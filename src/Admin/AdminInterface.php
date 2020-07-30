@@ -42,7 +42,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @method array                           configureActionButtons(string $action, ?object $object = null)
  * @method string                          getSearchResultLink(object $object)
  * @method void                            showMosaicButton(bool $isShown)
- * @method bool                            isDefaultFilter(string $name)
+ * @method bool                            isDefaultFilter(string $name)                                         // NEXT_MAJOR: Remove this
  * @method bool                            isCurrentRoute(string $name, ?string $adminCode)
  * @method bool                            canAccessObject(string $action, object $object)
  * @method mixed                           getPersistentParameter(string $name)
@@ -740,12 +740,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 //     * Setting to false will hide mosaic button for the admin screen.
 //     */
 //    public function showMosaicButton(bool $isShown): void;
-
-    /*
-     * Checks if a filter type is set to a default value
-     */
-//    NEXT_MAJOR: uncomment this method in 4.0
-    // public function isDefaultFilter(string $name): bool;
 
 //    NEXT_MAJOR: uncomment this method in 4.0
 //    public function setFilterPersister(?\Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface\FilterPersisterInterface $filterPersister = null): void;

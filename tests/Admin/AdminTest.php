@@ -2243,6 +2243,13 @@ class AdminTest extends TestCase
         $this->assertArrayHasKey('create', $admin->getDashboardActions());
     }
 
+    /**
+     * NEXT_MAJOR: Remove the assertion about isDefaultFilter method and the legacy group.
+     *
+     * @group legacy
+     *
+     * @expectedDeprecation Method "Sonata\AdminBundle\Admin\AbstractAdmin::isDefaultFilter" is deprecated since sonata-project/admin-bundle 3.x.
+     */
     public function testDefaultFilters(): void
     {
         $admin = new FilteredAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'Sonata\FooBundle\Controller\ModelAdminController');
