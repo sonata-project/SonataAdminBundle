@@ -1,6 +1,9 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.72 to 3.73
+=========================
+
 ### Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface::getParentFieldDescription`
 
 Use `Sonata\AdminBundle\Admin\AdminInterface::getParentFieldDescription` instead.
