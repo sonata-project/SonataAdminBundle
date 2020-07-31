@@ -96,6 +96,7 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
             }
 
             $admin->setLabelTranslatorStrategy($this);
+            $admin->setSubject($admin->getNewInstance());
 
             foreach (self::PUBLIC_ADMIN_METHODS as $method) {
                 $admin->$method();

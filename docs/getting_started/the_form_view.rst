@@ -263,8 +263,7 @@ started by creating a form and ended up with a nice edit page for your admin.
 In the :doc:`next chapter <the_list_view>`, you're going to look at the list
 and datagrid actions.
 
-.. _`Symfony Form component`: http://symfony.com/doc/current/book/forms.html
-.. _`field type reference`: http://symfony.com/doc/current/reference/forms/types.html
-.. _`entity field type`: http://symfony.com/doc/current/reference/forms/types/entity.html
-.. _`choice_label`: http://symfony.com/doc/current/reference/forms/types/entity.html#choice-label
-.. _`property`: http://symfony.com/doc/2.6/reference/forms/types/entity.html#property
+.. _`Symfony Form component`: https://symfony.com/doc/4.4/forms.html
+.. _`field type reference`: https://symfony.com/doc/4.4/reference/forms/types.html
+.. _`entity field type`: https://symfony.com/doc/4.4/reference/forms/types/entity.html
+.. _`choice_label`: https://symfony.com/doc/4.4/reference/forms/types/entity.html#choice-label

@@ -127,9 +127,9 @@ file that was distributed with this source code.
             {% if translation_domain is same as(false) %}
                 {{- label -}}
             {% elseif not sonata_admin.admin %}
-                {{- label|trans({}, translation_domain) -}}
+                {{- label|trans(label_translation_parameters, translation_domain) -}}
             {% else %}
-                {{ label|trans({}, sonata_admin.field_description.translationDomain ?: admin.translationDomain) }}
+                {{ label|trans(label_translation_parameters, sonata_admin.field_description.translationDomain ?: admin.translationDomain) }}
             {% endif %}
         </label>
     {% endif %}
@@ -166,7 +166,7 @@ file that was distributed with this source code.
                     {% if translation_domain is same as(false) %}
                         {{- label -}}
                     {% else %}
-                        {{- label|trans({}, translation_domain) -}}
+                        {{- label|trans(label_translation_parameters, translation_domain) -}}
                     {%- endif -%}
                 </span>
             {%- endif -%}
@@ -365,7 +365,7 @@ file that was distributed with this source code.
             {% endif %}
 
             {% if sonata_admin is defined and sonata_admin_enabled and sonata_admin.field_description.help|default(false) %}
-                <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|trans({}, sonata_admin.field_description.translationDomain ?: admin.translationDomain)|raw }}</span>
+                <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|trans(help_translation_parameters, sonata_admin.field_description.translationDomain ?: admin.translationDomain)|raw }}</span>
             {% endif %}
 
             {{ form_help(form) }}

@@ -448,4 +448,3 @@ by overriding ``checkAccess`` function::
             $this->customAccessLogic();
         }
     }
-

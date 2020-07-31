@@ -12,6 +12,7 @@
             <argument type="service" id="twig"/>
             <argument type="service" id="sonata.admin.pool"/>
             <argument type="service" id="sonata.admin.search.handler"/>
+            <argument type="service" id="sonata.admin.global_template_registry"/>
         </service>
         <service id="sonata.admin.block.stats" class="Sonata\AdminBundle\Block\AdminStatsBlockService" public="true">
             <tag name="sonata.block"/>
