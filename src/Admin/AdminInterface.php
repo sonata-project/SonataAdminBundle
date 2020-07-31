@@ -573,11 +573,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function showMosaicButton(bool $isShown): void;
 
-    /**
-     * Checks if a filter type is set to a default value.
-     */
-    public function isDefaultFilter(string $name): bool;
-
     public function configureActionButtons(array $buttonList, string $action, ?object $object = null): array;
 
     /**

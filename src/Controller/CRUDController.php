@@ -1500,7 +1500,7 @@ class CRUDController extends AbstractController
 
     private function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): JsonResponse
     {
-        if (!\in_array('application/json', $request->getAcceptableContentTypes(), true)) {
+        if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
             return $this->renderJson([], Response::HTTP_NOT_ACCEPTABLE);
         }
 
@@ -1520,7 +1520,7 @@ class CRUDController extends AbstractController
      */
     private function handleXmlHttpRequestSuccessResponse(Request $request, $object): JsonResponse
     {
-        if (!\in_array('application/json', $request->getAcceptableContentTypes(), true)) {
+        if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
             return $this->renderJson([], Response::HTTP_NOT_ACCEPTABLE);
         }
 
