@@ -2,6 +2,33 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.73.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.72.0...3.73.0) - 2020-07-31
+### Added
+- [[#6200](https://github.com/sonata-project/SonataAdminBundle/pull/6200)] Added support for columns not belonging to the model to the list view. ([@jorrit](https://github.com/jorrit))
+- [[#6206](https://github.com/sonata-project/SonataAdminBundle/pull/6206)] Support for 'help_translation_parameters' in form types ([@tkuska](https://github.com/tkuska))
+- [[#6206](https://github.com/sonata-project/SonataAdminBundle/pull/6206)] Support for 'label_translation_parameters' in form types ([@tkuska](https://github.com/tkuska))
+
+### Changed:
+- [[#6225](https://github.com/sonata-project/SonataAdminBundle/pull/6225)] Stop to hide default filters in order to provide a more natural UX-behavior. ([@kirya-dev](https://github.com/kirya-dev))
+
+### Deprecated
+- [[#6220](https://github.com/sonata-project/SonataAdminBundle/pull/6220)] Passing `null` or an instance of `EngineInterface` as argument 2 when instantiating `Sonata\AdminBundle\Block\AdminListBlockService`, `Sonata\AdminBundle\Block\AdminSearchBlockService` or `Sonata\AdminBundle\Block\AbstractBlockService` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6225](https://github.com/sonata-project/SonataAdminBundle/pull/6225)] Abstract:: isDefaultFilter method. ([@kirya-dev](https://github.com/kirya-dev))
+- [[#6234](https://github.com/sonata-project/SonataAdminBundle/pull/6234)] Deprecated `ModelManagerInterface::getParentFieldDescription`. ([@franmomu](https://github.com/franmomu))
+- [[#6200](https://github.com/sonata-project/SonataAdminBundle/pull/6200)] Calling `SonataAdminExtension::getValueFromFieldDescription()` ([@jorrit](https://github.com/jorrit))
+
+### Fixed
+- [[#6219](https://github.com/sonata-project/SonataAdminBundle/pull/6219)] Allow to use AdminType with unidirectional field. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6222](https://github.com/sonata-project/SonataAdminBundle/pull/6222)] Set the Accept header for ajaxSubmit in `Resources/views/CRUD/Association/edit_many_script.html.twig` to  "application/json" to prevent 406 (Not acceptable)  error. ([@nieuwenhuisen](https://github.com/nieuwenhuisen))
+- [[#6222](https://github.com/sonata-project/SonataAdminBundle/pull/6222)] CRUDController::handleXmlHttpRequestErrorResponse also accepts the wildcard Accept header  "*/*". ([@nieuwenhuisen](https://github.com/nieuwenhuisen))
+- [[#6222](https://github.com/sonata-project/SonataAdminBundle/pull/6222)] CRUDController::handleXmlHttpRequestSuccessResponse also accepts the wildcard Accept header  "*/*". ([@nieuwenhuisen](https://github.com/nieuwenhuisen))
+- [[#6224](https://github.com/sonata-project/SonataAdminBundle/pull/6224)] AdminExtractor sets subject created by `getNewInstance()` on Admin instance before extracting translatable strings. ([@jorrit](https://github.com/jorrit))
+- [[#6144](https://github.com/sonata-project/SonataAdminBundle/pull/6144)] Can't use `datetime` field type as editable ([@peter-gribanov](https://github.com/peter-gribanov))
+- [[#6167](https://github.com/sonata-project/SonataAdminBundle/pull/6167)] Show and edit `date` and `datetime` in the same timezone ([@peter-gribanov](https://github.com/peter-gribanov))
+- [[#6223](https://github.com/sonata-project/SonataAdminBundle/pull/6223)] Admin has no active subclass exception in *edit_many_script.html.twig* after adding a ModelType field. ([@nieuwenhuisen](https://github.com/nieuwenhuisen))
+- [[#6208](https://github.com/sonata-project/SonataAdminBundle/pull/6208)] Fixed checking if `FieldDescriptionInterface::getTargetModel()` exists before calling it. ([@franmomu](https://github.com/franmomu))
+- [[#6112](https://github.com/sonata-project/SonataAdminBundle/pull/6112)] Allow to use parameters/placeholders in (sidebar) menu label translation. ([@pavol-tk](https://github.com/pavol-tk))
+
 ## [3.72.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.71.1...3.72.0) - 2020-07-14
 ### Added
 - [[#6040](https://github.com/sonata-project/SonataAdminBundle/pull/6040)] Added new `AdminExtractor` to extract translations from the Admin classes ([@franmomu](https://github.com/franmomu))
