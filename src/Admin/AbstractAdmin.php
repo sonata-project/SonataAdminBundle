@@ -3295,7 +3295,7 @@ EOT;
      *
      * @deprecated Use configureTabMenu instead
      */
-    protected function configureSideMenu(ItemInterface $menu, $action, ?AdminInterface $childAdmin = null)
+    protected function configureSideMenu(ItemInterface $menu, string $action, ?AdminInterface $childAdmin = null)
     {
     }
 
