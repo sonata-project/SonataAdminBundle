@@ -22,7 +22,7 @@ use Sonata\Exporter\Source\SourceIteratorInterface;
 /**
  * A model manager is a bridge between the model classes and the admin functionality.
  */
-interface ModelManagerInterface extends DatagridManagerInterface
+interface ModelManagerInterface extends DatagridManagerInterface, ClassMetadataReaderInterface
 {
     /**
      * @param string $class
