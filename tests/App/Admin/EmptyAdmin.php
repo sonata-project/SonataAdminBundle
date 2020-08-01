@@ -23,17 +23,17 @@ final class EmptyAdmin extends AbstractAdmin
     protected $baseRoutePattern = 'empty';
     protected $baseRouteName = 'admin_empty';
 
-    protected function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list): void
     {
         // Empty
     }
 
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         // Empty
     }
 
-    protected function configureShowFields(ShowMapper $show)
+    protected function configureShowFields(ShowMapper $show): void
     {
         // Empty
     }

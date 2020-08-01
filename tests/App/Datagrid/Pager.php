@@ -28,7 +28,7 @@ final class Pager implements PagerInterface
         $this->repository = $repository;
     }
 
-    public function init()
+    public function init(): void
     {
     }
 
@@ -37,15 +37,15 @@ final class Pager implements PagerInterface
         return 1;
     }
 
-    public function setMaxPerPage($max)
+    public function setMaxPerPage($max): void
     {
     }
 
-    public function setPage($page)
+    public function setPage($page): void
     {
     }
 
-    public function setQuery($query)
+    public function setQuery($query): void
     {
     }
 
@@ -54,7 +54,7 @@ final class Pager implements PagerInterface
         return $this->repository->all();
     }
 
-    public function setMaxPageLinks($maxPageLinks)
+    public function setMaxPageLinks($maxPageLinks): void
     {
     }
 

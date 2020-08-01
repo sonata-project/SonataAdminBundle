@@ -25,7 +25,7 @@ final class ProxyQuery implements ProxyQueryInterface
     {
     }
 
-    public function setSortBy($parentAssociationMappings, $fieldMapping)
+    public function setSortBy($parentAssociationMappings, $fieldMapping): void
     {
     }
 
@@ -34,7 +34,7 @@ final class ProxyQuery implements ProxyQueryInterface
         return 'e.id';
     }
 
-    public function setSortOrder($sortOrder)
+    public function setSortOrder($sortOrder): void
     {
     }
 
@@ -48,7 +48,7 @@ final class ProxyQuery implements ProxyQueryInterface
         return 0;
     }
 
-    public function setFirstResult($firstResult)
+    public function setFirstResult($firstResult): void
     {
     }
 
@@ -57,7 +57,7 @@ final class ProxyQuery implements ProxyQueryInterface
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function setMaxResults($maxResults)
+    public function setMaxResults($maxResults): void
     {
     }
 
@@ -71,7 +71,7 @@ final class ProxyQuery implements ProxyQueryInterface
         return 1;
     }
 
-    public function entityJoin(array $associationMappings)
+    public function entityJoin(array $associationMappings): void
     {
     }
 }

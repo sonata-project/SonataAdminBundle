@@ -22,12 +22,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 final class TranslatedAdmin extends AbstractAdmin
 {
-    protected function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list): void
     {
         $list->add('name_list', TemplateRegistry::TYPE_STRING);
     }
 
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         $form
             ->add('name_form', TextType::class, ['help' => 'Help me!'])
@@ -36,7 +36,7 @@ final class TranslatedAdmin extends AbstractAdmin
             ->ifEnd();
     }
 
-    protected function configureShowFields(ShowMapper $show)
+    protected function configureShowFields(ShowMapper $show): void
     {
         $show->add('name_show', TemplateRegistry::TYPE_STRING);
     }

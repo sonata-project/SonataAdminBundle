@@ -230,6 +230,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * @param string $class
      * @param object $instance
+     *
+     * @return object
      */
     public function modelTransform($class, $instance);
 
