@@ -125,7 +125,7 @@ class AclSecurityHandlerTest extends TestCase
         $this->assertFalse($handler->isGranted($admin, 'raise exception', $admin));
     }
 
-    public function testAddObjectOwnerParamMustBeMutableAclInterface()
+    public function testAddObjectOwnerParamMustBeMutableAclInterface(): void
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(sprintf(
@@ -143,7 +143,7 @@ class AclSecurityHandlerTest extends TestCase
         $handler->addObjectOwner($this->createStub(AclInterface::class));
     }
 
-    public function testUpdateAclMustOnlyAcceptMutableAclInterface()
+    public function testUpdateAclMustOnlyAcceptMutableAclInterface(): void
     {
         $this->expectWarning();
         $this->expectWarningMessage('assert(): assert($acl instanceof MutableAclInterface) failed');
@@ -158,7 +158,7 @@ class AclSecurityHandlerTest extends TestCase
         $handler->updateAcl($acl);
     }
 
-    public function testSuccerfulUpdateAcl()
+    public function testSuccerfulUpdateAcl(): void
     {
         $acl = $this->createStub(MutableAclInterface::class);
         $aclProvider = $this->getMockForAbstractClass(MutableAclProviderInterface::class);

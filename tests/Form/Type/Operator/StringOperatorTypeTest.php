@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class StringOperatorTypeTest extends TypeTestCase
 {
-    public function testConfigureOptions()
+    public function testConfigureOptions(): void
     {
         $formType = new StringOperatorType();
         $optionsResolver = new OptionsResolver();
