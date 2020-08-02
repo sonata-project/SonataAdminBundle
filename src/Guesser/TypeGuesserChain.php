@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Guesser;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Guess\Guess;
+use Symfony\Component\Form\Guess\TypeGuess;
 
 /**
  * The code is based on Symfony2 Form Components.
@@ -61,7 +62,7 @@ class TypeGuesserChain implements TypeGuesserInterface
      * @param \Closure $closure The closure to execute. Accepts a guesser
      *                          as argument and should return a Guess instance
      *
-     * @return Guess The guess with the highest confidence
+     * @return TypeGuess The guess with the highest confidence
      */
     private function guess(\Closure $closure): Guess
     {
@@ -73,6 +74,6 @@ class TypeGuesserChain implements TypeGuesserInterface
             }
         }
 
-        return Guess::getBestGuess($guesses);
+        return TypeGuess::getBestGuess($guesses);
     }
 }
