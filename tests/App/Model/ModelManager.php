@@ -49,15 +49,15 @@ class ModelManager implements ModelManagerInterface, LockInterface
         return $fieldDescription;
     }
 
-    public function create($object)
+    public function create($object): void
     {
     }
 
-    public function update($object)
+    public function update($object): void
     {
     }
 
-    public function delete($object)
+    public function delete($object): void
     {
     }
 
@@ -76,17 +76,18 @@ class ModelManager implements ModelManagerInterface, LockInterface
         return $this->repository->byId($id);
     }
 
-    public function batchDelete($class, ProxyQueryInterface $queryProxy)
+    public function batchDelete($class, ProxyQueryInterface $queryProxy): void
     {
     }
 
-    public function getParentFieldDescription($parentAssociationMapping, $class)
+    public function getParentFieldDescription($parentAssociationMapping, $class): FieldDescriptionInterface
     {
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function createQuery($class, $alias = 'o')
+    public function createQuery($class, $alias = 'o'): ProxyQueryInterface
     {
+        throw new \BadMethodCallException('Not implemented.');
     }
 
     public function getModelIdentifier($class)
@@ -129,19 +130,19 @@ class ModelManager implements ModelManagerInterface, LockInterface
         return [];
     }
 
-    public function collectionRemoveElement(&$collection, &$element)
+    public function collectionRemoveElement(&$collection, &$element): void
     {
     }
 
-    public function collectionAddElement(&$collection, &$element)
+    public function collectionAddElement(&$collection, &$element): void
     {
     }
 
-    public function collectionHasElement(&$collection, &$element)
+    public function collectionHasElement(&$collection, &$element): void
     {
     }
 
-    public function collectionClear(&$collection)
+    public function collectionClear(&$collection): void
     {
     }
 
@@ -160,21 +161,21 @@ class ModelManager implements ModelManagerInterface, LockInterface
         return [];
     }
 
-    public function modelReverseTransform($class, array $array = [])
+    public function modelReverseTransform($class, array $array = []): object
     {
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function modelTransform($class, $instance)
+    public function modelTransform($class, $instance): object
     {
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function executeQuery($query)
+    public function executeQuery($query): void
     {
     }
 
-    public function getDataSourceIterator(DatagridInterface $datagrid, array $fields, $firstResult = null, $maxResult = null)
+    public function getDataSourceIterator(DatagridInterface $datagrid, array $fields, $firstResult = null, $maxResult = null): void
     {
     }
 
@@ -188,7 +189,7 @@ class ModelManager implements ModelManagerInterface, LockInterface
         return [];
     }
 
-    public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx)
+    public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx): void
     {
     }
 
