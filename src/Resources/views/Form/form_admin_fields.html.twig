@@ -25,7 +25,7 @@ file that was distributed with this source code.
 
 {% block form_help %}
     {% apply spaceless %}
-        <span class="help-block sonata-ba-field-widget-help">{{ parent() }}</span>
+        <span class="help-block sonata-ba-field-widget-help sonata-ba-field-help">{{ parent() }}</span>
     {% endapply %}
 {% endblock %}
 
@@ -364,7 +364,9 @@ file that was distributed with this source code.
                 </div>
             {% endif %}
 
+            {# NEXT_MAJOR: Remove this block #}
             {% if sonata_admin is defined and sonata_admin_enabled and sonata_admin.field_description.help|default(false) %}
+                {% deprecated 'The "help" option is deprecated in field description since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use Symfony Form "help" option instead.' %}
                 <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|trans(help_translation_parameters, sonata_admin.field_description.translationDomain ?: admin.translationDomain)|raw }}</span>
             {% endif %}
 

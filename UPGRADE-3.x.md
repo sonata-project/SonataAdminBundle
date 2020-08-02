@@ -1,6 +1,27 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated `help` option in field description
+
+You MUST use Symfony's [`help`](https://symfony.com/doc/4.4/reference/forms/types/form.html#help) option instead.
+
+Before:
+```php
+$formMapper
+    ->add('field', null, [
+        'help' => 'Help text <small>Please!</small>',
+    ]);
+```
+
+After:
+```php
+$formMapper
+    ->add('field', null, [
+        'help' => 'Help text <small>Please!</small>',
+        'help_html' => true,
+    ]);
+```
+
 UPGRADE FROM 3.72 to 3.73
 =========================
 

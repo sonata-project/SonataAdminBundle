@@ -55,16 +55,12 @@ class BaseFieldDescriptionTest extends TestCase
         $description->setOption('label', 'trucmuche');
         $this->assertSame('trucmuche', $description->getLabel());
         $this->assertNull($description->getTemplate());
-        $description->setOptions(['type' => 'integer', 'template' => 'foo.twig.html', 'help' => 'fooHelp']);
+        $description->setOptions(['type' => 'integer', 'template' => 'foo.twig.html']);
 
         $this->assertSame('integer', $description->getType());
         $this->assertSame('foo.twig.html', $description->getTemplate());
-        $this->assertSame('fooHelp', $description->getHelp());
 
         $this->assertCount(2, $description->getOptions());
-
-        $description->setHelp('Please enter an integer');
-        $this->assertSame('Please enter an integer', $description->getHelp());
 
         $description->setMappingType('int');
         $this->assertSame('int', $description->getMappingType());
@@ -78,6 +74,22 @@ class BaseFieldDescriptionTest extends TestCase
 
         $description->setOption('sortable', 'field_name');
         $this->assertTrue($description->isSortable());
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
+    public function testHelpOptions(): void
+    {
+        $description = new FieldDescription();
+
+        $description->setHelp('Please enter an integer');
+        $this->assertSame('Please enter an integer', $description->getHelp());
+
+        $description->setOptions(['help' => 'fooHelp']);
+        $this->assertSame('fooHelp', $description->getHelp());
     }
 
     public function testAdmin(): void

@@ -18,6 +18,12 @@ parameters:
             count: 1
             path: ../src/Action/SearchAction.php
 
+        -
+            # NEXT_MAJOR: Remove this error
+            message: "#^Call to an undefined method Sonata\\\\AdminBundle\\\\Admin\\\\FieldDescriptionInterface\\:\\:setHelp\\(\\)\\.$#"
+            count: 1
+            path: ../src/Form/FormMapper.php
+
 # next 6 errors are due to not installed Doctrine ORM\ODM
         -
             message: "#^Class Doctrine\\\\ODM\\\\MongoDB\\\\PersistentCollection not found\\.$#"

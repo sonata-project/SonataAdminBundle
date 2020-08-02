@@ -179,9 +179,17 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             unset($options['template']);
         }
 
+        // NEXT_MAJOR: Remove this block.
         // set help if provided
         if (isset($options['help'])) {
-            $this->setHelp($options['help']);
+            @trigger_error(sprintf(
+                'Passing "help" option to "%s()" is deprecated since sonata-project/admin-bundle 3.x'
+                .' and the option will be removed in 4.0.'
+                .' Use Symfony Form "help" option instead.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+
+            $this->setHelp($options['help'], 'sonata_deprecation_mute');
             unset($options['help']);
         }
 
@@ -414,14 +422,32 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     /**
      * Defines the help message.
+     *
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0. Use Symfony Form "help" option instead.
      */
     public function setHelp(string $help): void
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
+            @trigger_error(sprintf(
+                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+                .' Use Symfony Form "help" option instead.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         $this->help = $help;
     }
 
     public function getHelp(): string
     {
+        @trigger_error(sprintf(
+            'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+            .' Use Symfony Form "help" option instead.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         return $this->help;
     }
 
