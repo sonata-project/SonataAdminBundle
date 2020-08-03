@@ -423,15 +423,12 @@ class CRUDController implements ContainerAwareInterface
         if ($data = json_decode((string) $request->get('data'), true)) {
             $action = $data['action'];
             $idx = $data['idx'];
-            $allElements = $data['all_elements'];
+            $allElements = (bool) $data['all_elements'];
             $request->request->replace(array_merge($request->request->all(), $data));
         } else {
-            $request->request->set('idx', $request->get('idx', []));
-            $request->request->set('all_elements', $request->get('all_elements', false));
-
-            $action = $request->get('action');
-            $idx = $request->get('idx');
-            $allElements = $request->get('all_elements');
+            $action = $request->request->getAlnum('action');
+            $idx = $request->request->get('idx', []);
+            $allElements = $request->request->getBoolean('all_elements');
             $data = $request->request->all();
 
             unset($data['_sonata_csrf_token']);
