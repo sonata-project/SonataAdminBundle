@@ -92,7 +92,7 @@ final class MenuBuilder
         }
 
         $event = new ConfigureMenuEvent($this->factory, $menu);
-        $this->eventDispatcher->dispatch($event);
+        $this->eventDispatcher->dispatch($event, ConfigureMenuEvent::SIDEBAR);
 
         return $event->getMenu();
     }
