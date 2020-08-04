@@ -484,15 +484,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return false !== $this->getOption('virtual_field', false);
     }
 
-    private function getFieldGetterKey($object, ?string $fieldName): ?string
+    private function getFieldGetterKey(object $object, ?string $fieldName): ?string
     {
         if (!\is_string($fieldName)) {
             return null;
         }
 
-        if (!\is_object($object)) {
-            return null;
-        }
         $components = [\get_class($object), $fieldName];
 
         $code = $this->getOption('code');
@@ -503,14 +500,14 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return implode('-', $components);
     }
 
-    private function hasCachedFieldGetter($object, string $fieldName): bool
+    private function hasCachedFieldGetter(object $object, string $fieldName): bool
     {
         return isset(
             self::$fieldGetters[$this->getFieldGetterKey($object, $fieldName)]
         );
     }
 
-    private function callCachedGetter($object, string $fieldName, array $parameters = [])
+    private function callCachedGetter(object $object, string $fieldName, array $parameters = [])
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
 
@@ -525,7 +522,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $object->{$fieldName};
     }
 
-    private function cacheFieldGetter($object, ?string $fieldName, string $method, ?string $getter = null): void
+    private function cacheFieldGetter(object $object, ?string $fieldName, string $method, ?string $getter = null): void
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
         if (null !== $getterKey) {
