@@ -487,8 +487,6 @@ final class SonataAdminExtension extends AbstractExtension
         } catch (NoValueException $e) {
             if ($fieldDescription->hasAssociationAdmin()) {
                 $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
-            } else {
-                throw $e;
             }
         }
 

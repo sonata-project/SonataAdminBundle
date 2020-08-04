@@ -137,7 +137,6 @@ class MenuBuilderTest extends TestCase
             ->method('dispatch')
             ->with(
                 $this->isInstanceOf(ConfigureMenuEvent::class),
-                $this->equalTo('sonata.admin.event.configure.menu.sidebar')
             );
 
         $this->provider

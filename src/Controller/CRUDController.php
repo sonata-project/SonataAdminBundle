@@ -59,11 +59,6 @@ use Twig\Environment;
 class CRUDController extends AbstractController
 {
     /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
      * The related Admin class.
      *
      * @var AdminInterface
@@ -229,7 +224,7 @@ class CRUDController extends AbstractController
             'form' => $formView,
             'datagrid' => $datagrid,
             'csrf_token' => $this->getCsrfToken('sonata.batch'),
-            'export_formats' => $this->adminExporter instanceof Exporter ?
+            'export_formats' => $this->adminExporter ?
                 $this->adminExporter->getAvailableFormats($this->admin) :
                 $this->admin->getExportFormats(),
         ]);
@@ -1031,18 +1026,6 @@ class CRUDController extends AbstractController
         $parameters['admin_pool'] = $this->pool;
 
         return $parameters;
-    }
-
-    /**
-     * Gets a container configuration parameter by its name.
-     *
-     * @param string $name The parameter name
-     *
-     * @return mixed
-     */
-    protected function getParameter($name)
-    {
-        return $this->container->getParameter($name);
     }
 
     /**

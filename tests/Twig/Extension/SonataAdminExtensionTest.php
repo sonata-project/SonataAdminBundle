@@ -1842,7 +1842,6 @@ EOT
 
     public function testGetValueFromFieldDescriptionWithNoValueException(): void
     {
-        $this->expectException(NoValueException::class);
         $object = new \stdClass();
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
 
