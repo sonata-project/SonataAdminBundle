@@ -119,11 +119,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $associationAdmin;
 
     /**
-     * @var string the help message to display
-     */
-    protected $help;
-
-    /**
      * @var array[] cached object field getters
      */
     private static $fieldGetters = [];
