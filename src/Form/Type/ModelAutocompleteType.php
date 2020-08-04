@@ -26,12 +26,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * This type defines a standard text field with autocomplete feature.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  * @author Florent Denis <dflorent.pokap@gmail.com>
  */
-class ModelAutocompleteType extends AbstractType
+final class ModelAutocompleteType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -119,8 +117,7 @@ class ModelAutocompleteType extends AbstractType
             'to_string_callback' => null,
 
             // add button
-            // NEXT_MAJOR: Set this value to 'link_add' to display button by default
-            'btn_add' => false,
+            'btn_add' => 'link_add',
             'btn_catalogue' => 'SonataAdminBundle',
 
             // ajax parameters

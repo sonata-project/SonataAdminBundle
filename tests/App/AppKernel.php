@@ -51,10 +51,6 @@ final class AppKernel extends Kernel
             new SonataFormBundle(),
         ];
 
-        if (class_exists(SonataCoreBundle::class)) {
-            $bundles[] = new SonataCoreBundle();
-        }
-
         return $bundles;
     }
 
@@ -73,12 +69,12 @@ final class AppKernel extends Kernel
         return __DIR__;
     }
 
-    protected function configureRoutes(RouteCollectionBuilder $routes)
+    protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
         $routes->import(sprintf('%s/config/routes.yml', $this->getProjectDir()));
     }
 
-    protected function configureContainer(ContainerBuilder $containerBuilder, LoaderInterface $loader)
+    protected function configureContainer(ContainerBuilder $containerBuilder, LoaderInterface $loader): void
     {
         $containerBuilder->loadFromExtension('framework', [
             'secret' => 'MySecret',
@@ -100,6 +96,7 @@ final class AppKernel extends Kernel
         $containerBuilder->loadFromExtension('twig', [
             'strict_variables' => '%kernel.debug%',
             'exception_controller' => null,
+            'form_themes' => ['@SonataAdmin/Form/form_admin_fields.html.twig'],
         ]);
 
         $loader->load(sprintf('%s/config/services.yml', $this->getProjectDir()));

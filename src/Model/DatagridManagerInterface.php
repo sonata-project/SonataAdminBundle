@@ -15,8 +15,6 @@ namespace Sonata\AdminBundle\Model;
 
 /**
  * A datagrid manager is a bridge between the model classes and the admin datagrid functionality.
- *
- * @method array getDefaultPerPageOptions(string $class)
  */
 interface DatagridManagerInterface
 {
@@ -29,11 +27,10 @@ interface DatagridManagerInterface
      */
     public function getDefaultSortValues($class);
 
-//    NEXT_MAJOR: Uncomment the following lines.
-//    /**
-//     * Return all the allowed _per_page values.
-//     *
-//     * @return array<int>
-//     */
-//    public function getDefaultPerPageOptions(string $class): array;
+    /**
+     * Return all the allowed _per_page values.
+     *
+     * @return array<int>
+     */
+    public function getDefaultPerPageOptions(string $class): array;
 }

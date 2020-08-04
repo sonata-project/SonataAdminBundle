@@ -132,11 +132,6 @@ class FormMapper extends BaseGroupedMapper
             if (!isset($options['label'])) {
                 $options['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($name, 'form', 'label');
             }
-
-            if (isset($options['help'])) {
-                $fieldDescription->setHelp($options['help']);
-                unset($options['help']);
-            }
         }
 
         $this->admin->addFormFieldDescription($fieldName, $fieldDescription);
@@ -224,24 +219,6 @@ class FormMapper extends BaseGroupedMapper
     public function create(string $name, ?string $type = null, array $options = []): FormBuilderInterface
     {
         return $this->formBuilder->create($name, $type, $options);
-    }
-
-    public function setHelps(array $helps = []): self
-    {
-        foreach ($helps as $name => $help) {
-            $this->addHelp($name, $help);
-        }
-
-        return $this;
-    }
-
-    public function addHelp(string $name, string $help): self
-    {
-        if ($this->admin->hasFormFieldDescription($name)) {
-            $this->admin->getFormFieldDescription($name)->setHelp($help);
-        }
-
-        return $this;
     }
 
     /**

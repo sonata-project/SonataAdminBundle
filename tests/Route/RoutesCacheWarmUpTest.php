@@ -27,10 +27,9 @@ class RoutesCacheWarmUpTest extends TestCase
 
     protected function setUp(): void
     {
-        $routesCache = $this->getMockBuilder(RoutesCache::class)->disableOriginalConstructor()->getMock();
         $pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
 
-        $this->routesCacheWarmUp = new RoutesCacheWarmUp($routesCache, $pool);
+        $this->routesCacheWarmUp = new RoutesCacheWarmUp(new RoutesCache('test', false), $pool);
     }
 
     public function testIsOptional(): void

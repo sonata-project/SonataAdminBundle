@@ -11,4 +11,4 @@ jobs:
         env:
           REQUIRE_DEV: true
         with:
-          args: analyse -c .phpstan/phpstan.neon.dist
+          args: analyse

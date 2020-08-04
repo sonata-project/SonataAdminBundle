@@ -24,58 +24,56 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class Datagrid implements DatagridInterface
+final class Datagrid implements DatagridInterface
 {
     /**
      * The filter instances.
      *
      * @var array
      */
-    protected $filters = [];
+    private $filters = [];
 
     /**
      * @var array
      */
-    protected $values = [];
+    private $values = [];
 
     /**
      * @var FieldDescriptionCollection
      */
-    protected $columns;
+    private $columns;
 
     /**
      * @var PagerInterface
      */
-    protected $pager;
+    private $pager;
 
     /**
      * @var bool
      */
-    protected $bound = false;
+    private $bound = false;
 
     /**
      * @var ProxyQueryInterface
      */
-    protected $query;
+    private $query;
 
     /**
      * @var FormBuilderInterface
      */
-    protected $formBuilder;
+    private $formBuilder;
 
     /**
      * @var FormInterface
      */
-    protected $form;
+    private $form;
 
     /**
      * @var array|null
      */
-    protected $results;
+    private $results;
 
     public function __construct(
         ProxyQueryInterface $query,
@@ -214,19 +212,10 @@ class Datagrid implements DatagridInterface
     public function getFilter($name)
     {
         if (!$this->hasFilter($name)) {
-            @trigger_error(sprintf(
-                'Passing a nonexistent filter name as argument 1 to %s() is deprecated since'
-                .' sonata-project/admin-bundle 3.52 and will throw an exception in 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare FilterInterface as return type
-            // throw new \InvalidArgumentException(sprintf(
-            //    'Filter named "%s" doesn\'t exist.',
-            //    $name
-            // ));
-
-            return null;
+            throw new \InvalidArgumentException(sprintf(
+                'Filter named "%s" doesn\'t exist.',
+                $name
+            ));
         }
 
         return $this->filters[$name];

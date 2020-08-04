@@ -24,12 +24,10 @@ use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 /**
  * Sonata menu builder.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Martin Hasoň <martin.hason@gmail.com>
  * @author Alexandru Furculita <alex@furculita.net>
  */
-class MenuBuilder
+final class MenuBuilder
 {
     /**
      * @var Pool

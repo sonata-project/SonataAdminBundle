@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
 
@@ -26,10 +26,8 @@ interface UrlGeneratorInterface
 {
     /**
      * Returns the list of available urls.
-     *
-     * @return RouteCollection the list of available urls
      */
-    public function getRoutes(): RouteCollection;
+    public function getRoutes(): RouteCollectionInterface;
 
     /**
      * Return the parameter name used to represent the id in the url.

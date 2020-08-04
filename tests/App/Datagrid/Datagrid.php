@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\App\Datagrid;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -43,7 +44,7 @@ final class Datagrid implements DatagridInterface
         return $this->pager;
     }
 
-    public function getQuery()
+    public function getQuery(): ProxyQueryInterface
     {
         throw new \BadMethodCallException('Not implemented.');
     }
@@ -53,11 +54,11 @@ final class Datagrid implements DatagridInterface
         return $this->pager->getResults();
     }
 
-    public function buildPager()
+    public function buildPager(): void
     {
     }
 
-    public function addFilter(FilterInterface $filter)
+    public function addFilter(FilterInterface $filter): void
     {
     }
 
@@ -66,7 +67,7 @@ final class Datagrid implements DatagridInterface
         return [];
     }
 
-    public function reorderFilters(array $keys)
+    public function reorderFilters(array $keys): void
     {
     }
 
@@ -75,12 +76,12 @@ final class Datagrid implements DatagridInterface
         return [];
     }
 
-    public function getColumns()
+    public function getColumns(): FieldDescriptionCollection
     {
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function setValue($name, $operator, $value)
+    public function setValue($name, $operator, $value): void
     {
     }
 
@@ -89,7 +90,7 @@ final class Datagrid implements DatagridInterface
         return $this->formFactory->createNamedBuilder('filter', FormType::class, [])->getForm();
     }
 
-    public function getFilter($name)
+    public function getFilter($name): FilterInterface
     {
         throw new \BadMethodCallException('Not implemented.');
     }
@@ -99,7 +100,7 @@ final class Datagrid implements DatagridInterface
         return false;
     }
 
-    public function removeFilter($name)
+    public function removeFilter($name): void
     {
     }
 

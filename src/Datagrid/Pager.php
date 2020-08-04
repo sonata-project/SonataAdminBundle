@@ -275,10 +275,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return $this->page * $this->maxPerPage;
     }
 
-    /**
-     * @return int
-     */
-    public function getNbResults()
+    public function getNbResults(): int
     {
         return $this->nbResults;
     }
@@ -380,10 +377,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * Returns true if on the last page.
-     *
-     * @return bool
      */
-    public function isLastPage()
+    public function isLastPage(): bool
     {
         return $this->page === $this->lastPage;
     }

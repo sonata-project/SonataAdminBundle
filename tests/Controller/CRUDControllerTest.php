@@ -26,11 +26,11 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
-use Sonata\AdminBundle\Model\AuditManager;
+use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\AuditReaderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
-use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
+use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
@@ -67,8 +67,6 @@ use Twig\Environment;
  * Test for CRUDController.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
- *
- * @group legacy
  */
 class CRUDControllerTest extends TestCase
 {
@@ -110,7 +108,7 @@ class CRUDControllerTest extends TestCase
     private $session;
 
     /**
-     * @var AuditManager
+     * @var AuditManagerInterface
      */
     private $auditManager;
 
@@ -180,9 +178,7 @@ class CRUDControllerTest extends TestCase
 
         $this->exporter = new Exporter([new JsonWriter(sys_get_temp_dir().'/sonataadmin/export.json')]);
 
-        $this->auditManager = $this->getMockBuilder(AuditManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->auditManager = $this->createMock(AuditManagerInterface::class);
 
         $this->adminObjectAclManipulator = $this->getMockBuilder(AdminObjectAclManipulator::class)
             ->disableOriginalConstructor()
@@ -297,7 +293,6 @@ class CRUDControllerTest extends TestCase
         ];
         foreach ($testedMethods as $testedMethod) {
             $method = new \ReflectionMethod(CRUDController::class, $testedMethod);
-
             $method->setAccessible(true);
             $this->protectedTestedMethods[$testedMethod] = $method;
         }
@@ -720,7 +715,7 @@ class CRUDControllerTest extends TestCase
             ->method('checkAccess')
             ->with($this->equalTo('show'));
 
-        $show = $this->createMock(FieldDescriptionCollection::class);
+        $show = new FieldDescriptionCollection();
 
         $this->admin->expects($this->once())
             ->method('getShow')
@@ -2546,9 +2541,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->isInstanceOf(AdminObjectAclData::class))
             ->willReturn($aclRolesForm);
 
-        $aclSecurityHandler = $this->getMockBuilder(AclSecurityHandler::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $aclSecurityHandler = $this->createMock(AclSecurityHandlerInterface::class);
 
         $aclSecurityHandler
             ->method('getObjectPermissions')
@@ -2634,9 +2627,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->isInstanceOf(AdminObjectAclData::class))
             ->willReturn($aclRolesForm);
 
-        $aclSecurityHandler = $this->getMockBuilder(AclSecurityHandler::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $aclSecurityHandler = $this->createMock(AclSecurityHandlerInterface::class);
 
         $aclSecurityHandler
             ->method('getObjectPermissions')
@@ -2722,9 +2713,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->isInstanceOf(AdminObjectAclData::class))
             ->willReturn($aclRolesForm);
 
-        $aclSecurityHandler = $this->getMockBuilder(AclSecurityHandler::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $aclSecurityHandler = $this->createMock(AclSecurityHandlerInterface::class);
 
         $aclSecurityHandler
             ->method('getObjectPermissions')
@@ -3173,11 +3162,6 @@ class CRUDControllerTest extends TestCase
         }
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionMethodNotExist(): void
     {
         $this->expectException(\RuntimeException::class);

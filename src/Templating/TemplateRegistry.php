@@ -23,35 +23,11 @@ final class TemplateRegistry implements MutableTemplateRegistryInterface
     public const TYPE_DATE = 'date';
     public const TYPE_TIME = 'time';
     public const TYPE_DATETIME = 'datetime';
-    /**
-     * NEXT_MAJOR: Remove this constant.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.68, to be removed in 4.0. Use Sonata\AdminBundle\Templating\TemplateRegistry::TYPE_STRING instead.
-     */
-    public const TYPE_TEXT = 'text';
     public const TYPE_TEXTAREA = 'textarea';
     public const TYPE_EMAIL = 'email';
     public const TYPE_TRANS = 'trans';
     public const TYPE_STRING = 'string';
-    /**
-     * NEXT_MAJOR: Remove this constant.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.68, to be removed in 4.0. Use Sonata\AdminBundle\Templating\TemplateRegistry::TYPE_INTEGER instead.
-     */
-    public const TYPE_SMALLINT = 'smallint';
-    /**
-     * NEXT_MAJOR: Remove this constant.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.68, to be removed in 4.0. Use Sonata\AdminBundle\Templating\TemplateRegistry::TYPE_INTEGER instead.
-     */
-    public const TYPE_BIGINT = 'bigint';
     public const TYPE_INTEGER = 'integer';
-    /**
-     * NEXT_MAJOR: Remove this constant.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.68, to be removed in 4.0. Use Sonata\AdminBundle\Templating\TemplateRegistry::TYPE_FLOAT instead.
-     */
-    public const TYPE_DECIMAL = 'decimal';
     public const TYPE_FLOAT = 'float';
     public const TYPE_IDENTIFIER = 'identifier';
     public const TYPE_CURRENCY = 'currency';

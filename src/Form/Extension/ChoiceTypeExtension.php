@@ -20,11 +20,9 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Amine Zaghdoudi <amine.zaghdoudi@ekino.com>
  */
-class ChoiceTypeExtension extends AbstractTypeExtension
+final class ChoiceTypeExtension extends AbstractTypeExtension
 {
     public function configureOptions(OptionsResolver $resolver): void
     {

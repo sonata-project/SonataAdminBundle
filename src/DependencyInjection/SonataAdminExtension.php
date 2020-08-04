@@ -29,8 +29,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType as SymfonyTextType;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  * @author Michael Williams <michael.williams@funsational.com>
  */
@@ -175,11 +173,6 @@ final class SonataAdminExtension extends Extension
             ->replaceArgument(0, $classes)
             ->replaceArgument(1, $config['options']);
 
-        // NEXT_MAJOR: Remove this block
-        if (!isset($bundles['JMSTranslationBundle'])) {
-            $container->removeDefinition('sonata.admin.translator.extractor.jms_translator_bundle');
-        }
-
         // remove non-Mopa compatibility layer
         if (isset($bundles['MopaBootstrapBundle'])) {
             $container->removeDefinition('sonata.admin.form.extension.field.mopa');
@@ -190,8 +183,6 @@ final class SonataAdminExtension extends Extension
         $container->setParameter('sonata.admin.configuration.filters.persister', $config['filter_persister']);
 
         $container->setParameter('sonata.admin.configuration.show.mosaic.button', $config['show_mosaic_button']);
-
-        $container->setParameter('sonata.admin.configuration.translate_group_label', $config['translate_group_label']);
 
         $this->replacePropertyAccessor($container);
 

@@ -17,7 +17,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Util\ObjectAclManipulatorInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,20 +24,16 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class GenerateObjectAclCommand extends QuestionableCommand
+final class GenerateObjectAclCommand extends QuestionableCommand
 {
     protected static $defaultName = 'sonata:admin:generate-object-acl';
 
     /**
-     * NEXT_MAJOR: Rename to `$userModelClass`.
-     *
      * @var string
      */
-    protected $userEntityClass = '';
+    private $userModelClass = '';
 
     /**
      * @var Pool
@@ -71,8 +66,6 @@ class GenerateObjectAclCommand extends QuestionableCommand
         $this
             ->setDescription('Install ACL for the objects of the Admin Classes.')
             ->addOption('object_owner', null, InputOption::VALUE_OPTIONAL, 'If set, the task will set the object owner for each admin.')
-            // NEXT_MAJOR: Remove "user_entity" option.
-            ->addOption('user_entity', null, InputOption::VALUE_OPTIONAL, '<error>DEPRECATED</error> Use <comment>user_model</comment> option instead.')
             ->addOption('user_model', null, InputOption::VALUE_OPTIONAL, 'Shortcut notation like <comment>AcmeDemoBundle:User</comment>. If not set, it will be asked the first time an object owner is set.')
             ->addOption('step', null, InputOption::VALUE_NONE, 'If set, the task will ask for each admin if the ACLs need to be generated and what object owner to set, if any.')
         ;
@@ -99,7 +92,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
 
         if ($input->getOption('user_model')) {
             try {
-                $this->getUserEntityClass($input, $output);
+                $this->getUserModelClass($input, $output);
             } catch (\Exception $e) {
                 $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
@@ -123,18 +116,18 @@ class GenerateObjectAclCommand extends QuestionableCommand
                 continue;
             }
 
-            if ($input->getOption('step') && !$this->askConfirmation($input, $output, sprintf("<question>Generate ACLs for the object instances handled by \"%s\"?</question>\n", $id), 'no', '?')) {
+            if ($input->getOption('step') && !$this->askConfirmation($input, $output, sprintf("<question>Generate ACLs for the object instances handled by \"%s\"?</question>\n", $id), 'no')) {
                 continue;
             }
 
             $securityIdentity = null;
-            if ($input->getOption('step') && $this->askConfirmation($input, $output, "<question>Set an object owner?</question>\n", 'no', '?')) {
+            if ($input->getOption('step') && $this->askConfirmation($input, $output, "<question>Set an object owner?</question>\n", 'no')) {
                 $username = $this->askAndValidate($input, $output, 'Please enter the username: ', '', 'Sonata\AdminBundle\Command\Validators::validateUsername');
 
-                $securityIdentity = new UserSecurityIdentity($username, $this->getUserEntityClass($input, $output));
+                $securityIdentity = new UserSecurityIdentity($username, $this->getUserModelClass($input, $output));
             }
             if (!$input->getOption('step') && $input->getOption('object_owner')) {
-                $securityIdentity = new UserSecurityIdentity($input->getOption('object_owner'), $this->getUserEntityClass($input, $output));
+                $securityIdentity = new UserSecurityIdentity($input->getOption('object_owner'), $this->getUserModelClass($input, $output));
             }
 
             $manipulatorId = sprintf('sonata.admin.manipulator.acl.object.%s', $admin->getManagerType());
@@ -159,51 +152,11 @@ class GenerateObjectAclCommand extends QuestionableCommand
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         parent::initialize($input, $output);
-
-        // NEXT_MAJOR: Remove the following conditional block.
-        if (null !== $input->getOption('user_entity')) {
-            $output->writeln([
-                'Option <comment>user_entity</comment> is deprecated since sonata-project/admin-bundle 3.69 and will be removed in version 4.0.'
-                .' Use <comment>user_model</comment> option instead.',
-                '',
-            ]);
-
-            @trigger_error(
-                'Option "user_entity" is deprecated since sonata-project/admin-bundle 3.69 and will be removed in version 4.0.'
-                .' Use "user_model" option instead.',
-                E_USER_DEPRECATED
-            );
-
-            if (null === $input->getOption('user_model')) {
-                $input->setOption('user_model', $input->getOption('user_entity'));
-            }
-        }
     }
 
-    protected function getUserModelClass(InputInterface $input, OutputInterface $output): string
+    private function getUserModelClass(InputInterface $input, OutputInterface $output): string
     {
-        return $this->getUserEntityClass($input, $output);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method and move its body to `getUserModelClass()`.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.69. Use `getUserModelClass()` instead.
-     *
-     * @return string
-     */
-    protected function getUserEntityClass(InputInterface $input, OutputInterface $output)
-    {
-        if (self::class !== static::class) {
-            @trigger_error(sprintf(
-                'Method %s() is deprecated since sonata-project/admin-bundle 3.69 and will be removed in version 4.0.'
-                .' Use %s::getUserModelClass() instead.',
-                __METHOD__,
-                __CLASS__
-            ), E_USER_DEPRECATED);
-        }
-
-        if ('' === $this->userEntityClass) {
+        if ('' === $this->userModelClass) {
             if ($input->getOption('user_model')) {
                 [$userBundle, $userModel] = Validators::validateEntityName($input->getOption('user_model'));
             } else {
@@ -216,16 +169,11 @@ class GenerateObjectAclCommand extends QuestionableCommand
                 );
             }
 
-            // Entity exists?
-            if ($this->registry instanceof RegistryInterface) {
-                $namespace = $this->registry->getEntityNamespace($userBundle);
-            } else {
-                $namespace = $this->registry->getAliasNamespace($userBundle);
-            }
+            $namespace = $this->registry->getAliasNamespace($userBundle);
 
-            $this->userEntityClass = sprintf('%s\%s', $namespace, $userModel);
+            $this->userModelClass = sprintf('%s\%s', $namespace, $userModel);
         }
 
-        return $this->userEntityClass;
+        return $this->userModelClass;
     }
 }

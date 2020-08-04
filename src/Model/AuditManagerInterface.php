@@ -39,7 +39,7 @@ interface AuditManagerInterface
      *
      * @param string $class
      *
-     * @throws \RuntimeException // NEXT_MAJOR: Throw a \LogicException instead
+     * @throws \LogicException
      *
      * @return AuditReaderInterface
      */

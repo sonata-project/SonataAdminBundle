@@ -82,9 +82,6 @@ class AdminObjectAclDataTest extends TestCase
         }
     }
 
-    /**
-     * @group legacy
-     */
     public function testSetForm(): AdminObjectAclData
     {
         $form = $this->getMockBuilder(Form::class)
@@ -100,8 +97,6 @@ class AdminObjectAclDataTest extends TestCase
 
     /**
      * @depends testSetForm
-     *
-     * @group legacy
      */
     public function testGetForm(AdminObjectAclData $adminObjectAclData): void
     {

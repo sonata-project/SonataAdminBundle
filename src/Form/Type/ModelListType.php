@@ -40,10 +40,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *  - a button to open the associated admin create form in a dialog,
  *    in order to create and select an associated model.
  *  - a button to unlink the associated model, if any.
- *
- * @final since sonata-project/admin-bundle 3.52
  */
-class ModelListType extends AbstractType
+final class ModelListType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

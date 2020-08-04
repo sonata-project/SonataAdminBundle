@@ -50,6 +50,10 @@ final class CRUDControllerTest extends WebTestCase
             1,
             $crawler->filter('.sonata-ba-collapsed-fields label:contains("Name")')->count()
         );
+        $this->assertCount(
+            1,
+            $crawler->filter('.sonata-ba-field-help:contains("Help me!")')
+        );
     }
 
     public function testEmptyCreate(): void

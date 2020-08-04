@@ -83,17 +83,6 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function batchDelete($class, ProxyQueryInterface $queryProxy);
 
     /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.73. To be removed in 4.0.
-     * Use AdminInterface::getParentFieldDescription instead.
-     *
-     * @param array  $parentAssociationMapping
-     * @param string $class
-     */
-    public function getParentFieldDescription($parentAssociationMapping, $class);
-
-    /**
      * @param string $class
      * @param string $alias
      *
@@ -196,18 +185,6 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function collectionClear(&$collection);
 
     /**
-     * Returns the parameters used in the columns header.
-     *
-     * NEXT_MAJOR: - Remove this function
-     *             - Replace admin.modelmanager.sortparameters to admin.datagrid.sortparameters
-     *
-     * @deprecated since sonata-project/admin-bundle 3.66. To be removed in 4.0.
-     *
-     * @return array<string, mixed>
-     */
-    public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid);
-
-    /**
      * @param string $class
      *
      * @return object
@@ -217,6 +194,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * @param string $class
      * @param object $instance
+     *
+     * @return object
      */
     public function modelTransform($class, $instance);
 
@@ -244,18 +223,6 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @return string[]
      */
     public function getExportFields($class);
-
-    /**
-     * @param int $page
-     *
-     * NEXT_MAJOR: - Remove this function
-     *             - Replace admin.modelmanager.paginationparameters to admin.datagrid.paginationparameters
-     *
-     * @deprecated since sonata-project/admin-bundle 3.66. To be removed in 4.0.
-     *
-     * @return array<string, mixed>
-     */
-    public function getPaginationParameters(DatagridInterface $datagrid, $page);
 
     /**
      * @param string $class

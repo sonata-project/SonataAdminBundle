@@ -37,34 +37,42 @@ final class AdminMaker extends AbstractMaker
      * @var string
      */
     private $projectDirectory;
+
     /**
      * @var string[]
      */
     private $availableModelManagers;
+
     /**
      * @var string
      */
     private $skeletonDirectory;
+
     /**
      * @var string
      */
     private $modelClass;
+
     /**
      * @var string
      */
     private $modelClassBasename;
+
     /**
      * @var string
      */
     private $adminClassBasename;
+
     /**
      * @var string
      */
     private $controllerClassBasename;
+
     /**
      * @var string
      */
     private $managerType;
+
     /**
      * @var ModelManagerInterface
      */

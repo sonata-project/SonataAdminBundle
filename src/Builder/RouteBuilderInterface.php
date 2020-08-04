@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Builder;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface RouteBuilderInterface
 {
-    public function build(AdminInterface $admin, RouteCollection $collection): void;
+    public function build(AdminInterface $admin, RouteCollectionInterface $collection): void;
 }

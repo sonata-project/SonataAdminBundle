@@ -30,7 +30,6 @@ use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -64,9 +63,9 @@ use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 use Sonata\Doctrine\Adapter\AdapterInterface;
 use Sonata\Exporter\Source\ArraySourceIterator;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -313,10 +312,13 @@ class AdminTest extends TestCase
     public function testConfigureWithValidParentAssociationMapping(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-        $admin->setParentAssociationMapping('Category');
+
+        $comment = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'Sonata\NewsBundle\Controller\CommentAdminController');
+        $comment->addChild($admin, 'comment');
 
         $admin->initialize();
-        $this->assertSame('Category', $admin->getParentAssociationMapping());
+
+        $this->assertSame('comment', $admin->getParentAssociationMapping());
     }
 
     public function provideGetBaseRoutePattern()
@@ -528,97 +530,6 @@ class AdminTest extends TestCase
         $this->assertSame($expected, $admin->getBaseRouteName());
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Calling "addChild" without second argument is deprecated since sonata-project/admin-bundle 3.35 and will not be allowed in 4.0.
-     * @dataProvider provideGetBaseRouteName
-     */
-    public function testGetBaseRouteNameWithChildAdmin(string $objFqn, string $expected): void
-    {
-        $routeGenerator = new DefaultRouteGenerator(
-            $this->createMock(RouterInterface::class),
-            new RoutesCache($this->cacheTempFolder, true)
-        );
-
-        $container = new Container();
-        $pool = new Pool($container, 'Sonata Admin', '/path/to/pic.png');
-
-        $pathInfo = new PathInfoBuilder($this->createMock(AuditManagerInterface::class));
-        $postAdmin = new PostAdmin('sonata.post.admin.post', $objFqn, 'Sonata\NewsBundle\Controller\PostAdminController');
-        $container->set('sonata.post.admin.post', $postAdmin);
-        $postAdmin->setConfigurationPool($pool);
-        $postAdmin->setRouteBuilder($pathInfo);
-        $postAdmin->setRouteGenerator($routeGenerator);
-        $postAdmin->initialize();
-
-        $commentAdmin = new CommentAdmin(
-            'sonata.post.admin.comment',
-            'Application\Sonata\NewsBundle\Entity\Comment',
-            'Sonata\NewsBundle\Controller\CommentAdminController'
-        );
-        $container->set('sonata.post.admin.comment', $commentAdmin);
-        $commentAdmin->setConfigurationPool($pool);
-        $commentAdmin->setRouteBuilder($pathInfo);
-        $commentAdmin->setRouteGenerator($routeGenerator);
-        $commentAdmin->initialize();
-
-        $postAdmin->addChild($commentAdmin, 'post');
-
-        $commentVoteAdmin = new CommentVoteAdmin(
-            'sonata.post.admin.comment_vote',
-            'Application\Sonata\NewsBundle\Entity\CommentVote',
-            'Sonata\NewsBundle\Controller\CommentVoteAdminController'
-        );
-
-        $container->set('sonata.post.admin.comment_vote', $commentVoteAdmin);
-        $commentVoteAdmin->setConfigurationPool($pool);
-        $commentVoteAdmin->setRouteBuilder($pathInfo);
-        $commentVoteAdmin->setRouteGenerator($routeGenerator);
-        $commentVoteAdmin->initialize();
-
-        $commentAdmin->addChild($commentVoteAdmin);
-        $pool->setAdminServiceIds([
-            'sonata.post.admin.post',
-            'sonata.post.admin.comment',
-            'sonata.post.admin.comment_vote',
-        ]);
-
-        $this->assertSame(sprintf('%s_comment', $expected), $commentAdmin->getBaseRouteName());
-
-        $this->assertTrue($postAdmin->hasRoute('show'));
-        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post.show'));
-        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.show'));
-        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment|sonata.post.admin.comment_vote.show'));
-        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.comment.list'));
-        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.comment|sonata.post.admin.comment_vote.list'));
-        $this->assertFalse($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.edit'));
-        $this->assertFalse($commentAdmin->hasRoute('edit'));
-        $this->assertSame('post', $commentAdmin->getParentAssociationMapping());
-
-        /*
-         * Test the route name from request
-         */
-        $postListRequest = new Request(
-            [],
-            [],
-            [
-                '_route' => sprintf('%s_list', $postAdmin->getBaseRouteName()),
-            ]
-        );
-
-        $postAdmin->setRequest($postListRequest);
-        $commentAdmin->setRequest($postListRequest);
-
-        $this->assertTrue($postAdmin->isCurrentRoute('list'));
-        $this->assertFalse($postAdmin->isCurrentRoute('create'));
-        $this->assertFalse($commentAdmin->isCurrentRoute('list'));
-        $this->assertFalse($commentVoteAdmin->isCurrentRoute('list'));
-        $this->assertTrue($commentAdmin->isCurrentRoute('list', 'sonata.post.admin.post'));
-        $this->assertFalse($commentAdmin->isCurrentRoute('edit', 'sonata.post.admin.post'));
-        $this->assertTrue($commentVoteAdmin->isCurrentRoute('list', 'sonata.post.admin.post'));
-        $this->assertFalse($commentVoteAdmin->isCurrentRoute('edit', 'sonata.post.admin.post'));
-    }
-
     public function testGetBaseRouteNameWithUnreconizedClassname(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -721,7 +632,6 @@ class AdminTest extends TestCase
      */
     public function testSubClass(): void
     {
-        // NEXT_MAJOR: Remove the "@group" and "@expectedDeprecation" annotations
         $admin = new PostAdmin(
             'sonata.post.admin.post',
             Post::class,
@@ -805,35 +715,16 @@ class AdminTest extends TestCase
         $this->assertTrue($admin->hasActiveSubClass());
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Method "Sonata\AdminBundle\Admin\AbstractAdmin::addSubClass" is deprecated since sonata-project/admin-bundle 3.30 and will be removed in 4.0.
-     */
-    public function testAddSubClassIsDeprecated(): void
-    {
-        $admin = new PostAdmin(
-            'sonata.post.admin.post',
-            Post::class,
-            'Sonata\NewsBundle\Controller\PostAdminController'
-        );
-        $admin->addSubClass('whatever');
-    }
-
-    /**
-     * @group legacy
-     */
     public function testGetPerPageOptions(): void
     {
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+        $admin->setModelManager($modelManager);
 
         $perPageOptions = $admin->getPerPageOptions();
 
-        foreach ($perPageOptions as $perPage) {
-            $this->assertSame(0, $perPage % 4);
-        }
-
-        $admin->setPerPageOptions([500, 1000]);
-        $this->assertSame([500, 1000], $admin->getPerPageOptions());
+        $this->assertSame([25], $perPageOptions);
     }
 
     public function testGetLabelTranslatorStrategy(): void
@@ -1076,7 +967,7 @@ class AdminTest extends TestCase
 
     public function testGetRequestWithException(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('The Request object has not been set');
 
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
@@ -1091,21 +982,6 @@ class AdminTest extends TestCase
 
         $admin->setTranslationDomain('foo');
         $this->assertSame('foo', $admin->getTranslationDomain());
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testGetTranslator(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $this->assertNull($admin->getTranslator());
-
-        $translator = $this->createMock(TranslatorInterface::class);
-
-        $admin->setTranslator($translator);
-        $this->assertSame($translator, $admin->getTranslator());
     }
 
     public function testGetShowGroups(): void
@@ -1142,17 +1018,14 @@ class AdminTest extends TestCase
         $this->assertSame(14, $admin->getMaxPageLinks());
     }
 
-    /**
-     * @group legacy
-     */
     public function testGetMaxPerPage(): void
     {
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+        $admin->setModelManager($modelManager);
 
-        $this->assertSame(32, $admin->getMaxPerPage());
-
-        $admin->setMaxPerPage(94);
-        $this->assertSame(94, $admin->getMaxPerPage());
+        $this->assertSame(25, $admin->getMaxPerPage());
     }
 
     public function testGetLabel(): void
@@ -1232,10 +1105,13 @@ class AdminTest extends TestCase
 
     public function testDeterminedPerPageValue(): void
     {
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+
         $admin = new PostAdmin('sonata.post.admin.post', 'Acme\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+        $admin->setModelManager($modelManager);
 
         $this->assertFalse($admin->determinedPerPageValue(123));
-        $this->assertTrue($admin->determinedPerPageValue(16));
+        $this->assertTrue($admin->determinedPerPageValue(25));
     }
 
     public function testIsGranted(): void
@@ -1335,92 +1211,15 @@ class AdminTest extends TestCase
     }
 
     /**
-     * @group legacy
+     * @doesNotPerformAssertions
      */
-    public function testTrans(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-        $admin->setTranslationDomain('fooMessageDomain');
-
-        $translator = $this->createMock(TranslatorInterface::class);
-        $admin->setTranslator($translator);
-
-        $translator->expects($this->once())
-            ->method('trans')
-            ->with($this->equalTo('foo'), $this->equalTo([]), $this->equalTo('fooMessageDomain'))
-            ->willReturn('fooTranslated');
-
-        $this->assertSame('fooTranslated', $admin->trans('foo'));
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testTransWithMessageDomain(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $translator = $this->createMock(TranslatorInterface::class);
-        $admin->setTranslator($translator);
-
-        $translator->expects($this->once())
-            ->method('trans')
-            ->with($this->equalTo('foo'), $this->equalTo(['name' => 'Andrej']), $this->equalTo('fooMessageDomain'))
-            ->willReturn('fooTranslated');
-
-        $this->assertSame('fooTranslated', $admin->trans('foo', ['name' => 'Andrej'], 'fooMessageDomain'));
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testTransChoice(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-        $admin->setTranslationDomain('fooMessageDomain');
-
-        $translator = $this->createMock(TranslatorInterface::class);
-        $admin->setTranslator($translator);
-
-        $translator->expects($this->once())
-            ->method('trans')
-            ->with($this->equalTo('foo'), ['count' => 2], $this->equalTo('fooMessageDomain'))
-            ->willReturn('fooTranslated');
-
-        $this->assertSame('fooTranslated', $admin->trans('foo', ['count' => 2]));
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testTransChoiceWithMessageDomain(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $translator = $this->createMock(TranslatorInterface::class);
-        $admin->setTranslator($translator);
-
-        $translator->expects($this->once())
-            ->method('trans')
-            ->with($this->equalTo('foo'), ['count' => 2], $this->equalTo('Andrej'), $this->equalTo('fooMessageDomain'))
-            ->willReturn('fooTranslated');
-
-        $this->assertSame('fooTranslated', $admin->trans('foo', ['count' => 2], 'Andrej', 'fooMessageDomain'));
-    }
-
     public function testSetFilterPersister(): void
     {
-        $admin = new class('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle\Controller\PostAdminController') extends PostAdmin {
-            public function persistFilters(): bool
-            {
-                return $this->persistFilters;
-            }
-        };
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle\Controller\PostAdminController');
 
         $filterPersister = $this->createMock(FilterPersisterInterface::class);
 
         $admin->setFilterPersister($filterPersister);
-        $this->assertTrue($admin->persistFilters());
     }
 
     public function testGetRootCode(): void
@@ -1752,11 +1551,10 @@ class AdminTest extends TestCase
     {
         $authorId = uniqid();
 
-        $postAdmin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'Sonata\NewsBundle\Controller\CommentAdminController');
-        $commentAdmin->setParentAssociationMapping('post.author');
-        $commentAdmin->setParent($postAdmin);
+
+        $postAdmin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+        $postAdmin->addChild($commentAdmin, 'post__author');
 
         $request = $this->createMock(Request::class);
         $query = $this->createMock(ParameterBag::class);
@@ -2164,13 +1962,6 @@ class AdminTest extends TestCase
         $this->assertArrayHasKey('create', $admin->getDashboardActions());
     }
 
-    /**
-     * NEXT_MAJOR: Remove the assertion about isDefaultFilter method and the legacy group.
-     *
-     * @group legacy
-     *
-     * @expectedDeprecation Method "Sonata\AdminBundle\Admin\AbstractAdmin::isDefaultFilter" is deprecated since sonata-project/admin-bundle 3.x.
-     */
     public function testDefaultFilters(): void
     {
         $admin = new FilteredAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'Sonata\FooBundle\Controller\ModelAdminController');
@@ -2211,8 +2002,6 @@ class AdminTest extends TestCase
         $admin->setModelManager($modelManager);
 
         $this->assertSame([
-            '_page' => 1,
-            '_per_page' => 32,
             'foo' => [
                 'type' => '1',
                 'value' => 'bar',
@@ -2224,75 +2013,50 @@ class AdminTest extends TestCase
             'a' => [
                 'value' => 'b',
             ],
+            '_per_page' => 25,
         ], $admin->getFilterParameters());
-
-        $this->assertTrue($admin->isDefaultFilter('foo'));
-        $this->assertFalse($admin->isDefaultFilter('bar'));
-        $this->assertFalse($admin->isDefaultFilter('a'));
-    }
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @group legacy
-     */
-    public function testCreateQueryLegacyCallWorks(): void
-    {
-        $admin = $this->getMockForAbstractClass(AbstractAdmin::class, [
-            'admin.my_code', 'My\Class', 'MyBundle\ClassAdminController',
-        ]);
-        $query = $this->createMock(ProxyQueryInterface::class);
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-        $modelManager->expects($this->once())
-            ->method('createQuery')
-            ->with('My\Class')
-            ->willReturn($query);
-
-        $admin->setModelManager($modelManager);
-        $this->assertSame($query, $admin->createQuery('list'));
     }
 
     public function testGetDataSourceIterator(): void
     {
-        $datagrid = $this->createMock(DatagridInterface::class);
-        $datagrid->method('buildPager');
-
+        $pager = $this->createStub(PagerInterface::class);
+        $translator = $this->createStub(TranslatorInterface::class);
         $modelManager = $this->createMock(ModelManagerInterface::class);
+
+        $admin = new PostAdmin(
+            'sonata.post.admin.post',
+            'Application\Sonata\NewsBundle\Entity\Post',
+            'Sonata\NewsBundle\Controller\PostAdminController'
+        );
+
+        $formFactory = new FormFactory(new FormRegistry([], new ResolvedFormTypeFactory()));
+        $datagridBuilder = new DatagridBuilder($formFactory, $pager);
+
+        $translator->method('trans')->willReturnCallback(static function (string $label): string {
+            if ('export.label_field' === $label) {
+                return 'Feld';
+            }
+
+            return $label;
+        });
+
         $modelManager->method('getExportFields')->willReturn([
             'field',
             'foo',
             'bar',
         ]);
         $modelManager->expects($this->once())->method('getDataSourceIterator')
-            ->with($this->equalTo($datagrid), $this->equalTo([
+            ->with($this->equalTo($datagridBuilder->getBaseDatagrid($admin)), $this->equalTo([
                 'Feld' => 'field',
                 1 => 'foo',
                 2 => 'bar',
             ]))
             ->willReturn(new ArraySourceIterator([]));
 
-        $admin = $this->getMockBuilder(AbstractAdmin::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['getClass', 'getDatagrid', 'getTranslationLabel', 'trans'])
-            ->getMockForAbstractClass();
-        $admin->method('getClass')->willReturn('App\Admin\MyAdmin');
-        $admin->method('getDatagrid')->willReturn($datagrid);
+        $admin->setTranslator($translator);
+        $admin->setDatagridBuilder($datagridBuilder);
         $admin->setModelManager($modelManager);
-
-        $admin
-            ->method('getTranslationLabel')
-            ->willReturnCallback(static function (string $label, string $context = '', string $type = ''): string {
-                return sprintf('%s.%s_%s', $context, $type, $label);
-            });
-        $admin
-            ->method('trans')
-            ->willReturnCallback(static function (string $label): string {
-                if ('export.label_field' === $label) {
-                    return 'Feld';
-                }
-
-                return $label;
-            });
+        $admin->setLabelTranslatorStrategy(new UnderscoreLabelTranslatorStrategy());
 
         $admin->getDataSourceIterator();
     }
@@ -2357,7 +2121,7 @@ class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\Post',
             'Sonata\NewsBundle\Controller\PostAdminController'
         );
-        $postAdmin->addChild($postAdmin);
+        $postAdmin->addChild($postAdmin, 'post');
     }
 
     public function testGetRootAncestor(): void

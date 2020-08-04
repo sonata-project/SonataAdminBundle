@@ -24,11 +24,9 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ModelChoiceLoader implements ChoiceLoaderInterface
+final class ModelChoiceLoader implements ChoiceLoaderInterface
 {
     public $identifier;
 

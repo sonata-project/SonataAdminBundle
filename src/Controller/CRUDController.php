@@ -1469,7 +1469,7 @@ class CRUDController extends AbstractController
         return array_filter(['_tab' => $request->request->get('_tab')]);
     }
 
-    private function checkParentChildAssociation(Request $request, $object): void
+    private function checkParentChildAssociation(Request $request, object $object): void
     {
         if (!$this->admin->isChild()) {
             return;

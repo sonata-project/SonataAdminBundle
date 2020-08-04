@@ -25,7 +25,7 @@ interface ParentAdminInterface
     /**
      * add an Admin child to the current one.
      */
-    public function addChild(AdminInterface $child);
+    public function addChild(AdminInterface $child, string $field);
 
     /**
      * Returns true or false if an Admin child exists for the given $code.
@@ -45,8 +45,6 @@ interface ParentAdminInterface
 
     /**
      * Returns an admin child with the given $code.
-     *
-     * @return AdminInterface|null // NEXT_MAJOR: Return AdminInterface
      */
-    public function getChild(string $code): ?AdminInterface;
+    public function getChild(string $code): AdminInterface;
 }

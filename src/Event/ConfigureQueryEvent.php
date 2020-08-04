@@ -25,26 +25,24 @@ use Symfony\Contracts\EventDispatcher\Event;
  *   - sonata.admin.event.configure.query
  *   - sonata.admin.event.configure.[admin_code].query  (not implemented yet)
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ConfigureQueryEvent extends Event
+final class ConfigureQueryEvent extends Event
 {
     /**
      * @var AdminInterface
      */
-    protected $admin;
+    private $admin;
 
     /**
      * @var ProxyQueryInterface
      */
-    protected $proxyQuery;
+    private $proxyQuery;
 
     /**
      * @var string
      */
-    protected $context;
+    private $context;
 
     /**
      * @param string $context
