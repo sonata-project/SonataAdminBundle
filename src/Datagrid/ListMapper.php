@@ -53,6 +53,7 @@ class ListMapper extends BaseMapper
 
     /**
      * @param FieldDescriptionInterface|string $name
+     * @param array<string, mixed>             $fieldDescriptionOptions
      */
     public function addIdentifier($name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
@@ -72,6 +73,7 @@ class ListMapper extends BaseMapper
 
     /**
      * @param FieldDescriptionInterface|string $name
+     * @param array<string, mixed>             $fieldDescriptionOptions
      *
      * @throws \LogicException
      */
@@ -164,11 +166,17 @@ class ListMapper extends BaseMapper
         return $this;
     }
 
+    /**
+     * @return string[]
+     */
     final public function keys(): array
     {
         return array_keys($this->list->getElements());
     }
 
+    /**
+     * @param string[] $keys
+     */
     public function reorder(array $keys): self
     {
         $this->list->reorder($keys);

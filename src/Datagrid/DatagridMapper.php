@@ -49,6 +49,9 @@ class DatagridMapper extends BaseMapper
 
     /**
      * @param FieldDescriptionInterface|string $name
+     * @param array<string, mixed>             $filterOptions
+     * @param array<string, mixed>|null        $fieldOptions
+     * @param array<string, mixed>             $fieldDescriptionOptions
      *
      * @throws \LogicException
      */
@@ -60,11 +63,11 @@ class DatagridMapper extends BaseMapper
         ?array $fieldOptions = null,
         array $fieldDescriptionOptions = []
     ): self {
-        if (\is_array($fieldOptions)) {
+        if (null !== $fieldOptions) {
             $filterOptions['field_options'] = $fieldOptions;
         }
 
-        if ($fieldType) {
+        if (null !== $fieldType) {
             $filterOptions['field_type'] = $fieldType;
         }
 

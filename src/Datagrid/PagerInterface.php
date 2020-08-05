@@ -21,56 +21,55 @@ interface PagerInterface
     /**
      * Initialize the Pager.
      */
-    public function init();
+    public function init(): void;
 
     /**
      * Returns the maximum number of results per page.
-     *
-     * @return int
      */
-    public function getMaxPerPage();
+    public function getMaxPerPage(): int;
 
     /**
+     * TODO: allow only int to be set
      * Sets the maximum number of results per page.
      *
-     * @param int $max
+     * @param int|string $max
      */
-    public function setMaxPerPage($max);
+    public function setMaxPerPage($max): void;
 
     /**
+     * Gets the current page.
+     */
+    public function getPage(): int;
+
+    /**
+     * TODO: allow only int to be set
      * Sets the current page.
      *
-     * @param int $page
+     * @param int|string $page
      */
-    public function setPage($page);
+    public function setPage($page): void;
 
     /**
      * Set query.
-     *
-     * @param ProxyQueryInterface $query
      */
-    public function setQuery($query);
+    public function setQuery(ProxyQueryInterface $query): void;
 
     /**
      * Returns an array of results on the given page.
      *
-     * @return array
+     * @return object[]
      */
-    public function getResults();
+    public function getResults(): array;
 
     /**
      * Sets the maximum number of page numbers.
-     *
-     * @param int $maxPageLinks
      */
-    public function setMaxPageLinks($maxPageLinks);
+    public function setMaxPageLinks(int $maxPageLinks): void;
 
     /**
      * Returns the maximum number of page numbers.
-     *
-     * @return int
      */
-    public function getMaxPageLinks();
+    public function getMaxPageLinks(): int;
 
     /**
      * Returns true if on the last page.

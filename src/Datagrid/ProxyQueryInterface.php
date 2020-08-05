@@ -21,81 +21,45 @@ namespace Sonata\AdminBundle\Datagrid;
 interface ProxyQueryInterface
 {
     /**
-     * @param string $name
-     * @param array  $args
+     * @param mixed[] $args
      *
      * @return mixed
      */
-    public function __call($name, $args);
+    public function __call(string $name, array $args);
 
     /**
-     * @param int|null $hydrationMode
+     * @param array<string, mixed> $params
      *
      * @return mixed
      */
-    public function execute(array $params = [], $hydrationMode = null);
+    public function execute(array $params = [], ?int $hydrationMode = null);
 
     /**
-     * @param array $parentAssociationMappings
-     * @param array $fieldMapping
-     *
-     * @return ProxyQueryInterface
+     * @param mixed[] $parentAssociationMappings
+     * @param mixed[] $fieldMapping
      */
-    public function setSortBy($parentAssociationMappings, $fieldMapping);
+    public function setSortBy(array $parentAssociationMappings, array $fieldMapping): self;
+
+    public function getSortBy(): string;
+
+    public function setSortOrder(string $sortOrder): self;
+
+    public function getSortOrder(): string;
+
+    public function getSingleScalarResult(): ?int;
+
+    public function setFirstResult(?int $firstResult): self;
+
+    public function getFirstResult(): ?object;
+
+    public function setMaxResults(?int $maxResults): self;
+
+    public function getMaxResults(): ?int;
+
+    public function getUniqueParameterId(): int;
 
     /**
-     * @return string
+     * @param mixed[] $associationMappings
      */
-    public function getSortBy();
-
-    /**
-     * @param string $sortOrder
-     *
-     * @return ProxyQueryInterface
-     */
-    public function setSortOrder($sortOrder);
-
-    /**
-     * @return string
-     */
-    public function getSortOrder();
-
-    /**
-     * @return mixed
-     */
-    public function getSingleScalarResult();
-
-    /**
-     * @param int|null $firstResult
-     *
-     * @return ProxyQueryInterface
-     */
-    public function setFirstResult($firstResult);
-
-    /**
-     * @return mixed
-     */
-    public function getFirstResult();
-
-    /**
-     * @param int|null $maxResults
-     *
-     * @return ProxyQueryInterface
-     */
-    public function setMaxResults($maxResults);
-
-    /**
-     * @return int|null
-     */
-    public function getMaxResults();
-
-    /**
-     * @return int
-     */
-    public function getUniqueParameterId();
-
-    /**
-     * @return string
-     */
-    public function entityJoin(array $associationMappings);
+    public function entityJoin(array $associationMappings): string;
 }
