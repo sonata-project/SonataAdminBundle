@@ -2432,7 +2432,7 @@ EOT
             'object' => $this->object,
         ];
 
-        $template = $this->environment->loadTemplate('@SonataAdmin/CRUD/base_list_field.html.twig');
+        $template = $this->environment->load('@SonataAdmin/CRUD/base_list_field.html.twig')->unwrap();
 
         $this->assertSame(
             '<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td>',
