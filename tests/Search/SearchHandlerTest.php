@@ -63,6 +63,7 @@ class SearchHandlerTest extends TestCase
     public function buildPagerWithGlobalSearchField(bool $caseSensitive): void
     {
         $filter = $this->getMockForAbstractClass(FilterInterface::class);
+        $filter->expects($this->once())->method('getFormName')->willReturn('formName');
         $filter->expects($this->once())->method('getOption')->willReturn(true);
         $filter->expects($this->once())->method('setOption')->with('case_sensitive', $caseSensitive);
 
