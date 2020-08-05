@@ -11,6 +11,8 @@ services:
 
     Sonata\AdminBundle\Controller\CRUDController:
         public: true
+        arguments:
+            $kernelDebug: '%kernel.debug%'
 
     Sonata\AdminBundle\Templating\TemplateRegistryInterface:
         alias: 'sonata.admin.global_template_registry'

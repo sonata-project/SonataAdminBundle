@@ -102,9 +102,9 @@ class CRUDController extends AbstractController
     private $session;
 
     /**
-     * @var KernelInterface
+     * @var bool
      */
-    private $kernel;
+    private $kernelDebug;
 
     /**
      * @var AuditManagerInterface
@@ -149,7 +149,7 @@ class CRUDController extends AbstractController
         Environment $twig,
         TranslatorInterface $translator,
         SessionInterface $session,
-        KernelInterface $kernel,
+        bool $kernelDebug,
         AuditManagerInterface $auditManager,
         ?Exporter $exporter = null,
         ?AdminExporter $adminExporter = null,
@@ -165,7 +165,7 @@ class CRUDController extends AbstractController
         $this->twig = $twig;
         $this->translator = $translator;
         $this->session = $session;
-        $this->kernel = $kernel;
+        $this->kernelDebug = $kernelDebug;
         $this->auditManager = $auditManager;
         $this->exporter = $exporter;
         $this->adminExporter = $adminExporter;
@@ -1140,7 +1140,7 @@ class CRUDController extends AbstractController
      */
     protected function handleModelManagerException(\Exception $e): void
     {
-        if ($this->kernel->isDebug()) {
+        if ($this->kernelDebug) {
             throw $e;
         }
 
@@ -1360,7 +1360,7 @@ class CRUDController extends AbstractController
      */
     protected function getCsrfToken($intention)
     {
-        if ($this->csrfTokenManager instanceof CsrfTokenManagerInterface) {
+        if ($this->csrfTokenManager) {
             return $this->csrfTokenManager->getToken($intention)->getValue();
         }
 

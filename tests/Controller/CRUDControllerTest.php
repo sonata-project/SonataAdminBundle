@@ -56,7 +56,6 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -138,11 +137,6 @@ class CRUDControllerTest extends TestCase
     private $csrfProvider;
 
     /**
-     * @var KernelInterface
-     */
-    private $kernel;
-
-    /**
      * @var TranslatorInterface
      */
     private $translator;
@@ -204,8 +198,6 @@ class CRUDControllerTest extends TestCase
         $requestStack = new RequestStack();
         $requestStack->push($this->request);
 
-        $this->kernel = $this->createMock(KernelInterface::class);
-
         $this->container->set('sonata.admin.pool', $this->pool);
         $this->container->set('request_stack', $requestStack);
         $this->container->set('foo.admin', $this->admin);
@@ -217,7 +209,6 @@ class CRUDControllerTest extends TestCase
         $this->container->set('sonata.admin.object.manipulator.acl.admin', $this->adminObjectAclManipulator);
         $this->container->set('security.csrf.token_manager', $this->csrfProvider);
         $this->container->set('logger', $this->logger);
-        $this->container->set('kernel', $this->kernel);
         $this->container->set('translator', $this->translator);
         $this->container->set('sonata.admin.breadcrumbs_builder', new BreadcrumbsBuilder([]));
 
@@ -648,9 +639,7 @@ class CRUDControllerTest extends TestCase
             ->method('getModelManager')
             ->willReturn($modelManager);
 
-        $this->kernel->expects($this->once())
-            ->method('isDebug')
-            ->willReturn(true);
+        $this->controller = $this->createController(CRUDController::class, true);
 
         $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class));
     }
@@ -1008,9 +997,7 @@ class CRUDControllerTest extends TestCase
                 throw new ModelManagerException();
             });
 
-        $this->kernel->expects($this->once())
-            ->method('isDebug')
-            ->willReturn(true);
+        $this->controller = $this->createController(CRUDController::class, true);
 
         $this->request->setMethod(Request::METHOD_DELETE);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
@@ -3634,8 +3621,10 @@ class CRUDControllerTest extends TestCase
         return $twig;
     }
 
-    private function createController(string $classname = CRUDController::class): CRUDController
-    {
+    private function createController(
+        string $classname = CRUDController::class,
+        bool $kernelDebug = false
+    ): CRUDController {
         $requestStack = new RequestStack();
         $requestStack->push($this->request);
 
@@ -3650,7 +3639,7 @@ class CRUDControllerTest extends TestCase
             $this->createTwig(),
             $this->translator,
             $this->session,
-            $this->kernel,
+            $kernelDebug,
             $this->auditManager,
             $this->exporter,
             new AdminExporter($this->exporter),
