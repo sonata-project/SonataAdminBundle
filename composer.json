@@ -67,7 +67,6 @@
     "require-dev": {
         "jms/translation-bundle": "^1.4",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",
-        "mopa/bootstrap-bundle": "^3.3",
         "phpstan/phpstan": "^0.12.29",
         "psr/event-dispatcher": "^1.0",
         "sonata-project/intl-bundle": "^2.4",

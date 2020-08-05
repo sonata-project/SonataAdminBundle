@@ -75,7 +75,7 @@ class SonataAdminBundle extends Bundle
             return;
         }
 
-        FormHelper::registerFormTypeMapping([
+        $formMapping = [
             'sonata_type_admin' => AdminType::class,
             'sonata_type_model' => ModelType::class,
             'sonata_type_model_list' => ModelListType::class,
@@ -91,8 +91,13 @@ class SonataAdminBundle extends Bundle
             'sonata_type_filter_date_range' => DateRangeType::class,
             'sonata_type_filter_datetime' => DateTimeType::class,
             'sonata_type_filter_datetime_range' => DateTimeRangeType::class,
-            'tab' => TabType::class,
-        ]);
+        ];
+
+        if (class_exists(TabType::class)) {
+            $formMapping['tab'] = TabType::class;
+        }
+
+        FormHelper::registerFormTypeMapping($formMapping);
 
         FormHelper::registerFormExtensionMapping('form', [
             'sonata.admin.form.extension.field',

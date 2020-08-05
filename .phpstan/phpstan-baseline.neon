@@ -222,6 +222,12 @@ parameters:
             count: 1
             path: ../src/Form/Extension/ChoiceTypeExtension.php
 
+        -
+            # will be fixed in v4. The file won't exist
+            message: "#^Call to static method load\\(\\) on an unknown class Symfony\\\\Component\\\\ClassLoader\\\\ClassCollectionLoader\\.$#"
+            count: 1
+            path: ../src/Command/CreateClassCacheCommand.php
+
 # next 6 errors are due to not installed Doctrine ORM\ODM
         -
             message: "#^Class Doctrine\\\\ODM\\\\MongoDB\\\\PersistentCollection not found\\.$#"
