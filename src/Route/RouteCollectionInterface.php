@@ -67,7 +67,9 @@ interface RouteCollectionInterface
     public function clear(): self;
 
     /**
-     * Convert a word in to the format for a symfony action action_name => actionName.
+     * Converts a word into the format required for a controller action. By instance,
+     * the argument "list_something" returns "listSomething" if the associated controller is not an action itself,
+     * otherwise, it will return "listSomethingAction".
      */
     public function actionify(string $action): string;
 
