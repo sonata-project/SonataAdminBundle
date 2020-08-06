@@ -23,7 +23,7 @@ use Symfony\Component\Form\FormView;
 class FormViewIterator implements \RecursiveIterator
 {
     /**
-     * @var \ArrayIterator
+     * @var \ArrayIterator<string, FormView>
      */
     protected $iterator;
 

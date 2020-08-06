@@ -46,6 +46,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
@@ -511,7 +512,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     private $show;
 
     /**
-     * @var Form|null
+     * @var FormInterface|null
      */
     private $form;
 
@@ -1574,7 +1575,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * Returns the master admin.
      *
-     * @return AbstractAdmin the root admin class
+     * @return AdminInterface the root admin class
      */
     public function getRoot()
     {

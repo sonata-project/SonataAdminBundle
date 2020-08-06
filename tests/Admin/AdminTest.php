@@ -75,6 +75,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRegistry;
 use Symfony\Component\Form\ResolvedFormTypeFactory;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -1738,6 +1739,12 @@ class AdminTest extends TestCase
                     }),
                     $this->greaterThan(0)
                 );
+
+        $form = $this->createMock(FormInterface::class);
+        $formBuild->expects($this->once())
+            ->method('getForm')
+            ->willReturn($form)
+        ;
 
         $formContractor = $this->createMock(FormContractorInterface::class);
         $formContractor
