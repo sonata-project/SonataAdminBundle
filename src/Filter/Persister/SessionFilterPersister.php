@@ -33,17 +33,17 @@ final class SessionFilterPersister implements FilterPersisterInterface
         $this->session = $session;
     }
 
-    public function get($adminCode): array
+    public function get(string $adminCode): array
     {
         return $this->session->get($this->buildStorageKey($adminCode), []);
     }
 
-    public function set($adminCode, array $filters): void
+    public function set(string $adminCode, array $filters): void
     {
         $this->session->set($this->buildStorageKey($adminCode), $filters);
     }
 
-    public function reset($adminCode): void
+    public function reset(string $adminCode): void
     {
         $this->session->remove($this->buildStorageKey($adminCode));
     }

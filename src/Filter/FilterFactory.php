@@ -26,12 +26,12 @@ final class FilterFactory implements FilterFactoryInterface
     private $container;
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     private $types;
 
     /**
-     * @param string[] $types
+     * @param array<string, string> $types
      */
     public function __construct(ContainerInterface $container, array $types = [])
     {
@@ -39,12 +39,8 @@ final class FilterFactory implements FilterFactoryInterface
         $this->types = $types;
     }
 
-    public function create($name, $type, array $options = [])
+    public function create(string $name, string $type, array $options = []): FilterInterface
     {
-        if (!$type) {
-            throw new \RuntimeException('The type must be defined');
-        }
-
         $id = isset($this->types[$type]) ? $this->types[$type] : false;
 
         if ($id) {

@@ -21,17 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class FilterFactoryTest extends TestCase
 {
-    public function testEmptyType(): void
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('The type must be defined');
-
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
-
-        $filter = new FilterFactory($container, []);
-        $filter->create('test', null);
-    }
-
     public function testUnknownType(): void
     {
         $this->expectException(\RuntimeException::class);
