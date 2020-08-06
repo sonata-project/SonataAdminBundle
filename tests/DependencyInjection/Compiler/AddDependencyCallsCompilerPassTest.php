@@ -560,13 +560,13 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $definition = $container->getDefinition('sonata_post_one_admin');
         $this->assertSame('sonata_post_one_admin', $definition->getArgument(0));
         $this->assertSame(Post::class, $definition->getArgument(1));
-        $this->assertSame(CRUDController::class, $definition->getArgument(2));
+        $this->assertSame('sonata.admin.controller.crud', $definition->getArgument(2));
         $this->assertSame('extra_argument_1', $definition->getArgument(3));
 
         $definition = $container->getDefinition('sonata_post_two_admin');
         $this->assertSame('sonata_post_two_admin', $definition->getArgument(0));
         $this->assertSame(Post::class, $definition->getArgument(1));
-        $this->assertSame(CRUDController::class, $definition->getArgument(2));
+        $this->assertSame('sonata.admin.controller.crud', $definition->getArgument(2));
         $this->assertSame('extra_argument_2', $definition->getArgument(3));
     }
 

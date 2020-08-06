@@ -1,18 +1,9 @@
 services:
-    _defaults:
-        autowire: true
-        autoconfigure: true
-
     # Under real conditions, this service is registered by "doctrine/doctrine-bundle"
     database_connection:
         class: Sonata\AdminBundle\Tests\Fixtures\DoctrineBundle\Connection
 
     Sonata\AdminBundle\Tests\App\Model\FooRepository: ~
-
-    Sonata\AdminBundle\Controller\CRUDController:
-        public: true
-        arguments:
-            $kernelDebug: '%kernel.debug%'
 
     Sonata\AdminBundle\Templating\TemplateRegistryInterface:
         alias: 'sonata.admin.global_template_registry'
