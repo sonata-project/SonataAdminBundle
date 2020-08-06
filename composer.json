@@ -45,7 +45,7 @@
         "symfony/options-resolver": "^4.4",
         "symfony/property-access": "^4.4",
         "symfony/routing": "^4.4",
-        "symfony/security-acl": "^3.0",
+        "symfony/security-acl": "^3.1",
         "symfony/security-bundle": "^4.4",
         "symfony/security-core": "^4.4",
         "symfony/security-csrf": "^4.4",

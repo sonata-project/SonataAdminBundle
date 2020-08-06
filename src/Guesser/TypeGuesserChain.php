@@ -28,7 +28,7 @@ use Symfony\Component\Form\Guess\TypeGuess;
 class TypeGuesserChain implements TypeGuesserInterface
 {
     /**
-     * @var array
+     * @var TypeGuesserInterface[]
      */
     protected $guessers = [];
 
@@ -59,6 +59,10 @@ class TypeGuesserChain implements TypeGuesserInterface
             }
         }
 
-        return TypeGuess::getBestGuess($guesses);
+        $bestGuess = TypeGuess::getBestGuess($guesses);
+        // todo - remove `assert` statement after https://github.com/symfony/symfony/pull/37725 is released
+        \assert($bestGuess instanceof TypeGuess || null === $bestGuess);
+
+        return $bestGuess;
     }
 }
