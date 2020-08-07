@@ -43,7 +43,7 @@ class ChoiceTypeExtension extends AbstractTypeExtension
         return ChoiceType::class;
     }
 
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): iterable
     {
         return [ChoiceType::class];
     }

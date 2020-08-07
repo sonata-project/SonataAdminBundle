@@ -23,6 +23,7 @@ use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Test for AdminExtractor.
@@ -62,6 +63,10 @@ class AdminExtractorTest extends TestCase
 
     protected function setUp(): void
     {
+        if (!interface_exists(TranslatorInterface::class)) {
+            $this->markTestSkipped('This test is only available using Symfony 4');
+        }
+
         if (!interface_exists(ExtractorInterface::class)) {
             $this->markTestSkipped('JMS Translator Bundle does not exist');
         }

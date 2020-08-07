@@ -42,7 +42,6 @@ use Sonata\Exporter\Source\SourceIteratorInterface;
 use Sonata\Exporter\Writer\JsonWriter;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
@@ -176,8 +175,6 @@ class CRUDControllerTest extends TestCase
 
         $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
 
-        $templating = $this->createMock(DelegatingEngine::class);
-
         $templatingRenderReturnCallback = $this->returnCallback(function (
             $view,
             array $parameters = [],
@@ -185,24 +182,18 @@ class CRUDControllerTest extends TestCase
         ) {
             $this->template = $view;
 
-            if (null === $response) {
-                $response = new Response();
-            }
-
             $this->parameters = $parameters;
 
-            return $response;
+            return '';
         });
-
-        $templating
-            ->method('render')
-            ->will($templatingRenderReturnCallback);
 
         $this->session = new Session(new MockArraySessionStorage());
 
-        $twig = $this->getMockBuilder(Environment::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $twig = $this->createMock(Environment::class);
+
+        $twig
+            ->method('render')
+            ->will($templatingRenderReturnCallback);
 
         $twig
             ->method('getRuntime')
@@ -253,7 +244,6 @@ class CRUDControllerTest extends TestCase
         $this->container->set('request_stack', $requestStack);
         $this->container->set('foo.admin', $this->admin);
         $this->container->set('foo.admin.template_registry', $this->templateRegistry->reveal());
-        $this->container->set('templating', $templating);
         $this->container->set('twig', $twig);
         $this->container->set('session', $this->session);
         $this->container->set('sonata.admin.exporter', $exporter);
@@ -979,6 +969,7 @@ class CRUDControllerTest extends TestCase
         $admin->expects($this->once())
             ->method('getObject')
             ->willReturn($object2);
+        $admin->method('getIdParameter')->willReturn('id');
 
         $this->admin->expects($this->once())
             ->method('getObject')

@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Form\Type\Operator\ContainsOperatorType;
 use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as SymfonyChoiceType;
 use Symfony\Component\Form\FormTypeGuesserInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
 {
@@ -63,7 +63,7 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
 
     protected function getExtensions()
     {
-        $mock = $this->getMockBuilder(TranslatorInterface::class)->getMock();
+        $mock = $this->createMock(TranslatorInterface::class);
 
         $mock->method('trans')
             ->willReturnCallback(

@@ -290,6 +290,10 @@ class SonataAdminExtensionTest extends TestCase
      */
     public function testConstructWithLegacyTranslator(): void
     {
+        if (!interface_exists(LegacyTranslatorInterface::class)) {
+            $this->markTestSkipped('This test is only valid for Symfony 4');
+        }
+
         new SonataAdminExtension(
             $this->pool,
             null,

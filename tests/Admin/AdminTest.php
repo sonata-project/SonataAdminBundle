@@ -83,10 +83,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatorInterface as DeprecatedTranslatorInterface;
 use Symfony\Component\Validator\Mapping\MemberMetadata;
 use Symfony\Component\Validator\Mapping\PropertyMetadataInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdminTest extends TestCase
 {
@@ -1155,7 +1156,7 @@ class AdminTest extends TestCase
 
         $this->assertNull($admin->getTranslator());
 
-        $translator = $this->createMock(TranslatorInterface::class);
+        $translator = $this->createStub($this->getTranslatorInterface());
 
         $admin->setTranslator($translator);
         $this->assertSame($translator, $admin->getTranslator());
@@ -1430,7 +1431,7 @@ class AdminTest extends TestCase
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
         $admin->setTranslationDomain('fooMessageDomain');
 
-        $translator = $this->createMock(TranslatorInterface::class);
+        $translator = $this->createStub($this->getTranslatorInterface());
         $admin->setTranslator($translator);
 
         $translator->expects($this->once())
@@ -1448,7 +1449,7 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $translator = $this->createMock(TranslatorInterface::class);
+        $translator = $this->createStub($this->getTranslatorInterface());
         $admin->setTranslator($translator);
 
         $translator->expects($this->once())
@@ -1464,10 +1465,14 @@ class AdminTest extends TestCase
      */
     public function testTransChoice(): void
     {
+        if (!interface_exists(DeprecatedTranslatorInterface::class)) {
+            $this->markTestSkipped('Test only available in Symfony 4');
+        }
+
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
         $admin->setTranslationDomain('fooMessageDomain');
 
-        $translator = $this->createMock(TranslatorInterface::class);
+        $translator = $this->createMock(DeprecatedTranslatorInterface::class);
         $admin->setTranslator($translator);
 
         $translator->expects($this->once())
@@ -1483,9 +1488,13 @@ class AdminTest extends TestCase
      */
     public function testTransChoiceWithMessageDomain(): void
     {
+        if (!interface_exists(DeprecatedTranslatorInterface::class)) {
+            $this->markTestSkipped('Test only available in Symfony 4');
+        }
+
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $translator = $this->createMock(TranslatorInterface::class);
+        $translator = $this->createStub($this->getTranslatorInterface());
         $admin->setTranslator($translator);
 
         $translator->expects($this->once())
@@ -2772,5 +2781,14 @@ class AdminTest extends TestCase
             [0, 0, 0],
             [1, 1, 1],
         ];
+    }
+
+    private function getTranslatorInterface(): string
+    {
+        if (interface_exists(DeprecatedTranslatorInterface::class)) {
+            return DeprecatedTranslatorInterface::class;
+        }
+
+        return TranslatorInterface::class;
     }
 }

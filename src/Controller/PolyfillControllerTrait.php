@@ -65,6 +65,6 @@ class PolyfillProxyContainer extends Controller
     }
 }
 
-if (!trait_exists(ControllerTrait::class)) {
+if (!trait_exists(ControllerTrait::class) && class_exists(Controller::class)) {
     class_alias(PolyfillControllerTrait::class, ControllerTrait::class);
 }
