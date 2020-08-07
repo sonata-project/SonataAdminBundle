@@ -50,7 +50,9 @@ class ModelListTypeTest extends TypeTestCase
 
     public function testSubmitValidData(): void
     {
-        $formData = 42;
+        $model = new \stdClass();
+        $this->modelManager->find('My\Entity', 42)->willReturn($model);
+        $this->modelManager->getNormalizedIdentifier($model)->willReturn('42');
 
         $form = $this->factory->create(
             ModelListType::class,
@@ -60,8 +62,8 @@ class ModelListTypeTest extends TypeTestCase
                 'class' => 'My\Entity',
             ]
         );
-        $this->modelManager->find('My\Entity', 42)->shouldBeCalled();
-        $form->submit($formData);
+
+        $form->submit(42);
         $this->assertTrue($form->isSynchronized());
     }
 }

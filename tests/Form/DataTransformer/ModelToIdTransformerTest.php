@@ -33,15 +33,15 @@ class ModelToIdTransformerTest extends TestCase
         $this->modelManager
                 ->expects($this->exactly(2))
                 ->method('find')
-                ->willReturn(true);
+                ->willReturn(new \stdClass());
 
         $this->assertFalse(\in_array(false, ['0', 0], true));
 
         // we pass 0 as integer
-        $this->assertTrue($transformer->reverseTransform(0));
+        $this->assertNotNull($transformer->reverseTransform(0));
 
         // we pass 0 as string
-        $this->assertTrue($transformer->reverseTransform('0'));
+        $this->assertNotNull($transformer->reverseTransform('0'));
 
         // we pass null must return null
         $this->assertNull($transformer->reverseTransform(null));
@@ -76,7 +76,7 @@ class ModelToIdTransformerTest extends TestCase
     {
         $this->modelManager->expects($this->once())
             ->method('getNormalizedIdentifier')
-            ->willReturn(123);
+            ->willReturn('123');
 
         $transformer = new ModelToIdTransformer($this->modelManager, 'TEST');
 
@@ -85,6 +85,6 @@ class ModelToIdTransformerTest extends TestCase
         $this->assertNull($transformer->transform(0));
         $this->assertNull($transformer->transform('0'));
 
-        $this->assertSame(123, $transformer->transform(new \stdClass()));
+        $this->assertSame('123', $transformer->transform(new \stdClass()));
     }
 }

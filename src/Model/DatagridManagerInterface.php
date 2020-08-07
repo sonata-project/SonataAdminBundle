@@ -21,16 +21,18 @@ interface DatagridManagerInterface
     /**
      * Return _sort_order, _sort_by, _page and _per_page values.
      *
-     * @param string $class
-     *
      * @return array<string, int|string>
+     *
+     * @phpstan-param class-string $class
      */
-    public function getDefaultSortValues($class);
+    public function getDefaultSortValues(string $class): array;
 
     /**
      * Return all the allowed _per_page values.
      *
-     * @return array<int>
+     * @return int[]
+     *
+     * @phpstan-param class-string $class
      */
     public function getDefaultPerPageOptions(string $class): array;
 }
