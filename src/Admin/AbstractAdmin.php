@@ -580,11 +580,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             $extension->preUpdate($this, $object);
         }
 
-        $result = $this->getModelManager()->update($object);
-        // BC compatibility
-        if (null !== $result) {
-            $object = $result;
-        }
+        $this->getModelManager()->update($object);
 
         $this->postUpdate($object);
         foreach ($this->extensions as $extension) {
@@ -601,11 +597,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             $extension->prePersist($this, $object);
         }
 
-        $result = $this->getModelManager()->create($object);
-        // BC compatibility
-        if (null !== $result) {
-            $object = $result;
-        }
+        $this->getModelManager()->create($object);
 
         $this->postPersist($object);
         foreach ($this->extensions as $extension) {

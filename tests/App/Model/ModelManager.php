@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\App\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Model\LockInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\App\Admin\FieldDescription;
+use Sonata\Exporter\Source\SourceIteratorInterface;
 
 class ModelManager implements ModelManagerInterface, LockInterface
 {
@@ -32,7 +35,7 @@ class ModelManager implements ModelManagerInterface, LockInterface
         $this->repository = $repository;
     }
 
-    public function getNewFieldDescriptionInstance($class, $name, array $options = [])
+    public function getNewFieldDescriptionInstance(string $class, string $name, array $options = []): FieldDescriptionInterface
     {
         if (!isset($options['route']['name'])) {
             $options['route']['name'] = 'edit';
@@ -49,73 +52,63 @@ class ModelManager implements ModelManagerInterface, LockInterface
         return $fieldDescription;
     }
 
-    public function create($object): void
+    public function create(object $object): void
     {
     }
 
-    public function update($object): void
+    public function update(object $object): void
     {
     }
 
-    public function delete($object): void
+    public function delete(object $object): void
     {
     }
 
-    public function findBy($class, array $criteria = [])
+    public function findBy(string $class, array $criteria = []): array
     {
         return [];
     }
 
-    public function findOneBy($class, array $criteria = [])
+    public function findOneBy(string $class, array $criteria = []): ?object
     {
         return null;
     }
 
-    public function find($class, $id)
+    public function find(string $class, $id): ?object
     {
         return $this->repository->byId($id);
     }
 
-    public function batchDelete($class, ProxyQueryInterface $queryProxy): void
+    public function batchDelete(string $class, ProxyQueryInterface $queryProxy): void
     {
     }
 
-    public function getParentFieldDescription($parentAssociationMapping, $class): FieldDescriptionInterface
-    {
-        throw new \BadMethodCallException('Not implemented.');
-    }
-
-    public function createQuery($class, $alias = 'o'): ProxyQueryInterface
+    public function createQuery(string $class, string $alias = 'o'): ProxyQueryInterface
     {
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function getModelIdentifier($class)
-    {
-        return 'id';
-    }
-
-    public function getIdentifierValues($model)
+    public function getIdentifierValues(object $model): array
     {
         return [];
     }
 
-    public function getIdentifierFieldNames($class)
+    public function getIdentifierFieldNames(string $class): array
     {
         return [];
     }
 
-    public function getNormalizedIdentifier($model)
+    public function getNormalizedIdentifier(object $model): string
     {
         return $model->getId();
     }
 
-    public function getUrlSafeIdentifier($model)
+    public function getUrlSafeIdentifier(object $model): string
     {
         return $this->getNormalizedIdentifier($model);
     }
 
-    public function getModelInstance($class)
+    public function getModelInstance(string $class): object
     {
         switch ($class) {
             case Translated::class:
@@ -125,33 +118,29 @@ class ModelManager implements ModelManagerInterface, LockInterface
         }
     }
 
-    public function getModelCollectionInstance($class)
+    public function getModelCollectionInstance(string $class): Collection
     {
-        return [];
+        return new ArrayCollection();
     }
 
-    public function collectionRemoveElement(&$collection, &$element): void
-    {
-    }
-
-    public function collectionAddElement(&$collection, &$element): void
+    public function collectionRemoveElement(Collection $collection, object $element): void
     {
     }
 
-    public function collectionHasElement(&$collection, &$element): void
+    public function collectionAddElement(Collection $collection, object $element): void
     {
     }
 
-    public function collectionClear(&$collection): void
+    public function collectionHasElement(Collection $collection, object $element): bool
+    {
+        return true;
+    }
+
+    public function collectionClear(Collection $collection): void
     {
     }
 
-    public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid)
-    {
-        return [];
-    }
-
-    public function getDefaultSortValues($class)
+    public function getDefaultSortValues(string $class): array
     {
         return [];
     }
@@ -161,44 +150,40 @@ class ModelManager implements ModelManagerInterface, LockInterface
         return [];
     }
 
-    public function modelReverseTransform($class, array $array = []): object
+    public function modelReverseTransform(string $class, array $array = []): object
     {
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function modelTransform($class, $instance): object
+    public function modelTransform(string $class, object $instance): object
     {
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function executeQuery($query): void
+    public function executeQuery(object $query): void
     {
     }
 
-    public function getDataSourceIterator(DatagridInterface $datagrid, array $fields, $firstResult = null, $maxResult = null): void
+    public function getDataSourceIterator(DatagridInterface $datagrid, array $fields, ?int $firstResult = null, ?int $maxResult = null): SourceIteratorInterface
     {
+        throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function getExportFields($class)
-    {
-        return [];
-    }
-
-    public function getPaginationParameters(DatagridInterface $datagrid, $page)
+    public function getExportFields(string $class): array
     {
         return [];
     }
 
-    public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx): void
+    public function addIdentifiersToQuery(string $class, ProxyQueryInterface $query, array $idx): void
     {
     }
 
-    public function getLockVersion($object)
+    public function getLockVersion(object $object)
     {
         return null;
     }
 
-    public function lock($object, $expectedVersion)
+    public function lock(object $object, ?int $expectedVersion): void
     {
     }
 }

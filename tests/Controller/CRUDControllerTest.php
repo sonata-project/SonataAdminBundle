@@ -3262,8 +3262,7 @@ class CRUDControllerTest extends TestCase
 
         $modelManager->expects($this->once())
             ->method('addIdentifiersToQuery')
-            ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(['123', '456']))
-            ->willReturn(true);
+            ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(['123', '456']));
 
         $this->expectTranslate('flash_batch_delete_success', [], 'SonataAdminBundle');
 
@@ -3313,8 +3312,7 @@ class CRUDControllerTest extends TestCase
 
         $modelManager->expects($this->once())
             ->method('addIdentifiersToQuery')
-            ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(['123', '456']))
-            ->willReturn(true);
+            ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(['123', '456']));
 
         $this->expectTranslate('flash_batch_delete_success', [], 'SonataAdminBundle');
 
@@ -3583,8 +3581,7 @@ class CRUDControllerTest extends TestCase
 
         $modelManager->expects($this->once())
             ->method('addIdentifiersToQuery')
-            ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(['123', '456']))
-            ->willReturn(true);
+            ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(['123', '456']));
 
         $this->expectTranslate('flash_batch_delete_success', [], 'SonataAdminBundle');
 

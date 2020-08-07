@@ -83,9 +83,9 @@ class LockExtensionTest extends TestCase
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
         $this->configureAdmin(null, null, $this->modelManager->reveal());
-        $event = new FormEvent($form->reveal(), []);
+        $event = new FormEvent($form->reveal(), $this->object);
 
-        $this->modelManager->getLockVersion([])->willReturn(1);
+        $this->modelManager->getLockVersion($this->object)->willReturn(1);
 
         $form->add(
             '_lock_version',
@@ -141,9 +141,9 @@ class LockExtensionTest extends TestCase
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
         $this->configureAdmin(null, null, $this->modelManager->reveal());
-        $event = new FormEvent($form->reveal(), []);
+        $event = new FormEvent($form->reveal(), $this->object);
 
-        $this->modelManager->getLockVersion([])->willReturn(null);
+        $this->modelManager->getLockVersion($this->object)->willReturn(null);
         $form->add()->shouldNotBeCalled();
 
         $this->lockExtension->configureFormFields($formMapper);

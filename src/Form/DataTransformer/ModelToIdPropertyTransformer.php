@@ -94,7 +94,11 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
                 continue;
             }
 
-            $collection[] = $this->modelManager->find($this->className, $id);
+            $object = $this->modelManager->find($this->className, $id);
+
+            if (null !== $object) {
+                $collection[] = $object;
+            }
         }
 
         return $collection;
