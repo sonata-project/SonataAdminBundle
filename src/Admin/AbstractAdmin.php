@@ -3201,7 +3201,14 @@ EOT;
      */
     public function canAccessObject($action, $object)
     {
-        return $object && $this->id($object) && $this->hasAccess($action, $object);
+        if (!\is_object($object)) {
+            return false;
+        }
+        if (!$this->id($object)) {
+            return false;
+        }
+
+        return $this->hasAccess($action, $object);
     }
 
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
@@ -3488,7 +3495,7 @@ EOT;
     /**
      * Return list routes with permissions name.
      *
-     * @return array<string, string>
+     * @return array<string, string|array>
      */
     protected function getAccess()
     {

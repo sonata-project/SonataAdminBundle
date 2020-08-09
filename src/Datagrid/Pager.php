@@ -559,7 +559,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @return ProxyQueryInterface
+     * @return ProxyQueryInterface|null
      */
     public function getQuery()
     {

@@ -664,7 +664,7 @@ class SonataAdminExtension extends AbstractExtension
         TemplateWrapper $template,
         array $parameters,
         Environment $environment
-    ): ?string {
+    ): string {
         $content = $template->render($parameters);
 
         if ($environment->isDebug()) {

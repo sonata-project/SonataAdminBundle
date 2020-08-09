@@ -34,7 +34,7 @@ interface FieldDescriptionRegistryInterface
      *
      * @param string $name
      *
-     * @return FieldDescriptionInterface
+     * @return FieldDescriptionInterface|null // NEXT_MAJOR: Return FieldDescriptionInterface
      */
     public function getFormFieldDescription($name);
 
