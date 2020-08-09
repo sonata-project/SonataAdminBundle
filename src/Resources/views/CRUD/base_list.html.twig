@@ -246,7 +246,7 @@ file that was distributed with this source code.
                             <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
                                 <i class="fa {{ filterDisplayed ? 'fa-check-square-o' : 'fa-square-o' }}"></i>
                                 {% if filter.label is not same as(false) %}
-                                    {{ filter.label|trans({}, filter.translationDomain ?: admin.translationDomain) }}
+                                    {{ filter.label|trans(filter.options['label_translation_parameters']|default({}), filter.translationDomain ?: admin.translationDomain) }}
                                 {% endif %}
                             </a>
                         </li>
@@ -275,7 +275,7 @@ file that was distributed with this source code.
                                     {% set filterCanBeDisplayed = filter.options['show_filter'] is not same as(false) %}
                                     <div class="form-group {% block sonata_list_filter_group_class %}{% endblock %}" id="filter-{{ admin.uniqid }}-{{ filter.name }}" sonata-filter="{{ filterCanBeDisplayed ? 'true' : 'false' }}" style="display: {% if filterDisplayed %}block{% else %}none{% endif %}">
                                         {% if filter.label is not same as(false) %}
-                                            <label for="{{ form[filter.formName].children['value'].vars.id }}" class="col-sm-3 control-label">{{ filter.label|trans({}, filter.translationDomain ?: admin.translationDomain) }}</label>
+                                            <label for="{{ form[filter.formName].children['value'].vars.id }}" class="col-sm-3 control-label">{{ filter.label|trans(filter.options['label_translation_parameters']|default({}), filter.translationDomain ?: admin.translationDomain) }}</label>
                                         {% endif %}
                                         {% set attr = form[filter.formName].children['type'].vars.attr|default({}) %}
 

@@ -1,6 +1,9 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.x to 3.x
+=======================
+
 ## The following templates have been deprecated
 
  - `src/Resources/views/CRUD/base_filter_field.html.twig`
@@ -34,6 +37,13 @@ $formMapper
         'help_html' => true,
     ]);
 ```
+
+### Upgrade to SonataBlockBundle 4.0
+
+We added compatibility with SonataBlockBundle 4.0, make sure you are explicitly declaring your dependency
+with `sonata-project/block-bundle` on your composer.json in order to avoid unwanted upgrades.
+
+There is a minimal BC Break on `AdminListBlockService`, `AdminSearchBlockService` and `AdminStatsBlockService`. If you are extending those clases (keep in mind that they will become final on 4.0) you should add return type hints to `execute()` and `configureSettings()`.
 
 UPGRADE FROM 3.72 to 3.73
 =========================

@@ -437,7 +437,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     private $show;
 
     /**
-     * @var Form|null
+     * @var FormInterface|null
      */
     private $form;
 

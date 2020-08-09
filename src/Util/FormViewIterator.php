@@ -21,7 +21,7 @@ use Symfony\Component\Form\FormView;
 final class FormViewIterator implements \RecursiveIterator
 {
     /**
-     * @var \ArrayIterator
+     * @var \ArrayIterator<string, FormView>
      */
     private $iterator;
 

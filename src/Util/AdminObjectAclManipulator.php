@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
@@ -68,7 +69,7 @@ class AdminObjectAclManipulator
     /**
      * Gets the ACL users form.
      *
-     * @return Form
+     * @return FormInterface
      */
     public function createAclUsersForm(AdminObjectAclData $data)
     {
@@ -83,7 +84,7 @@ class AdminObjectAclManipulator
     /**
      * Gets the ACL roles form.
      *
-     * @return Form
+     * @return FormInterface
      */
     public function createAclRolesForm(AdminObjectAclData $data)
     {
@@ -187,7 +188,7 @@ class AdminObjectAclManipulator
     /**
      * Builds the form.
      *
-     * @return Form
+     * @return FormInterface
      */
     protected function buildForm(AdminObjectAclData $data, FormBuilderInterface $formBuilder, \Traversable $aclValues)
     {
