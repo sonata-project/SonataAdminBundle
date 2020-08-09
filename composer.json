@@ -29,7 +29,7 @@
         "knplabs/knp-menu": "^3.1",
         "knplabs/knp-menu-bundle": "^3.0",
         "sonata-project/block-bundle": "^4.0",
-        "sonata-project/doctrine-extensions": "^1.4",
+        "sonata-project/doctrine-extensions": "^1.8",
         "sonata-project/exporter": "^2.1",
         "sonata-project/form-extensions": "^1.4",
         "sonata-project/twig-extensions": "^1.3",

@@ -1855,7 +1855,13 @@ EOT
             ->method('hasAssociationAdmin')
             ->willReturn(false);
 
-        $this->assertNull($this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
+        $this->assertNull(
+            $this->getMethodAsPublic('getValueFromFieldDescription')->invoke(
+                $this->twigExtension,
+                $object,
+                $fieldDescription
+            )
+        );
     }
 
     public function testRenderRelationElementNoObject(): void
