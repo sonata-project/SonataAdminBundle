@@ -17,7 +17,7 @@ use Knp\Bundle\MenuBundle\KnpMenuBundle;
 use Sonata\AdminBundle\SonataAdminBundle;
 use Sonata\BlockBundle\SonataBlockBundle;
 use Sonata\CoreBundle\SonataCoreBundle;
-use Sonata\Doctrine\Bridge\Symfony\Bundle\SonataDoctrineBundle;
+use Sonata\Doctrine\Bridge\Symfony\SonataDoctrineBundle;
 use Sonata\Form\Bridge\Symfony\SonataFormBundle;
 use Sonata\Twig\Bridge\Symfony\SonataTwigBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
