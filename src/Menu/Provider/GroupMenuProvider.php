@@ -85,11 +85,14 @@ class GroupMenuProvider implements MenuProviderInterface
      */
     public function get($name, array $options = [])
     {
+        /**
+         * @var array{ label: string, label_catalogue: string, icon: string, on_top?: bool, keep_open: bool, provider: string, items: list }
+         */
         $group = $options['group'];
 
         $menuItem = $this->menuFactory->createItem($options['name']);
 
-        if (empty($group['on_top']) || false === $group['on_top']) {
+        if (!\array_key_exists('on_top', $group) || false === $group['on_top']) {
             foreach ($group['items'] as $item) {
                 if ($this->canGenerateMenuItem($item, $group)) {
                     $menuItem->addChild($this->generateMenuItem($item, $group));
