@@ -35,8 +35,6 @@ class ModelToIdTransformerTest extends TestCase
                 ->method('find')
                 ->willReturn(new \stdClass());
 
-        $this->assertFalse(\in_array(false, ['0', 0], true));
-
         // we pass 0 as integer
         $this->assertNotNull($transformer->reverseTransform(0));
 

@@ -20,9 +20,7 @@ use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface;
 use Symfony\Component\Form\Exception\RuntimeException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Symfony\Component\PropertyAccess\PropertyPath;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -35,9 +33,14 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
     private $modelManager;
 
     /**
-     * @var string
+     * @var PropertyAccessorInterface
+     */
+    private $propertyAccessor;
+
+    /**
+     * @var string|null
      *
-     * @phpstan-var class-string
+     * @phpstan-var class-string|null
      */
     private $class;
 
@@ -52,19 +55,9 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
     private $query;
 
     /**
-     * @var object[]
+     * @var object[]|null
      */
     private $choices;
-
-    /**
-     * @var PropertyPath|null
-     */
-    private $propertyPath;
-
-    /**
-     * @var PropertyAccessorInterface
-     */
-    private $propertyAccessor;
 
     /**
      * @var ChoiceListInterface|null
@@ -72,20 +65,17 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
     private $choiceList;
 
     /**
-     * @param string      $class
-     * @param string|null $property
-     * @param object|null $query
-     * @param object[]    $choices
+     * @param object[] $choices
      *
-     * @phpstan-param class-string $class
+     * @phpstan-param class-string|null $class
      */
     public function __construct(
         ModelManagerInterface $modelManager,
-        $class,
-        $property = null,
-        $query = null,
-        $choices = [],
-        ?PropertyAccessorInterface $propertyAccessor = null
+        PropertyAccessorInterface $propertyAccessor,
+        ?string $class = null,
+        ?string $property = null,
+        ?object $query = null,
+        array $choices = []
     ) {
         $this->modelManager = $modelManager;
         $this->class = $class;
@@ -94,32 +84,21 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
 
         if ($query) {
             if (!$this->modelManager->supportsQuery($query)) {
-                // NEXT_MAJOR: Remove the deprecation and uncomment the exception.
-                @trigger_error(
-                    'Passing a query which is not supported by the model manager is deprecated since'
-                    .' sonata-project/admin-bundle 3.76 and will throw an exception in version 4.0.',
-                    E_USER_DEPRECATED
-                );
-                // throw new \InvalidArgumentException('The model manager does not support the query.');
+                throw new \InvalidArgumentException('The model manager does not support the query.');
             }
 
             $this->query = $query;
         }
 
-        // The property option defines, which property (path) is used for
-        // displaying entities as strings
-        if ($property) {
-            $this->propertyPath = new PropertyPath($property);
-            $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
-        }
+        $this->propertyAccessor = $propertyAccessor;
     }
 
-    public function loadChoiceList($value = null)
+    public function loadChoiceList($value = null): ChoiceListInterface
     {
         if (!$this->choiceList) {
             if ($this->query) {
                 $entities = $this->modelManager->executeQuery($this->query);
-            } elseif (\is_array($this->choices) && \count($this->choices) > 0) {
+            } elseif (\count($this->choices) > 0) {
                 $entities = $this->choices;
             } else {
                 $entities = $this->modelManager->findBy($this->class);
@@ -127,9 +106,9 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
 
             $choices = [];
             foreach ($entities as $model) {
-                if ($this->propertyPath) {
+                if (null !== $this->property) {
                     // If the property option was given, use it
-                    $valueObject = $this->propertyAccessor->getValue($model, $this->propertyPath);
+                    $valueObject = $this->propertyAccessor->getValue($model, $this->property);
                 } else {
                     // Otherwise expect a __toString() method in the entity
                     try {
@@ -169,22 +148,20 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
         return $this->choiceList;
     }
 
-    public function loadChoicesForValues(array $values, $value = null)
+    public function loadChoicesForValues(array $values, $value = null): array
     {
         return $this->loadChoiceList($value)->getChoicesForValues($values);
     }
 
-    public function loadValuesForChoices(array $choices, $value = null)
+    public function loadValuesForChoices(array $choices, $value = null): array
     {
         return $this->loadChoiceList($value)->getValuesForChoices($choices);
     }
 
     /**
-     * @param object $model
-     *
      * @return mixed[]
      */
-    private function getIdentifierValues($model): array
+    private function getIdentifierValues(object $model): array
     {
         try {
             return $this->modelManager->getIdentifierValues($model);

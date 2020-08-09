@@ -31,13 +31,6 @@ class ChoiceTypeExtensionTest extends TestCase
 
     public function testExtendedType(): void
     {
-        $extension = new ChoiceTypeExtension();
-
-        $this->assertSame(
-            ChoiceType::class,
-            $extension->getExtendedType()
-        );
-
         $this->assertSame(
             [ChoiceType::class],
             ChoiceTypeExtension::getExtendedTypes()

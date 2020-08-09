@@ -41,16 +41,6 @@ final class ChoiceTypeExtension extends AbstractTypeExtension
     }
 
     /**
-     * @return string
-     *
-     * @phpstan-return class-string<FormTypeInterface>
-     */
-    public function getExtendedType()
-    {
-        return ChoiceType::class;
-    }
-
-    /**
      * @return string[]
      *
      * @phpstan-return class-string<FormTypeInterface>[]

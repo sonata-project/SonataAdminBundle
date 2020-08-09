@@ -49,16 +49,14 @@ final class ModelHiddenType extends AbstractType
     }
 
     /**
-     * @return string
-     *
-     * @phpstan-return class-string<FormTypeInterface>
+     * @phpstan-return class-string<FormTypeInterface>|null
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         return HiddenType::class;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_model_hidden';
     }

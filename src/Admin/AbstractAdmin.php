@@ -2574,10 +2574,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * Gets the subclass corresponding to the given name.
      *
-     * @param string $name The name of the sub class
-     *
-     * @return string the subclass
-     *
      * @phpstan-return class-string<T>
      */
     protected function getSubClass(string $name): string

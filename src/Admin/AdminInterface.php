@@ -145,7 +145,10 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     public function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription): void;
 
-    public function getParentFieldDescription(): ?FieldDescriptionInterface;
+    /**
+     * @throws \LogicException
+     */
+    public function getParentFieldDescription(): FieldDescriptionInterface;
 
     /**
      * Returns true if the Admin is linked to a parent FieldDescription.

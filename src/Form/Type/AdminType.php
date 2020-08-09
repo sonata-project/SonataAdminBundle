@@ -131,7 +131,7 @@ final class AdminType extends AbstractType
         ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_admin';
     }

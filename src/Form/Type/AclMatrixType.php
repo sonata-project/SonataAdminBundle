@@ -52,7 +52,7 @@ final class AclMatrixType extends AbstractType
         $resolver->setAllowedTypes('acl_value', ['string', UserInterface::class]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_acl_matrix';
     }

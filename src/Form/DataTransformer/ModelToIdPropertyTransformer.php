@@ -56,20 +56,15 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
     private $toStringCallback;
 
     /**
-     * @param string        $className
-     * @param string        $property
-     * @param bool          $multiple
-     * @param callable|null $toStringCallback
-     *
      * @phpstan-param class-string<T> $className
      * @phpstan-param null|callable(object, string): string $toStringCallback
      */
     public function __construct(
         ModelManagerInterface $modelManager,
-        $className,
-        $property,
-        $multiple = false,
-        $toStringCallback = null
+        string $className,
+        string $property,
+        bool $multiple = false,
+        ?callable $toStringCallback = null
     ) {
         $this->modelManager = $modelManager;
         $this->className = $className;
@@ -80,6 +75,8 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
 
     /**
      * @param mixed $value
+     *
+     * @throws \UnexpectedValueException
      *
      * @return Collection<int|string, object>|object|null
      *
@@ -123,6 +120,8 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
 
     /**
      * @param object|object[]|null $value
+     *
+     * @throws \InvalidArgumentException
      *
      * @return array<string|int, string>
      *
@@ -170,7 +169,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
             }
         }
 
-        if (empty($this->property)) {
+        if ('' === $this->property) {
             throw new \RuntimeException('Please define "property" parameter.');
         }
 
@@ -178,12 +177,6 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
             $id = current($this->modelManager->getIdentifierValues($model));
 
             if (null !== $this->toStringCallback) {
-                if (!\is_callable($this->toStringCallback)) {
-                    throw new \RuntimeException(
-                        'Callback in "to_string_callback" option doesn`t contain callable function.'
-                    );
-                }
-
                 $label = ($this->toStringCallback)($model, $this->property);
             } elseif (method_exists($model, '__toString')) {
                 $label = (string) $model;

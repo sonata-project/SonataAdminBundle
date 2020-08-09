@@ -26,12 +26,9 @@ final class NumberOperatorType extends AbstractType
     public const TYPE_LESS_EQUAL = 4;
     public const TYPE_LESS_THAN = 5;
 
-    /**
-     * @return void
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults($defaultOptions = [
+        $resolver->setDefaults([
             'choice_translation_domain' => 'SonataAdminBundle',
             'choices' => [
                 'label_type_equal' => self::TYPE_EQUAL,
@@ -44,16 +41,14 @@ final class NumberOperatorType extends AbstractType
     }
 
     /**
-     * @return string
-     *
-     * @phpstan-return class-string<FormTypeInterface>
+     * @phpstan-return class-string<FormTypeInterface>|null
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         return FormChoiceType::class;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_operator_number';
     }

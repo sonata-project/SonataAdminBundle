@@ -39,8 +39,6 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
     private $options = [];
 
     /**
-     * FormTypeFieldExtension constructor.
-     *
      * @param array<string, string> $defaultClasses
      * @param array<string, mixed>  $options
      */
@@ -161,16 +159,6 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
-     * @return string
-     *
-     * @phpstan-return class-string<FormTypeInterface>
-     */
-    public function getExtendedType()
-    {
-        return FormType::class;
-    }
-
-    /**
      * @return string[]
      *
      * @phpstan-return class-string<FormTypeInterface>[]
@@ -196,15 +184,13 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
      * return the value related to FieldDescription, if the associated object does no
      * exists => a temporary one is created.
      *
-     * @param object|null $object
-     *
      * @return mixed
      */
-    public function getValueFromFieldDescription($object, FieldDescriptionInterface $fieldDescription)
+    public function getValueFromFieldDescription(?object $object, FieldDescriptionInterface $fieldDescription)
     {
         $value = null;
 
-        if (!$object) {
+        if (null === $object) {
             return null;
         }
 

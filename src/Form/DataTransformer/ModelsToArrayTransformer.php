@@ -57,7 +57,7 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
      *
      * @phpstan-param T[]|null $value
      */
-    public function transform($value)
+    public function transform($value): array
     {
         if (null === $value) {
             return [];
@@ -65,15 +65,17 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
 
         $array = [];
         foreach ($value as $model) {
-            $id = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($model));
+            \assert($model instanceof $this->class);
 
-            $array[] = $id;
+            $array[] = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($model));
         }
 
         return $array;
     }
 
     /**
+     * @throws UnexpectedTypeException
+     *
      * @return Collection<int|string, object>|null
      *
      * @phpstan-return Collection<array-key, T>|null
@@ -112,13 +114,11 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param object $model
-     *
      * @return mixed[]
      *
      * @phpstan-param T $model
      */
-    private function getIdentifierValues($model): array
+    private function getIdentifierValues(object $model): array
     {
         try {
             return $this->modelManager->getIdentifierValues($model);
