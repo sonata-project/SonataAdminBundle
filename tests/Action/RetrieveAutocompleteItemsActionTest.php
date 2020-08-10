@@ -94,7 +94,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $this->admin->getFormFieldDescriptions()->willReturn(null);
         $this->admin->getFormFieldDescription('barField')->willReturn($fieldDescription->reveal());
 
-        $fieldDescription->getTargetEntity()->willReturn(Foo::class);
+        $fieldDescription->getTargetModel()->willReturn(Foo::class);
         $fieldDescription->getName()->willReturn('barField');
 
         ($this->action)($request);
@@ -120,7 +120,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $this->admin->getFormFieldDescription('barField')->willReturn($fieldDescription->reveal());
         $this->admin->getFormFieldDescriptions()->willReturn(null);
         $targetAdmin->checkAccess('list')->willReturn(null);
-        $fieldDescription->getTargetEntity()->willReturn(Foo::class);
+        $fieldDescription->getTargetModel()->willReturn(Foo::class);
         $fieldDescription->getName()->willReturn('barField');
         $fieldDescription->getAssociationAdmin()->willReturn($targetAdmin->reveal());
 
@@ -241,7 +241,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $datagrid->getPager()->willReturn($pager->reveal());
         $pager->getResults()->willReturn([$model]);
         $pager->isLastPage()->willReturn(true);
-        $fieldDescription->getTargetEntity()->willReturn(Foo::class);
+        $fieldDescription->getTargetModel()->willReturn(Foo::class);
         $fieldDescription->getName()->willReturn('barField');
         $fieldDescription->getAssociationAdmin()->willReturn($targetAdmin->reveal());
 

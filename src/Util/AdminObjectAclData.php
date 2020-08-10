@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Util;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
+use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Security\Acl\Domain\Acl;
 
@@ -55,7 +55,7 @@ class AdminObjectAclData
     /**
      * @var array Cache of masks
      */
-    protected $masks;
+    protected $masks = [];
 
     /**
      * @var Form
@@ -93,6 +93,9 @@ class AdminObjectAclData
         $this->aclUsers = $aclUsers;
         $this->aclRoles = (null === $aclRoles) ? new \ArrayIterator() : $aclRoles;
         $this->maskBuilderClass = $maskBuilderClass;
+        if (!$admin->isAclEnabled()) {
+            throw new \InvalidArgumentException('The admin must have ACL enabled.');
+        }
 
         $this->updateMasks();
     }
@@ -181,8 +184,7 @@ class AdminObjectAclData
     public function setForm(Form $form)
     {
         @trigger_error(
-            'setForm() is deprecated since version 3.0 and will be removed in 4.0. '
-            .'Use setAclUsersForm() instead.',
+            'setForm() is deprecated since version 3.0 and will be removed in 4.0. Use setAclUsersForm() instead.',
             E_USER_DEPRECATED
         );
 
@@ -201,8 +203,7 @@ class AdminObjectAclData
     public function getForm()
     {
         @trigger_error(
-            'getForm() is deprecated since version 3.0 and will be removed in 4.0. '
-            .'Use getAclUsersForm() instead.',
+            'getForm() is deprecated since version 3.0 and will be removed in 4.0. Use getAclUsersForm() instead.',
             E_USER_DEPRECATED
         );
 
@@ -260,7 +261,7 @@ class AdminObjectAclData
      */
     public function getPermissions()
     {
-        return $this->admin->getSecurityHandler()->getObjectPermissions();
+        return $this->getSecurityHandler()->getObjectPermissions();
     }
 
     /**
@@ -303,11 +304,14 @@ class AdminObjectAclData
     /**
      * Gets security handler.
      *
-     * @return SecurityHandlerInterface
+     * @return AclSecurityHandlerInterface
      */
     public function getSecurityHandler()
     {
-        return $this->admin->getSecurityHandler();
+        $securityHandler = $this->admin->getSecurityHandler();
+        \assert($securityHandler instanceof AclSecurityHandlerInterface);
+
+        return $securityHandler;
     }
 
     /**
@@ -315,7 +319,7 @@ class AdminObjectAclData
      */
     public function getSecurityInformation()
     {
-        return $this->admin->getSecurityHandler()->buildSecurityInformation($this->admin);
+        return $this->getSecurityHandler()->buildSecurityInformation($this->admin);
     }
 
     /**
@@ -328,7 +332,7 @@ class AdminObjectAclData
         $reflectionClass = new \ReflectionClass(new $this->maskBuilderClass());
         $this->masks = [];
         foreach ($permissions as $permission) {
-            $this->masks[$permission] = $reflectionClass->getConstant('MASK_'.$permission);
+            $this->masks[$permission] = $reflectionClass->getConstant(sprintf('MASK_%s', $permission));
         }
     }
 }

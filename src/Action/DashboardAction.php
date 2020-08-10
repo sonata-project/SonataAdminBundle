@@ -25,7 +25,7 @@ final class DashboardAction
     /**
      * @var array
      */
-    private $dashboardBlocks;
+    private $dashboardBlocks = [];
 
     /**
      * @var BreadcrumbsBuilderInterface

@@ -20,7 +20,7 @@ class TagAdmin extends AbstractAdmin
     public function getParentAssociationMapping()
     {
         if ($this->getParent() instanceof PostAdmin) {
-            return 'posts';
+            return 'post';
         }
 
         return null;

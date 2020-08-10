@@ -15,44 +15,56 @@ namespace Sonata\AdminBundle\Tests\Form\Extension;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\Extension\ChoiceTypeExtension;
+use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
 use Sonata\CoreBundle\Form\Extension\DependencyInjectionExtension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;
 
 class ChoiceTypeExtensionTest extends TestCase
 {
-    protected function setup(): void
+    /**
+     * @var FormFactoryInterface
+     */
+    private $factory;
+
+    protected function setUp(): void
     {
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $container->method('has')->willReturn(true);
-        $container->method('get')
-            ->with($this->equalTo('sonata.admin.form.choice_extension'))
-            ->willReturn(new ChoiceTypeExtension());
+        if (class_exists(DependencyInjectionExtension::class)) {
+            $container = $this->getMockForAbstractClass(ContainerInterface::class);
+            $container->method('has')->willReturn(true);
+            $container->method('get')
+                ->with($this->equalTo('sonata.admin.form.choice_extension'))
+                ->willReturn(new ChoiceTypeExtension());
 
-        $typeServiceIds = [];
-        $typeExtensionServiceIds = [];
-        $guesserServiceIds = [];
-        $mappingTypes = [
-            'choice' => ChoiceType::class,
-        ];
-        $extensionTypes = [
-            'choice' => [
-                'sonata.admin.form.choice_extension',
-            ],
-        ];
+            $typeServiceIds = [];
+            $typeExtensionServiceIds = [];
+            $guesserServiceIds = [];
+            $mappingTypes = [
+                'choice' => ChoiceType::class,
+            ];
+            $extensionTypes = [
+                'choice' => [
+                    'sonata.admin.form.choice_extension',
+                ],
+            ];
 
-        $dependency = new DependencyInjectionExtension(
-            $container,
-            $typeServiceIds,
-            $typeExtensionServiceIds,
-            $guesserServiceIds,
-            $mappingTypes,
-            $extensionTypes
-        );
+            $extension = new DependencyInjectionExtension(
+                $container,
+                $typeServiceIds,
+                $typeExtensionServiceIds,
+                $guesserServiceIds,
+                $mappingTypes,
+                $extensionTypes
+            );
+        } else {
+            $extension = new TestExtension(null);
+            $extension->addTypeExtension(new ChoiceTypeExtension());
+        }
 
         $this->factory = Forms::createFormFactoryBuilder()
-            ->addExtension($dependency)
+            ->addExtension($extension)
             ->getFormFactory();
     }
 

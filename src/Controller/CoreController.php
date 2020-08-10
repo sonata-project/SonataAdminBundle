@@ -15,11 +15,11 @@ namespace Sonata\AdminBundle\Controller;
 
 // NEXT_MAJOR: remove this file
 
-@trigger_error(
-    'The '.__NAMESPACE__.'\CoreController class is deprecated since version 3.36 and will be removed in 4.0.'
-    .' Use '.__NAMESPACE__.'\SearchAction or '.__NAMESPACE__.'\DashboardAction instead.',
-    E_USER_DEPRECATED
-);
+@trigger_error(sprintf(
+    'The %1$s\CoreController class is deprecated since version 3.36 and will be removed in 4.0.'
+    .' Use %1$s\SearchAction or %1$s\DashboardAction instead.',
+    __NAMESPACE__
+), E_USER_DEPRECATED);
 
 use Sonata\AdminBundle\Action\DashboardAction;
 use Sonata\AdminBundle\Action\SearchAction;
@@ -75,11 +75,12 @@ class CoreController extends Controller
      */
     public function getRequest()
     {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since 3.0 and will be removed in 4.0.'.
-            ' Inject the Symfony\Component\HttpFoundation\Request into the actions instead.',
-            E_USER_DEPRECATED
-        );
+        @trigger_error(sprintf(
+            'The %s method is deprecated since 3.0 and will be removed in 4.0.'
+            .' Inject the %s into the actions instead.',
+            __METHOD__,
+            Request::class
+        ), E_USER_DEPRECATED);
 
         return $this->getCurrentRequest();
     }

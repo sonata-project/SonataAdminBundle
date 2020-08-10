@@ -83,6 +83,11 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function batchDelete($class, ProxyQueryInterface $queryProxy);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.73. To be removed in 4.0.
+     * Use AdminInterface::getParentFieldDescription instead.
+     *
      * @param array  $parentAssociationMapping
      * @param string $class
      */
@@ -225,6 +230,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * @param string $class
      * @param object $instance
+     *
+     * @return object
      */
     public function modelTransform($class, $instance);
 

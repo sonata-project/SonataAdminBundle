@@ -35,7 +35,7 @@ file that was distributed with this source code.
 
 {% block form_help %}
     {% apply spaceless %}
-        <span class="help-block sonata-ba-field-widget-help">{{ parent() }}</span>
+        <span class="help-block sonata-ba-field-widget-help sonata-ba-field-help">{{ parent() }}</span>
     {% endapply %}
 {% endblock %}
 
@@ -156,9 +156,9 @@ file that was distributed with this source code.
             {% if translation_domain is same as(false) %}
                 {{- label -}}
             {% elseif not sonata_admin.admin %}
-                {{- label|trans({}, translation_domain) -}}
+                {{- label|trans(label_translation_parameters, translation_domain) -}}
             {% else %}
-                {{ label|trans({}, sonata_admin.field_description.translationDomain ?: admin.translationDomain) }}
+                {{ label|trans(label_translation_parameters, sonata_admin.field_description.translationDomain ?: admin.translationDomain) }}
             {% endif %}
         </label>
     {% endif %}
@@ -195,7 +195,7 @@ file that was distributed with this source code.
                     {% if translation_domain is same as(false) %}
                         {{- label -}}
                     {% else %}
-                        {{- label|trans({}, translation_domain) -}}
+                        {{- label|trans(label_translation_parameters, translation_domain) -}}
                     {%- endif -%}
                 </span>
             {%- endif -%}
@@ -400,8 +400,10 @@ file that was distributed with this source code.
                 </div>
             {% endif %}
 
+            {# NEXT_MAJOR: Remove this block #}
             {% if sonata_admin is defined and sonata_admin_enabled and sonata_admin.field_description.help|default(false) %}
-                <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|trans({}, sonata_admin.field_description.translationDomain ?: admin.translationDomain)|raw }}</span>
+                {% deprecated 'The "help" option is deprecated in field description since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use Symfony Form "help" option instead.' %}
+                <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|trans(help_translation_parameters, sonata_admin.field_description.translationDomain ?: admin.translationDomain)|raw }}</span>
             {% endif %}
 
             {{ form_help(form) }}

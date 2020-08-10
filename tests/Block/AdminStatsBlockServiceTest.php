@@ -39,7 +39,6 @@ class AdminStatsBlockServiceTest extends BlockServiceTestCase
     {
         $blockService = new AdminStatsBlockService(
             $this->createMock(Environment::class),
-            null,
             $this->pool
         );
         $blockContext = $this->getBlockContext($blockService);

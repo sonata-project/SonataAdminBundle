@@ -40,6 +40,7 @@ use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 use Sonata\Exporter\Writer\JsonWriter;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\DependencyInjection\Container;
@@ -74,6 +75,8 @@ use Twig\Environment;
  */
 class CRUDControllerTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     /**
      * @var CRUDController
      */
@@ -230,13 +233,13 @@ class CRUDControllerTest extends TestCase
         $this->csrfProvider
             ->method('getToken')
             ->willReturnCallback(static function (string $intention): CsrfToken {
-                return new CsrfToken($intention, 'csrf-token-123_'.$intention);
+                return new CsrfToken($intention, sprintf('csrf-token-123_%s', $intention));
             });
 
         $this->csrfProvider
             ->method('isTokenValid')
             ->willReturnCallback(static function (CsrfToken $token): bool {
-                return $token->getValue() === 'csrf-token-123_'.$token->getId();
+                return $token->getValue() === sprintf('csrf-token-123_%s', $token->getId());
             });
 
         $this->logger = $this->createMock(LoggerInterface::class);
@@ -326,7 +329,7 @@ class CRUDControllerTest extends TestCase
             ->method('generateObjectUrl')
             ->willReturnCallback(
                 static function (string $name, $object, array $parameters = []): string {
-                    $result = \get_class($object).'_'.$name;
+                    $result = sprintf('%s_%s', \get_class($object), $name);
                     if (!empty($parameters)) {
                         $result .= '?'.http_build_query($parameters);
                     }
@@ -1665,7 +1668,6 @@ class CRUDControllerTest extends TestCase
 
     /**
      * @legacy
-     * @expectedDeprecation In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`
      */
     public function testEditActionAjaxErrorWithoutAcceptApplicationJson(): void
     {
@@ -1706,6 +1708,7 @@ class CRUDControllerTest extends TestCase
             ->method('trans')
             ->willReturn('flash message');
 
+        $this->expectDeprecation('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json` or `Accept: */*`');
         $this->assertInstanceOf(Response::class, $response = $this->controller->editAction(null));
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
@@ -2363,7 +2366,6 @@ class CRUDControllerTest extends TestCase
 
     /**
      * @legacy
-     * @expectedDeprecation In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`
      */
     public function testCreateActionAjaxErrorWithoutAcceptApplicationJson(): void
     {
@@ -2408,6 +2410,7 @@ class CRUDControllerTest extends TestCase
             ->method('trans')
             ->willReturn('flash message');
 
+        $this->expectDeprecation('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json` or `Accept: */*`');
         $this->assertInstanceOf(Response::class, $response = $this->controller->createAction());
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
@@ -2697,7 +2700,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->query->set('id', 123);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('isAclEnabled')
             ->willReturn(true);
 
@@ -2780,7 +2783,7 @@ class CRUDControllerTest extends TestCase
         $this->request->query->set('id', 123);
         $this->request->request->set(AdminObjectAclManipulator::ACL_USERS_FORM_NAME, []);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('isAclEnabled')
             ->willReturn(true);
 
@@ -2869,7 +2872,7 @@ class CRUDControllerTest extends TestCase
         $this->request->query->set('id', 123);
         $this->request->request->set(AdminObjectAclManipulator::ACL_ROLES_FORM_NAME, []);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('isAclEnabled')
             ->willReturn(true);
 

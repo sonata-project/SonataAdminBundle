@@ -32,6 +32,11 @@ class DatagridMapper extends BaseMapper
      */
     protected $datagrid;
 
+    /**
+     * @var DatagridBuilderInterface
+     */
+    protected $builder;
+
     public function __construct(
         DatagridBuilderInterface $datagridBuilder,
         DatagridInterface $datagrid,
@@ -72,7 +77,10 @@ class DatagridMapper extends BaseMapper
             $fieldDescription->mergeOptions($filterOptions);
         } elseif (\is_string($name)) {
             if ($this->admin->hasFilterFieldDescription($name)) {
-                throw new \LogicException(sprintf('Duplicate field name "%s" in datagrid mapper. Names should be unique.', $name));
+                throw new \LogicException(sprintf(
+                    'Duplicate field name "%s" in datagrid mapper. Names should be unique.',
+                    $name
+                ));
             }
 
             if (!isset($filterOptions['field_name'])) {

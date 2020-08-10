@@ -1,0 +1,16 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 3
+
+    paths:
+        - ../src
+    excludes_analyse:
+        # temporarily ignore template files
+        - ../src/Resources/**.tpl.php
+    scanFiles:
+        # NEXT_MAJOR: Remove those files
+        - stubs/MetadataInterface.file
+        - stubs/Exporter.file
+        - stubs/TextExtension.file

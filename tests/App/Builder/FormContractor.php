@@ -22,6 +22,9 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 final class FormContractor implements FormContractorInterface
 {
+    /**
+     * @var FormFactoryInterface
+     */
     private $formFactory;
 
     public function __construct(FormFactoryInterface $formFactory)

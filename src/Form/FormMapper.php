@@ -34,6 +34,11 @@ class FormMapper extends BaseGroupedMapper
      */
     protected $formBuilder;
 
+    /**
+     * @var FormContractorInterface
+     */
+    protected $builder;
+
     public function __construct(
         FormContractorInterface $formContractor,
         FormBuilderInterface $formBuilder,
@@ -106,7 +111,7 @@ class FormMapper extends BaseGroupedMapper
         );
 
         // Note that the builder var is actually the formContractor:
-        $this->builder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
+        $this->builder->fixFieldDescription($this->admin, $fieldDescription);
 
         if ($fieldName !== $name) {
             $fieldDescription->setName($fieldName);
@@ -131,9 +136,19 @@ class FormMapper extends BaseGroupedMapper
                 $options['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($name, 'form', 'label');
             }
 
+            // NEXT_MAJOR: Remove this block.
             if (isset($options['help'])) {
-                $fieldDescription->setHelp($options['help']);
-                unset($options['help']);
+                $containsHtml = $options['help'] !== strip_tags($options['help']);
+
+                if (!isset($options['help_html']) && $containsHtml) {
+                    @trigger_error(
+                        'Using HTML syntax within the "help" option and not setting the "help_html" option to "true" is deprecated'
+                        .' since sonata-project/admin-bundle 3.x and it will not work in version 4.0.',
+                        E_USER_DEPRECATED
+                    );
+
+                    $options['help_html'] = true;
+                }
             }
         }
 
@@ -190,7 +205,7 @@ class FormMapper extends BaseGroupedMapper
 
         // When the default tab is used, the tabname is not prepended to the index in the group array
         if ('default' !== $tab) {
-            $group = $tab.'.'.$group;
+            $group = sprintf('%s.%s', $tab, $group);
         }
 
         if (isset($groups[$group])) {
@@ -236,24 +251,46 @@ class FormMapper extends BaseGroupedMapper
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0. Use Symfony Form "help" option instead.
+     *
      * @return FormMapper
      */
     public function setHelps(array $helps = [])
     {
+        @trigger_error(sprintf(
+            'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+            .' Use Symfony Form "help" option instead.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         foreach ($helps as $name => $help) {
-            $this->addHelp($name, $help);
+            $this->addHelp($name, $help, 'sonata_deprecation_mute');
         }
 
         return $this;
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0. Use Symfony Form "help" option instead.
+     *
      * @return FormMapper
      */
     public function addHelp($name, $help)
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[2] ?? null)) {
+            @trigger_error(sprintf(
+                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+                .' Use Symfony Form "help" option instead.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         if ($this->admin->hasFormFieldDescription($name)) {
-            $this->admin->getFormFieldDescription($name)->setHelp($help);
+            $this->admin->getFormFieldDescription($name)->setHelp($help, 'sonata_deprecation_mute');
         }
 
         return $this;

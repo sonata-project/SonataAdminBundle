@@ -1,6 +1,75 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.x to 3.x
+=======================
+
+## The following templates have been deprecated
+
+ - `src/Resources/views/CRUD/base_filter_field.html.twig`
+ - `src/Resources/views/CRUD/base_inline_edit_field.html.twig`
+ - `src/Resources/views/CRUD/base_standard_edit_field.html.twig`
+ - `src/Resources/views/CRUD/edit_array.html.twig `
+ - `src/Resources/views/CRUD/edit_boolean.html.twig`
+ - `src/Resources/views/CRUD/edit_file.html.twig`
+ - `src/Resources/views/CRUD/edit_integer.html.twig`
+ - `src/Resources/views/CRUD/edit_sonata_type_immutable_array.html.twig`
+ - `src/Resources/views/CRUD/edit_string.html.twig`
+ - `src/Resources/views/CRUD/edit_text.html.twig`
+
+## Deprecated `help` option in field description
+
+You MUST use Symfony's [`help`](https://symfony.com/doc/4.4/reference/forms/types/form.html#help) option instead.
+
+Before:
+```php
+$formMapper
+    ->add('field', null, [
+        'help' => 'Help text <small>Please!</small>',
+    ]);
+```
+
+After:
+```php
+$formMapper
+    ->add('field', null, [
+        'help' => 'Help text <small>Please!</small>',
+        'help_html' => true,
+    ]);
+```
+
+### Upgrade to SonataBlockBundle 4.0
+
+We added compatibility with SonataBlockBundle 4.0, make sure you are explicitly declaring your dependency
+with `sonata-project/block-bundle` on your composer.json in order to avoid unwanted upgrades.
+
+There is a minimal BC Break on `AdminListBlockService`, `AdminSearchBlockService` and `AdminStatsBlockService`. If you are extending those clases (keep in mind that they will become final on 4.0) you should add return type hints to `execute()` and `configureSettings()`.
+
+UPGRADE FROM 3.72 to 3.73
+=========================
+
+### Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface::getParentFieldDescription`
+
+Use `Sonata\AdminBundle\Admin\AdminInterface::getParentFieldDescription` instead.
+
+UPGRADE FROM 3.71 to 3.72
+=========================
+
+## Deprecated `SonataAdminBundle\Admin\AdminHelper::addNewInstance()`
+
+Use
+```
+$instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
+SonataAdminBundle\Manipulator\ObjectManipulator::setObject($instance, $object, $fieldDescription);
+```
+Instead of
+```
+$this->adminHelper->addNewInstance($object, $fieldDescription);
+```
+
+The static method `setObject()` avoids the need to inject the admin helper dependency,
+and adds more flexibility with the instance you're adding to the object.
+
 UPGRADE FROM 3.68 to 3.69
 =========================
 

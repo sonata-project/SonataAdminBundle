@@ -48,7 +48,6 @@ class AdminListBlockServiceTest extends BlockServiceTestCase
     {
         $blockService = new AdminListBlockService(
             $this->createMock(Environment::class),
-            null,
             $this->pool,
             $this->templateRegistry->reveal()
         );
@@ -66,7 +65,6 @@ class AdminListBlockServiceTest extends BlockServiceTestCase
     {
         $blockService = new FakeBlockService(
             $this->createMock(Environment::class),
-            null,
             $this->pool,
             $this->templateRegistry->reveal()
         );

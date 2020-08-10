@@ -243,6 +243,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         foreach ($keys as $key) {
             $method = $this->generateSetterMethodName($key);
+
             if (!isset($attributes[$key]) || $definition->hasMethodCall($method)) {
                 continue;
             }
@@ -407,7 +408,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definedTemplates = $overwrittenTemplates['view'] + $definedTemplates;
 
-        $templateRegistryId = $serviceId.'.template_registry';
+        $templateRegistryId = sprintf('%s.template_registry', $serviceId);
         $templateRegistryDefinition = $container
             ->register($templateRegistryId, TemplateRegistry::class)
             ->addTag('sonata.admin.template_registry')

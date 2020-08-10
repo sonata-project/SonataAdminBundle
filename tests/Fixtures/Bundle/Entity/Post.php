@@ -14,35 +14,61 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class Post
 {
     private $tags;
 
+    private $postCategories;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+        $this->postCategories = new ArrayCollection();
     }
 
-    public function setTags($tags): void
+    public function setTags(Collection $tags): void
     {
         $this->tags = $tags;
     }
 
-    public function getTags()
+    public function getTags(): Collection
     {
         return $this->tags;
     }
 
     public function addTag(Tag $tag): void
     {
-        $tag->addPost($this);
-        $this->tags[] = ($tag);
+        $tag->setPost($this);
+        $this->tags->add($tag);
     }
 
-    public function removePost(Tag $tag): void
+    public function removeTag(Tag $tag): void
     {
-        $tag->removePost($this);
+        $tag->setPost(null);
         $this->tags->removeElement($tag);
+    }
+
+    public function setPostCategories(Collection $postCategories): void
+    {
+        $this->postCategories = $postCategories;
+    }
+
+    public function getPostCategories(): Collection
+    {
+        return $this->postCategories;
+    }
+
+    public function addPostCategory(PostCategory $postCategory): void
+    {
+        $postCategory->addPost($this);
+        $this->postCategories->add($postCategory);
+    }
+
+    public function removePostCategory(PostCategory $postCategory): void
+    {
+        $postCategory->removePost($this);
+        $this->postCategories->removeElement($postCategory);
     }
 }

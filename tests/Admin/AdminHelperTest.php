@@ -72,6 +72,13 @@ class AdminHelperTest extends TestCase
         $this->assertInstanceOf(FormView::class, $this->helper->getChildFormView($formView, 'test_elementId'));
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     *
+     * @expectedDeprecation Method Sonata\AdminBundle\Admin\AdminHelper::addNewInstance() is deprecated since sonata-project/admin-bundle 3.72. It will be removed in version 4.0. Use Sonata\AdminBundle\Manipulator\ObjectManipulator::addInstance() instead.
+     */
     public function testAddNewInstance(): void
     {
         $admin = $this->createMock(AdminInterface::class);
@@ -90,29 +97,13 @@ class AdminHelperTest extends TestCase
         $this->helper->addNewInstance($object, $fieldDescription);
     }
 
-    public function testAddNewInstanceWithParentAssociation(): void
-    {
-        $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->once())->method('getNewInstance')->willReturn(new \stdClass());
-
-        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getAssociationAdmin')->willReturn($admin);
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBar']);
-        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([['fieldName' => 'parent']]);
-
-        $object2 = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['addFooBar'])
-            ->getMock();
-        $object2->expects($this->once())->method('addFooBar');
-
-        $object1 = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['getParent'])
-            ->getMock();
-        $object1->expects($this->once())->method('getParent')->willReturn($object2);
-
-        $this->helper->addNewInstance($object1, $fieldDescription);
-    }
-
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     *
+     * @expectedDeprecation Method Sonata\AdminBundle\Admin\AdminHelper::addNewInstance() is deprecated since sonata-project/admin-bundle 3.72. It will be removed in version 4.0. Use Sonata\AdminBundle\Manipulator\ObjectManipulator::addInstance() instead.
+     */
     public function testAddNewInstancePlural(): void
     {
         $admin = $this->createMock(AdminInterface::class);
@@ -131,6 +122,13 @@ class AdminHelperTest extends TestCase
         $this->helper->addNewInstance($object, $fieldDescription);
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     *
+     * @expectedDeprecation Method Sonata\AdminBundle\Admin\AdminHelper::addNewInstance() is deprecated since sonata-project/admin-bundle 3.72. It will be removed in version 4.0. Use Sonata\AdminBundle\Manipulator\ObjectManipulator::addInstance() instead.
+     */
     public function testAddNewInstanceInflector(): void
     {
         $admin = $this->createMock(AdminInterface::class);
@@ -184,7 +182,7 @@ class AdminHelperTest extends TestCase
         $subObject->expects($this->atLeastOnce())->method('getMore')->willReturn('Value');
 
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Could not get element id from '.$path.' Failing part: calls');
+        $this->expectExceptionMessage(sprintf('Could not get element id from %s Failing part: calls', $path));
 
         $this->helper->getElementAccessPath($path, $object);
     }

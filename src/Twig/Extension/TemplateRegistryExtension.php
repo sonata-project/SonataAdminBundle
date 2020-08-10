@@ -88,7 +88,7 @@ final class TemplateRegistryExtension extends AbstractExtension
      */
     private function getTemplateRegistry(string $adminCode): TemplateRegistryInterface
     {
-        $serviceId = $adminCode.'.template_registry';
+        $serviceId = sprintf('%s.template_registry', $adminCode);
         $templateRegistry = $this->container->get($serviceId);
         if ($templateRegistry instanceof TemplateRegistryInterface) {
             return $templateRegistry;

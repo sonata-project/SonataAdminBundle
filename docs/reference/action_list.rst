@@ -143,88 +143,21 @@ Options
 Available types and associated options
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. note::
-
-    ``(m)`` means that option is mandatory
-
-+-----------+---------------------+-----------------------------------------------------------------------+
-| Type      | Options             | Description                                                           |
-+===========+=====================+=======================================================================+
-| actions   | actions             | List of available actions                                             |
-+           +                     +                                                                       +
-|           |   edit              | Name of the action (``show``, ``edit``, ``history``, ``delete``, etc) |
-+           +                     +                                                                       +
-|           |     link_parameters | Route parameters                                                      |
-+-----------+---------------------+-----------------------------------------------------------------------+
-| batch     |                     | Renders a checkbox                                                    |
-+-----------+---------------------+-----------------------------------------------------------------------+
-| select    |                     | Renders a select box                                                  |
-+-----------+---------------------+-----------------------------------------------------------------------+
-| array     |                     | Displays an array                                                     |
-+-----------+---------------------+-----------------------------------------------------------------------+
-| boolean   | ajax_hidden         | Yes/No; ajax_hidden allows to hide list field during an AJAX context. |
-+           +---------------------+-----------------------------------------------------------------------+
-|           | editable            | Yes/No; editable allows to edit directly from the list if authorized. |
-+           +---------------------+-----------------------------------------------------------------------+
-|           | inverse             | Yes/No; reverses the background color (green for false, red for true) |
-+-----------+---------------------+-----------------------------------------------------------------------+
-| choice    | choices             | Possible choices                                                      |
-+           +---------------------+-----------------------------------------------------------------------+
-|           | multiple            | Is it a multiple choice option? Defaults to false.                    |
-+           +---------------------+-----------------------------------------------------------------------+
-|           | delimiter           | Separator of values if multiple.                                      |
-+           +---------------------+-----------------------------------------------------------------------+
-|           | catalogue           | Translation catalogue.                                                |
-+           +---------------------+-----------------------------------------------------------------------+
-|           | class               | Class path for editable association field.                            |
-+-----------+---------------------+-----------------------------------------------------------------------+
-| currency  | currency (m)        | A currency string (EUR or USD for instance).                          |
-+-----------+---------------------+-----------------------------------------------------------------------+
-| date      | format              | A format understandable by Twig's ``date`` function.                  |
-+           +---------------------+-----------------------------------------------------------------------+
-|           | timezone            | Second argument for Twig's ``date`` function                          |
-+-----------+---------------------+-----------------------------------------------------------------------+
-| datetime  | format              | A format understandable by Twig's ``date`` function.                  |
-+           +---------------------+-----------------------------------------------------------------------+
-|           | timezone            | Second argument for Twig's ``date`` function                          |
-+-----------+---------------------+-----------------------------------------------------------------------+
-| email     | as_string           | Renders the email as string, without any link.                        |
-+           +---------------------+-----------------------------------------------------------------------+
-|           | subject             | Add subject parameter to email link.                                  |
-+           +---------------------+-----------------------------------------------------------------------+
-|           | body                | Add body parameter to email link.                                     |
-+-----------+---------------------+-----------------------------------------------------------------------+
-| percent   |                     | Renders value as a percentage.                                        |
-+-----------+---------------------+-----------------------------------------------------------------------+
-| string    |                     | Renders a string.                                                     |
-+-----------+---------------------+-----------------------------------------------------------------------+
-| text      |                     | See 'string'                                                          |
-+-----------+---------------------+-----------------------------------------------------------------------+
-| html      |                     | Renders string as html                                                |
-+-----------+---------------------+-----------------------------------------------------------------------+
-| time      |                     | Renders a datetime's time with format ``H:i:s``.                      |
-+-----------+---------------------+-----------------------------------------------------------------------+
-| trans     | catalogue           | Translates the value with catalogue ``catalogue`` if defined.         |
-+-----------+---------------------+-----------------------------------------------------------------------+
-| url       | url                 | Adds a link with url ``url`` to the displayed value                   |
-+           +---------------------+-----------------------------------------------------------------------+
-|           | route               | Give a route to generate the url                                      |
-+           +                     +                                                                       +
-|           |   name              | Route name                                                            |
-+           +                     +                                                                       +
-|           |   parameters        | Route parameters                                                      |
-+           +---------------------+-----------------------------------------------------------------------+
-|           | hide_protocol       | Hide http:// or https:// (default: false)                             |
-+-----------+---------------------+-----------------------------------------------------------------------+
-
-If you have the SonataDoctrineORMAdminBundle installed, you have access
-to more field types, see `SonataDoctrineORMAdminBundle Documentation`_.
-
-.. note::
-
-    It is better to prefer non negative notions when possible for boolean
-    values so use the ``inverse`` option if you really cannot find a good enough
-    antonym for the name you have.
++--------------------------------------+---------------------+-----------------------------------------------------------------------+
+| Type                                 | Options             | Description                                                           |
++======================================+=====================+=======================================================================+
+| ``ListMapper::TYPE_ACTIONS``         | actions             | List of available actions                                             |
++                                      +                     +                                                                       +
+|                                      |   edit              | Name of the action (``show``, ``edit``, ``history``, ``delete``, etc) |
++                                      +                     +                                                                       +
+|                                      |     link_parameters | Route parameters                                                      |
++--------------------------------------+---------------------+-----------------------------------------------------------------------+
+| ``ListMapper::TYPE_BATCH``           |                     | Renders a checkbox                                                    |
++--------------------------------------+---------------------+-----------------------------------------------------------------------+
+| ``ListMapper::TYPE_SELECT``          |                     | Renders a select box                                                  |
++--------------------------------------+---------------------+-----------------------------------------------------------------------+
+| ``TemplateRegistry::TYPE_*``         |                     | See :doc:`Field Types <field_types>`                                  |
++--------------------------------------+---------------------+-----------------------------------------------------------------------+
 
 Customizing the query used to generate the list
 -----------------------------------------------
@@ -645,5 +578,59 @@ Checkbox range selection
     You can check / uncheck a range of checkboxes by clicking a first one,
     then a second one with shift + click.
 
+Displaying a non-model field
+----------------------------
+
+.. versionadded:: 3.73
+
+  Support for displaying fields not part of the model class was introduced in version 3.73.
+
+The list view can also display fields that are not part of the model class.
+
+In some situations you can add a new getter to your model class to calculate
+a field based on the other fields of your model::
+
+    // src/Entity/User.php
+
+    public function getFullName(): string
+    {
+        return $this->getGivenName().' '.$this->getFamilyName();
+    }
+
+    // src/Admin/UserAdmin.php
+
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper->addIdentifier('fullName');
+    }
+
+In situations where the data are not available in the model or it is more performant
+to have the database calculate the value you can override the ``configureQuery()`` Admin
+class method to add fields to the result set.
+In ``configureListFields()`` these fields can be added using the alias given
+in the query.
+
+In the following example the number of comments for a post is added to the
+query and displayed::
+
+    // src/Admin/PostAdmin.php
+
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+    {
+        $query = parent::configureQuery($query);
+
+        $query
+            ->leftJoin('n.Comments', 'c')
+            ->addSelect('COUNT(c.id) numberofcomments')
+            ->addGroupBy('n');
+
+        return $query;
+    }
+
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper->addIdentifier('numberofcomments');
+    }
+
 .. _`SonataDoctrineORMAdminBundle Documentation`: https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/list_field_definition.html
-.. _`here`: https://github.com/sonata-project/SonataCoreBundle/tree/3.x/src/Form/Type
+.. _`here`: https://github.com/sonata-project/form-extensions/tree/1.x/src/Type

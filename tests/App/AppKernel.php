@@ -17,7 +17,9 @@ use Knp\Bundle\MenuBundle\KnpMenuBundle;
 use Sonata\AdminBundle\SonataAdminBundle;
 use Sonata\BlockBundle\SonataBlockBundle;
 use Sonata\CoreBundle\SonataCoreBundle;
-use Sonata\Doctrine\Bridge\Symfony\Bundle\SonataDoctrineBundle;
+use Sonata\Doctrine\Bridge\Symfony\SonataDoctrineBundle;
+use Sonata\Form\Bridge\Symfony\SonataFormBundle;
+use Sonata\Twig\Bridge\Symfony\SonataTwigBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;
@@ -26,7 +28,6 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
-use Twig\Extra\TwigExtraBundle\TwigExtraBundle;
 
 final class AppKernel extends Kernel
 {
@@ -39,27 +40,33 @@ final class AppKernel extends Kernel
 
     public function registerBundles()
     {
-        return [
+        $bundles = [
             new FrameworkBundle(),
             new TwigBundle(),
-            new TwigExtraBundle(),
             new SecurityBundle(),
             new KnpMenuBundle(),
             new SonataBlockBundle(),
-            new SonataCoreBundle(),
             new SonataDoctrineBundle(),
             new SonataAdminBundle(),
+            new SonataTwigBundle(),
+            new SonataFormBundle(),
         ];
+
+        if (class_exists(SonataCoreBundle::class)) {
+            $bundles[] = new SonataCoreBundle();
+        }
+
+        return $bundles;
     }
 
     public function getCacheDir(): string
     {
-        return $this->getBaseDir().'cache';
+        return sprintf('%scache', $this->getBaseDir());
     }
 
     public function getLogDir(): string
     {
-        return $this->getBaseDir().'log';
+        return sprintf('%slog', $this->getBaseDir());
     }
 
     public function getProjectDir()
@@ -67,12 +74,12 @@ final class AppKernel extends Kernel
         return __DIR__;
     }
 
-    protected function configureRoutes(RouteCollectionBuilder $routes)
+    protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
-        $routes->import($this->getProjectDir().'/config/routes.yml');
+        $routes->import(sprintf('%s/config/routes.yml', $this->getProjectDir()));
     }
 
-    protected function configureContainer(ContainerBuilder $containerBuilder, LoaderInterface $loader)
+    protected function configureContainer(ContainerBuilder $containerBuilder, LoaderInterface $loader): void
     {
         $containerBuilder->loadFromExtension('framework', [
             'secret' => 'MySecret',
@@ -81,6 +88,9 @@ final class AppKernel extends Kernel
             'session' => ['handler_id' => 'session.handler.native_file', 'storage_id' => 'session.storage.mock_file', 'name' => 'MOCKSESSID'],
             'assets' => null,
             'test' => true,
+            'translator' => [
+                'default_path' => '%kernel.project_dir%/translations',
+            ],
         ]);
 
         $containerBuilder->loadFromExtension('security', [
@@ -91,13 +101,14 @@ final class AppKernel extends Kernel
         $containerBuilder->loadFromExtension('twig', [
             'strict_variables' => '%kernel.debug%',
             'exception_controller' => null,
+            'form_themes' => ['@SonataAdmin/Form/form_admin_fields.html.twig'],
         ]);
 
-        $loader->load($this->getProjectDir().'/config/services.yml');
+        $loader->load(sprintf('%s/config/services.yml', $this->getProjectDir()));
     }
 
     private function getBaseDir(): string
     {
-        return sys_get_temp_dir().'/sonata-admin-bundle/var/';
+        return sprintf('%s/sonata-admin-bundle/var/', sys_get_temp_dir());
     }
 }

@@ -29,7 +29,7 @@ use Twig\Extension\AbstractExtension;
  */
 final class DeprecatedTextExtension extends AbstractExtension
 {
-    public function twigTruncateFilter(Environment $env, ?string $value, int $length = 30, bool $preserve = false, $separator = '...')
+    public function twigTruncateFilter(Environment $env, ?string $value, int $length = 30, bool $preserve = false, string $separator = '...')
     {
         if (\function_exists('mb_get_info')) {
             if (mb_strlen($value, $env->getCharset()) > $length) {

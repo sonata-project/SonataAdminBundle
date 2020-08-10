@@ -270,7 +270,7 @@ class HelperControllerTest extends TestCase
         $fieldDescription->getType()->willReturn('choice');
         $fieldDescription->getOption('editable')->willReturn(true);
         $fieldDescription->getOption('class')->willReturn(AdminControllerHelper_Bar::class);
-        $fieldDescription->getTargetEntity()->willReturn(AdminControllerHelper_Bar::class);
+        $fieldDescription->getTargetModel()->willReturn(AdminControllerHelper_Bar::class);
         $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
         $fieldDescription->getTemplate()->willReturn('field_template');
         $fieldDescription->getValue(Argument::cetera())->willReturn('some value');
@@ -426,7 +426,7 @@ class HelperControllerTest extends TestCase
         $this->admin->getFormFieldDescriptions()->willReturn(null);
         $this->admin->getFormFieldDescription('barField')->willReturn($fieldDescription->reveal());
 
-        $fieldDescription->getTargetEntity()->willReturn(Foo::class);
+        $fieldDescription->getTargetModel()->willReturn(Foo::class);
         $fieldDescription->getName()->willReturn('barField');
 
         $this->controller->retrieveAutocompleteItemsAction($request);
@@ -452,7 +452,7 @@ class HelperControllerTest extends TestCase
         $this->admin->getFormFieldDescription('barField')->willReturn($fieldDescription->reveal());
         $this->admin->getFormFieldDescriptions()->willReturn(null);
         $targetAdmin->checkAccess('list')->willReturn(null);
-        $fieldDescription->getTargetEntity()->willReturn(Foo::class);
+        $fieldDescription->getTargetModel()->willReturn(Foo::class);
         $fieldDescription->getName()->willReturn('barField');
         $fieldDescription->getAssociationAdmin()->willReturn($targetAdmin->reveal());
 
@@ -573,7 +573,7 @@ class HelperControllerTest extends TestCase
         $datagrid->getPager()->willReturn($pager->reveal());
         $pager->getResults()->willReturn([$model]);
         $pager->isLastPage()->willReturn(true);
-        $fieldDescription->getTargetEntity()->willReturn(Foo::class);
+        $fieldDescription->getTargetModel()->willReturn(Foo::class);
         $fieldDescription->getName()->willReturn('barField');
         $fieldDescription->getAssociationAdmin()->willReturn($targetAdmin->reveal());
 

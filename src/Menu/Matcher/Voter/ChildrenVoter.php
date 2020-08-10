@@ -17,10 +17,7 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 
-@trigger_error(sprintf(
-    '"%s" is deprecated since 3.28, will be removed in 4.0.',
-    ChildrenVoter::class
-));
+@trigger_error(sprintf('"%s" is deprecated since 3.28, will be removed in 4.0.', ChildrenVoter::class));
 
 /**
  * Children menu voter based on children items.

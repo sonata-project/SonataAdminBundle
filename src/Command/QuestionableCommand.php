@@ -38,7 +38,7 @@ abstract class QuestionableCommand extends Command
     ) {
         $questionHelper = $this->getQuestionHelper();
 
-        $question = new Question($questionHelper->getQuestion($questionText, $default), $default);
+        $question = new Question($questionText, $default);
 
         $question->setValidator($validator);
 
@@ -50,6 +50,8 @@ abstract class QuestionableCommand extends Command
      * @param string $default
      * @param string $separator
      *
+     * NEXT_MAJOR: Remove `$separator` argument
+     *
      * @return string
      */
     final protected function askConfirmation(
@@ -60,12 +62,10 @@ abstract class QuestionableCommand extends Command
         $separator
     ) {
         $questionHelper = $this->getQuestionHelper();
-
-        $question = new ConfirmationQuestion($questionHelper->getQuestion(
-            $questionText,
-            $default,
-            $separator
-        ), ('no' === $default ? false : true));
+        $question = new ConfirmationQuestion(
+            (new Question($questionText, $default))->getQuestion(),
+            'no' !== $default
+        );
 
         return $questionHelper->ask($input, $output, $question);
     }

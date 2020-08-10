@@ -39,19 +39,19 @@ class PathInfoBuilder implements RouteBuilderInterface
         $collection->add('list');
         $collection->add('create');
         $collection->add('batch');
-        $collection->add('edit', $admin->getRouterIdParameter().'/edit');
-        $collection->add('delete', $admin->getRouterIdParameter().'/delete');
-        $collection->add('show', $admin->getRouterIdParameter().'/show');
+        $collection->add('edit', sprintf('%s/edit', $admin->getRouterIdParameter()));
+        $collection->add('delete', sprintf('%s/delete', $admin->getRouterIdParameter()));
+        $collection->add('show', sprintf('%s/show', $admin->getRouterIdParameter()));
         $collection->add('export');
 
         if ($this->manager->hasReader($admin->getClass())) {
-            $collection->add('history', $admin->getRouterIdParameter().'/history');
-            $collection->add('history_view_revision', $admin->getRouterIdParameter().'/history/{revision}/view');
-            $collection->add('history_compare_revisions', $admin->getRouterIdParameter().'/history/{base_revision}/{compare_revision}/compare');
+            $collection->add('history', sprintf('%s/history', $admin->getRouterIdParameter()));
+            $collection->add('history_view_revision', sprintf('%s/history/{revision}/view', $admin->getRouterIdParameter()));
+            $collection->add('history_compare_revisions', sprintf('%s/history/{base_revision}/{compare_revision}/compare', $admin->getRouterIdParameter()));
         }
 
         if ($admin->isAclEnabled()) {
-            $collection->add('acl', $admin->getRouterIdParameter().'/acl');
+            $collection->add('acl', sprintf('%s/acl', $admin->getRouterIdParameter()));
         }
 
         // add children urls

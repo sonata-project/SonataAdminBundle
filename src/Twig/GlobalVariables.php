@@ -51,22 +51,22 @@ class GlobalVariables
 
         // NEXT_MAJOR : remove this block and set adminPool from parameter.
         if ($adminPool instanceof ContainerInterface) {
-            @trigger_error(
-                'Using an instance of Symfony\Component\DependencyInjection\ContainerInterface is deprecated since
-                version 3.5 and will be removed in 4.0. Use Sonata\AdminBundle\Admin\Pool instead.',
-                E_USER_DEPRECATED
-            );
+            @trigger_error(sprintf(
+                'Using an instance of %s is deprecated since version 3.5 and will be removed in 4.0. Use %s instead.',
+                ContainerInterface::class,
+                Pool::class
+            ), E_USER_DEPRECATED);
 
             $adminPool = $adminPool->get('sonata.admin.pool');
         }
+
         if ($adminPool instanceof Pool) {
             $this->adminPool = $adminPool;
 
             return;
         }
-        throw new \InvalidArgumentException(
-            '$adminPool should be an instance of Sonata\AdminBundle\Admin\Pool'
-        );
+
+        throw new \InvalidArgumentException(sprintf('$adminPool should be an instance of %s', Pool::class));
     }
 
     /**
@@ -118,7 +118,7 @@ class GlobalVariables
         if ($pipe = strpos($code, '|')) {
             // convert code=sonata.page.admin.page|sonata.page.admin.snapshot, action=list
             // to => sonata.page.admin.page|sonata.page.admin.snapshot.list
-            $action = $code.'.'.$action;
+            $action = sprintf('%s.%s', $code, $action);
             $code = substr($code, 0, $pipe);
         }
 

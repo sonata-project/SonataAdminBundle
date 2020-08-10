@@ -48,7 +48,6 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
     {
         $blockService = new AdminSearchBlockService(
             $this->createMock(Environment::class),
-            null,
             $this->pool,
             $this->searchHandler
         );
@@ -69,7 +68,6 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
 
         $blockService = new AdminSearchBlockService(
             $this->createMock(Environment::class),
-            null,
             $this->pool,
             $this->searchHandler
         );

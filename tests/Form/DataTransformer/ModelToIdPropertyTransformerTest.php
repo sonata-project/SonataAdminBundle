@@ -118,12 +118,8 @@ class ModelToIdPropertyTransformerTest extends TestCase
      */
     public function testReverseTransformMultipleInvalidTypeTests(array $expected, $params, string $type): void
     {
-        $this->expectException(
-            \UnexpectedValueException::class
-        );
-        $this->expectExceptionMessage(
-            sprintf('Value should be array, %s given.', $type)
-        );
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage(sprintf('Value should be array, %s given.', $type));
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 

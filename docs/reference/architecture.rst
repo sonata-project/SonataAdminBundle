@@ -329,5 +329,5 @@ DIC, handles the ``Admin`` classes, lazy-loading them on demand (to reduce overh
 and matching each of them to a group. It is also responsible for handling the top level
 template files, administration panel title and logo.
 
-.. _`Django Project Website`: http://www.djangoproject.com/
-.. _`CRUD`: http://en.wikipedia.org/wiki/CRUD
+.. _`Django Project Website`: https://www.djangoproject.com/
+.. _`CRUD`: https://en.wikipedia.org/wiki/CRUD

@@ -14,12 +14,18 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Admin;
 
 use Knp\Menu\FactoryInterface as MenuFactoryInterface;
+use Knp\Menu\ItemInterface;
+use RuntimeException;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Object\MetadataInterface;
+use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
@@ -36,7 +42,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @method array                           configureActionButtons(string $action, ?object $object = null)
  * @method string                          getSearchResultLink(object $object)
  * @method void                            showMosaicButton(bool $isShown)
- * @method bool                            isDefaultFilter(string $name)
+ * @method bool                            isDefaultFilter(string $name)                                         // NEXT_MAJOR: Remove this
  * @method bool                            isCurrentRoute(string $name, ?string $adminCode)
  * @method bool                            canAccessObject(string $action, object $object)
  * @method mixed                           getPersistentParameter(string $name)
@@ -46,6 +52,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @method string                          getRootCode()
  * @method array                           getActionButtons(string $action, ?object $object)
  * @method FieldDescriptionCollection|null getList()
+ * @method void                            setFilterPersister(?FilterPersisterInterface $filterPersister = null)
+ * @method string                          getBaseRoutePattern()
+ * @method string                          getBaseRouteName()
+ * @method ItemInterface                   getSideMenu(string $action, ?AdminInterface $childAdmin = null)
+ * @method void                            addParentAssociationMapping(string $code, string $value)
+ * @method RouteGeneratorInterface         getRouteGenerator()
+ * @method string                          getClassnameLabel()
+ * @method AdminInterface|null             getCurrentChildAdmin()
+ * @method string|null                     getParentAssociationMapping()
+ * @method void                            reorderFormGroup(string $group, array $keys)
+ * @method void                            defineFormBuilder(FormBuilderInterface $formBuilder)
  */
 interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
 {
@@ -96,7 +113,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function attachAdminClass(FieldDescriptionInterface $fieldDescription);
 
     /**
-     * @return \Sonata\AdminBundle\Datagrid\DatagridInterface
+     * @return DatagridInterface
      */
     public function getDatagrid();
 
@@ -115,7 +132,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getBaseControllerName();
 
     /**
-     * @return \Sonata\AdminBundle\Model\ModelManagerInterface
+     * @return ModelManagerInterface
      */
     public function getModelManager();
 
@@ -146,7 +163,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * NEXT MAJOR: Remove the throws tag.
      *
-     * @throws \RuntimeException if no request is set
+     * @throws RuntimeException if no request is set
      *
      * @return Request
      */
@@ -225,6 +242,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function hasRoute($name);
 
+    /**
+     * @return void
+     */
     public function setSecurityHandler(SecurityHandlerInterface $securityHandler);
 
     /**
@@ -721,11 +741,59 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 //     */
 //    public function showMosaicButton(bool $isShown): void;
 
-    /*
-     * Checks if a filter type is set to a default value
-     */
 //    NEXT_MAJOR: uncomment this method in 4.0
-    // public function isDefaultFilter(string $name): bool;
+//    public function setFilterPersister(?\Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface\FilterPersisterInterface $filterPersister = null): void;
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    /**
+//     * Returns the baseRoutePattern used to generate the routing information.
+//     */
+//    public function getBaseRoutePattern(): string;
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    /**
+//     * Returns the baseRouteName used to generate the routing information.
+//     */
+//    public function getBaseRouteName(): string;
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    public function getSideMenu(string $action, ?AdminInterface $childAdmin = null): \Knp\Menu\ItemInterface;
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    public function addParentAssociationMapping(string $code, string $value): void;
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    public function getRouteGenerator(): \Sonata\AdminBundle\Route\RouteGeneratorInterface;
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    /**
+//     * Returns the classname label.
+//     */
+//    public function getClassnameLabel(): string;
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    /**
+//     * Returns the current child admin instance.
+//     */
+//    public function getCurrentChildAdmin(): ?AdminInterface;
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    /**
+//     * Returns the name of the parent related field, so the field can be use to set the default
+//     * value (ie the parent object) or to filter the object.
+//     *
+//     */
+//    public function getParentAssociationMapping(): ?string;
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    public function reorderFormGroup(string $group, array $keys): void;
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    /**
+//     * This method is being called by the main admin class and the child class,
+//     * the getFormBuilder is only call by the main admin class.
+//     */
+//    public function defineFormBuilder(FormBuilderInterface $formBuilder): void;
 }
 
 class_exists(\Sonata\Form\Validator\ErrorElement::class);

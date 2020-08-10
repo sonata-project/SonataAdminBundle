@@ -47,7 +47,7 @@ class BaseGroupedMapperTest extends TestCase
         $labelStrategy
             ->method('getLabel')
             ->willReturnCallback(static function (string $label): string {
-                return 'label_'.strtolower($label);
+                return sprintf('label_%s', strtolower($label));
             });
 
         $admin

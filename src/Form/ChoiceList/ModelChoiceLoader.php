@@ -111,7 +111,11 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
                     try {
                         $valueObject = (string) $model;
                     } catch (\Exception $e) {
-                        throw new RuntimeException(sprintf('Unable to convert the entity "%s" to string, provide "property" option or implement "__toString()" method in your entity.', ClassUtils::getClass($model)), 0, $e);
+                        throw new RuntimeException(sprintf(
+                            'Unable to convert the entity "%s" to string, provide "property" option'
+                            .' or implement "__toString()" method in your entity.',
+                            ClassUtils::getClass($model)
+                        ), 0, $e);
                     }
                 }
 
@@ -159,7 +163,10 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
         try {
             return $this->modelManager->getIdentifierValues($model);
         } catch (\Exception $e) {
-            throw new \InvalidArgumentException(sprintf('Unable to retrieve the identifier values for entity %s', ClassUtils::getClass($model)), 0, $e);
+            throw new \InvalidArgumentException(sprintf(
+                'Unable to retrieve the identifier values for entity %s',
+                ClassUtils::getClass($model)
+            ), 0, $e);
         }
     }
 }

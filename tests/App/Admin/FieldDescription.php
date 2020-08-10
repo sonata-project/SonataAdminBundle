@@ -17,7 +17,7 @@ use Sonata\AdminBundle\Admin\BaseFieldDescription;
 
 final class FieldDescription extends BaseFieldDescription
 {
-    public function setAssociationMapping($associationMapping)
+    public function setAssociationMapping($associationMapping): void
     {
     }
 
@@ -26,11 +26,16 @@ final class FieldDescription extends BaseFieldDescription
         return null;
     }
 
-    public function setFieldMapping($fieldMapping)
+    public function getTargetModel()
+    {
+        return null;
+    }
+
+    public function setFieldMapping($fieldMapping): void
     {
     }
 
-    public function setParentAssociationMappings(array $parentAssociationMappings)
+    public function setParentAssociationMappings(array $parentAssociationMappings): void
     {
     }
 

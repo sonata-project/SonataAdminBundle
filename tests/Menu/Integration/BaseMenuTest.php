@@ -35,9 +35,9 @@ abstract class BaseMenuTest extends TestCase
     {
         // Adapt to both bundle and project-wide test strategy
         $twigPaths = array_filter([
-            __DIR__.'/../../../../../../vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views',
-            __DIR__.'/../../../vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views',
-            __DIR__.'/../../../src/Resources/views',
+            sprintf('%s/../../../../../../vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views', __DIR__),
+            sprintf('%s/../../../vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views', __DIR__),
+            sprintf('%s/../../../src/Resources/views', __DIR__),
         ], 'is_dir');
 
         $loader = new StubFilesystemLoader($twigPaths);
@@ -69,7 +69,7 @@ abstract class BaseMenuTest extends TestCase
     protected function cleanHtmlWhitespace(string $html): string
     {
         $html = preg_replace_callback('/>([^<]+)</', static function ($value) {
-            return '>'.trim($value[1]).'<';
+            return sprintf('>%s<', trim($value[1]));
         }, $html);
 
         return $html;

@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
@@ -70,15 +71,14 @@ class AdminObjectAclManipulator
      *
      * NEXT_MAJOR: remove this method.
      *
-     * @return Form
+     * @return FormInterface
      *
      * @deprecated since sonata-project/admin-bundle 3.0. Use createAclUsersForm() instead
      */
     public function createForm(AdminObjectAclData $data)
     {
         @trigger_error(
-            'createForm() is deprecated since version 3.0 and will be removed in 4.0. '
-            .'Use createAclUsersForm() instead.',
+            'createForm() is deprecated since version 3.0 and will be removed in 4.0. Use createAclUsersForm() instead.',
             E_USER_DEPRECATED
         );
 
@@ -88,7 +88,7 @@ class AdminObjectAclManipulator
     /**
      * Gets the ACL users form.
      *
-     * @return Form
+     * @return FormInterface
      */
     public function createAclUsersForm(AdminObjectAclData $data)
     {
@@ -103,7 +103,7 @@ class AdminObjectAclManipulator
     /**
      * Gets the ACL roles form.
      *
-     * @return Form
+     * @return FormInterface
      */
     public function createAclRolesForm(AdminObjectAclData $data)
     {
@@ -147,8 +147,7 @@ class AdminObjectAclManipulator
     public function updateAcl(AdminObjectAclData $data)
     {
         @trigger_error(
-            'updateAcl() is deprecated since version 3.0 and will be removed in 4.0.'
-            .'Use updateAclUsers() instead.',
+            'updateAcl() is deprecated since version 3.0 and will be removed in 4.0. Use updateAclUsers() instead.',
             E_USER_DEPRECATED
         );
 
@@ -225,7 +224,7 @@ class AdminObjectAclManipulator
     /**
      * Builds the form.
      *
-     * @return Form
+     * @return FormInterface
      */
     protected function buildForm(AdminObjectAclData $data, FormBuilderInterface $formBuilder, \Traversable $aclValues)
     {

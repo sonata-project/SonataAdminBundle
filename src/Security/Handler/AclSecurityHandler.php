@@ -20,6 +20,7 @@ use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Exception\NotAllAclsFoundException;
 use Symfony\Component\Security\Acl\Model\AclInterface;
+use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 use Symfony\Component\Security\Acl\Model\MutableAclProviderInterface;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -51,17 +52,17 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     /**
      * @var array
      */
-    protected $superAdminRoles;
+    protected $superAdminRoles = [];
 
     /**
      * @var array
      */
-    protected $adminPermissions;
+    protected $adminPermissions = [];
 
     /**
      * @var array
      */
-    protected $objectPermissions;
+    protected $objectPermissions = [];
 
     /**
      * @var string
@@ -121,7 +122,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
 
     public function getBaseRole(AdminInterface $admin)
     {
-        return 'ROLE_'.str_replace('.', '_', strtoupper($admin->getCode())).'_%s';
+        return sprintf('ROLE_%s_%%s', str_replace('.', '_', strtoupper($admin->getCode())));
     }
 
     public function buildSecurityInformation(AdminInterface $admin)
@@ -186,6 +187,13 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
 
     public function addObjectOwner(AclInterface $acl, ?UserSecurityIdentity $securityIdentity = null)
     {
+        if (!$acl instanceof MutableAclInterface) {
+            throw new \TypeError(sprintf(
+                'Argument 1 passed to "%s()" must implement "%s".',
+                __METHOD__,
+                MutableAclInterface::class
+            ));
+        }
         if (false === $this->findClassAceIndexByUsername($acl, $securityIdentity->getUsername())) {
             // only add if not already exists
             $acl->insertObjectAce($securityIdentity, \constant("$this->maskBuilderClass::MASK_OWNER"));
@@ -194,6 +202,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
 
     public function addObjectClassAces(AclInterface $acl, array $roleInformation = [])
     {
+        \assert($acl instanceof MutableAclInterface);
         $builder = new $this->maskBuilderClass();
 
         foreach ($roleInformation as $role => $permissions) {
@@ -229,6 +238,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
 
     public function updateAcl(AclInterface $acl)
     {
+        \assert($acl instanceof MutableAclInterface);
         $this->aclProvider->updateAcl($acl);
     }
 

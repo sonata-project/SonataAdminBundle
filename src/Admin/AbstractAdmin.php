@@ -29,6 +29,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
+use Sonata\AdminBundle\Manipulator\ObjectManipulator;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Object\Metadata;
 use Sonata\AdminBundle\Route\RouteCollection;
@@ -45,12 +46,14 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Mapping\GenericMetadata;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -509,7 +512,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     private $show;
 
     /**
-     * @var Form|null
+     * @var FormInterface|null
      */
     private $form;
 
@@ -597,21 +600,24 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!\is_string($code)) {
             @trigger_error(sprintf(
-                'Passing other type than string as argument 1 for method %s() is deprecated since sonata-project/admin-bundle 3.65. It will accept only string in version 4.0.',
+                'Passing other type than string as argument 1 for method %s() is deprecated since'
+                .' sonata-project/admin-bundle 3.65. It will accept only string in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
         $this->code = $code;
         if (!\is_string($class)) {
             @trigger_error(sprintf(
-                'Passing other type than string as argument 2 for method %s() is deprecated since sonata-project/admin-bundle 3.65. It will accept only string in version 4.0.',
+                'Passing other type than string as argument 2 for method %s() is deprecated since'
+                .' sonata-project/admin-bundle 3.65. It will accept only string in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
         $this->class = $class;
         if (null !== $baseControllerName && !\is_string($baseControllerName)) {
             @trigger_error(sprintf(
-                'Passing other type than string or null as argument 3 for method %s() is deprecated since sonata-project/admin-bundle 3.65. It will accept only string and null in version 4.0.',
+                'Passing other type than string or null as argument 3 for method %s() is deprecated since'
+                .' sonata-project/admin-bundle 3.65. It will accept only string and null in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -659,10 +665,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         foreach ($this->getExportFields() as $key => $field) {
             $label = $this->getTranslationLabel($field, 'export', 'label');
+
+            // NEXT_MAJOR: We have to find another way to have a translated label or stop deprecating the translator.
             $transLabel = $this->trans($label);
 
-            // NEXT_MAJOR: Remove this hack, because all field labels will be translated with the major release
-            // No translation key exists
+            // NEXT_MAJOR: Remove the following code in favor of the commented one.
+            // If a key is provided we use it otherwise we use the generated label.
+            // $fieldKey = \is_string($key) ? $key : $transLabel;
+            // $fields[$fieldKey] = $field;
             if ($transLabel === $label) {
                 $fields[$key] = $field;
             } else {
@@ -926,7 +936,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             }
 
             throw new \InvalidArgumentException(sprintf(
-                "There's no association between %s and %s.",
+                'There\'s no association between %s and %s.',
                 $this->getCode(),
                 $this->getParent()->getCode()
             ));
@@ -964,7 +974,10 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
-                    throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', static::class));
+                    throw new \RuntimeException(sprintf(
+                        'Please define a default `baseRoutePattern` value for the admin class `%s`',
+                        static::class
+                    ));
                 }
                 $baseRoutePattern = $this->urlize($matches[5], '-');
             }
@@ -981,7 +994,10 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             preg_match(self::CLASS_REGEX, $this->class, $matches);
 
             if (!$matches) {
-                throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', static::class));
+                throw new \RuntimeException(sprintf(
+                    'Please define a default `baseRoutePattern` value for the admin class `%s`',
+                    static::class
+                ));
             }
 
             $this->cachedBaseRoutePattern = sprintf(
@@ -1014,7 +1030,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
-                    throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', static::class));
+                    throw new \RuntimeException(sprintf(
+                        'Cannot automatically determine base route name,'
+                        .' please define a default `baseRouteName` value for the admin class `%s`',
+                        static::class
+                    ));
                 }
                 $baseRouteName = $this->urlize($matches[5]);
             }
@@ -1030,7 +1050,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             preg_match(self::CLASS_REGEX, $this->class, $matches);
 
             if (!$matches) {
-                throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', static::class));
+                throw new \RuntimeException(sprintf(
+                    'Cannot automatically determine base route name,'
+                    .' please define a default `baseRouteName` value for the admin class `%s`',
+                    static::class
+                ));
             }
 
             $this->cachedBaseRouteName = sprintf(
@@ -1124,8 +1148,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!$this->hasActiveSubClass()) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. '.
-                'Use %s::hasActiveSubClass() to know if there is an active subclass.',
+                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52'
+                .' and will throw an exception in 4.0.'
+                .' Use %s::hasActiveSubClass() to know if there is an active subclass.',
                 __METHOD__,
                 __CLASS__
             ), E_USER_DEPRECATED);
@@ -1145,8 +1170,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!$this->hasActiveSubClass()) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. '.
-                'Use %s::hasActiveSubClass() to know if there is an active subclass.',
+                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52'
+                .' and will throw an exception in 4.0.'
+                .' Use %s::hasActiveSubClass() to know if there is an active subclass.',
                 __METHOD__,
                 __CLASS__
             ), E_USER_DEPRECATED);
@@ -1163,8 +1189,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         if (!$this->hasSubClass($subClass)) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. '.
-                'Use %s::hasActiveSubClass() to know if there is an active subclass.',
+                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52'
+                .' and will throw an exception in 4.0.'
+                .' Use %s::hasActiveSubClass() to know if there is an active subclass.',
                 __METHOD__,
                 __CLASS__
             ), E_USER_DEPRECATED);
@@ -1223,7 +1250,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function getRouterIdParameter()
     {
-        return '{'.$this->getIdParameter().'}';
+        return sprintf('{%s}', $this->getIdParameter());
     }
 
     public function getIdParameter()
@@ -1231,7 +1258,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $parameter = 'id';
 
         for ($i = 0; $i < $this->getChildDepth(); ++$i) {
-            $parameter = 'child'.ucfirst($parameter);
+            $parameter = sprintf('child%s', ucfirst($parameter));
         }
 
         return $parameter;
@@ -1271,7 +1298,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             return false;
         }
 
-        return ($admin->getBaseRouteName().'_'.$name) === $route;
+        return sprintf('%s_%s', $admin->getBaseRouteName(), $name) === $route;
     }
 
     public function generateObjectUrl($name, $object, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
@@ -1344,6 +1371,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function getNewInstance()
     {
         $object = $this->getModelManager()->getModelInstance($this->getClass());
+
+        $this->appendParentObject($object);
+
         foreach ($this->getExtensions() as $extension) {
             $extension->alterNewInstance($this, $object);
         }
@@ -1373,8 +1403,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!$this->hasSubject()) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no subject is deprecated since sonata-project/admin-bundle 3.65 and will throw an exception in 4.0. '.
-                'Use %s::setSubject() to set the subject.',
+                'Calling %s() when there is no subject is deprecated since sonata-project/admin-bundle 3.65'
+                .' and will throw an exception in 4.0. Use %s::setSubject() to set the subject.',
                 __METHOD__,
                 __CLASS__
             ), E_USER_DEPRECATED);
@@ -1409,11 +1439,18 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
             $admin = $pool->getAdminByAdminCode($adminCode);
         } else {
-            if (!$pool->hasAdminByClass($fieldDescription->getTargetEntity())) {
+            // NEXT_MAJOR: Remove the check and use `getTargetModel`.
+            if (method_exists($fieldDescription, 'getTargetModel')) {
+                $targetModel = $fieldDescription->getTargetModel();
+            } else {
+                $targetModel = $fieldDescription->getTargetEntity();
+            }
+
+            if (!$pool->hasAdminByClass($targetModel)) {
                 return;
             }
 
-            $admin = $pool->getAdminByClass($fieldDescription->getTargetEntity());
+            $admin = $pool->getAdminByClass($targetModel);
         }
 
         if ($this->hasRequest()) {
@@ -1453,10 +1490,10 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function createQuery($context = 'list')
     {
         if (\func_num_args() > 0) {
-            @trigger_error(
-                'The $context argument of '.__METHOD__.' is deprecated since 3.3, to be removed in 4.0.',
-                E_USER_DEPRECATED
-            );
+            @trigger_error(sprintf(
+                'The $context argument of %s is deprecated since 3.3, to be removed in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
         }
 
         $query = $this->getModelManager()->createQuery($this->getClass());
@@ -1538,7 +1575,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * Returns the master admin.
      *
-     * @return AbstractAdmin the root admin class
+     * @return AdminInterface the root admin class
      */
     public function getRoot()
     {
@@ -1581,10 +1618,10 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function setPersistFilters($persist)
     {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.34 and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
+        @trigger_error(sprintf(
+            'The %s method is deprecated since version 3.34 and will be removed in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
 
         $this->persistFilters = $persist;
     }
@@ -1645,7 +1682,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!\is_array($this->formGroups) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
+                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65.'
+                .' It will return only array in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -1684,7 +1722,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!\is_array($this->formTabs) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
+                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65.'
+                .' It will return only array in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -1701,7 +1740,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!\is_array($this->showTabs) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
+                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65.'
+                .' It will return only array in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -1718,7 +1758,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!\is_array($this->showGroups) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
+                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65.'
+                .' It will return only array in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -1748,8 +1789,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!$this->hasParentFieldDescription()) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no parent field description is deprecated since sonata-project/admin-bundle 3.66 and will throw an exception in 4.0. '.
-                'Use %s::hasParentFieldDescription() to know if there is a parent field description.',
+                'Calling %s() when there is no parent field description is deprecated since'
+                .' sonata-project/admin-bundle 3.66 and will throw an exception in 4.0.'
+                .' Use %s::hasParentFieldDescription() to know if there is a parent field description.',
                 __METHOD__,
                 __CLASS__
             ), E_USER_DEPRECATED);
@@ -1779,10 +1821,8 @@ which is not the one registered with this admin class ("%s").
 This is deprecated since 3.5 and will no longer be supported in 4.0.
 EOT;
 
-            @trigger_error(
-                sprintf($message, \get_class($subject), $this->getClass()),
-                E_USER_DEPRECATED
-            ); // NEXT_MAJOR : throw an exception instead
+            // NEXT_MAJOR : throw an exception instead
+            @trigger_error(sprintf($message, \get_class($subject), $this->getClass()), E_USER_DEPRECATED);
         }
 
         $this->subject = $subject;
@@ -1792,8 +1832,8 @@ EOT;
     {
         if (!$this->hasSubject()) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no subject is deprecated since sonata-project/admin-bundle 3.66 and will throw an exception in 4.0. '.
-                'Use %s::hasSubject() to know if there is a subject.',
+                'Calling %s() when there is no subject is deprecated since sonata-project/admin-bundle 3.66'
+                .' and will throw an exception in 4.0. Use %s::hasSubject() to know if there is a subject.',
                 __METHOD__,
                 __CLASS__
             ), E_USER_DEPRECATED);
@@ -1835,8 +1875,9 @@ EOT;
 
         if (!$this->hasFormFieldDescription($name)) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no form field description is deprecated since sonata-project/admin-bundle 3.69 and will throw an exception in 4.0. '.
-                'Use %s::hasFormFieldDescription() to know if there is a form field description.',
+                'Calling %s() when there is no form field description is deprecated since'
+                .' sonata-project/admin-bundle 3.69 and will throw an exception in 4.0.'
+                .' Use %s::hasFormFieldDescription() to know if there is a form field description.',
                 __METHOD__,
                 __CLASS__
             ), E_USER_DEPRECATED);
@@ -1907,8 +1948,9 @@ EOT;
 
         if (!$this->hasShowFieldDescription($name)) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no show field description is deprecated since sonata-project/admin-bundle 3.69 and will throw an exception in 4.0. '.
-                'Use %s::hasFormFieldDescription() to know if there is a show field description.',
+                'Calling %s() when there is no show field description is deprecated since'
+                .' sonata-project/admin-bundle 3.69 and will throw an exception in 4.0.'
+                .' Use %s::hasFormFieldDescription() to know if there is a show field description.',
                 __METHOD__,
                 __CLASS__
             ), E_USER_DEPRECATED);
@@ -1955,8 +1997,9 @@ EOT;
 
         if (!$this->hasListFieldDescription($name)) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no list field description is deprecated since sonata-project/admin-bundle 3.66 and will throw an exception in 4.0. '.
-                'Use %s::hasListFieldDescription(\'%s\') to know if there is a list field description.',
+                'Calling %s() when there is no list field description is deprecated since'
+                .' sonata-project/admin-bundle 3.66 and will throw an exception in 4.0.'
+                .' Use %s::hasListFieldDescription(\'%s\') to know if there is a list field description.',
                 __METHOD__,
                 __CLASS__,
                 $name
@@ -1997,8 +2040,9 @@ EOT;
 
         if (!$this->hasFilterFieldDescription($name)) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no filter field description is deprecated since sonata-project/admin-bundle 3.69 and will throw an exception in 4.0. '.
-                'Use %s::hasFilterFieldDescription() to know if there is a filter field description.',
+                'Calling %s() when there is no filter field description is deprecated since'
+                .' sonata-project/admin-bundle 3.69 and will throw an exception in 4.0.'
+                .' Use %s::hasFilterFieldDescription() to know if there is a filter field description.',
                 __METHOD__,
                 __CLASS__
             ), E_USER_DEPRECATED);
@@ -2066,8 +2110,7 @@ EOT;
             $child->addParentAssociationMapping($this->getCode(), $args[1]);
         } else {
             @trigger_error(
-                'Calling "addChild" without second argument is deprecated since'
-                .' sonata-project/admin-bundle 3.35 and will not be allowed in 4.0.',
+                'Calling "addChild" without second argument is deprecated since sonata-project/admin-bundle 3.35 and will not be allowed in 4.0.',
                 E_USER_DEPRECATED
             );
         }
@@ -2114,8 +2157,8 @@ EOT;
     {
         if (!$this->isChild()) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no parent is deprecated since sonata-project/admin-bundle 3.66 and will throw an exception in 4.0. '.
-                'Use %s::isChild() to know if there is a parent.',
+                'Calling %s() when there is no parent is deprecated since sonata-project/admin-bundle 3.66'
+                .' and will throw an exception in 4.0. Use %s::isChild() to know if there is a parent.',
                 __METHOD__,
                 __CLASS__
             ), E_USER_DEPRECATED);
@@ -2193,7 +2236,7 @@ EOT;
     public function getUniqid()
     {
         if (!$this->uniqid) {
-            $this->uniqid = 's'.uniqid();
+            $this->uniqid = sprintf('s%s', uniqid());
         }
 
         return $this->uniqid;
@@ -2217,7 +2260,10 @@ EOT;
             $params = $extension->getPersistentParameters($this);
 
             if (!\is_array($params)) {
-                throw new \RuntimeException(sprintf('The %s::getPersistentParameters must return an array', \get_class($extension)));
+                throw new \RuntimeException(sprintf(
+                    'The %s::getPersistentParameters must return an array',
+                    \get_class($extension)
+                ));
             }
 
             $parameters = array_merge($parameters, $params);
@@ -2240,11 +2286,12 @@ EOT;
 
     public function getBreadcrumbs($action)
     {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.2 and will be removed in 4.0.'.
-            ' Use Sonata\AdminBundle\Admin\BreadcrumbsBuilder::getBreadcrumbs instead.',
-            E_USER_DEPRECATED
-        );
+        @trigger_error(sprintf(
+            'The %s method is deprecated since version 3.2 and will be removed in 4.0.'
+            .' Use %s::getBreadcrumbs instead.',
+            __METHOD__,
+            BreadcrumbsBuilder::class
+        ), E_USER_DEPRECATED);
 
         return $this->getBreadcrumbsBuilder()->getBreadcrumbs($this, $action);
     }
@@ -2260,10 +2307,10 @@ EOT;
      */
     public function buildBreadcrumbs($action, ?ItemInterface $menu = null)
     {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.2 and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
+        @trigger_error(sprintf(
+            'The %s method is deprecated since version 3.2 and will be removed in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
 
         if (isset($this->breadcrumbs[$action])) {
             return $this->breadcrumbs[$action];
@@ -2280,11 +2327,11 @@ EOT;
      */
     final public function getBreadcrumbsBuilder()
     {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.2 and will be removed in 4.0.'.
-            ' Use the sonata.admin.breadcrumbs_builder service instead.',
-            E_USER_DEPRECATED
-        );
+        @trigger_error(sprintf(
+            'The %s method is deprecated since version 3.2 and will be removed in 4.0.'
+            .' Use the sonata.admin.breadcrumbs_builder service instead.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
         if (null === $this->breadcrumbsBuilder) {
             $this->breadcrumbsBuilder = new BreadcrumbsBuilder(
                 $this->getConfigurationPool()->getContainer()->getParameter('sonata.admin.configuration.breadcrumbs')
@@ -2301,11 +2348,11 @@ EOT;
      */
     final public function setBreadcrumbsBuilder(BreadcrumbsBuilderInterface $value)
     {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.2 and will be removed in 4.0.'.
-            ' Use the sonata.admin.breadcrumbs_builder service instead.',
-            E_USER_DEPRECATED
-        );
+        @trigger_error(sprintf(
+            'The %s method is deprecated since version 3.2 and will be removed in 4.0.'
+            .' Use the sonata.admin.breadcrumbs_builder service instead.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
         $this->breadcrumbsBuilder = $value;
 
         return $this;
@@ -2323,14 +2370,12 @@ EOT;
      */
     public function getCurrentChild()
     {
-        @trigger_error(
-            sprintf(
-                'The %s() method is deprecated since version 3.65 and will be removed in 4.0. Use %s::isCurrentChild() instead.',
-                __METHOD__,
-                __CLASS__
-            ),
-            E_USER_DEPRECATED
-        );
+        @trigger_error(sprintf(
+            'The %s() method is deprecated since version 3.65 and will be removed in 4.0.'
+            .' Use %s::isCurrentChild() instead.',
+            __METHOD__,
+            __CLASS__
+        ), E_USER_DEPRECATED);
 
         return $this->currentChild;
     }
@@ -2358,10 +2403,10 @@ EOT;
 
     public function trans($id, array $parameters = [], $domain = null, $locale = null)
     {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
+        @trigger_error(sprintf(
+            'The %s method is deprecated since version 3.9 and will be removed in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
 
         $domain = $domain ?: $this->getTranslationDomain();
 
@@ -2384,10 +2429,10 @@ EOT;
      */
     public function transChoice($id, $count, array $parameters = [], $domain = null, $locale = null)
     {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
+        @trigger_error(sprintf(
+            'The %s method is deprecated since version 3.9 and will be removed in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
 
         $domain = $domain ?: $this->getTranslationDomain();
 
@@ -2415,10 +2460,10 @@ EOT;
     {
         $args = \func_get_args();
         if (isset($args[1]) && $args[1]) {
-            @trigger_error(
-                'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
-                E_USER_DEPRECATED
-            );
+            @trigger_error(sprintf(
+                'The %s method is deprecated since version 3.9 and will be removed in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
         }
 
         $this->translator = $translator;
@@ -2433,10 +2478,10 @@ EOT;
      */
     public function getTranslator()
     {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
+        @trigger_error(sprintf(
+            'The %s method is deprecated since version 3.9 and will be removed in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
 
         return $this->translator;
     }
@@ -2556,10 +2601,10 @@ EOT;
      */
     public function setBaseCodeRoute($baseCodeRoute)
     {
-        @trigger_error(
-            'The '.__METHOD__.' is deprecated since 3.24 and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
+        @trigger_error(sprintf(
+            'The %s is deprecated since 3.24 and will be removed in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
 
         $this->baseCodeRoute = $baseCodeRoute;
     }
@@ -2568,7 +2613,7 @@ EOT;
     {
         // NEXT_MAJOR: Uncomment the following lines.
         // if ($this->isChild()) {
-        //     return $this->getParent()->getBaseCodeRoute().'|'.$this->getCode();
+        //     return sprintf('%s|%s', $this->getParent()->getBaseCodeRoute(), $this->getCode());
         // }
         //
         // return $this->getCode();
@@ -2581,7 +2626,7 @@ EOT;
                 $parentCode = $this->getParent()->getBaseCodeRoute();
             }
 
-            return $parentCode.'|'.$this->getCode();
+            return sprintf('%s|%s', $parentCode, $this->getCode());
         }
 
         return $this->baseCodeRoute;
@@ -2672,7 +2717,7 @@ EOT;
 
     public function isGranted($name, $object = null)
     {
-        $objectRef = $object ? '/'.spl_object_hash($object).'#'.$this->id($object) : '';
+        $objectRef = $object ? sprintf('/%s#%s', spl_object_hash($object), $this->id($object)) : '';
         $key = md5(json_encode($name).$objectRef);
 
         if (!\array_key_exists($key, $this->cacheIsGranted)) {
@@ -2701,9 +2746,10 @@ EOT;
     {
         // NEXT_MAJOR: Move ValidatorInterface check to method signature
         if (!$validator instanceof ValidatorInterface) {
-            throw new \InvalidArgumentException(
-                'Argument 1 must be an instance of Symfony\Component\Validator\Validator\ValidatorInterface'
-            );
+            throw new \InvalidArgumentException(sprintf(
+                'Argument 1 must be an instance of %s',
+                ValidatorInterface::class
+            ));
         }
 
         $this->validator = $validator;
@@ -3120,6 +3166,8 @@ EOT;
     }
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
      * Checks if a filter type is set to a default value.
      *
      * @param string $name
@@ -3128,6 +3176,11 @@ EOT;
      */
     final public function isDefaultFilter($name)
     {
+        @trigger_error(sprintf(
+            'Method "%s" is deprecated since sonata-project/admin-bundle 3.x.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         $filter = $this->getFilterParameters();
         $default = $this->getDefaultFilterValues();
 
@@ -3243,7 +3296,7 @@ EOT;
      *
      * @deprecated Use configureTabMenu instead
      */
-    protected function configureSideMenu(ItemInterface $menu, $action, ?AdminInterface $childAdmin = null)
+    protected function configureSideMenu(ItemInterface $menu, string $action, ?AdminInterface $childAdmin = null)
     {
     }
 
@@ -3352,26 +3405,6 @@ EOT;
 
         $this->loaded['form'] = true;
 
-        // append parent object if any
-        // todo : clean the way the Admin class can retrieve set the object
-        if ($this->isChild() && $this->getParentAssociationMapping()) {
-            $parent = $this->getParent()->getObject($this->request->get($this->getParent()->getIdParameter()));
-
-            $propertyAccessor = $this->getConfigurationPool()->getPropertyAccessor();
-            $propertyPath = new PropertyPath($this->getParentAssociationMapping());
-
-            $object = $this->getSubject();
-
-            $value = $propertyAccessor->getValue($object, $propertyPath);
-
-            if (\is_array($value) || $value instanceof \ArrayAccess) {
-                $value[] = $parent;
-                $propertyAccessor->setValue($object, $propertyPath, $value);
-            } else {
-                $propertyAccessor->setValue($object, $propertyPath, $parent);
-            }
-        }
-
         $formBuilder = $this->getFormBuilder();
         $formBuilder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $this->preValidate($event->getData());
@@ -3394,11 +3427,7 @@ EOT;
         }
 
         // NEXT_MAJOR: Throw \LogicException instead.
-        throw new \RuntimeException(sprintf(
-            'Unable to find the subclass `%s` for admin `%s`',
-            $name,
-            static::class
-        ));
+        throw new \RuntimeException(sprintf('Unable to find the subclass `%s` for admin `%s`', $name, static::class));
     }
 
     /**
@@ -3410,6 +3439,16 @@ EOT;
 
         // add the custom inline validation option
         $metadata = $this->validator->getMetadataFor($this->getClass());
+        if (!$metadata instanceof GenericMetadata) {
+            throw new \UnexpectedValueException(
+                sprintf(
+                    'Cannot add inline validator for %s because its metadata is an instance of %s instead of %s',
+                    $this->getClass(),
+                    \get_class($metadata),
+                    GenericMetadata::class
+                )
+            );
+        }
 
         $metadata->addConstraint(new InlineConstraint([
             'service' => $this,
@@ -3493,6 +3532,38 @@ EOT;
      */
     protected function configureDefaultSortValues(array &$sortValues)
     {
+    }
+
+    /**
+     * Set the parent object, if any, to the provided object.
+     */
+    final protected function appendParentObject(object $object): void
+    {
+        if ($this->isChild() && $this->getParentAssociationMapping()) {
+            $parentAdmin = $this->getParent();
+            $parentObject = $parentAdmin->getObject($this->request->get($parentAdmin->getIdParameter()));
+
+            if (null !== $parentObject) {
+                $propertyAccessor = $this->getConfigurationPool()->getPropertyAccessor();
+                $propertyPath = new PropertyPath($this->getParentAssociationMapping());
+
+                $value = $propertyAccessor->getValue($object, $propertyPath);
+
+                if (\is_array($value) || $value instanceof \ArrayAccess) {
+                    $value[] = $parentObject;
+                    $propertyAccessor->setValue($object, $propertyPath, $value);
+                } else {
+                    $propertyAccessor->setValue($object, $propertyPath, $parentObject);
+                }
+            }
+        } elseif ($this->hasParentFieldDescription()) {
+            $parentAdmin = $this->getParentFieldDescription()->getAdmin();
+            $parentObject = $parentAdmin->getObject($this->request->get($parentAdmin->getIdParameter()));
+
+            if (null !== $parentObject) {
+                ObjectManipulator::setObject($object, $parentObject, $this->getParentFieldDescription());
+            }
+        }
     }
 
     /**
