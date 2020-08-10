@@ -174,7 +174,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
      * return the value related to FieldDescription, if the associated object does no
      * exists => a temporary one is created.
      *
-     * @param object $object
+     * @param object|null $object
      *
      * @return mixed
      */
@@ -183,7 +183,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
         $value = null;
 
         if (!$object) {
-            return $value;
+            return null;
         }
 
         try {

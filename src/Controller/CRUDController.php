@@ -1245,7 +1245,7 @@ class CRUDController extends Controller
 
         $aclRoles = array_unique($aclRoles);
 
-        return \is_array($aclRoles) ? new \ArrayIterator($aclRoles) : $aclRoles;
+        return new \ArrayIterator($aclRoles);
     }
 
     /**

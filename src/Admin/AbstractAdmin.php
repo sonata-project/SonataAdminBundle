@@ -2365,7 +2365,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function canAccessObject(string $action, ?object $object = null): bool
     {
-        return $object && $this->id($object) && $this->hasAccess($action, $object);
+        if (!\is_object($object)) {
+            return false;
+        }
+        if (!$this->id($object)) {
+            return false;
+        }
+
+        return $this->hasAccess($action, $object);
     }
 
     public function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
@@ -2628,7 +2635,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * Return list routes with permissions name.
      *
-     * @return array<string, string>
+     * @return array<string, string|array>
      */
     protected function getAccess(): array
     {

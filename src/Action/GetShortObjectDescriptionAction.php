@@ -79,7 +79,9 @@ final class GetShortObjectDescriptionAction
                 'id' => $admin->id($object),
                 'label' => $admin->toString($object),
             ]]);
-        } elseif ('html' === $request->get('_format')) {
+        }
+
+        if ('html' === $request->get('_format')) {
             $templateRegistryId = $admin->getCode().'.template_registry';
             $templateRegistry = $this->pool->getContainer()->get($templateRegistryId);
 
