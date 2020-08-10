@@ -13,38 +13,36 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\Extension;
 
-use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @final since sonata-project/admin-bundle 3.52
- *
- * @author Amine Zaghdoudi <amine.zaghdoudi@ekino.com>
- */
-class ChoiceTypeExtension extends AbstractTypeExtension
-{
-    public function configureOptions(OptionsResolver $resolver)
+use Symfony\Component\Form\FormTypeExtensionInterface;
+
+// NEXT_MAJOR: Remove the "else" part, copy all methods from BaseChoiceTypeExtension in this class and
+// extend from AbstractTypeExtension.
+if (method_exists(FormTypeExtensionInterface::class, 'getExtendedTypes')) {
+    /**
+     * @final since sonata-project/admin-bundle 3.52
+     *
+     * @author Amine Zaghdoudi <amine.zaghdoudi@ekino.com>
+     */
+    class ChoiceTypeExtension extends BaseChoiceTypeExtension
     {
-        $optionalOptions = ['sortable'];
-
-        $resolver->setDefined($optionalOptions);
+        public static function getExtendedTypes(): iterable
+        {
+            return [ChoiceType::class];
+        }
     }
-
-    public function buildView(FormView $view, FormInterface $form, array $options)
+} else {
+    /**
+     * @final since sonata-project/admin-bundle 3.52
+     *
+     * @author Amine Zaghdoudi <amine.zaghdoudi@ekino.com>
+     */
+    class ChoiceTypeExtension extends BaseChoiceTypeExtension
     {
-        $view->vars['sortable'] = \array_key_exists('sortable', $options) && $options['sortable'];
-    }
-
-    public function getExtendedType()
-    {
-        return ChoiceType::class;
-    }
-
-    public static function getExtendedTypes(): iterable
-    {
-        return [ChoiceType::class];
+        public static function getExtendedTypes()
+        {
+            return [ChoiceType::class];
+        }
     }
 }
