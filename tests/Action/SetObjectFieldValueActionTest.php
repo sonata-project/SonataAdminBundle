@@ -100,6 +100,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->getObject(42)->willReturn($object);
         $this->admin->getCode()->willReturn('sonata.post.admin');
         $this->admin->hasAccess('edit', $object)->willReturn(true);
+        $this->admin->hasListFieldDescription('enabled')->willReturn(true);
         $this->admin->getListFieldDescription('enabled')->willReturn($fieldDescription->reveal());
         $this->admin->update($object)->shouldBeCalled();
         $templateRegistry->getTemplate('base_list_field')->willReturn('admin_template');
@@ -162,6 +163,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->getObject(42)->willReturn($object);
         $this->admin->getCode()->willReturn('sonata.post.admin');
         $this->admin->hasAccess('edit', $object)->willReturn(true);
+        $this->admin->hasListFieldDescription('dateProp')->willReturn(true);
         $this->admin->getListFieldDescription('dateProp')->willReturn($fieldDescription->reveal());
         $this->admin->update($object)->shouldBeCalled();
 
@@ -217,6 +219,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->getObject(42)->willReturn($object);
         $this->admin->getCode()->willReturn('sonata.post.admin');
         $this->admin->hasAccess('edit', $object)->willReturn(true);
+        $this->admin->hasListFieldDescription('bar')->willReturn(true);
         $this->admin->getListFieldDescription('bar')->willReturn($fieldDescription->reveal());
         $this->admin->getClass()->willReturn(\get_class($object));
         $this->admin->update($object)->shouldBeCalled();
@@ -264,6 +267,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
         $this->admin->getObject(42)->willReturn($object);
         $this->admin->hasAccess('edit', $object)->willReturn(true);
+        $this->admin->hasListFieldDescription('bar.enabled')->willReturn(true);
         $this->admin->getListFieldDescription('bar.enabled')->willReturn($fieldDescription->reveal());
         $this->validator->validate($bar)->willReturn(new ConstraintViolationList([
             new ConstraintViolation('error1', null, [], null, 'enabled', null),
@@ -300,6 +304,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->getObject(42)->willReturn($object);
         $this->admin->getCode()->willReturn('sonata.post.admin');
         $this->admin->hasAccess('edit', $object)->willReturn(true);
+        $this->admin->hasListFieldDescription('status')->willReturn(true);
         $this->admin->getListFieldDescription('status')->willReturn($fieldDescription->reveal());
         $this->admin->update($object)->shouldBeCalled();
         $templateRegistry->getTemplate('base_list_field')->willReturn('admin_template');

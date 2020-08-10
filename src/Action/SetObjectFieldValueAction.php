@@ -86,15 +86,15 @@ final class SetObjectFieldValueAction
             return new JsonResponse('Invalid permissions', Response::HTTP_FORBIDDEN);
         }
 
-        if ('list' === $context) {
-            $fieldDescription = $admin->getListFieldDescription($field);
-        } else {
+        if ('list' !== $context) {
             return new JsonResponse('Invalid context', Response::HTTP_BAD_REQUEST);
         }
 
-        if (!$fieldDescription) {
+        if (!$admin->hasListFieldDescription($field)) {
             return new JsonResponse('The field does not exist', Response::HTTP_BAD_REQUEST);
         }
+
+        $fieldDescription = $admin->getListFieldDescription($field);
 
         if (!$fieldDescription->getOption('editable')) {
             return new JsonResponse('The field cannot be edited, editable option must be set to true', Response::HTTP_BAD_REQUEST);

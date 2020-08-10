@@ -1013,13 +1013,15 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $route = $request->get('_route');
 
         if ($adminCode) {
-            $admin = $this->getConfigurationPool()->getAdminByAdminCode($adminCode);
+            $pool = $this->getConfigurationPool();
+
+            if ($pool->hasAdminByAdminCode($adminCode)) {
+                $admin = $pool->getAdminByAdminCode($adminCode);
+            } else {
+                return false;
+            }
         } else {
             $admin = $this;
-        }
-
-        if (!$admin) {
-            return false;
         }
 
         return sprintf('%s_%s', $admin->getBaseRouteName(), $name) === $route;
