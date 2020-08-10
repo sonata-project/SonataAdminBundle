@@ -429,6 +429,10 @@ class CRUDController implements ContainerAwareInterface
             $action = $request->request->getAlnum('action');
             $idx = $request->request->get('idx', []);
             $allElements = $request->request->getBoolean('all_elements');
+
+            $request->request->set('idx', $idx);
+            $request->request->set('all_elements', $allElements);
+
             $data = $request->request->all();
 
             unset($data['_sonata_csrf_token']);
