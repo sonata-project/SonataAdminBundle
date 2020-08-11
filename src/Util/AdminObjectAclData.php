@@ -16,7 +16,9 @@ namespace Sonata\AdminBundle\Util;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Acl\Domain\Acl;
+use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 
 /**
  * AdminObjectAclData holds data manipulated by {@link AdminObjectAclManipulator}.
@@ -58,17 +60,17 @@ class AdminObjectAclData
     protected $masks = [];
 
     /**
-     * @var Form
+     * @var FormInterface
      */
     protected $aclUsersForm;
 
     /**
-     * @var Form
+     * @var FormInterface
      */
     protected $aclRolesForm;
 
     /**
-     * @var Acl
+     * @var MutableAclInterface
      */
     protected $acl;
 
@@ -145,7 +147,7 @@ class AdminObjectAclData
      *
      * @return AdminObjectAclData
      */
-    public function setAcl(Acl $acl)
+    public function setAcl(MutableAclInterface $acl)
     {
         $this->acl = $acl;
 
@@ -155,7 +157,7 @@ class AdminObjectAclData
     /**
      * Gets ACL.
      *
-     * @return Acl
+     * @return MutableAclInterface
      */
     public function getAcl()
     {
@@ -196,7 +198,7 @@ class AdminObjectAclData
      *
      * NEXT_MAJOR: remove this method.
      *
-     * @return Form
+     * @return FormInterface
      *
      * @deprecated since sonata-project/admin-bundle version 3.0. Use getAclUsersForm() instead
      */
@@ -215,7 +217,7 @@ class AdminObjectAclData
      *
      * @return AdminObjectAclData
      */
-    public function setAclUsersForm(Form $form)
+    public function setAclUsersForm(FormInterface $form)
     {
         $this->aclUsersForm = $form;
 
@@ -225,7 +227,7 @@ class AdminObjectAclData
     /**
      * Gets ACL users form.
      *
-     * @return Form
+     * @return FormInterface
      */
     public function getAclUsersForm()
     {
@@ -237,7 +239,7 @@ class AdminObjectAclData
      *
      * @return AdminObjectAclData
      */
-    public function setAclRolesForm(Form $form)
+    public function setAclRolesForm(FormInterface $form)
     {
         $this->aclRolesForm = $form;
 
@@ -247,7 +249,7 @@ class AdminObjectAclData
     /**
      * Gets ACL roles form.
      *
-     * @return Form
+     * @return FormInterface
      */
     public function getAclRolesForm()
     {

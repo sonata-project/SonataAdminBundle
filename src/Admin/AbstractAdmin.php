@@ -2692,12 +2692,7 @@ EOT;
 
     public function showIn($context)
     {
-        switch ($context) {
-            case self::CONTEXT_DASHBOARD:
-            case self::CONTEXT_MENU:
-            default:
-                return $this->isGranted($this->getPermissionsShow($context));
-        }
+        return $this->isGranted($this->getPermissionsShow($context));
     }
 
     public function createObjectSecurity($object)

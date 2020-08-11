@@ -157,7 +157,7 @@ class AdminObjectAclManipulator
     /**
      * Builds ACL.
      */
-    protected function buildAcl(AdminObjectAclData $data, Form $form, \Traversable $aclValues)
+    protected function buildAcl(AdminObjectAclData $data, FormInterface $form, \Traversable $aclValues)
     {
         $masks = $data->getMasks();
         $acl = $data->getAcl();
