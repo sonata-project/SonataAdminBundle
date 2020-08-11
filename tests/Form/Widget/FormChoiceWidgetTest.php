@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Form\Widget;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormTypeInterface;
 
 class FormChoiceWidgetTest extends BaseWidgetTest
 {
@@ -27,10 +26,7 @@ class FormChoiceWidgetTest extends BaseWidgetTest
 
     public function testLabelRendering(): void
     {
-        $choices = ['some', 'choices'];
-        if (!method_exists(FormTypeInterface::class, 'setDefaultOptions')) {
-            $choices = array_flip($choices);
-        }
+        $choices = array_flip(['some', 'choices']);
 
         $choice = $this->factory->create(
             $this->getChoiceClass(),

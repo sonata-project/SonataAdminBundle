@@ -556,7 +556,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
         if ('getter' === self::$fieldGetters[$getterKey]['method']) {
             return $object->{self::$fieldGetters[$getterKey]['getter']}(...$parameters);
-        } elseif ('call' === self::$fieldGetters[$getterKey]['method']) {
+        }
+
+        if ('call' === self::$fieldGetters[$getterKey]['method']) {
             return $object->{$fieldName}(...$parameters);
         }
 

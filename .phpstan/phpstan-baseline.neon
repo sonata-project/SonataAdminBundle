@@ -231,6 +231,12 @@ parameters:
 
         -
             # will be fixed in v4. Currently BC break
+            message: "#^Parameter \\#1 \\$resolver of method .+(Type|Extension)\\:\\:configureOptions\\(\\) expects Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolver, Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface given\\.$#"
+            count: 17
+            path: ../src/Form/*
+
+        -
+            # will be fixed in v4. Currently BC break
             message: "#^Parameter \\$resolver of method Sonata\\\\AdminBundle\\\\Form\\\\Extension\\\\Field\\\\Type\\\\FormTypeFieldExtension\\:\\:setDefaultOptions\\(\\) has invalid typehint type Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface\\.$#"
             count: 1
             path: ../src/Form/Extension/Field/Type/FormTypeFieldExtension.php

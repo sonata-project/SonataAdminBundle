@@ -253,8 +253,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getSecurityHandler();
 
     /**
-     * @param string      $name
-     * @param object|null $object
+     * @param string|array $name
+     * @param object|null  $object
      *
      * @return bool
      */
