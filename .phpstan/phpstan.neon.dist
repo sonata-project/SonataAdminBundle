@@ -8,6 +8,11 @@ parameters:
     excludes_analyse:
         # temporarily ignore template files
         - ../src/Resources/**.tpl.php
+        # NEXT_MAJOR: Remove these files when dropping support of knplabs/knp-menu 2.x
+        - ../src/Menu/Matcher/Voter/ActiveVoter.php
+        - ../src/Menu/Matcher/Voter/AdminVoter.php
+        - ../src/Menu/Matcher/Voter/ChildrenVoter.php
+        - ../src/Menu/Provider/GroupMenuProvider.php
     scanFiles:
         # NEXT_MAJOR: Remove those files
         - stubs/MetadataInterface.file

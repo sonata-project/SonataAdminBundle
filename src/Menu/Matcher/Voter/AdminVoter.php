@@ -14,84 +14,165 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Menu\Matcher\Voter;
 
 use Knp\Menu\ItemInterface;
+use Knp\Menu\Matcher\Matcher;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-/**
- * Admin menu voter based on extra `admin`.
- *
- * @final since sonata-project/admin-bundle 3.52
- *
- * @author Samusev Andrey <andrey.simfi@ya.ru>
- */
-class AdminVoter implements VoterInterface
-{
+// NEXT_MAJOR: Remove the else part when dropping support for knplabs/knp-menu 2.x
+if (!method_exists(Matcher::class, 'addVoter')) {
     /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var Request|null
-     */
-    private $request;
-
-    public function __construct(?RequestStack $requestStack = null)
-    {
-        $this->requestStack = $requestStack;
-    }
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.31. Pass a RequestStack to the constructor instead.
+     * Admin menu voter based on extra `admin`.
      *
-     * @return $this
+     * @final since sonata-project/admin-bundle 3.52
+     *
+     * @author Samusev Andrey <andrey.simfi@ya.ru>
      */
-    public function setRequest($request)
+    class AdminVoter implements VoterInterface
     {
-        @trigger_error(sprintf(
-            'The %s() method is deprecated since version 3.31. Pass a %s in the constructor instead.',
-            __METHOD__,
-            RequestStack::class
-        ), E_USER_DEPRECATED);
+        /**
+         * @var RequestStack
+         */
+        private $requestStack;
 
-        $this->request = $request;
+        /**
+         * @var Request|null
+         */
+        private $request;
 
-        return $this;
-    }
-
-    public function matchItem(ItemInterface $item)
-    {
-        $admin = $item->getExtra('admin');
-
-        $request = $this->request;
-        if (null !== $this->requestStack) {
-            $request = $this->requestStack->getMasterRequest();
+        public function __construct(?RequestStack $requestStack = null)
+        {
+            $this->requestStack = $requestStack;
         }
 
-        if ($admin instanceof AdminInterface
-            && $admin->hasRoute('list') && $admin->hasAccess('list')
-            && $request
-        ) {
-            $requestCode = $request->get('_sonata_admin');
+        /**
+         * @deprecated since sonata-project/admin-bundle 3.31. Pass a RequestStack to the constructor instead.
+         *
+         * @return $this
+         */
+        public function setRequest($request)
+        {
+            @trigger_error(sprintf(
+                'The %s() method is deprecated since version 3.31. Pass a %s in the constructor instead.',
+                __METHOD__,
+                RequestStack::class
+            ), E_USER_DEPRECATED);
 
-            if ($admin->getCode() === $requestCode) {
+            $this->request = $request;
+
+            return $this;
+        }
+
+        public function matchItem(ItemInterface $item): ?bool
+        {
+            $admin = $item->getExtra('admin');
+
+            $request = $this->request;
+            if (null !== $this->requestStack) {
+                $request = $this->requestStack->getMasterRequest();
+            }
+
+            if ($admin instanceof AdminInterface
+                && $admin->hasRoute('list') && $admin->hasAccess('list')
+                && $request
+            ) {
+                $requestCode = $request->get('_sonata_admin');
+
+                if ($admin->getCode() === $requestCode) {
+                    return true;
+                }
+
+                foreach ($admin->getChildren() as $child) {
+                    if ($child->getBaseCodeRoute() === $requestCode) {
+                        return true;
+                    }
+                }
+            }
+
+            $route = $item->getExtra('route');
+            if ($route && $request && $route === $request->get('_route')) {
                 return true;
             }
 
-            foreach ($admin->getChildren() as $child) {
-                if ($child->getBaseCodeRoute() === $requestCode) {
+            return null;
+        }
+    }
+} else {
+    /**
+     * Admin menu voter based on extra `admin`.
+     *
+     * @final since sonata-project/admin-bundle 3.52
+     *
+     * @author Samusev Andrey <andrey.simfi@ya.ru>
+     */
+    class AdminVoter implements VoterInterface
+    {
+        /**
+         * @var RequestStack
+         */
+        private $requestStack;
+
+        /**
+         * @var Request|null
+         */
+        private $request;
+
+        public function __construct(?RequestStack $requestStack = null)
+        {
+            $this->requestStack = $requestStack;
+        }
+
+        /**
+         * @deprecated since sonata-project/admin-bundle 3.31. Pass a RequestStack to the constructor instead.
+         *
+         * @return $this
+         */
+        public function setRequest($request)
+        {
+            @trigger_error(sprintf(
+                'The %s() method is deprecated since version 3.31. Pass a %s in the constructor instead.',
+                __METHOD__,
+                RequestStack::class
+            ), E_USER_DEPRECATED);
+
+            $this->request = $request;
+
+            return $this;
+        }
+
+        public function matchItem(ItemInterface $item)
+        {
+            $admin = $item->getExtra('admin');
+
+            $request = $this->request;
+            if (null !== $this->requestStack) {
+                $request = $this->requestStack->getMasterRequest();
+            }
+
+            if ($admin instanceof AdminInterface
+                && $admin->hasRoute('list') && $admin->hasAccess('list')
+                && $request
+            ) {
+                $requestCode = $request->get('_sonata_admin');
+
+                if ($admin->getCode() === $requestCode) {
                     return true;
                 }
+
+                foreach ($admin->getChildren() as $child) {
+                    if ($child->getBaseCodeRoute() === $requestCode) {
+                        return true;
+                    }
+                }
             }
-        }
 
-        $route = $item->getExtra('route');
-        if ($route && $request && $route === $request->get('_route')) {
-            return true;
-        }
+            $route = $item->getExtra('route');
+            if ($route && $request && $route === $request->get('_route')) {
+                return true;
+            }
 
-        return null;
+            return null;
+        }
     }
 }

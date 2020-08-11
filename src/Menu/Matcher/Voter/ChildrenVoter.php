@@ -14,49 +14,95 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Menu\Matcher\Voter;
 
 use Knp\Menu\ItemInterface;
+use Knp\Menu\Matcher\Matcher;
 use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 
 @trigger_error(sprintf('"%s" is deprecated since 3.28, will be removed in 4.0.', ChildrenVoter::class));
 
-/**
- * Children menu voter based on children items.
- *
- * @author Samusev Andrey <andrey.simfi@ya.ru>
- *
- * @deprecated since sonata-project/admin-bundle 3.28, will be removed in 4.0.
- */
-class ChildrenVoter implements VoterInterface
-{
+// NEXT_MAJOR: Remove the else part when dropping support for knplabs/knp-menu 2.x
+if (!method_exists(Matcher::class, 'addVoter')) {
     /**
-     * @var MatcherInterface
+     * Children menu voter based on children items.
+     *
+     * @author Samusev Andrey <andrey.simfi@ya.ru>
+     *
+     * @deprecated since sonata-project/admin-bundle 3.28, will be removed in 4.0.
      */
-    private $matcher;
-
-    /**
-     * ChildrenVoter constructor.
-     */
-    public function __construct(MatcherInterface $matcher)
+    class ChildrenVoter implements VoterInterface
     {
-        $this->matcher = $matcher;
-    }
+        /**
+         * @var MatcherInterface
+         */
+        private $matcher;
 
-    public function matchItem(ItemInterface $item)
-    {
-        if (!$item->getExtra('sonata_admin', false)) {
-            return null;
+        /**
+         * ChildrenVoter constructor.
+         */
+        public function __construct(MatcherInterface $matcher)
+        {
+            $this->matcher = $matcher;
         }
 
-        $children = $item->getChildren();
-        $match = null;
-        foreach ($children as $child) {
-            if ($this->matcher->isCurrent($child)) {
-                $match = true;
-
-                break;
+        public function matchItem(ItemInterface $item): ?bool
+        {
+            if (!$item->getExtra('sonata_admin', false)) {
+                return null;
             }
+
+            $children = $item->getChildren();
+            $match = null;
+            foreach ($children as $child) {
+                if ($this->matcher->isCurrent($child)) {
+                    $match = true;
+
+                    break;
+                }
+            }
+
+            return $match;
+        }
+    }
+} else {
+    /**
+     * Children menu voter based on children items.
+     *
+     * @author Samusev Andrey <andrey.simfi@ya.ru>
+     *
+     * @deprecated since sonata-project/admin-bundle 3.28, will be removed in 4.0.
+     */
+    class ChildrenVoter implements VoterInterface
+    {
+        /**
+         * @var MatcherInterface
+         */
+        private $matcher;
+
+        /**
+         * ChildrenVoter constructor.
+         */
+        public function __construct(MatcherInterface $matcher)
+        {
+            $this->matcher = $matcher;
         }
 
-        return $match;
+        public function matchItem(ItemInterface $item)
+        {
+            if (!$item->getExtra('sonata_admin', false)) {
+                return null;
+            }
+
+            $children = $item->getChildren();
+            $match = null;
+            foreach ($children as $child) {
+                if ($this->matcher->isCurrent($child)) {
+                    $match = true;
+
+                    break;
+                }
+            }
+
+            return $match;
+        }
     }
 }
