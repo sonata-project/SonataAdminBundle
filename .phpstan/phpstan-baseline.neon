@@ -1,24 +1,6 @@
 parameters:
     ignoreErrors:
         -
-            # will be fixed in v4. Currently BC break
-            message: "#^Call to an undefined method Sonata\\\\AdminBundle\\\\Datagrid\\\\PagerInterface\\:\\:isLastPage\\(\\)\\.$#"
-            count: 1
-            path: ../src/Action/RetrieveAutocompleteItemsAction.php
-
-        -
-            # will be fixed in v4. Currently BC break
-            message: "#^Call to an undefined method Sonata\\\\AdminBundle\\\\Datagrid\\\\PagerInterface\\:\\:getPage\\(\\)\\.$#"
-            count: 1
-            path: ../src/Action/SearchAction.php
-
-        -
-            # will be fixed in v4. Currently BC break
-            message: "#^Call to an undefined method Sonata\\\\AdminBundle\\\\Datagrid\\\\PagerInterface\\:\\:getNbResults\\(\\)\\.$#"
-            count: 1
-            path: ../src/Action/SearchAction.php
-
-        -
             # will be fixed in v4. Code is marked as deprecated
             message: "#^Array \\(array\\<string\\, string\\>\\) does not accept key int\\.$#"
             count: 1
