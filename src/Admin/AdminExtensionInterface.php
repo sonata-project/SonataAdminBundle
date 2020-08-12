@@ -27,19 +27,16 @@ use Sonata\Form\Validator\ErrorElement;
  */
 interface AdminExtensionInterface
 {
-    public function configureFormFields(FormMapper $formMapper);
+    public function configureFormFields(FormMapper $formMapper): void;
 
-    public function configureListFields(ListMapper $listMapper);
+    public function configureListFields(ListMapper $listMapper): void;
 
-    public function configureDatagridFilters(DatagridMapper $datagridMapper);
+    public function configureDatagridFilters(DatagridMapper $datagridMapper): void;
 
-    public function configureShowFields(ShowMapper $showMapper);
+    public function configureShowFields(ShowMapper $showMapper): void;
 
-    public function configureRoutes(AdminInterface $admin, RouteCollectionInterface $collection);
+    public function configureRoutes(AdminInterface $admin, RouteCollectionInterface $collection): void;
 
-    /**
-     * Builds the tab menu.
-     */
     public function configureTabMenu(
         AdminInterface $admin,
         MenuItemInterface $menu,
@@ -63,21 +60,31 @@ interface AdminExtensionInterface
 
     /**
      * Get a chance to add persistent parameters.
+     *
+     * @return array<string, mixed>
      */
     public function getPersistentParameters(AdminInterface $admin): array;
 
     /**
      * Return the controller access mapping.
+     *
+     * @return array<string, string[]|string>
      */
     public function getAccessMapping(AdminInterface $admin): array;
 
     /**
      * Returns the list of batch actions.
+     *
+     * @param array $actions
+     *
+     * @return array
      */
     public function configureBatchActions(AdminInterface $admin, array $actions): array;
 
     /**
      * Get a chance to modify export fields.
+     *
+     * @param array $fields
      *
      * @return string[]
      */
@@ -97,8 +104,6 @@ interface AdminExtensionInterface
 
     /**
      * Get all action buttons for an action.
-     *
-     * @param object $object
      */
     public function configureActionButtons(
         AdminInterface $admin,
@@ -109,11 +114,15 @@ interface AdminExtensionInterface
 
     /**
      * Returns a list of default filters.
+     *
+     * @param array $filterValues
      */
     public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues): void;
 
-    /*
-     * Returns a list of default sort values
+    /**
+     * Returns a list of default sort values.
+     *
+     * @param array $sortValues
      */
     public function configureDefaultSortValues(AdminInterface $admin, array &$sortValues): void;
 }

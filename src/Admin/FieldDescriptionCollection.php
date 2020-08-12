@@ -28,6 +28,9 @@ final class FieldDescriptionCollection implements \ArrayAccess, \Countable
         $this->elements[$fieldDescription->getName()] = $fieldDescription;
     }
 
+    /**
+     * @return FieldDescriptionInterface[]
+     */
     public function getElements(): array
     {
         return $this->elements;
@@ -82,6 +85,9 @@ final class FieldDescriptionCollection implements \ArrayAccess, \Countable
         return \count($this->elements);
     }
 
+    /**
+     * @param string[] $keys
+     */
     public function reorder(array $keys): void
     {
         if ($this->has('batch')) {

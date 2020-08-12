@@ -34,7 +34,7 @@ interface UrlGeneratorInterface
      */
     public function getRouterIdParameter(): string;
 
-    public function setRouteGenerator(RouteGeneratorInterface $routeGenerator);
+    public function setRouteGenerator(RouteGeneratorInterface $routeGenerator): void;
 
     /**
      * Generates the object url with the given $name.
@@ -64,14 +64,9 @@ interface UrlGeneratorInterface
      *
      * @param array<string, mixed> $parameters
      *
-     * @return array return url parts: 'route', 'routeParameters', 'routeAbsolute'
+     * @return array{route: string, routeParameters: array<string, string>, routeAbsolute: bool}
      */
     public function generateMenuUrl(string $name, array $parameters = [], int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH): array;
 
-    /**
-     * @param mixed $model
-     *
-     * @return string|null a string representation of the id that is safe to use in a url
-     */
-    public function getUrlSafeIdentifier($model): ?string;
+    public function getUrlSafeIdentifier(object $model): string;
 }

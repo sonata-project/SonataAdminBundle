@@ -86,6 +86,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Sets a list of templates.
+     *
+     * @param array<string, string> $templates
      */
     public function setTemplates(array $templates): void;
 
@@ -94,30 +96,27 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function setTemplate(string $name, string $template): void;
 
+    public function setModelManager(ModelManagerInterface $modelManager): void;
+
     public function getModelManager(): ?ModelManagerInterface;
 
-    /**
-     * @return string the manager type of the admin
-     */
+    public function setManagerType(string $managerType): void;
+
     public function getManagerType(): ?string;
 
     public function createQuery(): ProxyQueryInterface;
 
-    /**
-     * @return FormBuilderInterface the form builder
-     */
     public function getFormBuilder(): FormBuilderInterface;
 
     /**
      * Returns a form depend on the given $object.
      */
-    public function getForm(): ?FormInterface;
+    public function getForm(): FormInterface;
 
     public function getRequest(): Request;
 
     /**
-     * @return bool true if a request object is linked to this Admin, false
-     *              otherwise
+     * Returns true if a request object is linked to this Admin, false otherwise.
      */
     public function hasRequest(): bool;
 
@@ -131,18 +130,13 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * - one permission that has the same name as the role for the role handler
      * This should be used by experimented users.
      *
-     * @return array 'role' => ['permission', 'permission']
+     * @return array<string, string[]|string> 'role' => ['permission', 'permission']
      */
     public function getSecurityInformation(): array;
 
     public function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription): void;
 
-    /**
-     * Get parent field description.
-     *
-     * @return FieldDescriptionInterface The parent field description
-     */
-    public function getParentFieldDescription(): ?FieldDescriptionInterface;
+    public function getParentFieldDescription(): FieldDescriptionInterface;
 
     /**
      * Returns true if the Admin is linked to a parent FieldDescription.
@@ -169,34 +163,36 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function isGranted($name, ?object $object = null): bool;
 
     /**
-     * @param mixed $model
-     *
-     * @return string a string representation of the identifiers for this instance
+     * Returns a string representation of the identifiers for this instance
      */
-    public function getNormalizedIdentifier($model): ?string;
+    public function getNormalizedIdentifier(object $model): string;
 
     /**
      * Shorthand method for templating.
-     *
-     * @param object $model
      */
-    public function id($model): ?string;
+    public function id(object $model): ?string;
 
     public function setValidator(ValidatorInterface $validator): void;
 
     public function getValidator(): ?ValidatorInterface;
 
-    public function getShow(): ?FieldDescriptionCollection;
+    public function getShow(): FieldDescriptionCollection;
 
+    /**
+     * @param string[] $formTheme
+     */
     public function setFormTheme(array $formTheme): void;
 
-    public function getList(): ?FieldDescriptionCollection;
+    public function getList(): FieldDescriptionCollection;
 
     /**
      * @return string[]
      */
     public function getFormTheme(): array;
 
+    /**
+     * @param string[] $filterTheme
+     */
     public function setFilterTheme(array $filterTheme): void;
 
     /**
@@ -217,10 +213,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     public function getRouteBuilder(): ?RouteBuilderInterface;
 
-    /**
-     * @param object $object
-     */
-    public function toString($object): string;
+    public function toString(?object $object): string;
 
     public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy): void;
 
@@ -237,16 +230,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     public function setUniqid(string $uniqId): void;
 
-    /**
-     * Returns the uniqid.
-     */
     public function getUniqid(): string;
 
-    /**
-     * Returns the classname label.
-     *
-     * @return string the classname label
-     */
     public function getClassnameLabel(): string;
 
     /**
@@ -267,16 +252,17 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Retuns a list of exported fields.
+     *
+     * @return string[]
      */
     public function getExportFields(): array;
 
-    /**
-     * Returns SourceIterator.
-     */
     public function getDataSourceIterator(): SourceIteratorInterface;
 
     /**
      * Call before the batch action, allow you to alter the query and the idx.
+     *
+     * @param mixed[] $idx
      */
     public function preBatchAction(string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements = false): void;
 
@@ -295,12 +281,10 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @param object $object
-     *
      * @deprecated this feature cannot be stable, use a custom validator,
      *             the feature will be removed with Symfony 2.2
      */
-    public function validate(ErrorElement $errorElement, $object): void;
+    public function validate(ErrorElement $errorElement, object $object): void;
 
     public function showIn(string $context): bool;
 
@@ -318,29 +302,17 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function isChild(): bool;
 
-    /**
-     * Set the translation domain.
-     *
-     * @param string $translationDomain the translation domain
-     */
     public function setTranslationDomain(string $translationDomain): void;
 
-    /**
-     * Returns the translation domain.
-     *
-     * @return string the translation domain
-     */
     public function getTranslationDomain(): string;
 
     /**
-     * Return the form groups.
-     *
      * @return array<string, mixed>
      */
     public function getFormGroups(): array;
 
     /**
-     * Set the form groups.
+     * @param array<string, mixed> $formGroups
      */
     public function setFormGroups(array $formGroups): void;
 
@@ -349,6 +321,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getFormTabs(): array;
 
+    /**
+     * @param array<string, mixed> $formTabs
+     */
     public function setFormTabs(array $formTabs): void;
 
     /**
@@ -356,27 +331,27 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getShowTabs(): array;
 
+    /**
+     * @param array<string, mixed> $showTabs
+     */
     public function setShowTabs(array $showTabs): void;
 
-    /**
-     * Remove a form group field.
-     */
     public function removeFieldFromFormGroup(string $key): void;
 
     /**
-     * Returns the show groups.
-     *
      * @return array<string, mixed>
      */
     public function getShowGroups(): array;
 
     /**
-     * Set the show groups.
+     * @param array<string, mixed> $showGroups
      */
     public function setShowGroups(array $showGroups): void;
 
     /**
      * Reorder items in showGroup.
+     *
+     * @param string[] $keys
      */
     public function reorderShowGroup(string $group, array $keys): void;
 
@@ -387,18 +362,20 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Returns list of supported sub classes.
+     *
+     * @return array<string, class-string>
      */
     public function getSubClasses(): array;
 
     /**
      * Sets the list of supported sub classes.
+     *
+     * @param array<string, class-string> $subClasses
      */
     public function setSubClasses(array $subClasses): void;
 
     /**
      * Returns true if the admin has the sub classes.
-     *
-     * @param string $name The name of the sub class
      */
     public function hasSubClass(string $name): bool;
 
@@ -409,15 +386,11 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Returns the currently active sub class.
-     *
-     * @return string the active sub class
      */
     public function getActiveSubClass(): string;
 
     /**
      * Returns the currently active sub class code.
-     *
-     * @return string the code for active sub class
      */
     public function getActiveSubclassCode(): string;
 
@@ -460,7 +433,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * @param object $object
      */
-    public function getObjectMetadata($object): MetadataInterface;
+    public function getObjectMetadata(object $object): MetadataInterface;
 
     /**
      * @return array<string, array<string, mixed>>
@@ -476,11 +449,15 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Configure buttons for an action.
+     *
+     * @return array<string, array<string, mixed>>
      */
     public function getActionButtons(string $action, ?object $object = null): array;
 
     /**
      * Get the list of actions that can be accessed directly from the dashboard.
+     *
+     * @return array<string, array<string, mixed>>
      */
     public function getDashboardActions(): array;
 
@@ -500,6 +477,11 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function showMosaicButton(bool $isShown): void;
 
+    /**
+     * @param array<string, array<string, mixed>> $buttonList
+     *
+     * @return array<string, array<string, mixed>>
+     */
     public function configureActionButtons(array $buttonList, string $action, ?object $object = null): array;
 
     /**
@@ -546,6 +528,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getParentAssociationMapping(): ?string;
 
+    /**
+     * @param string[] $keys
+     */
     public function reorderFormGroup(string $group, array $keys): void;
 
     /**
@@ -554,5 +539,3 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function defineFormBuilder(FormBuilderInterface $formBuilder): void;
 }
-
-class_exists(ErrorElement::class);

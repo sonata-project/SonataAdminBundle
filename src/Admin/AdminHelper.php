@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Manipulator\ObjectManipulator;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
 use Sonata\AdminBundle\Util\FormViewIterator;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
@@ -46,9 +47,6 @@ class AdminHelper
         $this->propertyAccessor = $propertyAccessor;
     }
 
-    /**
-     * @throws \RuntimeException
-     */
     public function getChildFormBuilder(FormBuilderInterface $formBuilder, string $elementId): ?FormBuilderInterface
     {
         foreach (new FormBuilderIterator($formBuilder) as $name => $formBuilder) {
@@ -77,6 +75,8 @@ class AdminHelper
      *
      * @throws \RuntimeException
      * @throws \Exception
+     *
+     * @return array{0: FieldDescriptionInterface|null, 1: FormInterface}
      */
     public function appendFormFieldElement(AdminInterface $admin, object $subject, string $elementId): array
     {
@@ -188,11 +188,11 @@ class AdminHelper
      *
      * @param string $elementId expects string in format used in form id field.
      *                          (uniqueIdentifier_model_sub_model or uniqueIdentifier_model_1_sub_model etc.)
-     * @param mixed  $model
+     * @param object $model
      *
      * @throws \Exception
      */
-    public function getElementAccessPath(string $elementId, $model): string
+    public function getElementAccessPath(string $elementId, object $model): string
     {
         $idWithoutIdentifier = preg_replace('/^[^_]*_/', '', $elementId);
         $initialPath = preg_replace('#(_(\d+)_)#', '[$2]_', $idWithoutIdentifier);
@@ -224,6 +224,8 @@ class AdminHelper
 
     /**
      * Recursively find the class name of the admin responsible for the element at the end of an association chain.
+     *
+     * @param string[] $elements
      */
     protected function getModelClassName(AdminInterface $admin, array $elements): string
     {

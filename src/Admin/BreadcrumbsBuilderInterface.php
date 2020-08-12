@@ -23,12 +23,7 @@ namespace Sonata\AdminBundle\Admin;
 interface BreadcrumbsBuilderInterface
 {
     /**
-     * Get breadcrumbs for $action.
-     *
-     * @param string $action the name of the action we want to get a
-     *                       breadcrumbs for
-     *
-     * @return iterable the breadcrumbs
+     * Get breadcrumbs for the action we want to get a breadcrumbs for.
      */
-    public function getBreadcrumbs(AdminInterface $admin, string $action): iterable;
+    public function getBreadcrumbs(AdminInterface $admin, string $action): array;
 }

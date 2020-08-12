@@ -66,24 +66,30 @@ class Pool
     protected $options = [];
 
     /**
-     * @var PropertyAccessorInterface
+     * @var PropertyAccessorInterface|null
      */
     protected $propertyAccessor;
 
+    /**
+     * @param array $options
+     */
     public function __construct(
         ContainerInterface $container,
         string $title,
-        string $logoTitle,
+        string $titleLogo,
         array $options = [],
         ?PropertyAccessorInterface $propertyAccessor = null
     ) {
         $this->container = $container;
         $this->title = $title;
-        $this->titleLogo = $logoTitle;
+        $this->titleLogo = $titleLogo;
         $this->options = $options;
         $this->propertyAccessor = $propertyAccessor;
     }
 
+    /**
+     * @return array
+     */
     public function getGroups(): array
     {
         $groups = $this->adminGroups;
@@ -105,6 +111,9 @@ class Pool
         return isset($this->adminGroups[$group]);
     }
 
+    /**
+     * @return array
+     */
     public function getDashboardGroups(): array
     {
         $groups = $this->adminGroups;
@@ -307,11 +316,17 @@ class Pool
         return $this->adminGroups;
     }
 
+    /**
+     * @param string[] $adminServiceIds
+     */
     public function setAdminServiceIds(array $adminServiceIds): void
     {
         $this->adminServiceIds = $adminServiceIds;
     }
 
+    /**
+     * @return string[]
+     */
     public function getAdminServiceIds(): array
     {
         return $this->adminServiceIds;

@@ -22,6 +22,8 @@ interface AccessRegistryInterface
 {
     /**
      * Return the controller access mapping.
+     *
+     * @return array
      */
     public function getAccessMapping(): array;
 

@@ -171,9 +171,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $code;
 
     /**
-     * The label.
-     *
-     * @var string
+     * @var string|null
      */
     protected $label;
 
@@ -231,7 +229,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The Entity or Document manager.
      *
-     * @var ModelManagerInterface
+     * @var ModelManagerInterface|null
      */
     protected $modelManager;
 
@@ -263,7 +261,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The related list builder.
      *
-     * @var ListBuilderInterface
+     * @var ListBuilderInterface|null
      */
     protected $listBuilder;
 
@@ -277,12 +275,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The related datagrid builder.
      *
-     * @var DatagridBuilderInterface
+     * @var DatagridBuilderInterface|null
      */
     protected $datagridBuilder;
 
     /**
-     * @var RouteBuilderInterface
+     * @var RouteBuilderInterface|null
      */
     protected $routeBuilder;
 
@@ -306,7 +304,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $securityHandler;
 
     /**
-     * @var ValidatorInterface
+     * @var ValidatorInterface|null
      */
     protected $validator;
 
@@ -323,7 +321,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $menu;
 
     /**
-     * @var FactoryInterface
+     * @var FactoryInterface|null
      */
     protected $menuFactory;
 
@@ -355,7 +353,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $extensions = [];
 
     /**
-     * @var LabelTranslatorStrategyInterface
+     * @var LabelTranslatorStrategyInterface|null
      */
     protected $labelTranslatorStrategy;
 
@@ -371,7 +369,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * Roles and permissions per role.
      *
-     * @var array 'role' => ['permission', 'permission']
+     * @var array<string, string[]|string> 'role' => ['permission', 'permission']
      */
     protected $securityInformation = [];
 
@@ -486,7 +484,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The manager type to use for the admin.
      *
-     * @var string
+     * @var string|null
      */
     private $managerType;
 
@@ -504,9 +502,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->baseControllerName = $baseControllerName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExportFormats(): array
     {
         return [
@@ -514,9 +509,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExportFields(): array
     {
         $fields = $this->getModelManager()->getExportFields($this->getClass());
@@ -557,7 +549,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->getModelManager()->getDataSourceIterator($datagrid, $fields);
     }
 
-    public function validate(ErrorElement $errorElement, $object): void
+    public function validate(ErrorElement $errorElement, object $object): void
     {
     }
 
@@ -1041,17 +1033,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->templateRegistry = $templateRegistry;
     }
 
-    /**
-     * @param array<string, string> $templates
-     */
+
     public function setTemplates(array $templates): void
     {
         $this->getTemplateRegistry()->setTemplates($templates);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setTemplate(string $name, string $template): void
     {
         $this->getTemplateRegistry()->setTemplate($name, $template);
@@ -1147,14 +1134,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $object;
     }
 
-    public function getForm(): ?FormInterface
+    public function getForm(): FormInterface
     {
         $this->buildForm();
 
         return $this->form;
     }
 
-    public function getList(): ?FieldDescriptionCollection
+    public function getList(): FieldDescriptionCollection
     {
         $this->buildList();
 
@@ -1243,7 +1230,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->baseControllerName;
     }
 
-    public function setLabel(?string $label): void
+    public function setLabel(string $label): void
     {
         $this->label = $label;
     }
@@ -1364,7 +1351,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function setSubject(?object $subject): void
     {
-        if (\is_object($subject) && !is_a($subject, $this->getClass(), true)) {
+        if (null !== $subject && !is_a($subject, $this->getClass(), true)) {
             throw new \LogicException(sprintf(
                 'Admin "%s" does not allow this subject: %s, use the one register with this admin class %s',
                 static::class,
@@ -1892,7 +1879,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->modelManager;
     }
 
-    public function setModelManager(?ModelManagerInterface $modelManager): void
+    public function setModelManager(ModelManagerInterface $modelManager): void
     {
         $this->modelManager = $modelManager;
     }
@@ -1902,7 +1889,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->managerType;
     }
 
-    public function setManagerType(?string $type): void
+    public function setManagerType(string $type): void
     {
         $this->managerType = $type;
     }
@@ -1953,12 +1940,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->securityHandler;
     }
 
-    /**
-     * NEXT_MAJOR: Decide the type declaration for the $name argument, since it is
-     * passed as argument 1 for `SecurityHandlerInterface::isGranted()`, which
-     * accepts string and array.
-     */
-    public function isGranted($name, ?object $object = null): bool
+    public function isGranted(string $name, ?object $object = null): bool
     {
         $objectRef = $object ? sprintf('/%s#%s', spl_object_hash($object), $this->id($object)) : '';
         $key = md5(json_encode($name).$objectRef);
@@ -1970,32 +1952,17 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->cacheIsGranted[$key];
     }
 
-    /**
-     * NEXT_MAJOR: Decide the type declaration for the $model argument, since it is
-     * passed as argument 1 for `ModelManagerInterface::getUrlSafeIdentifier()`, which
-     * accepts null.
-     */
-    public function getUrlSafeIdentifier($model): ?string
+    public function getUrlSafeIdentifier(object $model): string
     {
         return $this->getModelManager()->getUrlSafeIdentifier($model);
     }
 
-    /**
-     * NEXT_MAJOR: Decide the type declaration for the $model argument, since it is
-     * passed as argument 1 for `ModelManagerInterface::getNormalizedIdentifier()`, which
-     * accepts null.
-     */
-    public function getNormalizedIdentifier($model): ?string
+    public function getNormalizedIdentifier(object $model): string
     {
         return $this->getModelManager()->getNormalizedIdentifier($model);
     }
 
-    /**
-     * NEXT_MAJOR: Decide the type declaration for the $model argument, since it is
-     * passed as argument 1 for `ModelManagerInterface::getNormalizedIdentifier()`, which
-     * accepts null.
-     */
-    public function id($model): ?string
+    public function id(object $model): string
     {
         return $this->getNormalizedIdentifier($model);
     }
@@ -2010,7 +1977,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->validator;
     }
 
-    public function getShow(): ?FieldDescriptionCollection
+    public function getShow(): FieldDescriptionCollection
     {
         $this->buildShow();
 
@@ -2071,9 +2038,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * NEXT_MAJOR: Decide the type declaration for the $object argument, since there
      * are tests ensuring to accept null (`GetShortObjectDescriptionActionTest::testGetShortObjectDescriptionActionEmptyObjectIdAsJson()`).
      */
-    public function toString($object): string
+    public function toString(?object $object): string
     {
-        if (!\is_object($object)) {
+        if (null === $object) {
             return '';
         }
 
@@ -2142,11 +2109,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->getSecurityHandler() instanceof AclSecurityHandlerInterface;
     }
 
-    /**
-     * NEXT_MAJOR: Decide the type declaration for the $object argument, since it is
-     * passed as argument 1 to `toString()` method, which currently accepts null.
-     */
-    public function getObjectMetadata($object): MetadataInterface
+    public function getObjectMetadata(object $object): MetadataInterface
     {
         return new Metadata($this->toString($object));
     }
@@ -2448,7 +2411,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * Allows you to customize batch actions.
      *
-     * @param array $actions List of actions
+     * @param array<string, array<string, mixed>> $actions
+     *
+     * @return array<string, array<string, mixed>>
      */
     protected function configureBatchActions(array $actions): array
     {
@@ -2561,10 +2526,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     /**
      * Gets the subclass corresponding to the given name.
-     *
-     * @param string $name The name of the sub class
-     *
-     * @return string the subclass
      */
     protected function getSubClass(string $name): string
     {
@@ -2619,7 +2580,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * Return list routes with permissions name.
      *
-     * @return array<string, string|array>
+     * @return array<string, string|string[]>
      */
     protected function getAccess(): array
     {
@@ -2658,7 +2619,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *   $sortValues['_sort_by'] = 'foo'
      *   $sortValues['_sort_order'] = 'DESC'
      */
-    protected function configureDefaultSortValues(array &$sortValues)
+    protected function configureDefaultSortValues(array &$sortValues): void
     {
     }
 
