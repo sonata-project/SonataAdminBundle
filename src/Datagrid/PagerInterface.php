@@ -15,6 +15,12 @@ namespace Sonata\AdminBundle\Datagrid;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * NEXT_MAJOR: Remove these comments and uncomment corresponding methods.
+ *
+ * @method int  getPage()
+ * @method bool isLastPage()
+ * @method int  getNbResults()
  */
 interface PagerInterface
 {
@@ -82,4 +88,7 @@ interface PagerInterface
 
 //    NEXT_MAJOR: uncomment this method in 4.0
 //    public function getNbResults(): int;
+//
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    public function getPage(): int;
 }
