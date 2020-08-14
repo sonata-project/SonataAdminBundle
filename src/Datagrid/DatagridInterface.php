@@ -23,90 +23,66 @@ use Symfony\Component\Form\FormInterface;
  */
 interface DatagridInterface
 {
-    /**
-     * @return PagerInterface
-     */
-    public function getPager();
+    public function getPager(): PagerInterface;
+
+    public function getQuery(): ProxyQueryInterface;
 
     /**
-     * @return ProxyQueryInterface
+     * @return object[]
      */
-    public function getQuery();
+    public function getResults(): array;
+
+    public function buildPager(): void;
+
+    public function addFilter(FilterInterface $filter): void;
 
     /**
-     * @return array
+     * @return array<string, FilterInterface>
      */
-    public function getResults();
-
-    public function buildPager();
-
-    /**
-     * @return FilterInterface
-     */
-    public function addFilter(FilterInterface $filter);
-
-    /**
-     * @return array
-     */
-    public function getFilters();
+    public function getFilters(): array;
 
     /**
      * Reorder filters.
-     */
-    public function reorderFilters(array $keys);
-
-    /**
-     * @return array
-     */
-    public function getValues();
-
-    /**
-     * @return FieldDescriptionCollection
-     */
-    public function getColumns();
-
-    /**
-     * @param string      $name
-     * @param string|null $operator
-     * @param mixed       $value
-     */
-    public function setValue($name, $operator, $value);
-
-    /**
-     * @return FormInterface
-     */
-    public function getForm();
-
-    /**
-     * @param string $name
      *
-     * @return FilterInterface
+     * @param string[] $keys
      */
-    public function getFilter($name);
+    public function reorderFilters(array $keys): void;
 
     /**
-     * @param string $name
+     * @return array<string, mixed>
+     */
+    public function getValues(): array;
+
+    public function getColumns(): FieldDescriptionCollection;
+
+    /**
+     * @param mixed $value
+     */
+    public function setValue(string $name, ?string $operator, $value): void;
+
+    public function getForm(): FormInterface;
+
+    public function getFilter(string $name): FilterInterface;
+
+    public function hasFilter(string $name): bool;
+
+    public function removeFilter(string $name): void;
+
+    public function hasActiveFilters(): bool;
+
+    public function hasDisplayableFilters(): bool;
+
+    /**
+     * TODO: avoid returning an array with one element and return its contents instead.
      *
-     * @return bool
+     * @return array{filter: array<string, mixed>}
      */
-    public function hasFilter($name);
-
-    /**
-     * @param string $name
-     */
-    public function removeFilter($name);
-
-    /**
-     * @return bool
-     */
-    public function hasActiveFilters();
-
-    /**
-     * @return bool
-     */
-    public function hasDisplayableFilters();
-
     public function getSortParameters(FieldDescriptionInterface $fieldDescription): array;
 
+    /**
+     * TODO: avoid returning an array with one element and return its contents instead.
+     *
+     * @return array{filter: array<string, mixed>}
+     */
     public function getPaginationParameters(int $page): array;
 }

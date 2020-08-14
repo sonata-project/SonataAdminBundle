@@ -64,14 +64,15 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
     public function testGetShortObjectDescriptionActionInvalidAdmin(): void
     {
+        $code = 'sonata.post.admin';
+
         $request = new Request([
-            'code' => 'sonata.post.admin',
+            'code' => $code,
             'objectId' => 42,
             'uniqid' => 'asdasd123',
         ]);
 
-        $this->pool->getInstance('sonata.post.admin')
-            ->willThrow(new \InvalidArgumentException());
+        $this->pool->getInstance($code)->willThrow(\InvalidArgumentException::class);
         $this->admin->setRequest(Argument::type(Request::class))->shouldNotBeCalled();
 
         $this->expectException(NotFoundHttpException::class);

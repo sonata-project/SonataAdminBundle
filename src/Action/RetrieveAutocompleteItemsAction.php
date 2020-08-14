@@ -184,11 +184,11 @@ final class RetrieveAutocompleteItemsAction
         AdminInterface $admin,
         string $field
     ): FieldDescriptionInterface {
-        $fieldDescription = $admin->getFilterFieldDescription($field);
-
-        if (!$fieldDescription) {
+        if (!$admin->hasFilterFieldDescription($field)) {
             throw new \RuntimeException(sprintf('The field "%s" does not exist.', $field));
         }
+
+        $fieldDescription = $admin->getFilterFieldDescription($field);
 
         if (null === $fieldDescription->getTargetModel()) {
             throw new \RuntimeException(sprintf('No associated entity with field "%s".', $field));
@@ -206,11 +206,11 @@ final class RetrieveAutocompleteItemsAction
         AdminInterface $admin,
         string $field
     ): FieldDescriptionInterface {
-        $fieldDescription = $admin->getFormFieldDescription($field);
-
-        if (!$fieldDescription) {
+        if (!$admin->hasFormFieldDescription($field)) {
             throw new \RuntimeException(sprintf('The field "%s" does not exist.', $field));
         }
+
+        $fieldDescription = $admin->getFormFieldDescription($field);
 
         if (null === $fieldDescription->getTargetModel()) {
             throw new \RuntimeException(sprintf('No associated entity with field "%s".', $field));

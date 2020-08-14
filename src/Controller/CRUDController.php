@@ -473,15 +473,12 @@ class CRUDController extends AbstractController
         if ($data = json_decode($request->get('data', ''), true)) {
             $action = $data['action'];
             $idx = $data['idx'];
-            $allElements = $data['all_elements'];
+            $allElements = (bool) $data['all_elements'];
             $request->request->replace(array_merge($request->request->all(), $data));
         } else {
-            $request->request->set('idx', $request->get('idx', []));
-            $request->request->set('all_elements', $request->get('all_elements', false));
-
-            $action = $request->get('action');
-            $idx = $request->get('idx');
-            $allElements = $request->get('all_elements');
+            $action = $request->request->getAlnum('action');
+            $idx = $request->request->get('idx', []);
+            $allElements = $request->request->getBoolean('all_elements');
             $data = $request->request->all();
 
             unset($data['_sonata_csrf_token']);
@@ -1312,7 +1309,7 @@ class CRUDController extends AbstractController
 
         $aclRoles = array_unique($aclRoles);
 
-        return \is_array($aclRoles) ? new \ArrayIterator($aclRoles) : $aclRoles;
+        return new \ArrayIterator($aclRoles);
     }
 
     /**

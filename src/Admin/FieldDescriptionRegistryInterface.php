@@ -23,7 +23,7 @@ interface FieldDescriptionRegistryInterface
     /**
      * Return FormFieldDescription.
      */
-    public function getFormFieldDescription(string $name): ?FieldDescriptionInterface;
+    public function getFormFieldDescription(string $name): FieldDescriptionInterface;
 
     public function hasFormFieldDescription(string $name): bool;
 

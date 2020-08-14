@@ -437,7 +437,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     private $show;
 
     /**
-     * @var Form|null
+     * @var FormInterface|null
      */
     private $form;
 
@@ -1013,13 +1013,15 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $route = $request->get('_route');
 
         if ($adminCode) {
-            $admin = $this->getConfigurationPool()->getAdminByAdminCode($adminCode);
+            $pool = $this->getConfigurationPool();
+
+            if ($pool->hasAdminByAdminCode($adminCode)) {
+                $admin = $pool->getAdminByAdminCode($adminCode);
+            } else {
+                return false;
+            }
         } else {
             $admin = $this;
-        }
-
-        if (!$admin) {
-            return false;
         }
 
         return sprintf('%s_%s', $admin->getBaseRouteName(), $name) === $route;
@@ -2365,7 +2367,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function canAccessObject(string $action, ?object $object = null): bool
     {
-        return $object && $this->id($object) && $this->hasAccess($action, $object);
+        if (!\is_object($object)) {
+            return false;
+        }
+        if (!$this->id($object)) {
+            return false;
+        }
+
+        return $this->hasAccess($action, $object);
     }
 
     public function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
@@ -2628,7 +2637,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * Return list routes with permissions name.
      *
-     * @return array<string, string>
+     * @return array<string, string|array>
      */
     protected function getAccess(): array
     {

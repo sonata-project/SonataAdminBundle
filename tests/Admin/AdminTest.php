@@ -72,6 +72,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRegistry;
 use Symfony\Component\Form\ResolvedFormTypeFactory;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -1456,6 +1457,12 @@ class AdminTest extends TestCase
                     $this->greaterThan(0)
                 );
 
+        $form = $this->createMock(FormInterface::class);
+        $formBuild->expects($this->once())
+            ->method('getForm')
+            ->willReturn($form)
+        ;
+
         $formContractor = $this->createMock(FormContractorInterface::class);
         $formContractor
                 ->method('getDefaultOptions')
@@ -1836,6 +1843,38 @@ class AdminTest extends TestCase
         $admin->setSecurityHandler($securityHandler);
 
         $this->assertSame([], $admin->getActionButtons('list', null));
+    }
+
+    public function testCantAccessObjectIfNullPassed(): void
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+
+        $this->assertFalse($admin->canAccessObject('list', null));
+    }
+
+    public function testCantAccessObjectIfRandomObjectPassed(): void
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $admin->setModelManager($modelManager);
+
+        $this->assertFalse($admin->canAccessObject('list', new \stdClass()));
+    }
+
+    public function testCanAccessObject(): void
+    {
+        $model = new \stdClass();
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager
+            ->method('getNormalizedIdentifier')
+            ->willReturn('identifier');
+        $admin->setModelManager($modelManager);
+        $securityHandler = $this->createMock(SecurityHandlerInterface::class);
+        $securityHandler->method('isGranted')->with($admin, 'LIST', $model)->willReturn(true);
+        $admin->setSecurityHandler($securityHandler);
+
+        $this->assertTrue($admin->canAccessObject('list', $model));
     }
 
     /**

@@ -24,33 +24,28 @@ interface FilterPersisterInterface
     /**
      * Get persisted filters for given admin.
      *
-     * @param string $adminCode The admin code
-     *
-     * @return array The persisted filters
+     * @return array<string, int|string|array{type: int, value: mixed}>
      */
-    public function get($adminCode);
+    public function get(string $adminCode): array;
 
     /**
-     * Set persisted filters for given admin.
+     * Set persisted filters for given admin. Structure of filters:
+     *     {string filter field} => array(
+     *     "type" => {int filter type},
+     *     "value" => {mixed filter value},
+     *     ),
+     *     ...,
+     *     "_page" => {int page num},
+     *     "_sort_by" => {string sort property},
+     *     "_sort_order" => {string sort order (ASC|DESC)},
+     *     "_per_page" => {int count rows per page}.
      *
-     * @param string $adminCode The admin code
-     * @param array  $filters   The filters to persist. Structure :
-     *                          {string filter field} => array(
-     *                          "type" => {int filter type},
-     *                          "value" => {mixed filter value},
-     *                          ),
-     *                          ...,
-     *                          "_page" => {int page num},
-     *                          "_sort_by" => {string sort property},
-     *                          "_sort_order" => {string sort order (ASC|DESC)},
-     *                          "_per_page" => {int count rows per page}
+     * @param array<string, int|string|array{type: int, value: mixed}> $filters
      */
-    public function set($adminCode, array $filters);
+    public function set(string $adminCode, array $filters): void;
 
     /**
      * Reset persisted filters for given admin.
-     *
-     * @param string $adminCode The admin code
      */
-    public function reset($adminCode);
+    public function reset(string $adminCode): void;
 }

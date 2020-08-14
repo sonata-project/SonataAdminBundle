@@ -1,11 +1,5 @@
 parameters:
     ignoreErrors:
-        -
-            # will be fixed in v4. Currently BC break
-            message: "#^Call to an undefined method Sonata\\\\AdminBundle\\\\Datagrid\\\\PagerInterface\\:\\:getPage\\(\\)\\.$#"
-            count: 1
-            path: src/Action/SearchAction.php
-
 # next 6 errors are due to not installed Doctrine ORM\ODM
         -
             message: "#^Class Doctrine\\\\ODM\\\\MongoDB\\\\PersistentCollection not found\\.$#"

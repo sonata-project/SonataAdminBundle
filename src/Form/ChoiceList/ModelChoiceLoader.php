@@ -47,7 +47,7 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
     private $choices;
 
     /**
-     * @var PropertyPath
+     * @var PropertyPath|null
      */
     private $propertyPath;
 
@@ -100,7 +100,7 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
             }
 
             $choices = [];
-            foreach ($entities as $key => $model) {
+            foreach ($entities as $model) {
                 if ($this->propertyPath) {
                     // If the property option was given, use it
                     $valueObject = $this->propertyAccessor->getValue($model, $this->propertyPath);

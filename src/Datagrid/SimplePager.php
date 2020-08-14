@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Datagrid;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
@@ -24,7 +24,7 @@ final class SimplePager extends Pager
     /**
      * @var bool
      */
-    private $haveToPaginate;
+    private $haveToPaginate = false;
 
     /**
      * How many pages to look forward to create links to next pages.
@@ -34,7 +34,9 @@ final class SimplePager extends Pager
     private $threshold;
 
     /**
-     * @var int
+     * thresholdCount is null prior to its initialization in `getResults()`.
+     *
+     * @var int|null
      */
     private $thresholdCount;
 
@@ -46,11 +48,8 @@ final class SimplePager extends Pager
      * If set to 2 the pager will generate links to the next two pages
      * If set to 3 the pager will generate links to the next three pages
      * etc.
-     *
-     * @param int $maxPerPage Number of records to display per page
-     * @param int $threshold
      */
-    public function __construct($maxPerPage = 10, $threshold = 1)
+    public function __construct(int $maxPerPage = 10, int $threshold = 1)
     {
         parent::__construct($maxPerPage);
         $this->setThreshold($threshold);
@@ -66,36 +65,38 @@ final class SimplePager extends Pager
         return $n;
     }
 
-    public function getResults($hydrationMode = null)
+    public function getResults(?int $hydrationMode = null): array
     {
         if ($this->results) {
             return $this->results;
         }
 
-        $this->results = $this->getQuery()->execute([], $hydrationMode);
-        $this->thresholdCount = \count($this->results);
-        if (\count($this->results) > $this->getMaxPerPage()) {
+        $results = $this->getQuery()->execute([], $hydrationMode);
+
+        // doctrine/phpcr-odm returns ArrayCollection
+        if ($results instanceof Collection) {
+            $results = $results->toArray();
+        }
+
+        $this->thresholdCount = \count($results);
+
+        if (\count($results) > $this->getMaxPerPage()) {
             $this->haveToPaginate = true;
-            // doctrine/phpcr-odm returns ArrayCollection
-            if ($this->results instanceof ArrayCollection) {
-                $this->results = $this->results->toArray();
-            }
-            $this->results = \array_slice($this->results, 0, $this->getMaxPerPage());
+            $this->results = \array_slice($results, 0, $this->getMaxPerPage());
         } else {
             $this->haveToPaginate = false;
+            $this->results = $results;
         }
 
         return $this->results;
     }
 
-    public function haveToPaginate()
+    public function haveToPaginate(): bool
     {
         return $this->haveToPaginate || $this->getPage() > 1;
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws \RuntimeException the QueryBuilder is uninitialized
      */
     public function init(): void
@@ -126,18 +127,13 @@ final class SimplePager extends Pager
 
     /**
      * Set how many pages to look forward to create links to next pages.
-     *
-     * @param int $threshold
      */
-    public function setThreshold($threshold): void
+    public function setThreshold(int $threshold): void
     {
-        $this->threshold = (int) $threshold;
+        $this->threshold = $threshold;
     }
 
-    /**
-     * @return int
-     */
-    public function getThreshold()
+    public function getThreshold(): int
     {
         return $this->threshold;
     }

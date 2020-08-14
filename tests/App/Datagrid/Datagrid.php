@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\App\Datagrid;
 
+use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
@@ -20,6 +21,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 final class Datagrid implements DatagridInterface
 {
@@ -39,7 +41,7 @@ final class Datagrid implements DatagridInterface
         $this->pager = $pager;
     }
 
-    public function getPager()
+    public function getPager(): PagerInterface
     {
         return $this->pager;
     }
@@ -49,7 +51,7 @@ final class Datagrid implements DatagridInterface
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function getResults()
+    public function getResults(): array
     {
         return $this->pager->getResults();
     }
@@ -62,7 +64,7 @@ final class Datagrid implements DatagridInterface
     {
     }
 
-    public function getFilters()
+    public function getFilters(): array
     {
         return [];
     }
@@ -71,7 +73,7 @@ final class Datagrid implements DatagridInterface
     {
     }
 
-    public function getValues()
+    public function getValues(): array
     {
         return [];
     }
@@ -81,35 +83,35 @@ final class Datagrid implements DatagridInterface
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function setValue($name, $operator, $value): void
+    public function setValue(string $name, ?string $operator, $value): void
     {
     }
 
-    public function getForm()
+    public function getForm(): FormInterface
     {
         return $this->formFactory->createNamedBuilder('filter', FormType::class, [])->getForm();
     }
 
-    public function getFilter($name): FilterInterface
+    public function getFilter(string $name): FilterInterface
     {
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function hasFilter($name)
+    public function hasFilter(string $name): bool
     {
         return false;
     }
 
-    public function removeFilter($name): void
+    public function removeFilter(string $name): void
     {
     }
 
-    public function hasActiveFilters()
+    public function hasActiveFilters(): bool
     {
         return false;
     }
 
-    public function hasDisplayableFilters()
+    public function hasDisplayableFilters(): bool
     {
         return false;
     }
