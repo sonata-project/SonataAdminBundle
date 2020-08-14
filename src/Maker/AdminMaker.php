@@ -38,7 +38,7 @@ final class AdminMaker extends AbstractMaker
      */
     private $projectDirectory;
     /**
-     * @var string[]
+     * @var array<string, ModelManagerInterface>
      */
     private $availableModelManagers;
     /**
@@ -70,6 +70,10 @@ final class AdminMaker extends AbstractMaker
      */
     private $modelManager;
 
+    /**
+     * @param string                               $projectDirectory
+     * @param array<string, ModelManagerInterface> $modelManagers
+     */
     public function __construct($projectDirectory, array $modelManagers = [])
     {
         $this->projectDirectory = $projectDirectory;
@@ -292,6 +296,6 @@ final class AdminMaker extends AbstractMaker
         }
 
         $this->managerType = $input->getOption('manager') ?: array_keys($this->availableModelManagers)[0];
-        $this->modelManager = $this->availableModelManagers[$this->managerType] ?: current($this->availableModelManagers);
+        $this->modelManager = $this->availableModelManagers[$this->managerType] ?? current($this->availableModelManagers);
     }
 }

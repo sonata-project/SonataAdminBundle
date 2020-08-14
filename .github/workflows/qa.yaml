@@ -12,3 +12,11 @@ jobs:
           REQUIRE_DEV: true
         with:
           args: analyse -c .phpstan/phpstan.neon.dist
+  psalm:
+    name: Psalm
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Psalm
+        uses: docker://vimeo/psalm-github-actions

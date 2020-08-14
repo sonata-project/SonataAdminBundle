@@ -492,6 +492,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
         --$this->resultsCounter;
 
+        // NEXT_MAJOR: remove `return` statement, to be compatible with Iterator::next(): void
         return next($this->results);
     }
 
@@ -503,6 +504,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
         $this->resultsCounter = \count($this->results);
 
+        // NEXT_MAJOR: remove `return` statement, to be compatible with Iterator::rewind(): void
         return reset($this->results);
     }
 
