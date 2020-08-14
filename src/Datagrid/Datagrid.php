@@ -199,6 +199,8 @@ class Datagrid implements DatagridInterface
     public function addFilter(FilterInterface $filter)
     {
         $this->filters[$filter->getName()] = $filter;
+
+        return $filter;
     }
 
     public function hasFilter($name)

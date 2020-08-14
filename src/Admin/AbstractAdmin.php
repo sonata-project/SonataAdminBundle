@@ -263,7 +263,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * NEXT_MAJOR: should be default array and private.
      *
-     * @var string|array
+     * @var array<string, mixed>|string|null
      */
     protected $parentAssociationMapping;
 
@@ -952,6 +952,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     final public function addParentAssociationMapping($code, $value)
     {
+        if (\is_string($this->parentAssociationMapping)) {
+            @trigger_error(sprintf(
+                'Calling "%s"  when $this->parentAssociationMapping is string is deprecated since sonata-admin/admin-bundle 3.x and will be removed in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         $this->parentAssociationMapping[$code] = $value;
     }
 
@@ -2682,12 +2689,7 @@ EOT;
      */
     public function getPermissionsShow($context)
     {
-        switch ($context) {
-            case self::CONTEXT_DASHBOARD:
-            case self::CONTEXT_MENU:
-            default:
-                return ['LIST'];
-        }
+        return ['LIST'];
     }
 
     public function showIn($context)

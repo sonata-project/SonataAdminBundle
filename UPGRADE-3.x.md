@@ -49,6 +49,10 @@ with `sonata-project/block-bundle` on your composer.json in order to avoid unwan
 
 There is a minimal BC Break on `AdminListBlockService`, `AdminSearchBlockService` and `AdminStatsBlockService`. If you are extending those clases (keep in mind that they will become final on 4.0) you should add return type hints to `execute()` and `configureSettings()`.
 
+## Deprecated passing `callable` that does not return `Symfony\Component\Routing\Route` as `$element` (2nd argument) to `Sonata\AdminBundle\Route\RouteCollection::addElement($code, $element)`
+
+When calling a `Sonata\AdminBundle\Route\RouteCollection::addElement($code, $element)`, please pass `$element` of type `Route|callable():Route`. Passing `callable` that returns non instance of `Route` is deprecated.
+
 UPGRADE FROM 3.72 to 3.73
 =========================
 

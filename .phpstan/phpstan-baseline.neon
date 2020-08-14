@@ -116,12 +116,6 @@ parameters:
             path: ../src/Command/GenerateObjectAclCommand.php
 
         -
-            # will be fixed in v4. Currently BC break
-            message: "#^Method Sonata\\\\AdminBundle\\\\Datagrid\\\\Datagrid\\:\\:addFilter\\(\\) should return Sonata\\\\AdminBundle\\\\Filter\\\\FilterInterface but return statement is missing\\.$#"
-            count: 1
-            path: ../src/Datagrid/Datagrid.php
-
-        -
             # will be fixed in v4. Code is marked as deprecated
             message: "#^Method Sonata\\\\AdminBundle\\\\Datagrid\\\\Datagrid\\:\\:getFilter\\(\\) should return Sonata\\\\AdminBundle\\\\Filter\\\\FilterInterface but returns null\\.$#"
             count: 1

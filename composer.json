@@ -70,7 +70,9 @@
     "require-dev": {
         "jms/translation-bundle": "^1.4",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",
+        "phpdocumentor/reflection-docblock": "^5.2",
         "phpstan/phpstan": "^0.12.29",
+        "psalm/plugin-symfony": "^1.4",
         "psr/event-dispatcher": "^1.0",
         "sonata-project/intl-bundle": "^2.4",
         "symfony/browser-kit": "^4.4 || ^5.1",
@@ -78,7 +80,8 @@
         "symfony/filesystem": "^4.4 || ^5.1",
         "symfony/maker-bundle": "^1.17",
         "symfony/phpunit-bridge": "^5.1.1",
-        "symfony/yaml": "^4.4 || ^5.1"
+        "symfony/yaml": "^4.4 || ^5.1",
+        "vimeo/psalm": "^3.13.1"
     },
     "suggest": {
         "jms/translation-bundle": "Extract message keys from Admins",
