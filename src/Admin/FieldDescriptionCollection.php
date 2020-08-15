@@ -15,6 +15,8 @@ namespace Sonata\AdminBundle\Admin;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @implements \ArrayAccess<string, FieldDescriptionInterface>
  */
 final class FieldDescriptionCollection implements \ArrayAccess, \Countable
 {

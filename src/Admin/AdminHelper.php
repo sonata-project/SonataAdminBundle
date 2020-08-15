@@ -188,7 +188,6 @@ class AdminHelper
      *
      * @param string $elementId expects string in format used in form id field.
      *                          (uniqueIdentifier_model_sub_model or uniqueIdentifier_model_1_sub_model etc.)
-     * @param object $model
      *
      * @throws \Exception
      */

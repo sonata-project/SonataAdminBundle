@@ -94,11 +94,15 @@ interface FieldDescriptionInterface
 
     /**
      * Define the association mapping definition.
+     *
+     * @param array<string, mixed> $associationMapping
      */
     public function setAssociationMapping(array $associationMapping): void;
 
     /**
      * Returns the association mapping definition.
+     *
+     * @return array<string, mixed>
      */
     public function getAssociationMapping(): array;
 
@@ -110,35 +114,35 @@ interface FieldDescriptionInterface
     /**
      * Sets the field mapping information.
      *
-     * @param array $fieldMapping
+     * @param array<string, mixed> $fieldMapping
      */
     public function setFieldMapping(array $fieldMapping): void;
 
     /**
      * Returns the field mapping definition.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getFieldMapping(): array;
 
     /**
      * set the parent association mappings information.
      *
-     * @param array $parentAssociationMappings
+     * @param array<array<string, mixed>> $parentAssociationMappings
      */
     public function setParentAssociationMappings(array $parentAssociationMappings): void;
 
     /**
      * Returns the parent association mapping definitions.
      *
-     * @return array
+     * @return array<array<string, mixed>>
      */
     public function getParentAssociationMappings(): array;
 
     /**
      * Set the association admin instance (only used if the field is linked to an Admin).
      */
-    public function setAssociationAdmin(AdminInterface $associationAdmin);
+    public function setAssociationAdmin(AdminInterface $associationAdmin): void;
 
     /**
      * Returns the associated Admin instance (only used if the field is linked to an Admin).
@@ -173,7 +177,7 @@ interface FieldDescriptionInterface
     /**
      * Merge option values related to the provided option name.
      *
-     * @param array $options
+     * @param array<string, mixed> $options
      *
      * @throws \RuntimeException
      */
@@ -182,7 +186,7 @@ interface FieldDescriptionInterface
     /**
      * Merge options values.
      *
-     * @param array $options
+     * @param array<string, mixed> $options
      */
     public function mergeOptions(array $options = []): void;
 
@@ -221,14 +225,14 @@ interface FieldDescriptionInterface
     /**
      * Returns the field mapping definition used when sorting.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getSortFieldMapping(): array;
 
     /**
      * Returns the parent association mapping definitions used when sorting.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getSortParentAssociationMapping(): array;
 

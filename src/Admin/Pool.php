@@ -36,19 +36,14 @@ class Pool
     protected $adminServiceIds = [];
 
     /**
-     * @var array
+     * @var array<string, array<string, mixed>>
      */
     protected $adminGroups = [];
 
     /**
-     * @var array
+     * @var array<string, class-string[]>
      */
     protected $adminClasses = [];
-
-    /**
-     * @var array
-     */
-    protected $assets = [];
 
     /**
      * @var string
@@ -61,7 +56,7 @@ class Pool
     protected $titleLogo;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected $options = [];
 
@@ -71,7 +66,7 @@ class Pool
     protected $propertyAccessor;
 
     /**
-     * @param array $options
+     * @param array<string, mixed> $options
      */
     public function __construct(
         ContainerInterface $container,
@@ -88,7 +83,7 @@ class Pool
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, AdminInterface>>
      */
     public function getGroups(): array
     {
@@ -112,7 +107,7 @@ class Pool
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, AdminInterface[]>>
      */
     public function getDashboardGroups(): array
     {
@@ -306,11 +301,17 @@ class Pool
         return $this->container;
     }
 
+    /**
+     * @param array<string, array<string, mixed>> $adminGroups
+     */
     public function setAdminGroups(array $adminGroups): void
     {
         $this->adminGroups = $adminGroups;
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function getAdminGroups(): array
     {
         return $this->adminGroups;
@@ -332,11 +333,17 @@ class Pool
         return $this->adminServiceIds;
     }
 
+    /**
+     * @param array<string, class-string[]> $adminClasses
+     */
     public function setAdminClasses(array $adminClasses): void
     {
         $this->adminClasses = $adminClasses;
     }
 
+    /**
+     * @return array<string, class-string[]>
+     */
     public function getAdminClasses(): array
     {
         return $this->adminClasses;

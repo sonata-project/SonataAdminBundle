@@ -75,16 +75,16 @@ interface AdminExtensionInterface
     /**
      * Returns the list of batch actions.
      *
-     * @param array $actions
+     * @param array<string, array<string, mixed>> $actions
      *
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
     public function configureBatchActions(AdminInterface $admin, array $actions): array;
 
     /**
      * Get a chance to modify export fields.
      *
-     * @param array $fields
+     * @param string[] $fields
      *
      * @return string[]
      */
@@ -104,6 +104,10 @@ interface AdminExtensionInterface
 
     /**
      * Get all action buttons for an action.
+     *
+     * @param array<string, array<string, mixed>> $list
+     *
+     * @return array<string, array<string, mixed>>
      */
     public function configureActionButtons(
         AdminInterface $admin,
@@ -115,14 +119,14 @@ interface AdminExtensionInterface
     /**
      * Returns a list of default filters.
      *
-     * @param array $filterValues
+     * @param array<string, array<string, mixed>> $filterValues
      */
     public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues): void;
 
     /**
      * Returns a list of default sort values.
      *
-     * @param array $sortValues
+     * @param array{_page?: int, _per_page?: int, _sort_by?: string, _sort_order?: string} $sortValues
      */
     public function configureDefaultSortValues(AdminInterface $admin, array &$sortValues): void;
 }

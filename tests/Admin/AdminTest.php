@@ -602,8 +602,6 @@ class AdminTest extends TestCase
 
         $s = new FooToString();
         $this->assertSame('salut', $admin->toString($s));
-
-        $this->assertSame('', $admin->toString(false));
     }
 
     public function testToStringNull(): void
@@ -739,12 +737,11 @@ class AdminTest extends TestCase
 
     public function testGetLabelTranslatorStrategy(): void
     {
+        $labelTranslatorStrategy = $this->createStub(LabelTranslatorStrategyInterface::class);
+
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $this->assertNull($admin->getLabelTranslatorStrategy());
-
-        $labelTranslatorStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
         $admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
+
         $this->assertSame($labelTranslatorStrategy, $admin->getLabelTranslatorStrategy());
     }
 
@@ -855,13 +852,11 @@ class AdminTest extends TestCase
 
     public function testGetModelManager(): void
     {
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $this->assertNull($admin->getModelManager());
-
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-
         $admin->setModelManager($modelManager);
+
         $this->assertSame($modelManager, $admin->getModelManager());
     }
 

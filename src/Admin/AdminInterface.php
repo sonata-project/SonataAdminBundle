@@ -163,7 +163,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function isGranted($name, ?object $object = null): bool;
 
     /**
-     * Returns a string representation of the identifiers for this instance
+     * Returns a string representation of the identifiers for this instance.
      */
     public function getNormalizedIdentifier(object $model): string;
 
@@ -413,6 +413,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getPersistentParameters(): array;
 
+    /**
+     * @return mixed
+     */
     public function getPersistentParameter(string $name);
 
     /**
@@ -430,9 +433,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getTranslationLabel(string $label, string $context = '', string $type = ''): string;
 
-    /**
-     * @param object $object
-     */
     public function getObjectMetadata(object $object): MetadataInterface;
 
     /**

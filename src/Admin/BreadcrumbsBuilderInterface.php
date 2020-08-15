@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
+use Knp\Menu\ItemInterface;
+
 /**
  * Builds a breacrumbs. There is a dependency on the AdminInterface because
  * this object holds useful object to deal with this task, but there is
@@ -24,6 +26,8 @@ interface BreadcrumbsBuilderInterface
 {
     /**
      * Get breadcrumbs for the action we want to get a breadcrumbs for.
+     *
+     * @return ItemInterface[]
      */
     public function getBreadcrumbs(AdminInterface $admin, string $action): array;
 }
