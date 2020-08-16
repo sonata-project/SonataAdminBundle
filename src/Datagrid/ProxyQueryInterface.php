@@ -40,11 +40,11 @@ interface ProxyQueryInterface
      */
     public function setSortBy(array $parentAssociationMappings, array $fieldMapping): self;
 
-    public function getSortBy(): string;
+    public function getSortBy(): ?string;
 
     public function setSortOrder(string $sortOrder): self;
 
-    public function getSortOrder(): string;
+    public function getSortOrder(): ?string;
 
     /**
      * @return mixed
@@ -62,6 +62,8 @@ interface ProxyQueryInterface
     public function getUniqueParameterId(): int;
 
     /**
+     * Join entities from the given association mappings and return the last alias created.
+     *
      * @param mixed[] $associationMappings
      */
     public function entityJoin(array $associationMappings): string;
