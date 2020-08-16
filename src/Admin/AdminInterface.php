@@ -63,6 +63,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @method string|null                     getParentAssociationMapping()
  * @method void                            reorderFormGroup(string $group, array $keys)
  * @method void                            defineFormBuilder(FormBuilderInterface $formBuilder)
+ * @method string                          getPagerType()
  */
 interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
 {
@@ -111,6 +112,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getClass();
 
     public function attachAdminClass(FieldDescriptionInterface $fieldDescription);
+
+    // NEXT_MAJOR: uncomment this method in 4.0
+    //public function getPagerType(): string;
 
     /**
      * @return DatagridInterface
