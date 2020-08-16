@@ -23,55 +23,64 @@ final class ProxyQuery implements ProxyQueryInterface
 
     public function execute(array $params = [], $hydrationMode = null)
     {
+        throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function setSortBy($parentAssociationMappings, $fieldMapping): void
+    public function setSortBy($parentAssociationMappings, $fieldMapping): ProxyQueryInterface
     {
+        throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function getSortBy()
+    public function getSortBy(): string
     {
         return 'e.id';
     }
 
-    public function setSortOrder($sortOrder): void
+    public function setSortOrder($sortOrder): ProxyQueryInterface
     {
+        throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function getSortOrder()
+    public function getSortOrder(): string
     {
         return 'ASC';
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function getSingleScalarResult()
     {
         return 0;
     }
 
-    public function setFirstResult($firstResult): void
-    {
-    }
-
-    public function getFirstResult()
+    public function setFirstResult($firstResult): ProxyQueryInterface
     {
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function setMaxResults($maxResults): void
+    public function getFirstResult(): ?int
     {
+        throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function getMaxResults()
+    public function setMaxResults($maxResults): ProxyQueryInterface
+    {
+        throw new \BadMethodCallException('Not implemented.');
+    }
+
+    public function getMaxResults(): ?int
     {
         return 1;
     }
 
-    public function getUniqueParameterId()
+    public function getUniqueParameterId(): int
     {
         return 1;
     }
 
-    public function entityJoin(array $associationMappings): void
+    public function entityJoin(array $associationMappings): array
     {
+        throw new \BadMethodCallException('Not implemented.');
     }
 }

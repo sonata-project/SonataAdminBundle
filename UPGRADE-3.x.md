@@ -4,6 +4,10 @@ UPGRADE 3.x
 UPGRADE FROM 3.x to 3.x
 =======================
 
+## Deprecated `Sonata\AdminBundle\Datagrid\ProxyQueryInterface::getSingleScalarResult`
+
+Use `Sonata\AdminBundle\Datagrid\ProxyQueryInterface::execute` instead.
+
 ## The following templates have been deprecated
 
  - `src/Resources/views/CRUD/base_filter_field.html.twig`
