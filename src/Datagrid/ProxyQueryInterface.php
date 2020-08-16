@@ -46,11 +46,14 @@ interface ProxyQueryInterface
 
     public function getSortOrder(): string;
 
-    public function getSingleScalarResult(): ?int;
+    /**
+     * @return mixed
+     */
+    public function getSingleScalarResult();
 
     public function setFirstResult(?int $firstResult): self;
 
-    public function getFirstResult(): ?object;
+    public function getFirstResult(): ?int;
 
     public function setMaxResults(?int $maxResults): self;
 
