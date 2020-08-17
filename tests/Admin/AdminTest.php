@@ -1906,7 +1906,7 @@ class AdminTest extends TestCase
 
         $parameters = $commentAdmin->getFilterParameters();
 
-        $this->assertTrue(isset($parameters['post__author']));
+        $this->assertArrayHasKey('post__author', $parameters);
         $this->assertSame(['value' => $authorId], $parameters['post__author']);
     }
 
