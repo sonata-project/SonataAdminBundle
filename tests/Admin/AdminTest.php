@@ -1880,7 +1880,7 @@ class AdminTest extends TestCase
 
     public function testGetFilterParametersWithoutRequest(): void
     {
-        $authorId = uniqid();
+        $authorId = 1001;
 
         $postAdmin = new PostAdmin(
             'sonata.post.admin.post',
