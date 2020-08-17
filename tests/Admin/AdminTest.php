@@ -1896,7 +1896,7 @@ class AdminTest extends TestCase
         $commentAdmin->setParentAssociationMapping('post.author');
         $commentAdmin->setParent($postAdmin);
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = $this->createStub(ModelManagerInterface::class);
         $modelManager
             ->method('getDefaultSortValues')
             ->willReturn([])
