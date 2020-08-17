@@ -272,15 +272,17 @@ The deprecated minor version **MUST NOT** be provided. Use `x` instead. It will 
 Any deprecation **MUST** be documented in the corresponding `UPGRADE-[0-9].x.md`.
 The documentation **MUST** be filled inside the top **unreleased** section with a sub title.
 
-The `NEXT_MAJOR` tag SHOULD not be used for deprecation.
-The `@deprecated` and `E_USER_DEPRECATED` key will be searched for before releasing the next major version.
+The `NEXT_MAJOR` tag SHOULD also be used for deprecations, it will be searched for before releasing the next major version.
 
 You have three ways to deprecate things.
 
-For class definitions, methods (or first level functions) and properties, use the `@deprecated` tag:
+For class definitions and properties, use the `@deprecated` tag.
+For methods, use the `@deprecated` tag and trigger a deprecation with `@trigger_error('...', E_USER_DEPRECATED)`:
 
 ```php
 /**
+ * NEXT_MAJOR: Remove this class.
+ *
  * @deprecated since sonata-project/foo-lib 42.x, to be removed in 43.0. Use Shiny\New\ClassOfTheMonth instead.
  */
 final class IAmOldAndUseless
@@ -290,15 +292,24 @@ final class IAmOldAndUseless
 final class StillUsedClass
 {
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
      * @deprecated since sonata-project/foo-lib 42.x, to be removed in 43.0.
      */
     public $butNotThisProperty;
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * @deprecated since sonata-project/foo-lib 42.x, to be removed in 43.0.
      */
     public function iAmBatman()
     {
+        @trigger_error(sprintf(
+            'Method %s() is deprecated since sonata-project/foo-lib 42.x and will be removed in version 43.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         echo "But this is not Gotham here.";
     }
 }
@@ -307,6 +318,7 @@ final class StillUsedClass
 If the deprecated thing is a service, you **MUST** specify it on the service definition:
 
 ```xml
+<!-- NEXT_MAJOR: Remove this service -->
 <service id="sonata.block.old" class="Sonata\Block\Old">
     <argument type="service" id="security.token_storage" />
     <deprecated>The "%service_id%" service is deprecated since sonata-project/bar-bundle 42.x and will be removed in 43.0.</deprecated>
@@ -315,14 +327,15 @@ If the deprecated thing is a service, you **MUST** specify it on the service def
 
 More info: http://symfony.com/blog/new-in-symfony-2-8-deprecated-service-definitions
 
-For everything else, not managed by the `@deprecated` tag, you **MUST** trigger a deprecation message.
+For everything else, not managed by the `@deprecated` tag,
+you **MUST** still trigger a deprecation message (and add a `NEXT_MAJOR` comment).
 
 ```php
 <?php
+// NEXT_MAJOR: Remove this condition.
 if (/* some condition showing the user is using the legacy way */) {
     @trigger_error(
-        'The '.__METHOD__.' method is deprecated since sonata-project/bar-bundle 42.x, to be removed in 43.0. '.
-        'Use FooClass::barMethod() instead.',
+        'This is deprecated since sonata-project/bar-bundle 42.x and will not be supported in version 43.0.',
         E_USER_DEPRECATED
     );
 } else {
@@ -330,11 +343,9 @@ if (/* some condition showing the user is using the legacy way */) {
 }
 ```
 
-Note that the `trigger_error` usage is not necessary if the `@deprecated` tag is used.
-
 In the case of a deprecation, unit tests might show your deprecation notice.
-You **MUST** mark such tests with the `@group legacy` annotation and if need be,
-isolate them in a new test method that can simply be removed in the non-BC PR.
+You **MUST** mark such tests with the `@group legacy` annotation and add a `NEXT_MAJOR` comment to explain
+how to deal with them in the next major (with a removal or some changes).
 
 Be aware that pull requests with BC breaks could be rejected
 or postponed to next major release **only** if BC is not possible.
