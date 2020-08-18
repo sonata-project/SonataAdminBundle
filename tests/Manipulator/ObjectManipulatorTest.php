@@ -88,10 +88,18 @@ class ObjectManipulatorTest extends TestCase
         ObjectManipulator::setObject($instance, $object, $fieldDescription);
     }
 
-    public function testSetObjectWithoutMappedBy(): void
+    public function testSetObjectWithNullMapped(): void
     {
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['mappedBy' => null]);
+
+        ObjectManipulator::setObject(new \stdClass(), new \stdClass(), $fieldDescription);
+    }
+
+    public function testSetObjectWithoutMappedBy(): void
+    {
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
+        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn([]);
 
         ObjectManipulator::setObject(new \stdClass(), new \stdClass(), $fieldDescription);
     }
