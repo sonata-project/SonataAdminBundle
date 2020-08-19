@@ -21,6 +21,7 @@ use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -68,7 +69,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $parentDefinition = $container->getDefinition($definition->getParent());
                 }
 
-                $this->replaceDefaultArguments([
+                $this->replaceDefaultArguments($container, [
                     0 => $id,
                     2 => CRUDController::class,
                 ], $definition, $parentDefinition);
@@ -427,6 +428,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
      * Replace the empty arguments required by the Admin service definition.
      */
     private function replaceDefaultArguments(
+        ContainerBuilder $container,
         array $defaultArguments,
         Definition $definition,
         ?Definition $parentDefinition = null
@@ -437,6 +439,10 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         foreach ($defaultArguments as $index => $value) {
             $declaredInParent = $parentDefinition && \array_key_exists($index, $parentArguments);
             $argumentValue = $declaredInParent ? $parentArguments[$index] : $arguments[$index];
+
+            if ($argumentValue instanceof Parameter) {
+                $argumentValue = $container->getParameter($argumentValue);
+            }
 
             if (null === $argumentValue || 0 === \strlen($argumentValue)) {
                 $arguments[$declaredInParent ? sprintf('index_%s', $index) : $index] = $value;
