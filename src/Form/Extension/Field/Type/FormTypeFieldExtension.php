@@ -189,11 +189,25 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             'label_render' => true,
             // NEXT_MAJOR: Remove this property and the deprecation message
             'sonata_help' => null,
-        ])
-            ->setDeprecated(
-                'sonata_help',
-                'The "sonata_help" option is deprecated since sonata-project/admin-bundle 3.60, to be removed in 4.0. Use "help" instead.'
-            );
+        ]);
+
+        // BC layer for symfony/options-resolver < 5.1.
+        // @todo: Remove the check and the contents of the `else` condition when dropping the support for lower versions.
+        if (method_exists($resolver, 'getInfo')) {
+            $resolver
+                ->setDeprecated(
+                    'sonata_help',
+                    'sonata-project/admin-bundle',
+                    '3.60',
+                    'The %name% option is deprecated since sonata-project/admin-bundle 3.60, to be removed in 4.0. Use "help" instead.'
+                );
+        } else {
+            $resolver
+                ->setDeprecated(
+                    'sonata_help',
+                    'The "sonata_help" option is deprecated since sonata-project/admin-bundle 3.60, to be removed in 4.0. Use "help" instead.'
+                );
+        }
     }
 
     /**
