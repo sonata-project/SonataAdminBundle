@@ -73,9 +73,7 @@ interface UrlGeneratorInterface
     public function generateMenuUrl(string $name, array $parameters = [], int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH): array;
 
     /**
-     * @param object $model
-     *
      * @phpstan-param T $model
      */
-    public function getUrlSafeIdentifier($model): ?string;
+    public function getUrlSafeIdentifier(object $model): string;
 }

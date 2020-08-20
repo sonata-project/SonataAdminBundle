@@ -178,22 +178,18 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function isGranted($name, ?object $object = null): bool;
 
     /**
-     * @param object $model
-     *
      * @return string a string representation of the identifiers for this instance
      *
      * @phpstan-param T $model
      */
-    public function getNormalizedIdentifier($model): ?string;
+    public function getNormalizedIdentifier(object $model): string;
 
     /**
      * Shorthand method for templating.
      *
-     * @param object $model
-     *
      * @phpstan-param T $model
      */
-    public function id($model): ?string;
+    public function id(object $model): string;
 
     public function setValidator(ValidatorInterface $validator): void;
 
@@ -234,11 +230,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getRouteBuilder(): ?RouteBuilderInterface;
 
     /**
-     * @param object $object
-     *
      * @phpstan-param T $object
      */
-    public function toString($object): string;
+    public function toString(object $object): string;
 
     public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy): void;
 
@@ -503,11 +497,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getTranslationLabel(string $label, string $context = '', string $type = ''): string;
 
     /**
-     * @param object $object
-     *
      * @phpstan-param T $object
      */
-    public function getObjectMetadata($object): MetadataInterface;
+    public function getObjectMetadata(object $object): MetadataInterface;
 
     /**
      * @return array<string, array<string, mixed>>
