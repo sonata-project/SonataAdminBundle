@@ -72,6 +72,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     public function getDatagrid(): DatagridInterface;
 
+    // NEXT_MAJOR: uncomment this method in 4.0
+    //public function getPagerType(): string;
+
     /**
      * Set base controller name.
      */
@@ -162,7 +165,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getSecurityHandler(): ?SecurityHandlerInterface;
 
     /**
-     * @param string $name
+     * @param string|array $name
      */
     public function isGranted($name, ?object $object = null): bool;
 

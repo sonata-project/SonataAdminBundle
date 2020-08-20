@@ -46,7 +46,10 @@ final class ProxyQuery implements ProxyQueryInterface
         return 'ASC';
     }
 
-    public function getSingleScalarResult()
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
+    public function getSingleScalarResult(): ?int
     {
         return 0;
     }
@@ -78,6 +81,6 @@ final class ProxyQuery implements ProxyQueryInterface
 
     public function entityJoin(array $associationMappings): string
     {
-        return 'alias';
+        throw new \BadMethodCallException('Not implemented.');
     }
 }

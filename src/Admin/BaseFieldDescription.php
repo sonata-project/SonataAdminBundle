@@ -432,7 +432,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
 
         if ('call' === self::$fieldGetters[$getterKey]['method']) {
-            return $object->__call($fieldName, $parameters);
+            return $object->{$fieldName}(...$parameters);
         }
 
         return $object->{$fieldName};

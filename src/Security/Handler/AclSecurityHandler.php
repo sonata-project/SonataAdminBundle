@@ -160,6 +160,8 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
     {
         try {
             $acl = $this->aclProvider->findAcl($objectIdentity);
+            // todo - remove `assert` statement after https://github.com/phpstan/phpstan-symfony/pull/92 is released
+            \assert($acl instanceof MutableAclInterface);
         } catch (AclNotFoundException $e) {
             return null;
         }
@@ -180,8 +182,14 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         return $acls;
     }
 
+    /**
+     * NEXT_MAJOR: change signature to `addObjectOwner(MutableAclInterface $acl, ?UserSecurityIdentity $securityIdentity = null): void`.
+     *
+     * @param MutableAclInterface $acl
+     */
     public function addObjectOwner(AclInterface $acl, ?UserSecurityIdentity $securityIdentity = null): void
     {
+        // NEXT_MAJOR: remove `if` condition
         if (!$acl instanceof MutableAclInterface) {
             throw new \TypeError(sprintf(
                 'Argument 1 passed to "%s()" must implement "%s".',
@@ -195,8 +203,16 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         }
     }
 
+    /**
+     * Add the object class ACE's to the object ACL.
+     *
+     * NEXT_MAJOR: change signature to `addObjectClassAces(MutableAclInterface $acl, array $roleInformation = []): void`.
+     *
+     * @param MutableAclInterface $acl
+     */
     public function addObjectClassAces(AclInterface $acl, array $roleInformation = []): void
     {
+        // NEXT_MAJOR: remove `assert` statement
         \assert($acl instanceof MutableAclInterface);
         $builder = new $this->maskBuilderClass();
 
@@ -226,13 +242,24 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         }
     }
 
+    /**
+     * NEXT_MAJOR: change signature to `createAcl(ObjectIdentityInterface $objectIdentity): MutableAclInterface`.
+     *
+     * @return MutableAclInterface
+     */
     public function createAcl(ObjectIdentityInterface $objectIdentity)
     {
         return $this->aclProvider->createAcl($objectIdentity);
     }
 
+    /**
+     * NEXT_MAJOR: change signature to `updateAcl(MutableAclInterface $acl): void`.
+     *
+     * @param MutableAclInterface $acl
+     */
     public function updateAcl(AclInterface $acl): void
     {
+        // NEXT_MAJOR: remove `assert` statement
         \assert($acl instanceof MutableAclInterface);
         $this->aclProvider->updateAcl($acl);
     }
@@ -242,6 +269,13 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         $this->aclProvider->deleteAcl($objectIdentity);
     }
 
+    /**
+     * NEXT_MAJOR: change signature to `findClassAceIndexByRole(MutableAclInterface $acl, string $role): int|string|false`.
+     *
+     * @param MutableAclInterface $acl
+     *
+     * @return array-key|false
+     */
     public function findClassAceIndexByRole(AclInterface $acl, $role)
     {
         foreach ($acl->getClassAces() as $index => $entry) {
@@ -253,6 +287,13 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         return false;
     }
 
+    /**
+     * NEXT_MAJOR: change signature to `findClassAceIndexByUsername(MutableAclInterface $acl, string $username): int|string|false`.
+     *
+     * @param MutableAclInterface $acl
+     *
+     * @return array-key|false
+     */
     public function findClassAceIndexByUsername(AclInterface $acl, $username)
     {
         foreach ($acl->getClassAces() as $index => $entry) {
