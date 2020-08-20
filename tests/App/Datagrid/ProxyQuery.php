@@ -46,6 +46,9 @@ final class ProxyQuery implements ProxyQueryInterface
         return 'ASC';
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function getSingleScalarResult()
     {
         return 0;

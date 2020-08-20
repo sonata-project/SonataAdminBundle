@@ -19,7 +19,6 @@ use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Exception\NotAllAclsFoundException;
-use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 use Symfony\Component\Security\Acl\Model\MutableAclProviderInterface;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
@@ -156,10 +155,12 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         $this->deleteAcl($objectIdentity);
     }
 
-    public function getObjectAcl(ObjectIdentityInterface $objectIdentity)
+    public function getObjectAcl(ObjectIdentityInterface $objectIdentity): ?MutableAclInterface
     {
         try {
             $acl = $this->aclProvider->findAcl($objectIdentity);
+            // todo - remove `assert` statement after https://github.com/phpstan/phpstan-symfony/pull/92 is released
+            \assert($acl instanceof MutableAclInterface);
         } catch (AclNotFoundException $e) {
             return null;
         }
@@ -180,24 +181,16 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         return $acls;
     }
 
-    public function addObjectOwner(AclInterface $acl, ?UserSecurityIdentity $securityIdentity = null): void
+    public function addObjectOwner(MutableAclInterface $acl, ?UserSecurityIdentity $securityIdentity = null): void
     {
-        if (!$acl instanceof MutableAclInterface) {
-            throw new \TypeError(sprintf(
-                'Argument 1 passed to "%s()" must implement "%s".',
-                __METHOD__,
-                MutableAclInterface::class
-            ));
-        }
         if (false === $this->findClassAceIndexByUsername($acl, $securityIdentity->getUsername())) {
             // only add if not already exists
             $acl->insertObjectAce($securityIdentity, \constant("$this->maskBuilderClass::MASK_OWNER"));
         }
     }
 
-    public function addObjectClassAces(AclInterface $acl, array $roleInformation = []): void
+    public function addObjectClassAces(MutableAclInterface $acl, array $roleInformation = []): void
     {
-        \assert($acl instanceof MutableAclInterface);
         $builder = new $this->maskBuilderClass();
 
         foreach ($roleInformation as $role => $permissions) {
@@ -226,14 +219,13 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         }
     }
 
-    public function createAcl(ObjectIdentityInterface $objectIdentity)
+    public function createAcl(ObjectIdentityInterface $objectIdentity): MutableAclInterface
     {
         return $this->aclProvider->createAcl($objectIdentity);
     }
 
-    public function updateAcl(AclInterface $acl): void
+    public function updateAcl(MutableAclInterface $acl): void
     {
-        \assert($acl instanceof MutableAclInterface);
         $this->aclProvider->updateAcl($acl);
     }
 
@@ -242,7 +234,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         $this->aclProvider->deleteAcl($objectIdentity);
     }
 
-    public function findClassAceIndexByRole(AclInterface $acl, $role)
+    public function findClassAceIndexByRole(MutableAclInterface $acl, $role)
     {
         foreach ($acl->getClassAces() as $index => $entry) {
             if ($entry->getSecurityIdentity() instanceof RoleSecurityIdentity && $entry->getSecurityIdentity()->getRole() === $role) {
@@ -253,7 +245,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         return false;
     }
 
-    public function findClassAceIndexByUsername(AclInterface $acl, $username)
+    public function findClassAceIndexByUsername(MutableAclInterface $acl, $username)
     {
         foreach ($acl->getClassAces() as $index => $entry) {
             if ($entry->getSecurityIdentity() instanceof UserSecurityIdentity && $entry->getSecurityIdentity()->getUsername() === $username) {
