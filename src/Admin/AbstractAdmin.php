@@ -1982,11 +1982,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->securityHandler;
     }
 
-    /**
-     * NEXT_MAJOR: Decide the type declaration for the $name argument, since it is
-     * passed as argument 1 for `SecurityHandlerInterface::isGranted()`, which
-     * accepts string and array.
-     */
     public function isGranted($name, ?object $object = null): bool
     {
         $objectRef = $object ? sprintf('/%s#%s', spl_object_hash($object), $this->id($object)) : '';
@@ -1999,32 +1994,17 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->cacheIsGranted[$key];
     }
 
-    /**
-     * NEXT_MAJOR: Decide the type declaration for the $model argument, since it is
-     * passed as argument 1 for `ModelManagerInterface::getUrlSafeIdentifier()`, which
-     * accepts null.
-     */
-    public function getUrlSafeIdentifier($model): ?string
+    public function getUrlSafeIdentifier(object $model): string
     {
         return $this->getModelManager()->getUrlSafeIdentifier($model);
     }
 
-    /**
-     * NEXT_MAJOR: Decide the type declaration for the $model argument, since it is
-     * passed as argument 1 for `ModelManagerInterface::getNormalizedIdentifier()`, which
-     * accepts null.
-     */
-    public function getNormalizedIdentifier($model): ?string
+    public function getNormalizedIdentifier(object $model): string
     {
         return $this->getModelManager()->getNormalizedIdentifier($model);
     }
 
-    /**
-     * NEXT_MAJOR: Decide the type declaration for the $model argument, since it is
-     * passed as argument 1 for `ModelManagerInterface::getNormalizedIdentifier()`, which
-     * accepts null.
-     */
-    public function id($model): ?string
+    public function id(object $model): string
     {
         return $this->getNormalizedIdentifier($model);
     }
@@ -2096,24 +2076,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->routeBuilder;
     }
 
-    /**
-     * NEXT_MAJOR: Decide the type declaration for the $object argument, since there
-     * are tests ensuring to accept null (`GetShortObjectDescriptionActionTest::testGetShortObjectDescriptionActionEmptyObjectIdAsJson()`).
-     */
-    public function toString($object): string
+    public function toString(object $object): string
     {
-        // NEXT_MAJOR: Remove this check and use object as param typehint.
-        if (!\is_object($object)) {
-            @trigger_error(sprintf(
-                'Passing %s as argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.x.'
-                .' Only object will be allowed in version 4.0.',
-                \gettype($object),
-                __METHOD__
-            ), E_USER_DEPRECATED);
-
-            return '';
-        }
-
         if (method_exists($object, '__toString') && null !== $object->__toString()) {
             return $object->__toString();
         }
@@ -2179,11 +2143,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->getSecurityHandler() instanceof AclSecurityHandlerInterface;
     }
 
-    /**
-     * NEXT_MAJOR: Decide the type declaration for the $object argument, since it is
-     * passed as argument 1 to `toString()` method, which currently accepts null.
-     */
-    public function getObjectMetadata($object): MetadataInterface
+    public function getObjectMetadata(object $object): MetadataInterface
     {
         return new Metadata($this->toString($object));
     }
