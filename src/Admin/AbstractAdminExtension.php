@@ -51,10 +51,6 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     {
     }
 
-    public function validate(AdminInterface $admin, ErrorElement $errorElement, object $object): void
-    {
-    }
-
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query): void
     {
     }

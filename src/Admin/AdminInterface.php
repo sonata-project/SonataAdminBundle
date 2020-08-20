@@ -169,18 +169,11 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function isGranted($name, ?object $object = null): bool;
 
     /**
-     * @param mixed $model
-     *
      * @return string a string representation of the identifiers for this instance
      */
-    public function getNormalizedIdentifier($model): ?string;
+    public function getNormalizedIdentifier(object $model): ?string;
 
-    /**
-     * Shorthand method for templating.
-     *
-     * @param object $model
-     */
-    public function id($model): ?string;
+    public function id(object $model): ?string;
 
     public function setValidator(ValidatorInterface $validator): void;
 
@@ -217,10 +210,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     public function getRouteBuilder(): ?RouteBuilderInterface;
 
-    /**
-     * @param object $object
-     */
-    public function toString($object): string;
+    public function toString(object $object): string;
 
     public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy): void;
 
@@ -291,16 +281,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Return true if the Admin is related to a subject.
      */
     public function hasSubject(): bool;
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @param object $object
-     *
-     * @deprecated this feature cannot be stable, use a custom validator,
-     *             the feature will be removed with Symfony 2.2
-     */
-    public function validate(ErrorElement $errorElement, $object): void;
 
     public function showIn(string $context): bool;
 
@@ -457,10 +437,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getTranslationLabel(string $label, string $context = '', string $type = ''): string;
 
-    /**
-     * @param object $object
-     */
-    public function getObjectMetadata($object): MetadataInterface;
+    public function getObjectMetadata(object $object): MetadataInterface;
 
     /**
      * @return array<string, array<string, mixed>>

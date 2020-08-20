@@ -557,10 +557,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->getModelManager()->getDataSourceIterator($datagrid, $fields);
     }
 
-    public function validate(ErrorElement $errorElement, $object): void
-    {
-    }
-
     /**
      * define custom variable.
      */
@@ -1112,8 +1108,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         foreach ($this->getExtensions() as $extension) {
             $extension->configureFormFields($mapper);
         }
-
-        $this->attachInlineValidator();
     }
 
     public function attachAdminClass(FieldDescriptionInterface $fieldDescription): void
@@ -1966,11 +1960,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->securityHandler;
     }
 
-    /**
-     * NEXT_MAJOR: Decide the type declaration for the $name argument, since it is
-     * passed as argument 1 for `SecurityHandlerInterface::isGranted()`, which
-     * accepts string and array.
-     */
     public function isGranted($name, ?object $object = null): bool
     {
         $objectRef = $object ? sprintf('/%s#%s', spl_object_hash($object), $this->id($object)) : '';
@@ -1983,32 +1972,17 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->cacheIsGranted[$key];
     }
 
-    /**
-     * NEXT_MAJOR: Decide the type declaration for the $model argument, since it is
-     * passed as argument 1 for `ModelManagerInterface::getUrlSafeIdentifier()`, which
-     * accepts null.
-     */
-    public function getUrlSafeIdentifier($model): ?string
+    public function getUrlSafeIdentifier(object $model): ?string
     {
         return $this->getModelManager()->getUrlSafeIdentifier($model);
     }
 
-    /**
-     * NEXT_MAJOR: Decide the type declaration for the $model argument, since it is
-     * passed as argument 1 for `ModelManagerInterface::getNormalizedIdentifier()`, which
-     * accepts null.
-     */
-    public function getNormalizedIdentifier($model): ?string
+    public function getNormalizedIdentifier(object $model): ?string
     {
         return $this->getModelManager()->getNormalizedIdentifier($model);
     }
 
-    /**
-     * NEXT_MAJOR: Decide the type declaration for the $model argument, since it is
-     * passed as argument 1 for `ModelManagerInterface::getNormalizedIdentifier()`, which
-     * accepts null.
-     */
-    public function id($model): ?string
+    public function id(object $model): ?string
     {
         return $this->getNormalizedIdentifier($model);
     }
@@ -2080,16 +2054,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->routeBuilder;
     }
 
-    /**
-     * NEXT_MAJOR: Decide the type declaration for the $object argument, since there
-     * are tests ensuring to accept null (`GetShortObjectDescriptionActionTest::testGetShortObjectDescriptionActionEmptyObjectIdAsJson()`).
-     */
-    public function toString($object): string
+    public function toString(object $object): string
     {
-        if (!\is_object($object)) {
-            return '';
-        }
-
         if (method_exists($object, '__toString') && null !== $object->__toString()) {
             return (string) $object;
         }
@@ -2155,11 +2121,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->getSecurityHandler() instanceof AclSecurityHandlerInterface;
     }
 
-    /**
-     * NEXT_MAJOR: Decide the type declaration for the $object argument, since it is
-     * passed as argument 1 to `toString()` method, which currently accepts null.
-     */
-    public function getObjectMetadata($object): MetadataInterface
+    public function getObjectMetadata(object $object): MetadataInterface
     {
         return new Metadata($this->toString($object));
     }
@@ -2586,47 +2548,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         throw new \LogicException(sprintf('Unable to find the subclass `%s` for admin `%s`', $name, static::class));
-    }
-
-    /**
-     * Attach the inline validator to the model metadata, this must be done once per admin.
-     */
-    protected function attachInlineValidator(): void
-    {
-        $admin = $this;
-
-        // add the custom inline validation option
-        $metadata = $this->validator->getMetadataFor($this->getClass());
-        if (!$metadata instanceof GenericMetadata) {
-            throw new \UnexpectedValueException(
-                sprintf(
-                    'Cannot add inline validator for %s because its metadata is an instance of %s instead of %s',
-                    $this->getClass(),
-                    \get_class($metadata),
-                    GenericMetadata::class
-                )
-            );
-        }
-
-        $metadata->addConstraint(new InlineConstraint([
-            'service' => $this,
-            'method' => static function (ErrorElement $errorElement, $object) use ($admin): void {
-                /* @var \Sonata\AdminBundle\Admin\AdminInterface $admin */
-
-                // This avoid the main validation to be cascaded to children
-                // The problem occurs when a model Page has a collection of Page as property
-                if ($admin->hasSubject() && spl_object_hash($object) !== spl_object_hash($admin->getSubject())) {
-                    return;
-                }
-
-                $admin->validate($errorElement, $object);
-
-                foreach ($admin->getExtensions() as $extension) {
-                    $extension->validate($admin, $errorElement, $object);
-                }
-            },
-            'serializingWarning' => true,
-        ]));
     }
 
     /**
