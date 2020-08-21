@@ -3008,8 +3008,8 @@ EOT;
         $list = [];
 
         if (\in_array($action, ['tree', 'show', 'edit', 'delete', 'list', 'batch'], true)
-            && $this->hasAccess('create')
             && $this->hasRoute('create')
+            && $this->hasAccess('create')
         ) {
             $list['create'] = [
                 // NEXT_MAJOR: Remove this line and use commented line below it instead
@@ -3019,8 +3019,8 @@ EOT;
         }
 
         if (\in_array($action, ['show', 'delete', 'acl', 'history'], true)
-            && $this->canAccessObject('edit', $object)
             && $this->hasRoute('edit')
+            && $this->canAccessObject('edit', $object)
         ) {
             $list['edit'] = [
                 // NEXT_MAJOR: Remove this line and use commented line below it instead
@@ -3030,8 +3030,8 @@ EOT;
         }
 
         if (\in_array($action, ['show', 'edit', 'acl'], true)
-            && $this->canAccessObject('history', $object)
             && $this->hasRoute('history')
+            && $this->canAccessObject('history', $object)
         ) {
             $list['history'] = [
                 // NEXT_MAJOR: Remove this line and use commented line below it instead
@@ -3042,8 +3042,8 @@ EOT;
 
         if (\in_array($action, ['edit', 'history'], true)
             && $this->isAclEnabled()
-            && $this->canAccessObject('acl', $object)
             && $this->hasRoute('acl')
+            && $this->canAccessObject('acl', $object)
         ) {
             $list['acl'] = [
                 // NEXT_MAJOR: Remove this line and use commented line below it instead
@@ -3053,9 +3053,9 @@ EOT;
         }
 
         if (\in_array($action, ['edit', 'history', 'acl'], true)
+            && $this->hasRoute('show')
             && $this->canAccessObject('show', $object)
             && \count($this->getShow()) > 0
-            && $this->hasRoute('show')
         ) {
             $list['show'] = [
                 // NEXT_MAJOR: Remove this line and use commented line below it instead
@@ -3065,8 +3065,8 @@ EOT;
         }
 
         if (\in_array($action, ['show', 'edit', 'delete', 'acl', 'batch'], true)
-            && $this->hasAccess('list')
             && $this->hasRoute('list')
+            && $this->hasAccess('list')
         ) {
             $list['list'] = [
                 // NEXT_MAJOR: Remove this line and use commented line below it instead
