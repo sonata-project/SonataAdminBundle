@@ -17,7 +17,7 @@ use Doctrine\Inflector\InflectorFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionCollectionInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
@@ -602,7 +602,7 @@ class CRUDController extends Controller
         $this->admin->setSubject($object);
 
         $fields = $this->admin->getShow();
-        \assert($fields instanceof FieldDescriptionCollection);
+        \assert($fields instanceof FieldDescriptionCollectionInterface);
 
         $template = $this->templateRegistry->getTemplate('show');
 

@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionCollectionInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -37,7 +38,7 @@ class ListMapperTest extends TestCase
     private $listMapper;
 
     /**
-     * @var FieldDescriptionCollection
+     * @var FieldDescriptionCollectionInterface
      */
     private $fieldDescriptionCollection;
 

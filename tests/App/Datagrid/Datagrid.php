@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\App\Datagrid;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionCollectionInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
@@ -78,7 +78,7 @@ final class Datagrid implements DatagridInterface
         return [];
     }
 
-    public function getColumns(): FieldDescriptionCollection
+    public function getColumns(): FieldDescriptionCollectionInterface
     {
         throw new \BadMethodCallException('Not implemented.');
     }

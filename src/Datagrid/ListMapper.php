@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Datagrid;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionCollectionInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Mapper\BaseMapper;
@@ -33,7 +33,7 @@ class ListMapper extends BaseMapper
     public const TYPE_SELECT = 'select';
 
     /**
-     * @var FieldDescriptionCollection
+     * @var FieldDescriptionCollectionInterface
      */
     protected $list;
 
@@ -44,7 +44,7 @@ class ListMapper extends BaseMapper
 
     public function __construct(
         ListBuilderInterface $listBuilder,
-        FieldDescriptionCollection $list,
+        FieldDescriptionCollectionInterface $list,
         AdminInterface $admin
     ) {
         parent::__construct($listBuilder, $admin);

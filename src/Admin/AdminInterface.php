@@ -186,11 +186,11 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     public function getValidator(): ?ValidatorInterface;
 
-    public function getShow(): ?FieldDescriptionCollection;
+    public function getShow(): ?FieldDescriptionCollectionInterface;
 
     public function setFormTheme(array $formTheme): void;
 
-    public function getList(): ?FieldDescriptionCollection;
+    public function getList(): ?FieldDescriptionCollectionInterface;
 
     /**
      * @return string[]

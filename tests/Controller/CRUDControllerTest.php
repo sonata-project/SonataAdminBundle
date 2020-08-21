@@ -754,7 +754,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('show', $this->parameters['action']);
-        $this->assertInstanceOf(FieldDescriptionCollection::class, $this->parameters['elements']);
+        $this->assertSame($show, $this->parameters['elements']);
         $this->assertSame($object, $this->parameters['object']);
 
         $this->assertSame([], $this->session->getFlashBag()->all());

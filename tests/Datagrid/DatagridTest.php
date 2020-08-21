@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Datagrid;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionCollectionInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
@@ -47,7 +48,7 @@ class DatagridTest extends TestCase
     private $query;
 
     /**
-     * @var FieldDescriptionCollection
+     * @var FieldDescriptionCollectionInterface
      */
     private $columns;
 

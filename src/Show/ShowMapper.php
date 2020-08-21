@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Show;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionCollectionInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
@@ -37,7 +37,7 @@ class ShowMapper extends BaseGroupedMapper
 
     public function __construct(
         ShowBuilderInterface $showBuilder,
-        FieldDescriptionCollection $list,
+        FieldDescriptionCollectionInterface $list,
         AdminInterface $admin
     ) {
         parent::__construct($showBuilder, $admin);

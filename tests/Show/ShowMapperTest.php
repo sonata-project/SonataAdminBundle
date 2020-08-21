@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionCollectionInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -51,7 +52,7 @@ class ShowMapperTest extends TestCase
     private $showBuilder;
 
     /**
-     * @var FieldDescriptionCollection
+     * @var FieldDescriptionCollectionInterface
      */
     private $fieldDescriptionCollection;
 

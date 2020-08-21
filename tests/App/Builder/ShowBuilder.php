@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\App\Builder;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionCollectionInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 
@@ -24,12 +25,12 @@ final class ShowBuilder implements ShowBuilderInterface
     {
     }
 
-    public function getBaseList(array $options = []): FieldDescriptionCollection
+    public function getBaseList(array $options = []): FieldDescriptionCollectionInterface
     {
         return new FieldDescriptionCollection();
     }
 
-    public function addField(FieldDescriptionCollection $list, $type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin): void
+    public function addField(FieldDescriptionCollectionInterface $list, $type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin): void
     {
         $fieldDescription->setType($type);
         $fieldDescription->setAdmin($admin);

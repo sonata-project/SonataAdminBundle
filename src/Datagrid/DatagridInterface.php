@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Datagrid;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionCollectionInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\FormInterface;
@@ -53,7 +53,7 @@ interface DatagridInterface
      */
     public function getValues(): array;
 
-    public function getColumns(): FieldDescriptionCollection;
+    public function getColumns(): FieldDescriptionCollectionInterface;
 
     /**
      * @param mixed $value

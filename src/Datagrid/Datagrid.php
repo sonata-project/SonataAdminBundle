@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Datagrid;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionCollectionInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\CallbackTransformer;
@@ -41,7 +41,7 @@ final class Datagrid implements DatagridInterface
     private $values = [];
 
     /**
-     * @var FieldDescriptionCollection
+     * @var FieldDescriptionCollectionInterface
      */
     private $columns;
 
@@ -82,7 +82,7 @@ final class Datagrid implements DatagridInterface
      */
     public function __construct(
         ProxyQueryInterface $query,
-        FieldDescriptionCollection $columns,
+        FieldDescriptionCollectionInterface $columns,
         PagerInterface $pager,
         FormBuilderInterface $formBuilder,
         array $values = []
@@ -272,7 +272,7 @@ final class Datagrid implements DatagridInterface
         return false;
     }
 
-    public function getColumns(): FieldDescriptionCollection
+    public function getColumns(): FieldDescriptionCollectionInterface
     {
         return $this->columns;
     }

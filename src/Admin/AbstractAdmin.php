@@ -427,12 +427,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The list collection.
      *
-     * @var FieldDescriptionCollection|null
+     * @var FieldDescriptionCollectionInterface|null
      */
     private $list;
 
     /**
-     * @var FieldDescriptionCollection|null
+     * @var FieldDescriptionCollectionInterface|null
      */
     private $show;
 
@@ -1162,7 +1162,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->form;
     }
 
-    public function getList(): ?FieldDescriptionCollection
+    public function getList(): ?FieldDescriptionCollectionInterface
     {
         $this->buildList();
 
@@ -2023,7 +2023,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->validator;
     }
 
-    public function getShow(): ?FieldDescriptionCollection
+    public function getShow(): ?FieldDescriptionCollectionInterface
     {
         $this->buildShow();
 
