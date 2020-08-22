@@ -45,7 +45,7 @@ class SearchHandler
     {
         if ($deprecatedPoolOrCaseSensitive instanceof Pool) {
             @trigger_error(sprintf(
-                'Passing %s as argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.x.'
+                'Passing %s as argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.74.'
                 .' It will accept only bool in version 4.0.',
                 Pool::class,
                 __METHOD__

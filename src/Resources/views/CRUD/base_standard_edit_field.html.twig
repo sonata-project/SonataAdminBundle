@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 
-{% deprecated 'The "base_standard_edit_field.html.twig" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0' %}
+{% deprecated 'The "base_standard_edit_field.html.twig" is deprecated since sonata-project/admin-bundle 3.74 and will be removed in 4.0' %}
 
 <div class="form-group{% if field_element.var.errors|length > 0 %} has-error{% endif %}" id="sonata-ba-field-container-{{ field_element.vars.id }}">
     {% block label %}
@@ -26,7 +26,7 @@ file that was distributed with this source code.
 
         {# NEXT_MAJOR: Remove this block #}
         {% if field_description.help %}
-            {% deprecated 'The "help" option is deprecated in field description since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use Symfony Form "help" option instead.' %}
+            {% deprecated 'The "help" option is deprecated in field description since sonata-project/admin-bundle 3.74, to be removed in 4.0. Use Symfony Form "help" option instead.' %}
             <span class="help-block">{% block help %}{{ field_description.help|raw }}{% endblock %}</span>
         {% endif %}
 
