@@ -128,6 +128,9 @@ If you have implemented a custom admin extension, you must adapt the signature o
  * `configureBatchActions`
  * `getAccessMapping`
 
+## AdminHelper
+The `AdminHelper::__construct` method changes its `Pool` param to a `PropertyAccessorInterface` one.
+
 ## BreadcrumbsBuilder
 The `buildBreacrumbs` method may no longer be called from outside the class.
 

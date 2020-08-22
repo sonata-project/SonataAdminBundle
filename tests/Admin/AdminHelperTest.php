@@ -17,10 +17,8 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Bar;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -30,7 +28,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PropertyAccess\PropertyAccessorBuilder;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class AdminHelperTest extends TestCase
 {
@@ -41,10 +39,7 @@ class AdminHelperTest extends TestCase
 
     protected function setUp(): void
     {
-        $container = new Container();
-
-        $pool = new Pool($container, 'title', 'logo.png');
-        $this->helper = new AdminHelper($pool);
+        $this->helper = new AdminHelper(PropertyAccess::createPropertyAccessor());
     }
 
     public function testGetChildFormBuilder(): void
@@ -115,13 +110,6 @@ class AdminHelperTest extends TestCase
 
     public function testAppendFormFieldElement(): void
     {
-        $container = new Container();
-
-        $propertyAccessorBuilder = new PropertyAccessorBuilder();
-        $propertyAccessor = $propertyAccessorBuilder->getPropertyAccessor();
-        $pool = new Pool($container, 'title', 'logo.png', [], $propertyAccessor);
-        $helper = new AdminHelper($pool);
-
         $admin = $this->createMock(AdminInterface::class);
         $admin
             ->method('getClass')
@@ -211,7 +199,7 @@ class AdminHelperTest extends TestCase
         $associationAdmin->expects($this->atLeastOnce())->method('setSubject')->with($bar);
         $admin->method('getFormBuilder')->willReturn($formBuilder);
 
-        $finalForm = $helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
+        $finalForm = $this->helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
 
         foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
             $this->assertFalse($childField->has('_delete'));
@@ -220,7 +208,7 @@ class AdminHelperTest extends TestCase
         $deleteFormBuilder = new FormBuilder('_delete', null, $eventDispatcher, $formFactory);
         $subChildFormBuilder->add($deleteFormBuilder, CheckboxType::class, ['delete' => false]);
 
-        $finalForm = $helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
+        $finalForm = $this->helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
 
         foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
             $this->assertTrue($childField->has('_delete'));

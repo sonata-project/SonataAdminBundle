@@ -22,6 +22,7 @@ use Sonata\AdminBundle\Util\FormBuilderIterator;
 use Sonata\AdminBundle\Util\FormViewIterator;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * @final since sonata-project/admin-bundle 3.52
@@ -36,13 +37,13 @@ class AdminHelper
     private const FORM_FIELD_DELETE = '_delete';
 
     /**
-     * @var Pool
+     * @var PropertyAccessorInterface
      */
-    protected $pool;
+    protected $propertyAccessor;
 
-    public function __construct(Pool $pool)
+    public function __construct(PropertyAccessorInterface $propertyAccessor)
     {
-        $this->pool = $pool;
+        $this->propertyAccessor = $propertyAccessor;
     }
 
     /**
@@ -111,11 +112,9 @@ class AdminHelper
         //Child form not found (probably nested one)
         //if childFormBuilder was not found resulted in fatal error getName() method call on non object
         if (!$childFormBuilder) {
-            $propertyAccessor = $this->pool->getPropertyAccessor();
-
             $path = $this->getElementAccessPath($elementId, $subject);
 
-            $collection = $propertyAccessor->getValue($subject, $path);
+            $collection = $this->propertyAccessor->getValue($subject, $path);
 
             if ($collection instanceof DoctrinePersistentCollection || $collection instanceof PersistentCollection) {
                 //since doctrine 2.4
@@ -127,7 +126,7 @@ class AdminHelper
             }
 
             $collection->add(new $modelClassName());
-            $propertyAccessor->setValue($subject, $path, $collection);
+            $this->propertyAccessor->setValue($subject, $path, $collection);
 
             $fieldDescription = null;
         } else {
@@ -195,8 +194,6 @@ class AdminHelper
      */
     public function getElementAccessPath(string $elementId, $model): string
     {
-        $propertyAccessor = $this->pool->getPropertyAccessor();
-
         $idWithoutIdentifier = preg_replace('/^[^_]*_/', '', $elementId);
         $initialPath = preg_replace('#(_(\d+)_)#', '[$2]_', $idWithoutIdentifier);
 
@@ -208,7 +205,7 @@ class AdminHelper
             $currentPath .= empty($currentPath) ? $part : '_'.$part;
             $separator = empty($totalPath) ? '' : '.';
 
-            if ($propertyAccessor->isReadable($model, $totalPath.$separator.$currentPath)) {
+            if ($this->propertyAccessor->isReadable($model, $totalPath.$separator.$currentPath)) {
                 $totalPath .= $separator.$currentPath;
                 $currentPath = '';
             }
