@@ -184,7 +184,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         // set help if provided
         if (isset($options['help'])) {
             @trigger_error(sprintf(
-                'Passing "help" option to "%s()" is deprecated since sonata-project/admin-bundle 3.x'
+                'Passing "help" option to "%s()" is deprecated since sonata-project/admin-bundle 3.74'
                 .' and the option will be removed in 4.0.'
                 .' Use Symfony Form "help" option instead.',
                 __METHOD__
@@ -458,7 +458,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      *
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0. Use Symfony Form "help" option instead.
+     * @deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0. Use Symfony Form "help" option instead.
      *
      * @param string $help
      */
@@ -466,7 +466,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
             @trigger_error(sprintf(
-                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0.'
                 .' Use Symfony Form "help" option instead.',
                 __METHOD__
             ), E_USER_DEPRECATED);
@@ -478,7 +478,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     public function getHelp()
     {
         @trigger_error(sprintf(
-            'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+            'The "%s()" method is deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0.'
             .' Use Symfony Form "help" option instead.',
             __METHOD__
         ), E_USER_DEPRECATED);

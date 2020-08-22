@@ -1,8 +1,8 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.x to 3.x
-=======================
+UPGRADE FROM 3.73 to 3.74
+=========================
 
 ## Deprecated `Sonata\AdminBundle\Datagrid\ProxyQueryInterface::getSingleScalarResult`
 

@@ -2,6 +2,40 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.74.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.73.0...3.74.0) - 2020-08-22
+### Added
+- [[#6299](https://github.com/sonata-project/SonataAdminBundle/pull/6299)] Added support for symfony/expression-language:^5.1 ([@phansys](https://github.com/phansys))
+- [[#6299](https://github.com/sonata-project/SonataAdminBundle/pull/6299)] Added support for symfony/options-resolver:^5.1 ([@phansys](https://github.com/phansys))
+- [[#6299](https://github.com/sonata-project/SonataAdminBundle/pull/6299)] Added support for symfony/property-access:^5.1 ([@phansys](https://github.com/phansys))
+- [[#6127](https://github.com/sonata-project/SonataAdminBundle/pull/6127)] Added support for `doctrine/common` 3 ([@jaikdean](https://github.com/jaikdean))
+- [[#6256](https://github.com/sonata-project/SonataAdminBundle/pull/6256)] Added compatibility with Twig 3 ([@franmomu](https://github.com/franmomu))
+- [[#6252](https://github.com/sonata-project/SonataAdminBundle/pull/6252)] Support for 'label_translation_parameters' in filter form types ([@tkuska](https://github.com/tkuska))
+- [[#6212](https://github.com/sonata-project/SonataAdminBundle/pull/6212)] Add support for SonataBlockBundle 4.0 ([@jordisala1991](https://github.com/jordisala1991))
+
+### Changed
+- [[#6251](https://github.com/sonata-project/SonataAdminBundle/pull/6251)] Cast $allItems to an boolean to prevent typehint error ([@nieuwenhuisen](https://github.com/nieuwenhuisen))
+
+### Deprecated
+- [[#6308](https://github.com/sonata-project/SonataAdminBundle/pull/6308)] Passing a Pool to SearchHandler class ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6291](https://github.com/sonata-project/SonataAdminBundle/pull/6291)] Deprecated `Sonata\AdminBundle\Datagrid\ProxyQueryInterface::getSingleScalarResult` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6238](https://github.com/sonata-project/SonataAdminBundle/pull/6238)] Deprecated `base_filter_field.html.twig` template ([@franmomu](https://github.com/franmomu))
+- [[#6238](https://github.com/sonata-project/SonataAdminBundle/pull/6238)] Deprecated `base_inline_edit_field.html.twig` template ([@franmomu](https://github.com/franmomu))
+- [[#6238](https://github.com/sonata-project/SonataAdminBundle/pull/6238)] Deprecated `base_standard_edit_field.html.twig` template ([@franmomu](https://github.com/franmomu))
+- [[#6238](https://github.com/sonata-project/SonataAdminBundle/pull/6238)] Deprecated `edit_array.html.twig ` template ([@franmomu](https://github.com/franmomu))
+- [[#6238](https://github.com/sonata-project/SonataAdminBundle/pull/6238)] Deprecated `edit_boolean.html.twig` template ([@franmomu](https://github.com/franmomu))
+- [[#6238](https://github.com/sonata-project/SonataAdminBundle/pull/6238)] Deprecated `edit_file.html.twig` template ([@franmomu](https://github.com/franmomu))
+- [[#6238](https://github.com/sonata-project/SonataAdminBundle/pull/6238)] Deprecated `edit_integer.html.twig` template ([@franmomu](https://github.com/franmomu))
+- [[#6238](https://github.com/sonata-project/SonataAdminBundle/pull/6238)] Deprecated `edit_sonata_type_immutable_array.html.twig` template ([@franmomu](https://github.com/franmomu))
+- [[#6238](https://github.com/sonata-project/SonataAdminBundle/pull/6238)] Deprecated `edit_string.html.twig` template ([@franmomu](https://github.com/franmomu))
+- [[#6238](https://github.com/sonata-project/SonataAdminBundle/pull/6238)] Deprecated `edit_text.html.twig` template ([@franmomu](https://github.com/franmomu))
+- [[#6215](https://github.com/sonata-project/SonataAdminBundle/pull/6215)] Deprecated `BaseFieldDescription::setHelp()` and `BaseFieldDescription::getHelp()` ([@franmomu](https://github.com/franmomu))
+- [[#6215](https://github.com/sonata-project/SonataAdminBundle/pull/6215)] Deprecated passing `help` option to `BaseFieldDescription::setOptions()` ([@franmomu](https://github.com/franmomu))
+- [[#6215](https://github.com/sonata-project/SonataAdminBundle/pull/6215)] Deprecated `FormMapper::setHelps()` and `FormMapper:: addHelp()` ([@franmomu](https://github.com/franmomu))
+- [[#6215](https://github.com/sonata-project/SonataAdminBundle/pull/6215)] Deprecated passing `help` option to `FormMapper::add()` third argument containing HTML code without also passing `help_html` with `true` value ([@franmomu](https://github.com/franmomu))
+
+### Fixed
+- [[#6297](https://github.com/sonata-project/SonataAdminBundle/pull/6297)] ObjectManipulator::setObject does not throw an error anymore for DoctrineODM Embedded collections ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [3.73.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.72.0...3.73.0) - 2020-07-31
 ### Added
 - [[#6200](https://github.com/sonata-project/SonataAdminBundle/pull/6200)] Added support for columns not belonging to the model to the list view. ([@jorrit](https://github.com/jorrit))

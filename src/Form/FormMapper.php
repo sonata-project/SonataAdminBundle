@@ -143,7 +143,7 @@ class FormMapper extends BaseGroupedMapper
                 if (!isset($options['help_html']) && $containsHtml) {
                     @trigger_error(
                         'Using HTML syntax within the "help" option and not setting the "help_html" option to "true" is deprecated'
-                        .' since sonata-project/admin-bundle 3.x and it will not work in version 4.0.',
+                        .' since sonata-project/admin-bundle 3.74 and it will not work in version 4.0.',
                         E_USER_DEPRECATED
                     );
 
@@ -253,14 +253,14 @@ class FormMapper extends BaseGroupedMapper
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0. Use Symfony Form "help" option instead.
+     * @deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0. Use Symfony Form "help" option instead.
      *
      * @return FormMapper
      */
     public function setHelps(array $helps = [])
     {
         @trigger_error(sprintf(
-            'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+            'The "%s()" method is deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0.'
             .' Use Symfony Form "help" option instead.',
             __METHOD__
         ), E_USER_DEPRECATED);
@@ -275,7 +275,7 @@ class FormMapper extends BaseGroupedMapper
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0. Use Symfony Form "help" option instead.
+     * @deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0. Use Symfony Form "help" option instead.
      *
      * @return FormMapper
      */
@@ -283,7 +283,7 @@ class FormMapper extends BaseGroupedMapper
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[2] ?? null)) {
             @trigger_error(sprintf(
-                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0.'
                 .' Use Symfony Form "help" option instead.',
                 __METHOD__
             ), E_USER_DEPRECATED);

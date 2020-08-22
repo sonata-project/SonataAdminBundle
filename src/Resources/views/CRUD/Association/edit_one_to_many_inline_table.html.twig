@@ -52,7 +52,7 @@ file that was distributed with this source code.
                             {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name].help %}
                                 <span class="help-block">
                                     {%- block help %}
-                                        {% deprecated 'The "help" option is deprecated in field description since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use Symfony Form "help" option instead.' %}
+                                        {% deprecated 'The "help" option is deprecated in field description since sonata-project/admin-bundle 3.74, to be removed in 4.0. Use Symfony Form "help" option instead.' %}
                                         {{- sonata_admin.field_description.associationadmin.formfielddescriptions[field_name].help|trans(
                                             {},
                                             sonata_admin.field_description.associationadmin.formfielddescriptions[field_name].translationDomain
