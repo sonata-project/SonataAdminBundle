@@ -17,7 +17,7 @@
         </service>
         <service id="Sonata\AdminBundle\Route\AdminPoolLoader" alias="sonata.admin.route_loader"/>
         <service id="sonata.admin.helper" class="Sonata\AdminBundle\Admin\AdminHelper" public="true">
-            <argument type="service" id="sonata.admin.pool"/>
+            <argument type="service" id="property_accessor"/>
         </service>
         <service id="Sonata\AdminBundle\Admin\AdminHelper" alias="sonata.admin.helper"/>
         <service id="sonata.admin.builder.filter.factory" class="Sonata\AdminBundle\Filter\FilterFactory" public="true">
