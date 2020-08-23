@@ -1478,6 +1478,10 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function getObject($id)
     {
+        if (null === $id) {
+            return null;
+        }
+
         $object = $this->getModelManager()->find($this->getClass(), $id);
         foreach ($this->getExtensions() as $extension) {
             $extension->alterObject($this, $object);
@@ -2825,7 +2829,15 @@ EOT;
 
     public function toString($object)
     {
+        // NEXT_MAJOR: Remove this check and use object as param typehint.
         if (!\is_object($object)) {
+            @trigger_error(sprintf(
+                'Passing %s as argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.x.'
+                .' Only object will be allowed in version 4.0.',
+                \gettype($object),
+                __METHOD__
+            ), E_USER_DEPRECATED);
+
             return '';
         }
 

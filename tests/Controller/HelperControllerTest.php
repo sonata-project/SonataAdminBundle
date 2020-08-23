@@ -143,7 +143,6 @@ class HelperControllerTest extends TestCase
     {
         $request = new Request([
             'code' => 'sonata.post.admin',
-            'objectId' => '',
             'uniqid' => 'asdasd123',
             '_format' => 'html',
         ]);

@@ -710,6 +710,18 @@ class AdminTest extends TestCase
         $this->assertNotEmpty($admin->toString($s));
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     * @expectedDeprecation Passing boolean as argument 1 for Sonata\AdminBundle\Admin\AbstractAdmin::toString() is deprecated since sonata-project/admin-bundle 3.x. Only object will be allowed in version 4.0.
+     */
+    public function testToStringForNonObject(): void
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+        $this->assertSame('', $admin->toString(false));
+    }
+
     public function testIsAclEnabled(): void
     {
         $postAdmin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');

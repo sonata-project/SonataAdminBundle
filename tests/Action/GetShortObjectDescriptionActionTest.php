@@ -77,6 +77,12 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         ($this->action)($request);
     }
 
+    /**
+     * NEXT_MAJOR: Expect a NotFoundHttpException instead.
+     *
+     * @group legacy
+     * @expectedDeprecation Trying to get a short object description for a non found object is deprecated since sonata-project/admin-bundle 3.x and will be throw a 404 in version 4.0.
+     */
     public function testGetShortObjectDescriptionActionObjectDoesNotExist(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -94,17 +100,22 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         ($this->action)($request);
     }
 
+    /**
+     * NEXT_MAJOR: Expect a NotFoundHttpException instead.
+     *
+     * @group legacy
+     * @expectedDeprecation Trying to get a short object description for a non found object is deprecated since sonata-project/admin-bundle 3.x and will be throw a 404 in version 4.0.
+     */
     public function testGetShortObjectDescriptionActionEmptyObjectId(): void
     {
         $request = new Request([
             'code' => 'sonata.post.admin',
-            'objectId' => '',
             'uniqid' => 'asdasd123',
             '_format' => 'html',
         ]);
 
         $this->admin->setUniqid('asdasd123')->shouldBeCalled();
-        $this->admin->getObject(null)->willReturn(false);
+        $this->admin->getObject(null)->willReturn(null);
 
         $this->assertInstanceOf(Response::class, ($this->action)($request));
     }
@@ -129,19 +140,24 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->assertSame('renderedTemplate', $response->getContent());
     }
 
+    /**
+     * NEXT_MAJOR: Expect a NotFoundHttpException instead.
+     *
+     * @group legacy
+     * @expectedDeprecation Trying to get a short object description for a non found object is deprecated since sonata-project/admin-bundle 3.x and will be throw a 404 in version 4.0.
+     */
     public function testGetShortObjectDescriptionActionEmptyObjectIdAsJson(): void
     {
         $request = new Request([
             'code' => 'sonata.post.admin',
-            'objectId' => '',
             'uniqid' => 'asdasd123',
             '_format' => 'json',
         ]);
 
         $this->admin->setUniqid('asdasd123')->shouldBeCalled();
-        $this->admin->getObject(null)->willReturn(false);
-        $this->admin->id(false)->willReturn('');
-        $this->admin->toString(false)->willReturn('');
+        $this->admin->getObject(null)->willReturn(null);
+        $this->admin->id(null)->willReturn('');
+        $this->admin->toString(null)->willReturn('');
 
         $response = ($this->action)($request);
 
