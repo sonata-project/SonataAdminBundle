@@ -693,8 +693,6 @@ class AdminTest extends TestCase
 
         $s = new FooToString();
         $this->assertSame('salut', $admin->toString($s));
-
-        $this->assertSame('', $admin->toString(false));
     }
 
     public function testToStringNull(): void

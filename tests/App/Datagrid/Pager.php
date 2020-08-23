@@ -62,4 +62,19 @@ final class Pager implements PagerInterface
     {
         return 1;
     }
+
+    public function getPage()
+    {
+        return 1;
+    }
+
+    public function isLastPage()
+    {
+        return true;
+    }
+
+    public function getNbResults()
+    {
+        return \count($this->getResults());
+    }
 }
