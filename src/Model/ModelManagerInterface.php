@@ -169,6 +169,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function getModelInstance($class);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * @param string $class
      *
      * @return array|\ArrayAccess
@@ -176,6 +180,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function getModelCollectionInstance($class);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * Removes an element from the collection.
      *
      * @param array  $collection
@@ -184,6 +192,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function collectionRemoveElement(&$collection, &$element);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * Add an element from the collection.
      *
      * @param array  $collection
@@ -192,6 +204,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function collectionAddElement(&$collection, &$element);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * Check if the element exists in the collection.
      *
      * @param array  $collection
@@ -202,6 +218,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function collectionHasElement(&$collection, &$element);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * Clear the collection.
      *
      * @param array $collection

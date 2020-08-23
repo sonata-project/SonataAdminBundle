@@ -124,23 +124,38 @@ final class ModelManager implements ModelManagerInterface
         }
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function getModelCollectionInstance($class)
     {
         return [];
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function collectionRemoveElement(&$collection, &$element): void
     {
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function collectionAddElement(&$collection, &$element): void
     {
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function collectionHasElement(&$collection, &$element): void
     {
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function collectionClear(&$collection): void
     {
     }
