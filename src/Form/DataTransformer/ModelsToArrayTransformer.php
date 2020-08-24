@@ -18,6 +18,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Util\TraversableToCollection;
 use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\Form\ChoiceList\LazyChoiceList;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -55,8 +56,6 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     protected $choiceList;
 
     /**
-     * ModelsToArrayTransformer constructor.
-     *
      * @param LazyChoiceList|ModelChoiceLoader $choiceList
      * @param ModelManagerInterface            $modelManager
      * @param string                           $class
@@ -168,23 +167,22 @@ class ModelsToArrayTransformer implements DataTransformerInterface
             throw new UnexpectedTypeException($value, 'array');
         }
 
+        $value = array_map('strval', $value);
+
+        $query = $this->modelManager->createQuery($this->class);
+        $this->modelManager->addIdentifiersToQuery($this->class, $query, $value);
+        $result = $this->modelManager->executeQuery($query);
+
         /** @phpstan-var ArrayCollection<array-key, T> $collection */
-        $collection = new ArrayCollection();
-        $notFound = [];
+        $collection = TraversableToCollection::transform($result);
 
-        // optimize this into a SELECT WHERE IN query
-        foreach ($value as $key) {
-            if ($model = $this->modelManager->find($this->class, $key)) {
-                $collection->add($model);
-            } else {
-                $notFound[] = $key;
-            }
-        }
+        $diffCount = \count($value) - $collection->count();
 
-        if (\count($notFound) > 0) {
+        if (0 !== $diffCount) {
             throw new TransformationFailedException(sprintf(
-                'The entities with keys "%s" could not be found',
-                implode('", "', $notFound)
+                '%u keys could not be found in the provided values: "%s".',
+                $diffCount,
+                implode('", "', $value)
             ));
         }
 
