@@ -438,7 +438,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $declaredInParent = $parentDefinition && \array_key_exists($index, $parentArguments);
             $argumentValue = $declaredInParent ? $parentArguments[$index] : $arguments[$index];
 
-            if (null === $argumentValue || 0 === \strlen($argumentValue)) {
+            if (null === $argumentValue || (\is_string($argumentValue) && 0 === \strlen($argumentValue))) {
                 $arguments[$declaredInParent ? sprintf('index_%s', $index) : $index] = $value;
             }
         }
