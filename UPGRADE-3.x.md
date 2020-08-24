@@ -1,6 +1,15 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface` collection-related methods.
+
+Use:
+- `new \Doctrine\Common\Collections\ArrayCollection()` instead of `getModelCollectionInstance($class)`
+- `$collection->removeElement($element)` instead of `collectionRemoveElement($collection, $element)`
+- `$collection->add($element)` instead of `collectionAddElement($collection, $element)`
+- `$collection->contains($element)` instead of `collectionHasElement($collection, $element)`
+- `$collection->clear()` instead of `collectionClear($collection)`
+
 UPGRADE FROM 3.73 to 3.74
 =========================
 
