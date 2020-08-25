@@ -74,6 +74,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
 
     public function reverseTransform($value)
     {
+        /** @var ArrayCollection<array-key, object> $collection */
         $collection = new ArrayCollection();
 
         if (empty($value)) {
@@ -97,7 +98,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
                 continue;
             }
 
-            $collection[] = $this->modelManager->find($this->className, $id);
+            $collection->add($this->modelManager->find($this->className, $id));
         }
 
         return $collection;

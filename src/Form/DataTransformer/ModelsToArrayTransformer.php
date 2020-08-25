@@ -147,13 +147,14 @@ class ModelsToArrayTransformer implements DataTransformerInterface
             throw new UnexpectedTypeException($keys, 'array');
         }
 
+        /** @var ArrayCollection<array-key, object> $collection */
         $collection = new ArrayCollection();
         $notFound = [];
 
         // optimize this into a SELECT WHERE IN query
         foreach ($keys as $key) {
             if ($model = $this->modelManager->find($this->class, $key)) {
-                $collection[] = $model;
+                $collection->add($model);
             } else {
                 $notFound[] = $key;
             }
