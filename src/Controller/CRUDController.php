@@ -420,20 +420,22 @@ class CRUDController implements ContainerAwareInterface
 
         $confirmation = $request->get('confirmation', false);
 
+        $forwardedRequest = $request->duplicate();
+
         if ($data = json_decode((string) $request->get('data'), true)) {
             $action = $data['action'];
             $idx = $data['idx'];
             $allElements = (bool) $data['all_elements'];
-            $request->request->replace(array_merge($request->request->all(), $data));
+            $forwardedRequest->request->replace(array_merge($forwardedRequest->request->all(), $data));
         } else {
-            $action = $request->request->getAlnum('action');
+            $action = $forwardedRequest->request->getAlnum('action');
             $idx = $request->request->get('idx', []);
-            $allElements = $request->request->getBoolean('all_elements');
+            $allElements = $forwardedRequest->request->getBoolean('all_elements');
 
-            $request->request->set('idx', $idx);
-            $request->request->set('all_elements', $allElements);
+            $forwardedRequest->request->set('idx', $idx);
+            $forwardedRequest->request->set('all_elements', $allElements);
 
-            $data = $request->request->all();
+            $data = $forwardedRequest->request->all();
 
             unset($data['_sonata_csrf_token']);
         }
@@ -456,7 +458,7 @@ class CRUDController implements ContainerAwareInterface
         $isRelevantAction = sprintf('batchAction%sIsRelevant', $camelizedAction);
 
         if (method_exists($this, $isRelevantAction)) {
-            $nonRelevantMessage = $this->{$isRelevantAction}($idx, $allElements, $request);
+            $nonRelevantMessage = $this->{$isRelevantAction}($idx, $allElements, $forwardedRequest);
         } else {
             $nonRelevantMessage = 0 !== \count($idx) || $allElements; // at least one item is selected
         }
@@ -531,7 +533,7 @@ class CRUDController implements ContainerAwareInterface
             return $this->redirectToList();
         }
 
-        return $this->{$finalAction}($query, $request);
+        return $this->{$finalAction}($query, $forwardedRequest);
     }
 
     /**
