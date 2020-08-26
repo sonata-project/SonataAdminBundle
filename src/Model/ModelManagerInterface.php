@@ -171,7 +171,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
      *
      * @param string $class
      *
@@ -182,7 +182,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
      *
      * Removes an element from the collection.
      *
@@ -194,7 +194,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
      *
      * Add an element from the collection.
      *
@@ -206,7 +206,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
      *
      * Check if the element exists in the collection.
      *
@@ -220,7 +220,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
      *
      * Clear the collection.
      *

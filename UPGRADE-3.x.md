@@ -1,6 +1,9 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.74 to 3.75
+=========================
+
 ## Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface` collection-related methods.
 
 Use:

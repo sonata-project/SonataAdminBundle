@@ -954,7 +954,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (\is_string($this->parentAssociationMapping)) {
             @trigger_error(sprintf(
-                'Calling "%s"  when $this->parentAssociationMapping is string is deprecated since sonata-admin/admin-bundle 3.x and will be removed in 4.0.',
+                'Calling "%s" when $this->parentAssociationMapping is string is deprecated since sonata-admin/admin-bundle 3.75 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }

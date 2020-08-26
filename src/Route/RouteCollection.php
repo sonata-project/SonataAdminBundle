@@ -332,7 +332,7 @@ class RouteCollection
             $resolvedElement = $element();
             if (!$resolvedElement instanceof Route) {
                 @trigger_error(sprintf(
-                    'Element resolved by code "%s" is not instance of "%s"; This is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+                    'Element resolved by code "%s" is not instance of "%s"; This is deprecated since sonata-project/admin-bundle 3.75 and will be removed in 4.0.',
                     $code,
                     Route::class
                 ), E_USER_DEPRECATED);

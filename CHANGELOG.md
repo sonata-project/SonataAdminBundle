@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.75.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.74.0...3.75.0) - 2020-08-26
+### Changed
+- [[#6313](https://github.com/sonata-project/SonataAdminBundle/pull/6313)] Bump "knplabs/knp-menu-bundle" to ^3.0 ([@dmaicher](https://github.com/dmaicher))
+
+### Deprecated
+- [[#6312](https://github.com/sonata-project/SonataAdminBundle/pull/6312)] Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface` collection-related methods ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6288](https://github.com/sonata-project/SonataAdminBundle/pull/6288)] Deprecated passing `callable` that does not return `Symfony\Component\Routing\Route` as `$element` (2nd argument) to `Sonata\AdminBundle\Route\RouteCollection::addElement($code, $element)` ([@vladyslavstartsev](https://github.com/vladyslavstartsev))
+
+### Fixed
+- [[#6325](https://github.com/sonata-project/SonataAdminBundle/pull/6325)] Fixed allowing valid action names in `CRUDController::batchAction()` ([@phansys](https://github.com/phansys))
+- [[#6321](https://github.com/sonata-project/SonataAdminBundle/pull/6321)] Fixed mutating the original request at `CRUDController::batchAction()` ([@phansys](https://github.com/phansys))
+- [[#6271](https://github.com/sonata-project/SonataAdminBundle/pull/6271)] "Notice: Undefined index: idx" if there are no list items are selected ([@nieuwenhuisen](https://github.com/nieuwenhuisen))
+
 ## [3.74.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.73.0...3.74.0) - 2020-08-22
 ### Added
 - [[#6299](https://github.com/sonata-project/SonataAdminBundle/pull/6299)] Added support for symfony/expression-language:^5.1 ([@phansys](https://github.com/phansys))
