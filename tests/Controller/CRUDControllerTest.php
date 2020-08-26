@@ -3398,11 +3398,6 @@ class CRUDControllerTest extends TestCase
      */
     public function testBatchActionMethodNotExist(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            'A `Sonata\AdminBundle\Controller\CRUDController::batchActionFoo` method must be callable'
-        );
-
         $batchActions = ['foo' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 
         $this->admin->expects($this->once())
@@ -3417,6 +3412,11 @@ class CRUDControllerTest extends TestCase
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'A `Sonata\AdminBundle\Controller\CRUDController::batchActionFoo` method must be callable'
+        );
 
         $this->controller->batchAction();
     }
@@ -3597,13 +3597,15 @@ class CRUDControllerTest extends TestCase
      * NEXT_MAJOR: Remove this legacy group.
      *
      * @group legacy
+     *
+     * @dataProvider provideActionNames
      */
-    public function testBatchActionNonRelevantAction(): void
+    public function testBatchActionNonRelevantAction(string $actionName): void
     {
         $controller = new BatchAdminController();
         $controller->setContainer($this->container);
 
-        $batchActions = ['foo' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
+        $batchActions = [$actionName => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 
         $this->admin->expects($this->once())
             ->method('getBatchActions')
@@ -3618,7 +3620,7 @@ class CRUDControllerTest extends TestCase
         $this->expectTranslate('flash_batch_empty', [], 'SonataAdminBundle');
 
         $this->request->setMethod(Request::METHOD_POST);
-        $this->request->request->set('action', 'foo');
+        $this->request->request->set('action', $actionName);
         $this->request->request->set('idx', ['789']);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
@@ -3630,6 +3632,14 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(RedirectResponse::class, $result);
         $this->assertSame(['flash_batch_empty'], $this->session->getFlashBag()->get('sonata_flash_info'));
         $this->assertSame('list', $result->getTargetUrl());
+    }
+
+    public function provideActionNames(): iterable
+    {
+        yield ['foo'];
+        yield ['foo_bar'];
+        yield ['foo-bar'];
+        yield ['foobar'];
     }
 
     public function testBatchActionWithCustomConfirmationTemplate(): void
