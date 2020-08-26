@@ -161,15 +161,13 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
                 }
 
                 $label = ($this->toStringCallback)($model, $this->property);
+            } elseif (method_exists($model, '__toString')) {
+                $label = (string) $model;
             } else {
-                try {
-                    $label = (string) $model;
-                } catch (\Exception $e) {
-                    throw new \RuntimeException(sprintf(
-                        'Unable to convert the entity %s to String, entity must have a \'__toString()\' method defined',
-                        ClassUtils::getClass($model)
-                    ), 0, $e);
-                }
+                throw new \RuntimeException(sprintf(
+                    'Unable to convert the entity %s to String, entity must have a \'__toString()\' method defined',
+                    ClassUtils::getClass($model)
+                ));
             }
 
             $result[] = $id;

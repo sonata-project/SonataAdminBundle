@@ -19,9 +19,7 @@ namespace Sonata\AdminBundle\Model;
 interface DatagridManagerInterface
 {
     /**
-     * Return _sort_order, _sort_by, _page and _per_page values.
-     *
-     * @return array<string, int|string>
+     * @return array{_page?: int, _per_page?: int, _sort_by?: string, _sort_order?: string}
      *
      * @phpstan-param class-string $class
      */

@@ -236,8 +236,6 @@ interface ModelManagerInterface extends DatagridManagerInterface
 
     /**
      * @param string[] $fields
-     *
-     * @return SourceIteratorInterface<object>
      */
     public function getDataSourceIterator(
         DatagridInterface $datagrid,
