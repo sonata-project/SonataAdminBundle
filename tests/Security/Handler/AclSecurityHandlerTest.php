@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
-use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 use Symfony\Component\Security\Acl\Model\MutableAclProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -125,40 +124,7 @@ class AclSecurityHandlerTest extends TestCase
         $this->assertFalse($handler->isGranted($admin, 'raise exception', $admin));
     }
 
-    public function testAddObjectOwnerParamMustBeMutableAclInterface(): void
-    {
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(sprintf(
-            'Argument 1 passed to "%s::addObjectOwner()" must implement "%s".',
-            AclSecurityHandler::class,
-            MutableAclInterface::class
-        ));
-        $handler = new AclSecurityHandler(
-            $this->getTokenStorageMock(),
-            $this->getAuthorizationCheckerMock(),
-            $this->getMockForAbstractClass(MutableAclProviderInterface::class),
-            MaskBuilder::class,
-            []
-        );
-        $handler->addObjectOwner($this->createStub(AclInterface::class));
-    }
-
-    public function testUpdateAclMustOnlyAcceptMutableAclInterface(): void
-    {
-        $this->expectWarning();
-        $this->expectWarningMessage('assert(): assert($acl instanceof MutableAclInterface) failed');
-        $handler = new AclSecurityHandler(
-            $this->getTokenStorageMock(),
-            $this->getAuthorizationCheckerMock(),
-            $this->getMockForAbstractClass(MutableAclProviderInterface::class),
-            MaskBuilder::class,
-            []
-        );
-        $acl = $this->createStub(AclInterface::class);
-        $handler->updateAcl($acl);
-    }
-
-    public function testSuccerfulUpdateAcl(): void
+    public function testSuccessfulUpdateAcl(): void
     {
         $acl = $this->createStub(MutableAclInterface::class);
         $aclProvider = $this->getMockForAbstractClass(MutableAclProviderInterface::class);

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Model;
 
+use Doctrine\Common\Collections\Collection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -25,70 +26,74 @@ use Sonata\Exporter\Source\SourceIteratorInterface;
 interface ModelManagerInterface extends DatagridManagerInterface
 {
     /**
-     * @param string $class
-     * @param string $name
+     * @param array<string, mixed> $options
      *
-     * @return FieldDescriptionInterface
+     * @phpstan-param class-string $class
      */
-    public function getNewFieldDescriptionInstance($class, $name, array $options = []);
+    public function getNewFieldDescriptionInstance(string $class, string $name, array $options = []): FieldDescriptionInterface;
 
     /**
-     * @param object $object
-     *
      * @throws ModelManagerException
      */
-    public function create($object);
+    public function create(object $object): void;
 
     /**
-     * @param object $object
-     *
      * @throws ModelManagerException
      */
-    public function update($object);
+    public function update(object $object): void;
 
     /**
-     * @param object $object
-     *
      * @throws ModelManagerException
      */
-    public function delete($object);
+    public function delete(object $object): void;
 
     /**
-     * @param string $class
+     * @template T of object
      *
-     * @return array all objects matching the criteria
+     * @param array<string, mixed> $criteria
+     *
+     * @return object[] all objects matching the criteria
+     *
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T[]
      */
-    public function findBy($class, array $criteria = []);
+    public function findBy(string $class, array $criteria = []): array;
 
     /**
-     * @param string $class
+     * @template T of object
+     *
+     * @param array<string, mixed> $criteria
      *
      * @return object|null an object matching the criteria or null if none match
+     *
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T|null
      */
-    public function findOneBy($class, array $criteria = []);
+    public function findOneBy(string $class, array $criteria = []): ?object;
 
     /**
-     * @param string $class
-     * @param mixed  $id
+     * @template T of object
+     *
+     * @param mixed $id
      *
      * @return object|null the object with id or null if not found
+     *
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T|null
      */
-    public function find($class, $id);
+    public function find(string $class, $id): ?object;
 
     /**
-     * @param string $class
-     *
      * @throws ModelManagerException
+     *
+     * @phpstan-param class-string $class
      */
-    public function batchDelete($class, ProxyQueryInterface $queryProxy);
+    public function batchDelete(string $class, ProxyQueryInterface $queryProxy): void;
 
     /**
-     * @param string $class
-     * @param string $alias
-     *
-     * @return ProxyQueryInterface
+     * @phpstan-param class-string $class
      */
-    public function createQuery($class, $alias = 'o');
+    public function createQuery(string $class, string $alias = 'o'): ProxyQueryInterface;
 
     /**
      * Get the identifiers of this model class.
@@ -97,135 +102,159 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * composed of multiple columns. If you need a string representation,
      * use getNormalizedIdentifier resp. getUrlSafeIdentifier
      *
-     * @param object $model
-     *
-     * @return array list of all identifiers of this model
+     * @return mixed[]
      */
-    public function getIdentifierValues($model);
+    public function getIdentifierValues(object $model): array;
 
     /**
-     * Get a list of the field names models of the specified class use to store
-     * the identifier.
+     * Get a list of the field names models of the specified fully qualified
+     * class name used to store the identifier.
      *
-     * @param string $class fully qualified class name
+     * @return string[]
      *
-     * @return array
+     * @phpstan-param class-string $class
      */
-    public function getIdentifierFieldNames($class);
+    public function getIdentifierFieldNames(string $class): array;
 
     /**
      * Get the identifiers for this model class as a string.
-     *
-     * @param object $model
-     *
-     * @return string a string representation of the identifiers for this
-     *                instance
      */
-    public function getNormalizedIdentifier($model);
+    public function getNormalizedIdentifier(object $model): string;
 
     /**
      * Get the identifiers as a string that is safe to use in a url.
      *
      * This is similar to getNormalizedIdentifier but guarantees an id that can
      * be used in a URL.
-     *
-     * @param object $model
-     *
-     * @return string string representation of the id that is safe to use in a url
      */
-    public function getUrlSafeIdentifier($model);
+    public function getUrlSafeIdentifier(object $model): string;
 
     /**
      * Create a new instance of the model of the specified class.
      *
-     * @param string $class
+     * @template T of object
      *
-     * @return object
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T
      */
-    public function getModelInstance($class);
+    public function getModelInstance(string $class): object;
 
     /**
-     * @param string $class
+     * NEXT_MAJOR: Remove this method.
      *
-     * @return array|\ArrayAccess
+     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     *
+     * @template T of object
+     *
+     * @return Collection<int|string, object>
+     *
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return Collection<array-key, T>
      */
-    public function getModelCollectionInstance($class);
+    public function getModelCollectionInstance(string $class): Collection;
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * Removes an element from the collection.
      *
-     * @param array  $collection
-     * @param object $element
+     * @template T of object
+     *
+     * @param Collection<int|string, object> $collection
+     *
+     * @phpstan-param Collection<array-key, T> $collection
+     * @phpstan-param T $element
      */
-    public function collectionRemoveElement(&$collection, &$element);
+    public function collectionRemoveElement(Collection $collection, object $element): void;
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * Add an element from the collection.
      *
-     * @param array  $collection
-     * @param object $element
+     * @template T of object
+     *
+     * @param Collection<int|string, object> $collection
+     *
+     * @phpstan-param Collection<array-key, T> $collection
+     * @phpstan-param T $element
      */
-    public function collectionAddElement(&$collection, &$element);
+    public function collectionAddElement(Collection $collection, object $element): void;
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * Check if the element exists in the collection.
      *
-     * @param array  $collection
-     * @param object $element
+     * @template T of object
      *
-     * @return bool
+     * @param Collection<int|string, object> $collection
+     *
+     * @phpstan-param Collection<array-key, T> $collection
+     * @phpstan-param T $element
      */
-    public function collectionHasElement(&$collection, &$element);
+    public function collectionHasElement(Collection $collection, object $element): bool;
 
     /**
      * Clear the collection.
      *
-     * @param array $collection
-     */
-    public function collectionClear(&$collection);
-
-    /**
-     * @param string $class
+     * @param Collection<int|string, object> $collection
      *
-     * @return object
+     * @phpstan-param Collection<array-key, object> $collection
      */
-    public function modelReverseTransform($class, array $array = []);
+    public function collectionClear(Collection $collection): void;
 
     /**
-     * @param string $class
-     * @param object $instance
+     * @template T of object
      *
-     * @return object
-     */
-    public function modelTransform($class, $instance);
-
-    /**
-     * @param mixed $query
-     */
-    public function executeQuery($query);
-
-    /**
-     * @param int|null $firstResult
-     * @param int|null $maxResult
+     * @param array<string, mixed> $array
      *
-     * @return SourceIteratorInterface
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T
+     */
+    public function modelReverseTransform(string $class, array $array = []): object;
+
+    /**
+     * @template T of object
+     *
+     * @phpstan-param class-string $class
+     * @phpstan-param T $instance
+     * @phpstan-return T
+     */
+    public function modelTransform(string $class, object $instance): object;
+
+    /**
+     * @return mixed
+     */
+    public function executeQuery(object $query);
+
+    /**
+     * @param string[] $fields
      */
     public function getDataSourceIterator(
         DatagridInterface $datagrid,
         array $fields,
-        $firstResult = null,
-        $maxResult = null
-    );
+        ?int $firstResult = null,
+        ?int $maxResult = null
+    ): SourceIteratorInterface;
 
     /**
-     * @param string $class
-     *
      * @return string[]
+     *
+     * @phpstan-param class-string $class
      */
-    public function getExportFields($class);
+    public function getExportFields(string $class): array;
 
     /**
-     * @param string $class
+     * @param string[] $idx
+     *
+     * @phpstan-param class-string $class
      */
-    public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx);
+    public function addIdentifiersToQuery(string $class, ProxyQueryInterface $query, array $idx): void;
 }

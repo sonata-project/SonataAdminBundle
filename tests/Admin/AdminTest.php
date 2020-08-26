@@ -1842,7 +1842,33 @@ class AdminTest extends TestCase
             ->willReturn(false);
         $admin->setSecurityHandler($securityHandler);
 
+        $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
+        $routeGenerator
+            ->expects($this->once())
+            ->method('hasAdminRoute')
+            ->with($admin, 'create')
+            ->willReturn(true);
+        $admin->setRouteGenerator($routeGenerator);
+
         $this->assertSame([], $admin->getActionButtons('list', null));
+    }
+
+    public function testGetActionButtonsListWithoutExtraChecks(): void
+    {
+        $admin = $this->getMockBuilder(AbstractAdmin::class)
+            ->disableOriginalConstructor()
+            ->setMethodsExcept(['getActionButtons', 'configureActionButtons'])
+            ->getMockForAbstractClass();
+
+        $admin->method('isAclEnabled')->willReturn(true);
+        $admin->method('getExtensions')->willReturn([]);
+
+        $admin->expects($this->exactly(9))->method('hasRoute')->willReturn(false);
+        $admin->expects($this->never())->method('hasAccess');
+        $admin->expects($this->never())->method('getShow');
+
+        $this->assertSame([], $admin->getActionButtons('show'));
+        $this->assertSame([], $admin->getActionButtons('edit'));
     }
 
     public function testCantAccessObjectIfNullPassed(): void

@@ -40,17 +40,24 @@ interface ProxyQueryInterface
      */
     public function setSortBy(array $parentAssociationMappings, array $fieldMapping): self;
 
-    public function getSortBy(): string;
+    public function getSortBy(): ?string;
 
     public function setSortOrder(string $sortOrder): self;
 
-    public function getSortOrder(): string;
+    public function getSortOrder(): ?string;
 
-    public function getSingleScalarResult(): ?int;
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.74, to be removed in 4.0.
+     *
+     * @return mixed
+     */
+    public function getSingleScalarResult();
 
     public function setFirstResult(?int $firstResult): self;
 
-    public function getFirstResult(): ?object;
+    public function getFirstResult(): ?int;
 
     public function setMaxResults(?int $maxResults): self;
 
@@ -59,6 +66,8 @@ interface ProxyQueryInterface
     public function getUniqueParameterId(): int;
 
     /**
+     * Join entities from the given association mappings and return the last alias created.
+     *
      * @param mixed[] $associationMappings
      */
     public function entityJoin(array $associationMappings): string;

@@ -3209,8 +3209,7 @@ class CRUDControllerTest extends TestCase
 
         $modelManager->expects($this->once())
             ->method('addIdentifiersToQuery')
-            ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(['123', '456']))
-            ->willReturn(true);
+            ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(['123', '456']));
 
         $this->expectTranslate('flash_batch_delete_success', [], 'SonataAdminBundle');
 
@@ -3218,8 +3217,11 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('data', json_encode(['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
+        $this->assertNull($this->request->get('idx'));
+
         $result = $this->controller->batchAction($this->request);
 
+        $this->assertNull($this->request->get('idx'), 'Ensure original request is not modified by calling `CRUDController::batchAction()`.');
         $this->assertInstanceOf(RedirectResponse::class, $result);
         $this->assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
         $this->assertSame('list', $result->getTargetUrl());
@@ -3260,8 +3262,7 @@ class CRUDControllerTest extends TestCase
 
         $modelManager->expects($this->once())
             ->method('addIdentifiersToQuery')
-            ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(['123', '456']))
-            ->willReturn(true);
+            ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(['123', '456']));
 
         $this->expectTranslate('flash_batch_delete_success', [], 'SonataAdminBundle');
 
@@ -3348,8 +3349,11 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('idx', ['789']);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
+        $this->assertNull($this->request->get('all_elements'));
+
         $result = $controller->batchAction($this->request);
 
+        $this->assertNull($this->request->get('all_elements'), 'Ensure original request is not modified by calling `CRUDController::batchAction()`.');
         $this->assertInstanceOf(RedirectResponse::class, $result);
         $this->assertSame(['flash_batch_empty'], $this->session->getFlashBag()->get('sonata_flash_info'));
         $this->assertSame('list', $result->getTargetUrl());
@@ -3526,8 +3530,7 @@ class CRUDControllerTest extends TestCase
 
         $modelManager->expects($this->once())
             ->method('addIdentifiersToQuery')
-            ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(['123', '456']))
-            ->willReturn(true);
+            ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(['123', '456']));
 
         $this->expectTranslate('flash_batch_delete_success', [], 'SonataAdminBundle');
 

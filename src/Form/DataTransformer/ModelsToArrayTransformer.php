@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\Doctrine\Adapter\AdapterInterface;
@@ -67,13 +68,14 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
             throw new UnexpectedTypeException($keys, 'array');
         }
 
-        $collection = $this->modelManager->getModelCollectionInstance($this->class);
+        /** @var ArrayCollection<array-key, object> $collection */
+        $collection = new ArrayCollection();
         $notFound = [];
 
         // optimize this into a SELECT WHERE IN query
         foreach ($keys as $key) {
             if ($model = $this->modelManager->find($this->class, $key)) {
-                $collection[] = $model;
+                $collection->add($model);
             } else {
                 $notFound[] = $key;
             }

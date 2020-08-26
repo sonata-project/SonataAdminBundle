@@ -26,7 +26,7 @@ use Sonata\AdminBundle\Filter\FilterInterface;
 class SearchHandler
 {
     /**
-     * @var Pool
+     * @var Pool|null
      */
     protected $pool;
 
@@ -35,10 +35,27 @@ class SearchHandler
      */
     private $caseSensitive;
 
-    public function __construct(Pool $pool, bool $caseSensitive)
+    /**
+     * NEXT_MAJOR: Change signature to __construct(bool $caseSensitive) and remove pool property.
+     *
+     * @param Pool|bool $deprecatedPoolOrCaseSensitive
+     * @param bool      $caseSensitive
+     */
+    public function __construct($deprecatedPoolOrCaseSensitive, $caseSensitive = true)
     {
-        $this->pool = $pool;
-        $this->caseSensitive = $caseSensitive;
+        if ($deprecatedPoolOrCaseSensitive instanceof Pool) {
+            @trigger_error(sprintf(
+                'Passing %s as argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.74.'
+                .' It will accept only bool in version 4.0.',
+                Pool::class,
+                __METHOD__
+            ), E_USER_DEPRECATED);
+
+            $this->pool = $deprecatedPoolOrCaseSensitive;
+            $this->caseSensitive = $caseSensitive;
+        } else {
+            $this->caseSensitive = $deprecatedPoolOrCaseSensitive;
+        }
     }
 
     /**

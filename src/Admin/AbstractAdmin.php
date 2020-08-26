@@ -580,11 +580,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             $extension->preUpdate($this, $object);
         }
 
-        $result = $this->getModelManager()->update($object);
-        // BC compatibility
-        if (null !== $result) {
-            $object = $result;
-        }
+        $this->getModelManager()->update($object);
 
         $this->postUpdate($object);
         foreach ($this->extensions as $extension) {
@@ -601,11 +597,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             $extension->prePersist($this, $object);
         }
 
-        $result = $this->getModelManager()->create($object);
-        // BC compatibility
-        if (null !== $result) {
-            $object = $result;
-        }
+        $this->getModelManager()->create($object);
 
         $this->postPersist($object);
         foreach ($this->extensions as $extension) {
@@ -1938,22 +1930,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function getPermissionsShow(string $context): array
     {
-        switch ($context) {
-            case self::CONTEXT_DASHBOARD:
-            case self::CONTEXT_MENU:
-            default:
-                return ['LIST'];
-        }
+        return ['LIST'];
     }
 
     public function showIn(string $context): bool
     {
-        switch ($context) {
-            case self::CONTEXT_DASHBOARD:
-            case self::CONTEXT_MENU:
-            default:
-                return $this->isGranted($this->getPermissionsShow($context));
-        }
+        return $this->isGranted($this->getPermissionsShow($context));
     }
 
     public function createObjectSecurity(object $object): void
@@ -2249,8 +2231,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $buttonList = [];
 
         if (\in_array($action, ['tree', 'show', 'edit', 'delete', 'list', 'batch'], true)
-            && $this->hasAccess('create')
             && $this->hasRoute('create')
+            && $this->hasAccess('create')
         ) {
             $buttonList['create'] = [
                 'template' => $this->getTemplateRegistry()->getTemplate('button_create'),
@@ -2258,8 +2240,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         if (\in_array($action, ['show', 'delete', 'acl', 'history'], true)
-            && $this->canAccessObject('edit', $object)
             && $this->hasRoute('edit')
+            && $this->canAccessObject('edit', $object)
         ) {
             $buttonList['edit'] = [
                 'template' => $this->getTemplateRegistry()->getTemplate('button_edit'),
@@ -2267,8 +2249,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         if (\in_array($action, ['show', 'edit', 'acl'], true)
-            && $this->canAccessObject('history', $object)
             && $this->hasRoute('history')
+            && $this->canAccessObject('history', $object)
         ) {
             $buttonList['history'] = [
                 'template' => $this->getTemplateRegistry()->getTemplate('button_history'),
@@ -2277,8 +2259,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         if (\in_array($action, ['edit', 'history'], true)
             && $this->isAclEnabled()
-            && $this->canAccessObject('acl', $object)
             && $this->hasRoute('acl')
+            && $this->canAccessObject('acl', $object)
         ) {
             $buttonList['acl'] = [
                 'template' => $this->getTemplateRegistry()->getTemplate('button_acl'),
@@ -2286,9 +2268,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         if (\in_array($action, ['edit', 'history', 'acl'], true)
+            && $this->hasRoute('show')
             && $this->canAccessObject('show', $object)
             && \count($this->getShow()) > 0
-            && $this->hasRoute('show')
         ) {
             $buttonList['show'] = [
                 'template' => $this->getTemplateRegistry()->getTemplate('button_show'),
@@ -2296,8 +2278,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         if (\in_array($action, ['show', 'edit', 'delete', 'acl', 'batch'], true)
-            && $this->hasAccess('list')
             && $this->hasRoute('list')
+            && $this->hasAccess('list')
         ) {
             $buttonList['list'] = [
                 'template' => $this->getTemplateRegistry()->getTemplate('button_list'),

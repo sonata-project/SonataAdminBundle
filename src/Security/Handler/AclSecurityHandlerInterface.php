@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Security\Handler;
 
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
-use Symfony\Component\Security\Acl\Model\AclInterface;
+use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 
 /**
@@ -48,10 +48,8 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
 
     /**
      * Get the ACL for the passed object identity.
-     *
-     * @return AclInterface|null or NULL if not found
      */
-    public function getObjectAcl(ObjectIdentityInterface $objectIdentity);
+    public function getObjectAcl(ObjectIdentityInterface $objectIdentity): ?MutableAclInterface;
 
     /**
      * Find the ACLs for the passed object identities.
@@ -67,25 +65,29 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
 
     /**
      * Add an object owner ACE to the object ACL.
+     *
+     * @return void
      */
-    public function addObjectOwner(AclInterface $acl, ?UserSecurityIdentity $securityIdentity = null);
+    public function addObjectOwner(MutableAclInterface $acl, ?UserSecurityIdentity $securityIdentity = null);
 
     /**
      * Add the object class ACE's to the object ACL.
+     *
+     * @return void
      */
-    public function addObjectClassAces(AclInterface $acl, array $roleInformation = []);
+    public function addObjectClassAces(MutableAclInterface $acl, array $roleInformation = []);
 
     /**
      * Create an object ACL.
-     *
-     * @return AclInterface
      */
-    public function createAcl(ObjectIdentityInterface $objectIdentity);
+    public function createAcl(ObjectIdentityInterface $objectIdentity): MutableAclInterface;
 
     /**
      * Update the ACL.
+     *
+     * @return void
      */
-    public function updateAcl(AclInterface $acl);
+    public function updateAcl(MutableAclInterface $acl);
 
     /**
      * Delete the ACL.
@@ -97,16 +99,16 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
      *
      * @param string $role
      *
-     * @return mixed index if found, FALSE if not found
+     * @return string|int|false index if found, FALSE if not found
      */
-    public function findClassAceIndexByRole(AclInterface $acl, $role);
+    public function findClassAceIndexByRole(MutableAclInterface $acl, $role);
 
     /**
      * Helper method to find the index of a class ACE for a username.
      *
      * @param string $username
      *
-     * @return mixed index if found, FALSE if not found
+     * @return string|int|false index if found, FALSE if not found
      */
-    public function findClassAceIndexByUsername(AclInterface $acl, $username);
+    public function findClassAceIndexByUsername(MutableAclInterface $acl, $username);
 }

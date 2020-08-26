@@ -23,42 +23,50 @@ final class ProxyQuery implements ProxyQueryInterface
 
     public function execute(array $params = [], ?int $hydrationMode = null)
     {
+        throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function setSortBy(array $parentAssociationMappings, array $fieldMapping): void
-    {
-    }
-
-    public function getSortBy(): string
-    {
-        return 'e.id';
-    }
-
-    public function setSortOrder(string $sortOrder): void
-    {
-    }
-
-    public function getSortOrder(): string
-    {
-        return 'ASC';
-    }
-
-    public function getSingleScalarResult(): ?int
-    {
-        return 0;
-    }
-
-    public function setFirstResult(?int $firstResult): void
-    {
-    }
-
-    public function getFirstResult(): ?object
+    public function setSortBy(array $parentAssociationMappings, array $fieldMapping): ProxyQueryInterface
     {
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function setMaxResults(?int $maxResults): void
+    public function getSortBy(): ?string
     {
+        return 'e.id';
+    }
+
+    public function setSortOrder(string $sortOrder): ProxyQueryInterface
+    {
+        throw new \BadMethodCallException('Not implemented.');
+    }
+
+    public function getSortOrder(): ?string
+    {
+        return 'ASC';
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
+    public function getSingleScalarResult()
+    {
+        return 0;
+    }
+
+    public function setFirstResult(?int $firstResult): ProxyQueryInterface
+    {
+        throw new \BadMethodCallException('Not implemented.');
+    }
+
+    public function getFirstResult(): ?int
+    {
+        throw new \BadMethodCallException('Not implemented.');
+    }
+
+    public function setMaxResults(?int $maxResults): ProxyQueryInterface
+    {
+        throw new \BadMethodCallException('Not implemented.');
     }
 
     public function getMaxResults(): ?int

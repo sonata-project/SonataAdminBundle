@@ -1,8 +1,21 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.x to 3.x
-=======================
+## Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface` collection-related methods.
+
+Use:
+- `new \Doctrine\Common\Collections\ArrayCollection()` instead of `getModelCollectionInstance($class)`
+- `$collection->removeElement($element)` instead of `collectionRemoveElement($collection, $element)`
+- `$collection->add($element)` instead of `collectionAddElement($collection, $element)`
+- `$collection->contains($element)` instead of `collectionHasElement($collection, $element)`
+- `$collection->clear()` instead of `collectionClear($collection)`
+
+UPGRADE FROM 3.73 to 3.74
+=========================
+
+## Deprecated `Sonata\AdminBundle\Datagrid\ProxyQueryInterface::getSingleScalarResult`
+
+Use `Sonata\AdminBundle\Datagrid\ProxyQueryInterface::execute` instead.
 
 ## The following templates have been deprecated
 
@@ -44,6 +57,10 @@ We added compatibility with SonataBlockBundle 4.0, make sure you are explicitly 
 with `sonata-project/block-bundle` on your composer.json in order to avoid unwanted upgrades.
 
 There is a minimal BC Break on `AdminListBlockService`, `AdminSearchBlockService` and `AdminStatsBlockService`. If you are extending those clases (keep in mind that they will become final on 4.0) you should add return type hints to `execute()` and `configureSettings()`.
+
+## Deprecated passing `callable` that does not return `Symfony\Component\Routing\Route` as `$element` (2nd argument) to `Sonata\AdminBundle\Route\RouteCollection::addElement($code, $element)`
+
+When calling a `Sonata\AdminBundle\Route\RouteCollection::addElement($code, $element)`, please pass `$element` of type `Route|callable():Route`. Passing `callable` that returns non instance of `Route` is deprecated.
 
 UPGRADE FROM 3.72 to 3.73
 =========================

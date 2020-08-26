@@ -18,7 +18,7 @@
         </service>
         <service id="Sonata\AdminBundle\Route\AdminPoolLoader" alias="sonata.admin.route_loader"/>
         <service id="sonata.admin.helper" class="Sonata\AdminBundle\Admin\AdminHelper" public="true">
-            <argument type="service" id="sonata.admin.pool"/>
+            <argument type="service" id="property_accessor"/>
         </service>
         <service id="Sonata\AdminBundle\Admin\AdminHelper" alias="sonata.admin.helper"/>
         <service id="sonata.admin.builder.filter.factory" class="Sonata\AdminBundle\Filter\FilterFactory" public="true">
@@ -74,7 +74,6 @@
         <service id="Sonata\AdminBundle\Model\AuditManager" alias="sonata.admin.audit.manager"/>
         <service id="Sonata\AdminBundle\Model\AuditManagerInterface" alias="sonata.admin.audit.manager"/>
         <service id="sonata.admin.search.handler" class="Sonata\AdminBundle\Search\SearchHandler" public="true">
-            <argument type="service" id="sonata.admin.pool"/>
             <argument>%sonata.admin.configuration.global_search.case_sensitive%</argument>
         </service>
         <service id="Sonata\AdminBundle\Search\SearchHandler" alias="sonata.admin.search.handler"/>

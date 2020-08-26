@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Route;
 final class RouteCollection implements RouteCollectionInterface
 {
     /**
-     * @var Route[]
+     * @var array<string, Route|callable():Route>
      */
     private $elements = [];
 
@@ -46,7 +46,7 @@ final class RouteCollection implements RouteCollectionInterface
     private $baseRoutePattern;
 
     /**
-     * @var Route[]
+     * @var array<string, Route|callable():Route>
      */
     private $cachedElements = [];
 
@@ -123,8 +123,10 @@ final class RouteCollection implements RouteCollectionInterface
         foreach ($this->elements as $code => $element) {
             $this->resolveElement($code);
         }
+        /** @var array<string, Route> $elements */
+        $elements = $this->elements;
 
-        return $this->elements;
+        return $elements;
     }
 
     public function has(string $name): bool
@@ -142,6 +144,7 @@ final class RouteCollection implements RouteCollectionInterface
         if ($this->has($name)) {
             $code = $this->getCode($name);
             $this->resolveElement($code);
+            \assert($this->elements[$code] instanceof Route);
 
             return $this->elements[$code];
         }
@@ -232,7 +235,7 @@ final class RouteCollection implements RouteCollectionInterface
     }
 
     /**
-     * @param Route|callable $element
+     * @param Route|callable():Route $element
      */
     private function addElement(string $code, $element): void
     {
@@ -250,7 +253,17 @@ final class RouteCollection implements RouteCollectionInterface
         $element = $this->elements[$code];
 
         if (\is_callable($element)) {
-            $this->elements[$code] = $element();
+            $resolvedElement = $element();
+            if (!$resolvedElement instanceof Route) {
+                @trigger_error(sprintf(
+                    'Element resolved by code "%s" is not instance of "%s"; This is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+                    $code,
+                    Route::class
+                ), E_USER_DEPRECATED);
+                // NEXT_MAJOR : remove the previous `trigger_error()` and throw exception
+            }
+
+            $this->elements[$code] = $resolvedElement;
             $this->updateCachedElement($code);
         }
     }

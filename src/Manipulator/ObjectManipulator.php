@@ -53,7 +53,7 @@ final class ObjectManipulator
         object $object,
         FieldDescriptionInterface $parentFieldDescription
     ): object {
-        $mappedBy = $parentFieldDescription->getAssociationMapping()['mappedBy'];
+        $mappedBy = $parentFieldDescription->getAssociationMapping()['mappedBy'] ?? null;
         if (null === $mappedBy) {
             return $instance;
         }

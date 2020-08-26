@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Util\DummyObjectAclManipulator;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
-use Symfony\Component\Security\Acl\Model\AclInterface;
+use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 
 /**
@@ -66,7 +66,7 @@ class ObjectAclManipulatorTest extends TestCase
         $acls->contains(Argument::type(ObjectIdentityInterface::class))
             ->shouldBeCalled()
             ->willReturn(false, true);
-        $acl = $this->prophesize(AclInterface::class)->reveal();
+        $acl = $this->prophesize(MutableAclInterface::class)->reveal();
         $acls->offsetGet(Argument::type(ObjectIdentityInterface::class))
             ->shouldBeCalled()
             ->willReturn($acl);

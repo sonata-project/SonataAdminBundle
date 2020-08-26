@@ -19,46 +19,47 @@ namespace Sonata\AdminBundle\Model;
 interface AuditReaderInterface
 {
     /**
-     * @param string $className
-     * @param string $id
-     * @param string $revision
+     * @template T of object
      *
-     * @return object
+     * @param mixed $id
+     * @param mixed $revisionId
+     *
+     * @phpstan-param class-string<T> $className
+     * @phpstan-return T|null
      */
-    public function find($className, $id, $revision);
+    public function find(string $className, $id, $revisionId): ?object;
 
     /**
-     * @param string $className
-     * @param int    $limit
-     * @param int    $offset
+     * @return object[]
+     *
+     * @phpstan-param class-string $className
+     */
+    public function findRevisionHistory(string $className, int $limit = 20, int $offset = 0): array;
+
+    /**
+     * @param mixed $revisionId
+     *
+     * @phpstan-param class-string $className
+     */
+    public function findRevision(string $className, $revisionId): ?object;
+
+    /**
+     * @param mixed $id
      *
      * @return object[]
+     *
+     * @phpstan-param class-string $className
      */
-    public function findRevisionHistory($className, $limit = 20, $offset = 0);
+    public function findRevisions(string $className, $id): array;
 
     /**
-     * @param string $classname
-     * @param string $revision
+     * @param mixed $id
+     * @param mixed $oldRevisionId
+     * @param mixed $newRevisionId
      *
-     * @return object
-     */
-    public function findRevision($classname, $revision);
-
-    /**
-     * @param string $className
-     * @param string $id
+     * @return array<string, array{old: mixed, new: mixed, same: mixed}>
      *
-     * @return object[]
+     * @phpstan-param class-string $className
      */
-    public function findRevisions($className, $id);
-
-    /**
-     * @param string $className
-     * @param int    $id
-     * @param int    $oldRevision
-     * @param int    $newRevision
-     *
-     * @return array
-     */
-    public function diff($className, $id, $oldRevision, $newRevision);
+    public function diff(string $className, $id, $oldRevisionId, $newRevisionId): array;
 }

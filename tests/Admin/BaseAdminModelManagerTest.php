@@ -84,7 +84,7 @@ class BaseAdminModelManagerTest extends TestCase
         $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
         $admin->setModelManager($modelManager);
 
-        $admin->id('Entity');
-        $admin->getNormalizedIdentifier('Entity');
+        $admin->id(new \stdClass());
+        $admin->getNormalizedIdentifier(new \stdClass());
     }
 }
