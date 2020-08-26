@@ -199,9 +199,11 @@ final class Datagrid implements DatagridInterface
         $this->bound = true;
     }
 
-    public function addFilter(FilterInterface $filter): void
+    public function addFilter(FilterInterface $filter): FilterInterface
     {
         $this->filters[$filter->getName()] = $filter;
+
+        return $filter;
     }
 
     public function hasFilter(string $name): bool

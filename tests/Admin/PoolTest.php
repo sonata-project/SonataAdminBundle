@@ -340,7 +340,7 @@ class PoolTest extends TestCase
             ->willReturn($adminMock);
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp(sprintf(
+        $this->expectExceptionMessageMatches(sprintf(
             '{^Argument 1 passed to Sonata\\\AdminBundle\\\Admin\\\Pool::getAdminByAdminCode\(\) must contain a valid admin reference, "[^"]+" found at "%s"\.$}',
             $adminId
         ));

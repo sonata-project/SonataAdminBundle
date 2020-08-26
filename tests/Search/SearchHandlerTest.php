@@ -15,30 +15,13 @@ namespace Sonata\AdminBundle\Tests\Search;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Search\SearchHandler;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 class SearchHandlerTest extends TestCase
 {
-    public function getPool(?AdminInterface $admin = null): Pool
-    {
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $container->method('get')->willReturnCallback(static function (string $id) use ($admin): AdminInterface {
-            if ('fake' === $id) {
-                throw new ServiceNotFoundException('Fake service does not exist');
-            }
-
-            return $admin;
-        });
-
-        return new Pool($container, 'title', 'logo', ['asd']);
-    }
-
     public function testBuildPagerWithNoGlobalSearchField(): void
     {
         $filter = $this->getMockForAbstractClass(FilterInterface::class);
@@ -51,16 +34,14 @@ class SearchHandlerTest extends TestCase
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->expects($this->once())->method('getDatagrid')->willReturn($datagrid);
 
-        $handler = new SearchHandler($this->getPool($admin), true);
+        $handler = new SearchHandler(true);
         $this->assertFalse($handler->search($admin, 'myservice'));
     }
 
     /**
-     * @test
-     *
      * @dataProvider buildPagerWithGlobalSearchFieldProvider
      */
-    public function buildPagerWithGlobalSearchField(bool $caseSensitive): void
+    public function testBuildPagerWithGlobalSearchField(bool $caseSensitive): void
     {
         $filter = $this->getMockForAbstractClass(FilterInterface::class);
         $filter->expects($this->once())->method('getFormName')->willReturn('formName');
@@ -79,7 +60,7 @@ class SearchHandlerTest extends TestCase
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->expects($this->once())->method('getDatagrid')->willReturn($datagrid);
 
-        $handler = new SearchHandler($this->getPool($admin), $caseSensitive);
+        $handler = new SearchHandler($caseSensitive);
         $this->assertInstanceOf(PagerInterface::class, $handler->search($admin, 'myservice'));
     }
 

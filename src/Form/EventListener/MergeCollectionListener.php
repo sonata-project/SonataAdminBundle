@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\EventListener;
 
+use Doctrine\Common\Collections\Collection;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -24,12 +25,23 @@ use Symfony\Component\Form\FormEvents;
 final class MergeCollectionListener implements EventSubscriberInterface
 {
     /**
-     * @var ModelManagerInterface
+     * @var ModelManagerInterface|null
      */
     private $modelManager;
 
-    public function __construct(ModelManagerInterface $modelManager)
+    /**
+     * NEXT_MAJOR: Remove this constructor and the modelManager property.
+     */
+    public function __construct(?ModelManagerInterface $modelManager = null)
     {
+        if (null !== $modelManager) {
+            @trigger_error(sprintf(
+                'Passing argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will be ignored in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         $this->modelManager = $modelManager;
     }
 
@@ -43,7 +55,10 @@ final class MergeCollectionListener implements EventSubscriberInterface
     public function onBind(FormEvent $event): void
     {
         $collection = $event->getForm()->getData();
+        \assert(null === $collection || $collection instanceof Collection);
+
         $data = $event->getData();
+        \assert($data instanceof Collection);
 
         // looks like there is no way to remove other listeners
         $event->stopPropagation();
@@ -51,19 +66,19 @@ final class MergeCollectionListener implements EventSubscriberInterface
         if (!$collection) {
             $collection = $data;
         } elseif (0 === \count($data)) {
-            $this->modelManager->collectionClear($collection);
+            $collection->clear();
         } else {
             // merge $data into $collection
             foreach ($collection as $model) {
-                if (!$this->modelManager->collectionHasElement($data, $model)) {
-                    $this->modelManager->collectionRemoveElement($collection, $model);
+                if (!$data->contains($model)) {
+                    $collection->removeElement($model);
                 } else {
-                    $this->modelManager->collectionRemoveElement($data, $model);
+                    $data->removeElement($model);
                 }
             }
 
             foreach ($data as $model) {
-                $this->modelManager->collectionAddElement($collection, $model);
+                $collection->add($model);
             }
         }
 

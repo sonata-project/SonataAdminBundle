@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -71,7 +72,8 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
 
     public function reverseTransform($value)
     {
-        $collection = $this->modelManager->getModelCollectionInstance($this->className);
+        /** @var ArrayCollection<array-key, object> $collection */
+        $collection = new ArrayCollection();
 
         if (empty($value)) {
             if ($this->multiple) {
@@ -97,7 +99,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
             $object = $this->modelManager->find($this->className, $id);
 
             if (null !== $object) {
-                $collection[] = $object;
+                $collection->add($object);
             }
         }
 

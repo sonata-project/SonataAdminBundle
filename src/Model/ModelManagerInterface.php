@@ -140,6 +140,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function getModelInstance(string $class): object;
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * @template T of object
      *
      * @return Collection<int|string, object>
@@ -150,6 +154,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function getModelCollectionInstance(string $class): Collection;
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * Removes an element from the collection.
      *
      * @template T of object
@@ -162,6 +170,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function collectionRemoveElement(Collection $collection, object $element): void;
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * Add an element from the collection.
      *
      * @template T of object
@@ -174,6 +186,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function collectionAddElement(Collection $collection, object $element): void;
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * Check if the element exists in the collection.
      *
      * @template T of object

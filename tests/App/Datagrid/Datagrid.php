@@ -60,8 +60,9 @@ final class Datagrid implements DatagridInterface
     {
     }
 
-    public function addFilter(FilterInterface $filter): void
+    public function addFilter(FilterInterface $filter): FilterInterface
     {
+        return $filter;
     }
 
     public function getFilters(): array

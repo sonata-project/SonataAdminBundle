@@ -118,24 +118,39 @@ class ModelManager implements ModelManagerInterface, LockInterface
         }
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function getModelCollectionInstance(string $class): Collection
     {
         return new ArrayCollection();
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function collectionRemoveElement(Collection $collection, object $element): void
     {
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function collectionAddElement(Collection $collection, object $element): void
     {
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function collectionHasElement(Collection $collection, object $element): bool
     {
         return true;
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function collectionClear(Collection $collection): void
     {
     }
