@@ -143,21 +143,6 @@ class AclSecurityHandlerTest extends TestCase
         $handler->addObjectOwner($this->createStub(AclInterface::class));
     }
 
-    public function testUpdateAclMustOnlyAcceptMutableAclInterface(): void
-    {
-        $this->expectWarning();
-        $this->expectWarningMessage('assert(): assert($acl instanceof MutableAclInterface) failed');
-        $handler = new AclSecurityHandler(
-            $this->getTokenStorageMock(),
-            $this->getAuthorizationCheckerMock(),
-            $this->getMockForAbstractClass(MutableAclProviderInterface::class),
-            MaskBuilder::class,
-            []
-        );
-        $acl = $this->createStub(AclInterface::class);
-        $handler->updateAcl($acl);
-    }
-
     public function testSuccerfulUpdateAcl(): void
     {
         $acl = $this->createStub(MutableAclInterface::class);
