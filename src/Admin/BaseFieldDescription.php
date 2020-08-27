@@ -475,13 +475,22 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->help = $help;
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0. Use Symfony Form "help" option instead.
+     *
+     * @return string
+     */
     public function getHelp()
     {
-        @trigger_error(sprintf(
-            'The "%s()" method is deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0.'
-            .' Use Symfony Form "help" option instead.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
+        if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0.'
+                .' Use Symfony Form "help" option instead.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
 
         return $this->help;
     }
