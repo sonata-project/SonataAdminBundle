@@ -47,6 +47,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\InputBag;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
@@ -812,7 +814,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         // build the values array
         if ($this->hasRequest()) {
-            $filters = $this->request->query->get('filter', []);
+            /** @var InputBag|ParameterBag $bag */
+            $bag = $this->request->query;
+            if ($bag instanceof InputBag) {
+                // symfony 5.1+
+                $filters = $bag->all('filter');
+            } else {
+                $filters = $bag->get('filter', []);
+            }
             if (isset($filters['_page'])) {
                 $filters['_page'] = (int) $filters['_page'];
             }
