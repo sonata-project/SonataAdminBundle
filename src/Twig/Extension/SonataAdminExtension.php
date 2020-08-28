@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Security\Acl\Voter\FieldVote;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
-use Symfony\Component\Translation\TranslatorInterface as LegacyTranslationInterface;
+use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -104,11 +104,11 @@ class SonataAdminExtension extends AbstractExtension
                 ), E_USER_DEPRECATED);
             }
 
-            if (!$translator instanceof TranslatorInterface && !$translator instanceof LegacyTranslationInterface) {
+            if (!$translator instanceof TranslatorInterface && !$translator instanceof LegacyTranslatorInterface) {
                 throw new \TypeError(sprintf(
                     'Argument 2 must be an instance of "%s" or preferably "%s", "%s given"',
                     TranslatorInterface::class,
-                    LegacyTranslationInterface::class,
+                    LegacyTranslatorInterface::class,
                     \get_class($translator)
                 ));
             }

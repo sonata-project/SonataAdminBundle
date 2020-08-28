@@ -18,7 +18,8 @@ use Sonata\Form\Type\DateTimeRangeType as FormDateTimeRangeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @final since sonata-project/admin-bundle 3.52
@@ -42,12 +43,22 @@ class DateTimeRangeType extends AbstractType
      *
      * @deprecated since sonata-project/admin-bundle 3.5, to be removed with 4.0
      *
-     * @var TranslatorInterface
+     * @var TranslatorInterface|LegacyTranslatorInterface
      */
     protected $translator;
 
-    public function __construct(TranslatorInterface $translator)
+    public function __construct($translator)
     {
+        if (!$translator instanceof LegacyTranslatorInterface && !$translator instanceof TranslatorInterface) {
+            throw new \TypeError(sprintf(
+                'Argument 1 passed to "%s()" must be an instance of "%s" or "%s", %s given.',
+                __METHOD__,
+                LegacyTranslatorInterface::class,
+                TranslatorInterface::class,
+                \is_object($translator) ? 'instance of '.\get_class($translator) : \gettype($translator)
+            ));
+        }
+
         $this->translator = $translator;
     }
 

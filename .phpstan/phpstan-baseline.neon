@@ -33,7 +33,7 @@ parameters:
         -
             # will be fixed in v4. Code is marked as deprecated
             message: "#^Result of \\&\\& is always false\\.$#"
-            count: 1
+            count: 2
             path: ../src/Admin/AbstractAdmin.php
 
         -
@@ -271,3 +271,8 @@ parameters:
             message: "#^Method Symfony\\\\Contracts\\\\EventDispatcher\\\\EventDispatcherInterface\\:\\:dispatch\\(\\) invoked with 2 parameters, 1 required\\.$#"
             count: 1
             path: ../src/Menu/MenuBuilder.php
+
+        -
+            message: '#Else branch is unreachable because ternary operator condition is always true#'
+            count: 1
+            path: ../src/Admin/AbstractAdmin.php

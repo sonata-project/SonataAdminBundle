@@ -52,9 +52,10 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterface;
 use Symfony\Component\Validator\Mapping\GenericMetadata;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -309,7 +310,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * NEXT_MAJOR: remove this property
      *
-     * @var \Symfony\Component\Translation\TranslatorInterface
+     * @var TranslatorInterface|LegacyTranslatorInterface
      *
      * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
      */
@@ -2441,6 +2442,10 @@ EOT;
             __METHOD__
         ), E_USER_DEPRECATED);
 
+        if (!method_exists($this->translator, 'transChoice')) {
+            throw new \RuntimeException('AbstractAdmin::transChoice is only supported with symfony/translation 4.4');
+        }
+
         $domain = $domain ?: $this->getTranslationDomain();
 
         return $this->translator->transChoice($id, $count, $parameters, $domain, $locale);
@@ -2461,9 +2466,11 @@ EOT;
      *
      * NEXT_MAJOR: remove this method
      *
+     * @param LegacyTranslatorInterface|TranslatorInterface $translator
+     *
      * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
      */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator($translator)
     {
         $args = \func_get_args();
         if (isset($args[1]) && $args[1]) {
@@ -2471,6 +2478,16 @@ EOT;
                 'The %s method is deprecated since version 3.9 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
+        }
+
+        if (!$translator instanceof LegacyTranslatorInterface && !$translator instanceof TranslatorInterface) {
+            throw new \TypeError(sprintf(
+                'Argument 1 passed to "%s()" must be an instance of "%s" or "%s", %s given.',
+                __METHOD__,
+                LegacyTranslatorInterface::class,
+                TranslatorInterface::class,
+                \is_object($translator) ? 'instance of '.\get_class($translator) : \gettype($translator)
+            ));
         }
 
         $this->translator = $translator;
@@ -2482,6 +2499,8 @@ EOT;
      * NEXT_MAJOR: remove this method
      *
      * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
+     *
+     * @return LegacyTranslatorInterface|TranslatorInterface
      */
     public function getTranslator()
     {
