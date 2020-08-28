@@ -974,6 +974,7 @@ class CRUDControllerTest extends TestCase
         $object2 = new \stdClass();
 
         $admin = $this->createMock(PostAdmin::class);
+        $admin->method('getIdParameter')->willReturn('parent_id');
 
         $admin->expects($this->once())
             ->method('getObject')
