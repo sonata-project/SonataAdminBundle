@@ -77,14 +77,4 @@ class SetupAclCommandTest extends TestCase
             $commandTester->getDisplay()
         );
     }
-
-    public function testExecuteWithException2(): void
-    {
-        $pool = new Pool($this->container, '', '');
-
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(sprintf('Argument 2 passed to %s::__construct() must implement interface %s, instance of %s given', SetupAclCommand::class, AdminAclManipulatorInterface::class, \stdClass::class));
-
-        new SetupAclCommand($pool, new \stdClass());
-    }
 }
