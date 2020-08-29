@@ -29,6 +29,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param string $name
      *
      * @return FieldDescriptionInterface
+     *
+     * @phpstan-param class-string $class
      */
     public function getNewFieldDescriptionInstance($class, $name, array $options = []);
 
@@ -54,16 +56,26 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function delete($object);
 
     /**
-     * @param string $class
+     * @param string               $class
+     * @param array<string, mixed> $criteria
      *
-     * @return array all objects matching the criteria
+     * @return object[] all objects matching the criteria
+     *
+     * @phpstan-template T
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T[]
      */
     public function findBy($class, array $criteria = []);
 
     /**
-     * @param string $class
+     * @param string               $class
+     * @param array<string, mixed> $criteria
      *
      * @return object|null an object matching the criteria or null if none match
+     *
+     * @phpstan-template T
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T|null
      */
     public function findOneBy($class, array $criteria = []);
 
@@ -72,6 +84,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param mixed  $id
      *
      * @return object|null the object with id or null if not found
+     *
+     * @phpstan-template T
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T|null
      */
     public function find($class, $id);
 
@@ -79,6 +95,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param string $class
      *
      * @throws ModelManagerException
+     *
+     * @phpstan-param class-string $class
      */
     public function batchDelete($class, ProxyQueryInterface $queryProxy);
 
@@ -90,6 +108,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @param array  $parentAssociationMapping
      * @param string $class
+     *
+     * @phpstan-param class-string $class
      */
     public function getParentFieldDescription($parentAssociationMapping, $class);
 
@@ -98,6 +118,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param string $alias
      *
      * @return ProxyQueryInterface
+     *
+     * @phpstan-param class-string $class
      */
     public function createQuery($class, $alias = 'o');
 
@@ -111,6 +133,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param string $class fully qualified class name
      *
      * @return string
+     *
+     * @phpstan-param class-string $class
      */
     public function getModelIdentifier($class);
 
@@ -133,7 +157,9 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @param string $class fully qualified class name
      *
-     * @return array
+     * @return string[]
+     *
+     * @phpstan-param class-string $class
      */
     public function getIdentifierFieldNames($class);
 
@@ -165,6 +191,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param string $class
      *
      * @return object
+     *
+     * @phpstan-template T
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T
      */
     public function getModelInstance($class);
 
@@ -244,6 +274,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param string $class
      *
      * @return object
+     *
+     * @phpstan-template T
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T
      */
     public function modelReverseTransform($class, array $array = []);
 
@@ -252,6 +286,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param object $instance
      *
      * @return object
+     *
+     * @phpstan-template T
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T
      */
     public function modelTransform($class, $instance);
 
@@ -277,6 +315,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param string $class
      *
      * @return string[]
+     *
+     * @phpstan-param class-string $class
      */
     public function getExportFields($class);
 
@@ -294,6 +334,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
 
     /**
      * @param string $class
+     *
+     * @phpstan-param class-string $class
      */
     public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx);
 }
