@@ -37,11 +37,11 @@ jobs:
             dependencies: highest
             allowed_to_fail: true
             variant: normal
-          - php-version: '7.3'
+          - php-version: '7.4'
             dependencies: highest
             allowed_to_fail: false
             variant: 'symfony/symfony:"4.4.*"'
-          - php-version: '7.3'
+          - php-version: '7.4'
             dependencies: highest
             allowed_to_fail: false
             variant: 'sonata-project/block-bundle:"3.*"'
@@ -71,6 +71,10 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ matrix.variant }}
           restore-keys: ${{ runner.os }}-${{ matrix.php-version }}-composer-
 
+      - name: Configuration required for PHP 8.0
+        if: matrix.php-version == '8.0'
+        run: composer config platform.php 7.4.99 && composer require phpunit/phpunit:"9.3.*" --no-update
+
       - name: Install variant
         if: matrix.variant != 'normal'
         run: composer require ${{ matrix.variant }} --no-update
@@ -80,15 +84,16 @@ jobs:
         run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable --prefer-lowest
 
       - name: Install Composer dependencies (highest)
-        if: matrix.dependencies == 'highest' && matrix.php-version != '8.0'
+        if: matrix.dependencies == 'highest'
         run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
 
-      - name: Install Composer dependencies (highest) on PHP 8.0
-        if: matrix.dependencies == 'highest' && matrix.php-version == '8.0'
-        run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable --ignore-platform-req=php
-
       - name: Run Tests
+        if: matrix.php-version != '8.0'
         run: make test
+
+      - name: Run Tests (PHP 8.0)
+        if: matrix.php-version == '8.0'
+        run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
       - name: Send coverage to Codecov
         uses: codecov/codecov-action@v1
