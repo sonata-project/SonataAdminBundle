@@ -36,7 +36,7 @@ final class MergeCollectionListener implements EventSubscriberInterface
     {
         if (null !== $modelManager) {
             @trigger_error(sprintf(
-                'Passing argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.x'
+                'Passing argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.75'
                 .' and will be ignored in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);

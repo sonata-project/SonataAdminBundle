@@ -55,4 +55,8 @@ class BatchAdminController extends CRUDController
 
         return false;
     }
+
+    public function batchActionFooBarIsRelevant(array $idx, $allElements)
+    {
+    }
 }
