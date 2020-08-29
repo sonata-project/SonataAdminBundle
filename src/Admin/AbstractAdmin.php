@@ -641,11 +641,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x
+     *
      * @return array
      */
     public function getExportFields()
     {
-        $fields = $this->getModelManager()->getExportFields($this->getClass());
+        $fields = $this->configureExportFields();
 
         foreach ($this->getExtensions() as $extension) {
             if (method_exists($extension, 'configureExportFields')) {
@@ -3206,6 +3208,14 @@ EOT;
         }
 
         return $this->hasAccess($action, $object);
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function configureExportFields(): array
+    {
+        return $this->getModelManager()->getExportFields($this->getClass());
     }
 
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
