@@ -137,10 +137,10 @@ class FormMapper extends BaseGroupedMapper
             }
 
             // NEXT_MAJOR: Remove this block.
-            if (isset($options['help'])) {
+            if (isset($options['help']) && !isset($options['help_html'])) {
                 $containsHtml = $options['help'] !== strip_tags($options['help']);
 
-                if (!isset($options['help_html']) && $containsHtml) {
+                if ($containsHtml) {
                     @trigger_error(
                         'Using HTML syntax within the "help" option and not setting the "help_html" option to "true" is deprecated'
                         .' since sonata-project/admin-bundle 3.74 and it will not work in version 4.0.',
