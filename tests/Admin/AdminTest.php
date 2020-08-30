@@ -1475,7 +1475,7 @@ class AdminTest extends TestCase
                 'foo',
                 [
                     '%count%' => 2,
-                    '%foo%' => 'bar'
+                    '%foo%' => 'bar',
                 ],
                 'fooMessageDomain',
                 'en'
