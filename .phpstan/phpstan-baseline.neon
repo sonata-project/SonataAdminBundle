@@ -271,8 +271,3 @@ parameters:
             message: "#^Method Symfony\\\\Contracts\\\\EventDispatcher\\\\EventDispatcherInterface\\:\\:dispatch\\(\\) invoked with 2 parameters, 1 required\\.$#"
             count: 1
             path: ../src/Menu/MenuBuilder.php
-
-        -
-            message: '#Else branch is unreachable because ternary operator condition is always true#'
-            count: 1
-            path: ../src/Admin/AbstractAdmin.php

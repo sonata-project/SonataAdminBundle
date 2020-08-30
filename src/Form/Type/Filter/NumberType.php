@@ -66,11 +66,11 @@ class NumberType extends AbstractType
     {
         if (!$translator instanceof LegacyTranslatorInterface && !$translator instanceof TranslatorInterface) {
             throw new \TypeError(sprintf(
-                'Argument 1 passed to "%s()" must be an instance of "%s" or "%s", %s given.',
+                'Argument 1 passed to "%s()" must be an instance of "%s" or "%s", instance of "%s" given.',
                 __METHOD__,
                 LegacyTranslatorInterface::class,
                 TranslatorInterface::class,
-                \is_object($translator) ? 'instance of '.\get_class($translator) : \gettype($translator)
+                \get_class($translator)
             ));
         }
 
