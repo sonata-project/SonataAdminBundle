@@ -65,7 +65,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * @method void                            reorderFormGroup(string $group, array $keys)
  * @method void                            defineFormBuilder(FormBuilderInterface $formBuilder)
  * @method string                          getPagerType()
- * @method void                            setTranslator($translator);
+ * @method void                            setTranslator(object $translator);
  */
 interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
 {

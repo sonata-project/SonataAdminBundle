@@ -47,7 +47,7 @@ class DateTimeRangeType extends AbstractType
      */
     protected $translator;
 
-    public function __construct($translator)
+    public function __construct(object $translator)
     {
         if (!$translator instanceof LegacyTranslatorInterface && !$translator instanceof TranslatorInterface) {
             throw new \TypeError(sprintf(
