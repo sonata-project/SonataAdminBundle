@@ -885,27 +885,23 @@ class AdminTest extends TestCase
 
     public function testGetRouteGenerator(): void
     {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $this->assertNull($admin->getRouteGenerator());
-
         $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
 
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
         $admin->setRouteGenerator($routeGenerator);
+
         $this->assertSame($routeGenerator, $admin->getRouteGenerator());
     }
 
     public function testGetConfigurationPool(): void
     {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $this->assertNull($admin->getConfigurationPool());
-
         $pool = $this->getMockBuilder(Pool::class)
             ->disableOriginalConstructor()
             ->getMock();
 
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
         $admin->setConfigurationPool($pool);
+
         $this->assertSame($pool, $admin->getConfigurationPool());
     }
 

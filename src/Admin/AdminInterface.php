@@ -158,7 +158,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getSecurityHandler(): ?SecurityHandlerInterface;
 
     /**
-     * @param string|array $name
+     * @param string|string[] $name
      */
     public function isGranted($name, ?object $object = null): bool;
 
@@ -363,14 +363,18 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Returns list of supported sub classes.
      *
-     * @return array<string, class-string>
+     * @return array<string, string>
+     *
+     * @phpstan-return array<string, class-string>
      */
     public function getSubClasses(): array;
 
     /**
      * Sets the list of supported sub classes.
      *
-     * @param array<string, class-string> $subClasses
+     * @param array<string, string> $subClasses
+     *
+     * @phpstan-param array<string, class-string> $subClasses
      */
     public function setSubClasses(array $subClasses): void;
 
