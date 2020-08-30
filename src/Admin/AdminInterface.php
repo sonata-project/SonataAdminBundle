@@ -33,8 +33,9 @@ use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -64,6 +65,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @method void                            reorderFormGroup(string $group, array $keys)
  * @method void                            defineFormBuilder(FormBuilderInterface $formBuilder)
  * @method string                          getPagerType()
+ * @method void                            setTranslator($translator);
  */
 interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
 {
@@ -90,10 +92,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getDatagridBuilder();
 
-    public function setTranslator(TranslatorInterface $translator);
-
     /**
-     * @return TranslatorInterface
+     * @return TranslatorInterface|LegacyTranslatorInterface
      */
     public function getTranslator();
 

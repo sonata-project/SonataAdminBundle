@@ -18,6 +18,7 @@ use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Translation\ExtractorInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
@@ -71,10 +72,10 @@ class AdminExtractorTest extends TestCase
             $this->markTestSkipped('JMS Translator Bundle does not exist');
         }
 
-        $this->fooAdmin = $this->getMockForAbstractClass(AdminInterface::class);
-        $this->barAdmin = $this->getMockForAbstractClass(AdminInterface::class);
+        $this->fooAdmin = $this->createMock(AbstractAdmin::class);
+        $this->barAdmin = $this->createMock(AbstractAdmin::class);
 
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $container = $this->createMock(ContainerInterface::class);
         $container
             ->method('get')
             ->willReturnCallback(function (string $id): AdminInterface {
