@@ -1420,6 +1420,12 @@ class AdminTest extends TestCase
      */
     public function testTrans(string $translatorClass): void
     {
+        if (!interface_exists($translatorClass)) {
+            $this->markTestSkipped('This test is only available using Symfony 4');
+
+            return;
+        }
+
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
         $admin->setTranslationDomain('fooMessageDomain');
 
