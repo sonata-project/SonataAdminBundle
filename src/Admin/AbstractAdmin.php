@@ -2442,16 +2442,13 @@ EOT;
             __METHOD__
         ), E_USER_DEPRECATED);
 
-        if (!$this->translator instanceof LegacyTranslatorInterface) {
-            throw new \RuntimeException(sprintf(
-                'AbstractAdmin::transChoice is only supported for translators implementing "%s"',
-                LegacyTranslatorInterface::class
-            ));
-        }
-
         $domain = $domain ?: $this->getTranslationDomain();
 
-        return $this->translator->transChoice($id, $count, $parameters, $domain, $locale);
+        if ($this->translator instanceof LegacyTranslatorInterface) {
+            return $this->translator->transChoice($id, $count, $parameters, $domain, $locale);
+        }
+
+        return $this->translator->trans($id, ['%count%' => $count] + $parameters, $domain, $locale);
     }
 
     public function setTranslationDomain($translationDomain)

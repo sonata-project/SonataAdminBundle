@@ -1461,21 +1461,34 @@ class AdminTest extends TestCase
     /**
      * @group legacy
      */
-    public function testTransChoiceFailsForUnsupportedInstance(): void
+    public function testTransChoice(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('AbstractAdmin::transChoice is only supported for translators implementing "Symfony\Component\Translation\TranslatorInterface"');
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+        $admin->setTranslationDomain('fooMessageDomain');
+
         $translator = $this->createMock(TranslatorInterface::class);
-        $admin = new PostAdmin('', '');
         $admin->setTranslator($translator);
 
-        $admin->transChoice('key', 1);
+        $translator->expects($this->once())
+            ->method('trans')
+            ->with(
+                'foo',
+                [
+                    '%count%' => 2,
+                    '%foo%' => 'bar'
+                ],
+                'fooMessageDomain',
+                'en'
+            )
+            ->willReturn('fooTranslated');
+
+        $this->assertSame('fooTranslated', $admin->transChoice('foo', 2, ['%foo%' => 'bar'], null, 'en'));
     }
 
     /**
      * @group legacy
      */
-    public function testTransChoice(): void
+    public function testTransChoiceWithLegacyTranslator(): void
     {
         if (!interface_exists(LegacyTranslatorInterface::class)) {
             $this->markTestSkipped('This test is only available using Symfony 4');
