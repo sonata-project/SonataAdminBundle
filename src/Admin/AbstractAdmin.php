@@ -3295,9 +3295,9 @@ EOT;
     /**
      * Allows you to customize batch actions.
      *
-     * @param array $actions List of actions
+     * @param array<string, mixed> $actions List of actions
      *
-     * @return array
+     * @return array<string, mixed>
      */
     protected function configureBatchActions($actions)
     {
@@ -3531,6 +3531,8 @@ EOT;
 
     /**
      * Configures a list of default filters.
+     *
+     * @param array<string, mixed> $filterValues
      */
     protected function configureDefaultFilterValues(array &$filterValues)
     {
@@ -3542,6 +3544,8 @@ EOT;
      * Example:
      *   $sortValues['_sort_by'] = 'foo'
      *   $sortValues['_sort_order'] = 'DESC'
+     *
+     * @phpstan-param array{_page?: int, _per_page?: int, _sort_by?: string, _sort_order?: string} $sortValues
      */
     protected function configureDefaultSortValues(array &$sortValues)
     {
