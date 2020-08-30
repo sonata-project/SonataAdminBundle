@@ -2442,8 +2442,11 @@ EOT;
             __METHOD__
         ), E_USER_DEPRECATED);
 
-        if (!method_exists($this->translator, 'transChoice')) {
-            throw new \RuntimeException('AbstractAdmin::transChoice is only supported with symfony/translation 4.4');
+        if (!$this->translator instanceof LegacyTranslatorInterface) {
+            throw new \RuntimeException(sprintf(
+                'AbstractAdmin::transChoice is only supported for translators implementing "%s"',
+                LegacyTranslatorInterface::class
+            ));
         }
 
         $domain = $domain ?: $this->getTranslationDomain();

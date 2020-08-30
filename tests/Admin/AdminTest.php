@@ -1453,6 +1453,20 @@ class AdminTest extends TestCase
     /**
      * @group legacy
      */
+    public function testTransChoiceFailsForUnsupportedInstance(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('AbstractAdmin::transChoice is only supported for translators implementing "Symfony\Component\Translation\TranslatorInterface"');
+        $translator = $this->createMock(TranslatorInterface::class);
+        $admin = new PostAdmin('', '');
+        $admin->setTranslator($translator);
+
+        $admin->transChoice('key', 1);
+    }
+
+    /**
+     * @group legacy
+     */
     public function testTransChoice(): void
     {
         if (!interface_exists(LegacyTranslatorInterface::class)) {
