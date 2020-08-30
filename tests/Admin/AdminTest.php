@@ -1415,13 +1415,15 @@ class AdminTest extends TestCase
 
     /**
      * @group legacy
+     * @testWith ["Symfony\\Component\\Translation\\TranslatorInterface"]
+     *           ["Symfony\\Contracts\\Translation\\TranslatorInterface"]
      */
-    public function testTrans(): void
+    public function testTrans(string $translatorClass): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
         $admin->setTranslationDomain('fooMessageDomain');
 
-        $translator = $this->createMock(TranslatorInterface::class);
+        $translator = $this->createMock($translatorClass);
         $admin->setTranslator($translator);
 
         $translator->expects($this->once())
