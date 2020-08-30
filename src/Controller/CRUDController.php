@@ -34,6 +34,7 @@ use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -430,6 +431,7 @@ class CRUDController implements ContainerAwareInterface
             $forwardedRequest->request->replace(array_merge($forwardedRequest->request->all(), $data));
         } else {
             $action = $forwardedRequest->request->get('action');
+            /** @var InputBag|ParameterBag $bag */
             $bag = $request->request;
             if ($bag instanceof InputBag) {
                 // symfony 5.1+
