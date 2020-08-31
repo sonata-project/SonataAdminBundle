@@ -42,7 +42,9 @@ class Pool
     protected $adminGroups = [];
 
     /**
-     * @var array
+     * @var array<string, string[]>
+     *
+     * @phpstan-var array<class-string, string[]>
      */
     protected $adminClasses = [];
 
@@ -197,6 +199,10 @@ class Pool
      * @param string $class
      *
      * @return AdminInterface|null
+     *
+     * @phpstan-template T of object
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return AdminInterface<T>|null
      */
     public function getAdminByClass($class)
     {
@@ -236,6 +242,8 @@ class Pool
      * @param string $class
      *
      * @return bool
+     *
+     * @phpstan-param class-string $class
      */
     public function hasAdminByClass($class)
     {
@@ -387,6 +395,9 @@ class Pool
         return $this->container;
     }
 
+    /**
+     * @return void
+     */
     public function setAdminGroups(array $adminGroups)
     {
         $this->adminGroups = $adminGroups;
@@ -400,6 +411,9 @@ class Pool
         return $this->adminGroups;
     }
 
+    /**
+     * @return void
+     */
     public function setAdminServiceIds(array $adminServiceIds)
     {
         $this->adminServiceIds = $adminServiceIds;
@@ -413,26 +427,37 @@ class Pool
         return $this->adminServiceIds;
     }
 
+    /**
+     * @param array<string, string[]> $adminClasses
+     *
+     * @phpstan-param array<class-string, string[]> $adminClasses
+     *
+     * @return void
+     */
     public function setAdminClasses(array $adminClasses)
     {
         $this->adminClasses = $adminClasses;
     }
 
     /**
-     * @return array
+     * @return array<string, string[]>
+     *
+     * @phpstan-return array<class-string, string[]>
      */
     public function getAdminClasses()
     {
         return $this->adminClasses;
     }
 
-    final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry)
+    final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void
     {
         $this->templateRegistry = $templateRegistry;
     }
 
     /**
      * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     *
+     * @return void
      */
     public function setTemplates(array $templates)
     {

@@ -30,6 +30,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class AclMatrixType extends AbstractType
 {
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $aclValueType = $options['acl_value'] instanceof UserInterface ? 'user' : 'role';
@@ -44,6 +47,9 @@ class AclMatrixType extends AbstractType
         }
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['permissions', 'acl_value']);
@@ -54,7 +60,7 @@ class AclMatrixType extends AbstractType
     /**
      * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
      *
-     * {@inheritdoc}
+     * @return string
      */
     public function getName()
     {

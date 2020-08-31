@@ -33,6 +33,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ModelAutocompleteType extends AbstractType
 {
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addViewTransformer(new ModelToIdPropertyTransformer($options['model_manager'], $options['class'], $options['property'], $options['multiple'], $options['to_string_callback']), true);
@@ -93,6 +96,9 @@ class ModelAutocompleteType extends AbstractType
         }
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $compound = static function (Options $options) {
@@ -158,7 +164,7 @@ class ModelAutocompleteType extends AbstractType
     /**
      * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
      *
-     * {@inheritdoc}
+     * @return string
      */
     public function getName()
     {

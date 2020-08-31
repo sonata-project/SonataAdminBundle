@@ -19,6 +19,7 @@ use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -30,21 +31,30 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class FormTypeFieldExtension extends AbstractTypeExtension
 {
     /**
-     * @var array
+     * @var array<string, string>
      */
     protected $defaultClasses = [];
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected $options = [];
 
+    /**
+     * FormTypeFieldExtension constructor.
+     *
+     * @param array<string, string> $defaultClasses
+     * @param array<string, mixed>  $options
+     */
     public function __construct(array $defaultClasses, array $options)
     {
         $this->defaultClasses = $defaultClasses;
         $this->options = $options;
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $sonataAdmin = [
@@ -79,6 +89,9 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         $builder->setAttribute('sonata_admin', $sonataAdmin);
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $sonataAdmin = $form->getConfig()->getAttribute('sonata_admin');
@@ -157,16 +170,29 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         $view->vars['sonata_admin'] = $sonataAdmin;
     }
 
+    /**
+     * @return string
+     *
+     * @phpstan-return class-string<FormTypeInterface>
+     */
     public function getExtendedType()
     {
         return FormType::class;
     }
 
+    /**
+     * @return string[]
+     *
+     * @phpstan-return class-string<FormTypeInterface>[]
+     */
     public static function getExtendedTypes()
     {
         return [FormType::class];
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver

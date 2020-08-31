@@ -64,7 +64,7 @@ abstract class BaseMapper
     /**
      * @param string $key
      *
-     * @return $this
+     * @return static
      */
     abstract public function remove($key);
 
@@ -79,7 +79,7 @@ abstract class BaseMapper
     /**
      * @param array $keys field names
      *
-     * @return $this
+     * @return static
      */
     abstract public function reorder(array $keys);
 }

@@ -30,7 +30,7 @@ interface BreadcrumbsBuilderInterface
      * @param string $action the name of the action we want to get a
      *                       breadcrumbs for
      *
-     * @return iterable the breadcrumbs
+     * @return ItemInterface[] the breadcrumbs
      */
     public function getBreadcrumbs(AdminInterface $admin, $action);
 

@@ -50,7 +50,7 @@ class ShowMapper extends BaseGroupedMapper
      *
      * @throws \LogicException
      *
-     * @return $this
+     * @return static
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = [])
     {
@@ -126,7 +126,7 @@ class ShowMapper extends BaseGroupedMapper
      * @param bool   $deleteEmptyTab Whether or not the parent Tab should be deleted too,
      *                               when the deleted group leaves the tab empty after deletion
      *
-     * @return $this
+     * @return static
      */
     public function removeGroup($group, $tab = 'default', $deleteEmptyTab = false)
     {

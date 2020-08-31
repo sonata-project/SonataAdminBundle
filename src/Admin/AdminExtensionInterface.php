@@ -34,14 +34,29 @@ use Sonata\Form\Validator\ErrorElement;
  */
 interface AdminExtensionInterface
 {
+    /**
+     * @return void
+     */
     public function configureFormFields(FormMapper $formMapper);
 
+    /**
+     * @return void
+     */
     public function configureListFields(ListMapper $listMapper);
 
+    /**
+     * @return void
+     */
     public function configureDatagridFilters(DatagridMapper $datagridMapper);
 
+    /**
+     * @return void
+     */
     public function configureShowFields(ShowMapper $showMapper);
 
+    /**
+     * @return void
+     */
     public function configureRoutes(AdminInterface $admin, RouteCollection $collection);
 
     /**
@@ -50,6 +65,8 @@ interface AdminExtensionInterface
      * NEXT_MAJOR: remove this method.
      *
      * @param string $action
+     *
+     * @return void
      *
      * @deprecated
      */
@@ -64,6 +81,8 @@ interface AdminExtensionInterface
      * Builds the tab menu.
      *
      * @param string $action
+     *
+     * @return void
      */
     public function configureTabMenu(
         AdminInterface $admin,
@@ -74,11 +93,15 @@ interface AdminExtensionInterface
 
     /**
      * @param object $object
+     *
+     * @return void
      */
     public function validate(AdminInterface $admin, ErrorElement $errorElement, $object);
 
     /**
      * @param string $context
+     *
+     * @return void
      */
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list');
 
@@ -86,6 +109,8 @@ interface AdminExtensionInterface
      * Get a chance to modify a newly created instance.
      *
      * @param object $object
+     *
+     * @return void
      */
     public function alterNewInstance(AdminInterface $admin, $object);
 
@@ -93,6 +118,8 @@ interface AdminExtensionInterface
      * Get a chance to modify object instance.
      *
      * @param object $object
+     *
+     * @return void
      */
     public function alterObject(AdminInterface $admin, $object);
 

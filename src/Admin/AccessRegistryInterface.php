@@ -19,6 +19,8 @@ namespace Sonata\AdminBundle\Admin;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @method bool hasAccess(string $action, ?object $object = null)
+ *
+ * @phpstan-template T of object
  */
 interface AccessRegistryInterface
 {
@@ -34,6 +36,8 @@ interface AccessRegistryInterface
      *
      * @param string $action
      * @param object $object
+     *
+     * @phpstan-param T|null $object
      */
     public function checkAccess($action, $object = null);
 

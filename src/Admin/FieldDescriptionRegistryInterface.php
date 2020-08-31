@@ -70,6 +70,8 @@ interface FieldDescriptionRegistryInterface
      * Adds a FieldDescription.
      *
      * @param string $name
+     *
+     * @return void
      */
     public function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription);
 
@@ -77,6 +79,8 @@ interface FieldDescriptionRegistryInterface
      * Removes a ShowFieldDescription.
      *
      * @param string $name
+     *
+     * @return void
      */
     public function removeShowFieldDescription($name);
 
@@ -93,6 +97,8 @@ interface FieldDescriptionRegistryInterface
      * Adds a list FieldDescription.
      *
      * @param string $name
+     *
+     * @return void
      */
     public function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription);
 
@@ -100,6 +106,8 @@ interface FieldDescriptionRegistryInterface
      * Removes a list FieldDescription.
      *
      * @param string $name
+     *
+     * @return void
      */
     public function removeListFieldDescription($name);
 
@@ -135,6 +143,8 @@ interface FieldDescriptionRegistryInterface
      * Adds a filter FieldDescription.
      *
      * @param string $name
+     *
+     * @return void
      */
     public function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription);
 
@@ -142,6 +152,8 @@ interface FieldDescriptionRegistryInterface
      * Removes a filter FieldDescription.
      *
      * @param string $name
+     *
+     * @return void
      */
     public function removeFilterFieldDescription($name);
 
