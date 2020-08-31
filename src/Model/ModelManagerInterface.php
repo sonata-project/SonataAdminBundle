@@ -52,7 +52,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object[] all objects matching the criteria
      *
-     * @phpstan-template T
+     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T[]
      */
@@ -63,7 +63,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object|null an object matching the criteria or null if none match
      *
-     * @phpstan-template T
+     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T|null
      */
@@ -74,7 +74,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object|null the object with id or null if not found
      *
-     * @phpstan-template T
+     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T|null
      */
@@ -140,10 +140,9 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
      *
-     * @template T of object
-     *
      * @return Collection<int|string, object>
      *
+     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return Collection<array-key, T>
      */
@@ -156,10 +155,9 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * Removes an element from the collection.
      *
-     * @template T of object
-     *
      * @param Collection<int|string, object> $collection
      *
+     * @phpstan-template T of object
      * @phpstan-param Collection<array-key, T> $collection
      * @phpstan-param T $element
      */
@@ -172,10 +170,9 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * Add an element from the collection.
      *
-     * @template T of object
-     *
      * @param Collection<int|string, object> $collection
      *
+     * @phpstan-template T of object
      * @phpstan-param Collection<array-key, T> $collection
      * @phpstan-param T $element
      */
@@ -188,10 +185,9 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * Check if the element exists in the collection.
      *
-     * @template T of object
-     *
      * @param Collection<int|string, object> $collection
      *
+     * @phpstan-template T of object
      * @phpstan-param Collection<array-key, T> $collection
      * @phpstan-param T $element
      */
@@ -222,7 +218,6 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
-     * @phpstan-param T $instance
      * @phpstan-return T
      */
     public function modelTransform(string $class, object $instance): object;
