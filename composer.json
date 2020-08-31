@@ -37,7 +37,7 @@
         "symfony/asset": "^4.4",
         "symfony/config": "^4.4",
         "symfony/console": "^4.4",
-        "symfony/dependency-injection": "^4.4.3",
+        "symfony/dependency-injection": "^4.4.8",
         "symfony/doctrine-bridge": "^4.4",
         "symfony/event-dispatcher": "^4.4",
         "symfony/event-dispatcher-contracts": "^1.1 || ^2.0",

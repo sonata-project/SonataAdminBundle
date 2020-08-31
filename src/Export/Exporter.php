@@ -36,6 +36,6 @@ if (class_exists(CoreExporter::class)) {
 } else {
     class_alias(
         BaseExporter::class,
-        __NAMESPACE__.'\Exporter'
+        'Sonata\AdminBundle\Export\Exporter'
     );
 }
