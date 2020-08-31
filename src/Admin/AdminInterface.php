@@ -432,6 +432,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getDataSourceIterator();
 
+    /**
+     * Additional admin configuration.
+     */
     public function configure();
 
     /**

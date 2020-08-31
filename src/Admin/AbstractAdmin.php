@@ -455,6 +455,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     protected $securityInformation = [];
 
+    /**
+     * @var array
+     */
     protected $cacheIsGranted = [];
 
     /**
@@ -464,6 +467,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     protected $searchResultActions = ['edit', 'show'];
 
+    /**
+     * @var array<string, array<string, mixed>>
+     */
     protected $listModes = [
         'list' => [
             'class' => 'fa fa-list fa-fw',
@@ -3263,22 +3269,47 @@ EOT;
         return $defaultFilterValues;
     }
 
+    /**
+     * Configure fields for form view.
+     *
+     * @param FormMapper $form Object for simulating Form API
+     */
     protected function configureFormFields(FormMapper $form)
     {
     }
 
+    /**
+     * Configure fields for list view.
+     *
+     * @param ListMapper $list Object for simulating Form API
+     */
     protected function configureListFields(ListMapper $list)
     {
     }
 
+    /**
+     * Configure fields for datagrid filters.
+     *
+     * @param DatagridMapper $filter Object for simulating Form API
+     */
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
     }
 
+    /**
+     * Configure fields for show view.
+     *
+     * @param ShowMapper $show Object for simulating Form API
+     */
     protected function configureShowFields(ShowMapper $show)
     {
     }
 
+    /**
+     * Configure routes collection.
+     *
+     * @param RouteCollection $collection Collection of admin routes
+     */
     protected function configureRoutes(RouteCollection $collection)
     {
     }
