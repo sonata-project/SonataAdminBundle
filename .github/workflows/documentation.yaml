@@ -10,12 +10,10 @@ on:
       - master
       - 3.x
   pull_request:
-    paths:
-      - 'docs/**'
 
 jobs:
   build:
-    name: Build
+    name: Build documentation
 
     runs-on: ubuntu-latest
 
