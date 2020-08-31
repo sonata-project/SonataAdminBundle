@@ -570,6 +570,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * @param int $nb
+     *
+     * @return void
      */
     protected function setNbResults($nb)
     {
@@ -578,6 +580,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * @param int $page
+     *
+     * @return void
      */
     protected function setLastPage($page)
     {
@@ -600,6 +604,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * Loads data into properties used for iteration.
+     *
+     * @return void
      */
     protected function initializeIterator()
     {
@@ -609,6 +615,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * Empties properties used for iteration.
+     *
+     * @return void
      */
     protected function resetIterator()
     {

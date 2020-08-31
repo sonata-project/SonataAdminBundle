@@ -26,24 +26,26 @@ interface FilterPersisterInterface
      *
      * @param string $adminCode The admin code
      *
-     * @return array The persisted filters
+     * @return array<string, mixed> The persisted filters
      */
     public function get($adminCode);
 
     /**
      * Set persisted filters for given admin.
      *
-     * @param string $adminCode The admin code
-     * @param array  $filters   The filters to persist. Structure :
-     *                          {string filter field} => array(
-     *                          "type" => {int filter type},
-     *                          "value" => {mixed filter value},
-     *                          ),
-     *                          ...,
-     *                          "_page" => {int page num},
-     *                          "_sort_by" => {string sort property},
-     *                          "_sort_order" => {string sort order (ASC|DESC)},
-     *                          "_per_page" => {int count rows per page}
+     * @param string               $adminCode The admin code
+     * @param array<string, mixed> $filters   The filters to persist. Structure :
+     *                                        {string filter field} => array(
+     *                                        "type" => {int filter type},
+     *                                        "value" => {mixed filter value},
+     *                                        ),
+     *                                        ...,
+     *                                        "_page" => {int page num},
+     *                                        "_sort_by" => {string sort property},
+     *                                        "_sort_order" => {string sort order (ASC|DESC)},
+     *                                        "_per_page" => {int count rows per page}
+     *
+     * @return void
      */
     public function set($adminCode, array $filters);
 
@@ -51,6 +53,8 @@ interface FilterPersisterInterface
      * Reset persisted filters for given admin.
      *
      * @param string $adminCode The admin code
+     *
+     * @return void
      */
     public function reset($adminCode);
 }

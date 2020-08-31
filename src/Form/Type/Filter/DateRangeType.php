@@ -54,7 +54,7 @@ class DateRangeType extends AbstractType
     /**
      * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
      *
-     * {@inheritdoc}
+     * @return string
      */
     public function getName()
     {
@@ -66,6 +66,9 @@ class DateRangeType extends AbstractType
         return 'sonata_type_filter_date_range';
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -74,6 +77,9 @@ class DateRangeType extends AbstractType
         ;
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

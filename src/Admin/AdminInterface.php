@@ -64,9 +64,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @method void                            reorderFormGroup(string $group, array $keys)
  * @method void                            defineFormBuilder(FormBuilderInterface $formBuilder)
  * @method string                          getPagerType()
+ *
+ * @phpstan-template T of object
+ * @phpstan-extends AccessRegistryInterface<T>
+ * @phpstan-extends UrlGeneratorInterface<T>
+ * @phpstan-extends LifecycleHookProviderInterface<T>
  */
 interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
 {
+    /**
+     * @return void
+     */
     public function setMenuFactory(MenuFactoryInterface $menuFactory);
 
     /**
@@ -74,8 +82,14 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getMenuFactory();
 
+    /**
+     * @return void
+     */
     public function setFormContractor(FormContractorInterface $formContractor);
 
+    /**
+     * @return void
+     */
     public function setListBuilder(ListBuilderInterface $listBuilder);
 
     /**
@@ -83,6 +97,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getListBuilder();
 
+    /**
+     * @return void
+     */
     public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder);
 
     /**
@@ -90,6 +107,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getDatagridBuilder();
 
+    /**
+     * @return void
+     */
     public function setTranslator(TranslatorInterface $translator);
 
     /**
@@ -97,8 +117,14 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getTranslator();
 
+    /**
+     * @return void
+     */
     public function setRequest(Request $request);
 
+    /**
+     * @return void
+     */
     public function setConfigurationPool(Pool $pool);
 
     /**
@@ -108,9 +134,14 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * - class name if not.
      *
      * @return string
+     *
+     * @phpstan-return class-string<T>
      */
     public function getClass();
 
+    /**
+     * @return void
+     */
     public function attachAdminClass(FieldDescriptionInterface $fieldDescription);
 
     // NEXT_MAJOR: uncomment this method in 4.0
@@ -125,6 +156,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Set base controller name.
      *
      * @param string $baseControllerName
+     *
+     * @return void
      */
     public function setBaseControllerName($baseControllerName);
 
@@ -195,10 +228,13 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * - one permission that has the same name as the role for the role handler
      * This should be used by experimented users.
      *
-     * @return array 'role' => ['permission', 'permission']
+     * @return array<string, string[]> 'role' => ['permission', 'permission']
      */
     public function getSecurityInformation();
 
+    /**
+     * @return void
+     */
     public function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription);
 
     /**
@@ -261,6 +297,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @param object|null  $object
      *
      * @return bool
+     *
+     * @phpstan-param T|null $object
      */
     public function isGranted($name, $object = null);
 
@@ -268,6 +306,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @param object $model
      *
      * @return string a string representation of the identifiers for this instance
+     *
+     * @phpstan-param T $model
      */
     public function getNormalizedIdentifier($model);
 
@@ -277,11 +317,15 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @param object $model
      *
      * @return mixed
+     *
+     * @phpstan-param T $model
      */
     public function id($model);
 
     /**
      * @param ValidatorInterface $validator
+     *
+     * @return void
      */
     public function setValidator($validator);
 
@@ -298,6 +342,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 //    NEXT_MAJOR: uncomment this method in 4.0
 //    public function getList(): ?FieldDescriptionCollection;
 
+    /**
+     * @return void
+     */
     public function setFormTheme(array $formTheme);
 
     /**
@@ -305,6 +352,11 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getFormTheme();
 
+    /**
+     * @param string[] $filterTheme
+     *
+     * @return void
+     */
     public function setFilterTheme(array $filterTheme);
 
     /**
@@ -312,6 +364,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getFilterTheme();
 
+    /**
+     * @return void
+     */
     public function addExtension(AdminExtensionInterface $extension);
 
     /**
@@ -321,6 +376,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getExtensions();
 
+    /**
+     * @return void
+     */
     public function setRouteBuilder(RouteBuilderInterface $routeBuilder);
 
     /**
@@ -332,9 +390,14 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @param object $object
      *
      * @return string
+     *
+     * @phpstan-param T $object
      */
     public function toString($object);
 
+    /**
+     * @return void
+     */
     public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy);
 
     /**
@@ -353,11 +416,15 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * @return object a new object instance
+     *
+     * @phpstan-return T
      */
     public function getNewInstance();
 
     /**
      * @param string $uniqId
+     *
+     * @return void
      */
     public function setUniqid($uniqId);
 
@@ -372,11 +439,17 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @param mixed $id
      *
      * @return object|null
+     *
+     * @phpstan-return T|null
      */
     public function getObject($id);
 
     /**
      * @param object|null $subject
+     *
+     * @return void
+     *
+     * @phpstan-param T|null $subject
      */
     public function setSubject($subject);
 
@@ -384,6 +457,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * NEXT MAJOR: return object.
      *
      * @return object|null
+     *
+     * @phpstan-return T|null
      */
     public function getSubject();
 
@@ -432,6 +507,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getDataSourceIterator();
 
+    /**
+     * @return void
+     */
     public function configure();
 
     /**
@@ -461,8 +539,12 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @param object $object
      *
+     * @return void
+     *
      * @deprecated this feature cannot be stable, use a custom validator,
      *             the feature will be removed with Symfony 2.2
+     *
+     * @phpstan-param T $object
      */
     public function validate(ErrorElement $errorElement, $object);
 
@@ -477,6 +559,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Add object security, fe. make the current user owner of the object.
      *
      * @param object $object
+     *
+     * @phpstan-param T $object
      */
     public function createObjectSecurity($object);
 
@@ -485,6 +569,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getParent();
 
+    /**
+     * @return void
+     */
     public function setParent(self $admin);
 
     /**
@@ -509,6 +596,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Set the translation domain.
      *
      * @param string $translationDomain the translation domain
+     *
+     * @return void
      */
     public function setTranslationDomain($translationDomain);
 
@@ -530,27 +619,45 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Set the form groups.
+     *
+     * @param array<string, mixed> $formGroups
      */
     public function setFormGroups(array $formGroups);
 
     /**
      * NEXT_MAJOR: must return only `array<string, mixed>`.
+     *
+     * @return array<string, mixed>|false
      */
     public function getFormTabs();
 
+    /**
+     * @param array<string, mixed> $formTabs
+     *
+     * @return void
+     */
     public function setFormTabs(array $formTabs);
 
     /**
      * NEXT_MAJOR: must return only `array<string, mixed>`.
+     *
+     * @return array<string, mixed>|false
      */
     public function getShowTabs();
 
+    /**
+     * @param array<string, mixed> $showTabs
+     *
+     * @return void
+     */
     public function setShowTabs(array $showTabs);
 
     /**
      * Remove a form group field.
      *
      * @param string $key
+     *
+     * @return void
      */
     public function removeFieldFromFormGroup($key);
 
@@ -565,13 +672,20 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Set the show groups.
+     *
+     * @param array<string, mixed> $showGroups
+     *
+     * @return void
      */
     public function setShowGroups(array $showGroups);
 
     /**
      * Reorder items in showGroup.
      *
-     * @param string $group
+     * @param string   $group
+     * @param string[] $keys
+     *
+     * @return void
      */
     public function reorderShowGroup($group, array $keys);
 
@@ -590,6 +704,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Remove a FieldDescription.
      *
      * @param string $name
+     *
+     * @return void
      */
     public function removeFormFieldDescription($name);
 
@@ -602,6 +718,12 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Sets the list of supported sub classes.
+     *
+     * @param string[] $subClasses
+     *
+     * @return void
+     *
+     * @phpstan-param array<class-string<T>> $subClasses
      */
     public function setSubClasses(array $subClasses);
 
@@ -611,6 +733,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @param string $name The name of the sub class
      *
      * @return bool
+     *
+     * @phpstan-param class-string $name
      */
     public function hasSubClass($name);
 
@@ -625,6 +749,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Returns the currently active sub class.
      *
      * @return string the active sub class
+     *
+     * @phpstan-return class-string
      */
     public function getActiveSubClass();
 
@@ -662,7 +788,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @param string $action
      *
-     * @return iterable
+     * @return ItemInterface[]
      */
     public function getBreadcrumbs($action);
 
@@ -670,6 +796,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Set the current child status.
      *
      * @param bool $currentChild
+     *
+     * @return void
      */
     public function setCurrentChild($currentChild);
 
@@ -697,6 +825,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @param object $object
      *
      * @return MetadataInterface
+     *
+     * @phpstan-param T $object
      */
     public function getObjectMetadata($object);
 
@@ -719,6 +849,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * @param string $mode
+     *
+     * @return void
      */
     public function setListMode($mode);
 

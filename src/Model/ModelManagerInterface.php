@@ -61,7 +61,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object[] all objects matching the criteria
      *
-     * @phpstan-template T
+     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T[]
      */
@@ -73,7 +73,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object|null an object matching the criteria or null if none match
      *
-     * @phpstan-template T
+     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T|null
      */
@@ -85,7 +85,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object|null the object with id or null if not found
      *
-     * @phpstan-template T
+     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T|null
      */
@@ -192,7 +192,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object
      *
-     * @phpstan-template T
+     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T
      */
@@ -275,7 +275,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object
      *
-     * @phpstan-template T
+     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T
      */
@@ -287,14 +287,14 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object
      *
-     * @phpstan-template T
+     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T
      */
     public function modelTransform($class, $instance);
 
     /**
-     * @param mixed $query
+     * @param object $query
      */
     public function executeQuery($query);
 

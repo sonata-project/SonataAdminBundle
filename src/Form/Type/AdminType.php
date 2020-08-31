@@ -58,6 +58,9 @@ class AdminType extends AbstractType
         $this->adminHelper = $adminHelper;
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $admin = clone $this->getAdmin($options);
@@ -122,6 +125,9 @@ class AdminType extends AbstractType
         $builder->addModelTransformer(new ArrayToModelTransformer($admin->getModelManager(), $admin->getClass()));
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['btn_add'] = $options['btn_add'];
@@ -130,6 +136,9 @@ class AdminType extends AbstractType
         $view->vars['btn_catalogue'] = $options['btn_catalogue'];
     }
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -154,7 +163,7 @@ class AdminType extends AbstractType
     /**
      * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
      *
-     * {@inheritdoc}
+     * @return string
      */
     public function getName()
     {
@@ -167,6 +176,8 @@ class AdminType extends AbstractType
     }
 
     /**
+     * @param array<string, mixed> $options
+     *
      * @throws \RuntimeException
      *
      * @return FieldDescriptionInterface
@@ -181,6 +192,8 @@ class AdminType extends AbstractType
     }
 
     /**
+     * @param array<string, mixed> $options
+     *
      * @return AdminInterface
      */
     protected function getAdmin(array $options)

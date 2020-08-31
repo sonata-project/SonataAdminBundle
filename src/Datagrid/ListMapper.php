@@ -55,7 +55,7 @@ class ListMapper extends BaseMapper
      * @param string      $name
      * @param string|null $type
      *
-     * @return $this
+     * @return static
      */
     public function addIdentifier($name, $type = null, array $fieldDescriptionOptions = [])
     {
@@ -79,7 +79,7 @@ class ListMapper extends BaseMapper
      *
      * @throws \LogicException
      *
-     * @return $this
+     * @return static
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = [])
     {

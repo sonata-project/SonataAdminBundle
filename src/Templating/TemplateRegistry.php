@@ -65,7 +65,7 @@ final class TemplateRegistry implements MutableTemplateRegistryInterface
     public const TYPE_ONE_TO_ONE = 'one_to_one';
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     private $templates = [];
 
@@ -77,17 +77,11 @@ final class TemplateRegistry implements MutableTemplateRegistryInterface
         $this->templates = $templates;
     }
 
-    /**
-     * @return string[]
-     */
     public function getTemplates(): array
     {
         return $this->templates;
     }
 
-    /**
-     * @param string[] $templates
-     */
     public function setTemplates(array $templates)
     {
         $this->templates = $templates;

@@ -20,6 +20,8 @@ namespace Sonata\AdminBundle\Admin;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @method void preValidate($object)
+ *
+ * @phpstan-template T of object
  */
 interface LifecycleHookProviderInterface
 {
@@ -29,6 +31,8 @@ interface LifecycleHookProviderInterface
      * @param object $object
      *
      * @return object
+     *
+     * @phpstan-param T $object
      */
     public function update($object);
 
@@ -38,6 +42,8 @@ interface LifecycleHookProviderInterface
      * @param object $object
      *
      * @return object
+     *
+     * @phpstan-param T $object
      */
     public function create($object);
 
@@ -45,6 +51,8 @@ interface LifecycleHookProviderInterface
      * This method should call preRemove, do the removal, and call postRemove.
      *
      * @param object $object
+     *
+     * @phpstan-param T $object
      */
     public function delete($object);
 
@@ -56,31 +64,43 @@ interface LifecycleHookProviderInterface
 
     /**
      * @param object $object
+     *
+     * @phpstan-param T $object
      */
     public function preUpdate($object);
 
     /**
      * @param object $object
+     *
+     * @phpstan-param T $object
      */
     public function postUpdate($object);
 
     /**
      * @param object $object
+     *
+     * @phpstan-param T $object
      */
     public function prePersist($object);
 
     /**
      * @param object $object
+     *
+     * @phpstan-param T $object
      */
     public function postPersist($object);
 
     /**
      * @param object $object
+     *
+     * @phpstan-param T $object
      */
     public function preRemove($object);
 
     /**
      * @param object $object
+     *
+     * @phpstan-param T $object
      */
     public function postRemove($object);
 }

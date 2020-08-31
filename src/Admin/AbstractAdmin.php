@@ -60,6 +60,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
+ * @phpstan-implements AdminInterface<T>
  */
 abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, AdminTreeInterface
 {
@@ -234,13 +237,15 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * The subject only set in edit/update/create mode.
      *
      * @var object|null
+     *
+     * @phpstan-var T|null
      */
     protected $subject;
 
     /**
      * Define a Collection of child admin, ie /admin/order/{id}/order-element/{childId}.
      *
-     * @var array
+     * @var array<string, AdminInterface>
      */
     protected $children = [];
 
@@ -453,10 +458,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * Roles and permissions per role.
      *
-     * @var array 'role' => ['permission', 'permission']
+     * @var array<string, string[]> 'role' => ['permission', 'permission']
      */
     protected $securityInformation = [];
 
+    /**
+     * @var array<string, bool>
+     */
     protected $cacheIsGranted = [];
 
     /**
@@ -466,6 +474,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     protected $searchResultActions = ['edit', 'show'];
 
+    /**
+     * @var array<string, array<string, string>>
+     */
     protected $listModes = [
         'list' => [
             'class' => 'fa fa-list fa-fw',
@@ -491,6 +502,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * The class name managed by the admin class.
      *
      * @var string
+     *
+     * @phpstan-var class-string<T>
      */
     private $class;
 
@@ -597,6 +610,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * @param string      $code
      * @param string      $class
      * @param string|null $baseControllerName
+     *
+     * @phpstan-param class-string<T> $class
      */
     public function __construct($code, $class, $baseControllerName = null)
     {
@@ -775,6 +790,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     /**
      * @param object $object
+     *
+     * @phpstan-param T $object
      */
     public function preValidate($object)
     {
@@ -2845,7 +2862,7 @@ EOT;
         }
 
         if (method_exists($object, '__toString') && null !== $object->__toString()) {
-            return (string) $object;
+            return $object->__toString();
         }
 
         return sprintf('%s:%s', ClassUtils::getClass($object), spl_object_hash($object));
@@ -2997,10 +3014,12 @@ EOT;
     /**
      * Hook to handle access authorization, without throw Exception.
      *
-     * @param string $action
-     * @param object $object
+     * @param string      $action
+     * @param object|null $object
      *
      * @return bool
+     *
+     * @phpstan-param T|null $object
      */
     public function hasAccess($action, $object = null)
     {
@@ -3028,6 +3047,8 @@ EOT;
      * @param object|null $object
      *
      * @return array
+     *
+     * @phpstan-param T|null $object
      */
     public function configureActionButtons($action, $object = null)
     {
@@ -3105,10 +3126,12 @@ EOT;
     }
 
     /**
-     * @param string $action
-     * @param object $object
+     * @param string      $action
+     * @param object|null $object
      *
      * @return array
+     *
+     * @phpstan-param T|null $object
      */
     public function getActionButtons($action, $object = null)
     {
@@ -3174,6 +3197,8 @@ EOT;
 
     /**
      * @param object $object
+     *
+     * @phpstan-param T $object
      */
     final public function getSearchResultLink($object)
     {
@@ -3219,6 +3244,8 @@ EOT;
      * @param object $object
      *
      * @return bool
+     *
+     * @phpstan-param T $object
      */
     public function canAccessObject($action, $object)
     {
@@ -3447,6 +3474,8 @@ EOT;
      * @param string $name The name of the sub class
      *
      * @return string the subclass
+     *
+     * @phpstan-return class-string<T>
      */
     protected function getSubClass($name)
     {
@@ -3568,6 +3597,8 @@ EOT;
 
     /**
      * Set the parent object, if any, to the provided object.
+     *
+     * @phpstan-param T $object
      */
     final protected function appendParentObject(object $object): void
     {

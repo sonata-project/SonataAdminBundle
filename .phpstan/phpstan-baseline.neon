@@ -8,7 +8,7 @@ parameters:
 
         -
             # will be fixed in v4. Code is marked as deprecated
-            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AbstractAdmin\\:\\:getActiveSubClass\\(\\) should return string but returns null\\.$#"
+            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AbstractAdmin\\:\\:getActiveSubClass\\(\\) should return class-string but returns null\\.$#"
             count: 1
             path: ../src/Admin/AbstractAdmin.php
 
@@ -147,13 +147,13 @@ parameters:
 
         -
             # will be fixed in v4. Currently BC break
-            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\:\\:getFormGroups\\(\\) invoked with 1 parameter, 0 required\\.$#"
+            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\<object\\>\\:\\:getFormGroups\\(\\) invoked with 1 parameter, 0 required\\.$#"
             count: 1
             path: ../src/Form/FormMapper.php
 
         -
             # will be fixed in v4. Currently BC break
-            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\:\\:getFormTabs\\(\\) invoked with 1 parameter, 0 required\\.$#"
+            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\<object\\>\\:\\:getFormTabs\\(\\) invoked with 1 parameter, 0 required\\.$#"
             count: 1
             path: ../src/Form/FormMapper.php
 
@@ -177,13 +177,13 @@ parameters:
 
         -
             # will be fixed in v4. Currently BC break
-            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\:\\:getShowGroups\\(\\) invoked with 1 parameter, 0 required\\.$#"
+            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\<object\\>\\:\\:getShowGroups\\(\\) invoked with 1 parameter, 0 required\\.$#"
             count: 1
             path: ../src/Show/ShowMapper.php
 
         -
             # will be fixed in v4. Currently BC break
-            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\:\\:getShowTabs\\(\\) invoked with 1 parameter, 0 required\\.$#"
+            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\<object\\>\\:\\:getShowTabs\\(\\) invoked with 1 parameter, 0 required\\.$#"
             count: 1
             path: ../src/Show/ShowMapper.php
 
