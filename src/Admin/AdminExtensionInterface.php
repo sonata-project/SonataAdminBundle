@@ -63,6 +63,8 @@ interface AdminExtensionInterface
 
     /**
      * Get a chance to add persistent parameters.
+     *
+     * @return array<string, mixed>
      */
     public function getPersistentParameters(AdminInterface $admin): array;
 

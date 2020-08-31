@@ -32,6 +32,7 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
@@ -907,6 +908,50 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame([], $this->session->getFlashBag()->all());
         $this->assertSame('@SonataAdmin/CRUD/delete.html.twig', $this->template);
+    }
+
+    public function testDeleteActionChildNoConnectedException(): void
+    {
+        $object = new \stdClass();
+        $object->parent = 'test';
+
+        $object2 = new \stdClass();
+
+        $admin = $this->createMock(PostAdmin::class);
+        $admin->method('getIdParameter')->willReturn('parent_id');
+
+        $admin->expects($this->exactly(2))
+            ->method('getObject')
+            ->willReturn($object2);
+
+        $admin->expects($this->once())
+            ->method('toString')
+            ->willReturn('parentObject');
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->willReturn($object);
+
+        $this->admin->expects($this->once())
+            ->method('isChild')
+            ->willReturn(true);
+
+        $this->admin->expects($this->once())
+            ->method('getParent')
+            ->willReturn($admin);
+
+        $this->admin->expects($this->once())
+            ->method('getParentAssociationMapping')
+            ->willReturn('parent');
+
+        $this->admin->expects($this->once())
+            ->method('toString')
+            ->willReturn('childObject');
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('There is no association between "parentObject" and "childObject"');
+
+        $this->controller->deleteAction($this->request, 1);
     }
 
     public function testDeleteActionNoCsrfToken(): void

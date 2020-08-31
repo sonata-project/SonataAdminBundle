@@ -1311,6 +1311,7 @@ class AdminTest extends TestCase
 
         $postAdmin = $this->getMockBuilder(PostAdmin::class)->disableOriginalConstructor()->getMock();
         $postAdmin->method('getObject')->willReturn($post);
+        $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
         $formBuilder = $this->createStub(FormBuilderInterface::class);
         $formBuilder->method('getForm')->willReturn(null);
@@ -1346,6 +1347,7 @@ class AdminTest extends TestCase
 
         $postAdmin = $this->getMockBuilder(PostAdmin::class)->disableOriginalConstructor()->getMock();
         $postAdmin->method('getObject')->willReturn($post);
+        $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
         $formBuilder = $this->createStub(FormBuilderInterface::class);
         $formBuilder->method('getForm')->willReturn(null);
@@ -1383,6 +1385,7 @@ class AdminTest extends TestCase
 
         $postAdmin = $this->getMockBuilder(PostAdmin::class)->disableOriginalConstructor()->getMock();
         $postAdmin->method('getObject')->willReturn($post);
+        $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
         $formBuilder = $this->createStub(FormBuilderInterface::class);
         $formBuilder->method('getForm')->willReturn(null);

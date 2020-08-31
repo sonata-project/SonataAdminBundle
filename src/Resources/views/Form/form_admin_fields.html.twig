@@ -23,11 +23,12 @@ file that was distributed with this source code.
     {% endif %}
 {%- endblock form_errors %}
 
-{% block form_help %}
-    {% apply spaceless %}
-        <span class="help-block sonata-ba-field-widget-help sonata-ba-field-help">{{ parent() }}</span>
-    {% endapply %}
-{% endblock %}
+{% block form_help -%}
+    {% if help is not empty %}
+        {% set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' help-block sonata-ba-field-help')}) %}
+        {{ parent() }}
+    {% endif %}
+{%- endblock form_help %}
 
 {% block form_widget_simple %}
     {% set type = type|default('text') %}
@@ -124,13 +125,13 @@ file that was distributed with this source code.
         {% endif %}
 
         <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
-            {% if translation_domain is same as(false) %}
+            {%- if translation_domain is same as(false) -%}
                 {{- label -}}
-            {% elseif not sonata_admin.admin %}
+            {%- elseif not sonata_admin.admin -%}
                 {{- label|trans(label_translation_parameters, translation_domain) -}}
-            {% else %}
-                {{ label|trans(label_translation_parameters, sonata_admin.field_description.translationDomain ?: admin.translationDomain) }}
-            {% endif %}
+            {%- else -%}
+                {{- label|trans(label_translation_parameters, sonata_admin.field_description.translationDomain ?: admin.translationDomain) -}}
+            {%- endif -%}
         </label>
     {% endif %}
 {% endapply %}
@@ -364,6 +365,14 @@ file that was distributed with this source code.
                 </div>
             {% endif %}
 
+<<<<<<< HEAD
+=======
+            {# NEXT_MAJOR: Remove this block #}
+            {% if sonata_admin is defined and sonata_admin_enabled and sonata_admin.field_description.getHelp('sonata_deprecation_mute')|default(false) %}
+                <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|trans(help_translation_parameters, sonata_admin.field_description.translationDomain ?: admin.translationDomain)|raw }}</span>
+            {% endif %}
+
+>>>>>>> upstream/3.x
             {{ form_help(form) }}
         </div>
     </div>

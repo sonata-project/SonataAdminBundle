@@ -29,7 +29,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -374,7 +376,14 @@ class CRUDController extends Controller
             $forwardedRequest->request->replace(array_merge($forwardedRequest->request->all(), $data));
         } else {
             $action = $forwardedRequest->request->get('action');
-            $idx = $request->request->get('idx', []);
+            /** @var InputBag|ParameterBag $bag */
+            $bag = $request->request;
+            if ($bag instanceof InputBag) {
+                // symfony 5.1+
+                $idx = $bag->all('idx');
+            } else {
+                $idx = $bag->get('idx', []);
+            }
             $allElements = $forwardedRequest->request->getBoolean('all_elements');
 
             $forwardedRequest->request->set('idx', $idx);

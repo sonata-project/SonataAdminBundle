@@ -48,36 +48,33 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function delete(object $object): void;
 
     /**
-     * @template T of object
-     *
      * @param array<string, mixed> $criteria
      *
      * @return object[] all objects matching the criteria
      *
+     * @phpstan-template T
      * @phpstan-param class-string<T> $class
      * @phpstan-return T[]
      */
     public function findBy(string $class, array $criteria = []): array;
 
     /**
-     * @template T of object
-     *
      * @param array<string, mixed> $criteria
      *
      * @return object|null an object matching the criteria or null if none match
      *
+     * @phpstan-template T
      * @phpstan-param class-string<T> $class
      * @phpstan-return T|null
      */
     public function findOneBy(string $class, array $criteria = []): ?object;
 
     /**
-     * @template T of object
-     *
      * @param mixed $id
      *
      * @return object|null the object with id or null if not found
      *
+     * @phpstan-template T
      * @phpstan-param class-string<T> $class
      * @phpstan-return T|null
      */
@@ -132,8 +129,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * Create a new instance of the model of the specified class.
      *
-     * @template T of object
-     *
+     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T
      */
@@ -215,19 +211,17 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function collectionClear(Collection $collection): void;
 
     /**
-     * @template T of object
-     *
      * @param array<string, mixed> $array
      *
+     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T
      */
     public function modelReverseTransform(string $class, array $array = []): object;
 
     /**
-     * @template T of object
-     *
-     * @phpstan-param class-string $class
+     * @phpstan-template T of object
+     * @phpstan-param class-string<T> $class
      * @phpstan-param T $instance
      * @phpstan-return T
      */
