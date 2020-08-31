@@ -26,6 +26,8 @@ interface TypeGuesserInterface
      * @param string $property
      *
      * @return TypeGuess|null
+     *
+     * @phpstan-param class-string $class
      */
     public function guessType($class, $property, ModelManagerInterface $modelManager);
 }
