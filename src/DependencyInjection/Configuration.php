@@ -252,24 +252,33 @@ CASESENSITIVE;
                                             ->ifArray()
                                             ->then(static function ($items) {
                                                 foreach ($items as $key => $item) {
-                                                    if (\is_array($item)) {
-                                                        if (!\array_key_exists('label', $item) || !\array_key_exists('route', $item)) {
-                                                            throw new \InvalidArgumentException('Expected either parameters "route" and "label" for array items');
-                                                        }
+                                                    if (!\is_array($item)) {
+                                                        $item = ['admin' => $item];
+                                                        $items[$key] = $item;
 
-                                                        if (!\array_key_exists('route_params', $item)) {
-                                                            $items[$key]['route_params'] = [];
-                                                        }
+                                                        continue;
+                                                    }
 
-                                                        $items[$key]['admin'] = '';
-                                                    } else {
-                                                        $items[$key] = [
-                                                            'admin' => $item,
-                                                            'label' => '',
-                                                            'route' => '',
-                                                            'route_params' => [],
-                                                            'route_absolute' => false,
-                                                        ];
+                                                    // NEXT_MAJOR: Use !isset() instead and remove the elseif part.
+                                                    if (!\array_key_exists('route', $item)) {
+                                                        throw new \InvalidArgumentException('Expected parameter "route" for array items');
+                                                    } elseif (null === $items[$key]['route']) {
+                                                        @trigger_error(
+                                                            'Passing a null route is deprecated since sonata-project/admin-bundle 3.x.',
+                                                            E_USER_DEPRECATED
+                                                        );
+                                                    }
+
+                                                    // NEXT_MAJOR: Use !isset() instead and remove the elseif part.
+                                                    if (!\array_key_exists('label', $item)) {
+                                                        throw new \InvalidArgumentException('Expected parameter "label" for array items');
+                                                    } elseif (null === $items[$key]['label']) {
+                                                        @trigger_error(
+                                                            'Passing a null label is deprecated since sonata-project/admin-bundle 3.x.',
+                                                            E_USER_DEPRECATED
+                                                        );
+
+                                                        $items[$key]['label'] = '';
                                                     }
                                                 }
 
@@ -289,6 +298,7 @@ CASESENSITIVE;
                                                 ->end()
                                                 ->arrayNode('route_params')
                                                     ->prototype('scalar')->end()
+                                                    ->defaultValue([])
                                                 ->end()
                                                 ->booleanNode('route_absolute')
                                                     ->info('Whether the generated url should be absolute')
