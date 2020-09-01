@@ -142,7 +142,7 @@ final class RetrieveAutocompleteItemsAction
         }
 
         $datagrid->setValue('_per_page', null, $itemsPerPage);
-        $datagrid->setValue('_page', null, $request->query->get($reqParamPageNumber, 1));
+        $datagrid->setValue('_page', null, $request->query->get($reqParamPageNumber, '1'));
         $datagrid->buildPager();
 
         $pager = $datagrid->getPager();

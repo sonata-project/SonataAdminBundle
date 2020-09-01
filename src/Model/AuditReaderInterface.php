@@ -19,11 +19,10 @@ namespace Sonata\AdminBundle\Model;
 interface AuditReaderInterface
 {
     /**
-     * @template T of object
-     *
      * @param mixed $id
      * @param mixed $revisionId
      *
+     * @phpstan-template T of object
      * @phpstan-param class-string<T> $className
      * @phpstan-return T|null
      */

@@ -1,6 +1,9 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.74 to 3.75
+=========================
+
 ## Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface` collection-related methods.
 
 Use:
@@ -37,8 +40,14 @@ You MUST use Symfony's [`help`](https://symfony.com/doc/4.4/reference/forms/type
 Before:
 ```php
 $formMapper
-    ->add('field', null, [
+    ->add('field', null, [], [
         'help' => 'Help text <small>Please!</small>',
+    ])
+    ->add('field2')
+    ->addHelp('field2', 'This field is required.')
+    ->add('field3')
+    ->setHelps([
+        'field3' => 'Great day to great work!',
     ]);
 ```
 
@@ -48,6 +57,12 @@ $formMapper
     ->add('field', null, [
         'help' => 'Help text <small>Please!</small>',
         'help_html' => true,
+    ])
+    ->add('field2', null, [
+        'help' => 'This field is required.'
+    ])
+    ->add('field3', null, [
+        'help' => 'Great day to great work!'
     ]);
 ```
 

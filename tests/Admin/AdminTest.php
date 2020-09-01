@@ -603,11 +603,20 @@ class AdminTest extends TestCase
         $s = new FooToString();
         $this->assertSame('salut', $admin->toString($s));
 
+        $this->assertSame('', $admin->toString(false));
+    }
+
+    public function testToStringNull(): void
+    {
+        if (\PHP_VERSION_ID >= 80000) {
+            $this->markTestSkipped('PHP 8.0 does not allow __toString() method to return null');
+        }
+
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+
         // To string method is implemented, but returns null
         $s = new FooToStringNull();
         $this->assertNotEmpty($admin->toString($s));
-
-        $this->assertSame('', $admin->toString(false));
     }
 
     public function testIsAclEnabled(): void
@@ -1302,6 +1311,7 @@ class AdminTest extends TestCase
 
         $postAdmin = $this->getMockBuilder(PostAdmin::class)->disableOriginalConstructor()->getMock();
         $postAdmin->method('getObject')->willReturn($post);
+        $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
         $formBuilder = $this->createStub(FormBuilderInterface::class);
         $formBuilder->method('getForm')->willReturn(null);
@@ -1337,6 +1347,7 @@ class AdminTest extends TestCase
 
         $postAdmin = $this->getMockBuilder(PostAdmin::class)->disableOriginalConstructor()->getMock();
         $postAdmin->method('getObject')->willReturn($post);
+        $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
         $formBuilder = $this->createStub(FormBuilderInterface::class);
         $formBuilder->method('getForm')->willReturn(null);
@@ -1374,6 +1385,7 @@ class AdminTest extends TestCase
 
         $postAdmin = $this->getMockBuilder(PostAdmin::class)->disableOriginalConstructor()->getMock();
         $postAdmin->method('getObject')->willReturn($post);
+        $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
         $formBuilder = $this->createStub(FormBuilderInterface::class);
         $formBuilder->method('getForm')->willReturn(null);

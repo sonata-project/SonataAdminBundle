@@ -48,36 +48,33 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function delete(object $object): void;
 
     /**
-     * @template T of object
-     *
      * @param array<string, mixed> $criteria
      *
      * @return object[] all objects matching the criteria
      *
+     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T[]
      */
     public function findBy(string $class, array $criteria = []): array;
 
     /**
-     * @template T of object
-     *
      * @param array<string, mixed> $criteria
      *
      * @return object|null an object matching the criteria or null if none match
      *
+     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T|null
      */
     public function findOneBy(string $class, array $criteria = []): ?object;
 
     /**
-     * @template T of object
-     *
      * @param mixed $id
      *
      * @return object|null the object with id or null if not found
      *
+     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T|null
      */
@@ -132,8 +129,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * Create a new instance of the model of the specified class.
      *
-     * @template T of object
-     *
+     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T
      */
@@ -142,12 +138,11 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
-     *
-     * @template T of object
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
      *
      * @return Collection<int|string, object>
      *
+     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return Collection<array-key, T>
      */
@@ -156,14 +151,13 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
      *
      * Removes an element from the collection.
      *
-     * @template T of object
-     *
      * @param Collection<int|string, object> $collection
      *
+     * @phpstan-template T of object
      * @phpstan-param Collection<array-key, T> $collection
      * @phpstan-param T $element
      */
@@ -172,14 +166,13 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
      *
      * Add an element from the collection.
      *
-     * @template T of object
-     *
      * @param Collection<int|string, object> $collection
      *
+     * @phpstan-template T of object
      * @phpstan-param Collection<array-key, T> $collection
      * @phpstan-param T $element
      */
@@ -188,20 +181,23 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use doctrine/collections instead.
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
      *
      * Check if the element exists in the collection.
      *
-     * @template T of object
-     *
      * @param Collection<int|string, object> $collection
      *
+     * @phpstan-template T of object
      * @phpstan-param Collection<array-key, T> $collection
      * @phpstan-param T $element
      */
     public function collectionHasElement(Collection $collection, object $element): bool;
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * Clear the collection.
      *
      * @param Collection<int|string, object> $collection
@@ -211,20 +207,17 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function collectionClear(Collection $collection): void;
 
     /**
-     * @template T of object
-     *
      * @param array<string, mixed> $array
      *
+     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T
      */
     public function modelReverseTransform(string $class, array $array = []): object;
 
     /**
-     * @template T of object
-     *
-     * @phpstan-param class-string $class
-     * @phpstan-param T $instance
+     * @phpstan-template T of object
+     * @phpstan-param class-string<T> $class
      * @phpstan-return T
      */
     public function modelTransform(string $class, object $instance): object;

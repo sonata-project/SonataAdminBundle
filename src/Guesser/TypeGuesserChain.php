@@ -57,10 +57,6 @@ final class TypeGuesserChain implements TypeGuesserInterface
             }
         }
 
-        $bestGuess = TypeGuess::getBestGuess($guesses);
-        // todo - remove `assert` statement after https://github.com/symfony/symfony/pull/37725 is released
-        \assert($bestGuess instanceof TypeGuess || null === $bestGuess);
-
-        return $bestGuess;
+        return TypeGuess::getBestGuess($guesses);
     }
 }

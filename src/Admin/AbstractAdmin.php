@@ -50,6 +50,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\InputBag;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
@@ -663,7 +665,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         // build the values array
         if ($this->hasRequest()) {
-            $filters = $this->request->query->get('filter', []);
+            /** @var InputBag|ParameterBag $bag */
+            $bag = $this->request->query;
+            if ($bag instanceof InputBag) {
+                // symfony 5.1+
+                $filters = $bag->all('filter');
+            } else {
+                $filters = $bag->get('filter', []);
+            }
             if (isset($filters['_page'])) {
                 $filters['_page'] = (int) $filters['_page'];
             }
@@ -2448,7 +2457,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * Allows you to customize batch actions.
      *
-     * @param array $actions List of actions
+     * @param array<string, mixed> $actions List of actions
+     *
+     * @return array<string, mixed>
      */
     protected function configureBatchActions(array $actions): array
     {
@@ -2646,6 +2657,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     /**
      * Configures a list of default filters.
+     *
+     * @param array<string, mixed> $filterValues
      */
     protected function configureDefaultFilterValues(array &$filterValues): void
     {
@@ -2657,6 +2670,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * Example:
      *   $sortValues['_sort_by'] = 'foo'
      *   $sortValues['_sort_order'] = 'DESC'
+     *
+     * @phpstan-param array{_page?: int, _per_page?: int, _sort_by?: string, _sort_order?: string} $sortValues
      */
     protected function configureDefaultSortValues(array &$sortValues)
     {

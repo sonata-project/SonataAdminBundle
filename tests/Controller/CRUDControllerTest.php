@@ -32,6 +32,7 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
@@ -867,6 +868,50 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame([], $this->session->getFlashBag()->all());
         $this->assertSame('@SonataAdmin/CRUD/delete.html.twig', $this->template);
+    }
+
+    public function testDeleteActionChildNoConnectedException(): void
+    {
+        $object = new \stdClass();
+        $object->parent = 'test';
+
+        $object2 = new \stdClass();
+
+        $admin = $this->createMock(PostAdmin::class);
+        $admin->method('getIdParameter')->willReturn('parent_id');
+
+        $admin->expects($this->exactly(2))
+            ->method('getObject')
+            ->willReturn($object2);
+
+        $admin->expects($this->once())
+            ->method('toString')
+            ->willReturn('parentObject');
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->willReturn($object);
+
+        $this->admin->expects($this->once())
+            ->method('isChild')
+            ->willReturn(true);
+
+        $this->admin->expects($this->once())
+            ->method('getParent')
+            ->willReturn($admin);
+
+        $this->admin->expects($this->once())
+            ->method('getParentAssociationMapping')
+            ->willReturn('parent');
+
+        $this->admin->expects($this->once())
+            ->method('toString')
+            ->willReturn('childObject');
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('There is no association between "parentObject" and "childObject"');
+
+        $this->controller->deleteAction($this->request, 1);
     }
 
     public function testDeleteActionNoCsrfToken(): void
@@ -3151,11 +3196,6 @@ class CRUDControllerTest extends TestCase
 
     public function testBatchActionMethodNotExist(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            'A `Sonata\AdminBundle\Controller\CRUDController::batchActionFoo` method must be callable'
-        );
-
         $batchActions = ['foo' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 
         $this->admin->expects($this->once())
@@ -3170,6 +3210,11 @@ class CRUDControllerTest extends TestCase
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'A `Sonata\AdminBundle\Controller\CRUDController::batchActionFoo` method must be callable'
+        );
 
         $this->controller->batchAction($this->request);
     }
@@ -3326,11 +3371,14 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('@SonataAdmin/CRUD/batch_confirmation.html.twig', $this->template);
     }
 
-    public function testBatchActionNonRelevantAction(): void
+    /**
+     * @dataProvider provideActionNames
+     */
+    public function testBatchActionNonRelevantAction(string $actionName): void
     {
         $controller = $this->createController(BatchAdminController::class);
 
-        $batchActions = ['foo' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
+        $batchActions = [$actionName => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 
         $this->admin->expects($this->once())
             ->method('getBatchActions')
@@ -3345,7 +3393,7 @@ class CRUDControllerTest extends TestCase
         $this->expectTranslate('flash_batch_empty', [], 'SonataAdminBundle');
 
         $this->request->setMethod(Request::METHOD_POST);
-        $this->request->request->set('action', 'foo');
+        $this->request->request->set('action', $actionName);
         $this->request->request->set('idx', ['789']);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
@@ -3357,6 +3405,14 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(RedirectResponse::class, $result);
         $this->assertSame(['flash_batch_empty'], $this->session->getFlashBag()->get('sonata_flash_info'));
         $this->assertSame('list', $result->getTargetUrl());
+    }
+
+    public function provideActionNames(): iterable
+    {
+        yield ['foo'];
+        yield ['foo_bar'];
+        yield ['foo-bar'];
+        yield ['foobar'];
     }
 
     public function testBatchActionWithCustomConfirmationTemplate(): void
