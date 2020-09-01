@@ -15,11 +15,14 @@ namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\DependencyInjection\Configuration;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 use Symfony\Component\Config\Definition\Processor;
 
 class ConfigurationTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     public function testOptions(): void
     {
         $config = $this->process([]);
@@ -153,22 +156,18 @@ class ConfigurationTest extends TestCase
             $config['dashboard']['groups']['bar']['items'][0],
             [
                 'admin' => 'item1',
-                'label' => '',
-                'route' => '',
+                'roles' => [],
                 'route_params' => [],
                 'route_absolute' => false,
-                'roles' => [],
             ]
         );
         $this->assertSame(
             $config['dashboard']['groups']['bar']['items'][1],
             [
                 'admin' => 'item2',
-                'label' => '',
-                'route' => '',
+                'roles' => [],
                 'route_params' => [],
                 'route_absolute' => false,
-                'roles' => [],
             ]
         );
         $this->assertSame(
@@ -178,7 +177,6 @@ class ConfigurationTest extends TestCase
                 'route' => 'fooRoute',
                 'route_params' => ['bar' => 'foo'],
                 'route_absolute' => true,
-                'admin' => '',
                 'roles' => [],
             ]
         );
@@ -187,18 +185,56 @@ class ConfigurationTest extends TestCase
             [
                 'label' => 'barLabel',
                 'route' => 'barRoute',
-                'route_params' => [],
-                'admin' => '',
                 'roles' => [],
+                'route_params' => [],
                 'route_absolute' => false,
             ]
         );
     }
 
-    public function testDashboardGroupsWithBadItemsParams(): void
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
+    public function testDashboardGroupsWithNullLabel(): void
+    {
+        $this->expectDeprecation('Passing a null label is deprecated since sonata-project/admin-bundle 3.x.');
+
+        $config = $this->process([[
+            'dashboard' => [
+                'groups' => [
+                    'bar' => [
+                        'label' => 'foo',
+                        'icon' => '<i class="fa fa-edit"></i>',
+                        'items' => [
+                            [
+                                'label' => null,
+                                'route' => 'barRoute',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]]);
+
+        $this->assertCount(1, $config['dashboard']['groups']['bar']['items']);
+        $this->assertSame(
+            $config['dashboard']['groups']['bar']['items'][0],
+            [
+                'label' => '',
+                'route' => 'barRoute',
+                'roles' => [],
+                'route_params' => [],
+                'route_absolute' => false,
+            ]
+        );
+    }
+
+    public function testDashboardGroupsWithNoRoute(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Expected either parameters "route" and "label" for array items');
+        $this->expectExceptionMessage('Expected parameter "route" for array items');
 
         $this->process([[
             'dashboard' => [
@@ -207,11 +243,27 @@ class ConfigurationTest extends TestCase
                         'label' => 'foo',
                         'icon' => '<i class="fa fa-edit"></i>',
                         'items' => [
-                            'item1',
-                            'item2',
-                            [
-                                'route' => 'fooRoute',
-                            ],
+                            ['label' => 'noRoute'],
+                        ],
+                    ],
+                ],
+            ],
+        ]]);
+    }
+
+    public function testDashboardGroupsWithNoLabel(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected parameter "label" for array items');
+
+        $this->process([[
+            'dashboard' => [
+                'groups' => [
+                    'bar' => [
+                        'label' => 'foo',
+                        'icon' => '<i class="fa fa-edit"></i>',
+                        'items' => [
+                            ['route' => 'noLabel'],
                         ],
                     ],
                 ],
