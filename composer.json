@@ -43,7 +43,7 @@
         "symfony/event-dispatcher": "^4.4 || ^5.1",
         "symfony/event-dispatcher-contracts": "^1.1 || ^2.0",
         "symfony/expression-language": "^4.4 || ^5.1",
-        "symfony/form": "^4.0 || ^5.1",
+        "symfony/form": "^4.4.12 || ^5.1",
         "symfony/framework-bundle": "^4.4 || ^5.1",
         "symfony/http-foundation": "^4.4 || ^5.1",
         "symfony/http-kernel": "^4.4 || ^5.1",
