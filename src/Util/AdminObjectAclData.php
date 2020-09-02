@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Util;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Acl\Domain\Acl;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
@@ -30,7 +29,7 @@ use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 class AdminObjectAclData
 {
     /**
-     * @var array Permissions managed only by a OWNER
+     * @var string[] Permissions managed only by a OWNER
      */
     protected static $ownerPermissions = ['MASTER', 'OWNER'];
 
@@ -60,34 +59,37 @@ class AdminObjectAclData
     protected $masks = [];
 
     /**
-     * @var FormInterface
+     * @var FormInterface|null
      */
     protected $aclUsersForm;
 
     /**
-     * @var FormInterface
+     * @var FormInterface|null
      */
     protected $aclRolesForm;
 
     /**
-     * @var MutableAclInterface
+     * @var MutableAclInterface|null
      */
     protected $acl;
 
     /**
      * @var string
+     * @phpstan-var class-string
      */
     protected $maskBuilderClass;
 
     /**
-     * @param object $object
-     * @param string $maskBuilderClass
+     * @param \Traversable $aclUsers
+     * @param \Traversable|null $aclRoles
+     *
+     * @phpstan-param class-string $maskBuilderClass
      */
     public function __construct(
         AdminInterface $admin,
-        $object,
+        object $object,
         \Traversable $aclUsers,
-        $maskBuilderClass,
+        string $maskBuilderClass,
         ?\Traversable $aclRoles = null
     ) {
         $this->admin = $admin;
@@ -102,138 +104,79 @@ class AdminObjectAclData
         $this->updateMasks();
     }
 
-    /**
-     * Gets admin.
-     *
-     * @return AdminInterface
-     */
-    public function getAdmin()
+    public function getAdmin(): AdminInterface
     {
         return $this->admin;
     }
 
-    /**
-     * Gets object.
-     *
-     * @return object
-     */
-    public function getObject()
+    public function getObject(): object
     {
         return $this->object;
     }
 
-    /**
-     * Gets ACL users.
-     *
-     * @return \Traversable
-     */
-    public function getAclUsers()
+    public function getAclUsers(): \Traversable
     {
         return $this->aclUsers;
     }
 
-    /**
-     * Gets ACL roles.
-     *
-     * @return \Traversable
-     */
-    public function getAclRoles()
+    public function getAclRoles(): \Traversable
     {
         return $this->aclRoles;
     }
 
-    /**
-     * Sets ACL.
-     *
-     * @return AdminObjectAclData
-     */
-    public function setAcl(MutableAclInterface $acl)
+    public function setAcl(MutableAclInterface $acl): self
     {
         $this->acl = $acl;
 
         return $this;
     }
 
-    /**
-     * Gets ACL.
-     *
-     * @return MutableAclInterface
-     */
-    public function getAcl()
+    public function getAcl(): MutableAclInterface
     {
+        \assert($this->acl !== null);
+
         return $this->acl;
     }
 
-    /**
-     * Gets masks.
-     *
-     * @return array
-     */
-    public function getMasks()
+    public function getMasks(): array
     {
         return $this->masks;
     }
 
-    /**
-     * Sets ACL users form.
-     *
-     * @return AdminObjectAclData
-     */
-    public function setAclUsersForm(FormInterface $form)
+    public function setAclUsersForm(FormInterface $form): self
     {
         $this->aclUsersForm = $form;
 
         return $this;
     }
 
-    /**
-     * Gets ACL users form.
-     *
-     * @return FormInterface
-     */
-    public function getAclUsersForm()
+    public function getAclUsersForm(): FormInterface
     {
+        \assert($this->aclUsersForm !== null);
+
         return $this->aclUsersForm;
     }
 
-    /**
-     * Sets ACL roles form.
-     *
-     * @return AdminObjectAclData
-     */
-    public function setAclRolesForm(FormInterface $form)
+    public function setAclRolesForm(FormInterface $form): self
     {
         $this->aclRolesForm = $form;
 
         return $this;
     }
 
-    /**
-     * Gets ACL roles form.
-     *
-     * @return FormInterface
-     */
-    public function getAclRolesForm()
+    public function getAclRolesForm(): FormInterface
     {
+        \assert($this->aclRolesForm !== null);
+
         return $this->aclRolesForm;
     }
 
-    /**
-     * Gets permissions.
-     *
-     * @return array
-     */
-    public function getPermissions()
+    public function getPermissions(): array
     {
         return $this->getSecurityHandler()->getObjectPermissions();
     }
 
-    /**
-     * Get permissions that the current user can set.
-     *
-     * @return array
-     */
-    public function getUserPermissions()
+    public function getUserPermissions(): array
     {
         $permissions = $this->getPermissions();
 
@@ -249,28 +192,24 @@ class AdminObjectAclData
         return $permissions;
     }
 
-    public function getOwnerPermissions()
+    /**
+     * @return string[]
+     */
+    public function getOwnerPermissions(): array
     {
         return self::$ownerPermissions;
     }
 
     /**
      * Tests if the current user has the OWNER right.
-     *
-     * @return bool
      */
-    public function isOwner()
+    public function isOwner(): bool
     {
         // Only a owner can set MASTER and OWNER ACL
         return $this->admin->isGranted('OWNER', $this->object);
     }
 
-    /**
-     * Gets security handler.
-     *
-     * @return AclSecurityHandlerInterface
-     */
-    public function getSecurityHandler()
+    public function getSecurityHandler(): AclSecurityHandlerInterface
     {
         $securityHandler = $this->admin->getSecurityHandler();
         \assert($securityHandler instanceof AclSecurityHandlerInterface);
@@ -278,10 +217,7 @@ class AdminObjectAclData
         return $securityHandler;
     }
 
-    /**
-     * @return array
-     */
-    public function getSecurityInformation()
+    public function getSecurityInformation(): array
     {
         return $this->getSecurityHandler()->buildSecurityInformation($this->admin);
     }

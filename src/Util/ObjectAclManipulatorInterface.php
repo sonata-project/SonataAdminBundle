@@ -32,5 +32,5 @@ interface ObjectAclManipulatorInterface
         OutputInterface $output,
         AdminInterface $admin,
         ?UserSecurityIdentity $securityIdentity = null
-    );
+    ): void;
 }

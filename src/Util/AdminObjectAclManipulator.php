@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Util;
 
 use Sonata\AdminBundle\Form\Type\AclMatrixType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -42,36 +41,28 @@ class AdminObjectAclManipulator
      * @var FormFactoryInterface
      */
     protected $formFactory;
+
     /**
      * @var string
+     * @phpstan-var class-string
      */
     protected $maskBuilderClass;
 
     /**
-     * @param string $maskBuilderClass
+     * @phpstan-param class-string $maskBuilderClass
      */
-    public function __construct(FormFactoryInterface $formFactory, $maskBuilderClass)
+    public function __construct(FormFactoryInterface $formFactory, string $maskBuilderClass)
     {
         $this->formFactory = $formFactory;
         $this->maskBuilderClass = $maskBuilderClass;
     }
 
-    /**
-     * Gets mask builder class name.
-     *
-     * @return string
-     */
-    public function getMaskBuilderClass()
+    public function getMaskBuilderClass(): string
     {
         return $this->maskBuilderClass;
     }
 
-    /**
-     * Gets the ACL users form.
-     *
-     * @return FormInterface
-     */
-    public function createAclUsersForm(AdminObjectAclData $data)
+    public function createAclUsersForm(AdminObjectAclData $data): FormInterface
     {
         $aclValues = $data->getAclUsers();
         $formBuilder = $this->formFactory->createNamedBuilder(self::ACL_USERS_FORM_NAME, FormType::class);
@@ -81,12 +72,7 @@ class AdminObjectAclManipulator
         return $form;
     }
 
-    /**
-     * Gets the ACL roles form.
-     *
-     * @return FormInterface
-     */
-    public function createAclRolesForm(AdminObjectAclData $data)
+    public function createAclRolesForm(AdminObjectAclData $data): FormInterface
     {
         $aclValues = $data->getAclRoles();
         $formBuilder = $this->formFactory->createNamedBuilder(self::ACL_ROLES_FORM_NAME, FormType::class);
@@ -96,9 +82,6 @@ class AdminObjectAclManipulator
         return $form;
     }
 
-    /**
-     * Updates ACL users.
-     */
     public function updateAclUsers(AdminObjectAclData $data): void
     {
         $aclValues = $data->getAclUsers();
@@ -107,9 +90,6 @@ class AdminObjectAclManipulator
         $this->buildAcl($data, $form, $aclValues);
     }
 
-    /**
-     * Updates ACL roles.
-     */
     public function updateAclRoles(AdminObjectAclData $data): void
     {
         $aclValues = $data->getAclRoles();
@@ -119,7 +99,9 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Builds ACL.
+     * @param \Traversable<int|string, UserInterface|string> $aclValues
+     *
+     * @phpstan-param \Traversable<array-key, UserInterface|string> $aclValues
      */
     protected function buildAcl(AdminObjectAclData $data, FormInterface $form, \Traversable $aclValues): void
     {
@@ -175,7 +157,7 @@ class AdminObjectAclManipulator
                 }
             }
 
-            if ($ace) {
+            if (null !== $ace && null !== $index) {
                 $acl->updateObjectAce($index, $mask);
             } else {
                 $acl->insertObjectAce($securityIdentity, $mask);
@@ -186,11 +168,11 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Builds the form.
+     * @param \Traversable<int|string, UserInterface|string> $aclValues
      *
-     * @return FormInterface
+     * @phpstan-param \Traversable<array-key, UserInterface|string> $aclValues
      */
-    protected function buildForm(AdminObjectAclData $data, FormBuilderInterface $formBuilder, \Traversable $aclValues)
+    protected function buildForm(AdminObjectAclData $data, FormBuilderInterface $formBuilder, \Traversable $aclValues): FormInterface
     {
         // Retrieve object identity
         $objectIdentity = ObjectIdentity::fromDomainObject($data->getObject());
