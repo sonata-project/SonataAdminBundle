@@ -80,7 +80,7 @@ interface UrlGeneratorInterface
     public function generateMenuUrl($name, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH);
 
     /**
-     * @param mixed $model
+     * @param object $model
      *
      * @return string a string representation of the id that is safe to use in a url
      */
