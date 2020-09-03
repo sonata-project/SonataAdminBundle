@@ -17,7 +17,7 @@ use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as SymfonyChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType as SymfonyDateTimeType;
@@ -56,24 +56,24 @@ final class SonataAdminExtension extends Extension
             ]);
         }
 
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('actions.xml');
-        $loader->load('block.xml');
-        $loader->load('commands.xml');
-        $loader->load('core.xml');
-        $loader->load('event_listener.xml');
-        $loader->load('form_types.xml');
-        $loader->load('menu.xml');
-        $loader->load('route.xml');
-        $loader->load('twig.xml');
-        $loader->load('validator.xml');
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('actions.php');
+        $loader->load('block.php');
+        $loader->load('commands.php');
+        $loader->load('core.php');
+        $loader->load('event_listener.php');
+        $loader->load('form_types.php');
+        $loader->load('menu.php');
+        $loader->load('route.php');
+        $loader->load('twig.php');
+        $loader->load('validator.php');
 
         if (isset($bundles['MakerBundle'])) {
-            $loader->load('makers.xml');
+            $loader->load('makers.php');
         }
 
         if (isset($bundles['SonataExporterBundle'])) {
-            $loader->load('exporter.xml');
+            $loader->load('exporter.php');
         }
 
         $configuration = $this->getConfiguration($configs, $container);
@@ -152,7 +152,7 @@ final class SonataAdminExtension extends Extension
         $container->setParameter('sonata.admin.configuration.security.admin_permissions', $config['security']['admin_permissions']);
         $container->setParameter('sonata.admin.configuration.security.object_permissions', $config['security']['object_permissions']);
 
-        $loader->load('security.xml');
+        $loader->load('security.php');
 
         $container->setParameter('sonata.admin.extension.map', $config['extensions']);
 

@@ -169,7 +169,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function isGranted($name, ?object $object = null): bool;
 
     /**
-     * @param mixed $model
+     * @param object $model
      *
      * @return string a string representation of the identifiers for this instance
      */

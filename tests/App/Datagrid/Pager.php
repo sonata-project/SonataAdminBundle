@@ -62,7 +62,7 @@ final class Pager implements PagerInterface
 
     public function getNbResults(): int
     {
-        return 10;
+        return \count($this->getResults());
     }
 
     public function getResults(): array

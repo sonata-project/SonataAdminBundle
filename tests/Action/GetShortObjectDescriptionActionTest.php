@@ -80,6 +80,12 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         ($this->action)($request);
     }
 
+    /**
+     * NEXT_MAJOR: Expect a NotFoundHttpException instead.
+     *
+     * @group legacy
+     * @expectedDeprecation Trying to get a short object description for a non found object is deprecated since sonata-project/admin-bundle 3.x and will be throw a 404 in version 4.0.
+     */
     public function testGetShortObjectDescriptionActionObjectDoesNotExist(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -97,11 +103,16 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         ($this->action)($request);
     }
 
+    /**
+     * NEXT_MAJOR: Expect a NotFoundHttpException instead.
+     *
+     * @group legacy
+     * @expectedDeprecation Trying to get a short object description for a non found object is deprecated since sonata-project/admin-bundle 3.x and will be throw a 404 in version 4.0.
+     */
     public function testGetShortObjectDescriptionActionEmptyObjectId(): void
     {
         $request = new Request([
             'code' => 'sonata.post.admin',
-            'objectId' => '',
             'uniqid' => 'asdasd123',
             '_format' => 'html',
         ]);
@@ -139,11 +150,16 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->assertSame('renderedTemplate', $response->getContent());
     }
 
+    /**
+     * NEXT_MAJOR: Expect a NotFoundHttpException instead.
+     *
+     * @group legacy
+     * @expectedDeprecation Trying to get a short object description for a non found object is deprecated since sonata-project/admin-bundle 3.x and will be throw a 404 in version 4.0.
+     */
     public function testGetShortObjectDescriptionActionEmptyObjectIdAsJson(): void
     {
         $request = new Request([
             'code' => 'sonata.post.admin',
-            'objectId' => '',
             'uniqid' => 'asdasd123',
             '_format' => 'json',
         ]);
