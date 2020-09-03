@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Command\ExplainAdminCommand;
 use Sonata\AdminBundle\Command\GenerateObjectAclCommand;
 use Sonata\AdminBundle\Command\ListAdminCommand;
 use Sonata\AdminBundle\Command\SetupAclCommand;
+use Sonata\AdminBundle\Util\BCDeprecationParameters;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 
@@ -30,7 +31,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('console.command', [
                 'command' => 'cache:create-cache-class',
             ])
-            ->deprecate('The "%service_id%" service is deprecated since sonata-project/admin-bundle 3.39.0 and will be removed in 4.0.')
+            ->deprecate(...BCDeprecationParameters::forConfig(
+                'The "%service_id%" service is deprecated since sonata-project/admin-bundle 3.39.0 and will be removed in 4.0.',
+                '3.39.0'
+            ))
             ->args([
                 '%kernel.cache_dir%',
                 '%kernel.debug%',
