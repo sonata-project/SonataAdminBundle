@@ -38,6 +38,7 @@ use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 use Sonata\AdminBundle\Twig\GlobalVariables;
+use Sonata\AdminBundle\Util\BCDeprecationParameters;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 
@@ -136,10 +137,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('jms_translation.extractor', [
                 'alias' => 'sonata_admin',
             ])
-            ->deprecate(sprintf(
+            ->deprecate(...BCDeprecationParameters::forConfig(sprintf(
                 'The service "%%service_id%%" is deprecated since sonata-project/admin-bundle 3.72 and will be removed in 4.0. Use "%s" service instead.',
                 Sonata\AdminBundle\Translator\Extractor\AdminExtractor::class
-            ))
+            ), '3.72'))
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
                 (new ReferenceConfigurator('logger'))->nullOnInvalid(),
@@ -160,7 +161,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove this service.
         ->set('sonata.admin.controller.admin', HelperController::class)
             ->public()
-            ->deprecate('The controller service "%service_id%" is deprecated in favor of several action services since sonata-project/admin-bundle 3.38.0 and will be removed in 4.0.')
+            ->deprecate(...BCDeprecationParameters::forConfig(
+                'The controller service "%service_id%" is deprecated in favor of several action services since sonata-project/admin-bundle 3.38.0 and will be removed in 4.0.',
+                '3.38.0'
+            ))
             ->args([
                 new ReferenceConfigurator('twig'),
                 new ReferenceConfigurator('sonata.admin.pool'),
@@ -181,7 +185,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove this service.
         ->set('sonata.admin.exporter', Exporter::class)
             ->public()
-            ->deprecate('The service "%service_id%" is deprecated since sonata-project/admin-bundle 3.14.0 and will be removed in 4.0. Use "sonata.exporter.exporter" service instead.')
+            ->deprecate(...BCDeprecationParameters::forConfig(
+                'The service "%service_id%" is deprecated since sonata-project/admin-bundle 3.14.0 and will be removed in 4.0. Use "sonata.exporter.exporter" service instead.',
+                '3.14.0'
+            ))
 
         ->set('sonata.admin.search.handler', SearchHandler::class)
             ->public()
