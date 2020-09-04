@@ -21,6 +21,8 @@ use Sonata\Exporter\Source\SourceIteratorInterface;
 
 /**
  * A model manager is a bridge between the model classes and the admin functionality.
+ *
+ * @method void updateFieldDescriptionMapping(string $class, FieldDescriptionInterface $fieldDescription)
  */
 interface ModelManagerInterface extends DatagridManagerInterface
 {
@@ -338,4 +340,11 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @phpstan-param class-string $class
      */
     public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx);
+
+    // NEXT_MAJOR: Uncomment this method.
+//    /**
+//     * @phpstan-template T
+//     * @phpstan-param class-string<T> $class
+//     */
+//    public function updateFieldDescriptionMapping(string $class, FieldDescriptionInterface $fieldDescription): void;
 }
