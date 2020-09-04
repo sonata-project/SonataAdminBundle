@@ -134,6 +134,23 @@ CASESENSITIVE;
                         ->booleanNode('sort_admins')->defaultFalse()->info('Auto order groups and admins by label or id')->end()
                         ->booleanNode('confirm_exit')->defaultTrue()->end()
                         ->booleanNode('js_debug')->defaultFalse()->end()
+                        ->enumNode('skin')
+                            ->defaultValue('skin-black')
+                            ->values([
+                                'skin-black',
+                                'skin-black-light',
+                                'skin-blue',
+                                'skin-blue-light',
+                                'skin-green',
+                                'skin-green-light',
+                                'skin-purple',
+                                'skin-purple-light',
+                                'skin-red',
+                                'skin-red-light',
+                                'skin-yellow',
+                                'skin-yellow-light',
+                            ])
+                        ->end()
                         ->booleanNode('use_select2')->defaultTrue()->end()
                         ->booleanNode('use_icheck')->defaultTrue()->end()
                         ->booleanNode('use_bootlint')->defaultFalse()->end()
@@ -406,7 +423,6 @@ CASESENSITIVE;
                                 'bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css',
                                 'bundles/sonatacore/vendor/ionicons/css/ionicons.min.css',
                                 'bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css',
-                                'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css',
                                 'bundles/sonataadmin/vendor/iCheck/skins/square/blue.css',
 
                                 'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',

@@ -226,6 +226,11 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
     private function buildStylesheets(array $config): array
     {
+        $config['assets']['stylesheets'][] = sprintf(
+            'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/%s.min.css',
+            $config['options']['skin']
+        );
+
         return $this->mergeArray(
             $config['assets']['stylesheets'],
             $config['assets']['extra_stylesheets'],
