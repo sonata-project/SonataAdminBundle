@@ -377,29 +377,29 @@ to handle the conversion of ``Expectation`` to ``UserHasExpectations``::
             $this->modelManager = $modelManager;
         }
 
-        public function transform($data)
+        public function transform($value)
         {
-            if (!is_null($data)) {
+            if (!is_null($value)) {
                 $results = [];
 
                 /** @var UserHasExpectations $userHasExpectations */
-                foreach ($data as $userHasExpectations) {
+                foreach ($value as $userHasExpectations) {
                     $results[] = $userHasExpectations->getExpectation();
                 }
 
                 return $results;
             }
 
-            return $data;
+            return $value;
         }
 
-        public function reverseTransform($expectations)
+        public function reverseTransform($value)
         {
             $results  = new ArrayCollection();
             $position = 0;
 
             /** @var Expectation $expectation */
-            foreach ($expectations as $expectation) {
+            foreach ($value as $expectation) {
                 $userHasExpectations = $this->create();
                 $userHasExpectations->setExpectation($expectation);
                 $userHasExpectations->setPosition($position++);
