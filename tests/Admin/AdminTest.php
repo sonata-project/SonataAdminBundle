@@ -2669,6 +2669,11 @@ class AdminTest extends TestCase
         $this->assertSame(2, $commentVoteAdmin->getChildDepth());
     }
 
+    /**
+     * @group legacy
+     *
+     * @expectedDeprecation The Sonata\AdminBundle\Admin\AbstractAdmin::getCurrentChild() method is deprecated since version 3.65 and will be removed in 4.0. Use Sonata\AdminBundle\Admin\AbstractAdmin::isCurrentChild() instead.
+     */
     public function testGetCurrentLeafChildAdmin(): void
     {
         $postAdmin = new PostAdmin(
