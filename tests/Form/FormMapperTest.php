@@ -527,6 +527,7 @@ class FormMapperTest extends TestCase
         $this->formMapper->add('bar', 'bar');
 
         $this->assertTrue($this->formMapper->has('bar'));
+        $this->assertTrue($this->admin->hasFormFieldDescription('bar'));
 
         $this->formMapper->add('quux', 'bar', [], ['role' => 'ROLE_QUX']);
 
@@ -541,9 +542,15 @@ class FormMapperTest extends TestCase
             ->end();
 
         $this->assertArrayHasKey('qux', $this->admin->getFormGroups());
+
         $this->assertTrue($this->formMapper->has('foobar'));
+        $this->assertTrue($this->admin->hasFormFieldDescription('foobar'));
+
         $this->assertFalse($this->formMapper->has('foo'));
+        $this->assertFalse($this->admin->hasFormFieldDescription('foo'));
+
         $this->assertTrue($this->formMapper->has('baz'));
+        $this->assertTrue($this->admin->hasFormFieldDescription('baz'));
     }
 
     private function getFieldDescriptionMock(

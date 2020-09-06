@@ -67,6 +67,10 @@ class FormMapper extends BaseGroupedMapper
             return $this;
         }
 
+        if (isset($fieldDescriptionOptions['role']) && !$this->admin->isGranted($fieldDescriptionOptions['role'])) {
+            return $this;
+        }
+
         if ($name instanceof FormBuilderInterface) {
             $fieldName = $name->getName();
         } else {
@@ -153,10 +157,7 @@ class FormMapper extends BaseGroupedMapper
         }
 
         $this->admin->addFormFieldDescription($fieldName, $fieldDescription);
-
-        if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
-            $this->formBuilder->add($name, $type, $options);
-        }
+        $this->formBuilder->add($name, $type, $options);
 
         return $this;
     }
