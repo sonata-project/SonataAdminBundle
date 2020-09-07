@@ -30,7 +30,7 @@ use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 class AdminObjectAclData
 {
     /**
-     * @var array Permissions managed only by a OWNER
+     * @var string[] Permissions managed only by a OWNER
      */
     protected static $ownerPermissions = ['MASTER', 'OWNER'];
 
@@ -55,33 +55,37 @@ class AdminObjectAclData
     protected $aclRoles;
 
     /**
-     * @var array Cache of masks
+     * @var array<string, mixed> Cache of masks
      */
     protected $masks = [];
 
     /**
-     * @var FormInterface
+     * @var FormInterface|null
      */
     protected $aclUsersForm;
 
     /**
-     * @var FormInterface
+     * @var FormInterface|null
      */
     protected $aclRolesForm;
 
     /**
-     * @var MutableAclInterface
+     * @var MutableAclInterface|null
      */
     protected $acl;
 
     /**
      * @var string
+     *
+     * @phpstan-var class-string
      */
     protected $maskBuilderClass;
 
     /**
      * @param object $object
      * @param string $maskBuilderClass
+     *
+     * @phpstan-param class-string $maskBuilderClass
      */
     public function __construct(
         AdminInterface $admin,
@@ -167,7 +171,7 @@ class AdminObjectAclData
     /**
      * Gets masks.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getMasks()
     {

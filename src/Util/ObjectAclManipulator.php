@@ -28,7 +28,9 @@ abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
      *
      * @throws \Exception
      *
-     * @return array [countAdded, countUpdated]
+     * @return array<int, int> [countAdded, countUpdated]
+     *
+     * @phpstan-return array{0: int, 1: int}
      */
     public function configureAcls(
         OutputInterface $output,
