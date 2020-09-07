@@ -30,11 +30,15 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
 {
     /**
      * @var string
+     *
+     * @phpstan-var class-string
      */
     protected $maskBuilderClass;
 
     /**
      * @param string $maskBuilderClass
+     *
+     * @phpstan-param class-string $maskBuilderClass
      */
     public function __construct($maskBuilderClass)
     {
