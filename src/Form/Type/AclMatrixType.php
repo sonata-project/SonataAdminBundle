@@ -28,6 +28,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 final class AclMatrixType extends AbstractType
 {
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $aclValueType = $options['acl_value'] instanceof UserInterface ? 'user' : 'role';

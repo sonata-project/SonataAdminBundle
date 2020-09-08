@@ -112,7 +112,9 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     }
 
     /**
-     * @param object $object
+     * @param array<string, mixed> $list
+     *
+     * @return array<string, mixed>
      */
     public function configureActionButtons(
         AdminInterface $admin,

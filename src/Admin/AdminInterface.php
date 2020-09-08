@@ -37,6 +37,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
+ * @phpstan-extends AccessRegistryInterface<T>
+ * @phpstan-extends UrlGeneratorInterface<T>
+ * @phpstan-extends LifecycleHookProviderInterface<T>
  */
 interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
 {
@@ -65,6 +70,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * - subclass name if subclass parameter is defined
      * - subject class name if subject is defined
      * - class name if not.
+     *
+     * @phpstan-return class-string<T>
      */
     public function getClass(): string;
 
@@ -131,7 +138,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * - one permission that has the same name as the role for the role handler
      * This should be used by experimented users.
      *
-     * @return array 'role' => ['permission', 'permission']
+     * @return array<string, string[]> 'role' => ['permission', 'permission']
      */
     public function getSecurityInformation(): array;
 
@@ -165,6 +172,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * @param string|array $name
+     *
+     * @phpstan-param T|null $object
      */
     public function isGranted($name, ?object $object = null): bool;
 
@@ -172,6 +181,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @param object $model
      *
      * @return string a string representation of the identifiers for this instance
+     *
+     * @phpstan-param T $model
      */
     public function getNormalizedIdentifier($model): ?string;
 
@@ -179,6 +190,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Shorthand method for templating.
      *
      * @param object $model
+     *
+     * @phpstan-param T $model
      */
     public function id($model): ?string;
 
@@ -197,6 +210,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getFormTheme(): array;
 
+    /**
+     * @param string[] $filterTheme
+     */
     public function setFilterTheme(array $filterTheme): void;
 
     /**
@@ -219,6 +235,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * @param object $object
+     *
+     * @phpstan-param T $object
      */
     public function toString($object): string;
 
@@ -233,6 +251,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function supportsPreviewMode(): bool;
 
+    /**
+     * @phpstan-return T
+     */
     public function getNewInstance(): object;
 
     public function setUniqid(string $uniqId): void;
@@ -244,16 +265,19 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Returns the classname label.
-     *
-     * @return string the classname label
      */
     public function getClassnameLabel(): string;
 
     /**
      * @param mixed $id
+     *
+     * @phpstan-return T|null
      */
     public function getObject($id): ?object;
 
+    /**
+     * @phpstan-param T|null $subject
+     */
     public function setSubject(?object $subject): void;
 
     public function getSubject(): object;
@@ -299,6 +323,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @deprecated this feature cannot be stable, use a custom validator,
      *             the feature will be removed with Symfony 2.2
+     *
+     * @phpstan-param T $object
      */
     public function validate(ErrorElement $errorElement, $object): void;
 
@@ -306,6 +332,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Add object security, fe. make the current user owner of the object.
+     *
+     * @phpstan-param T $object
      */
     public function createObjectSecurity(object $object): void;
 
@@ -341,6 +369,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Set the form groups.
+     *
+     * @param array<string, mixed> $formGroups
      */
     public function setFormGroups(array $formGroups): void;
 
@@ -349,6 +379,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getFormTabs(): array;
 
+    /**
+     * @param array<string, mixed> $formTabs
+     */
     public function setFormTabs(array $formTabs): void;
 
     /**
@@ -356,11 +389,11 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getShowTabs(): array;
 
+    /**
+     * @param array<string, mixed> $showTabs
+     */
     public function setShowTabs(array $showTabs): void;
 
-    /**
-     * Remove a form group field.
-     */
     public function removeFieldFromFormGroup(string $key): void;
 
     /**
@@ -372,11 +405,15 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Set the show groups.
+     *
+     * @param array<string, mixed> $showGroups
      */
     public function setShowGroups(array $showGroups): void;
 
     /**
      * Reorder items in showGroup.
+     *
+     * @param string[] $keys
      */
     public function reorderShowGroup(string $group, array $keys): void;
 
@@ -392,6 +429,10 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Sets the list of supported sub classes.
+     *
+     * @param string[] $subClasses
+     *
+     * @phpstan-param array<class-string<T>> $subClasses
      */
     public function setSubClasses(array $subClasses): void;
 
@@ -399,6 +440,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Returns true if the admin has the sub classes.
      *
      * @param string $name The name of the sub class
+     *
+     * @phpstan-param class-string $name
      */
     public function hasSubClass(string $name): bool;
 
@@ -411,6 +454,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Returns the currently active sub class.
      *
      * @return string the active sub class
+     *
+     * @phpstan-return class-string
      */
     public function getActiveSubClass(): string;
 
@@ -459,6 +504,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * @param object $object
+     *
+     * @phpstan-param T $object
      */
     public function getObjectMetadata($object): MetadataInterface;
 
@@ -476,6 +523,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Configure buttons for an action.
+     *
+     * @phpstan-param T|null $object
      */
     public function getActionButtons(string $action, ?object $object = null): array;
 
@@ -491,6 +540,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Returns the result link for an object.
+     *
+     * @phpstan-param T $object
      */
     public function getSearchResultLink(object $object): ?string;
 
@@ -504,6 +555,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Check object existence and access, without throwing Exception.
+     *
+     * @phpstan-param T $object
      */
     public function canAccessObject(string $action, ?object $object = null): bool;
 

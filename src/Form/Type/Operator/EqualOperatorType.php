@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Form\Type\Operator;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class EqualOperatorType extends AbstractType
@@ -22,6 +23,9 @@ final class EqualOperatorType extends AbstractType
     public const TYPE_EQUAL = 1;
     public const TYPE_NOT_EQUAL = 2;
 
+    /**
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -33,6 +37,11 @@ final class EqualOperatorType extends AbstractType
         ]);
     }
 
+    /**
+     * @return string
+     *
+     * @phpstan-return class-string<FormTypeInterface>
+     */
     public function getParent()
     {
         return FormChoiceType::class;

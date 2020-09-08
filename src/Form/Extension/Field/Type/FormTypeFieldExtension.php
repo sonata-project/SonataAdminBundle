@@ -29,21 +29,30 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class FormTypeFieldExtension extends AbstractTypeExtension
 {
     /**
-     * @var array
+     * @var array<string, string>
      */
     private $defaultClasses = [];
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private $options = [];
 
+    /**
+     * FormTypeFieldExtension constructor.
+     *
+     * @param array<string, string> $defaultClasses
+     * @param array<string, mixed>  $options
+     */
     public function __construct(array $defaultClasses, array $options)
     {
         $this->defaultClasses = $defaultClasses;
         $this->options = $options;
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $sonataAdmin = [
@@ -76,6 +85,9 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
         $builder->setAttribute('sonata_admin', $sonataAdmin);
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $sonataAdmin = $form->getConfig()->getAttribute('sonata_admin');
@@ -148,11 +160,21 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
         $view->vars['sonata_admin'] = $sonataAdmin;
     }
 
+    /**
+     * @return string
+     *
+     * @phpstan-return class-string<FormTypeInterface>
+     */
     public function getExtendedType()
     {
         return FormType::class;
     }
 
+    /**
+     * @return string[]
+     *
+     * @phpstan-return class-string<FormTypeInterface>[]
+     */
     public static function getExtendedTypes()
     {
         return [FormType::class];

@@ -57,6 +57,10 @@ class FormMapper extends BaseGroupedMapper
 
     /**
      * @param FormBuilderInterface|string $name
+     * @param array<string, mixed>        $options
+     * @param array<string, mixed>        $fieldDescriptionOptions
+     *
+     * @return static
      */
     public function add($name, ?string $type = null, array $options = [], array $fieldDescriptionOptions = []): self
     {
@@ -158,6 +162,9 @@ class FormMapper extends BaseGroupedMapper
         return $this->formBuilder->has($key);
     }
 
+    /**
+     * @return string[]
+     */
     final public function keys(): array
     {
         return array_keys($this->formBuilder->all());
@@ -179,6 +186,8 @@ class FormMapper extends BaseGroupedMapper
      * @param string $group          The group to delete
      * @param string $tab            The tab the group belongs to, defaults to 'default'
      * @param bool   $deleteEmptyTab Whether or not the Tab should be deleted, when the deleted group leaves the tab empty after deletion
+     *
+     * @return static
      */
     public function removeGroup(string $group, string $tab = 'default', bool $deleteEmptyTab = false): self
     {
@@ -217,6 +226,9 @@ class FormMapper extends BaseGroupedMapper
         return $this->formBuilder;
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function create(string $name, ?string $type = null, array $options = []): FormBuilderInterface
     {
         return $this->formBuilder->create($name, $type, $options);

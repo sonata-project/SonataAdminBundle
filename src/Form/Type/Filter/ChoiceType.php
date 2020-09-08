@@ -29,6 +29,9 @@ final class ChoiceType extends AbstractType
         return 'sonata_type_filter_choice';
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

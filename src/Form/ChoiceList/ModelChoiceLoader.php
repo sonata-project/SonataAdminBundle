@@ -17,6 +17,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
+use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface;
 use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -29,19 +30,30 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 final class ModelChoiceLoader implements ChoiceLoaderInterface
 {
     /**
-     * @var \Sonata\AdminBundle\Model\ModelManagerInterface
+     * @var ModelManagerInterface
      */
     private $modelManager;
 
     /**
      * @var string
+     *
+     * @phpstan-var class-string
      */
     private $class;
 
+    /**
+     * @var string|null
+     */
     private $property;
 
+    /**
+     * @var object|null
+     */
     private $query;
 
+    /**
+     * @var object[]
+     */
     private $choices;
 
     /**
@@ -54,13 +66,18 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
      */
     private $propertyAccessor;
 
+    /**
+     * @var ChoiceListInterface|null
+     */
     private $choiceList;
 
     /**
      * @param string      $class
      * @param string|null $property
-     * @param mixed|null  $query
-     * @param array       $choices
+     * @param object|null $query
+     * @param object[]    $choices
+     *
+     * @phpstan-param class-string $class
      */
     public function __construct(
         ModelManagerInterface $modelManager,
@@ -151,6 +168,8 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
 
     /**
      * @param object $model
+     *
+     * @return mixed[]
      */
     private function getIdentifierValues($model): array
     {

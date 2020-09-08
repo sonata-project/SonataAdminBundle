@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -57,6 +58,11 @@ final class ChoiceFieldMaskType extends AbstractType
         $resolver->setAllowedTypes('map', 'array');
     }
 
+    /**
+     * @return string
+     *
+     * @phpstan-return class-string<FormTypeInterface>
+     */
     public function getParent()
     {
         return ChoiceType::class;

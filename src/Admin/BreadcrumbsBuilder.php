@@ -46,7 +46,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         ]);
     }
 
-    public function getBreadcrumbs(AdminInterface $admin, string $action): iterable
+    public function getBreadcrumbs(AdminInterface $admin, string $action): array
     {
         $breadcrumbs = [];
         if ($admin->isChild()) {
@@ -146,11 +146,11 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
      * Creates a new menu item from a simple name. The name is normalized and
      * translated with the specified translation domain.
      *
-     * @param AdminInterface $admin             used for translation
-     * @param ItemInterface  $menu              will be modified and returned
-     * @param string         $name              the source of the final label
-     * @param string         $translationDomain for label translation
-     * @param array          $options           menu item options
+     * @param AdminInterface       $admin             used for translation
+     * @param ItemInterface        $menu              will be modified and returned
+     * @param string               $name              the source of the final label
+     * @param string               $translationDomain for label translation
+     * @param array<string, mixed> $options           menu item options
      */
     private function createMenuItem(
         AdminInterface $admin,

@@ -29,6 +29,9 @@ final class DefaultType extends AbstractType
         return 'sonata_type_filter_default';
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

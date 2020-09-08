@@ -63,6 +63,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
+ * @phpstan-implements AdminInterface<T>
  */
 abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, AdminTreeInterface
 {
@@ -190,13 +193,15 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * The subject only set in edit/update/create mode.
      *
      * @var object|null
+     *
+     * @phpstan-var T|null
      */
     protected $subject;
 
     /**
      * Define a Collection of child admin, ie /admin/order/{id}/order-element/{childId}.
      *
-     * @var array
+     * @var array<string, AdminInterface>
      */
     protected $children = [];
 
@@ -373,10 +378,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * Roles and permissions per role.
      *
-     * @var array 'role' => ['permission', 'permission']
+     * @var array<string, string[]> 'role' => ['permission', 'permission']
      */
     protected $securityInformation = [];
 
+    /**
+     * @var array<string, bool>
+     */
     protected $cacheIsGranted = [];
 
     /**
@@ -386,6 +394,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     protected $searchResultActions = ['edit', 'show'];
 
+    /**
+     * @var array<string, array<string, string>>
+     */
     protected $listModes = [
         'list' => [
             'class' => 'fa fa-list fa-fw',
@@ -416,6 +427,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * The class name managed by the admin class.
      *
      * @var string
+     *
+     * @phpstan-var class-string<T>
      */
     private $class;
 
@@ -499,6 +512,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     private $filterPersister;
 
+    /**
+     * @phpstan-param class-string<T> $class
+     */
     public function __construct(string $code, string $class, ?string $baseControllerName = null)
     {
         $this->code = $code;
@@ -516,12 +532,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExportFields(): array
     {
-        $fields = $this->getModelManager()->getExportFields($this->getClass());
+        $fields = $this->configureExportFields();
 
         foreach ($this->getExtensions() as $extension) {
             if (method_exists($extension, 'configureExportFields')) {
@@ -627,6 +640,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
     }
 
+    /**
+     * @phpstan-param T $object
+     */
     public function preValidate(object $object): void
     {
     }
@@ -2099,7 +2115,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         if (method_exists($object, '__toString') && null !== $object->__toString()) {
-            return (string) $object;
+            return $object->__toString();
         }
 
         return sprintf('%s:%s', ClassUtils::getClass($object), spl_object_hash($object));
@@ -2223,9 +2239,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasAccess(string $action, ?object $object = null): bool
     {
         $access = $this->getAccess();
@@ -2316,9 +2329,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $buttonList;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDashboardActions(): array
     {
         $actions = [];
@@ -2345,9 +2355,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $actions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function showMosaicButton($isShown): void
     {
         if ($isShown) {
@@ -2390,6 +2397,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     protected function configure(): void
     {
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function configureExportFields(): array
+    {
+        return $this->getModelManager()->getExportFields($this->getClass());
     }
 
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
@@ -2588,6 +2603,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * @param string $name The name of the sub class
      *
      * @return string the subclass
+     *
+     * @phpstan-return class-string<T>
      */
     protected function getSubClass(string $name): string
     {
@@ -2691,6 +2708,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     /**
      * Set the parent object, if any, to the provided object.
+     *
+     * @phpstan-param T $object
      */
     final protected function appendParentObject(object $object): void
     {

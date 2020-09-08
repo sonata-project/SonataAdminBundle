@@ -48,6 +48,8 @@ class ShowMapper extends BaseGroupedMapper
      * @param FieldDescriptionInterface|string $name
      *
      * @throws \LogicException
+     *
+     * @return static
      */
     public function add($name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
@@ -121,6 +123,8 @@ class ShowMapper extends BaseGroupedMapper
      * @param string $tab            The tab the group belongs to, defaults to 'default'
      * @param bool   $deleteEmptyTab Whether or not the parent Tab should be deleted too,
      *                               when the deleted group leaves the tab empty after deletion
+     *
+     * @return static
      */
     public function removeGroup(string $group, string $tab = 'default', bool $deleteEmptyTab = false): self
     {

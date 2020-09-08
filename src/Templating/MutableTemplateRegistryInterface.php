@@ -19,13 +19,15 @@ namespace Sonata\AdminBundle\Templating;
 interface MutableTemplateRegistryInterface extends TemplateRegistryInterface
 {
     /**
-     * @param array $templates 'name' => 'file_path.html.twig'
+     * @param array<string, string> $templates 'name' => 'file_path.html.twig'
      */
     public function setTemplates(array $templates);
 
     /**
      * @param string $name
      * @param string $template
+     *
+     * @return void
      */
     public function setTemplate($name, $template);
 }
