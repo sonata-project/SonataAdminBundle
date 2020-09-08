@@ -67,6 +67,7 @@ final class SonataAdminExtension extends Extension
         $loader->load('route.php');
         $loader->load('twig.php');
         $loader->load('validator.php');
+        $loader->load('controllers.php');
 
         if (isset($bundles['MakerBundle'])) {
             $loader->load('makers.php');

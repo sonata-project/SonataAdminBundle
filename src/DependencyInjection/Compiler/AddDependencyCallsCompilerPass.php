@@ -405,8 +405,8 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $templateRegistryId = sprintf('%s.template_registry', $serviceId);
         $templateRegistryDefinition = $container
             ->register($templateRegistryId, TemplateRegistry::class)
-            ->addTag('sonata.admin.template_registry')
-            ->setPublic(true); // Temporary fix until we can support service locators
+            ->addTag('sonata.admin.template_registry', ['admin_code' => $serviceId])
+            ->setPublic(true);
 
         if ($container->getParameter('sonata.admin.configuration.templates') !== $definedTemplates) {
             $templateRegistryDefinition->addArgument($definedTemplates);

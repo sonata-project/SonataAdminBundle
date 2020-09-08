@@ -11,21 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
+use Symfony\Component\DependencyInjection\Reference;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     // Use "service" function for creating references to services when dropping support for Symfony 4.4
     // Use "param" function for creating references to parameters when dropping support for Symfony 5.1
     $containerConfigurator->services()
 
-        ->set('sonata.admin.admin_exporter', AdminExporter::class)
+        ->set(CRUDController::class, CRUDController::class)
             ->public()
-            ->args([
-                new ReferenceConfigurator('sonata.exporter.exporter'),
-            ])
-
-        ->alias(AdminExporter::class, 'sonata.admin.admin_exporter')
+            ->autoconfigure()
+            ->autowire()
     ;
 };

@@ -14,18 +14,23 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Controller;
 
 use Doctrine\Inflector\InflectorFactory;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
+use Sonata\AdminBundle\Templating\TemplateRegistryProvider;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
@@ -45,13 +50,8 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class CRUDController extends Controller
+class CRUDController extends AbstractController
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
     /**
      * The related Admin class.
      *
@@ -66,11 +66,33 @@ class CRUDController extends Controller
      */
     private $templateRegistry;
 
-    public function setContainer(?ContainerInterface $container = null): void
+    /**
+     * @required
+     * @internal
+     */
+    public function setContainer(ContainerInterface $container): ?ContainerInterface
     {
-        $this->container = $container;
+        //TODO: we should avoid calling setContainer as its @internal
+        // so we have to find some other way of calling ->configure()
+        // maybe on the "kernel.controller" event?
+        $previousContainer = parent::setContainer($container);
+        if (null === $previousContainer) {
+            $this->configure();
+        }
 
-        $this->configure();
+        return $previousContainer;
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+                'sonata.admin.pool' => Pool::class,
+                'sonata.admin.template_registry_provider' => TemplateRegistryProvider::class,
+                'sonata.admin.admin_exporter' => '?'.AdminExporter::class,
+                'sonata.admin.audit.manager' => AuditManagerInterface::class,
+                'sonata.admin.object.manipulator.acl.admin' => AdminObjectAclManipulator::class,
+                'sonata.admin.breadcrumbs_builder' => BreadcrumbsBuilderInterface::class,
+            ];
     }
 
     /**
@@ -912,7 +934,7 @@ class CRUDController extends Controller
      */
     public function getRequest()
     {
-        return $this->container->get('request_stack')->getCurrentRequest();
+        return $this->get('request_stack')->getCurrentRequest();
     }
 
     /**
@@ -931,18 +953,6 @@ class CRUDController extends Controller
         $parameters['admin_pool'] = $this->get('sonata.admin.pool');
 
         return $parameters;
-    }
-
-    /**
-     * Gets a container configuration parameter by its name.
-     *
-     * @param string $name The parameter name
-     *
-     * @return mixed
-     */
-    protected function getParameter($name)
-    {
-        return $this->container->getParameter($name);
     }
 
     /**
@@ -1008,7 +1018,7 @@ class CRUDController extends Controller
         }
 
         try {
-            $this->admin = $this->container->get('sonata.admin.pool')->getAdminByAdminCode($adminCode);
+            $this->admin = $this->get('sonata.admin.pool')->getAdminByAdminCode($adminCode);
         } catch (\InvalidArgumentException $e) {
             throw new \RuntimeException(sprintf(
                 'Unable to find the admin class related to the current controller (%s)',
@@ -1016,7 +1026,10 @@ class CRUDController extends Controller
             ));
         }
 
-        $this->templateRegistry = $this->container->get(sprintf('%s.template_registry', $this->admin->getCode()));
+        /** @var TemplateRegistryProvider $templateRegistryLocator */
+        $templateRegistryLocator = $this->get('sonata.admin.template_registry_provider');
+
+        $this->templateRegistry = $templateRegistryLocator->getTemplateRegistry($this->admin->getCode());
         if (!$this->templateRegistry instanceof TemplateRegistryInterface) {
             throw new \RuntimeException(sprintf(
                 'Unable to find the template registry related to the current admin (%s)',
@@ -1046,8 +1059,8 @@ class CRUDController extends Controller
      */
     protected function getLogger()
     {
-        if ($this->container->has('logger')) {
-            $logger = $this->container->get('logger');
+        if ($this->has('logger')) {
+            $logger = $this->get('logger');
             \assert($logger instanceof LoggerInterface);
 
             return $logger;
@@ -1216,7 +1229,7 @@ class CRUDController extends Controller
     {
         $aclUsers = [];
 
-        $userManagerServiceName = $this->container->getParameter('sonata.admin.security.acl_user_manager');
+        $userManagerServiceName = $this->getParameter('sonata.admin.security.acl_user_manager');
         if (null !== $userManagerServiceName && $this->has($userManagerServiceName)) {
             $userManager = $this->get($userManagerServiceName);
 
@@ -1236,8 +1249,8 @@ class CRUDController extends Controller
     protected function getAclRoles()
     {
         $aclRoles = [];
-        $roleHierarchy = $this->container->getParameter('security.role_hierarchy.roles');
-        $pool = $this->container->get('sonata.admin.pool');
+        $roleHierarchy = $this->getParameter('security.role_hierarchy.roles');
+        $pool = $this->get('sonata.admin.pool');
 
         foreach ($pool->getAdminServiceIds() as $id) {
             try {
@@ -1275,8 +1288,8 @@ class CRUDController extends Controller
         $request = $this->getRequest();
         $token = $request->get('_sonata_csrf_token');
 
-        if ($this->container->has('security.csrf.token_manager')) {
-            $valid = $this->container->get('security.csrf.token_manager')->isTokenValid(new CsrfToken($intention, $token));
+        if ($this->has('security.csrf.token_manager')) {
+            $valid = $this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken($intention, $token));
         } else {
             return;
         }
@@ -1307,8 +1320,8 @@ class CRUDController extends Controller
      */
     protected function getCsrfToken($intention)
     {
-        if ($this->container->has('security.csrf.token_manager')) {
-            return $this->container->get('security.csrf.token_manager')->getToken($intention)->getValue();
+        if ($this->has('security.csrf.token_manager')) {
+            return $this->get('security.csrf.token_manager')->getToken($intention)->getValue();
         }
 
         return false;
