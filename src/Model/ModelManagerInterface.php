@@ -21,6 +21,8 @@ use Sonata\Exporter\Source\SourceIteratorInterface;
 
 /**
  * A model manager is a bridge between the model classes and the admin functionality.
+ *
+ * @method bool supportsQuery(object $query)
  */
 interface ModelManagerInterface extends DatagridManagerInterface
 {
@@ -292,6 +294,9 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @phpstan-return T
      */
     public function modelTransform($class, $instance);
+
+    // NEXT_MAJOR: Uncomment this.
+//    public function supportsQuery(object $query): bool;
 
     /**
      * @param object $query

@@ -185,6 +185,11 @@ final class ModelManager implements ModelManagerInterface
         throw new \BadMethodCallException('Not implemented.');
     }
 
+    public function supportsQuery(object $query): bool
+    {
+        return true;
+    }
+
     public function executeQuery($query): void
     {
     }
