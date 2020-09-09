@@ -52,7 +52,7 @@ abstract class BaseMapper
     abstract public function has(string $key): bool;
 
     /**
-     * @return $this
+     * @return static
      */
     abstract public function remove(string $key);
 
@@ -66,7 +66,7 @@ abstract class BaseMapper
     /**
      * @param string[] $keys field names
      *
-     * @return $this
+     * @return static
      */
     abstract public function reorder(array $keys);
 }

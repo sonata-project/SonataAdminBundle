@@ -19,7 +19,7 @@ namespace Sonata\AdminBundle\Templating;
 interface TemplateRegistryInterface
 {
     /**
-     * @return array 'name' => 'file_path.html.twig'
+     * @return array<string, string> 'name' => 'file_path.html.twig'
      */
     public function getTemplates();
 

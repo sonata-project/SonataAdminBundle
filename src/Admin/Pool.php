@@ -41,7 +41,9 @@ class Pool
     protected $adminGroups = [];
 
     /**
-     * @var array
+     * @var array<string, string[]>
+     *
+     * @phpstan-var array<class-string, string[]>
      */
     protected $adminClasses = [];
 
@@ -163,6 +165,10 @@ class Pool
 
     /**
      * Return the admin related to the given $class.
+     *
+     * @phpstan-template T of object
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return AdminInterface<T>
      */
     public function getAdminByClass(string $class): AdminInterface
     {
@@ -185,6 +191,9 @@ class Pool
         return $this->getInstance($this->adminClasses[$class][0]);
     }
 
+    /**
+     * @phpstan-param class-string $class
+     */
     public function hasAdminByClass(string $class): bool
     {
         return isset($this->adminClasses[$class]);
@@ -317,11 +326,21 @@ class Pool
         return $this->adminServiceIds;
     }
 
+    /**
+     * @param array<string, string[]> $adminClasses
+     *
+     * @phpstan-param array<class-string, string[]> $adminClasses
+     */
     public function setAdminClasses(array $adminClasses): void
     {
         $this->adminClasses = $adminClasses;
     }
 
+    /**
+     * @return array<string, string[]>
+     *
+     * @phpstan-return array<class-string, string[]>
+     */
     public function getAdminClasses(): array
     {
         return $this->adminClasses;

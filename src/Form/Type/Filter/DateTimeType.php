@@ -29,6 +29,9 @@ final class DateTimeType extends AbstractType
         return 'sonata_type_filter_datetime';
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

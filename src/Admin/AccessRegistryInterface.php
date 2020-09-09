@@ -17,6 +17,8 @@ namespace Sonata\AdminBundle\Admin;
  * Tells if the current user has access to a given action.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
  */
 interface AccessRegistryInterface
 {
@@ -27,11 +29,15 @@ interface AccessRegistryInterface
 
     /**
      * Hook to handle access authorization.
+     *
+     * @phpstan-param T|null $object
      */
     public function checkAccess(string $action, ?object $object = null): void;
 
     /**
      * Hook to handle access authorization, without throwing an exception.
+     *
+     * @phpstan-param T|null $object
      */
     public function hasAccess(string $action, ?object $object = null): bool;
 }

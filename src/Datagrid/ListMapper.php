@@ -54,6 +54,8 @@ class ListMapper extends BaseMapper
     /**
      * @param FieldDescriptionInterface|string $name
      * @param array<string, mixed>             $fieldDescriptionOptions
+     *
+     * @return static
      */
     public function addIdentifier($name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
@@ -76,6 +78,8 @@ class ListMapper extends BaseMapper
      * @param array<string, mixed>             $fieldDescriptionOptions
      *
      * @throws \LogicException
+     *
+     * @return static
      */
     public function add($name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {

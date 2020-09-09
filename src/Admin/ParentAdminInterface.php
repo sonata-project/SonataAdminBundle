@@ -39,7 +39,7 @@ interface ParentAdminInterface
     /**
      * Returns an collection of admin children.
      *
-     * @return array list of Admin children
+     * @return array<string, AdminInterface> list of Admin children
      */
     public function getChildren(): array;
 

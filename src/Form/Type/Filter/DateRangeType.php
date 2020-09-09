@@ -29,6 +29,9 @@ final class DateRangeType extends AbstractType
         return 'sonata_type_filter_date_range';
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

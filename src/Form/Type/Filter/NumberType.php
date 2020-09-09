@@ -29,6 +29,9 @@ final class NumberType extends AbstractType
         return 'sonata_type_filter_number';
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

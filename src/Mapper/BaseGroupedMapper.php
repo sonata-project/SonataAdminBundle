@@ -38,7 +38,11 @@ abstract class BaseGroupedMapper extends BaseMapper
     /**
      * Add new group or tab (if parameter "tab=true" is available in options).
      *
+     * @param array<string, mixed> $options
+     *
      * @throws \LogicException
+     *
+     * @return static
      */
     public function with(string $name, array $options = []): self
     {
@@ -159,6 +163,8 @@ abstract class BaseGroupedMapper extends BaseMapper
 
     /**
      * Only nested add if the condition match true.
+     *
+     * @return static
      */
     public function ifTrue(bool $bool): self
     {
@@ -169,6 +175,8 @@ abstract class BaseGroupedMapper extends BaseMapper
 
     /**
      * Only nested add if the condition match false.
+     *
+     * @return static
      */
     public function ifFalse(bool $bool): self
     {
@@ -179,6 +187,8 @@ abstract class BaseGroupedMapper extends BaseMapper
 
     /**
      * @throws \LogicException
+     *
+     * @return static
      */
     public function ifEnd(): self
     {
@@ -193,6 +203,10 @@ abstract class BaseGroupedMapper extends BaseMapper
 
     /**
      * Add new tab.
+     *
+     * @param array<string, mixed> $options
+     *
+     * @return static
      */
     public function tab(string $name, array $options = []): self
     {
@@ -203,6 +217,8 @@ abstract class BaseGroupedMapper extends BaseMapper
      * Close the current group or tab.
      *
      * @throws \LogicException
+     *
+     * @return static
      */
     public function end(): self
     {
@@ -229,18 +245,32 @@ abstract class BaseGroupedMapper extends BaseMapper
         return null !== $this->currentTab;
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     abstract protected function getGroups(): array;
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     abstract protected function getTabs(): array;
 
+    /**
+     * @param array<string, array<string, mixed>> $groups
+     */
     abstract protected function setGroups(array $groups): void;
 
+    /**
+     * @param array<string, array<string, mixed>> $tabs
+     */
     abstract protected function setTabs(array $tabs): void;
 
     abstract protected function getName(): string;
 
     /**
      * Add the field name to the current group.
+     *
+     * @return array<string, mixed>
      */
     protected function addFieldToCurrentGroup(string $fieldName): array
     {
