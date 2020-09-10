@@ -294,7 +294,16 @@ abstract class BaseGroupedMapper extends BaseMapper
     protected function getCurrentGroupName(): string
     {
         if (!$this->currentGroup) {
-            $this->with($this->admin->getLabel() ?: 'default', ['auto_created' => true]);
+            $label = $this->admin->getLabel();
+
+            if (null === $label) {
+                $this->with('default', ['auto_created' => true]);
+            } else {
+                $this->with($label, [
+                    'auto_created' => true,
+                    'translation_domain' => $this->admin->getTranslationDomain(),
+                ]);
+            }
         }
 
         return $this->currentGroup;

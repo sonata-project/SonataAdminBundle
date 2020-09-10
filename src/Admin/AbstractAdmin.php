@@ -178,7 +178,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The label.
      *
-     * @var string
+     * @var string|null
      */
     protected $label;
 
