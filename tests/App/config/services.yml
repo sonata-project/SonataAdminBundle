@@ -5,6 +5,9 @@ services:
 
     Sonata\AdminBundle\Tests\App\Model\FooRepository: ~
 
+    Sonata\AdminBundle\Templating\TemplateRegistryInterface:
+        alias: 'sonata.admin.global_template_registry'
+
     sonata.admin.manager.test:
         class: Sonata\AdminBundle\Tests\App\Model\ModelManager
         arguments:

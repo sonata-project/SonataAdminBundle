@@ -67,7 +67,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 $this->replaceDefaultArguments([
                     0 => $id,
-                    2 => CRUDController::class,
+                    2 => 'sonata.admin.controller.crud',
                 ], $definition, $parentDefinition);
                 $this->applyConfigurationFromAttribute($definition, $attributes);
                 $this->applyDefaults($container, $id, $attributes);

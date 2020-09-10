@@ -17,15 +17,20 @@ use Doctrine\Inflector\InflectorFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Sonata\AdminBundle\Util\AdminObjectAclUserManager;
+use Sonata\Exporter\Exporter;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
@@ -34,24 +39,25 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class CRUDController extends Controller
+class CRUDController extends AbstractController
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
     /**
      * The related Admin class.
      *
@@ -60,15 +66,114 @@ class CRUDController extends Controller
     protected $admin;
 
     /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    /**
+     * @var Pool
+     */
+    private $pool;
+
+    /**
      * The template registry of the related Admin class.
      *
      * @var TemplateRegistryInterface
      */
     private $templateRegistry;
 
-    public function setContainer(?ContainerInterface $container = null): void
-    {
-        $this->container = $container;
+    /**
+     * @var BreadcrumbsBuilder
+     */
+    private $breadcrumbsBuilder;
+
+    /**
+     * @var Environment
+     */
+    private $twig;
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
+     * @var bool
+     */
+    private $kernelDebug;
+
+    /**
+     * @var AuditManagerInterface
+     */
+    private $auditManager;
+
+    /**
+     * @var Exporter|null
+     */
+    private $exporter;
+
+    /**
+     * @var AdminExporter|null
+     */
+    private $adminExporter;
+
+    /**
+     * @var CsrfTokenManagerInterface|null
+     */
+    private $csrfTokenManager;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @var AdminObjectAclManipulator|null
+     */
+    private $adminObjectAclManipulator;
+
+    /**
+     * @var AdminObjectAclUserManager|null
+     */
+    private $adminObjectAclUserManager;
+
+    public function __construct(
+        RequestStack $requestStack,
+        Pool $pool,
+        TemplateRegistryInterface $templateRegistry,
+        BreadcrumbsBuilder $breadcrumbsBuilder,
+        Environment $twig,
+        TranslatorInterface $translator,
+        SessionInterface $session,
+        bool $kernelDebug,
+        AuditManagerInterface $auditManager,
+        ?Exporter $exporter = null,
+        ?AdminExporter $adminExporter = null,
+        ?CsrfTokenManagerInterface $csrfTokenManager = null,
+        ?LoggerInterface $logger = null,
+        ?AdminObjectAclManipulator $adminObjectAclManipulator = null,
+        ?AdminObjectAclUserManager $adminObjectAclUserManager = null
+    ) {
+        $this->requestStack = $requestStack;
+        $this->pool = $pool;
+        $this->templateRegistry = $templateRegistry;
+        $this->breadcrumbsBuilder = $breadcrumbsBuilder;
+        $this->twig = $twig;
+        $this->translator = $translator;
+        $this->session = $session;
+        $this->kernelDebug = $kernelDebug;
+        $this->auditManager = $auditManager;
+        $this->exporter = $exporter;
+        $this->adminExporter = $adminExporter;
+        $this->csrfTokenManager = $csrfTokenManager;
+        $this->logger = $logger ?? new NullLogger();
+        $this->adminObjectAclManipulator = $adminObjectAclManipulator;
+        $this->adminObjectAclUserManager = $adminObjectAclUserManager;
 
         $this->configure();
     }
@@ -78,12 +183,12 @@ class CRUDController extends Controller
      *
      * @param string               $view       The view name
      * @param array<string, mixed> $parameters An array of parameters to pass to the view
-     *
-     * @return Response A Response instance
      */
-    public function renderWithExtraParams($view, array $parameters = [], ?Response $response = null)
+    public function renderWithExtraParams($view, array $parameters = [], ?Response $response = null): Response
     {
-        return $this->render($view, $this->addRenderExtraParams($parameters), $response);
+        $response = $response ?? new Response();
+
+        return $response->setContent($this->twig->render($view, $this->addRenderExtraParams($parameters)));
     }
 
     /**
@@ -119,10 +224,10 @@ class CRUDController extends Controller
             'form' => $formView,
             'datagrid' => $datagrid,
             'csrf_token' => $this->getCsrfToken('sonata.batch'),
-            'export_formats' => $this->has('sonata.admin.admin_exporter') ?
-                $this->get('sonata.admin.admin_exporter')->getAvailableFormats($this->admin) :
+            'export_formats' => $this->adminExporter ?
+                $this->adminExporter->getAvailableFormats($this->admin) :
                 $this->admin->getExportFormats(),
-        ], null);
+        ]);
     }
 
     /**
@@ -228,7 +333,7 @@ class CRUDController extends Controller
             'object' => $object,
             'action' => 'delete',
             'csrf_token' => $this->getCsrfToken('sonata.delete'),
-        ], null);
+        ]);
     }
 
     /**
@@ -339,7 +444,7 @@ class CRUDController extends Controller
             'form' => $formView,
             'object' => $existingObject,
             'objectId' => $objectId,
-        ], null);
+        ]);
     }
 
     /**
@@ -447,7 +552,7 @@ class CRUDController extends Controller
                 'form' => $formView,
                 'data' => $data,
                 'csrf_token' => $this->getCsrfToken('sonata.batch'),
-            ], null);
+            ]);
         }
 
         // execute the action, batchActionXxxxx
@@ -500,8 +605,7 @@ class CRUDController extends Controller
                     'base_template' => $this->getBaseTemplate(),
                     'admin' => $this->admin,
                     'action' => 'create',
-                ],
-                null
+                ]
             );
         }
 
@@ -585,7 +689,7 @@ class CRUDController extends Controller
             'form' => $formView,
             'object' => $newObject,
             'objectId' => null,
-        ], null);
+        ]);
     }
 
     /**
@@ -647,16 +751,16 @@ class CRUDController extends Controller
 
         $this->admin->checkAccess('history', $object);
 
-        $manager = $this->get('sonata.admin.audit.manager');
-
-        if (!$manager->hasReader($this->admin->getClass())) {
-            throw $this->createNotFoundException(sprintf(
-                'unable to find the audit reader for class : %s',
-                $this->admin->getClass()
-            ));
+        if (!$this->auditManager->hasReader($this->admin->getClass())) {
+            throw $this->createNotFoundException(
+                sprintf(
+                    'unable to find the audit reader for class : %s',
+                    $this->admin->getClass()
+                )
+            );
         }
 
-        $reader = $manager->getReader($this->admin->getClass());
+        $reader = $this->auditManager->getReader($this->admin->getClass());
 
         $revisions = $reader->findRevisions($this->admin->getClass(), $id);
 
@@ -667,7 +771,7 @@ class CRUDController extends Controller
             'object' => $object,
             'revisions' => $revisions,
             'currentRevision' => $revisions ? current($revisions) : false,
-        ], null);
+        ]);
     }
 
     /**
@@ -691,16 +795,16 @@ class CRUDController extends Controller
 
         $this->admin->checkAccess('historyViewRevision', $object);
 
-        $manager = $this->get('sonata.admin.audit.manager');
-
-        if (!$manager->hasReader($this->admin->getClass())) {
-            throw $this->createNotFoundException(sprintf(
-                'unable to find the audit reader for class : %s',
-                $this->admin->getClass()
-            ));
+        if (!$this->auditManager->hasReader($this->admin->getClass())) {
+            throw $this->createNotFoundException(
+                sprintf(
+                    'unable to find the audit reader for class : %s',
+                    $this->admin->getClass()
+                )
+            );
         }
 
-        $reader = $manager->getReader($this->admin->getClass());
+        $reader = $this->auditManager->getReader($this->admin->getClass());
 
         // retrieve the revisioned object
         $object = $reader->find($this->admin->getClass(), $id, $revision);
@@ -722,7 +826,7 @@ class CRUDController extends Controller
             'action' => 'show',
             'object' => $object,
             'elements' => $this->admin->getShow(),
-        ], null);
+        ]);
     }
 
     /**
@@ -747,16 +851,16 @@ class CRUDController extends Controller
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
 
-        $manager = $this->get('sonata.admin.audit.manager');
-
-        if (!$manager->hasReader($this->admin->getClass())) {
-            throw $this->createNotFoundException(sprintf(
-                'unable to find the audit reader for class : %s',
-                $this->admin->getClass()
-            ));
+        if (!$this->auditManager->hasReader($this->admin->getClass())) {
+            throw $this->createNotFoundException(
+                sprintf(
+                    'unable to find the audit reader for class : %s',
+                    $this->admin->getClass()
+                )
+            );
         }
 
-        $reader = $manager->getReader($this->admin->getClass());
+        $reader = $this->auditManager->getReader($this->admin->getClass());
 
         // retrieve the base revision
         $baseObject = $reader->find($this->admin->getClass(), $id, $baseRevision);
@@ -793,7 +897,7 @@ class CRUDController extends Controller
             'object' => $baseObject,
             'object_compare' => $compareObject,
             'elements' => $this->admin->getShow(),
-        ], null);
+        ]);
     }
 
     /**
@@ -810,10 +914,8 @@ class CRUDController extends Controller
 
         $format = $request->get('format');
 
-        $adminExporter = $this->get('sonata.admin.admin_exporter');
-        $allowedExportFormats = $adminExporter->getAvailableFormats($this->admin);
-        $filename = $adminExporter->getExportFilename($this->admin, $format);
-        $exporter = $this->get('sonata.exporter.exporter');
+        $allowedExportFormats = $this->adminExporter->getAvailableFormats($this->admin);
+        $filename = $this->adminExporter->getExportFilename($this->admin, $format);
 
         if (!\in_array($format, $allowedExportFormats, true)) {
             throw new \RuntimeException(sprintf(
@@ -824,7 +926,7 @@ class CRUDController extends Controller
             ));
         }
 
-        return $exporter->getResponse(
+        return $this->exporter->getResponse(
             $format,
             $filename,
             $this->admin->getDataSourceIterator()
@@ -858,17 +960,16 @@ class CRUDController extends Controller
         $aclUsers = $this->getAclUsers();
         $aclRoles = $this->getAclRoles();
 
-        $adminObjectAclManipulator = $this->get('sonata.admin.object.manipulator.acl.admin');
         $adminObjectAclData = new AdminObjectAclData(
             $this->admin,
             $object,
             $aclUsers,
-            $adminObjectAclManipulator->getMaskBuilderClass(),
+            $this->adminObjectAclManipulator->getMaskBuilderClass(),
             $aclRoles
         );
 
-        $aclUsersForm = $adminObjectAclManipulator->createAclUsersForm($adminObjectAclData);
-        $aclRolesForm = $adminObjectAclManipulator->createAclRolesForm($adminObjectAclData);
+        $aclUsersForm = $this->adminObjectAclManipulator->createAclUsersForm($adminObjectAclData);
+        $aclRolesForm = $this->adminObjectAclManipulator->createAclRolesForm($adminObjectAclData);
 
         if (Request::METHOD_POST === $request->getMethod()) {
             if ($request->request->has(AdminObjectAclManipulator::ACL_USERS_FORM_NAME)) {
@@ -883,7 +984,7 @@ class CRUDController extends Controller
                 $form->handleRequest($request);
 
                 if ($form->isValid()) {
-                    $adminObjectAclManipulator->$updateMethod($adminObjectAclData);
+                    $this->adminObjectAclManipulator->$updateMethod($adminObjectAclData);
                     $this->addFlash(
                         'sonata_flash_success',
                         $this->trans('flash_acl_edit_success', [], 'SonataAdminBundle')
@@ -904,15 +1005,19 @@ class CRUDController extends Controller
             'roles' => $aclRoles,
             'aclUsersForm' => $aclUsersForm->createView(),
             'aclRolesForm' => $aclRolesForm->createView(),
-        ], null);
+        ]);
     }
 
-    /**
-     * @return Request
-     */
-    public function getRequest()
+    public function getRequest(): ?Request
     {
-        return $this->container->get('request_stack')->getCurrentRequest();
+        return $this->requestStack->getCurrentRequest();
+    }
+
+    protected function addFlash(string $type, $message): void
+    {
+        if ($this->session instanceof Session) {
+            $this->session->getFlashBag()->add($type, $message);
+        }
     }
 
     /**
@@ -923,26 +1028,14 @@ class CRUDController extends Controller
     protected function addRenderExtraParams(array $parameters = []): array
     {
         if (!$this->isXmlHttpRequest()) {
-            $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
+            $parameters['breadcrumbs_builder'] = $this->breadcrumbsBuilder;
         }
 
         $parameters['admin'] = $parameters['admin'] ?? $this->admin;
         $parameters['base_template'] = $parameters['base_template'] ?? $this->getBaseTemplate();
-        $parameters['admin_pool'] = $this->get('sonata.admin.pool');
+        $parameters['admin_pool'] = $this->pool;
 
         return $parameters;
-    }
-
-    /**
-     * Gets a container configuration parameter by its name.
-     *
-     * @param string $name The parameter name
-     *
-     * @return mixed
-     */
-    protected function getParameter($name)
-    {
-        return $this->container->getParameter($name);
     }
 
     /**
@@ -1008,19 +1101,11 @@ class CRUDController extends Controller
         }
 
         try {
-            $this->admin = $this->container->get('sonata.admin.pool')->getAdminByAdminCode($adminCode);
+            $this->admin = $this->pool->getAdminByAdminCode($adminCode);
         } catch (\InvalidArgumentException $e) {
             throw new \RuntimeException(sprintf(
                 'Unable to find the admin class related to the current controller (%s)',
                 static::class
-            ));
-        }
-
-        $this->templateRegistry = $this->container->get(sprintf('%s.template_registry', $this->admin->getCode()));
-        if (!$this->templateRegistry instanceof TemplateRegistryInterface) {
-            throw new \RuntimeException(sprintf(
-                'Unable to find the template registry related to the current admin (%s)',
-                $this->admin->getCode()
             ));
         }
 
@@ -1041,19 +1126,10 @@ class CRUDController extends Controller
     /**
      * Proxy for the logger service of the container.
      * If no such service is found, a NullLogger is returned.
-     *
-     * @return LoggerInterface
      */
-    protected function getLogger()
+    protected function getLogger(): LoggerInterface
     {
-        if ($this->container->has('logger')) {
-            $logger = $this->container->get('logger');
-            \assert($logger instanceof LoggerInterface);
-
-            return $logger;
-        }
-
-        return new NullLogger();
+        return $this->logger;
     }
 
     /**
@@ -1075,7 +1151,7 @@ class CRUDController extends Controller
      */
     protected function handleModelManagerException(\Exception $e): void
     {
-        if ($this->get('kernel')->isDebug()) {
+        if ($this->kernelDebug) {
             throw $e;
         }
 
@@ -1190,9 +1266,9 @@ class CRUDController extends Controller
     protected function isInPreviewMode()
     {
         return $this->admin->supportsPreviewMode()
-        && ($this->isPreviewRequested()
-            || $this->isPreviewApproved()
-            || $this->isPreviewDeclined());
+            && ($this->isPreviewRequested()
+                || $this->isPreviewApproved()
+                || $this->isPreviewDeclined());
     }
 
     /**
@@ -1209,39 +1285,27 @@ class CRUDController extends Controller
 
     /**
      * Gets ACL users.
-     *
-     * @return \Traversable
      */
-    protected function getAclUsers()
+    protected function getAclUsers(): \Traversable
     {
-        $aclUsers = [];
-
-        $userManagerServiceName = $this->container->getParameter('sonata.admin.security.acl_user_manager');
-        if (null !== $userManagerServiceName && $this->has($userManagerServiceName)) {
-            $userManager = $this->get($userManagerServiceName);
-
-            if (method_exists($userManager, 'findUsers')) {
-                $aclUsers = $userManager->findUsers();
-            }
-        }
+        $aclUsers = $this->adminObjectAclUserManager instanceof AdminObjectAclUserManager ?
+            $this->adminObjectAclUserManager->findUsers() :
+            [];
 
         return \is_array($aclUsers) ? new \ArrayIterator($aclUsers) : $aclUsers;
     }
 
     /**
      * Gets ACL roles.
-     *
-     * @return \Traversable
      */
-    protected function getAclRoles()
+    protected function getAclRoles(): \Traversable
     {
         $aclRoles = [];
-        $roleHierarchy = $this->container->getParameter('security.role_hierarchy.roles');
-        $pool = $this->container->get('sonata.admin.pool');
+        $roleHierarchy = $this->pool->getContainer()->getParameter('security.role_hierarchy.roles');
 
-        foreach ($pool->getAdminServiceIds() as $id) {
+        foreach ($this->pool->getAdminServiceIds() as $id) {
             try {
-                $admin = $pool->getInstance($id);
+                $admin = $this->pool->getInstance($id);
             } catch (\Exception $e) {
                 continue;
             }
@@ -1275,8 +1339,8 @@ class CRUDController extends Controller
         $request = $this->getRequest();
         $token = $request->get('_sonata_csrf_token');
 
-        if ($this->container->has('security.csrf.token_manager')) {
-            $valid = $this->container->get('security.csrf.token_manager')->isTokenValid(new CsrfToken($intention, $token));
+        if ($this->csrfTokenManager instanceof CsrfTokenManagerInterface) {
+            $valid = $this->csrfTokenManager->isTokenValid(new CsrfToken($intention, $token));
         } else {
             return;
         }
@@ -1307,8 +1371,8 @@ class CRUDController extends Controller
      */
     protected function getCsrfToken($intention)
     {
-        if ($this->container->has('security.csrf.token_manager')) {
-            return $this->container->get('security.csrf.token_manager')->getToken($intention)->getValue();
+        if ($this->csrfTokenManager) {
+            return $this->csrfTokenManager->getToken($intention)->getValue();
         }
 
         return false;
@@ -1390,7 +1454,7 @@ class CRUDController extends Controller
     {
         $domain = $domain ?: $this->admin->getTranslationDomain();
 
-        return $this->get('translator')->trans($id, $parameters, $domain, $locale);
+        return $this->translator->trans($id, $parameters, $domain, $locale);
     }
 
     private function getSelectedTab(Request $request): array
@@ -1424,9 +1488,7 @@ class CRUDController extends Controller
      */
     private function setFormTheme(FormView $formView, ?array $theme = null): void
     {
-        $twig = $this->get('twig');
-
-        $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
+        $this->twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
     }
 
     private function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): JsonResponse
