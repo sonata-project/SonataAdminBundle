@@ -45,52 +45,52 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
 
         ->set('sonata.admin.pool', Pool::class)
-        ->public()
-        ->args([
-            new ReferenceConfigurator('service_container'),
-            '',
-            '',
-            [],
-            new ReferenceConfigurator('property_accessor'),
-        ])
+            ->public()
+            ->args([
+                new ReferenceConfigurator('service_container'),
+                '',
+                '',
+                [],
+                new ReferenceConfigurator('property_accessor'),
+            ])
 
         ->alias(Pool::class, 'sonata.admin.pool')
 
         ->set('sonata.admin.route_loader', AdminPoolLoader::class)
-        ->public()
-        ->tag('routing.loader')
-        ->args([
-            new ReferenceConfigurator('sonata.admin.pool'),
-            [],
-            new ReferenceConfigurator('service_container'),
-        ])
+            ->public()
+            ->tag('routing.loader')
+            ->args([
+                new ReferenceConfigurator('sonata.admin.pool'),
+                [],
+                new ReferenceConfigurator('service_container'),
+            ])
 
         ->alias(AdminPoolLoader::class, 'sonata.admin.route_loader')
 
         ->set('sonata.admin.helper', AdminHelper::class)
-        ->public()
-        ->args([
-            new ReferenceConfigurator('sonata.admin.pool'),
-        ])
+            ->public()
+            ->args([
+                new ReferenceConfigurator('sonata.admin.pool'),
+            ])
 
         ->alias(AdminHelper::class, 'sonata.admin.helper')
 
         ->set('sonata.admin.builder.filter.factory', FilterFactory::class)
-        ->public()
-        ->args([
-            new ReferenceConfigurator('service_container'),
-            [],
-        ])
+            ->public()
+            ->args([
+                new ReferenceConfigurator('service_container'),
+                [],
+            ])
 
         ->alias(FilterFactory::class, 'sonata.admin.builder.filter.factory')
 
         ->alias(FilterFactoryInterface::class, 'sonata.admin.builder.filter.factory')
 
         ->set('sonata.admin.breadcrumbs_builder', BreadcrumbsBuilder::class)
-        ->public()
-        ->args([
-            '%sonata.admin.configuration.breadcrumbs%',
-        ])
+            ->public()
+            ->args([
+                '%sonata.admin.configuration.breadcrumbs%',
+            ])
 
         ->alias(BreadcrumbsBuilder::class, 'sonata.admin.breadcrumbs_builder')
 
@@ -99,124 +99,124 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // Services used to format the label, default is sonata.admin.label.strategy.noop
 
         ->set('sonata.admin.label.strategy.bc', BCLabelTranslatorStrategy::class)
-        ->public()
+            ->public()
 
         ->alias(BCLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.bc')
 
         ->set('sonata.admin.label.strategy.native', NativeLabelTranslatorStrategy::class)
-        ->public()
+            ->public()
 
         ->alias(NativeLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.native')
 
         ->alias(LabelTranslatorStrategyInterface::class, 'sonata.admin.label.strategy.native')
 
         ->set('sonata.admin.label.strategy.noop', NoopLabelTranslatorStrategy::class)
-        ->public()
+            ->public()
 
         ->alias(NoopLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.noop')
 
         ->set('sonata.admin.label.strategy.underscore', UnderscoreLabelTranslatorStrategy::class)
-        ->public()
+            ->public()
 
         ->alias(UnderscoreLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.underscore')
 
         ->set('sonata.admin.label.strategy.form_component', FormLabelTranslatorStrategy::class)
-        ->public()
+            ->public()
 
         ->alias(FormLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.form_component')
 
         ->set('sonata.admin.controller.crud', CRUDController::class)
-        ->public()
-        ->args([
-            new ReferenceConfigurator('request_stack'),
-            new ReferenceConfigurator('sonata.admin.pool'),
-            new ReferenceConfigurator('sonata.admin.global_template_registry'),
-            new ReferenceConfigurator('sonata.admin.breadcrumbs_builder'),
-            new ReferenceConfigurator('twig'),
-            new ReferenceConfigurator('translator'),
-            new ReferenceConfigurator('session'),
-            '%kernel.debug%',
-            new ReferenceConfigurator('sonata.admin.audit.manager'),
-            (new ReferenceConfigurator('sonata.exporter.exporter'))
-                ->nullOnInvalid(),
-            (new ReferenceConfigurator('sonata.admin.admin_exporter'))
-                ->nullOnInvalid(),
-            (new ReferenceConfigurator('crsf_token_manager'))
-                ->nullOnInvalid(),
-            (new ReferenceConfigurator('logger'))
-                ->nullOnInvalid(),
-            (new ReferenceConfigurator('sonata.admin.object.manipulator.acl.admin'))
-                ->nullOnInvalid(),
-            (new ReferenceConfigurator('sonata.admin.security.acl_user_manager'))
-                ->nullOnInvalid(),
-        ])
-        ->call('setContainer', [new ReferenceConfigurator('service_container')])
+            ->public()
+            ->args([
+                new ReferenceConfigurator('request_stack'),
+                new ReferenceConfigurator('sonata.admin.pool'),
+                new ReferenceConfigurator('sonata.admin.global_template_registry'),
+                new ReferenceConfigurator('sonata.admin.breadcrumbs_builder'),
+                new ReferenceConfigurator('twig'),
+                new ReferenceConfigurator('translator'),
+                new ReferenceConfigurator('session'),
+                '%kernel.debug%',
+                new ReferenceConfigurator('sonata.admin.audit.manager'),
+                (new ReferenceConfigurator('sonata.exporter.exporter'))
+                    ->nullOnInvalid(),
+                (new ReferenceConfigurator('sonata.admin.admin_exporter'))
+                    ->nullOnInvalid(),
+                (new ReferenceConfigurator('crsf_token_manager'))
+                    ->nullOnInvalid(),
+                (new ReferenceConfigurator('logger'))
+                    ->nullOnInvalid(),
+                (new ReferenceConfigurator('sonata.admin.object.manipulator.acl.admin'))
+                    ->nullOnInvalid(),
+                (new ReferenceConfigurator('sonata.admin.security.acl_user_manager'))
+                    ->nullOnInvalid(),
+            ])
+            ->call('setContainer', [new ReferenceConfigurator('service_container')])
 
         ->alias(CRUDController::class, 'sonata.admin.controller.crud')
 
         ->set(AdminExtractor::class)
-        ->tag('translation.extractor', [
-            'alias' => 'sonata_admin',
-        ])
-        ->args([
-            new ReferenceConfigurator('sonata.admin.pool'),
-            new ReferenceConfigurator('sonata.admin.breadcrumbs_builder'),
-        ])
+            ->tag('translation.extractor', [
+                'alias' => 'sonata_admin',
+            ])
+            ->args([
+                new ReferenceConfigurator('sonata.admin.pool'),
+                new ReferenceConfigurator('sonata.admin.breadcrumbs_builder'),
+            ])
 
         ->set('sonata.admin.audit.manager', AuditManager::class)
-        ->public()
-        ->args([
-            new ReferenceConfigurator('service_container'),
-        ])
+            ->public()
+            ->args([
+                new ReferenceConfigurator('service_container'),
+            ])
 
         ->alias(AuditManager::class, 'sonata.admin.audit.manager')
 
         ->alias(AuditManagerInterface::class, 'sonata.admin.audit.manager')
 
         ->set('sonata.admin.search.handler', SearchHandler::class)
-        ->public()
-        ->args([
-            '%sonata.admin.configuration.global_search.case_sensitive%',
-        ])
+            ->public()
+            ->args([
+                '%sonata.admin.configuration.global_search.case_sensitive%',
+            ])
 
         ->alias(SearchHandler::class, 'sonata.admin.search.handler')
 
         ->set('sonata.admin.event.extension', AdminEventExtension::class)
-        ->public()
-        ->tag('sonata.admin.extension', ['global' => true])
-        ->args([
-            new ReferenceConfigurator('event_dispatcher'),
-        ])
+            ->public()
+            ->tag('sonata.admin.extension', ['global' => true])
+            ->args([
+                new ReferenceConfigurator('event_dispatcher'),
+            ])
 
         ->alias(AdminEventExtension::class, 'sonata.admin.event.extension')
 
         ->set('sonata.admin.lock.extension', LockExtension::class)
-        ->public()
-        ->tag('sonata.admin.extension', ['global' => true])
+            ->public()
+            ->tag('sonata.admin.extension', ['global' => true])
 
         ->set('sonata.admin.twig.global', GlobalVariables::class)
-        ->public()
-        ->args([
-            new ReferenceConfigurator('sonata.admin.pool'),
-            '%sonata.admin.configuration.mosaic_background%',
-        ])
+            ->public()
+            ->args([
+                new ReferenceConfigurator('sonata.admin.pool'),
+                '%sonata.admin.configuration.mosaic_background%',
+            ])
 
         ->alias(GlobalVariables::class, 'sonata.admin.twig.global')
 
         ->set('sonata.admin.filter_persister.session', SessionFilterPersister::class)
-        ->args([
-            new ReferenceConfigurator('session'),
-        ])
+            ->args([
+                new ReferenceConfigurator('session'),
+            ])
 
         ->alias(SessionFilterPersister::class, 'sonata.admin.filter_persister.session')
 
         ->alias(FilterPersisterInterface::class, 'sonata.admin.filter_persister.session')
 
         ->set('sonata.admin.global_template_registry', TemplateRegistry::class)
-        ->public()
-        ->args([
-            '%sonata.admin.configuration.templates%',
-        ])
+            ->public()
+            ->args([
+                '%sonata.admin.configuration.templates%',
+            ])
 
         ->alias(TemplateRegistry::class, 'sonata.admin.global_template_registry')
 
