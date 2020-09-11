@@ -81,7 +81,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param mixed[]|null $value
+     * @param mixed $value
      *
      * @return Collection<int|string, object>|object|null
      *

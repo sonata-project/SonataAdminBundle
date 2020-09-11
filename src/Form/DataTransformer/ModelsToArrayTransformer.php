@@ -158,10 +158,14 @@ class ModelsToArrayTransformer implements DataTransformerInterface
      *
      * @phpstan-return Collection<array-key, T>|null
      */
-    public function reverseTransform($keys)
+    public function reverseTransform($value)
     {
-        if (!\is_array($keys)) {
-            throw new UnexpectedTypeException($keys, 'array');
+        if (null === $value) {
+            return null;
+        }
+
+        if (!\is_array($value)) {
+            throw new UnexpectedTypeException($value, 'array');
         }
 
         /** @phpstan-var ArrayCollection<array-key, T> $collection */
@@ -169,7 +173,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         $notFound = [];
 
         // optimize this into a SELECT WHERE IN query
-        foreach ($keys as $key) {
+        foreach ($value as $key) {
             if ($model = $this->modelManager->find($this->class, $key)) {
                 $collection->add($model);
             } else {
