@@ -80,12 +80,6 @@ class ModelToIdPropertyTransformerTest extends TestCase
                 }
             });
 
-        $collection = new ArrayCollection();
-        $this->modelManager
-            ->method('getModelCollectionInstance')
-            ->with($this->equalTo(Foo::class))
-            ->willReturn($collection);
-
         $result = $transformer->reverseTransform($params);
         $this->assertInstanceOf(ArrayCollection::class, $result);
         $this->assertSame($expected, $result->getValues());
@@ -122,12 +116,6 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->expectExceptionMessage(sprintf('Value should be array, %s given.', $type));
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
-
-        $collection = new ArrayCollection();
-        $this->modelManager
-            ->method('getModelCollectionInstance')
-            ->with($this->equalTo(Foo::class))
-            ->willReturn($collection);
 
         $result = $transformer->reverseTransform($params);
         $this->assertInstanceOf(ArrayCollection::class, $result);
