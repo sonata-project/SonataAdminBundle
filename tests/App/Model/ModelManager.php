@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\App\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -116,43 +114,6 @@ class ModelManager implements ModelManagerInterface, LockInterface
             default:
                 return new Foo('test_id', 'foo_name');
         }
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function getModelCollectionInstance(string $class): Collection
-    {
-        return new ArrayCollection();
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function collectionRemoveElement(Collection $collection, object $element): void
-    {
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function collectionAddElement(Collection $collection, object $element): void
-    {
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function collectionHasElement(Collection $collection, object $element): bool
-    {
-        return true;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function collectionClear(Collection $collection): void
-    {
     }
 
     public function getDefaultSortValues(string $class): array

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Model;
 
-use Doctrine\Common\Collections\Collection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -134,77 +133,6 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @phpstan-return T
      */
     public function getModelInstance(string $class): object;
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
-     *
-     * @return Collection<int|string, object>
-     *
-     * @phpstan-template T of object
-     * @phpstan-param class-string<T> $class
-     * @phpstan-return Collection<array-key, T>
-     */
-    public function getModelCollectionInstance(string $class): Collection;
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
-     *
-     * Removes an element from the collection.
-     *
-     * @param Collection<int|string, object> $collection
-     *
-     * @phpstan-template T of object
-     * @phpstan-param Collection<array-key, T> $collection
-     * @phpstan-param T $element
-     */
-    public function collectionRemoveElement(Collection $collection, object $element): void;
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
-     *
-     * Add an element from the collection.
-     *
-     * @param Collection<int|string, object> $collection
-     *
-     * @phpstan-template T of object
-     * @phpstan-param Collection<array-key, T> $collection
-     * @phpstan-param T $element
-     */
-    public function collectionAddElement(Collection $collection, object $element): void;
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
-     *
-     * Check if the element exists in the collection.
-     *
-     * @param Collection<int|string, object> $collection
-     *
-     * @phpstan-template T of object
-     * @phpstan-param Collection<array-key, T> $collection
-     * @phpstan-param T $element
-     */
-    public function collectionHasElement(Collection $collection, object $element): bool;
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
-     *
-     * Clear the collection.
-     *
-     * @param Collection<int|string, object> $collection
-     *
-     * @phpstan-param Collection<array-key, object> $collection
-     */
-    public function collectionClear(Collection $collection): void;
 
     /**
      * @param array<string, mixed> $array
