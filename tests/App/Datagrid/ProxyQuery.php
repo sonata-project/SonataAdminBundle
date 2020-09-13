@@ -74,11 +74,17 @@ final class ProxyQuery implements ProxyQueryInterface
         return 1;
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function getUniqueParameterId(): int
     {
         return 1;
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function entityJoin(array $associationMappings): array
     {
         throw new \BadMethodCallException('Not implemented.');

@@ -1,6 +1,14 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated `Sonata\AdminBundle\Datagrid\ProxyQueryInterface::getUniqueParameterId()`
+
+This method has been deprecated without replacement.
+
+## Deprecated `Sonata\AdminBundle\Datagrid\ProxyQueryInterface::entityJoin()`
+
+This method has been deprecated without replacement.
+
 UPGRADE FROM 3.74 to 3.75
 =========================
 
