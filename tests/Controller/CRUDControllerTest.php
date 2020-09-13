@@ -505,8 +505,6 @@ class CRUDControllerTest extends TestCase
 
     public function testPreList(): void
     {
-        $datagrid = $this->createMock(DatagridInterface::class);
-
         $this->admin
             ->method('hasRoute')
             ->with($this->equalTo('list'))
@@ -2402,7 +2400,7 @@ class CRUDControllerTest extends TestCase
     public function testHistoryActionNoReader(): void
     {
         $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage('unable to find the audit reader for class : Foo');
+        $this->expectExceptionMessage('Unable to find the audit reader for class Foo.');
 
         $this->request->query->set('id', 123);
 
@@ -2801,7 +2799,7 @@ class CRUDControllerTest extends TestCase
     public function testHistoryViewRevisionActionNoReader(): void
     {
         $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage('unable to find the audit reader for class : Foo');
+        $this->expectExceptionMessage('Unable to find the audit reader for class Foo.');
 
         $this->request->query->set('id', 123);
 
@@ -2963,7 +2961,7 @@ class CRUDControllerTest extends TestCase
     public function testHistoryCompareRevisionsActionNoReader(): void
     {
         $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage('unable to find the audit reader for class : Foo');
+        $this->expectExceptionMessage('Unable to find the audit reader for class Foo.');
 
         $this->request->query->set('id', 123);
 
@@ -3665,9 +3663,7 @@ class CRUDControllerTest extends TestCase
             return '';
         });
 
-        $twig = $this->getMockBuilder(Environment::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $twig = $this->createStub(Environment::class);
 
         $twig
             ->method('getRuntime')

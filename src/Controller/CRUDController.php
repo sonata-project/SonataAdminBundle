@@ -798,7 +798,7 @@ class CRUDController extends AbstractController
         if (!$this->auditManager->hasReader($this->admin->getClass())) {
             throw $this->createNotFoundException(
                 sprintf(
-                    'unable to find the audit reader for class : %s',
+                    'Unable to find the audit reader for class %s.',
                     $this->admin->getClass()
                 )
             );
@@ -854,7 +854,7 @@ class CRUDController extends AbstractController
         if (!$this->auditManager->hasReader($this->admin->getClass())) {
             throw $this->createNotFoundException(
                 sprintf(
-                    'unable to find the audit reader for class : %s',
+                    'Unable to find the audit reader for class %s.',
                     $this->admin->getClass()
                 )
             );
