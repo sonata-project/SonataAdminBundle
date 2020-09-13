@@ -94,11 +94,19 @@ interface ProxyQueryInterface
     public function getMaxResults();
 
     /**
+     * NEXT_MAJOR: Remove this method from the interface.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     *
      * @return int
      */
     public function getUniqueParameterId();
 
     /**
+     * NEXT_MAJOR: Remove this method from the interface.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     *
      * @return string
      */
     public function entityJoin(array $associationMappings);
