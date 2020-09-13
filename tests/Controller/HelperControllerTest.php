@@ -23,6 +23,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\HelperController;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\Pager;
+use Sonata\AdminBundle\Form\DataTransformerResolver;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
@@ -84,6 +85,11 @@ class HelperControllerTest extends TestCase
     private $controller;
 
     /**
+     * @var DataTransformerResolver
+     */
+    private $resolver;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
@@ -93,6 +99,7 @@ class HelperControllerTest extends TestCase
         $this->helper = $this->prophesize(AdminHelper::class);
         $this->validator = $this->prophesize(ValidatorInterface::class);
         $this->admin = $this->prophesize(AbstractAdmin::class);
+        $this->resolver = new DataTransformerResolver();
 
         $this->pool->getInstance(Argument::any())->willReturn($this->admin->reveal());
         $this->admin->setRequest(Argument::type(Request::class))->shouldBeCalled();
@@ -101,7 +108,8 @@ class HelperControllerTest extends TestCase
             $this->twig->reveal(),
             $this->pool->reveal(),
             $this->helper->reveal(),
-            $this->validator->reveal()
+            $this->validator->reveal(),
+            $this->resolver
         );
     }
 
@@ -200,6 +208,7 @@ class HelperControllerTest extends TestCase
         $propertyAccessor = new PropertyAccessor();
         $templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
         $container = $this->prophesize(ContainerInterface::class);
+        $modelManager = $this->prophesize(ModelManagerInterface::class);
 
         $this->admin->getObject(42)->willReturn($object);
         $this->admin->getCode()->willReturn('sonata.post.admin');
@@ -208,6 +217,7 @@ class HelperControllerTest extends TestCase
         $this->admin->update($object)->shouldBeCalled();
         // NEXT_MAJOR: Remove this line
         $this->admin->getTemplate('base_list_field')->willReturn('admin_template');
+        $this->admin->getModelManager()->willReturn($modelManager->reveal());
         $templateRegistry->getTemplate('base_list_field')->willReturn('admin_template');
         $container->get('sonata.post.admin.template_registry')->willReturn($templateRegistry->reveal());
         $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
@@ -221,6 +231,7 @@ class HelperControllerTest extends TestCase
         $fieldDescription->getType()->willReturn('boolean');
         $fieldDescription->getTemplate()->willReturn(false);
         $fieldDescription->getValue(Argument::cetera())->willReturn('some value');
+        $fieldDescription->getOption('data_transformer')->willReturn(null);
         $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
 
         $response = $this->controller->setObjectFieldValueAction($request);
@@ -274,6 +285,7 @@ class HelperControllerTest extends TestCase
         $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
         $fieldDescription->getTemplate()->willReturn('field_template');
         $fieldDescription->getValue(Argument::cetera())->willReturn('some value');
+        $fieldDescription->getOption('data_transformer')->willReturn(null);
         $modelManager->find(\get_class($associationObject), 1)->willReturn($associationObject);
 
         $response = $this->controller->setObjectFieldValueAction($request);
@@ -373,17 +385,20 @@ class HelperControllerTest extends TestCase
 
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
         $propertyAccessor = new PropertyAccessor();
+        $modelManager = $this->prophesize(ModelManagerInterface::class);
 
         $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
         $this->admin->getObject(42)->willReturn($object);
         $this->admin->hasAccess('edit', $object)->willReturn(true);
         $this->admin->getListFieldDescription('bar.enabled')->willReturn($fieldDescription->reveal());
+        $this->admin->getModelManager()->willReturn($modelManager->reveal());
         $this->validator->validate($bar)->willReturn(new ConstraintViolationList([
             new ConstraintViolation('error1', null, [], null, 'enabled', null),
             new ConstraintViolation('error2', null, [], null, 'enabled', null),
         ]));
         $fieldDescription->getOption('editable')->willReturn(true);
         $fieldDescription->getType()->willReturn('boolean');
+        $fieldDescription->getOption('data_transformer')->willReturn(null);
 
         $response = $this->controller->setObjectFieldValueAction($request);
 

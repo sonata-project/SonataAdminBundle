@@ -170,6 +170,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('sonata.admin.pool'),
                 new ReferenceConfigurator('sonata.admin.helper'),
                 new ReferenceConfigurator('validator'),
+                new ReferenceConfigurator('sonata.admin.form.data_transformer_resolver'),
             ])
 
         ->set('sonata.admin.audit.manager', AuditManager::class)
