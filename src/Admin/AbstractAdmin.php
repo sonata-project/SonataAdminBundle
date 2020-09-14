@@ -1359,6 +1359,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
+     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0. Use TemplateRegistry services instead
+     *
      * @param array<string, string> $templates
      */
     public function setTemplates(array $templates)
@@ -1370,6 +1372,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
+     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0. Use TemplateRegistry services instead
+     *
      * @param string $name
      * @param string $template
      */
@@ -3262,6 +3266,33 @@ EOT;
     }
 
     /**
+     * @return MutableTemplateRegistryInterface
+     */
+    final public function getTemplateRegistry()
+    {
+        // NEXT_MAJOR: Remove the deprecation and uncomment the exception.
+        if (!$this->hasTemplateRegistry()) {
+            @trigger_error(sprintf(
+                'Calling %s() when there is no template registry is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will throw an exception in 4.0.'
+                .' Use %s::hasTemplateRegistry() to know if the template registry is set.',
+                __METHOD__,
+                __CLASS__
+            ), E_USER_DEPRECATED);
+        }
+        //if (false === $this->hasTemplateRegistry()) {
+        //    throw new \LogicException(sprintf('Unable to find the template registry for admin `%s`.', static::class));
+        //}
+
+        return $this->templateRegistry;
+    }
+
+    final public function hasTemplateRegistry(): bool
+    {
+        return null !== $this->templateRegistry;
+    }
+
+    /**
      * @return string[]
      */
     protected function configureExportFields(): array
@@ -3272,14 +3303,6 @@ EOT;
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
         return $query;
-    }
-
-    /**
-     * @return MutableTemplateRegistryInterface
-     */
-    final protected function getTemplateRegistry()
-    {
-        return $this->templateRegistry;
     }
 
     /**
