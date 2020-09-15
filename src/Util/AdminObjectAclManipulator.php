@@ -42,13 +42,18 @@ class AdminObjectAclManipulator
      * @var FormFactoryInterface
      */
     protected $formFactory;
+
     /**
      * @var string
+     *
+     * @phpstan-var class-string
      */
     protected $maskBuilderClass;
 
     /**
      * @param string $maskBuilderClass
+     *
+     * @phpstan-param class-string $maskBuilderClass
      */
     public function __construct(FormFactoryInterface $formFactory, $maskBuilderClass)
     {
@@ -119,7 +124,9 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Builds ACL.
+     * @param \Traversable<int|string, UserInterface|string> $aclValues
+     *
+     * @phpstan-param \Traversable<array-key, UserInterface|string> $aclValues
      */
     protected function buildAcl(AdminObjectAclData $data, FormInterface $form, \Traversable $aclValues): void
     {
@@ -186,9 +193,11 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Builds the form.
+     * @param \Traversable<int|string, UserInterface|string> $aclValues
      *
      * @return FormInterface
+     *
+     * @phpstan-param \Traversable<array-key, UserInterface|string> $aclValues
      */
     protected function buildForm(AdminObjectAclData $data, FormBuilderInterface $formBuilder, \Traversable $aclValues)
     {

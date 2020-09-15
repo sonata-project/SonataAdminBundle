@@ -18,6 +18,8 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
  */
 final class ModelToIdTransformer implements DataTransformerInterface
 {
@@ -28,11 +30,15 @@ final class ModelToIdTransformer implements DataTransformerInterface
 
     /**
      * @var string
+     *
+     * @phpstan-var class-string<T>
      */
     private $className;
 
     /**
      * @param string $className
+     *
+     * @phpstan-param class-string<T> $className
      */
     public function __construct(ModelManagerInterface $modelManager, $className)
     {
@@ -40,21 +46,35 @@ final class ModelToIdTransformer implements DataTransformerInterface
         $this->className = $className;
     }
 
-    public function reverseTransform($newId)
+    /**
+     * @param mixed $value
+     *
+     * @return object|null
+     *
+     * @phpstan-return T|null
+     */
+    public function reverseTransform($value)
     {
-        if (empty($newId) && !\in_array($newId, ['0', 0], true)) {
+        if (empty($value) && !\in_array($value, ['0', 0], true)) {
             return null;
         }
 
-        return $this->modelManager->find($this->className, $newId);
+        return $this->modelManager->find($this->className, $value);
     }
 
-    public function transform($model)
+    /**
+     * @param object|null $value
+     *
+     * @return string|null
+     *
+     * @phpstan-param T|null $value
+     */
+    public function transform($value)
     {
-        if (empty($model)) {
+        if (empty($value)) {
             return null;
         }
 
-        return $this->modelManager->getNormalizedIdentifier($model);
+        return $this->modelManager->getNormalizedIdentifier($value);
     }
 }

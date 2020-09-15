@@ -14,8 +14,11 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Form\DataTransformerResolver;
+use Sonata\AdminBundle\Form\DataTransformerResolverInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
+use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,11 +44,31 @@ final class SetObjectFieldValueAction
      */
     private $validator;
 
-    public function __construct(Environment $twig, Pool $pool, ValidatorInterface $validator)
+    /**
+     * @var DataTransformerResolver
+     */
+    private $resolver;
+
+    /**
+     * @param DataTransformerResolver|null $resolver
+     */
+    public function __construct(Environment $twig, Pool $pool, ValidatorInterface $validator, $resolver = null)
     {
-        $this->pool = $pool;
+        // NEXT_MAJOR: Move DataTransformerResolver check to method signature
+        if (!$resolver instanceof DataTransformerResolverInterface) {
+            @trigger_error(sprintf(
+                'Passing other type than %s in argument 4 to %s() is deprecated since sonata-project/admin-bundle 3.x and will throw %s exception in 4.0.',
+                DataTransformerResolverInterface::class,
+                __METHOD__,
+                \TypeError::class
+            ), E_USER_DEPRECATED);
+            $resolver = new DataTransformerResolver();
+        }
+
         $this->twig = $twig;
+        $this->pool = $pool;
         $this->validator = $validator;
+        $this->resolver = $resolver;
     }
 
     /**
@@ -111,42 +134,25 @@ final class SetObjectFieldValueAction
             $propertyPath = new PropertyPath($field);
         }
 
-        // Handle date type has setter expect a DateTime object
-        if ('' !== $value && TemplateRegistry::TYPE_DATE === $fieldDescription->getType()) {
-            $inputTimezone = new \DateTimeZone(date_default_timezone_get());
-            $outputTimezone = $fieldDescription->getOption('timezone');
+        if ('' === $value) {
+            $this->pool->getPropertyAccessor()->setValue($object, $propertyPath, null);
+        } else {
+            $dataTransformer = $this->resolver->resolve($fieldDescription, $admin->getModelManager());
 
-            if ($outputTimezone && !$outputTimezone instanceof \DateTimeZone) {
-                $outputTimezone = new \DateTimeZone($outputTimezone);
+            if ($dataTransformer instanceof DataTransformerInterface) {
+                $value = $dataTransformer->reverseTransform($value);
             }
 
-            $value = new \DateTime($value, $outputTimezone ?: $inputTimezone);
-            $value->setTimezone($inputTimezone);
-        }
-
-        // Handle boolean type transforming the value into a boolean
-        if ('' !== $value && TemplateRegistry::TYPE_BOOLEAN === $fieldDescription->getType()) {
-            $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
-        }
-
-        // Handle entity choice association type, transforming the value into entity
-        if ('' !== $value
-            && TemplateRegistry::TYPE_CHOICE === $fieldDescription->getType()
-            && null !== $fieldDescription->getOption('class')
-            && $fieldDescription->getOption('class') === $fieldDescription->getTargetModel()
-        ) {
-            $value = $admin->getModelManager()->find($fieldDescription->getOption('class'), $value);
-
-            if (!$value) {
+            if (!$value && TemplateRegistry::TYPE_CHOICE === $fieldDescription->getType()) {
                 return new JsonResponse(sprintf(
                     'Edit failed, object with id: %s not found in association: %s.',
                     $originalValue,
                     $field
                 ), Response::HTTP_NOT_FOUND);
             }
-        }
 
-        $this->pool->getPropertyAccessor()->setValue($object, $propertyPath, '' !== $value ? $value : null);
+            $this->pool->getPropertyAccessor()->setValue($object, $propertyPath, $value);
+        }
 
         $violations = $this->validator->validate($object);
 

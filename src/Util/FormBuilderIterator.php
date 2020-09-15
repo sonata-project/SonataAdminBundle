@@ -94,9 +94,9 @@ final class FormBuilderIterator extends \RecursiveArrayIterator
     }
 
     /**
-     * @static
+     * @return array<int|string, int|string>
      *
-     * @return array
+     * @phpstan-return array-key[]
      */
     private static function getKeys(FormBuilderInterface $formBuilder)
     {

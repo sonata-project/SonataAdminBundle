@@ -14,16 +14,18 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
  */
 final class ModelsToArrayTransformer implements DataTransformerInterface
 {
@@ -34,11 +36,13 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
 
     /**
      * @var string
+     *
+     * @phpstan-var class-string<T>
      */
     private $class;
 
     /**
-     * @throws RuntimeException
+     * @phpstan-param class-string<T> $class
      */
     public function __construct(ModelManagerInterface $modelManager, string $class)
     {
@@ -46,14 +50,21 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
         $this->class = $class;
     }
 
-    public function transform($collection)
+    /**
+     * @param object[]|null $value
+     *
+     * @return string[]
+     *
+     * @phpstan-param T[]|null $value
+     */
+    public function transform($value)
     {
-        if (null === $collection) {
+        if (null === $value) {
             return [];
         }
 
         $array = [];
-        foreach ($collection as $key => $model) {
+        foreach ($value as $model) {
             $id = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($model));
 
             $array[] = $id;
@@ -62,18 +73,27 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
         return $array;
     }
 
-    public function reverseTransform($keys)
+    /**
+     * @return Collection<int|string, object>|null
+     *
+     * @phpstan-return Collection<array-key, T>|null
+     */
+    public function reverseTransform($value)
     {
-        if (!\is_array($keys)) {
-            throw new UnexpectedTypeException($keys, 'array');
+        if (null === $value) {
+            return null;
         }
 
-        /** @var ArrayCollection<array-key, object> $collection */
+        if (!\is_array($value)) {
+            throw new UnexpectedTypeException($value, 'array');
+        }
+
+        /** @phpstan-var ArrayCollection<array-key, T> $collection */
         $collection = new ArrayCollection();
         $notFound = [];
 
         // optimize this into a SELECT WHERE IN query
-        foreach ($keys as $key) {
+        foreach ($value as $key) {
             if ($model = $this->modelManager->find($this->class, $key)) {
                 $collection->add($model);
             } else {
@@ -93,6 +113,10 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
 
     /**
      * @param object $model
+     *
+     * @return mixed[]
+     *
+     * @phpstan-param T $model
      */
     private function getIdentifierValues($model): array
     {
