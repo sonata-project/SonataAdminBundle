@@ -67,6 +67,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
 
     /**
      * {@inheritdoc}
+     *
      * NEXT_MAJOR : make this method private.
      */
     public function buildBreadcrumbs(

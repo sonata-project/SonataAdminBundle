@@ -647,9 +647,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->datagridValues['_per_page'] = $this->maxPerPage;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExportFormats()
     {
         return [
@@ -1359,12 +1356,19 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
-     * @deprecated since sonata-project/admin-bundle 3.76, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since sonata-project/admin-bundle 3.76, will be dropped in 4.0. Use "getTemplateRegistry()->setTemplates()" instead.
      *
      * @param array<string, string> $templates
      */
     public function setTemplates(array $templates)
     {
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.'
+            .' Use "getTemplateRegistry()->%s() instead.',
+            __METHOD__,
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         // NEXT_MAJOR: Remove this line
         $this->templates = $templates;
 
@@ -1372,13 +1376,20 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
-     * @deprecated since sonata-project/admin-bundle 3.76, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since sonata-project/admin-bundle 3.76, will be dropped in 4.0. Use "getTemplateRegistry()->setTemplate()" instead.
      *
      * @param string $name
      * @param string $template
      */
     public function setTemplate($name, $template)
     {
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.'
+            .' Use "getTemplateRegistry()->%s() instead.',
+            __METHOD__,
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         // NEXT_MAJOR: Remove this line
         $this->templates[$name] = $template;
 
@@ -1386,17 +1397,24 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
-     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use "getTemplateRegistry()->getTemplates()" instead.
      *
      * @return array<string, string>
      */
     public function getTemplates()
     {
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.'
+            .' Use "getTemplateRegistry()->%s() instead.',
+            __METHOD__,
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         return $this->getTemplateRegistry()->getTemplates();
     }
 
     /**
-     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use "getTemplateRegistry()->getTemplate()" instead.
      *
      * @param string $name
      *
@@ -1404,6 +1422,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function getTemplate($name)
     {
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.'
+            .' Use "getTemplateRegistry()->%s() instead.',
+            __METHOD__,
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         return $this->getTemplateRegistry()->getTemplate($name);
     }
 

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Templating;
 
 /**
- * /**
  * @author Wojciech Błoszyk <wbloszyk@gmail.com>
  *
  * @method MutableTemplateRegistryInterface getTemplateRegistry()

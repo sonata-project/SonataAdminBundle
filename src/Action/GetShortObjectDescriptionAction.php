@@ -84,6 +84,7 @@ final class GetShortObjectDescriptionAction
         }
 
         if ('html' === $request->get('_format')) {
+            // NEXT_MAJOR: use $admin->getTemplateRegistry()->getTemplate('short_object_description') instead
             return new Response($this->twig->render($admin->getTemplate('short_object_description'), [
                 'admin' => $admin,
                 'description' => $admin->toString($object),

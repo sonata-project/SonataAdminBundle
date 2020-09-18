@@ -143,6 +143,7 @@ class AdminSearchBlockService extends AbstractBlockService
             return $response->setContent('')->setStatusCode(204);
         }
 
+        // NEXT_MAJOR: use $admin->getTemplateRegistry()->getTemplate('search_result_block') instead
         return $this->renderPrivateResponse($admin->getTemplate('search_result_block'), [
             'block' => $blockContext->getBlock(),
             'settings' => $blockContext->getSettings(),
