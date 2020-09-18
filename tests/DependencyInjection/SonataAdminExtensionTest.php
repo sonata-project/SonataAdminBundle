@@ -40,6 +40,7 @@ use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 use Sonata\AdminBundle\Twig\GlobalVariables;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
 class SonataAdminExtensionTest extends AbstractExtensionTestCase
@@ -158,7 +159,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $stylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
 
         $this->assertSame(
-            array_merge($this->defaultConfiguration['assets']['stylesheets'], $extraStylesheets),
+            array_merge($this->getDefaultStylesheets(), $extraStylesheets),
             $stylesheets
         );
     }
@@ -346,8 +347,81 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->assertNull($this->container->getDefinition('sonata.string.twig.extension')->getArgument(0));
     }
 
+    public function testDefaultSkin(): void
+    {
+        $this->container->setParameter('kernel.bundles', []);
+        $this->load();
+
+        $stylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
+        $skin = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['skin'];
+
+        $this->assertSame($this->getDefaultStylesheets(), $stylesheets);
+        $this->assertSame('skin-black', $skin);
+    }
+
+    public function testSetSkin(): void
+    {
+        $this->container->setParameter('kernel.bundles', []);
+        $this->load([
+            'options' => [
+                'skin' => 'skin-blue',
+            ],
+        ]);
+
+        $stylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
+        $skin = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['skin'];
+
+        $this->assertSame($this->getDefaultStylesheets('skin-blue'), $stylesheets);
+        $this->assertSame('skin-blue', $skin);
+    }
+
+    public function testSetDefaultSkin(): void
+    {
+        $this->container->setParameter('kernel.bundles', []);
+        $this->load([
+            'options' => [
+                'skin' => 'skin-black',
+            ],
+        ]);
+
+        $stylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
+        $skin = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['skin'];
+
+        $this->assertSame($this->getDefaultStylesheets(), $stylesheets);
+        $this->assertSame('skin-black', $skin);
+    }
+
+    public function testSetInvalidSkin(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('The value "skin-invalid" is not allowed for path "sonata_admin.options.skin". Permissible values: "skin-black", "skin-black-light", "skin-blue", "skin-blue-light", "skin-green", "skin-green-light", "skin-purple", "skin-purple-light", "skin-red", "skin-red-light", "skin-yellow", "skin-yellow-light"');
+        $this->container->setParameter('kernel.bundles', []);
+        $this->load([
+            'options' => [
+                'skin' => 'skin-invalid',
+            ],
+        ]);
+    }
+
     protected function getContainerExtensions(): array
     {
         return [new SonataAdminExtension()];
+    }
+
+    private function getDefaultStylesheets(?string $skin = 'skin-black'): array
+    {
+        $this->load([
+            'options' => [
+                'skin' => $skin,
+            ],
+        ]);
+
+        $defaultStylesheets = $this->defaultConfiguration['assets']['stylesheets'];
+        $defaultStylesheets[] = sprintf(
+            'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/%s.min.css',
+            $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['skin']
+        );
+
+        return $defaultStylesheets;
     }
 }
