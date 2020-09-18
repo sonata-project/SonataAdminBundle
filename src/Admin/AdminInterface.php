@@ -27,7 +27,7 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
-use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
+use Sonata\AdminBundle\Templating\TemplateRegistryAwareInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 use Sonata\Form\Validator\ErrorElement;
@@ -40,39 +40,38 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @method array                            configureActionButtons(string $action, ?object $object = null)
- * @method string                           getSearchResultLink(object $object)
- * @method void                             showMosaicButton(bool $isShown)
- * @method bool                             isDefaultFilter(string $name)                                         // NEXT_MAJOR: Remove this
- * @method bool                             isCurrentRoute(string $name, ?string $adminCode)
- * @method bool                             canAccessObject(string $action, object $object)
- * @method mixed                            getPersistentParameter(string $name)
- * @method array                            getExportFields()
- * @method array                            getSubClasses()
- * @method AdminInterface                   getRoot()
- * @method string                           getRootCode()
- * @method array                            getActionButtons(string $action, ?object $object)
- * @method FieldDescriptionCollection|null  getList()
- * @method void                             setFilterPersister(?FilterPersisterInterface $filterPersister = null)
- * @method string                           getBaseRoutePattern()
- * @method string                           getBaseRouteName()
- * @method ItemInterface                    getSideMenu(string $action, ?AdminInterface $childAdmin = null)
- * @method void                             addParentAssociationMapping(string $code, string $value)
- * @method RouteGeneratorInterface          getRouteGenerator()
- * @method string                           getClassnameLabel()
- * @method AdminInterface|null              getCurrentChildAdmin()
- * @method string|null                      getParentAssociationMapping()
- * @method void                             reorderFormGroup(string $group, array $keys)
- * @method void                             defineFormBuilder(FormBuilderInterface $formBuilder)
- * @method string                           getPagerType()
- * @method MutableTemplateRegistryInterface getTemplateRegistry()
+ * @method array                           configureActionButtons(string $action, ?object $object = null)
+ * @method string                          getSearchResultLink(object $object)
+ * @method void                            showMosaicButton(bool $isShown)
+ * @method bool                            isDefaultFilter(string $name)                                         // NEXT_MAJOR: Remove this
+ * @method bool                            isCurrentRoute(string $name, ?string $adminCode)
+ * @method bool                            canAccessObject(string $action, object $object)
+ * @method mixed                           getPersistentParameter(string $name)
+ * @method array                           getExportFields()
+ * @method array                           getSubClasses()
+ * @method AdminInterface                  getRoot()
+ * @method string                          getRootCode()
+ * @method array                           getActionButtons(string $action, ?object $object)
+ * @method FieldDescriptionCollection|null getList()
+ * @method void                            setFilterPersister(?FilterPersisterInterface $filterPersister = null)
+ * @method string                          getBaseRoutePattern()
+ * @method string                          getBaseRouteName()
+ * @method ItemInterface                   getSideMenu(string $action, ?AdminInterface $childAdmin = null)
+ * @method void                            addParentAssociationMapping(string $code, string $value)
+ * @method RouteGeneratorInterface         getRouteGenerator()
+ * @method string                          getClassnameLabel()
+ * @method AdminInterface|null             getCurrentChildAdmin()
+ * @method string|null                     getParentAssociationMapping()
+ * @method void                            reorderFormGroup(string $group, array $keys)
+ * @method void                            defineFormBuilder(FormBuilderInterface $formBuilder)
+ * @method string                          getPagerType()
  *
  * @phpstan-template T of object
  * @phpstan-extends AccessRegistryInterface<T>
  * @phpstan-extends UrlGeneratorInterface<T>
  * @phpstan-extends LifecycleHookProviderInterface<T>
  */
-interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
+interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface, TemplateRegistryAwareInterface
 {
     /**
      * @return void
@@ -593,9 +592,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @return string|null
      */
     public function getTemplate($name);
-
-    // NEXT_MAJOR: uncomment this method in 4.0
-    //public function getTemplateRegistry(): MutableTemplateRegistryInterface;
 
     /**
      * Set the translation domain.

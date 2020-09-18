@@ -1353,7 +1353,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->routeGenerator->generateMenuUrl($this, $name, $parameters, $referenceType);
     }
 
-    final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry)
+    final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void
     {
         $this->templateRegistry = $templateRegistry;
     }
@@ -3265,10 +3265,7 @@ EOT;
         return $this->hasAccess($action, $object);
     }
 
-    /**
-     * @return MutableTemplateRegistryInterface
-     */
-    final public function getTemplateRegistry()
+    final public function getTemplateRegistry(): ?MutableTemplateRegistryInterface
     {
         // NEXT_MAJOR: Remove the deprecation and uncomment the exception.
         if (!$this->hasTemplateRegistry()) {
