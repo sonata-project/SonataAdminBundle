@@ -90,8 +90,21 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
         $this->modelManager = $modelManager;
         $this->class = $class;
         $this->property = $property;
-        $this->query = $query;
         $this->choices = $choices;
+
+        if ($query) {
+            if (!$this->modelManager->supportsQuery($query)) {
+                // NEXT_MAJOR: Remove the deprecation and uncomment the exception.
+                @trigger_error(
+                    'Passing a query which is not supported by the model manager is deprecated since'
+                    .' sonata-project/admin-bundle 3.76 and will throw an exception in version 4.0.',
+                    E_USER_DEPRECATED
+                );
+                // throw new \InvalidArgumentException('The model manager does not support the query.');
+            }
+
+            $this->query = $query;
+        }
 
         // The property option defines, which property (path) is used for
         // displaying entities as strings

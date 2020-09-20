@@ -532,7 +532,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         ];
     }
 
-    public function getExportFields(): array
+    final public function getExportFields(): array
     {
         $fields = $this->configureExportFields();
 
@@ -1067,6 +1067,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
+     * @deprecated since sonata-project/admin-bundle 3.76, will be dropped in 4.0. Use TemplateRegistry services instead
+     *
      * @param array<string, string> $templates
      */
     public function setTemplates(array $templates): void
@@ -1075,7 +1077,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
-     * {@inheritdoc}
+     * @deprecated since sonata-project/admin-bundle 3.76, will be dropped in 4.0. Use TemplateRegistry services instead
      */
     public function setTemplate(string $name, string $template): void
     {
@@ -2352,6 +2354,30 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $buttonList;
     }
 
+    final public function getTemplateRegistry(): ?MutableTemplateRegistryInterface
+    {
+        // NEXT_MAJOR: Remove the deprecation and uncomment the exception.
+        if (!$this->hasTemplateRegistry()) {
+            @trigger_error(sprintf(
+                'Calling %s() when there is no template registry is deprecated since sonata-project/admin-bundle 3.76'
+                .' and will throw an exception in 4.0.'
+                .' Use %s::hasTemplateRegistry() to know if the template registry is set.',
+                __METHOD__,
+                __CLASS__
+            ), E_USER_DEPRECATED);
+        }
+        //if (false === $this->hasTemplateRegistry()) {
+        //    throw new \LogicException(sprintf('Unable to find the template registry for admin `%s`.', static::class));
+        //}
+
+        return $this->templateRegistry;
+    }
+
+    final public function hasTemplateRegistry(): bool
+    {
+        return null !== $this->templateRegistry;
+    }
+
     /**
      * Hook to run after initialization.
      */
@@ -2380,11 +2406,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     final protected function urlize(string $word, string $sep = '_'): string
     {
         return strtolower(preg_replace('/[^a-z0-9_]/i', $sep.'$1', $word));
-    }
-
-    final protected function getTemplateRegistry(): MutableTemplateRegistryInterface
-    {
-        return $this->templateRegistry;
     }
 
     /**

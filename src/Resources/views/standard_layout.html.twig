@@ -21,6 +21,7 @@ file that was distributed with this source code.
 {% set _actions = block('actions') is defined ? block('actions')|trim : null %}
 {% set _navbar_title = block('navbar_title') is defined ? block('navbar_title')|trim : null %}
 {% set _list_filters_actions = block('list_filters_actions') is defined ? block('list_filters_actions')|trim : null -%}
+{% set _skin = sonata_admin.adminPool.getOption('skin') %}
 {% set _use_select2 = sonata_admin.adminPool.getOption('use_select2') %}
 {% set _use_icheck = sonata_admin.adminPool.getOption('use_icheck') %}
 
@@ -35,6 +36,7 @@ file that was distributed with this source code.
 
         <meta data-sonata-admin='{{ {
             config: {
+                SKIN: _skin,
                 CONFIRM_EXIT: sonata_admin.adminPool.getOption('confirm_exit'),
                 USE_SELECT2: _use_select2,
                 USE_ICHECK: _use_icheck,
@@ -113,7 +115,7 @@ file that was distributed with this source code.
     </head>
     <body
             {% block body_attributes -%}
-                class="sonata-bc skin-black fixed
+                class="sonata-bc {% block admin_lte_skin_class %}{{ _skin }}{% endblock %} fixed
                 {% if _use_select2 %}sonata-select2{% endif %}
                 {% if _use_icheck %}sonata-icheck{% endif %}
                 {% if app.request.cookies.get('sonata_sidebar_hide') -%}

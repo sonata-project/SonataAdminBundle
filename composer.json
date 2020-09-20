@@ -3,10 +3,12 @@
     "type": "symfony-bundle",
     "description": "The missing Symfony Admin Generator",
     "keywords": [
-        "Admin Generator",
         "admin",
+        "admin-generator",
+        "admin-lte",
+        "bundle",
         "sonata",
-        "bootstrap"
+        "symfony"
     ],
     "homepage": "https://sonata-project.org/bundles/admin",
     "license": "MIT",

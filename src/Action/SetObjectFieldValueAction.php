@@ -57,7 +57,7 @@ final class SetObjectFieldValueAction
         // NEXT_MAJOR: Move DataTransformerResolver check to method signature
         if (!$resolver instanceof DataTransformerResolverInterface) {
             @trigger_error(sprintf(
-                'Passing other type than %s in argument 4 to %s() is deprecated since sonata-project/admin-bundle 3.x and will throw %s exception in 4.0.',
+                'Passing other type than %s in argument 4 to %s() is deprecated since sonata-project/admin-bundle 3.76 and will throw %s exception in 4.0.',
                 DataTransformerResolverInterface::class,
                 __METHOD__,
                 \TypeError::class

@@ -150,6 +150,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
      */
     public function modelTransform(string $class, object $instance): object;
 
+    public function supportsQuery(object $query): bool;
+
     /**
      * @return mixed
      */

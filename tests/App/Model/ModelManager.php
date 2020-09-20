@@ -136,6 +136,11 @@ class ModelManager implements ModelManagerInterface, LockInterface
         throw new \BadMethodCallException('Not implemented.');
     }
 
+    public function supportsQuery(object $query): bool
+    {
+        return true;
+    }
+
     public function executeQuery(object $query): void
     {
     }
