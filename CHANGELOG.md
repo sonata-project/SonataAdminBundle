@@ -2,6 +2,50 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.76.0](sonata-project/SonataAdminBundle/compare/3.75.0...3.76.0) - 2020-09-20
+### Added
+- [[#6390](https://github.com/sonata-project/SonataAdminBundle/pull/6390)]  `Sonata\AdminBundle\Templating\TemplateRegistryAwareInterface` with `getTemplateRegistry()`, `hasTemplateRegistry()` and `setTemplateRegistry()` methods ([@wbloszyk](https://github.com/wbloszyk))
+- [[#6378](https://github.com/sonata-project/SonataAdminBundle/pull/6378)] Added option to load different Admin LTE skins ([@fastnloud](https://github.com/fastnloud))
+- [[#6381](https://github.com/sonata-project/SonataAdminBundle/pull/6381)] Added `ModelManagerInterface::supportsQuery()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6387](https://github.com/sonata-project/SonataAdminBundle/pull/6387)] `Sonata\AdminBundle\Admin\AbstractAdmin::hasTemplateRegistry(): bool` ([@wbloszyk](https://github.com/wbloszyk))
+- [[#6377](https://github.com/sonata-project/SonataAdminBundle/pull/6377)] Add type hints to data transformers ([@core23](https://github.com/core23))
+- [[#6377](https://github.com/sonata-project/SonataAdminBundle/pull/6377)] Add type hints to util classes ([@core23](https://github.com/core23))
+- [[#6348](https://github.com/sonata-project/SonataAdminBundle/pull/6348)] Add `AbstractAdmin::configureExportFields` extension point ([@core23](https://github.com/core23))
+- [[#6361](https://github.com/sonata-project/SonataAdminBundle/pull/6361)] Added generic type hints to (nearly) all admin interfaces ([@core23](https://github.com/core23))
+- [[#6369](https://github.com/sonata-project/SonataAdminBundle/pull/6369)] Added support for `symfony/config` 5.1. ([@franmomu](https://github.com/franmomu))
+- [[#6369](https://github.com/sonata-project/SonataAdminBundle/pull/6369)] Added support for `symfony/dependency-injection` 5.1. ([@franmomu](https://github.com/franmomu))
+- [[#6369](https://github.com/sonata-project/SonataAdminBundle/pull/6369)] Added support for `symfony/routing` 5.1. ([@franmomu](https://github.com/franmomu))
+- [[#6363](https://github.com/sonata-project/SonataAdminBundle/pull/6363)] Allow `symfony/security-csrf` and `symfony/asset` ^5.1 ([@jordisala1991](https://github.com/jordisala1991))
+- [[#6344](https://github.com/sonata-project/SonataAdminBundle/pull/6344)] Support for symfony/http-foundation and symfony/validator 5.1 ([@dmaicher](https://github.com/dmaicher))
+- [[#6349](https://github.com/sonata-project/SonataAdminBundle/pull/6349)] Add generics to `ModelManagerInterface` ([@core23](https://github.com/core23))
+
+### Changed
+- [[#6364](https://github.com/sonata-project/SonataAdminBundle/pull/6364)]  Prevent `addFormFieldDescription` if field role no granted ([@kirya-dev](https://github.com/kirya-dev))
+
+### Deprecated
+- [[#6381](https://github.com/sonata-project/SonataAdminBundle/pull/6381)] Create a new instance of ModelChoiceLoader with a query unsupported by the modelManager ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6387](https://github.com/sonata-project/SonataAdminBundle/pull/6387)] `Sonata\AdminBundle\Admin\AbstractAdmin::setTemplates()` ([@wbloszyk](https://github.com/wbloszyk))
+- [[#6387](https://github.com/sonata-project/SonataAdminBundle/pull/6387)] `Sonata\AdminBundle\Admin\AbstractAdmin::setTemplate()` ([@wbloszyk](https://github.com/wbloszyk))
+- [[#6386](https://github.com/sonata-project/SonataAdminBundle/pull/6386)] Deprecated `ProxyQueryInterface::getUniqueParameterId`. ([@franmomu](https://github.com/franmomu))
+- [[#6386](https://github.com/sonata-project/SonataAdminBundle/pull/6386)] Deprecated `ProxyQueryInterface::entityJoin`. ([@franmomu](https://github.com/franmomu))
+- [[#6311](https://github.com/sonata-project/SonataAdminBundle/pull/6311)] Passing another type than `object` to `AbstractAdmin::toString` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6311](https://github.com/sonata-project/SonataAdminBundle/pull/6311)] Passing `null` to `AbstractAdmin::getUrlSafeIdentifier`, `AbstractAdmin::getNormalizedIdentifier`, `AbstractAdmin::getId` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6311](https://github.com/sonata-project/SonataAdminBundle/pull/6311)] Using `GetShortObjectDescriptionAction` with an empty objectId. ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fix
+- [[#6361](https://github.com/sonata-project/SonataAdminBundle/pull/6361)]  Fix calling undefined `AdminInterface::isCurrentChild` ([@core23](https://github.com/core23))
+
+### Fixed
+- [[#6394](https://github.com/sonata-project/SonataAdminBundle/pull/6394)] Fixed ProxyQueryInterface::getSortBy and ProxyQueryInterface::getSortOrder phpdoc ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6377](https://github.com/sonata-project/SonataAdminBundle/pull/6377)] Allow null transformation in ModelsToArrayTransformer ([@core23](https://github.com/core23))
+- [[#5937](https://github.com/sonata-project/SonataAdminBundle/pull/5937)] Allow use Symfony Data Transformers in list fields editable ([@peter-gribanov](https://github.com/peter-gribanov))
+- [[#6372](https://github.com/sonata-project/SonataAdminBundle/pull/6372)] The default `group` now correctly use the admin translation domain when using the admin label. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6335](https://github.com/sonata-project/SonataAdminBundle/pull/6335)] Remove unnecessary span wrapper for field help. Merge styles with paragraph. ([@kirya-dev](https://github.com/kirya-dev))
+- [[#6335](https://github.com/sonata-project/SonataAdminBundle/pull/6335)] Prevent too many deprecation notices. ([@kirya-dev](https://github.com/kirya-dev))
+
+### Removed
+- [[#6334](https://github.com/sonata-project/SonataAdminBundle/pull/6334)] Long time deprecated and unused `setDefaultOptions` methods using `Symfony\Component\OptionsResolver\OptionsResolverInterface` ([@dmaicher](https://github.com/dmaicher))
+
 ## [3.75.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.74.0...3.75.0) - 2020-08-26
 ### Changed
 - [[#6313](https://github.com/sonata-project/SonataAdminBundle/pull/6313)] Bump "knplabs/knp-menu-bundle" to ^3.0 ([@dmaicher](https://github.com/dmaicher))

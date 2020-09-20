@@ -45,7 +45,7 @@ class ModelChoiceLoaderTest extends TestCase
 
         $modelManager->method('supportsQuery')->willReturn(false);
 
-        $this->expectDeprecation('Passing a query which is not supported by the model manager is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in version 4.0.');
+        $this->expectDeprecation('Passing a query which is not supported by the model manager is deprecated since sonata-project/admin-bundle 3.76 and will throw an exception in version 4.0.');
         new ModelChoiceLoader($modelManager, \stdClass::class, null, new \stdClass());
     }
 

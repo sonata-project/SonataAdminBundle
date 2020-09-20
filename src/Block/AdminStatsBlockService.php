@@ -56,7 +56,7 @@ class AdminStatsBlockService extends AbstractBlockService
             $this->pool = $poolOrTemplating;
         } elseif (null === $poolOrTemplating || $poolOrTemplating instanceof EngineInterface) {
             @trigger_error(sprintf(
-                'Passing %s as argument 2 to %s() is deprecated since sonata-project/admin-bundle 3.x'
+                'Passing %s as argument 2 to %s() is deprecated since sonata-project/admin-bundle 3.76'
                 .' and will throw a \TypeError in version 4.0. You must pass an instance of %s instead.',
                 null === $poolOrTemplating ? 'null' : EngineInterface::class,
                 __METHOD__,

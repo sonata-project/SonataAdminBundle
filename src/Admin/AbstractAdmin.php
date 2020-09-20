@@ -658,7 +658,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x
+     * @final since sonata-project/admin-bundle 3.76
      *
      * @return array
      */
@@ -1359,7 +1359,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
-     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since sonata-project/admin-bundle 3.76, will be dropped in 4.0. Use TemplateRegistry services instead
      *
      * @param array<string, string> $templates
      */
@@ -1372,7 +1372,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
-     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since sonata-project/admin-bundle 3.76, will be dropped in 4.0. Use TemplateRegistry services instead
      *
      * @param string $name
      * @param string $template
@@ -2858,7 +2858,7 @@ EOT;
         // NEXT_MAJOR: Remove this check and use object as param typehint.
         if (!\is_object($object)) {
             @trigger_error(sprintf(
-                'Passing %s as argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.x.'
+                'Passing %s as argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.76.'
                 .' Only object will be allowed in version 4.0.',
                 \gettype($object),
                 __METHOD__
@@ -3229,7 +3229,7 @@ EOT;
     final public function isDefaultFilter($name)
     {
         @trigger_error(sprintf(
-            'Method "%s" is deprecated since sonata-project/admin-bundle 3.x.',
+            'Method "%s" is deprecated since sonata-project/admin-bundle 3.76.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -3270,7 +3270,7 @@ EOT;
         // NEXT_MAJOR: Remove the deprecation and uncomment the exception.
         if (!$this->hasTemplateRegistry()) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no template registry is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s() when there is no template registry is deprecated since sonata-project/admin-bundle 3.76'
                 .' and will throw an exception in 4.0.'
                 .' Use %s::hasTemplateRegistry() to know if the template registry is set.',
                 __METHOD__,

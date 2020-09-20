@@ -478,7 +478,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0. Use Symfony Form "help" option instead.
+     * @deprecated since sonata-project/admin-bundle 3.76 and will be removed in version 4.0. Use Symfony Form "help" option instead.
      *
      * @return string
      */
