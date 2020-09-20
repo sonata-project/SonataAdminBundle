@@ -81,7 +81,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
      * NEXT_MAJOR: Expect a NotFoundHttpException instead.
      *
      * @group legacy
-     * @expectedDeprecation Trying to get a short object description for a non found object is deprecated since sonata-project/admin-bundle 3.x and will be throw a 404 in version 4.0.
+     * @expectedDeprecation Trying to get a short object description for a non found object is deprecated since sonata-project/admin-bundle 3.76 and will be throw a 404 in version 4.0.
      */
     public function testGetShortObjectDescriptionActionObjectDoesNotExist(): void
     {
@@ -104,7 +104,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
      * NEXT_MAJOR: Expect a NotFoundHttpException instead.
      *
      * @group legacy
-     * @expectedDeprecation Trying to get a short object description for a non found object is deprecated since sonata-project/admin-bundle 3.x and will be throw a 404 in version 4.0.
+     * @expectedDeprecation Trying to get a short object description for a non found object is deprecated since sonata-project/admin-bundle 3.76 and will be throw a 404 in version 4.0.
      */
     public function testGetShortObjectDescriptionActionEmptyObjectId(): void
     {
@@ -144,7 +144,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
      * NEXT_MAJOR: Expect a NotFoundHttpException instead.
      *
      * @group legacy
-     * @expectedDeprecation Trying to get a short object description for a non found object is deprecated since sonata-project/admin-bundle 3.x and will be throw a 404 in version 4.0.
+     * @expectedDeprecation Trying to get a short object description for a non found object is deprecated since sonata-project/admin-bundle 3.76 and will be throw a 404 in version 4.0.
      */
     public function testGetShortObjectDescriptionActionEmptyObjectIdAsJson(): void
     {

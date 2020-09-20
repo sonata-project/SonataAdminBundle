@@ -49,7 +49,7 @@ class DeprecatedAdminListBlockServiceTest extends BlockServiceTestCase
     }
 
     /**
-     * @expectedDeprecation Passing null as argument 2 to Sonata\AdminBundle\Block\AdminListBlockService::__construct() is deprecated since sonata-project/admin-bundle 3.x and will throw a \TypeError in version 4.0. You must pass an instance of Sonata\AdminBundle\Admin\Pool instead.
+     * @expectedDeprecation Passing null as argument 2 to Sonata\AdminBundle\Block\AdminListBlockService::__construct() is deprecated since sonata-project/admin-bundle 3.76 and will throw a \TypeError in version 4.0. You must pass an instance of Sonata\AdminBundle\Admin\Pool instead.
      */
     public function testDefaultSettings(): void
     {
@@ -67,7 +67,7 @@ class DeprecatedAdminListBlockServiceTest extends BlockServiceTestCase
     }
 
     /**
-     * @expectedDeprecation Passing null as argument 2 to Sonata\AdminBundle\Block\AdminListBlockService::__construct() is deprecated since sonata-project/admin-bundle 3.x and will throw a \TypeError in version 4.0. You must pass an instance of Sonata\AdminBundle\Admin\Pool instead.
+     * @expectedDeprecation Passing null as argument 2 to Sonata\AdminBundle\Block\AdminListBlockService::__construct() is deprecated since sonata-project/admin-bundle 3.76 and will throw a \TypeError in version 4.0. You must pass an instance of Sonata\AdminBundle\Admin\Pool instead.
      */
     public function testOverriddenDefaultSettings(): void
     {

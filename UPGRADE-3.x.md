@@ -1,6 +1,9 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.75 to 3.76
+=========================
+
 ## Deprecated `Sonata\AdminBundle\Datagrid\ProxyQueryInterface::getUniqueParameterId()`
 
 This method has been deprecated without replacement.

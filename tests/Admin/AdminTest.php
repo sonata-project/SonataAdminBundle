@@ -712,7 +712,7 @@ class AdminTest extends TestCase
      * NEXT_MAJOR: Remove this test.
      *
      * @group legacy
-     * @expectedDeprecation Passing boolean as argument 1 for Sonata\AdminBundle\Admin\AbstractAdmin::toString() is deprecated since sonata-project/admin-bundle 3.x. Only object will be allowed in version 4.0.
+     * @expectedDeprecation Passing boolean as argument 1 for Sonata\AdminBundle\Admin\AbstractAdmin::toString() is deprecated since sonata-project/admin-bundle 3.76. Only object will be allowed in version 4.0.
      */
     public function testToStringForNonObject(): void
     {
@@ -2333,7 +2333,7 @@ class AdminTest extends TestCase
      *
      * @group legacy
      *
-     * @expectedDeprecation Method "Sonata\AdminBundle\Admin\AbstractAdmin::isDefaultFilter" is deprecated since sonata-project/admin-bundle 3.x.
+     * @expectedDeprecation Method "Sonata\AdminBundle\Admin\AbstractAdmin::isDefaultFilter" is deprecated since sonata-project/admin-bundle 3.76.
      */
     public function testDefaultFilters(): void
     {
