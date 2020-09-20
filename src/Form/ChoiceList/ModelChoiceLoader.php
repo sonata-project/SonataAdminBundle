@@ -55,7 +55,7 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
     private $query;
 
     /**
-     * @var object[]|null
+     * @var object[]
      */
     private $choices;
 

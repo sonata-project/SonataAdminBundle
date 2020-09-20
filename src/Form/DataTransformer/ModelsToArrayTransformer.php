@@ -65,8 +65,6 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
 
         $array = [];
         foreach ($value as $model) {
-            \assert($model instanceof $this->class);
-
             $array[] = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($model));
         }
 

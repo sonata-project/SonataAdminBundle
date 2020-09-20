@@ -79,24 +79,20 @@ final class ModelType extends AbstractType
     {
         $options = [];
 
-        $options['choice_loader'] =
-            /**
-             * @phpstan-return ModelChoiceLoader|mixed[]
-             */
-            function (Options $options, ?ChoiceListInterface $previousValue) {
-                if ($previousValue && \count($choices = $previousValue->getChoices())) {
-                    return $choices;
-                }
+        $options['choice_loader'] = function (Options $options, ?ChoiceListInterface $previousValue) {
+            if ($previousValue && \count($choices = $previousValue->getChoices())) {
+                return $choices;
+            }
 
-                return new ModelChoiceLoader(
-                    $options['model_manager'],
-                    $this->propertyAccessor,
-                    $options['class'],
-                    $options['property'],
-                    $options['query'],
-                    $options['choices'],
-                );
-            };
+            return new ModelChoiceLoader(
+                $options['model_manager'],
+                $this->propertyAccessor,
+                $options['class'],
+                $options['property'],
+                $options['query'],
+                $options['choices'],
+            );
+        };
 
         $resolver->setDefaults(array_merge($options, [
             'compound' => static function (Options $options) {
