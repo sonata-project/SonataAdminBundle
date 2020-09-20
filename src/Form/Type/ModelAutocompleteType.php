@@ -58,7 +58,7 @@ final class ModelAutocompleteType extends AbstractType
     }
 
     /**
-     * @param mixed[] $options
+     * @param array<string, mixed> $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
