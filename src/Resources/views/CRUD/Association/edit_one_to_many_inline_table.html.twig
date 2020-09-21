@@ -23,9 +23,12 @@ file that was distributed with this source code.
                             style="display:none;"
                         {% endif %}
                     >
-                        {{ nested_field.vars.label|trans({}, nested_field.vars['sonata_admin'].admin.translationDomain
-                            |default(nested_field.vars.translation_domain)
-                        ) }}
+                        {% if nested_field.vars.translation_domain is same as(false) %}
+                            {{ nested_field.vars.label }}
+                        {% else %}
+                            {% set translationDomain = nested_field.vars.translation_domain|default(nested_field.vars['sonata_admin'].admin.translationDomain) %}
+                            {{ nested_field.vars.label|trans({}, translationDomain) }}
+                        {% endif %}
                     </th>
                 {% endif %}
             {% endfor %}
