@@ -763,13 +763,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->parentAssociationMapping[$code] = $value;
     }
 
-    /**
-     * Returns the baseRoutePattern used to generate the routing information.
-     *
-     * @throws \RuntimeException
-     *
-     * @return string the baseRoutePattern used to generate the routing information
-     */
     public function getBaseRoutePattern(): string
     {
         if (null !== $this->cachedBaseRoutePattern) {
