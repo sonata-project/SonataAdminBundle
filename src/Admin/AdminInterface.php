@@ -145,11 +145,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     public function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription): void;
 
-    /**
-     * Get parent field description.
-     *
-     * @return FieldDescriptionInterface The parent field description
-     */
     public function getParentFieldDescription(): ?FieldDescriptionInterface;
 
     /**
@@ -567,11 +562,15 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Returns the baseRoutePattern used to generate the routing information.
+     *
+     * @throws \RuntimeException if a default baseRoutePattern is required for the admin class
      */
     public function getBaseRoutePattern(): string;
 
     /**
      * Returns the baseRouteName used to generate the routing information.
+     *
+     * @throws \RuntimeException if a default baseRouteName is required for the admin class
      */
     public function getBaseRouteName(): string;
 
