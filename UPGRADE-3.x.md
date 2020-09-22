@@ -7,6 +7,30 @@ This interface has been deprecated without replacement.
 
 `ModelManagerInterface::getDefaultSortValues()` won't be used anymore.
 
+### Empty values in datagrid filters
+
+Empty values are passed to datagrid filters. If you have custom datagrid filters, you MUST add empty string checks to them.
+
+```php
+->add('with_open_comments', CallbackFilter::class, [
+    'callback' => static function (ProxyQueryInterface $queryBuilder, string $alias, string $field, array $value): bool {
+        if (!$value['value']) {
+            return false;
+        }
+
+        $queryBuilder
+            ->leftJoin(sprintf('%s.comments', $alias), 'c')
+            ->andWhere('c.moderation = :moderation')
+            ->setParameter('moderation', CommentModeration::APPROVED);
+
+        return true;
+    },
+    'field_type' => CheckboxType::class,
+]);
+```
+
+The `!$value['value']` check is required to avoid the filtering by `''` if you didn't used the filter.
+
 UPGRADE FROM 3.77 to 3.78
 =========================
 
