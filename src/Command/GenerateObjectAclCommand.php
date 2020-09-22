@@ -135,7 +135,7 @@ final class GenerateObjectAclCommand extends QuestionableCommand
         return 0;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         parent::initialize($input, $output);
     }
