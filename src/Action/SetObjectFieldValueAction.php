@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Form\DataTransformerResolver;
 use Sonata\AdminBundle\Form\DataTransformerResolverInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
@@ -45,26 +44,12 @@ final class SetObjectFieldValueAction
     private $validator;
 
     /**
-     * @var DataTransformerResolver
+     * @var DataTransformerResolverInterface
      */
     private $resolver;
 
-    /**
-     * @param DataTransformerResolver|null $resolver
-     */
-    public function __construct(Environment $twig, Pool $pool, ValidatorInterface $validator, $resolver = null)
+    public function __construct(Environment $twig, Pool $pool, ValidatorInterface $validator, DataTransformerResolverInterface $resolver)
     {
-        // NEXT_MAJOR: Move DataTransformerResolver check to method signature
-        if (!$resolver instanceof DataTransformerResolverInterface) {
-            @trigger_error(sprintf(
-                'Passing other type than %s in argument 4 to %s() is deprecated since sonata-project/admin-bundle 3.76 and will throw %s exception in 4.0.',
-                DataTransformerResolverInterface::class,
-                __METHOD__,
-                \TypeError::class
-            ), E_USER_DEPRECATED);
-            $resolver = new DataTransformerResolver();
-        }
-
         $this->twig = $twig;
         $this->pool = $pool;
         $this->validator = $validator;
