@@ -16,7 +16,6 @@ namespace Sonata\AdminBundle\Block;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Search\SearchHandler;
-use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
@@ -49,13 +48,13 @@ final class AdminSearchBlockService extends AbstractBlockService
         Environment $twig,
         Pool $pool,
         SearchHandler $searchHandler,
-        ?TemplateRegistryInterface $templateRegistry = null
+        TemplateRegistryInterface $templateRegistry
     ) {
         parent::__construct($twig);
 
         $this->pool = $pool;
         $this->searchHandler = $searchHandler;
-        $this->templateRegistry = $templateRegistry ?: new TemplateRegistry();
+        $this->templateRegistry = $templateRegistry;
     }
 
     public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response

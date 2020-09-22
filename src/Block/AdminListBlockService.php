@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Block;
 
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
@@ -40,12 +39,12 @@ final class AdminListBlockService extends AbstractBlockService
     public function __construct(
         Environment $twig,
         Pool $pool,
-        ?TemplateRegistryInterface $templateRegistry = null
+        TemplateRegistryInterface $templateRegistry
     ) {
         parent::__construct($twig);
 
         $this->pool = $pool;
-        $this->templateRegistry = $templateRegistry ?: new TemplateRegistry();
+        $this->templateRegistry = $templateRegistry;
     }
 
     public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
