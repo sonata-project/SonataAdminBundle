@@ -38,13 +38,12 @@ class AdminListBlockServiceTest extends BlockServiceTestCase
         parent::setUp();
 
         $this->pool = $this->createMock(Pool::class);
-
-        $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
+        $this->templateRegistry = $this->createMock(TemplateRegistryInterface::class);
     }
 
     public function testDefaultSettings(): void
     {
-        $blockService = new AdminListBlockService($this->twig, $this->pool, $this->templateRegistry->reveal());
+        $blockService = new AdminListBlockService($this->twig, $this->pool, $this->templateRegistry);
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings([

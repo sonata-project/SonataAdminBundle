@@ -128,6 +128,12 @@ If you have implemented a custom admin extension, you must adapt the signature o
  * `configureBatchActions`
  * `getAccessMapping`
 
+## AdminListBlockService
+The third argument of the `AdminListBlockService::__construct` method is now mandatory.
+
+## AdminSearchBlockService
+The fourth argument of the `AdminListBlockService::__construct` method is now mandatory.
+
 ## AdminHelper
 The `AdminHelper::__construct` method changes its `Pool` param to a `PropertyAccessorInterface` one.
 
