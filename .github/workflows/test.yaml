@@ -71,7 +71,6 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ matrix.variant }}
           restore-keys: ${{ runner.os }}-${{ matrix.php-version }}-composer-
 
-
       - name: Configuration required for PHP 8.0
         if: matrix.php-version == '8.0'
         run: composer config platform.php 7.4.99 && composer require phpunit/phpunit:"9.3.*" --no-update
