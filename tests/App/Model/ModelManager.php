@@ -160,8 +160,14 @@ final class ModelManager implements ModelManagerInterface
     {
     }
 
+    // NEXT_MAJOR: Remove this method.
     public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid)
     {
+        @trigger_error(sprintf(
+            'Method %s() is deprecated since sonata-project/admin-bundle 3.66. To be removed in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         return [];
     }
 
@@ -203,8 +209,14 @@ final class ModelManager implements ModelManagerInterface
         return [];
     }
 
+    // NEXT_MAJOR: Remove this method.
     public function getPaginationParameters(DatagridInterface $datagrid, $page)
     {
+        @trigger_error(sprintf(
+            'Method %s() is deprecated since sonata-project/admin-bundle 3.66. To be removed in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         return [];
     }
 
