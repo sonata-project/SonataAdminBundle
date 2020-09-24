@@ -1,6 +1,11 @@
 UPGRADE 3.x
 ===========
 
+### Deprecated using shortcut notation when specifying the `user_model` option in `sonata:admin:generate-object-acl` command.
+
+The shortcut notation (`AppBundle:User`) has been deprecated in favor of the FQCN (`App\Model\User`) when passing
+`user_model` option to `sonata:admin:generate-object-acl` command.
+
 UPGRADE FROM 3.75 to 3.76
 =========================
 
