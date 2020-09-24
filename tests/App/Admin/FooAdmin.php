@@ -24,7 +24,9 @@ final class FooAdmin extends AbstractAdmin
 {
     protected function configureListFields(ListMapper $list): void
     {
-        $list->add('name', TemplateRegistry::TYPE_STRING);
+        $list->add('name', TemplateRegistry::TYPE_STRING, [
+            'sortable' => true,
+        ]);
     }
 
     protected function configureFormFields(FormMapper $form): void
