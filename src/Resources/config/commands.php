@@ -48,6 +48,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('validator'),
             ])
 
+        // NEXT_MAJOR: Remove "doctrine" argument.
         ->set(GenerateObjectAclCommand::class, GenerateObjectAclCommand::class)
             ->public()
             ->tag('console.command')
