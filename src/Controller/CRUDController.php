@@ -1668,13 +1668,44 @@ class CRUDController implements ContainerAwareInterface
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $propertyPath = new PropertyPath($this->admin->getParentAssociationMapping());
 
-        if ($parentAdmin->getObject($parentId) !== $propertyAccessor->getValue($object, $propertyPath)) {
+        $parentAdminObject = $parentAdmin->getObject($parentId);
+        $objectParent = $propertyAccessor->getValue($object, $propertyPath);
+
+        // $objectParent may be an array or a Collection when the parent association is many to many.
+        $parentObjectMatches = $this->equalsOrInList($parentAdminObject, $objectParent);
+
+        if (!$parentObjectMatches) {
             // NEXT_MAJOR: make this exception
             @trigger_error(
                 'Accessing a child that isn\'t connected to a given parent is deprecated since sonata-project/admin-bundle 3.34 and won\'t be allowed in 4.0.',
                 \E_USER_DEPRECATED
             );
         }
+    }
+
+    /**
+     * Checks whether $needle is equal to $haystack or part of it.
+     *
+     * @param object          $needle   Object to compare with $haystack
+     * @param object|iterable $haystack Object to compare with $needle
+     *
+     * @return bool true when $haystack equals $needle or $haystack is iterable and contains $needle
+     */
+    private function equalsOrInList(object $needle, $haystack): bool
+    {
+        if ($needle === $haystack) {
+            return true;
+        }
+
+        if (is_iterable($haystack)) {
+            foreach ($haystack as $haystackItem) {
+                if ($haystackItem === $needle) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -1428,6 +1428,42 @@ class CRUDControllerTest extends TestCase
         $this->assertSame(Request::METHOD_DELETE, $this->request->getMethod());
     }
 
+    public function testDeleteActionChildManyToMany(): void
+    {
+        $parent = new \stdClass();
+
+        $child = new \stdClass();
+        $child->parents = [$parent];
+
+        $parentAdmin = $this->createMock(PostAdmin::class);
+        $parentAdmin->method('getIdParameter')->willReturn('parent_id');
+
+        $childAdmin = $this->admin;
+        $childAdmin->method('getIdParameter')->willReturn('parent_id');
+
+        $parentAdmin->expects($this->once())
+            ->method('getObject')
+            ->willReturn($parent);
+
+        $childAdmin->expects($this->once())
+            ->method('getObject')
+            ->willReturn($child);
+
+        $childAdmin->expects($this->once())
+            ->method('isChild')
+            ->willReturn(true);
+
+        $childAdmin->expects($this->once())
+            ->method('getParent')
+            ->willReturn($parentAdmin);
+
+        $childAdmin->expects($this->exactly(2))
+            ->method('getParentAssociationMapping')
+            ->willReturn('parents');
+
+        $this->controller->deleteAction(1);
+    }
+
     public function testEditActionNotFoundException(): void
     {
         $this->expectException(NotFoundHttpException::class);
