@@ -58,7 +58,7 @@ class ModelType extends AbstractType
             );
 
             $builder
-                ->addEventSubscriber(new MergeCollectionListener($options['model_manager']))
+                ->addEventSubscriber(new MergeCollectionListener())
             ;
         } else {
             $builder
