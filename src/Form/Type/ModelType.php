@@ -132,9 +132,9 @@ final class ModelType extends AbstractType
     }
 
     /**
-     * @phpstan-return class-string<FormTypeInterface>|null
+     * @phpstan-return class-string<FormTypeInterface>
      */
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
