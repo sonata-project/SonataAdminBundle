@@ -174,7 +174,7 @@ class CRUDControllerTest extends TestCase
         $this->parameters = [];
         $this->template = '';
 
-        $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
+        $this->templateRegistry = $this->createMock(TemplateRegistryInterface::class);
 
         $templating = $this->createMock(DelegatingEngine::class);
 
@@ -252,7 +252,7 @@ class CRUDControllerTest extends TestCase
         $this->container->set('sonata.admin.pool', $this->pool);
         $this->container->set('request_stack', $requestStack);
         $this->container->set('foo.admin', $this->admin);
-        $this->container->set('foo.admin.template_registry', $this->templateRegistry->reveal());
+        $this->container->set('foo.admin.template_registry', $this->templateRegistry);
         $this->container->set('templating', $templating);
         $this->container->set('twig', $twig);
         $this->container->set('session', $this->session);
@@ -271,20 +271,28 @@ class CRUDControllerTest extends TestCase
         );
         $this->container->setParameter('sonata.admin.security.acl_user_manager', null);
 
-        $this->templateRegistry->getTemplate('ajax')->willReturn('@SonataAdmin/ajax_layout.html.twig');
-        $this->templateRegistry->getTemplate('layout')->willReturn('@SonataAdmin/standard_layout.html.twig');
-        $this->templateRegistry->getTemplate('show')->willReturn('@SonataAdmin/CRUD/show.html.twig');
-        $this->templateRegistry->getTemplate('show_compare')->willReturn('@SonataAdmin/CRUD/show_compare.html.twig');
-        $this->templateRegistry->getTemplate('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');
-        $this->templateRegistry->getTemplate('dashboard')->willReturn('@SonataAdmin/Core/dashboard.html.twig');
-        $this->templateRegistry->getTemplate('search')->willReturn('@SonataAdmin/Core/search.html.twig');
-        $this->templateRegistry->getTemplate('list')->willReturn('@SonataAdmin/CRUD/list.html.twig');
-        $this->templateRegistry->getTemplate('preview')->willReturn('@SonataAdmin/CRUD/preview.html.twig');
-        $this->templateRegistry->getTemplate('history')->willReturn('@SonataAdmin/CRUD/history.html.twig');
-        $this->templateRegistry->getTemplate('acl')->willReturn('@SonataAdmin/CRUD/acl.html.twig');
-        $this->templateRegistry->getTemplate('delete')->willReturn('@SonataAdmin/CRUD/delete.html.twig');
-        $this->templateRegistry->getTemplate('batch')->willReturn('@SonataAdmin/CRUD/list__batch.html.twig');
-        $this->templateRegistry->getTemplate('batch_confirmation')->willReturn('@SonataAdmin/CRUD/batch_confirmation.html.twig');
+        $templates = [
+            'ajax' => '@SonataAdmin/ajax_layout.html.twig',
+            'layout' => '@SonataAdmin/standard_layout.html.twig',
+            'show' => '@SonataAdmin/CRUD/show.html.twig',
+            'show_compare' => '@SonataAdmin/CRUD/show_compare.html.twig',
+            'edit' => '@SonataAdmin/CRUD/edit.html.twig',
+            'dashboard' => '@SonataAdmin/Core/dashboard.html.twig',
+            'search' => '@SonataAdmin/Core/search.html.twig',
+            'list' => '@SonataAdmin/CRUD/list.html.twig',
+            'preview' => '@SonataAdmin/CRUD/preview.html.twig',
+            'history' => '@SonataAdmin/CRUD/history.html.twig',
+            'acl' => '@SonataAdmin/CRUD/acl.html.twig',
+            'delete' => '@SonataAdmin/CRUD/delete.html.twig',
+            'batch' => '@SonataAdmin/CRUD/list__batch.html.twig',
+            'batch_confirmation' => '@SonataAdmin/CRUD/batch_confirmation.html.twig',
+        ];
+
+        $this->templateRegistry
+            ->method('getTemplate')
+            ->willReturnCallback(static function (string $templateName) use ($templates): string {
+                return $templates[$templateName];
+            });
 
         // NEXT_MAJOR: Remove this call
         $this->admin->method('getTemplate')->willReturnMap([

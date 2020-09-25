@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -29,6 +28,7 @@ use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGenerator;
@@ -155,20 +155,18 @@ class SonataAdminExtensionTest extends TestCase
 
         $this->translator = $translator;
 
-        $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
-        $this->container = $this->prophesize(ContainerInterface::class);
-        $this->container->get('sonata_admin_foo_service.template_registry')->willReturn($this->templateRegistry->reveal());
+        $this->templateRegistry = $this->createMock(TemplateRegistryInterface::class);
+        $this->container = new Container();
+        $this->container->set('sonata_admin_foo_service.template_registry', $this->templateRegistry);
 
-        $this->securityChecker = $this->prophesize(AuthorizationCheckerInterface::class);
-        $this->securityChecker->isGranted(['foo', 'bar'], null)->willReturn(false);
-        $this->securityChecker->isGranted(Argument::type('string'), null)->willReturn(true);
+        $this->securityChecker = $this->createStub(AuthorizationCheckerInterface::class);
 
         $this->twigExtension = new SonataAdminExtension(
             $this->pool,
             $this->logger,
             $this->translator,
-            $this->container->reveal(),
-            $this->securityChecker->reveal()
+            $this->container,
+            $this->securityChecker
         );
         $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping);
 
@@ -318,7 +316,10 @@ class SonataAdminExtensionTest extends TestCase
             ->with('base_list_field')
             ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
-        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+        $this->templateRegistry
+            ->method('getTemplate')
+            ->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription
             ->method('getValue')
@@ -400,7 +401,10 @@ class SonataAdminExtensionTest extends TestCase
             ->with('base_list_field')
             ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
-        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+        $this->templateRegistry
+            ->method('getTemplate')
+            ->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription
             ->method('getTemplate')
@@ -430,7 +434,10 @@ class SonataAdminExtensionTest extends TestCase
             ->with('base_list_field')
             ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
-        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+        $this->templateRegistry
+            ->method('getTemplate')
+            ->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription
             ->method('getValue')
@@ -464,7 +471,10 @@ class SonataAdminExtensionTest extends TestCase
             ->with('base_list_field')
             ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
-        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+        $this->templateRegistry
+            ->method('getTemplate')
+            ->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription
             ->method('getValue')
@@ -1493,7 +1503,10 @@ EOT
             ->with('base_list_field')
             ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
-        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+        $this->templateRegistry
+            ->method('getTemplate')
+            ->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription->expects($this->once())
             ->method('getValue')
@@ -1537,15 +1550,16 @@ EOT
             ->with('base_list_field')
             ->willReturn('@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig');
 
-        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig');
+        $this->templateRegistry
+            ->method('getTemplate')
+            ->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig');
 
         $this->fieldDescription->expects($this->once())
             ->method('getTemplate')
             ->willReturn('@SonataAdmin/CRUD/list_nonexistent_template.html.twig');
 
         $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription);
-
-        $this->templateRegistry->getTemplate('base_list_field')->shouldHaveBeenCalled();
     }
 
     /**
@@ -2959,10 +2973,24 @@ EOT
 
     public function testIsGrantedAffirmative(): void
     {
+        $this->securityChecker
+            ->method('isGranted')
+            ->willReturnCallback(static function (string $role): bool {
+                if ('foo' === $role) {
+                    return false;
+                }
+
+                if ('bar' === $role) {
+                    return true;
+                }
+
+                return false;
+            });
+
         $this->assertTrue(
             $this->twigExtension->isGrantedAffirmative(['foo', 'bar'])
         );
-        $this->assertTrue($this->twigExtension->isGrantedAffirmative('foo'));
+        $this->assertFalse($this->twigExtension->isGrantedAffirmative('foo'));
         $this->assertTrue($this->twigExtension->isGrantedAffirmative('bar'));
     }
 
