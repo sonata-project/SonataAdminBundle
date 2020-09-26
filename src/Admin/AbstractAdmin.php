@@ -165,7 +165,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * Options to set to the form (ie, validation_groups).
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected $formOptions = [];
 
@@ -489,7 +489,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The Access mapping.
      *
-     * @var array [action1 => requiredRole1, action2 => [requiredRole2, requiredRole3]]
+     * @var array<string, string|string[]> [action1 => requiredRole1, action2 => [requiredRole2, requiredRole3]]
      */
     protected $accessMapping = [];
 
@@ -3575,7 +3575,7 @@ EOT;
     /**
      * Return list routes with permissions name.
      *
-     * @return array<string, string|array>
+     * @return array<string, string|string[]>
      */
     protected function getAccess()
     {

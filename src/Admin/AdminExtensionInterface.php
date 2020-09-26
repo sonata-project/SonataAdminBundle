@@ -132,6 +132,8 @@ interface AdminExtensionInterface
 
     /**
      * Return the controller access mapping.
+     *
+     * @return array<string, string|string[]>
      */
     // NEXT_MAJOR: Uncomment this method
     // public function getAccessMapping(AdminInterface $admin): array;
