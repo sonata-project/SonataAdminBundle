@@ -20,6 +20,7 @@ use Sonata\AdminBundle\Util\ObjectAclManipulatorInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
@@ -52,6 +53,9 @@ final class GenerateObjectAclCommand extends QuestionableCommand
      */
     private $registry;
 
+    /**
+     * NEXT_MAJOR: Remove $registry argument.
+     */
     public function __construct(Pool $pool, array $aclObjectManipulators, ?ManagerRegistry $registry = null)
     {
         $this->pool = $pool;
@@ -66,7 +70,7 @@ final class GenerateObjectAclCommand extends QuestionableCommand
         $this
             ->setDescription('Install ACL for the objects of the Admin Classes.')
             ->addOption('object_owner', null, InputOption::VALUE_OPTIONAL, 'If set, the task will set the object owner for each admin.')
-            ->addOption('user_model', null, InputOption::VALUE_OPTIONAL, 'Shortcut notation like <comment>AcmeDemoBundle:User</comment>. If not set, it will be asked the first time an object owner is set.')
+            ->addOption('user_model', null, InputOption::VALUE_OPTIONAL, 'Fully qualified class name <comment>App\Model\User</comment>. If not set, it will be asked the first time an object owner is set.')
             ->addOption('step', null, InputOption::VALUE_NONE, 'If set, the task will ask for each admin if the ACLs need to be generated and what object owner to set, if any.')
         ;
     }
@@ -79,7 +83,7 @@ final class GenerateObjectAclCommand extends QuestionableCommand
             'This command helps you to generate ACL entities for the objects handled by the AdminBundle.',
             '',
             'If the step option is used, you will be asked if you want to generate the object ACL entities for each Admin.',
-            'You must use the shortcut notation like <comment>AcmeDemoBundle:User</comment> if you want to set an object owner.',
+            'You must use fully qualified class name like <comment>App\Model\User</comment> if you want to set an object owner.',
             '',
         ]);
 
@@ -158,20 +162,39 @@ final class GenerateObjectAclCommand extends QuestionableCommand
     {
         if ('' === $this->userModelClass) {
             if ($input->getOption('user_model')) {
-                [$userBundle, $userModel] = Validators::validateEntityName($input->getOption('user_model'));
+                $userModelFromInput = $input->getOption('user_model');
             } else {
-                [$userBundle, $userModel] = $this->askAndValidate(
+                $userModelFromInput = $this->getQuestionHelper()->ask(
                     $input,
                     $output,
-                    'Please enter the User Entity shortcut name: ',
-                    '',
-                    'Sonata\AdminBundle\Command\Validators::validateEntityName'
+                    new Question('Please enter the User Model fully qualified class name: ', '')
                 );
             }
 
-            $namespace = $this->registry->getAliasNamespace($userBundle);
+            if (!class_exists($userModelFromInput)) {
+                // NEXT_MAJOR: Remove the trigger, uncomment the exception and remove the code below the exception
+                // until "else".
+                @trigger_error(sprintf(
+                    'Passing a model shortcut name ("%s" given) as "user_model" option is deprecated since'
+                    .' sonata-project/admin-bundle 3.x and will throw an exception in 4.x.'
+                    .' Pass a fully qualified class name instead (e.g. App\Model\User).',
+                    $userModelFromInput
+                ), E_USER_DEPRECATED);
 
-            $this->userModelClass = sprintf('%s\%s', $namespace, $userModel);
+//                throw new \InvalidArgumentException(sprintf(
+//                    'The "user_model" name be a fully qualified class name'
+//                    .' ("%s" given, expecting something like App\Model\User)',
+//                    $userModelFromInput
+//                ));
+
+                [$userBundle, $userModel] = Validators::validateEntityName($userModelFromInput);
+
+                $namespace = $this->registry->getAliasNamespace($userBundle);
+
+                $this->userModelClass = sprintf('%s\%s', $namespace, $userModel);
+            } else {
+                $this->userModelClass = $userModelFromInput;
+            }
         }
 
         return $this->userModelClass;
