@@ -79,6 +79,9 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
         return [];
     }
 
+    /**
+     * @return array<string, string|string[]>
+     */
     public function getAccessMapping(AdminInterface $admin)
     {
         return [];
