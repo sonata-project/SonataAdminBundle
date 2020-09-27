@@ -33,9 +33,7 @@ class SonataAdminBundleTest extends TestCase
 {
     public function testBuild(): void
     {
-        $containerBuilder = $this->getMockBuilder(ContainerBuilder::class)
-            ->setMethods(['addCompilerPass'])
-            ->getMock();
+        $containerBuilder = $this->createMock(ContainerBuilder::class);
 
         $containerBuilder->expects($this->exactly(7))
             ->method('addCompilerPass')

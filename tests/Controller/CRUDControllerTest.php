@@ -174,7 +174,7 @@ class CRUDControllerTest extends TestCase
         $this->parameters = [];
         $this->template = '';
 
-        $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
+        $this->templateRegistry = $this->createStub(TemplateRegistryInterface::class);
 
         $templating = $this->createMock(DelegatingEngine::class);
 
@@ -252,7 +252,7 @@ class CRUDControllerTest extends TestCase
         $this->container->set('sonata.admin.pool', $this->pool);
         $this->container->set('request_stack', $requestStack);
         $this->container->set('foo.admin', $this->admin);
-        $this->container->set('foo.admin.template_registry', $this->templateRegistry->reveal());
+        $this->container->set('foo.admin.template_registry', $this->templateRegistry);
         $this->container->set('templating', $templating);
         $this->container->set('twig', $twig);
         $this->container->set('session', $this->session);
@@ -271,20 +271,22 @@ class CRUDControllerTest extends TestCase
         );
         $this->container->setParameter('sonata.admin.security.acl_user_manager', null);
 
-        $this->templateRegistry->getTemplate('ajax')->willReturn('@SonataAdmin/ajax_layout.html.twig');
-        $this->templateRegistry->getTemplate('layout')->willReturn('@SonataAdmin/standard_layout.html.twig');
-        $this->templateRegistry->getTemplate('show')->willReturn('@SonataAdmin/CRUD/show.html.twig');
-        $this->templateRegistry->getTemplate('show_compare')->willReturn('@SonataAdmin/CRUD/show_compare.html.twig');
-        $this->templateRegistry->getTemplate('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');
-        $this->templateRegistry->getTemplate('dashboard')->willReturn('@SonataAdmin/Core/dashboard.html.twig');
-        $this->templateRegistry->getTemplate('search')->willReturn('@SonataAdmin/Core/search.html.twig');
-        $this->templateRegistry->getTemplate('list')->willReturn('@SonataAdmin/CRUD/list.html.twig');
-        $this->templateRegistry->getTemplate('preview')->willReturn('@SonataAdmin/CRUD/preview.html.twig');
-        $this->templateRegistry->getTemplate('history')->willReturn('@SonataAdmin/CRUD/history.html.twig');
-        $this->templateRegistry->getTemplate('acl')->willReturn('@SonataAdmin/CRUD/acl.html.twig');
-        $this->templateRegistry->getTemplate('delete')->willReturn('@SonataAdmin/CRUD/delete.html.twig');
-        $this->templateRegistry->getTemplate('batch')->willReturn('@SonataAdmin/CRUD/list__batch.html.twig');
-        $this->templateRegistry->getTemplate('batch_confirmation')->willReturn('@SonataAdmin/CRUD/batch_confirmation.html.twig');
+        $this->templateRegistry->method('getTemplate')->willReturnMap([
+            ['ajax', '@SonataAdmin/ajax_layout.html.twig'],
+            ['layout', '@SonataAdmin/standard_layout.html.twig'],
+            ['show', '@SonataAdmin/CRUD/show.html.twig'],
+            ['show_compare', '@SonataAdmin/CRUD/show_compare.html.twig'],
+            ['edit', '@SonataAdmin/CRUD/edit.html.twig'],
+            ['dashboard', '@SonataAdmin/Core/dashboard.html.twig'],
+            ['search', '@SonataAdmin/Core/search.html.twig'],
+            ['list', '@SonataAdmin/CRUD/list.html.twig'],
+            ['preview', '@SonataAdmin/CRUD/preview.html.twig'],
+            ['history', '@SonataAdmin/CRUD/history.html.twig'],
+            ['acl', '@SonataAdmin/CRUD/acl.html.twig'],
+            ['delete', '@SonataAdmin/CRUD/delete.html.twig'],
+            ['batch', '@SonataAdmin/CRUD/list__batch.html.twig'],
+            ['batch_confirmation', '@SonataAdmin/CRUD/batch_confirmation.html.twig'],
+        ]);
 
         // NEXT_MAJOR: Remove this call
         $this->admin->method('getTemplate')->willReturnMap([
@@ -859,10 +861,10 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->at(0))
-            ->method('hasRoute')
-            ->with($this->equalTo('edit'))
-            ->willReturn(true);
+        $this->admin->expects($this->exactly(2))->method('hasRoute')->willReturnMap([
+            ['edit', true],
+            ['show', false],
+        ]);
 
         $this->admin
             ->method('hasAccess')
@@ -3262,15 +3264,10 @@ class CRUDControllerTest extends TestCase
         $objectRevision->revision = 456;
 
         // first call should return, so the second call will throw an exception
-        $reader->expects($this->at(0))
-            ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo(456))
-            ->willReturn($objectRevision);
-
-        $reader->expects($this->at(1))
-            ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo(789))
-            ->willReturn(null);
+        $reader->expects($this->exactly(2))->method('find')->willReturnMap([
+            ['Foo', 123, 456, $objectRevision],
+            ['Foo', 123, 789, null],
+        ]);
 
         $this->controller->historyCompareRevisionsAction(123, 456, 789);
     }
@@ -3312,15 +3309,10 @@ class CRUDControllerTest extends TestCase
         $compareObjectRevision = new \stdClass();
         $compareObjectRevision->revision = 789;
 
-        $reader->expects($this->at(0))
-            ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo(456))
-            ->willReturn($objectRevision);
-
-        $reader->expects($this->at(1))
-            ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo(789))
-            ->willReturn($compareObjectRevision);
+        $reader->expects($this->exactly(2))->method('find')->willReturnMap([
+            ['Foo', 123, 456, $objectRevision],
+            ['Foo', 123, 789, $compareObjectRevision],
+        ]);
 
         $this->admin->expects($this->once())
             ->method('setSubject')
@@ -3793,7 +3785,7 @@ class CRUDControllerTest extends TestCase
         $result = $controller->batchAction();
 
         $this->assertInstanceOf(Response::class, $result);
-        $this->assertRegExp('/Redirecting to list/', $result->getContent());
+        $this->assertMatchesRegularExpression('/Redirecting to list/', $result->getContent());
     }
 
     /**

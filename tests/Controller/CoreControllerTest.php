@@ -34,13 +34,15 @@ class CoreControllerTest extends TestCase
     {
         $container = new Container();
 
-        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->getTemplate('ajax')->willReturn('ajax.html');
-        $templateRegistry->getTemplate('dashboard')->willReturn('dashboard.html');
-        $templateRegistry->getTemplate('layout')->willReturn('layout.html');
+        $templateRegistry = $this->createStub(MutableTemplateRegistryInterface::class);
+        $templateRegistry->method('getTemplate')->willReturnMap([
+            ['ajax', 'ajax.html'],
+            ['dashboard', 'dashboard.html'],
+            ['layout', 'layout.html'],
+        ]);
 
         $pool = new Pool($container, 'title', 'logo.png');
-        $pool->setTemplateRegistry($templateRegistry->reveal());
+        $pool->setTemplateRegistry($templateRegistry);
 
         $twig = $this->createMock(Environment::class);
         $request = new Request();
@@ -53,7 +55,7 @@ class CoreControllerTest extends TestCase
         $container->set(DashboardAction::class, new DashboardAction(
             [],
             $breadcrumbsBuilder,
-            $templateRegistry->reveal(),
+            $templateRegistry,
             $pool,
             $twig
         ));
@@ -72,14 +74,16 @@ class CoreControllerTest extends TestCase
     {
         $container = new Container();
 
-        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->getTemplate('ajax')->willReturn('ajax.html');
-        $templateRegistry->getTemplate('dashboard')->willReturn('dashboard.html');
-        $templateRegistry->getTemplate('layout')->willReturn('layout.html');
-        $breadcrumbsBuilder = $this->getMockForAbstractClass(BreadcrumbsBuilderInterface::class);
+        $templateRegistry = $this->createStub(MutableTemplateRegistryInterface::class);
+        $templateRegistry->method('getTemplate')->willReturnMap([
+            ['ajax', 'ajax.html'],
+            ['dashboard', 'dashboard.html'],
+            ['layout', 'layout.html'],
+        ]);
+        $breadcrumbsBuilder = $this->createStub(BreadcrumbsBuilderInterface::class);
 
         $pool = new Pool($container, 'title', 'logo.png');
-        $pool->setTemplateRegistry($templateRegistry->reveal());
+        $pool->setTemplateRegistry($templateRegistry);
 
         $twig = $this->createMock(Environment::class);
         $request = new Request();
@@ -91,7 +95,7 @@ class CoreControllerTest extends TestCase
         $container->set(DashboardAction::class, new DashboardAction(
             [],
             $breadcrumbsBuilder,
-            $templateRegistry->reveal(),
+            $templateRegistry,
             $pool,
             $twig
         ));

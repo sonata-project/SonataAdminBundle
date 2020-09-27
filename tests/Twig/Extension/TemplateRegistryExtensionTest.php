@@ -50,20 +50,20 @@ class TemplateRegistryExtensionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
-        $this->container = $this->prophesize(ContainerInterface::class);
+        $this->templateRegistry = $this->createStub(TemplateRegistryInterface::class);
+        $this->container = $this->createStub(ContainerInterface::class);
 
         // NEXT_MAJOR: Remove this line
-        $this->admin = $this->prophesize(AdminInterface::class);
+        $this->admin = $this->createStub(AdminInterface::class);
 
         // NEXT_MAJOR: Remove this line
-        $this->admin->getTemplate('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');
+        $this->admin->method('getTemplate')->with('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');
 
-        $this->templateRegistry->getTemplate('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');
+        $this->templateRegistry->method('getTemplate')->with('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');
 
         $this->extension = new TemplateRegistryExtension(
-            $this->templateRegistry->reveal(),
-            $this->container->reveal()
+            $this->templateRegistry,
+            $this->container
         );
     }
 
@@ -82,10 +82,11 @@ class TemplateRegistryExtensionTest extends TestCase
 
     public function testGetAdminTemplate(): void
     {
-        // NEXT_MAJOR: Remove this line
-        $this->container->get('admin.post')->willReturn($this->admin->reveal());
-
-        $this->container->get('admin.post.template_registry')->willReturn($this->templateRegistry->reveal());
+        $this->container->method('get')->willReturnMap([
+            // NEXT_MAJOR: Remove this line
+            ['admin.post', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $this->admin],
+            ['admin.post.template_registry', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $this->templateRegistry],
+        ]);
 
         $this->assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
@@ -95,10 +96,6 @@ class TemplateRegistryExtensionTest extends TestCase
 
     public function testGetAdminTemplateFailure(): void
     {
-        // NEXT_MAJOR: Remove this line
-        $this->container->get('admin.post')->willReturn(null);
-        $this->container->get('admin.post.template_registry')->willReturn(null);
-
         $this->expectException(ServiceNotFoundException::class);
 
         // NEXT_MAJOR: Remove this line and use the commented line below instead

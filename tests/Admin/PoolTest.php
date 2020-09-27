@@ -504,12 +504,11 @@ class PoolTest extends TestCase
      */
     public function testTemplate(): void
     {
-        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->getTemplate('ajax')
-            ->shouldBeCalledTimes(1)
+        $templateRegistry = $this->createMock(MutableTemplateRegistryInterface::class);
+        $templateRegistry->expects($this->once())->method('getTemplate')->with('ajax')
             ->willReturn('Foo.html.twig');
 
-        $this->pool->setTemplateRegistry($templateRegistry->reveal());
+        $this->pool->setTemplateRegistry($templateRegistry);
 
         $this->assertSame('Foo.html.twig', $this->pool->getTemplate('ajax'));
     }
@@ -524,14 +523,11 @@ class PoolTest extends TestCase
             'layout' => 'Bar.html.twig',
         ];
 
-        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->setTemplates($templates)
-            ->shouldBeCalledTimes(1);
-        $templateRegistry->getTemplates()
-            ->shouldBeCalledTimes(1)
-            ->willReturn($templates);
+        $templateRegistry = $this->createMock(MutableTemplateRegistryInterface::class);
+        $templateRegistry->expects($this->once())->method('setTemplates')->with($templates);
+        $templateRegistry->expects($this->once())->method('getTemplates')->willReturn($templates);
 
-        $this->pool->setTemplateRegistry($templateRegistry->reveal());
+        $this->pool->setTemplateRegistry($templateRegistry);
 
         $this->pool->setTemplates($templates);
 

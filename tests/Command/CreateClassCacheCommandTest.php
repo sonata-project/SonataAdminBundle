@@ -84,7 +84,7 @@ class CreateClassCacheCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertRegExp('@Writing cache file ...\s+done!@', $commandTester->getDisplay());
+        $this->assertMatchesRegularExpression('@Writing cache file ...\s+done!@', $commandTester->getDisplay());
 
         $this->assertFileExists(sprintf('%s/classes.php', $this->tempDirectory));
         $this->assertFileEquals(sprintf('%s/../Fixtures/Command/classes.php', __DIR__), sprintf('%s/classes.php', $this->tempDirectory));

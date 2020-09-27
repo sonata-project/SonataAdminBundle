@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -155,20 +154,24 @@ class SonataAdminExtensionTest extends TestCase
 
         $this->translator = $translator;
 
-        $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
-        $this->container = $this->prophesize(ContainerInterface::class);
-        $this->container->get('sonata_admin_foo_service.template_registry')->willReturn($this->templateRegistry->reveal());
+        $this->templateRegistry = $this->createStub(TemplateRegistryInterface::class);
+        $this->container = $this->createStub(ContainerInterface::class);
+        $this->container->method('get')->with('sonata_admin_foo_service.template_registry')
+            ->willReturn($this->templateRegistry);
 
-        $this->securityChecker = $this->prophesize(AuthorizationCheckerInterface::class);
-        $this->securityChecker->isGranted(['foo', 'bar'], null)->willReturn(false);
-        $this->securityChecker->isGranted(Argument::type('string'), null)->willReturn(true);
+        $this->securityChecker = $this->createStub(AuthorizationCheckerInterface::class);
+        $this->securityChecker->method('isGranted')->willReturnMap([
+            [['foo', 'bar'], null, false],
+            ['foo', null, true],
+            ['bar', null, true],
+        ]);
 
         $this->twigExtension = new SonataAdminExtension(
             $this->pool,
             $this->logger,
             $this->translator,
-            $this->container->reveal(),
-            $this->securityChecker->reveal()
+            $this->container,
+            $this->securityChecker
         );
         $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping);
 
@@ -318,7 +321,8 @@ class SonataAdminExtensionTest extends TestCase
             ->with('base_list_field')
             ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
-        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+        $this->templateRegistry->method('getTemplate')->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription
             ->method('getValue')
@@ -400,7 +404,8 @@ class SonataAdminExtensionTest extends TestCase
             ->with('base_list_field')
             ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
-        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+        $this->templateRegistry->method('getTemplate')->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription
             ->method('getTemplate')
@@ -430,7 +435,8 @@ class SonataAdminExtensionTest extends TestCase
             ->with('base_list_field')
             ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
-        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+        $this->templateRegistry->method('getTemplate')->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription
             ->method('getValue')
@@ -464,7 +470,8 @@ class SonataAdminExtensionTest extends TestCase
             ->with('base_list_field')
             ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
-        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+        $this->templateRegistry->method('getTemplate')->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription
             ->method('getValue')
@@ -1493,7 +1500,8 @@ EOT
             ->with('base_list_field')
             ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
-        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+        $this->templateRegistry->method('getTemplate')->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription->expects($this->once())
             ->method('getValue')
@@ -1537,7 +1545,8 @@ EOT
             ->with('base_list_field')
             ->willReturn('@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig');
 
-        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig');
+        $this->templateRegistry->method('getTemplate')->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig');
 
         $this->fieldDescription->expects($this->once())
             ->method('getTemplate')

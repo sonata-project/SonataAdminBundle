@@ -25,31 +25,12 @@ use Twig\Environment;
  */
 class AdminListBlockServiceTest extends BlockServiceTestCase
 {
-    /**
-     * @var Pool
-     */
-    private $pool;
-
-    /**
-     * @var TemplateRegistryInterface
-     */
-    private $templateRegistry;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->pool = $this->createMock(Pool::class);
-
-        $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
-    }
-
     public function testDefaultSettings(): void
     {
         $blockService = new AdminListBlockService(
-            $this->createMock(Environment::class),
-            $this->pool,
-            $this->templateRegistry->reveal()
+            $this->createStub(Environment::class),
+            $this->createStub(Pool::class),
+            $this->createStub(TemplateRegistryInterface::class)
         );
         $blockContext = $this->getBlockContext($blockService);
 
@@ -64,9 +45,9 @@ class AdminListBlockServiceTest extends BlockServiceTestCase
     public function testOverriddenDefaultSettings(): void
     {
         $blockService = new FakeBlockService(
-            $this->createMock(Environment::class),
-            $this->pool,
-            $this->templateRegistry->reveal()
+            $this->createStub(Environment::class),
+            $this->createStub(Pool::class),
+            $this->createStub(TemplateRegistryInterface::class)
         );
         $blockContext = $this->getBlockContext($blockService);
 
