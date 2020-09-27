@@ -27,7 +27,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\DummySubject;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -52,7 +52,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $translatorStrategy = $this->getMockForAbstractClass(LabelTranslatorStrategyInterface::class);
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
         $routeGenerator = $this->getMockForAbstractClass(RouteGeneratorInterface::class);
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $container = new Container();
         $pool = $this->getMockBuilder(Pool::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -78,10 +78,7 @@ class BreadcrumbsBuilderTest extends TestCase
 
         $commentAdmin->setCurrentChild(true);
 
-        $container
-            ->method('getParameter')
-            ->with('sonata.admin.configuration.breadcrumbs')
-            ->willReturn([]);
+        $container->setParameter('sonata.admin.configuration.breadcrumbs', []);
 
         $pool
             ->method('getContainer')
@@ -220,7 +217,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $translatorStrategy = $this->getMockForAbstractClass(LabelTranslatorStrategyInterface::class);
         $routeGenerator = $this->getMockForAbstractClass(RouteGeneratorInterface::class);
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $container = new Container();
         $pool = $this->getMockBuilder(Pool::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -273,10 +270,7 @@ class BreadcrumbsBuilderTest extends TestCase
             )
             ->willReturn($menu);
 
-        $container
-            ->method('getParameter')
-            ->with('sonata.admin.configuration.breadcrumbs')
-            ->willReturn([]);
+        $container->setParameter('sonata.admin.configuration.breadcrumbs', []);
 
         $pool
             ->method('getContainer')

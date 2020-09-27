@@ -22,7 +22,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
  * Test for AdminExtractor.
@@ -69,17 +69,9 @@ class AdminExtractorTest extends TestCase
         $this->fooAdmin = $this->getMockForAbstractClass(AdminInterface::class);
         $this->barAdmin = $this->getMockForAbstractClass(AdminInterface::class);
 
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $container
-            ->method('get')
-            ->willReturnCallback(function (string $id): AdminInterface {
-                switch ($id) {
-                    case 'foo_admin':
-                        return $this->fooAdmin;
-                    case 'bar_admin':
-                        return $this->barAdmin;
-                }
-            });
+        $container = new Container();
+        $container->set('foo_admin', $this->fooAdmin);
+        $container->set('bar_admin', $this->barAdmin);
 
         $logger = $this->getMockForAbstractClass(LoggerInterface::class);
 

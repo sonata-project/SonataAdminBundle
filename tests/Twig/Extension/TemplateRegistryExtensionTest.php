@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Twig\TwigFunction;
@@ -51,7 +52,7 @@ class TemplateRegistryExtensionTest extends TestCase
     protected function setUp(): void
     {
         $this->templateRegistry = $this->createStub(TemplateRegistryInterface::class);
-        $this->container = $this->createStub(ContainerInterface::class);
+        $this->container = new Container();
 
         // NEXT_MAJOR: Remove this line
         $this->admin = $this->createStub(AdminInterface::class);
@@ -82,11 +83,10 @@ class TemplateRegistryExtensionTest extends TestCase
 
     public function testGetAdminTemplate(): void
     {
-        $this->container->method('get')->willReturnMap([
-            // NEXT_MAJOR: Remove this line
-            ['admin.post', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $this->admin],
-            ['admin.post.template_registry', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $this->templateRegistry],
-        ]);
+        // NEXT_MAJOR: Remove next line.
+        $this->container->set('admin.post', $this->admin);
+
+        $this->container->set('admin.post.template_registry', $this->templateRegistry);
 
         $this->assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
