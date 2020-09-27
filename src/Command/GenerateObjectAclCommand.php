@@ -67,27 +67,35 @@ class GenerateObjectAclCommand extends QuestionableCommand
     {
         $this->pool = $pool;
         $this->aclObjectManipulators = $aclObjectManipulators;
-        if (null !== $registry && (!$registry instanceof RegistryInterface && !$registry instanceof ManagerRegistry)) {
-            if (!$registry instanceof ManagerRegistry) {
-                @trigger_error(sprintf(
-                    'Passing an object that doesn\'t implement %s as argument 3 to %s() is deprecated since'
-                    .' sonata-project/admin-bundle 3.56.',
-                    ManagerRegistry::class,
-                    __METHOD__
-                ), E_USER_DEPRECATED);
-            }
+        if (null !== $registry) {
+            @trigger_error(sprintf(
+                'Passing a third argument to %s() is deprecated since sonata-project/admin-bundle 3.x.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
 
-            throw new \TypeError(sprintf(
-                'Argument 3 passed to %s() must be either an instance of %s or %s, %s given.',
-                __METHOD__,
-                RegistryInterface::class,
-                ManagerRegistry::class,
-                \is_object($registry) ? \get_class($registry) : \gettype($registry)
-            ));
+            if (!$registry instanceof RegistryInterface && !$registry instanceof ManagerRegistry) {
+                throw new \TypeError(sprintf(
+                    'Argument 3 passed to %s() must be either an instance of %s or %s, %s given.',
+                    __METHOD__,
+                    RegistryInterface::class,
+                    ManagerRegistry::class,
+                    \is_object($registry) ? \get_class($registry) : \gettype($registry)
+                ));
+            }
         }
         $this->registry = $registry;
 
         parent::__construct();
+    }
+
+    /**
+     * @internal
+     *
+     * @param RegistryInterface|ManagerRegistry|null $registry
+     */
+    public function setRegistry(?object $registry)
+    {
+        $this->registry = $registry;
     }
 
     public function configure()
@@ -113,13 +121,6 @@ class GenerateObjectAclCommand extends QuestionableCommand
             'You must use fully qualified class name like <comment>App\Model\User</comment> if you want to set an object owner.',
             '',
         ]);
-
-        if (!$this->registry) {
-            throw new ServiceNotFoundException('doctrine', static::class, null, [], sprintf(
-                'The command "%s" has a dependency on a non-existent service "doctrine".',
-                static::$defaultName
-            ));
-        }
 
         if ($input->getOption('user_model')) {
             try {
@@ -243,7 +244,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
                 // until "else".
                 @trigger_error(sprintf(
                     'Passing a model shortcut name ("%s" given) as "user_model" option is deprecated since'
-                    .' sonata-project/admin-bundle 3.x and will throw an exception in 4.x.'
+                    .' sonata-project/admin-bundle 3.x and will throw an exception in 4.0.'
                     .' Pass a fully qualified class name instead (e.g. App\Model\User).',
                     $userModelFromInput
                 ), E_USER_DEPRECATED);
@@ -253,6 +254,13 @@ class GenerateObjectAclCommand extends QuestionableCommand
 //                    .' ("%s" given, expecting something like App\Model\User)',
 //                    $userModelFromInput
 //                ));
+
+                if (!$this->registry) {
+                    throw new ServiceNotFoundException('doctrine', static::class, null, [], sprintf(
+                        'The command "%s" has a dependency on a non-existent service "doctrine".',
+                        static::$defaultName
+                    ));
+                }
 
                 [$userBundle, $userModel] = Validators::validateEntityName($userModelFromInput);
 
