@@ -27,7 +27,7 @@ class SessionFilterPersisterTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->session = $this->createStub(SessionInterface::class);
+        $this->session = $this->createMock(SessionInterface::class);
     }
 
     protected function tearDown(): void

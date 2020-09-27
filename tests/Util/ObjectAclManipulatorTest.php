@@ -29,8 +29,8 @@ class ObjectAclManipulatorTest extends TestCase
 {
     protected function setUp(): void
     {
-        $this->output = $this->createStub(OutputInterface::class);
-        $this->admin = $this->createStub(AdminInterface::class);
+        $this->output = $this->createMock(OutputInterface::class);
+        $this->admin = $this->createMock(AdminInterface::class);
         $this->oids = new \ArrayIterator([
             $this->createStub(ObjectIdentityInterface::class),
             $this->createStub(ObjectIdentityInterface::class),

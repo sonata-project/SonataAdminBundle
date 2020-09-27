@@ -294,7 +294,7 @@ class BreadcrumbsBuilderTest extends TestCase
     {
         $action = 'my_action';
         $breadcrumbsBuilder = new BreadcrumbsBuilder(['child_admin_route' => 'show']);
-        $admin = $this->createMock(AbstractAdmin::class);
+        $admin = $this->createStub(AbstractAdmin::class);
         $admin->method('isChild')->willReturn(false);
 
         $admin->method('getMenuFactory')->willReturn(new MenuFactory());

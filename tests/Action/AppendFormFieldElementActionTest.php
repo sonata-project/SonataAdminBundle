@@ -110,7 +110,7 @@ final class AppendFormFieldElementActionTest extends TestCase
 
     private function configureFormRenderer()
     {
-        $runtime = $this->createStub(FormRenderer::class);
+        $runtime = $this->createMock(FormRenderer::class);
 
         $this->twig->method('getRuntime')->with(FormRenderer::class)->willReturn($runtime);
 
