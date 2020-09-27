@@ -22,14 +22,13 @@ jobs:
     strategy:
       matrix:
         php-version:
-          - '7.2'
           - '7.3'
           - '7.4'
         dependencies: [highest]
         allowed_to_fail: [false]
         variant: [normal]
         include:
-          - php-version: '7.2'
+          - php-version: '7.3'
             dependencies: lowest
             allowed_to_fail: false
             variant: normal
