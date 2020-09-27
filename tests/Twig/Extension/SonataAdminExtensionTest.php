@@ -2963,17 +2963,10 @@ EOT
 
     public function testIsGrantedAffirmative(): void
     {
-        $this->securityChecker->method('isGranted')->willReturnCallback(static function (string $role): bool {
-            if ('foo' === $role) {
-                return false;
-            }
-
-            if ('bar' === $role) {
-                return true;
-            }
-
-            return false;
-        });
+       $this->securityChecker->method('isGranted')->willReturnMap([
+            ['foo', null, false],
+            ['bar', null, true],
+        ]);
 
         $this->assertTrue($this->twigExtension->isGrantedAffirmative(['foo', 'bar']));
         $this->assertFalse($this->twigExtension->isGrantedAffirmative('foo'));
