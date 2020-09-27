@@ -108,8 +108,8 @@ final class DataTransformerResolver implements DataTransformerResolverInterface
         FieldDescriptionInterface $fieldDescription,
         string $class
     ): bool {
-        return (
-            method_exists($fieldDescription, 'getTargetModel') && $class === $fieldDescription->getTargetModel()
-        ) || $class === $fieldDescription->getTargetEntity();
+        return method_exists($fieldDescription, 'getTargetModel') ?
+            $class === $fieldDescription->getTargetModel() :
+            $class === $fieldDescription->getTargetEntity();
     }
 }
