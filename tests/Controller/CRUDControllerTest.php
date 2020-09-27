@@ -3849,6 +3849,8 @@ class CRUDControllerTest extends TestCase
 
     /**
      * @expectedDeprecation Method Sonata\AdminBundle\Controller\CRUDController::render has been renamed to Sonata\AdminBundle\Controller\CRUDController::renderWithExtraParams.
+     *
+     * @doesNotPerformAssertions
      */
     public function testRenderIsDeprecated(): void
     {

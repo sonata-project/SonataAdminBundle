@@ -851,6 +851,8 @@ class AdminTest extends TestCase
     /**
      * @group legacy
      * @expectedDeprecation Method "Sonata\AdminBundle\Admin\AbstractAdmin::addSubClass" is deprecated since sonata-project/admin-bundle 3.30 and will be removed in 4.0.
+     *
+     * @doesNotPerformAssertions
      */
     public function testAddSubClassIsDeprecated(): void
     {
@@ -2765,6 +2767,8 @@ class AdminTest extends TestCase
      * @dataProvider getDeprecatedAbstractAdminConstructorArgs
      *
      * @expectedDeprecation Passing other type than string%S as argument %d for method Sonata\AdminBundle\Admin\AbstractAdmin::__construct() is deprecated since sonata-project/admin-bundle 3.65. It will accept only string%S in version 4.0.
+     *
+     * @doesNotPerformAssertions
      */
     public function testDeprecatedAbstractAdminConstructorArgs($code, $class, $baseControllerName): void
     {

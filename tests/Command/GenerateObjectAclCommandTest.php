@@ -183,6 +183,8 @@ class GenerateObjectAclCommandTest extends TestCase
      * NEXT_MAJOR: Remove this test.
      *
      * @group legacy
+     *
+     * @doesNotPerformAssertions
      */
     public function testExecuteWithDeprecatedUserModelNotation(): void
     {

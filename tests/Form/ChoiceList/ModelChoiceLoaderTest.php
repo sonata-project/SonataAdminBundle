@@ -34,6 +34,8 @@ class ModelChoiceLoaderTest extends TestCase
      * NEXT_MAJOR: Expect exception instead.
      *
      * @group legacy
+     *
+     * @doesNotPerformAssertions
      */
     public function testConstructWithUnsupportedQuery(): void
     {
