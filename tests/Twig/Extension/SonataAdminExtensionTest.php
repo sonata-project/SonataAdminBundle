@@ -2963,7 +2963,7 @@ EOT
 
     public function testIsGrantedAffirmative(): void
     {
-       $this->securityChecker->method('isGranted')->willReturnMap([
+        $this->securityChecker->method('isGranted')->willReturnMap([
             ['foo', null, false],
             ['bar', null, true],
         ]);
