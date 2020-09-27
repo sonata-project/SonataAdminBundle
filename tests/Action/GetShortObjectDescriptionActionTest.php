@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Action;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
@@ -50,13 +49,12 @@ final class GetShortObjectDescriptionActionTest extends TestCase
     protected function setUp(): void
     {
         $this->twig = new Environment(new ArrayLoader(['template' => 'renderedTemplate']));
-        $this->pool = $this->prophesize(Pool::class);
-        $this->admin = $this->prophesize(AbstractAdmin::class);
-        $this->pool->getInstance(Argument::any())->willReturn($this->admin->reveal());
-        $this->admin->setRequest(Argument::type(Request::class))->shouldBeCalled();
+        $this->pool = $this->createStub(Pool::class);
+        $this->admin = $this->createMock(AbstractAdmin::class);
+        $this->pool->method('getInstance')->willReturn($this->admin);
         $this->action = new GetShortObjectDescriptionAction(
             $this->twig,
-            $this->pool->reveal()
+            $this->pool
         );
     }
 
@@ -71,8 +69,8 @@ final class GetShortObjectDescriptionActionTest extends TestCase
             'uniqid' => 'asdasd123',
         ]);
 
-        $this->pool->getInstance($code)->willThrow(\InvalidArgumentException::class);
-        $this->admin->setRequest(Argument::type(Request::class))->shouldNotBeCalled();
+        $this->pool->method('getInstance')->with($code)->willThrowException(new \InvalidArgumentException());
+        $this->admin->expects($this->never())->method('setRequest');
 
         ($this->action)($request);
     }
@@ -94,8 +92,9 @@ final class GetShortObjectDescriptionActionTest extends TestCase
             'uniqid' => 'asdasd123',
         ]);
 
-        $this->admin->setUniqid('asdasd123')->shouldBeCalled();
-        $this->admin->getObject(42)->willReturn(false);
+        $this->admin->expects($this->once())->method('setRequest')->with($request);
+        $this->admin->expects($this->once())->method('setUniqid')->with('asdasd123');
+        $this->admin->method('getObject')->with(42)->willReturn(false);
 
         ($this->action)($request);
     }
@@ -114,8 +113,9 @@ final class GetShortObjectDescriptionActionTest extends TestCase
             '_format' => 'html',
         ]);
 
-        $this->admin->setUniqid('asdasd123')->shouldBeCalled();
-        $this->admin->getObject(null)->willReturn(null);
+        $this->admin->expects($this->once())->method('setRequest')->with($request);
+        $this->admin->expects($this->once())->method('setUniqid')->with('asdasd123');
+        $this->admin->method('getObject')->with(null)->willReturn(null);
 
         $this->assertInstanceOf(Response::class, ($this->action)($request));
     }
@@ -130,10 +130,11 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         ]);
         $object = new \stdClass();
 
-        $this->admin->setUniqid('asdasd123')->shouldBeCalled();
-        $this->admin->getObject(42)->willReturn($object);
-        $this->admin->getTemplate('short_object_description')->willReturn('template');
-        $this->admin->toString($object)->willReturn('bar');
+        $this->admin->expects($this->once())->method('setRequest')->with($request);
+        $this->admin->expects($this->once())->method('setUniqid')->with('asdasd123');
+        $this->admin->method('getObject')->with(42)->willReturn($object);
+        $this->admin->method('getTemplate')->with('short_object_description')->willReturn('template');
+        $this->admin->method('toString')->with($object)->willReturn('bar');
 
         $response = ($this->action)($request);
 
@@ -154,10 +155,11 @@ final class GetShortObjectDescriptionActionTest extends TestCase
             '_format' => 'json',
         ]);
 
-        $this->admin->setUniqid('asdasd123')->shouldBeCalled();
-        $this->admin->getObject(null)->willReturn(null);
-        $this->admin->id(null)->willReturn('');
-        $this->admin->toString(null)->willReturn('');
+        $this->admin->expects($this->once())->method('setRequest')->with($request);
+        $this->admin->expects($this->once())->method('setUniqid')->with('asdasd123');
+        $this->admin->method('getObject')->with(null)->willReturn(null);
+        $this->admin->method('id')->with(null)->willReturn('');
+        $this->admin->method('toString')->with(null)->willReturn('');
 
         $response = ($this->action)($request);
 
@@ -175,11 +177,12 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         ]);
         $object = new \stdClass();
 
-        $this->admin->setUniqid('asdasd123')->shouldBeCalled();
-        $this->admin->id($object)->willReturn(42);
-        $this->admin->getObject(42)->willReturn($object);
-        $this->admin->getTemplate('short_object_description')->willReturn('template');
-        $this->admin->toString($object)->willReturn('bar');
+        $this->admin->expects($this->once())->method('setRequest')->with($request);
+        $this->admin->expects($this->once())->method('setUniqid')->with('asdasd123');
+        $this->admin->method('id')->with($object)->willReturn(42);
+        $this->admin->method('getObject')->with(42)->willReturn($object);
+        $this->admin->method('getTemplate')->with('short_object_description')->willReturn('template');
+        $this->admin->method('toString')->with($object)->willReturn('bar');
 
         $response = ($this->action)($request);
 

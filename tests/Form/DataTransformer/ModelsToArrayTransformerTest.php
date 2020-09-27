@@ -21,17 +21,10 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 
 class ModelsToArrayTransformerTest extends TestCase
 {
-    private $modelManager;
-
-    protected function setUp(): void
-    {
-        $this->modelManager = $this->prophesize(ModelManagerInterface::class)->reveal();
-    }
-
     public function testConstructor(): void
     {
         $transformer = new ModelsToArrayTransformer(
-            $this->modelManager,
+            $this->createStub(ModelManagerInterface::class),
             Foo::class
         );
 
@@ -43,13 +36,9 @@ class ModelsToArrayTransformerTest extends TestCase
      */
     public function testLegacyConstructor(): void
     {
-        $choiceListClass = ModelChoiceLoader::class;
-
-        $choiceList = $this->prophesize($choiceListClass)->reveal();
-
         $transformer = new ModelsToArrayTransformer(
-            $choiceList,
-            $this->modelManager,
+            $this->createStub(ModelChoiceLoader::class),
+            $this->createStub(ModelManagerInterface::class),
             Foo::class
         );
 

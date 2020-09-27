@@ -23,7 +23,7 @@ class ModelListTypeTest extends TypeTestCase
 
     protected function setUp(): void
     {
-        $this->modelManager = $this->prophesize(ModelManagerInterface::class);
+        $this->modelManager = $this->createMock(ModelManagerInterface::class);
 
         parent::setUp();
     }
@@ -36,11 +36,11 @@ class ModelListTypeTest extends TypeTestCase
             ModelListType::class,
             null,
             [
-                'model_manager' => $this->modelManager->reveal(),
+                'model_manager' => $this->modelManager,
                 'class' => 'My\Entity',
             ]
         );
-        $this->modelManager->find('My\Entity', 42)->shouldBeCalled();
+        $this->modelManager->expects($this->once())->method('find')->with('My\Entity', 42);
         $form->submit($formData);
         $this->assertTrue($form->isSynchronized());
     }

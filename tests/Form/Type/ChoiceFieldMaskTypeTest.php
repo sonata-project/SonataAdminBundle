@@ -80,20 +80,18 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
     {
         $choiceFieldMaskType = new ChoiceFieldMaskType();
 
-        $view = $this->prophesize(FormView::class);
-        $form = $this->prophesize(FormInterface::class);
-        $options = [
-            'map' => [
-                'choice_1' => ['field1', 'field2'],
-                'choice_2' => ['field__3', 'field.4'],
-                'choice_3' => ['field1', 'field5'],
-            ],
-        ];
+        $view = $this->createStub(FormView::class);
 
         $choiceFieldMaskType->buildView(
-            $view->reveal(),
-            $form->reveal(),
-            $options
+            $view,
+            $this->createStub(FormInterface::class),
+            [
+                'map' => [
+                    'choice_1' => ['field1', 'field2'],
+                    'choice_2' => ['field__3', 'field.4'],
+                    'choice_3' => ['field1', 'field5'],
+                ],
+            ]
         );
 
         $expectedAllFields = [
@@ -119,30 +117,27 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
             ],
         ];
 
-        $this->assertSame(array_values($expectedAllFields), array_values($view->reveal()->vars['all_fields']), '"all_fields" is not as expected');
-        $this->assertSame($expectedMap, $view->reveal()->vars['map'], '"map" is not as expected');
+        $this->assertSame(array_values($expectedAllFields), array_values($view->vars['all_fields']), '"all_fields" is not as expected');
+        $this->assertSame($expectedMap, $view->vars['map'], '"map" is not as expected');
     }
 
     public function testBuildViewWithFaultyMapValues(): void
     {
-        $options = ['map' => [
-            'int' => 1,
-            'string' => 'string',
-            'boolean' => false,
-            'array' => ['field_1', 'field_2'],
-            'empty_array' => [],
-            'class' => new \stdClass(),
-        ]];
-
         $choiceFieldMaskType = new ChoiceFieldMaskType();
 
-        $view = $this->prophesize(FormView::class);
-        $form = $this->prophesize(FormInterface::class);
+        $view = $this->createStub(FormView::class);
 
         $choiceFieldMaskType->buildView(
-            $view->reveal(),
-            $form->reveal(),
-            $options
+            $view,
+            $this->createStub(FormInterface::class),
+            ['map' => [
+                'int' => 1,
+                'string' => 'string',
+                'boolean' => false,
+                'array' => ['field_1', 'field_2'],
+                'empty_array' => [],
+                'class' => new \stdClass(),
+            ]]
         );
 
         $expectedAllFields = ['field_1', 'field_2'];
@@ -150,8 +145,8 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
             'array' => ['field_1', 'field_2'],
         ];
 
-        $this->assertSame(array_values($expectedAllFields), array_values($view->reveal()->vars['all_fields']), '"all_fields" is not as expected');
-        $this->assertSame($expectedMap, $view->reveal()->vars['map'], '"map" is not as expected');
+        $this->assertSame(array_values($expectedAllFields), array_values($view->vars['all_fields']), '"all_fields" is not as expected');
+        $this->assertSame($expectedMap, $view->vars['map'], '"map" is not as expected');
     }
 
     private function resolveOptions(array $options): array

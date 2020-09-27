@@ -25,12 +25,12 @@ final class AdminExtractorTest extends KernelTestCase
         $tester = $this->createCommandTester();
         $tester->execute(['locale' => 'en']);
 
-        $this->assertRegExp('/group_label/', $tester->getDisplay());
-        $this->assertRegExp('/admin_label/', $tester->getDisplay());
-        $this->assertRegExp('/Name Show/', $tester->getDisplay());
-        $this->assertRegExp('/Name List/', $tester->getDisplay());
-        $this->assertRegExp('/Name Form/', $tester->getDisplay());
-        $this->assertRegExp('/Date Published/', $tester->getDisplay());
+        $this->assertMatchesRegularExpression('/group_label/', $tester->getDisplay());
+        $this->assertMatchesRegularExpression('/admin_label/', $tester->getDisplay());
+        $this->assertMatchesRegularExpression('/Name Show/', $tester->getDisplay());
+        $this->assertMatchesRegularExpression('/Name List/', $tester->getDisplay());
+        $this->assertMatchesRegularExpression('/Name Form/', $tester->getDisplay());
+        $this->assertMatchesRegularExpression('/Date Published/', $tester->getDisplay());
     }
 
     protected static function getKernelClass(): string
