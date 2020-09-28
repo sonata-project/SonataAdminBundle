@@ -37,6 +37,13 @@ file that was distributed with this source code.
                 {% else %}
                     {% trans with {'%count%': data.idx|length} from 'SonataAdminBundle' %}message_batch_confirmation{% endtrans %}
                 {% endif %}
+                <ul>
+                    {% for element in datagrid.getQuery().execute() %}
+                        <li>
+                            {{ element }}
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
             <div class="box-footer clearfix">
                 <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST">

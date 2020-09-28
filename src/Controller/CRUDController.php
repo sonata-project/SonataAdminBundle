@@ -488,6 +488,15 @@ class CRUDController implements ContainerAwareInterface
             return $this->redirectToList();
         }
 
+        $query = $datagrid->getQuery();
+
+        $query->setFirstResult(null);
+        $query->setMaxResults(null);
+
+        if (\count($idx) > 0) {
+            $this->admin->getModelManager()->addIdentifiersToQuery($this->admin->getClass(), $query, $idx);
+        }
+
         $askConfirmation = $batchActions[$action]['ask_confirmation'] ??
             true;
 
@@ -524,16 +533,9 @@ class CRUDController implements ContainerAwareInterface
             throw new \RuntimeException(sprintf('A `%s::%s` method must be callable', static::class, $finalAction));
         }
 
-        $query = $datagrid->getQuery();
-
-        $query->setFirstResult(null);
-        $query->setMaxResults(null);
-
         $this->admin->preBatchAction($action, $query, $idx, $allElements);
 
-        if (\count($idx) > 0) {
-            $this->admin->getModelManager()->addIdentifiersToQuery($this->admin->getClass(), $query, $idx);
-        } elseif (!$allElements) {
+        if (!$allElements) {
             $this->addFlash(
                 'sonata_flash_info',
                 $this->trans('flash_batch_no_elements_processed', [], 'SonataAdminBundle')
