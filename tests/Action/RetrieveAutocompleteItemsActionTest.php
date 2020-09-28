@@ -237,7 +237,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     {
         $model = new \stdClass();
 
-        $targetAdmin = $this->createStub(AbstractAdmin::class);
+        $targetAdmin = $this->createMock(AbstractAdmin::class);
         $datagrid = $this->createStub(DatagridInterface::class);
         $metadata = $this->createStub(MetadataInterface::class);
         $pager = $this->createStub(Pager::class);

@@ -609,7 +609,7 @@ class HelperControllerTest extends TestCase
         $model = new Foo();
 
         $targetAdmin = $this->createStub(AbstractAdmin::class);
-        $datagrid = $this->createStub(DatagridInterface::class);
+        $datagrid = $this->createMock(DatagridInterface::class);
         $metadata = $this->createStub(MetadataInterface::class);
         $pager = $this->createStub(Pager::class);
         // NEXT_MAJOR: Use `createStub` instead of using mock builder
@@ -709,7 +709,7 @@ class HelperControllerTest extends TestCase
 
     private function configureFormRenderer()
     {
-        $runtime = $this->createStub(FormRenderer::class);
+        $runtime = $this->createMock(FormRenderer::class);
 
         $this->twig->method('getRuntime')->with(FormRenderer::class)->willReturn($runtime);
 

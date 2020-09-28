@@ -83,7 +83,7 @@ final class RetrieveFormFieldElementActionTest extends TestCase
 
         $modelManager = $this->createStub(ModelManagerInterface::class);
         $formView = new FormView();
-        $form = $this->createStub(Form::class);
+        $form = $this->createMock(Form::class);
         $formBuilder = $this->createStub(FormBuilder::class);
 
         $renderer = $this->configureFormRenderer();

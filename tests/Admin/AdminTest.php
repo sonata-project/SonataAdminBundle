@@ -2455,7 +2455,7 @@ class AdminTest extends TestCase
         $admin = $this->getMockForAbstractClass(AbstractAdmin::class, [
             'admin.my_code', 'My\Class', 'MyBundle\ClassAdminController',
         ]);
-        $builder = $this->createStub(BreadcrumbsBuilderInterface::class);
+        $builder = $this->createMock(BreadcrumbsBuilderInterface::class);
         $action = 'myaction';
         $builder->expects($this->once())->method('getBreadcrumbs')->with($admin, $action);
         $admin->setBreadcrumbsBuilder($builder)->getBreadcrumbs($action);
@@ -2469,7 +2469,7 @@ class AdminTest extends TestCase
         $admin = $this->getMockForAbstractClass(AbstractAdmin::class, [
             'admin.my_code', 'My\Class', 'MyBundle\ClassAdminController',
         ]);
-        $builder = $this->createStub(BreadcrumbsBuilderInterface::class);
+        $builder = $this->createMock(BreadcrumbsBuilderInterface::class);
         $action = 'myaction';
         $menu = $this->createMock(ItemInterface::class);
         $builder->expects($this->once())->method('buildBreadcrumbs')->with($admin, $action, $menu)
