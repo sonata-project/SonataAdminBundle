@@ -388,7 +388,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getRouteBuilder();
 
     /**
-     * @param object $object
+     * @param object|null $object NEXT_MAJOR: Use `object` as type declaration for argument 1
      *
      * @return string
      *
