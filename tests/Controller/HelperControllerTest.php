@@ -29,7 +29,7 @@ use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormConfigInterface;
@@ -208,7 +208,7 @@ class HelperControllerTest extends TestCase
         $translator = $this->createStub(TranslatorInterface::class);
         $propertyAccessor = new PropertyAccessor();
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
-        $container = $this->createStub(ContainerInterface::class);
+        $container = new Container();
         $modelManager = $this->createStub(ModelManagerInterface::class);
 
         $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
@@ -221,7 +221,7 @@ class HelperControllerTest extends TestCase
         $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $this->admin->method('getModelManager')->willReturn($modelManager);
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
-        $container->method('get')->with('sonata.post.admin.template_registry')->willReturn($templateRegistry);
+        $container->set('sonata.post.admin.template_registry', $templateRegistry);
         $this->pool->method('getPropertyAccessor')->willReturn($propertyAccessor);
         $this->twig->method('getExtension')->with(SonataAdminExtension::class)->willReturn(
             new SonataAdminExtension($pool, null, $translator, $container)
@@ -264,7 +264,7 @@ class HelperControllerTest extends TestCase
         $translator = $this->createStub(TranslatorInterface::class);
         $propertyAccessor = new PropertyAccessor();
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
-        $container = $this->createStub(ContainerInterface::class);
+        $container = new Container();
 
         $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
         $this->admin->method('getObject')->with(42)->willReturn($object);
@@ -273,7 +273,7 @@ class HelperControllerTest extends TestCase
         $this->admin->method('getListFieldDescription')->with('bar')->willReturn($fieldDescription);
         $this->admin->method('getClass')->willReturn(\get_class($object));
         $this->admin->expects($this->once())->method('update')->with($object);
-        $container->method('get')->with('sonata.post.admin.template_registry')->willReturn($templateRegistry);
+        $container->set('sonata.post.admin.template_registry', $templateRegistry);
         // NEXT_MAJOR: Remove this line
         $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');

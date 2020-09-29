@@ -22,7 +22,7 @@ use Sonata\AdminBundle\Form\DataTransformerResolver;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -109,7 +109,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $translator = $this->createStub(TranslatorInterface::class);
         $propertyAccessor = new PropertyAccessor();
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
-        $container = $this->createStub(ContainerInterface::class);
+        $container = new Container();
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
@@ -119,7 +119,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         // NEXT_MAJOR: Remove this line
         $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
-        $container->method('get')->with('sonata.post.admin.template_registry')->willReturn($templateRegistry);
+        $container->set('sonata.post.admin.template_registry', $templateRegistry);
         $this->pool->method('getPropertyAccessor')->willReturn($propertyAccessor);
         $this->twig->addExtension(new SonataAdminExtension(
             $pool,
@@ -176,7 +176,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $translator = $this->createStub(TranslatorInterface::class);
         $propertyAccessor = new PropertyAccessor();
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
-        $container = $this->createStub(ContainerInterface::class);
+        $container = new Container();
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
@@ -186,7 +186,7 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
-        $container->method('get')->with('sonata.post.admin.template_registry')->willReturn($templateRegistry);
+        $container->set('sonata.post.admin.template_registry', $templateRegistry);
         $this->pool->method('getPropertyAccessor')->willReturn($propertyAccessor);
         $this->twig->addExtension(new SonataAdminExtension(
             $pool,
@@ -237,7 +237,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $translator = $this->createStub(TranslatorInterface::class);
         $propertyAccessor = new PropertyAccessor();
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
-        $container = $this->createStub(ContainerInterface::class);
+        $container = new Container();
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
@@ -245,7 +245,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->method('getListFieldDescription')->with('bar')->willReturn($fieldDescription);
         $this->admin->method('getClass')->willReturn(\get_class($object));
         $this->admin->expects($this->once())->method('update')->with($object);
-        $container->method('get')->with('sonata.post.admin.template_registry')->willReturn($templateRegistry);
+        $container->set('sonata.post.admin.template_registry', $templateRegistry);
         // NEXT_MAJOR: Remove this line
         $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
@@ -328,7 +328,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $translator = $this->createStub(TranslatorInterface::class);
         $propertyAccessor = new PropertyAccessor();
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
-        $container = $this->createStub(ContainerInterface::class);
+        $container = new Container();
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
@@ -338,7 +338,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         // NEXT_MAJOR: Remove this line
         $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
-        $container->method('get')->with('sonata.post.admin.template_registry')->willReturn($templateRegistry);
+        $container->set('sonata.post.admin.template_registry', $templateRegistry);
         $this->pool->method('getPropertyAccessor')->willReturn($propertyAccessor);
         $this->twig->addExtension(new SonataAdminExtension(
             $pool,
@@ -386,7 +386,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $translator = $this->createStub(TranslatorInterface::class);
         $propertyAccessor = new PropertyAccessor();
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
-        $container = $this->createStub(ContainerInterface::class);
+        $container = new Container();
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
@@ -396,7 +396,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         // NEXT_MAJOR: Remove this line
         $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
-        $container->method('get')->with('sonata.post.admin.template_registry')->willReturn($templateRegistry);
+        $container->set('sonata.post.admin.template_registry', $templateRegistry);
         $this->pool->method('getPropertyAccessor')->willReturn($propertyAccessor);
         $this->twig->addExtension(new SonataAdminExtension(
             $pool,
@@ -446,7 +446,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $translator = $this->createStub(TranslatorInterface::class);
         $propertyAccessor = new PropertyAccessor();
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
-        $container = $this->createStub(ContainerInterface::class);
+        $container = new Container();
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
@@ -456,7 +456,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         // NEXT_MAJOR: Remove this line
         $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
-        $container->method('get')->with('sonata.post.admin.template_registry')->willReturn($templateRegistry);
+        $container->set('sonata.post.admin.template_registry', $templateRegistry);
         $this->pool->method('getPropertyAccessor')->willReturn($propertyAccessor);
         $this->twig->addExtension(new SonataAdminExtension(
             $pool,

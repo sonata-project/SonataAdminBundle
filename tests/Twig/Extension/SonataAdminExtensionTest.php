@@ -28,7 +28,7 @@ use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
@@ -100,7 +100,7 @@ class SonataAdminExtensionTest extends TestCase
     private $translator;
 
     /**
-     * @var ContainerInterface
+     * @var Container
      */
     private $container;
 
@@ -118,7 +118,7 @@ class SonataAdminExtensionTest extends TestCase
     {
         date_default_timezone_set('Europe/London');
 
-        $container = $this->createMock(ContainerInterface::class);
+        $container = new Container();
 
         $this->pool = new Pool($container, '', '');
         $this->pool->setAdminServiceIds(['sonata_admin_foo_service']);
@@ -155,9 +155,8 @@ class SonataAdminExtensionTest extends TestCase
         $this->translator = $translator;
 
         $this->templateRegistry = $this->createStub(TemplateRegistryInterface::class);
-        $this->container = $this->createStub(ContainerInterface::class);
-        $this->container->method('get')->with('sonata_admin_foo_service.template_registry')
-            ->willReturn($this->templateRegistry);
+        $this->container = new Container();
+        $this->container->set('sonata_admin_foo_service.template_registry', $this->templateRegistry);
 
         $this->securityChecker = $this->createStub(AuthorizationCheckerInterface::class);
 
@@ -238,17 +237,8 @@ class SonataAdminExtensionTest extends TestCase
             ->with($this->equalTo($this->object))
             ->willReturn(12345);
 
-        $container
-            ->method('get')
-            ->willReturnCallback(function (string $id) {
-                if ('sonata_admin_foo_service' === $id) {
-                    return $this->admin;
-                }
-
-                if ('sonata_admin_bar_service' === $id) {
-                    return $this->adminBar;
-                }
-            });
+        $container->set('sonata_admin_foo_service', $this->admin);
+        $container->set('sonata_admin_bar_service', $this->adminBar);
 
         // initialize field description
         $this->fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
@@ -2963,10 +2953,18 @@ EOT
 
     public function testIsGrantedAffirmative(): void
     {
-        $this->securityChecker->method('isGranted')->willReturnMap([
-            ['foo', null, false],
-            ['bar', null, true],
-        ]);
+        $this->securityChecker
+            ->method('isGranted')
+            ->withConsecutive(
+                ['foo', null],
+                ['bar', null],
+                ['foo', null],
+                ['bar', null]
+            )
+            ->willReturnMap([
+                ['foo', null, false],
+                ['bar', null, true],
+            ]);
 
         $this->assertTrue($this->twigExtension->isGrantedAffirmative(['foo', 'bar']));
         $this->assertFalse($this->twigExtension->isGrantedAffirmative('foo'));
