@@ -2435,12 +2435,16 @@ EOT;
      */
     public function getCurrentChildAdmin()
     {
-        foreach ($this->children as $children) {
+        foreach ($this->children as $child) {
             // NEXT_MAJOR: Remove method_exists check and delete elseif case
-            if (method_exists($children, 'isCurrentChild') && $children->isCurrentChild()) {
-                return $children;
-            } elseif ($children->getCurrentChild()) {
-                return $children;
+            if (method_exists($child, 'isCurrentChild')) {
+                if ($child->isCurrentChild()) {
+                    return $child;
+                }
+            } else {
+                if ($child->getCurrentChild()) {
+                    return $child;
+                }
             }
         }
 
