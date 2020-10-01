@@ -26,7 +26,6 @@ jobs:
           REQUIRE_DEV: true
         with:
           args: analyse -c .phpstan/phpstan.neon.dist
-
   psalm:
     name: Psalm
 
