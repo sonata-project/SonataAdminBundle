@@ -130,7 +130,10 @@ class FormMapper extends BaseGroupedMapper
             $name = $fieldDescription->getName();
 
             // Note that the builder var is actually the formContractor:
-            $options = array_replace_recursive($this->builder->getDefaultOptions($type, $fieldDescription) ?? [], $options);
+            $options = array_replace_recursive(
+                $this->builder->getDefaultOptions($type, $fieldDescription, $options),
+                $options
+            );
 
             // be compatible with mopa if not installed, avoid generating an exception for invalid option
             // force the default to false ...

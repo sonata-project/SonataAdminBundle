@@ -110,7 +110,13 @@ class AdminType extends AbstractType
                         $subject = $p->getValue($parentSubject, $parentPath.$path);
                     } catch (NoSuchIndexException $e) {
                         // no object here, we create a new one
-                        $subject = ObjectManipulator::setObject($admin->getNewInstance(), $parentSubject, $parentFieldDescription);
+                        $subject = $admin->getNewInstance();
+
+                        if ($options['by_reference']) {
+                            $subject = ObjectManipulator::addInstance($parentSubject, $subject, $parentFieldDescription);
+                        } else {
+                            $subject = ObjectManipulator::setObject($subject, $parentSubject, $parentFieldDescription);
+                        }
                     }
                 }
             }

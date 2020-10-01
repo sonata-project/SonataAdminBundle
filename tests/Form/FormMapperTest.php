@@ -57,6 +57,7 @@ class FormMapperTest extends TestCase
     protected function setUp(): void
     {
         $this->contractor = $this->createMock(FormContractorInterface::class);
+        $this->contractor->method('getDefaultOptions')->willReturn([]);
 
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
