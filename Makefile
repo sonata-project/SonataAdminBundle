@@ -65,3 +65,7 @@ endif
 docs:
 	cd docs && sphinx-build -W -b html -d _build/doctrees . _build/html
 .PHONY: docs
+
+phpstan:
+    docker run --env REQUIRE_DEV=true --rm -it -w=/app -v ${PWD}:/app oskarstark/phpstan-ga:latest -c .phpstan/phpstan.neon.dist
+.PHONY: phpstan
