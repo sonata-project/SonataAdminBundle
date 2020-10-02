@@ -67,6 +67,8 @@ interface AdminExtensionInterface
 
     /**
      * Return the controller access mapping.
+     *
+     * @return array<string, string|string[]>
      */
     public function getAccessMapping(AdminInterface $admin): array;
 

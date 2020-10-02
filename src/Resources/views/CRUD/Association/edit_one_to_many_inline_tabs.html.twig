@@ -13,14 +13,19 @@ file that was distributed with this source code.
         <div>
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
-                    {% for name, form_group in associationAdmin.formgroups %}
+                    {% for form_group in associationAdmin.formgroups %}
                         <li class="{% if loop.first %}active{% endif %}">
                             <a
                                 href="#{{ id }}_{{ loop.parent.loop.index }}_{{ loop.index }}"
                                 data-toggle="tab"
                             >
                                 <i class="icon-exclamation-sign has-errors hide"></i>
-                                {{ form_group.label|trans({}, form_group.translation_domain|default(associationAdmin.translationDomain)) }}
+                                {% if form_group.translation_domain is same as(false) %}
+                                    {{ form_group.label }}
+                                {% else %}
+                                    {% set translationDomain = form_group.translation_domain|default(associationAdmin.translationDomain) %}
+                                    {{ form_group.label|trans({}, translationDomain) }}
+                                {% endif %}
                             </a>
                         </li>
                     {% endfor %}

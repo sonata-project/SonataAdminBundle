@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Builder\BuilderInterface;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 use Sonata\AdminBundle\Tests\Fixtures\Mapper\AbstractDummyGroupedMapper;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
  * Test for BaseGroupedMapper.
@@ -54,7 +54,8 @@ class BaseGroupedMapperTest extends TestCase
             ->method('getLabelTranslatorStrategy')
             ->willReturn($labelStrategy);
 
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $container = new Container();
+        $container->setParameter('sonata.admin.configuration.translate_group_label', '');
         $configurationPool = new Pool($container, 'myTitle', 'myLogoTitle');
 
         $admin

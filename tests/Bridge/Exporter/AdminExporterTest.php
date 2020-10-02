@@ -59,7 +59,7 @@ class AdminExporterTest extends TestCase
             ->method('getClass')
             ->willReturn('MyProject\AppBundle\Model\MyClass');
         $adminExporter = new AdminExporter(new Exporter());
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '#export_myclass_\d{4}_\d{2}_\d{2}_\d{2}_\d{2}_\d{2}.csv#',
             $adminExporter->getExportFilename($admin, 'csv')
         );

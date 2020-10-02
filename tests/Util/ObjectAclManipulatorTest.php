@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Util;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Util\DummyObjectAclManipulator;
@@ -28,31 +28,51 @@ use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
  */
 class ObjectAclManipulatorTest extends TestCase
 {
+    /**
+     * @var MockObject|OutputInterface
+     */
+    private $output;
+
+    /**
+     * @var MockObject|AdminInterface
+     */
+    private $admin;
+
+    /**
+     * @var \ArrayIterator
+     */
+    private $oids;
+
+    /**
+     * @var UserSecurityIdentity
+     */
+    private $securityIdentity;
+
     protected function setUp(): void
     {
-        $this->output = $this->prophesize(OutputInterface::class);
-        $this->admin = $this->prophesize(AdminInterface::class);
+        $this->output = $this->createMock(OutputInterface::class);
+        $this->admin = $this->createMock(AdminInterface::class);
         $this->oids = new \ArrayIterator([
-            $this->prophesize(ObjectIdentityInterface::class)->reveal(),
-            $this->prophesize(ObjectIdentityInterface::class)->reveal(),
+            $this->createStub(ObjectIdentityInterface::class),
+            $this->createStub(ObjectIdentityInterface::class),
         ]);
         $this->securityIdentity = new UserSecurityIdentity('Michael', \stdClass::class);
     }
 
     public function testConfigureAclsIgnoresNonAclSecurityHandlers(): void
     {
-        $this->admin->getSecurityHandler()->shouldBeCalled();
-        $this->admin->getCode()->shouldBeCalled()->willReturn('test');
-        $this->output->writeln(Argument::allOf(
-            Argument::containingString('ignoring'),
-            Argument::containingString('test')
-        ))->shouldBeCalled();
+        $this->admin->expects($this->once())->method('getSecurityHandler');
+        $this->admin->expects($this->once())->method('getCode')->willReturn('test');
+        $this->output->expects($this->once())->method('writeln')->with($this->logicalAnd(
+            $this->stringContains('ignoring'),
+            $this->stringContains('test')
+        ));
         $manipulator = new DummyObjectAclManipulator();
         $this->assertSame(
             [0, 0],
             $manipulator->configureAcls(
-                $this->output->reveal(),
-                $this->admin->reveal(),
+                $this->output,
+                $this->admin,
                 $this->oids,
                 $this->securityIdentity
             )
@@ -61,35 +81,33 @@ class ObjectAclManipulatorTest extends TestCase
 
     public function testConfigureAcls(): void
     {
-        $securityHandler = $this->prophesize(AclSecurityHandlerInterface::class);
-        $acls = $this->prophesize('SplObjectStorage');
-        $acls->contains(Argument::type(ObjectIdentityInterface::class))
-            ->shouldBeCalled()
+        $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
+        $acls = $this->createMock('SplObjectStorage');
+        $acls->expects($this->atLeastOnce())->method('contains')->with($this->isInstanceOf(ObjectIdentityInterface::class))
             ->willReturn(false, true);
-        $acl = $this->prophesize(MutableAclInterface::class)->reveal();
-        $acls->offsetGet(Argument::type(ObjectIdentityInterface::class))
-            ->shouldBeCalled()
+        $acl = $this->createStub(MutableAclInterface::class);
+        $acls->expects($this->once())->method('offsetGet')->with($this->isInstanceOf(ObjectIdentityInterface::class))
             ->willReturn($acl);
-        $securityHandler->findObjectAcls($this->oids)->shouldBeCalled()->willReturn($acls->reveal());
-        $securityHandler->createAcl(Argument::type(ObjectIdentityInterface::class))->shouldBeCalled()->willReturn($acl);
-        $securityHandler->addObjectOwner($acl, Argument::type(UserSecurityIdentity::class))->shouldBeCalled();
-        $securityHandler->buildSecurityInformation($this->admin)->shouldBeCalled()->willReturn([]);
-        $securityHandler->addObjectClassAces($acl, [])->shouldBeCalled();
-        $securityHandler->updateAcl($acl)->shouldBeCalled()->willThrow(new \Exception('test exception'));
-        $this->output->writeln(Argument::allOf(
-            Argument::containingString('ignoring'),
-            Argument::containingString('test exception')
-        ))->shouldBeCalled();
+        $securityHandler->expects($this->once())->method('findObjectAcls')->with($this->oids)->willReturn($acls);
+        $securityHandler->expects($this->once())->method('createAcl')->with($this->isInstanceOf(ObjectIdentityInterface::class))->willReturn($acl);
+        $securityHandler->expects($this->atLeastOnce())->method('addObjectOwner')->with($acl, $this->isInstanceOf(UserSecurityIdentity::class));
+        $securityHandler->expects($this->atLeastOnce())->method('buildSecurityInformation')->with($this->admin)->willReturn([]);
+        $securityHandler->expects($this->atLeastOnce())->method('addObjectClassAces')->with($acl, []);
+        $securityHandler->expects($this->atLeastOnce())->method('updateAcl')->with($acl)->willThrowException(new \Exception('test exception'));
+        $this->output->method('writeln')->with($this->logicalAnd(
+            $this->stringContains('ignoring'),
+            $this->stringContains('test exception')
+        ));
 
-        $this->admin->getSecurityHandler()->shouldBeCalled()->willReturn($securityHandler->reveal());
+        $this->admin->expects($this->once())->method('getSecurityHandler')->willReturn($securityHandler);
 
         $manipulator = new DummyObjectAclManipulator();
 
         $this->assertSame(
             [1, 1],
             $manipulator->configureAcls(
-                $this->output->reveal(),
-                $this->admin->reveal(),
+                $this->output,
+                $this->admin,
                 $this->oids,
                 $this->securityIdentity
             )

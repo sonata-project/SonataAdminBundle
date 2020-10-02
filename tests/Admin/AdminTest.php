@@ -172,15 +172,17 @@ class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\Post',
             'Sonata\NewsBundle\Controller\PostAdminController'
         );
-        $securityHandler = $this->prophesize(SecurityHandlerInterface::class);
-        $securityHandler->isGranted($admin, 'CUSTOM_ROLE', $admin)->willReturn(true);
-        $securityHandler->isGranted($admin, 'EXTRA_CUSTOM_ROLE', $admin)->willReturn(false);
-        $customExtension = $this->prophesize(AbstractAdminExtension::class);
-        $customExtension->getAccessMapping($admin)->willReturn(
+        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
+        $securityHandler->method('isGranted')->willReturnMap([
+            [$admin, 'CUSTOM_ROLE', $admin, true],
+            [$admin, 'EXTRA_CUSTOM_ROLE', $admin, false],
+        ]);
+        $customExtension = $this->createStub(AbstractAdminExtension::class);
+        $customExtension->method('getAccessMapping')->with($admin)->willReturn(
             ['custom_action' => ['CUSTOM_ROLE', 'EXTRA_CUSTOM_ROLE']]
         );
-        $admin->addExtension($customExtension->reveal());
-        $admin->setSecurityHandler($securityHandler->reveal());
+        $admin->addExtension($customExtension);
+        $admin->setSecurityHandler($securityHandler);
         $this->expectException(
             AccessDeniedException::class
         );
@@ -208,15 +210,17 @@ class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\Post',
             'Sonata\NewsBundle\Controller\PostAdminController'
         );
-        $securityHandler = $this->prophesize(SecurityHandlerInterface::class);
-        $securityHandler->isGranted($admin, 'CUSTOM_ROLE', $admin)->willReturn(true);
-        $securityHandler->isGranted($admin, 'EXTRA_CUSTOM_ROLE', $admin)->willReturn(false);
-        $customExtension = $this->prophesize(AbstractAdminExtension::class);
-        $customExtension->getAccessMapping($admin)->willReturn(
+        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
+        $securityHandler->method('isGranted')->willReturnMap([
+            [$admin, 'CUSTOM_ROLE', $admin, true],
+            [$admin, 'EXTRA_CUSTOM_ROLE', $admin, false],
+        ]);
+        $customExtension = $this->createStub(AbstractAdminExtension::class);
+        $customExtension->method('getAccessMapping')->with($admin)->willReturn(
             ['custom_action' => ['CUSTOM_ROLE', 'EXTRA_CUSTOM_ROLE']]
         );
-        $admin->addExtension($customExtension->reveal());
-        $admin->setSecurityHandler($securityHandler->reveal());
+        $admin->addExtension($customExtension);
+        $admin->setSecurityHandler($securityHandler);
 
         $this->assertFalse($admin->hasAccess('custom_action'));
     }
@@ -228,15 +232,17 @@ class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\Post',
             'Sonata\NewsBundle\Controller\PostAdminController'
         );
-        $securityHandler = $this->prophesize(SecurityHandlerInterface::class);
-        $securityHandler->isGranted($admin, 'CUSTOM_ROLE', $admin)->willReturn(true);
-        $securityHandler->isGranted($admin, 'EXTRA_CUSTOM_ROLE', $admin)->willReturn(true);
-        $customExtension = $this->prophesize(AbstractAdminExtension::class);
-        $customExtension->getAccessMapping($admin)->willReturn(
+        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
+        $securityHandler->method('isGranted')->willReturnMap([
+            [$admin, 'CUSTOM_ROLE', $admin, true],
+            [$admin, 'EXTRA_CUSTOM_ROLE', $admin, true],
+        ]);
+        $customExtension = $this->createStub(AbstractAdminExtension::class);
+        $customExtension->method('getAccessMapping')->with($admin)->willReturn(
             ['custom_action' => ['CUSTOM_ROLE', 'EXTRA_CUSTOM_ROLE']]
         );
-        $admin->addExtension($customExtension->reveal());
-        $admin->setSecurityHandler($securityHandler->reveal());
+        $admin->addExtension($customExtension);
+        $admin->setSecurityHandler($securityHandler);
 
         $this->assertTrue($admin->hasAccess('custom_action'));
     }
@@ -248,14 +254,14 @@ class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\Post',
             'Sonata\NewsBundle\Controller\PostAdminController'
         );
-        $securityHandler = $this->prophesize(SecurityHandlerInterface::class);
-        $securityHandler->isGranted($admin, 'EDIT_ROLE', $admin)->willReturn(true);
-        $customExtension = $this->prophesize(AbstractAdminExtension::class);
-        $customExtension->getAccessMapping($admin)->willReturn(
+        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
+        $securityHandler->method('isGranted')->with($admin, 'EDIT_ROLE', $admin)->willReturn(true);
+        $customExtension = $this->createStub(AbstractAdminExtension::class);
+        $customExtension->method('getAccessMapping')->with($admin)->willReturn(
             ['edit_action' => ['EDIT_ROLE']]
         );
-        $admin->addExtension($customExtension->reveal());
-        $admin->setSecurityHandler($securityHandler->reveal());
+        $admin->addExtension($customExtension);
+        $admin->setSecurityHandler($securityHandler);
 
         $this->assertTrue($admin->hasAccess('edit_action'));
     }
@@ -1813,10 +1819,10 @@ class AdminTest extends TestCase
 
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->getTemplate('button_create')->willReturn('Foo.html.twig');
+        $templateRegistry = $this->createStub(MutableTemplateRegistryInterface::class);
+        $templateRegistry->method('getTemplate')->with('button_create')->willReturn('Foo.html.twig');
 
-        $admin->setTemplateRegistry($templateRegistry->reveal());
+        $admin->setTemplateRegistry($templateRegistry);
 
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
@@ -2019,12 +2025,12 @@ class AdminTest extends TestCase
         $admin->setRouteGenerator($routeGenerator);
         $admin->initialize();
 
-        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->getTemplate('action_create')->willReturn('Foo.html.twig');
+        $templateRegistry = $this->createStub(MutableTemplateRegistryInterface::class);
+        $templateRegistry->method('getTemplate')->with('action_create')->willReturn('Foo.html.twig');
 
-        $admin->setTemplateRegistry($templateRegistry->reveal());
+        $admin->setTemplateRegistry($templateRegistry);
 
-        $securityHandler = $this->createMock(SecurityHandlerInterface::class);
+        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
             ->willReturnCallback(static function (AdminInterface $adminIn, string $attributes, $object = null) use ($admin): bool {

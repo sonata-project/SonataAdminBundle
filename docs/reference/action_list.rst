@@ -280,10 +280,14 @@ You can customize the list query thanks to the ``configureQuery`` method::
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
         $query = parent::configureQuery($query);
+
+        $rootAlias = current($query->getRootAliases());
+
         $query->andWhere(
-            $query->expr()->eq($query->getRootAliases()[0] . '.my_field', ':my_param')
+            $query->expr()->eq($rootAlias . '.my_field', ':my_param')
         );
         $query->setParameter('my_param', 'my_value');
+
         return $query;
     }
 
@@ -354,6 +358,8 @@ Configuring the default ordering column can be achieved by overriding the
             {
                 $query->addOrderBy('author', 'ASC');
                 $query->addOrderBy('createdAt', 'ASC');
+                
+                return $query;
             }
 
             // ...

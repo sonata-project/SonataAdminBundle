@@ -44,8 +44,8 @@ final class DataTransformerResolverTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
-        $this->modelManager = $this->prophesize(ModelManagerInterface::class);
+        $this->fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $this->modelManager = $this->createStub(ModelManagerInterface::class);
         $this->resolver = new DataTransformerResolver();
     }
 
@@ -75,8 +75,8 @@ final class DataTransformerResolverTest extends TestCase
         }, static function ($value): bool {
             return filter_var($value, FILTER_VALIDATE_BOOLEAN);
         });
-        $this->fieldDescription->getOption('data_transformer')->willReturn($customDataTransformer);
-        $this->fieldDescription->getType()->willReturn($fieldType);
+        $this->fieldDescription->method('getOption')->with('data_transformer')->willReturn($customDataTransformer);
+        $this->fieldDescription->method('getType')->willReturn($fieldType);
 
         $dataTransformer = $this->resolve();
 
@@ -104,9 +104,11 @@ final class DataTransformerResolverTest extends TestCase
      */
     public function testResolveDateDataTransformer($timezone, \DateTimeZone $expectedTimezone): void
     {
-        $this->fieldDescription->getOption('data_transformer')->willReturn(null);
-        $this->fieldDescription->getOption('timezone')->willReturn($timezone);
-        $this->fieldDescription->getType()->willReturn('date');
+        $this->fieldDescription->method('getOption')->willReturnMap([
+            ['data_transformer', null, null],
+            ['timezone', null, $timezone],
+        ]);
+        $this->fieldDescription->method('getType')->willReturn('date');
 
         $dataTransformer = $this->resolve();
 
@@ -131,19 +133,19 @@ final class DataTransformerResolverTest extends TestCase
 
     public function testResolveChoiceWithoutClassName(): void
     {
-        $this->fieldDescription->getOption('data_transformer')->willReturn(null);
-        $this->fieldDescription->getType()->willReturn('choice');
-        $this->fieldDescription->getOption('class')->willReturn(null);
+        $this->fieldDescription->method('getType')->willReturn('choice');
 
         $this->assertNull($this->resolve());
     }
 
     public function testResolveChoiceBadClassName(): void
     {
-        $this->fieldDescription->getOption('data_transformer')->willReturn(null);
-        $this->fieldDescription->getType()->willReturn('choice');
-        $this->fieldDescription->getOption('class')->willReturn(\stdClass::class);
-        $this->fieldDescription->getTargetModel()->willReturn(\DateTime::class);
+        $this->fieldDescription->method('getOption')->willReturnMap([
+            ['data_transformer', null, null],
+            ['class', null, \stdClass::class],
+        ]);
+        $this->fieldDescription->method('getType')->willReturn('choice');
+        $this->fieldDescription->method('getTargetModel')->willReturn(\DateTime::class);
 
         $this->assertNull($this->resolve());
     }
@@ -154,12 +156,13 @@ final class DataTransformerResolverTest extends TestCase
         $className = \stdClass::class;
         $object = new \stdClass();
 
-        $this->fieldDescription->getOption('data_transformer')->willReturn(null);
-        $this->fieldDescription->getType()->willReturn('choice');
-        $this->fieldDescription->getOption('class')->willReturn($className);
-        $this->fieldDescription->getTargetModel()->willReturn($className);
-
-        $this->modelManager->find($className, $newId)->willReturn($object);
+        $this->fieldDescription->method('getOption')->willReturnMap([
+            ['data_transformer', null, null],
+            ['class', null, $className],
+        ]);
+        $this->fieldDescription->method('getType')->willReturn('choice');
+        $this->fieldDescription->method('getTargetModel')->willReturn($className);
+        $this->modelManager->method('find')->with($className, $newId)->willReturn($object);
 
         $dataTransformer = $this->resolve();
 
@@ -178,8 +181,7 @@ final class DataTransformerResolverTest extends TestCase
             return filter_var($value, FILTER_VALIDATE_BOOLEAN);
         });
 
-        $this->fieldDescription->getOption('data_transformer')->willReturn(null);
-        $this->fieldDescription->getType()->willReturn($fieldType);
+        $this->fieldDescription->method('getType')->willReturn($fieldType);
 
         $this->resolver = new DataTransformerResolver([
             $fieldType => $customDataTransformer, // override predefined transformer
@@ -202,8 +204,7 @@ final class DataTransformerResolverTest extends TestCase
             return filter_var($value, FILTER_VALIDATE_BOOLEAN);
         });
 
-        $this->fieldDescription->getOption('data_transformer')->willReturn(null);
-        $this->fieldDescription->getType()->willReturn($fieldType);
+        $this->fieldDescription->method('getType')->willReturn($fieldType);
 
         $this->resolver->addCustomGlobalTransformer($fieldType, $customDataTransformer);
 
@@ -215,6 +216,6 @@ final class DataTransformerResolverTest extends TestCase
 
     private function resolve(): ?DataTransformerInterface
     {
-        return $this->resolver->resolve($this->fieldDescription->reveal(), $this->modelManager->reveal());
+        return $this->resolver->resolve($this->fieldDescription, $this->modelManager);
     }
 }

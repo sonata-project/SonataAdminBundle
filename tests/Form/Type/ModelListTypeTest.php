@@ -24,7 +24,7 @@ class ModelListTypeTest extends TypeTestCase
 
     protected function setUp(): void
     {
-        $this->modelManager = $this->prophesize(ModelManagerInterface::class);
+        $this->modelManager = $this->createMock(ModelManagerInterface::class);
 
         parent::setUp();
     }
@@ -50,19 +50,16 @@ class ModelListTypeTest extends TypeTestCase
 
     public function testSubmitValidData(): void
     {
-        $model = new \stdClass();
-        $this->modelManager->find('My\Entity', 42)->willReturn($model);
-        $this->modelManager->getNormalizedIdentifier($model)->willReturn('42');
-
         $form = $this->factory->create(
             ModelListType::class,
             null,
             [
-                'model_manager' => $this->modelManager->reveal(),
+                'model_manager' => $this->modelManager,
                 'class' => 'My\Entity',
             ]
         );
 
+        $this->modelManager->expects($this->once())->method('find')->with('My\Entity', 42);
         $form->submit(42);
         $this->assertTrue($form->isSynchronized());
     }

@@ -19,7 +19,6 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
-use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
@@ -27,7 +26,7 @@ use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
@@ -93,7 +92,7 @@ class SonataAdminExtensionTest extends TestCase
     private $translator;
 
     /**
-     * @var ContainerInterface
+     * @var Container
      */
     private $container;
 
@@ -111,7 +110,7 @@ class SonataAdminExtensionTest extends TestCase
     {
         date_default_timezone_set('Europe/London');
 
-        $container = $this->createMock(ContainerInterface::class);
+        $container = new Container();
 
         $this->pool = new Pool($container, '', '');
         $this->pool->setAdminServiceIds(['sonata_admin_foo_service']);
@@ -146,15 +145,11 @@ class SonataAdminExtensionTest extends TestCase
 
         $this->translator = $translator;
 
-        $this->templateRegistry = new TemplateRegistry();
-        $this->container = $this->createMock(ContainerInterface::class);
-        $this->container
-            ->method('get')
-            ->with('sonata_admin_foo_service.template_registry')
-            ->willReturn($this->templateRegistry);
+        $this->templateRegistry = $this->createStub(TemplateRegistryInterface::class);
+        $this->container = new Container();
+        $this->container->set('sonata_admin_foo_service.template_registry', $this->templateRegistry);
 
-        $this->securityChecker = $this->createMock(AuthorizationCheckerInterface::class);
-        $this->securityChecker->method('isGranted')->willReturn(true);
+        $this->securityChecker = $this->createStub(AuthorizationCheckerInterface::class);
 
         $this->twigExtension = new SonataAdminExtension(
             $this->pool,
@@ -226,17 +221,8 @@ class SonataAdminExtensionTest extends TestCase
             ->with($this->equalTo($this->object))
             ->willReturn('12345');
 
-        $container
-            ->method('get')
-            ->willReturnCallback(function (string $id) {
-                if ('sonata_admin_foo_service' === $id) {
-                    return $this->admin;
-                }
-
-                if ('sonata_admin_bar_service' === $id) {
-                    return $this->adminBar;
-                }
-            });
+        $container->set('sonata_admin_foo_service', $this->admin);
+        $container->set('sonata_admin_bar_service', $this->adminBar);
 
         // initialize field description
         $this->fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
@@ -2276,10 +2262,21 @@ EOT
 
     public function testIsGrantedAffirmative(): void
     {
-        $this->assertTrue(
-            $this->twigExtension->isGrantedAffirmative(['foo', 'bar'])
-        );
-        $this->assertTrue($this->twigExtension->isGrantedAffirmative('foo'));
+        $this->securityChecker
+            ->method('isGranted')
+            ->withConsecutive(
+                ['foo', null],
+                ['bar', null],
+                ['foo', null],
+                ['bar', null]
+            )
+            ->willReturnMap([
+                ['foo', null, false],
+                ['bar', null, true],
+            ]);
+
+        $this->assertTrue($this->twigExtension->isGrantedAffirmative(['foo', 'bar']));
+        $this->assertFalse($this->twigExtension->isGrantedAffirmative('foo'));
         $this->assertTrue($this->twigExtension->isGrantedAffirmative('bar'));
     }
 

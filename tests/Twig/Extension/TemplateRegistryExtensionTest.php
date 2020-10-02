@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\Twig\Extension;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Twig\TwigFunction;
@@ -42,14 +43,14 @@ class TemplateRegistryExtensionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
-        $this->container = $this->prophesize(ContainerInterface::class);
+        $this->templateRegistry = $this->createStub(TemplateRegistryInterface::class);
+        $this->container = new Container();
 
-        $this->templateRegistry->getTemplate('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');
+        $this->templateRegistry->method('getTemplate')->with('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');
 
         $this->extension = new TemplateRegistryExtension(
-            $this->templateRegistry->reveal(),
-            $this->container->reveal()
+            $this->templateRegistry,
+            $this->container
         );
     }
 
@@ -65,7 +66,7 @@ class TemplateRegistryExtensionTest extends TestCase
 
     public function testGetAdminTemplate(): void
     {
-        $this->container->get('admin.post.template_registry')->willReturn($this->templateRegistry->reveal());
+        $this->container->set('admin.post.template_registry', $this->templateRegistry);
 
         $this->assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
@@ -75,8 +76,6 @@ class TemplateRegistryExtensionTest extends TestCase
 
     public function testGetAdminTemplateFailure(): void
     {
-        $this->container->get('admin.post.template_registry')->willReturn(null);
-
         $this->expectException(ServiceNotFoundException::class);
 
         $this->expectExceptionMessage('You have requested a non-existent service "admin.post.template_registry"');

@@ -20,7 +20,6 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Command\GenerateObjectAclCommand;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Util\ObjectAclManipulatorInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\StreamOutput;
@@ -70,7 +69,7 @@ class GenerateObjectAclCommandTest extends TestCase
     {
         $pool = new Pool($this->container, '', '');
 
-        $registry = $this->createStub(RegistryInterface::class);
+        $registry = $this->createStub(ManagerRegistry::class);
         $command = new GenerateObjectAclCommand($pool, [], $registry);
 
         $application = new Application();
@@ -80,7 +79,7 @@ class GenerateObjectAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertRegExp('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
+        $this->assertMatchesRegularExpression('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
     }
 
     public function testExecuteWithEmptyManipulators(): void
@@ -97,7 +96,7 @@ class GenerateObjectAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertRegExp('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
+        $this->assertMatchesRegularExpression('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
     }
 
     public function testExecuteWithManipulatorNotFound(): void
@@ -106,17 +105,9 @@ class GenerateObjectAclCommandTest extends TestCase
         $registry = $this->createStub(ManagerRegistry::class);
         $pool = $this->createStub(Pool::class);
 
-        $admin
-            ->method('getManagerType')
-            ->willReturn('bar');
-
-        $pool
-            ->method('getAdminServiceIds')
-            ->willReturn(['acme.admin.foo']);
-
-        $pool
-            ->method('getInstance')
-            ->willReturn($admin);
+        $admin->method('getManagerType')->willReturn('bar');
+        $pool->method('getAdminServiceIds')->willReturn(['acme.admin.foo']);
+        $pool->method('getInstance')->willReturn($admin);
 
         $aclObjectManipulators = [
             'bar' => new \stdClass(),
@@ -131,7 +122,7 @@ class GenerateObjectAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertRegExp('/Admin class is using a manager type that has no manipulator implemented : ignoring/', $commandTester->getDisplay());
+        $this->assertMatchesRegularExpression('/Admin class is using a manager type that has no manipulator implemented : ignoring/', $commandTester->getDisplay());
     }
 
     public function testExecuteWithManipulatorNotObjectAclManipulatorInterface(): void
@@ -140,17 +131,9 @@ class GenerateObjectAclCommandTest extends TestCase
         $registry = $this->createStub(ManagerRegistry::class);
         $pool = $this->createStub(Pool::class);
 
-        $admin
-            ->method('getManagerType')
-            ->willReturn('bar');
-
-        $pool
-            ->method('getAdminServiceIds')
-            ->willReturn(['acme.admin.foo']);
-
-        $pool
-            ->method('getInstance')
-            ->willReturn($admin);
+        $admin->method('getManagerType')->willReturn('bar');
+        $pool->method('getAdminServiceIds')->willReturn(['acme.admin.foo']);
+        $pool->method('getInstance')->willReturn($admin);
 
         $aclObjectManipulators = [
             'sonata.admin.manipulator.acl.object.bar' => new \stdClass(),
@@ -165,7 +148,7 @@ class GenerateObjectAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertRegExp('/The interface "ObjectAclManipulatorInterface" is not implemented for/', $commandTester->getDisplay());
+        $this->assertMatchesRegularExpression('/The interface "ObjectAclManipulatorInterface" is not implemented for/', $commandTester->getDisplay());
     }
 
     public function testExecuteWithManipulator(): void
@@ -174,22 +157,12 @@ class GenerateObjectAclCommandTest extends TestCase
         $registry = $this->createStub(ManagerRegistry::class);
         $pool = $this->createStub(Pool::class);
 
-        $admin
-            ->method('getManagerType')
-            ->willReturn('bar');
-
-        $pool
-            ->method('getAdminServiceIds')
-            ->willReturn(['acme.admin.foo']);
-
-        $pool
-            ->method('getInstance')
-            ->willReturn($admin);
+        $admin->method('getManagerType')->willReturn('bar');
+        $pool->method('getAdminServiceIds')->willReturn(['acme.admin.foo']);
+        $pool->method('getInstance')->willReturn($admin);
 
         $manipulator = $this->createMock(ObjectAclManipulatorInterface::class);
-        $manipulator
-            ->expects($this->once())
-            ->method('batchConfigureAcls')
+        $manipulator->expects($this->once())->method('batchConfigureAcls')
             ->with($this->isInstanceOf(StreamOutput::class), $admin, null);
 
         $aclObjectManipulators = [
@@ -210,6 +183,8 @@ class GenerateObjectAclCommandTest extends TestCase
      * NEXT_MAJOR: Remove this test.
      *
      * @group legacy
+     *
+     * @doesNotPerformAssertions
      */
     public function testExecuteWithDeprecatedUserModelNotation(): void
     {

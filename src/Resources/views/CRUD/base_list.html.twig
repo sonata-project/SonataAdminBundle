@@ -65,7 +65,7 @@ file that was distributed with this source code.
                                             {% set sortable = false %}
                                             {% if field_description.options.sortable is defined and field_description.options.sortable %}
                                                 {% set sortable             = true %}
-                                                {% set sort_parameters      = admin.modelmanager.sortparameters(field_description, admin.datagrid) %}
+                                                {% set sort_parameters      = admin.datagrid.sortparameters(field_description) %}
                                                 {% set current              = admin.datagrid.values._sort_by is defined
                                                     and (admin.datagrid.values._sort_by == field_description
                                                         or admin.datagrid.values._sort_by.name == sort_parameters.filter._sort_by) %}

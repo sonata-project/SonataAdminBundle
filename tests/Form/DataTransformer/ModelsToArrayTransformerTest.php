@@ -20,17 +20,10 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 
 class ModelsToArrayTransformerTest extends TestCase
 {
-    private $modelManager;
-
-    protected function setUp(): void
-    {
-        $this->modelManager = $this->prophesize(ModelManagerInterface::class)->reveal();
-    }
-
     public function testConstructor(): void
     {
         $transformer = new ModelsToArrayTransformer(
-            $this->modelManager,
+            $this->createStub(ModelManagerInterface::class),
             Foo::class
         );
 

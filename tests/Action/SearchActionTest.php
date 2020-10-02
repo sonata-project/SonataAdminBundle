@@ -47,27 +47,27 @@ class SearchActionTest extends TestCase
 
         $this->breadcrumbsBuilder = $this->createMock(BreadcrumbsBuilderInterface::class);
         $this->searchHandler = $this->createMock(SearchHandler::class);
-        $this->twig = $this->prophesize(Environment::class);
+        $this->twig = $this->createStub(Environment::class);
 
         $this->action = new SearchAction(
             $this->pool,
             $this->searchHandler,
             $templateRegistry,
             $this->breadcrumbsBuilder,
-            $this->twig->reveal()
+            $this->twig
         );
     }
 
     public function testGlobalPage(): void
     {
         $request = new Request(['q' => 'some search']);
-        $this->twig->render('search.html.twig', [
+        $this->twig->method('render')->with('search.html.twig', [
             'base_template' => 'layout.html.twig',
             'breadcrumbs_builder' => $this->breadcrumbsBuilder,
             'admin_pool' => $this->pool,
             'query' => 'some search',
             'groups' => [],
-        ])->willReturn('rendered search');
+        ])->willReturn('rendered_search');
 
         $this->assertInstanceOf(Response::class, ($this->action)($request));
     }
