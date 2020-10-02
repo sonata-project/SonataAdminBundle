@@ -356,8 +356,10 @@ Configuring the default ordering column can be achieved by overriding the
 
             protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
             {
-                $query->addOrderBy('author', 'ASC');
-                $query->addOrderBy('createdAt', 'ASC');
+                $rootAlias = current($query->getRootAliases());
+            
+                $query->addOrderBy($rootAlias . 'author', 'ASC');
+                $query->addOrderBy($rootAlias . 'createdAt', 'ASC');
                 
                 return $query;
             }
