@@ -358,8 +358,8 @@ Configuring the default ordering column can be achieved by overriding the
             {
                 $rootAlias = current($query->getRootAliases());
             
-                $query->addOrderBy($rootAlias . 'author', 'ASC');
-                $query->addOrderBy($rootAlias . 'createdAt', 'ASC');
+                $query->addOrderBy($rootAlias.'.author', 'ASC');
+                $query->addOrderBy($rootAlias.'.createdAt', 'ASC');
                 
                 return $query;
             }
