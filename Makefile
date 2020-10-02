@@ -67,5 +67,5 @@ docs:
 .PHONY: docs
 
 phpstan:
-	docker run --env REQUIRE_DEV=true --rm -it -w=/app -v ${PWD}:/app oskarstark/phpstan-ga:latest
+	docker run --env REQUIRE_DEV=true --rm -it -w=/app -v ${PWD}:/app oskarstark/phpstan-ga:latest analyse
 .PHONY: phpstan
