@@ -791,9 +791,6 @@ jQuery(window).resize(function() {
 
 jQuery(document).ready(function() {
     jQuery('html').removeClass('no-js');
-    if (Admin.get_config('CONFIRM_EXIT')) {
-        jQuery('.sonata-ba-form form').each(function () { jQuery(this).confirmExit(); });
-    }
 
     Admin.setup_per_page_switcher(document);
     Admin.setup_collection_buttons(document);
@@ -805,4 +802,12 @@ jQuery(document).on('sonata-admin-append-form-element', function(e) {
     Admin.setup_select2(e.target);
     Admin.setup_icheck(e.target);
     Admin.setup_collection_counter(e.target);
+});
+
+jQuery(window).load(function() {
+    if (Admin.get_config('CONFIRM_EXIT')) {
+        jQuery('.sonata-ba-form form').each(function() {
+            jQuery(this).confirmExit();
+        });
+    }
 });
