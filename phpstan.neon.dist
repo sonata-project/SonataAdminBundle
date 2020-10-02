@@ -4,12 +4,12 @@ includes:
 parameters:
     level: 5
     paths:
-        - ../src
+        - src
     excludes_analyse:
         # temporarily ignore template files
-        - ../src/Resources/**.tpl.php
+        - src/Resources/**.tpl.php
     scanFiles:
         # NEXT_MAJOR: Remove those files
-        - stubs/MetadataInterface.file
-        - stubs/Exporter.file
-        - stubs/TextExtension.file
+        - .phpstan/stubs/MetadataInterface.file
+        - .phpstan/stubs/Exporter.file
+        - .phpstan/stubs/TextExtension.file
