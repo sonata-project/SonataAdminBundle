@@ -24,8 +24,6 @@ jobs:
         uses: docker://oskarstark/phpstan-ga
         env:
           REQUIRE_DEV: true
-        with:
-          args: analyse -c .phpstan/phpstan.neon.dist
   psalm:
     name: Psalm
 
