@@ -354,6 +354,8 @@ Configuring the default ordering column can be achieved by overriding the
             {
                 $query->addOrderBy('author', 'ASC');
                 $query->addOrderBy('createdAt', 'ASC');
+                
+                return $query;
             }
 
             // ...
