@@ -68,7 +68,7 @@ class ModelTypeTest extends TypeTestCase
 
         $this->type->configureOptions($optionResolver);
 
-        $options = $optionResolver->resolve(['model_manager' => $modelManager,'class' => \stdClass::class, 'choices' => [], 'multiple' => $multiple, 'expanded' => $expanded]);
+        $options = $optionResolver->resolve(['model_manager' => $modelManager, 'class' => \stdClass::class, 'choices' => [], 'multiple' => $multiple, 'expanded' => $expanded]);
 
         $this->assertSame($expectedCompound, $options['compound']);
         $this->assertSame('choice', $options['template']);

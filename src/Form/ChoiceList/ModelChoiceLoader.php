@@ -67,7 +67,7 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
     /**
      * @param object[] $choices
      *
-     * @phpstan-param class-string|null $class
+     * @phpstan-param class-string $class
      */
     public function __construct(
         ModelManagerInterface $modelManager,
@@ -78,6 +78,7 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
         array $choices = []
     ) {
         $this->modelManager = $modelManager;
+        $this->propertyAccessor = $propertyAccessor;
         $this->class = $class;
         $this->property = $property;
         $this->choices = $choices;
@@ -89,8 +90,6 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
 
             $this->query = $query;
         }
-
-        $this->propertyAccessor = $propertyAccessor;
     }
 
     public function loadChoiceList($value = null): ChoiceListInterface
