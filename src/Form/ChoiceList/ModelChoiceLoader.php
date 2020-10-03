@@ -38,9 +38,9 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
     private $propertyAccessor;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @phpstan-var class-string|null
+     * @phpstan-var class-string
      */
     private $class;
 
@@ -72,7 +72,7 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
     public function __construct(
         ModelManagerInterface $modelManager,
         PropertyAccessorInterface $propertyAccessor,
-        ?string $class = null,
+        string $class,
         ?string $property = null,
         ?object $query = null,
         array $choices = []

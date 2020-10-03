@@ -39,14 +39,14 @@ class ModelTypeTest extends TypeTestCase
 
         $this->type->configureOptions($optionResolver);
 
-        $options = $optionResolver->resolve(['model_manager' => $modelManager, 'choices' => []]);
+        $options = $optionResolver->resolve(['model_manager' => $modelManager, 'class' => \stdClass::class, 'choices' => []]);
 
         $this->assertFalse($options['compound']);
         $this->assertSame('choice', $options['template']);
         $this->assertFalse($options['multiple']);
         $this->assertFalse($options['expanded']);
         $this->assertInstanceOf(ModelManagerInterface::class, $options['model_manager']);
-        $this->assertNull($options['class']);
+        $this->assertSame(\stdClass::class, $options['class']);
         $this->assertNull($options['property']);
         $this->assertNull($options['query']);
         $this->assertCount(0, $options['choices']);
@@ -68,14 +68,14 @@ class ModelTypeTest extends TypeTestCase
 
         $this->type->configureOptions($optionResolver);
 
-        $options = $optionResolver->resolve(['model_manager' => $modelManager, 'choices' => [], 'multiple' => $multiple, 'expanded' => $expanded]);
+        $options = $optionResolver->resolve(['model_manager' => $modelManager,'class' => \stdClass::class, 'choices' => [], 'multiple' => $multiple, 'expanded' => $expanded]);
 
         $this->assertSame($expectedCompound, $options['compound']);
         $this->assertSame('choice', $options['template']);
         $this->assertSame($multiple, $options['multiple']);
         $this->assertSame($expanded, $options['expanded']);
         $this->assertInstanceOf(ModelManagerInterface::class, $options['model_manager']);
-        $this->assertNull($options['class']);
+        $this->assertSame(\stdClass::class, $options['class']);
         $this->assertNull($options['property']);
         $this->assertNull($options['query']);
         $this->assertCount(0, $options['choices']);

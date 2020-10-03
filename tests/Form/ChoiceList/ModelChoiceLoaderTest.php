@@ -41,7 +41,7 @@ class ModelChoiceLoaderTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The model manager does not support the query.');
 
-        new ModelChoiceLoader($this->modelManager, $this->propertyAccessor, null, null, new \stdClass());
+        new ModelChoiceLoader($this->modelManager, $this->propertyAccessor, \stdClass::class, null, new \stdClass());
     }
 
     public function testLoadFromEntityWithSamePropertyValues(): void
