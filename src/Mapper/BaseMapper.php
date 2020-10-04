@@ -52,6 +52,8 @@ abstract class BaseMapper
     abstract public function has(string $key): bool;
 
     /**
+     * NEXT_MAJOR: Add self return typehint when dropping support for php < 7.4.
+     *
      * @return static
      */
     abstract public function remove(string $key);
@@ -64,6 +66,8 @@ abstract class BaseMapper
     abstract public function keys(): array;
 
     /**
+     * NEXT_MAJOR: Add self return typehint when dropping support for php < 7.4.
+     *
      * @param string[] $keys field names
      *
      * @return static
