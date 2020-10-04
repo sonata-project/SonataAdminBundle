@@ -137,7 +137,7 @@ final class SonataAdminExtension extends AbstractExtension
         ];
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'sonata_admin';
     }
