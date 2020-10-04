@@ -36,11 +36,9 @@ final class ArrayToModelTransformer implements DataTransformerInterface
     private $className;
 
     /**
-     * @param string $className
-     *
      * @phpstan-param class-string<T> $className
      */
-    public function __construct(ModelManagerInterface $modelManager, $className)
+    public function __construct(ModelManagerInterface $modelManager, string $className)
     {
         $this->modelManager = $modelManager;
         $this->className = $className;
@@ -49,13 +47,11 @@ final class ArrayToModelTransformer implements DataTransformerInterface
     /**
      * @param object|array<string, mixed>|null $value
      *
-     * @return object
-     *
      * @phpstan-param T|array<string, mixed>|null $value
      *
      * @phpstan-return T
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): object
     {
         // when the object is created the form return an array
         // one the object is persisted, the edit $array is the user instance
@@ -63,10 +59,8 @@ final class ArrayToModelTransformer implements DataTransformerInterface
             return $value;
         }
 
-        $instance = new $this->className();
-
         if (!\is_array($value)) {
-            return $instance;
+            return new $this->className();
         }
 
         return $this->modelManager->modelReverseTransform($this->className, $value);

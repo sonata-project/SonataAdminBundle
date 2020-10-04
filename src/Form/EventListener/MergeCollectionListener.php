@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Form\EventListener;
 
 use Doctrine\Common\Collections\Collection;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -24,28 +23,7 @@ use Symfony\Component\Form\FormEvents;
  */
 final class MergeCollectionListener implements EventSubscriberInterface
 {
-    /**
-     * @var ModelManagerInterface|null
-     */
-    private $modelManager;
-
-    /**
-     * NEXT_MAJOR: Remove this constructor and the modelManager property.
-     */
-    public function __construct(?ModelManagerInterface $modelManager = null)
-    {
-        if (null !== $modelManager) {
-            @trigger_error(sprintf(
-                'Passing argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.75'
-                .' and will be ignored in version 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
-        $this->modelManager = $modelManager;
-    }
-
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             FormEvents::SUBMIT => ['onBind', 10],

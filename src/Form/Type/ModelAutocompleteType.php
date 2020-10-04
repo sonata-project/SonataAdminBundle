@@ -57,6 +57,9 @@ final class ModelAutocompleteType extends AbstractType
         }
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         foreach ([
@@ -96,7 +99,7 @@ final class ModelAutocompleteType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $compound = static function (Options $options) {
+        $compound = static function (Options $options): bool {
             return $options['multiple'];
         };
 
@@ -150,7 +153,7 @@ final class ModelAutocompleteType extends AbstractType
         $resolver->setRequired(['property']);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_model_autocomplete';
     }

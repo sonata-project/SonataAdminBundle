@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class ModelChoiceLoaderTest extends TestCase
 {
@@ -25,24 +26,22 @@ class ModelChoiceLoaderTest extends TestCase
 
     private $modelManager;
 
+    private $propertyAccessor;
+
     protected function setUp(): void
     {
         $this->modelManager = $this->createMock(ModelManagerInterface::class);
+        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 
-    /**
-     * NEXT_MAJOR: Expect exception instead.
-     *
-     * @group legacy
-     *
-     * @doesNotPerformAssertions
-     */
     public function testConstructWithUnsupportedQuery(): void
     {
         $this->modelManager->method('supportsQuery')->willReturn(false);
 
-        $this->expectDeprecation('Passing a query which is not supported by the model manager is deprecated since sonata-project/admin-bundle 3.76 and will throw an exception in version 4.0.');
-        new ModelChoiceLoader($this->modelManager, \stdClass::class, null, new \stdClass());
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The model manager does not support the query.');
+
+        new ModelChoiceLoader($this->modelManager, $this->propertyAccessor, \stdClass::class, null, new \stdClass());
     }
 
     public function testLoadFromEntityWithSamePropertyValues(): void
@@ -67,6 +66,7 @@ class ModelChoiceLoaderTest extends TestCase
 
         $modelChoiceLoader = new ModelChoiceLoader(
             $this->modelManager,
+            $this->propertyAccessor,
             \Sonata\AdminBundle\Tests\Fixtures\Entity\Foo::class,
             'baz'
         );

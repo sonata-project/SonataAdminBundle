@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 use Sonata\AdminBundle\Form\EventListener\MergeCollectionListener;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -55,9 +56,7 @@ final class ModelType extends AbstractType
                 true
             );
 
-            $builder
-                ->addEventSubscriber(new MergeCollectionListener())
-            ;
+            $builder->addEventSubscriber(new MergeCollectionListener());
         } else {
             $builder
                 ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']), true)
@@ -65,6 +64,9 @@ final class ModelType extends AbstractType
         }
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['btn_add'] = $options['btn_add'];
@@ -76,19 +78,19 @@ final class ModelType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $options = [];
-        $propertyAccessor = $this->propertyAccessor;
-        $options['choice_loader'] = static function (Options $options, $previousValue) use ($propertyAccessor) {
+
+        $options['choice_loader'] = function (Options $options, ?ChoiceListInterface $previousValue) {
             if ($previousValue && \count($choices = $previousValue->getChoices())) {
                 return $choices;
             }
 
             return new ModelChoiceLoader(
                 $options['model_manager'],
+                $this->propertyAccessor,
                 $options['class'],
                 $options['property'],
                 $options['query'],
                 $options['choices'],
-                $propertyAccessor
             );
         };
 
@@ -130,16 +132,14 @@ final class ModelType extends AbstractType
     }
 
     /**
-     * @return string
-     *
      * @phpstan-return class-string<FormTypeInterface>
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_model';
     }

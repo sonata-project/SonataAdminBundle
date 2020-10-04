@@ -54,6 +54,9 @@ final class ModelListType extends AbstractType
             ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         if (isset($view->vars['sonata_admin'])) {
@@ -81,16 +84,14 @@ final class ModelListType extends AbstractType
     }
 
     /**
-     * @return string
-     *
      * @phpstan-return class-string<FormTypeInterface>
      */
-    public function getParent()
+    public function getParent(): string
     {
         return TextType::class;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_model_list';
     }

@@ -268,8 +268,6 @@ abstract class BaseGroupedMapper extends BaseMapper
     abstract protected function getName(): string;
 
     /**
-     * Add the field name to the current group.
-     *
      * @return array<string, mixed>
      */
     protected function addFieldToCurrentGroup(string $fieldName): array

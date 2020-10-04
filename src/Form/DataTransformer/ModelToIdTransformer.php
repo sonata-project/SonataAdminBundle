@@ -36,11 +36,9 @@ final class ModelToIdTransformer implements DataTransformerInterface
     private $className;
 
     /**
-     * @param string $className
-     *
      * @phpstan-param class-string<T> $className
      */
-    public function __construct(ModelManagerInterface $modelManager, $className)
+    public function __construct(ModelManagerInterface $modelManager, string $className)
     {
         $this->modelManager = $modelManager;
         $this->className = $className;
@@ -49,11 +47,9 @@ final class ModelToIdTransformer implements DataTransformerInterface
     /**
      * @param mixed $value
      *
-     * @return object|null
-     *
      * @phpstan-return T|null
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): ?object
     {
         if (empty($value) && !\in_array($value, ['0', 0], true)) {
             return null;
@@ -65,11 +61,9 @@ final class ModelToIdTransformer implements DataTransformerInterface
     /**
      * @param object|null $value
      *
-     * @return string|null
-     *
      * @phpstan-param T|null $value
      */
-    public function transform($value)
+    public function transform($value): ?string
     {
         if (empty($value)) {
             return null;
