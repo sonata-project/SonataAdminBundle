@@ -58,6 +58,6 @@ jobs:
       - name: Run DOCtor-RST
         uses: docker://oskarstark/doctor-rst
         with:
-          args: --short
+          args: --short --error-format=github
         env:
           DOCS_DIR: 'docs/'
