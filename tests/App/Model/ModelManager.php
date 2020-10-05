@@ -167,11 +167,17 @@ final class ModelManager implements ModelManagerInterface
         return [];
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function getDefaultSortValues($class)
     {
         return [];
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function getDefaultPerPageOptions(string $class): array
     {
         return [];

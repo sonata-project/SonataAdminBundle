@@ -830,7 +830,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function getFilterParameters()
     {
         $parameters = array_merge(
-            $this->getModelManager()->getDefaultSortValues($this->getClass()),
+            $this->getModelManager()->getDefaultSortValues($this->getClass()), // NEXT_MAJOR: Remove this line.
             $this->datagridValues, // NEXT_MAJOR: Remove this line.
             $this->getDefaultSortValues(),
             $this->getDefaultFilterValues()
@@ -1713,7 +1713,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         // NEXT_MAJOR: Remove this line and uncomment the following.
         return $this->maxPerPage;
-        // $sortValues = $this->getModelManager()->getDefaultSortValues($this->class);
+        // $sortValues = $this->getDefaultSortValues();
 
         // return $sortValues['_per_page'] ?? 25;
     }
@@ -2932,7 +2932,7 @@ EOT;
     {
         // NEXT_MAJOR: Remove this line and uncomment the following
         return $this->perPageOptions;
-//        $perPageOptions = $this->getModelManager()->getDefaultPerPageOptions($this->class);
+//        $perPageOptions = [10, 25, 50, 100, 250];
 //        $perPageOptions[] = $this->getMaxPerPage();
 //
 //        $perPageOptions = array_unique($perPageOptions);
@@ -3326,7 +3326,9 @@ EOT;
      */
     final protected function getDefaultSortValues(): array
     {
+        // NEXT_MAJOR: Use the next line instead.
         $defaultSortValues = [];
+        // $defaultSortValues = ['_page' => 1, '_per_page' => 25];
 
         $this->configureDefaultSortValues($defaultSortValues);
 

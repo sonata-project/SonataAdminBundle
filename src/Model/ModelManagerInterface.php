@@ -20,6 +20,8 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 
 /**
+ * NEXT_MAJOR: Stop to extend DatagridManagerInterface.
+ *
  * A model manager is a bridge between the model classes and the admin functionality.
  *
  * @method bool supportsQuery(object $query)
