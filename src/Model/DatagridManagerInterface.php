@@ -16,6 +16,10 @@ namespace Sonata\AdminBundle\Model;
 /**
  * A datagrid manager is a bridge between the model classes and the admin datagrid functionality.
  *
+ * NEXT_MAJOR: Remove this interface
+ *
+ * @deprecated since sonata-project/admin-bundle 3.x
+ *
  * @method array getDefaultPerPageOptions(string $class)
  */
 interface DatagridManagerInterface
@@ -28,12 +32,4 @@ interface DatagridManagerInterface
      * @return array<string, int|string>
      */
     public function getDefaultSortValues($class);
-
-//    NEXT_MAJOR: Uncomment the following lines.
-//    /**
-//     * Return all the allowed _per_page values.
-//     *
-//     * @return array<int>
-//     */
-//    public function getDefaultPerPageOptions(string $class): array;
 }

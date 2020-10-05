@@ -1,6 +1,12 @@
 UPGRADE 3.x
 ===========
 
+### Deprecated `Sonata\AdminBundle\Model\DatagridManagerInterface` interface.
+
+This interface has been deprecated without replacement.
+
+`ModelManagerInterface::getDefaultSortValues()` won't be used anymore.
+
 UPGRADE FROM 3.77 to 3.78
 =========================
 
