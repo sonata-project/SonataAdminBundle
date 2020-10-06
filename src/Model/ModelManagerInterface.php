@@ -82,8 +82,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function findOneBy($class, array $criteria = []);
 
     /**
-     * @param string $class
-     * @param mixed  $id
+     * @param string     $class
+     * @param int|string $id
      *
      * @return object|null the object with id or null if not found
      *
@@ -149,7 +149,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @param object $model
      *
-     * @return string[] list of all identifiers of this model
+     * @return array<int|string> list of all identifiers of this model
      */
     public function getIdentifierValues($model);
 
@@ -338,7 +338,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function getPaginationParameters(DatagridInterface $datagrid, $page);
 
     /**
-     * @param string $class
+     * @param string                 $class
+     * @param array<int, int|string> $idx
      *
      * @phpstan-param class-string $class
      */
