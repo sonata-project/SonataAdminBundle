@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
@@ -58,40 +60,43 @@ class ModelToIdPropertyTransformerTest extends TestCase
      */
     public function testReverseTransformMultiple(array $expected, $params, Foo $entity1, Foo $entity2, Foo $entity3): void
     {
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $transformer = new ModelToIdPropertyTransformer($modelManager, Foo::class, 'bar', true);
+        $proxyQuery = $this->createMock(ProxyQueryInterface::class);
+        $modelManager
+            ->expects($this->exactly($params ? 1 : 0))
+            ->method('createQuery')
+            ->with($this->equalTo(Foo::class))
+            ->willReturn($proxyQuery);
+        $modelManager
+            ->expects($this->exactly($params ? 1 : 0))
+            ->method('executeQuery')
+            ->with($this->equalTo($proxyQuery))
+            ->willReturnCallback(static function (ProxyQueryInterface $query) use ($params, $entity1, $entity2, $entity3): array {
+                $collection = [];
 
-        $this->modelManager
-            ->method('find')
-            ->willReturnCallback(static function (string $className, int $value) use ($entity1, $entity2, $entity3) {
-                if (Foo::class !== $className) {
-                    return;
+                if (\in_array(123, $params, true)) {
+                    $collection[] = $entity1;
                 }
 
-                if (123 === $value) {
-                    return $entity1;
+                if (\in_array(456, $params, true)) {
+                    $collection[] = $entity2;
                 }
 
-                if (456 === $value) {
-                    return $entity2;
+                if (\in_array(789, $params, true)) {
+                    $collection[] = $entity3;
                 }
 
-                if (789 === $value) {
-                    return $entity3;
-                }
+                return $collection;
             });
 
-        $collection = new ArrayCollection();
-        $this->modelManager
-            ->method('getModelCollectionInstance')
-            ->with($this->equalTo(Foo::class))
-            ->willReturn($collection);
-
         $result = $transformer->reverseTransform($params);
-        $this->assertInstanceOf(ArrayCollection::class, $result);
+        $this->assertInstanceOf(Collection::class, $result);
+        $this->assertCount(\count($expected), $result);
         $this->assertSame($expected, $result->getValues());
     }
 
-    public function getReverseTransformMultipleTests()
+    public function getReverseTransformMultipleTests(): iterable
     {
         $entity1 = new Foo();
         $entity1->setBaz(123);
@@ -105,12 +110,10 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $entity3->setBaz(789);
         $entity3->setBar('example3');
 
-        return [
-            [[], null, $entity1, $entity2, $entity3],
-            [[], false, $entity1, $entity2, $entity3],
-            [[$entity1], [123, '_labels' => ['example']], $entity1, $entity2, $entity3],
-            [[$entity1, $entity2, $entity3], [123, 456, 789, '_labels' => ['example', 'example2', 'example3']], $entity1, $entity2, $entity3],
-        ];
+        yield [[], null, $entity1, $entity2, $entity3];
+        yield [[], false, $entity1, $entity2, $entity3];
+        yield [[$entity1], [123, '_labels' => ['example']], $entity1, $entity2, $entity3];
+        yield [[$entity1, $entity2, $entity3], [123, 456, 789, '_labels' => ['example', 'example2', 'example3']], $entity1, $entity2, $entity3];
     }
 
     /**
