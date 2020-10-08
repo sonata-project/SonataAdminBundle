@@ -144,7 +144,8 @@ var Admin = {
         if (Admin.get_config('USE_ICHECK')) {
             Admin.log('[core|setup_icheck] configure iCheck on', subject);
 
-            jQuery('input[type="checkbox"]:not(label.btn > input, [data-sonata-icheck="false"]), input[type="radio"]:not(label.btn > input, [data-sonata-icheck="false"])', subject)
+            var inputs = jQuery('input[type="checkbox"]:not(label.btn > input, [data-sonata-icheck="false"]), input[type="radio"]:not(label.btn > input, [data-sonata-icheck="false"])', subject);
+            inputs
               .iCheck({
                 checkboxClass: 'icheckbox_square-blue',
                 radioClass: 'iradio_square-blue'
@@ -154,6 +155,10 @@ var Admin = {
                   $(e.target).trigger('change');
               });
 
+            // In case some checkbox are already checked (for instance after a back via browser history), update iCheck checkboxes
+            if (subject === window.document) {
+                setTimeout(function () { inputs.iCheck('update'); }, 0);
+            }
         }
     },
     /**
