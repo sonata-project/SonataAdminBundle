@@ -22,40 +22,28 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 interface RouteGeneratorInterface
 {
     /**
-     * @param AdminInterface $admin
-     * @param string $name
+     * @param string               $name
      * @param array<string, mixed> $parameters
-     * @param int $referenceType
-     *
-     * @return string
+     * @param int                  $referenceType
      */
     public function generateUrl(AdminInterface $admin, $name, array $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string;
 
     /**
-     * @param AdminInterface $admin
-     * @param string $name
+     * @param string               $name
      * @param array<string, mixed> $parameters
-     * @param int $referenceType
-     *
-     * @return array
+     * @param int                  $referenceType
      */
     public function generateMenuUrl(AdminInterface $admin, $name, array $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): array;
 
     /**
-     * @param AdminInterface $admin
-     * @param string $name
+     * @param string               $name
      * @param array<string, mixed> $parameters
-     * @param int $referenceType
-     *
-     * @return string
+     * @param int                  $referenceType
      */
     public function generate($name, array $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string;
 
     /**
-     * @param AdminInterface $admin
      * @param string $name
-     *
-     * @return bool
      */
     public function hasAdminRoute(AdminInterface $admin, $name): bool;
 }

@@ -17,8 +17,6 @@ use RuntimeException;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
-use function array_key_exists;
-use function in_array;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -51,7 +49,7 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
         $this->cache = $cache;
     }
 
-    public function generate($name, array $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH) : string
+    public function generate($name, array $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
     {
         return $this->router->generate($name, $parameters, $referenceType);
     }
@@ -61,7 +59,7 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
         $name,
         array $parameters = [],
         $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
-    ): string  {
+    ): string {
         $arrayRoute = $this->generateMenuUrl($admin, $name, $parameters, $referenceType);
 
         return $this->router->generate(
@@ -116,7 +114,7 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
 
         $code = $this->getCode($admin, $name);
 
-        if (!array_key_exists($code, $this->caches)) {
+        if (!\array_key_exists($code, $this->caches)) {
             throw new RuntimeException(sprintf('unable to find the route `%s`', $code));
         }
 
@@ -127,9 +125,9 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
         ];
     }
 
-    public function hasAdminRoute(AdminInterface $admin, $name) : bool
+    public function hasAdminRoute(AdminInterface $admin, $name): bool
     {
-        return array_key_exists($this->getCode($admin, $name), $this->caches);
+        return \array_key_exists($this->getCode($admin, $name), $this->caches);
     }
 
     private function getCode(AdminInterface $admin, string $name): string
@@ -137,7 +135,7 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
         $this->loadCache($admin);
 
         // someone provide the fullname
-        if (!$admin->isChild() && array_key_exists($name, $this->caches)) {
+        if (!$admin->isChild() && \array_key_exists($name, $this->caches)) {
             return $name;
         }
 
@@ -159,7 +157,7 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
             return;
         }
 
-        if (in_array($admin->getCode(), $this->loaded, true)) {
+        if (\in_array($admin->getCode(), $this->loaded, true)) {
             return;
         }
 

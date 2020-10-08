@@ -15,11 +15,6 @@ namespace Sonata\AdminBundle\Route;
 
 use InvalidArgumentException;
 use Symfony\Component\Routing\Route;
-use function array_key_exists;
-use function assert;
-use function in_array;
-use function is_array;
-use function is_callable;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -137,12 +132,12 @@ final class RouteCollection implements RouteCollectionInterface
 
     public function has(string $name): bool
     {
-        return array_key_exists($this->getCode($name), $this->elements);
+        return \array_key_exists($this->getCode($name), $this->elements);
     }
 
     public function hasCached(string $name): bool
     {
-        return array_key_exists($this->getCode($name), $this->cachedElements);
+        return \array_key_exists($this->getCode($name), $this->cachedElements);
     }
 
     public function get(string $name): Route
@@ -150,7 +145,7 @@ final class RouteCollection implements RouteCollectionInterface
         if ($this->has($name)) {
             $code = $this->getCode($name);
             $this->resolveElement($code);
-            assert($this->elements[$code] instanceof Route);
+            \assert($this->elements[$code] instanceof Route);
 
             return $this->elements[$code];
         }
@@ -179,11 +174,12 @@ final class RouteCollection implements RouteCollectionInterface
 
     /**
      * @param string|string[] $routeList
+     *
      * @return $this|RouteCollectionInterface
      */
     public function clearExcept($routeList): RouteCollectionInterface
     {
-        if (!is_array($routeList)) {
+        if (!\is_array($routeList)) {
             $routeList = [$routeList];
         }
 
@@ -194,7 +190,7 @@ final class RouteCollection implements RouteCollectionInterface
 
         $elements = $this->elements;
         foreach ($elements as $code => $element) {
-            if (!in_array($code, $routeCodeList, true)) {
+            if (!\in_array($code, $routeCodeList, true)) {
                 unset($this->elements[$code]);
             }
         }
@@ -245,7 +241,6 @@ final class RouteCollection implements RouteCollectionInterface
     }
 
     /**
-     * @param string $code
      * @param Route|callable():Route $element
      */
     private function addElement(string $code, $element): void
@@ -263,7 +258,7 @@ final class RouteCollection implements RouteCollectionInterface
     {
         $element = $this->elements[$code];
 
-        if (is_callable($element)) {
+        if (\is_callable($element)) {
             $resolvedElement = $element();
             if (!$resolvedElement instanceof Route) {
                 @trigger_error(sprintf(
