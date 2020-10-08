@@ -37,7 +37,7 @@ final class RoutesCacheWarmUp implements CacheWarmerInterface
         $this->pool = $pool;
     }
 
-    public function isOptional()
+    public function isOptional(): bool
     {
         return true;
     }

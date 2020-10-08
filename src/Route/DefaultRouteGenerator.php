@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Route;
 
+use RuntimeException;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
+use function array_key_exists;
+use function in_array;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -48,7 +51,7 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
         $this->cache = $cache;
     }
 
-    public function generate($name, array $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generate($name, array $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH) : string
     {
         return $this->router->generate($name, $parameters, $referenceType);
     }
@@ -58,7 +61,7 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
         $name,
         array $parameters = [],
         $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
-    ) {
+    ): string  {
         $arrayRoute = $this->generateMenuUrl($admin, $name, $parameters, $referenceType);
 
         return $this->router->generate(
@@ -73,7 +76,7 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
         $name,
         array $parameters = [],
         $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
-    ) {
+    ): array {
         // if the admin is a child we automatically append the parent's id
         if ($admin->isChild() && $admin->hasRequest()) {
             // twig template does not accept variable hash key ... so cannot use admin.idparameter ...
@@ -113,8 +116,8 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
 
         $code = $this->getCode($admin, $name);
 
-        if (!\array_key_exists($code, $this->caches)) {
-            throw new \RuntimeException(sprintf('unable to find the route `%s`', $code));
+        if (!array_key_exists($code, $this->caches)) {
+            throw new RuntimeException(sprintf('unable to find the route `%s`', $code));
         }
 
         return [
@@ -124,9 +127,9 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
         ];
     }
 
-    public function hasAdminRoute(AdminInterface $admin, $name)
+    public function hasAdminRoute(AdminInterface $admin, $name) : bool
     {
-        return \array_key_exists($this->getCode($admin, $name), $this->caches);
+        return array_key_exists($this->getCode($admin, $name), $this->caches);
     }
 
     private function getCode(AdminInterface $admin, string $name): string
@@ -134,7 +137,7 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
         $this->loadCache($admin);
 
         // someone provide the fullname
-        if (!$admin->isChild() && \array_key_exists($name, $this->caches)) {
+        if (!$admin->isChild() && array_key_exists($name, $this->caches)) {
             return $name;
         }
 
@@ -156,7 +159,7 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
             return;
         }
 
-        if (\in_array($admin->getCode(), $this->loaded, true)) {
+        if (in_array($admin->getCode(), $this->loaded, true)) {
             return;
         }
 

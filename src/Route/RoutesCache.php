@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Route;
 
+use ReflectionObject;
+use RuntimeException;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\Resource\FileResource;
@@ -43,7 +45,7 @@ final class RoutesCache
     }
 
     /**
-     * @throws \RuntimeException
+     * @throws RuntimeException
      *
      * @return mixed
      */
@@ -56,7 +58,7 @@ final class RoutesCache
             $resources = [];
             $routes = [];
 
-            $reflection = new \ReflectionObject($admin);
+            $reflection = new ReflectionObject($admin);
             if (file_exists($reflection->getFileName())) {
                 $resources[] = new FileResource($reflection->getFileName());
             }
@@ -66,7 +68,7 @@ final class RoutesCache
             }
 
             foreach ($admin->getExtensions() as $extension) {
-                $reflection = new \ReflectionObject($extension);
+                $reflection = new ReflectionObject($extension);
                 $resources[] = new FileResource($reflection->getFileName());
             }
 
