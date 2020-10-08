@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Route;
 
-use ReflectionObject;
 use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Config\Resource\FileResource;
@@ -49,12 +48,12 @@ final class AdminPoolLoader extends Loader
         $this->container = $container;
     }
 
-    public function supports($resource, ?string $type = null)
+    public function supports($resource, string $type = null): bool
     {
         return self::ROUTE_TYPE_NAME === $type;
     }
 
-    public function load($resource, ?string $type = null)
+    public function load($resource, string $type = null): SymfonyRouteCollection
     {
         $collection = new SymfonyRouteCollection();
         foreach ($this->adminServiceIds as $id) {
@@ -64,13 +63,13 @@ final class AdminPoolLoader extends Loader
                 $collection->add($route->getDefault('_sonata_name'), $route);
             }
 
-            $reflection = new ReflectionObject($admin);
+            $reflection = new \ReflectionObject($admin);
             if (file_exists($reflection->getFileName())) {
                 $collection->addResource(new FileResource($reflection->getFileName()));
             }
         }
 
-        $reflection = new ReflectionObject($this->container);
+        $reflection = new \ReflectionObject($this->container);
         if (file_exists($reflection->getFileName())) {
             $collection->addResource(new FileResource($reflection->getFileName()));
         }
