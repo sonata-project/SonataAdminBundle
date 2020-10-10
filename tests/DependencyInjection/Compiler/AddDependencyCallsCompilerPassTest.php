@@ -294,7 +294,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $callsPostAdmin = $container->getDefinition('sonata_post_admin')->getMethodCalls();
 
         foreach ($callsPostAdmin as $call) {
-            list($name, $parameters) = $call;
+            [$name, $parameters] = $call;
 
             switch ($name) {
                 case 'setTemplates':
@@ -319,7 +319,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $callsNewsAdmin = $container->getDefinition('sonata_news_admin')->getMethodCalls();
 
         foreach ($callsNewsAdmin as $call) {
-            list($name, $parameters) = $call;
+            [$name, $parameters] = $call;
 
             switch ($name) {
                 case 'setTemplates':
@@ -353,7 +353,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $callsReportOneAdmin = $container->getDefinition('sonata_report_one_admin')->getMethodCalls();
 
         foreach ($callsReportOneAdmin as $call) {
-            list($name, $parameters) = $call;
+            [$name, $parameters] = $call;
 
             if ('showMosaicButton' === $name) {
                 $this->assertFalse($parameters[0]);
@@ -363,7 +363,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $callsReportTwoAdmin = $container->getDefinition('sonata_report_two_admin')->getMethodCalls();
 
         foreach ($callsReportTwoAdmin as $call) {
-            list($name, $parameters) = $call;
+            [$name, $parameters] = $call;
 
             if ('showMosaicButton' === $name) {
                 $this->assertTrue($parameters[0]);

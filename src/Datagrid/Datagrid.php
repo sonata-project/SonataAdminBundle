@@ -114,7 +114,7 @@ class Datagrid implements DatagridInterface
         }
 
         foreach ($this->getFilters() as $name => $filter) {
-            list($type, $options) = $filter->getRenderSettings();
+            [$type, $options] = $filter->getRenderSettings();
 
             $this->formBuilder->add($filter->getFormName(), $type, $options);
         }

@@ -74,7 +74,7 @@ final class AppendFormFieldElementAction
 
         $admin->setSubject($subject);
 
-        list(, $form) = $this->helper->appendFormFieldElement($admin, $subject, $elementId);
+        [, $form] = $this->helper->appendFormFieldElement($admin, $subject, $elementId);
 
         \assert($form instanceof Form);
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
