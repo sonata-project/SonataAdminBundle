@@ -81,17 +81,25 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
 
     /**
      * @return array<string, string|string[]>
+     *
+     * @phpstan-param AdminInterface<object> $admin
      */
     public function getAccessMapping(AdminInterface $admin)
     {
         return [];
     }
 
+    /**
+     * @phpstan-param AdminInterface<object> $admin
+     */
     public function configureBatchActions(AdminInterface $admin, array $actions)
     {
         return $actions;
     }
 
+    /**
+     * @phpstan-param AdminInterface<object> $admin
+     */
     public function configureExportFields(AdminInterface $admin, array $fields)
     {
         return $fields;
@@ -127,16 +135,24 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
      * @param object               $object
      *
      * @return array<string, mixed>
+     *
+     * @phpstan-param AdminInterface<object> $admin
      */
     public function configureActionButtons(AdminInterface $admin, $list, $action, $object)
     {
         return $list;
     }
 
+    /**
+     * @phpstan-param AdminInterface<object> $admin
+     */
     public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues)
     {
     }
 
+    /**
+     * @phpstan-param AdminInterface<object> $admin
+     */
     public function configureDefaultSortValues(AdminInterface $admin, array &$sortValues): void
     {
     }
