@@ -48,7 +48,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     protected $cursor = 1;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected $parameters = [];
 
@@ -69,7 +69,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     // used by iterator interface
     /**
-     * @var \Traversable|array|null
+     * @var object[]|null
      */
     protected $results;
 
@@ -84,7 +84,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     protected $query;
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $countColumn = ['id'];
 
@@ -131,7 +131,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @param int $nbLinks The maximum number of page numbers to return
      *
-     * @return array
+     * @return int[]
      */
     public function getLinks($nbLinks = null)
     {
@@ -423,7 +423,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Returns the current pager's parameter holder.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getParameters()
     {
@@ -540,7 +540,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getCountColumn()
     {
@@ -548,7 +548,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function setCountColumn(array $countColumn)
     {

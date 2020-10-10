@@ -149,7 +149,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @param object $model
      *
-     * @return array list of all identifiers of this model
+     * @return string[] list of all identifiers of this model
      */
     public function getIdentifierValues($model);
 

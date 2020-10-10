@@ -81,7 +81,7 @@ interface FieldDescriptionInterface
     /**
      * Returns options.
      *
-     * @return array options
+     * @return array<string, mixed> options
      */
     public function getOptions();
 

@@ -66,7 +66,7 @@ interface FilterInterface
     public function setLabel($label);
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getDefaultOptions();
 

@@ -126,11 +126,9 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
     /**
      * @param object|object[]|null $value
      *
-     * @return array<string|int, string>
+     * @return mixed[]
      *
      * @phpstan-param T|T[]|null $value
-     *
-     * @phpstan-return array{_labels?: mixed}
      */
     public function transform($value)
     {
