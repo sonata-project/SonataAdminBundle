@@ -16,6 +16,14 @@ file that was distributed with this source code.
 HEADER;
 
 $rules = [
+    '@PHP56Migration' => true,
+    '@PHP56Migration:risky' => true,
+    '@PHP70Migration' => true,
+    '@PHP70Migration:risky' => true,
+    '@PHP71Migration' => true,
+    '@PHP71Migration:risky' => true,
+    '@PHPUnit57Migration:risky' => true,
+    '@PHPUnit60Migration:risky' => true,
     '@Symfony' => true,
     '@Symfony:risky' => true,
     'array_syntax' => [
@@ -23,9 +31,11 @@ $rules = [
     ],
     'combine_consecutive_issets' => true,
     'combine_consecutive_unsets' => true,
+    'compact_nullable_typehint' => true,
     'header_comment' => [
         'header' => $header,
     ],
+    'list_syntax' => ['syntax' => 'short'],
     'logical_operators' => true,
     'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
     'no_extra_blank_lines' => true,
@@ -37,22 +47,13 @@ $rules = [
     'ordered_class_elements' => true,
     'ordered_imports' => true,
     'php_unit_set_up_tear_down_visibility' => true,
+    'php_unit_strict' => true,
     'phpdoc_order' => true,
-    '@PHP56Migration' => true,
-    '@PHP56Migration:risky' => true,
-    '@PHPUnit57Migration:risky' => true,
     'single_line_throw' => false,
-    '@PHP70Migration' => true,
-    '@PHP70Migration:risky' => true,
-    '@PHPUnit60Migration:risky' => true,
-    '@PHP71Migration' => true,
-    '@PHP71Migration:risky' => true,
-    'compact_nullable_typehint' => true,
-    'void_return' => null,
     'static_lambda' => true,
     'strict_comparison' => true,
     'strict_param' => true,
-    'php_unit_strict' => true,
+    'void_return' => null,
 ];
 
 
