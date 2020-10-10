@@ -60,7 +60,7 @@ interface PagerInterface
     /**
      * Returns an array of results on the given page.
      *
-     * @return array
+     * @return object[]
      */
     public function getResults();
 

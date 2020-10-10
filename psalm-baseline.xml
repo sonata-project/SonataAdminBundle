@@ -19,12 +19,20 @@
             <code>next($this-&gt;results)</code>
             <code>reset($this-&gt;results)</code>
         </InvalidReturnStatement>
+        <InvalidReturnType occurrences="2">
+            <code>next</code>
+            <code>rewind</code>
+        </InvalidReturnType>
     </file>
     <file src="src/Datagrid/SimplePager.php">
         <InvalidReturnStatement occurrences="2">
             <code>$this-&gt;results</code>
             <code>$this-&gt;results</code>
         </InvalidReturnStatement>
+        <InvalidPropertyAssignmentValue occurrences="2">
+            <code>new ArrayCollection($this-&gt;results-&gt;slice(0, $this-&gt;getMaxPerPage()))</code>
+            <code>new ArrayCollection(\array_slice($this-&gt;results, 0, $this-&gt;getMaxPerPage()))</code>
+        </InvalidPropertyAssignmentValue>
     </file>
     <file src="src/Translator/Extractor/JMSTranslatorBundle/AdminExtractor.php">
         <InvalidReturnType occurrences="2">

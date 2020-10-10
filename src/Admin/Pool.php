@@ -104,7 +104,7 @@ class Pool
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, AdminInterface>>
      */
     public function getGroups()
     {
@@ -430,7 +430,7 @@ class Pool
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getAdminServiceIds()
     {
@@ -480,7 +480,7 @@ class Pool
     /**
      * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
      *
-     * @return array
+     * @return array<string, string>
      */
     public function getTemplates()
     {

@@ -84,7 +84,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The list FieldDescription constructed from the configureListField method.
      *
-     * @var FieldDescriptionInterface[]
+     * @var array<string, FieldDescriptionInterface>
      */
     protected $listFieldDescriptions = [];
 
@@ -374,7 +374,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * NEXT_MAJOR : remove this property
      *
-     * @var array
+     * @var array<string, ItemInterface|null>
      */
     protected $breadcrumbs = [];
 
@@ -660,7 +660,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * @final since sonata-project/admin-bundle 3.76
      *
-     * @return array
+     * @return string[]
      */
     public function getExportFields()
     {
@@ -2346,7 +2346,7 @@ EOT;
      *
      * @param string $action
      *
-     * @return array
+     * @return ItemInterface|null
      */
     public function buildBreadcrumbs($action, ?ItemInterface $menu = null)
     {
@@ -2728,7 +2728,7 @@ EOT;
      *
      * @param string $context
      *
-     * @return array
+     * @return string[]
      */
     public function getPermissionsShow($context)
     {
@@ -2913,7 +2913,7 @@ EOT;
     /**
      * Returns predefined per page options.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getPerPageOptions()
     {
@@ -3056,7 +3056,7 @@ EOT;
      * @param string      $action
      * @param object|null $object
      *
-     * @return array
+     * @return array<string, array<string, mixed>>
      *
      * @phpstan-param T|null $object
      */
@@ -3139,7 +3139,7 @@ EOT;
      * @param string      $action
      * @param object|null $object
      *
-     * @return array
+     * @return array<string, array<string, mixed>>
      *
      * @phpstan-param T|null $object
      */
@@ -3160,7 +3160,7 @@ EOT;
     /**
      * Get the list of actions that can be accessed directly from the dashboard.
      *
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
     public function getDashboardActions()
     {
@@ -3330,7 +3330,7 @@ EOT;
     /**
      * Returns a list of default filters.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     final protected function getDefaultFilterValues()
     {

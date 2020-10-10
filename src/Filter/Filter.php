@@ -31,7 +31,7 @@ abstract class Filter implements FilterInterface
     protected $value;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected $options = [];
 
@@ -173,7 +173,7 @@ abstract class Filter implements FilterInterface
     /**
      * Get options.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getOptions()
     {

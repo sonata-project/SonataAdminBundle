@@ -46,7 +46,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @method bool                            isCurrentRoute(string $name, ?string $adminCode)
  * @method bool                            canAccessObject(string $action, object $object)
  * @method mixed                           getPersistentParameter(string $name)
- * @method array                           getExportFields()
+ * @method string[]                        getExportFields()
  * @method array                           getSubClasses()
  * @method AdminInterface                  getRoot()
  * @method string                          getRootCode()
@@ -489,7 +489,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * Returns the collection of list FieldDescriptions.
      *
-     * @return array
+     * @return array<string, FieldDescriptionInterface>
      */
     public function getListFieldDescriptions();
 

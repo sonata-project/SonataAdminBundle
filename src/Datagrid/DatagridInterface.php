@@ -37,7 +37,7 @@ interface DatagridInterface
     public function getQuery();
 
     /**
-     * @return array
+     * @return object[]
      */
     public function getResults();
 
@@ -49,7 +49,7 @@ interface DatagridInterface
     public function addFilter(FilterInterface $filter);
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getFilters();
 
