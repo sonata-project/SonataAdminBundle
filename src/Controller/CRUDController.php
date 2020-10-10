@@ -70,6 +70,8 @@ class CRUDController implements ContainerAwareInterface
     /**
      * The template registry of the related Admin class.
      *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use `$this->admin->getTemplateRegistry()` instead.
+     *
      * @var TemplateRegistryInterface
      */
     private $templateRegistry;
@@ -147,7 +149,7 @@ class CRUDController implements ContainerAwareInterface
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
         $template = $this->admin->getTemplate('list');
-        // $template = $this->templateRegistry->getTemplate('list');
+        // $template = $this->admin->getTemplateRegistry()->getTemplate('list');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'list',
@@ -262,7 +264,7 @@ class CRUDController implements ContainerAwareInterface
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
         $template = $this->admin->getTemplate('delete');
-        // $template = $this->templateRegistry->getTemplate('delete');
+        // $template = $this->admin->getTemplateRegistry()->getTemplate('delete');
 
         return $this->renderWithExtraParams($template, [
             'object' => $object,
@@ -386,7 +388,7 @@ class CRUDController implements ContainerAwareInterface
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
         $template = $this->admin->getTemplate($templateKey);
-        // $template = $this->templateRegistry->getTemplate($templateKey);
+        // $template = $this->admin->getTemplateRegistry()->getTemplate($templateKey);
 
         return $this->renderWithExtraParams($template, [
             'action' => 'edit',
@@ -505,7 +507,7 @@ class CRUDController implements ContainerAwareInterface
                 $this->admin->getTemplate('batch_confirmation');
             // $template = !empty($batchActions[$action]['template']) ?
             //     $batchActions[$action]['template'] :
-            //     $this->templateRegistry->getTemplate('batch_confirmation');
+            //     $this->admin->getTemplateRegistry()->getTemplate('batch_confirmation');
 
             return $this->renderWithExtraParams($template, [
                 'action' => 'list',
@@ -649,7 +651,7 @@ class CRUDController implements ContainerAwareInterface
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
         $template = $this->admin->getTemplate($templateKey);
-        // $template = $this->templateRegistry->getTemplate($templateKey);
+        // $template = $this->admin->getTemplateRegistry()->getTemplate($templateKey);
 
         return $this->renderWithExtraParams($template, [
             'action' => 'create',
@@ -704,7 +706,7 @@ class CRUDController implements ContainerAwareInterface
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
         $template = $this->admin->getTemplate('show');
-        //$template = $this->templateRegistry->getTemplate('show');
+        //$template = $this->admin->getTemplateRegistry()->getTemplate('show');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'show',
@@ -759,7 +761,7 @@ class CRUDController implements ContainerAwareInterface
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
         $template = $this->admin->getTemplate('history');
-        // $template = $this->templateRegistry->getTemplate('history');
+        // $template = $this->admin->getTemplateRegistry()->getTemplate('history');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'history',
@@ -819,7 +821,7 @@ class CRUDController implements ContainerAwareInterface
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
         $template = $this->admin->getTemplate('show');
-        // $template = $this->templateRegistry->getTemplate('show');
+        // $template = $this->admin->getTemplateRegistry()->getTemplate('show');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'show',
@@ -889,7 +891,7 @@ class CRUDController implements ContainerAwareInterface
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
         $template = $this->admin->getTemplate('show_compare');
-        // $template = $this->templateRegistry->getTemplate('show_compare');
+        // $template = $this->admin->getTemplateRegistry()->getTemplate('show_compare');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'show',
@@ -1029,7 +1031,7 @@ class CRUDController implements ContainerAwareInterface
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
         $template = $this->admin->getTemplate('acl');
-        // $template = $this->templateRegistry->getTemplate('acl');
+        // $template = $this->admin->getTemplateRegistry()->getTemplate('acl');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'acl',
@@ -1124,6 +1126,8 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
+     * NEXT_MAJOR: move this method to 'sonata.admin.pool' service.
+     *
      * Contextualize the admin class depends on the current request.
      *
      * @throws \RuntimeException
@@ -1151,6 +1155,7 @@ class CRUDController implements ContainerAwareInterface
             ));
         }
 
+        // NEXT_MAJOR: remove this if. It is unnesessery becouse template registry is get directly from admin.
         $this->templateRegistry = $this->container->get(sprintf('%s.template_registry', $this->admin->getCode()));
         if (!$this->templateRegistry instanceof TemplateRegistryInterface) {
             throw new \RuntimeException(sprintf(
@@ -1201,12 +1206,12 @@ class CRUDController implements ContainerAwareInterface
         if ($this->isXmlHttpRequest()) {
             // NEXT_MAJOR: Remove this line and use commented line below it instead
             return $this->admin->getTemplate('ajax');
-            // return $this->templateRegistry->getTemplate('ajax');
+            // return $this->admin->getTemplateRegistry()->getTemplate('ajax');
         }
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
         return $this->admin->getTemplate('layout');
-        // return $this->templateRegistry->getTemplate('layout');
+        // return $this->admin->getTemplateRegistry()->getTemplate('layout');
     }
 
     /**

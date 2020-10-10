@@ -93,6 +93,8 @@ class CRUDControllerTest extends TestCase
     private $admin;
 
     /**
+     * NEXT_MAJOR: remove this property and use '$this->admin->getTemplateRegistry()' instead.
+     *
      * @var TemplateRegistryInterface
      */
     private $templateRegistry;
