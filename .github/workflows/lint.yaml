@@ -7,8 +7,8 @@ name: Lint
 on:
   push:
     branches:
-      - master
       - 3.x
+      - master
   pull_request:
 
 jobs:
