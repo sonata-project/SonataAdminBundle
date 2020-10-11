@@ -63,6 +63,8 @@ class CRUDController implements ContainerAwareInterface
     /**
      * The related Admin class.
      *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use `getCurrentAdmin()` from `sonata.admin.pool` service instead.
+     *
      * @var AdminInterface
      */
     protected $admin;
@@ -70,7 +72,7 @@ class CRUDController implements ContainerAwareInterface
     /**
      * The template registry of the related Admin class.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use `$this->admin->getTemplateRegistry()` instead.
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use `$admin->getTemplateRegistry()` instead.
      *
      * @var TemplateRegistryInterface
      */
@@ -128,9 +130,10 @@ class CRUDController implements ContainerAwareInterface
      */
     public function listAction()
     {
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
         $request = $this->getRequest();
 
-        $this->admin->checkAccess('list');
+        $admin->checkAccess('list');
 
         $preResponse = $this->preList($request);
         if (null !== $preResponse) {
@@ -138,18 +141,18 @@ class CRUDController implements ContainerAwareInterface
         }
 
         if ($listMode = $request->get('_list_mode')) {
-            $this->admin->setListMode($listMode);
+            $admin->setListMode($listMode);
         }
 
-        $datagrid = $this->admin->getDatagrid();
+        $datagrid = $admin->getDatagrid();
         $formView = $datagrid->getForm()->createView();
 
         // set the theme for the current Admin Form
-        $this->setFormTheme($formView, $this->admin->getFilterTheme());
+        $this->setFormTheme($formView, $admin->getFilterTheme());
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
-        $template = $this->admin->getTemplate('list');
-        // $template = $this->admin->getTemplateRegistry()->getTemplate('list');
+        $template = $admin->getTemplate('list');
+        // $template = $admin->getTemplateRegistry()->getTemplate('list');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'list',
@@ -157,8 +160,8 @@ class CRUDController implements ContainerAwareInterface
             'datagrid' => $datagrid,
             'csrf_token' => $this->getCsrfToken('sonata.batch'),
             'export_formats' => $this->has('sonata.admin.admin_exporter') ?
-                $this->get('sonata.admin.admin_exporter')->getAvailableFormats($this->admin) :
-                $this->admin->getExportFormats(),
+                $this->get('sonata.admin.admin_exporter')->getAvailableFormats($admin) :
+                $admin->getExportFormats(),
         ], null);
     }
 
@@ -171,12 +174,14 @@ class CRUDController implements ContainerAwareInterface
      */
     public function batchActionDelete(ProxyQueryInterface $query)
     {
-        $this->admin->checkAccess('batchDelete');
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
 
-        $modelManager = $this->admin->getModelManager();
+        $admin->checkAccess('batchDelete');
+
+        $modelManager = $admin->getModelManager();
 
         try {
-            $modelManager->batchDelete($this->admin->getClass(), $query);
+            $modelManager->batchDelete($admin->getClass(), $query);
             $this->addFlash(
                 'sonata_flash_success',
                 $this->trans('flash_batch_delete_success', [], 'SonataAdminBundle')
@@ -204,9 +209,10 @@ class CRUDController implements ContainerAwareInterface
      */
     public function deleteAction($id) // NEXT_MAJOR: Remove the unused $id parameter
     {
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
+        $id = $request->get($admin->getIdParameter());
+        $object = $admin->getObject($id);
 
         if (!$object) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
@@ -214,7 +220,7 @@ class CRUDController implements ContainerAwareInterface
 
         $this->checkParentChildAssociation($request, $object);
 
-        $this->admin->checkAccess('delete', $object);
+        $admin->checkAccess('delete', $object);
 
         $preResponse = $this->preDelete($request, $object);
         if (null !== $preResponse) {
@@ -225,10 +231,10 @@ class CRUDController implements ContainerAwareInterface
             // check the csrf token
             $this->validateCsrfToken('sonata.delete');
 
-            $objectName = $this->admin->toString($object);
+            $objectName = $admin->toString($object);
 
             try {
-                $this->admin->delete($object);
+                $admin->delete($object);
 
                 if ($this->isXmlHttpRequest()) {
                     return $this->renderJson(['result' => 'ok'], Response::HTTP_OK, []);
@@ -263,8 +269,8 @@ class CRUDController implements ContainerAwareInterface
         }
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
-        $template = $this->admin->getTemplate('delete');
-        // $template = $this->admin->getTemplateRegistry()->getTemplate('delete');
+        $template = $admin->getTemplate('delete');
+        // $template = $admin->getTemplateRegistry()->getTemplate('delete');
 
         return $this->renderWithExtraParams($template, [
             'object' => $object,
@@ -285,6 +291,8 @@ class CRUDController implements ContainerAwareInterface
      */
     public function editAction($deprecatedId = null) // NEXT_MAJOR: Remove the unused $id parameter
     {
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
+
         if (isset(\func_get_args()[0])) {
             @trigger_error(sprintf(
                 'Support for the "id" route param as argument 1 at `%s()` is deprecated since'
@@ -298,8 +306,8 @@ class CRUDController implements ContainerAwareInterface
         $templateKey = 'edit';
 
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
-        $existingObject = $this->admin->getObject($id);
+        $id = $request->get($admin->getIdParameter());
+        $existingObject = $admin->getObject($id);
 
         if (!$existingObject) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
@@ -307,17 +315,17 @@ class CRUDController implements ContainerAwareInterface
 
         $this->checkParentChildAssociation($request, $existingObject);
 
-        $this->admin->checkAccess('edit', $existingObject);
+        $admin->checkAccess('edit', $existingObject);
 
         $preResponse = $this->preEdit($request, $existingObject);
         if (null !== $preResponse) {
             return $preResponse;
         }
 
-        $this->admin->setSubject($existingObject);
-        $objectId = $this->admin->getNormalizedIdentifier($existingObject);
+        $admin->setSubject($existingObject);
+        $objectId = $admin->getNormalizedIdentifier($existingObject);
 
-        $form = $this->admin->getForm();
+        $form = $admin->getForm();
 
         $form->setData($existingObject);
         $form->handleRequest($request);
@@ -328,10 +336,10 @@ class CRUDController implements ContainerAwareInterface
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
                 $submittedObject = $form->getData();
-                $this->admin->setSubject($submittedObject);
+                $admin->setSubject($submittedObject);
 
                 try {
-                    $existingObject = $this->admin->update($submittedObject);
+                    $existingObject = $admin->update($submittedObject);
 
                     if ($this->isXmlHttpRequest()) {
                         return $this->handleXmlHttpRequestSuccessResponse($request, $existingObject);
@@ -341,7 +349,7 @@ class CRUDController implements ContainerAwareInterface
                         'sonata_flash_success',
                         $this->trans(
                             'flash_edit_success',
-                            ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))],
+                            ['%name%' => $this->escapeHtml($admin->toString($existingObject))],
                             'SonataAdminBundle'
                         )
                     );
@@ -354,8 +362,8 @@ class CRUDController implements ContainerAwareInterface
                     $isFormValid = false;
                 } catch (LockException $e) {
                     $this->addFlash('sonata_flash_error', $this->trans('flash_lock_error', [
-                        '%name%' => $this->escapeHtml($this->admin->toString($existingObject)),
-                        '%link_start%' => sprintf('<a href="%s">', $this->admin->generateObjectUrl('edit', $existingObject)),
+                        '%name%' => $this->escapeHtml($admin->toString($existingObject)),
+                        '%link_start%' => sprintf('<a href="%s">', $admin->generateObjectUrl('edit', $existingObject)),
                         '%link_end%' => '</a>',
                     ], 'SonataAdminBundle'));
                 }
@@ -371,24 +379,24 @@ class CRUDController implements ContainerAwareInterface
                     'sonata_flash_error',
                     $this->trans(
                         'flash_edit_error',
-                        ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))],
+                        ['%name%' => $this->escapeHtml($admin->toString($existingObject))],
                         'SonataAdminBundle'
                     )
                 );
             } elseif ($this->isPreviewRequested()) {
                 // enable the preview template if the form was valid and preview was requested
                 $templateKey = 'preview';
-                $this->admin->getShow();
+                $admin->getShow();
             }
         }
 
         $formView = $form->createView();
         // set the theme for the current Admin Form
-        $this->setFormTheme($formView, $this->admin->getFormTheme());
+        $this->setFormTheme($formView, $admin->getFormTheme());
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
-        $template = $this->admin->getTemplate($templateKey);
-        // $template = $this->admin->getTemplateRegistry()->getTemplate($templateKey);
+        $template = $admin->getTemplate($templateKey);
+        // $template = $admin->getTemplateRegistry()->getTemplate($templateKey);
 
         return $this->renderWithExtraParams($template, [
             'action' => 'edit',
@@ -408,6 +416,7 @@ class CRUDController implements ContainerAwareInterface
      */
     public function batchAction()
     {
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
         $request = $this->getRequest();
         $restMethod = $this->getRestMethod();
 
@@ -452,15 +461,15 @@ class CRUDController implements ContainerAwareInterface
         }
 
         // NEXT_MAJOR: Remove reflection check.
-        $reflector = new \ReflectionMethod($this->admin, 'getBatchActions');
-        if ($reflector->getDeclaringClass()->getName() === \get_class($this->admin)) {
+        $reflector = new \ReflectionMethod($admin, 'getBatchActions');
+        if ($reflector->getDeclaringClass()->getName() === \get_class($admin)) {
             @trigger_error(sprintf(
                 'Override %1$s::getBatchActions method is deprecated since version 3.2.'
                 .' Use %1$s::configureBatchActions instead. The method will be final in 4.0.',
                 AbstractAdmin::class
             ), E_USER_DEPRECATED);
         }
-        $batchActions = $this->admin->getBatchActions();
+        $batchActions = $admin->getBatchActions();
         if (!\array_key_exists($action, $batchActions)) {
             throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
         }
@@ -478,7 +487,7 @@ class CRUDController implements ContainerAwareInterface
             $nonRelevantMessage = 'flash_batch_empty';
         }
 
-        $datagrid = $this->admin->getDatagrid();
+        $datagrid = $admin->getDatagrid();
         $datagrid->buildPager();
 
         if (true !== $nonRelevantMessage) {
@@ -496,18 +505,18 @@ class CRUDController implements ContainerAwareInterface
         if ($askConfirmation && 'ok' !== $confirmation) {
             $actionLabel = $batchActions[$action]['label'];
             $batchTranslationDomain = $batchActions[$action]['translation_domain'] ??
-                $this->admin->getTranslationDomain();
+                $admin->getTranslationDomain();
 
             $formView = $datagrid->getForm()->createView();
-            $this->setFormTheme($formView, $this->admin->getFilterTheme());
+            $this->setFormTheme($formView, $admin->getFilterTheme());
 
             // NEXT_MAJOR: Remove these lines and use commented lines below them instead
             $template = !empty($batchActions[$action]['template']) ?
                 $batchActions[$action]['template'] :
-                $this->admin->getTemplate('batch_confirmation');
+                $admin->getTemplate('batch_confirmation');
             // $template = !empty($batchActions[$action]['template']) ?
             //     $batchActions[$action]['template'] :
-            //     $this->admin->getTemplateRegistry()->getTemplate('batch_confirmation');
+            //     $admin->getTemplateRegistry()->getTemplate('batch_confirmation');
 
             return $this->renderWithExtraParams($template, [
                 'action' => 'list',
@@ -531,10 +540,10 @@ class CRUDController implements ContainerAwareInterface
         $query->setFirstResult(null);
         $query->setMaxResults(null);
 
-        $this->admin->preBatchAction($action, $query, $idx, $allElements);
+        $admin->preBatchAction($action, $query, $idx, $allElements);
 
         if (\count($idx) > 0) {
-            $this->admin->getModelManager()->addIdentifiersToQuery($this->admin->getClass(), $query, $idx);
+            $admin->getModelManager()->addIdentifiersToQuery($admin->getClass(), $query, $idx);
         } elseif (!$allElements) {
             $this->addFlash(
                 'sonata_flash_info',
@@ -556,36 +565,37 @@ class CRUDController implements ContainerAwareInterface
      */
     public function createAction()
     {
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
         $request = $this->getRequest();
         // the key used to lookup the template
         $templateKey = 'edit';
 
-        $this->admin->checkAccess('create');
+        $admin->checkAccess('create');
 
-        $class = new \ReflectionClass($this->admin->hasActiveSubClass() ? $this->admin->getActiveSubClass() : $this->admin->getClass());
+        $class = new \ReflectionClass($admin->hasActiveSubClass() ? $admin->getActiveSubClass() : $admin->getClass());
 
         if ($class->isAbstract()) {
             return $this->renderWithExtraParams(
                 '@SonataAdmin/CRUD/select_subclass.html.twig',
                 [
                     'base_template' => $this->getBaseTemplate(),
-                    'admin' => $this->admin,
+                    'admin' => $admin,
                     'action' => 'create',
                 ],
                 null
             );
         }
 
-        $newObject = $this->admin->getNewInstance();
+        $newObject = $admin->getNewInstance();
 
         $preResponse = $this->preCreate($request, $newObject);
         if (null !== $preResponse) {
             return $preResponse;
         }
 
-        $this->admin->setSubject($newObject);
+        $admin->setSubject($newObject);
 
-        $form = $this->admin->getForm();
+        $form = $admin->getForm();
 
         $form->setData($newObject);
         $form->handleRequest($request);
@@ -596,11 +606,11 @@ class CRUDController implements ContainerAwareInterface
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
                 $submittedObject = $form->getData();
-                $this->admin->setSubject($submittedObject);
-                $this->admin->checkAccess('create', $submittedObject);
+                $admin->setSubject($submittedObject);
+                $admin->checkAccess('create', $submittedObject);
 
                 try {
-                    $newObject = $this->admin->create($submittedObject);
+                    $newObject = $admin->create($submittedObject);
 
                     if ($this->isXmlHttpRequest()) {
                         return $this->handleXmlHttpRequestSuccessResponse($request, $newObject);
@@ -610,7 +620,7 @@ class CRUDController implements ContainerAwareInterface
                         'sonata_flash_success',
                         $this->trans(
                             'flash_create_success',
-                            ['%name%' => $this->escapeHtml($this->admin->toString($newObject))],
+                            ['%name%' => $this->escapeHtml($admin->toString($newObject))],
                             'SonataAdminBundle'
                         )
                     );
@@ -634,24 +644,24 @@ class CRUDController implements ContainerAwareInterface
                     'sonata_flash_error',
                     $this->trans(
                         'flash_create_error',
-                        ['%name%' => $this->escapeHtml($this->admin->toString($newObject))],
+                        ['%name%' => $this->escapeHtml($admin->toString($newObject))],
                         'SonataAdminBundle'
                     )
                 );
             } elseif ($this->isPreviewRequested()) {
                 // pick the preview template if the form was valid and preview was requested
                 $templateKey = 'preview';
-                $this->admin->getShow();
+                $admin->getShow();
             }
         }
 
         $formView = $form->createView();
         // set the theme for the current Admin Form
-        $this->setFormTheme($formView, $this->admin->getFormTheme());
+        $this->setFormTheme($formView, $admin->getFormTheme());
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
-        $template = $this->admin->getTemplate($templateKey);
-        // $template = $this->admin->getTemplateRegistry()->getTemplate($templateKey);
+        $template = $admin->getTemplate($templateKey);
+        // $template = $admin->getTemplateRegistry()->getTemplate($templateKey);
 
         return $this->renderWithExtraParams($template, [
             'action' => 'create',
@@ -682,9 +692,10 @@ class CRUDController implements ContainerAwareInterface
             ), E_USER_DEPRECATED);
         }
 
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
+        $id = $request->get($admin->getIdParameter());
+        $object = $admin->getObject($id);
 
         if (!$object) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
@@ -692,21 +703,21 @@ class CRUDController implements ContainerAwareInterface
 
         $this->checkParentChildAssociation($request, $object);
 
-        $this->admin->checkAccess('show', $object);
+        $admin->checkAccess('show', $object);
 
         $preResponse = $this->preShow($request, $object);
         if (null !== $preResponse) {
             return $preResponse;
         }
 
-        $this->admin->setSubject($object);
+        $admin->setSubject($object);
 
-        $fields = $this->admin->getShow();
+        $fields = $admin->getShow();
         \assert($fields instanceof FieldDescriptionCollection);
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
-        $template = $this->admin->getTemplate('show');
-        //$template = $this->admin->getTemplateRegistry()->getTemplate('show');
+        $template = $admin->getTemplate('show');
+        //$template = $admin->getTemplateRegistry()->getTemplate('show');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'show',
@@ -736,32 +747,33 @@ class CRUDController implements ContainerAwareInterface
             ), E_USER_DEPRECATED);
         }
 
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
+        $id = $request->get($admin->getIdParameter());
+        $object = $admin->getObject($id);
 
         if (!$object) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
 
-        $this->admin->checkAccess('history', $object);
+        $admin->checkAccess('history', $object);
 
         $manager = $this->get('sonata.admin.audit.manager');
 
-        if (!$manager->hasReader($this->admin->getClass())) {
+        if (!$manager->hasReader($admin->getClass())) {
             throw $this->createNotFoundException(sprintf(
                 'unable to find the audit reader for class : %s',
-                $this->admin->getClass()
+                $admin->getClass()
             ));
         }
 
-        $reader = $manager->getReader($this->admin->getClass());
+        $reader = $manager->getReader($admin->getClass());
 
-        $revisions = $reader->findRevisions($this->admin->getClass(), $id);
+        $revisions = $reader->findRevisions($admin->getClass(), $id);
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
-        $template = $this->admin->getTemplate('history');
-        // $template = $this->admin->getTemplateRegistry()->getTemplate('history');
+        $template = $admin->getTemplate('history');
+        // $template = $admin->getTemplateRegistry()->getTemplate('history');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'history',
@@ -784,49 +796,50 @@ class CRUDController implements ContainerAwareInterface
      */
     public function historyViewRevisionAction($id = null, $revision = null) // NEXT_MAJOR: Remove the unused $id parameter
     {
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
+        $id = $request->get($admin->getIdParameter());
+        $object = $admin->getObject($id);
 
         if (!$object) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
 
-        $this->admin->checkAccess('historyViewRevision', $object);
+        $admin->checkAccess('historyViewRevision', $object);
 
         $manager = $this->get('sonata.admin.audit.manager');
 
-        if (!$manager->hasReader($this->admin->getClass())) {
+        if (!$manager->hasReader($admin->getClass())) {
             throw $this->createNotFoundException(sprintf(
                 'unable to find the audit reader for class : %s',
-                $this->admin->getClass()
+                $admin->getClass()
             ));
         }
 
-        $reader = $manager->getReader($this->admin->getClass());
+        $reader = $manager->getReader($admin->getClass());
 
         // retrieve the revisioned object
-        $object = $reader->find($this->admin->getClass(), $id, $revision);
+        $object = $reader->find($admin->getClass(), $id, $revision);
 
         if (!$object) {
             throw $this->createNotFoundException(sprintf(
                 'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
                 $id,
                 $revision,
-                $this->admin->getClass()
+                $admin->getClass()
             ));
         }
 
-        $this->admin->setSubject($object);
+        $admin->setSubject($object);
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
-        $template = $this->admin->getTemplate('show');
-        // $template = $this->admin->getTemplateRegistry()->getTemplate('show');
+        $template = $admin->getTemplate('show');
+        // $template = $admin->getTemplateRegistry()->getTemplate('show');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'show',
             'object' => $object,
-            'elements' => $this->admin->getShow(),
+            'elements' => $admin->getShow(),
         ], null);
     }
 
@@ -844,11 +857,13 @@ class CRUDController implements ContainerAwareInterface
      */
     public function historyCompareRevisionsAction($id = null, $base_revision = null, $compare_revision = null) // NEXT_MAJOR: Remove the unused $id parameter
     {
-        $this->admin->checkAccess('historyCompareRevisions');
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
+
+        $admin->checkAccess('historyCompareRevisions');
 
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
+        $id = $request->get($admin->getIdParameter());
+        $object = $admin->getObject($id);
 
         if (!$object) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
@@ -856,48 +871,48 @@ class CRUDController implements ContainerAwareInterface
 
         $manager = $this->get('sonata.admin.audit.manager');
 
-        if (!$manager->hasReader($this->admin->getClass())) {
+        if (!$manager->hasReader($admin->getClass())) {
             throw $this->createNotFoundException(sprintf(
                 'unable to find the audit reader for class : %s',
-                $this->admin->getClass()
+                $admin->getClass()
             ));
         }
 
-        $reader = $manager->getReader($this->admin->getClass());
+        $reader = $manager->getReader($admin->getClass());
 
         // retrieve the base revision
-        $base_object = $reader->find($this->admin->getClass(), $id, $base_revision);
+        $base_object = $reader->find($admin->getClass(), $id, $base_revision);
         if (!$base_object) {
             throw $this->createNotFoundException(sprintf(
                 'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
                 $id,
                 $base_revision,
-                $this->admin->getClass()
+                $admin->getClass()
             ));
         }
 
         // retrieve the compare revision
-        $compare_object = $reader->find($this->admin->getClass(), $id, $compare_revision);
+        $compare_object = $reader->find($admin->getClass(), $id, $compare_revision);
         if (!$compare_object) {
             throw $this->createNotFoundException(sprintf(
                 'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
                 $id,
                 $compare_revision,
-                $this->admin->getClass()
+                $admin->getClass()
             ));
         }
 
-        $this->admin->setSubject($base_object);
+        $admin->setSubject($base_object);
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
-        $template = $this->admin->getTemplate('show_compare');
-        // $template = $this->admin->getTemplateRegistry()->getTemplate('show_compare');
+        $template = $admin->getTemplate('show_compare');
+        // $template = $admin->getTemplateRegistry()->getTemplate('show_compare');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'show',
             'object' => $base_object,
             'object_compare' => $compare_object,
-            'elements' => $this->admin->getShow(),
+            'elements' => $admin->getShow(),
         ], null);
     }
 
@@ -911,7 +926,9 @@ class CRUDController implements ContainerAwareInterface
      */
     public function exportAction(Request $request)
     {
-        $this->admin->checkAccess('export');
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
+
+        $admin->checkAccess('export');
 
         $format = $request->get('format');
 
@@ -921,9 +938,9 @@ class CRUDController implements ContainerAwareInterface
                 'Not registering the exporter bundle is deprecated since version 3.14. You must register it to be able to use the export action in 4.0.',
                 E_USER_DEPRECATED
             );
-            $allowedExportFormats = (array) $this->admin->getExportFormats();
+            $allowedExportFormats = (array) $admin->getExportFormats();
 
-            $class = (string) $this->admin->getClass();
+            $class = (string) $admin->getClass();
             $filename = sprintf(
                 'export_%s_%s.%s',
                 strtolower((string) substr($class, strripos($class, '\\') + 1)),
@@ -933,8 +950,8 @@ class CRUDController implements ContainerAwareInterface
             $exporter = $this->get('sonata.admin.exporter');
         } else {
             $adminExporter = $this->get('sonata.admin.admin_exporter');
-            $allowedExportFormats = $adminExporter->getAvailableFormats($this->admin);
-            $filename = $adminExporter->getExportFilename($this->admin, $format);
+            $allowedExportFormats = $adminExporter->getAvailableFormats($admin);
+            $filename = $adminExporter->getExportFilename($admin, $format);
             $exporter = $this->get('sonata.exporter.exporter');
         }
 
@@ -942,7 +959,7 @@ class CRUDController implements ContainerAwareInterface
             throw new \RuntimeException(sprintf(
                 'Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`',
                 $format,
-                $this->admin->getClass(),
+                $admin->getClass(),
                 implode(', ', $allowedExportFormats)
             ));
         }
@@ -950,7 +967,7 @@ class CRUDController implements ContainerAwareInterface
         return $exporter->getResponse(
             $format,
             $filename,
-            $this->admin->getDataSourceIterator()
+            $admin->getDataSourceIterator()
         );
     }
 
@@ -975,27 +992,29 @@ class CRUDController implements ContainerAwareInterface
             ), E_USER_DEPRECATED);
         }
 
-        if (!$this->admin->isAclEnabled()) {
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
+
+        if (!$admin->isAclEnabled()) {
             throw $this->createNotFoundException('ACL are not enabled for this admin');
         }
 
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
+        $id = $request->get($admin->getIdParameter());
+        $object = $admin->getObject($id);
 
         if (!$object) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
 
-        $this->admin->checkAccess('acl', $object);
+        $admin->checkAccess('acl', $object);
 
-        $this->admin->setSubject($object);
+        $admin->setSubject($object);
         $aclUsers = $this->getAclUsers();
         $aclRoles = $this->getAclRoles();
 
         $adminObjectAclManipulator = $this->get('sonata.admin.object.manipulator.acl.admin');
         $adminObjectAclData = new AdminObjectAclData(
-            $this->admin,
+            $admin,
             $object,
             $aclUsers,
             $adminObjectAclManipulator->getMaskBuilderClass(),
@@ -1024,14 +1043,14 @@ class CRUDController implements ContainerAwareInterface
                         $this->trans('flash_acl_edit_success', [], 'SonataAdminBundle')
                     );
 
-                    return new RedirectResponse($this->admin->generateObjectUrl('acl', $object));
+                    return new RedirectResponse($admin->generateObjectUrl('acl', $object));
                 }
             }
         }
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
-        $template = $this->admin->getTemplate('acl');
-        // $template = $this->admin->getTemplateRegistry()->getTemplate('acl');
+        $template = $admin->getTemplate('acl');
+        // $template = $admin->getTemplateRegistry()->getTemplate('acl');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'acl',
@@ -1063,7 +1082,8 @@ class CRUDController implements ContainerAwareInterface
             $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
         }
 
-        $parameters['admin'] = $parameters['admin'] ?? $this->admin;
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
+        $parameters['admin'] = $parameters['admin'] ?? $admin;
         $parameters['base_template'] = $parameters['base_template'] ?? $this->getBaseTemplate();
         $parameters['admin_pool'] = $this->get('sonata.admin.pool');
 
@@ -1126,7 +1146,7 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
-     * NEXT_MAJOR: move this method to 'sonata.admin.pool' service.
+     * NEXT_MAJOR: remove this method.
      *
      * Contextualize the admin class depends on the current request.
      *
@@ -1134,48 +1154,18 @@ class CRUDController implements ContainerAwareInterface
      */
     protected function configure()
     {
-        $request = $this->getRequest();
-
-        $adminCode = $request->get('_sonata_admin');
-
-        if (!$adminCode) {
-            throw new \RuntimeException(sprintf(
-                'There is no `_sonata_admin` defined for the controller `%s` and the current route `%s`',
-                static::class,
-                $request->get('_route')
-            ));
-        }
-
-        $this->admin = $this->container->get('sonata.admin.pool')->getAdminByAdminCode($adminCode);
-
-        if (!$this->admin) {
-            throw new \RuntimeException(sprintf(
-                'Unable to find the admin class related to the current controller (%s)',
-                static::class
-            ));
-        }
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
 
         // NEXT_MAJOR: remove this if. It is unnesessery becouse template registry is get directly from admin.
-        $this->templateRegistry = $this->container->get(sprintf('%s.template_registry', $this->admin->getCode()));
+        $this->templateRegistry = $this->container->get(sprintf('%s.template_registry', $admin->getCode()));
         if (!$this->templateRegistry instanceof TemplateRegistryInterface) {
             throw new \RuntimeException(sprintf(
                 'Unable to find the template registry related to the current admin (%s)',
-                $this->admin->getCode()
+                $admin->getCode()
             ));
         }
 
-        $rootAdmin = $this->admin;
-
-        while ($rootAdmin->isChild()) {
-            $rootAdmin->setCurrentChild(true);
-            $rootAdmin = $rootAdmin->getParent();
-        }
-
-        $rootAdmin->setRequest($request);
-
-        if ($request->get('uniqid')) {
-            $this->admin->setUniqid($request->get('uniqid'));
-        }
+        $this->admin = $admin;
     }
 
     /**
@@ -1203,15 +1193,17 @@ class CRUDController implements ContainerAwareInterface
      */
     protected function getBaseTemplate()
     {
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
+
         if ($this->isXmlHttpRequest()) {
             // NEXT_MAJOR: Remove this line and use commented line below it instead
-            return $this->admin->getTemplate('ajax');
-            // return $this->admin->getTemplateRegistry()->getTemplate('ajax');
+            return $admin->getTemplate('ajax');
+            // return $admin->getTemplateRegistry()->getTemplate('ajax');
         }
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
-        return $this->admin->getTemplate('layout');
-        // return $this->admin->getTemplateRegistry()->getTemplate('layout');
+        return $admin->getTemplate('layout');
+        // return $admin->getTemplateRegistry()->getTemplate('layout');
     }
 
     /**
@@ -1239,6 +1231,7 @@ class CRUDController implements ContainerAwareInterface
      */
     protected function redirectTo($object)
     {
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
         $request = $this->getRequest();
 
         $url = false;
@@ -1252,10 +1245,10 @@ class CRUDController implements ContainerAwareInterface
 
         if (null !== $request->get('btn_create_and_create')) {
             $params = [];
-            if ($this->admin->hasActiveSubClass()) {
+            if ($admin->hasActiveSubClass()) {
                 $params['subclass'] = $request->get('subclass');
             }
-            $url = $this->admin->generateUrl('create', $params);
+            $url = $admin->generateUrl('create', $params);
         }
 
         if ('DELETE' === $this->getRestMethod()) {
@@ -1264,8 +1257,8 @@ class CRUDController implements ContainerAwareInterface
 
         if (!$url) {
             foreach (['edit', 'show'] as $route) {
-                if ($this->admin->hasRoute($route) && $this->admin->hasAccess($route, $object)) {
-                    $url = $this->admin->generateObjectUrl(
+                if ($admin->hasRoute($route) && $admin->hasAccess($route, $object)) {
+                    $url = $admin->generateObjectUrl(
                         $route,
                         $object,
                         $this->getSelectedTab($request)
@@ -1290,13 +1283,14 @@ class CRUDController implements ContainerAwareInterface
      */
     final protected function redirectToList()
     {
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
         $parameters = [];
 
-        if ($filter = $this->admin->getFilterParameters()) {
+        if ($filter = $admin->getFilterParameters()) {
             $parameters['filter'] = $filter;
         }
 
-        return $this->redirect($this->admin->generateUrl('list', $parameters));
+        return $this->redirect($admin->generateUrl('list', $parameters));
     }
 
     /**
@@ -1333,7 +1327,9 @@ class CRUDController implements ContainerAwareInterface
      */
     protected function isInPreviewMode()
     {
-        return $this->admin->supportsPreviewMode()
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
+
+        return $admin->supportsPreviewMode()
         && ($this->isPreviewRequested()
             || $this->isPreviewApproved()
             || $this->isPreviewDeclined());
@@ -1532,7 +1528,8 @@ class CRUDController implements ContainerAwareInterface
      */
     final protected function trans($id, array $parameters = [], $domain = null, $locale = null)
     {
-        $domain = $domain ?: $this->admin->getTranslationDomain();
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
+        $domain = $domain ?: $admin->getTranslationDomain();
 
         return $this->get('translator')->trans($id, $parameters, $domain, $locale);
     }
@@ -1544,20 +1541,22 @@ class CRUDController implements ContainerAwareInterface
 
     private function checkParentChildAssociation(Request $request, object $object): void
     {
-        if (!$this->admin->isChild()) {
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
+
+        if (!$admin->isChild()) {
             return;
         }
 
         // NEXT_MAJOR: remove this check
-        if (!$this->admin->getParentAssociationMapping()) {
+        if (!$admin->getParentAssociationMapping()) {
             return;
         }
 
-        $parentAdmin = $this->admin->getParent();
+        $parentAdmin = $admin->getParent();
         $parentId = $request->get($parentAdmin->getIdParameter());
 
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
-        $propertyPath = new PropertyPath($this->admin->getParentAssociationMapping());
+        $propertyPath = new PropertyPath($admin->getParentAssociationMapping());
 
         if ($parentAdmin->getObject($parentId) !== $propertyAccessor->getValue($object, $propertyPath)) {
             // NEXT_MAJOR: make this exception
@@ -1602,14 +1601,16 @@ class CRUDController implements ContainerAwareInterface
      */
     private function handleXmlHttpRequestSuccessResponse(Request $request, $object): JsonResponse
     {
+        $admin = $this->container->get('sonata.admin.pool')->getCurrentAdmin();
+
         if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
             @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json` or `Accept: */*`', E_USER_DEPRECATED);
         }
 
         return $this->renderJson([
             'result' => 'ok',
-            'objectId' => $this->admin->getNormalizedIdentifier($object),
-            'objectName' => $this->escapeHtml($this->admin->toString($object)),
+            'objectId' => $admin->getNormalizedIdentifier($object),
+            'objectName' => $this->escapeHtml($admin->toString($object)),
         ], Response::HTTP_OK);
     }
 }

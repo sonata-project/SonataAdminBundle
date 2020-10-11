@@ -86,6 +86,11 @@ class Pool
     private $templateRegistry;
 
     /**
+     * @var AdminInterface
+     */
+    private $currentAdmin;
+
+    /**
      * @param string $title
      * @param string $logoTitle
      * @param array  $options
@@ -340,7 +345,7 @@ class Pool
     }
 
     /**
-     * Returns a new admin instance depends on the given code.
+     * Returns a admin instance depends on the given code.
      *
      * @param string $id
      *
@@ -527,5 +532,61 @@ class Pool
         }
 
         return $this->propertyAccessor;
+    }
+
+    /**
+     * Returns a admin instance depends on the given Request (_sonata_admin).
+     */
+    public function getCurrentAdmin(bool $throwException = true): AdminInterface
+    {
+        if (null === $this->currentAdmin) {
+            $this->configure();
+        }
+
+        return $this->currentAdmin;
+    }
+
+    public function configure(bool $throwException = true): void
+    {
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+
+        $adminCode = $request->get('_sonata_admin');
+
+        if (!$adminCode) {
+            if (!$throwException) {
+                return;
+            }
+
+            throw new \RuntimeException(sprintf(
+                'There is no `_sonata_admin` defined for the current route `%s`',
+                $request->get('_route')
+            ));
+        }
+
+        $this->currentAdmin = $this->getAdminByAdminCode($adminCode);
+
+        if (!$this->currentAdmin) {
+            if (!$throwException) {
+                return;
+            }
+
+            throw new \RuntimeException(sprintf(
+                'Unable to find the admin class related to the current admin code (%s)',
+                $adminCode
+            ));
+        }
+
+        $rootAdmin = $this->currentAdmin;
+
+        while ($rootAdmin->isChild()) {
+            $rootAdmin->setCurrentChild(true);
+            $rootAdmin = $rootAdmin->getParent();
+        }
+
+        $rootAdmin->setRequest($request);
+
+        if ($request->get('uniqid')) {
+            $this->currentAdmin->setUniqid($request->get('uniqid'));
+        }
     }
 }

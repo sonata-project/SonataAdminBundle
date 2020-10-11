@@ -20,6 +20,8 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class PoolTest extends TestCase
 {
@@ -554,6 +556,77 @@ class PoolTest extends TestCase
     public function testOptionDefault(): void
     {
         $this->assertSame([], $this->pool->getOption('nonexistantarray', []));
+    }
+
+    public function testConfigure(): void
+    {
+        $adminGroup1 = $this->createMock(AdminInterface::class);
+        $adminGroup1->expects($this->once())->method('isChild')->willReturn(false);
+
+        $adminGroup1child = $this->createMock(AdminInterface::class);
+        $adminGroup1child->expects($this->once())->method('getParent')->willReturn($adminGroup1);
+        $adminGroup1child->expects($this->once())->method('isChild')->willReturn(true);
+        $adminGroup1child->expects($this->once())->method('setCurrentChild');
+        $adminGroup1child->expects($this->once())->method('setUniqid')->with('123456')->willReturn(false);
+
+        $adminGroup2 = $this->createMock(AdminInterface::class);
+
+        $this->container->set('sonata.admin.pool', $this->pool);
+        $this->container->set('sonata.user.admin.group1.parent', $adminGroup1);
+        $this->container->set('sonata.user.admin.group1.child', $adminGroup1child);
+        $this->container->set('sonata.user.admin.group2', $adminGroup2);
+
+        $this->pool->setAdminServiceIds([
+            'sonata.user.admin.group1.parent',
+            'sonata.user.admin.group1.child',
+            'sonata.user.admin.group2',
+        ]);
+
+        $request = new Request([
+            '_sonata_admin' => 'sonata.user.admin.group1.child',
+            'uniqid' => '123456',
+        ]);
+        $requestStack = $this->createMock(RequestStack::class);
+        $requestStack->expects($this->once())->method('getCurrentRequest')->willReturn($request);
+
+        $this->container->set('request_stack', $requestStack);
+        $admin = $this->pool->getCurrentAdmin();
+
+        $this->assertSame($adminGroup1child, $admin);
+    }
+
+    public function testConfigureWithException(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'There is no `_sonata_admin` defined for the current route `test_route`'
+        );
+
+        $request = new Request([
+            '_route' => 'test_route',
+        ]);
+
+        $requestStack = $this->createMock(RequestStack::class);
+        $requestStack->expects($this->once())->method('getCurrentRequest')->willReturn($request);
+
+        $this->container->set('request_stack', $requestStack);
+        $this->pool->getCurrentAdmin();
+    }
+
+    public function testConfigureWithException2(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Admin service "nonexistent.admin" not found in admin pool.');
+
+        $request = new Request([
+            '_sonata_admin' => 'nonexistent.admin',
+        ]);
+
+        $requestStack = $this->createMock(RequestStack::class);
+        $requestStack->expects($this->once())->method('getCurrentRequest')->willReturn($request);
+
+        $this->container->set('request_stack', $requestStack);
+        $this->pool->getCurrentAdmin();
     }
 
     private function getItemArray(string $serviceId): array
