@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Admin;
 
 use Knp\Menu\FactoryInterface as MenuFactoryInterface;
 use Knp\Menu\ItemInterface;
-use RuntimeException;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
@@ -201,7 +200,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * NEXT MAJOR: Remove the throws tag.
      *
-     * @throws RuntimeException if no request is set
+     * @throws \RuntimeException if no request is set
      *
      * @return Request
      */
