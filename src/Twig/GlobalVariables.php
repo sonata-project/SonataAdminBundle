@@ -55,7 +55,7 @@ final class GlobalVariables
      */
     public function url($code, $action, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        list($action, $code) = $this->getCodeAction($code, $action);
+        [$action, $code] = $this->getCodeAction($code, $action);
 
         return $this->getAdminPool()->getAdminByAdminCode($code)->generateUrl($action, $parameters, $referenceType);
     }
@@ -71,7 +71,7 @@ final class GlobalVariables
      */
     public function objectUrl($code, $action, $object, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        list($action, $code) = $this->getCodeAction($code, $action);
+        [$action, $code] = $this->getCodeAction($code, $action);
 
         return $this->getAdminPool()->getAdminByAdminCode($code)->generateObjectUrl($action, $object, $parameters, $referenceType);
     }
