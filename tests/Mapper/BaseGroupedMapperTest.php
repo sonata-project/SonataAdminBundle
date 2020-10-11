@@ -227,10 +227,11 @@ class BaseGroupedMapperTest extends TestCase
      */
     public function testLabel(bool $translated, string $name, ?string $label, string $expectedLabel): void
     {
+        // NEXT_MAJOR: Remove $container variable and the call to setParameter.
         $container = $this->baseGroupedMapper
             ->getAdmin()
             ->getConfigurationPool()
-            ->getContainer();
+            ->getContainer('sonata_deprecation_mute');
 
         $container->setParameter('sonata.admin.configuration.translate_group_label', $translated);
 
