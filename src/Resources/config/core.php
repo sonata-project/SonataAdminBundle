@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Extension\LockExtension;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Event\AdminEventExtension;
 use Sonata\AdminBundle\Filter\FilterFactory;
 use Sonata\AdminBundle\Filter\FilterFactoryInterface;
@@ -150,6 +151,23 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         ->alias(SearchHandler::class, 'sonata.admin.search.handler')
+
+        ->set('sonata.admin.controller.crud', CRUDController::class)
+            ->public()
+            ->tag('container.service_subscriber')
+            ->args([
+                new ReferenceConfigurator('sonata.admin.pool'),
+                new ReferenceConfigurator('sonata.admin.audit.manager'),
+                new ReferenceConfigurator('sonata.admin.object.manipulator.acl.admin'),
+                new ReferenceConfigurator('sonata.admin.breadcrumbs_builder'),
+                new ReferenceConfigurator('request_stack'),
+                new ReferenceConfigurator('translator'),
+                (new ReferenceConfigurator('sonata.exporter.exporter'))->nullOnInvalid(),
+                (new ReferenceConfigurator('sonata.admin.admin_exporter'))->nullOnInvalid(),
+                (new ReferenceConfigurator('sonata.admin.security.acl_user_manager'))->nullOnInvalid(),
+                (new ReferenceConfigurator('logger'))->nullOnInvalid(),
+            ])
+            ->call('setContainer', [new ReferenceConfigurator('service_container')])
 
         ->set('sonata.admin.event.extension', AdminEventExtension::class)
             ->public()

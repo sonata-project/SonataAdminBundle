@@ -110,10 +110,16 @@ final class SonataAdminExtension extends Extension
         $container->setParameter('sonata.admin.configuration.default_icon', $config['options']['default_icon']);
         $container->setParameter('sonata.admin.configuration.breadcrumbs', $config['breadcrumbs']);
 
-        if (null === $config['security']['acl_user_manager'] && isset($bundles['FOSUserBundle'])) {
-            $container->setParameter('sonata.admin.security.acl_user_manager', 'fos_user.user_manager');
-        } else {
-            $container->setParameter('sonata.admin.security.acl_user_manager', $config['security']['acl_user_manager']);
+        $aclUserManager = null;
+
+        if (null !== $config['security']['acl_user_manager']) {
+            $aclUserManager = $config['security']['acl_user_manager'];
+        } elseif (isset($bundles['FOSUserBundle'])) {
+            $aclUserManager = 'fos_user.user_manager';
+        }
+
+        if (null !== $aclUserManager) {
+            $container->setAlias('sonata.admin.security.acl_user_manager', $aclUserManager);
         }
 
         $container->setAlias('sonata.admin.security.handler', $config['security']['handler']);

@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Controller;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
+use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
@@ -43,6 +45,7 @@ use Sonata\Exporter\Writer\JsonWriter;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormRenderer;
@@ -57,7 +60,6 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -72,6 +74,26 @@ use Twig\Environment;
 class CRUDControllerTest extends TestCase
 {
     use ExpectDeprecationTrait;
+
+    /**
+     * @var Pool
+     */
+    private $pool;
+
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    /**
+     * @var Environment&Stub
+     */
+    private $twig;
+
+    /**
+     * @var LoggerInterface&MockObject
+     */
+    private $logger;
 
     /**
      * @var CRUDController
@@ -94,11 +116,6 @@ class CRUDControllerTest extends TestCase
     private $templateRegistry;
 
     /**
-     * @var Pool
-     */
-    private $pool;
-
-    /**
      * @var array
      */
     private $parameters;
@@ -107,6 +124,16 @@ class CRUDControllerTest extends TestCase
      * @var Session
      */
     private $session;
+
+    /**
+     * @var BreadcrumbsBuilderInterface
+     */
+    private $breadcrumbsBuilder;
+
+    /**
+     * @var ParameterBag
+     */
+    private $parameterBag;
 
     /**
      * @var AuditManagerInterface
@@ -119,7 +146,7 @@ class CRUDControllerTest extends TestCase
     private $container;
 
     /**
-     * @var AdminObjectAclManipulator
+     * @var AdminObjectAclManipulator&MockObject
      */
     private $adminObjectAclManipulator;
 
@@ -139,115 +166,69 @@ class CRUDControllerTest extends TestCase
     private $csrfProvider;
 
     /**
-     * @var KernelInterface
-     */
-    private $kernel;
-
-    /**
      * @var TranslatorInterface
      */
     private $translator;
-
-    /**
-     * @var LoggerInterface|MockObject
-     */
-    private $logger;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp(): void
     {
+        $this->admin = $this->getMockBuilder(AdminInterface::class)
+            ->addMethods(['getTemplateRegistry'])
+            ->getMockForAbstractClass();
+        $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->templateRegistry = $this->createStub(TemplateRegistryInterface::class);
+        $this->twig = $this->createStub(Environment::class);
+        $this->auditManager = $this->createMock(AuditManagerInterface::class);
+        $this->adminObjectAclManipulator = $this->createMock(AdminObjectAclManipulator::class);
+        $this->csrfProvider = $this->createStub(CsrfTokenManagerInterface::class);
+        $this->logger = $this->createMock(LoggerInterface::class);
+
         $this->container = new Container();
         $this->request = new Request();
+        $this->requestStack = new RequestStack();
         $this->pool = new Pool($this->container, 'title', 'logo.png');
-        $this->pool->setAdminServiceIds(['foo.admin']);
-        $this->request->attributes->set('_sonata_admin', 'foo.admin');
-        $this->admin = $this->createMock(AdminInterface::class);
-        $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->session = new Session(new MockArraySessionStorage());
+        $this->breadcrumbsBuilder = new BreadcrumbsBuilder([]);
+        $this->parameterBag = new ParameterBag([
+            'security.role_hierarchy.roles' => ['ROLE_SUPER_ADMIN' => ['ROLE_USER', 'ROLE_SONATA_ADMIN', 'ROLE_ADMIN']],
+            'kernel.debug' => false,
+        ]);
         $this->parameters = [];
         $this->template = '';
 
-        $this->templateRegistry = $this->createStub(TemplateRegistryInterface::class);
-
-        $templatingRenderReturnCallback = $this->returnCallback(function (
-            string $name,
-            array $context = []
-        ): string {
-            $this->template = $name;
-
-            $this->parameters = $context;
-
-            return '';
-        });
-
-        $this->session = new Session(new MockArraySessionStorage());
-
-        $twig = $this->getMockBuilder(Environment::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $twig
-            ->method('getRuntime')
-            ->willReturn($this->createMock(FormRenderer::class));
-
-        $twig
-            ->method('render')
-            ->will($templatingRenderReturnCallback);
-
         $exporter = new Exporter([new JsonWriter(sys_get_temp_dir().'/sonataadmin/export.json')]);
-
         $adminExporter = new AdminExporter($exporter);
 
-        $this->auditManager = $this->createMock(AuditManagerInterface::class);
+        $this->requestStack->push($this->request);
+        $this->pool->setAdminServiceIds(['foo.admin']);
+        $this->request->attributes->set('_sonata_admin', 'foo.admin');
 
-        $this->adminObjectAclManipulator = $this->getMockBuilder(AdminObjectAclManipulator::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->twig->method('getRuntime')->willReturn($this->createMock(FormRenderer::class));
+        $this->twig->method('render')->willReturnCallback(
+            function (string $name, array $context = []): string {
+                $this->template = $name;
+                $this->parameters = $context;
 
-        $this->csrfProvider = $this->getMockBuilder(CsrfTokenManagerInterface::class)
-            ->getMock();
-
-        $this->csrfProvider
-            ->method('getToken')
-            ->willReturnCallback(static function (string $intention): CsrfToken {
-                return new CsrfToken($intention, sprintf('csrf-token-123_%s', $intention));
-            });
-
-        $this->csrfProvider
-            ->method('isTokenValid')
-            ->willReturnCallback(static function (CsrfToken $token): bool {
-                return $token->getValue() === sprintf('csrf-token-123_%s', $token->getId());
-            });
-
-        $this->logger = $this->createMock(LoggerInterface::class);
-
-        $requestStack = new RequestStack();
-        $requestStack->push($this->request);
-
-        $this->kernel = $this->createMock(KernelInterface::class);
-
-        $this->container->set('sonata.admin.pool', $this->pool);
-        $this->container->set('request_stack', $requestStack);
-        $this->container->set('foo.admin', $this->admin);
-        $this->container->set('foo.admin.template_registry', $this->templateRegistry);
-        $this->container->set('twig', $twig);
-        $this->container->set('session', $this->session);
-        $this->container->set('sonata.exporter.exporter', $exporter);
-        $this->container->set('sonata.admin.admin_exporter', $adminExporter);
-        $this->container->set('sonata.admin.audit.manager', $this->auditManager);
-        $this->container->set('sonata.admin.object.manipulator.acl.admin', $this->adminObjectAclManipulator);
-        $this->container->set('security.csrf.token_manager', $this->csrfProvider);
-        $this->container->set('logger', $this->logger);
-        $this->container->set('kernel', $this->kernel);
-        $this->container->set('translator', $this->translator);
-        $this->container->set('sonata.admin.breadcrumbs_builder', new BreadcrumbsBuilder([]));
-
-        $this->container->setParameter(
-            'security.role_hierarchy.roles',
-            ['ROLE_SUPER_ADMIN' => ['ROLE_USER', 'ROLE_SONATA_ADMIN', 'ROLE_ADMIN']]
+                return '';
+            }
         );
-        $this->container->setParameter('sonata.admin.security.acl_user_manager', null);
+
+        $this->csrfProvider->method('getToken')->willReturnCallback(static function (string $intention): CsrfToken {
+            return new CsrfToken($intention, sprintf('csrf-token-123_%s', $intention));
+        });
+
+        $this->csrfProvider->method('isTokenValid')->willReturnCallback(static function (CsrfToken $token): bool {
+            return $token->getValue() === sprintf('csrf-token-123_%s', $token->getId());
+        });
+
+        $this->container->set('foo.admin', $this->admin);
+        $this->container->set('twig', $this->twig);
+        $this->container->set('session', $this->session);
+        $this->container->set('security.csrf.token_manager', $this->csrfProvider);
+        $this->container->set('parameter_bag', $this->parameterBag);
 
         $this->templateRegistry->method('getTemplate')->willReturnMap([
             ['ajax', '@SonataAdmin/ajax_layout.html.twig'],
@@ -266,45 +247,43 @@ class CRUDControllerTest extends TestCase
             ['batch_confirmation', '@SonataAdmin/CRUD/batch_confirmation.html.twig'],
         ]);
 
-        $this->admin
-            ->method('getIdParameter')
-            ->willReturn('id');
+        $this->admin->method('getIdParameter')->willReturn('id');
+        $this->admin->method('getAccessMapping')->willReturn([]);
+        $this->admin->method('getCode')->willReturn('foo.admin');
+        $this->admin->method('getTemplateRegistry')->willReturn($this->templateRegistry);
 
-        $this->admin
-            ->method('getAccessMapping')
-            ->willReturn([]);
+        $this->admin->method('generateUrl')->willReturnCallback(static function ($name, array $parameters = []) {
+            $result = $name;
+            if (!empty($parameters)) {
+                $result .= '?'.http_build_query($parameters);
+            }
 
-        $this->admin
-            ->method('generateUrl')
-            ->willReturnCallback(
-                static function ($name, array $parameters = []) {
-                    $result = $name;
-                    if (!empty($parameters)) {
-                        $result .= '?'.http_build_query($parameters);
-                    }
+            return $result;
+        });
 
-                    return $result;
+        $this->admin->method('generateObjectUrl')->willReturnCallback(
+            static function (string $name, $object, array $parameters = []): string {
+                $result = sprintf('%s_%s', \get_class($object), $name);
+                if (!empty($parameters)) {
+                    $result .= '?'.http_build_query($parameters);
                 }
-            );
 
-        $this->admin
-            ->method('generateObjectUrl')
-            ->willReturnCallback(
-                static function (string $name, $object, array $parameters = []): string {
-                    $result = sprintf('%s_%s', \get_class($object), $name);
-                    if (!empty($parameters)) {
-                        $result .= '?'.http_build_query($parameters);
-                    }
+                return $result;
+            }
+        );
 
-                    return $result;
-                }
-            );
-
-        $this->admin
-            ->method('getCode')
-            ->willReturn('foo.admin');
-
-        $this->controller = new CRUDController();
+        $this->controller = new CRUDController(
+            $this->pool,
+            $this->auditManager,
+            $this->adminObjectAclManipulator,
+            $this->breadcrumbsBuilder,
+            $this->requestStack,
+            $this->translator,
+            $exporter,
+            $adminExporter,
+            null,
+            $this->logger
+        );
         $this->controller->setContainer($this->container);
 
         // Make some methods public to test them
@@ -551,7 +530,14 @@ class CRUDControllerTest extends TestCase
             ->method('checkAccess')
             ->with($this->equalTo('list'));
 
-        $controller = new PreCRUDController();
+        $controller = new PreCRUDController(
+            $this->pool,
+            $this->auditManager,
+            $this->adminObjectAclManipulator,
+            $this->breadcrumbsBuilder,
+            $this->requestStack,
+            $this->translator
+        );
         $controller->setContainer($this->container);
 
         $response = $controller->listAction($this->request);
@@ -665,21 +651,18 @@ class CRUDControllerTest extends TestCase
     public function testBatchActionDeleteWithModelManagerExceptionInDebugMode(): void
     {
         $modelManager = $this->createMock(ModelManagerInterface::class);
-        $this->expectException(ModelManagerException::class);
 
-        $modelManager->expects($this->once())
-            ->method('batchDelete')
-            ->willReturnCallback(static function (): void {
+        $modelManager->expects($this->once())->method('batchDelete')->willReturnCallback(
+            static function (): void {
                 throw new ModelManagerException();
-            });
+            }
+        );
 
-        $this->admin->expects($this->once())
-            ->method('getModelManager')
-            ->willReturn($modelManager);
+        $this->admin->expects($this->once())->method('getModelManager')->willReturn($modelManager);
 
-        $this->kernel->expects($this->once())
-            ->method('isDebug')
-            ->willReturn(true);
+        $this->parameterBag->set('kernel.debug', true);
+
+        $this->expectException(ModelManagerException::class);
 
         $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class));
     }
@@ -724,7 +707,14 @@ class CRUDControllerTest extends TestCase
             ->method('checkAccess')
             ->with($this->equalTo('show'));
 
-        $controller = new PreCRUDController();
+        $controller = new PreCRUDController(
+            $this->pool,
+            $this->auditManager,
+            $this->adminObjectAclManipulator,
+            $this->breadcrumbsBuilder,
+            $this->requestStack,
+            $this->translator
+        );
         $controller->setContainer($this->container);
 
         $response = $controller->showAction($this->request);
@@ -878,7 +868,14 @@ class CRUDControllerTest extends TestCase
             ->method('checkAccess')
             ->with($this->equalTo('delete'));
 
-        $controller = new PreCRUDController();
+        $controller = new PreCRUDController(
+            $this->pool,
+            $this->auditManager,
+            $this->adminObjectAclManipulator,
+            $this->breadcrumbsBuilder,
+            $this->requestStack,
+            $this->translator
+        );
         $controller->setContainer($this->container);
 
         $response = $controller->deleteAction($this->request);
@@ -958,8 +955,6 @@ class CRUDControllerTest extends TestCase
 
     public function testDeleteActionNoCsrfToken(): void
     {
-        $this->container->set('security.csrf.token_manager', null);
-
         $object = new \stdClass();
 
         $this->admin->expects($this->once())
@@ -970,7 +965,11 @@ class CRUDControllerTest extends TestCase
             ->method('checkAccess')
             ->with($this->equalTo('delete'));
 
-        $this->assertInstanceOf(Response::class, $this->controller->deleteAction($this->request));
+        $this->container->set('security.csrf.token_manager', null);
+
+        $response = $this->controller->deleteAction($this->request);
+
+        $this->assertInstanceOf(Response::class, $response);
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
@@ -1065,30 +1064,17 @@ class CRUDControllerTest extends TestCase
 
     public function testDeleteActionWithModelManagerExceptionInDebugMode(): void
     {
-        $this->expectException(ModelManagerException::class);
-
-        $object = new \stdClass();
-
-        $this->admin->expects($this->once())
-            ->method('getObject')
-            ->willReturn($object);
-
-        $this->admin->expects($this->once())
-            ->method('checkAccess')
-            ->with($this->equalTo('delete'));
-
-        $this->admin->expects($this->once())
-            ->method('delete')
-            ->willReturnCallback(static function (): void {
-                throw new ModelManagerException();
-            });
-
-        $this->kernel->expects($this->once())
-            ->method('isDebug')
-            ->willReturn(true);
+        $this->admin->expects($this->once())->method('getObject')->willReturn(new \stdClass());
+        $this->admin->expects($this->once())->method('checkAccess')->with('delete');
+        $this->admin->expects($this->once())->method('delete')->willReturnCallback(static function (): void {
+            throw new ModelManagerException();
+        });
 
         $this->request->setMethod(Request::METHOD_DELETE);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
+        $this->parameterBag->set('kernel.debug', true);
+
+        $this->expectException(ModelManagerException::class);
 
         $this->controller->deleteAction($this->request);
     }
@@ -1187,7 +1173,17 @@ class CRUDControllerTest extends TestCase
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('_method', Request::METHOD_DELETE);
 
-        $response = $this->controller->deleteAction($this->request);
+        $controller = new CRUDController(
+            $this->pool,
+            $this->auditManager,
+            $this->adminObjectAclManipulator,
+            $this->breadcrumbsBuilder,
+            $this->requestStack,
+            $this->translator
+        );
+        $controller->setContainer($this->container);
+
+        $response = $controller->deleteAction($this->request);
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame(['flash_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
@@ -1321,7 +1317,14 @@ class CRUDControllerTest extends TestCase
             ->method('checkAccess')
             ->with($this->equalTo('edit'));
 
-        $controller = new PreCRUDController();
+        $controller = new PreCRUDController(
+            $this->pool,
+            $this->auditManager,
+            $this->adminObjectAclManipulator,
+            $this->breadcrumbsBuilder,
+            $this->requestStack,
+            $this->translator
+        );
         $controller->setContainer($this->container);
 
         $response = $controller->editAction($this->request);
@@ -1831,7 +1834,14 @@ class CRUDControllerTest extends TestCase
             ->method('getNewInstance')
             ->willReturn($object);
 
-        $controller = new PreCRUDController();
+        $controller = new PreCRUDController(
+            $this->pool,
+            $this->auditManager,
+            $this->adminObjectAclManipulator,
+            $this->breadcrumbsBuilder,
+            $this->requestStack,
+            $this->translator
+        );
         $controller->setContainer($this->container);
 
         $response = $controller->createAction($this->request);
@@ -3422,7 +3432,14 @@ class CRUDControllerTest extends TestCase
      */
     public function testBatchActionNonRelevantAction(string $actionName): void
     {
-        $controller = new BatchAdminController();
+        $controller = new BatchAdminController(
+            $this->pool,
+            $this->auditManager,
+            $this->adminObjectAclManipulator,
+            $this->breadcrumbsBuilder,
+            $this->requestStack,
+            $this->translator
+        );
         $controller->setContainer($this->container);
 
         $batchActions = [$actionName => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
@@ -3499,7 +3516,14 @@ class CRUDControllerTest extends TestCase
 
     public function testBatchActionNonRelevantAction2(): void
     {
-        $controller = new BatchAdminController();
+        $controller = new BatchAdminController(
+            $this->pool,
+            $this->auditManager,
+            $this->adminObjectAclManipulator,
+            $this->breadcrumbsBuilder,
+            $this->requestStack,
+            $this->translator
+        );
         $controller->setContainer($this->container);
 
         $batchActions = ['foo' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
@@ -3558,7 +3582,14 @@ class CRUDControllerTest extends TestCase
 
     public function testBatchActionNoItemsEmptyQuery(): void
     {
-        $controller = new BatchAdminController();
+        $controller = new BatchAdminController(
+            $this->pool,
+            $this->auditManager,
+            $this->adminObjectAclManipulator,
+            $this->breadcrumbsBuilder,
+            $this->requestStack,
+            $this->translator
+        );
         $controller->setContainer($this->container);
 
         $batchActions = ['bar' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
@@ -3650,11 +3681,6 @@ class CRUDControllerTest extends TestCase
         $this->assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
         $this->assertSame('list', $result->getTargetUrl());
         $this->assertSame('bar', $this->request->request->get('foo'));
-    }
-
-    public function getCsrfProvider()
-    {
-        return $this->csrfProvider;
     }
 
     public function getToStringValues()
