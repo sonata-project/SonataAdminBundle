@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
-use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -295,7 +294,7 @@ class Pool
         $admin = $this->container->get($id);
 
         if (!$admin instanceof AdminInterface) {
-            throw new InvalidArgumentException(sprintf('Found service "%s" is not a valid admin service', $id));
+            throw new \InvalidArgumentException(sprintf('Found service "%s" is not a valid admin service', $id));
         }
 
         return $admin;
@@ -303,6 +302,13 @@ class Pool
 
     public function getContainer(): ContainerInterface
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         return $this->container;
     }
 
