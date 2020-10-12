@@ -300,18 +300,6 @@ class Pool
         return $admin;
     }
 
-    public function getContainer(): ContainerInterface
-    {
-        if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
-            @trigger_error(sprintf(
-                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
-        return $this->container;
-    }
-
     public function setAdminGroups(array $adminGroups): void
     {
         $this->adminGroups = $adminGroups;
