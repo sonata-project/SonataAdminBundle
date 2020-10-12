@@ -18,7 +18,6 @@ use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Twig\Environment;
@@ -114,9 +113,6 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $templateRegistry = new TemplateRegistry([
             'short_object_description' => 'short_object_description',
         ]);
-        $container = new Container();
-        $container->set('sonata.post.admin.template_registry', $templateRegistry);
-        $this->pool->method('getContainer')->willReturn($container);
 
         $request = new Request([
             'code' => 'sonata.post.admin',
@@ -131,6 +127,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('toString')->with($object)->willReturn('bar');
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
+        $this->admin->setTemplateRegistry($templateRegistry);
 
         $response = ($this->action)($request);
 
