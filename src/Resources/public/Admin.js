@@ -155,7 +155,7 @@ var Admin = {
                   $(e.target).trigger('change');
               });
 
-            // In case some checkbox are already checked (for instance after a back via browser history), update iCheck checkboxes
+            // In case some checkboxes were already checked (for instance after moving back in the browser's session history), update iCheck checkboxes.
             if (subject === window.document) {
                 setTimeout(function () { inputs.iCheck('update'); }, 0);
             }
