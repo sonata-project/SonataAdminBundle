@@ -2377,7 +2377,7 @@ EOT;
         ), E_USER_DEPRECATED);
         if (null === $this->breadcrumbsBuilder) {
             $this->breadcrumbsBuilder = new BreadcrumbsBuilder(
-                $this->getConfigurationPool()->getContainer()->getParameter('sonata.admin.configuration.breadcrumbs')
+                $this->getConfigurationPool()->getContainer('sonata_deprecation_mute')->getParameter('sonata.admin.configuration.breadcrumbs')
             );
         }
 

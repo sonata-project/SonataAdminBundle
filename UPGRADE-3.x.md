@@ -1,6 +1,10 @@
 UPGRADE 3.x
 ===========
 
+### Deprecated `Sonata\AdminBundle\Admin\Pool::getContainer()` method.
+
+This method has been deprecated without replacement.
+
 ### Deprecated using shortcut notation when specifying the `user_model` option in `sonata:admin:generate-object-acl` command.
 
 The shortcut notation (`AppBundle:User`) has been deprecated in favor of the FQCN (`App\Model\User`) when passing
