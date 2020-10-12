@@ -2347,21 +2347,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $buttonList;
     }
 
-    final public function getTemplateRegistry(): ?MutableTemplateRegistryInterface
+    final public function getTemplateRegistry(): MutableTemplateRegistryInterface
     {
-        // NEXT_MAJOR: Remove the deprecation and uncomment the exception.
-        if (!$this->hasTemplateRegistry()) {
-            @trigger_error(sprintf(
-                'Calling %s() when there is no template registry is deprecated since sonata-project/admin-bundle 3.76'
-                .' and will throw an exception in 4.0.'
-                .' Use %s::hasTemplateRegistry() to know if the template registry is set.',
-                __METHOD__,
-                __CLASS__
-            ), E_USER_DEPRECATED);
+        if (false === $this->hasTemplateRegistry()) {
+            throw new \LogicException(sprintf('Unable to find the template registry for admin `%s`.', static::class));
         }
-        //if (false === $this->hasTemplateRegistry()) {
-        //    throw new \LogicException(sprintf('Unable to find the template registry for admin `%s`.', static::class));
-        //}
 
         return $this->templateRegistry;
     }
