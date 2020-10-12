@@ -19,13 +19,12 @@ use Knp\Menu\Provider\MenuProviderInterface;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminExtensionInterface;
-use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait;
 use Sonata\BlockBundle\DependencyInjection\SonataBlockExtension;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Bundle\FrameworkBundle\Translation\TranslatorInterface;
+use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -38,6 +37,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ExtensionCompilerPassTest extends TestCase
 {
@@ -356,7 +356,8 @@ class ExtensionCompilerPassTest extends TestCase
             ->setClass(EngineInterface::class);
         $container
             ->register('translator')
-            ->setClass(TranslatorInterface::class);
+            ->setClass(Translator::class);
+        $container->setAlias(TranslatorInterface::class, 'translator');
         $container
             ->register('validator.validator_factory')
             ->setClass(ConstraintValidatorFactory::class);
@@ -396,19 +397,19 @@ class ExtensionCompilerPassTest extends TestCase
             ->register('sonata_post_admin')
             ->setPublic(true)
             ->setClass(MockAdmin::class)
-            ->setArguments(['', Post::class, CRUDController::class])
+            ->setArguments(['', Post::class, 'sonata.admin.controller.crud'])
             ->addTag('sonata.admin');
         $container
             ->register('sonata_news_admin')
             ->setPublic(true)
             ->setClass(MockAdmin::class)
-            ->setArguments(['', News::class, CRUDController::class])
+            ->setArguments(['', News::class, 'sonata.admin.controller.crud'])
             ->addTag('sonata.admin');
         $container
             ->register('sonata_article_admin')
             ->setPublic(true)
             ->setClass(MockAdmin::class)
-            ->setArguments(['', Article::class, CRUDController::class])
+            ->setArguments(['', Article::class, 'sonata.admin.controller.crud'])
             ->addTag('sonata.admin');
         $container
             ->register('event_dispatcher')

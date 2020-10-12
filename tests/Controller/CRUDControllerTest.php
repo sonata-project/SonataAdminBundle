@@ -31,7 +31,7 @@ use Sonata\AdminBundle\Model\AuditReaderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
-use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
@@ -43,6 +43,7 @@ use Sonata\Exporter\Writer\JsonWriter;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormRenderer;
@@ -57,7 +58,6 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -89,7 +89,7 @@ class CRUDControllerTest extends TestCase
     private $admin;
 
     /**
-     * @var TemplateRegistryInterface
+     * @var MutableTemplateRegistryInterface
      */
     private $templateRegistry;
 
@@ -139,11 +139,6 @@ class CRUDControllerTest extends TestCase
     private $csrfProvider;
 
     /**
-     * @var KernelInterface
-     */
-    private $kernel;
-
-    /**
      * @var TranslatorInterface
      */
     private $translator;
@@ -168,7 +163,7 @@ class CRUDControllerTest extends TestCase
         $this->parameters = [];
         $this->template = '';
 
-        $this->templateRegistry = $this->createStub(TemplateRegistryInterface::class);
+        $this->templateRegistry = $this->createStub(MutableTemplateRegistryInterface::class);
 
         $templatingRenderReturnCallback = $this->returnCallback(function (
             string $name,
@@ -225,12 +220,11 @@ class CRUDControllerTest extends TestCase
         $requestStack = new RequestStack();
         $requestStack->push($this->request);
 
-        $this->kernel = $this->createMock(KernelInterface::class);
+        $this->parameterBag = new ParameterBag();
 
         $this->container->set('sonata.admin.pool', $this->pool);
         $this->container->set('request_stack', $requestStack);
         $this->container->set('foo.admin', $this->admin);
-        $this->container->set('foo.admin.template_registry', $this->templateRegistry);
         $this->container->set('twig', $twig);
         $this->container->set('session', $this->session);
         $this->container->set('sonata.exporter.exporter', $exporter);
@@ -239,15 +233,15 @@ class CRUDControllerTest extends TestCase
         $this->container->set('sonata.admin.object.manipulator.acl.admin', $this->adminObjectAclManipulator);
         $this->container->set('security.csrf.token_manager', $this->csrfProvider);
         $this->container->set('logger', $this->logger);
-        $this->container->set('kernel', $this->kernel);
         $this->container->set('translator', $this->translator);
         $this->container->set('sonata.admin.breadcrumbs_builder', new BreadcrumbsBuilder([]));
+        $this->container->set('parameter_bag', $this->parameterBag);
 
-        $this->container->setParameter(
+        $this->parameterBag->set(
             'security.role_hierarchy.roles',
             ['ROLE_SUPER_ADMIN' => ['ROLE_USER', 'ROLE_SONATA_ADMIN', 'ROLE_ADMIN']]
         );
-        $this->container->setParameter('sonata.admin.security.acl_user_manager', null);
+        $this->parameterBag->set('kernel.debug', false);
 
         $this->templateRegistry->method('getTemplate')->willReturnMap([
             ['ajax', '@SonataAdmin/ajax_layout.html.twig'],
@@ -266,13 +260,11 @@ class CRUDControllerTest extends TestCase
             ['batch_confirmation', '@SonataAdmin/CRUD/batch_confirmation.html.twig'],
         ]);
 
-        $this->admin
-            ->method('getIdParameter')
-            ->willReturn('id');
-
-        $this->admin
-            ->method('getAccessMapping')
-            ->willReturn([]);
+        $this->admin->method('getIdParameter')->willReturn('id');
+        $this->admin->method('getAccessMapping')->willReturn([]);
+        $this->admin->method('getCode')->willReturn('foo.admin');
+        $this->admin->method('hasTemplateRegistry')->willReturn(true);
+        $this->admin->method('getTemplateRegistry')->willReturn($this->templateRegistry);
 
         $this->admin
             ->method('generateUrl')
@@ -299,10 +291,6 @@ class CRUDControllerTest extends TestCase
                     return $result;
                 }
             );
-
-        $this->admin
-            ->method('getCode')
-            ->willReturn('foo.admin');
 
         $this->controller = new CRUDController();
         $this->controller->setContainer($this->container);
@@ -677,9 +665,7 @@ class CRUDControllerTest extends TestCase
             ->method('getModelManager')
             ->willReturn($modelManager);
 
-        $this->kernel->expects($this->once())
-            ->method('isDebug')
-            ->willReturn(true);
+        $this->parameterBag->set('kernel.debug', true);
 
         $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class));
     }
@@ -1083,9 +1069,7 @@ class CRUDControllerTest extends TestCase
                 throw new ModelManagerException();
             });
 
-        $this->kernel->expects($this->once())
-            ->method('isDebug')
-            ->willReturn(true);
+        $this->parameterBag->set('kernel.debug', true);
 
         $this->request->setMethod(Request::METHOD_DELETE);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
