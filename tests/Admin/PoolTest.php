@@ -479,16 +479,6 @@ class PoolTest extends TestCase
         $this->assertSame(['sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3'], $this->pool->getAdminServiceIds());
     }
 
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testGetContainer(): void
-    {
-        $this->assertInstanceOf(ContainerInterface::class, $this->pool->getContainer());
-    }
-
     public function testGetTitleLogo(): void
     {
         $this->assertSame('/path/to/pic.png', $this->pool->getTitleLogo());
