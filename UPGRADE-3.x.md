@@ -1,6 +1,54 @@
 UPGRADE 3.x
 ===========
 
+### Deprecated not configuring `acl_user_manager` and using ACL security handler when `friendsofsymfony/user-bundle` is installed.
+
+If you are using `friendsofsymfony/user-bundle` and using ACL security handler, you MUST explicitly configure the `acl_user_manager`.
+
+```yaml
+sonata_admin:
+    security:
+        acl_user_manager: App\Manager\AclFOSUserManager # this service MUST implement "AdminAclUserManagerInterface"
+```
+
+### Deprecated configuring `acl_user_manager` with a service that does not implement `AdminAclUserManagerInterface`.
+
+Given this configuration:
+```yaml
+sonata_admin:
+    security:
+        acl_user_manager: 'App\Manager\AclUserManager'
+```
+
+`App\Manager\AclUserManager` MUST implement `AdminAclUserManagerInterface`, if you are using `fos_user_manager`, this could
+be an example:
+```php
+<?php
+
+namespace App\Manager;
+
+use FOS\UserBundle\Model\UserManagerInterface;
+use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
+
+final class AclUserManager implements AdminAclUserManagerInterface
+{
+    /**
+     * @var UserManagerInterface
+     */
+    private $userManager;
+
+    public function __construct(UserManagerInterface $userManager)
+    {
+        $this->userManager = $userManager;
+    }
+
+    public function findUsers(): iterable
+    {
+        return $this->userManager->findUsers();
+    }
+}
+```
+
 UPGRADE FROM 3.76 to 3.77
 =========================
 
