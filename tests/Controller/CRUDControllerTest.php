@@ -2662,6 +2662,30 @@ class CRUDControllerTest extends TestCase
         $this->controller->aclAction(null);
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
+    public function testAclTriggerDeprecationWithoutConfiguringUserManager(): void
+    {
+        $this->admin->expects($this->once())
+            ->method('isAclEnabled')
+            ->willReturn(true);
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->willReturn(false);
+
+        $this->container->setParameter('sonata.admin.security.fos_user_autoconfigured', true);
+
+        $this->expectDeprecation('Not configuring "acl_user_manager" and using ACL security handler is deprecated since sonata-project/admin-bundle 3.x and will not work on 4.x. You MUST specify the service name under "sonata_admin.security.acl_user_manager" option.');
+
+        $this->expectException(NotFoundHttpException::class);
+
+        $this->controller->aclAction(null);
+    }
+
     public function testAclActionNotFoundException(): void
     {
         $this->expectException(NotFoundHttpException::class);

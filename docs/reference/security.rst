@@ -50,8 +50,9 @@ implementation, you can switch the ``security_handler`` to the role security han
 Configuration
 ~~~~~~~~~~~~~
 
-Only the security handler is required to determine which type of security to use.
-The other parameters are set as default, change them if needed.
+The security handler is required to determine which type of security to use.
+In case of using ACL you MUST set ``acl_user_manager`` parameter, the other other ones
+are set as default, change them if needed.
 
 Using roles:
 
@@ -79,6 +80,9 @@ Using ACL:
         sonata_admin:
             security:
                 handler: sonata.admin.security.handler.acl
+
+                # this service MUST implement ``Sonata\AdminBundle\Util\AdminAclUserManagerInterface``.
+                acl_user_manager: App\Manager\AclUserManager
 
                 role_admin: ROLE_ADMIN
                 role_super_admin: ROLE_SUPER_ADMIN
@@ -304,6 +308,46 @@ User class (in a custom UserBundle). Do it as follows::
             // your own logic
         }
     }
+
+If you are going to use ACL, you must create a service implementing
+`Sonata\AdminBundle\Util\AdminAclUserManagerInterface`::
+
+    namespace App\Manager;
+
+    use FOS\UserBundle\Model\UserManagerInterface;
+    use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
+
+    final class AclUserManager implements AdminAclUserManagerInterface
+    {
+        /**
+         * @var UserManagerInterface
+         */
+        private $userManager;
+
+        public function __construct(UserManagerInterface $userManager)
+        {
+            $this->userManager = $userManager;
+        }
+
+        public function findUsers(): iterable
+        {
+            return $this->userManager->findUsers();
+        }
+    }
+
+and then configure SonataAdminBundle:
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # config/packages/sonata_admin.yaml
+
+        sonata_admin:
+            security:
+                handler: sonata.admin.security.handler.acl
+                acl_user_manager: App\Manager\AclUserManager
+                # ...
 
 In your ``config/packages/fos_user.yaml`` you then need to put the following:
 
@@ -741,27 +785,6 @@ return an iterable collection of roles::
         return new \ArrayIterator($roles);
     }
 
-Custom user manager
-~~~~~~~~~~~~~~~~~~~
-
-If your project does not use `FOSUserBundle`, you can globally configure another
-service to use when retrieving your users.
-
-- Create a service with a method called ``findUsers()`` returning an iterable
-  collection of users
-- Update your admin configuration to reference your service name
-
-.. configuration-block::
-
-    .. code-block:: yaml
-
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            security:
-
-                # the name of your service
-                acl_user_manager: my_user_manager
 
 .. _`SonataUserBundle's documentation area`: https://sonata-project.org/bundles/user/master/doc/reference/installation.html
 .. _`changing the access decision strategy`: https://symfony.com/doc/4.4/security/voters.html#changing-the-access-decision-strategy
