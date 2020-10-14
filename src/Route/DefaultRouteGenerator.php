@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Route;
 
-use RuntimeException;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -115,7 +114,7 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
         $code = $this->getCode($admin, $name);
 
         if (!\array_key_exists($code, $this->caches)) {
-            throw new RuntimeException(sprintf('unable to find the route `%s`', $code));
+            throw new \RuntimeException(sprintf('unable to find the route `%s`', $code));
         }
 
         return [
