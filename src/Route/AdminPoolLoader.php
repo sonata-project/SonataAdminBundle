@@ -48,7 +48,7 @@ final class AdminPoolLoader extends Loader
         $this->container = $container;
     }
 
-    public function supports($resource, string $type = null): bool
+    public function supports($resource, ?string $type = null): bool
     {
         return self::ROUTE_TYPE_NAME === $type;
     }
