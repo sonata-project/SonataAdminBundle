@@ -48,12 +48,12 @@ final class AdminPoolLoader extends Loader
         $this->container = $container;
     }
 
-    public function supports($resource, $type = NULL)
+    public function supports($resource, $type = null)
     {
         return self::ROUTE_TYPE_NAME === $type;
     }
 
-    public function load($resource, $type = NULL)
+    public function load($resource, $type = null)
     {
         $collection = new SymfonyRouteCollection();
         foreach ($this->adminServiceIds as $id) {
