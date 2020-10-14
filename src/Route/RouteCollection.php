@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Route;
 
-use InvalidArgumentException;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -150,7 +149,7 @@ final class RouteCollection implements RouteCollectionInterface
             return $this->elements[$code];
         }
 
-        throw new InvalidArgumentException(sprintf('Element "%s" does not exist.', $name));
+        throw new \InvalidArgumentException(sprintf('Element "%s" does not exist.', $name));
     }
 
     public function remove(string $name): RouteCollectionInterface
@@ -169,7 +168,7 @@ final class RouteCollection implements RouteCollectionInterface
             return $this;
         }
 
-        throw new InvalidArgumentException(sprintf('Element "%s" does not exist in cache.', $name));
+        throw new \InvalidArgumentException(sprintf('Element "%s" does not exist in cache.', $name));
     }
 
     /**

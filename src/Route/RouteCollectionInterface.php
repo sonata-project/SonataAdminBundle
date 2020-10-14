@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Route;
 
-use InvalidArgumentException;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -47,14 +46,14 @@ interface RouteCollectionInterface
     public function hasCached(string $name): bool;
 
     /**
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function get(string $name): Route;
 
     public function remove(string $name): self;
 
     /**
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function restore(string $name): self;
 
