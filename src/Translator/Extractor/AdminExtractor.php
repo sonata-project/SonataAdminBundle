@@ -81,7 +81,7 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
      *
      * @param string|array $resource Files, a file or a directory
      */
-    public function extract($resource, MessageCatalogue $catalogue)
+    public function extract($resource, MessageCatalogue $catalogue): void
     {
         $this->catalogue = $catalogue;
 
@@ -114,11 +114,13 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
     }
 
     /**
+     * NEXT_MAJOR: Add string type hint when support for Symfony 4 is dropped
+     * 
      * Sets the prefix that should be used for new found messages.
      *
      * @param string $prefix The prefix
      */
-    public function setPrefix(string $prefix)
+    public function setPrefix($prefix): void
     {
         $this->prefix = $prefix;
     }
