@@ -48,15 +48,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('validator'),
             ])
 
-        // NEXT_MAJOR: Remove "doctrine" argument.
+        // NEXT_MAJOR: Remove the "setRegistry" call.
         ->set(GenerateObjectAclCommand::class, GenerateObjectAclCommand::class)
             ->public()
             ->tag('console.command')
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
                 [],
-                (new ReferenceConfigurator('doctrine'))->nullOnInvalid(),
             ])
+            ->call('setRegistry', [(new ReferenceConfigurator('doctrine'))->nullOnInvalid()])
 
         ->set(ListAdminCommand::class, ListAdminCommand::class)
             ->public()

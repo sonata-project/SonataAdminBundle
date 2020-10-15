@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Command;
 
-use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
@@ -25,7 +24,6 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
 /**
@@ -47,30 +45,11 @@ class GenerateObjectAclCommandTest extends TestCase
         $this->container = new Container();
     }
 
-    public function testExecuteWithoutDoctrineService(): void
-    {
-        $generateObjectAclCommand = new GenerateObjectAclCommand(new Pool($this->container, '', ''), []);
-
-        $application = new Application();
-        $application->add($generateObjectAclCommand);
-
-        $command = $application->find(GenerateObjectAclCommand::getDefaultName());
-        $commandTester = new CommandTester($command);
-
-        $this->assertFalse($this->container->has('doctrine'));
-
-        $this->expectException(ServiceNotFoundException::class);
-        $this->expectExceptionMessage(sprintf('The command "%s" has a dependency on a non-existent service "doctrine".', GenerateObjectAclCommand::getDefaultName()));
-
-        $commandTester->execute(['command' => GenerateObjectAclCommand::getDefaultName()]);
-    }
-
     public function testExecuteWithDeprecatedDoctrineService(): void
     {
         $pool = new Pool($this->container, '', '');
 
-        $registry = $this->createStub(ManagerRegistry::class);
-        $command = new GenerateObjectAclCommand($pool, [], $registry);
+        $command = new GenerateObjectAclCommand($pool, []);
 
         $application = new Application();
         $application->add($command);
@@ -86,8 +65,7 @@ class GenerateObjectAclCommandTest extends TestCase
     {
         $pool = new Pool($this->container, '', '');
 
-        $registry = $this->createStub(ManagerRegistry::class);
-        $command = new GenerateObjectAclCommand($pool, [], $registry);
+        $command = new GenerateObjectAclCommand($pool, []);
 
         $application = new Application();
         $application->add($command);
@@ -102,7 +80,6 @@ class GenerateObjectAclCommandTest extends TestCase
     public function testExecuteWithManipulatorNotFound(): void
     {
         $admin = $this->createStub(AbstractAdmin::class);
-        $registry = $this->createStub(ManagerRegistry::class);
         $pool = $this->createStub(Pool::class);
 
         $admin->method('getManagerType')->willReturn('bar');
@@ -113,7 +90,7 @@ class GenerateObjectAclCommandTest extends TestCase
             'bar' => new \stdClass(),
         ];
 
-        $command = new GenerateObjectAclCommand($pool, $aclObjectManipulators, $registry);
+        $command = new GenerateObjectAclCommand($pool, $aclObjectManipulators);
 
         $application = new Application();
         $application->add($command);
@@ -128,7 +105,6 @@ class GenerateObjectAclCommandTest extends TestCase
     public function testExecuteWithManipulatorNotObjectAclManipulatorInterface(): void
     {
         $admin = $this->createStub(AbstractAdmin::class);
-        $registry = $this->createStub(ManagerRegistry::class);
         $pool = $this->createStub(Pool::class);
 
         $admin->method('getManagerType')->willReturn('bar');
@@ -139,7 +115,7 @@ class GenerateObjectAclCommandTest extends TestCase
             'sonata.admin.manipulator.acl.object.bar' => new \stdClass(),
         ];
 
-        $command = new GenerateObjectAclCommand($pool, $aclObjectManipulators, $registry);
+        $command = new GenerateObjectAclCommand($pool, $aclObjectManipulators);
 
         $application = new Application();
         $application->add($command);
@@ -154,7 +130,6 @@ class GenerateObjectAclCommandTest extends TestCase
     public function testExecuteWithManipulator(): void
     {
         $admin = $this->createStub(AbstractAdmin::class);
-        $registry = $this->createStub(ManagerRegistry::class);
         $pool = $this->createStub(Pool::class);
 
         $admin->method('getManagerType')->willReturn('bar');
@@ -169,7 +144,7 @@ class GenerateObjectAclCommandTest extends TestCase
             'sonata.admin.manipulator.acl.object.bar' => $manipulator,
         ];
 
-        $command = new GenerateObjectAclCommand($pool, $aclObjectManipulators, $registry);
+        $command = new GenerateObjectAclCommand($pool, $aclObjectManipulators);
 
         $application = new Application();
         $application->add($command);
@@ -179,41 +154,9 @@ class GenerateObjectAclCommandTest extends TestCase
         $commandTester->execute(['command' => $command->getName()]);
     }
 
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     *
-     * @doesNotPerformAssertions
-     */
-    public function testExecuteWithDeprecatedUserModelNotation(): void
-    {
-        $pool = new Pool($this->container, '', '');
-
-        $registry = $this->createStub(ManagerRegistry::class);
-        $command = new GenerateObjectAclCommand($pool, [], $registry);
-
-        $application = new Application();
-        $application->add($command);
-
-        $command = $application->find(GenerateObjectAclCommand::getDefaultName());
-        $commandTester = new CommandTester($command);
-
-        $this->expectDeprecation(
-            'Passing a model shortcut name ("AppBundle:User" given) as "user_model" option is deprecated'
-            .' since sonata-project/admin-bundle 3.x and will throw an exception in 4.x.'
-            .' Pass a fully qualified class name instead (e.g. App\Model\User).'
-        );
-        $commandTester->execute([
-            'command' => $command->getName(),
-            '--user_model' => 'AppBundle:User',
-        ]);
-    }
-
     public function testExecuteWithUserModel(): void
     {
         $admin = $this->createStub(AbstractAdmin::class);
-        $registry = $this->createStub(ManagerRegistry::class);
         $pool = $this->createStub(Pool::class);
 
         $admin
@@ -244,7 +187,7 @@ class GenerateObjectAclCommandTest extends TestCase
             'sonata.admin.manipulator.acl.object.bar' => $manipulator,
         ];
 
-        $command = new GenerateObjectAclCommand($pool, $aclObjectManipulators, $registry);
+        $command = new GenerateObjectAclCommand($pool, $aclObjectManipulators);
 
         $application = new Application();
         $application->add($command);
