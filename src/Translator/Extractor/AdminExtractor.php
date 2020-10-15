@@ -114,8 +114,8 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
     }
 
     /**
-     * NEXT_MAJOR: Add string type hint when support for Symfony 4 is dropped
-     * 
+     * NEXT_MAJOR: Add string type hint when support for Symfony 4 is dropped.
+     *
      * Sets the prefix that should be used for new found messages.
      *
      * @param string $prefix The prefix
