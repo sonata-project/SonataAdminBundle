@@ -25,5 +25,5 @@ interface LabelTranslatorStrategyInterface
      *
      * @return string
      */
-    public function getLabel($label, $context = '', $type = '');
+    public function getLabel(string $label, string $context = '', string $type = ''): string;
 }

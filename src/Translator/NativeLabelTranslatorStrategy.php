@@ -18,7 +18,16 @@ namespace Sonata\AdminBundle\Translator;
  */
 final class NativeLabelTranslatorStrategy implements LabelTranslatorStrategyInterface
 {
-    public function getLabel($label, $context = '', $type = '')
+
+    /**
+     * @param string $label
+     * @param string $context
+     * @param string $type
+     *
+     * @return string
+     */
+
+    public function getLabel(string $label, string $context = '', string $type = ''): string
     {
         $label = str_replace(['_', '.'], ' ', $label);
         $label = strtolower(preg_replace('~(?<=\\w)([A-Z])~', '_$1', $label));
