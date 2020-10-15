@@ -37,9 +37,19 @@ final class AssetsInstallCommandListener
     public const METHOD_ABSOLUTE_SYMLINK = 'absolute symlink';
     public const METHOD_RELATIVE_SYMLINK = 'relative symlink';
 
+    /**
+     * @var string
+     */
     protected static $defaultName = 'assets:install';
 
+    /**
+     * @var Filesystem
+     */
     private $filesystem;
+
+    /**
+     * @var string
+     */
     private $projectDir;
 
     public function __construct(Filesystem $filesystem, string $projectDir)
@@ -48,7 +58,7 @@ final class AssetsInstallCommandListener
         $this->projectDir = $projectDir;
     }
 
-    public function copySonataCoreBundleAssets(ConsoleTerminateEvent $event)
+    public function copySonataCoreBundleAssets(ConsoleTerminateEvent $event): void
     {
         $command = $event->getCommand();
         $application = $command->getApplication();
@@ -209,7 +219,7 @@ final class AssetsInstallCommandListener
      *
      * @throws IOException if link can not be created
      */
-    private function symlink(string $originDir, string $targetDir, bool $relative = false)
+    private function symlink(string $originDir, string $targetDir, bool $relative = false): void
     {
         if ($relative) {
             $this->filesystem->mkdir(\dirname($targetDir));
