@@ -51,7 +51,7 @@ final class AdminPoolLoader extends Loader
     /**
      * NEXT_MAJOR: Add the ?string param typehint when Symfony 4 support is dropped.
      *
-     * @param string      $resource
+     * @param mixed       $resource
      * @param string|null $type
      */
     public function supports($resource, $type = null): bool
@@ -62,7 +62,7 @@ final class AdminPoolLoader extends Loader
     /**
      * NEXT_MAJOR: Add the ?string param typehint when Symfony 4 support is dropped.
      *
-     * @param string      $resource
+     * @param mixed       $resource
      * @param string|null $type
      */
     public function load($resource, $type = null): SymfonyRouteCollection
