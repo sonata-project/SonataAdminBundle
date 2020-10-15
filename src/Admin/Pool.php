@@ -222,11 +222,7 @@ class Pool
             return null;
         }
 
-        if (!\is_array($this->adminClasses[$class])) {
-            throw new \RuntimeException('Invalid format for the Pool::adminClass property');
-        }
-
-        if (\count($this->adminClasses[$class]) > 1) {
+        if (!$this->hasSingleAdminByClass($class)) {
             throw new \RuntimeException(sprintf(
                 'Unable to find a valid admin for the class: %s, there are too many registered: %s',
                 $class,
@@ -247,6 +243,18 @@ class Pool
     public function hasAdminByClass($class)
     {
         return isset($this->adminClasses[$class]);
+    }
+
+    /**
+     * @phpstan-param class-string $class
+     */
+    public function hasSingleAdminByClass(string $class): bool
+    {
+        if (!$this->hasAdminByClass($class)) {
+            return false;
+        }
+
+        return 1 === \count($this->adminClasses[$class]);
     }
 
     /**

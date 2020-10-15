@@ -142,16 +142,6 @@ class PoolTest extends TestCase
         $this->assertCount(1, $this->pool->getAdminsByGroup('adminGroup2'));
     }
 
-    public function testGetAdminForClassWithInvalidFormat(): void
-    {
-        $this->expectException(\RuntimeException::class);
-
-        $this->pool->setAdminClasses(['someclass' => 'sonata.user.admin.group1']);
-        $this->assertTrue($this->pool->hasAdminByClass('someclass'));
-
-        $this->pool->getAdminByClass('someclass');
-    }
-
     public function testGetAdminForClassWithTooManyRegisteredAdmin(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -161,6 +151,7 @@ class PoolTest extends TestCase
         ]);
 
         $this->assertTrue($this->pool->hasAdminByClass('someclass'));
+        $this->assertFalse($this->pool->hasSingleAdminByClass('someclass'));
         $this->pool->getAdminByClass('someclass');
     }
 
@@ -174,6 +165,7 @@ class PoolTest extends TestCase
         ]);
 
         $this->assertTrue($this->pool->hasAdminByClass('someclass'));
+        $this->assertTrue($this->pool->hasSingleAdminByClass('someclass'));
         $this->assertInstanceOf(AdminInterface::class, $this->pool->getAdminByClass('someclass'));
     }
 
