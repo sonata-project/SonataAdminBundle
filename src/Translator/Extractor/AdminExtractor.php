@@ -76,12 +76,7 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
         $this->breadcrumbsBuilder = $breadcrumbsBuilder;
     }
 
-    /**
-     * Extracts translation messages from files, a file or a directory to the catalogue.
-     *
-     * @param string|array $resource Files, a file or a directory
-     */
-    public function extract($resource, MessageCatalogue $catalogue): void
+    public function extract($resource, MessageCatalogue $catalogue)
     {
         $this->catalogue = $catalogue;
 
@@ -113,12 +108,17 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
         }
     }
 
-    public function setPrefix($prefix): void
+    /**
+     * Sets the prefix that should be used for new found messages.
+     *
+     * @param string $prefix The prefix
+     */
+    public function setPrefix(string $prefix)
     {
         $this->prefix = $prefix;
     }
 
-    public function getLabel($label, $context = '', $type = ''): string
+    public function getLabel(string $label, string $context = '', string $type = ''): string
     {
         $label = $this->labelStrategy->getLabel($label, $context, $type);
 
