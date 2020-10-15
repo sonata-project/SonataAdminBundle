@@ -50,6 +50,11 @@ final class AdminPoolLoader extends Loader
 
     /**
      * NEXT_MAJOR: Add the ?string param typehint when Symfony 4 support is dropped.
+     *
+     * @param string $resource
+     * @param string $type     | null
+     *
+     * @return bool
      */
     public function supports($resource, $type = null)
     {
@@ -58,6 +63,11 @@ final class AdminPoolLoader extends Loader
 
     /**
      * NEXT_MAJOR: Add the ?string param typehint when Symfony 4 support is dropped.
+     *
+     * @param string $resource
+     * @param string $type     | null
+     *
+     * @return SymfonyRouteCollection
      */
     public function load($resource, $type = null)
     {
