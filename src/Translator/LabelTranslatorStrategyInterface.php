@@ -18,12 +18,5 @@ namespace Sonata\AdminBundle\Translator;
  */
 interface LabelTranslatorStrategyInterface
 {
-    /**
-     * @param string $label
-     * @param string $context
-     * @param string $type
-     *
-     * @return string
-     */
-    public function getLabel($label, $context = '', $type = '');
+    public function getLabel(string $label, string $context = '', string $type = ''): string;
 }

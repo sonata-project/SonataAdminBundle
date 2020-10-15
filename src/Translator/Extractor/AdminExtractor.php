@@ -76,7 +76,12 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
         $this->breadcrumbsBuilder = $breadcrumbsBuilder;
     }
 
-    public function extract($resource, MessageCatalogue $catalogue)
+    /**
+     * Extracts translation messages from files, a file or a directory to the catalogue.
+     *
+     * @param string|array $resource Files, a file or a directory
+     */
+    public function extract($resource, MessageCatalogue $catalogue): void
     {
         $this->catalogue = $catalogue;
 
