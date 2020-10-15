@@ -79,10 +79,9 @@ final class AdminMaker extends AbstractMaker
     private $modelManager;
 
     /**
-     * @param string                               $projectDirectory
      * @param array<string, ModelManagerInterface> $modelManagers
      */
-    public function __construct($projectDirectory, array $modelManagers = [])
+    public function __construct(string $projectDirectory, array $modelManagers = [])
     {
         $this->projectDirectory = $projectDirectory;
         $this->availableModelManagers = $modelManagers;
