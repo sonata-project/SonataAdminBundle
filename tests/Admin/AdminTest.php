@@ -1438,10 +1438,13 @@ class AdminTest extends TestCase
                 ->willReturn($this->createMock(MemberMetadata::class));
         $modelAdmin->setValidator($validator);
 
+        $fieldDescription = new FieldDescription();
+        $fieldDescription->setName('fooName');
+
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
             ->method('getNewFieldDescriptionInstance')
-            ->willReturn(new FieldDescription());
+            ->willReturn($fieldDescription);
         $modelAdmin->setModelManager($modelManager);
 
         // a Admin class to test that preValidate is called
@@ -1508,10 +1511,13 @@ class AdminTest extends TestCase
             ->willReturn($metadata);
         $modelAdmin->setValidator($validator);
 
+        $fieldDescription = new FieldDescription();
+        $fieldDescription->setName('fooName');
+
         $modelManager = $this->createStub(ModelManagerInterface::class);
         $modelManager
             ->method('getNewFieldDescriptionInstance')
-            ->willReturn(new FieldDescription());
+            ->willReturn($fieldDescription);
         $modelAdmin->setModelManager($modelManager);
 
         $event = $this->createStub(FormEvent::class);
