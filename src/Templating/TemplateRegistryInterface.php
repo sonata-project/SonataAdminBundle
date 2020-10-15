@@ -21,14 +21,9 @@ interface TemplateRegistryInterface
     /**
      * @return array<string, string> 'name' => 'file_path.html.twig'
      */
-    public function getTemplates();
+    public function getTemplates(): array;
 
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
-    public function getTemplate($name);
+    public function getTemplate(string $name): string;
 
     public function hasTemplate(string $name): bool;
 }
