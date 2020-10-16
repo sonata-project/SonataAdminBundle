@@ -32,11 +32,7 @@ final class RoutesCache
      */
     private $debug;
 
-    /**
-     * @param string $cacheFolder
-     * @param bool   $debug
-     */
-    public function __construct($cacheFolder, $debug)
+    public function __construct(string $cacheFolder, bool $debug)
     {
         $this->cacheFolder = $cacheFolder;
         $this->debug = $debug;

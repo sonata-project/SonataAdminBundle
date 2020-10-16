@@ -48,12 +48,24 @@ final class AdminPoolLoader extends Loader
         $this->container = $container;
     }
 
-    public function supports($resource, $type = null)
+    /**
+     * NEXT_MAJOR: Add the ?string param typehint when Symfony 4 support is dropped.
+     *
+     * @param mixed       $resource
+     * @param string|null $type
+     */
+    public function supports($resource, $type = null): bool
     {
         return self::ROUTE_TYPE_NAME === $type;
     }
 
-    public function load($resource, $type = null)
+    /**
+     * NEXT_MAJOR: Add the ?string param typehint when Symfony 4 support is dropped.
+     *
+     * @param mixed       $resource
+     * @param string|null $type
+     */
+    public function load($resource, $type = null): SymfonyRouteCollection
     {
         $collection = new SymfonyRouteCollection();
         foreach ($this->adminServiceIds as $id) {

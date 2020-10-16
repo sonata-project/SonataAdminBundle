@@ -48,17 +48,17 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
         $this->cache = $cache;
     }
 
-    public function generate($name, array $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generate(string $name, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
     {
         return $this->router->generate($name, $parameters, $referenceType);
     }
 
     public function generateUrl(
         AdminInterface $admin,
-        $name,
+        string $name,
         array $parameters = [],
-        $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
-    ) {
+        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
+    ): string {
         $arrayRoute = $this->generateMenuUrl($admin, $name, $parameters, $referenceType);
 
         return $this->router->generate(
@@ -70,10 +70,10 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
 
     public function generateMenuUrl(
         AdminInterface $admin,
-        $name,
+        string $name,
         array $parameters = [],
-        $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
-    ) {
+        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
+    ): array {
         // if the admin is a child we automatically append the parent's id
         if ($admin->isChild() && $admin->hasRequest()) {
             // twig template does not accept variable hash key ... so cannot use admin.idparameter ...
@@ -124,7 +124,7 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
         ];
     }
 
-    public function hasAdminRoute(AdminInterface $admin, $name)
+    public function hasAdminRoute(AdminInterface $admin, string $name): bool
     {
         return \array_key_exists($this->getCode($admin, $name), $this->caches);
     }

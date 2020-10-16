@@ -171,6 +171,9 @@ final class RouteCollection implements RouteCollectionInterface
         throw new \InvalidArgumentException(sprintf('Element "%s" does not exist in cache.', $name));
     }
 
+    /**
+     * @param string|string[] $routeList
+     */
     public function clearExcept($routeList): RouteCollectionInterface
     {
         if (!\is_array($routeList)) {
