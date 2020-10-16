@@ -1,6 +1,9 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.76 to 3.77
+=========================
+
 ### Deprecated `Sonata\AdminBundle\Admin\Pool::getContainer()` method.
 
 This method has been deprecated without replacement.

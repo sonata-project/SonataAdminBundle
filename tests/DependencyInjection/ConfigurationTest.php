@@ -199,7 +199,7 @@ class ConfigurationTest extends TestCase
      */
     public function testDashboardGroupsWithNullLabel(): void
     {
-        $this->expectDeprecation('Passing a null label is deprecated since sonata-project/admin-bundle 3.x.');
+        $this->expectDeprecation('Passing a null label is deprecated since sonata-project/admin-bundle 3.77.');
 
         $config = $this->process([[
             'dashboard' => [

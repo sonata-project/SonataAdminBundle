@@ -264,7 +264,7 @@ CASESENSITIVE;
                                                         throw new \InvalidArgumentException('Expected parameter "route" for array items');
                                                     } elseif (null === $items[$key]['route']) {
                                                         @trigger_error(
-                                                            'Passing a null route is deprecated since sonata-project/admin-bundle 3.x.',
+                                                            'Passing a null route is deprecated since sonata-project/admin-bundle 3.77.',
                                                             E_USER_DEPRECATED
                                                         );
                                                     }
@@ -274,7 +274,7 @@ CASESENSITIVE;
                                                         throw new \InvalidArgumentException('Expected parameter "label" for array items');
                                                     } elseif (null === $items[$key]['label']) {
                                                         @trigger_error(
-                                                            'Passing a null label is deprecated since sonata-project/admin-bundle 3.x.',
+                                                            'Passing a null label is deprecated since sonata-project/admin-bundle 3.77.',
                                                             E_USER_DEPRECATED
                                                         );
 

@@ -2,6 +2,70 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.77.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.76.0...3.77.0) - 2020-10-16
+### Added
+- [[#6419](https://github.com/sonata-project/SonataAdminBundle/pull/6419)] Add
+  phpdoc for access mappings ([@core23](https://github.com/core23))
+
+### Changed
+- [[#6315](https://github.com/sonata-project/SonataAdminBundle/pull/6315)]
+  Changed multiple calls to `ModelManagerInterface::find()` with
+`ModelManagerInterface::findBy()` in order to avoid multiple transactions.
+([@phansys](https://github.com/phansys))
+- [[#6435](https://github.com/sonata-project/SonataAdminBundle/pull/6435)]
+  Default mosaic background is now a file instead of a data URI.
+([@jorrit](https://github.com/jorrit))
+- [[#6451](https://github.com/sonata-project/SonataAdminBundle/pull/6451)]
+  Moved confirmExit to window.load ([@fastnloud](https://github.com/fastnloud))
+
+### Deprecated
+- [[#6420](https://github.com/sonata-project/SonataAdminBundle/pull/6420)]
+  Deprecate Passing a third argument to
+`GenerateObjectAclCommand::__construct()`
+([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6475](https://github.com/sonata-project/SonataAdminBundle/pull/6475)]
+  Deprecated `Pool::getContainer()` method.
+([@franmomu](https://github.com/franmomu))
+- [[#6350](https://github.com/sonata-project/SonataAdminBundle/pull/6350)]
+  Deprecate usage of a null groupItem label
+([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6413](https://github.com/sonata-project/SonataAdminBundle/pull/6413)]
+  Deprecate using shortcut notation for user_model in favor of FQCN in
+`GenerateObjectAclCommand` ([@franmomu](https://github.com/franmomu))
+
+### Fixed
+- [[#6466](https://github.com/sonata-project/SonataAdminBundle/pull/6466)]
+  Solve problem with unset batch checkbox`s after back via browser history
+([@kirya-dev](https://github.com/kirya-dev))
+- [[#6401](https://github.com/sonata-project/SonataAdminBundle/pull/6401)]
+  Fixed incorrect inline table / tabs collection translation domain
+([@EmmanuelVella](https://github.com/EmmanuelVella))
+- [[#6350](https://github.com/sonata-project/SonataAdminBundle/pull/6350)] Keep
+  support for a null groupItem label
+([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6429](https://github.com/sonata-project/SonataAdminBundle/pull/6429)]
+  Superfluous deprecation notice in `getCurrentChild()` when calling
+`getCurrentChildAdmin()`. ([@jorrit](https://github.com/jorrit))
+- [[#6414](https://github.com/sonata-project/SonataAdminBundle/pull/6414)]
+  Remove calls to deprecated method
+`ModelInterface::getPaginationParameters()`.
+([@franmomu](https://github.com/franmomu))
+- [[#6414](https://github.com/sonata-project/SonataAdminBundle/pull/6414)]
+  Remove calls to deprecated method `ModelInterface::getSortParameters()`.
+([@franmomu](https://github.com/franmomu))
+- [[#6421](https://github.com/sonata-project/SonataAdminBundle/pull/6421)] Call
+  to deprecated `getTargetEntity`
+([@jordisala1991](https://github.com/jordisala1991))
+- [[#6412](https://github.com/sonata-project/SonataAdminBundle/pull/6412)]
+  Deprecation notice in `MergeCollectionListener` when using the `ModelType`
+form type with the `model_manager` option set.
+([@jorrit](https://github.com/jorrit))
+
+### Removed
+- [[#6437](https://github.com/sonata-project/SonataAdminBundle/pull/6437)]
+  Removed several large unnecessary resources from
+public/bundles/sonatacore/vendor. ([@jorrit](https://github.com/jorrit))
+
 ## [3.76.0](sonata-project/SonataAdminBundle/compare/3.75.0...3.76.0) - 2020-09-20
 ### Added
 - [[#6390](https://github.com/sonata-project/SonataAdminBundle/pull/6390)]  `Sonata\AdminBundle\Templating\TemplateRegistryAwareInterface` with `getTemplateRegistry()`, `hasTemplateRegistry()` and `setTemplateRegistry()` methods ([@wbloszyk](https://github.com/wbloszyk))
