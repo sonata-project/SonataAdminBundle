@@ -42,6 +42,7 @@ class SearchHandler
         $datagrid = $admin->getDatagrid();
 
         $found = false;
+
         foreach ($datagrid->getFilters() as $filter) {
             /** @var $filter FilterInterface */
             if ($filter->getOption('global_search', false)) {
@@ -53,7 +54,7 @@ class SearchHandler
         }
 
         if (!$found) {
-            return false;
+            return null;
         }
 
         $datagrid->buildPager();
