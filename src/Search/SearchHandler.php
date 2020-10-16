@@ -39,14 +39,13 @@ class SearchHandler
      * NEXT_MAJOR: Change signature to __construct(bool $caseSensitive) and remove pool property.
      *
      * @param Pool|bool $deprecatedPoolOrCaseSensitive
-     * @param bool      $caseSensitive
      */
-    public function __construct($deprecatedPoolOrCaseSensitive, $caseSensitive = true)
+    public function __construct($deprecatedPoolOrCaseSensitive, bool $caseSensitive = true)
     {
         if ($deprecatedPoolOrCaseSensitive instanceof Pool) {
             @trigger_error(sprintf(
                 'Passing %s as argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.74.'
-                .' It will accept only bool in version 4.0.',
+                    .' It will accept only bool in version 4.0.',
                 Pool::class,
                 __METHOD__
             ), E_USER_DEPRECATED);
@@ -59,15 +58,11 @@ class SearchHandler
     }
 
     /**
-     * @param string $term
-     * @param int    $page
-     * @param int    $offset
-     *
      * @throws \RuntimeException
      *
      * @return PagerInterface|false
      */
-    public function search(AdminInterface $admin, $term, $page = 0, $offset = 20)
+    public function search(AdminInterface $admin, string $term, int $page = 0, int $offset = 20)
     {
         $datagrid = $admin->getDatagrid();
 
