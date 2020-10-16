@@ -82,10 +82,7 @@ final class SonataAdminExtension extends AbstractExtension
         $this->securityChecker = $securityChecker;
     }
 
-    /**
-     * @return TwigFilter[]
-     */
-    public function getFilters(): array
+    public function getFilters()
     {
         return [
             new TwigFilter(
@@ -131,10 +128,7 @@ final class SonataAdminExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * @return TwigFunction[]
-     */
-    public function getFunctions(): array
+    public function getFunctions()
     {
         return [
             new TwigFunction('canonicalize_locale_for_moment', [$this, 'getCanonicalizedLocaleForMoment'], ['needs_context' => true]),
@@ -143,9 +137,6 @@ final class SonataAdminExtension extends AbstractExtension
         ];
     }
 
-    /*
-     * @return string
-     */
     public function getName(): string
     {
         return 'sonata_admin';
@@ -155,13 +146,12 @@ final class SonataAdminExtension extends AbstractExtension
      * render a list element from the FieldDescription.
      *
      * @param object|array $listElement
-     * @param array        $params
      */
     public function renderListElement(
         Environment $environment,
         $listElement,
         FieldDescriptionInterface $fieldDescription,
-        $params = []
+        array $params = []
     ): string {
         $template = $this->getTemplate(
             $fieldDescription,
@@ -364,8 +354,6 @@ final class SonataAdminExtension extends AbstractExtension
     /*
      * Returns a canonicalized locale for "moment" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
-     *
-     * @return string|null
      */
     public function getCanonicalizedLocaleForMoment(array $context): ?string
     {
