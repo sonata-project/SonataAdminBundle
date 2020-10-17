@@ -28,6 +28,9 @@ use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
  */
 class ShowMapper extends BaseGroupedMapper
 {
+    /**
+     * @var FieldDescriptionCollection
+     */
     protected $list;
 
     /**
@@ -46,6 +49,7 @@ class ShowMapper extends BaseGroupedMapper
 
     /**
      * @param FieldDescriptionInterface|string $name
+     * @param array<string, mixed>             $fieldDescriptionOptions
      *
      * @throws \LogicException
      *
@@ -76,7 +80,7 @@ class ShowMapper extends BaseGroupedMapper
         } else {
             throw new \TypeError(
                 'Unknown field name in show mapper.'
-                .' Field name should be either of FieldDescriptionInterface interface or string.'
+                    .' Field name should be either of FieldDescriptionInterface interface or string.'
             );
         }
 
