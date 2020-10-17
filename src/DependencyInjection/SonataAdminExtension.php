@@ -191,7 +191,7 @@ final class SonataAdminExtension extends Extension
             ->addTag(ModelManagerCompilerPass::MANAGER_TAG);
     }
 
-    public function getNamespace()
+    public function getNamespace(): string
     {
         return 'https://sonata-project.org/schema/dic/admin';
     }
