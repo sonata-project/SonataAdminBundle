@@ -88,12 +88,9 @@ final class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param string                                                                           $id
      * @param array<string, array<string, array<string, array<string, array<string, mixed>>>>> $extensionMap
-     *
-     * @return array
      */
-    private function getExtensionsForAdmin($id, Definition $admin, ContainerBuilder $container, array $extensionMap)
+    private function getExtensionsForAdmin(string $id, Definition $admin, ContainerBuilder $container, array $extensionMap): array
     {
         $extensions = [];
 
@@ -132,11 +129,9 @@ final class ExtensionCompilerPass implements CompilerPassInterface
     /**
      * Resolves the class argument of the admin to an actual class (in case of %parameter%).
      *
-     * @return string|null
-     *
      * @phpstan-return class-string|null
      */
-    private function getManagedClass(Definition $admin, ContainerBuilder $container)
+    private function getManagedClass(Definition $admin, ContainerBuilder $container): ?string
     {
         $argument = $admin->getArgument(1);
         $class = $container->getParameterBag()->resolveValue($argument);
@@ -188,7 +183,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
      *     'uses'       => ['<trait>'     => ['<extension_id>' => ['priority' => <int>]]],
      * ]
      */
-    private function flattenExtensionConfiguration(array $config)
+    private function flattenExtensionConfiguration(array $config): array
     {
         $extensionMap = [
             'excludes' => [],
@@ -216,11 +211,9 @@ final class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @return bool
-     *
      * @phpstan-param class-string $traitName
      */
-    private function hasTrait(\ReflectionClass $class, $traitName)
+    private function hasTrait(\ReflectionClass $class, string $traitName): bool
     {
         if (\in_array($traitName, $class->getTraitNames(), true)) {
             return true;
