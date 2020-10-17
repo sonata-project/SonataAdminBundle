@@ -121,6 +121,9 @@ class SonataAdminExtension extends AbstractExtension
         $this->securityChecker = $securityChecker;
     }
 
+    /**
+     * @return TwigFilter[]
+     */
     public function getFilters()
     {
         return [
@@ -167,6 +170,9 @@ class SonataAdminExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @return TwigFunction[]
+     */
     public function getFunctions()
     {
         return [
