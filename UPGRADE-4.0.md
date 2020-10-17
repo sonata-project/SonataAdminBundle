@@ -155,3 +155,6 @@ Method `SimplePager::getResults` is always returning an array
 
 ## RouteCollectionInterface
 `RouteCollection` implements `RouteCollectionInterface`.
+
+## SearchHandler
+When no Pager is found, `SearchHandler::search()` now return `null` instead of `false`.
