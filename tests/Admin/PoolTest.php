@@ -276,7 +276,7 @@ class PoolTest extends TestCase
     /**
      * @group legacy
      *
-     * @expectedDeprecation Passing an invalid admin hierarchy inside argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.
+     * @expectedDeprecation Passing an invalid admin hierarchy inside argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.
      */
     public function testGetAdminByAdminCodeWithCodeNotChild(): void
     {

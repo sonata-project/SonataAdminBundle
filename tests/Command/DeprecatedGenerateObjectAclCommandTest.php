@@ -56,7 +56,7 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
         $pool = new Pool($this->container, '', '');
 
         $registry = $this->createStub(RegistryInterface::class);
-        $this->expectDeprecation('Passing a third argument to %s() is deprecated since sonata-project/admin-bundle 3.x.');
+        $this->expectDeprecation('Passing a third argument to Sonata\AdminBundle\Command\GenerateObjectAclCommand::__construct() is deprecated since sonata-project/admin-bundle 3.x.');
         $command = new GenerateObjectAclCommand($pool, [], $registry);
 
         $application = new Application();
@@ -74,7 +74,7 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
         $pool = new Pool($this->container, '', '');
 
         $registry = $this->createStub(ManagerRegistry::class);
-        $this->expectDeprecation('Passing a third argument to %s() is deprecated since sonata-project/admin-bundle 3.x.');
+        $this->expectDeprecation('Passing a third argument to Sonata\AdminBundle\Command\GenerateObjectAclCommand::__construct() is deprecated since sonata-project/admin-bundle 3.x.');
         $command = new GenerateObjectAclCommand($pool, [], $registry);
 
         $application = new Application();
@@ -109,7 +109,7 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
             'bar' => new \stdClass(),
         ];
 
-        $this->expectDeprecation('Passing a third argument to %s() is deprecated since sonata-project/admin-bundle 3.x.');
+        $this->expectDeprecation('Passing a third argument to Sonata\AdminBundle\Command\GenerateObjectAclCommand::__construct() is deprecated since sonata-project/admin-bundle 3.x.');
         $command = new GenerateObjectAclCommand($pool, $aclObjectManipulators, $registry);
 
         $application = new Application();
@@ -144,7 +144,7 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
             'sonata.admin.manipulator.acl.object.bar' => new \stdClass(),
         ];
 
-        $this->expectDeprecation('Passing a third argument to %s() is deprecated since sonata-project/admin-bundle 3.x.');
+        $this->expectDeprecation('Passing a third argument to Sonata\AdminBundle\Command\GenerateObjectAclCommand::__construct() is deprecated since sonata-project/admin-bundle 3.x.');
         $command = new GenerateObjectAclCommand($pool, $aclObjectManipulators, $registry);
 
         $application = new Application();
@@ -185,7 +185,7 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
             'sonata.admin.manipulator.acl.object.bar' => $manipulator,
         ];
 
-        $this->expectDeprecation('Passing a third argument to %s() is deprecated since sonata-project/admin-bundle 3.x.');
+        $this->expectDeprecation('Passing a third argument to Sonata\AdminBundle\Command\GenerateObjectAclCommand::__construct() is deprecated since sonata-project/admin-bundle 3.x.');
         $command = new GenerateObjectAclCommand($pool, $aclObjectManipulators, $registry);
 
         $application = new Application();
@@ -201,7 +201,7 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
         $pool = new Pool($this->container, '', '');
 
         $registry = $this->createStub(ManagerRegistry::class);
-        $this->expectDeprecation('Passing a third argument to %s() is deprecated since sonata-project/admin-bundle 3.x.');
+        $this->expectDeprecation('Passing a third argument to Sonata\AdminBundle\Command\GenerateObjectAclCommand::__construct() is deprecated since sonata-project/admin-bundle 3.x.');
         $command = new GenerateObjectAclCommand($pool, [], $registry);
 
         $application = new Application();
@@ -308,7 +308,7 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
             'sonata.admin.manipulator.acl.object.bar' => $manipulator,
         ];
 
-        $this->expectDeprecation('Passing a third argument to %s() is deprecated since sonata-project/admin-bundle 3.x.');
+        $this->expectDeprecation('Passing a third argument to Sonata\AdminBundle\Command\GenerateObjectAclCommand::__construct() is deprecated since sonata-project/admin-bundle 3.x.');
         $command = new GenerateObjectAclCommand($pool, $aclObjectManipulators, $registry);
 
         $application = new Application();
