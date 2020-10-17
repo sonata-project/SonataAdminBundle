@@ -69,7 +69,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
         $this->aclObjectManipulators = $aclObjectManipulators;
         if (null !== $registry) {
             @trigger_error(sprintf(
-                'Passing a third argument to %s() is deprecated since sonata-project/admin-bundle 3.x.',
+                'Passing a third argument to %s() is deprecated since sonata-project/admin-bundle 3.77.',
                 __METHOD__
             ), E_USER_DEPRECATED);
 
@@ -244,7 +244,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
                 // until "else".
                 @trigger_error(sprintf(
                     'Passing a model shortcut name ("%s" given) as "user_model" option is deprecated since'
-                    .' sonata-project/admin-bundle 3.x and will throw an exception in 4.0.'
+                    .' sonata-project/admin-bundle 3.77 and will throw an exception in 4.0.'
                     .' Pass a fully qualified class name instead (e.g. App\Model\User).',
                     $userModelFromInput
                 ), E_USER_DEPRECATED);

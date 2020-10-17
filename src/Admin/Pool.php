@@ -389,7 +389,7 @@ class Pool
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x.
+     * @deprecated since sonata-project/admin-bundle 3.77.
      *
      * @return ContainerInterface
      */
@@ -397,7 +397,7 @@ class Pool
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.77 and will be removed in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
