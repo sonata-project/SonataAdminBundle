@@ -35,7 +35,7 @@ class SearchHandlerTest extends TestCase
         $admin->expects($this->once())->method('getDatagrid')->willReturn($datagrid);
 
         $handler = new SearchHandler(true);
-        $this->assertFalse($handler->search($admin, 'myservice'));
+        $this->assertNull($handler->search($admin, 'myservice'));
     }
 
     /**

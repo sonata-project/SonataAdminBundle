@@ -77,7 +77,7 @@ class SearchActionTest extends TestCase
         $admin = new CleanAdmin('code', 'class', 'controller');
         $this->container->set('foo', $admin);
         $this->pool->setAdminServiceIds(['foo']);
-        $request = new Request(['admin' => 'foo']);
+        $request = new Request(['admin' => 'foo', 'q' => 'fooTerm', 'page' => 5, 'offset' => 10]);
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $this->assertInstanceOf(JsonResponse::class, ($this->action)($request));

@@ -155,3 +155,6 @@ Method `SimplePager::getResults` is always returning an array
 
 ## RouteCollectionInterface
 `RouteCollection` implements `RouteCollectionInterface`.
+
+## SearchHandler
+When there is no searchable filters, `SearchHandler::search()` returns `null`. Previously, it was returning `false`.
