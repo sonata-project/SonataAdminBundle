@@ -498,6 +498,10 @@
                 <source>label_type_ends_with</source>
                 <target>завършва със</target>
             </trans-unit>
+            <trans-unit id="go_to_the_first_page">
+                <source>go_to_the_first_page</source>
+                <target>Отидете на първата страница</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

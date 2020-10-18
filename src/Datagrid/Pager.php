@@ -587,6 +587,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     {
         $this->lastPage = $page;
 
+        // NEXT_MAJOR: Remove this code.
         if ($this->getPage() > $page) {
             $this->setPage($page);
         }

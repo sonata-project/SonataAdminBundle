@@ -498,6 +498,10 @@
                 <source>label_type_ends_with</source>
                 <target>termine par</target>
             </trans-unit>
+            <trans-unit id="go_to_first_page">
+                <source>go_to_first_page</source>
+                <target>Aller à la première page</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -499,6 +499,10 @@
                 <source>label_type_ends_with</source>
                 <target>slutter med</target>
             </trans-unit>
+            <trans-unit id="go_to_first_page">
+                <source>go_to_first_page</source>
+                <target>Gå til første side</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
