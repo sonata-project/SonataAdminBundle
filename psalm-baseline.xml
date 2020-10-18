@@ -29,7 +29,8 @@
         </InvalidPropertyAssignmentValue>
     </file>
     <file src="src/Admin/FieldDescriptionCollection.php">
-        <InvalidPropertyAssignmentValue occurrences="1">
+        <InvalidPropertyAssignmentValue occurrences="2">
+            <code>$this-&gt;elements</code>
             <code>array_merge(array_flip($keys), $this-&gt;elements)</code>
         </InvalidPropertyAssignmentValue>
     </file>

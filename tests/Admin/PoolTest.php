@@ -18,7 +18,6 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class PoolTest extends TestCase
 {
@@ -245,22 +244,20 @@ class PoolTest extends TestCase
 
     public function testGetAdminByAdminCodeWithCodeNotChild(): void
     {
-        $adminMock = $this->getMockBuilder(AdminInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $adminMock->expects($this->any())
+        $adminMock = $this->createMock(AdminInterface::class);
+        $adminMock
             ->method('hasChild')
             ->willReturn(false);
+        $adminMock
+            ->method('getCode')
+            ->willReturn('sonata.news.admin.post');
 
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->expects($this->any())
-            ->method('get')
-            ->willReturn($adminMock);
-
-        $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
+        $this->container->set('sonata.news.admin.post', $adminMock);
         $this->pool->setAdminServiceIds(['sonata.news.admin.post', 'sonata.news.admin.valid']);
 
         $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Argument 1 passed to Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() must contain a valid admin hierarchy, "sonata.news.admin.valid" is not a valid child for "sonata.news.admin.post"');
+
         $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.valid');
     }
 

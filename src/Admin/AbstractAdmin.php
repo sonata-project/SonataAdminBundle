@@ -87,7 +87,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The list FieldDescription constructed from the configureListField method.
      *
-     * @var FieldDescriptionInterface[]
+     * @var array<string, FieldDescriptionInterface>
      */
     protected $listFieldDescriptions = [];
 
@@ -1951,6 +1951,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     /**
      * Return the list of permissions the user should have in order to display the admin.
+     *
+     * @return string[]
      */
     public function getPermissionsShow(string $context): array
     {
@@ -2097,6 +2099,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     /**
      * Returns predefined per page options.
+     *
+     * @return list<int>
      */
     public function getPerPageOptions(): array
     {
@@ -2215,6 +2219,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return true;
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     *
+     * @phpstan-param T|null $object
+     */
     final public function getActionButtons(string $action, ?object $object = null): array
     {
         $buttonList = [];
@@ -2284,6 +2293,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $buttonList;
     }
 
+    /**
+     * Get the list of actions that can be accessed directly from the dashboard.
+     *
+     * @return array<string, array<string, mixed>>
+     */
     public function getDashboardActions(): array
     {
         $actions = [];
@@ -2411,6 +2425,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     /**
      * Returns a list of default filters.
+     *
+     * @return array<string, mixed>
      */
     final protected function getDefaultFilterValues(): array
     {

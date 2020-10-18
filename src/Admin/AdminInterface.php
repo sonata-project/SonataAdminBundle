@@ -284,6 +284,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Retuns a list of exported fields.
+     *
+     * @return string[]
      */
     public function getExportFields(): array;
 

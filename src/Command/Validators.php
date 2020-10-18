@@ -43,7 +43,9 @@ final class Validators
      *
      * @throws \InvalidArgumentException
      *
-     * @return array
+     * @return string[]
+     *
+     * @phpstan-return array{string, string}
      */
     public static function validateEntityName($shortcut)
     {

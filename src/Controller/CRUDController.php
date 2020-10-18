@@ -845,6 +845,16 @@ class CRUDController extends Controller
             throw $this->createNotFoundException('ACL are not enabled for this admin');
         }
 
+        // NEXT_MAJOR: Remove this block.
+        if ($this->container->hasParameter('sonata.admin.security.fos_user_autoconfigured')
+            && $this->getParameter('sonata.admin.security.fos_user_autoconfigured')) {
+            @trigger_error(sprintf(
+                'Not configuring "acl_user_manager" and using ACL security handler is deprecated since'
+                .' sonata-project/admin-bundle 3.x and will not work on 4.x. You MUST specify the service name'
+                .' under "sonata_admin.security.acl_user_manager" option.'
+            ), E_USER_DEPRECATED);
+        }
+
         $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
@@ -1214,6 +1224,7 @@ class CRUDController extends Controller
      */
     protected function getAclUsers()
     {
+        // NEXT_MAJOR: Remove this code until the commented code and uncomment it;
         $aclUsers = [];
 
         $userManagerServiceName = $this->container->getParameter('sonata.admin.security.acl_user_manager');
@@ -1226,6 +1237,14 @@ class CRUDController extends Controller
         }
 
         return \is_array($aclUsers) ? new \ArrayIterator($aclUsers) : $aclUsers;
+
+//        if (!$this->has('sonata.admin.security.acl_user_manager')) {
+//            return new \ArrayIterator([]);
+//        }
+//
+//        $aclUsers = $this->get('sonata.admin.security.acl_user_manager')->findUsers();
+//
+//        return \is_array($aclUsers) ? new \ArrayIterator($aclUsers) : $aclUsers;
     }
 
     /**

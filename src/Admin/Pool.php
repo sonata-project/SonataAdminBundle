@@ -85,6 +85,9 @@ class Pool
         $this->propertyAccessor = $propertyAccessor;
     }
 
+    /**
+     * @return array<string, array<string, AdminInterface>>
+     */
     public function getGroups(): array
     {
         $groups = $this->adminGroups;
@@ -315,6 +318,9 @@ class Pool
         $this->adminServiceIds = $adminServiceIds;
     }
 
+    /**
+     * @return string[]
+     */
     public function getAdminServiceIds(): array
     {
         return $this->adminServiceIds;

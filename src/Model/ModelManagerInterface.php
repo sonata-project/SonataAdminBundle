@@ -69,7 +69,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function findOneBy(string $class, array $criteria = []): ?object;
 
     /**
-     * @param mixed $id
+     * @param int|string $id
      *
      * @return object|null the object with id or null if not found
      *
@@ -98,7 +98,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * composed of multiple columns. If you need a string representation,
      * use getNormalizedIdentifier resp. getUrlSafeIdentifier
      *
-     * @return mixed[]
+     * @return array<int|string> list of all identifiers of this model
      */
     public function getIdentifierValues(object $model): array;
 
@@ -175,7 +175,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function getExportFields(string $class): array;
 
     /**
-     * @param string[] $idx
+     * @param array<int, int|string> $idx
      *
      * @phpstan-param class-string $class
      */

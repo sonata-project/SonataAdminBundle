@@ -81,6 +81,9 @@ final class GlobalVariables
         return $this->mosaicBackground;
     }
 
+    /**
+     * @return string[]
+     */
     private function getCodeAction(string $code, string $action): array
     {
         if ($pipe = strpos($code, '|')) {

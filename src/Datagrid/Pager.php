@@ -128,6 +128,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Returns an array of page numbers to use in pagination links.
      *
+     * @param int $nbLinks The maximum number of page numbers to return
+     *
      * @return int[]
      */
     public function getLinks(?int $nbLinks = null): array

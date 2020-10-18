@@ -123,11 +123,9 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
      *
      * @throws \InvalidArgumentException
      *
-     * @return array<string|int, string>
+     * @return array<string|int, int|string|array<string>>
      *
      * @phpstan-param T|T[]|null $value
-     *
-     * @phpstan-return array{_labels?: mixed}
      */
     public function transform($value)
     {

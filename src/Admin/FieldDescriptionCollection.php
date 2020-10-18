@@ -19,7 +19,7 @@ namespace Sonata\AdminBundle\Admin;
 final class FieldDescriptionCollection implements \ArrayAccess, \Countable
 {
     /**
-     * @var FieldDescriptionInterface[]
+     * @var array<string, FieldDescriptionInterface>
      */
     private $elements = [];
 
@@ -28,6 +28,9 @@ final class FieldDescriptionCollection implements \ArrayAccess, \Countable
         $this->elements[$fieldDescription->getName()] = $fieldDescription;
     }
 
+    /**
+     * @return array<string, FieldDescriptionInterface>
+     */
     public function getElements(): array
     {
         return $this->elements;

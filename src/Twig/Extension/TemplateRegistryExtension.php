@@ -38,6 +38,9 @@ final class TemplateRegistryExtension extends AbstractExtension
         $this->container = $container;
     }
 
+    /**
+     * @return TwigFunction[]
+     */
     public function getFunctions(): array
     {
         return [
