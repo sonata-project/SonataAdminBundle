@@ -71,7 +71,7 @@ final class TemplateRegistry implements MutableTemplateRegistryInterface
         return isset($this->templates[$name]);
     }
 
-    public function getTemplate($name): string
+    public function getTemplate(string $name): string
     {
         if (isset($this->templates[$name])) {
             return $this->templates[$name];
@@ -83,7 +83,7 @@ final class TemplateRegistry implements MutableTemplateRegistryInterface
         ));
     }
 
-    public function setTemplate($name, $template): void
+    public function setTemplate(string $name, string $template): void
     {
         $this->templates[$name] = $template;
     }
