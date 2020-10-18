@@ -76,6 +76,11 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
         $this->breadcrumbsBuilder = $breadcrumbsBuilder;
     }
 
+    /**
+     * Extracts translation messages from files, a file or a directory to the catalogue.
+     *
+     * @param string|string[] $resource Files, a file or a directory
+     */
     public function extract($resource, MessageCatalogue $catalogue)
     {
         $this->catalogue = $catalogue;
@@ -108,6 +113,13 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
         }
     }
 
+    /**
+     * NEXT_MAJOR: Add string type hint when support for Symfony 4 is dropped.
+     *
+     * Sets the prefix that should be used for new found messages.
+     *
+     * @param string $prefix The prefix
+     */
     public function setPrefix($prefix): void
     {
         $this->prefix = $prefix;
