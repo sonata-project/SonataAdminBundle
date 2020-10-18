@@ -829,7 +829,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function getFilterParameters()
     {
-        $parameters = [];
+        $parameters = array_merge(
+            $this->getModelManager()->getDefaultSortValues($this->getClass()),
+            $this->datagridValues, // NEXT_MAJOR: Remove this line.
+            $this->getDefaultSortValues(),
+            $this->getDefaultFilterValues()
+        );
 
         // build the values array
         if ($this->hasRequest()) {
@@ -865,23 +870,17 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 }
             }
 
-            $parameters = array_merge(
-                $this->getModelManager()->getDefaultSortValues($this->getClass()),
-                $this->datagridValues, // NEXT_MAJOR: Remove this line.
-                $this->getDefaultSortValues(),
-                $this->getDefaultFilterValues(),
-                $filters
-            );
-
-            if (!$this->determinedPerPageValue($parameters['_per_page'])) {
-                $parameters['_per_page'] = $this->getMaxPerPage();
-            }
+            $parameters = array_merge($parameters, $filters);
 
             // always force the parent value
             if ($this->isChild() && $this->getParentAssociationMapping()) {
                 $name = str_replace('.', '__', $this->getParentAssociationMapping());
                 $parameters[$name] = ['value' => $this->request->get($this->getParent()->getIdParameter())];
             }
+        }
+
+        if (!$this->determinedPerPageValue($parameters['_per_page'])) {
+            $parameters['_per_page'] = $this->getMaxPerPage();
         }
 
         return $parameters;
