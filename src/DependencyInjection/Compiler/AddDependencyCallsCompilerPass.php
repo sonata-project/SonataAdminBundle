@@ -272,6 +272,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $defaultAddServices = [
             'model_manager' => sprintf('sonata.admin.manager.%s', $managerType),
+            'data_source' => sprintf('sonata.admin.data_source.%s', $managerType),
             'form_contractor' => sprintf('sonata.admin.builder.%s_form', $managerType),
             'show_builder' => sprintf('sonata.admin.builder.%s_show', $managerType),
             'list_builder' => sprintf('sonata.admin.builder.%s_list', $managerType),
@@ -290,6 +291,11 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $definition->addMethodCall('setManagerType', [$managerType]);
 
         foreach ($defaultAddServices as $attr => $addServiceId) {
+            // NEXT_MAJOR: Remove this check
+            if ('data_source' === $attr && !$container->has($addServiceId)) {
+                continue;
+            }
+
             $method = $this->generateSetterMethodName($attr);
 
             if (isset($overwriteAdminConfiguration[$attr]) || !$definition->hasMethodCall($method)) {
