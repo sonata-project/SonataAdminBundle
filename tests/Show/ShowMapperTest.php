@@ -586,7 +586,7 @@ class ShowMapperTest extends TestCase
 
     private function getFieldDescriptionMock(string $name, ?string $label = null): BaseFieldDescription
     {
-        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name]);
+        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name, []]);
 
         if (null !== $label) {
             $fieldDescription->setOption('label', $label);

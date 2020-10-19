@@ -557,7 +557,7 @@ class FormMapperTest extends TestCase
         ?string $label = null,
         ?string $translationDomain = null
     ): BaseFieldDescription {
-        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name]);
+        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name, []]);
 
         if (null !== $label) {
             $fieldDescription->setOption('label', $label);
