@@ -52,37 +52,24 @@ final class PersistenceEvent extends Event
      */
     private $type;
 
-    /**
-     * @param object $object
-     * @param string $type
-     */
-    public function __construct(AdminInterface $admin, $object, $type)
+    public function __construct(AdminInterface $admin, object $object, string $type)
     {
         $this->admin = $admin;
         $this->object = $object;
         $this->type = $type;
     }
 
-    /**
-     * @return AdminInterface
-     */
-    public function getAdmin()
+    public function getAdmin(): AdminInterface
     {
         return $this->admin;
     }
 
-    /**
-     * @return object
-     */
-    public function getObject()
+    public function getObject(): object
     {
         return $this->object;
     }
 
-    /**
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }

@@ -52,36 +52,24 @@ final class ConfigureEvent extends Event
      */
     private $type;
 
-    /**
-     * @param string $type
-     */
-    public function __construct(AdminInterface $admin, BaseMapper $mapper, $type)
+    public function __construct(AdminInterface $admin, BaseMapper $mapper, string $type)
     {
         $this->admin = $admin;
         $this->mapper = $mapper;
         $this->type = $type;
     }
 
-    /**
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @return AdminInterface
-     */
-    public function getAdmin()
+    public function getAdmin(): AdminInterface
     {
         return $this->admin;
     }
 
-    /**
-     * @return BaseMapper
-     */
-    public function getMapper()
+    public function getMapper(): BaseMapper
     {
         return $this->mapper;
     }

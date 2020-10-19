@@ -67,7 +67,7 @@ final class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list'): void
+    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, string $context = 'list'): void
     {
         $this->eventDispatcher->dispatch(
             new ConfigureQueryEvent($admin, $query, $context),
@@ -75,7 +75,7 @@ final class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function preUpdate(AdminInterface $admin, $object): void
+    public function preUpdate(AdminInterface $admin, object $object): void
     {
         $this->eventDispatcher->dispatch(
             new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_PRE_UPDATE),
@@ -83,7 +83,7 @@ final class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function postUpdate(AdminInterface $admin, $object): void
+    public function postUpdate(AdminInterface $admin, object $object): void
     {
         $this->eventDispatcher->dispatch(
             new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_POST_UPDATE),
@@ -91,7 +91,7 @@ final class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function prePersist(AdminInterface $admin, $object): void
+    public function prePersist(AdminInterface $admin, object $object): void
     {
         $this->eventDispatcher->dispatch(
             new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_PRE_PERSIST),
@@ -99,7 +99,7 @@ final class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function postPersist(AdminInterface $admin, $object): void
+    public function postPersist(AdminInterface $admin, object $object): void
     {
         $this->eventDispatcher->dispatch(
             new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_POST_PERSIST),
@@ -107,7 +107,7 @@ final class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function preRemove(AdminInterface $admin, $object): void
+    public function preRemove(AdminInterface $admin, object $object): void
     {
         $this->eventDispatcher->dispatch(
             new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_PRE_REMOVE),
@@ -115,7 +115,7 @@ final class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function postRemove(AdminInterface $admin, $object): void
+    public function postRemove(AdminInterface $admin, object $object): void
     {
         $this->eventDispatcher->dispatch(
             new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_POST_REMOVE),
