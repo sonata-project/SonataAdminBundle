@@ -142,7 +142,7 @@ class Pool
             if (isset($adminGroup['items'])) {
                 foreach ($adminGroup['items'] as $key => $item) {
                     // Only Admin Group should be returned
-                    if ('' !== $item['admin']) {
+                    if (isset($item['admin']) && !empty($item['admin'])) {
                         $admin = $this->getInstance($item['admin']);
 
                         if ($admin->showIn(AbstractAdmin::CONTEXT_DASHBOARD)) {
@@ -186,7 +186,9 @@ class Pool
         }
 
         foreach ($this->adminGroups[$group]['items'] as $item) {
-            $admins[] = $this->getInstance($item['admin']);
+            if (isset($item['admin']) && !empty($item['admin'])) {
+                $admins[] = $this->getInstance($item['admin']);
+            }
         }
 
         return $admins;

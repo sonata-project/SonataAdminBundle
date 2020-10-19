@@ -91,6 +91,9 @@ class PoolTest extends TestCase
             'adminGroup3' => [
                 'items' => ['itemKey' => $this->getItemArray('sonata.user.admin.group3')],
             ],
+            'adminGroup4' => [
+                'items' => ['itemKey' => $this->getItemArray()],
+            ],
         ]);
 
         $groups = $this->pool->getDashboardGroups();
@@ -131,6 +134,7 @@ class PoolTest extends TestCase
                 'items' => [
                     $this->getItemArray('sonata.admin1'),
                     $this->getItemArray('sonata.admin2'),
+                    $this->getItemArray(),
                 ],
             ],
             'adminGroup2' => [
@@ -561,13 +565,18 @@ class PoolTest extends TestCase
         $this->assertSame([], $this->pool->getOption('nonexistantarray', []));
     }
 
-    private function getItemArray(string $serviceId): array
+    private function getItemArray(?string $serviceId = null): array
     {
-        return [
-            'admin' => $serviceId,
+        $item = [
             'label' => '',
             'route' => '',
             'route_params' => [],
         ];
+
+        if (null !== $serviceId) {
+            $item['admin'] = $serviceId;
+        }
+
+        return $item;
     }
 }
