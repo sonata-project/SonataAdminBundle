@@ -41,8 +41,7 @@ final class ModelManager implements ModelManagerInterface
             $options['route']['parameters'] = [];
         }
 
-        $fieldDescription = new FieldDescription();
-        $fieldDescription->setName($name);
+        $fieldDescription = new FieldDescription($name);
         $fieldDescription->setOptions($options);
 
         return $fieldDescription;

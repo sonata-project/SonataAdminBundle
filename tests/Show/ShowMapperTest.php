@@ -105,8 +105,7 @@ class ShowMapperTest extends TestCase
         $modelManager
             ->method('getNewFieldDescriptionInstance')
             ->willReturnCallback(function (?string $class, string $name, array $options = []) {
-                $fieldDescription = $this->getFieldDescriptionMock();
-                $fieldDescription->setName($name);
+                $fieldDescription = $this->getFieldDescriptionMock($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
@@ -573,8 +572,7 @@ class ShowMapperTest extends TestCase
         $modelManager
             ->method('getNewFieldDescriptionInstance')
             ->willReturnCallback(function (string $class, string $name, array $options = []): FieldDescriptionInterface {
-                $fieldDescription = $this->getFieldDescriptionMock();
-                $fieldDescription->setName($name);
+                $fieldDescription = $this->getFieldDescriptionMock($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
@@ -586,13 +584,9 @@ class ShowMapperTest extends TestCase
         $this->admin->setShowBuilder(new ShowBuilder());
     }
 
-    private function getFieldDescriptionMock(?string $name = null, ?string $label = null): BaseFieldDescription
+    private function getFieldDescriptionMock(string $name, ?string $label = null): BaseFieldDescription
     {
-        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class);
-
-        if (null !== $name) {
-            $fieldDescription->setName($name);
-        }
+        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name]);
 
         if (null !== $label) {
             $fieldDescription->setOption('label', $label);

@@ -33,7 +33,7 @@ interface FieldDescriptionInterface
     /**
      * Returns the field name.
      *
-     * @return string the field name
+     * @return string|null the field name
      */
     public function getFieldName();
 
@@ -45,9 +45,11 @@ interface FieldDescriptionInterface
     public function setName($name);
 
     /**
+     * NEXT_MAJOR: Restrict return type to string.
+     *
      * Returns the name, the name can be used as a form label or table header.
      *
-     * @return string the name
+     * @return string|null the name
      */
     public function getName();
 

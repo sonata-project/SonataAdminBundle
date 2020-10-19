@@ -26,16 +26,18 @@ class BaseFieldDescriptionTest extends TestCase
 {
     public function testSetName(): void
     {
-        $description = new FieldDescription();
-        $description->setName('foo');
-
+        $description = new FieldDescription('foo');
         $this->assertSame('foo', $description->getFieldName());
         $this->assertSame('foo', $description->getName());
+
+        $description->setName('bar');
+        $this->assertSame('foo', $description->getFieldName());
+        $this->assertSame('bar', $description->getName());
     }
 
     public function testOptions(): void
     {
-        $description = new FieldDescription();
+        $description = new FieldDescription('name');
         $description->setOption('foo', 'bar');
 
         $this->assertNull($description->getOption('bar'));
@@ -84,7 +86,7 @@ class BaseFieldDescriptionTest extends TestCase
      */
     public function testHelpOptions(): void
     {
-        $description = new FieldDescription();
+        $description = new FieldDescription('name');
 
         $description->setHelp('Please enter an integer');
         $this->assertSame('Please enter an integer', $description->getHelp());
@@ -95,7 +97,7 @@ class BaseFieldDescriptionTest extends TestCase
 
     public function testAdmin(): void
     {
-        $description = new FieldDescription();
+        $description = new FieldDescription('name');
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $description->setAdmin($admin);
@@ -116,7 +118,7 @@ class BaseFieldDescriptionTest extends TestCase
 
     public function testGetValue(): void
     {
-        $description = new FieldDescription();
+        $description = new FieldDescription('name');
         $description->setOption('code', 'getFoo');
 
         $mock = $this->getMockBuilder(\stdClass::class)
@@ -131,7 +133,7 @@ class BaseFieldDescriptionTest extends TestCase
          */
         $arg1 = 38;
         $oneParameter = [$arg1];
-        $description1 = new FieldDescription();
+        $description1 = new FieldDescription('name');
         $description1->setOption('code', 'getWithOneParameter');
         $description1->setOption('parameters', $oneParameter);
 
@@ -148,7 +150,7 @@ class BaseFieldDescriptionTest extends TestCase
          */
         $arg2 = 4;
         $twoParameters = [$arg1, $arg2];
-        $description2 = new FieldDescription();
+        $description2 = new FieldDescription('name');
         $description2->setOption('code', 'getWithTwoParameters');
         $description2->setOption('parameters', $twoParameters);
 
@@ -163,7 +165,7 @@ class BaseFieldDescriptionTest extends TestCase
          * Test with underscored attribute name
          */
         foreach (['getFake', 'isFake', 'hasFake'] as $method) {
-            $description3 = new FieldDescription();
+            $description3 = new FieldDescription('name');
             $mock3 = $this->getMockBuilder(\stdClass::class)
                 ->setMethods([$method])
                 ->getMock();
@@ -179,7 +181,7 @@ class BaseFieldDescriptionTest extends TestCase
             ->method('myMethod')
             ->willReturn('myMethodValue');
 
-        $description4 = new FieldDescription();
+        $description4 = new FieldDescription('name');
         $description4->setOption('code', 'myMethod');
 
         $this->assertSame($description4->getFieldValue($mock4, null), 'myMethodValue');
@@ -189,7 +191,7 @@ class BaseFieldDescriptionTest extends TestCase
     {
         $this->expectException(\Sonata\AdminBundle\Exception\NoValueException::class);
 
-        $description = new FieldDescription();
+        $description = new FieldDescription('name');
         $mock = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getFoo'])
             ->getMock();
@@ -202,7 +204,7 @@ class BaseFieldDescriptionTest extends TestCase
      */
     public function testGetVirtualValue(): void
     {
-        $description = new FieldDescription();
+        $description = new FieldDescription('name');
         $mock = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getFoo'])
             ->getMock();
@@ -215,14 +217,14 @@ class BaseFieldDescriptionTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        $description = new FieldDescription();
+        $description = new FieldDescription('name');
         $description->setOption('bar', 'hello');
         $description->mergeOption('bar', ['exception']);
     }
 
     public function testGetTranslationDomain(): void
     {
-        $description = new FieldDescription();
+        $description = new FieldDescription('name');
 
         $admin = $this->createMock(AdminInterface::class);
         $description->setAdmin($admin);
@@ -259,7 +261,7 @@ class BaseFieldDescriptionTest extends TestCase
         $rm->setAccessible(true);
         $this->assertSame($quux, $rm->invokeArgs($foo, []));
 
-        $description = new FieldDescription();
+        $description = new FieldDescription('name');
 
         $this->expectException(NoValueException::class);
         $description->getFieldValue($foo, 'quux');
@@ -270,7 +272,7 @@ class BaseFieldDescriptionTest extends TestCase
         $foo = new Foo();
         $foo->setBar('Bar');
 
-        $description = new FieldDescription();
+        $description = new FieldDescription('name');
         $this->assertSame('Bar', $description->getFieldValue($foo, 'bar'));
         $foo->setBar('baR');
         $this->assertSame('baR', $description->getFieldValue($foo, 'bar'));
@@ -284,7 +286,7 @@ class BaseFieldDescriptionTest extends TestCase
         $foo->setBar(true);
         $foo->setBaz(false);
 
-        $description = new FieldDescription();
+        $description = new FieldDescription('name');
         $this->assertTrue($description->getFieldValue($foo, 'bar'));
         $this->assertFalse($description->getFieldValue($foo, 'baz'));
 
@@ -297,7 +299,7 @@ class BaseFieldDescriptionTest extends TestCase
         $foo = new Foo();
         $foo->setBaz('Baz');
 
-        $description = new FieldDescription();
+        $description = new FieldDescription('name');
 
         $description->setOption('code', 'getBaz');
         $this->assertSame('Baz', $description->getFieldValue($foo, 'inexistantMethod'));
@@ -312,7 +314,7 @@ class BaseFieldDescriptionTest extends TestCase
         $parameters = ['foo', 'bar'];
         $foo = new FooCall();
 
-        $description = new FieldDescription();
+        $description = new FieldDescription('name');
         $description->setOption('parameters', $parameters);
         $this->assertSame(['inexistantMethod', $parameters], $description->getFieldValue($foo, 'inexistantMethod'));
 
@@ -323,7 +325,7 @@ class BaseFieldDescriptionTest extends TestCase
     public function testGetFieldValueWithNullObject(): void
     {
         $foo = null;
-        $description = new FieldDescription();
+        $description = new FieldDescription('name');
         $this->assertNull($description->getFieldValue($foo, 'bar'));
     }
 }
