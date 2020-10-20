@@ -37,39 +37,19 @@ final class GlobalVariables
         $this->mosaicBackground = $mosaicBackground;
     }
 
-    /**
-     * @return Pool
-     */
-    public function getAdminPool()
+    public function getAdminPool(): Pool
     {
         return $this->adminPool;
     }
 
-    /**
-     * @param string $code
-     * @param string $action
-     * @param array  $parameters
-     * @param int    $referenceType
-     *
-     * @return string
-     */
-    public function url($code, $action, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function url(string $code, string $action, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
     {
         [$action, $code] = $this->getCodeAction($code, $action);
 
         return $this->getAdminPool()->getAdminByAdminCode($code)->generateUrl($action, $parameters, $referenceType);
     }
 
-    /**
-     * @param string $code
-     * @param string $action
-     * @param object $object
-     * @param array  $parameters
-     * @param int    $referenceType
-     *
-     * @return string
-     */
-    public function objectUrl($code, $action, $object, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function objectUrl(string $code, string $action, object $object, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
     {
         [$action, $code] = $this->getCodeAction($code, $action);
 

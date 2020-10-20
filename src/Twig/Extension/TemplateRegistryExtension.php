@@ -50,21 +50,15 @@ final class TemplateRegistryExtension extends AbstractExtension
     }
 
     /**
-     * @param string $name
-     * @param string $adminCode
-     *
      * @throws ServiceNotFoundException
      * @throws ServiceCircularReferenceException
      */
-    public function getAdminTemplate($name, $adminCode): ?string
+    public function getAdminTemplate(string $name, string $adminCode): ?string
     {
         return $this->getTemplateRegistry($adminCode)->getTemplate($name);
     }
 
-    /**
-     * @param string $name
-     */
-    public function getGlobalTemplate($name): ?string
+    public function getGlobalTemplate(string $name): ?string
     {
         return $this->globalTemplateRegistry->getTemplate($name);
     }

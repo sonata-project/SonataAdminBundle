@@ -143,7 +143,7 @@ final class SonataAdminExtension extends AbstractExtension
         ];
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'sonata_admin';
     }
@@ -152,16 +152,13 @@ final class SonataAdminExtension extends AbstractExtension
      * render a list element from the FieldDescription.
      *
      * @param object|array $listElement
-     * @param array        $params
-     *
-     * @return string
      */
     public function renderListElement(
         Environment $environment,
         $listElement,
         FieldDescriptionInterface $fieldDescription,
-        $params = []
-    ) {
+        array $params = []
+    ): string {
         $template = $this->getTemplate(
             $fieldDescription,
             $this->getTemplateRegistry($fieldDescription->getAdmin()->getCode())->getTemplate('base_list_field'),
@@ -178,18 +175,11 @@ final class SonataAdminExtension extends AbstractExtension
         ]), $environment);
     }
 
-    /**
-     * render a view element.
-     *
-     * @param object $object
-     *
-     * @return string
-     */
     public function renderViewElement(
         Environment $environment,
         FieldDescriptionInterface $fieldDescription,
-        $object
-    ) {
+        object $object
+    ): string {
         $template = $this->getTemplate(
             $fieldDescription,
             '@SonataAdmin/CRUD/base_show_field.html.twig',
@@ -206,18 +196,13 @@ final class SonataAdminExtension extends AbstractExtension
 
     /**
      * render a compared view element.
-     *
-     * @param mixed $baseObject
-     * @param mixed $compareObject
-     *
-     * @return string
      */
     public function renderViewElementCompare(
         Environment $environment,
         FieldDescriptionInterface $fieldDescription,
-        $baseObject,
-        $compareObject
-    ) {
+        object $baseObject,
+        object $compareObject
+    ): string {
         $template = $this->getTemplate(
             $fieldDescription,
             '@SonataAdmin/CRUD/base_show_field.html.twig',
@@ -275,7 +260,7 @@ final class SonataAdminExtension extends AbstractExtension
             if (!method_exists($element, $method)) {
                 throw new \RuntimeException(sprintf(
                     'You must define an `associated_property` option or create a `%s::__toString` method'
-                    .' to the field option %s from service %s is ',
+                        .' to the field option %s from service %s is ',
                     \get_class($element),
                     $fieldDescription->getName(),
                     $fieldDescription->getAdmin()->getCode()
@@ -295,11 +280,9 @@ final class SonataAdminExtension extends AbstractExtension
     /**
      * Get the identifiers as a string that is safe to use in a url.
      *
-     * @param object $model
-     *
      * @return string string representation of the id that is safe to use in a url
      */
-    public function getUrlSafeIdentifier($model, ?AdminInterface $admin = null)
+    public function getUrlSafeIdentifier(object $model, ?AdminInterface $admin = null): string
     {
         if (null === $admin) {
             $class = ClassUtils::getClass($model);
@@ -316,7 +299,7 @@ final class SonataAdminExtension extends AbstractExtension
     /**
      * @param string[] $xEditableTypeMapping
      */
-    public function setXEditableTypeMapping($xEditableTypeMapping): void
+    public function setXEditableTypeMapping(array $xEditableTypeMapping): void
     {
         $this->xEditableTypeMapping = $xEditableTypeMapping;
     }
@@ -324,7 +307,7 @@ final class SonataAdminExtension extends AbstractExtension
     /**
      * @return string|bool
      */
-    public function getXEditableType($type)
+    public function getXEditableType(string $type)
     {
         return isset($this->xEditableTypeMapping[$type]) ? $this->xEditableTypeMapping[$type] : false;
     }
@@ -335,10 +318,8 @@ final class SonataAdminExtension extends AbstractExtension
      *     ['Status1' => 'Alias1', 'Status2' => 'Alias2']
      * The method will return:
      *     [['value' => 'Status1', 'text' => 'Alias1'], ['value' => 'Status2', 'text' => 'Alias2']].
-     *
-     * @return array
      */
-    public function getXEditableChoices(FieldDescriptionInterface $fieldDescription)
+    public function getXEditableChoices(FieldDescriptionInterface $fieldDescription): array
     {
         $choices = $fieldDescription->getOption('choices', []);
         $catalogue = $fieldDescription->getOption('catalogue');
@@ -363,7 +344,8 @@ final class SonataAdminExtension extends AbstractExtension
             }
         }
 
-        if (false === $fieldDescription->getOption('required', true)
+        if (
+            false === $fieldDescription->getOption('required', true)
             && false === $fieldDescription->getOption('multiple', false)
         ) {
             $xEditableChoices = array_merge([[
@@ -378,10 +360,8 @@ final class SonataAdminExtension extends AbstractExtension
     /*
      * Returns a canonicalized locale for "moment" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
-     *
-     * @return string|null
      */
-    public function getCanonicalizedLocaleForMoment(array $context)
+    public function getCanonicalizedLocaleForMoment(array $context): ?string
     {
         $locale = strtolower(str_replace('_', '-', $context['app']->getRequest()->getLocale()));
 
@@ -402,10 +382,8 @@ final class SonataAdminExtension extends AbstractExtension
     /**
      * Returns a canonicalized locale for "select2" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
-     *
-     * @return string|null
      */
-    public function getCanonicalizedLocaleForSelect2(array $context)
+    public function getCanonicalizedLocaleForSelect2(array $context): ?string
     {
         $locale = str_replace('_', '-', $context['app']->getRequest()->getLocale());
 
@@ -435,12 +413,8 @@ final class SonataAdminExtension extends AbstractExtension
 
     /**
      * @param string|array $role
-     * @param object|null  $object
-     * @param string|null  $field
-     *
-     * @return bool
      */
-    public function isGrantedAffirmative($role, $object = null, $field = null)
+    public function isGrantedAffirmative($role, ?object $object = null, ?string $field = null): bool
     {
         if (null === $this->securityChecker) {
             return false;
@@ -471,14 +445,12 @@ final class SonataAdminExtension extends AbstractExtension
      * return the value related to FieldDescription, if the associated object does no
      * exists => a temporary one is created.
      *
-     * @param object $object
-     *
      * @throws \RuntimeException
      *
      * @return mixed
      */
     private function getValueFromFieldDescription(
-        $object,
+        object $object,
         FieldDescriptionInterface $fieldDescription,
         array $params = []
     ) {
@@ -501,16 +473,12 @@ final class SonataAdminExtension extends AbstractExtension
 
     /**
      * Get template.
-     *
-     * @param string $defaultTemplate
-     *
-     * @return TemplateWrapper
      */
     private function getTemplate(
         FieldDescriptionInterface $fieldDescription,
-        $defaultTemplate,
+        string $defaultTemplate,
         Environment $environment
-    ) {
+    ): TemplateWrapper {
         $templateName = $fieldDescription->getTemplate() ?: $defaultTemplate;
 
         return $environment->load($templateName);
