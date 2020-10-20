@@ -38,6 +38,8 @@ use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
 use Sonata\AdminBundle\Tests\Fixtures\Util\DummyDomainObject;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
+use Sonata\AdminBundle\Util\CsrfTokenManager;
+use Sonata\AdminBundle\Util\CsrfTokenManagerInterface as SonataCsrfTokenManagerInterface;
 use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 use Sonata\Exporter\Writer\JsonWriter;
@@ -145,6 +147,11 @@ class CRUDControllerTest extends TestCase
      * @var CsrfTokenManagerInterface
      */
     private $csrfProvider;
+
+    /**
+     * @var SonataCsrfTokenManagerInterface
+     */
+    private $sonataCsrfProviderUtil;
 
     /**
      * @var KernelInterface
@@ -265,6 +272,8 @@ class CRUDControllerTest extends TestCase
         $requestStack = new RequestStack();
         $requestStack->push($this->request);
 
+        $this->sonataCsrfProviderUtil = new CsrfTokenManager($requestStack, $this->csrfProvider);
+
         $this->kernel = $this->createMock(KernelInterface::class);
 
         $this->container->set('sonata.admin.pool', $this->pool);
@@ -277,6 +286,7 @@ class CRUDControllerTest extends TestCase
         $this->container->set('sonata.admin.exporter', $exporter);
         $this->container->set('sonata.admin.audit.manager', $this->auditManager);
         $this->container->set('sonata.admin.object.manipulator.acl.admin', $this->adminObjectAclManipulator);
+        $this->container->set('sonata.admin.util.csrf.manager', $this->sonataCsrfProviderUtil);
         $this->container->set('security.csrf.token_manager', $this->csrfProvider);
         $this->container->set('logger', $this->logger);
         $this->container->set('kernel', $this->kernel);
@@ -1134,7 +1144,13 @@ class CRUDControllerTest extends TestCase
 
     public function testDeleteActionNoCsrfToken(): void
     {
+        $requestStack = new RequestStack();
+        $requestStack->push($this->request);
+
+        $this->sonataCsrfProviderUtil = new CsrfTokenManager($requestStack, null);
+
         $this->container->set('security.csrf.token_manager', null);
+        $this->container->set('sonata.admin.util.csrf.manager', $this->sonataCsrfProviderUtil);
 
         $object = new \stdClass();
 
@@ -1355,7 +1371,13 @@ class CRUDControllerTest extends TestCase
      */
     public function testDeleteActionSuccessNoCsrfTokenProvider(string $expectedToStringValue, string $toStringValue): void
     {
+        $requestStack = new RequestStack();
+        $requestStack->push($this->request);
+
+        $this->sonataCsrfProviderUtil = new CsrfTokenManager($requestStack, null);
+
         $this->container->set('security.csrf.token_manager', null);
+        $this->container->set('sonata.admin.util.csrf.manager', $this->sonataCsrfProviderUtil);
 
         $object = new \stdClass();
 

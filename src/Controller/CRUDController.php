@@ -43,7 +43,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Csrf\CsrfToken;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -162,7 +161,7 @@ class CRUDController implements ContainerAwareInterface
             'action' => 'list',
             'form' => $formView,
             'datagrid' => $datagrid,
-            'csrf_token' => $this->getCsrfToken('sonata.batch'),
+            'csrf_token' => $this->container->get('sonata.admin.helper.csrf_manager')->getCsrfToken('sonata.batch'),
             'export_formats' => $this->has('sonata.admin.admin_exporter') ?
                 $this->get('sonata.admin.admin_exporter')->getAvailableFormats($this->admin) :
                 $this->admin->getExportFormats(),
@@ -228,7 +227,7 @@ class CRUDController implements ContainerAwareInterface
 
         if (Request::METHOD_DELETE === $request->getMethod()) {
             // check the csrf token
-            $this->validateCsrfToken('sonata.delete');
+            $this->container->get('sonata.admin.helper.csrf_manager')->validateCsrfToken('sonata.delete');
 
             $objectName = $this->admin->toString($object);
 
@@ -274,7 +273,7 @@ class CRUDController implements ContainerAwareInterface
         return $this->renderWithExtraParams($template, [
             'object' => $object,
             'action' => 'delete',
-            'csrf_token' => $this->getCsrfToken('sonata.delete'),
+            'csrf_token' => $this->container->get('sonata.admin.helper.csrf_manager')->getCsrfToken('sonata.delete'),
         ]);
     }
 
@@ -424,7 +423,7 @@ class CRUDController implements ContainerAwareInterface
         }
 
         // check the csrf token
-        $this->validateCsrfToken('sonata.batch');
+        $this->container->get('sonata.admin.helper.csrf_manager')->validateCsrfToken('sonata.batch');
 
         $confirmation = $request->get('confirmation', false);
 
@@ -521,7 +520,7 @@ class CRUDController implements ContainerAwareInterface
                 'datagrid' => $datagrid,
                 'form' => $formView,
                 'data' => $data,
-                'csrf_token' => $this->getCsrfToken('sonata.batch'),
+                'csrf_token' => $this->container->get('sonata.admin.helper.csrf_manager')->getCsrfToken('sonata.batch'),
             ]);
         }
 
@@ -1475,24 +1474,15 @@ class CRUDController implements ContainerAwareInterface
     /**
      * Validate CSRF token for action without form.
      *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     *
      * @param string $intention
      *
      * @throws HttpException
      */
     protected function validateCsrfToken($intention)
     {
-        $request = $this->getRequest();
-        $token = $request->get('_sonata_csrf_token');
-
-        if ($this->container->has('security.csrf.token_manager')) {
-            $valid = $this->container->get('security.csrf.token_manager')->isTokenValid(new CsrfToken($intention, $token));
-        } else {
-            return;
-        }
-
-        if (!$valid) {
-            throw new HttpException(Response::HTTP_BAD_REQUEST, 'The csrf token is not valid, CSRF attack?');
-        }
+        return $this->container->get('sonata.admin.helper.csrf_manager')->validateCsrfToken($intention);
     }
 
     /**
@@ -1510,17 +1500,15 @@ class CRUDController implements ContainerAwareInterface
     /**
      * Get CSRF token.
      *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     *
      * @param string $intention
      *
      * @return string|false
      */
     protected function getCsrfToken($intention)
     {
-        if ($this->container->has('security.csrf.token_manager')) {
-            return $this->container->get('security.csrf.token_manager')->getToken($intention)->getValue();
-        }
-
-        return false;
+        return $this->container->get('sonata.admin.helper.csrf_manager')->getCsrfToken($intention);
     }
 
     /**

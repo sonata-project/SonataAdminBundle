@@ -70,6 +70,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $loader->load('core.php');
         $loader->load('event_listener.php');
         $loader->load('form_types.php');
+        $loader->load('helper.php');
         $loader->load('menu.php');
         $loader->load('route.php');
         $loader->load('twig.php');
