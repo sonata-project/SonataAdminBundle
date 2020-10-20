@@ -90,6 +90,30 @@ class ModelsToArrayTransformerTest extends TestCase
         yield [null];
     }
 
+    public function testReverseTransformWithEmptyArray(): void
+    {
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager
+            ->expects($this->never())
+            ->method('createQuery');
+        $modelManager
+            ->expects($this->never())
+            ->method('addIdentifiersToQuery');
+        $modelManager
+            ->expects($this->never())
+            ->method('executeQuery');
+
+        $transformer = new ModelsToArrayTransformer(
+            $modelManager,
+            Foo::class
+        );
+
+        $result = $transformer->reverseTransform([]);
+
+        $this->assertInstanceOf(Collection::class, $result);
+        $this->assertCount(0, $result);
+    }
+
     public function testReverseTransformUnexpectedType(): void
     {
         $value = 'unexpected';
