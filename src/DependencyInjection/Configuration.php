@@ -226,26 +226,12 @@ CASESENSITIVE;
                                                         continue;
                                                     }
 
-                                                    // NEXT_MAJOR: Use !isset() instead and remove the elseif part.
-                                                    if (!\array_key_exists('route', $item)) {
+                                                    if (!isset($item['route'])) {
                                                         throw new \InvalidArgumentException('Expected parameter "route" for array items');
-                                                    } elseif (null === $items[$key]['route']) {
-                                                        @trigger_error(
-                                                            'Passing a null route is deprecated since sonata-project/admin-bundle 3.77.',
-                                                            E_USER_DEPRECATED
-                                                        );
                                                     }
 
-                                                    // NEXT_MAJOR: Use !isset() instead and remove the elseif part.
-                                                    if (!\array_key_exists('label', $item)) {
+                                                    if (!isset($item['label'])) {
                                                         throw new \InvalidArgumentException('Expected parameter "label" for array items');
-                                                    } elseif (null === $items[$key]['label']) {
-                                                        @trigger_error(
-                                                            'Passing a null label is deprecated since sonata-project/admin-bundle 3.77.',
-                                                            E_USER_DEPRECATED
-                                                        );
-
-                                                        $items[$key]['label'] = '';
                                                     }
                                                 }
 

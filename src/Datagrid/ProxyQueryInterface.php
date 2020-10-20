@@ -53,22 +53,4 @@ interface ProxyQueryInterface
     public function setMaxResults(?int $maxResults): self;
 
     public function getMaxResults(): ?int;
-
-    /**
-     * NEXT_MAJOR: Remove this method from the interface.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.76, to be removed in 4.0.
-     */
-    public function getUniqueParameterId(): int;
-
-    /**
-     * NEXT_MAJOR: Remove this method from the interface.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.76, to be removed in 4.0.
-     *
-     * Join entities from the given association mappings and return the last alias created.
-     *
-     * @param mixed[] $associationMappings
-     */
-    public function entityJoin(array $associationMappings): string;
 }

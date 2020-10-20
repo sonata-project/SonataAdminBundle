@@ -109,7 +109,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
 
                 $class = $this->getManagedClass($admin, $container);
 
-                if (null === $class || !class_exists($class)) {
+                if (!class_exists($class)) {
                     continue;
                 }
 
@@ -129,41 +129,24 @@ final class ExtensionCompilerPass implements CompilerPassInterface
     /**
      * Resolves the class argument of the admin to an actual class (in case of %parameter%).
      *
-     * @phpstan-return class-string|null
+     * @phpstan-return class-string
      */
-    private function getManagedClass(Definition $admin, ContainerBuilder $container): ?string
+    private function getManagedClass(Definition $admin, ContainerBuilder $container): string
     {
         $argument = $admin->getArgument(1);
         $class = $container->getParameterBag()->resolveValue($argument);
 
         if (null === $class) {
-            // NEXT_MAJOR: Throw exception
-//            throw new \DomainException(sprintf('The admin "%s" does not have a valid manager.', $admin->getClass()));
-
-            @trigger_error(
-                sprintf('The admin "%s" does not have a valid manager.', $admin->getClass()),
-                E_USER_DEPRECATED
-            );
+            throw new \DomainException(sprintf('The admin "%s" does not have a valid manager.', $admin->getClass()));
         }
 
         if (!\is_string($class)) {
-            // NEXT_MAJOR: Throw exception
-//            throw new \TypeError(sprintf(
-//                'Argument "%s" for admin class "%s" must be of type string, %s given.',
-//                $argument,
-//                $admin->getClass(),
-//                \is_object($class) ? \get_class($class) : \gettype($class)
-//            ));
-
-            @trigger_error(
-                sprintf(
-                    'Argument "%s" for admin class "%s" must be of type string, %s given.',
-                    $argument,
-                    $admin->getClass(),
-                    \is_object($class) ? \get_class($class) : \gettype($class)
-                ),
-                E_USER_DEPRECATED
-            );
+            throw new \TypeError(sprintf(
+                'Argument "%s" for admin class "%s" must be of type string, %s given.',
+                $argument,
+                $admin->getClass(),
+                \is_object($class) ? \get_class($class) : \gettype($class)
+            ));
         }
 
         return $class;
