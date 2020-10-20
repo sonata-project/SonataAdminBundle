@@ -45,6 +45,10 @@ class ValidatorsTest extends TestCase
     }
 
     /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     *
      * @dataProvider getValidateEntityNameTests
      */
     public function testValidateEntityName(array $expected, string $value): void
@@ -52,6 +56,9 @@ class ValidatorsTest extends TestCase
         $this->assertSame($expected, Validators::validateEntityName($value));
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function getValidateEntityNameTests(): array
     {
         return [
@@ -62,6 +69,10 @@ class ValidatorsTest extends TestCase
     }
 
     /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     *
      * @dataProvider getValidateEntityNamesWithExceptionTests
      */
     public function testValidateEntityNameWithException(string $value): void
@@ -71,6 +82,9 @@ class ValidatorsTest extends TestCase
         Validators::validateEntityName($value);
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function getValidateEntityNamesWithExceptionTests(): array
     {
         return [

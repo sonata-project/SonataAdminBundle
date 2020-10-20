@@ -39,6 +39,10 @@ class Validators
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, will be removed in version 4.0.
+     *
      * @static
      *
      * @param string $shortcut
@@ -51,6 +55,12 @@ class Validators
      */
     public static function validateEntityName($shortcut)
     {
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x'
+            .' and will be removed in version 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         $model = str_replace('/', '\\', $shortcut);
 
         if (false === $pos = strpos($model, ':')) {
