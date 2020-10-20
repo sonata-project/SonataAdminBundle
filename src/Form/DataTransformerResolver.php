@@ -78,10 +78,7 @@ final class DataTransformerResolver implements DataTransformerResolverInterface
         if (TemplateRegistry::TYPE_CHOICE === $fieldType) {
             $className = $fieldDescription->getOption('class');
 
-            if (null !== $className &&
-                // NEXT_MAJOR: Replace this call with "$className === $fieldDescription->getTargetModel()".
-                $this->hasFieldDescriptionAssociationWithClass($fieldDescription, $className)
-            ) {
+            if (null !== $className && $className === $fieldDescription->getTargetModel()) {
                 return new ModelToIdTransformer($modelManager, $className);
             }
         }
@@ -102,12 +99,5 @@ final class DataTransformerResolver implements DataTransformerResolverInterface
         }
 
         return $outputTimezone;
-    }
-
-    private function hasFieldDescriptionAssociationWithClass(
-        FieldDescriptionInterface $fieldDescription,
-        string $class
-    ): bool {
-        return $class === $fieldDescription->getTargetModel();
     }
 }

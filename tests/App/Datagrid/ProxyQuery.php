@@ -46,14 +46,6 @@ final class ProxyQuery implements ProxyQueryInterface
         return 'ASC';
     }
 
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function getSingleScalarResult()
-    {
-        return 0;
-    }
-
     public function setFirstResult(?int $firstResult): ProxyQueryInterface
     {
         throw new \BadMethodCallException('Not implemented.');
@@ -72,21 +64,5 @@ final class ProxyQuery implements ProxyQueryInterface
     public function getMaxResults(): ?int
     {
         return 1;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function getUniqueParameterId(): int
-    {
-        return 1;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function entityJoin(array $associationMappings): string
-    {
-        return 'alias';
     }
 }

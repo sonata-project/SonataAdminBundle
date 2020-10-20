@@ -15,8 +15,7 @@ namespace Sonata\AdminBundle\DependencyInjection;
 
 use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-// NEXT_MAJOR: Uncomment this line.
-//use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
+use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -112,20 +111,10 @@ final class SonataAdminExtension extends Extension
         $container->setParameter('sonata.admin.configuration.default_icon', $config['options']['default_icon']);
         $container->setParameter('sonata.admin.configuration.breadcrumbs', $config['breadcrumbs']);
 
-        // NEXT_MAJOR: Remove this block and uncomment the one below.
-        if (null === $config['security']['acl_user_manager'] && isset($bundles['FOSUserBundle'])) {
-            $container->setParameter('sonata.admin.security.fos_user_autoconfigured', true);
-            $container->setParameter('sonata.admin.security.acl_user_manager', 'fos_user.user_manager');
-        } else {
-            $container->setParameter('sonata.admin.security.fos_user_autoconfigured', false);
-            $container->setParameter('sonata.admin.security.acl_user_manager', $config['security']['acl_user_manager']);
+        if (null !== $config['security']['acl_user_manager']) {
+            $container->setAlias('sonata.admin.security.acl_user_manager', $config['security']['acl_user_manager']);
+            $container->setAlias(AdminAclUserManagerInterface::class, 'sonata.admin.security.acl_user_manager');
         }
-
-        // NEXT_MAJOR: Uncomment this code.
-        //if (null !== $config['security']['acl_user_manager']) {
-        //    $container->setAlias('sonata.admin.security.acl_user_manager', $config['security']['acl_user_manager']);
-        //    $container->setAlias(AdminAclUserManagerInterface::class, 'sonata.admin.security.acl_user_manager');
-        //}
 
         $container->setAlias('sonata.admin.security.handler', $config['security']['handler']);
 

@@ -51,24 +51,6 @@ class FilterFactoryTest extends TestCase
         $filter->create('test', DefaultType::class);
     }
 
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testInvalidTypeInstance(): void
-    {
-        $container = new Container();
-        $container->set('mytype', new \stdClass());
-
-        $filter = new FilterFactory($container, ['mytype' => 'mytype']);
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('The service `mytype` must implement `FilterInterface`');
-
-        $filter->create('test', 'mytype');
-    }
-
     public function testCreateFilter(): void
     {
         $filter = $this->createMock(FilterInterface::class);

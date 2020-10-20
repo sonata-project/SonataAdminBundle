@@ -192,45 +192,6 @@ class ConfigurationTest extends TestCase
         );
     }
 
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testDashboardGroupsWithNullLabel(): void
-    {
-        $this->expectDeprecation('Passing a null label is deprecated since sonata-project/admin-bundle 3.77.');
-
-        $config = $this->process([[
-            'dashboard' => [
-                'groups' => [
-                    'bar' => [
-                        'label' => 'foo',
-                        'icon' => '<i class="fa fa-edit"></i>',
-                        'items' => [
-                            [
-                                'label' => null,
-                                'route' => 'barRoute',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ]]);
-
-        $this->assertCount(1, $config['dashboard']['groups']['bar']['items']);
-        $this->assertSame(
-            $config['dashboard']['groups']['bar']['items'][0],
-            [
-                'label' => '',
-                'route' => 'barRoute',
-                'roles' => [],
-                'route_params' => [],
-                'route_absolute' => false,
-            ]
-        );
-    }
-
     public function testDashboardGroupsWithNoRoute(): void
     {
         $this->expectException(\InvalidArgumentException::class);
