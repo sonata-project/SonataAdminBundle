@@ -498,6 +498,10 @@
                 <source>label_type_ends_with</source>
                 <target>で終わる</target>
             </trans-unit>
+            <trans-unit id="go_to_first_page">
+                <source>go_to_first_page</source>
+                <target>最初のページに移動</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
