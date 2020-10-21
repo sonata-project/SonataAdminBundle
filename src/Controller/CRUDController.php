@@ -79,7 +79,7 @@ class CRUDController extends AbstractController
 
     public static function getSubscribedServices()
     {
-        return parent::getSubscribedServices() + [
+        return [
             'sonata.admin.pool' => Pool::class,
             'sonata.admin.breadcrumbs_builder' => BreadcrumbsBuilderInterface::class,
             'sonata.admin.audit.manager' => AuditManagerInterface::class,
@@ -90,7 +90,7 @@ class CRUDController extends AbstractController
 
             'logger' => '?'.LoggerInterface::class,
             'translator' => TranslatorInterface::class,
-        ];
+        ] + parent::getSubscribedServices();
     }
 
     /**
