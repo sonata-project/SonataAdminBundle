@@ -146,7 +146,7 @@ class AdminTest extends TestCase
         $baseControllerName = 'Sonata\NewsBundle\Controller\PostAdminController';
 
         $admin = new PostAdmin('sonata.post.admin.post', $class, $baseControllerName);
-        $admin->setParentFieldDescription(new FieldDescription());
+        $admin->setParentFieldDescription(new FieldDescription('name'));
         $admin->setSubClasses(['foo' => 'bar']);
         $admin->setRequest(new Request(['subclass' => 'foo']));
         $admin->getClass();
@@ -1740,7 +1740,7 @@ class AdminTest extends TestCase
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
             ->method('getNewFieldDescriptionInstance')
-            ->willReturn(new FieldDescription());
+            ->willReturn(new FieldDescription('name'));
         $modelAdmin->setModelManager($modelManager);
 
         // a Admin class to test that preValidate is called
@@ -1810,7 +1810,7 @@ class AdminTest extends TestCase
         $modelManager = $this->createStub(ModelManagerInterface::class);
         $modelManager
             ->method('getNewFieldDescriptionInstance')
-            ->willReturn(new FieldDescription());
+            ->willReturn(new FieldDescription('name'));
         $modelAdmin->setModelManager($modelManager);
 
         $event = $this->createStub(FormEvent::class);
@@ -1941,9 +1941,9 @@ class AdminTest extends TestCase
     {
         $modelAdmin = new ModelAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'Sonata\FooBundle\Controller\ModelAdminController');
 
-        $fooFieldDescription = new FieldDescription();
-        $barFieldDescription = new FieldDescription();
-        $bazFieldDescription = new FieldDescription();
+        $fooFieldDescription = new FieldDescription('foo');
+        $barFieldDescription = new FieldDescription('bar');
+        $bazFieldDescription = new FieldDescription('baz');
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
@@ -2132,7 +2132,7 @@ class AdminTest extends TestCase
         $this->assertSame($comment, $commentAdmin->getSubject());
 
         $commentAdmin->setSubject(null);
-        $commentAdmin->setParentFieldDescription(new FieldDescription());
+        $commentAdmin->setParentFieldDescription(new FieldDescription('name'));
 
         $this->assertFalse($commentAdmin->hasSubject());
     }

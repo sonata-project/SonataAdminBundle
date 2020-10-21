@@ -132,6 +132,25 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     private static $fieldGetters = [];
 
+    /**
+     * NEXT_MAJOR: Remove the null default value and restrict param type to `string`.
+     */
+    public function __construct(?string $name = null, array $options = [])
+    {
+        // NEXT_MAJOR: Remove this check and keep the else part.
+        if (null === $name) {
+            @trigger_error(sprintf(
+                'Omitting the argument 1 for "%s()" or passing other type than "string" is deprecated'.
+                ' since sonata-project/admin-bundle 3.x. It will accept only string in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        } else {
+            $this->setName($name);
+        }
+
+        $this->setOptions($options);
+    }
+
     public function setFieldName($fieldName)
     {
         $this->fieldName = $fieldName;
