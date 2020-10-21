@@ -111,19 +111,19 @@ file that was distributed with this source code.
                                 <div class="progress">
                                     <div class="progress-bar" style="width: 0%"></div>
                                 </div>
-                                <span class="progress-description">
-                                    {% if not app.request.xmlHttpRequest %}
-                                    <ul class="list-unstyled">
-                                        {% if admin.datagrid.pager.results|length > 0 %}
-                                            <a href="{{ admin.generateUrl('list') }}">
-                                                {{ 'go_to_the_first_page'|trans({}, 'SonataAdminBundle') }}
-                                            </a>
-                                        {% else %}
-                                            {% include get_admin_template('button_create', admin.code) %}
-                                        {% endif %}
+                                <div class="progress-description">
+                                    <ul class="list-inline">
+                                        {%- if admin.datagrid.pager.results|length > 0 -%}
+                                            <li>
+                                                <a href="{{ admin.generateUrl('list') }}">
+                                                    {{- 'go_to_the_first_page'|trans({}, 'SonataAdminBundle') -}}
+                                                </a>
+                                            </li>
+                                        {%- elseif not app.request.xmlHttpRequest -%}
+                                            {%- include get_admin_template('button_create', admin.code) -%}
+                                        {%- endif -%}
                                     </ul>
-                                    {% endif %}
-                                </span>
+                                </div>
                             </div><!-- /.info-box-content -->
                         </div>
                     {% endblock %}
