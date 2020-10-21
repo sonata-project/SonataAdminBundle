@@ -11,11 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Psr\Container\ContainerInterface;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Extension\LockExtension;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Event\AdminEventExtension;
 use Sonata\AdminBundle\Filter\FilterFactory;
 use Sonata\AdminBundle\Filter\FilterFactoryInterface;
@@ -150,6 +152,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         ->alias(SearchHandler::class, 'sonata.admin.search.handler')
+
+        ->set('sonata.admin.controller.crud', CRUDController::class)
+            ->public()
+            ->tag('container.service_subscriber')
+            ->call('setContainer', [new ReferenceConfigurator(ContainerInterface::class)])
 
         ->set('sonata.admin.event.extension', AdminEventExtension::class)
             ->public()

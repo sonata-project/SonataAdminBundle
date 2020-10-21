@@ -23,7 +23,6 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Model\LockInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormEvent;
@@ -31,6 +30,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class LockExtensionTest extends TestCase
 {

@@ -42,10 +42,12 @@ final class RoutesCacheWarmUp implements CacheWarmerInterface
         return true;
     }
 
-    public function warmUp($cacheDir): void
+    public function warmUp($cacheDir): array
     {
         foreach ($this->pool->getAdminServiceIds() as $id) {
             $this->cache->load($this->pool->getInstance($id));
         }
+
+        return [];
     }
 }

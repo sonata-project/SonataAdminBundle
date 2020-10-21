@@ -75,5 +75,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('form.factory'),
                 '%sonata.admin.security.mask.builder.class%',
             ])
+
+        ->alias(AdminObjectAclManipulator::class, 'sonata.admin.object.manipulator.acl.admin')
     ;
 };

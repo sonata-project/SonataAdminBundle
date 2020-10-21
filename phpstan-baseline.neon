@@ -36,9 +36,3 @@ parameters:
             message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeParentInterface\\:\\:arrayNode\\(\\)\\.$#"
             count: 1
             path: src/DependencyInjection/Configuration.php
-
-        -
-            # Symfony BC break policy
-            message: "#^Method Symfony\\\\Contracts\\\\EventDispatcher\\\\EventDispatcherInterface\\:\\:dispatch\\(\\) invoked with 2 parameters, 1 required\\.$#"
-            count: 1
-            path: src/Menu/MenuBuilder.php
