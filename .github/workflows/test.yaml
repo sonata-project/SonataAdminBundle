@@ -73,7 +73,12 @@ jobs:
 
       - name: Configuration required for PHP 8.0
         if: matrix.php-version == '8.0'
-        run: composer config platform.php 7.4.99 && composer require phpunit/phpunit:"9.3.*" --no-update
+        run: composer config platform.php 7.4.99
+
+      - name: Sets phpunit 9 for PHP 8.0
+        if: matrix.php-version == '8.0'
+        run: |
+          echo 'SYMFONY_PHPUNIT_VERSION=9' >> $GITHUB_ENV
 
       - name: Install variant
         if: matrix.variant != 'normal'
@@ -88,12 +93,7 @@ jobs:
         run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
 
       - name: Run Tests
-        if: matrix.php-version != '8.0'
         run: make test
-
-      - name: Run Tests (PHP 8.0)
-        if: matrix.php-version == '8.0'
-        run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
       - name: Send coverage to Codecov
         uses: codecov/codecov-action@v1
