@@ -85,7 +85,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         $this->adminPermissions = $permissions;
     }
 
-    public function getAdminPermissions()
+    public function getAdminPermissions(): array
     {
         return $this->adminPermissions;
     }
@@ -95,12 +95,12 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         $this->objectPermissions = $permissions;
     }
 
-    public function getObjectPermissions()
+    public function getObjectPermissions(): array
     {
         return $this->objectPermissions;
     }
 
-    public function isGranted(AdminInterface $admin, $attributes, $object = null)
+    public function isGranted(AdminInterface $admin, $attributes, ?object $object = null): bool
     {
         if (!\is_array($attributes)) {
             $attributes = [$attributes];
@@ -114,12 +114,12 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         }
     }
 
-    public function getBaseRole(AdminInterface $admin)
+    public function getBaseRole(AdminInterface $admin): string
     {
         return sprintf('ROLE_%s_%%s', str_replace('.', '_', strtoupper($admin->getCode())));
     }
 
-    public function buildSecurityInformation(AdminInterface $admin)
+    public function buildSecurityInformation(AdminInterface $admin): array
     {
         $baseRole = $this->getBaseRole($admin);
 
@@ -131,7 +131,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         return $results;
     }
 
-    public function createObjectSecurity(AdminInterface $admin, $object): void
+    public function createObjectSecurity(AdminInterface $admin, object $object): void
     {
         // retrieving the ACL for the object identity
         $objectIdentity = ObjectIdentity::fromDomainObject($object);
@@ -149,7 +149,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         $this->updateAcl($acl);
     }
 
-    public function deleteObjectSecurity(AdminInterface $admin, $object): void
+    public function deleteObjectSecurity(AdminInterface $admin, object $object): void
     {
         $objectIdentity = ObjectIdentity::fromDomainObject($object);
         $this->deleteAcl($objectIdentity);
@@ -168,7 +168,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         return $acl;
     }
 
-    public function findObjectAcls(\Traversable $oids, array $sids = [])
+    public function findObjectAcls(\Traversable $oids, array $sids = []): \SplObjectStorage
     {
         try {
             $acls = $this->aclProvider->findAcls(iterator_to_array($oids), $sids);
@@ -245,7 +245,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         return false;
     }
 
-    public function findClassAceIndexByUsername(MutableAclInterface $acl, $username)
+    public function findClassAceIndexByUsername(MutableAclInterface $acl, string $username)
     {
         foreach ($acl->getClassAces() as $index => $entry) {
             if ($entry->getSecurityIdentity() instanceof UserSecurityIdentity && $entry->getSecurityIdentity()->getUsername() === $username) {
@@ -256,7 +256,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         return false;
     }
 
-    private function isAnyGranted(array $attributes, $subject = null): bool
+    private function isAnyGranted(array $attributes, ?object $subject = null): bool
     {
         foreach ($attributes as $attribute) {
             if ($this->authorizationChecker->isGranted($attribute, $subject)) {
