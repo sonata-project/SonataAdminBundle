@@ -35,7 +35,7 @@ final class CheckAclUserManagerCompilerPassTest extends AbstractCompilerPassTest
         $this->setParameter('sonata.admin.security.acl_user_manager', 'acl_user_manager');
         $this->setParameter('sonata.admin.security.fos_user_autoconfigured', false);
 
-        $this->expectDeprecation('Configuring the service in sonata_admin.security.acl_user_manager without implementing "Sonata\AdminBundle\Util\AdminAclUserManagerInterface" is deprecated since sonata-project/admin-bundle 3.x and will throw an "InvalidArgumentException" exception in 4.0.');
+        $this->expectDeprecation('Configuring the service in sonata_admin.security.acl_user_manager without implementing "Sonata\AdminBundle\Util\AdminAclUserManagerInterface" is deprecated since sonata-project/admin-bundle 3.78 and will throw an "InvalidArgumentException" exception in 4.0.');
 
         $this->compile();
     }

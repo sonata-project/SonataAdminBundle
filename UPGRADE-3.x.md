@@ -1,8 +1,8 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.x to 3.x
-=======================
+UPGRADE FROM 3.77 to 3.78
+=========================
 
 ### Deprecated `Sonata\AdminBundle\Command\Validators::validateEntityName()`
 

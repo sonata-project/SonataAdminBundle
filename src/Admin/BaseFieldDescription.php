@@ -141,7 +141,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         if (null === $name) {
             @trigger_error(sprintf(
                 'Omitting the argument 1 for "%s()" or passing other type than "string" is deprecated'.
-                ' since sonata-project/admin-bundle 3.x. It will accept only string in version 4.0.',
+                ' since sonata-project/admin-bundle 3.78. It will accept only string in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         } else {

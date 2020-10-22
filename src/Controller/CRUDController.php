@@ -981,7 +981,7 @@ class CRUDController implements ContainerAwareInterface
             && $this->getParameter('sonata.admin.security.fos_user_autoconfigured')) {
             @trigger_error(sprintf(
                 'Not configuring "acl_user_manager" and using ACL security handler is deprecated since'
-                .' sonata-project/admin-bundle 3.x and will not work on 4.x. You MUST specify the service name'
+                .' sonata-project/admin-bundle 3.78 and will not work on 4.0. You MUST specify the service name'
                 .' under "sonata_admin.security.acl_user_manager" option.'
             ), E_USER_DEPRECATED);
         }
@@ -1121,14 +1121,14 @@ class CRUDController implements ContainerAwareInterface
      * Returns the correct RESTful verb, given either by the request itself or
      * via the "_method" parameter.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use `Request::getMethod()` instead.
+     * @deprecated since sonata-project/admin-bundle 3.78, to be removed in 4.0. Use `Request::getMethod()` instead.
      *
      * @return string HTTP method, either
      */
     protected function getRestMethod()
     {
         @trigger_error(sprintf(
-            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x'
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.78'
             .', to be removed in 4.0. Use `%s::getMethod()` instead.',
             __METHOD__,
             Request::class

@@ -44,7 +44,7 @@ final class CheckAclUserManagerCompilerPass implements CompilerPassInterface
         if (!is_a($userManagerDefinition->getClass(), AdminAclUserManagerInterface::class, true)) {
             @trigger_error(sprintf(
                 'Configuring the service in sonata_admin.security.acl_user_manager without implementing "%s"'
-                .' is deprecated since sonata-project/admin-bundle 3.x and will throw an "%s" exception in 4.0.',
+                .' is deprecated since sonata-project/admin-bundle 3.78 and will throw an "%s" exception in 4.0.',
                 AdminAclUserManagerInterface::class,
                 \InvalidArgumentException::class
             ), E_USER_DEPRECATED);
