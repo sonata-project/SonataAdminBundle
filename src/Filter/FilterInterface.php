@@ -27,7 +27,7 @@ interface FilterInterface
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0
+     * @deprecated since sonata-project/admin-bundle 3.78, to be removed with 4.0
      *
      * Apply the filter to the QueryBuilder instance.
      *
