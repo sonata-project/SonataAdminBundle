@@ -24,31 +24,23 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
 {
     /**
      * Set the permissions not related to an object instance and also to be available when objects do not exist.
-     *
-     * @return void
      */
-    public function setAdminPermissions(array $permissions);
+    public function setAdminPermissions(array $permissions): void;
 
     /**
      * Return the permissions not related to an object instance and also to be available when objects do not exist.
-     *
-     * @return array
      */
-    public function getAdminPermissions();
+    public function getAdminPermissions(): array;
 
     /**
      * Set the permissions related to an object instance.
-     *
-     * @return void
      */
-    public function setObjectPermissions(array $permissions);
+    public function setObjectPermissions(array $permissions): void;
 
     /**
      * Return the permissions related to an object instance.
-     *
-     * @return array
      */
-    public function getObjectPermissions();
+    public function getObjectPermissions(): array;
 
     /**
      * Get the ACL for the passed object identity.
@@ -65,21 +57,17 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
      *
      * @return \SplObjectStorage mapping the passed object identities to ACLs
      */
-    public function findObjectAcls(\Traversable $oids, array $sids = []);
+    public function findObjectAcls(\Traversable $oids, array $sids = []): \SplObjectStorage;
 
     /**
      * Add an object owner ACE to the object ACL.
-     *
-     * @return void
      */
-    public function addObjectOwner(MutableAclInterface $acl, ?UserSecurityIdentity $securityIdentity = null);
+    public function addObjectOwner(MutableAclInterface $acl, ?UserSecurityIdentity $securityIdentity = null): void;
 
     /**
      * Add the object class ACE's to the object ACL.
-     *
-     * @return void
      */
-    public function addObjectClassAces(MutableAclInterface $acl, array $roleInformation = []);
+    public function addObjectClassAces(MutableAclInterface $acl, array $roleInformation = []): void;
 
     /**
      * Create an object ACL.
@@ -88,33 +76,25 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
 
     /**
      * Update the ACL.
-     *
-     * @return void
      */
-    public function updateAcl(MutableAclInterface $acl);
+    public function updateAcl(MutableAclInterface $acl): void;
 
     /**
      * Delete the ACL.
-     *
-     * @return void
      */
-    public function deleteAcl(ObjectIdentityInterface $objectIdentity);
+    public function deleteAcl(ObjectIdentityInterface $objectIdentity): void;
 
     /**
      * Helper method to find the index of a class ACE for a role.
      *
-     * @param string $role
-     *
      * @return string|int|false index if found, FALSE if not found
      */
-    public function findClassAceIndexByRole(MutableAclInterface $acl, $role);
+    public function findClassAceIndexByRole(MutableAclInterface $acl, string $role);
 
     /**
      * Helper method to find the index of a class ACE for a username.
      *
-     * @param string $username
-     *
      * @return string|int|false index if found, FALSE if not found
      */
-    public function findClassAceIndexByUsername(MutableAclInterface $acl, $username);
+    public function findClassAceIndexByUsername(MutableAclInterface $acl, string $username);
 }
