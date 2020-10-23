@@ -426,8 +426,8 @@ class CRUDController implements ContainerAwareInterface
 
         if ($data = json_decode((string) $request->get('data'), true)) {
             $action = $data['action'];
-            $idx = $data['idx'];
-            $allElements = (bool) $data['all_elements'];
+            $idx = (array) ($data['idx'] ?? []);
+            $allElements = (bool) ($data['all_elements'] ?? false);
             $forwardedRequest->request->replace(array_merge($forwardedRequest->request->all(), $data));
         } else {
             $action = $forwardedRequest->request->get('action');
@@ -437,7 +437,7 @@ class CRUDController implements ContainerAwareInterface
                 // symfony 5.1+
                 $idx = $bag->all('idx');
             } else {
-                $idx = $bag->get('idx', []);
+                $idx = (array) $bag->get('idx', []);
             }
             $allElements = $forwardedRequest->request->getBoolean('all_elements');
 
@@ -445,6 +445,7 @@ class CRUDController implements ContainerAwareInterface
             $forwardedRequest->request->set('all_elements', $allElements);
 
             $data = $forwardedRequest->request->all();
+            $data['all_elements'] = $allElements;
 
             unset($data['_sonata_csrf_token']);
         }
