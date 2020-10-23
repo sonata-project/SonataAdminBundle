@@ -177,15 +177,15 @@ file that was distributed with this source code.
                                                                         {% if menu.extra('safe_label', true) %}
                                                                             {{- label|raw -}}
                                                                         {% else %}
-                                                                            {{- label|u.truncate(100) -}}
+                                                                            {{- label|u.truncate(100, '...') -}}
                                                                         {% endif %}
                                                                     </a>
                                                                 {% else %}
-                                                                    <span>{{ label|u.truncate(100) }}</span>
+                                                                    <span>{{ label|u.truncate(100, '...') }}</span>
                                                                 {% endif %}
                                                             </li>
                                                         {% else %}
-                                                            <li class="active"><span>{{ label|u.truncate(100) }}</span></li>
+                                                            <li class="active"><span>{{ label|u.truncate(100, '...') }}</span></li>
                                                         {% endif %}
                                                     {% endfor %}
                                                 {% endif %}
