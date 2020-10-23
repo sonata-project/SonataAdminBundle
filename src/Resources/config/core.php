@@ -71,7 +71,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.helper', AdminHelper::class)
             ->public()
             ->args([
-                new ReferenceConfigurator('sonata.admin.pool'),
+                new ReferenceConfigurator('property_accessor'),
             ])
 
         ->alias(AdminHelper::class, 'sonata.admin.helper')
