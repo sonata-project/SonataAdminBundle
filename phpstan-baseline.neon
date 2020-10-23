@@ -223,6 +223,12 @@ parameters:
             count: 1
             path: src/Command/CreateClassCacheCommand.php
 
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Method Sonata\\\\AdminBundle\\\\Builder\\\\FormContractorInterface\\:\\:getDefaultOptions\\(\\) invoked with 3 parameters, 2 required\\.$#"
+            count: 1
+            path: src/Form/FormMapper.php
+
 # next 6 errors are due to not installed Doctrine ORM\ODM
         -
             message: "#^Class Doctrine\\\\ODM\\\\MongoDB\\\\PersistentCollection not found\\.$#"

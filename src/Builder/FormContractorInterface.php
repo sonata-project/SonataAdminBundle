@@ -31,14 +31,16 @@ interface FormContractorInterface extends BuilderInterface
      *
      * @return FormBuilderInterface
      */
-    public function getFormBuilder($name, array $options = []);
+    public function getFormBuilder($name, array $formOptions = []);
 
     /**
+     * NEXT_MAJOR: Change signature to add the third parameter $formOptions.
+     *
      * Should provide Symfony form options.
      *
      * @param string|null $type
      *
      * @return array<string, mixed>
      */
-    public function getDefaultOptions($type, FieldDescriptionInterface $fieldDescription);
+    public function getDefaultOptions($type, FieldDescriptionInterface $fieldDescription/*, array $formOptions = []*/);
 }
