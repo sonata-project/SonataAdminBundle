@@ -45,7 +45,7 @@ final class TypeGuesserChain implements TypeGuesserInterface
         }
     }
 
-    public function guessType($class, $property, ModelManagerInterface $modelManager)
+    public function guessType(string $class, string $property, ModelManagerInterface $modelManager): ?TypeGuess
     {
         $guesses = [];
 
