@@ -22,12 +22,7 @@ use Symfony\Component\Form\Guess\TypeGuess;
 interface TypeGuesserInterface
 {
     /**
-     * @param string $class
-     * @param string $property
-     *
-     * @return TypeGuess|null
-     *
      * @phpstan-param class-string $class
      */
-    public function guessType($class, $property, ModelManagerInterface $modelManager);
+    public function guessType(string $class, string $property, ModelManagerInterface $modelManager): ?TypeGuess;
 }
