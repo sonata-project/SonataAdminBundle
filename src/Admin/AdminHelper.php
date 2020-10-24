@@ -20,7 +20,6 @@ use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Manipulator\ObjectManipulator;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
 use Sonata\AdminBundle\Util\FormViewIterator;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -47,9 +46,6 @@ class AdminHelper
         $this->propertyAccessor = $propertyAccessor;
     }
 
-    /**
-     * @throws \RuntimeException
-     */
     public function getChildFormBuilder(FormBuilderInterface $formBuilder, string $elementId): ?FormBuilderInterface
     {
         foreach (new FormBuilderIterator($formBuilder) as $name => $formBuilder) {
@@ -187,15 +183,31 @@ class AdminHelper
     }
 
     /**
+     * Recursively find the class name of the admin responsible for the element at the end of an association chain.
+     *
+     * @param string[] $elements
+     */
+    protected function getModelClassName(AdminInterface $admin, array $elements): string
+    {
+        $element = array_shift($elements);
+        $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();
+        if (0 === \count($elements)) {
+            return $associationAdmin->getClass();
+        }
+
+        return $this->getModelClassName($associationAdmin, $elements);
+    }
+
+    /**
      * Get access path to element which works with PropertyAccessor.
      *
-     * @param string $elementId expects string in format used in form id field.
-     *                          (uniqueIdentifier_model_sub_model or uniqueIdentifier_model_1_sub_model etc.)
-     * @param mixed  $model
+     * @param string       $elementId expects string in format used in form id field.
+     *                                (uniqueIdentifier_model_sub_model or uniqueIdentifier_model_1_sub_model etc.)
+     * @param object|array $model
      *
      * @throws \Exception
      */
-    public function getElementAccessPath(string $elementId, $model): string
+    private function getElementAccessPath(string $elementId, $model): string
     {
         $idWithoutIdentifier = preg_replace('/^[^_]*_/', '', $elementId);
         $initialPath = preg_replace('#(_(\d+)_)#', '[$2]_', $idWithoutIdentifier);
@@ -223,19 +235,5 @@ class AdminHelper
         }
 
         return $totalPath;
-    }
-
-    /**
-     * Recursively find the class name of the admin responsible for the element at the end of an association chain.
-     */
-    protected function getModelClassName(AdminInterface $admin, array $elements): string
-    {
-        $element = array_shift($elements);
-        $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();
-        if (0 === \count($elements)) {
-            return $associationAdmin->getClass();
-        }
-
-        return $this->getModelClassName($associationAdmin, $elements);
     }
 }

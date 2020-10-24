@@ -104,9 +104,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     public function getModelManager(): ?ModelManagerInterface;
 
-    /**
-     * @return string the manager type of the admin
-     */
     public function getManagerType(): ?string;
 
     public function createQuery(): ProxyQueryInterface;
