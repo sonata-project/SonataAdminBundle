@@ -19,8 +19,8 @@ namespace Sonata\AdminBundle\Model;
 interface AuditReaderInterface
 {
     /**
-     * @param mixed $id
-     * @param mixed $revisionId
+     * @param int|string $id
+     * @param int|string $revisionId
      *
      * @phpstan-template T of object
      * @phpstan-param class-string<T> $className
@@ -36,14 +36,14 @@ interface AuditReaderInterface
     public function findRevisionHistory(string $className, int $limit = 20, int $offset = 0): array;
 
     /**
-     * @param mixed $revisionId
+     * @param int|string $revisionId
      *
      * @phpstan-param class-string $className
      */
     public function findRevision(string $className, $revisionId): ?object;
 
     /**
-     * @param mixed $id
+     * @param int|string $id
      *
      * @return object[]
      *
@@ -52,9 +52,9 @@ interface AuditReaderInterface
     public function findRevisions(string $className, $id): array;
 
     /**
-     * @param mixed $id
-     * @param mixed $oldRevisionId
-     * @param mixed $newRevisionId
+     * @param int|string $id
+     * @param int|string $oldRevisionId
+     * @param int|string $newRevisionId
      *
      * @return array<string, array{old: mixed, new: mixed, same: mixed}>
      *
