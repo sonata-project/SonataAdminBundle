@@ -153,10 +153,10 @@ You can specify your templates in the config file:
     Notice that this is a global change, meaning it will affect all model mappings
     automatically, both for ``Admin`` mappings defined by you and by other bundles.
 
-If you wish, you can specify custom templates on a per ``Admin`` mapping
-basis. Internally, the ``CRUDController`` fetches this information from the
+If you wish, you can specify custom templates on a per ``Admin`` template registry
+service basis. Internally, the ``CRUDController`` fetches this information from the
 ``TemplateRegistry`` class instance that belongs with the ``Admin``, so you
-can specify the templates to use in the ``Admin`` service definition:
+can specify the templates to use in the ``Admin`` template registry service definition:
 
 .. configuration-block::
 
@@ -165,26 +165,15 @@ can specify the templates to use in the ``Admin`` service definition:
         # config/services.yaml
 
         services:
-            app.admin.post:
-                class: App\Admin\PostAdmin
-                arguments:
-                    - ~
-                    - App\Entity\Post
-                    - ~
+            app.admin.post.template_registry:
                 calls:
                     - [setTemplate, ['edit', 'PostAdmin/edit.html.twig']]
-                tags:
-                    - { name: sonata.admin, manager_type: orm, group: 'Content', label: 'Post' }
 
     .. code-block:: xml
 
        <!-- config/services.xml -->
 
-        <service id="app.admin.post" class="App\Admin\PostAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
-            <argument/>
-            <argument>App\Entity\Post</argument>
-            <argument/>
+        <service id="app.admin.post.template_registry">
             <call method="setTemplate">
                 <argument>edit</argument>
                 <argument>PostAdmin/edit.html.twig</argument>
@@ -202,19 +191,17 @@ can specify the templates to use in the ``Admin`` service definition:
 
 Changes made using the ``setTemplate()`` and ``setTemplates()`` methods
 override the customizations made in the configuration file, so you can specify
-a global custom template and then override that customization on a specific
+a global custom template and then override that customization for a specific
 ``Admin`` class.
 
 Finding configured templates
 ----------------------------
 Each ``Admin`` has a ``TemplateRegistry`` service connected to it that holds
-the templates registered through the configuration above. Through the method
-``getTemplate($name)`` of that class, you can access the templates set for
-that ``Admin``. The ``TemplateRegistry`` is available through ``$this->getTemplateRegistry()``
-within the ``Admin``. Using the service container the template registries can
-be accessed outside an ``Admin``. Use the ``Admin`` code + ``.template_registry``
-as the service ID (i.e. "app.admin.post" uses the Template Registry
-"app.admin.post.template_registry").
+the templates registered through the configuration above. The ``TemplateRegistry``
+is available through ``$this->getTemplateRegistry()`` within the ``Admin``.
+Outside an ``Admin``, you can obtain the template registries through their service ID.
+Use the ``Admin`` code + ``.template_registry`` as the service ID (i.e.
+"app.admin.post" uses the template registry "app.admin.post.template_registry").
 
 The ``TemplateRegistry`` service that holds the global templates can be accessed
 using the service ID "sonata.admin.global_template_registry".

@@ -17,7 +17,9 @@ The recipe
 Configure your Admin service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The configuration takes place in the DIC by calling the ``setTemplates`` method.
+The configuration takes place by calling the ``setTemplate()`` / ``setTemplates()``
+method in the service ``%s.template_registry`` service, where ``%s`` is the name of your
+admin service (for instance ``sonata.admin.comment``).
 Two template keys need to be set:
 
 - ``inner_list_row``: The template for the row, which you will customize. Often
@@ -32,10 +34,7 @@ Two template keys need to be set:
 
         <!-- config/services.xml -->
 
-        <service id="sonata.admin.comment" class="%sonata.admin.comment.class%">
-            <argument/>
-            <argument>%sonata.admin.comment.entity%</argument>
-            <argument>%sonata.admin.comment.controller%</argument>
+        <service id="sonata.admin.comment.template_registry">
             <call method="setTemplates">
                 <argument type="collection">
                     <argument key="inner_list_row">
@@ -46,14 +45,6 @@ Two template keys need to be set:
                     </argument>
                 </argument>
             </call>
-            <tag
-                name="sonata.admin"
-                manager_type="orm"
-                group="sonata_blog"
-                label="comments"
-                label_catalogue="%sonata.admin.comment.translation_domain%"
-                label_translator_strategy="sonata.admin.label.strategy.underscore"
-                />
         </service>
 
 Create your customized template

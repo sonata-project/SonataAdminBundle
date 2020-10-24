@@ -38,17 +38,14 @@ You also need to configure the block in the sonata block config
                 sonata.admin.block.search_result:
                     contexts: [admin]
 
-You can also configure the block template per admin while defining the admin:
+You can also configure the block template per admin by calling ``setTemplate()``
+or ``setTemplates()`` methods in the admin template registry:
 
 .. configuration-block::
 
     .. code-block:: xml
 
-        <service id="app.admin.post" class="App\Admin\PostAdmin">
-              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
-              <argument/>
-              <argument>App\Entity\Post</argument>
-              <argument/>
+        <service id="app.admin.post.template_registry">
               <call method="setTemplate">
                   <argument>search_result_block</argument>
                   <argument>@SonataPost/Block/block_search_result.html.twig</argument>

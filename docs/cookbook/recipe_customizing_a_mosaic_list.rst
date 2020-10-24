@@ -33,26 +33,15 @@ First, configure the ``outer_list_rows_mosaic`` template key:
 
       <!-- config/services.xml -->
 
-       <service id="sonata.media.admin.media" class="%sonata.media.admin.media.class%">
-            <argument/>
-            <argument>%sonata.media.admin.media.entity%</argument>
-            <argument>%sonata.media.admin.media.controller%</argument>
+        <service id="sonata.media.admin.media.template_registry">
             <call method="setTemplates">
-                <argument type="collection">
-                    <argument key="outer_list_rows_mosaic">@SonataMedia/MediaAdmin/list_outer_rows_mosaic.html.twig</argument>
-                </argument>
-            </call>
-            <tag
-                name="sonata.admin"
-                manager_type="orm"
-                group="sonata_media"
-                label_catalogue="%sonata.media.admin.media.translation_domain%"
-                label="media"
-                label_translator_strategy="sonata.admin.label.strategy.underscore"
-                />
-       </service>
+                 <argument type="collection">
+                     <argument key="outer_list_rows_mosaic">@SonataMedia/MediaAdmin/list_outer_rows_mosaic.html.twig</argument>
+                 </argument>
+             </call>
+        </service>
 
-The ``list_outer_rows_mosaic.html.twig`` is the name of one mosaic's tile. You should also extends the template and overwrite the default blocks availables.
+The ``list_outer_rows_mosaic.html.twig`` is the name of one mosaic's tile. You should also extend the template and overwrite the default blocks availables.
 
 .. code-block:: jinja
 
