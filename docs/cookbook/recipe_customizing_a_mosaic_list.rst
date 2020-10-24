@@ -41,7 +41,7 @@ First, configure the ``outer_list_rows_mosaic`` template key:
              </call>
         </service>
 
-The ``list_outer_rows_mosaic.html.twig`` is the name of one mosaic's tile. You should also extend the template and overwrite the default blocks availables.
+The ``list_outer_rows_mosaic.html.twig`` is the name of one mosaic's tile. You should also extend the template and overwrite the default blocks available.
 
 .. code-block:: jinja
 
