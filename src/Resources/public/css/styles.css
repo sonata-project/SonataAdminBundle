@@ -53,6 +53,11 @@ body > .header .logo {
     -moz-animation-duration: .3s;
 }
 
+.dropdown-menu-scrollable {
+    overflow-y: auto;
+    max-height: 75vh;
+}
+
 /* Buttons */
 
 .btn.btn-outline {
