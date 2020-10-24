@@ -498,6 +498,10 @@
                 <source>label_type_ends_with</source>
                 <target>ends with</target>
             </trans-unit>
+            <trans-unit id="go_to_the_first_page">
+                <source>go_to_the_first_page</source>
+                <target>Go to the first page</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

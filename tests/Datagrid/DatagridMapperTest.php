@@ -86,8 +86,7 @@ class DatagridMapperTest extends TestCase
         $modelManager
             ->method('getNewFieldDescriptionInstance')
             ->willReturnCallback(function (?string $class, string $name, array $options = []): BaseFieldDescription {
-                $fieldDescription = $this->getFieldDescriptionMock();
-                $fieldDescription->setName($name);
+                $fieldDescription = $this->getFieldDescriptionMock($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
@@ -134,10 +133,10 @@ class DatagridMapperTest extends TestCase
             'show_filter' => null,
             'advanced_filter' => true,
             'foo_default_option' => 'bar_default',
-            'label' => 'fooLabel',
-            'field_name' => 'fooFilterName',
             'placeholder' => 'short_object_description_placeholder',
             'link_parameters' => [],
+            'label' => 'fooLabel',
+            'field_name' => 'fooFilterName',
         ], $filter->getOptions());
     }
 
@@ -160,13 +159,13 @@ class DatagridMapperTest extends TestCase
             'show_filter' => null,
             'advanced_filter' => true,
             'foo_default_option' => 'bar_custom',
+            'placeholder' => 'short_object_description_placeholder',
+            'link_parameters' => [],
             'label' => 'fooLabel',
             'field_name' => 'fooFilterName',
             'foo_filter_option' => 'foo_filter_option_value',
             'field_options' => ['foo_field_option' => 'baz'],
             'field_type' => 'foo_field_type',
-            'placeholder' => 'short_object_description_placeholder',
-            'link_parameters' => [],
         ], $filter->getOptions());
     }
 
@@ -302,13 +301,9 @@ class DatagridMapperTest extends TestCase
         $this->assertTrue($this->datagridMapper->has('baz'));
     }
 
-    private function getFieldDescriptionMock(?string $name = null, ?string $label = null): BaseFieldDescription
+    private function getFieldDescriptionMock(string $name, ?string $label = null): BaseFieldDescription
     {
-        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class);
-
-        if (null !== $name) {
-            $fieldDescription->setName($name);
-        }
+        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name, []]);
 
         if (null !== $label) {
             $fieldDescription->setOption('label', $label);

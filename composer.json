@@ -65,9 +65,7 @@
         "twig/twig": "^2.12.1 || ^3.0"
     },
     "conflict": {
-        "doctrine/doctrine-bundle": ">=3",
-        "sonata-project/media-bundle": "<3.7",
-        "sonata-project/user-bundle": "<3.3"
+        "doctrine/doctrine-bundle": ">=3"
     },
     "require-dev": {
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",

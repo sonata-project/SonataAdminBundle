@@ -43,11 +43,7 @@ class ModelManager implements ModelManagerInterface, LockInterface
             $options['route']['parameters'] = [];
         }
 
-        $fieldDescription = new FieldDescription();
-        $fieldDescription->setName($name);
-        $fieldDescription->setOptions($options);
-
-        return $fieldDescription;
+        return new FieldDescription($name, $options);
     }
 
     public function create(object $object): void

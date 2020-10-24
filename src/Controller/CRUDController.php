@@ -201,7 +201,7 @@ class CRUDController extends AbstractController
             return $preResponse;
         }
 
-        if (Request::METHOD_DELETE === $this->getRestMethod()) {
+        if (Request::METHOD_DELETE === $request->getMethod()) {
             // check the csrf token
             $this->validateCsrfToken('sonata.delete');
 
@@ -372,7 +372,7 @@ class CRUDController extends AbstractController
      */
     public function batchAction(Request $request)
     {
-        $restMethod = $this->getRestMethod();
+        $restMethod = $request->getMethod();
 
         if (Request::METHOD_POST !== $restMethod) {
             throw $this->createNotFoundException(sprintf(
@@ -980,23 +980,6 @@ class CRUDController extends AbstractController
     }
 
     /**
-     * Returns the correct RESTful verb, given either by the request itself or
-     * via the "_method" parameter.
-     *
-     * @return string HTTP method, either
-     */
-    protected function getRestMethod()
-    {
-        $request = $this->getRequest();
-
-        if (Request::getHttpMethodParameterOverride() || !$request->request->has('_method')) {
-            return $request->getMethod();
-        }
-
-        return $request->request->get('_method');
-    }
-
-    /**
      * Contextualize the admin class depends on the current request.
      *
      * @throws \RuntimeException
@@ -1123,7 +1106,7 @@ class CRUDController extends AbstractController
             $url = $this->admin->generateUrl('create', $params);
         }
 
-        if ('DELETE' === $this->getRestMethod()) {
+        if ('DELETE' === $request->getMethod()) {
             return $this->redirectToList();
         }
 

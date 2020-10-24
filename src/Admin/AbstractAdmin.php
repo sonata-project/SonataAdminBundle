@@ -677,7 +677,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function getFilterParameters(): array
     {
-        $parameters = [];
+        $parameters = array_merge(
+            $this->getModelManager()->getDefaultSortValues($this->getClass()),
+            $this->getDefaultSortValues(),
+            $this->getDefaultFilterValues()
+        );
 
         // build the values array
         if ($this->hasRequest()) {
@@ -712,22 +716,17 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 }
             }
 
-            $parameters = array_merge(
-                $this->getModelManager()->getDefaultSortValues($this->getClass()),
-                $this->getDefaultSortValues(),
-                $this->getDefaultFilterValues(),
-                $filters
-            );
-
-            if (!isset($parameters['_per_page']) || !$this->determinedPerPageValue($parameters['_per_page'])) {
-                $parameters['_per_page'] = $this->getMaxPerPage();
-            }
+            $parameters = array_merge($parameters, $filters);
 
             // always force the parent value
             if ($this->isChild() && $this->getParentAssociationMapping()) {
                 $name = str_replace('.', '__', $this->getParentAssociationMapping());
                 $parameters[$name] = ['value' => $this->request->get($this->getParent()->getIdParameter())];
             }
+        }
+
+        if (!isset($parameters['_per_page']) || !$this->determinedPerPageValue($parameters['_per_page'])) {
+            $parameters['_per_page'] = $this->getMaxPerPage();
         }
 
         return $parameters;
@@ -1137,6 +1136,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         if (null !== $adminCode) {
             if (!$pool->hasAdminByAdminCode($adminCode)) {
                 return;
+                // NEXT_MAJOR: Uncomment the following exception instead.
+//                throw new \InvalidArgumentException(sprintf('No admin found for the admin_code "%s"', $adminCode));
             }
 
             $admin = $pool->getAdminByAdminCode($adminCode);
@@ -1145,6 +1146,18 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
             if (!$pool->hasAdminByClass($targetModel)) {
                 return;
+                // NEXT_MAJOR: Uncomment the following exception instead.
+//                throw new \InvalidArgumentException(sprintf(
+//                    'No admin found for the class "%s", please use the admin_code option instead',
+//                    $targetModel
+//                ));
+            }
+
+            if (!$pool->hasSingleAdminByClass($targetModel)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Too many admins found for the class "%s", please use the admin_code option instead',
+                    $targetModel
+                ));
             }
 
             $admin = $pool->getAdminByClass($targetModel);

@@ -1,6 +1,16 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.77 to 3.78
+=========================
+
+### Deprecated `Sonata\AdminBundle\Command\Validators::validateEntityName()`
+
+In version 3.77, the shortcut notation for model class names (`AppBundle:User`)
+has been deprecated in favor of its FQCN (`App\Model\User`) when passing `user_model`
+option to `sonata:admin:generate-object-acl` command, so this method SHOULD not
+be called if that deprecation is addressed.
+
 ### Deprecated not configuring `acl_user_manager` and using ACL security handler when `friendsofsymfony/user-bundle` is installed.
 
 If you are using `friendsofsymfony/user-bundle` and using ACL security handler, you MUST explicitly configure the `acl_user_manager`.
@@ -74,6 +84,11 @@ This method has been deprecated without replacement.
 
 UPGRADE FROM 3.74 to 3.75
 =========================
+
+## Deprecated `Sonata\AdminBundle\Controller\CRUDController::getRestMethod()` method
+
+`Sonata\AdminBundle\Controller\CRUDController::getRestMethod()` method is deprecated.
+Use `Symfony\Component\HttpFoundation\Request::getMethod()` instead.
 
 ## Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface` collection-related methods.
 

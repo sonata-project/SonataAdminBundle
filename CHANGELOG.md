@@ -2,6 +2,33 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.78.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.77.0...3.78.0) - 2020-10-23
+### Added
+- [[#6486](https://github.com/sonata-project/SonataAdminBundle/pull/6486)] Added `Pool::hasSingleAdminByClass()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6468](https://github.com/sonata-project/SonataAdminBundle/pull/6468)] Add phpdoc to array returns ([@core23](https://github.com/core23))
+
+### Changed
+- [[#6513](https://github.com/sonata-project/SonataAdminBundle/pull/6513)] Html with a links in no_result_content ([@axzx](https://github.com/axzx))
+- [[#6500](https://github.com/sonata-project/SonataAdminBundle/pull/6500)] When accessing on a non-existent List page, it displays a link to go to page 1 instead of a button to create a new entity ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6497](https://github.com/sonata-project/SonataAdminBundle/pull/6497)] Setting default values ​​for filters and sorting even without a request ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Deprecated
+- [[#6503](https://github.com/sonata-project/SonataAdminBundle/pull/6503)] Instantiate a FieldDescription without passing the name as first argument ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6515](https://github.com/sonata-project/SonataAdminBundle/pull/6515)] Deprecate `FilterInterface::filter()` method ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6510](https://github.com/sonata-project/SonataAdminBundle/pull/6510)] Method `Validators::validateEntityName()` ([@phansys](https://github.com/phansys))
+- [[#6320](https://github.com/sonata-project/SonataAdminBundle/pull/6320)] Deprecated `Sonata\AdminBundle\Controller\CRUDController::getRestMethod()` method in favor of `Symfony\Component\HttpFoundation\Request::getMethod()` ([@phansys](https://github.com/phansys))
+- [[#6480](https://github.com/sonata-project/SonataAdminBundle/pull/6480)] Deprecated not configuring `acl_user_manager` service explicitly when using `friendsofsymfony/user-bundle` ([@franmomu](https://github.com/franmomu))
+- [[#6480](https://github.com/sonata-project/SonataAdminBundle/pull/6480)] Deprecated configuring `acl_user_manager` service without implementing `AdminAclUserManagerInterface` ([@franmomu](https://github.com/franmomu))
+
+### Fixed
+- [[#6509](https://github.com/sonata-project/SonataAdminBundle/pull/6509)] Passing an empty array as argument 3 for implementations of `ModelManagerInterface::addIdentifiersToQuery()` ([@phansys](https://github.com/phansys))
+- [[#6507](https://github.com/sonata-project/SonataAdminBundle/pull/6507)] Pool support of group without admin ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6320](https://github.com/sonata-project/SonataAdminBundle/pull/6320)] Fixed return value from `CRUDController::getRestMethod()` respecting `Request::getHttpMethodParameterOverride()` ([@phansys](https://github.com/phansys))
+- [[#6498](https://github.com/sonata-project/SonataAdminBundle/pull/6498)] Call \Knp\Menu\MenuItem::getLabel() method directly in twig template to avoid a possible side effect from \ArrayAccess ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6525](https://github.com/sonata-project/SonataAdminBundle/pull/6525)] Missing ellipsis in some truncated word ([@phansys](https://github.com/phansys))
+- [[#6523](https://github.com/sonata-project/SonataAdminBundle/pull/6523)] fixed BC break with getting the translation domain for nested fields on a one-to-many inline edit table view ([@dmaicher](https://github.com/dmaicher))
+- [[#6438](https://github.com/sonata-project/SonataAdminBundle/pull/6438)] AdminType with CollectionType passed by reference ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [3.77.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.76.0...3.77.0) - 2020-10-16
 ### Added
 - [[#6419](https://github.com/sonata-project/SonataAdminBundle/pull/6419)] Add

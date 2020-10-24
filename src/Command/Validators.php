@@ -32,28 +32,6 @@ final class Validators
 
     /**
      * @throws \InvalidArgumentException
-     *
-     * @return string[]
-     *
-     * @phpstan-return array{string, string}
-     */
-    public static function validateEntityName(string $shortcut): array
-    {
-        $model = str_replace('/', '\\', $shortcut);
-
-        if (false === $pos = strpos($model, ':')) {
-            throw new \InvalidArgumentException(sprintf(
-                'The entity name must contain a ":" (colon sign)'
-                .' ("%s" given, expecting something like AcmeBlogBundle:Post)',
-                $model
-            ));
-        }
-
-        return [substr($model, 0, $pos), substr($model, $pos + 1)];
-    }
-
-    /**
-     * @throws \InvalidArgumentException
      */
     public static function validateClass(string $class): string
     {

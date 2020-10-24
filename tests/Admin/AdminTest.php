@@ -143,7 +143,7 @@ class AdminTest extends TestCase
         $baseControllerName = 'Sonata\NewsBundle\Controller\PostAdminController';
 
         $admin = new PostAdmin('sonata.post.admin.post', $class, $baseControllerName);
-        $admin->setParentFieldDescription(new FieldDescription());
+        $admin->setParentFieldDescription(new FieldDescription('name'));
         $admin->setSubClasses(['foo' => 'bar']);
         $admin->setRequest(new Request(['subclass' => 'foo']));
         $admin->getClass();
@@ -1438,13 +1438,10 @@ class AdminTest extends TestCase
                 ->willReturn($this->createMock(MemberMetadata::class));
         $modelAdmin->setValidator($validator);
 
-        $fieldDescription = new FieldDescription();
-        $fieldDescription->setName('fooName');
-
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
             ->method('getNewFieldDescriptionInstance')
-            ->willReturn($fieldDescription);
+            ->willReturn(new FieldDescription('name'));
         $modelAdmin->setModelManager($modelManager);
 
         // a Admin class to test that preValidate is called
@@ -1511,13 +1508,10 @@ class AdminTest extends TestCase
             ->willReturn($metadata);
         $modelAdmin->setValidator($validator);
 
-        $fieldDescription = new FieldDescription();
-        $fieldDescription->setName('fooName');
-
         $modelManager = $this->createStub(ModelManagerInterface::class);
         $modelManager
             ->method('getNewFieldDescriptionInstance')
-            ->willReturn($fieldDescription);
+            ->willReturn(new FieldDescription('name'));
         $modelAdmin->setModelManager($modelManager);
 
         $event = $this->createStub(FormEvent::class);
@@ -1616,15 +1610,46 @@ class AdminTest extends TestCase
         $this->assertSame(['value' => $authorId], $parameters['post__author']);
     }
 
+    public function testGetFilterParametersWithoutRequest(): void
+    {
+        $commentAdmin = new CommentAdmin(
+            'sonata.post.admin.comment',
+            'Application\Sonata\NewsBundle\Entity\Comment',
+            'Sonata\NewsBundle\Controller\CommentAdminController'
+        );
+
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager
+            ->method('getDefaultSortValues')
+            ->willReturn([
+                '_sort_by' => 'id',
+                '_sort_order' => 'ASC',
+            ])
+        ;
+
+        $commentAdmin->setModelManager($modelManager);
+
+        $parameters = $commentAdmin->getFilterParameters();
+
+        $this->assertArrayHasKey('_sort_by', $parameters);
+        $this->assertSame('id', $parameters['_sort_by']);
+        $this->assertArrayHasKey('_sort_order', $parameters);
+        $this->assertSame('ASC', $parameters['_sort_order']);
+    }
+
     public function testGetFilterFieldDescription(): void
     {
         $modelAdmin = new ModelAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'Sonata\FooBundle\Controller\ModelAdminController');
 
-        $fooFieldDescription = new FieldDescription();
-        $barFieldDescription = new FieldDescription();
-        $bazFieldDescription = new FieldDescription();
+        $fooFieldDescription = new FieldDescription('foo');
+        $barFieldDescription = new FieldDescription('bar');
+        $bazFieldDescription = new FieldDescription('baz');
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager
+            ->method('getDefaultSortValues')
+            ->willReturn([]);
+
         $modelManager->expects($this->exactly(3))
             ->method('getNewFieldDescriptionInstance')
             ->willReturnCallback(static function ($adminClass, string $name, $filterOptions) use ($fooFieldDescription, $barFieldDescription, $bazFieldDescription) {
@@ -1666,7 +1691,7 @@ class AdminTest extends TestCase
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
         $datagridBuilder->expects($this->once())
             ->method('getBaseDatagrid')
-            ->with($this->identicalTo($modelAdmin), [])
+            ->with($this->identicalTo($modelAdmin))
             ->willReturn($datagrid);
 
         $datagridBuilder->expects($this->exactly(3))
@@ -1807,7 +1832,7 @@ class AdminTest extends TestCase
         $this->assertSame($comment, $commentAdmin->getSubject());
 
         $commentAdmin->setSubject(null);
-        $commentAdmin->setParentFieldDescription(new FieldDescription());
+        $commentAdmin->setParentFieldDescription(new FieldDescription('name'));
 
         $this->assertFalse($commentAdmin->hasSubject());
     }
@@ -2324,9 +2349,15 @@ class AdminTest extends TestCase
         $this->expectNotToPerformAssertions();
 
         $formFactory = new FormFactory(new FormRegistry([], new ResolvedFormTypeFactory()));
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager
+            ->method('getDefaultSortValues')
+            ->willReturn([]);
 
         $admin = new AvoidInfiniteLoopAdmin('code', \stdClass::class, null);
         $admin->setSubject(new \stdClass());
+
+        $admin->setModelManager($modelManager);
 
         $admin->setFormContractor(new FormContractor($formFactory));
 

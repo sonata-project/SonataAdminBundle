@@ -117,7 +117,7 @@ class Pool
             if (isset($adminGroup['items'])) {
                 foreach ($adminGroup['items'] as $key => $item) {
                     // Only Admin Group should be returned
-                    if ('' !== $item['admin']) {
+                    if (isset($item['admin']) && !empty($item['admin'])) {
                         $admin = $this->getInstance($item['admin']);
 
                         if ($admin->showIn(AbstractAdmin::CONTEXT_DASHBOARD)) {
@@ -159,7 +159,9 @@ class Pool
         }
 
         foreach ($this->adminGroups[$group]['items'] as $item) {
-            $admins[] = $this->getInstance($item['admin']);
+            if (isset($item['admin']) && !empty($item['admin'])) {
+                $admins[] = $this->getInstance($item['admin']);
+            }
         }
 
         return $admins;
@@ -178,11 +180,7 @@ class Pool
             throw new \LogicException(sprintf('Pool has no admin for the class %s.', $class));
         }
 
-        if (!\is_array($this->adminClasses[$class])) {
-            throw new \RuntimeException('Invalid format for the Pool::adminClass property');
-        }
-
-        if (\count($this->adminClasses[$class]) > 1) {
+        if (!$this->hasSingleAdminByClass($class)) {
             throw new \RuntimeException(sprintf(
                 'Unable to find a valid admin for the class: %s, there are too many registered: %s',
                 $class,
@@ -199,6 +197,18 @@ class Pool
     public function hasAdminByClass(string $class): bool
     {
         return isset($this->adminClasses[$class]);
+    }
+
+    /**
+     * @phpstan-param class-string $class
+     */
+    public function hasSingleAdminByClass(string $class): bool
+    {
+        if (!$this->hasAdminByClass($class)) {
+            return false;
+        }
+
+        return 1 === \count($this->adminClasses[$class]);
     }
 
     /**

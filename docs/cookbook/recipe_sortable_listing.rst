@@ -85,7 +85,7 @@ In order to add new routes for these actions we are also adding the following me
 
     // src/Admin/ClientAdmin.php
 
-    namespace App/Admin;
+    namespace App\Admin;
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
