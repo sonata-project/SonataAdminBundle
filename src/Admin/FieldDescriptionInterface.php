@@ -18,36 +18,30 @@ namespace Sonata\AdminBundle\Admin;
  */
 interface FieldDescriptionInterface
 {
-    /**
-     * set the field name.
-     */
     public function setFieldName(?string $fieldName): void;
 
     /**
      * Returns the field name.
      *
-     * @return string the field name
+     * @return string|null the field name
      */
     public function getFieldName(): ?string;
 
-    /**
-     * Set the name.
-     */
-    public function setName(?string $name): void;
+    public function setName(string $name): void;
 
     /**
      * Returns the name, the name can be used as a form label or table header.
      *
      * @return string the name
      */
-    public function getName(): ?string;
+    public function getName(): string;
 
     /**
      * Returns the value represented by the provided name.
      *
-     * @param mixed|null $default
+     * @param mixed $default
      *
-     * @return mixed the value represented by the provided name
+     * @return mixed
      */
     public function getOption(string $name, $default = null);
 
@@ -81,11 +75,6 @@ interface FieldDescriptionInterface
      */
     public function setTemplate(?string $template): void;
 
-    /**
-     * Returns the template name.
-     *
-     * @return string|null the template name
-     */
     public function getTemplate(): ?string;
 
     /**
@@ -102,10 +91,12 @@ interface FieldDescriptionInterface
     /**
      * set the parent Admin (only used in nested admin).
      */
-    public function setParent(AdminInterface $parent);
+    public function setParent(AdminInterface $parent): void;
 
     /**
      * Returns the parent Admin (only used in nested admin).
+     *
+     * @throws \LogicException
      */
     public function getParent(): AdminInterface;
 
@@ -113,11 +104,15 @@ interface FieldDescriptionInterface
 
     /**
      * Define the association mapping definition.
+     *
+     * @param array<string, mixed> $associationMapping
      */
     public function setAssociationMapping(array $associationMapping): void;
 
     /**
      * Returns the association mapping definition.
+     *
+     * @return array<string, mixed>
      */
     public function getAssociationMapping(): array;
 
@@ -128,37 +123,41 @@ interface FieldDescriptionInterface
 
     /**
      * Sets the field mapping information.
+     *
+     * @param array<string, mixed> $fieldMapping
      */
     public function setFieldMapping(array $fieldMapping): void;
 
     /**
      * Returns the field mapping definition.
      *
-     * @return array the field mapping definition
+     * @return array<string, mixed>
      */
     public function getFieldMapping(): array;
 
     /**
      * set the parent association mappings information.
+     *
+     *  @param array<array<string, mixed>> $parentAssociationMappings
      */
     public function setParentAssociationMappings(array $parentAssociationMappings): void;
 
     /**
      * Returns the parent association mapping definitions.
      *
-     * @return array the parent association mapping definitions
+     * @return array<array<string, mixed>>
      */
     public function getParentAssociationMappings(): array;
 
     /**
-     * set the association admin instance (only used if the field is linked to an Admin).
-     *
-     * @param AdminInterface $associationAdmin the associated admin
+     * Set the association admin instance (only used if the field is linked to an Admin).
      */
-    public function setAssociationAdmin(AdminInterface $associationAdmin);
+    public function setAssociationAdmin(AdminInterface $associationAdmin): void;
 
     /**
      * Returns the associated Admin instance (only used if the field is linked to an Admin).
+     *
+     * @throws \LogicException
      */
     public function getAssociationAdmin(): AdminInterface;
 
@@ -172,40 +171,41 @@ interface FieldDescriptionInterface
     /**
      * Returns the value linked to the description.
      *
-     * @return bool|mixed
+     * @return mixed
      */
     public function getValue(object $object);
 
-    /**
-     * set the admin class linked to this FieldDescription.
-     */
-    public function setAdmin(AdminInterface $admin);
+    public function setAdmin(AdminInterface $admin): void;
 
     /**
-     * @return AdminInterface the admin class linked to this FieldDescription
+     * @throws \LogicException
      */
     public function getAdmin(): AdminInterface;
 
     public function hasAdmin(): bool;
 
     /**
-     * merge option values related to the provided option name.
+     * Merge option values related to the provided option name.
+     *
+     * @param array<string, mixed> $options
      *
      * @throws \RuntimeException
      */
     public function mergeOption(string $name, array $options = []): void;
 
     /**
-     * merge options values.
+     * Merge options values.
+     *
+     * @param array<string, mixed> $options
      */
     public function mergeOptions(array $options = []): void;
 
     /**
      * set the original mapping type (only used if the field is linked to an entity).
      *
-     * @param string|int $mappingType
+     * @param int|string $mappingType
      */
-    public function setMappingType($mappingType);
+    public function setMappingType($mappingType): void;
 
     /**
      * Returns the mapping type.
@@ -235,14 +235,14 @@ interface FieldDescriptionInterface
     /**
      * Returns the field mapping definition used when sorting.
      *
-     * @return array the field mapping definition
+     * @return array<string, mixed>
      */
     public function getSortFieldMapping(): array;
 
     /**
      * Returns the parent association mapping definitions used when sorting.
      *
-     * @return array the parent association mapping definitions
+     * @return array<string, mixed>
      */
     public function getSortParentAssociationMapping(): array;
 

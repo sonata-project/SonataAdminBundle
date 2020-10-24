@@ -36,7 +36,7 @@ interface UrlGeneratorInterface
      */
     public function getRouterIdParameter(): string;
 
-    public function setRouteGenerator(RouteGeneratorInterface $routeGenerator);
+    public function setRouteGenerator(RouteGeneratorInterface $routeGenerator): void;
 
     /**
      * Generates the object url with the given $name.
@@ -68,7 +68,8 @@ interface UrlGeneratorInterface
      *
      * @param array<string, mixed> $parameters
      *
-     * @return array return url parts: 'route', 'routeParameters', 'routeAbsolute'
+     * @return array<string, mixed>
+     * @phpstan-return array{route: string, routeParameters: array<string, string>, routeAbsolute: bool}
      */
     public function generateMenuUrl(string $name, array $parameters = [], int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH): array;
 
