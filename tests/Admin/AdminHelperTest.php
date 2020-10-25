@@ -84,7 +84,11 @@ class AdminHelperTest extends TestCase
         $subObject->expects($this->atLeastOnce())->method('getAnother')->willReturn($sub2Object);
         $sub2Object->expects($this->atLeastOnce())->method('getMoreThings')->willReturn('Value');
 
-        $path = $this->helper->getElementAccessPath('uniquePartOfId_path_to_object_0_another_more_things', $object);
+        $path = $this->getMethodAsPublic('getElementAccessPath')->invoke(
+            $this->helper,
+            'uniquePartOfId_path_to_object_0_another_more_things',
+            $object
+        );
 
         $this->assertSame('path_to_object[0].another.more_things', $path);
     }
@@ -105,7 +109,11 @@ class AdminHelperTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage(sprintf('Could not get element id from %s Failing part: calls', $path));
 
-        $this->helper->getElementAccessPath($path, $object);
+        $this->getMethodAsPublic('getElementAccessPath')->invoke(
+            $this->helper,
+            $path,
+            $object
+        );
     }
 
     public function testAppendFormFieldElement(): void
@@ -276,5 +284,13 @@ class AdminHelperTest extends TestCase
         $this->expectExceptionMessage('unknown collection class');
 
         $this->helper->appendFormFieldElement($admin, $object, 'uniquePartOfId_sub_object_0_and_more_0_final_data');
+    }
+
+    private function getMethodAsPublic($privateMethod): \ReflectionMethod
+    {
+        $reflectionMethod = new \ReflectionMethod('Sonata\AdminBundle\Admin\AdminHelper', $privateMethod);
+        $reflectionMethod->setAccessible(true);
+
+        return $reflectionMethod;
     }
 }

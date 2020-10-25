@@ -85,7 +85,7 @@ class LockExtensionTest extends TestCase
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
 
-        $this->configureAdmin('', null, $this->modelManager);
+        $this->configureAdmin($this->modelManager);
         $event = new FormEvent($form, $this->object);
 
         $this->modelManager->method('getLockVersion')->with($this->object)->willReturn(1);
@@ -105,7 +105,7 @@ class LockExtensionTest extends TestCase
         $modelManager = $this->createStub(ModelManagerInterface::class);
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
-        $this->configureAdmin('', null, $modelManager);
+        $this->configureAdmin($modelManager);
         $event = new FormEvent($form, $this->object);
 
         $form->expects($this->never())->method('add');
@@ -144,7 +144,7 @@ class LockExtensionTest extends TestCase
         $data = new \stdClass();
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
-        $this->configureAdmin('', null, $this->modelManager);
+        $this->configureAdmin($this->modelManager);
         $event = new FormEvent($form, $this->object);
 
         $this->modelManager->method('getLockVersion')->with($this->object)->willReturn(null);
@@ -156,7 +156,7 @@ class LockExtensionTest extends TestCase
 
     public function testPreUpdateIfAdminHasNoRequest(): void
     {
-        $this->configureAdmin();
+        $this->configureAdmin($this->modelManager);
         $this->modelManager->expects($this->never())->method('lock');
 
         $this->lockExtension->preUpdate($this->admin, $this->object);
@@ -164,7 +164,7 @@ class LockExtensionTest extends TestCase
 
     public function testPreUpdateIfObjectIsNotVersioned(): void
     {
-        $this->configureAdmin();
+        $this->configureAdmin($this->modelManager);
         $this->modelManager->expects($this->never())->method('lock');
 
         $this->lockExtension->preUpdate($this->admin, $this->object);
@@ -173,7 +173,7 @@ class LockExtensionTest extends TestCase
     public function testPreUpdateIfRequestDoesNotHaveLockVersion(): void
     {
         $uniqid = 'admin123';
-        $this->configureAdmin($uniqid, $this->request);
+        $this->configureAdmin($this->modelManager, $uniqid, $this->request);
 
         $this->modelManager->expects($this->never())->method('lock');
 
@@ -185,9 +185,11 @@ class LockExtensionTest extends TestCase
     {
         $uniqid = 'admin123';
         $this->configureAdmin(
-            $uniqid,
-            $this->request,
-            $this->createStub(ModelManagerInterface::class)
+            $this->createStub(
+                ModelManagerInterface::class,
+                $uniqid,
+                $this->request
+            )
         );
         $this->modelManager->expects($this->never())->method('lock');
 
@@ -198,7 +200,7 @@ class LockExtensionTest extends TestCase
     public function testPreUpdateIfObjectIsVersioned(): void
     {
         $uniqid = 'admin123';
-        $this->configureAdmin($uniqid, $this->request, $this->modelManager);
+        $this->configureAdmin($this->modelManager, $uniqid, $this->request);
 
         $this->modelManager->expects($this->once())->method('lock')->with($this->object, 1);
 
@@ -233,9 +235,9 @@ class LockExtensionTest extends TestCase
     }
 
     private function configureAdmin(
+        ModelManagerInterface $modelManager,
         string $uniqid = '',
-        ?Request $request = null,
-        ?ModelManagerInterface $modelManager = null
+        ?Request $request = null
     ): void {
         $this->admin->method('getUniqid')->willReturn($uniqid);
         $this->admin->method('getModelManager')->willReturn($modelManager);

@@ -745,11 +745,22 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $this->assertNull($admin->getLabelTranslatorStrategy());
-
         $labelTranslatorStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
         $admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
         $this->assertSame($labelTranslatorStrategy, $admin->getLabelTranslatorStrategy());
+    }
+
+    public function testGetLabelTranslatorStrategyWithException()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage(sprintf(
+            'Admin "%s" has no label translator strategy.',
+            PostAdmin::class
+        ));
+
+        $admin->getLabelTranslatorStrategy();
     }
 
     public function testGetRouteBuilder(): void
@@ -861,12 +872,23 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $this->assertNull($admin->getModelManager());
-
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
         $admin->setModelManager($modelManager);
         $this->assertSame($modelManager, $admin->getModelManager());
+    }
+
+    public function testGetModelManagerWithException()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage(sprintf(
+            'Admin "%s" has no model manager.',
+            PostAdmin::class
+        ));
+
+        $admin->getModelManager();
     }
 
     public function testGetBaseCodeRoute(): void
@@ -896,19 +918,25 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $this->assertNull($admin->getRouteGenerator());
-
         $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
 
         $admin->setRouteGenerator($routeGenerator);
         $this->assertSame($routeGenerator, $admin->getRouteGenerator());
     }
 
-    public function testGetConfigurationPool(): void
+    public function testGetRouteGeneratorWithException()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $this->assertNull($admin->getConfigurationPool());
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage(sprintf('Admin "%s" has no route generator.', PostAdmin::class));
+
+        $admin->getRouteGenerator();
+    }
+
+    public function testGetConfigurationPool(): void
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
         $pool = $this->getMockBuilder(Pool::class)
             ->disableOriginalConstructor()
@@ -916,6 +944,16 @@ class AdminTest extends TestCase
 
         $admin->setConfigurationPool($pool);
         $this->assertSame($pool, $admin->getConfigurationPool());
+    }
+
+    public function testGetConfigurationPoolWithException(): void
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage(sprintf('Admin "%s" has no pool.', PostAdmin::class));
+
+        $admin->getConfigurationPool();
     }
 
     public function testGetShowBuilder(): void

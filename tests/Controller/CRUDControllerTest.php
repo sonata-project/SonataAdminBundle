@@ -1695,6 +1695,8 @@ class CRUDControllerTest extends TestCase
             ->method('supportsPreviewMode')
             ->willReturn(true);
 
+        $this->admin->method('getShow')->willReturn(new FieldDescriptionCollection());
+
         $formView = $this->createMock(FormView::class);
 
         $form
@@ -2313,6 +2315,8 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('supportsPreviewMode')
             ->willReturn(true);
+
+        $this->admin->method('getShow')->willReturn(new FieldDescriptionCollection());
 
         $formView = $this->createMock(FormView::class);
 
