@@ -67,8 +67,6 @@
         "doctrine/doctrine-bundle": ">=3",
         "sonata-project/core-bundle": "<3.20",
         "sonata-project/doctrine-extensions": "<1.8",
-        "sonata-project/doctrine-mongodb-admin-bundle": "<3.5",
-        "sonata-project/doctrine-orm-admin-bundle": "<3.24",
         "sonata-project/media-bundle": "<3.7",
         "sonata-project/user-bundle": "<3.3"
     },
