@@ -22,25 +22,23 @@ use Sonata\AdminBundle\Mapper\BaseMapper;
 /**
  * This class is used to simulate the Form API.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ListMapper extends BaseMapper
+final class ListMapper extends BaseMapper
 {
     public const TYPE_ACTIONS = 'actions';
     public const TYPE_BATCH = 'batch';
     public const TYPE_SELECT = 'select';
 
     /**
-     * @var FieldDescriptionCollection
-     */
-    protected $list;
-
-    /**
      * @var ListBuilderInterface
      */
     protected $builder;
+
+    /**
+     * @var FieldDescriptionCollection
+     */
+    private $list;
 
     public function __construct(
         ListBuilderInterface $listBuilder,
@@ -173,7 +171,7 @@ class ListMapper extends BaseMapper
     /**
      * @return string[]
      */
-    final public function keys(): array
+    public function keys(): array
     {
         return array_keys($this->list->getElements());
     }

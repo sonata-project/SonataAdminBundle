@@ -18,58 +18,56 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class Pool
+final class Pool
 {
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    private $container;
 
     /**
      * @var string[]
      */
-    protected $adminServiceIds = [];
+    private $adminServiceIds = [];
 
     /**
      * @var array
      */
-    protected $adminGroups = [];
+    private $adminGroups = [];
 
     /**
      * @var array<string, string[]>
      *
      * @phpstan-var array<class-string, string[]>
      */
-    protected $adminClasses = [];
+    private $adminClasses = [];
 
     /**
      * @var array
      */
-    protected $assets = [];
+    private $assets = [];
 
     /**
      * @var string
      */
-    protected $title;
+    private $title;
 
     /**
      * @var string
      */
-    protected $titleLogo;
+    private $titleLogo;
 
     /**
      * @var array
      */
-    protected $options = [];
+    private $options = [];
 
     /**
      * @var PropertyAccessorInterface
      */
-    protected $propertyAccessor;
+    private $propertyAccessor;
 
     public function __construct(
         ContainerInterface $container,
@@ -258,7 +256,7 @@ class Pool
     /**
      * Checks if an admin with a certain admin code exists.
      */
-    final public function hasAdminByAdminCode(string $adminCode): bool
+    public function hasAdminByAdminCode(string $adminCode): bool
     {
         try {
             $this->getAdminByAdminCode($adminCode);

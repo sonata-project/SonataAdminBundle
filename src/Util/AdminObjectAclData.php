@@ -21,63 +21,58 @@ use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 /**
  * AdminObjectAclData holds data manipulated by {@link AdminObjectAclManipulator}.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  */
-class AdminObjectAclData
+final class AdminObjectAclData
 {
-    /**
-     * @var string[] Permissions managed only by a OWNER
-     */
-    protected static $ownerPermissions = ['MASTER', 'OWNER'];
+    private const OWNER_PERMISSIONS = ['MASTER', 'OWNER'];
 
     /**
      * @var AdminInterface
      */
-    protected $admin;
+    private $admin;
 
     /**
      * @var object
      */
-    protected $object;
+    private $object;
 
     /**
      * @var \Traversable Users to set ACL for
      */
-    protected $aclUsers;
+    private $aclUsers;
 
     /**
      * @var \Traversable Roles to set ACL for
      */
-    protected $aclRoles;
+    private $aclRoles;
 
     /**
      * @var array<string, mixed> Cache of masks
      */
-    protected $masks = [];
+    private $masks = [];
 
     /**
      * @var FormInterface|null
      */
-    protected $aclUsersForm;
+    private $aclUsersForm;
 
     /**
      * @var FormInterface|null
      */
-    protected $aclRolesForm;
+    private $aclRolesForm;
 
     /**
      * @var MutableAclInterface|null
      */
-    protected $acl;
+    private $acl;
 
     /**
      * @var string
      *
      * @phpstan-var class-string
      */
-    protected $maskBuilderClass;
+    private $maskBuilderClass;
 
     /**
      * @phpstan-param class-string $maskBuilderClass
@@ -178,7 +173,7 @@ class AdminObjectAclData
         $permissions = $this->getPermissions();
 
         if (!$this->isOwner()) {
-            foreach (self::$ownerPermissions as $permission) {
+            foreach (self::OWNER_PERMISSIONS as $permission) {
                 $key = array_search($permission, $permissions, true);
                 if (false !== $key) {
                     unset($permissions[$key]);
@@ -191,7 +186,7 @@ class AdminObjectAclData
 
     public function getOwnerPermissions(): array
     {
-        return self::$ownerPermissions;
+        return self::OWNER_PERMISSIONS;
     }
 
     /**
@@ -219,7 +214,7 @@ class AdminObjectAclData
     /**
      * Cache masks.
      */
-    protected function updateMasks(): void
+    private function updateMasks(): void
     {
         $permissions = $this->getPermissions();
 

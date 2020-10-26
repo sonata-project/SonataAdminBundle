@@ -20,17 +20,14 @@ use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Manipulator\ObjectManipulator;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
 use Sonata\AdminBundle\Util\FormViewIterator;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AdminHelper
+final class AdminHelper
 {
     /**
      * @var string
@@ -40,7 +37,7 @@ class AdminHelper
     /**
      * @var PropertyAccessorInterface
      */
-    protected $propertyAccessor;
+    private $propertyAccessor;
 
     public function __construct(PropertyAccessorInterface $propertyAccessor)
     {
@@ -228,7 +225,7 @@ class AdminHelper
     /**
      * Recursively find the class name of the admin responsible for the element at the end of an association chain.
      */
-    protected function getModelClassName(AdminInterface $admin, array $elements): string
+    private function getModelClassName(AdminInterface $admin, array $elements): string
     {
         $element = array_shift($elements);
         $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();
