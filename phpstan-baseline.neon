@@ -260,6 +260,18 @@ parameters:
             count: 2
             path: src/Datagrid/SimplePager.php
 
+        -
+            # will be fixed in v4
+            message: "#^Method Sonata\\\\AdminBundle\\\\Datagrid\\\\Pager::next\\(\\) with return type void returns mixed but should not return anything\\.$#"
+            count: 1
+            path: src/Datagrid/Pager.php
+
+        -
+            # will be fixed in v4
+            message: "#^Method Sonata\\\\AdminBundle\\\\Datagrid\\\\Pager::rewind\\(\\) with return type void returns mixed but should not return anything\\.$#"
+            count: 1
+            path: src/Datagrid/Pager.php
+
 # Symfony related errors
         -
             message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeParentInterface\\:\\:arrayNode\\(\\)\\.$#"
