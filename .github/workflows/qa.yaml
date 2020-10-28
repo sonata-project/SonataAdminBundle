@@ -5,68 +5,151 @@
 name: Quality assurance
 
 on:
-  push:
-    branches:
-      - 3.x
-      - master
-  pull_request:
+    push:
+        branches:
+            - 3.x
+            - master
+    pull_request:
 
 jobs:
-  phpstan:
-    name: PHPStan
+    phpstan:
+        name: PHPStan ${{ matrix.php-version }} + ${{ matrix.dependencies }} + ${{ matrix.variant }}
 
-    runs-on: ubuntu-latest
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+        continue-on-error: ${{ matrix.allowed_to_fail }}
 
-      -   name: Install PHP with extensions
-          uses: shivammathur/setup-php@v2
-          with:
-              php-version: 7.4
-              coverage: none
-              tools: composer:v2
+        strategy:
+            matrix:
+                php-version:
+                    - '7.2'
+                    - '7.3'
+                    - '7.4'
+                dependencies: [highest]
+                allowed_to_fail: [false]
+                variant: [normal]
+                include:
+                    - php-version: '7.2'
+                      dependencies: lowest
+                      allowed_to_fail: false
+                      variant: normal
+                    - php-version: '8.0'
+                      dependencies: highest
+                      allowed_to_fail: true
+                      variant: normal
+                    - php-version: '7.4'
+                      dependencies: highest
+                      allowed_to_fail: false
+                      variant: 'symfony/symfony:"4.4.*"'
+                    - php-version: '7.4'
+                      dependencies: highest
+                      allowed_to_fail: false
+                      variant: 'sonata-project/block-bundle:"3.*"'
 
-      - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
-        with:
-          path: ~/.composer/cache
-          key: 7.4-composer-
-          restore-keys: |
-            7.4-composer-
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
 
-      - name: Install dependencies with composer
-        run: "composer install --no-interaction --no-progress --no-suggest"
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php-version }}
+                  coverage: none
+                  tools: composer:v2
 
-      - name: Run a static analysis with Phpstan
-        run: "vendor/bin/phpstan --memory-limit=1G analyse"
-  psalm:
-    name: Psalm
+            - name: Set Composer cache directory
+              id: composer-cache
+              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-    runs-on: ubuntu-latest
+            - name: Cache Composer
+              uses: actions/cache@v2
+              with:
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: ${{ runner.os }}-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ matrix.variant }}
+                  restore-keys: ${{ runner.os }}-${{ matrix.php-version }}-composer-
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+            - name: Install variant
+              if: matrix.variant != 'normal'
+              run: composer require ${{ matrix.variant }} --no-update
 
-      - name: Install PHP with extensions
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 7.4
-          coverage: none
-          tools: composer:v2
+            - name: Install Composer dependencies (lowest)
+              if: matrix.dependencies == 'lowest'
+              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable --prefer-lowest
 
-      - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
-        with:
-          path: ~/.composer/cache
-          key: 7.4-composer-
-          restore-keys: |
-            7.4-composer-
+            - name: Install Composer dependencies (highest)
+              if: matrix.dependencies == 'highest'
+              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
 
-      - name: Install dependencies with composer
-        run: "composer install --no-interaction --no-progress --no-suggest"
+            - name: PHPStan
+              run: vendor/bin/phpstan --memory-limit=1G analyse
 
-      - name: Run a static analysis with Psalm
-        run: "vendor/bin/psalm --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd"
+    psalm:
+        name: Psalm ${{ matrix.php-version }} + ${{ matrix.dependencies }} + ${{ matrix.variant }}
+
+        runs-on: ubuntu-latest
+
+        continue-on-error: ${{ matrix.allowed_to_fail }}
+
+        strategy:
+            matrix:
+                php-version:
+                    - '7.2'
+                    - '7.3'
+                    - '7.4'
+                dependencies: [highest]
+                allowed_to_fail: [false]
+                variant: [normal]
+                include:
+                    - php-version: '7.2'
+                      dependencies: lowest
+                      allowed_to_fail: false
+                      variant: normal
+                    - php-version: '8.0'
+                      dependencies: highest
+                      allowed_to_fail: true
+                      variant: normal
+                    - php-version: '7.4'
+                      dependencies: highest
+                      allowed_to_fail: false
+                      variant: 'symfony/symfony:"4.4.*"'
+                    - php-version: '7.4'
+                      dependencies: highest
+                      allowed_to_fail: false
+                      variant: 'sonata-project/block-bundle:"3.*"'
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php-version }}
+                  coverage: none
+                  tools: composer:v2
+
+            - name: Set Composer cache directory
+              id: composer-cache
+              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            - name: Cache Composer
+              uses: actions/cache@v2
+              with:
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: ${{ runner.os }}-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ matrix.variant }}
+                  restore-keys: ${{ runner.os }}-${{ matrix.php-version }}-composer-
+
+            - name: Install variant
+              if: matrix.variant != 'normal'
+              run: composer require ${{ matrix.variant }} --no-update
+
+            - name: Install Composer dependencies (lowest)
+              if: matrix.dependencies == 'lowest'
+              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable --prefer-lowest
+
+            - name: Install Composer dependencies (highest)
+              if: matrix.dependencies == 'highest'
+              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
+
+            - name: Psalm
+              run: vendor/bin/psalm --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd
