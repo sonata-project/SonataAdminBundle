@@ -21,12 +21,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: PHPStan
-        uses: docker://oskarstark/phpstan-ga
-        env:
-          REQUIRE_DEV: true
+      -   name: Install PHP with extensions
+          uses: shivammathur/setup-php@v2
+          with:
+              php-version: 7.4
+              coverage: none
+              tools: composer:v2
+
+      - name: Cache dependencies installed with composer
+        uses: actions/cache@v2
         with:
-          args: analyse
+          path: ~/.composer/cache
+          key: 7.4-composer-
+          restore-keys: |
+            7.4-composer-
+
+      - name: Install dependencies with composer
+        run: "composer install --no-interaction --no-progress --no-suggest"
+
+      - name: Run a static analysis with Phpstan
+        run: "vendor/bin/phpstan --memory-limit=1G analyse"
   psalm:
     name: Psalm
 
@@ -36,7 +50,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Psalm
-        uses: docker://vimeo/psalm-github-actions
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
         with:
-          args: --shepherd
+          php-version: 7.4
+          coverage: none
+          tools: composer:v2
+
+      - name: Cache dependencies installed with composer
+        uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache
+          key: 7.4-composer-
+          restore-keys: |
+            7.4-composer-
+
+      - name: Install dependencies with composer
+        run: "composer install --no-interaction --no-progress --no-suggest"
+
+      - name: Run a static analysis with Psalm
+        run: "vendor/bin/psalm --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd"
