@@ -56,7 +56,7 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
     private $query;
 
     /**
-     * @var object[]
+     * @var object[]|null
      */
     private $choices;
 
@@ -76,10 +76,10 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
     private $choiceList;
 
     /**
-     * @param string      $class
-     * @param string|null $property
-     * @param object|null $query
-     * @param object[]    $choices
+     * @param string        $class
+     * @param string|null   $property
+     * @param object|null   $query
+     * @param object[]|null $choices
      *
      * @phpstan-param class-string $class
      */
@@ -88,7 +88,7 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
         $class,
         $property = null,
         $query = null,
-        $choices = [],
+        $choices = null,
         ?PropertyAccessorInterface $propertyAccessor = null
     ) {
         $this->modelManager = $modelManager;
@@ -128,7 +128,7 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
         if (!$this->choiceList) {
             if ($this->query) {
                 $entities = $this->modelManager->executeQuery($this->query);
-            } elseif (\is_array($this->choices) && \count($this->choices) > 0) {
+            } elseif (\is_array($this->choices)) {
                 $entities = $this->choices;
             } else {
                 $entities = $this->modelManager->findBy($this->class);
