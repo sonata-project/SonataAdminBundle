@@ -74,4 +74,21 @@ EOD;
             $expression
         );
     }
+
+    public function testRowAttr(): void
+    {
+        $form = $this->factory->createNamed('name', TextType::class, '', [
+            'row_attr' => [
+                'class' => 'foo',
+                'data-value' => 'bar',
+            ],
+        ]);
+        $view = $form->createView();
+        $html = $this->renderRow($view);
+
+        $this->assertMatchesXpath(
+            $html,
+            '//div[@class="foo form-group"][@data-value="bar"][@id="sonata-ba-field-container-name"]'
+        );
+    }
 }
