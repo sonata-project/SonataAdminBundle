@@ -1558,7 +1558,7 @@ class CRUDController implements ContainerAwareInterface
     protected function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): ?JsonResponse
     {
         if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
-            @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json` or `Accept: */*`', E_USER_DEPRECATED);
+            @trigger_error(sprintf('"%s" is not supported since sonata-project/admin-bundle 3.x and the status code 406 will be set in the returned response in 4.0. Use `application/json`.', implode('", "', $request->getAcceptableContentTypes())));
 
             return null;
         }
@@ -1580,7 +1580,7 @@ class CRUDController implements ContainerAwareInterface
     protected function handleXmlHttpRequestSuccessResponse(Request $request, $object): JsonResponse
     {
         if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
-            @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json` or `Accept: */*`', E_USER_DEPRECATED);
+            @trigger_error(sprintf('"%s" is not supported since sonata-project/admin-bundle 3.x and the status code 406 will be set in the returned response in 4.0. Use `application/json`.', implode('", "', $request->getAcceptableContentTypes())));
         }
 
         return $this->renderJson([
