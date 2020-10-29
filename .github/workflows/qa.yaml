@@ -13,38 +13,9 @@ on:
 
 jobs:
     phpstan:
-        name: PHPStan ${{ matrix.php-version }} + ${{ matrix.dependencies }} + ${{ matrix.variant }}
+        name: PHPStan
 
         runs-on: ubuntu-latest
-
-        continue-on-error: ${{ matrix.allowed_to_fail }}
-
-        strategy:
-            matrix:
-                php-version:
-                    - '7.2'
-                    - '7.3'
-                    - '7.4'
-                dependencies: [highest]
-                allowed_to_fail: [false]
-                variant: [normal]
-                include:
-                    - php-version: '7.2'
-                      dependencies: lowest
-                      allowed_to_fail: false
-                      variant: normal
-                    - php-version: '8.0'
-                      dependencies: highest
-                      allowed_to_fail: true
-                      variant: normal
-                    - php-version: '7.4'
-                      dependencies: highest
-                      allowed_to_fail: false
-                      variant: 'symfony/symfony:"4.4.*"'
-                    - php-version: '7.4'
-                      dependencies: highest
-                      allowed_to_fail: false
-                      variant: 'sonata-project/block-bundle:"3.*"'
 
         steps:
             - name: Checkout
@@ -53,7 +24,7 @@ jobs:
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: ${{ matrix.php-version }}
+                  php-version: 7.4
                   coverage: none
                   tools: composer:v2
 
@@ -65,57 +36,19 @@ jobs:
               uses: actions/cache@v2
               with:
                   path: ${{ steps.composer-cache.outputs.dir }}
-                  key: ${{ runner.os }}-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ matrix.variant }}
-                  restore-keys: ${{ runner.os }}-${{ matrix.php-version }}-composer-
-
-            - name: Install variant
-              if: matrix.variant != 'normal'
-              run: composer require ${{ matrix.variant }} --no-update
-
-            - name: Install Composer dependencies (lowest)
-              if: matrix.dependencies == 'lowest'
-              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable --prefer-lowest
+                  key: ${{ runner.os }}-7.4-composer-highest-normal
+                  restore-keys: ${{ runner.os }}-7.4-composer-
 
             - name: Install Composer dependencies (highest)
-              if: matrix.dependencies == 'highest'
               run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
 
             - name: PHPStan
               run: vendor/bin/phpstan --memory-limit=1G analyse
 
     psalm:
-        name: Psalm ${{ matrix.php-version }} + ${{ matrix.dependencies }} + ${{ matrix.variant }}
+        name: Psalm
 
         runs-on: ubuntu-latest
-
-        continue-on-error: ${{ matrix.allowed_to_fail }}
-
-        strategy:
-            matrix:
-                php-version:
-                    - '7.2'
-                    - '7.3'
-                    - '7.4'
-                dependencies: [highest]
-                allowed_to_fail: [false]
-                variant: [normal]
-                include:
-                    - php-version: '7.2'
-                      dependencies: lowest
-                      allowed_to_fail: false
-                      variant: normal
-                    - php-version: '8.0'
-                      dependencies: highest
-                      allowed_to_fail: true
-                      variant: normal
-                    - php-version: '7.4'
-                      dependencies: highest
-                      allowed_to_fail: false
-                      variant: 'symfony/symfony:"4.4.*"'
-                    - php-version: '7.4'
-                      dependencies: highest
-                      allowed_to_fail: false
-                      variant: 'sonata-project/block-bundle:"3.*"'
 
         steps:
             - name: Checkout
@@ -124,7 +57,7 @@ jobs:
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: ${{ matrix.php-version }}
+                  php-version: 7.4
                   coverage: none
                   tools: composer:v2
 
@@ -136,19 +69,10 @@ jobs:
               uses: actions/cache@v2
               with:
                   path: ${{ steps.composer-cache.outputs.dir }}
-                  key: ${{ runner.os }}-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ matrix.variant }}
-                  restore-keys: ${{ runner.os }}-${{ matrix.php-version }}-composer-
-
-            - name: Install variant
-              if: matrix.variant != 'normal'
-              run: composer require ${{ matrix.variant }} --no-update
-
-            - name: Install Composer dependencies (lowest)
-              if: matrix.dependencies == 'lowest'
-              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable --prefer-lowest
+                  key: ${{ runner.os }}-7.4-composer-highest-normal
+                  restore-keys: ${{ runner.os }}-7.4-composer-
 
             - name: Install Composer dependencies (highest)
-              if: matrix.dependencies == 'highest'
               run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
 
             - name: Psalm
