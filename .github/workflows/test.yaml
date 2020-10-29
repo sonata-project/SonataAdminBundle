@@ -15,7 +15,7 @@ jobs:
     test:
         name: PHP ${{ matrix.php-version }} + ${{ matrix.dependencies }} + ${{ matrix.variant }}
 
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-18.04
 
         continue-on-error: ${{ matrix.allowed_to_fail }}
 

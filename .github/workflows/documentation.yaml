@@ -15,7 +15,7 @@ jobs:
     build:
         name: Sphinx build
 
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-18.04
 
         steps:
             - name: Checkout
@@ -49,7 +49,7 @@ jobs:
     doctor-rst:
         name: DOCtor-RST
 
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-18.04
 
         steps:
             - name: Checkout
