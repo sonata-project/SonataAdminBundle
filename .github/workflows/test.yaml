@@ -58,7 +58,7 @@ jobs:
                   tools: composer:v2
 
             - name: Add PHPUnit matcher
-            run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+              run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
             - name: Set Composer cache directory
               id: composer-cache
@@ -67,9 +67,9 @@ jobs:
             - name: Cache Composer
               uses: actions/cache@v2
               with:
-                path: ${{ steps.composer-cache.outputs.dir }}
-                key: ${{ runner.os }}-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ matrix.variant }}
-                restore-keys: ${{ runner.os }}-${{ matrix.php-version }}-composer-
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: ${{ runner.os }}-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ matrix.variant }}
+                  restore-keys: ${{ runner.os }}-${{ matrix.php-version }}-composer-
 
             - name: Configuration required for PHP 8.0
               if: matrix.php-version == '8.0'
@@ -82,7 +82,7 @@ jobs:
 
             - name: Install variant
               if: matrix.variant != 'normal'
-            run: composer require ${{ matrix.variant }} --no-update
+              run: composer require ${{ matrix.variant }} --no-update
 
             - name: Install Composer dependencies (lowest)
               if: matrix.dependencies == 'lowest'
