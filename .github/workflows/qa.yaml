@@ -5,38 +5,76 @@
 name: Quality assurance
 
 on:
-  push:
-    branches:
-      - 3.x
-      - master
-  pull_request:
+    push:
+        branches:
+            - 3.x
+            - master
+    pull_request:
 
 jobs:
-  phpstan:
-    name: PHPStan
+    phpstan:
+        name: PHPStan
 
-    runs-on: ubuntu-latest
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
 
-      - name: PHPStan
-        uses: docker://oskarstark/phpstan-ga
-        env:
-          REQUIRE_DEV: true
-        with:
-          args: analyse
-  psalm:
-    name: Psalm
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 7.4
+                  coverage: none
+                  tools: composer:v2
 
-    runs-on: ubuntu-latest
+            - name: Set Composer cache directory
+              id: composer-cache
+              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+            - name: Cache Composer
+              uses: actions/cache@v2
+              with:
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: ${{ runner.os }}-7.4-composer-highest-normal
+                  restore-keys: ${{ runner.os }}-7.4-composer-
 
-      - name: Psalm
-        uses: docker://vimeo/psalm-github-actions
-        with:
-          args: --shepherd
+            - name: Install Composer dependencies (highest)
+              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
+
+            - name: PHPStan
+              run: vendor/bin/phpstan --memory-limit=1G analyse
+
+    psalm:
+        name: Psalm
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 7.4
+                  coverage: none
+                  tools: composer:v2
+
+            - name: Set Composer cache directory
+              id: composer-cache
+              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            - name: Cache Composer
+              uses: actions/cache@v2
+              with:
+                  path: $0
+                  key: $-7.4-composer-highest-normal
+                  restore-keys: $-7.4-composer-
+
+            - name: Install Composer dependencies (highest)
+              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
+
+            - name: Psalm
+              run: vendor/bin/psalm --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd
+
