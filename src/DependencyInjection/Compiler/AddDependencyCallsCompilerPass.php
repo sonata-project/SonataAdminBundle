@@ -376,22 +376,22 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $methods = [];
         $pos = 0;
-        foreach ($definition->getMethodCalls() as $method) {
-            if ('setTemplates' === $method[0]) {
-                $definedTemplates = array_merge($definedTemplates, $method[1][0]);
+        foreach ($definition->getMethodCalls() as [$method, $args]) {
+            if ('setTemplates' === $method) {
+                $definedTemplates = array_merge($definedTemplates, $args[0]);
 
                 continue;
             }
 
-            if ('setTemplate' === $method[0]) {
-                $definedTemplates[$method[1][0]] = $method[1][1];
+            if ('setTemplate' === $method) {
+                $definedTemplates[$args[0]] = $args[1];
 
                 continue;
             }
 
             // set template for simple pager if it is not already overwritten
-            if ('setPagerType' === $method[0]
-                && Pager::TYPE_SIMPLE === $method[1][0]
+            if ('setPagerType' === $method
+                && Pager::TYPE_SIMPLE === $args[0]
                 && (
                     !isset($definedTemplates['pager_results'])
                     || '@SonataAdmin/Pager/results.html.twig' === $definedTemplates['pager_results']
@@ -400,7 +400,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 $definedTemplates['pager_results'] = '@SonataAdmin/Pager/simple_pager_results.html.twig';
             }
 
-            $methods[$pos] = $method;
+            $methods[$pos] = [$method, $args];
             ++$pos;
         }
 
