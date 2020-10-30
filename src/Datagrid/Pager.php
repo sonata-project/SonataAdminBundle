@@ -440,7 +440,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     public function getParameter($name, $default = null)
     {
-        return isset($this->parameters[$name]) ? $this->parameters[$name] : $default;
+        return $this->parameters[$name] ?? $default;
     }
 
     /**
