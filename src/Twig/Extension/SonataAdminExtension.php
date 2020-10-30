@@ -481,7 +481,7 @@ class SonataAdminExtension extends AbstractExtension
      */
     public function getXEditableType($type)
     {
-        return isset($this->xEditableTypeMapping[$type]) ? $this->xEditableTypeMapping[$type] : false;
+        return $this->xEditableTypeMapping[$type] ?? false;
     }
 
     /**
