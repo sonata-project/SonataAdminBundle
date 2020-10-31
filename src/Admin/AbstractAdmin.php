@@ -678,7 +678,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function getFilterParameters(): array
     {
         $parameters = array_merge(
-            $this->getModelManager()->getDefaultSortValues($this->getClass()),
             $this->getDefaultSortValues(),
             $this->getDefaultFilterValues()
         );
@@ -1297,7 +1296,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function getMaxPerPage(): int
     {
-        $sortValues = $this->getModelManager()->getDefaultSortValues($this->class);
+        $sortValues = $this->getDefaultSortValues();
 
         return $sortValues['_per_page'] ?? 25;
     }
@@ -2117,7 +2116,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function getPerPageOptions(): array
     {
-        $perPageOptions = $this->getModelManager()->getDefaultPerPageOptions($this->class);
+        $perPageOptions = [10, 25, 50, 100, 250];
         $perPageOptions[] = $this->getMaxPerPage();
 
         $perPageOptions = array_unique($perPageOptions);
@@ -2425,7 +2424,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     final protected function getDefaultSortValues(): array
     {
+        // NEXT_MAJOR: Use the next line instead.
         $defaultSortValues = [];
+        // $defaultSortValues = ['_page' => 1, '_per_page' => 25];
 
         $this->configureDefaultSortValues($defaultSortValues);
 

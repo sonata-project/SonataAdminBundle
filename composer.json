@@ -71,6 +71,7 @@
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",
         "phpdocumentor/reflection-docblock": "^5.2",
         "phpstan/phpstan": "^0.12.29",
+        "phpstan/phpstan-symfony": "^0.12.10",
         "psalm/plugin-symfony": "^1.4",
         "psr/event-dispatcher": "^1.0",
         "sonata-project/intl-bundle": "^2.4",

@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.78.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.78.0...3.78.1) - 2020-10-28
+### Fixed
+- [[#6530](https://github.com/sonata-project/SonataAdminBundle/pull/6530)] Added the ability to scroll the filter list dropdown ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [3.78.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.77.0...3.78.0) - 2020-10-23
 ### Added
 - [[#6486](https://github.com/sonata-project/SonataAdminBundle/pull/6486)] Added `Pool::hasSingleAdminByClass()` ([@VincentLanglet](https://github.com/VincentLanglet))

@@ -112,16 +112,6 @@ class ModelManager implements ModelManagerInterface, LockInterface
         }
     }
 
-    public function getDefaultSortValues(string $class): array
-    {
-        return [];
-    }
-
-    public function getDefaultPerPageOptions(string $class): array
-    {
-        return [];
-    }
-
     public function modelReverseTransform(string $class, array $array = []): object
     {
         throw new \BadMethodCallException('Not implemented.');

@@ -731,14 +731,11 @@ class AdminTest extends TestCase
 
     public function testGetPerPageOptions(): void
     {
-        $modelManager = $this->createStub(ModelManagerInterface::class);
-
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-        $admin->setModelManager($modelManager);
 
         $perPageOptions = $admin->getPerPageOptions();
 
-        $this->assertSame([25], $perPageOptions);
+        $this->assertSame([10, 25, 50, 100, 250], $perPageOptions);
     }
 
     public function testGetLabelTranslatorStrategy(): void
@@ -1597,13 +1594,6 @@ class AdminTest extends TestCase
 
         $commentAdmin->setRequest($request);
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-        $modelManager
-            ->method('getDefaultSortValues')
-            ->willReturn([]);
-
-        $commentAdmin->setModelManager($modelManager);
-
         $parameters = $commentAdmin->getFilterParameters();
 
         $this->assertTrue(isset($parameters['post__author']));
@@ -1618,23 +1608,10 @@ class AdminTest extends TestCase
             'Sonata\NewsBundle\Controller\CommentAdminController'
         );
 
-        $modelManager = $this->createStub(ModelManagerInterface::class);
-        $modelManager
-            ->method('getDefaultSortValues')
-            ->willReturn([
-                '_sort_by' => 'id',
-                '_sort_order' => 'ASC',
-            ])
-        ;
-
-        $commentAdmin->setModelManager($modelManager);
-
         $parameters = $commentAdmin->getFilterParameters();
 
-        $this->assertArrayHasKey('_sort_by', $parameters);
-        $this->assertSame('id', $parameters['_sort_by']);
-        $this->assertArrayHasKey('_sort_order', $parameters);
-        $this->assertSame('ASC', $parameters['_sort_order']);
+        $this->assertArrayHasKey('_per_page', $parameters);
+        $this->assertSame(25, $parameters['_per_page']);
     }
 
     public function testGetFilterFieldDescription(): void
@@ -1646,9 +1623,6 @@ class AdminTest extends TestCase
         $bazFieldDescription = new FieldDescription('baz');
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
-        $modelManager
-            ->method('getDefaultSortValues')
-            ->willReturn([]);
 
         $modelManager->expects($this->exactly(3))
             ->method('getNewFieldDescriptionInstance')
@@ -2106,13 +2080,6 @@ class AdminTest extends TestCase
 
         $admin->setRequest($request);
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-        $modelManager
-            ->method('getDefaultSortValues')
-            ->willReturn([]);
-
-        $admin->setModelManager($modelManager);
-
         $this->assertSame([
             'foo' => [
                 'type' => '1',
@@ -2349,15 +2316,9 @@ class AdminTest extends TestCase
         $this->expectNotToPerformAssertions();
 
         $formFactory = new FormFactory(new FormRegistry([], new ResolvedFormTypeFactory()));
-        $modelManager = $this->createStub(ModelManagerInterface::class);
-        $modelManager
-            ->method('getDefaultSortValues')
-            ->willReturn([]);
 
         $admin = new AvoidInfiniteLoopAdmin('code', \stdClass::class, null);
         $admin->setSubject(new \stdClass());
-
-        $admin->setModelManager($modelManager);
 
         $admin->setFormContractor(new FormContractor($formFactory));
 
