@@ -221,6 +221,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     }
 
     /**
+     * NEXT_MAJOR: Change visibility to private.
+     *
      * This method read the attribute keys and configure admin class to use the related dependency.
      */
     public function applyConfigurationFromAttribute(Definition $definition, array $attributes)
@@ -253,6 +255,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     }
 
     /**
+     * NEXT_MAJOR: Change visibility to private.
+     *
      * Apply the default values required by the AdminInterface to the Admin service definition.
      *
      * @param string $serviceId
@@ -364,6 +368,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     }
 
     /**
+     * NEXT_MAJOR: Change visibility to private.
+     *
      * @param string $serviceId
      */
     public function fixTemplates(
