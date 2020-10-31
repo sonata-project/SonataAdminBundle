@@ -117,13 +117,12 @@ interface ModelManagerInterface extends DatagridManagerInterface
 
     /**
      * @param string $class
-     * @param string $alias
      *
      * @return ProxyQueryInterface
      *
      * @phpstan-param class-string $class
      */
-    public function createQuery($class, $alias = 'o');
+    public function createQuery($class);
 
     /**
      * Get the identifier for the model type of this class.
