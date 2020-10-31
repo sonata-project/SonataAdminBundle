@@ -10,6 +10,12 @@ This interface has been deprecated without replacement.
 UPGRADE FROM 3.77 to 3.78
 =========================
 
+### Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface::getDataSourceIterator()`
+
+As replacement, you MUST inject an instance of `Sonata\AdminBundle\Exporter\DataSourceInterface` in your admin. This way, the method `DataSourceInterface::createIterator()` will be used instead.
+
+Setting a `DataSourceInterface` instance in your admin will be mandatory in version 4.0.
+
 ### Deprecated `Sonata\AdminBundle\Command\Validators::validateEntityName()`
 
 In version 3.77, the shortcut notation for model class names (`AppBundle:User`)

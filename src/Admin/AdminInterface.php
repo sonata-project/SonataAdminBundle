@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Exporter\DataSourceInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Object\MetadataInterface;
@@ -64,6 +65,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @method void                            reorderFormGroup(string $group, array $keys)
  * @method void                            defineFormBuilder(FormBuilderInterface $formBuilder)
  * @method string                          getPagerType()
+ * @method DataSourceInterface|null        getDataSource()
  *
  * @phpstan-template T of object
  * @phpstan-extends AccessRegistryInterface<T>
@@ -172,6 +174,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @return ModelManagerInterface
      */
     public function getModelManager();
+
+    // NEXT_MAJOR: Uncomment the next line.
+    // public function getDataSource(): DataSourceInterface;
 
     /**
      * @return string the manager type of the admin

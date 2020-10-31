@@ -33,6 +33,7 @@ use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Exporter\DataSourceInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -67,6 +68,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\Doctrine\Adapter\AdapterInterface;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -90,6 +92,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AdminTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     protected $cacheTempFolder;
 
     protected function setUp(): void
@@ -2535,10 +2539,63 @@ class AdminTest extends TestCase
 
     public function testGetDataSourceIterator(): void
     {
-        $datagrid = $this->createMock(DatagridInterface::class);
-        $datagrid->method('buildPager');
+        $query = $this->createStub(ProxyQueryInterface::class);
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $datagrid = $this->createMock(DatagridInterface::class);
+        $datagrid->expects($this->once())->method('buildPager');
+        $datagrid->method('getQuery')->willReturn($query);
+
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager->method('getExportFields')->willReturn([
+            'field',
+            'foo',
+            'bar',
+        ]);
+
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $dataSource->expects($this->once())->method('createIterator')->with($query, [
+            'Feld' => 'field',
+            1 => 'foo',
+            2 => 'bar',
+        ]);
+
+        $admin = $this->getMockBuilder(AbstractAdmin::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getDatagrid', 'getTranslationLabel', 'trans'])
+            ->getMockForAbstractClass();
+        $admin->method('getDatagrid')->willReturn($datagrid);
+        $admin->setModelManager($modelManager);
+        $admin->setDataSource($dataSource);
+
+        $admin
+            ->method('getTranslationLabel')
+            ->willReturnCallback(static function (string $label, string $context = '', string $type = ''): string {
+                return sprintf('%s.%s_%s', $context, $type, $label);
+            });
+        $admin
+            ->method('trans')
+            ->willReturnCallback(static function (string $label): string {
+                if ('export.label_field' === $label) {
+                    return 'Feld';
+                }
+
+                return $label;
+            });
+
+        $admin->getDataSourceIterator();
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
+    public function testGetDataSourceIteratorWithoutDataSourceSet(): void
+    {
+        $datagrid = $this->createMock(DatagridInterface::class);
+        $datagrid->expects($this->once())->method('buildPager');
+
+        $modelManager = $this->createStub(ModelManagerInterface::class);
         $modelManager->method('getExportFields')->willReturn([
             'field',
             'foo',
@@ -2553,7 +2610,7 @@ class AdminTest extends TestCase
 
         $admin = $this->getMockBuilder(AbstractAdmin::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getDatagrid', 'getTranslationLabel', 'trans'])
+            ->onlyMethods(['getDatagrid', 'getTranslationLabel', 'trans'])
             ->getMockForAbstractClass();
         $admin->method('getDatagrid')->willReturn($datagrid);
         $admin->setModelManager($modelManager);
@@ -2573,6 +2630,7 @@ class AdminTest extends TestCase
                 return $label;
             });
 
+        $this->expectDeprecation('Using "Sonata\AdminBundle\Admin\AbstractAdmin::getDataSourceIterator()" without setting a "Sonata\AdminBundle\Exporter\DataSourceInterface" instance in the admin is deprecated since sonata-admin/admin-bundle 3.x and won\'t be possible in 4.0.');
         $admin->getDataSourceIterator();
     }
 

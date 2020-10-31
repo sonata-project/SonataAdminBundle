@@ -26,6 +26,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Exporter\DataSourceInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
@@ -42,7 +43,6 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\Form\Validator\Constraints\InlineConstraint;
 use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -303,6 +303,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * @var ModelManagerInterface
      */
     protected $modelManager;
+
+    /**
+     * NEXT_MAJOR: Restrict to DataSourceInterface.
+     *
+     * @var DataSourceInterface|null
+     */
+    protected $dataSource;
 
     /**
      * The current request object.
@@ -698,6 +705,19 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 $fields[$transLabel] = $field;
             }
         }
+
+        if ($this->getDataSource()) {
+            $query = $datagrid->getQuery();
+
+            return $this->getDataSource()->createIterator($query, $fields);
+        }
+
+        @trigger_error(sprintf(
+            'Using "%s()" without setting a "%s" instance in the admin is deprecated since sonata-admin/admin-bundle 3.x'
+            .' and won\'t be possible in 4.0.',
+            __METHOD__,
+            DataSourceInterface::class
+        ), E_USER_DEPRECATED);
 
         return $this->getModelManager()->getDataSourceIterator($datagrid, $fields);
     }
@@ -2703,6 +2723,19 @@ EOT;
     public function setModelManager(ModelManagerInterface $modelManager)
     {
         $this->modelManager = $modelManager;
+    }
+
+    /**
+     * NEXT_MAJOR: Change typehint for DataSourceInterface.
+     */
+    public function getDataSource(): ?DataSourceInterface
+    {
+        return $this->dataSource;
+    }
+
+    public function setDataSource(DataSourceInterface $dataSource)
+    {
+        $this->dataSource = $dataSource;
     }
 
     public function getManagerType()
