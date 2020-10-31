@@ -80,6 +80,8 @@ class Pool
     protected $propertyAccessor;
 
     /**
+     * NEXT_MAJOR: change to TemplateRegistryInterface.
+     *
      * @var MutableTemplateRegistryInterface
      */
     private $templateRegistry;
@@ -469,6 +471,9 @@ class Pool
         return $this->adminClasses;
     }
 
+    /**
+     * NEXT_MAJOR: change to TemplateRegistryInterface.
+     */
     final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void
     {
         $this->templateRegistry = $templateRegistry;
