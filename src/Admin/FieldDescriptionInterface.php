@@ -31,8 +31,6 @@ interface FieldDescriptionInterface
 
     /**
      * Returns the name, the name can be used as a form label or table header.
-     *
-     * @return string the name
      */
     public function getName(): string;
 
