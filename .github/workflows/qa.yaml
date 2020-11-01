@@ -68,9 +68,9 @@ jobs:
             - name: Cache Composer
               uses: actions/cache@v2
               with:
-                  path: $0
-                  key: $-7.4-composer-highest-normal
-                  restore-keys: $-7.4-composer-
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: ${{ runner.os }}-7.4-composer-highest-normal
+                  restore-keys: ${{ runner.os }}-7.4-composer-
 
             - name: Install Composer dependencies (highest)
               run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
