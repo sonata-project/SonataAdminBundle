@@ -384,13 +384,23 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $methods = [];
         $pos = 0;
+        $customTemplateRegistryId = null;
+
         foreach ($definition->getMethodCalls() as [$method, $args]) {
+            if ('setTemplateRegistry' === $method) {
+                $customTemplateRegistryId = $args[0]->__toString();
+
+                continue;
+            }
+
+            // NEXT_MAJOR: remove this if, method is deprecated
             if ('setTemplates' === $method) {
                 $definedTemplates = array_merge($definedTemplates, $args[0]);
 
                 continue;
             }
 
+            // NEXT_MAJOR: remove this if, method is deprecated
             if ('setTemplate' === $method) {
                 $definedTemplates[$args[0]] = $args[1];
 
@@ -417,16 +427,29 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $definedTemplates = $overwrittenTemplates['view'] + $definedTemplates;
 
         $templateRegistryId = sprintf('%s.template_registry', $serviceId);
-        $templateRegistryDefinition = $container
-            ->register($templateRegistryId, TemplateRegistry::class)
-            ->addTag('sonata.admin.template_registry')
-            ->setPublic(true); // Temporary fix until we can support service locators
 
-        if ($container->getParameter('sonata.admin.configuration.templates') !== $definedTemplates) {
-            $templateRegistryDefinition->addArgument($definedTemplates);
+        if (null !== $customTemplateRegistryId && $container->hasDefinition((string) $customTemplateRegistryId)) {
+            $templateRegistryDefinition = $container
+                ->getDefinition((string) $customTemplateRegistryId)
+                ->setClass(TemplateRegistry::class)
+                ->setPublic(true); // Temporary fix until we can support service locators
+
+            if ($templateRegistryId !== $customTemplateRegistryId) {
+                $container
+                    ->setAlias($templateRegistryId, (string) $customTemplateRegistryId)
+                    ->setPublic(true)
+                ;
+            }
         } else {
-            $templateRegistryDefinition->addArgument('%sonata.admin.configuration.templates%');
+            $templateRegistryDefinition = $container
+                ->register($templateRegistryId, TemplateRegistry::class)
+                ->addTag('sonata.admin.template_registry')
+                ->setPublic(true); // Temporary fix until we can support service locators
         }
+
+        $templateRegistryDefinitionArgs = $templateRegistryDefinition->getArguments();
+
+        $templateRegistryDefinition->addArgument(array_merge($definedTemplates, $templateRegistryDefinitionArgs[0] ?? []));
 
         $definition->addMethodCall('setTemplateRegistry', [new Reference($templateRegistryId)]);
     }
