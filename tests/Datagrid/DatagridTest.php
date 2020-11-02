@@ -456,11 +456,11 @@ class DatagridTest extends TestCase
 
         $this->pager->expects($this->once())
             ->method('setMaxPerPage')
-            ->with($this->equalTo('50'));
+            ->with($this->equalTo(50));
 
         $this->pager->expects($this->once())
             ->method('setPage')
-            ->with($this->equalTo('3'));
+            ->with($this->equalTo(3));
 
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, ['_sort_by' => $sortBy, '_page' => $page, '_per_page' => $perPage]);
 
@@ -499,14 +499,9 @@ class DatagridTest extends TestCase
 
     public function getBuildPagerWithPageTests(): array
     {
-        // tests for php 5.3, because isset functionality was changed since php 5.4
         return [
             [3, 50],
-            ['3', '50'],
-            [3, '50'],
-            ['3', 50],
             [3, ['type' => null, 'value' => 50]],
-            [3, ['type' => null, 'value' => '50']],
         ];
     }
 
@@ -517,11 +512,11 @@ class DatagridTest extends TestCase
     {
         $this->pager->expects($this->once())
             ->method('setMaxPerPage')
-            ->with($this->equalTo('50'));
+            ->with($this->equalTo(50));
 
         $this->pager->expects($this->once())
             ->method('setPage')
-            ->with($this->equalTo('3'));
+            ->with($this->equalTo(3));
 
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, []);
         $this->datagrid->setValue('_per_page', null, $perPage);
@@ -541,12 +536,8 @@ class DatagridTest extends TestCase
 
     public function getBuildPagerWithPage2Tests(): array
     {
-        // tests for php 5.3, because isset functionality was changed since php 5.4
         return [
             [3, 50],
-            ['3', '50'],
-            [3, '50'],
-            ['3', 50],
         ];
     }
 
