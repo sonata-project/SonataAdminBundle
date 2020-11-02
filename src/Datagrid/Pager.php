@@ -284,9 +284,9 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return max($this->getPage() - 1, $this->getFirstPage());
     }
 
-    public function setPage($page): void
+    public function setPage(int $page): void
     {
-        $this->page = (int) $page;
+        $this->page = $page;
 
         if ($this->page <= 0) {
             // set first page, which depends on a maximum set
@@ -299,10 +299,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return $this->maxPerPage;
     }
 
-    public function setMaxPerPage($max): void
+    public function setMaxPerPage(int $max): void
     {
-        $max = (int) $max;
-
         if ($max > 0) {
             $this->maxPerPage = $max;
             if (0 === $this->page) {
