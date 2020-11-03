@@ -1,8 +1,31 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.xx to 3.xx
-=========================
+UPGRADE FROM 3.x to 3.x
+=======================
+
+### `sonata.admin.template_registry` tag functionality was improved
+
+You can now remove deprecations from yours `Admin` services configurations.
+
+Before:
+
+    Sonata\AdminBundle\Tests\App\Admin\FooAdmin:
+        arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, ~]
+        tags:
+            - {name: sonata.admin, manager_type: test, label: Foo}
+       calls:
+           - [setTemplate, ['edit','@FooAdmin/CRUD/edit.html.twig']]
+           - [setTemplate, ['list', '@FooAdmin/CRUD/list.html.twig']]
+
+After:
+
+    Sonata\AdminBundle\Tests\App\Admin\FooAdmin:
+        arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, ~]
+        tags:
+            - {name: sonata.admin, manager_type: test, label: Foo}
+            - {name: sonata.admin.template_registry, template_name:'edit', template_path: '@FooAdmin/CRUD/edit.html.twig'}
+            - {name: sonata.admin.template_registry, template_name:'list', template_path: '@FooAdmin/CRUD/list.html.twig'}
 
 ### `RouteCollection` now implements `RouteCollectionInterface`
 

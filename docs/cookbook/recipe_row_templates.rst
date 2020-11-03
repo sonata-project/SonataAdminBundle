@@ -36,16 +36,16 @@ Two template keys need to be set:
             <argument/>
             <argument>%sonata.admin.comment.entity%</argument>
             <argument>%sonata.admin.comment.controller%</argument>
-            <call method="setTemplates">
-                <argument type="collection">
-                    <argument key="inner_list_row">
-                        @App/Admin/inner_row_comment.html.twig
-                    </argument>
-                    <argument key="base_list_field">
-                        @SonataAdmin/CRUD/base_list_flat_field.html.twig
-                    </argument>
-                </argument>
-            </call>
+            <tag
+                name="sonata.admin.template_registry"
+                template_name="inner_list_row"
+                template_path="@App/Admin/inner_row_comment.html.twig"
+                />
+            <tag
+                name="sonata.admin.template_registry"
+                template_name="base_list_field"
+                template_path="@SonataAdmin/CRUD/base_list_flat_field.html.twig"
+                />
             <tag
                 name="sonata.admin"
                 manager_type="orm"

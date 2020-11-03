@@ -37,11 +37,11 @@ First, configure the ``outer_list_rows_mosaic`` template key:
             <argument/>
             <argument>%sonata.media.admin.media.entity%</argument>
             <argument>%sonata.media.admin.media.controller%</argument>
-            <call method="setTemplates">
-                <argument type="collection">
-                    <argument key="outer_list_rows_mosaic">@SonataMedia/MediaAdmin/list_outer_rows_mosaic.html.twig</argument>
-                </argument>
-            </call>
+            <tag
+                name="sonata.admin.template_registry"
+                template_name="outer_list_rows_mosaic"
+                template_path="@SonataMedia/MediaAdmin/list_outer_rows_mosaic.html.twig"
+                />
             <tag
                 name="sonata.admin"
                 manager_type="orm"

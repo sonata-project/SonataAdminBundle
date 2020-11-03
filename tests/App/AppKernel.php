@@ -102,6 +102,7 @@ final class AppKernel extends Kernel
             'strict_variables' => '%kernel.debug%',
             'exception_controller' => null,
             'form_themes' => ['@SonataAdmin/Form/form_admin_fields.html.twig'],
+            'paths' => ['%kernel.project_dir%/Resources/views'],
         ]);
 
         $loader->load(sprintf('%s/config/services.yml', $this->getProjectDir()));

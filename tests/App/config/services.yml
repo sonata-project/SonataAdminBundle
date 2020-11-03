@@ -41,6 +41,9 @@ services:
         arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, ~]
         tags:
             - {name: sonata.admin, manager_type: test, label: Foo}
+            - {name: sonata.admin.template_registry, template_name: 'list', template_path: 'CRUD/custom_list.html.twig'}
+            - {name: sonata.admin.template_registry, template_name: 'show', template_path: 'CRUD/custom_show.html.twig'}
+            - {name: sonata.admin.template_registry, template_name: 'edit', template_path: 'CRUD/custom_edit.html.twig'}
 
     Sonata\AdminBundle\Tests\App\Admin\EmptyAdmin:
         arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, ~]

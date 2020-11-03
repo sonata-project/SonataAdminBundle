@@ -52,6 +52,7 @@ The demo website can be found at https://demo.sonata-project.org.
    reference/console
    reference/troubleshooting
    reference/breadcrumbs
+   reference/tags
 
 .. toctree::
    :caption: Advanced Options

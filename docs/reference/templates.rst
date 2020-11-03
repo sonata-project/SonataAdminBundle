@@ -171,10 +171,9 @@ can specify the templates to use in the ``Admin`` service definition:
                     - ~
                     - App\Entity\Post
                     - ~
-                calls:
-                    - [setTemplate, ['edit', 'PostAdmin/edit.html.twig']]
                 tags:
                     - { name: sonata.admin, manager_type: orm, group: 'Content', label: 'Post' }
+                    - { name: sonata.admin.template_registry, template_name: 'edit', template_path: 'PostAdmin/edit.html.twig' }
 
     .. code-block:: xml
 
@@ -185,10 +184,11 @@ can specify the templates to use in the ``Admin`` service definition:
             <argument/>
             <argument>App\Entity\Post</argument>
             <argument/>
-            <call method="setTemplate">
-                <argument>edit</argument>
-                <argument>PostAdmin/edit.html.twig</argument>
-            </call>
+            <tag
+                name="sonata.admin.template_registry"
+                template_name="edit"
+                template_path="PostAdmin/edit.html.twig"
+                />
         </service>
 
 .. note::
@@ -207,14 +207,12 @@ a global custom template and then override that customization on a specific
 
 Finding configured templates
 ----------------------------
-Each ``Admin`` has a ``TemplateRegistry`` service connected to it that holds
-the templates registered through the configuration above. Through the method
-``getTemplate($name)`` of that class, you can access the templates set for
-that ``Admin``. The ``TemplateRegistry`` is available through ``$this->getTemplateRegistry()``
-within the ``Admin``. Using the service container the template registries can
-be accessed outside an ``Admin``. Use the ``Admin`` code + ``.template_registry``
-as the service ID (i.e. "app.admin.post" uses the Template Registry
-"app.admin.post.template_registry").
+Each ``Admin`` has a ``MutableTemplateRegistry`` service connected to it that holds
+the templates registered through the configuration above. The ``MutableTemplateRegistry``
+is available through ``$this->getTemplateRegistry()`` within the ``Admin``.
+Outside an ``Admin``, you can obtain the template registries through their service ID.
+Use the ``Admin`` code + ``.template_registry`` as the service ID (i.e.
+``app.admin.post`` uses the template registry ``app.admin.post.template_registry``).
 
 The ``TemplateRegistry`` service that holds the global templates can be accessed
 using the service ID "sonata.admin.global_template_registry".

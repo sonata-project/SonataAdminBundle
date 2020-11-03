@@ -62,14 +62,15 @@ You can also configure the block template per admin while defining the admin:
     .. code-block:: xml
 
         <service id="app.admin.post" class="App\Admin\PostAdmin">
-              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
-              <argument/>
-              <argument>App\Entity\Post</argument>
-              <argument/>
-              <call method="setTemplate">
-                  <argument>search_result_block</argument>
-                  <argument>@SonataPost/Block/block_search_result.html.twig</argument>
-              </call>
+            <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
+            <argument/>
+            <argument>App\Entity\Post</argument>
+            <argument/>
+            <tag
+                name="sonata.admin.template_registry"
+                template_name="search_result_block"
+                template_path="@SonataPost/Block/block_search_result.html.twig"
+                />
           </service>
 
 Configure the default search result action

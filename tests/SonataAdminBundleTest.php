@@ -21,6 +21,7 @@ use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ObjectAclManipulatorCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\TemplateRegistryCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\TwigStringExtensionCompilerPass;
 use Sonata\AdminBundle\SonataAdminBundle;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -36,7 +37,7 @@ class SonataAdminBundleTest extends TestCase
     {
         $containerBuilder = $this->createMock(ContainerBuilder::class);
 
-        $containerBuilder->expects($this->exactly(8))
+        $containerBuilder->expects($this->exactly(9))
             ->method('addCompilerPass')
             ->willReturnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION): void {
                 if ($pass instanceof AddDependencyCallsCompilerPass) {
@@ -67,6 +68,10 @@ class SonataAdminBundleTest extends TestCase
                     return;
                 }
 
+                if ($pass instanceof TemplateRegistryCompilerPass) {
+                    return;
+                }
+
                 if ($pass instanceof TwigStringExtensionCompilerPass) {
                     return;
                 }
@@ -80,6 +85,7 @@ class SonataAdminBundleTest extends TestCase
                     GlobalVariablesCompilerPass::class,
                     ModelManagerCompilerPass::class,
                     ObjectAclManipulatorCompilerPass::class,
+                    TemplateRegistryCompilerPass::class,
                     TwigStringExtensionCompilerPass::class,
                     \get_class($pass)
                 ));
