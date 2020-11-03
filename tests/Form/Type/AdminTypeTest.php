@@ -231,7 +231,7 @@ class AdminTypeTest extends TypeTestCase
                 'sonata_field_description' => $field,
                 'delete' => false, // not needed
                 'property_path' => '[0]', // actual test case
-                'by_reference' => false,
+                'collection_by_reference' => false,
             ]);
         } catch (NoSuchPropertyException $exception) {
             $this->fail($exception->getMessage());
@@ -282,7 +282,7 @@ class AdminTypeTest extends TypeTestCase
                 'sonata_field_description' => $field,
                 'delete' => false, // not needed
                 'property_path' => '[0]', // actual test case
-                'by_reference' => true,
+                'collection_by_reference' => true,
             ]);
         } catch (NoSuchPropertyException $exception) {
             $this->fail($exception->getMessage());
