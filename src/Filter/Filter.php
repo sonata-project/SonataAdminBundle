@@ -114,7 +114,7 @@ abstract class Filter implements FilterInterface
         return $this->getOption('label');
     }
 
-    public function setLabel(string $label): void
+    public function setLabel($label): void
     {
         $this->setOption('label', $label);
     }

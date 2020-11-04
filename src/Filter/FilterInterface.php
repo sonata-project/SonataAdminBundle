@@ -59,7 +59,10 @@ interface FilterInterface
      */
     public function getLabel();
 
-    public function setLabel(string $label): void;
+    /**
+     * @param string|false|null $label
+     */
+    public function setLabel($label): void;
 
     /**
      * @return array<string, mixed>
