@@ -14,21 +14,20 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Templating;
 
 /**
- * /**
  * @author Wojciech Błoszyk <wbloszyk@gmail.com>
  *
- * @method MutableTemplateRegistryInterface getTemplateRegistry()
- * @method bool                             hasTemplateRegistry()
- * @method void                             setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry)
+ * @method TemplateRegistryInterface getTemplateRegistry()
+ * @method bool                      hasTemplateRegistry()
+ * @method void                      setTemplateRegistry(TemplateRegistryInterface $templateRegistry)
  */
 interface TemplateRegistryAwareInterface
 {
     // NEXT_MAJOR: uncomment this method in 4.0
-    //public function getTemplateRegistry(): MutableTemplateRegistryInterface;
+    //public function getTemplateRegistry(): TemplateRegistryInterface;
 
     // NEXT_MAJOR: uncomment this method in 4.0
     //public function hasTemplateRegistry(): bool;
 
     // NEXT_MAJOR: uncomment this method in 4.0
-    //public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void;
+    //public function setTemplateRegistry(TemplateRegistryInterface $templateRegistry): void;
 }

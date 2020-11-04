@@ -1,6 +1,21 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.x to 3.x
+=========================
+
+### Template registry structure and responsibilities.
+
+The `Sonata\AdminBundle\Templating\TemplateRegistry` class has been splitted into 3 classes:
+   - `TemplateRegistry`, implementing `Sonata\AdminBundle\Templating\TemplateRegistryInterface`
+   - `MutableTemplateRegistry`, implementing `Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface`
+   - `AbstractTemplateRegistry`, implementing `Sonata\AdminBundle\Templating\TemplateRegistryInterface`. You MUST extend this class if you want to create your own template registry.
+
+The interface `Sonata\AdminBundle\Templating\TemplateRegistryAwareInterface` was updated in order to handle instances of `TemplateRegistryInterface`.
+The interface `Sonata\AdminBundle\Templating\MutableTemplateRegistryAwareInterface` was added to provide a simple contract for classes depending on a `MutableTemplateRegistryInterface`.
+
+`TemplateRegistry` will stop implementing `MutableTemplateRegistryInterface` in version 4.0. If you are using `setTemplate()` or `setTemplates()` methods, you MUST use `MutableTemplateRegistry` instead.
+
 ### Deprecated `Sonata\AdminBundle\Model\DatagridManagerInterface` interface.
 
 This interface has been deprecated without replacement.
