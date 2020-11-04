@@ -226,6 +226,10 @@ var Admin = {
                     .replaceWith(html);
             },
             error: function(xhr, statusText, errorThrown) {
+                if (xhr.status === 400){
+                    return JSON.parse(xhr.responseText);
+                }
+
                 return xhr.responseText;
             }
         });
