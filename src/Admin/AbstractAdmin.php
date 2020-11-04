@@ -2772,7 +2772,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         if ($this->isChild() && $this->getParentAssociationMapping() && !$mapper->has($this->getParentAssociationMapping())) {
             $mapper->add($this->getParentAssociationMapping(), null, [
                 'show_filter' => false,
-                'label' => null,
+                'label' => false,
                 'field_type' => ModelHiddenType::class,
                 'field_options' => [
                     'model_manager' => $this->getModelManager(),
