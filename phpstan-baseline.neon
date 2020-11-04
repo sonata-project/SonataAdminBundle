@@ -116,6 +116,12 @@ parameters:
             path: src/Datagrid/Datagrid.php
 
         -
+            # will be fixed in v4. Code is marked as deprecated
+            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\FieldDescriptionInterface\\:\\:getLabel\\(\\) invoked with 1 parameter, 0 required\\.$#"
+            count: 1
+            path: src/Datagrid/DatagridMapper.php
+
+        -
             # will be fixed in v4. Currently BC break
             message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\FieldDescriptionInterface\\:\\:getLabel\\(\\) invoked with 1 parameter, 0 required\\.$#"
             count: 1
