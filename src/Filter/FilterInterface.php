@@ -51,7 +51,13 @@ interface FilterInterface
      */
     public function getFormName(): string;
 
-    public function getLabel(): ?string;
+    /**
+     * Returns the label to use for the current field.
+     * Use null to fallback to the default label and false to hide the label.
+     *
+     * @return string|false|null
+     */
+    public function getLabel();
 
     public function setLabel(string $label): void;
 
