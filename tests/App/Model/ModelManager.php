@@ -188,6 +188,9 @@ final class ModelManager implements ModelManagerInterface
         throw new \BadMethodCallException('Not implemented.');
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function modelTransform($class, $instance): object
     {
         throw new \BadMethodCallException('Not implemented.');

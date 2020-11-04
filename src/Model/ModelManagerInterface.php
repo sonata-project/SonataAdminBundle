@@ -286,6 +286,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function modelReverseTransform($class, array $array = []);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-admin/admin-bundle 3.x and will be removed in 4.0.
+     *
      * @param string $class
      * @param object $instance
      *
