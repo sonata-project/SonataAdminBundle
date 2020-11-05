@@ -2007,8 +2007,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         try {
             return $this->getModelManager()->getUrlSafeIdentifier($model);
-        }
-        catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             return '';
         }
     }
@@ -2017,15 +2016,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         try {
             return $this->getModelManager()->getNormalizedIdentifier($model);
-        }
-        catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             return '';
         }
     }
 
     public function id(?object $model): string
     {
-        if(!is_object($model)) {
+        if(!\is_object($model)) {
             return '';
         }
 
