@@ -226,7 +226,7 @@ var Admin = {
                     .replaceWith(html);
             },
             error: function(xhr, statusText, errorThrown) {
-                if (xhr.status === 400){
+                if (xhr.status === 400 || xhr.status === 403 || xhr.status === 404 || xhr.status === 405){
                     return JSON.parse(xhr.responseText);
                 }
 
