@@ -109,12 +109,12 @@ abstract class Filter implements FilterInterface
         $this->options['field_options'][$name] = $value;
     }
 
-    public function getLabel()
+    public function getLabel(): ?string
     {
         return $this->getOption('label');
     }
 
-    public function setLabel($label): void
+    public function setLabel(string $label): void
     {
         $this->setOption('label', $label);
     }

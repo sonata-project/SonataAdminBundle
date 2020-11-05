@@ -2005,16 +2005,30 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function getUrlSafeIdentifier(object $model): string
     {
-        return $this->getModelManager()->getUrlSafeIdentifier($model);
+        try {
+            return $this->getModelManager()->getUrlSafeIdentifier($model);
+        }
+        catch (\InvalidArgumentException $e) {
+            return '';
+        }
     }
 
     public function getNormalizedIdentifier(object $model): string
     {
-        return $this->getModelManager()->getNormalizedIdentifier($model);
+        try {
+            return $this->getModelManager()->getNormalizedIdentifier($model);
+        }
+        catch (\InvalidArgumentException $e) {
+            return '';
+        }
     }
 
-    public function id(object $model): string
+    public function id(?object $model): string
     {
+        if(!is_object($model)) {
+            return '';
+        }
+
         return $this->getNormalizedIdentifier($model);
     }
 
