@@ -2023,7 +2023,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function id(?object $model): string
     {
-        if(!\is_object($model)) {
+        if (!\is_object($model)) {
             return '';
         }
 
