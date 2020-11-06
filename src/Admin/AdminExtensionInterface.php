@@ -198,6 +198,8 @@ interface AdminExtensionInterface
      * @param object $object
      *
      * @return void
+     *
+     * @phpstan-param AdminInterface<object> $admin
      */
     public function prePersist(AdminInterface $admin, $object);
 
