@@ -25,6 +25,8 @@ use Symfony\Component\Form\FormEvents;
  * @final since sonata-project/admin-bundle 3.52
  *
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
+ *
+ * @phpstan-extends AbstractAdminExtension<object>
  */
 class LockExtension extends AbstractAdminExtension
 {

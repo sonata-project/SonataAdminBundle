@@ -27,6 +27,8 @@ use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
  * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-extends AbstractAdminExtension<object>
  */
 class AdminEventExtension extends AbstractAdminExtension
 {
