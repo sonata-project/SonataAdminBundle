@@ -31,6 +31,8 @@ use Sonata\Form\Validator\ErrorElement;
  * @method array configureActionButtons(AdminInterface $admin, array $list, string $action, object $object)
  * @method void  configureDefaultFilterValues(AdminInterface $admin, array &$filterValues)
  * @method void  configureDefaultSortValues(AdminInterface $admin, array &$sortValues)
+ *
+ * @phpstan-template T of object
  */
 interface AdminExtensionInterface
 {
@@ -57,7 +59,7 @@ interface AdminExtensionInterface
     /**
      * @return void
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function configureRoutes(AdminInterface $admin, RouteCollection $collection);
 
@@ -70,8 +72,8 @@ interface AdminExtensionInterface
      *
      * @return void
      *
-     * @phpstan-param AdminInterface<object> $admin
-     * @phpstan-param AdminInterface<object>|null $childAdmin
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param AdminInterface<T>|null $childAdmin
      *
      * @deprecated
      */
@@ -89,8 +91,8 @@ interface AdminExtensionInterface
      *
      * @return void
      *
-     * @phpstan-param AdminInterface<object> $admin
-     * @phpstan-param AdminInterface<object>|null $childAdmin
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param AdminInterface<T>|null $childAdmin
      */
     public function configureTabMenu(
         AdminInterface $admin,
@@ -108,7 +110,8 @@ interface AdminExtensionInterface
      *
      * @deprecated since sonata-project/admin-bundle 3.82.
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param T $object
      */
     public function validate(AdminInterface $admin, ErrorElement $errorElement, $object);
 
@@ -117,7 +120,7 @@ interface AdminExtensionInterface
      *
      * @return void
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list');
 
@@ -128,7 +131,8 @@ interface AdminExtensionInterface
      *
      * @return void
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param T $object
      */
     public function alterNewInstance(AdminInterface $admin, $object);
 
@@ -139,7 +143,8 @@ interface AdminExtensionInterface
      *
      * @return void
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param T $object
      */
     public function alterObject(AdminInterface $admin, $object);
 
@@ -148,7 +153,7 @@ interface AdminExtensionInterface
      *
      * @return array<string, mixed>
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function getPersistentParameters(AdminInterface $admin);
 
@@ -157,7 +162,7 @@ interface AdminExtensionInterface
      *
      * @return array<string, string|string[]>
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
      */
     // NEXT_MAJOR: Uncomment this method
     // public function getAccessMapping(AdminInterface $admin): array;
@@ -165,7 +170,7 @@ interface AdminExtensionInterface
     /**
      * Returns the list of batch actions.
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
      */
     // NEXT_MAJOR: Uncomment this method
     // public function configureBatchActions(AdminInterface $admin, array $actions): array;
@@ -175,7 +180,7 @@ interface AdminExtensionInterface
      *
      * @return string[]
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
      */
     // NEXT_MAJOR: Uncomment this method
     // public function configureExportFields(AdminInterface $admin, array $fields): array;
@@ -185,7 +190,8 @@ interface AdminExtensionInterface
      *
      * @return void
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param T $object
      */
     public function preUpdate(AdminInterface $admin, $object);
 
@@ -194,7 +200,8 @@ interface AdminExtensionInterface
      *
      * @return void
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param T $object
      */
     public function postUpdate(AdminInterface $admin, $object);
 
@@ -203,7 +210,8 @@ interface AdminExtensionInterface
      *
      * @return void
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param T $object
      */
     public function prePersist(AdminInterface $admin, $object);
 
@@ -212,7 +220,8 @@ interface AdminExtensionInterface
      *
      * @return void
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param T $object
      */
     public function postPersist(AdminInterface $admin, $object);
 
@@ -221,7 +230,8 @@ interface AdminExtensionInterface
      *
      * @return void
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param T $object
      */
     public function preRemove(AdminInterface $admin, $object);
 
@@ -230,14 +240,16 @@ interface AdminExtensionInterface
      *
      * @return void
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param T $object
      */
     public function postRemove(AdminInterface $admin, $object);
 
     /*
      * Get all action buttons for an action
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param T $object
      */
     // NEXT_MAJOR: Uncomment this method
     // public function configureActionButtons(AdminInterface $admin, array $list, string $action, object $object): array;
@@ -247,7 +259,7 @@ interface AdminExtensionInterface
      *
      * Returns a list of default filters
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
      */
     // public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues): void;
 
@@ -256,7 +268,7 @@ interface AdminExtensionInterface
      *
      * Returns a list of default sort values
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
      */
     // public function configureDefaultSortValues(AdminInterface $admin, array &$sortValues): void;
 }
