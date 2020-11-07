@@ -67,6 +67,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\DependencyInjection\Container;
@@ -1944,6 +1945,7 @@ class AdminTest extends TestCase
     public function testGetFilterFieldDescription(): void
     {
         $modelAdmin = new ModelAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'Sonata\FooBundle\Controller\ModelAdminController');
+        $modelAdmin->setLabelTranslatorStrategy(new NoopLabelTranslatorStrategy());
 
         $fooFieldDescription = new FieldDescription('foo');
         $barFieldDescription = new FieldDescription('bar');
