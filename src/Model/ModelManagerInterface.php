@@ -115,7 +115,7 @@ interface ModelManagerInterface
     /**
      * Get the identifiers for this model class as a string.
      */
-    public function getNormalizedIdentifier(object $model): string;
+    public function getNormalizedIdentifier(object $model): ?string;
 
     /**
      * Get the identifiers as a string that is safe to use in a url.
@@ -123,7 +123,7 @@ interface ModelManagerInterface
      * This is similar to getNormalizedIdentifier but guarantees an id that can
      * be used in a URL.
      */
-    public function getUrlSafeIdentifier(object $model): string;
+    public function getUrlSafeIdentifier(object $model): ?string;
 
     /**
      * Create a new instance of the model of the specified class.
