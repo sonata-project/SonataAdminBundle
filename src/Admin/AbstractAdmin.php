@@ -2003,17 +2003,17 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->cacheIsGranted[$key];
     }
 
-    public function getUrlSafeIdentifier(object $model): string
+    public function getUrlSafeIdentifier(object $model): ?string
     {
         return $this->getModelManager()->getUrlSafeIdentifier($model);
     }
 
-    public function getNormalizedIdentifier(object $model): string
+    public function getNormalizedIdentifier(object $model): ?string
     {
         return $this->getModelManager()->getNormalizedIdentifier($model);
     }
 
-    public function id(object $model): string
+    public function id(object $model): ?string
     {
         return $this->getNormalizedIdentifier($model);
     }
