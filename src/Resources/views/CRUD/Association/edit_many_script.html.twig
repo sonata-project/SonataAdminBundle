@@ -462,10 +462,10 @@ This code manages the many-to-[one|many] association field popup
 
             Admin.log('[{{ id }}|on:change] update the label');
 
-            var objectId =  jQuery(this).val();
+            var objectId = jQuery(this).val();
 
             // Skip short object information call if object is missing.
-            if (!objectId) {
+            if (objectId === undefined || objectId === null || objectId === "") {
                 jQuery('#field_widget_{{ id }}').html('{{ 'short_object_description_placeholder'|trans({}, 'SonataAdminBundle') }}');
 
                 {% if btn_edit %}
