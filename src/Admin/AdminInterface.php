@@ -181,14 +181,14 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @phpstan-param T $model
      */
-    public function getNormalizedIdentifier(object $model): string;
+    public function getNormalizedIdentifier(object $model): ?string;
 
     /**
      * Shorthand method for templating.
      *
      * @phpstan-param T $model
      */
-    public function id(object $model): string;
+    public function id(object $model): ?string;
 
     public function setValidator(ValidatorInterface $validator): void;
 

@@ -75,5 +75,5 @@ interface UrlGeneratorInterface
     /**
      * @phpstan-param T $model
      */
-    public function getUrlSafeIdentifier(object $model): string;
+    public function getUrlSafeIdentifier(object $model): ?string;
 }
