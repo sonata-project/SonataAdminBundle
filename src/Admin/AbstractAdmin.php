@@ -713,7 +713,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         @trigger_error(sprintf(
-            'Using "%s()" without setting a "%s" instance in the admin is deprecated since sonata-admin/admin-bundle 3.x'
+            'Using "%s()" without setting a "%s" instance in the admin is deprecated since sonata-admin/admin-bundle 3.79'
             .' and won\'t be possible in 4.0.',
             __METHOD__,
             DataSourceInterface::class

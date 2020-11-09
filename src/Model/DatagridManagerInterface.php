@@ -18,7 +18,7 @@ namespace Sonata\AdminBundle\Model;
  *
  * NEXT_MAJOR: Remove this interface
  *
- * @deprecated since sonata-project/admin-bundle 3.x
+ * @deprecated since sonata-project/admin-bundle 3.79
  *
  * @method array getDefaultPerPageOptions(string $class)
  */

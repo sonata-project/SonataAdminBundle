@@ -2,6 +2,31 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.79.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.78.1...3.79.0) - 2020-11-09
+### Added
+- [[#6565](https://github.com/sonata-project/SonataAdminBundle/pull/6565)] Added `collection_by_reference` option for AdminType ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6556](https://github.com/sonata-project/SonataAdminBundle/pull/6556)] Added `Sonata\AdminBundle\Templating\AbstractTemplateRegistry` ([@wbloszyk](https://github.com/wbloszyk))
+- [[#6556](https://github.com/sonata-project/SonataAdminBundle/pull/6556)] Added `Sonata\AdminBundle\Templating\MutableTemplateRegistry` ([@wbloszyk](https://github.com/wbloszyk))
+- [[#6556](https://github.com/sonata-project/SonataAdminBundle/pull/6556)] Added `Sonata\AdminBundle\Templating\MutableTemplateRegistryAwareInterface` ([@wbloszyk](https://github.com/wbloszyk))
+- [[#6463](https://github.com/sonata-project/SonataAdminBundle/pull/6463)] Added DataSourceInterface ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Changed
+- [[#6565](https://github.com/sonata-project/SonataAdminBundle/pull/6565)] `collection_by_reference` is used instead of `by_reference` in `AdminType in order to know which call should be used between `ObjectManipulator::addInstance()` and `ObjectManipulator::setObject()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6556](https://github.com/sonata-project/SonataAdminBundle/pull/6556)] Changed `Sonata\AdminBundle\Templating\TemplateRegistryAwareInterface` to handle instances of `TemplateRegistryInterface`. ([@wbloszyk](https://github.com/wbloszyk))
+- [[#6548](https://github.com/sonata-project/SonataAdminBundle/pull/6548)] Prevent load entities when pass empty choices for `ModelType`, use null for native loading ([@kirya-dev](https://github.com/kirya-dev))
+
+### Deprecated
+- [[#6556](https://github.com/sonata-project/SonataAdminBundle/pull/6556)] Deprecated `Sonata\AdminBundle\Templating\TemplateRegistry:setTemplate()` ([@wbloszyk](https://github.com/wbloszyk))
+- [[#6556](https://github.com/sonata-project/SonataAdminBundle/pull/6556)] Deprecated `Sonata\AdminBundle\Templating\TemplateRegistry:setTemplates()` ([@wbloszyk](https://github.com/wbloszyk))
+- [[#6458](https://github.com/sonata-project/SonataAdminBundle/pull/6458)] `DatagridManagerInterface` with no replacement ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6463](https://github.com/sonata-project/SonataAdminBundle/pull/6463)] Deprecated not setting a DataSourceInterface to an Admin ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6463](https://github.com/sonata-project/SonataAdminBundle/pull/6463)] Deprecated `ModelManagerInterface::getDataSourceIterator()` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#6571](https://github.com/sonata-project/SonataAdminBundle/pull/6571)] If no label is provided to the filter, the default label is used following the label translator strategy ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6574](https://github.com/sonata-project/SonataAdminBundle/pull/6574)] Showing toggle filter button when the filter is hidden in the admin list ([@phansys](https://github.com/phansys))
+- [[#6534](https://github.com/sonata-project/SonataAdminBundle/pull/6534)] Allow usage object properties to get/set instance in `ObjectManipulator` ([@peter-gribanov](https://github.com/peter-gribanov))
+
 ## [3.78.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.78.0...3.78.1) - 2020-10-28
 ### Fixed
 - [[#6530](https://github.com/sonata-project/SonataAdminBundle/pull/6530)] Added the ability to scroll the filter list dropdown ([@VincentLanglet](https://github.com/VincentLanglet))

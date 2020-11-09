@@ -311,7 +311,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param int|null $firstResult
      * @param int|null $maxResult
      *
-     * @deprecated since sonata-admin/admin-bundle 3.x and will be removed in 4.0.
+     * @deprecated since sonata-admin/admin-bundle 3.79 and will be removed in 4.0.
      *
      * @return SourceIteratorInterface
      */
