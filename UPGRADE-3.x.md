@@ -1,12 +1,15 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.78 to 3.79
-=========================
+UPGRADE FROM 3.x to 3.x
+=======================
 
 ### Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface::modelTransform()`
 
 This method has been deprecated without replacement.
+
+UPGRADE FROM 3.78 to 3.79
+=========================
 
 ### Template registry structure and responsibilities.
 
