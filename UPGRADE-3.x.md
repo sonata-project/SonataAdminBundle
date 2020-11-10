@@ -4,6 +4,10 @@ UPGRADE 3.x
 UPGRADE FROM 3.x to 3.x
 =======================
 
+### Sonata\AdminBundle\Form\Type\Operator\StringOperatorType
+
+Added "Not equal" in the default list for "choices" option in order to allow filtering by strings that are not equal to the model data.
+
 ### Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface::modelTransform()`
 
 This method has been deprecated without replacement.

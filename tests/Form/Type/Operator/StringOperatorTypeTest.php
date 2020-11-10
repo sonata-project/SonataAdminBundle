@@ -29,6 +29,7 @@ class StringOperatorTypeTest extends TypeTestCase
             'label_type_equals' => StringOperatorType::TYPE_EQUAL,
             'label_type_starts_with' => StringOperatorType::TYPE_STARTS_WITH,
             'label_type_ends_with' => StringOperatorType::TYPE_ENDS_WITH,
+            'label_type_not_equals' => StringOperatorType::TYPE_NOT_EQUAL,
         ];
         $formType->configureOptions($optionsResolver);
         $options = $optionsResolver->resolve([]);
