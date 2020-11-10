@@ -29,12 +29,9 @@ interface PagerInterface
     public function getMaxPerPage(): int;
 
     /**
-     * TODO: allow only int to be set
      * Sets the maximum number of results per page.
-     *
-     * @param int|string $max
      */
-    public function setMaxPerPage($max): void;
+    public function setMaxPerPage(int $max): void;
 
     /**
      * Gets the current page.
@@ -42,12 +39,9 @@ interface PagerInterface
     public function getPage(): int;
 
     /**
-     * TODO: allow only int to be set
      * Sets the current page.
-     *
-     * @param int|string $page
      */
-    public function setPage($page): void;
+    public function setPage(int $page): void;
 
     /**
      * Set query.
