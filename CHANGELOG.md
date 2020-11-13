@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.80.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.79.0...3.80.0) - 2020-11-13
+### Added
+- [[#6585](https://github.com/sonata-project/SonataAdminBundle/pull/6585)] `NOT_EQUAL` operator for `StringOperatorType` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Changed
+- [[#6402](https://github.com/sonata-project/SonataAdminBundle/pull/6402)] Delegate filter query by empty value to filters ([@peter-gribanov](https://github.com/peter-gribanov))
+
+### Deprecated
+- [[#6568](https://github.com/sonata-project/SonataAdminBundle/pull/6568)] Deprecated `ModelManagerInterface::modelTransform()` method ([@franmomu](https://github.com/franmomu))
+
 ## [3.79.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.78.1...3.79.0) - 2020-11-09
 ### Added
 - [[#6565](https://github.com/sonata-project/SonataAdminBundle/pull/6565)] Added `collection_by_reference` option for AdminType ([@VincentLanglet](https://github.com/VincentLanglet))
