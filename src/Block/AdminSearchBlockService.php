@@ -97,7 +97,7 @@ final class AdminSearchBlockService extends AbstractBlockService
             'admin_pool' => $this->pool,
             'pager' => $pager,
             'admin' => $admin,
-            'show_empty_boxes'=>$this->emptyBoxesOption
+            'show_empty_boxes' => $this->emptyBoxesOption,
         ], $response);
     }
 
