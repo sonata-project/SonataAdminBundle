@@ -17,7 +17,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Filter\FilterInterface;
-use Symfony\Component\Form\Form;
+use Sonata\AdminBundle\Form\Type\Operator\StringOperatorType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -125,7 +125,7 @@ final class RetrieveAutocompleteItemsAction
                     $filter = $datagrid->getFilter($prop);
                     $filter->setCondition(FilterInterface::CONDITION_OR);
 
-                    $datagrid->setValue($filter->getFormName(), null, $searchText);
+                    $datagrid->setValue($filter->getFormName(), StringOperatorType::TYPE_CONTAINS, $searchText);
                 }
             } else {
                 if (!$datagrid->hasFilter($property)) {
@@ -137,7 +137,7 @@ final class RetrieveAutocompleteItemsAction
                     ));
                 }
 
-                $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $searchText);
+                $datagrid->setValue($datagrid->getFilter($property)->getFormName(), StringOperatorType::TYPE_CONTAINS, $searchText);
             }
         }
 
