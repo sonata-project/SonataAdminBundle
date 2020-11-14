@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Datagrid;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
+use Sonata\AdminBundle\Form\Type\Operator\StringOperatorType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -296,6 +297,7 @@ class Datagrid implements DatagridInterface
         foreach ($this->getFilters() as $name => $filter) {
             $this->values[$name] = $this->values[$name] ?? null;
             $filterFormName = $filter->getFormName();
+            $this->values[$filterFormName]['type'] = $this->values[$filterFormName]['type'] ?? StringOperatorType::TYPE_CONTAINS;
             if (isset($this->values[$filterFormName]['type'], $this->values[$filterFormName]['value']) &&
                 ('' !== $this->values[$filterFormName]['type'] || '' !== $this->values[$filterFormName]['value'])
             ) {
