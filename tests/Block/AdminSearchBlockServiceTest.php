@@ -42,6 +42,11 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
      */
     private $templateRegistry;
 
+    /**
+     * @var string
+     */
+    private $emptyBoxesOption;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -50,11 +55,12 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
         $this->searchHandler = $this->createMock(SearchHandler::class);
         $this->templateRegistry = $this->createMock(TemplateRegistryInterface::class);
         $this->templateRegistry->method('getTemplate')->willReturn('@SonataAdmin/Block/block_search_result.html.twig');
+        $this->emptyBoxesOption = 'show';
     }
 
     public function testDefaultSettings(): void
     {
-        $blockService = new AdminSearchBlockService($this->twig, $this->pool, $this->searchHandler, $this->templateRegistry);
+        $blockService = new AdminSearchBlockService($this->twig, $this->pool, $this->searchHandler, $this->templateRegistry, $this->emptyBoxesOption);
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings([
@@ -71,7 +77,7 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
         $admin = $this->createMock(AbstractAdmin::class);
         $pagerInterface = $this->createMock(PagerInterface::class);
 
-        $blockService = new AdminSearchBlockService($this->twig, $this->pool, $this->searchHandler, $this->templateRegistry);
+        $blockService = new AdminSearchBlockService($this->twig, $this->pool, $this->searchHandler, $this->templateRegistry, $this->emptyBoxesOption);
         $blockContext = $this->getBlockContext($blockService);
 
         $this->searchHandler->expects(self::once())->method('search')->willReturn($pagerInterface);
@@ -88,7 +94,7 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
     {
         $admin = $this->createMock(AbstractAdmin::class);
 
-        $blockService = new AdminSearchBlockService($this->twig, $this->pool, $this->searchHandler, $this->templateRegistry);
+        $blockService = new AdminSearchBlockService($this->twig, $this->pool, $this->searchHandler, $this->templateRegistry, $this->emptyBoxesOption);
         $blockContext = $this->getBlockContext($blockService);
 
         $this->searchHandler->expects(self::once())->method('search')->willReturn(null);
