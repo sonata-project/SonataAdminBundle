@@ -297,10 +297,13 @@ class Datagrid implements DatagridInterface
         foreach ($this->getFilters() as $name => $filter) {
             $this->values[$name] = $this->values[$name] ?? null;
             $filterFormName = $filter->getFormName();
-            $this->values[$filterFormName]['type'] = $this->values[$filterFormName]['type'] ?? StringOperatorType::TYPE_CONTAINS;
-            if (isset($this->values[$filterFormName]['type'], $this->values[$filterFormName]['value']) &&
-                ('' !== $this->values[$filterFormName]['type'] || '' !== $this->values[$filterFormName]['value'])
-            ) {
+
+            $hasValue = isset($this->values[$filterFormName]['value'])
+                && '' !== $this->values[$filterFormName]['value'];
+            $hasType = isset($this->values[$filterFormName]['type'])
+                && '' !== $this->values[$filterFormName]['type'];
+
+            if ($hasValue || $hasType) {
                 $filter->apply($this->query, $data[$filterFormName]);
             }
         }
