@@ -1,0 +1,33 @@
+{% macro render_groups(admin, form, groups, has_tab) %}
+    <div class="row">
+
+    {% for code in groups|filter(code => admin.formgroups[code] is defined) %}
+        {% set form_group = admin.formgroups[code] %}
+
+        <div class="{{ form_group.class|default('col-md-12') }}">
+            <div class="{{ form_group.box_class }}">
+                <div class="box-header">
+                    <h4 class="box-title">
+                        {{ form_group.label|trans({}, form_group.translation_domain ?: admin.translationDomain) }}
+                    </h4>
+                </div>
+                <div class="box-body">
+                    <div class="sonata-ba-collapsed-fields">
+                        {% if form_group.description %}
+                            <p>{{ form_group.description|trans({}, form_group.translation_domain ?: admin.translationDomain)|raw }}</p>
+                        {% endif %}
+
+                        {% for field_name in form_group.fields|filter(field_name => form[field_name] is defined) %}
+                            {{ form_row(form[field_name]) }}
+                        {% else %}
+                            {% if form_group.empty_message != false %}
+                                <em>{{ form_group.empty_message|trans({}, form_group.empty_message_translation_domain) }}</em>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endmacro %}

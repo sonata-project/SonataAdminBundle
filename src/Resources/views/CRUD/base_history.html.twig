@@ -1,0 +1,91 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+
+{%- block actions -%}
+    {% include '@SonataAdmin/CRUD/action_buttons.html.twig' %}
+{%- endblock -%}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-5">
+            <div class="box box-primary">
+                <div class="box-body table-responsive no-padding">
+                    <table class="table" id="revisions">
+                        <thead>
+                        <tr>
+                            <th>{{ 'td_revision'|trans({}, 'SonataAdminBundle') }}</th>
+                            <th>{{ 'td_timestamp'|trans({}, 'SonataAdminBundle') }}</th>
+                            <th>{{ 'td_username'|trans({}, 'SonataAdminBundle') }}</th>
+                            <th>{{ 'td_action'|trans({}, 'SonataAdminBundle') }}</th>
+                            <th>{{ 'td_compare'|trans({}, 'SonataAdminBundle') }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for revision in revisions %}
+                            <tr class="{% if (currentRevision != false and revision.rev == currentRevision.rev) %}current-revision{% endif %}">
+                                <td>{{ revision.rev }}</td>
+                                <td>{% include get_admin_template('history_revision_timestamp', admin.code) %}</td>
+                                <td>{{ revision.username|default('label_unknown_user'|trans({}, 'SonataAdminBundle')) }}</td>
+                                <td><a href="{{ admin.generateObjectUrl('history_view_revision', object, {'revision': revision.rev }) }}" class="revision-link" rel="{{ revision.rev }}">{{ "label_view_revision"|trans({}, 'SonataAdminBundle') }}</a></td>
+                                <td>
+                                    {% if (currentRevision == false or revision.rev == currentRevision.rev) %}
+                                        /
+                                    {% else %}
+                                        <a href="{{ admin.generateObjectUrl('history_compare_revisions', object, {'base_revision': currentRevision.rev, 'compare_revision': revision.rev }) }}" class="revision-compare-link" rel="{{ revision.rev }}">{{ 'label_compare_revision'|trans({}, 'SonataAdminBundle') }}</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="revision-detail" class="col-md-7 revision-detail">
+
+        </div>
+    </div>
+
+    <script>
+        jQuery(document).ready(function() {
+
+            jQuery('a.revision-link, a.revision-compare-link').bind('click', function(event) {
+                event.stopPropagation();
+                event.preventDefault();
+
+                action = jQuery(this).hasClass('revision-link')
+                    ? 'show'
+                    : 'compare';
+
+                jQuery('#revision-detail').html('');
+
+                if(action == 'show'){
+                    jQuery('table#revisions tbody tr').removeClass('current');
+                    jQuery(this).parent('').removeClass('current');
+                }
+
+                jQuery.ajax({
+                    url: jQuery(this).attr('href'),
+                    dataType: 'html',
+                    success: function(data) {
+                        jQuery('#revision-detail').html(data);
+                    }
+                });
+
+                return false;
+            });
+
+        });
+    </script>
+{% endblock %}

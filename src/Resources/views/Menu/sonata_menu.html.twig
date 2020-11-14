@@ -1,0 +1,64 @@
+{% extends 'knp_menu.html.twig' %}
+
+{% block root %}
+    {%- set listAttributes = item.childrenAttributes|merge({'class': 'sidebar-menu', 'data-widget': 'tree'}) -%}
+    {%- set request        = item.extra('request') ?: app.request -%}
+    {{ block('list') -}}
+{% endblock %}
+
+{% block item %}
+    {%- if item.displayed -%}
+        {#- check role of the group #}
+        {%- set display = item.extra('roles') is empty or is_granted(sonata_admin.adminPool.getOption('role_super_admin')) or item.extra('roles')|filter(role => is_granted(role))|length > 0 -%}
+    {%- endif -%}
+
+    {%- if item.displayed and display|default -%}
+        {%- set options = options|merge({branch_class: 'treeview', currentClass: "active", ancestorClass: "active"}) -%}
+        {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' active')|trim) -%}
+        {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' treeview-menu')|trim) -%}
+        {{ parent() }}
+    {%- endif -%}
+{% endblock %}
+
+{% block linkElement %}
+    {% apply spaceless %}
+        {%- set translation_domain = item.extra('label_catalogue', 'messages') -%}
+        {%- if item.extra('on_top') is defined and not item.extra('on_top') -%}
+            {%- set icon = item.extra('icon')|default(item.level > 1 ? '<i class="fa fa-angle-double-right" aria-hidden="true"></i>' : '') -%}
+        {%- else -%}
+            {%- set icon = item.extra('icon') -%}
+        {%- endif -%}
+        {%- set is_link = true -%}
+        {{ parent() }}
+    {% endapply %}
+{% endblock %}
+
+{% block spanElement %}
+    {% apply spaceless %}
+        <a href="#">
+            {%- set translation_domain = item.extra('label_catalogue', 'messages') -%}
+            {%- set icon = item.extra('icon')|default('') -%}
+            {{ icon|raw }}
+            {{ parent() }}
+            {%- if item.extra('keep_open') is not defined or not item.extra('keep_open') -%}
+                <span class="pull-right-container"><i class="fa pull-right fa-angle-left"></i></span>
+            {%- endif -%}
+        </a>
+    {% endapply %}
+{% endblock %}
+
+{% block label %}
+    {% apply spaceless %}
+        {%- if is_link|default(false) -%}
+            {{ icon|default|raw }}
+        {%- endif -%}
+        {# We use method accessor instead of ".label" since `item` implements `ArrayAccess` and could have a property called "label". #}
+        {%- set item_label = item.getLabel() -%}
+        {%- if options.allow_safe_labels and item.extra('safe_label', false) -%}
+            {{ item_label|raw }}
+        {%- else -%}
+            {%- set translation_domain = item.extra('label_catalogue', 'messages') -%}
+            {{ item_label|trans(item.extra('label_translation_parameters', {}), translation_domain) }}
+        {%- endif -%}
+    {% endapply %}
+{% endblock %}

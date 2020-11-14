@@ -1,0 +1,59 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends '@SonataAdmin/CRUD/edit.html.twig' %}
+
+{% block actions %}
+{% endblock %}
+
+{% block side_menu %}
+{% endblock %}
+
+{% block formactions %}
+    <button class="btn btn-success" type="submit" name="btn_preview_approve">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        {{ 'btn_preview_approve'|trans({}, 'SonataAdminBundle') }}
+    </button>
+    <button class="btn btn-danger" type="submit" name="btn_preview_decline">
+        <i class="fa fa-times" aria-hidden="true"></i>
+        {{ 'btn_preview_decline'|trans({}, 'SonataAdminBundle') }}
+    </button>
+{% endblock %}
+
+{% block preview %}
+    <div class="sonata-ba-view">
+        {% for name, view_group in admin.showgroups %}
+            <table class="table table-bordered">
+                {% if name %}
+                    <tr class="sonata-ba-view-title">
+                        <td colspan="2">
+                            {{ name|trans({}, admin.translationdomain) }}
+                        </td>
+                    </tr>
+                {% endif %}
+
+                {% for field_name in view_group.fields %}
+                    <tr class="sonata-ba-view-container">
+                        {% if admin.show[field_name] is defined %}
+                            {{ admin.show[field_name]|render_view_element(object) }}
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block form %}
+    <div class="sonata-preview-form-container">
+        {{ parent() }}
+    </div>
+{% endblock %}

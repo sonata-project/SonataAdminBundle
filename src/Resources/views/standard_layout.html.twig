@@ -1,0 +1,382 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{%- set _preview = block('preview') is defined ? block('preview')|trim : null %}
+{% set _form = block('form') is defined ? block('form')|trim : null %}
+{% set _show = block('show') is defined ? block('show')|trim : null %}
+{% set _list_table = block('list_table') is defined ? block('list_table')|trim : null %}
+{% set _list_filters = block('list_filters') is defined ? block('list_filters')|trim : null %}
+{% set _tab_menu = block('tab_menu') is defined ? block('tab_menu')|trim : null %}
+{% set _content = block('content') is defined ? block('content')|trim : null %}
+{% set _title = block('title') is defined ? block('title')|trim : null %}
+{% set _breadcrumb = block('breadcrumb') is defined ? block('breadcrumb')|trim : null %}
+{% set _actions = block('actions') is defined ? block('actions')|trim : null %}
+{% set _navbar_title = block('navbar_title') is defined ? block('navbar_title')|trim : null %}
+{% set _list_filters_actions = block('list_filters_actions') is defined ? block('list_filters_actions')|trim : null -%}
+{% set _skin = sonata_admin.adminPool.getOption('skin') %}
+{% set _use_select2 = sonata_admin.adminPool.getOption('use_select2') %}
+{% set _use_icheck = sonata_admin.adminPool.getOption('use_icheck') %}
+
+<!DOCTYPE html>
+<html {% block html_attributes %}class="no-js"{% endblock %}>
+    <head>
+        {% block meta_tags %}
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta charset="UTF-8">
+            <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+        {% endblock %}
+
+        <meta data-sonata-admin='{{ {
+            config: {
+                SKIN: _skin,
+                CONFIRM_EXIT: sonata_admin.adminPool.getOption('confirm_exit'),
+                USE_SELECT2: _use_select2,
+                USE_ICHECK: _use_icheck,
+                USE_STICKYFORMS: sonata_admin.adminPool.getOption('use_stickyforms'),
+                DEBUG: sonata_admin.adminPool.getOption('js_debug'),
+            },
+            translations: {
+                CONFIRM_EXIT: 'confirm_exit'|trans({}, 'SonataAdminBundle'),
+            },
+        }|json_encode()|raw }}'
+        >
+
+        {% block stylesheets %}
+            {% for stylesheet in sonata_admin.adminPool.getOption('stylesheets', []) %}
+                <link rel="stylesheet" href="{{ asset(stylesheet) }}">
+            {% endfor %}
+        {% endblock %}
+
+        {% block javascripts %}
+            {% block sonata_javascript_config %}
+            {% endblock %}
+
+            {% block sonata_javascript_pool %}
+                {% for javascript in sonata_admin.adminPool.getOption('javascripts', []) %}
+                    <script src="{{ asset(javascript) }}"></script>
+                {% endfor %}
+            {% endblock %}
+
+            {# localize moment #}
+            {% set localeForMoment = canonicalize_locale_for_moment() %}
+            {% if localeForMoment %}
+                <script src="{{ asset(
+                    'bundles/sonatacore/vendor/moment/locale/' ~
+                    localeForMoment ~
+                    '.js'
+                ) }}"></script>
+            {% endif %}
+
+            {# localize select2 #}
+            {% if sonata_admin.adminPool.getOption('use_select2') %}
+                {% set localeForSelect2 = canonicalize_locale_for_select2() %}
+                {% if localeForSelect2 %}
+                    <script src="{{ asset('bundles/sonatacore/vendor/select2/select2_locale_' ~ localeForSelect2 ~ '.js') }}"></script>
+                {% endif %}
+            {% endif %}
+        {% endblock %}
+
+        <title>
+        {% block sonata_head_title %}
+            {{ 'Admin'|trans({}, 'SonataAdminBundle') }}
+
+            {% if _title is not empty %}
+                {{ _title|striptags|raw }}
+            {% else %}
+                {% if action is defined %}
+                    -
+                    {% for menu in breadcrumbs_builder.breadcrumbs(admin, action) %}
+                        {% if not loop.first %}
+                            {% if loop.index != 2 %}
+                                &gt;
+                            {% endif %}
+
+                            {%- set translation_domain = menu.extra('translation_domain', 'messages') -%}
+                            {# We use method accessor instead of ".label" since `menu` implements `ArrayAccess` and could have a property called "label". #}
+                            {%- set label = menu.getLabel() -%}
+                            {%- if translation_domain is not same as(false) -%}
+                                {%- set label = label|trans(menu.extra('translation_params', {}), translation_domain) -%}
+                            {%- endif -%}
+
+                            {{ label }}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        {% endblock %}
+        </title>
+    </head>
+    <body
+            {% block body_attributes -%}
+                class="sonata-bc {% block admin_lte_skin_class %}{{ _skin }}{% endblock %} fixed
+                {% if _use_select2 %}sonata-select2{% endif %}
+                {% if _use_icheck %}sonata-icheck{% endif %}
+                {% if app.request.cookies.get('sonata_sidebar_hide') -%}
+                    sidebar-collapse
+                {%- endif -%}"
+            {%- endblock -%}
+    >
+
+    <div class="wrapper">
+
+        {% block sonata_header %}
+            <header class="main-header">
+                {% block sonata_header_noscript_warning %}
+                    <noscript>
+                        <div class="noscript-warning">
+                            {{ 'noscript_warning'|trans({}, 'SonataAdminBundle') }}
+                        </div>
+                    </noscript>
+                {% endblock %}
+                {% block logo %}
+                    {% apply spaceless %}
+                        <a class="logo" href="{{ path('sonata_admin_dashboard') }}">
+                            {% if 'single_image' == sonata_admin.adminPool.getOption('title_mode') or 'both' == sonata_admin.adminPool.getOption('title_mode') %}
+                                <img src="{{ asset(sonata_admin.adminPool.titlelogo) }}" alt="{{ sonata_admin.adminPool.title }}">
+                            {% endif %}
+                            {% if 'single_text' == sonata_admin.adminPool.getOption('title_mode') or 'both' == sonata_admin.adminPool.getOption('title_mode') %}
+                                <span>{{ sonata_admin.adminPool.title }}</span>
+                            {% endif %}
+                        </a>
+                    {% endapply %}
+                {% endblock %}
+                {% block sonata_nav %}
+                    <nav class="navbar navbar-static-top" role="navigation">
+                        <a href="#" class="sidebar-toggle" data-toggle="offcanvas"
+                           role="button" title="{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}">
+                            <span class="sr-only">{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}</span>
+                        </a>
+
+                        <div class="navbar-left">
+                            {% block sonata_breadcrumb %}
+                                <div class="hidden-xs">
+                                    {% if _breadcrumb is not empty or action is defined %}
+                                        <ol class="nav navbar-top-links breadcrumb">
+                                            {% if _breadcrumb is empty %}
+                                                {% if action is defined %}
+                                                    {% for menu in breadcrumbs_builder.breadcrumbs(admin, action) %}
+                                                        {%- set translation_domain = menu.extra('translation_domain', 'messages') -%}
+                                                        {# We use method accessor instead of ".label" since `menu` implements `ArrayAccess` and could have a property called "label". #}
+                                                        {%- set label = menu.getLabel() -%}
+                                                        {%- if translation_domain is not same as(false) -%}
+                                                            {%- set label = label|trans(menu.extra('translation_params', {}), translation_domain) -%}
+                                                        {%- endif -%}
+
+                                                        {% if not loop.last %}
+                                                            <li>
+                                                                {% if menu.uri is not empty %}
+                                                                    <a href="{{ menu.uri }}">
+                                                                        {% if menu.extra('safe_label', true) %}
+                                                                            {{- label|raw -}}
+                                                                        {% else %}
+                                                                            {{- label|u.truncate(100, '...') -}}
+                                                                        {% endif %}
+                                                                    </a>
+                                                                {% else %}
+                                                                    <span>{{ label|u.truncate(100, '...') }}</span>
+                                                                {% endif %}
+                                                            </li>
+                                                        {% else %}
+                                                            <li class="active"><span>{{ label|u.truncate(100, '...') }}</span></li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% else %}
+                                                {{ _breadcrumb|raw }}
+                                            {% endif %}
+                                        </ol>
+                                    {% endif %}
+                                </div>
+                            {% endblock sonata_breadcrumb %}
+                        </div>
+
+                        {% block sonata_top_nav_menu %}
+                            {% if app.user and is_granted(sonata_admin.adminPool.getOption('role_admin')) %}
+                                <div class="navbar-custom-menu">
+                                    <ul class="nav navbar-nav">
+                                        {% block sonata_top_nav_menu_add_block %}
+                                            <li class="dropdown">
+                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                    <i class="fa fa-plus-square fa-fw" aria-hidden="true"></i> <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                                </a>
+                                                {% include get_global_template('add_block') %}
+                                            </li>
+                                        {% endblock %}
+                                        {% block sonata_top_nav_menu_user_block %}
+                                            <li class="dropdown user-menu">
+                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                    <i class="fa fa-user fa-fw" aria-hidden="true"></i> <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-user">
+                                                    {% include get_global_template('user_block') %}
+                                                </ul>
+                                            </li>
+                                        {% endblock %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        {% endblock %}
+                    </nav>
+                {% endblock sonata_nav %}
+            </header>
+        {% endblock sonata_header %}
+
+        {% block sonata_wrapper %}
+            {% block sonata_left_side %}
+                <aside class="main-sidebar">
+                    <section class="sidebar">
+                        {% block sonata_side_nav %}
+                            {% block sonata_sidebar_search %}
+                                {% if sonata_admin.adminPool.getOption('search') %}
+                                    <form action="{{ path('sonata_admin_search') }}" method="GET" class="sidebar-form" role="search">
+                                        <div class="input-group custom-search-form">
+                                            <input type="text" name="q" value="{{ app.request.get('q') }}" class="form-control" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-flat" type="submit">
+                                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </form>
+                                {% endif %}
+                            {% endblock sonata_sidebar_search %}
+
+                            {% block side_bar_before_nav %} {% endblock %}
+                            {% block side_bar_nav %}
+                                {{ knp_menu_render('sonata_admin_sidebar', {template: get_global_template('knp_menu_template')}) }}
+                            {% endblock side_bar_nav %}
+                            {% block side_bar_after_nav %}
+                                <p class="text-center small" style="border-top: 1px solid #444444; padding-top: 10px">
+                                    {% block side_bar_after_nav_content %}
+                                    {% endblock %}
+                                </p>
+                            {% endblock %}
+                        {% endblock sonata_side_nav %}
+                    </section>
+                </aside>
+            {% endblock sonata_left_side %}
+
+            <div class="content-wrapper">
+                {% block sonata_page_content %}
+                    <section class="content-header">
+
+                        {% block sonata_page_content_header %}
+                            {% block sonata_page_content_nav %}
+                                {% if _navbar_title is not empty
+                                  or _tab_menu is not empty
+                                  or _actions is not empty
+                                  or _list_filters_actions is not empty
+                                 %}
+                                    <nav class="navbar navbar-default" role="navigation">
+                                        <div class="container-fluid">
+                                            {% block tab_menu_navbar_header %}
+                                                {% if _navbar_title is not empty %}
+                                                    <div class="navbar-header">
+                                                        <a class="navbar-brand" href="#">{{ _navbar_title|raw }}</a>
+                                                    </div>
+                                                {% endif %}
+                                            {% endblock %}
+
+                                            <div class="navbar-collapse">
+                                                {% if _tab_menu is not empty %}
+                                                    <div class="navbar-left">
+                                                        {{ _tab_menu|raw }}
+                                                    </div>
+                                                {% endif %}
+
+                                                {% if admin is defined and action is defined and action == 'list' and admin.listModes|length > 1 %}
+                                                    <div class="nav navbar-right btn-group">
+                                                        {% for mode, settings in admin.listModes %}
+                                                            <a href="{{ admin.generateUrl('list', app.request.query.all|merge({_list_mode: mode})) }}" class="btn btn-default navbar-btn btn-sm{% if admin.getListMode() == mode %} active{% endif %}"><i class="{{ settings.class }}"></i></a>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+
+                                                {% block sonata_admin_content_actions_wrappers %}
+                                                    {% if _actions|replace({ '<li>': '', '</li>': '' })|trim is not empty %}
+                                                        <ul class="nav navbar-nav navbar-right">
+                                                        {% if _actions|split('</a>')|length > 2 %}
+                                                            <li class="dropdown sonata-actions">
+                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'link_actions'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b></a>
+                                                                <ul class="dropdown-menu" role="menu">
+                                                                    {{ _actions|raw }}
+                                                                </ul>
+                                                            </li>
+                                                        {% else %}
+                                                            {{ _actions|raw }}
+                                                        {% endif %}
+                                                        </ul>
+                                                    {% endif %}
+                                                {% endblock sonata_admin_content_actions_wrappers %}
+
+                                                {% if _list_filters_actions is not empty %}
+                                                    {{ _list_filters_actions|raw }}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </nav>
+                                {% endif %}
+                            {% endblock sonata_page_content_nav %}
+                        {% endblock sonata_page_content_header %}
+                    </section>
+
+                    <section class="content">
+                        {% block sonata_admin_content %}
+
+                            {% block notice %}
+                                {% include '@SonataTwig/FlashMessage/render.html.twig' %}
+                            {% endblock notice %}
+
+                            {% if _preview is not empty %}
+                                <div class="sonata-ba-preview">{{ _preview|raw }}</div>
+                            {% endif %}
+
+                            {% if _content is not empty %}
+                                <div class="sonata-ba-content">{{ _content|raw }}</div>
+                            {% endif %}
+
+                            {% if _show is not empty %}
+                                <div class="sonata-ba-show">{{ _show|raw }}</div>
+                            {% endif %}
+
+                            {% if _form is not empty %}
+                                <div class="sonata-ba-form">{{ _form|raw }}</div>
+                            {% endif %}
+
+                            {% if _list_filters is not empty %}
+                                <div class="row">
+                                    {{ _list_filters|raw }}
+                                </div>
+                            {% endif %}
+
+                            {% if _list_table is not empty %}
+                                <div class="row">
+                                    {{ _list_table|raw }}
+                                </div>
+                            {% endif %}
+                        {% endblock sonata_admin_content %}
+                    </section>
+                {% endblock sonata_page_content %}
+            </div>
+        {% endblock sonata_wrapper %}
+    </div>
+
+    {% if sonata_admin.adminPool.getOption('use_bootlint') %}
+        {% block bootlint %}
+            {# Bootlint - https://github.com/twbs/bootlint#in-the-browser #}
+            <script type="text/javascript">
+                javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([], {hasProblems: false, problemFree: false});};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();
+            </script>
+        {% endblock %}
+    {% endif %}
+
+    </body>
+</html>

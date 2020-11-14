@@ -1,0 +1,321 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+{% apply spaceless %}
+
+    <input type="text" id="{{ id }}_autocomplete_input" value=""
+        {%- for attribute,value in attr %} {{ attribute }}="{{ value }}" {% endfor -%}
+        {%- if disabled %} disabled="disabled"{% endif %}
+    />
+
+    <select id="{{ id }}_autocomplete_input_v4" data-sonata-select2="false"
+        {%- if read_only|default(false) %} readonly="readonly"{% endif -%}
+        {%- if disabled %} disabled="disabled"{% endif %}
+    >
+        {%- for idx, val  in value|filter((val, idx) => idx~'' != '_labels') -%}
+            <option value="{{ val }}" selected>{{ value['_labels'][idx] }}</option>
+        {%- endfor -%}
+    </select>
+
+    <div id="{{ id }}_hidden_inputs_wrap">
+        {% if multiple -%}
+            {%- for idx, val  in value|filter((val, idx) => idx~'' != '_labels') -%}
+                <input type="hidden" name="{{ full_name }}[]" {%- if disabled %} disabled="disabled"{% endif %} value="{{ val }}">
+            {%- endfor -%}
+        {% else -%}
+            <input type="hidden" name="{{ full_name }}" {%- if disabled %} disabled="disabled"{% endif %} value="{{ value[0]|default('') }}">
+        {% endif -%}
+    </div>
+
+    {% if sonata_admin.field_description and sonata_admin.field_description.hasAssociationAdmin %}
+        <div id="field_actions_{{ id }}" class="field-actions">
+            {% set display_btn_add = sonata_admin.edit != 'admin' and sonata_admin.field_description.associationadmin.hasRoute('create')
+                                     and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
+            {% if display_btn_add %}
+                <a  href="{{ sonata_admin.field_description.associationadmin.generateUrl('create',
+                             sonata_admin.field_description.getOption('link_parameters', {}))
+                          }}"
+                    onclick="return start_field_dialog_form_add_{{ id }}(this);"
+                    class="btn btn-success btn-sm sonata-ba-action"
+                    title="{{ btn_add|trans({}, btn_catalogue) }}"
+                    >
+                    <i class="fa fa-plus-circle"></i>
+                    {{ btn_add|trans({}, btn_catalogue) }}
+                </a>
+                {% include '@SonataAdmin/CRUD/Association/edit_modal.html.twig' %}
+                {% include '@SonataAdmin/CRUD/Association/edit_many_script.html.twig' %}
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <script>
+        {% autoescape 'js' %}
+        jQuery(function ($) {
+            // Select2 v3 does not used same input as v4.
+            // NEXT_MAJOR: Remove this BC layer while upgrading to v4.
+            var usedInputRef = window.Select2 ? '#{{ id }}_autocomplete_input' : '#{{ id }}_autocomplete_input_v4';
+            var unusedInputRef = window.Select2 ? '#{{ id }}_autocomplete_input_v4' : '#{{ id }}_autocomplete_input';
+
+            $(unusedInputRef).remove();
+            var autocompleteInput = $(usedInputRef);
+
+            var select2Options = {
+                {%- set allowClearPlaceholder = (not multiple and not required) ? ' ' : '' -%}
+                placeholder: '{{ placeholder ?: allowClearPlaceholder }}', // allowClear needs placeholder to work properly
+                allowClear: {{ required ? 'false' : 'true' }},
+                enable: {{ disabled ? 'false' : 'true' }},
+                readonly: {{ attr.read_only|default(false) ? 'true' : 'false' }},
+                minimumInputLength: {{ minimum_input_length }},
+                multiple: {{ multiple ? 'true' : 'false' }},
+                width: function() {
+                    // Select2 v3 and v4 BC. If window.Select2 is defined, then the v3 is installed.
+                    // NEXT_MAJOR: Remove Select2 v3 support.
+                    return Admin.get_select2_width(window.Select2 ? this.element : jQuery(this));
+                },
+                dropdownAutoWidth: {{ dropdown_auto_width ? 'true' : 'false' }},
+                containerCssClass: '{{ container_css_class ~ ' form-control' }}',
+                dropdownCssClass: '{{ dropdown_css_class }}',
+                ajax: {
+                    url:  '{{ url ?: path(route.name, route.parameters|default([])) }}',
+                    dataType: 'json',
+                    quietMillis: {{ quiet_millis }},
+                    cache: {{ cache ? 'true' : 'false' }},
+                    data: function (term, page) { // page is the one-based page number tracked by Select2
+                        // Select2 v4 got a "params" unique argument
+                        // NEXT_MAJOR: Remove this BC layer.
+                        if (typeof page === 'undefined') {
+                            page = typeof term.page !== 'undefined' ? term.page : 1;
+                            term = term.term;
+                        }
+
+                        {% block sonata_type_model_autocomplete_ajax_request_parameters %}
+                        return {
+                                //search term
+                                '{{ req_param_name_search }}': term,
+
+                                // page size
+                                '{{ req_param_name_items_per_page }}': {{ items_per_page }},
+
+                                // page number
+                                '{{ req_param_name_page_number }}': page,
+
+                                // admin
+                                {% if sonata_admin.admin is not null %}
+                                    'uniqid': '{{ sonata_admin.admin.uniqid }}',
+                                    'admin_code': '{{ sonata_admin.admin.code|e('js') }}',
+                                {% elseif admin_code %}
+                                    'admin_code':  '{{ admin_code|e('js') }}',
+                                {% endif %}
+
+                                 // subclass
+                                {% if app.request.query.get('subclass') %}
+                                    'subclass': '{{ app.request.query.get('subclass') }}',
+                                {% endif %}
+
+                                {% if context == 'filter' %}
+                                    'field':  '{{ full_name|replace({'filter[': '', '][value]': '', '__':'.'}) }}',
+                                    '_context': 'filter'
+                                {% else %}
+                                    'field':  '{{ name }}'
+                                {% endif %}
+
+                                // other parameters
+                                {% if req_params is not empty %},
+                                    {%- for key, value in req_params -%}
+                                        '{{- key -}}': '{{- value -}}'
+                                        {%- if not loop.last -%}, {% endif -%}
+                                    {%- endfor -%}
+                                {% endif %}
+                        };
+                        {% endblock %}
+                    },
+                },
+                escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
+            };
+
+            // Select2 v3/v4 special options.
+            // NEXT_MAJOR: Remove this BC layer while upgrading to v4.
+            var templateResult = function (item) {
+                return {% block sonata_type_model_autocomplete_dropdown_item_format -%}
+                    {% if safe_label|default(false) %}
+                        '<div class="{{ dropdown_item_css_class }}">'+item.label+'<\/div>'
+                    {% else %}
+                        jQuery('<div class="{{ dropdown_item_css_class }}">').text(item.label).prop('outerHTML')
+                    {% endif %}
+                {%- endblock %}; // format of one dropdown item
+            };
+            var templateSelection = function (item) {
+                // Select2 v4 BC select pre-selection.
+                if (typeof item.label === 'undefined') {
+                    item.label = item.text;
+                }
+                return {% block sonata_type_model_autocomplete_selection_format -%}
+                    {% if safe_label|default(false) %}
+                        item.label
+                    {% else %}
+                        jQuery('<div>').text(item.label).prop('innerHTML')
+                    {% endif %}
+                {%- endblock %}; // format selected item '<b>'+item.label+'</b>';
+            };
+
+            if (window.Select2) {
+                select2Options.initSelection = function (element, callback) {
+                    callback(element.val());
+                };
+                select2Options.ajax.results = function (data, page) {
+                    // notice we return the value of more so Select2 knows if more results can be loaded
+                    return {results: data.items, more: data.more};
+                };
+                select2Options.formatResult = templateResult;
+                select2Options.formatSelection = templateSelection;
+            } else {
+                select2Options.ajax.processResults = function (data, params) {
+                    return {
+                        results: data.items,
+                        pagination: {
+                            more: data.more
+                        }
+                    };
+                };
+                select2Options.templateResult = templateResult;
+                select2Options.templateSelection = templateSelection;
+            }
+            // END Select2 v3/v4 special options
+
+            autocompleteInput.select2(select2Options);
+
+            // Events structure is different between v3 and v4
+            // NEXT_MAJOR: Remove BC layer.
+            var boundEvents = window.Select2 ? 'change' : 'select2:select select2:unselect';
+            autocompleteInput.on(boundEvents, function(e) {
+                if (e.type === 'select2:select') {
+                    e.added = e.params.data;
+                }
+                if (e.type === 'select2:unselect') {
+                    e.removed = e.params.data;
+                }
+
+                // console.log('change '+JSON.stringify({val:e.val, added:e.added, removed:e.removed}));
+
+                // remove input
+                if (undefined !== e.removed && null !== e.removed) {
+                    var removedItems = e.removed;
+
+                    {% if multiple %}
+                        if(!$.isArray(removedItems)) {
+                            removedItems = [removedItems];
+                        }
+
+                        var length = removedItems.length;
+                        for (var i = 0; i < length; i++) {
+                            el = removedItems[i];
+                            $('#{{ id }}_hidden_inputs_wrap input:hidden[value="'+el.id+'"]').remove();
+                        }
+                    {%- else -%}
+                        $('#{{ id }}_hidden_inputs_wrap input:hidden').val('');
+                    {%- endif %}
+                }
+
+                // add new input
+                var el = null;
+                if (undefined !== e.added) {
+
+                    var addedItems = e.added;
+
+                    {% if multiple %}
+                        if(!$.isArray(addedItems)) {
+                            addedItems = [addedItems];
+                        }
+
+                        var length = addedItems.length;
+                        for (var i = 0; i < length; i++) {
+                            el = addedItems[i];
+                            $('#{{ id }}_hidden_inputs_wrap').append('<input type="hidden" name="{{ full_name }}[]" value="'+el.id+'" />');
+                        }
+                    {%- else -%}
+                        $('#{{ id }}_hidden_inputs_wrap input:hidden').val(addedItems.id);
+                    {%- endif %}
+                }
+            });
+
+            // Initialise the autocomplete
+            var data = [];
+
+            {%- if value is not empty -%}
+                data = {%- if multiple -%}[ {%- endif -%}
+                {%- for idx, val  in value|filter((val, idx) => idx~'' != '_labels') -%}
+                    {%- if not loop.first -%}, {% endif -%}
+                    {id: '{{ val }}', label:'{{ value['_labels'][idx] }}'}
+                {%- endfor -%}
+                {%- if multiple -%} ] {%- endif -%};
+            {% endif -%}
+
+            // Select2 v3 data populate.
+            // NEXT_MAJOR: Remove while dropping v3 support.
+            if (window.Select2 && (undefined==data.length || 0<data.length)) { // Leave placeholder if no data set
+                autocompleteInput.select2('data', data);
+            }
+
+            // remove unneeded autocomplete text input before form submit
+            $(usedInputRef).closest('form').submit(function()
+            {
+                $(usedInputRef).remove();
+                return true;
+            });
+
+            // Automatically select the created record after closing the popup window
+            {% if sonata_admin.field_description
+                and sonata_admin.field_description.hasAssociationAdmin
+                and btn_add
+                and sonata_admin.field_description.associationadmin.hasRoute('create')
+                and sonata_admin.field_description.associationadmin.hasAccess('create') %}
+
+                {% set create_url = sonata_admin.field_description.associationadmin.generateUrl('create', sonata_admin.field_description.getOption('link_parameters', {})) %}
+
+                $(document).ajaxSuccess(function(event, xhr, settings) {
+                  if(typeof xhr.responseJSON != 'undefined') {
+                      if ('{{ create_url }}'.indexOf(settings.url) !== -1 && typeof xhr.responseJSON != 'string' && xhr.responseJSON.result == 'ok') {
+                        var item = new Option(
+                          new DOMParser().parseFromString(xhr.responseJSON.objectName, "text/html").documentElement.textContent,
+                          xhr.responseJSON.objectId,
+                          true, true
+                          );
+
+                        {%- if multiple -%}
+                          var data = autocompleteInput.select2('data');
+                          data.push(item);
+                        {%- else -%}
+                          var data = item;
+                        {%- endif -%}
+
+                        {% if multiple %}
+                          $('#{{ id }}_hidden_inputs_wrap').append('<input type="hidden" name="{{ full_name }}[]" value="'+xhr.responseJSON.objectId+'" />');
+                        {% else %}
+                          $('#{{ id }}_hidden_inputs_wrap').html('<input type="hidden" name="{{ full_name }}" value="'+xhr.responseJSON.objectId+'" />');
+                        {% endif %}
+
+                        // append to Select2
+                        autocompleteInput.select2('data', data).append(data).trigger('change');
+
+                        // manually trigger the `select2:select` event
+                        autocompleteInput.select2('data', data).trigger({
+                            type: 'select2:select',
+                            params: {
+                                data: data
+                            }
+                        });
+                      }
+                  }
+                });
+            {% endif %}
+        });
+        {% endautoescape %}
+    </script>
+{% endapply %}

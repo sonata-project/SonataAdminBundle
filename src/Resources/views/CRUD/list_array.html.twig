@@ -1,0 +1,20 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+{% import '@SonataAdmin/CRUD/base_array_macro.html.twig' as list %}
+
+{% extends get_admin_template('base_list_field', admin.code) %}
+
+{% block field %}
+    {{ list.render_array(
+        value,
+        { default_translation_domain : admin.translationDomain, inline: true }|merge(field_description.options)
+    ) }}
+{% endblock %}

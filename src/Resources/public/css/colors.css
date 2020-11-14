@@ -1,0 +1,41 @@
+table.sonata-ba-list th {
+    background-image: -moz-linear-gradient(-90deg, #f8f8f8 , #e2e2e2);
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f8f8f8), to(#e2e2e2));
+}
+
+table.sonata-ba-list tfoot td {
+    background-image: -moz-linear-gradient(-90deg, #f8f8f8 , #e2e2e2);
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f8f8f8), to(#e2e2e2));
+    border-top: 1px solid #DDD;
+}
+
+a.sonata-ba-collapsed {
+    color: #404040;
+}
+
+/* Form */
+textarea.title {
+    font-size: 1em;
+    width: 500px;
+}
+
+input.title {
+    font-size: 1em;
+    width: 500px;
+}
+
+div.sonata-ba-field-error input{
+    border: 1px solid #f79992;
+}
+
+div.sonata-ba-field-error textarea{
+    border: 1px solid #f79992;
+}
+
+div.sonata-ba-field-error select{
+    border: 1px solid #f79992;
+}
+
+div.sonata-ba-field-error .field-short-description {
+    border: 1px solid #B94A48;
+}

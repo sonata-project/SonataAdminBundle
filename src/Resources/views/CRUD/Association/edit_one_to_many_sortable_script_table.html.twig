@@ -1,0 +1,40 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+<script type="text/javascript">
+    jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody').first().sortable({
+        axis: 'y',
+        opacity: 0.6,
+        items: '> tr',
+        stop: apply_position_value_{{ id }}
+    });
+
+    function apply_position_value_{{ id }}() {
+        // update the input value position
+        jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ id }}-{{ sonata_admin.field_description.options.sortable }}').each(function(index, element) {
+            // remove the sortable handler and put it back
+            jQuery('span.sonata-ba-sortable-handler', element).remove();
+            jQuery(element).append('<span class="sonata-ba-sortable-handler ui-icon ui-icon-grip-solid-horizontal"></span>');
+            jQuery('input', element).hide();
+        });
+
+        jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ id }}-{{ sonata_admin.field_description.options.sortable }} input').each(function(index, value) {
+            jQuery(value).val(index + 1);
+        });
+    }
+
+    // refresh the sortable option when a new element is added
+    jQuery('#sonata-ba-field-container-{{ id }}').bind('sonata.add_element', function() {
+        apply_position_value_{{ id }}();
+        jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody').sortable('refresh');
+    });
+
+    apply_position_value_{{ id }}();
+</script>

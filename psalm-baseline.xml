@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="3.13.1@afd8874a9e4562eac42a02de90e42e430c3a1db1">
+    <!--The next error is due to not installed Doctrine ORM\ODM-->
+    <file src="src/Admin/AdminHelper.php">
+        <UndefinedClass occurrences="1">
+            <code>DoctrinePersistentCollection</code>
+        </UndefinedClass>
+    </file>
+    <!-- ignore template files-->
+    <file src="src/Resources/skeleton/Admin.tpl.php">
+        <UndefinedGlobalVariable occurrences="6">
+            <code>$namespace</code>
+            <code>$class_name</code>
+            <code>$fields</code>
+            <code>$fields</code>
+            <code>$fields</code>
+            <code>$fields</code>
+        </UndefinedGlobalVariable>
+    </file>
+    <file src="src/Resources/skeleton/AdminController.tpl.php">
+        <UndefinedGlobalVariable occurrences="2">
+            <code>$namespace</code>
+            <code>$class_name</code>
+        </UndefinedGlobalVariable>
+    </file>
+    <file src="src/Datagrid/Datagrid.php">
+        <InvalidPropertyAssignmentValue occurrences="1">
+            <code>array_merge(array_flip($keys), $this-&gt;filters)</code>
+        </InvalidPropertyAssignmentValue>
+    </file>
+    <file src="src/Admin/FieldDescriptionCollection.php">
+        <InvalidPropertyAssignmentValue occurrences="2">
+            <code>$this-&gt;elements</code>
+            <code>array_merge(array_flip($keys), $this-&gt;elements)</code>
+        </InvalidPropertyAssignmentValue>
+    </file>
+</files>

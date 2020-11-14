@@ -1,0 +1,10 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 5
+    paths:
+        - src
+    excludes_analyse:
+        # temporarily ignore template files
+        - src/Resources/**.tpl.php

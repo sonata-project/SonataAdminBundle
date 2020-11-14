@@ -1,0 +1,63 @@
+{% block user_block %}
+    {% set items_per_column = sonata_admin.adminPool.getOption('dropdown_number_groups_per_colums') %}
+    {% set groups = [] %}
+
+    {% for group in sonata_admin.adminPool.dashboardgroups|filter(group => group.items|filter(admin => admin.hasRoute('create') and admin.hasAccess('create'))|length > 0) %}
+        {% set groups = [group]|merge(groups) %}
+    {% endfor %}
+
+    {% set column_count = (groups|length / items_per_column)|round(0, 'ceil') %}
+
+    <div class="dropdown-menu multi-column dropdown-add"
+        {% if column_count > 1 %}style="width: {{ column_count*140 }}px;"{% endif %}
+    >
+        {% for group in groups|reverse %}
+            {% set display = group.roles is empty or is_granted(sonata_admin.adminPool.getOption('role_admin')) or group.roles|filter(role => is_granted(role))|length > 0 %}
+
+            {% if loop.first %}
+                {% set render_first_element = true %}
+            {% endif %}
+
+            {% if display %}
+                {% if render_first_element or loop.index0 % items_per_column == 0 %}
+                    {% if render_first_element %}
+                        <div class="container-fluid">
+                            <div class="row">
+                        {% set render_first_element = false %}
+                    {% else %}
+                        </ul>
+                    {% endif %}
+                    <ul class="dropdown-menu{% if column_count > 1 %} col-md-{{ (12/column_count)|round }}{% endif %}">
+                {% endif %}
+                {% if loop.index0 % items_per_column != 0 %}
+                    <li role="presentation" class="divider"></li>
+                {% endif %}
+                <li role="presentation" class="dropdown-header">
+                    {{ group.icon|raw }}
+                    {{ group.label|trans({}, group.label_catalogue) }}
+                </li>
+
+                {% for admin in group.items %}
+                    {% if admin.hasRoute('create') and admin.hasAccess('create') %}
+                        {% if admin.subClasses is empty %}
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="{{ admin.generateUrl('create') }}">{{ admin.label|trans({}, admin.translationdomain) }}</a>
+                            </li>
+                        {% else %}
+                            {% for subclass in admin.subclasses|keys %}
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">{{ subclass|trans({}, admin.translationdomain) }}</a>
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {% if loop.last and not render_first_element %}
+                    </ul>
+                    </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

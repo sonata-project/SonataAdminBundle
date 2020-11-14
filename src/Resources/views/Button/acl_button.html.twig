@@ -1,0 +1,18 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+{% if admin.isAclEnabled() and admin.canAccessObject('acl', object) and admin.hasRoute('acl') %}
+    <li>
+        <a class="sonata-action-element" href="{{ admin.generateObjectUrl('acl', object) }}">
+            <i class="fa fa-users" aria-hidden="true"></i>
+            {{ 'link_action_acl'|trans({}, 'SonataAdminBundle') }}
+        </a>
+    </li>
+{% endif %}

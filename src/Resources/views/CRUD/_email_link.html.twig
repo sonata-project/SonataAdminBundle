@@ -1,0 +1,21 @@
+
+{%- if value is empty -%}
+    &nbsp;
+{%- elseif field_description.options.as_string is defined and field_description.options.as_string -%}
+    {{ value }}
+{%- else -%}
+    {% set parameters = {} %}
+    {% set subject = field_description.options.subject|default('') %}
+    {% set body = field_description.options.body|default('') %}
+
+    {% if subject is not empty %}
+        {% set parameters = parameters|merge({'subject': subject}) %}
+    {% endif %}
+    {% if body is not empty %}
+        {% set parameters = parameters|merge({'body': body}) %}
+    {% endif %}
+
+    <a href="mailto:{{ value }}{% if parameters|length > 0 %}?{{- parameters|url_encode -}}{% endif %}">
+        {{- value -}}
+    </a>
+{%- endif -%}

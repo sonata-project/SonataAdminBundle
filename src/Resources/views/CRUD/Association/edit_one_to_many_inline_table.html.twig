@@ -1,0 +1,74 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            {% for field_name, nested_field in form.children|first.children %}
+                {% if field_name == '_delete' %}
+                    <th>{{ 'action_delete'|trans({}, 'SonataAdminBundle') }}</th>
+                {% else %}
+                    <th
+                        {% if nested_field.vars['required']|default(false) %}
+                            class="required"
+                        {% endif %}
+                        {% if nested_field.vars['attr']['hidden']|default(false) %}
+                            style="display:none;"
+                        {% endif %}
+                    >
+                        {% if nested_field.vars.translation_domain is same as(false) %}
+                            {{ nested_field.vars.label }}
+                        {% else %}
+                            {% set translationDomain = nested_field.vars.translation_domain|default(nested_field.vars['sonata_admin'].admin.translationDomain|default(null)) %}
+                            {{ nested_field.vars.label|trans({}, translationDomain) }}
+                        {% endif %}
+                    </th>
+                {% endif %}
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody class="sonata-ba-tbody">
+        {% for nested_group_field_name, nested_group_field in form.children %}
+            <tr>
+                {% for field_name, nested_field in nested_group_field.children %}
+                    <td class="
+                        sonata-ba-td-{{ id }}-{{ field_name }}
+                        form-group
+                        control-group
+                        {% if nested_field.vars.errors|default(false) %} error has-error sonata-ba-field-error{% endif %}
+                        "
+                        {% if nested_field.vars['attr']['hidden']|default(false) %}
+                            style="display:none;"
+                        {% endif %}
+                    >
+                        {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name] is defined %}
+                            {{ form_widget(nested_field) }}
+
+                            {{ form_help(nested_field) }}
+
+                            {% set dummy = nested_group_field.setrendered %}
+                        {% else %}
+                            {% if field_name == '_delete' %}
+                                {{ form_widget(nested_field, { label: false }) }}
+                            {% else %}
+                                {{ form_widget(nested_field) }}
+                            {% endif %}
+                        {% endif %}
+                        {% if nested_field.vars.errors|default(false) %}
+                            <div class="help-block help-inline sonata-ba-field-error-messages">
+                                {{ form_errors(nested_field) }}
+                            </div>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

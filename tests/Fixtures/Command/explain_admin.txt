@@ -1,0 +1,42 @@
+AdminBundle Information
+id                   : foo
+Admin                : %1$s
+Model                : Acme\Entity\Foo
+Controller           : Sonata\AdminBundle\Controller\CRUDController
+Model Manager        : %2$s
+Form Builder         : %3$s
+Datagrid Builder     : %4$s
+List Builder         : %5$s
+Parent          : foo_child
+
+Routes
+  - fooBar_list               /foo-bar/list
+  - fooBar_edit               /foo-bar/edit
+
+Datagrid Columns
+  - fooTextField               text            @SonataAdmin/CRUD/foo_text.html.twig
+  - barDateTimeField           datetime        @SonataAdmin/CRUD/bar_datetime.html.twig
+
+Datagrid Filters
+  - fooTextField               text            @SonataAdmin/CRUD/foo_text.html.twig
+  - barDateTimeField           datetime        @SonataAdmin/CRUD/bar_datetime.html.twig
+
+Form theme(s)
+  - @Foo/bar.html.twig
+
+Form Fields
+  - fooTextField               text            @SonataAdmin/CRUD/foo_text.html.twig
+  - barDateTimeField           datetime        @SonataAdmin/CRUD/bar_datetime.html.twig
+
+Validation Framework - http://symfony.com/doc/3.0/book/validation.html
+Properties constraints
+  - firstName
+    Symfony\Component\Validator\Constraints\NotNull                        Default
+    Symfony\Component\Validator\Constraints\Length                         create|edit
+
+Getters constraints
+  - email
+    Symfony\Component\Validator\Constraints\NotNull                        Default
+    Symfony\Component\Validator\Constraints\Email                          registration|edit
+
+done!

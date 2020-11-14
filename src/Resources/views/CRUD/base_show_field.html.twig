@@ -1,0 +1,48 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+<th{% if(is_diff|default(false)) %} class="diff"{% endif %}>
+    {%- block name -%}
+        {% apply spaceless %}
+            {% if field_description.label is not same as(false) %}
+                {{ field_description.label|trans({}, field_description.translationDomain ?: admin.translationDomain) }}
+            {% endif %}
+        {% endapply %}
+    {%- endblock -%}
+</th>
+<td>
+    {%- block field -%}
+        {% apply spaceless %}
+            {% set collapse = field_description.options.collapse|default(false) %}
+            {% if collapse %}
+                <div class="sonata-readmore"
+                      data-readmore-height="{{ collapse.height|default(40) }}"
+                      data-readmore-more="{{ collapse.more|default('read_more')|trans({}, 'SonataAdminBundle') }}"
+                      data-readmore-less="{{ collapse.less|default('read_less')|trans({}, 'SonataAdminBundle') }}">
+                    {% block field_value %}
+                        {% if field_description.options.safe %}{{ value|raw }}{% else %}{{ value|nl2br }}{% endif %}
+                    {% endblock %}
+                </div>
+            {% else %}
+                {{ block('field_value') }}
+            {% endif %}
+        {% endapply %}
+    {%- endblock -%}
+</td>
+
+{%- block field_compare -%}
+    {% apply spaceless %}
+        {% if(value_compare is defined) %}
+            {% set value = value_compare %}
+            <td>{{ block('field') }}</td>
+        {% endif %}
+    {% endapply %}
+{%- endblock -%}

@@ -1,0 +1,67 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends sonata_block.templates.block_base %}
+
+{% block block %}
+    {% set show_empty_boxes = sonata_admin.adminPool.container.getParameter('sonata.admin.configuration.global_search.empty_boxes') %}
+    {% set visibility_class = 'sonata-search-result-' ~ show_empty_boxes %}
+    {% if pager and pager.getResults()|length %}
+        {% set visibility_class = 'sonata-search-result-show' %}
+    {% endif %}
+
+    <div class="col-lg-4 col-md-6 search-box-item {{ visibility_class }}">
+        <div class="box box-solid {{ visibility_class }}">
+            <div class="box-header with-border {{ visibility_class }}">
+                {% set icon = settings.icon|default('') %}
+                {{ icon|raw }}
+                <h3 class="box-title">
+                    {{ admin.label|trans({}, admin.translationdomain) }}
+                </h3>
+
+                <div class="box-tools pull-right">
+                    {% if pager and pager.getNbResults() > 0 %}
+                        <span class="badge">{{ pager.getNbResults() }}</span>
+                    {% elseif admin.hasRoute('create') and admin.hasAccess('create') %}
+                        <a href="{{ admin.generateUrl('create') }}" class="btn btn-box-tool">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </a>
+                    {% endif %}
+                    {% if admin.hasRoute('list') and admin.hasAccess('list') %}
+                        <a href="{{ admin.generateUrl('list') }}" class="btn btn-box-tool">
+                            <i class="fa fa-list" aria-hidden="true"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% if pager and pager.getResults()|length %}
+                <div class="box-body no-padding">
+                    <ul class="nav nav-stacked sonata-search-result-list">
+                        {% for result in pager.getResults() %}
+                            {% set link = admin.getSearchResultLink(result) %}
+                            {% if link %}
+                                <li><a href="{{ link }}">{{ admin.toString(result) }}</a></li>
+                            {% else %}
+                                <li><a>{{ admin.toString(result) }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+                <div class="box-body">
+                    <p>
+                        <em>{{ 'no_results_found'|trans({}, 'SonataAdminBundle') }}</em>
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
