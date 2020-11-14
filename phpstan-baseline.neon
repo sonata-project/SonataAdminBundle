@@ -129,24 +129,6 @@ parameters:
 
         -
             # will be fixed in v4. Currently BC break
-            message: "#^Constructor of class Sonata\\\\AdminBundle\\\\Form\\\\DataTransformer\\\\ModelsToArrayTransformer has an unused parameter \\$choiceList\\.$#"
-            count: 1
-            path: src/Form/DataTransformer/ModelsToArrayTransformer.php
-
-        -
-            # will be fixed in v4. Currently BC break
-            message: "#^Constructor of class Sonata\\\\AdminBundle\\\\Form\\\\DataTransformer\\\\ModelsToArrayTransformer has an unused parameter \\$class\\.$#"
-            count: 1
-            path: src/Form/DataTransformer/ModelsToArrayTransformer.php
-
-        -
-            # will be fixed in v4. Currently BC break
-            message: "#^Constructor of class Sonata\\\\AdminBundle\\\\Form\\\\DataTransformer\\\\ModelsToArrayTransformer has an unused parameter \\$modelManager\\.$#"
-            count: 1
-            path: src/Form/DataTransformer/ModelsToArrayTransformer.php
-
-        -
-            # will be fixed in v4. Currently BC break
             message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\<object\\>\\:\\:getFormGroups\\(\\) invoked with 1 parameter, 0 required\\.$#"
             count: 1
             path: src/Form/FormMapper.php
