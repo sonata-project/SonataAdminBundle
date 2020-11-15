@@ -75,6 +75,7 @@
         "matthiasnoback/symfony-config-test": "^4.2",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",
         "phpdocumentor/reflection-docblock": "^5.2",
+        "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^0.12.29",
         "phpstan/phpstan-symfony": "^0.12.10",
         "psalm/plugin-symfony": "^2.0",
