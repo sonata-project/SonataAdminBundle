@@ -73,7 +73,7 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
      */
     public function testDefaultSettingsWithoutEmptyBoxOption(): void
     {
-        $this->expectDeprecation('Not passing a string as argument 4 to %s() is deprecated since sonata-project/admin-bundle 3.x and will throw a \TypeError in version 4.0.');
+        $this->expectDeprecation('Not passing a string as argument 4 to %s() is deprecated since sonata-project/admin-bundle 3.81 and will throw a \TypeError in version 4.0.');
 
         $blockService = new AdminSearchBlockService(
             $this->createMock(Environment::class),
