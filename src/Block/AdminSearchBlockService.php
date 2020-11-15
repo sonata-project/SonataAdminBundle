@@ -86,7 +86,7 @@ class AdminSearchBlockService extends AbstractBlockService
 
             if (!\is_string($emptyBoxesOptionOrSearchHandler)) {
                 @trigger_error(sprintf(
-                    'Not passing a string as argument 4 to %s() is deprecated since sonata-project/admin-bundle 3.x'
+                    'Not passing a string as argument 4 to %s() is deprecated since sonata-project/admin-bundle 3.81'
                     .' and will throw a \TypeError in version 4.0.',
                     __METHOD__
                 ), E_USER_DEPRECATED);
