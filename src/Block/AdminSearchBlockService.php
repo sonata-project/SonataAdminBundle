@@ -42,13 +42,26 @@ class AdminSearchBlockService extends AbstractBlockService
     protected $searchHandler;
 
     /**
-     * NEXT_MAJOR: Change signature for (Environment $twig, Pool $pool, SearchHandler $searchHandler).
+     * NEXT_MAJOR: Change var to string and phpstan-var to 'show'|'hide'|'fade'.
+     *
+     * @var string|null
+     *
+     * @phpstan-var 'show'|'hide'|'fade'|null
+     */
+    private $emptyBoxesOption;
+
+    /**
+     * NEXT_MAJOR: Change signature for (Environment $twig, Pool $pool, SearchHandler $searchHandler, string $emptyBoxesOption).
      *
      * @param Environment|string        $twigOrName
      * @param Pool|EngineInterface|null $poolOrTemplating
      * @param SearchHandler|Pool        $searchHandlerOrPool
+     * @param string|SearchHandler|null $emptyBoxesOptionOrSearchHandler
+     *
+     * @phpstan-param 'show'|'hide'|'fade'|SearchHandler|null $emptyBoxesOptionOrSearchHandler
+     * @phpstan-param 'show'|'hide'|'fade'|null               $emptyBoxesOption
      */
-    public function __construct($twigOrName, ?object $poolOrTemplating, object $searchHandlerOrPool, ?SearchHandler $searchHandler = null)
+    public function __construct($twigOrName, ?object $poolOrTemplating, object $searchHandlerOrPool, $emptyBoxesOptionOrSearchHandler = null, ?string $emptyBoxesOption = null)
     {
         if ($poolOrTemplating instanceof Pool) {
             if (!$twigOrName instanceof Environment) {
@@ -71,8 +84,17 @@ class AdminSearchBlockService extends AbstractBlockService
 
             parent::__construct($twigOrName);
 
+            if (!\is_string($emptyBoxesOptionOrSearchHandler)) {
+                @trigger_error(sprintf(
+                    'Not passing a string as argument 4 to %s() is deprecated since sonata-project/admin-bundle 3.x'
+                    .' and will throw a \TypeError in version 4.0.',
+                    __METHOD__
+                ), E_USER_DEPRECATED);
+            }
+
             $this->pool = $poolOrTemplating;
             $this->searchHandler = $searchHandlerOrPool;
+            $this->emptyBoxesOption = $emptyBoxesOptionOrSearchHandler;
         } elseif (null === $poolOrTemplating || $poolOrTemplating instanceof EngineInterface) {
             @trigger_error(sprintf(
                 'Passing %s as argument 2 to %s() is deprecated since sonata-project/admin-bundle 3.76'
@@ -91,7 +113,7 @@ class AdminSearchBlockService extends AbstractBlockService
                 ));
             }
 
-            if (null === $searchHandler) {
+            if (null === $emptyBoxesOptionOrSearchHandler) {
                 throw new \TypeError(sprintf(
                     'Passing null as argument 3 to %s() is not allowed when %s is passed as argument 2.'
                     .' You must pass an instance of %s instead.',
@@ -104,7 +126,8 @@ class AdminSearchBlockService extends AbstractBlockService
             parent::__construct($twigOrName, $poolOrTemplating);
 
             $this->pool = $searchHandlerOrPool;
-            $this->searchHandler = $searchHandler;
+            $this->searchHandler = $emptyBoxesOptionOrSearchHandler;
+            $this->emptyBoxesOption = $emptyBoxesOption;
         } else {
             throw new \TypeError(sprintf(
                 'Argument 2 passed to %s() must be either null or an instance of %s or preferably %s, instance of %s given.',
@@ -149,6 +172,7 @@ class AdminSearchBlockService extends AbstractBlockService
             'admin_pool' => $this->pool,
             'pager' => $pager,
             'admin' => $admin,
+            'show_empty_boxes' => $this->emptyBoxesOption,
         ], $response);
     }
 

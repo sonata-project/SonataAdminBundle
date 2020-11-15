@@ -38,6 +38,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('twig'),
                 new ReferenceConfigurator('sonata.admin.pool'),
                 new ReferenceConfigurator('sonata.admin.search.handler'),
+                '%sonata.admin.configuration.global_search.empty_boxes%',
             ])
 
         ->set('sonata.admin.block.stats', AdminStatsBlockService::class)
