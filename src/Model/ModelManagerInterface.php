@@ -144,6 +144,10 @@ interface ModelManagerInterface
     public function modelReverseTransform(string $class, array $array = []): object;
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-admin/admin-bundle 3.80 and will be removed in 4.0.
+     *
      * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T
@@ -158,7 +162,11 @@ interface ModelManagerInterface
     public function executeQuery(object $query);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * @param string[] $fields
+     *
+     * @deprecated since sonata-admin/admin-bundle 3.79 and will be removed in 4.0.
      */
     public function getDataSourceIterator(
         DatagridInterface $datagrid,

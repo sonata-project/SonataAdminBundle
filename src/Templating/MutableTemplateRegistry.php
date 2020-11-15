@@ -16,11 +16,15 @@ namespace Sonata\AdminBundle\Templating;
 /**
  * @author Wojciech Błoszyk <wbloszyk@gmail.com>
  */
-interface TemplateRegistryAwareInterface
+final class MutableTemplateRegistry extends AbstractTemplateRegistry implements MutableTemplateRegistryInterface
 {
-    public function getTemplateRegistry(): TemplateRegistryInterface;
+    public function setTemplates(array $templates): void
+    {
+        $this->templates = $templates;
+    }
 
-    public function hasTemplateRegistry(): bool;
-
-    public function setTemplateRegistry(TemplateRegistryInterface $templateRegistry): void;
+    public function setTemplate(string $name, string $template): void
+    {
+        $this->templates[$name] = $template;
+    }
 }

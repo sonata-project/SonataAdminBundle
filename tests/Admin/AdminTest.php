@@ -63,9 +63,9 @@ use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
+use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Sonata\Doctrine\Adapter\AdapterInterface;
-use Sonata\Exporter\Source\ArraySourceIterator;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -83,10 +83,11 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Mapping\MemberMetadata;
 use Symfony\Component\Validator\Mapping\PropertyMetadataInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdminTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     protected $cacheTempFolder;
 
     protected function setUp(): void
@@ -1617,6 +1618,7 @@ class AdminTest extends TestCase
     public function testGetFilterFieldDescription(): void
     {
         $modelAdmin = new ModelAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'Sonata\FooBundle\Controller\ModelAdminController');
+        $modelAdmin->setLabelTranslatorStrategy(new NoopLabelTranslatorStrategy());
 
         $fooFieldDescription = new FieldDescription('foo');
         $barFieldDescription = new FieldDescription('bar');
@@ -2094,50 +2096,6 @@ class AdminTest extends TestCase
             ],
             '_per_page' => 25,
         ], $admin->getFilterParameters());
-    }
-
-    public function testGetDataSourceIterator(): void
-    {
-        $pager = $this->createStub(PagerInterface::class);
-        $translator = $this->createStub(TranslatorInterface::class);
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-
-        $admin = new PostAdmin(
-            'sonata.post.admin.post',
-            'Application\Sonata\NewsBundle\Entity\Post',
-            'Sonata\NewsBundle\Controller\PostAdminController'
-        );
-
-        $formFactory = new FormFactory(new FormRegistry([], new ResolvedFormTypeFactory()));
-        $datagridBuilder = new DatagridBuilder($formFactory, $pager);
-
-        $translator->method('trans')->willReturnCallback(static function (string $label): string {
-            if ('export.label_field' === $label) {
-                return 'Feld';
-            }
-
-            return $label;
-        });
-
-        $modelManager->method('getExportFields')->willReturn([
-            'field',
-            'foo',
-            'bar',
-        ]);
-        $modelManager->expects($this->once())->method('getDataSourceIterator')
-            ->with($this->equalTo($datagridBuilder->getBaseDatagrid($admin)), $this->equalTo([
-                'Feld' => 'field',
-                1 => 'foo',
-                2 => 'bar',
-            ]))
-            ->willReturn(new ArraySourceIterator([]));
-
-        $admin->setTranslator($translator);
-        $admin->setDatagridBuilder($datagridBuilder);
-        $admin->setModelManager($modelManager);
-        $admin->setLabelTranslatorStrategy(new UnderscoreLabelTranslatorStrategy());
-
-        $admin->getDataSourceIterator();
     }
 
     public function testCircularChildAdmin(): void

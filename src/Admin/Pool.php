@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -70,6 +71,13 @@ class Pool
      * @var PropertyAccessorInterface
      */
     protected $propertyAccessor;
+
+    /**
+     * NEXT_MAJOR: change to TemplateRegistryInterface.
+     *
+     * @var MutableTemplateRegistryInterface
+     */
+    private $templateRegistry;
 
     public function __construct(
         ContainerInterface $container,
@@ -354,6 +362,46 @@ class Pool
     public function getAdminClasses(): array
     {
         return $this->adminClasses;
+    }
+
+    /**
+     * NEXT_MAJOR: change to TemplateRegistryInterface.
+     */
+    final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void
+    {
+        $this->templateRegistry = $templateRegistry;
+    }
+
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     *
+     * @return void
+     */
+    public function setTemplates(array $templates)
+    {
+        $this->templateRegistry->setTemplates($templates);
+    }
+
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     *
+     * @return array<string, string>
+     */
+    public function getTemplates()
+    {
+        return $this->templateRegistry->getTemplates();
+    }
+
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     *
+     * @param string $name
+     *
+     * @return string|null
+     */
+    public function getTemplate($name)
+    {
+        return $this->templateRegistry->getTemplate($name);
     }
 
     public function getTitleLogo(): string

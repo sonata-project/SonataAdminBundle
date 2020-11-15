@@ -86,7 +86,7 @@ final class AdminType extends AbstractType
                         // no object here, we create a new one
                         $subject = $admin->getNewInstance();
 
-                        if ($options['by_reference']) {
+                        if ($options['collection_by_reference']) {
                             $subject = ObjectManipulator::addInstance($parentSubject, $subject, $parentFieldDescription);
                         } else {
                             $subject = ObjectManipulator::setObject($subject, $parentSubject, $parentFieldDescription);
@@ -134,6 +134,7 @@ final class AdminType extends AbstractType
             'btn_list' => 'link_list',
             'btn_delete' => 'link_delete',
             'btn_catalogue' => 'SonataAdminBundle',
+            'collection_by_reference' => true,
         ]);
     }
 

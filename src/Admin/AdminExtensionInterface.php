@@ -121,6 +121,9 @@ interface AdminExtensionInterface
      */
     public function postUpdate(AdminInterface $admin, object $object): void;
 
+    /**
+     * @phpstan-param AdminInterface<object> $admin
+     */
     public function prePersist(AdminInterface $admin, object $object): void;
 
     /**

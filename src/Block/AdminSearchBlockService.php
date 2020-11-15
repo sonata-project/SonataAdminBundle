@@ -44,17 +44,27 @@ final class AdminSearchBlockService extends AbstractBlockService
      */
     private $templateRegistry;
 
+    /**
+     * @var string
+     */
+    private $emptyBoxesOption;
+
+    /**
+     * @phpstan-param 'show'|'hide'|'fade' $emptyBoxesOption
+     */
     public function __construct(
         Environment $twig,
         Pool $pool,
         SearchHandler $searchHandler,
-        TemplateRegistryInterface $templateRegistry
+        TemplateRegistryInterface $templateRegistry,
+        string $emptyBoxesOption
     ) {
         parent::__construct($twig);
 
         $this->pool = $pool;
         $this->searchHandler = $searchHandler;
         $this->templateRegistry = $templateRegistry;
+        $this->emptyBoxesOption = $emptyBoxesOption;
     }
 
     public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
@@ -90,6 +100,7 @@ final class AdminSearchBlockService extends AbstractBlockService
             'admin_pool' => $this->pool,
             'pager' => $pager,
             'admin' => $admin,
+            'show_empty_boxes' => $this->emptyBoxesOption,
         ], $response);
     }
 

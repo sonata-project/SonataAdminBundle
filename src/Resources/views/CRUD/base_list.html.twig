@@ -293,13 +293,15 @@ file that was distributed with this source code.
                                             {{ form_widget(form[filter.formName].children['value']) }}
                                         </div>
 
-                                        <div class="col-sm-1">
-                                            <label class="control-label">
-                                                <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
-                                                    <i class="fa fa-minus-circle" aria-hidden="true"></i>
-                                                </a>
-                                            </label>
-                                        </div>
+                                        {% if filterCanBeDisplayed %}
+                                            <div class="col-sm-1">
+                                                <label class="control-label">
+                                                    <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
+                                                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                                    </a>
+                                                </label>
+                                            </div>
+                                        {% endif %}
                                     </div>
 
                                     {% if filter.options['advanced_filter'] %}
