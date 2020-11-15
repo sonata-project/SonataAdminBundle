@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminSearchBlockService;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\BlockBundle\Test\BlockServiceTestCase;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
@@ -26,6 +27,8 @@ use Twig\Environment;
  */
 class AdminSearchBlockServiceTest extends BlockServiceTestCase
 {
+    use ExpectDeprecationTrait;
+
     /**
      * @var Pool
      */
@@ -49,7 +52,33 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
         $blockService = new AdminSearchBlockService(
             $this->createMock(Environment::class),
             $this->pool,
-            $this->searchHandler
+            $this->searchHandler,
+            'show'
+        );
+        $blockContext = $this->getBlockContext($blockService);
+
+        $this->assertSettings([
+            'admin_code' => '',
+            'query' => '',
+            'page' => 0,
+            'per_page' => 10,
+            'icon' => '<i class="fa fa-list"></i>',
+        ], $blockContext);
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
+    public function testDefaultSettingsWithoutEmptyBoxOption(): void
+    {
+        $this->expectDeprecation('Not passing a string as argument 4 to %s() is deprecated since sonata-project/admin-bundle 3.x and will throw a \TypeError in version 4.0.');
+
+        $blockService = new AdminSearchBlockService(
+            $this->createMock(Environment::class),
+            $this->pool,
+            $this->searchHandler,
         );
         $blockContext = $this->getBlockContext($blockService);
 
@@ -69,7 +98,8 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
         $blockService = new AdminSearchBlockService(
             $this->createMock(Environment::class),
             $this->pool,
-            $this->searchHandler
+            $this->searchHandler,
+            'show'
         );
         $blockContext = $this->getBlockContext($blockService);
 

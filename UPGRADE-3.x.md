@@ -4,6 +4,13 @@ UPGRADE 3.x
 UPGRADE FROM 3.x to 3.x
 =======================
 
+### Sonata\AdminBundle\Block\AdminSearchBlockService
+
+Not passing the `empty_boxes` option as argument 4 to `Sonata\AdminBundle\Block\AdminSearchBlockService()` is deprecated.
+
+UPGRADE FROM 3.79 to 3.80
+=========================
+
 ### Sonata\AdminBundle\Form\Type\Operator\StringOperatorType
 
 Added "Not equal" in the default list for "choices" option in order to allow filtering by strings that are not equal to the model data.
