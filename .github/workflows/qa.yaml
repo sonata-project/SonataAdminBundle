@@ -28,19 +28,11 @@ jobs:
                   coverage: none
                   tools: composer:v2
 
-            - name: Set Composer cache directory
-              id: composer-cache
-              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-            - name: Cache Composer
-              uses: actions/cache@v2
-              with:
-                  path: ${{ steps.composer-cache.outputs.dir }}
-                  key: ${{ runner.os }}-7.4-composer-highest-normal
-                  restore-keys: ${{ runner.os }}-7.4-composer-
-
             - name: Install Composer dependencies (highest)
-              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
+              uses: "ramsey/composer-install@v1"
+              with:
+                  dependency-versions: "highest"
+                  composer-options: "--prefer-dist --prefer-stable"
 
             - name: PHPStan
               run: vendor/bin/phpstan --memory-limit=1G analyse
@@ -61,19 +53,11 @@ jobs:
                   coverage: none
                   tools: composer:v2
 
-            - name: Set Composer cache directory
-              id: composer-cache
-              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-            - name: Cache Composer
-              uses: actions/cache@v2
-              with:
-                  path: ${{ steps.composer-cache.outputs.dir }}
-                  key: ${{ runner.os }}-7.4-composer-highest-normal
-                  restore-keys: ${{ runner.os }}-7.4-composer-
-
             - name: Install Composer dependencies (highest)
-              run: composer update --prefer-dist --no-progress --no-interaction --prefer-stable
+              uses: "ramsey/composer-install@v1"
+              with:
+                  dependency-versions: "highest"
+                  composer-options: "--prefer-dist --prefer-stable"
 
             - name: Psalm
               run: vendor/bin/psalm --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd
