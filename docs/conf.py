@@ -258,6 +258,3 @@ latex_elements = {
 
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
 #texinfo_show_urls = 'footnote'
-
-# Use PHP syntax highlighting in code examples by default
-highlight_language='php'
