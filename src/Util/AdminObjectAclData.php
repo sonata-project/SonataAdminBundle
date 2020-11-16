@@ -161,7 +161,7 @@ class AdminObjectAclData
     /**
      * Gets ACL.
      *
-     * @return MutableAclInterface
+     * @return MutableAclInterface|null
      */
     public function getAcl()
     {
@@ -231,7 +231,7 @@ class AdminObjectAclData
     /**
      * Gets ACL users form.
      *
-     * @return FormInterface
+     * @return FormInterface|null
      */
     public function getAclUsersForm()
     {
@@ -253,7 +253,7 @@ class AdminObjectAclData
     /**
      * Gets ACL roles form.
      *
-     * @return FormInterface
+     * @return FormInterface|null
      */
     public function getAclRolesForm()
     {
