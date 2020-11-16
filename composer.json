@@ -91,7 +91,6 @@
     },
     "suggest": {
         "jms/translation-bundle": "Extract message keys from Admins",
-        "kunicmarko/sonata-auto-configure-bundle": "Auto configures Admin classes",
         "twig/extra-bundle": "Auto configures the Twig Intl extension"
     },
     "config": {
