@@ -27,7 +27,7 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
-use Sonata\AdminBundle\Templating\TemplateRegistryAwareInterface;
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryAwareInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 use Sonata\Form\Validator\ErrorElement;
@@ -72,7 +72,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @phpstan-extends UrlGeneratorInterface<T>
  * @phpstan-extends LifecycleHookProviderInterface<T>
  */
-interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface, TemplateRegistryAwareInterface
+interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface, MutableTemplateRegistryAwareInterface
 {
     /**
      * @return void
