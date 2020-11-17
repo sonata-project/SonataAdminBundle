@@ -30,6 +30,8 @@ use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Exporter\DataSourceInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -64,7 +66,9 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
+use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 use Sonata\Doctrine\Adapter\AdapterInterface;
+use Sonata\Exporter\Source\SourceIteratorInterface;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormBuilder;
@@ -83,6 +87,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Mapping\MemberMetadata;
 use Symfony\Component\Validator\Mapping\PropertyMetadataInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdminTest extends TestCase
 {
@@ -2285,7 +2290,8 @@ class AdminTest extends TestCase
         $admin->setListBuilder(new ListBuilder());
 
         $pager = $this->createStub(PagerInterface::class);
-        $admin->setDatagridBuilder(new DatagridBuilder($formFactory, $pager));
+        $proxyQuery = $this->createStub(ProxyQueryInterface::class);
+        $admin->setDatagridBuilder(new DatagridBuilder($formFactory, $pager, $proxyQuery));
 
         $validator = $this->createMock(ValidatorInterface::class);
         $validator->method('getMetadataFor')->willReturn($this->createStub(MemberMetadata::class));
@@ -2299,5 +2305,48 @@ class AdminTest extends TestCase
         $admin->getShow();
         $admin->getList();
         $admin->getDatagrid();
+    }
+
+    public function testGetDataSourceIterator(): void
+    {
+        $pager = $this->createStub(PagerInterface::class);
+        $translator = $this->createStub(TranslatorInterface::class);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $proxyQuery = $this->createStub(ProxyQueryInterface::class);
+        $sourceIterator = $this->createStub(SourceIteratorInterface::class);
+
+        $admin = new PostAdmin(
+            'sonata.post.admin.post',
+            'Application\Sonata\NewsBundle\Entity\Post',
+            'Sonata\NewsBundle\Controller\PostAdminController'
+        );
+
+        $formFactory = new FormFactory(new FormRegistry([], new ResolvedFormTypeFactory()));
+        $datagridBuilder = new DatagridBuilder($formFactory, $pager, $proxyQuery);
+
+        $translator->method('trans')->willReturnCallback(static function (string $label): string {
+            if ('export.label_field' === $label) {
+                return 'Feld';
+            }
+
+            return $label;
+        });
+
+        $modelManager->expects(self::once())->method('getExportFields')->willReturn(['field', 'foo', 'bar']);
+
+        $dataSource
+            ->expects(self::once())
+            ->method('createIterator')
+            ->with($proxyQuery, ['Feld' => 'field', 1 => 'foo', 2 => 'bar'])
+            ->willReturn($sourceIterator);
+
+        $admin->setTranslator($translator);
+        $admin->setDatagridBuilder($datagridBuilder);
+        $admin->setModelManager($modelManager);
+        $admin->setLabelTranslatorStrategy(new UnderscoreLabelTranslatorStrategy());
+        $admin->setDataSource($dataSource);
+
+        $this->assertSame($sourceIterator, $admin->getDataSourceIterator());
     }
 }
