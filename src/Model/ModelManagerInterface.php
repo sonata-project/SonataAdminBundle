@@ -172,8 +172,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @param object $model
      *
-     * @return string a string representation of the identifiers for this
-     *                instance
+     * @return string|null a string representation of the identifiers for this
+     *                     instance
      */
     public function getNormalizedIdentifier($model);
 
@@ -185,7 +185,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @param object $model
      *
-     * @return string string representation of the id that is safe to use in a url
+     * @return string|null string representation of the id that is safe to use in a url
      */
     public function getUrlSafeIdentifier($model);
 
