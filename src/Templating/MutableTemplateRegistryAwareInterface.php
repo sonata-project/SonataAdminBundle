@@ -18,7 +18,7 @@ namespace Sonata\AdminBundle\Templating;
  *
  * @method MutableTemplateRegistryInterface getTemplateRegistry()
  * @method bool                             hasTemplateRegistry()
- * @method void                             setTemplateRegistry(TemplateRegistryInterface $templateRegistry)
+ * @method void                             setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry)
  */
 interface MutableTemplateRegistryAwareInterface
 {
