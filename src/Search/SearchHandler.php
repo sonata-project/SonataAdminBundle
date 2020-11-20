@@ -36,6 +36,11 @@ class SearchHandler
     private $caseSensitive;
 
     /**
+     * @var array<string, bool>
+     */
+    private $adminsSearchConfig = [];
+
+    /**
      * NEXT_MAJOR: Change signature to __construct(bool $caseSensitive) and remove pool property.
      *
      * @param Pool|bool $deprecatedPoolOrCaseSensitive
@@ -69,6 +74,11 @@ class SearchHandler
      */
     public function search(AdminInterface $admin, $term, $page = 0, $offset = 20)
     {
+        // If the search is disabled for the whole admin, skip any further processing.
+        if (false === ($this->adminsSearchConfig[$admin->getCode()] ?? true)) {
+            return false;
+        }
+
         $datagrid = $admin->getDatagrid();
 
         $found = false;
@@ -94,5 +104,16 @@ class SearchHandler
         $pager->init();
 
         return $pager;
+    }
+
+    /**
+     * Sets whether the search must be enabled or not for the passed admin codes.
+     * Receives an array with the admin code as key and a boolean as value.
+     *
+     * @param array<string, bool> $adminsSearchConfig
+     */
+    final public function configureAdminSearch(array $adminsSearchConfig): void
+    {
+        $this->adminsSearchConfig = $adminsSearchConfig;
     }
 }

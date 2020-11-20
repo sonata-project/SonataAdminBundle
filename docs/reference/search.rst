@@ -5,6 +5,23 @@ The admin comes with a basic global search available in the upper navigation men
 and look for filter with the option ``global_search`` set to true. If you are using the ``SonataDoctrineORMBundle``
 any text filter will be set to ``true`` by default.
 
+Disabling the search by admin
+-----------------------------
+
+You can disable the search for a whole admin by setting the ``global_search`` attribute
+to ``false`` at your admin definition using the tag ``sonata.admin``.
+
+.. configuration-block::
+
+    .. code-block:: xml
+
+        <service id="app.admin.post" class="App\Admin\PostAdmin">
+            <tag name="sonata.admin" global_search="false" manager_type="orm" group="Content" label="Post"/>
+            <argument/>
+            <argument>App\Entity\Post</argument>
+            <argument/>
+        </service>
+
 Customization
 -------------
 
