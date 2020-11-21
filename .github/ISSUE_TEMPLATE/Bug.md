@@ -44,6 +44,8 @@ $ php -v
     Next sections are for ERRORS only.
 -->
 
+## Minimal repository with the bug
+
 ## Steps to reproduce
 
 ## Expected results
