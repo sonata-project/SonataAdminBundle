@@ -117,14 +117,6 @@ class ModelManager implements ModelManagerInterface, LockInterface
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function modelTransform(string $class, object $instance): object
-    {
-        throw new \BadMethodCallException('Not implemented.');
-    }
-
     public function supportsQuery(object $query): bool
     {
         return true;

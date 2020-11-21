@@ -143,17 +143,6 @@ interface ModelManagerInterface
      */
     public function modelReverseTransform(string $class, array $array = []): object;
 
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-admin/admin-bundle 3.80 and will be removed in 4.0.
-     *
-     * @phpstan-template T of object
-     * @phpstan-param class-string<T> $class
-     * @phpstan-return T
-     */
-    public function modelTransform(string $class, object $instance): object;
-
     public function supportsQuery(object $query): bool;
 
     /**

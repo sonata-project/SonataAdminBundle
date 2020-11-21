@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Filter;
 
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
@@ -23,17 +21,6 @@ interface FilterInterface
     public const CONDITION_OR = 'OR';
 
     public const CONDITION_AND = 'AND';
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.78, to be removed with 4.0
-     *
-     * Apply the filter to the QueryBuilder instance.
-     *
-     * @param mixed[] $value
-     */
-    public function filter(ProxyQueryInterface $queryBuilder, string $alias, string $field, $value): void;
 
     /**
      * @param mixed $query
