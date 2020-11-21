@@ -67,6 +67,13 @@ class Pool
     protected $propertyAccessor;
 
     /**
+     * NEXT_MAJOR: change to TemplateRegistryInterface.
+     *
+     * @var MutableTemplateRegistryInterface
+     */
+    private $templateRegistry;
+
+    /**
      * @param array<string, mixed> $options
      */
     public function __construct(
