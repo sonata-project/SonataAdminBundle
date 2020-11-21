@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -117,7 +118,7 @@ class Pool
             if (isset($adminGroup['items'])) {
                 foreach ($adminGroup['items'] as $key => $item) {
                     // Only Admin Group should be returned
-                    if ('' !== $item['admin']) {
+                    if (isset($item['admin']) && !empty($item['admin'])) {
                         $admin = $this->getInstance($item['admin']);
 
                         if ($admin->showIn(AbstractAdmin::CONTEXT_DASHBOARD)) {
@@ -159,7 +160,9 @@ class Pool
         }
 
         foreach ($this->adminGroups[$group]['items'] as $item) {
-            $admins[] = $this->getInstance($item['admin']);
+            if (isset($item['admin']) && !empty($item['admin'])) {
+                $admins[] = $this->getInstance($item['admin']);
+            }
         }
 
         return $admins;
@@ -178,11 +181,7 @@ class Pool
             throw new \LogicException(sprintf('Pool has no admin for the class %s.', $class));
         }
 
-        if (!\is_array($this->adminClasses[$class])) {
-            throw new \RuntimeException('Invalid format for the Pool::adminClass property');
-        }
-
-        if (\count($this->adminClasses[$class]) > 1) {
+        if (!$this->hasSingleAdminByClass($class)) {
             throw new \RuntimeException(sprintf(
                 'Unable to find a valid admin for the class: %s, there are too many registered: %s',
                 $class,
@@ -199,6 +198,18 @@ class Pool
     public function hasAdminByClass(string $class): bool
     {
         return isset($this->adminClasses[$class]);
+    }
+
+    /**
+     * @phpstan-param class-string $class
+     */
+    public function hasSingleAdminByClass(string $class): bool
+    {
+        if (!$this->hasAdminByClass($class)) {
+            return false;
+        }
+
+        return 1 === \count($this->adminClasses[$class]);
     }
 
     /**
@@ -353,6 +364,46 @@ class Pool
     public function getAdminClasses(): array
     {
         return $this->adminClasses;
+    }
+
+    /**
+     * NEXT_MAJOR: change to TemplateRegistryInterface.
+     */
+    final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void
+    {
+        $this->templateRegistry = $templateRegistry;
+    }
+
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     *
+     * @return void
+     */
+    public function setTemplates(array $templates)
+    {
+        $this->templateRegistry->setTemplates($templates);
+    }
+
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     *
+     * @return array<string, string>
+     */
+    public function getTemplates()
+    {
+        return $this->templateRegistry->getTemplates();
+    }
+
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     *
+     * @param string $name
+     *
+     * @return string|null
+     */
+    public function getTemplate($name)
+    {
+        return $this->templateRegistry->getTemplate($name);
     }
 
     public function getTitleLogo(): string

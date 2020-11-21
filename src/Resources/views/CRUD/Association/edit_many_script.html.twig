@@ -462,6 +462,19 @@ This code manages the many-to-[one|many] association field popup
 
             Admin.log('[{{ id }}|on:change] update the label');
 
+            var objectId = jQuery(this).val();
+
+            // Skip short object information call if object is missing.
+            if (undefined === objectId || null === objectId || '' === objectId) {
+                jQuery('#field_widget_{{ id }}').html('{{ 'short_object_description_placeholder'|trans({}, 'SonataAdminBundle') }}');
+
+                {% if btn_edit %}
+                    jQuery('#field_actions_{{ id }} a.btn-warning').addClass('hidden');
+                {% endif %}
+
+                return;
+            }
+
             jQuery('#field_widget_{{ id }}').html("<span><img src=\"{{ asset('bundles/sonataadmin/ajax-loader.gif') }}\" style=\"vertical-align: middle; margin-right: 10px\"/>{{ 'loading_information'|trans([], 'SonataAdminBundle') }}</span>");
             jQuery.ajax({
                 type: 'GET',
@@ -470,7 +483,7 @@ This code manages the many-to-[one|many] association field popup
                     'uniqid': associationadmin.uniqid,
                     'code': associationadmin.code,
                     'linkParameters': sonata_admin.field_description.options.link_parameters
-                })}}'.replace('OBJECT_ID', jQuery(this).val()),
+                })}}'.replace('OBJECT_ID', objectId),
                 dataType: 'html',
                 success: function(html) {
                     jQuery('#field_widget_{{ id }}').html(html);
@@ -480,14 +493,9 @@ This code manages the many-to-[one|many] association field popup
             {% if btn_edit %}
                 var edit_button_url = '{{
                     associationadmin.generateUrl('edit', {'id' : 'OBJECT_ID'})
-                }}'.replace('OBJECT_ID', jQuery(this).val());
+                }}'.replace('OBJECT_ID', objectId);
 
-                var edit_button_node = jQuery('#field_actions_{{ id }} a.btn-warning');
-                if (jQuery(this).val()) {
-                    edit_button_node.removeClass('hidden').attr('href', edit_button_url);
-                } else {
-                    edit_button_node.addClass('hidden');
-                }
+                jQuery('#field_actions_{{ id }} a.btn-warning').removeClass('hidden').attr('href', edit_button_url);
             {% endif %}
         });
 

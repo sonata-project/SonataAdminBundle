@@ -41,7 +41,7 @@ final class FilterFactory implements FilterFactoryInterface
 
     public function create(string $name, string $type, array $options = []): FilterInterface
     {
-        $id = isset($this->types[$type]) ? $this->types[$type] : false;
+        $id = $this->types[$type] ?? false;
 
         if ($id) {
             $filter = $this->container->get($id);

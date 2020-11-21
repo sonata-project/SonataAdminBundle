@@ -138,7 +138,7 @@ $YOUR_FAVORITE_BROWSER docs/_build/html/index.html
 If your PR contains a new feature, you MUST add documentation for it.
 Of course, you can also create PRs consisting only in documentation changes.
 
-Documentation contributions SHOULD comply with [the Symfony documentation standards][sf_docs_standards].
+Documentation contributions SHOULD comply with [the Symfony documentation standards](https://symfony.com/doc/current/contributing/documentation/standards.html).
 
 #### Tests
 

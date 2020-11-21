@@ -15,9 +15,12 @@ namespace Sonata\AdminBundle\Tests\Templating;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 class TemplateRegistryTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     /**
      * @var TemplateRegistry
      */
@@ -25,61 +28,31 @@ class TemplateRegistryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->templateRegistry = new TemplateRegistry();
+        $this->templateRegistry = new TemplateRegistry([
+            'list' => '@FooAdmin/CRUD/list.html.twig',
+            'show' => '@FooAdmin/CRUD/show.html.twig',
+            'edit' => '@FooAdmin/CRUD/edit.html.twig',
+        ]);
     }
 
     public function testGetTemplates(): void
     {
-        $this->assertSame([], $this->templateRegistry->getTemplates());
-
         $templates = [
             'list' => '@FooAdmin/CRUD/list.html.twig',
             'show' => '@FooAdmin/CRUD/show.html.twig',
             'edit' => '@FooAdmin/CRUD/edit.html.twig',
         ];
 
-        $this->templateRegistry->setTemplates($templates);
         $this->assertSame($templates, $this->templateRegistry->getTemplates());
-    }
-
-    public function testSetTemplate(): void
-    {
-        $this->assertFalse($this->templateRegistry->hasTemplate('edit'));
-
-        $this->templateRegistry->setTemplate('edit', '@FooAdmin/CRUD/edit.html.twig');
-        $this->templateRegistry->setTemplate('show', '@FooAdmin/CRUD/show.html.twig');
-
-        $this->assertTrue($this->templateRegistry->hasTemplate('edit'));
-        $this->assertSame('@FooAdmin/CRUD/edit.html.twig', $this->templateRegistry->getTemplate('edit'));
-        $this->assertTrue($this->templateRegistry->hasTemplate('show'));
-        $this->assertSame('@FooAdmin/CRUD/show.html.twig', $this->templateRegistry->getTemplate('show'));
-    }
-
-    public function testSetTemplates(): void
-    {
-        $this->assertFalse($this->templateRegistry->hasTemplate('edit'));
-
-        $templates = [
-            'list' => '@FooAdmin/CRUD/list.html.twig',
-            'show' => '@FooAdmin/CRUD/show.html.twig',
-            'edit' => '@FooAdmin/CRUD/edit.html.twig',
-        ];
-
-        $this->templateRegistry->setTemplates($templates);
-
-        $this->assertTrue($this->templateRegistry->hasTemplate('edit'));
-        $this->assertSame('@FooAdmin/CRUD/edit.html.twig', $this->templateRegistry->getTemplate('edit'));
-        $this->assertTrue($this->templateRegistry->hasTemplate('show'));
-        $this->assertSame('@FooAdmin/CRUD/show.html.twig', $this->templateRegistry->getTemplate('show'));
     }
 
     public function testThrowExceptionIfTheTemplateDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Template named "edit" doesn\'t exist.');
+        $this->expectExceptionMessage('Template named "foo" doesn\'t exist.');
 
-        $this->assertFalse($this->templateRegistry->hasTemplate('edit'));
+        $this->assertFalse($this->templateRegistry->hasTemplate('foo'));
 
-        $this->templateRegistry->getTemplate('edit');
+        $this->templateRegistry->getTemplate('foo');
     }
 }

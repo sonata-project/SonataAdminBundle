@@ -98,6 +98,10 @@ class DatagridMapper extends BaseMapper
             );
         }
 
+        if (null === $fieldDescription->getLabel()) {
+            $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'filter', 'label'));
+        }
+
         if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
             // add the field with the DatagridBuilder
             $this->builder->addFilter($this->datagrid, $type, $fieldDescription, $this->admin);

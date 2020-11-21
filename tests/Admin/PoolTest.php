@@ -89,6 +89,9 @@ class PoolTest extends TestCase
             'adminGroup3' => [
                 'items' => ['itemKey' => $this->getItemArray('sonata.user.admin.group3')],
             ],
+            'adminGroup4' => [
+                'items' => ['itemKey' => $this->getItemArray()],
+            ],
         ]);
 
         $groups = $this->pool->getDashboardGroups();
@@ -129,6 +132,7 @@ class PoolTest extends TestCase
                 'items' => [
                     $this->getItemArray('sonata.admin1'),
                     $this->getItemArray('sonata.admin2'),
+                    $this->getItemArray(),
                 ],
             ],
             'adminGroup2' => [
@@ -140,16 +144,6 @@ class PoolTest extends TestCase
         $this->assertCount(1, $this->pool->getAdminsByGroup('adminGroup2'));
     }
 
-    public function testGetAdminForClassWithInvalidFormat(): void
-    {
-        $this->expectException(\RuntimeException::class);
-
-        $this->pool->setAdminClasses(['someclass' => 'sonata.user.admin.group1']);
-        $this->assertTrue($this->pool->hasAdminByClass('someclass'));
-
-        $this->pool->getAdminByClass('someclass');
-    }
-
     public function testGetAdminForClassWithTooManyRegisteredAdmin(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -159,6 +153,7 @@ class PoolTest extends TestCase
         ]);
 
         $this->assertTrue($this->pool->hasAdminByClass('someclass'));
+        $this->assertFalse($this->pool->hasSingleAdminByClass('someclass'));
         $this->pool->getAdminByClass('someclass');
     }
 
@@ -172,6 +167,7 @@ class PoolTest extends TestCase
         ]);
 
         $this->assertTrue($this->pool->hasAdminByClass('someclass'));
+        $this->assertTrue($this->pool->hasSingleAdminByClass('someclass'));
         $this->assertInstanceOf(AdminInterface::class, $this->pool->getAdminByClass('someclass'));
     }
 
@@ -498,13 +494,18 @@ class PoolTest extends TestCase
         $this->assertSame([], $this->pool->getOption('nonexistantarray', []));
     }
 
-    private function getItemArray(string $serviceId): array
+    private function getItemArray(?string $serviceId = null): array
     {
-        return [
-            'admin' => $serviceId,
+        $item = [
             'label' => '',
             'route' => '',
             'route_params' => [],
         ];
+
+        if (null !== $serviceId) {
+            $item['admin'] = $serviceId;
+        }
+
+        return $item;
     }
 }

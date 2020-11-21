@@ -35,10 +35,19 @@ final class Datagrid implements DatagridInterface
      */
     private $pager;
 
-    public function __construct(FormFactoryInterface $formFactory, PagerInterface $pager)
-    {
+    /**
+     * @var ProxyQueryInterface
+     */
+    private $proxyQuery;
+
+    public function __construct(
+        FormFactoryInterface $formFactory,
+        PagerInterface $pager,
+        ProxyQueryInterface $proxyQuery
+    ) {
         $this->formFactory = $formFactory;
         $this->pager = $pager;
+        $this->proxyQuery = $proxyQuery;
     }
 
     public function getPager(): PagerInterface
@@ -48,7 +57,7 @@ final class Datagrid implements DatagridInterface
 
     public function getQuery(): ProxyQueryInterface
     {
-        throw new \BadMethodCallException('Not implemented.');
+        return $this->proxyQuery;
     }
 
     public function getResults(): array

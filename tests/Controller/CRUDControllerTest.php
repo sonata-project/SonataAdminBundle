@@ -149,10 +149,16 @@ class CRUDControllerTest extends TestCase
     private $logger;
 
     /**
+     * @var bool
+     */
+    private $httpMethodParameterOverride = false;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
     {
+        $this->httpMethodParameterOverride = Request::getHttpMethodParameterOverride();
         $this->container = new Container();
         $this->request = new Request();
         $this->pool = new Pool($this->container, 'title', 'logo.png');
@@ -308,6 +314,18 @@ class CRUDControllerTest extends TestCase
             $method = new \ReflectionMethod(CRUDController::class, $testedMethod);
             $method->setAccessible(true);
             $this->protectedTestedMethods[$testedMethod] = $method;
+        }
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        if (!$this->httpMethodParameterOverride && Request::getHttpMethodParameterOverride()) {
+            $disableHttpMethodParameterOverride = \Closure::bind(static function (): void {
+                self::$httpMethodParameterOverride = false;
+            }, null, Request::class);
+            $disableHttpMethodParameterOverride();
         }
     }
 
@@ -964,7 +982,7 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame('delete', $this->parameters['action']);
         $this->assertSame($object, $this->parameters['object']);
-        $this->assertFalse($this->parameters['csrf_token']);
+        $this->assertNull($this->parameters['csrf_token']);
 
         $this->assertSame([], $this->session->getFlashBag()->all());
         $this->assertSame('@SonataAdmin/CRUD/delete.html.twig', $this->template);
@@ -1012,11 +1030,14 @@ class CRUDControllerTest extends TestCase
 
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
+        Request::enableHttpMethodParameterOverride();
+
         $response = $this->controller->deleteAction($this->request);
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(json_encode(['result' => 'ok']), $response->getContent());
         $this->assertSame([], $this->session->getFlashBag()->all());
+        $this->assertSame(Request::METHOD_DELETE, $this->request->getMethod());
     }
 
     public function testDeleteActionAjaxError(): void
@@ -1137,11 +1158,14 @@ class CRUDControllerTest extends TestCase
 
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
 
+        Request::enableHttpMethodParameterOverride();
+
         $response = $this->controller->deleteAction($this->request);
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame(['flash_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
         $this->assertSame('list', $response->getTargetUrl());
+        $this->assertSame(Request::METHOD_DELETE, $this->request->getMethod());
     }
 
     /**
@@ -1171,11 +1195,14 @@ class CRUDControllerTest extends TestCase
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('_method', Request::METHOD_DELETE);
 
+        Request::enableHttpMethodParameterOverride();
+
         $response = $this->controller->deleteAction($this->request);
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame(['flash_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
         $this->assertSame('list', $response->getTargetUrl());
+        $this->assertSame(Request::METHOD_DELETE, $this->request->getMethod());
     }
 
     public function testDeleteActionWrongRequestMethod(): void
@@ -1193,6 +1220,8 @@ class CRUDControllerTest extends TestCase
         //without POST request parameter "_method" should not be used as real REST method
         $this->request->query->set('_method', Request::METHOD_DELETE);
 
+        Request::enableHttpMethodParameterOverride();
+
         $this->assertInstanceOf(Response::class, $this->controller->deleteAction($this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
@@ -1205,6 +1234,7 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame([], $this->session->getFlashBag()->all());
         $this->assertSame('@SonataAdmin/CRUD/delete.html.twig', $this->template);
+        $this->assertSame(Request::METHOD_GET, $this->request->getMethod());
     }
 
     /**
@@ -1257,12 +1287,16 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('_method', Request::METHOD_DELETE);
         $this->request->request->set('_sonata_csrf_token', 'CSRF-INVALID');
 
+        Request::enableHttpMethodParameterOverride();
+
         try {
             $this->controller->deleteAction($this->request);
         } catch (HttpException $e) {
             $this->assertSame('The csrf token is not valid, CSRF attack?', $e->getMessage());
             $this->assertSame(400, $e->getStatusCode());
         }
+
+        $this->assertSame(Request::METHOD_DELETE, $this->request->getMethod());
     }
 
     public function testEditActionNotFoundException(): void
@@ -2822,7 +2856,7 @@ class CRUDControllerTest extends TestCase
 
         $this->expectException(AccessDeniedException::class);
 
-        $this->controller->historyViewRevisionAction($this->request, null);
+        $this->controller->historyViewRevisionAction($this->request, 'fooRevision');
     }
 
     public function testHistoryViewRevisionActionNotFoundException(): void
@@ -2836,7 +2870,7 @@ class CRUDControllerTest extends TestCase
         $this->expectException(NotFoundHttpException::class);
         $this->expectExceptionMessage('unable to find the object with id: 123');
 
-        $this->controller->historyViewRevisionAction($this->request, null);
+        $this->controller->historyViewRevisionAction($this->request, 'fooRevision');
     }
 
     public function testHistoryViewRevisionActionNoReader(): void
@@ -2865,14 +2899,14 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('Foo'))
             ->willReturn(false);
 
-        $this->controller->historyViewRevisionAction($this->request, null);
+        $this->controller->historyViewRevisionAction($this->request, 'fooRevision');
     }
 
     public function testHistoryViewRevisionActionNotFoundRevision(): void
     {
         $this->expectException(NotFoundHttpException::class);
         $this->expectExceptionMessage(
-            'unable to find the targeted object `123` from the revision `456` with classname : `Foo`'
+            'unable to find the targeted object `123` from the revision `fooRevision` with classname : `Foo`'
         );
 
         $this->request->query->set('id', 123);
@@ -2905,10 +2939,10 @@ class CRUDControllerTest extends TestCase
 
         $reader->expects($this->once())
             ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo(456))
+            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo('fooRevision'))
             ->willReturn(null);
 
-        $this->controller->historyViewRevisionAction($this->request, 456);
+        $this->controller->historyViewRevisionAction($this->request, 'fooRevision');
     }
 
     public function testHistoryViewRevisionAction(): void
@@ -2942,11 +2976,11 @@ class CRUDControllerTest extends TestCase
             ->willReturn($reader);
 
         $objectRevision = new \stdClass();
-        $objectRevision->revision = 456;
+        $objectRevision->revision = 'fooRevision';
 
         $reader->expects($this->once())
             ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo(456))
+            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo('fooRevision'))
             ->willReturn($objectRevision);
 
         $this->admin->expects($this->once())
@@ -2958,7 +2992,7 @@ class CRUDControllerTest extends TestCase
             ->method('getShow')
             ->willReturn($fieldDescriptionCollection);
 
-        $this->assertInstanceOf(Response::class, $this->controller->historyViewRevisionAction($this->request, 456));
+        $this->assertInstanceOf(Response::class, $this->controller->historyViewRevisionAction($this->request, 'fooRevision'));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
@@ -2981,7 +3015,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('historyCompareRevisions'))
             ->will($this->throwException(new AccessDeniedException()));
 
-        $this->controller->historyCompareRevisionsAction($this->request, null, null);
+        $this->controller->historyCompareRevisionsAction($this->request, 'fooBaseRevision', 'fooCompareRevision');
     }
 
     public function testHistoryCompareRevisionsActionNotFoundException(): void
@@ -2999,7 +3033,7 @@ class CRUDControllerTest extends TestCase
             ->method('getObject')
             ->willReturn(null);
 
-        $this->controller->historyCompareRevisionsAction($this->request, null, null);
+        $this->controller->historyCompareRevisionsAction($this->request, 'fooBaseRevision', 'fooCompareRevision');
     }
 
     public function testHistoryCompareRevisionsActionNoReader(): void
@@ -3028,14 +3062,14 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('Foo'))
             ->willReturn(false);
 
-        $this->controller->historyCompareRevisionsAction($this->request, null, null);
+        $this->controller->historyCompareRevisionsAction($this->request, 'fooBaseRevision', 'fooCompareRevision');
     }
 
     public function testHistoryCompareRevisionsActionNotFoundBaseRevision(): void
     {
         $this->expectException(NotFoundHttpException::class);
         $this->expectExceptionMessage(
-            'unable to find the targeted object `123` from the revision `456` with classname : `Foo`'
+            'unable to find the targeted object `123` from the revision `fooBaseRevision` with classname : `Foo`'
         );
 
         $this->request->query->set('id', 123);
@@ -3069,17 +3103,17 @@ class CRUDControllerTest extends TestCase
         // once because it will not be found and therefore the second call won't be executed
         $reader->expects($this->once())
             ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo(456))
+            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo('fooBaseRevision'))
             ->willReturn(null);
 
-        $this->controller->historyCompareRevisionsAction($this->request, 456, 789);
+        $this->controller->historyCompareRevisionsAction($this->request, 'fooBaseRevision', 'fooCompareRevision');
     }
 
     public function testHistoryCompareRevisionsActionNotFoundCompareRevision(): void
     {
         $this->expectException(NotFoundHttpException::class);
         $this->expectExceptionMessage(
-            'unable to find the targeted object `123` from the revision `789` with classname : `Foo`'
+            'unable to find the targeted object `123` from the revision `fooCompareRevision` with classname : `Foo`'
         );
 
         $this->request->query->set('id', 123);
@@ -3111,15 +3145,15 @@ class CRUDControllerTest extends TestCase
             ->willReturn($reader);
 
         $objectRevision = new \stdClass();
-        $objectRevision->revision = 456;
+        $objectRevision->revision = 'fooBaseRevision';
 
         // first call should return, so the second call will throw an exception
         $reader->expects($this->exactly(2))->method('find')->willReturnMap([
-            ['Foo', 123, 456, $objectRevision],
-            ['Foo', 123, 789, null],
+            ['Foo', 123, 'fooBaseRevision', $objectRevision],
+            ['Foo', 123, 'fooCompareRevision', null],
         ]);
 
-        $this->controller->historyCompareRevisionsAction($this->request, 456, 789);
+        $this->controller->historyCompareRevisionsAction($this->request, 'fooBaseRevision', 'fooCompareRevision');
     }
 
     public function testHistoryCompareRevisionsActionAction(): void
@@ -3153,14 +3187,14 @@ class CRUDControllerTest extends TestCase
             ->willReturn($reader);
 
         $objectRevision = new \stdClass();
-        $objectRevision->revision = 456;
+        $objectRevision->revision = 'fooBaseRevision';
 
         $compareObjectRevision = new \stdClass();
-        $compareObjectRevision->revision = 789;
+        $compareObjectRevision->revision = 'fooCompareRevision';
 
         $reader->expects($this->exactly(2))->method('find')->willReturnMap([
-            ['Foo', 123, 456, $objectRevision],
-            ['Foo', 123, 789, $compareObjectRevision],
+            ['Foo', 123, 'fooBaseRevision', $objectRevision],
+            ['Foo', 123, 'fooCompareRevision', $compareObjectRevision],
         ]);
 
         $this->admin->expects($this->once())
@@ -3172,7 +3206,7 @@ class CRUDControllerTest extends TestCase
             ->method('getShow')
             ->willReturn($fieldDescriptionCollection);
 
-        $this->assertInstanceOf(Response::class, $this->controller->historyCompareRevisionsAction($this->request, 456, 789));
+        $this->assertInstanceOf(Response::class, $this->controller->historyCompareRevisionsAction($this->request, 'fooBaseRevision', 'fooCompareRevision'));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);

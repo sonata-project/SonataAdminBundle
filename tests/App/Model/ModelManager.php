@@ -43,11 +43,7 @@ class ModelManager implements ModelManagerInterface, LockInterface
             $options['route']['parameters'] = [];
         }
 
-        $fieldDescription = new FieldDescription();
-        $fieldDescription->setName($name);
-        $fieldDescription->setOptions($options);
-
-        return $fieldDescription;
+        return new FieldDescription($name, $options);
     }
 
     public function create(object $object): void
@@ -116,21 +112,14 @@ class ModelManager implements ModelManagerInterface, LockInterface
         }
     }
 
-    public function getDefaultSortValues(string $class): array
-    {
-        return [];
-    }
-
-    public function getDefaultPerPageOptions(string $class): array
-    {
-        return [];
-    }
-
     public function modelReverseTransform(string $class, array $array = []): object
     {
         throw new \BadMethodCallException('Not implemented.');
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function modelTransform(string $class, object $instance): object
     {
         throw new \BadMethodCallException('Not implemented.');

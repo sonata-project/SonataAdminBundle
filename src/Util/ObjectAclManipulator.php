@@ -37,7 +37,7 @@ abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
         AdminInterface $admin,
         \Traversable $oids,
         ?UserSecurityIdentity $securityIdentity = null
-    ) {
+    ): array {
         $countAdded = 0;
         $countUpdated = 0;
         $securityHandler = $admin->getSecurityHandler();

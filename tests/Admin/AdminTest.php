@@ -30,6 +30,8 @@ use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Exporter\DataSourceInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -63,9 +65,11 @@ use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 use Sonata\Doctrine\Adapter\AdapterInterface;
-use Sonata\Exporter\Source\ArraySourceIterator;
+use Sonata\Exporter\Source\SourceIteratorInterface;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -87,6 +91,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdminTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     protected $cacheTempFolder;
 
     protected function setUp(): void
@@ -143,7 +149,7 @@ class AdminTest extends TestCase
         $baseControllerName = 'Sonata\NewsBundle\Controller\PostAdminController';
 
         $admin = new PostAdmin('sonata.post.admin.post', $class, $baseControllerName);
-        $admin->setParentFieldDescription(new FieldDescription());
+        $admin->setParentFieldDescription(new FieldDescription('name'));
         $admin->setSubClasses(['foo' => 'bar']);
         $admin->setRequest(new Request(['subclass' => 'foo']));
         $admin->getClass();
@@ -731,14 +737,11 @@ class AdminTest extends TestCase
 
     public function testGetPerPageOptions(): void
     {
-        $modelManager = $this->createStub(ModelManagerInterface::class);
-
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-        $admin->setModelManager($modelManager);
 
         $perPageOptions = $admin->getPerPageOptions();
 
-        $this->assertSame([25], $perPageOptions);
+        $this->assertSame([10, 25, 50, 100, 250], $perPageOptions);
     }
 
     public function testGetLabelTranslatorStrategy(): void
@@ -1476,13 +1479,10 @@ class AdminTest extends TestCase
                 ->willReturn($this->createMock(MemberMetadata::class));
         $modelAdmin->setValidator($validator);
 
-        $fieldDescription = new FieldDescription();
-        $fieldDescription->setName('fooName');
-
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
             ->method('getNewFieldDescriptionInstance')
-            ->willReturn($fieldDescription);
+            ->willReturn(new FieldDescription('name'));
         $modelAdmin->setModelManager($modelManager);
 
         // a Admin class to test that preValidate is called
@@ -1549,13 +1549,10 @@ class AdminTest extends TestCase
             ->willReturn($metadata);
         $modelAdmin->setValidator($validator);
 
-        $fieldDescription = new FieldDescription();
-        $fieldDescription->setName('fooName');
-
         $modelManager = $this->createStub(ModelManagerInterface::class);
         $modelManager
             ->method('getNewFieldDescriptionInstance')
-            ->willReturn($fieldDescription);
+            ->willReturn(new FieldDescription('name'));
         $modelAdmin->setModelManager($modelManager);
 
         $event = $this->createStub(FormEvent::class);
@@ -1641,28 +1638,37 @@ class AdminTest extends TestCase
 
         $commentAdmin->setRequest($request);
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-        $modelManager
-            ->method('getDefaultSortValues')
-            ->willReturn([]);
-
-        $commentAdmin->setModelManager($modelManager);
-
         $parameters = $commentAdmin->getFilterParameters();
 
         $this->assertTrue(isset($parameters['post__author']));
         $this->assertSame(['value' => $authorId], $parameters['post__author']);
     }
 
+    public function testGetFilterParametersWithoutRequest(): void
+    {
+        $commentAdmin = new CommentAdmin(
+            'sonata.post.admin.comment',
+            'Application\Sonata\NewsBundle\Entity\Comment',
+            'Sonata\NewsBundle\Controller\CommentAdminController'
+        );
+
+        $parameters = $commentAdmin->getFilterParameters();
+
+        $this->assertArrayHasKey('_per_page', $parameters);
+        $this->assertSame(25, $parameters['_per_page']);
+    }
+
     public function testGetFilterFieldDescription(): void
     {
         $modelAdmin = new ModelAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'Sonata\FooBundle\Controller\ModelAdminController');
+        $modelAdmin->setLabelTranslatorStrategy(new NoopLabelTranslatorStrategy());
 
-        $fooFieldDescription = new FieldDescription();
-        $barFieldDescription = new FieldDescription();
-        $bazFieldDescription = new FieldDescription();
+        $fooFieldDescription = new FieldDescription('foo');
+        $barFieldDescription = new FieldDescription('bar');
+        $bazFieldDescription = new FieldDescription('baz');
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
+
         $modelManager->expects($this->exactly(3))
             ->method('getNewFieldDescriptionInstance')
             ->willReturnCallback(static function ($adminClass, string $name, $filterOptions) use ($fooFieldDescription, $barFieldDescription, $bazFieldDescription) {
@@ -1704,7 +1710,7 @@ class AdminTest extends TestCase
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
         $datagridBuilder->expects($this->once())
             ->method('getBaseDatagrid')
-            ->with($this->identicalTo($modelAdmin), [])
+            ->with($this->identicalTo($modelAdmin))
             ->willReturn($datagrid);
 
         $datagridBuilder->expects($this->exactly(3))
@@ -1845,7 +1851,7 @@ class AdminTest extends TestCase
         $this->assertSame($comment, $commentAdmin->getSubject());
 
         $commentAdmin->setSubject(null);
-        $commentAdmin->setParentFieldDescription(new FieldDescription());
+        $commentAdmin->setParentFieldDescription(new FieldDescription('name'));
 
         $this->assertFalse($commentAdmin->hasSubject());
     }
@@ -2119,13 +2125,6 @@ class AdminTest extends TestCase
 
         $admin->setRequest($request);
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-        $modelManager
-            ->method('getDefaultSortValues')
-            ->willReturn([]);
-
-        $admin->setModelManager($modelManager);
-
         $this->assertSame([
             'foo' => [
                 'type' => '1',
@@ -2140,50 +2139,6 @@ class AdminTest extends TestCase
             ],
             '_per_page' => 25,
         ], $admin->getFilterParameters());
-    }
-
-    public function testGetDataSourceIterator(): void
-    {
-        $pager = $this->createStub(PagerInterface::class);
-        $translator = $this->createStub(TranslatorInterface::class);
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-
-        $admin = new PostAdmin(
-            'sonata.post.admin.post',
-            'Application\Sonata\NewsBundle\Entity\Post',
-            'Sonata\NewsBundle\Controller\PostAdminController'
-        );
-
-        $formFactory = new FormFactory(new FormRegistry([], new ResolvedFormTypeFactory()));
-        $datagridBuilder = new DatagridBuilder($formFactory, $pager);
-
-        $translator->method('trans')->willReturnCallback(static function (string $label): string {
-            if ('export.label_field' === $label) {
-                return 'Feld';
-            }
-
-            return $label;
-        });
-
-        $modelManager->method('getExportFields')->willReturn([
-            'field',
-            'foo',
-            'bar',
-        ]);
-        $modelManager->expects($this->once())->method('getDataSourceIterator')
-            ->with($this->equalTo($datagridBuilder->getBaseDatagrid($admin)), $this->equalTo([
-                'Feld' => 'field',
-                1 => 'foo',
-                2 => 'bar',
-            ]))
-            ->willReturn(new ArraySourceIterator([]));
-
-        $admin->setTranslator($translator);
-        $admin->setDatagridBuilder($datagridBuilder);
-        $admin->setModelManager($modelManager);
-        $admin->setLabelTranslatorStrategy(new UnderscoreLabelTranslatorStrategy());
-
-        $admin->getDataSourceIterator();
     }
 
     public function testCircularChildAdmin(): void
@@ -2373,7 +2328,8 @@ class AdminTest extends TestCase
         $admin->setListBuilder(new ListBuilder());
 
         $pager = $this->createStub(PagerInterface::class);
-        $admin->setDatagridBuilder(new DatagridBuilder($formFactory, $pager));
+        $proxyQuery = $this->createStub(ProxyQueryInterface::class);
+        $admin->setDatagridBuilder(new DatagridBuilder($formFactory, $pager, $proxyQuery));
 
         $validator = $this->createMock(ValidatorInterface::class);
         $validator->method('getMetadataFor')->willReturn($this->createStub(MemberMetadata::class));
@@ -2387,5 +2343,48 @@ class AdminTest extends TestCase
         $admin->getShow();
         $admin->getList();
         $admin->getDatagrid();
+    }
+
+    public function testGetDataSourceIterator(): void
+    {
+        $pager = $this->createStub(PagerInterface::class);
+        $translator = $this->createStub(TranslatorInterface::class);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $proxyQuery = $this->createStub(ProxyQueryInterface::class);
+        $sourceIterator = $this->createStub(SourceIteratorInterface::class);
+
+        $admin = new PostAdmin(
+            'sonata.post.admin.post',
+            'Application\Sonata\NewsBundle\Entity\Post',
+            'Sonata\NewsBundle\Controller\PostAdminController'
+        );
+
+        $formFactory = new FormFactory(new FormRegistry([], new ResolvedFormTypeFactory()));
+        $datagridBuilder = new DatagridBuilder($formFactory, $pager, $proxyQuery);
+
+        $translator->method('trans')->willReturnCallback(static function (string $label): string {
+            if ('export.label_field' === $label) {
+                return 'Feld';
+            }
+
+            return $label;
+        });
+
+        $modelManager->expects(self::once())->method('getExportFields')->willReturn(['field', 'foo', 'bar']);
+
+        $dataSource
+            ->expects(self::once())
+            ->method('createIterator')
+            ->with($proxyQuery, ['Feld' => 'field', 1 => 'foo', 2 => 'bar'])
+            ->willReturn($sourceIterator);
+
+        $admin->setTranslator($translator);
+        $admin->setDatagridBuilder($datagridBuilder);
+        $admin->setModelManager($modelManager);
+        $admin->setLabelTranslatorStrategy(new UnderscoreLabelTranslatorStrategy());
+        $admin->setDataSource($dataSource);
+
+        $this->assertSame($sourceIterator, $admin->getDataSourceIterator());
     }
 }

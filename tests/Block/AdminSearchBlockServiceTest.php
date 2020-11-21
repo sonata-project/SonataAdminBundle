@@ -54,7 +54,13 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
 
     public function testDefaultSettings(): void
     {
-        $blockService = new AdminSearchBlockService($this->twig, $this->pool, $this->searchHandler, $this->templateRegistry);
+        $blockService = new AdminSearchBlockService(
+            $this->twig,
+            $this->pool,
+            $this->searchHandler,
+            $this->templateRegistry,
+            'show'
+        );
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings([
@@ -71,7 +77,13 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
         $admin = $this->createMock(AbstractAdmin::class);
         $pagerInterface = $this->createMock(PagerInterface::class);
 
-        $blockService = new AdminSearchBlockService($this->twig, $this->pool, $this->searchHandler, $this->templateRegistry);
+        $blockService = new AdminSearchBlockService(
+            $this->twig,
+            $this->pool,
+            $this->searchHandler,
+            $this->templateRegistry,
+            'show'
+        );
         $blockContext = $this->getBlockContext($blockService);
 
         $this->searchHandler->expects(self::once())->method('search')->willReturn($pagerInterface);
@@ -88,7 +100,13 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
     {
         $admin = $this->createMock(AbstractAdmin::class);
 
-        $blockService = new AdminSearchBlockService($this->twig, $this->pool, $this->searchHandler, $this->templateRegistry);
+        $blockService = new AdminSearchBlockService(
+            $this->twig,
+            $this->pool,
+            $this->searchHandler,
+            $this->templateRegistry,
+            'show'
+        );
         $blockContext = $this->getBlockContext($blockService);
 
         $this->searchHandler->expects(self::once())->method('search')->willReturn(null);

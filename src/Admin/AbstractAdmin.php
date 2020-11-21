@@ -26,6 +26,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Exporter\DataSourceInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
@@ -239,6 +240,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * @var ModelManagerInterface|null
      */
     protected $modelManager;
+
+    /**
+     * NEXT_MAJOR: Restrict to DataSourceInterface.
+     *
+     * @var DataSourceInterface|null
+     */
+    protected $dataSource;
 
     /**
      * The current request object.
@@ -564,6 +572,19 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             }
         }
 
+        if ($this->getDataSource()) {
+            $query = $datagrid->getQuery();
+
+            return $this->getDataSource()->createIterator($query, $fields);
+        }
+
+        @trigger_error(sprintf(
+            'Using "%s()" without setting a "%s" instance in the admin is deprecated since sonata-admin/admin-bundle 3.79'
+            .' and won\'t be possible in 4.0.',
+            __METHOD__,
+            DataSourceInterface::class
+        ), E_USER_DEPRECATED);
+
         return $this->getModelManager()->getDataSourceIterator($datagrid, $fields);
     }
 
@@ -672,7 +693,10 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function getFilterParameters(): array
     {
-        $parameters = [];
+        $parameters = array_merge(
+            $this->getDefaultSortValues(),
+            $this->getDefaultFilterValues()
+        );
 
         // build the values array
         if ($this->hasRequest()) {
@@ -707,16 +731,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 }
             }
 
-            $parameters = array_merge(
-                $this->getModelManager()->getDefaultSortValues($this->getClass()),
-                $this->getDefaultSortValues(),
-                $this->getDefaultFilterValues(),
-                $filters
-            );
-
-            if (!isset($parameters['_per_page']) || !$this->determinedPerPageValue($parameters['_per_page'])) {
-                $parameters['_per_page'] = $this->getMaxPerPage();
-            }
+            $parameters = array_merge($parameters, $filters);
 
             // always force the parent value
             if ($this->isChild()) {
@@ -727,6 +742,10 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                     $parameters[$name] = ['value' => $this->request->get($this->getParent()->getIdParameter())];
                 }
             }
+        }
+
+        if (!isset($parameters['_per_page']) || !$this->determinedPerPageValue($parameters['_per_page'])) {
+            $parameters['_per_page'] = $this->getMaxPerPage();
         }
 
         return $parameters;
@@ -1136,6 +1155,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         if (null !== $adminCode) {
             if (!$pool->hasAdminByAdminCode($adminCode)) {
                 return;
+                // NEXT_MAJOR: Uncomment the following exception instead.
+//                throw new \InvalidArgumentException(sprintf('No admin found for the admin_code "%s"', $adminCode));
             }
 
             $admin = $pool->getAdminByAdminCode($adminCode);
@@ -1144,6 +1165,18 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
             if (!$pool->hasAdminByClass($targetModel)) {
                 return;
+                // NEXT_MAJOR: Uncomment the following exception instead.
+//                throw new \InvalidArgumentException(sprintf(
+//                    'No admin found for the class "%s", please use the admin_code option instead',
+//                    $targetModel
+//                ));
+            }
+
+            if (!$pool->hasSingleAdminByClass($targetModel)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Too many admins found for the class "%s", please use the admin_code option instead',
+                    $targetModel
+                ));
             }
 
             $admin = $pool->getAdminByClass($targetModel);
@@ -1294,7 +1327,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function getMaxPerPage(): int
     {
-        $sortValues = $this->getModelManager()->getDefaultSortValues($this->class);
+        $sortValues = $this->getDefaultSortValues();
 
         return $sortValues['_per_page'] ?? 25;
     }
@@ -1952,6 +1985,19 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->modelManager = $modelManager;
     }
 
+    /**
+     * NEXT_MAJOR: Change typehint for DataSourceInterface.
+     */
+    public function getDataSource(): ?DataSourceInterface
+    {
+        return $this->dataSource;
+    }
+
+    public function setDataSource(DataSourceInterface $dataSource)
+    {
+        $this->dataSource = $dataSource;
+    }
+
     public function getManagerType(): ?string
     {
         return $this->managerType;
@@ -2030,17 +2076,17 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->cacheIsGranted[$key];
     }
 
-    public function getUrlSafeIdentifier(object $model): string
+    public function getUrlSafeIdentifier(object $model): ?string
     {
         return $this->getModelManager()->getUrlSafeIdentifier($model);
     }
 
-    public function getNormalizedIdentifier(object $model): string
+    public function getNormalizedIdentifier(object $model): ?string
     {
         return $this->getModelManager()->getNormalizedIdentifier($model);
     }
 
-    public function id(object $model): string
+    public function id(object $model): ?string
     {
         return $this->getNormalizedIdentifier($model);
     }
@@ -2150,7 +2196,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function getPerPageOptions(): array
     {
-        $perPageOptions = $this->getModelManager()->getDefaultPerPageOptions($this->class);
+        $perPageOptions = [10, 25, 50, 100, 250];
         $perPageOptions[] = $this->getMaxPerPage();
 
         $perPageOptions = array_unique($perPageOptions);
@@ -2458,7 +2504,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     final protected function getDefaultSortValues(): array
     {
+        // NEXT_MAJOR: Use the next line instead.
         $defaultSortValues = [];
+        // $defaultSortValues = ['_page' => 1, '_per_page' => 25];
 
         $this->configureDefaultSortValues($defaultSortValues);
 

@@ -125,6 +125,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     private static $fieldGetters = [];
 
+    public function __construct(string $name, array $options = [])
+    {
+        $this->setName($name);
+        $this->setOptions($options);
+    }
+
     public function setFieldName(?string $fieldName): void
     {
         $this->fieldName = $fieldName;

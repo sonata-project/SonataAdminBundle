@@ -1,6 +1,85 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.80 to 3.81
+=========================
+
+### Sonata\AdminBundle\Block\AdminSearchBlockService
+
+Not passing the `empty_boxes` option as argument 4 to `Sonata\AdminBundle\Block\AdminSearchBlockService()` is deprecated.
+
+UPGRADE FROM 3.79 to 3.80
+=========================
+
+### Sonata\AdminBundle\Form\Type\Operator\StringOperatorType
+
+Added "Not equal" in the default list for "choices" option in order to allow filtering by strings that are not equal to the model data.
+
+### Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface::modelTransform()`
+
+This method has been deprecated without replacement.
+
+UPGRADE FROM 3.78 to 3.79
+=========================
+
+### Template registry structure and responsibilities.
+
+The `Sonata\AdminBundle\Templating\TemplateRegistry` class has been splitted into 3 classes:
+   - `TemplateRegistry`, implementing `Sonata\AdminBundle\Templating\TemplateRegistryInterface`
+   - `MutableTemplateRegistry`, implementing `Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface`
+   - `AbstractTemplateRegistry`, implementing `Sonata\AdminBundle\Templating\TemplateRegistryInterface`. You MUST extend this class if you want to create your own template registry.
+
+The interface `Sonata\AdminBundle\Templating\TemplateRegistryAwareInterface` was updated in order to handle instances of `TemplateRegistryInterface`.
+The interface `Sonata\AdminBundle\Templating\MutableTemplateRegistryAwareInterface` was added to provide a simple contract for classes depending on a `MutableTemplateRegistryInterface`.
+
+`TemplateRegistry` will stop implementing `MutableTemplateRegistryInterface` in version 4.0. If you are using `setTemplate()` or `setTemplates()` methods, you MUST use `MutableTemplateRegistry` instead.
+
+### Deprecated `Sonata\AdminBundle\Model\DatagridManagerInterface` interface.
+
+This interface has been deprecated without replacement.
+
+`ModelManagerInterface::getDefaultSortValues()` won't be used anymore.
+
+### Empty values in datagrid filters
+
+Empty values are passed to datagrid filters. If you have custom datagrid filters, you MUST add empty string checks to them.
+
+```php
+->add('with_open_comments', CallbackFilter::class, [
+    'callback' => static function (ProxyQueryInterface $queryBuilder, string $alias, string $field, array $value): bool {
+        if (!$value['value']) {
+            return false;
+        }
+
+        $queryBuilder
+            ->leftJoin(sprintf('%s.comments', $alias), 'c')
+            ->andWhere('c.moderation = :moderation')
+            ->setParameter('moderation', CommentModeration::APPROVED);
+
+        return true;
+    },
+    'field_type' => CheckboxType::class,
+]);
+```
+
+The `!$value['value']` check is required to avoid the filtering by `''` if you didn't used the filter.
+
+UPGRADE FROM 3.77 to 3.78
+=========================
+
+### Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface::getDataSourceIterator()`
+
+As replacement, you MUST inject an instance of `Sonata\AdminBundle\Exporter\DataSourceInterface` in your admin. This way, the method `DataSourceInterface::createIterator()` will be used instead.
+
+Setting a `DataSourceInterface` instance in your admin will be mandatory in version 4.0.
+
+### Deprecated `Sonata\AdminBundle\Command\Validators::validateEntityName()`
+
+In version 3.77, the shortcut notation for model class names (`AppBundle:User`)
+has been deprecated in favor of its FQCN (`App\Model\User`) when passing `user_model`
+option to `sonata:admin:generate-object-acl` command, so this method SHOULD not
+be called if that deprecation is addressed.
+
 ### Deprecated not configuring `acl_user_manager` and using ACL security handler when `friendsofsymfony/user-bundle` is installed.
 
 If you are using `friendsofsymfony/user-bundle` and using ACL security handler, you MUST explicitly configure the `acl_user_manager`.
@@ -74,6 +153,11 @@ This method has been deprecated without replacement.
 
 UPGRADE FROM 3.74 to 3.75
 =========================
+
+## Deprecated `Sonata\AdminBundle\Controller\CRUDController::getRestMethod()` method
+
+`Sonata\AdminBundle\Controller\CRUDController::getRestMethod()` method is deprecated.
+Use `Symfony\Component\HttpFoundation\Request::getMethod()` instead.
 
 ## Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface` collection-related methods.
 

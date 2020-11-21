@@ -149,50 +149,11 @@ final class Datagrid implements DatagridInterface
         $this->form = $this->formBuilder->getForm();
         $this->form->submit($this->values);
 
-        $data = $this->form->getData();
+        $this->applyFilters($this->form->getData() ?? []);
+        $this->applySorting();
 
-        foreach ($this->getFilters() as $name => $filter) {
-            $this->values[$name] = isset($this->values[$name]) ? $this->values[$name] : null;
-            $filterFormName = $filter->getFormName();
-            if (isset($this->values[$filterFormName]['value']) && '' !== $this->values[$filterFormName]['value']) {
-                $filter->apply($this->query, $data[$filterFormName]);
-            }
-        }
-
-        if (isset($this->values['_sort_by'])) {
-            if (!$this->values['_sort_by'] instanceof FieldDescriptionInterface) {
-                throw new UnexpectedTypeException($this->values['_sort_by'], FieldDescriptionInterface::class);
-            }
-
-            if ($this->values['_sort_by']->isSortable()) {
-                $this->query->setSortBy($this->values['_sort_by']->getSortParentAssociationMapping(), $this->values['_sort_by']->getSortFieldMapping());
-
-                $this->values['_sort_order'] = $this->values['_sort_order'] ?? 'ASC';
-                $this->query->setSortOrder($this->values['_sort_order']);
-            }
-        }
-
-        $maxPerPage = 25;
-        if (isset($this->values['_per_page'])) {
-            if (isset($this->values['_per_page']['value'])) {
-                $maxPerPage = $this->values['_per_page']['value'];
-            } else {
-                $maxPerPage = $this->values['_per_page'];
-            }
-        }
-        $this->pager->setMaxPerPage($maxPerPage);
-
-        $page = 1;
-        if (isset($this->values['_page'])) {
-            if (isset($this->values['_page']['value'])) {
-                $page = $this->values['_page']['value'];
-            } else {
-                $page = $this->values['_page'];
-            }
-        }
-
-        $this->pager->setPage($page);
-
+        $this->pager->setMaxPerPage($this->getMaxPerPage(25));
+        $this->pager->setPage($this->getPage(1));
         $this->pager->setQuery($this->query);
         $this->pager->init();
 
@@ -322,6 +283,70 @@ final class Datagrid implements DatagridInterface
         $values['_page'] = $page;
 
         return ['filter' => $values];
+    }
+
+    private function applyFilters(array $data): void
+    {
+        foreach ($this->getFilters() as $name => $filter) {
+            $this->values[$name] = $this->values[$name] ?? null;
+            $filterFormName = $filter->getFormName();
+
+            $value = $this->values[$filterFormName]['value'] ?? '';
+            $type = $this->values[$filterFormName]['type'] ?? '';
+
+            if ('' !== $value || '' !== $type) {
+                $filter->apply($this->query, $data[$filterFormName]);
+            }
+        }
+    }
+
+    private function applySorting(): void
+    {
+        if (!isset($this->values['_sort_by'])) {
+            return;
+        }
+
+        if (!$this->values['_sort_by'] instanceof FieldDescriptionInterface) {
+            throw new UnexpectedTypeException($this->values['_sort_by'], FieldDescriptionInterface::class);
+        }
+
+        if (!$this->values['_sort_by']->isSortable()) {
+            return;
+        }
+
+        $this->query->setSortBy(
+            $this->values['_sort_by']->getSortParentAssociationMapping(),
+            $this->values['_sort_by']->getSortFieldMapping()
+        );
+
+        $this->values['_sort_order'] = $this->values['_sort_order'] ?? 'ASC';
+        $this->query->setSortOrder($this->values['_sort_order']);
+    }
+
+    private function getMaxPerPage(int $default): int
+    {
+        if (!isset($this->values['_per_page'])) {
+            return $default;
+        }
+
+        if (isset($this->values['_per_page']['value'])) {
+            return (int) $this->values['_per_page']['value'];
+        }
+
+        return (int) $this->values['_per_page'];
+    }
+
+    private function getPage(int $default): int
+    {
+        if (!isset($this->values['_page'])) {
+            return $default;
+        }
+
+        if (isset($this->values['_page']['value'])) {
+            return (int) $this->values['_page']['value'];
+        }
+
+        return (int) $this->values['_page'];
     }
 
     private function isFieldAlreadySorted(FieldDescriptionInterface $fieldDescription): bool

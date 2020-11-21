@@ -22,7 +22,7 @@ use Sonata\Exporter\Source\SourceIteratorInterface;
 /**
  * A model manager is a bridge between the model classes and the admin functionality.
  */
-interface ModelManagerInterface extends DatagridManagerInterface
+interface ModelManagerInterface
 {
     /**
      * @param array<string, mixed> $options
@@ -115,7 +115,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * Get the identifiers for this model class as a string.
      */
-    public function getNormalizedIdentifier(object $model): string;
+    public function getNormalizedIdentifier(object $model): ?string;
 
     /**
      * Get the identifiers as a string that is safe to use in a url.
@@ -123,7 +123,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * This is similar to getNormalizedIdentifier but guarantees an id that can
      * be used in a URL.
      */
-    public function getUrlSafeIdentifier(object $model): string;
+    public function getUrlSafeIdentifier(object $model): ?string;
 
     /**
      * Create a new instance of the model of the specified class.
@@ -144,6 +144,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function modelReverseTransform(string $class, array $array = []): object;
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-admin/admin-bundle 3.80 and will be removed in 4.0.
+     *
      * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T
@@ -158,7 +162,11 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function executeQuery(object $query);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * @param string[] $fields
+     *
+     * @deprecated since sonata-admin/admin-bundle 3.79 and will be removed in 4.0.
      */
     public function getDataSourceIterator(
         DatagridInterface $datagrid,

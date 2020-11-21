@@ -89,11 +89,14 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
             throw new UnexpectedTypeException($value, 'array');
         }
 
-        $value = array_map('strval', $value);
-
-        $query = $this->modelManager->createQuery($this->class);
-        $this->modelManager->addIdentifiersToQuery($this->class, $query, $value);
-        $result = $this->modelManager->executeQuery($query);
+        if ([] === $value) {
+            $result = $value;
+        } else {
+            $value = array_map('strval', $value);
+            $query = $this->modelManager->createQuery($this->class);
+            $this->modelManager->addIdentifiersToQuery($this->class, $query, $value);
+            $result = $this->modelManager->executeQuery($query);
+        }
 
         /** @phpstan-var ArrayCollection<array-key, T> $collection */
         $collection = TraversableToCollection::transform($result);

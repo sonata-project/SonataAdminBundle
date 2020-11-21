@@ -5,38 +5,59 @@
 name: Quality assurance
 
 on:
-  push:
-    branches:
-      - 3.x
-      - master
-  pull_request:
+    push:
+        branches:
+            - 3.x
+            - master
+    pull_request:
 
 jobs:
-  phpstan:
-    name: PHPStan
+    phpstan:
+        name: PHPStan
 
-    runs-on: ubuntu-latest
+        runs-on: ubuntu-18.04
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
 
-      - name: PHPStan
-        uses: docker://oskarstark/phpstan-ga
-        env:
-          REQUIRE_DEV: true
-        with:
-          args: analyse
-  psalm:
-    name: Psalm
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 7.4
+                  coverage: none
+                  tools: composer:v2
 
-    runs-on: ubuntu-latest
+            - name: Install Composer dependencies (highest)
+              uses: "ramsey/composer-install@v1"
+              with:
+                  dependency-versions: "highest"
+                  composer-options: "--prefer-dist --prefer-stable"
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+            - name: PHPStan
+              run: vendor/bin/phpstan --memory-limit=1G analyse
 
-      - name: Psalm
-        uses: docker://vimeo/psalm-github-actions
-        with:
-          args: --shepherd
+    psalm:
+        name: Psalm
+
+        runs-on: ubuntu-18.04
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 7.4
+                  coverage: none
+                  tools: composer:v2
+
+            - name: Install Composer dependencies (highest)
+              uses: "ramsey/composer-install@v1"
+              with:
+                  dependency-versions: "highest"
+                  composer-options: "--prefer-dist --prefer-stable"
+
+            - name: Psalm
+              run: vendor/bin/psalm --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd

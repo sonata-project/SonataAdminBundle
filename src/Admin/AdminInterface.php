@@ -21,12 +21,13 @@ use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Exporter\DataSourceInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
-use Sonata\AdminBundle\Templating\TemplateRegistryAwareInterface;
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryAwareInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 use Sonata\Form\Validator\ErrorElement;
@@ -44,7 +45,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * @phpstan-extends UrlGeneratorInterface<T>
  * @phpstan-extends LifecycleHookProviderInterface<T>
  */
-interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface, TemplateRegistryAwareInterface
+interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface, MutableTemplateRegistryAwareInterface
 {
     public function setMenuFactory(FactoryInterface $menuFactory): void;
 
@@ -98,6 +99,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @param array<string, string> $templates
      */
     public function setTemplates(array $templates): void;
+
+    public function getDataSource(): ?DataSourceInterface;
 
     /**
      * Sets a specific template.
@@ -179,14 +182,14 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @phpstan-param T $model
      */
-    public function getNormalizedIdentifier(object $model): string;
+    public function getNormalizedIdentifier(object $model): ?string;
 
     /**
      * Shorthand method for templating.
      *
      * @phpstan-param T $model
      */
-    public function id(object $model): string;
+    public function id(object $model): ?string;
 
     public function setValidator(ValidatorInterface $validator): void;
 

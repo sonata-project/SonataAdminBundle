@@ -23,11 +23,11 @@ file that was distributed with this source code.
 {%- endblock -%}
 
 {% block title %}
-    {{ admin.isChild and admin.parent.subject ? 'title_edit'|trans({'%name%': admin.parent.toString(admin.parent.subject)|u.truncate(15) }, 'SonataAdminBundle') : '' }}
+    {{ admin.isChild and admin.parent.subject ? 'title_edit'|trans({'%name%': admin.parent.toString(admin.parent.subject)|u.truncate(15, '...') }, 'SonataAdminBundle') : '' }}
 {% endblock %}
 
 {% block navbar_title %}
-    {{ admin.isChild and admin.parent.subject ? 'title_edit'|trans({'%name%': admin.parent.toString(admin.parent.subject)|u.truncate(100) }, 'SonataAdminBundle') : '' }}
+    {{ admin.isChild and admin.parent.subject ? 'title_edit'|trans({'%name%': admin.parent.toString(admin.parent.subject)|u.truncate(100, '...') }, 'SonataAdminBundle') : '' }}
 {% endblock %}
 
 {% block list_table %}
@@ -109,13 +109,19 @@ file that was distributed with this source code.
                                 <div class="progress">
                                     <div class="progress-bar" style="width: 0%"></div>
                                 </div>
-                                <span class="progress-description">
-                                    {% if not app.request.xmlHttpRequest %}
-                                    <ul class="list-unstyled">
-                                        {% include get_admin_template('button_create', admin.code) %}
+                                <div class="progress-description">
+                                    <ul class="list-inline">
+                                        {%- if admin.datagrid.pager.results|length > 0 -%}
+                                            <li>
+                                                <a href="{{ admin.generateUrl('list') }}">
+                                                    {{- 'go_to_the_first_page'|trans({}, 'SonataAdminBundle') -}}
+                                                </a>
+                                            </li>
+                                        {%- elseif not app.request.xmlHttpRequest -%}
+                                            {%- include get_admin_template('button_create', admin.code) -%}
+                                        {%- endif -%}
                                     </ul>
-                                    {% endif %}
-                                </span>
+                                </div>
                             </div><!-- /.info-box-content -->
                         </div>
                     {% endblock %}
@@ -239,7 +245,7 @@ file that was distributed with this source code.
                     <b class="caret"></b>
                 </a>
 
-                <ul class="dropdown-menu" role="menu">
+                <ul class="dropdown-menu dropdown-menu-scrollable" role="menu">
                     {% for filter in admin.datagrid.filters|filter(filter => filter.options['show_filter'] is not same as (false)) %}
                         {% set filterDisplayed = filter.isActive() or filter.options['show_filter'] is same as (true) %}
                         <li>
@@ -287,13 +293,15 @@ file that was distributed with this source code.
                                             {{ form_widget(form[filter.formName].children['value']) }}
                                         </div>
 
-                                        <div class="col-sm-1">
-                                            <label class="control-label">
-                                                <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
-                                                    <i class="fa fa-minus-circle" aria-hidden="true"></i>
-                                                </a>
-                                            </label>
-                                        </div>
+                                        {% if filterCanBeDisplayed %}
+                                            <div class="col-sm-1">
+                                                <label class="control-label">
+                                                    <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
+                                                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                                    </a>
+                                                </label>
+                                            </div>
+                                        {% endif %}
                                     </div>
 
                                     {% if filter.options['advanced_filter'] %}

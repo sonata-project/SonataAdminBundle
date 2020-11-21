@@ -25,6 +25,7 @@ final class StringOperatorType extends AbstractType
     public const TYPE_EQUAL = 3;
     public const TYPE_STARTS_WITH = 4;
     public const TYPE_ENDS_WITH = 5;
+    public const TYPE_NOT_EQUAL = 6;
 
     public function configureOptions(OptionsResolver $resolver): void
     {
@@ -36,6 +37,7 @@ final class StringOperatorType extends AbstractType
                 'label_type_equals' => self::TYPE_EQUAL,
                 'label_type_starts_with' => self::TYPE_STARTS_WITH,
                 'label_type_ends_with' => self::TYPE_ENDS_WITH,
+                'label_type_not_equals' => self::TYPE_NOT_EQUAL,
             ],
         ]);
     }

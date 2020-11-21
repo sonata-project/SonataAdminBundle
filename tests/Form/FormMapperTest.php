@@ -57,6 +57,7 @@ class FormMapperTest extends TestCase
     protected function setUp(): void
     {
         $this->contractor = $this->createMock(FormContractorInterface::class);
+        $this->contractor->method('getDefaultOptions')->willReturn([]);
 
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
@@ -91,8 +92,7 @@ class FormMapperTest extends TestCase
         $this->modelManager
             ->method('getNewFieldDescriptionInstance')
             ->willReturnCallback(function (string $class, string $name, array $options = []): BaseFieldDescription {
-                $fieldDescription = $this->getFieldDescriptionMock();
-                $fieldDescription->setName($name);
+                $fieldDescription = $this->getFieldDescriptionMock($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
@@ -551,15 +551,11 @@ class FormMapperTest extends TestCase
     }
 
     private function getFieldDescriptionMock(
-        ?string $name = null,
+        string $name,
         ?string $label = null,
         ?string $translationDomain = null
     ): BaseFieldDescription {
-        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class);
-
-        if (null !== $name) {
-            $fieldDescription->setName($name);
-        }
+        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name, []]);
 
         if (null !== $label) {
             $fieldDescription->setOption('label', $label);

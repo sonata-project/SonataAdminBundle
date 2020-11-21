@@ -122,7 +122,7 @@ final class ModelType extends AbstractType
             'class' => null,
             'property' => null,
             'query' => null,
-            'choices' => [],
+            'choices' => null,
             'preferred_choices' => [],
             'btn_add' => 'link_add',
             'btn_list' => 'link_list',
