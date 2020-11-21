@@ -64,7 +64,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $name;
 
     /**
-     * @var string the type
+     * @var string|null the type
      */
     protected $type;
 
@@ -74,22 +74,22 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $mappingType;
 
     /**
-     * @var string the field name (of the form)
+     * @var string|null the field name (of the form)
      */
     protected $fieldName;
 
     /**
-     * @var array the ORM association mapping
+     * @var array<string, mixed> the ORM association mapping
      */
     protected $associationMapping = [];
 
     /**
-     * @var array the ORM field information
+     * @var array<string, mixed> the ORM field information
      */
     protected $fieldMapping = [];
 
     /**
-     * @var array the ORM parent mapping association
+     * @var array<string, mixed> the ORM parent mapping association
      */
     protected $parentAssociationMappings = [];
 
@@ -119,7 +119,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $associationAdmin;
 
     /**
-     * @var array[] cached object field getters
+     * @var string[][]
+     *
+     * @phpstan-var array<string, array{method: 'getter'|'call'|'var', getter?: string}>
      */
     private static $fieldGetters = [];
 
@@ -139,7 +141,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->fieldName;
     }
 
-    public function setName(?string $name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
 
@@ -148,7 +150,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -221,7 +223,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function getParent(): AdminInterface
     {
-        if (!$this->hasParent()) {
+        if (null === $this->parent) {
             throw new \LogicException(sprintf('%s has no parent.', static::class));
         }
 
@@ -256,7 +258,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function getAssociationAdmin(): AdminInterface
     {
-        if (!$this->hasAssociationAdmin()) {
+        if (null === $this->associationAdmin) {
             throw new \LogicException(sprintf('%s has no association admin.', static::class));
         }
 
@@ -333,7 +335,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function getAdmin(): AdminInterface
     {
-        if (!$this->hasAdmin()) {
+        if (null === $this->admin) {
             throw new \LogicException(sprintf('%s has no admin.', static::class));
         }
 
@@ -429,6 +431,11 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         );
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     *
+     * @return mixed
+     */
     private function callCachedGetter(object $object, string $fieldName, array $parameters = [])
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
@@ -444,6 +451,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $object->{$fieldName};
     }
 
+    /**
+     * @phpstan-param 'call'|'getter'|'var' $method
+     */
     private function cacheFieldGetter(object $object, ?string $fieldName, string $method, ?string $getter = null): void
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);

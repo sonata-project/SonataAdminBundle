@@ -36,21 +36,15 @@ class Pool
     protected $adminServiceIds = [];
 
     /**
-     * @var array
+     * @var array<string, array<string, mixed>>
      */
     protected $adminGroups = [];
 
     /**
      * @var array<string, string[]>
-     *
      * @phpstan-var array<class-string, string[]>
      */
     protected $adminClasses = [];
-
-    /**
-     * @var array
-     */
-    protected $assets = [];
 
     /**
      * @var string
@@ -63,12 +57,12 @@ class Pool
     protected $titleLogo;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected $options = [];
 
     /**
-     * @var PropertyAccessorInterface
+     * @var PropertyAccessorInterface|null
      */
     protected $propertyAccessor;
 
@@ -79,16 +73,19 @@ class Pool
      */
     private $templateRegistry;
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function __construct(
         ContainerInterface $container,
         string $title,
-        string $logoTitle,
+        string $titleLogo,
         array $options = [],
         ?PropertyAccessorInterface $propertyAccessor = null
     ) {
         $this->container = $container;
         $this->title = $title;
-        $this->titleLogo = $logoTitle;
+        $this->titleLogo = $titleLogo;
         $this->options = $options;
         $this->propertyAccessor = $propertyAccessor;
     }
@@ -117,6 +114,9 @@ class Pool
         return isset($this->adminGroups[$group]);
     }
 
+    /**
+     * @return array<string, array<string, AdminInterface[]>>
+     */
     public function getDashboardGroups(): array
     {
         $groups = $this->adminGroups;
@@ -321,16 +321,25 @@ class Pool
         return $admin;
     }
 
+    /**
+     * @param array<string, array<string, mixed>> $adminGroups
+     */
     public function setAdminGroups(array $adminGroups): void
     {
         $this->adminGroups = $adminGroups;
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function getAdminGroups(): array
     {
         return $this->adminGroups;
     }
 
+    /**
+     * @param string[] $adminServiceIds
+     */
     public function setAdminServiceIds(array $adminServiceIds): void
     {
         $this->adminServiceIds = $adminServiceIds;

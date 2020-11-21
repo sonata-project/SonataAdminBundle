@@ -15,6 +15,8 @@ namespace Sonata\AdminBundle\Admin;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @implements \ArrayAccess<string, FieldDescriptionInterface>
  */
 final class FieldDescriptionCollection implements \ArrayAccess, \Countable
 {
@@ -29,7 +31,7 @@ final class FieldDescriptionCollection implements \ArrayAccess, \Countable
     }
 
     /**
-     * @return array<string, FieldDescriptionInterface>
+     * @return FieldDescriptionInterface[]
      */
     public function getElements(): array
     {
@@ -85,6 +87,9 @@ final class FieldDescriptionCollection implements \ArrayAccess, \Countable
         return \count($this->elements);
     }
 
+    /**
+     * @param string[] $keys
+     */
     public function reorder(array $keys): void
     {
         if ($this->has('batch')) {

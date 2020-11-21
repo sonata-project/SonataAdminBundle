@@ -41,8 +41,6 @@ interface AdminExtensionInterface
     public function configureRoutes(AdminInterface $admin, RouteCollectionInterface $collection): void;
 
     /**
-     * Builds the tab menu.
-     *
      * @phpstan-param AdminInterface<object> $admin
      * @phpstan-param AdminInterface<object>|null $childAdmin
      */
@@ -89,7 +87,7 @@ interface AdminExtensionInterface
     /**
      * Return the controller access mapping.
      *
-     * @return array<string, string|string[]>
+     * @return array<string, string[]|string>
      *
      * @phpstan-param AdminInterface<object> $admin
      */
@@ -98,12 +96,16 @@ interface AdminExtensionInterface
     /**
      * Returns the list of batch actions.
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @param array<string, array<string, mixed>> $actions
+     *
+     * @return array<string, array<string, mixed>>
      */
     public function configureBatchActions(AdminInterface $admin, array $actions): array;
 
     /**
      * Get a chance to modify export fields.
+     *
+     * @param string[] $fields
      *
      * @return string[]
      *
@@ -146,6 +148,10 @@ interface AdminExtensionInterface
     /**
      * Get all action buttons for an action.
      *
+     * @param array<string, array<string, mixed>> $list
+     *
+     * @return array<string, array<string, mixed>>
+     *
      * @phpstan-param AdminInterface<object> $admin
      */
     public function configureActionButtons(
@@ -159,6 +165,8 @@ interface AdminExtensionInterface
      * Returns a list of default filters.
      *
      * @phpstan-param AdminInterface<object> $admin
+     *
+     * @param array<string, array<string, mixed>> $filterValues
      */
     public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues): void;
 

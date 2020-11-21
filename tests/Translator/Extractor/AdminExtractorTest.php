@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\Translator\Extractor;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Translator\Extractor\AdminExtractor;
 use Symfony\Component\DependencyInjection\Container;
@@ -52,6 +53,11 @@ final class AdminExtractorTest extends TestCase
     {
         $this->fooAdmin = $this->createStub(AdminInterface::class);
         $this->barAdmin = $this->createStub(AdminInterface::class);
+
+        $this->fooAdmin->method('getShow')->willReturn(new FieldDescriptionCollection());
+        $this->fooAdmin->method('getList')->willReturn(new FieldDescriptionCollection());
+        $this->barAdmin->method('getShow')->willReturn(new FieldDescriptionCollection());
+        $this->barAdmin->method('getList')->willReturn(new FieldDescriptionCollection());
 
         $container = new Container();
         $container->set('foo_admin', $this->fooAdmin);
