@@ -25,7 +25,9 @@ file that was distributed with this source code.
                 {% set icon = settings.icon|default('') %}
                 {{ icon|raw }}
                 <h3 class="box-title">
-                    {{ admin.label|trans({}, admin.translationdomain) }}
+                    {% if admin.label is not empty %}
+                        {{ admin.label|trans({}, admin.translationdomain) }}
+                    {% endif %}
                 </h3>
 
                 <div class="box-tools pull-right">
