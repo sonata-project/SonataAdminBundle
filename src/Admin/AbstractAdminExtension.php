@@ -20,7 +20,6 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\Form\Validator\ErrorElement;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -48,10 +47,6 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     }
 
     public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
-    {
-    }
-
-    public function validate(AdminInterface $admin, ErrorElement $errorElement, object $object): void
     {
     }
 

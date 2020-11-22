@@ -308,16 +308,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function hasSubject(): bool;
 
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated this feature cannot be stable, use a custom validator,
-     *             the feature will be removed with Symfony 2.2
-     *
-     * @phpstan-param T $object
-     */
-    public function validate(ErrorElement $errorElement, object $object): void;
-
     public function showIn(string $context): bool;
 
     /**

@@ -43,8 +43,6 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
-use Sonata\Form\Validator\Constraints\InlineConstraint;
-use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -56,7 +54,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Validator\Mapping\GenericMetadata;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -586,10 +583,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         ), E_USER_DEPRECATED);
 
         return $this->getModelManager()->getDataSourceIterator($datagrid, $fields);
-    }
-
-    public function validate(ErrorElement $errorElement, object $object): void
-    {
     }
 
     /**
@@ -1142,8 +1135,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         foreach ($this->getExtensions() as $extension) {
             $extension->configureFormFields($mapper);
         }
-
-        $this->attachInlineValidator();
     }
 
     public function attachAdminClass(FieldDescriptionInterface $fieldDescription): void
@@ -2683,48 +2674,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         throw new \LogicException(sprintf('Unable to find the subclass `%s` for admin `%s`', $name, static::class));
-    }
-
-    /**
-     * Attach the inline validator to the model metadata, this must be done once per admin.
-     */
-    protected function attachInlineValidator(): void
-    {
-        $admin = $this;
-
-        // add the custom inline validation option
-        $metadata = $this->validator->getMetadataFor($this->getClass());
-        if (!$metadata instanceof GenericMetadata) {
-            throw new \UnexpectedValueException(
-                sprintf(
-                    'Cannot add inline validator for %s because its metadata is an instance of %s instead of %s',
-                    $this->getClass(),
-                    \get_class($metadata),
-                    GenericMetadata::class
-                )
-            );
-        }
-
-        $metadata->addConstraint(new InlineConstraint([
-            'service' => $this,
-            'method' => static function (ErrorElement $errorElement, object $object) use ($admin): void {
-                /* @var \Sonata\AdminBundle\Admin\AdminInterface $admin */
-
-                // This avoid the main validation to be cascaded to children
-                // The problem occurs when a model Page has a collection of Page as property
-                if ($admin->hasSubject() && spl_object_hash($object) !== spl_object_hash($admin->getSubject())) {
-                    return;
-                }
-
-                // @phpstan-ignore-next-line
-                $admin->validate($errorElement, $object);
-
-                foreach ($admin->getExtensions() as $extension) {
-                    $extension->validate($admin, $errorElement, $object);
-                }
-            },
-            'serializingWarning' => true,
-        ]));
     }
 
     /**
