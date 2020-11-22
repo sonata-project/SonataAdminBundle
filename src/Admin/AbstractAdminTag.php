@@ -172,6 +172,10 @@ abstract class AbstractAdminTag implements AdminTagInterface
     protected $routeGenerator;
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0
+     *
      * @var ValidatorInterface|null
      */
     protected $validator;
@@ -518,7 +522,7 @@ abstract class AbstractAdminTag implements AdminTagInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.83
      */
     public function setTranslator(TranslatorInterface $translator)
     {
@@ -526,7 +530,7 @@ abstract class AbstractAdminTag implements AdminTagInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.83
      */
     public function getTranslator()
     {
@@ -608,6 +612,8 @@ abstract class AbstractAdminTag implements AdminTagInterface
 
     /**
      * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0
      */
     public function setValidator($validator)
     {
@@ -624,12 +630,14 @@ abstract class AbstractAdminTag implements AdminTagInterface
 
     /**
      * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0
      */
     public function getValidator()
     {
         @trigger_error(sprintf(
-            'Calling %s() is deprecated since sonata-project/admin-bundle 3.x.',
-            __METHOD__,
+            'The %s method is deprecated since version 3.83 and will be removed in 4.0.',
+            __METHOD__
         ), E_USER_DEPRECATED);
 
         return $this->validator;
