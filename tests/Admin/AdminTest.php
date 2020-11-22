@@ -735,6 +735,7 @@ class AdminTest extends TestCase
     {
         $postAdmin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
+        $postAdmin->setSecurityHandler($this->createMock(SecurityHandlerInterface::class));
         $this->assertFalse($postAdmin->isAclEnabled());
 
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'Sonata\NewsBundle\Controller\CommentAdminController');
@@ -890,8 +891,6 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $this->assertNull($admin->getLabelTranslatorStrategy());
-
         $labelTranslatorStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
         $admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
         $this->assertSame($labelTranslatorStrategy, $admin->getLabelTranslatorStrategy());
@@ -901,8 +900,6 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $this->assertNull($admin->getRouteBuilder());
-
         $routeBuilder = $this->createMock(RouteBuilderInterface::class);
         $admin->setRouteBuilder($routeBuilder);
         $this->assertSame($routeBuilder, $admin->getRouteBuilder());
@@ -911,8 +908,6 @@ class AdminTest extends TestCase
     public function testGetMenuFactory(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $this->assertNull($admin->getMenuFactory());
 
         $menuFactory = $this->createMock(FactoryInterface::class);
         $admin->setMenuFactory($menuFactory);
@@ -963,13 +958,11 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $this->assertNull($admin->getValidator());
-
         $validator = $this->getMockForAbstractClass(ValidatorInterface::class);
 
         $admin->setValidator($validator);
 
-        $this->expectDeprecation('The Sonata\AdminBundle\Admin\AbstractAdmin::getValidator method is deprecated since version 3.83 and will be removed in 4.0.');
+        $this->expectDeprecation('The Sonata\AdminBundle\Admin\AbstractAdminTag::getValidator method is deprecated since version 3.83 and will be removed in 4.0.');
 
         $this->assertSame($validator, $admin->getValidator());
     }
@@ -977,8 +970,6 @@ class AdminTest extends TestCase
     public function testGetSecurityHandler(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $this->assertNull($admin->getSecurityHandler());
 
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $admin->setSecurityHandler($securityHandler);
@@ -1004,8 +995,6 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $this->assertNull($admin->getManagerType());
-
         $admin->setManagerType('foo_orm');
         $this->assertSame('foo_orm', $admin->getManagerType());
     }
@@ -1013,8 +1002,6 @@ class AdminTest extends TestCase
     public function testGetModelManager(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $this->assertNull($admin->getModelManager());
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
@@ -1065,8 +1052,6 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $this->assertNull($admin->getRouteGenerator());
-
         $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
 
         $admin->setRouteGenerator($routeGenerator);
@@ -1076,8 +1061,6 @@ class AdminTest extends TestCase
     public function testGetConfigurationPool(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $this->assertNull($admin->getConfigurationPool());
 
         $pool = $this->getMockBuilder(Pool::class)
             ->disableOriginalConstructor()
@@ -1091,8 +1074,6 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $this->assertNull($admin->getShowBuilder());
-
         $showBuilder = $this->createMock(ShowBuilderInterface::class);
 
         $admin->setShowBuilder($showBuilder);
@@ -1102,8 +1083,6 @@ class AdminTest extends TestCase
     public function testGetListBuilder(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $this->assertNull($admin->getListBuilder());
 
         $listBuilder = $this->createMock(ListBuilderInterface::class);
 
@@ -1115,8 +1094,6 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $this->assertNull($admin->getDatagridBuilder());
-
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
 
         $admin->setDatagridBuilder($datagridBuilder);
@@ -1126,8 +1103,6 @@ class AdminTest extends TestCase
     public function testGetFormContractor(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $this->assertNull($admin->getFormContractor());
 
         $formContractor = $this->createMock(FormContractorInterface::class);
 
@@ -1167,14 +1142,9 @@ class AdminTest extends TestCase
         $this->assertSame('foo', $admin->getTranslationDomain());
     }
 
-    /**
-     * @group legacy
-     */
     public function testGetTranslator(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $this->assertNull($admin->getTranslator());
 
         $translator = $this->createMock(TranslatorInterface::class);
 
@@ -2569,20 +2539,8 @@ class AdminTest extends TestCase
             2 => 'bar',
         ]);
 
-        $admin = $this->getMockBuilder(AbstractAdmin::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getDatagrid', 'getTranslationLabel', 'trans'])
-            ->getMockForAbstractClass();
-        $admin->method('getDatagrid')->willReturn($datagrid);
-        $admin->setModelManager($modelManager);
-        $admin->setDataSource($dataSource);
-
-        $admin
-            ->method('getTranslationLabel')
-            ->willReturnCallback(static function (string $label, string $context = '', string $type = ''): string {
-                return sprintf('%s.%s_%s', $context, $type, $label);
-            });
-        $admin
+        $translator = $this->createStub(TranslatorInterface::class);
+        $translator
             ->method('trans')
             ->willReturnCallback(static function (string $label): string {
                 if ('export.label_field' === $label) {
@@ -2590,6 +2548,21 @@ class AdminTest extends TestCase
                 }
 
                 return $label;
+            });
+
+        $admin = $this->getMockBuilder(AbstractAdmin::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getDatagrid', 'getTranslationLabel'])
+            ->getMockForAbstractClass();
+        $admin->method('getDatagrid')->willReturn($datagrid);
+        $admin->setModelManager($modelManager);
+        $admin->setDataSource($dataSource);
+        $admin->setTranslator($translator);
+
+        $admin
+            ->method('getTranslationLabel')
+            ->willReturnCallback(static function (string $label, string $context = '', string $type = ''): string {
+                return sprintf('%s.%s_%s', $context, $type, $label);
             });
 
         $admin->getDataSourceIterator();
@@ -2618,19 +2591,8 @@ class AdminTest extends TestCase
                 2 => 'bar',
             ]));
 
-        $admin = $this->getMockBuilder(AbstractAdmin::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getDatagrid', 'getTranslationLabel', 'trans'])
-            ->getMockForAbstractClass();
-        $admin->method('getDatagrid')->willReturn($datagrid);
-        $admin->setModelManager($modelManager);
-
-        $admin
-            ->method('getTranslationLabel')
-            ->willReturnCallback(static function (string $label, string $context = '', string $type = ''): string {
-                return sprintf('%s.%s_%s', $context, $type, $label);
-            });
-        $admin
+        $translator = $this->createStub(TranslatorInterface::class);
+        $translator
             ->method('trans')
             ->willReturnCallback(static function (string $label): string {
                 if ('export.label_field' === $label) {
@@ -2638,6 +2600,20 @@ class AdminTest extends TestCase
                 }
 
                 return $label;
+            });
+
+        $admin = $this->getMockBuilder(AbstractAdmin::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getDatagrid', 'getTranslationLabel'])
+            ->getMockForAbstractClass();
+        $admin->method('getDatagrid')->willReturn($datagrid);
+        $admin->setModelManager($modelManager);
+        $admin->setTranslator($translator);
+
+        $admin
+            ->method('getTranslationLabel')
+            ->willReturnCallback(static function (string $label, string $context = '', string $type = ''): string {
+                return sprintf('%s.%s_%s', $context, $type, $label);
             });
 
         $this->expectDeprecation('Using "Sonata\AdminBundle\Admin\AbstractAdmin::getDataSourceIterator()" without setting a "Sonata\AdminBundle\Exporter\DataSourceInterface" instance in the admin is deprecated since sonata-project/admin-bundle 3.79 and won\'t be possible in 4.0.');
@@ -2815,13 +2791,6 @@ class AdminTest extends TestCase
         $this->assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
     }
 
-    public function testAdminWithoutControllerName(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', null);
-
-        $this->assertNull($admin->getBaseControllerName());
-    }
-
     public function testAdminAvoidInifiniteLoop(): void
     {
         $this->expectNotToPerformAssertions();
@@ -2832,7 +2801,7 @@ class AdminTest extends TestCase
             ->method('getDefaultSortValues')
             ->willReturn([]);
 
-        $admin = new AvoidInfiniteLoopAdmin('code', \stdClass::class, null);
+        $admin = new AvoidInfiniteLoopAdmin('code', \stdClass::class, 'controller');
         $admin->setSubject(new \stdClass());
 
         $admin->setModelManager($modelManager);
@@ -2867,7 +2836,7 @@ class AdminTest extends TestCase
      *
      * @dataProvider getDeprecatedAbstractAdminConstructorArgs
      *
-     * @expectedDeprecation Passing other type than string%S as argument %d for method Sonata\AdminBundle\Admin\AbstractAdmin::__construct() is deprecated since sonata-project/admin-bundle 3.65. It will accept only string%S in version 4.0.
+     * @expectedDeprecation  Passing other type than string as argument %d for method Sonata\AdminBundle\Admin\AbstractAdminTag::__construct() is deprecated since sonata-project/admin-bundle 3.%s. It will accept only string in version 4.0.
      *
      * @doesNotPerformAssertions
      */
