@@ -233,7 +233,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'translator',
             'configuration_pool',
             'router',
-            'validator', //NEXT_MAJOR: Remove this line
+            'validator', // NEXT_MAJOR: Remove this line
             'security_handler',
             'menu_factory',
             'route_builder',
@@ -281,7 +281,12 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'translator' => 'translator',
             'configuration_pool' => 'sonata.admin.pool',
             'route_generator' => 'sonata.admin.route.default_generator',
+<<<<<<< HEAD
             'validator' => 'validator', //NEXT_MAJOR: Remove this line
+=======
+            // NEXT_MAJOR: Remove this line.
+            'validator' => 'validator',
+>>>>>>> e3f653f61... Improve AddDependencyCallsCompilerPass
             'security_handler' => 'sonata.admin.security.handler',
             'menu_factory' => 'knp_menu.factory',
             'route_builder' => 'sonata.admin.route.path_info'.
@@ -309,49 +314,26 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             }
         }
 
-        if (isset($overwriteAdminConfiguration['pager_type'])) {
-            $pagerType = $overwriteAdminConfiguration['pager_type'];
-        } elseif (isset($attributes['pager_type'])) {
-            $pagerType = $attributes['pager_type'];
-        } else {
-            $pagerType = Pager::TYPE_DEFAULT;
-        }
-
+        $pagerType = $overwriteAdminConfiguration['pager_type'] ?? $attributes['pager_type'] ?? Pager::TYPE_DEFAULT;
         $definition->addMethodCall('setPagerType', [$pagerType]);
 
-        if (isset($overwriteAdminConfiguration['label'])) {
-            $label = $overwriteAdminConfiguration['label'];
-        } elseif (isset($attributes['label'])) {
-            $label = $attributes['label'];
-        } else {
-            $label = '-';
-        }
-
+        // NEXT_MAJOR: Default to null
+        $label = $overwriteAdminConfiguration['label'] ?? $attributes['label'] ?? '-';
         $definition->addMethodCall('setLabel', [$label]);
 
-        $persistFilters = $container->getParameter('sonata.admin.configuration.filters.persist');
-        // override default configuration with admin config if set
-        if (isset($attributes['persist_filters'])) {
-            $persistFilters = $attributes['persist_filters'];
-        }
-        $filtersPersister = $container->getParameter('sonata.admin.configuration.filters.persister');
-        // override default configuration with admin config if set
-        if (isset($attributes['filter_persister'])) {
-            $filtersPersister = $attributes['filter_persister'];
-        }
+        $persistFilters = $attributes['persist_filters']
+            ?? $container->getParameter('sonata.admin.configuration.filters.persist');
+        $filtersPersister = $attributes['filter_persister']
+            ?? $container->getParameter('sonata.admin.configuration.filters.persister');
+
         // configure filters persistence, if configured to
         if ($persistFilters) {
             $definition->addMethodCall('setFilterPersister', [new Reference($filtersPersister)]);
         }
 
-        if (isset($overwriteAdminConfiguration['show_mosaic_button'])) {
-            $showMosaicButton = $overwriteAdminConfiguration['show_mosaic_button'];
-        } elseif (isset($attributes['show_mosaic_button'])) {
-            $showMosaicButton = $attributes['show_mosaic_button'];
-        } else {
-            $showMosaicButton = $container->getParameter('sonata.admin.configuration.show.mosaic.button');
-        }
-
+        $showMosaicButton = $overwriteAdminConfiguration['show_mosaic_button']
+            ?? $attributes['show_mosaic_button']
+            ?? $container->getParameter('sonata.admin.configuration.show.mosaic.button');
         $definition->addMethodCall('showMosaicButton', [$showMosaicButton]);
 
         $this->fixTemplates(
