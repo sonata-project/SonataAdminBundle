@@ -8,6 +8,18 @@ UPGRADE FROM 3.80 to 3.81
 
 Not passing the `empty_boxes` option as argument 4 to `Sonata\AdminBundle\Block\AdminSearchBlockService()` is deprecated.
 
+### Deprecated `Sonata\AdminBundle\Admin\AdminInterface::validate()` method.
+
+Use `Symfony\Component\Validator\Validation::validate()` instead.
+
+### Deprecated `Sonata\AdminBundle\Admin\AbstractAdmin::attachInlineValidator()` method.
+
+This method has been deprecated without replacement.
+
+### Deprecated `Sonata\AdminBundle\Admin\AdminExtensionInterface::validate()` method.
+
+This method has been deprecated without replacement.
+
 UPGRADE FROM 3.79 to 3.80
 =========================
 
