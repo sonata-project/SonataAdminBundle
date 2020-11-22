@@ -741,7 +741,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
-     * define custom variable.
+     * @final since sonata-admin/admin-bundle 3.x
      */
     public function initialize()
     {
@@ -760,6 +760,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->configure();
     }
 
+    /**
+     * NEXT_MAJOR: Restrict visibility to protected.
+     */
     public function configure()
     {
     }
@@ -767,7 +770,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function update($object)
     {
         $this->preUpdate($object);
-        foreach ($this->extensions as $extension) {
+        foreach ($this->getExtensions() as $extension) {
             $extension->preUpdate($this, $object);
         }
 
@@ -778,7 +781,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         $this->postUpdate($object);
-        foreach ($this->extensions as $extension) {
+        foreach ($this->getExtensions() as $extension) {
             $extension->postUpdate($this, $object);
         }
 
@@ -788,7 +791,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function create($object)
     {
         $this->prePersist($object);
-        foreach ($this->extensions as $extension) {
+        foreach ($this->getExtensions() as $extension) {
             $extension->prePersist($this, $object);
         }
 
@@ -799,7 +802,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         $this->postPersist($object);
-        foreach ($this->extensions as $extension) {
+        foreach ($this->getExtensions() as $extension) {
             $extension->postPersist($this, $object);
         }
 
@@ -811,7 +814,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function delete($object)
     {
         $this->preRemove($object);
-        foreach ($this->extensions as $extension) {
+        foreach ($this->getExtensions() as $extension) {
             $extension->preRemove($this, $object);
         }
 
@@ -819,7 +822,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->getModelManager()->delete($object);
 
         $this->postRemove($object);
-        foreach ($this->extensions as $extension) {
+        foreach ($this->getExtensions() as $extension) {
             $extension->postRemove($this, $object);
         }
     }
@@ -883,7 +886,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         // build the values array
         if ($this->hasRequest()) {
             /** @var InputBag|ParameterBag $bag */
-            $bag = $this->request->query;
+            $bag = $this->getRequest()->query;
             if ($bag instanceof InputBag) {
                 // symfony 5.1+
                 $filters = $bag->all('filter');
@@ -919,7 +922,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             // always force the parent value
             if ($this->isChild() && $this->getParentAssociationMapping()) {
                 $name = str_replace('.', '__', $this->getParentAssociationMapping());
-                $parameters[$name] = ['value' => $this->request->get($this->getParent()->getIdParameter())];
+                $parameters[$name] = ['value' => $this->getRequest()->get($this->getParent()->getIdParameter())];
             }
         }
 
@@ -961,7 +964,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         // initialize the datagrid
         $this->datagrid = $this->getDatagridBuilder()->getBaseDatagrid($this, $filterParameters);
 
-        $this->datagrid->getPager()->setMaxPageLinks($this->maxPageLinks);
+        $this->datagrid->getPager()->setMaxPageLinks($this->getMaxPageLinks());
 
         $mapper = new DatagridMapper($this->getDatagridBuilder(), $this->datagrid, $this);
 
@@ -1175,8 +1178,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             return $this->getSubClass($subClass);
         }
 
-        // see https://github.com/sonata-project/SonataCoreBundle/commit/247eeb0a7ca7211142e101754769d70bc402a5b4
-        if ($this->subject && \is_object($this->subject)) {
+        // Do not use `$this->hasSubject()` and `$this->getSubject()` here to avoid infinite loop.
+        // `getSubject` use `hasSubject()` which use `getObject()` which use `getClass()`.
+        if (null !== $this->subject) {
             return ClassUtils::getClass($this->subject);
         }
 
@@ -1215,7 +1219,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function hasActiveSubClass()
     {
-        if (\count($this->subClasses) > 0 && $this->request) {
+        if (\count($this->subClasses) > 0 && $this->hasRequest()) {
             return null !== $this->getRequest()->query->get('subclass');
         }
 
@@ -1344,11 +1348,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function hasRoute($name)
     {
+        // NEXT_MAJOR: Remove this check.
         if (!$this->routeGenerator) {
             throw new \RuntimeException('RouteGenerator cannot be null');
         }
 
-        return $this->routeGenerator->hasAdminRoute($this, $name);
+        return $this->getRouteGenerator()->hasAdminRoute($this, $name);
     }
 
     /**
@@ -1600,7 +1605,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $query = $this->getModelManager()->createQuery($this->getClass());
 
         $query = $this->configureQuery($query);
-        foreach ($this->extensions as $extension) {
+        foreach ($this->getExtensions() as $extension) {
             $extension->configureQuery($this, $query, $context);
         }
 
@@ -1622,9 +1627,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         $this->loaded['tab_menu'] = true;
 
-        $menu = $this->menuFactory->createItem('root');
+        $menu = $this->getMenuFactory()->createItem('root');
         $menu->setChildrenAttribute('class', 'nav navbar-nav');
-        $menu->setExtra('translation_domain', $this->translationDomain);
+        $menu->setExtra('translation_domain', $this->getTranslationDomain());
 
         // Prevents BC break with KnpMenuBundle v1.x
         if (method_exists($menu, 'setCurrentUri')) {
@@ -1953,7 +1958,7 @@ EOT;
     public function hasSubject()
     {
         if (null === $this->subject && $this->hasRequest() && !$this->hasParentFieldDescription()) {
-            $id = $this->request->get($this->getIdParameter());
+            $id = $this->getRequest()->get($this->getIdParameter());
 
             if (null !== $id) {
                 $this->subject = $this->getObject($id);
@@ -2246,7 +2251,7 @@ EOT;
             return null;
         }
 
-        return $this->children[$code];
+        return $this->getChildren()[$code];
     }
 
     public function setParent(AdminInterface $parent)
@@ -2493,7 +2498,7 @@ EOT;
      */
     public function getCurrentChildAdmin()
     {
-        foreach ($this->children as $child) {
+        foreach ($this->getChildren() as $child) {
             // NEXT_MAJOR: Remove method_exists check and delete elseif case
             if (method_exists($child, 'isCurrentChild')) {
                 if ($child->isCurrentChild()) {
@@ -2518,7 +2523,7 @@ EOT;
 
         $domain = $domain ?: $this->getTranslationDomain();
 
-        return $this->translator->trans($id, $parameters, $domain, $locale);
+        return $this->getTranslator()->trans($id, $parameters, $domain, $locale);
     }
 
     /**
@@ -2544,7 +2549,7 @@ EOT;
 
         $domain = $domain ?: $this->getTranslationDomain();
 
-        return $this->translator->transChoice($id, $count, $parameters, $domain, $locale);
+        return $this->getTranslator()->transChoice($id, $count, $parameters, $domain, $locale);
     }
 
     public function setTranslationDomain($translationDomain)
@@ -2816,23 +2821,13 @@ EOT;
         $this->getSecurityHandler()->createObjectSecurity($this, $object);
     }
 
-    public function setSecurityHandler(SecurityHandlerInterface $securityHandler)
-    {
-        $this->securityHandler = $securityHandler;
-    }
-
-    public function getSecurityHandler()
-    {
-        return $this->securityHandler;
-    }
-
     public function isGranted($name, $object = null)
     {
         $objectRef = $object ? sprintf('/%s#%s', spl_object_hash($object), $this->id($object)) : '';
         $key = md5(json_encode($name).$objectRef);
 
         if (!\array_key_exists($key, $this->cacheIsGranted)) {
-            $this->cacheIsGranted[$key] = $this->securityHandler->isGranted($this, $name, $object ?: $this);
+            $this->cacheIsGranted[$key] = $this->getSecurityHandler()->isGranted($this, $name, $object ?: $this);
         }
 
         return $this->cacheIsGranted[$key];
@@ -3698,7 +3693,7 @@ EOT;
             'list' => 'LIST',
         ], $this->getAccessMapping());
 
-        foreach ($this->extensions as $extension) {
+        foreach ($this->getExtensions() as $extension) {
             // NEXT_MAJOR: remove method check
             if (method_exists($extension, 'getAccessMapping')) {
                 $access = array_merge($access, $extension->getAccessMapping($this));
@@ -3739,7 +3734,7 @@ EOT;
     {
         if ($this->isChild() && $this->getParentAssociationMapping()) {
             $parentAdmin = $this->getParent();
-            $parentObject = $parentAdmin->getObject($this->request->get($parentAdmin->getIdParameter()));
+            $parentObject = $parentAdmin->getObject($this->getRequest()->get($parentAdmin->getIdParameter()));
 
             if (null !== $parentObject) {
                 $propertyAccessor = PropertyAccess::createPropertyAccessor();
@@ -3756,7 +3751,7 @@ EOT;
             }
         } elseif ($this->hasParentFieldDescription()) {
             $parentAdmin = $this->getParentFieldDescription()->getAdmin();
-            $parentObject = $parentAdmin->getObject($this->request->get($parentAdmin->getIdParameter()));
+            $parentObject = $parentAdmin->getObject($this->getRequest()->get($parentAdmin->getIdParameter()));
 
             if (null !== $parentObject) {
                 ObjectManipulator::setObject($object, $parentObject, $this->getParentFieldDescription());
@@ -3782,7 +3777,7 @@ EOT;
             $this->getBaseControllerName()
         );
 
-        $this->routeBuilder->build($this, $this->routes);
+        $this->getRouteBuilder()->build($this, $this->routes);
 
         $this->configureRoutes($this->routes);
 
