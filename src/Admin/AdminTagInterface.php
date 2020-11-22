@@ -235,9 +235,22 @@ interface AdminTagInterface
 //    public function getRouteGenerator(): RouteGeneratorInterface;
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
+     * @param ValidatorInterface $validator
+     *
+     * @return void
+     *
+     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0
+     */
+    public function setValidator($validator);
+
+    /**
      * NEXT_MAJOR: Remove this method.
      *
      * @return ValidatorInterface
+     *
+     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0
      */
     public function getValidator();
 
