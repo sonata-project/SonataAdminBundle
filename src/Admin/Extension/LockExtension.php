@@ -79,6 +79,6 @@ class LockExtension extends AbstractAdminExtension
             return;
         }
 
-        $modelManager->lock($object, $data[$this->fieldName]);
+        $modelManager->lock($object, (int) $data[$this->fieldName]);
     }
 }
