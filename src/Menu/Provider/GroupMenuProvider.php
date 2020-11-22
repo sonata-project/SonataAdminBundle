@@ -179,7 +179,7 @@ class GroupMenuProvider implements MenuProviderInterface
                 'admin' => $admin,
             ];
 
-            return $this->menuFactory->createItem($admin->getLabel(), $options);
+            return $this->menuFactory->createItem($admin->getLabel() ?? '', $options);
         }
 
         return $this->menuFactory->createItem($item['label'], [
