@@ -7,6 +7,7 @@ rules:
     blank_line_after_directive: ~
     blank_line_after_filepath_in_code_block: ~
     composer_dev_option_at_the_end: ~
+    ensure_exactly_one_space_between_link_definition_and_link: ~
     ensure_order_of_code_blocks_in_configuration_block: ~
     extend_abstract_admin: ~
     final_admin_class: ~
@@ -20,6 +21,7 @@ rules:
     no_composer_phar: ~
     no_composer_req: ~
     no_config_yaml: ~
+    no_directive_after_shorthand: ~
     no_explicit_use_of_code_block_php: ~
     no_inheritdoc: ~
     no_php_open_tag_in_code_block_php_directive: ~

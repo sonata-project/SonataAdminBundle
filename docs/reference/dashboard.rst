@@ -295,7 +295,7 @@ suit this scenario.
 In this example, you would have two ``admin_list`` blocks on your dashboard, each
 of them containing the respectively configured groups.
 
-.. _`SonataBlock documentation page`:  https://sonata-project.org/bundles/block/master/doc/index.html
+.. _`SonataBlock documentation page`: https://sonata-project.org/bundles/block/master/doc/index.html
 
 Statistic Block
 ~~~~~~~~~~~~~~~

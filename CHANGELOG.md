@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.81.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.81.0...3.81.1) - 2020-11-21
+### Fixed
+- [[#6597](https://github.com/sonata-project/SonataAdminBundle/pull/6597)] `AdminInterface` extends `MutableTemplateRegistryAwareInterface` instead of `TemplateRegistryAwareInterface` ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [3.81.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.80.0...3.81.0) - 2020-11-15
 ### Deprecated
 - [[#6593](https://github.com/sonata-project/SonataAdminBundle/pull/6593)] Not passing 'show', 'hide' or 'fade' as argument 4 to `Sonata\AdminBundle\Block\AdminSearchBlockService()` ([@VincentLanglet](https://github.com/VincentLanglet))
