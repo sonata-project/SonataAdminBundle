@@ -87,7 +87,7 @@ abstract class BaseGroupedMapper extends BaseMapper
         ];
 
         // NEXT_MAJOR: remove this code
-        if ($this->admin instanceof AbstractAdmin && $pool = $this->admin->getConfigurationPool()) {
+        if ($this->admin instanceof AbstractAdmin && $pool = $this->admin->getConfigurationPool('sonata_deprecation_mute')) {
             if ($pool->getContainer('sonata_deprecation_mute')->getParameter('sonata.admin.configuration.translate_group_label')) {
                 $defaultOptions['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($name, $this->getName(), 'group');
             }
