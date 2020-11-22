@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
 use Doctrine\Inflector\InflectorFactory;
+use Sonata\AdminBundle\Admin\AdminTagInterface;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
@@ -56,7 +57,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'icon' => $container->getParameter('sonata.admin.configuration.default_icon'),
         ];
 
-        foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $tags) {
+        foreach ($container->findTaggedServiceIds(AdminTagInterface::ADMIN_TAG) as $id => $tags) {
             foreach ($tags as $attributes) {
                 $definition = $container->getDefinition($id);
                 $parentDefinition = null;
