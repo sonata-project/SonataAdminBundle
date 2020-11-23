@@ -58,11 +58,14 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
         $this->configureSideMenu($admin, $menu, $action, $childAdmin);
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function validate(AdminInterface $admin, ErrorElement $errorElement, $object)
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[3] ?? null)) {
             @trigger_error(sprintf(
-                'The %s method is deprecated since version 3.81 and will be removed in 4.0.',
+                'The %s method is deprecated since version 3.x and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
