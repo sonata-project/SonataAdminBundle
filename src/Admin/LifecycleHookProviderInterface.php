@@ -19,8 +19,6 @@ namespace Sonata\AdminBundle\Admin;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @method void preValidate($object)
- *
  * @phpstan-template T of object
  */
 interface LifecycleHookProviderInterface
@@ -55,12 +53,6 @@ interface LifecycleHookProviderInterface
      * @phpstan-param T $object
      */
     public function delete($object);
-
-    //NEXT_MAJOR: uncomment this method for 4.0
-    //    /**
-    //     * @param object $object
-    //     */
-    //    public function preValidate($object);
 
     /**
      * @param object $object

@@ -724,6 +724,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function validate(ErrorElement $errorElement, $object)
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[2] ?? null)) {
+            @trigger_error(sprintf(
+                'The %s method is deprecated since version 3.81 and will be removed in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
     }
 
     /**
@@ -817,6 +823,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function preValidate($object)
     {
+        if ('sonata_deprecation_mute' !== \func_get_args()[1] ?? null) {
+            @trigger_error(sprintf(
+                'The %s method is deprecated since version 3.81 and will be removed in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
     }
 
     public function preUpdate($object)
@@ -1481,7 +1493,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             $extension->configureFormFields($mapper);
         }
 
-        $this->attachInlineValidator();
+        $this->attachInlineValidator('sonata_deprecation_mute');
     }
 
     public function attachAdminClass(FieldDescriptionInterface $fieldDescription)
@@ -3544,7 +3556,7 @@ EOT;
 
         $formBuilder = $this->getFormBuilder();
         $formBuilder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            $this->preValidate($event->getData());
+            $this->preValidate($event->getData(), 'sonata_deprecation_mute');
         }, 100);
 
         $this->form = $formBuilder->getForm();
@@ -3571,9 +3583,20 @@ EOT;
 
     /**
      * Attach the inline validator to the model metadata, this must be done once per admin.
+     *
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-admin/admin-bundle 3.81
      */
     protected function attachInlineValidator()
     {
+        if ('sonata_deprecation_mute' !== \func_get_args()[0] ?? null) {
+            @trigger_error(sprintf(
+                'The %s method is deprecated since version 3.81 and will be removed in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         $admin = $this;
 
         // add the custom inline validation option
@@ -3600,10 +3623,11 @@ EOT;
                     return;
                 }
 
-                $admin->validate($errorElement, $object);
+                $admin->validate($errorElement, $object, 'sonata_deprecation_mute');
 
                 foreach ($admin->getExtensions() as $extension) {
-                    $extension->validate($admin, $errorElement, $object);
+                    /* @phpstan-ignore-next-line */
+                    $extension->validate($admin, $errorElement, $object, 'sonata_deprecation_mute');
                 }
             },
             'serializingWarning' => true,

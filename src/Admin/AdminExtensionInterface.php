@@ -100,9 +100,13 @@ interface AdminExtensionInterface
     );
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
      * @param object $object
      *
      * @return void
+     *
+     * @deprecated since sonata-admin/admin-bundle 3.81
      *
      * @phpstan-param AdminInterface<object> $admin
      */
