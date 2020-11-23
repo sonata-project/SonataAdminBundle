@@ -60,10 +60,10 @@ interface PagerInterface
     public function setPage($page);
 
 //    NEXT_MAJOR: uncomment this method in 4.0
-//    public function getNextPage(): bool;
+//    public function getNextPage(): int;
 
 //    NEXT_MAJOR: uncomment this method in 4.0
-//    public function getPreviousPage(): bool;
+//    public function getPreviousPage(): int;
 
 //    NEXT_MAJOR: uncomment this method in 4.0
 //    public function getFirstPage(): int;
