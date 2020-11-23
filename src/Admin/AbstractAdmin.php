@@ -713,7 +713,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         @trigger_error(sprintf(
-            'Using "%s()" without setting a "%s" instance in the admin is deprecated since sonata-admin/admin-bundle 3.79'
+            'Using "%s()" without setting a "%s" instance in the admin is deprecated since sonata-project/admin-bundle 3.79'
             .' and won\'t be possible in 4.0.',
             __METHOD__,
             DataSourceInterface::class
@@ -1013,7 +1013,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (\is_string($this->parentAssociationMapping)) {
             @trigger_error(sprintf(
-                'Calling "%s" when $this->parentAssociationMapping is string is deprecated since sonata-admin/admin-bundle 3.75 and will be removed in 4.0.',
+                'Calling "%s" when $this->parentAssociationMapping is string is deprecated since sonata-project/admin-bundle 3.75 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -3586,7 +3586,7 @@ EOT;
      *
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-admin/admin-bundle 3.81
+     * @deprecated since sonata-project/admin-bundle 3.81
      */
     protected function attachInlineValidator()
     {

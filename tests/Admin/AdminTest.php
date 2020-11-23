@@ -2632,7 +2632,7 @@ class AdminTest extends TestCase
                 return $label;
             });
 
-        $this->expectDeprecation('Using "Sonata\AdminBundle\Admin\AbstractAdmin::getDataSourceIterator()" without setting a "Sonata\AdminBundle\Exporter\DataSourceInterface" instance in the admin is deprecated since sonata-admin/admin-bundle 3.79 and won\'t be possible in 4.0.');
+        $this->expectDeprecation('Using "Sonata\AdminBundle\Admin\AbstractAdmin::getDataSourceIterator()" without setting a "Sonata\AdminBundle\Exporter\DataSourceInterface" instance in the admin is deprecated since sonata-project/admin-bundle 3.79 and won\'t be possible in 4.0.');
         $admin->getDataSourceIterator();
     }
 
