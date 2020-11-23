@@ -546,7 +546,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @return void
      *
-     * @deprecated since sonata-project/admin-bundle 3.81
+     * @deprecated since sonata-project/admin-bundle 3.x.
      *
      * @phpstan-param T $object
      */

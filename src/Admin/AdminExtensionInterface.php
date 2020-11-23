@@ -106,7 +106,7 @@ interface AdminExtensionInterface
      *
      * @return void
      *
-     * @deprecated since sonata-project/admin-bundle 3.81
+     * @deprecated since sonata-project/admin-bundle 3.x.
      *
      * @phpstan-param AdminInterface<object> $admin
      */
