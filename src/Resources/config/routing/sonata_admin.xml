@@ -11,6 +11,6 @@
         <requirement key="_format">html|json</requirement>
     </route>
     <route id="sonata_admin_set_object_field_value" path="/core/set-object-field-value" controller="sonata.admin.action.set_object_field_value"/>
-    <route id="sonata_admin_search" path="/search" controller="Sonata\AdminBundle\Action\SearchAction"/>
+    <route id="sonata_admin_search" path="/search" controller="sonata.admin.action.search"/>
     <route id="sonata_admin_retrieve_autocomplete_items" path="/core/get-autocomplete-items" controller="sonata.admin.action.retrieve_autocomplete_items"/>
 </routes>

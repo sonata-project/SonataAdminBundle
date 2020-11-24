@@ -51,6 +51,10 @@ interface AdminExtensionInterface
     ): void;
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x.
+     *
      * @phpstan-param AdminInterface<object> $admin
      */
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query): void;
