@@ -20,7 +20,7 @@ file that was distributed with this source code.
         {% set count = 0 %}
         <div class="row" data-masonry='{ "itemSelector": ".search-box-item" }'>
         {% for group in groups %}
-            {% set display = group.roles is empty or is_granted(sonata_admin.adminPool.getOption('role_super_admin')) or group.roles|filter(role => is_granted(role))|length > 0 %}
+            {% set display = group.roles is empty or is_granted(sonata_config.getOption('role_super_admin')) or group.roles|filter(role => is_granted(role))|length > 0 %}
 
             {% if display %}
                 {% for admin in group.items %}

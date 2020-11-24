@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
+use Sonata\AdminBundle\SonataConfiguration;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -60,16 +61,28 @@ class Pool
     protected $assets = [];
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0.
+     *
      * @var string
      */
     protected $title;
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0.
+     *
      * @var string
      */
     protected $titleLogo;
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0.
+     *
      * @var array
      */
     protected $options = [];
@@ -92,6 +105,7 @@ class Pool
 
     /**
      * NEXT_MAJOR: Remove $propertyAccessor argument.
+     * NEXT_MAJOR: Remove $title, $logoTitle and $options.
      *
      * @param string $title
      * @param string $logoTitle
@@ -532,22 +546,48 @@ class Pool
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0.
+     *
      * @return string
      */
     public function getTitleLogo()
     {
+        @trigger_error(sprintf(
+            'The "%s" method is deprecated since version 3.x and will be removed in 4.0.'
+            .' Use "%s::getTitle()" instead.',
+            SonataConfiguration::class,
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         return $this->titleLogo;
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0.
+     *
      * @return string
      */
     public function getTitle()
     {
+        @trigger_error(sprintf(
+            'The "%s" method is deprecated since version 3.x and will be removed in 4.0.'
+            .' Use "%s::getLogo()" instead.',
+            SonataConfiguration::class,
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         return $this->title;
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0.
+     *
      * @param string $name
      * @param mixed  $default
      *
@@ -555,6 +595,13 @@ class Pool
      */
     public function getOption($name, $default = null)
     {
+        @trigger_error(sprintf(
+            'The "%s" method is deprecated since version 3.x and will be removed in 4.0.'
+            .' Use "%s::getOption()" instead.',
+            SonataConfiguration::class,
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         if (isset($this->options[$name])) {
             return $this->options[$name];
         }

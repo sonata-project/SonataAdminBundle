@@ -30,7 +30,7 @@ This template can be customized to match your needs. You should only extends the
 
                             <div class="mosaic-inner-box-default">
                                 {% block sonata_mosaic_background %}
-                                    {% set metaImage = meta.isImageAvailable is defined and not meta.isImageAvailable ? sonata_admin.mosaicBackground : meta.image %}
+                                    {% set metaImage = meta.isImageAvailable is defined and not meta.isImageAvailable ? sonata_config.getOption('mosaic_background') : meta.image %}
                                     {% if not (metaImage starts with 'data:') %}
                                         {% set metaImage = asset(metaImage) %}
                                     {% endif %}

@@ -36,6 +36,7 @@ class PoolTest extends TestCase
     protected function setUp(): void
     {
         $this->container = new Container();
+        // NEXT_MAJOR: Only pass the container to Pool: "new Pool($this->container)".
         $this->pool = new Pool($this->container, 'Sonata Admin', '/path/to/pic.png', ['foo' => 'bar']);
     }
 
@@ -535,16 +536,31 @@ class PoolTest extends TestCase
         $this->assertSame($templates, $this->pool->getTemplates());
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testGetTitleLogo(): void
     {
         $this->assertSame('/path/to/pic.png', $this->pool->getTitleLogo());
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testGetTitle(): void
     {
         $this->assertSame('Sonata Admin', $this->pool->getTitle());
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testGetOption(): void
     {
         $this->assertSame('bar', $this->pool->getOption('foo'));
@@ -552,6 +568,11 @@ class PoolTest extends TestCase
         $this->assertNull($this->pool->getOption('non_existent_option'));
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testOptionDefault(): void
     {
         $this->assertSame([], $this->pool->getOption('nonexistantarray', []));

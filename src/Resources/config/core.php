@@ -27,6 +27,7 @@ use Sonata\AdminBundle\Model\AuditManager;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Route\AdminPoolLoader;
 use Sonata\AdminBundle\Search\SearchHandler;
+use Sonata\AdminBundle\SonataConfiguration;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy;
@@ -60,6 +61,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         ->alias(Pool::class, 'sonata.admin.pool')
+
+        ->set('sonata.admin.configuration', SonataConfiguration::class)
+            ->args([
+                '',
+                '',
+                [],
+            ])
+
+        ->alias(SonataConfiguration::class, 'sonata.admin.configuration')
 
         ->set('sonata.admin.route_loader', AdminPoolLoader::class)
             ->public()
@@ -213,6 +223,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->public()
             ->tag('sonata.admin.extension', ['global' => true])
 
+        // NEXT_MAJOR: Remove this service definition and alias.
         ->set('sonata.admin.twig.global', GlobalVariables::class)
             ->public()
             ->args([
