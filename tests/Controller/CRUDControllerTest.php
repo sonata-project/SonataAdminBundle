@@ -1745,7 +1745,13 @@ class CRUDControllerTest extends TestCase
             ->method('trans')
             ->willReturn('flash message');
 
-        $this->expectDeprecation('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json` or `Accept: */*`');
+        $this->expectDeprecation(sprintf(
+            'None of the passed values ("%s") in the "Accept" header when requesting %s %s is supported since sonata-project/admin-bundle 3.x.'
+            .' It will result in a response with the status code 406 (Not Acceptable) in 4.0. You must add "application/json".',
+            implode('", "', $this->request->getAcceptableContentTypes()),
+            $this->request->getMethod(),
+            $this->request->getUri()
+        ));
         $this->assertInstanceOf(Response::class, $response = $this->controller->editAction(null));
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
@@ -2447,7 +2453,13 @@ class CRUDControllerTest extends TestCase
             ->method('trans')
             ->willReturn('flash message');
 
-        $this->expectDeprecation('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json` or `Accept: */*`');
+        $this->expectDeprecation(sprintf(
+            'None of the passed values ("%s") in the "Accept" header when requesting %s %s is supported since sonata-project/admin-bundle 3.x.'
+            .' It will result in a response with the status code 406 (Not Acceptable) in 4.0. You must add "application/json".',
+            implode('", "', $this->request->getAcceptableContentTypes()),
+            $this->request->getMethod(),
+            $this->request->getUri()
+        ));
         $this->assertInstanceOf(Response::class, $response = $this->controller->createAction());
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);

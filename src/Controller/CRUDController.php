@@ -1558,7 +1558,13 @@ class CRUDController implements ContainerAwareInterface
     protected function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): ?JsonResponse
     {
         if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
-            @trigger_error(sprintf('"%s" is not supported since sonata-project/admin-bundle 3.x and the status code 406 will be set in the returned response in 4.0. Use `application/json`.', implode('", "', $request->getAcceptableContentTypes())));
+            @trigger_error(sprintf(
+                'None of the passed values ("%s") in the "Accept" header when requesting %s %s is supported since sonata-project/admin-bundle 3.x.'
+                .' It will result in a response with the status code 406 (Not Acceptable) in 4.0. You must add "application/json".',
+                implode('", "', $request->getAcceptableContentTypes()),
+                $request->getMethod(),
+                $request->getUri()
+            ), E_USER_DEPRECATED);
 
             return null;
         }
@@ -1574,13 +1580,16 @@ class CRUDController implements ContainerAwareInterface
         ], Response::HTTP_BAD_REQUEST);
     }
 
-    /**
-     * @param object $object
-     */
-    protected function handleXmlHttpRequestSuccessResponse(Request $request, $object): JsonResponse
+    protected function handleXmlHttpRequestSuccessResponse(Request $request, object $object): JsonResponse
     {
         if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
-            @trigger_error(sprintf('"%s" is not supported since sonata-project/admin-bundle 3.x and the status code 406 will be set in the returned response in 4.0. Use `application/json`.', implode('", "', $request->getAcceptableContentTypes())));
+            @trigger_error(sprintf(
+                'None of the passed values ("%s") in the "Accept" header when requesting %s %s is supported since sonata-project/admin-bundle 3.x.'
+                .' It will result in a response with the status code 406 (Not Acceptable) in 4.0. You must add "application/json".',
+                implode('", "', $request->getAcceptableContentTypes()),
+                $request->getMethod(),
+                $request->getUri()
+            ), E_USER_DEPRECATED);
         }
 
         return $this->renderJson([
