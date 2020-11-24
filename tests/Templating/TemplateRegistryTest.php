@@ -46,19 +46,13 @@ class TemplateRegistryTest extends TestCase
         $this->assertSame($templates, $this->templateRegistry->getTemplates());
     }
 
-    /**
-     * @group legacy
-     */
-    public function testGetTemplate(): void
+    public function testThrowExceptionIfTheTemplateDoesNotExist(): void
     {
-        $this->assertFalse($this->templateRegistry->hasTemplate('nonexist_template'));
-        // NEXT_MAJOR: remove this line
-        $this->expectDeprecation('Passing a nonexistent template name as argument 1 to Sonata\AdminBundle\Templating\AbstractTemplateRegistry::getTemplate() is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0.');
-        $this->assertNull($this->templateRegistry->getTemplate('nonexist_template'));
-        // NEXT_MAJOR: Remove previous assertion, the "@group" annotations and uncomment the following line
-        // $this->assertFalse($this->templateRegistry->hasTemplate('nonexist_template'));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Template named "foo" doesn\'t exist.');
 
-        $this->assertTrue($this->templateRegistry->hasTemplate('edit'));
-        $this->assertSame('@FooAdmin/CRUD/edit.html.twig', $this->templateRegistry->getTemplate('edit'));
+        $this->assertFalse($this->templateRegistry->hasTemplate('foo'));
+
+        $this->templateRegistry->getTemplate('foo');
     }
 }

@@ -14,94 +14,42 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Twig;
 
 use Sonata\AdminBundle\Admin\Pool;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class GlobalVariables
+final class GlobalVariables
 {
-    /**
-     * @var ContainerInterface
-     *
-     * @deprecated since sonata-project/admin-bundle 3.5, will be removed in 4.0.
-     * NEXT_MAJOR : remove this property
-     */
-    protected $container;
-
     /**
      * @var Pool
      */
-    protected $adminPool;
+    private $adminPool;
 
     /**
      * @var string|null
      */
     private $mosaicBackground;
 
-    /**
-     * @param ContainerInterface|Pool $adminPool
-     */
-    public function __construct($adminPool, ?string $mosaicBackground = null)
+    public function __construct(Pool $adminPool, ?string $mosaicBackground = null)
     {
+        $this->adminPool = $adminPool;
         $this->mosaicBackground = $mosaicBackground;
-
-        // NEXT_MAJOR : remove this block and set adminPool from parameter.
-        if ($adminPool instanceof ContainerInterface) {
-            @trigger_error(sprintf(
-                'Using an instance of %s is deprecated since version 3.5 and will be removed in 4.0. Use %s instead.',
-                ContainerInterface::class,
-                Pool::class
-            ), E_USER_DEPRECATED);
-
-            $adminPool = $adminPool->get('sonata.admin.pool');
-        }
-
-        if ($adminPool instanceof Pool) {
-            $this->adminPool = $adminPool;
-
-            return;
-        }
-
-        throw new \InvalidArgumentException(sprintf('$adminPool should be an instance of %s', Pool::class));
     }
 
-    /**
-     * @return Pool
-     */
-    public function getAdminPool()
+    public function getAdminPool(): Pool
     {
         return $this->adminPool;
     }
 
-    /**
-     * @param string $code
-     * @param string $action
-     * @param array  $parameters
-     * @param int    $referenceType
-     *
-     * @return string
-     */
-    public function url($code, $action, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function url(string $code, string $action, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
     {
         [$action, $code] = $this->getCodeAction($code, $action);
 
         return $this->getAdminPool()->getAdminByAdminCode($code)->generateUrl($action, $parameters, $referenceType);
     }
 
-    /**
-     * @param string $code
-     * @param string $action
-     * @param object $object
-     * @param array  $parameters
-     * @param int    $referenceType
-     *
-     * @return string
-     */
-    public function objectUrl($code, $action, $object, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function objectUrl(string $code, string $action, object $object, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
     {
         [$action, $code] = $this->getCodeAction($code, $action);
 

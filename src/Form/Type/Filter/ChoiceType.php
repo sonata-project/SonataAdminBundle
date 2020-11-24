@@ -18,55 +18,13 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ChoiceType extends AbstractType
+final class ChoiceType extends AbstractType
 {
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use ContainsOperatorType::TYPE_CONTAINS instead
-     */
-    public const TYPE_CONTAINS = 1;
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use ContainsOperatorType::TYPE_NOT_CONTAINS instead
-     */
-    public const TYPE_NOT_CONTAINS = 2;
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use ContainsOperatorType::TYPE_EQUAL instead
-     */
-    public const TYPE_EQUAL = 3;
-
-    /**
-     * NEXT_MAJOR: remove this property.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.5, to be removed with 4.0
-     *
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_filter_choice';
     }
@@ -74,7 +32,7 @@ class ChoiceType extends AbstractType
     /**
      * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('type', $options['operator_type'], array_merge(['required' => false], $options['operator_options']))
@@ -82,10 +40,7 @@ class ChoiceType extends AbstractType
         ;
     }
 
-    /**
-     * @return void
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'field_type' => FormChoiceType::class,

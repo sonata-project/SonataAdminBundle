@@ -76,6 +76,7 @@ final class RetrieveFormFieldElementActionTest extends TestCase
         $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => 42,
+            'elementId' => 'element_42',
             'field' => 'enabled',
             'value' => 1,
             'context' => 'list',
@@ -91,16 +92,15 @@ final class RetrieveFormFieldElementActionTest extends TestCase
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getClass')->willReturn(\get_class($object));
         $this->admin->expects($this->once())->method('setSubject')->with($object);
-        $this->admin->method('getFormTheme')->willReturn($formView);
+        $this->admin->method('getFormTheme')->willReturn([]);
         $this->admin->method('getFormBuilder')->willReturn($formBuilder);
-        $this->helper->method('getChildFormView')->with($formView, null)
-            ->willReturn($formView);
+        $this->helper->method('getChildFormView')->with($formView, 'element_42')->willReturn($formView);
         $modelManager->method('find')->with(\get_class($object), 42)->willReturn($object);
         $form->expects($this->once())->method('setData')->with($object);
         $form->expects($this->once())->method('handleRequest')->with($request);
         $form->method('createView')->willReturn($formView);
         $formBuilder->method('getForm')->willReturn($form);
-        $renderer->expects($this->once())->method('setTheme')->with($formView, $formView);
+        $renderer->expects($this->once())->method('setTheme')->with($formView, []);
         $renderer->method('searchAndRenderBlock')->with($formView, 'widget')->willReturn('block');
 
         $response = ($this->action)($request);

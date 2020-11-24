@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Twig\GlobalVariables;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -43,7 +42,7 @@ class GlobalVariablesTest extends TestCase
         $this->admin->expects($this->once())
             ->method('generateUrl')
             ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', ['foo'], UrlGeneratorInterface::ABSOLUTE_PATH)
-            ->willReturn(true);
+            ->willReturn('/list?foo');
 
         $this->pool->expects($this->once())
             ->method('getAdminByAdminCode')
@@ -57,10 +56,11 @@ class GlobalVariablesTest extends TestCase
 
     public function testObjectUrl(): void
     {
+        $object = new \stdClass();
         $this->admin->expects($this->once())
             ->method('generateObjectUrl')
-            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', 'foo', ['bar'], UrlGeneratorInterface::ABSOLUTE_PATH)
-            ->willReturn(true);
+            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', $object, ['bar'], UrlGeneratorInterface::ABSOLUTE_PATH)
+            ->willReturn('/list?bar');
 
         $this->pool->expects($this->once())
             ->method('getAdminByAdminCode')
@@ -69,46 +69,7 @@ class GlobalVariablesTest extends TestCase
 
         $globalVariables = new GlobalVariables($this->pool);
 
-        $globalVariables->objectUrl($this->code, $this->action, 'foo', ['bar']);
-    }
-
-    /**
-     * @group legacy
-     * NEXT_MAJOR: remove this method
-     */
-    public function testWithContainer(): void
-    {
-        $this->admin->expects($this->once())
-            ->method('generateUrl')
-            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', ['foo'], UrlGeneratorInterface::ABSOLUTE_PATH)
-            ->willReturn(true);
-
-        $this->pool->expects($this->once())
-            ->method('getAdminByAdminCode')
-            ->with('sonata.page.admin.page')
-            ->willReturn($this->admin);
-
-        $container = new Container();
-        $container->set('sonata.admin.pool', $this->pool);
-
-        $globalVariables = new GlobalVariables($container);
-
-        $this->assertSame($this->pool, $globalVariables->getAdminPool());
-
-        $globalVariables->url($this->code, $this->action, ['foo']);
-    }
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     */
-    public function testInvalidArgumentException(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            '$adminPool should be an instance of Sonata\AdminBundle\Admin\Pool'
-        );
-
-        new GlobalVariables('foo');
+        $globalVariables->objectUrl($this->code, $this->action, $object, ['bar']);
     }
 
     public function testGetMosaicBackground(): void

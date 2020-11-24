@@ -18,16 +18,12 @@ namespace Sonata\AdminBundle\Templating;
  */
 final class MutableTemplateRegistry extends AbstractTemplateRegistry implements MutableTemplateRegistryInterface
 {
-    // NEXT_MAJOR: change method declaration for new one
-    // public function setTemplates(array $templates): void
-    public function setTemplates(array $templates)
+    public function setTemplates(array $templates): void
     {
         $this->templates = $templates;
     }
 
-    // NEXT_MAJOR: change method declaration for new one
-    // public function setTemplate(string $name, string $template): void
-    public function setTemplate($name, $template)
+    public function setTemplate(string $name, string $template): void
     {
         $this->templates[$name] = $template;
     }

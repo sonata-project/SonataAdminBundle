@@ -19,13 +19,11 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ExtensionCompilerPass implements CompilerPassInterface
+final class ExtensionCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $universalExtensions = [];
         $targets = [];
@@ -90,12 +88,9 @@ class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param string                                                                           $id
      * @param array<string, array<string, array<string, array<string, array<string, mixed>>>>> $extensionMap
-     *
-     * @return array
      */
-    protected function getExtensionsForAdmin($id, Definition $admin, ContainerBuilder $container, array $extensionMap)
+    private function getExtensionsForAdmin(string $id, Definition $admin, ContainerBuilder $container, array $extensionMap): array
     {
         $extensions = [];
 
@@ -114,7 +109,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
 
                 $class = $this->getManagedClass($admin, $container);
 
-                if (null === $class || !class_exists($class)) {
+                if (!class_exists($class)) {
                     continue;
                 }
 
@@ -134,43 +129,24 @@ class ExtensionCompilerPass implements CompilerPassInterface
     /**
      * Resolves the class argument of the admin to an actual class (in case of %parameter%).
      *
-     * @return string|null
-     *
-     * @phpstan-return class-string|null
+     * @phpstan-return class-string
      */
-    protected function getManagedClass(Definition $admin, ContainerBuilder $container)
+    private function getManagedClass(Definition $admin, ContainerBuilder $container): string
     {
         $argument = $admin->getArgument(1);
         $class = $container->getParameterBag()->resolveValue($argument);
 
         if (null === $class) {
-            // NEXT_MAJOR: Throw exception
-//            throw new \DomainException(sprintf('The admin "%s" does not have a valid manager.', $admin->getClass()));
-
-            @trigger_error(
-                sprintf('The admin "%s" does not have a valid manager.', $admin->getClass()),
-                E_USER_DEPRECATED
-            );
+            throw new \DomainException(sprintf('The admin "%s" does not have a valid manager.', $admin->getClass()));
         }
 
         if (!\is_string($class)) {
-            // NEXT_MAJOR: Throw exception
-//            throw new \TypeError(sprintf(
-//                'Argument "%s" for admin class "%s" must be of type string, %s given.',
-//                $argument,
-//                $admin->getClass(),
-//                \is_object($class) ? \get_class($class) : \gettype($class)
-//            ));
-
-            @trigger_error(
-                sprintf(
-                    'Argument "%s" for admin class "%s" must be of type string, %s given.',
-                    $argument,
-                    $admin->getClass(),
-                    \is_object($class) ? \get_class($class) : \gettype($class)
-                ),
-                E_USER_DEPRECATED
-            );
+            throw new \TypeError(sprintf(
+                'Argument "%s" for admin class "%s" must be of type string, %s given.',
+                $argument,
+                $admin->getClass(),
+                \is_object($class) ? \get_class($class) : \gettype($class)
+            ));
         }
 
         return $class;
@@ -190,7 +166,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
      *     'uses'       => ['<trait>'     => ['<extension_id>' => ['priority' => <int>]]],
      * ]
      */
-    protected function flattenExtensionConfiguration(array $config)
+    private function flattenExtensionConfiguration(array $config): array
     {
         $extensionMap = [
             'excludes' => [],
@@ -218,11 +194,9 @@ class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @return bool
-     *
      * @phpstan-param class-string $traitName
      */
-    protected function hasTrait(\ReflectionClass $class, $traitName)
+    private function hasTrait(\ReflectionClass $class, string $traitName): bool
     {
         if (\in_array($traitName, $class->getTraitNames(), true)) {
             return true;

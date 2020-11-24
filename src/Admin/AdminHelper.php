@@ -14,17 +14,15 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Admin;
 
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Inflector\Inflector;
-use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ODM\MongoDB\PersistentCollection;
 use Doctrine\ORM\PersistentCollection as DoctrinePersistentCollection;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Manipulator\ObjectManipulator;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
 use Sonata\AdminBundle\Util\FormViewIterator;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * @final since sonata-project/admin-bundle 3.52
@@ -39,23 +37,16 @@ class AdminHelper
     private const FORM_FIELD_DELETE = '_delete';
 
     /**
-     * @var Pool
+     * @var PropertyAccessorInterface
      */
-    protected $pool;
+    protected $propertyAccessor;
 
-    public function __construct(Pool $pool)
+    public function __construct(PropertyAccessorInterface $propertyAccessor)
     {
-        $this->pool = $pool;
+        $this->propertyAccessor = $propertyAccessor;
     }
 
-    /**
-     * @param string $elementId
-     *
-     * @throws \RuntimeException
-     *
-     * @return FormBuilderInterface|null
-     */
-    public function getChildFormBuilder(FormBuilderInterface $formBuilder, $elementId)
+    public function getChildFormBuilder(FormBuilderInterface $formBuilder, string $elementId): ?FormBuilderInterface
     {
         foreach (new FormBuilderIterator($formBuilder) as $name => $formBuilder) {
             if ($name === $elementId) {
@@ -66,12 +57,7 @@ class AdminHelper
         return null;
     }
 
-    /**
-     * @param string $elementId
-     *
-     * @return FormView|null
-     */
-    public function getChildFormView(FormView $formView, $elementId)
+    public function getChildFormView(FormView $formView, string $elementId): ?FormView
     {
         foreach (new \RecursiveIteratorIterator(new FormViewIterator($formView), \RecursiveIteratorIterator::SELF_FIRST) as $name => $formView) {
             if ($name === $elementId) {
@@ -83,34 +69,15 @@ class AdminHelper
     }
 
     /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated
-     *
-     * @param string $code
-     *
-     * @return AdminInterface
-     */
-    public function getAdmin($code)
-    {
-        return $this->pool->getInstance($code);
-    }
-
-    /**
      * Note:
      *   This code is ugly, but there is no better way of doing it.
-     *
-     * @param object $subject
-     * @param string $elementId
      *
      * @throws \RuntimeException
      * @throws \Exception
      *
-     * @return array
-     *
      * @phpstan-return array{\Sonata\AdminBundle\Admin\FieldDescriptionInterface|null, \Symfony\Component\Form\FormInterface}
      */
-    public function appendFormFieldElement(AdminInterface $admin, $subject, $elementId)
+    public function appendFormFieldElement(AdminInterface $admin, object $subject, string $elementId): array
     {
         // child rows marked as toDelete
         $toDelete = [];
@@ -144,23 +111,21 @@ class AdminHelper
         //Child form not found (probably nested one)
         //if childFormBuilder was not found resulted in fatal error getName() method call on non object
         if (!$childFormBuilder) {
-            $propertyAccessor = $this->pool->getPropertyAccessor();
-
             $path = $this->getElementAccessPath($elementId, $subject);
 
-            $collection = $propertyAccessor->getValue($subject, $path);
+            $collection = $this->propertyAccessor->getValue($subject, $path);
 
             if ($collection instanceof DoctrinePersistentCollection || $collection instanceof PersistentCollection) {
                 //since doctrine 2.4
                 $modelClassName = $collection->getTypeClass()->getName();
             } elseif ($collection instanceof Collection) {
-                $modelClassName = $this->getEntityClassName($admin, explode('.', preg_replace('#\[\d*?\]#', '', $path)));
+                $modelClassName = $this->getModelClassName($admin, explode('.', preg_replace('#\[\d*?\]#', '', $path)));
             } else {
                 throw new \Exception('unknown collection class');
             }
 
             $collection->add(new $modelClassName());
-            $propertyAccessor->setValue($subject, $path, $collection);
+            $this->propertyAccessor->setValue($subject, $path, $collection);
 
             $fieldDescription = null;
         } else {
@@ -218,71 +183,32 @@ class AdminHelper
     }
 
     /**
-     * NEXT_MAJOR: remove this method.
+     * Recursively find the class name of the admin responsible for the element at the end of an association chain.
      *
-     * @deprecated since sonata-project/admin-bundle 3.72, use to be removed with 4.0.
-     *
-     * Add a new instance to the related FieldDescriptionInterface value.
-     *
-     * @param object $object
-     *
-     * @throws \RuntimeException
-     *
-     * @return object
+     * @param string[] $elements
      */
-    public function addNewInstance($object, FieldDescriptionInterface $fieldDescription)
+    protected function getModelClassName(AdminInterface $admin, array $elements): string
     {
-        @trigger_error(sprintf(
-            'Method %s() is deprecated since sonata-project/admin-bundle 3.72. It will be removed in version 4.0.'
-            .' Use %s::addInstance() instead.',
-            __METHOD__,
-            ObjectManipulator::class
-        ), E_USER_DEPRECATED);
+        $element = array_shift($elements);
+        $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();
+        if (0 === \count($elements)) {
+            return $associationAdmin->getClass();
+        }
 
-        $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
-
-        return ObjectManipulator::addInstance($object, $instance, $fieldDescription);
-    }
-
-    /**
-     * Camelize a string.
-     *
-     * NEXT_MAJOR: remove this method.
-     *
-     * @static
-     *
-     * @param string $property
-     *
-     * @return string
-     *
-     * @deprecated since sonata-project/admin-bundle 3.1. Use \Doctrine\Inflector\Inflector::classify() instead
-     */
-    public function camelize($property)
-    {
-        @trigger_error(sprintf(
-            'The %s method is deprecated since 3.1 and will be removed in 4.0. Use %s::classify() instead.',
-            __METHOD__,
-            Inflector::class
-        ), E_USER_DEPRECATED);
-
-        return InflectorFactory::create()->build()->classify($property);
+        return $this->getModelClassName($associationAdmin, $elements);
     }
 
     /**
      * Get access path to element which works with PropertyAccessor.
      *
-     * @param string $elementId expects string in format used in form id field.
-     *                          (uniqueIdentifier_model_sub_model or uniqueIdentifier_model_1_sub_model etc.)
-     * @param mixed  $model
+     * @param string       $elementId expects string in format used in form id field.
+     *                                (uniqueIdentifier_model_sub_model or uniqueIdentifier_model_1_sub_model etc.)
+     * @param object|array $model
      *
      * @throws \Exception
-     *
-     * @return string
      */
-    public function getElementAccessPath($elementId, $model)
+    private function getElementAccessPath(string $elementId, $model): string
     {
-        $propertyAccessor = $this->pool->getPropertyAccessor();
-
         $idWithoutIdentifier = preg_replace('/^[^_]*_/', '', $elementId);
         $initialPath = preg_replace('#(_(\d+)_)#', '[$2]_', $idWithoutIdentifier);
 
@@ -294,7 +220,7 @@ class AdminHelper
             $currentPath .= empty($currentPath) ? $part : '_'.$part;
             $separator = empty($totalPath) ? '' : '.';
 
-            if ($propertyAccessor->isReadable($model, $totalPath.$separator.$currentPath)) {
+            if ($this->propertyAccessor->isReadable($model, $totalPath.$separator.$currentPath)) {
                 $totalPath .= $separator.$currentPath;
                 $currentPath = '';
             }
@@ -309,42 +235,5 @@ class AdminHelper
         }
 
         return $totalPath;
-    }
-
-    /**
-     * Recursively find the class name of the admin responsible for the element at the end of an association chain.
-     */
-    protected function getModelClassName(AdminInterface $admin, array $elements): string
-    {
-        return $this->getEntityClassName($admin, $elements);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method and move its body to `getModelClassName()`.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.69. Use `getModelClassName()` instead.
-     *
-     * @param array $elements
-     *
-     * @return string
-     */
-    protected function getEntityClassName(AdminInterface $admin, $elements)
-    {
-        if (self::class !== static::class) {
-            @trigger_error(sprintf(
-                'Method %s() is deprecated since sonata-project/admin-bundle 3.69 and will be removed in version 4.0.'
-                .' Use %s::getModelClassName() instead.',
-                __METHOD__,
-                __CLASS__
-            ), E_USER_DEPRECATED);
-        }
-
-        $element = array_shift($elements);
-        $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();
-        if (0 === \count($elements)) {
-            return $associationAdmin->getClass();
-        }
-
-        return $this->getEntityClassName($associationAdmin, $elements);
     }
 }

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
-use Sonata\AdminBundle\Util\BCDeprecationParameters;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -24,16 +23,11 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  * This information is solely responsible for how the different configuration
  * sections are normalized, and merged.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Michael Williams <mtotheikle@gmail.com>
  */
-class Configuration implements ConfigurationInterface
+final class Configuration implements ConfigurationInterface
 {
-    /**
-     * @return TreeBuilder
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('sonata_admin');
         $rootNode = $treeBuilder->getRootNode();
@@ -183,33 +177,6 @@ CASESENSITIVE;
                             ->defaultValue('bundles/sonataadmin/default_mosaic_image.png')
                             ->info('Background used in mosaic view')
                         ->end()
-                        // NEXT_MAJOR : remove this option
-                        ->booleanNode('legacy_twig_text_extension')
-                            ->info('Use text filters from "twig/extensions" instead of those provided by "twig/string-extra".')
-                            ->setDeprecated(...BCDeprecationParameters::forConfig(
-                                'The child node "%node%" at path "%path%" is deprecated since sonata-project/admin-bundle 3.70 and will be removed in 4.0.',
-                                '3.70'
-                            ))
-                            ->defaultValue(static function (): bool {
-                                @trigger_error(
-                                    'Using `true` as value for "sonata_admin.options.legacy_twig_text_extension" option is deprecated since sonata-project/admin-bundle 3.64. '
-                                    .'You should set it to `false`, which will be the default value since version 4.0.'
-                                );
-
-                                return true;
-                            })
-                            ->validate()
-                                ->ifTrue()
-                                ->then(static function (bool $v): bool {
-                                    @trigger_error(
-                                        'Using `true` as value for "sonata_admin.options.legacy_twig_text_extension" option is deprecated since sonata-project/admin-bundle 3.64 and will be remove in 4.0'
-                                        .'You should set it to `false` before upgrade process.'
-                                    );
-
-                                    return $v;
-                                })
-                            ->end()
-                        ->end()
                     ->end()
                 ->end()
                 ->arrayNode('dashboard')
@@ -259,26 +226,12 @@ CASESENSITIVE;
                                                         continue;
                                                     }
 
-                                                    // NEXT_MAJOR: Use !isset() instead and remove the elseif part.
-                                                    if (!\array_key_exists('route', $item)) {
+                                                    if (!isset($item['route'])) {
                                                         throw new \InvalidArgumentException('Expected parameter "route" for array items');
-                                                    } elseif (null === $items[$key]['route']) {
-                                                        @trigger_error(
-                                                            'Passing a null route is deprecated since sonata-project/admin-bundle 3.77.',
-                                                            E_USER_DEPRECATED
-                                                        );
                                                     }
 
-                                                    // NEXT_MAJOR: Use !isset() instead and remove the elseif part.
-                                                    if (!\array_key_exists('label', $item)) {
+                                                    if (!isset($item['label'])) {
                                                         throw new \InvalidArgumentException('Expected parameter "label" for array items');
-                                                    } elseif (null === $items[$key]['label']) {
-                                                        @trigger_error(
-                                                            'Passing a null label is deprecated since sonata-project/admin-bundle 3.77.',
-                                                            E_USER_DEPRECATED
-                                                        );
-
-                                                        $items[$key]['label'] = '';
                                                     }
                                                 }
 
@@ -556,13 +509,6 @@ CASESENSITIVE;
                     ->defaultTrue()
                     ->info('Show mosaic button on all admin screens')
                 ->end()
-
-                // NEXT_MAJOR : remove this option
-                ->booleanNode('translate_group_label')
-                    ->defaultFalse()
-                    ->info('Translate group label')
-                ->end()
-
             ->end()
         ->end();
 

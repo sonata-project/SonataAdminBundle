@@ -22,7 +22,7 @@ class FieldDescription extends BaseFieldDescription
         throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
 
-    public function getTargetEntity(): void
+    public function getTargetEntity(): ?string
     {
         throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
@@ -37,15 +37,13 @@ class FieldDescription extends BaseFieldDescription
         throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
 
-    public function isIdentifier(): void
+    public function isIdentifier(): bool
     {
         throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
 
     /**
      * set the parent association mappings information.
-     *
-     * @param array $parentAssociationMappings
      */
     public function setParentAssociationMappings(array $parentAssociationMappings): void
     {

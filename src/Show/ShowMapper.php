@@ -49,22 +49,17 @@ class ShowMapper extends BaseGroupedMapper
 
     /**
      * @param FieldDescriptionInterface|string $name
-     * @param string|null                      $type
      * @param array<string, mixed>             $fieldDescriptionOptions
      *
      * @throws \LogicException
      *
      * @return static
      */
-    public function add($name, $type = null, array $fieldDescriptionOptions = [])
+    public function add($name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
         if (!$this->shouldApply()) {
             return $this;
         }
-
-        $fieldKey = ($name instanceof FieldDescriptionInterface) ? $name->getName() : $name;
-
-        $this->addFieldToCurrentGroup($fieldKey);
 
         if ($name instanceof FieldDescriptionInterface) {
             $fieldDescription = $name;
@@ -89,8 +84,11 @@ class ShowMapper extends BaseGroupedMapper
             );
         }
 
-        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
-        if (null === $fieldDescription->getLabel('sonata_deprecation_mute')) {
+        $fieldKey = ($name instanceof FieldDescriptionInterface) ? $name->getName() : $name;
+
+        $this->addFieldToCurrentGroup($fieldKey);
+
+        if (null === $fieldDescription->getLabel()) {
             $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'show', 'label'));
         }
 
@@ -104,17 +102,17 @@ class ShowMapper extends BaseGroupedMapper
         return $this;
     }
 
-    public function get($name)
+    public function get(string $name): FieldDescriptionInterface
     {
         return $this->list->get($name);
     }
 
-    public function has($key)
+    public function has(string $key): bool
     {
         return $this->list->has($key);
     }
 
-    public function remove($key)
+    public function remove(string $key): self
     {
         $this->admin->removeShowFieldDescription($key);
         $this->list->remove($key);
@@ -132,7 +130,7 @@ class ShowMapper extends BaseGroupedMapper
      *
      * @return static
      */
-    public function removeGroup($group, $tab = 'default', $deleteEmptyTab = false)
+    public function removeGroup(string $group, string $tab = 'default', bool $deleteEmptyTab = false): self
     {
         $groups = $this->getGroups();
 
@@ -164,43 +162,39 @@ class ShowMapper extends BaseGroupedMapper
         return $this;
     }
 
-    final public function keys()
+    final public function keys(): array
     {
         return array_keys($this->list->getElements());
     }
 
-    public function reorder(array $keys)
+    public function reorder(array $keys): self
     {
         $this->admin->reorderShowGroup($this->getCurrentGroupName(), $keys);
 
         return $this;
     }
 
-    protected function getGroups()
+    protected function getGroups(): array
     {
-        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
-
-        return $this->admin->getShowGroups('sonata_deprecation_mute');
+        return $this->admin->getShowGroups();
     }
 
-    protected function setGroups(array $groups)
+    protected function setGroups(array $groups): void
     {
         $this->admin->setShowGroups($groups);
     }
 
-    protected function getTabs()
+    protected function getTabs(): array
     {
-        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
-
-        return $this->admin->getShowTabs('sonata_deprecation_mute');
+        return $this->admin->getShowTabs();
     }
 
-    protected function setTabs(array $tabs)
+    protected function setTabs(array $tabs): void
     {
         $this->admin->setShowTabs($tabs);
     }
 
-    protected function getName()
+    protected function getName(): string
     {
         return 'show';
     }

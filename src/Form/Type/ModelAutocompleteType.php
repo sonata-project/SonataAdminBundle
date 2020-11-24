@@ -26,17 +26,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * This type defines a standard text field with autocomplete feature.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  * @author Florent Denis <dflorent.pokap@gmail.com>
  */
-class ModelAutocompleteType extends AbstractType
+final class ModelAutocompleteType extends AbstractType
 {
     /**
      * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addViewTransformer(new ModelToIdPropertyTransformer($options['model_manager'], $options['class'], $options['property'], $options['multiple'], $options['to_string_callback']), true);
 
@@ -59,7 +57,10 @@ class ModelAutocompleteType extends AbstractType
         }
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    /**
+     * @param array<string, mixed> $options
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         foreach ([
             'admin_code',
@@ -96,12 +97,9 @@ class ModelAutocompleteType extends AbstractType
         }
     }
 
-    /**
-     * @return void
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $compound = static function (Options $options) {
+        $compound = static function (Options $options): bool {
             return $options['multiple'];
         };
 
@@ -125,8 +123,7 @@ class ModelAutocompleteType extends AbstractType
             'to_string_callback' => null,
 
             // add button
-            // NEXT_MAJOR: Set this value to 'link_add' to display button by default
-            'btn_add' => false,
+            'btn_add' => 'link_add',
             'btn_catalogue' => 'SonataAdminBundle',
 
             // ajax parameters
@@ -156,18 +153,8 @@ class ModelAutocompleteType extends AbstractType
         $resolver->setRequired(['property']);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_model_autocomplete';
-    }
-
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 }

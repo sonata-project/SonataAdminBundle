@@ -20,28 +20,26 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AdminPoolLoader extends Loader
+final class AdminPoolLoader extends Loader
 {
     public const ROUTE_TYPE_NAME = 'sonata_admin';
 
     /**
      * @var Pool
      */
-    protected $pool;
+    private $pool;
 
     /**
      * @var array
      */
-    protected $adminServiceIds = [];
+    private $adminServiceIds = [];
 
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    private $container;
 
     public function __construct(Pool $pool, array $adminServiceIds, ContainerInterface $container)
     {
@@ -50,12 +48,24 @@ class AdminPoolLoader extends Loader
         $this->container = $container;
     }
 
-    public function supports($resource, $type = null)
+    /**
+     * NEXT_MAJOR: Add the ?string param typehint when Symfony 4 support is dropped.
+     *
+     * @param mixed       $resource
+     * @param string|null $type
+     */
+    public function supports($resource, $type = null): bool
     {
         return self::ROUTE_TYPE_NAME === $type;
     }
 
-    public function load($resource, $type = null)
+    /**
+     * NEXT_MAJOR: Add the ?string param typehint when Symfony 4 support is dropped.
+     *
+     * @param mixed       $resource
+     * @param string|null $type
+     */
+    public function load($resource, $type = null): SymfonyRouteCollection
     {
         $collection = new SymfonyRouteCollection();
         foreach ($this->adminServiceIds as $id) {

@@ -21,33 +21,19 @@ use Symfony\Component\Form\FormTypeInterface;
  * This type wrap native `collection` form type and render `add` and `delete`
  * buttons in standard Symfony` collection form type.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class CollectionType extends AbstractType
+final class CollectionType extends AbstractType
 {
     /**
-     * @return string
-     *
      * @phpstan-return class-string<FormTypeInterface>
      */
-    public function getParent()
+    public function getParent(): string
     {
         return SymfonyCollectionType::class;
     }
 
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_native_collection';
     }

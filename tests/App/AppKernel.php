@@ -16,7 +16,6 @@ namespace Sonata\AdminBundle\Tests\App;
 use Knp\Bundle\MenuBundle\KnpMenuBundle;
 use Sonata\AdminBundle\SonataAdminBundle;
 use Sonata\BlockBundle\SonataBlockBundle;
-use Sonata\CoreBundle\SonataCoreBundle;
 use Sonata\Doctrine\Bridge\Symfony\SonataDoctrineBundle;
 use Sonata\Form\Bridge\Symfony\SonataFormBundle;
 use Sonata\Twig\Bridge\Symfony\SonataTwigBundle;
@@ -52,10 +51,6 @@ final class AppKernel extends Kernel
             new SonataFormBundle(),
         ];
 
-        if (class_exists(SonataCoreBundle::class)) {
-            $bundles[] = new SonataCoreBundle();
-        }
-
         return $bundles;
     }
 
@@ -88,6 +83,7 @@ final class AppKernel extends Kernel
             'session' => ['handler_id' => 'session.handler.native_file', 'storage_id' => 'session.storage.mock_file', 'name' => 'MOCKSESSID'],
             'assets' => null,
             'test' => true,
+            'router' => ['utf8' => true],
             'translator' => [
                 'default_path' => '%kernel.project_dir%/translations',
             ],

@@ -21,16 +21,11 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Amine Zaghdoudi <amine.zaghdoudi@ekino.com>
  */
-class ChoiceTypeExtension extends AbstractTypeExtension
+final class ChoiceTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * @return void
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $optionalOptions = ['sortable'];
 
@@ -40,19 +35,9 @@ class ChoiceTypeExtension extends AbstractTypeExtension
     /**
      * @param array<string, mixed> $options
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['sortable'] = \array_key_exists('sortable', $options) && $options['sortable'];
-    }
-
-    /**
-     * @return string
-     *
-     * @phpstan-return class-string<FormTypeInterface>
-     */
-    public function getExtendedType()
-    {
-        return ChoiceType::class;
     }
 
     /**
@@ -60,7 +45,7 @@ class ChoiceTypeExtension extends AbstractTypeExtension
      *
      * @phpstan-return class-string<FormTypeInterface>[]
      */
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): iterable
     {
         return [ChoiceType::class];
     }

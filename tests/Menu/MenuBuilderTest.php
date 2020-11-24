@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Event\ConfigureMenuEvent;
 use Sonata\AdminBundle\Menu\MenuBuilder;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class MenuBuilderTest extends TestCase
 {

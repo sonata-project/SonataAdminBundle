@@ -25,7 +25,7 @@ use Sonata\AdminBundle\Event\ConfigureQueryEvent;
 use Sonata\AdminBundle\Event\PersistenceEvent;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdminEventExtensionTest extends TestCase
 {

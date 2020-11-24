@@ -43,21 +43,6 @@ class AdminVoterTest extends AbstractVoterTest
     }
 
     /**
-     * @doesNotPerformAssertions
-     * @group legacy
-     */
-    public function testDeprecatedRequestSetter(): void
-    {
-        $request = new Request();
-
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
-
-        $voter = new AdminVoter();
-        $voter->setRequest($request);
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function createVoter($dataVoter, $route): VoterInterface

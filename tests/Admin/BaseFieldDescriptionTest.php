@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Tests\Admin;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
@@ -77,22 +76,6 @@ class BaseFieldDescriptionTest extends TestCase
 
         $description->setOption('sortable', 'field_name');
         $this->assertTrue($description->isSortable());
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testHelpOptions(): void
-    {
-        $description = new FieldDescription('name');
-
-        $description->setHelp('Please enter an integer');
-        $this->assertSame('Please enter an integer', $description->getHelp());
-
-        $description->setOptions(['help' => 'fooHelp']);
-        $this->assertSame('fooHelp', $description->getHelp());
     }
 
     public function testAdmin(): void
@@ -184,7 +167,7 @@ class BaseFieldDescriptionTest extends TestCase
         $description4 = new FieldDescription('name');
         $description4->setOption('code', 'myMethod');
 
-        $this->assertSame($description4->getFieldValue($mock4, null), 'myMethodValue');
+        $this->assertSame($description4->getFieldValue($mock4, ''), 'myMethodValue');
     }
 
     public function testGetValueNoValueException(): void
@@ -239,16 +222,6 @@ class BaseFieldDescriptionTest extends TestCase
             ->method('getTranslationDomain');
         $description->setOption('translation_domain', 'ExtensionDomain');
         $this->assertSame('ExtensionDomain', $description->getTranslationDomain());
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testCamelize(): void
-    {
-        $this->assertSame('FooBar', BaseFieldDescription::camelize('foo_bar'));
-        $this->assertSame('FooBar', BaseFieldDescription::camelize('foo bar'));
-        $this->assertSame('FOoBar', BaseFieldDescription::camelize('fOo bar'));
     }
 
     public function testGetInaccessibleValue(): void

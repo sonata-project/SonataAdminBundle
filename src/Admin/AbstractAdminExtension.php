@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\Form\Validator\ErrorElement;
 
@@ -27,54 +27,47 @@ use Sonata\Form\Validator\ErrorElement;
  */
 abstract class AbstractAdminExtension implements AdminExtensionInterface
 {
-    public function configureFormFields(FormMapper $formMapper)
+    public function configureFormFields(FormMapper $formMapper): void
     {
     }
 
-    public function configureListFields(ListMapper $listMapper)
+    public function configureListFields(ListMapper $listMapper): void
     {
     }
 
-    public function configureDatagridFilters(DatagridMapper $datagridMapper)
+    public function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
     }
 
-    public function configureShowFields(ShowMapper $showMapper)
+    public function configureShowFields(ShowMapper $showMapper): void
     {
     }
 
-    public function configureRoutes(AdminInterface $admin, RouteCollection $collection)
+    public function configureRoutes(AdminInterface $admin, RouteCollectionInterface $collection): void
     {
     }
 
-    public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, ?AdminInterface $childAdmin = null)
+    public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
     {
     }
 
-    public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, $action, ?AdminInterface $childAdmin = null)
-    {
-        // Use configureSideMenu not to mess with previous overrides
-        // NEXT_MAJOR: remove this line
-        $this->configureSideMenu($admin, $menu, $action, $childAdmin);
-    }
-
-    public function validate(AdminInterface $admin, ErrorElement $errorElement, $object)
+    public function validate(AdminInterface $admin, ErrorElement $errorElement, object $object): void
     {
     }
 
-    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list')
+    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query): void
     {
     }
 
-    public function alterNewInstance(AdminInterface $admin, $object)
+    public function alterNewInstance(AdminInterface $admin, object $object): void
     {
     }
 
-    public function alterObject(AdminInterface $admin, $object)
+    public function alterObject(AdminInterface $admin, object $object): void
     {
     }
 
-    public function getPersistentParameters(AdminInterface $admin)
+    public function getPersistentParameters(AdminInterface $admin): array
     {
         return [];
     }
@@ -84,7 +77,7 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
      *
      * @phpstan-param AdminInterface<object> $admin
      */
-    public function getAccessMapping(AdminInterface $admin)
+    public function getAccessMapping(AdminInterface $admin): array
     {
         return [];
     }
@@ -92,7 +85,7 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     /**
      * @phpstan-param AdminInterface<object> $admin
      */
-    public function configureBatchActions(AdminInterface $admin, array $actions)
+    public function configureBatchActions(AdminInterface $admin, array $actions): array
     {
         return $actions;
     }
@@ -100,53 +93,57 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     /**
      * @phpstan-param AdminInterface<object> $admin
      */
-    public function configureExportFields(AdminInterface $admin, array $fields)
+    public function configureExportFields(AdminInterface $admin, array $fields): array
     {
         return $fields;
     }
 
-    public function preUpdate(AdminInterface $admin, $object)
+    public function preUpdate(AdminInterface $admin, object $object): void
     {
     }
 
-    public function postUpdate(AdminInterface $admin, $object)
+    public function postUpdate(AdminInterface $admin, object $object): void
     {
     }
 
-    public function prePersist(AdminInterface $admin, $object)
+    public function prePersist(AdminInterface $admin, object $object): void
     {
     }
 
-    public function postPersist(AdminInterface $admin, $object)
+    public function postPersist(AdminInterface $admin, object $object): void
     {
     }
 
-    public function preRemove(AdminInterface $admin, $object)
+    public function preRemove(AdminInterface $admin, object $object): void
     {
     }
 
-    public function postRemove(AdminInterface $admin, $object)
+    public function postRemove(AdminInterface $admin, object $object): void
     {
     }
 
     /**
      * @param array<string, mixed> $list
-     * @param string               $action
-     * @param object               $object
      *
      * @return array<string, mixed>
      *
      * @phpstan-param AdminInterface<object> $admin
      */
-    public function configureActionButtons(AdminInterface $admin, $list, $action, $object)
-    {
+    public function configureActionButtons(
+        AdminInterface $admin,
+        array $list,
+        string $action,
+        ?object $object = null
+    ): array {
         return $list;
     }
 
     /**
+     * Returns a list of default filters.
+     *
      * @phpstan-param AdminInterface<object> $admin
      */
-    public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues)
+    public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues): void
     {
     }
 
@@ -157,5 +154,3 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     {
     }
 }
-
-class_exists(\Sonata\Form\Validator\ErrorElement::class);

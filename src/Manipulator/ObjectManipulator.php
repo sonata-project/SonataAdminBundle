@@ -87,10 +87,7 @@ final class ObjectManipulator
             }
         }
 
-        /*
-         * NEXT_MAJOR: Use BadMethodCallException instead
-         */
-        throw new \RuntimeException(
+        throw new \BadMethodCallException(
             sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
         );
     }
@@ -123,10 +120,7 @@ final class ObjectManipulator
             }
         }
 
-        /*
-         * NEXT_MAJOR: Use BadMethodCallException instead
-         */
-        throw new \RuntimeException(
+        throw new \BadMethodCallException(
             sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($instance), $method)
         );
     }
@@ -150,10 +144,7 @@ final class ObjectManipulator
                 $method = sprintf('add%s', $inflector->classify($inflector->singularize($fieldName)));
 
                 if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
-                    /*
-                     * NEXT_MAJOR: Use BadMethodCallException instead
-                     */
-                    throw new \RuntimeException(
+                    throw new \BadMethodCallException(
                         sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
                     );
                 }

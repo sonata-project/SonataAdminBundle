@@ -47,7 +47,7 @@ class AuditManagerTest extends TestCase
 
     public function testGetReaderWithException(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('The class "Foo\Foo" does not have any reader manager');
 
         $auditManager = new AuditManager(new Container());

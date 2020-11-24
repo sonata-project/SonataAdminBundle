@@ -22,18 +22,12 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
  */
 interface DatagridBuilderInterface extends BuilderInterface
 {
-    /**
-     * @param string|null $type
-     */
     public function addFilter(
         DatagridInterface $datagrid,
-        $type,
+        ?string $type,
         FieldDescriptionInterface $fieldDescription,
         AdminInterface $admin
-    );
+    ): void;
 
-    /**
-     * @return DatagridInterface
-     */
-    public function getBaseDatagrid(AdminInterface $admin, array $values = []);
+    public function getBaseDatagrid(AdminInterface $admin, array $values = []): DatagridInterface;
 }

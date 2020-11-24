@@ -23,26 +23,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * This type define a standard hidden field, that stored id to a object.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ModelHiddenType extends AbstractType
+final class ModelHiddenType extends AbstractType
 {
     /**
      * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']), true)
         ;
     }
 
-    /**
-     * @return void
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'model_manager' => null,
@@ -54,26 +49,14 @@ class ModelHiddenType extends AbstractType
     }
 
     /**
-     * @return string
-     *
      * @phpstan-return class-string<FormTypeInterface>
      */
-    public function getParent()
+    public function getParent(): string
     {
         return HiddenType::class;
     }
 
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_model_hidden';
     }

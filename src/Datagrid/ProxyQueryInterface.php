@@ -21,93 +21,36 @@ namespace Sonata\AdminBundle\Datagrid;
 interface ProxyQueryInterface
 {
     /**
-     * @param string $name
-     * @param array  $args
+     * @param mixed[] $args
      *
      * @return mixed
      */
-    public function __call($name, $args);
+    public function __call(string $name, array $args);
 
     /**
-     * @param int|null $hydrationMode
+     * @param array<string, mixed> $params
      *
      * @return mixed
      */
-    public function execute(array $params = [], $hydrationMode = null);
+    public function execute(array $params = [], ?int $hydrationMode = null);
 
     /**
-     * @param array $parentAssociationMappings
-     * @param array $fieldMapping
-     *
-     * @return ProxyQueryInterface
+     * @param mixed[] $parentAssociationMappings
+     * @param mixed[] $fieldMapping
      */
-    public function setSortBy($parentAssociationMappings, $fieldMapping);
+    public function setSortBy(array $parentAssociationMappings, array $fieldMapping): self;
 
-    /**
-     * @return string|null
-     */
-    public function getSortBy();
+    public function getSortBy(): ?string;
 
-    /**
-     * @param string $sortOrder
-     *
-     * @return ProxyQueryInterface
-     */
-    public function setSortOrder($sortOrder);
+    public function setSortOrder(string $sortOrder): self;
 
-    /**
-     * @return string|null
-     */
-    public function getSortOrder();
+    public function getSortOrder(): ?string;
 
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.74, to be removed in 4.0.
-     *
-     * @return mixed
-     */
-    public function getSingleScalarResult();
+    public function setFirstResult(?int $firstResult): self;
 
-    /**
-     * @param int|null $firstResult
-     *
-     * @return ProxyQueryInterface
-     */
-    public function setFirstResult($firstResult);
+    public function getFirstResult(): ?int;
 
-    /**
-     * @return mixed
-     */
-    public function getFirstResult();
+    public function setMaxResults(?int $maxResults): self;
 
-    /**
-     * @param int|null $maxResults
-     *
-     * @return ProxyQueryInterface
-     */
-    public function setMaxResults($maxResults);
-
-    /**
-     * @return int|null
-     */
-    public function getMaxResults();
-
-    /**
-     * NEXT_MAJOR: Remove this method from the interface.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.76, to be removed in 4.0.
-     *
-     * @return int
-     */
-    public function getUniqueParameterId();
-
-    /**
-     * NEXT_MAJOR: Remove this method from the interface.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.76, to be removed in 4.0.
-     *
-     * @return string
-     */
-    public function entityJoin(array $associationMappings);
+    public function getMaxResults(): ?int;
 }

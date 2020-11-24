@@ -120,11 +120,6 @@ class DatagridTest extends TestCase
         $this->assertSame($this->pager, $this->datagrid->getPager());
     }
 
-    /**
-     * @group legacy
-     *
-     * @expectedDeprecation Passing a nonexistent filter name as argument 1 to Sonata\AdminBundle\Datagrid\Datagrid::getFilter() is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0.
-     */
     public function testFilter(): void
     {
         $this->assertFalse($this->datagrid->hasFilter('foo'));
@@ -143,12 +138,11 @@ class DatagridTest extends TestCase
         $this->datagrid->removeFilter('foo');
 
         $this->assertFalse($this->datagrid->hasFilter('foo'));
-        $this->assertNull($this->datagrid->getFilter('foo'));
-        // NEXT_MAJOR: Remove previous assertion, the "@group" and "@expectedDeprecation" annotations and uncomment the following lines
-        // $this->expectException(\InvalidArgumentException::class);
-        // $this->expectExceptionMessage('Filter named "foo" doesn\'t exist.');
-        //
-        // $this->datagrid->getFilter('foo');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Filter named "foo" doesn\'t exist.');
+
+        $this->datagrid->getFilter('foo');
     }
 
     public function testGetFilters(): void
@@ -328,8 +322,6 @@ class DatagridTest extends TestCase
 
     public function testGetResults(): void
     {
-        $this->assertNull($this->datagrid->getResults());
-
         $this->pager->expects($this->once())
             ->method('getResults')
             ->willReturn(['foo', 'bar']);
@@ -461,13 +453,11 @@ class DatagridTest extends TestCase
 
         $this->pager->expects($this->once())
             ->method('setMaxPerPage')
-            ->with($this->equalTo('25'))
-            ->willReturn(null);
+            ->with($this->equalTo('25'));
 
         $this->pager->expects($this->once())
             ->method('setPage')
-            ->with($this->equalTo('1'))
-            ->willReturn(null);
+            ->with($this->equalTo('1'));
 
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, ['_sort_by' => $sortBy]);
 
@@ -510,13 +500,11 @@ class DatagridTest extends TestCase
 
         $this->pager->expects($this->once())
             ->method('setMaxPerPage')
-            ->with($this->equalTo('50'))
-            ->willReturn(null);
+            ->with($this->equalTo(50));
 
         $this->pager->expects($this->once())
             ->method('setPage')
-            ->with($this->equalTo('3'))
-            ->willReturn(null);
+            ->with($this->equalTo(3));
 
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, ['_sort_by' => $sortBy, '_page' => $page, '_per_page' => $perPage]);
 
@@ -555,14 +543,9 @@ class DatagridTest extends TestCase
 
     public function getBuildPagerWithPageTests(): array
     {
-        // tests for php 5.3, because isset functionality was changed since php 5.4
         return [
             [3, 50],
-            ['3', '50'],
-            [3, '50'],
-            ['3', 50],
             [3, ['type' => null, 'value' => 50]],
-            [3, ['type' => null, 'value' => '50']],
         ];
     }
 
@@ -573,13 +556,11 @@ class DatagridTest extends TestCase
     {
         $this->pager->expects($this->once())
             ->method('setMaxPerPage')
-            ->with($this->equalTo('50'))
-            ->willReturn(null);
+            ->with($this->equalTo(50));
 
         $this->pager->expects($this->once())
             ->method('setPage')
-            ->with($this->equalTo('3'))
-            ->willReturn(null);
+            ->with($this->equalTo(3));
 
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, []);
         $this->datagrid->setValue('_per_page', null, $perPage);
@@ -599,12 +580,8 @@ class DatagridTest extends TestCase
 
     public function getBuildPagerWithPage2Tests(): array
     {
-        // tests for php 5.3, because isset functionality was changed since php 5.4
         return [
             [3, 50],
-            ['3', '50'],
-            [3, '50'],
-            ['3', 50],
         ];
     }
 

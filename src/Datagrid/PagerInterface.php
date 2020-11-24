@@ -15,80 +15,60 @@ namespace Sonata\AdminBundle\Datagrid;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
- *
- * NEXT_MAJOR: Remove these comments and uncomment corresponding methods.
- *
- * @method int  getPage()
- * @method bool isLastPage()
- * @method int  getNbResults()
  */
 interface PagerInterface
 {
     /**
      * Initialize the Pager.
      */
-    public function init();
+    public function init(): void;
 
     /**
      * Returns the maximum number of results per page.
-     *
-     * @return int
      */
-    public function getMaxPerPage();
+    public function getMaxPerPage(): int;
 
     /**
      * Sets the maximum number of results per page.
-     *
-     * @param int $max
      */
-    public function setMaxPerPage($max);
+    public function setMaxPerPage(int $max): void;
+
+    /**
+     * Gets the current page.
+     */
+    public function getPage(): int;
 
     /**
      * Sets the current page.
-     *
-     * @param int $page
      */
-    public function setPage($page);
+    public function setPage(int $page): void;
 
     /**
      * Set query.
-     *
-     * @param ProxyQueryInterface $query
      */
-    public function setQuery($query);
+    public function setQuery(ProxyQueryInterface $query): void;
 
     /**
      * Returns an array of results on the given page.
      *
      * @return object[]
      */
-    public function getResults();
+    public function getResults(): array;
 
     /**
      * Sets the maximum number of page numbers.
-     *
-     * @param int $maxPageLinks
      */
-    public function setMaxPageLinks($maxPageLinks);
+    public function setMaxPageLinks(int $maxPageLinks): void;
 
     /**
      * Returns the maximum number of page numbers.
-     *
-     * @return int
      */
-    public function getMaxPageLinks();
+    public function getMaxPageLinks(): int;
 
-//    NEXT_MAJOR: uncomment this method in 4.0
-//    /**
-//     * Returns true if on the last page.
-//     *
-//     * @return bool
-//     */
-//    public function isLastPage(): bool;
+    /**
+     * Returns true if on the last page.
+     */
+    public function isLastPage(): bool;
 
-//    NEXT_MAJOR: uncomment this method in 4.0
-//    public function getNbResults(): int;
-//
-//    NEXT_MAJOR: uncomment this method in 4.0
-//    public function getPage(): int;
+    public function getNbResults(): int;
 }

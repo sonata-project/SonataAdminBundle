@@ -18,25 +18,19 @@ use Sonata\AdminBundle\Filter\Filter;
 
 class FooFilter extends Filter
 {
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $value): void
-    {
-    }
-
     public function apply($query, $value): void
     {
     }
 
-    public function getDefaultOptions()
+    public function getDefaultOptions(): array
     {
         return [
             'foo' => 'bar',
         ];
     }
 
-    public function getRenderSettings(): void
+    public function getRenderSettings(): array
     {
+        return ['string', []];
     }
 }

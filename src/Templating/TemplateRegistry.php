@@ -25,7 +25,7 @@ final class TemplateRegistry extends AbstractTemplateRegistry implements Mutable
      *
      * @deprecated since version sonata-project/admin-bundle 3.39.0 and will be removed in 4.0. Use Sonata\AdminBundle\Templating\MutableTemplateRegistry instead.
      */
-    public function setTemplates(array $templates)
+    public function setTemplates(array $templates): void
     {
         $this->templates = $templates;
 
@@ -40,7 +40,7 @@ final class TemplateRegistry extends AbstractTemplateRegistry implements Mutable
      *
      * @deprecated since version sonata-project/admin-bundle 3.39.0 and will be removed in 4.0. Use Sonata\AdminBundle\Templating\MutableTemplateRegistry instead.
      */
-    public function setTemplate($name, $template)
+    public function setTemplate(string $name, string $template): void
     {
         $this->templates[$name] = $template;
 

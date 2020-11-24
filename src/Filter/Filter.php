@@ -26,7 +26,7 @@ abstract class Filter implements FilterInterface
     protected $name;
 
     /**
-     * @var mixed|null
+     * @var mixed
      */
     protected $value;
 
@@ -36,22 +36,30 @@ abstract class Filter implements FilterInterface
     protected $options = [];
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $condition;
 
-    public function initialize($name, array $options = [])
+    public function initialize(string $name, array $options = []): void
     {
         $this->name = $name;
         $this->setOptions($options);
     }
 
-    public function getName()
+    public function getName(): string
     {
+        if (null === $this->name) {
+            throw new \LogicException(sprintf(
+                'Seems like you didn\'t call `initialize()` on the filter `%s`. Did you create it through `%s::create()`?',
+                static::class,
+                FilterFactory::class
+            ));
+        }
+
         return $this->name;
     }
 
-    public function getFormName()
+    public function getFormName(): string
     {
         /*
            Symfony default form class sadly can't handle
@@ -60,10 +68,10 @@ abstract class Filter implements FilterInterface
            So use this trick to avoid any issue.
         */
 
-        return str_replace('.', '__', $this->name);
+        return str_replace('.', '__', $this->getName());
     }
 
-    public function getOption($name, $default = null)
+    public function getOption(string $name, $default = null)
     {
         if (\array_key_exists($name, $this->options)) {
             return $this->options[$name];
@@ -72,22 +80,22 @@ abstract class Filter implements FilterInterface
         return $default;
     }
 
-    public function setOption($name, $value)
+    public function setOption(string $name, $value): void
     {
         $this->options[$name] = $value;
     }
 
-    public function getFieldType()
+    public function getFieldType(): string
     {
         return $this->getOption('field_type', TextType::class);
     }
 
-    public function getFieldOptions()
+    public function getFieldOptions(): array
     {
         return $this->getOption('field_options', ['required' => false]);
     }
 
-    public function getFieldOption($name, $default = null)
+    public function getFieldOption(string $name, $default = null)
     {
         if (isset($this->options['field_options'][$name]) && \is_array($this->options['field_options'])) {
             return $this->options['field_options'][$name];
@@ -96,7 +104,7 @@ abstract class Filter implements FilterInterface
         return $default;
     }
 
-    public function setFieldOption($name, $value)
+    public function setFieldOption(string $name, $value): void
     {
         $this->options['field_options'][$name] = $value;
     }
@@ -106,16 +114,16 @@ abstract class Filter implements FilterInterface
         return $this->getOption('label');
     }
 
-    public function setLabel($label)
+    public function setLabel($label): void
     {
         $this->setOption('label', $label);
     }
 
-    public function getFieldName()
+    public function getFieldName(): string
     {
         $fieldName = $this->getOption('field_name');
 
-        if (!$fieldName) {
+        if (null === $fieldName) {
             throw new \RuntimeException(sprintf(
                 'The option `field_name` must be set for field: `%s`',
                 $this->getName()
@@ -125,16 +133,16 @@ abstract class Filter implements FilterInterface
         return $fieldName;
     }
 
-    public function getParentAssociationMappings()
+    public function getParentAssociationMappings(): array
     {
         return $this->getOption('parent_association_mappings', []);
     }
 
-    public function getFieldMapping()
+    public function getFieldMapping(): array
     {
         $fieldMapping = $this->getOption('field_mapping');
 
-        if (!$fieldMapping) {
+        if (null === $fieldMapping) {
             throw new \RuntimeException(sprintf(
                 'The option `field_mapping` must be set for field: `%s`',
                 $this->getName()
@@ -144,11 +152,11 @@ abstract class Filter implements FilterInterface
         return $fieldMapping;
     }
 
-    public function getAssociationMapping()
+    public function getAssociationMapping(): array
     {
         $associationMapping = $this->getOption('association_mapping');
 
-        if (!$associationMapping) {
+        if (null === $associationMapping) {
             throw new \RuntimeException(sprintf(
                 'The option `association_mapping` must be set for field: `%s`',
                 $this->getName()
@@ -159,9 +167,9 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * Set options.
+     * @param array<string, mixed> $options
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): void
     {
         $this->options = array_merge(
             ['show_filter' => null, 'advanced_filter' => true],
@@ -171,28 +179,22 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * Get options.
-     *
      * @return array<string, mixed>
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
 
     /**
-     * Set value.
-     *
      * @param mixed $value
      */
-    public function setValue($value)
+    public function setValue($value): void
     {
         $this->value = $value;
     }
 
     /**
-     * Get value.
-     *
      * @return mixed
      */
     public function getValue()
@@ -200,7 +202,7 @@ abstract class Filter implements FilterInterface
         return $this->value;
     }
 
-    public function isActive()
+    public function isActive(): bool
     {
         $values = $this->getValue();
 
@@ -209,17 +211,17 @@ abstract class Filter implements FilterInterface
             && '' !== $values['value'];
     }
 
-    public function setCondition($condition)
+    public function setCondition(string $condition): void
     {
         $this->condition = $condition;
     }
 
-    public function getCondition()
+    public function getCondition(): ?string
     {
         return $this->condition;
     }
 
-    public function getTranslationDomain()
+    public function getTranslationDomain(): ?string
     {
         return $this->getOption('translation_domain');
     }

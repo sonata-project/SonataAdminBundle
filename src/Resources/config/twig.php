@@ -11,7 +11,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Sonata\AdminBundle\Twig\Extension\PaginationExtension;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -48,7 +47,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('twig.extension')
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
-                (new ReferenceConfigurator('logger'))->nullOnInvalid(),
                 new ReferenceConfigurator('translator'),
                 new ReferenceConfigurator('service_container'),
                 new ReferenceConfigurator('security.authorization_checker'),
@@ -63,9 +61,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('sonata.admin.global_template_registry'),
                 new ReferenceConfigurator('service_container'),
             ])
-
-        // NEXT_MAJOR: Remove this service.
-        ->set('sonata.pagination.twig.extension', PaginationExtension::class)
-            ->tag('twig.extension')
     ;
 };

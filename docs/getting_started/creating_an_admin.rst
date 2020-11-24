@@ -13,7 +13,6 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
 
     // src/Entity/BlogPost.php
 
-    // ...
     class BlogPost
     {
         // ...
@@ -87,18 +86,21 @@ After this, create the schema for these entities:
 .. note::
 
     This article assumes you have basic knowledge of the Doctrine2 ORM and
-    you've set up a database correctly.
+    you've set up a database correctly. You can learn more on Doctrine entities
+    in the `Databases and the Doctrine ORM`_ chapter.
+
+.. _`Databases and the Doctrine ORM`: https://symfony.com/doc/current/doctrine.html
 
 Step 1: Create an Admin Class
 -----------------------------
 
 SonataAdminBundle helps you manage your data using a graphical interface that
 will let you create, update or search your model instances. The bundle relies
-on Admin classes to know which models will be managed and how these actions
+on Admin classes to know which models will be managed and what these actions
 will look like.
 
 An Admin class decides which fields to show on a listing, which fields are used
-to find entries and how the create form will look like. Each model will have
+to find entries and what the create form will look like. Each model will have
 its own Admin class.
 
 Knowing this, let's create an Admin class for the ``Category`` entity. The
@@ -173,6 +175,12 @@ provides a compiler pass which takes care of configuring it correctly for you.
 You can often tweak things using tag attributes. The code shown here is the
 shortest code needed to get it working.
 
+.. note::
+
+    If you don't like writing configuration and want to some more magic,
+    have a look at the [SonataAutoConfigureBundle](https://symfony.com/doc/master/bundles/SonataAdminBundle/cookbook/recipe_auto_configure_admin_classes.html)
+    described in chapter 24.
+
 Step 4: Register SonataAdmin custom Routes
 ------------------------------------------
 
@@ -213,3 +221,5 @@ entity and learn more about this class.
     "link_add", you should make sure that you've `enabled the translator`_.
 
 .. _`enabled the translator`: https://symfony.com/doc/4.4/translation.html#configuration
+
+In the :doc:`next chapter <the_form_view>`, you're going to look at the form view.

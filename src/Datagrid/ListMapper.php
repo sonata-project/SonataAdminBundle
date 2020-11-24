@@ -52,12 +52,12 @@ class ListMapper extends BaseMapper
     }
 
     /**
-     * @param string      $name
-     * @param string|null $type
+     * @param FieldDescriptionInterface|string $name
+     * @param array<string, mixed>             $fieldDescriptionOptions
      *
      * @return static
      */
-    public function addIdentifier($name, $type = null, array $fieldDescriptionOptions = [])
+    public function addIdentifier($name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
         $fieldDescriptionOptions['identifier'] = true;
 
@@ -75,13 +75,13 @@ class ListMapper extends BaseMapper
 
     /**
      * @param FieldDescriptionInterface|string $name
-     * @param string|null                      $type
+     * @param array<string, mixed>             $fieldDescriptionOptions
      *
      * @throws \LogicException
      *
      * @return static
      */
-    public function add($name, $type = null, array $fieldDescriptionOptions = [])
+    public function add($name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
         // Default sort on "associated_property"
         if (isset($fieldDescriptionOptions['associated_property'])) {
@@ -105,32 +105,8 @@ class ListMapper extends BaseMapper
             $type = self::TYPE_ACTIONS;
         }
 
-        // Change deprecated inline action "view" to "show"
-        if ('_action' === $name && self::TYPE_ACTIONS === $type) {
-            if (isset($fieldDescriptionOptions['actions']['view'])) {
-                @trigger_error(
-                    'Inline action "view" is deprecated since version 2.2.4 and will be removed in 4.0. Use inline action "show" instead.',
-                    E_USER_DEPRECATED
-                );
-
-                $fieldDescriptionOptions['actions']['show'] = $fieldDescriptionOptions['actions']['view'];
-
-                unset($fieldDescriptionOptions['actions']['view']);
-            }
-        }
-
         if (\array_key_exists('identifier', $fieldDescriptionOptions) && !\is_bool($fieldDescriptionOptions['identifier'])) {
-            @trigger_error(
-                'Passing a non boolean value for the "identifier" option is deprecated since sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.',
-                E_USER_DEPRECATED
-            );
-
-            $fieldDescriptionOptions['identifier'] = (bool) $fieldDescriptionOptions['identifier'];
-            // NEXT_MAJOR: Remove the previous 6 lines and use commented line below it instead
-            // throw new \InvalidArgumentException(sprintf(
-            //     'Value for "identifier" option must be boolean, %s given.',
-            //     gettype($fieldDescriptionOptions['identifier'])
-            // ));
+            throw new \InvalidArgumentException(sprintf('Value for "identifier" option must be boolean, %s given.', \gettype($fieldDescriptionOptions['identifier'])));
         }
 
         if ($name instanceof FieldDescriptionInterface) {
@@ -156,18 +132,10 @@ class ListMapper extends BaseMapper
             );
         }
 
-        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
-        if (null === $fieldDescription->getLabel('sonata_deprecation_mute')) {
+        if (null === $fieldDescription->getLabel()) {
             $fieldDescription->setOption(
                 'label',
                 $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'list', 'label')
-            );
-        }
-
-        if (isset($fieldDescriptionOptions['header_style'])) {
-            @trigger_error(
-                'The "header_style" option is deprecated, please, use "header_class" option instead.',
-                E_USER_DEPRECATED
             );
         }
 
@@ -184,17 +152,17 @@ class ListMapper extends BaseMapper
         return $this;
     }
 
-    public function get($name)
+    public function get(string $name): FieldDescriptionInterface
     {
         return $this->list->get($name);
     }
 
-    public function has($key)
+    public function has(string $key): bool
     {
         return $this->list->has($key);
     }
 
-    public function remove($key)
+    public function remove(string $key): self
     {
         $this->admin->removeListFieldDescription($key);
         $this->list->remove($key);
@@ -202,12 +170,18 @@ class ListMapper extends BaseMapper
         return $this;
     }
 
-    final public function keys()
+    /**
+     * @return string[]
+     */
+    final public function keys(): array
     {
         return array_keys($this->list->getElements());
     }
 
-    public function reorder(array $keys)
+    /**
+     * @param string[] $keys
+     */
+    public function reorder(array $keys): self
     {
         $this->list->reorder($keys);
 

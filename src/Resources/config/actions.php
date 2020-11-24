@@ -26,7 +26,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Use "param" function for creating references to parameters when dropping support for Symfony 5.1
     $containerConfigurator->services()
 
-        ->set(DashboardAction::class, DashboardAction::class)
+        ->set('sonata.admin.action.dashboard', DashboardAction::class)
             ->public()
             ->args([
                 '%sonata.admin.configuration.dashboard_blocks%',
@@ -36,7 +36,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('twig'),
             ])
 
-        ->set(SearchAction::class, SearchAction::class)
+        ->set('sonata.admin.action.search', SearchAction::class)
             ->public()
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),

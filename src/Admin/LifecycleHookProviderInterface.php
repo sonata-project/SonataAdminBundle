@@ -19,8 +19,6 @@ namespace Sonata\AdminBundle\Admin;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @method void preValidate($object)
- *
  * @phpstan-template T of object
  */
 interface LifecycleHookProviderInterface
@@ -28,79 +26,53 @@ interface LifecycleHookProviderInterface
     /**
      * This method should call preUpdate, do the update, and call postUpdate.
      *
-     * @param object $object
-     *
-     * @return object
-     *
      * @phpstan-param T $object
      */
-    public function update($object);
+    public function update(object $object): object;
 
     /**
      * This method should call prePersist, do the creation, and call postPersist.
      *
-     * @param object $object
-     *
-     * @return object
-     *
      * @phpstan-param T $object
      */
-    public function create($object);
+    public function create(object $object): object;
 
     /**
      * This method should call preRemove, do the removal, and call postRemove.
      *
-     * @param object $object
-     *
      * @phpstan-param T $object
      */
-    public function delete($object);
+    public function delete(object $object): void;
 
-    //NEXT_MAJOR: uncomment this method for 4.0
-    //    /**
-    //     * @param object $object
-    //     */
-    //    public function preValidate($object);
+    public function preValidate(object $object): void;
 
     /**
-     * @param object $object
-     *
      * @phpstan-param T $object
      */
-    public function preUpdate($object);
+    public function preUpdate(object $object): void;
 
     /**
-     * @param object $object
-     *
      * @phpstan-param T $object
      */
-    public function postUpdate($object);
+    public function postUpdate(object $object): void;
 
     /**
-     * @param object $object
-     *
      * @phpstan-param T $object
      */
-    public function prePersist($object);
+    public function prePersist(object $object): void;
 
     /**
-     * @param object $object
-     *
      * @phpstan-param T $object
      */
-    public function postPersist($object);
+    public function postPersist(object $object): void;
 
     /**
-     * @param object $object
-     *
      * @phpstan-param T $object
      */
-    public function preRemove($object);
+    public function preRemove(object $object): void;
 
     /**
-     * @param object $object
-     *
      * @phpstan-param T $object
      */
-    public function postRemove($object);
+    public function postRemove(object $object): void;
 }

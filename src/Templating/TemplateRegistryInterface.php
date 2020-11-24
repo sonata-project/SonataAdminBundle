@@ -15,8 +15,6 @@ namespace Sonata\AdminBundle\Templating;
 
 /**
  * @author Timo Bakx <timobakx@gmail.com>
- *
- * @method bool hasTemplate(string $name)
  */
 interface TemplateRegistryInterface
 {
@@ -69,15 +67,9 @@ interface TemplateRegistryInterface
     /**
      * @return array<string, string> 'name' => 'file_path.html.twig'
      */
-    public function getTemplates();
+    public function getTemplates(): array;
 
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
-    public function getTemplate($name);
+    public function getTemplate(string $name): string;
 
-    // NEXT_MAJOR: Uncomment the following method
-    // public function hasTemplate(string $name): bool;
+    public function hasTemplate(string $name): bool;
 }

@@ -44,10 +44,7 @@ final class DataTransformerResolverTest extends TestCase
 
     protected function setUp(): void
     {
-        // NEXT_MAJOR: Use `createStub` instead of using mock builder
-        $this->fieldDescription = $this->getMockBuilder(FieldDescriptionInterface::class)
-            ->addMethods(['getTargetModel'])
-            ->getMockForAbstractClass();
+        $this->fieldDescription = $this->createStub(FieldDescriptionInterface::class);
         $this->modelManager = $this->createStub(ModelManagerInterface::class);
         $this->resolver = new DataTransformerResolver();
     }

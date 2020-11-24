@@ -13,32 +13,32 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Datagrid;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Sjoerd Peters <sjoerd.peters@gmail.com>
  */
-class SimplePager extends Pager
+final class SimplePager extends Pager
 {
     /**
      * @var bool
      */
-    protected $haveToPaginate;
+    private $haveToPaginate = false;
 
     /**
      * How many pages to look forward to create links to next pages.
      *
      * @var int
      */
-    protected $threshold;
+    private $threshold;
 
     /**
-     * @var int
+     * thresholdCount is null prior to its initialization in `getResults()`.
+     *
+     * @var int|null
      */
-    protected $thresholdCount;
+    private $thresholdCount;
 
     /**
      * The threshold parameter can be used to determine how far ahead the pager
@@ -48,17 +48,14 @@ class SimplePager extends Pager
      * If set to 2 the pager will generate links to the next two pages
      * If set to 3 the pager will generate links to the next three pages
      * etc.
-     *
-     * @param int $maxPerPage Number of records to display per page
-     * @param int $threshold
      */
-    public function __construct($maxPerPage = 10, $threshold = 1)
+    public function __construct(int $maxPerPage = 10, int $threshold = 1)
     {
         parent::__construct($maxPerPage);
         $this->setThreshold($threshold);
     }
 
-    public function getNbResults()
+    public function getNbResults(): int
     {
         $n = ($this->getLastPage() - 1) * $this->getMaxPerPage();
         if ($this->getLastPage() === $this->getPage()) {
@@ -68,40 +65,41 @@ class SimplePager extends Pager
         return $n;
     }
 
-    public function getResults($hydrationMode = null)
+    public function getResults(?int $hydrationMode = null): array
     {
         if ($this->results) {
             return $this->results;
         }
 
-        $this->results = $this->getQuery()->execute([], $hydrationMode);
-        $this->thresholdCount = \count($this->results);
-        if (\count($this->results) > $this->getMaxPerPage()) {
-            $this->haveToPaginate = true;
+        $results = $this->getQuery()->execute([], $hydrationMode);
 
-            if ($this->results instanceof ArrayCollection) {
-                $this->results = new ArrayCollection($this->results->slice(0, $this->getMaxPerPage()));
-            } else {
-                $this->results = new ArrayCollection(\array_slice($this->results, 0, $this->getMaxPerPage()));
-            }
+        // doctrine/phpcr-odm returns ArrayCollection
+        if ($results instanceof Collection) {
+            $results = $results->toArray();
+        }
+
+        $this->thresholdCount = \count($results);
+
+        if (\count($results) > $this->getMaxPerPage()) {
+            $this->haveToPaginate = true;
+            $this->results = \array_slice($results, 0, $this->getMaxPerPage());
         } else {
             $this->haveToPaginate = false;
+            $this->results = $results;
         }
 
         return $this->results;
     }
 
-    public function haveToPaginate()
+    public function haveToPaginate(): bool
     {
         return $this->haveToPaginate || $this->getPage() > 1;
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws \RuntimeException the QueryBuilder is uninitialized
      */
-    public function init()
+    public function init(): void
     {
         if (!$this->getQuery()) {
             throw new \RuntimeException('Uninitialized QueryBuilder');
@@ -129,23 +127,18 @@ class SimplePager extends Pager
 
     /**
      * Set how many pages to look forward to create links to next pages.
-     *
-     * @param int $threshold
      */
-    public function setThreshold($threshold)
+    public function setThreshold(int $threshold): void
     {
-        $this->threshold = (int) $threshold;
+        $this->threshold = $threshold;
     }
 
-    /**
-     * @return int
-     */
-    public function getThreshold()
+    public function getThreshold(): int
     {
         return $this->threshold;
     }
 
-    protected function resetIterator()
+    protected function resetIterator(): void
     {
         parent::resetIterator();
         $this->haveToPaginate = false;

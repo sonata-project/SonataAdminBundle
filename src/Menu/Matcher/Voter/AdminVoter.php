@@ -16,63 +16,34 @@ namespace Sonata\AdminBundle\Menu\Matcher\Voter;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Admin menu voter based on extra `admin`.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Samusev Andrey <andrey.simfi@ya.ru>
  */
-class AdminVoter implements VoterInterface
+final class AdminVoter implements VoterInterface
 {
     /**
      * @var RequestStack
      */
     private $requestStack;
 
-    /**
-     * @var Request|null
-     */
-    private $request;
-
-    public function __construct(?RequestStack $requestStack = null)
+    public function __construct(RequestStack $requestStack)
     {
         $this->requestStack = $requestStack;
-    }
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.31. Pass a RequestStack to the constructor instead.
-     *
-     * @return static
-     */
-    public function setRequest($request)
-    {
-        @trigger_error(sprintf(
-            'The %s() method is deprecated since version 3.31. Pass a %s in the constructor instead.',
-            __METHOD__,
-            RequestStack::class
-        ), E_USER_DEPRECATED);
-
-        $this->request = $request;
-
-        return $this;
     }
 
     public function matchItem(ItemInterface $item): ?bool
     {
         $admin = $item->getExtra('admin');
 
-        $request = $this->request;
-        if (null !== $this->requestStack) {
-            $request = $this->requestStack->getMasterRequest();
-        }
+        $request = $this->requestStack->getMasterRequest();
 
         if ($admin instanceof AdminInterface
             && $admin->hasRoute('list') && $admin->hasAccess('list')
-            && $request
+            && null !== $request
         ) {
             $requestCode = $request->get('_sonata_admin');
 

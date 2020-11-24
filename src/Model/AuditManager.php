@@ -16,38 +16,32 @@ namespace Sonata\AdminBundle\Model;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AuditManager implements AuditManagerInterface
+final class AuditManager implements AuditManagerInterface
 {
     /**
-     * @var array
+     * @var array<string, string[]>
+     * @phpstan-var array<string, class-string[]>
      */
-    protected $classes = [];
-
-    /**
-     * @var array
-     */
-    protected $readers = [];
+    private $readers = [];
 
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    private $container;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
-    public function setReader($serviceId, array $classes)
+    public function setReader(string $serviceId, array $classes): void
     {
         $this->readers[$serviceId] = $classes;
     }
 
-    public function hasReader($class)
+    public function hasReader(string $class): bool
     {
         foreach ($this->readers as $classes) {
             if (\in_array($class, $classes, true)) {
@@ -58,7 +52,7 @@ class AuditManager implements AuditManagerInterface
         return false;
     }
 
-    public function getReader($class)
+    public function getReader(string $class): AuditReaderInterface
     {
         foreach ($this->readers as $readerId => $classes) {
             if (\in_array($class, $classes, true)) {
@@ -66,7 +60,6 @@ class AuditManager implements AuditManagerInterface
             }
         }
 
-        // NEXT_MAJOR: Throw a \LogicException instead.
-        throw new \RuntimeException(sprintf('The class "%s" does not have any reader manager', $class));
+        throw new \LogicException(sprintf('The class "%s" does not have any reader manager', $class));
     }
 }

@@ -41,22 +41,23 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *  - a button to open the associated admin create form in a dialog,
  *    in order to create and select an associated model.
  *  - a button to unlink the associated model, if any.
- *
- * @final since sonata-project/admin-bundle 3.52
  */
-class ModelListType extends AbstractType
+final class ModelListType extends AbstractType
 {
     /**
      * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->resetViewTransformers()
             ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    /**
+     * @param array<string, mixed> $options
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         if (isset($view->vars['sonata_admin'])) {
             // set the correct edit mode
@@ -69,10 +70,7 @@ class ModelListType extends AbstractType
         $view->vars['btn_catalogue'] = $options['btn_catalogue'];
     }
 
-    /**
-     * @return void
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'model_manager' => null,
@@ -86,26 +84,14 @@ class ModelListType extends AbstractType
     }
 
     /**
-     * @return string
-     *
      * @phpstan-return class-string<FormTypeInterface>
      */
-    public function getParent()
+    public function getParent(): string
     {
         return TextType::class;
     }
 
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_model_list';
     }

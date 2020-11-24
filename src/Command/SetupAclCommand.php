@@ -21,11 +21,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class SetupAclCommand extends Command
+final class SetupAclCommand extends Command
 {
     protected static $defaultName = 'sonata:admin:setup-acl';
 
@@ -47,12 +45,12 @@ class SetupAclCommand extends Command
         parent::__construct();
     }
 
-    public function configure()
+    public function configure(): void
     {
         $this->setDescription('Install ACL for Admin Classes');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Starting ACL AdminBundle configuration');
 

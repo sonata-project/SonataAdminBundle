@@ -27,5 +27,5 @@ interface BuilderInterface
      * @param AdminInterface            $admin            will be used to gather information
      * @param FieldDescriptionInterface $fieldDescription will be modified
      */
-    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription);
+    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription): void;
 }

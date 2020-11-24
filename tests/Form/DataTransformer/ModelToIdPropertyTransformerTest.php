@@ -126,12 +126,6 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 
-        $collection = new ArrayCollection();
-        $this->modelManager
-            ->method('getModelCollectionInstance')
-            ->with($this->equalTo(Foo::class))
-            ->willReturn($collection);
-
         $result = $transformer->reverseTransform($params);
         $this->assertInstanceOf(ArrayCollection::class, $result);
         $this->assertSame($expected, $result->getValues());
@@ -197,24 +191,6 @@ class ModelToIdPropertyTransformerTest extends TestCase
         });
 
         $this->assertSame([123, '_labels' => ['bazz']], $transformer->transform($model));
-    }
-
-    public function testTransformToStringCallbackException(): void
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Callback in "to_string_callback" option doesn`t contain callable function.');
-
-        $model = new Foo();
-        $model->setBar('example');
-        $model->setBaz('bazz');
-
-        $this->modelManager->expects($this->once())
-            ->method('getIdentifierValues')
-            ->willReturn([123]);
-
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, '987654');
-
-        $transformer->transform($model);
     }
 
     public function testTransformMultiple(): void

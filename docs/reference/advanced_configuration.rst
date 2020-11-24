@@ -358,7 +358,6 @@ You can add or override filter parameters to the Tab Menu::
         }
     }
 
-The `Delivery` class is based on the `sonata_type_translatable_choice` example inside the `Core's documentation`_.
 
 Actions Menu
 ------------
@@ -369,15 +368,15 @@ overriding the following method::
     public function configureActionButtons(AdminInterface $admin, $list, $action, $object)
     {
         if (in_array($action, ['show', 'edit', 'acl']) && $object) {
-            $list['custom'] = [
+            $buttonList['custom'] = [
                 'template' => '@App/Button/custom_button.html.twig',
             ];
         }
 
         // Remove history action
-        unset($list['history']);
+        unset($buttonList['history']);
 
-        return $list;
+        return $buttonList;
     }
 
 .. figure:: ../images/custom_action_buttons.png
@@ -449,5 +448,3 @@ by overriding ``checkAccess`` function::
             $this->customAccessLogic();
         }
     }
-
-.. _`Core's documentation`: https://sonata-project.org/bundles/core/master/doc/reference/form_types.html#sonata-type-translatable-choice

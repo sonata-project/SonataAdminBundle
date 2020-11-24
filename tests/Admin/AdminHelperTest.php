@@ -17,19 +17,18 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Bar;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PropertyAccess\PropertyAccessorBuilder;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class AdminHelperTest extends TestCase
 {
@@ -40,10 +39,7 @@ class AdminHelperTest extends TestCase
 
     protected function setUp(): void
     {
-        $container = new Container();
-
-        $pool = new Pool($container, 'title', 'logo.png');
-        $this->helper = new AdminHelper($pool);
+        $this->helper = new AdminHelper(PropertyAccess::createPropertyAccessor());
     }
 
     public function testGetChildFormBuilder(): void
@@ -72,81 +68,6 @@ class AdminHelperTest extends TestCase
         $this->assertInstanceOf(FormView::class, $this->helper->getChildFormView($formView, 'test_elementId'));
     }
 
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     *
-     * @expectedDeprecation Method Sonata\AdminBundle\Admin\AdminHelper::addNewInstance() is deprecated since sonata-project/admin-bundle 3.72. It will be removed in version 4.0. Use Sonata\AdminBundle\Manipulator\ObjectManipulator::addInstance() instead.
-     */
-    public function testAddNewInstance(): void
-    {
-        $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->once())->method('getNewInstance')->willReturn(new \stdClass());
-
-        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getAssociationAdmin')->willReturn($admin);
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBar']);
-        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([]);
-
-        $object = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['addFooBar'])
-            ->getMock();
-        $object->expects($this->once())->method('addFooBar');
-
-        $this->helper->addNewInstance($object, $fieldDescription);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     *
-     * @expectedDeprecation Method Sonata\AdminBundle\Admin\AdminHelper::addNewInstance() is deprecated since sonata-project/admin-bundle 3.72. It will be removed in version 4.0. Use Sonata\AdminBundle\Manipulator\ObjectManipulator::addInstance() instead.
-     */
-    public function testAddNewInstancePlural(): void
-    {
-        $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->once())->method('getNewInstance')->willReturn(new \stdClass());
-
-        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getAssociationAdmin')->willReturn($admin);
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBars']);
-        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([]);
-
-        $object = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['addFooBar'])
-            ->getMock();
-        $object->expects($this->once())->method('addFooBar');
-
-        $this->helper->addNewInstance($object, $fieldDescription);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     *
-     * @expectedDeprecation Method Sonata\AdminBundle\Admin\AdminHelper::addNewInstance() is deprecated since sonata-project/admin-bundle 3.72. It will be removed in version 4.0. Use Sonata\AdminBundle\Manipulator\ObjectManipulator::addInstance() instead.
-     */
-    public function testAddNewInstanceInflector(): void
-    {
-        $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->once())->method('getNewInstance')->willReturn(new \stdClass());
-
-        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getAssociationAdmin')->willReturn($admin);
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['fieldName' => 'entries']);
-        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([]);
-
-        $object = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['addEntry'])
-            ->getMock();
-        $object->expects($this->once())->method('addEntry');
-
-        $this->helper->addNewInstance($object, $fieldDescription);
-    }
-
     public function testGetElementAccessPath(): void
     {
         $object = $this->getMockBuilder(\stdClass::class)
@@ -163,7 +84,11 @@ class AdminHelperTest extends TestCase
         $subObject->expects($this->atLeastOnce())->method('getAnother')->willReturn($sub2Object);
         $sub2Object->expects($this->atLeastOnce())->method('getMoreThings')->willReturn('Value');
 
-        $path = $this->helper->getElementAccessPath('uniquePartOfId_path_to_object_0_another_more_things', $object);
+        $path = $this->getMethodAsPublic('getElementAccessPath')->invoke(
+            $this->helper,
+            'uniquePartOfId_path_to_object_0_another_more_things',
+            $object
+        );
 
         $this->assertSame('path_to_object[0].another.more_things', $path);
     }
@@ -184,18 +109,15 @@ class AdminHelperTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage(sprintf('Could not get element id from %s Failing part: calls', $path));
 
-        $this->helper->getElementAccessPath($path, $object);
+        $this->getMethodAsPublic('getElementAccessPath')->invoke(
+            $this->helper,
+            $path,
+            $object
+        );
     }
 
     public function testAppendFormFieldElement(): void
     {
-        $container = new Container();
-
-        $propertyAccessorBuilder = new PropertyAccessorBuilder();
-        $propertyAccessor = $propertyAccessorBuilder->getPropertyAccessor();
-        $pool = new Pool($container, 'title', 'logo.png', [], $propertyAccessor);
-        $helper = new AdminHelper($pool);
-
         $admin = $this->createMock(AdminInterface::class);
         $admin
             ->method('getClass')
@@ -245,8 +167,9 @@ class AdminHelperTest extends TestCase
         $request->request = new ParameterBag();
 
         $admin
+            ->expects($this->atLeastOnce())
             ->method('getRequest')
-            ->will($this->onConsecutiveCalls($request, $request, $request, null, $request, $request, $request, $request, null, $request));
+            ->willReturn($request);
 
         $foo = $this->createMock(Foo::class);
         $admin
@@ -276,6 +199,7 @@ class AdminHelperTest extends TestCase
         $subChildFormBuilder->setDataMapper($dataMapper);
         $childFormBuilder->add($subChildFormBuilder);
 
+        $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
         $formBuilder->setCompound(true);
         $formBuilder->setDataMapper($dataMapper);
         $formBuilder->add($childFormBuilder);
@@ -283,7 +207,7 @@ class AdminHelperTest extends TestCase
         $associationAdmin->expects($this->atLeastOnce())->method('setSubject')->with($bar);
         $admin->method('getFormBuilder')->willReturn($formBuilder);
 
-        $finalForm = $helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
+        $finalForm = $this->helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
 
         foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
             $this->assertFalse($childField->has('_delete'));
@@ -292,7 +216,7 @@ class AdminHelperTest extends TestCase
         $deleteFormBuilder = new FormBuilder('_delete', null, $eventDispatcher, $formFactory);
         $subChildFormBuilder->add($deleteFormBuilder, CheckboxType::class, ['delete' => false]);
 
-        $finalForm = $helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
+        $finalForm = $this->helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
 
         foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
             $this->assertTrue($childField->has('_delete'));
@@ -303,6 +227,26 @@ class AdminHelperTest extends TestCase
     public function testAppendFormFieldElementNested(): void
     {
         $admin = $this->createMock(AdminInterface::class);
+        $request = $this->createMock(Request::class);
+        $request
+            ->method('get')
+            ->willReturn([
+                'bar' => [
+                    [
+                        'baz' => [
+                            'baz' => true,
+                        ],
+                    ],
+                    ['_delete' => true],
+                ],
+            ]);
+
+        $request->request = new ParameterBag();
+
+        $admin
+            ->expects($this->atLeastOnce())
+            ->method('getRequest')
+            ->willReturn($request);
         $object = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getSubObject'])
             ->getMock();
@@ -327,6 +271,7 @@ class AdminHelperTest extends TestCase
         $sub2Object->expects($this->atLeastOnce())->method('getMore')->willReturn([$sub3Object]);
         $sub3Object->expects($this->atLeastOnce())->method('getFinalData')->willReturn('value');
 
+        $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
         $formBuilder->setCompound(true);
         $formBuilder->setDataMapper($dataMapper);
         $formBuilder->add($childFormBuilder);
@@ -339,5 +284,13 @@ class AdminHelperTest extends TestCase
         $this->expectExceptionMessage('unknown collection class');
 
         $this->helper->appendFormFieldElement($admin, $object, 'uniquePartOfId_sub_object_0_and_more_0_final_data');
+    }
+
+    private function getMethodAsPublic($privateMethod): \ReflectionMethod
+    {
+        $reflectionMethod = new \ReflectionMethod('Sonata\AdminBundle\Admin\AdminHelper', $privateMethod);
+        $reflectionMethod->setAccessible(true);
+
+        return $reflectionMethod;
     }
 }

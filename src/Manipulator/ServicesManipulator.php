@@ -16,12 +16,10 @@ namespace Sonata\AdminBundle\Manipulator;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Marek Stipek <mario.dweller@seznam.cz>
  * @author Simon Cosandey <simon.cosandey@simseo.ch>
  */
-class ServicesManipulator
+final class ServicesManipulator
 {
     /**
      * @var string
@@ -56,7 +54,7 @@ class ServicesManipulator
      *
      * @throws \RuntimeException
      */
-    public function addResource($serviceId, $modelClass, $adminClass, $controllerName, $managerType)
+    public function addResource($serviceId, $modelClass, $adminClass, $controllerName, $managerType): void
     {
         $code = "services:\n";
 

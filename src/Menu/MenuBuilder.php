@@ -18,17 +18,15 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Event\ConfigureMenuEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Sonata menu builder.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Martin Hasoň <martin.hason@gmail.com>
  * @author Alexandru Furculita <alex@furculita.net>
  */
-class MenuBuilder
+final class MenuBuilder
 {
     /**
      * @var Pool
@@ -64,10 +62,8 @@ class MenuBuilder
 
     /**
      * Builds sidebar menu.
-     *
-     * @return ItemInterface
      */
-    public function createSidebarMenu()
+    public function createSidebarMenu(): ItemInterface
     {
         $menu = $this->factory->createItem('root');
 

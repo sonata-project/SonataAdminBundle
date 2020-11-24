@@ -23,17 +23,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * This type define an ACL matrix.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Samuel Roze <samuel@sroze.io>
  * @author Baptiste Meyer <baptiste@les-tilleuls.coop>
  */
-class AclMatrixType extends AbstractType
+final class AclMatrixType extends AbstractType
 {
     /**
      * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $aclValueType = $options['acl_value'] instanceof UserInterface ? 'user' : 'role';
         $aclValueData = $options['acl_value'] instanceof UserInterface ? $options['acl_value']->getUsername() : $options['acl_value'];
@@ -47,27 +45,14 @@ class AclMatrixType extends AbstractType
         }
     }
 
-    /**
-     * @return void
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['permissions', 'acl_value']);
         $resolver->setAllowedTypes('permissions', 'array');
         $resolver->setAllowedTypes('acl_value', ['string', UserInterface::class]);
     }
 
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_acl_matrix';
     }

@@ -92,7 +92,6 @@ Full Configuration Options
 
                 # Enable locking when editing an object, if the corresponding object manager supports it.
                 lock_protection: false
-
             dashboard:
                 groups:
 

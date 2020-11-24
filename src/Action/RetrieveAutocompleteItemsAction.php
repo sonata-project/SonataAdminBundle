@@ -184,20 +184,13 @@ final class RetrieveAutocompleteItemsAction
         AdminInterface $admin,
         string $field
     ): FieldDescriptionInterface {
-        $fieldDescription = $admin->getFilterFieldDescription($field);
-
-        if (!$fieldDescription) {
+        if (!$admin->hasFilterFieldDescription($field)) {
             throw new \RuntimeException(sprintf('The field "%s" does not exist.', $field));
         }
 
-        // NEXT_MAJOR: Remove the check and use `getTargetModel`.
-        if (method_exists($fieldDescription, 'getTargetModel')) {
-            $targetModel = $fieldDescription->getTargetModel();
-        } else {
-            $targetModel = $fieldDescription->getTargetEntity();
-        }
+        $fieldDescription = $admin->getFilterFieldDescription($field);
 
-        if (null === $targetModel) {
+        if (null === $fieldDescription->getTargetModel()) {
             throw new \RuntimeException(sprintf('No associated entity with field "%s".', $field));
         }
 
@@ -213,20 +206,13 @@ final class RetrieveAutocompleteItemsAction
         AdminInterface $admin,
         string $field
     ): FieldDescriptionInterface {
-        $fieldDescription = $admin->getFormFieldDescription($field);
-
-        if (!$fieldDescription) {
+        if (!$admin->hasFormFieldDescription($field)) {
             throw new \RuntimeException(sprintf('The field "%s" does not exist.', $field));
         }
 
-        // NEXT_MAJOR: Remove the check and use `getTargetModel`.
-        if (method_exists($fieldDescription, 'getTargetModel')) {
-            $targetModel = $fieldDescription->getTargetModel();
-        } else {
-            $targetModel = $fieldDescription->getTargetEntity();
-        }
+        $fieldDescription = $admin->getFormFieldDescription($field);
 
-        if (null === $targetModel) {
+        if (null === $fieldDescription->getTargetModel()) {
             throw new \RuntimeException(sprintf('No associated entity with field "%s".', $field));
         }
 

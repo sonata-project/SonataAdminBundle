@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Mapper;
 
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-
 /**
  * This class is used to simulate the Form API.
  *
@@ -40,14 +38,13 @@ abstract class BaseGroupedMapper extends BaseMapper
     /**
      * Add new group or tab (if parameter "tab=true" is available in options).
      *
-     * @param string               $name
      * @param array<string, mixed> $options
      *
      * @throws \LogicException
      *
      * @return static
      */
-    public function with($name, array $options = [])
+    public function with(string $name, array $options = []): self
     {
         if (!$this->shouldApply()) {
             return $this;
@@ -77,21 +74,13 @@ abstract class BaseGroupedMapper extends BaseMapper
             'collapsed' => false,
             'class' => false,
             'description' => false,
-            'label' => $name, // NEXT_MAJOR: Remove this line and uncomment the next one
-//            'label' => $this->admin->getLabelTranslatorStrategy()->getLabel($name, $this->getName(), 'group'),
+            'label' => $this->admin->getLabelTranslatorStrategy()->getLabel($name, $this->getName(), 'group'),
             'translation_domain' => null,
             'name' => $name,
             'box_class' => 'box box-primary',
             'empty_message' => 'message_form_group_empty',
             'empty_message_translation_domain' => 'SonataAdminBundle',
         ];
-
-        // NEXT_MAJOR: remove this code
-        if ($this->admin instanceof AbstractAdmin && $pool = $this->admin->getConfigurationPool()) {
-            if ($pool->getContainer('sonata_deprecation_mute')->getParameter('sonata.admin.configuration.translate_group_label')) {
-                $defaultOptions['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($name, $this->getName(), 'group');
-            }
-        }
 
         $code = $name;
 
@@ -175,11 +164,9 @@ abstract class BaseGroupedMapper extends BaseMapper
     /**
      * Only nested add if the condition match true.
      *
-     * @param bool $bool
-     *
      * @return static
      */
-    public function ifTrue($bool)
+    public function ifTrue(bool $bool): self
     {
         $this->apply[] = true === $bool;
 
@@ -189,11 +176,9 @@ abstract class BaseGroupedMapper extends BaseMapper
     /**
      * Only nested add if the condition match false.
      *
-     * @param bool $bool
-     *
      * @return static
      */
-    public function ifFalse($bool)
+    public function ifFalse(bool $bool): self
     {
         $this->apply[] = false === $bool;
 
@@ -205,7 +190,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * @return static
      */
-    public function ifEnd()
+    public function ifEnd(): self
     {
         if (empty($this->apply)) {
             throw new \LogicException('No open ifTrue() or ifFalse(), you cannot use ifEnd()');
@@ -219,12 +204,11 @@ abstract class BaseGroupedMapper extends BaseMapper
     /**
      * Add new tab.
      *
-     * @param string               $name
      * @param array<string, mixed> $options
      *
      * @return static
      */
-    public function tab($name, array $options = [])
+    public function tab(string $name, array $options = []): self
     {
         return $this->with($name, array_merge($options, ['tab' => true]));
     }
@@ -236,7 +220,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * @return static
      */
-    public function end()
+    public function end(): self
     {
         if (!$this->shouldApply()) {
             return $this;
@@ -255,10 +239,8 @@ abstract class BaseGroupedMapper extends BaseMapper
 
     /**
      * Returns a boolean indicating if there is an open tab at the moment.
-     *
-     * @return bool
      */
-    public function hasOpenTab()
+    public function hasOpenTab(): bool
     {
         return null !== $this->currentTab;
     }
@@ -266,46 +248,29 @@ abstract class BaseGroupedMapper extends BaseMapper
     /**
      * @return array<string, array<string, mixed>>
      */
-    abstract protected function getGroups();
+    abstract protected function getGroups(): array;
 
     /**
      * @return array<string, array<string, mixed>>
      */
-    abstract protected function getTabs();
+    abstract protected function getTabs(): array;
 
     /**
      * @param array<string, array<string, mixed>> $groups
      */
-    abstract protected function setGroups(array $groups);
+    abstract protected function setGroups(array $groups): void;
 
     /**
      * @param array<string, array<string, mixed>> $tabs
      */
-    abstract protected function setTabs(array $tabs);
+    abstract protected function setTabs(array $tabs): void;
+
+    abstract protected function getName(): string;
 
     /**
-     * NEXT_MAJOR: make this method abstract.
-     *
-     * @return string
-     */
-    protected function getName()
-    {
-        @trigger_error(sprintf(
-            '%s should be implemented and will be abstract in 4.0.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-
-        return 'default';
-    }
-
-    /**
-     * Add the field name to the current group.
-     *
-     * @param string $fieldName
-     *
      * @return array<string, mixed>
      */
-    protected function addFieldToCurrentGroup($fieldName)
+    protected function addFieldToCurrentGroup(string $fieldName): array
     {
         // Note this line must happen before the next line.
         // See https://github.com/sonata-project/SonataAdminBundle/pull/1351
@@ -323,16 +288,20 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * Note that this can have the side effect to change the 'group' value
      * returned by the getGroup function
-     *
-     * @return string
      */
-    protected function getCurrentGroupName()
+    protected function getCurrentGroupName(): string
     {
         if (!$this->currentGroup) {
-            $this->with($this->admin->getLabel(), [
-                'auto_created' => true,
-                'translation_domain' => $this->admin->getTranslationDomain(),
-            ]);
+            $label = $this->admin->getLabel();
+
+            if (null === $label) {
+                $this->with('default', ['auto_created' => true]);
+            } else {
+                $this->with($label, [
+                    'auto_created' => true,
+                    'translation_domain' => $this->admin->getTranslationDomain(),
+                ]);
+            }
         }
 
         return $this->currentGroup;

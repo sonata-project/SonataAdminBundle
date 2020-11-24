@@ -16,127 +16,55 @@ namespace Sonata\AdminBundle\Block;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Search\SearchHandler;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AdminSearchBlockService extends AbstractBlockService
+final class AdminSearchBlockService extends AbstractBlockService
 {
     /**
      * @var Pool
      */
-    protected $pool;
+    private $pool;
 
     /**
      * @var SearchHandler
      */
-    protected $searchHandler;
+    private $searchHandler;
 
     /**
-     * NEXT_MAJOR: Change var to string and phpstan-var to 'show'|'hide'|'fade'.
-     *
-     * @var string|null
-     *
-     * @phpstan-var 'show'|'hide'|'fade'|null
+     * @var TemplateRegistryInterface
+     */
+    private $templateRegistry;
+
+    /**
+     * @var string
      */
     private $emptyBoxesOption;
 
     /**
-     * NEXT_MAJOR: Change signature for (Environment $twig, Pool $pool, SearchHandler $searchHandler, string $emptyBoxesOption).
-     *
-     * @param Environment|string        $twigOrName
-     * @param Pool|EngineInterface|null $poolOrTemplating
-     * @param SearchHandler|Pool        $searchHandlerOrPool
-     * @param string|SearchHandler|null $emptyBoxesOptionOrSearchHandler
-     *
-     * @phpstan-param 'show'|'hide'|'fade'|SearchHandler|null $emptyBoxesOptionOrSearchHandler
-     * @phpstan-param 'show'|'hide'|'fade'|null               $emptyBoxesOption
+     * @phpstan-param 'show'|'hide'|'fade' $emptyBoxesOption
      */
-    public function __construct($twigOrName, ?object $poolOrTemplating, object $searchHandlerOrPool, $emptyBoxesOptionOrSearchHandler = null, ?string $emptyBoxesOption = null)
-    {
-        if ($poolOrTemplating instanceof Pool) {
-            if (!$twigOrName instanceof Environment) {
-                throw new \TypeError(sprintf(
-                    'Argument 1 passed to %s() must be an instance of %s, %s given.',
-                    __METHOD__,
-                    Environment::class,
-                    \is_object($twigOrName) ? 'instance of '.\get_class($twigOrName) : \gettype($twigOrName)
-                ));
-            }
+    public function __construct(
+        Environment $twig,
+        Pool $pool,
+        SearchHandler $searchHandler,
+        TemplateRegistryInterface $templateRegistry,
+        string $emptyBoxesOption
+    ) {
+        parent::__construct($twig);
 
-            if (!$searchHandlerOrPool instanceof SearchHandler) {
-                throw new \TypeError(sprintf(
-                    'Argument 3 passed to %s() must be an instance of %s, instance of %s given.',
-                    __METHOD__,
-                    SearchHandler::class,
-                    \get_class($twigOrName)
-                ));
-            }
-
-            parent::__construct($twigOrName);
-
-            if (!\is_string($emptyBoxesOptionOrSearchHandler)) {
-                @trigger_error(sprintf(
-                    'Not passing a string as argument 4 to %s() is deprecated since sonata-project/admin-bundle 3.81'
-                    .' and will throw a \TypeError in version 4.0.',
-                    __METHOD__
-                ), E_USER_DEPRECATED);
-            }
-
-            $this->pool = $poolOrTemplating;
-            $this->searchHandler = $searchHandlerOrPool;
-            $this->emptyBoxesOption = $emptyBoxesOptionOrSearchHandler;
-        } elseif (null === $poolOrTemplating || $poolOrTemplating instanceof EngineInterface) {
-            @trigger_error(sprintf(
-                'Passing %s as argument 2 to %s() is deprecated since sonata-project/admin-bundle 3.76'
-                .' and will throw a \TypeError in version 4.0. You must pass an instance of %s instead.',
-                null === $poolOrTemplating ? 'null' : EngineInterface::class,
-                __METHOD__,
-                Pool::class
-            ), E_USER_DEPRECATED);
-
-            if (!$searchHandlerOrPool instanceof Pool) {
-                throw new \TypeError(sprintf(
-                    'Argument 2 passed to %s() must be an instance of %s, instance of %s given.',
-                    __METHOD__,
-                    Pool::class,
-                    \get_class($twigOrName)
-                ));
-            }
-
-            if (null === $emptyBoxesOptionOrSearchHandler) {
-                throw new \TypeError(sprintf(
-                    'Passing null as argument 3 to %s() is not allowed when %s is passed as argument 2.'
-                    .' You must pass an instance of %s instead.',
-                    __METHOD__,
-                    EngineInterface::class,
-                    SearchHandler::class
-                ));
-            }
-
-            parent::__construct($twigOrName, $poolOrTemplating);
-
-            $this->pool = $searchHandlerOrPool;
-            $this->searchHandler = $emptyBoxesOptionOrSearchHandler;
-            $this->emptyBoxesOption = $emptyBoxesOption;
-        } else {
-            throw new \TypeError(sprintf(
-                'Argument 2 passed to %s() must be either null or an instance of %s or preferably %s, instance of %s given.',
-                __METHOD__,
-                EngineInterface::class,
-                Pool::class,
-                \get_class($poolOrTemplating)
-            ));
-        }
+        $this->pool = $pool;
+        $this->searchHandler = $searchHandler;
+        $this->templateRegistry = $templateRegistry;
+        $this->emptyBoxesOption = $emptyBoxesOption;
     }
 
     public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
@@ -160,13 +88,13 @@ class AdminSearchBlockService extends AbstractBlockService
             $blockContext->getSetting('per_page')
         );
 
-        if (false === $pager) {
+        if (null === $pager) {
             $response = $response ?: new Response();
 
             return $response->setContent('')->setStatusCode(204);
         }
 
-        return $this->renderPrivateResponse($admin->getTemplate('search_result_block'), [
+        return $this->renderPrivateResponse($this->templateRegistry->getTemplate('search_result_block'), [
             'block' => $blockContext->getBlock(),
             'settings' => $blockContext->getSettings(),
             'admin_pool' => $this->pool,
@@ -174,11 +102,6 @@ class AdminSearchBlockService extends AbstractBlockService
             'admin' => $admin,
             'show_empty_boxes' => $this->emptyBoxesOption,
         ], $response);
-    }
-
-    public function getName()
-    {
-        return 'Admin Search Result';
     }
 
     public function configureSettings(OptionsResolver $resolver): void

@@ -37,26 +37,28 @@ final class AssetsInstallCommandListener
     public const METHOD_ABSOLUTE_SYMLINK = 'absolute symlink';
     public const METHOD_RELATIVE_SYMLINK = 'relative symlink';
 
+    /**
+     * @var string
+     */
     protected static $defaultName = 'assets:install';
 
+    /**
+     * @var Filesystem
+     */
     private $filesystem;
+
+    /**
+     * @var string
+     */
     private $projectDir;
 
-    public function __construct(Filesystem $filesystem, ?string $projectDir = null)
+    public function __construct(Filesystem $filesystem, string $projectDir)
     {
-        if (null === $projectDir) {
-            @trigger_error(sprintf(
-                'Not passing the project directory to the constructor of %s is deprecated since Symfony 4.3'
-                .' and will not be supported in 5.0.',
-                __CLASS__
-            ), E_USER_DEPRECATED);
-        }
-
         $this->filesystem = $filesystem;
         $this->projectDir = $projectDir;
     }
 
-    public function copySonataCoreBundleAssets(ConsoleTerminateEvent $event)
+    public function copySonataCoreBundleAssets(ConsoleTerminateEvent $event): void
     {
         $command = $event->getCommand();
         $application = $command->getApplication();
@@ -217,7 +219,7 @@ final class AssetsInstallCommandListener
      *
      * @throws IOException if link can not be created
      */
-    private function symlink(string $originDir, string $targetDir, bool $relative = false)
+    private function symlink(string $originDir, string $targetDir, bool $relative = false): void
     {
         if ($relative) {
             $this->filesystem->mkdir(\dirname($targetDir));

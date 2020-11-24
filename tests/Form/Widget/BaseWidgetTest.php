@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\Widget;
 
+use Sonata\AdminBundle\Tests\Fixtures\StubTranslator;
 use Sonata\Form\Test\AbstractWidgetTestCase;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
-use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslator;
 use Twig\Environment;
 
 /**
@@ -94,8 +94,11 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
      */
     protected function getTemplatePaths(): array
     {
-        return array_merge(parent::getTemplatePaths(), [
+        $twigPaths = array_filter([
+            sprintf('%s/../../../vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form', __DIR__),
             sprintf('%s/../../../src/Resources/views/Form', __DIR__),
-        ]);
+        ], 'is_dir');
+
+        return array_merge(parent::getTemplatePaths(), $twigPaths);
     }
 }

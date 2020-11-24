@@ -23,56 +23,49 @@ use Symfony\Component\Form\DataTransformerInterface;
 /**
  * Transform object to ID and property label.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  *
  * @phpstan-template T of object
  */
-class ModelToIdPropertyTransformer implements DataTransformerInterface
+final class ModelToIdPropertyTransformer implements DataTransformerInterface
 {
     /**
      * @var ModelManagerInterface
      */
-    protected $modelManager;
+    private $modelManager;
 
     /**
      * @var string
      *
      * @phpstan-var class-string<T>
      */
-    protected $className;
+    private $className;
 
     /**
      * @var string
      */
-    protected $property;
+    private $property;
 
     /**
      * @var bool
      */
-    protected $multiple;
+    private $multiple;
 
     /**
      * @var callable|null
      */
-    protected $toStringCallback;
+    private $toStringCallback;
 
     /**
-     * @param string        $className
-     * @param string        $property
-     * @param bool          $multiple
-     * @param callable|null $toStringCallback
-     *
      * @phpstan-param class-string<T> $className
      * @phpstan-param null|callable(object, string): string $toStringCallback
      */
     public function __construct(
         ModelManagerInterface $modelManager,
-        $className,
-        $property,
-        $multiple = false,
-        $toStringCallback = null
+        string $className,
+        string $property,
+        bool $multiple = false,
+        ?callable $toStringCallback = null
     ) {
         $this->modelManager = $modelManager;
         $this->className = $className;
@@ -83,6 +76,8 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
 
     /**
      * @param mixed $value
+     *
+     * @throws \UnexpectedValueException
      *
      * @return Collection<int|string, object>|object|null
      *
@@ -126,7 +121,9 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
     /**
      * @param object|object[]|null $value
      *
-     * @return mixed[]
+     * @throws \InvalidArgumentException
+     *
+     * @return array<string|int, int|string|array<string>>
      *
      * @phpstan-param T|T[]|null $value
      */
@@ -170,7 +167,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
             }
         }
 
-        if (empty($this->property)) {
+        if ('' === $this->property) {
             throw new \RuntimeException('Please define "property" parameter.');
         }
 
@@ -178,22 +175,14 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
             $id = current($this->modelManager->getIdentifierValues($model));
 
             if (null !== $this->toStringCallback) {
-                if (!\is_callable($this->toStringCallback)) {
-                    throw new \RuntimeException(
-                        'Callback in "to_string_callback" option doesn`t contain callable function.'
-                    );
-                }
-
                 $label = ($this->toStringCallback)($model, $this->property);
+            } elseif (method_exists($model, '__toString')) {
+                $label = (string) $model;
             } else {
-                try {
-                    $label = (string) $model;
-                } catch (\Exception $e) {
-                    throw new \RuntimeException(sprintf(
-                        'Unable to convert the entity %s to String, entity must have a \'__toString()\' method defined',
-                        ClassUtils::getClass($model)
-                    ), 0, $e);
-                }
+                throw new \RuntimeException(sprintf(
+                    'Unable to convert the entity %s to String, entity must have a \'__toString()\' method defined',
+                    ClassUtils::getClass($model)
+                ));
             }
 
             $result[] = $id;

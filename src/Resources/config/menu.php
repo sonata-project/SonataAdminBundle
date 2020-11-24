@@ -14,10 +14,8 @@ declare(strict_types=1);
 use Knp\Menu\MenuItem;
 use Sonata\AdminBundle\Menu\Matcher\Voter\ActiveVoter;
 use Sonata\AdminBundle\Menu\Matcher\Voter\AdminVoter;
-use Sonata\AdminBundle\Menu\Matcher\Voter\ChildrenVoter;
 use Sonata\AdminBundle\Menu\MenuBuilder;
 use Sonata\AdminBundle\Menu\Provider\GroupMenuProvider;
-use Sonata\AdminBundle\Util\BCDeprecationParameters;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 
@@ -56,17 +54,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('knp_menu.voter')
             ->args([
                 new ReferenceConfigurator('request_stack'),
-            ])
-
-        // NEXT_MAJOR: Remove this service.
-        ->set('sonata.admin.menu.matcher.voter.children', ChildrenVoter::class)
-            ->public()
-            ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%service_id%" service is deprecated since sonata-project/admin-bundle 3.28 and will be removed in 4.0.',
-                '3.28'
-            ))
-            ->args([
-                new ReferenceConfigurator('knp_menu.matcher'),
             ])
 
         ->set('sonata.admin.menu.matcher.voter.active', ActiveVoter::class)

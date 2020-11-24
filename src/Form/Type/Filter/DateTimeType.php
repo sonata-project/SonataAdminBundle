@@ -18,75 +18,13 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType as FormDateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class DateTimeType extends AbstractType
+final class DateTimeType extends AbstractType
 {
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use DateOperatorType::TYPE_GREATER_EQUAL instead
-     */
-    public const TYPE_GREATER_EQUAL = 1;
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use DateOperatorType::TYPE_GREATER_THAN instead
-     */
-    public const TYPE_GREATER_THAN = 2;
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use DateOperatorType::TYPE_EQUAL instead
-     */
-    public const TYPE_EQUAL = 3;
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use DateOperatorType::TYPE_LESS_EQUAL instead
-     */
-    public const TYPE_LESS_EQUAL = 4;
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use DateOperatorType::TYPE_LESS_THAN instead
-     */
-    public const TYPE_LESS_THAN = 5;
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use DateOperatorType::TYPE_NULL instead
-     */
-    public const TYPE_NULL = 6;
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use DateOperatorType::TYPE_NOT_NULL instead
-     */
-    public const TYPE_NOT_NULL = 7;
-
-    /**
-     * NEXT_MAJOR: remove this property.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.5, to be removed with 4.0
-     *
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_filter_datetime';
     }
@@ -94,7 +32,7 @@ class DateTimeType extends AbstractType
     /**
      * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('type', DateOperatorType::class, ['required' => false])
@@ -102,10 +40,7 @@ class DateTimeType extends AbstractType
         ;
     }
 
-    /**
-     * @return void
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'field_type' => FormDateTimeType::class,

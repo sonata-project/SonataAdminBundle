@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Form\DataTransformerResolver;
 use Sonata\AdminBundle\Form\DataTransformerResolverInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
@@ -45,38 +44,14 @@ final class SetObjectFieldValueAction
     private $validator;
 
     /**
-     * @var DataTransformerResolver
+     * @var DataTransformerResolverInterface
      */
     private $resolver;
 
-    /**
-     * @param ValidatorInterface           $validator
-     * @param DataTransformerResolver|null $resolver
-     */
-    public function __construct(Environment $twig, Pool $pool, $validator, $resolver = null)
+    public function __construct(Environment $twig, Pool $pool, ValidatorInterface $validator, DataTransformerResolverInterface $resolver)
     {
-        // NEXT_MAJOR: Move ValidatorInterface check to method signature
-        if (!($validator instanceof ValidatorInterface)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Argument 3 is an instance of %s, expecting an instance of %s',
-                \get_class($validator),
-                ValidatorInterface::class
-            ));
-        }
-
-        // NEXT_MAJOR: Move DataTransformerResolver check to method signature
-        if (!$resolver instanceof DataTransformerResolverInterface) {
-            @trigger_error(sprintf(
-                'Passing other type than %s in argument 4 to %s() is deprecated since sonata-project/admin-bundle 3.76 and will throw %s exception in 4.0.',
-                DataTransformerResolverInterface::class,
-                __METHOD__,
-                \TypeError::class
-            ), E_USER_DEPRECATED);
-            $resolver = new DataTransformerResolver();
-        }
-
-        $this->pool = $pool;
         $this->twig = $twig;
+        $this->pool = $pool;
         $this->validator = $validator;
         $this->resolver = $resolver;
     }
@@ -119,15 +94,15 @@ final class SetObjectFieldValueAction
             return new JsonResponse('Invalid permissions', Response::HTTP_FORBIDDEN);
         }
 
-        if ('list' === $context) {
-            $fieldDescription = $admin->getListFieldDescription($field);
-        } else {
+        if ('list' !== $context) {
             return new JsonResponse('Invalid context', Response::HTTP_BAD_REQUEST);
         }
 
-        if (!$fieldDescription) {
+        if (!$admin->hasListFieldDescription($field)) {
             return new JsonResponse('The field does not exist', Response::HTTP_BAD_REQUEST);
         }
+
+        $fieldDescription = $admin->getListFieldDescription($field);
 
         if (!$fieldDescription->getOption('editable')) {
             return new JsonResponse('The field cannot be edited, editable option must be set to true', Response::HTTP_BAD_REQUEST);

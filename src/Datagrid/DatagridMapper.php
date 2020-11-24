@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Datagrid;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
+use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Mapper\BaseMapper;
 
 /**
@@ -48,27 +49,25 @@ class DatagridMapper extends BaseMapper
 
     /**
      * @param FieldDescriptionInterface|string $name
-     * @param string|null                      $type
-     * @param string|null                      $fieldType
-     * @param array|null                       $fieldOptions
+     * @param array<string, mixed>             $filterOptions
+     * @param array<string, mixed>|null        $fieldOptions
+     * @param array<string, mixed>             $fieldDescriptionOptions
      *
      * @throws \LogicException
-     *
-     * @return DatagridMapper
      */
     public function add(
         $name,
-        $type = null,
+        ?string $type = null,
         array $filterOptions = [],
-        $fieldType = null,
-        $fieldOptions = null,
+        ?string $fieldType = null,
+        ?array $fieldOptions = null,
         array $fieldDescriptionOptions = []
-    ) {
-        if (\is_array($fieldOptions)) {
+    ): self {
+        if (null !== $fieldOptions) {
             $filterOptions['field_options'] = $fieldOptions;
         }
 
-        if ($fieldType) {
+        if (null !== $fieldType) {
             $filterOptions['field_type'] = $fieldType;
         }
 
@@ -99,8 +98,7 @@ class DatagridMapper extends BaseMapper
             );
         }
 
-        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
-        if (null === $fieldDescription->getLabel('sonata_deprecation_mute')) {
+        if (null === $fieldDescription->getLabel()) {
             $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'filter', 'label'));
         }
 
@@ -112,22 +110,22 @@ class DatagridMapper extends BaseMapper
         return $this;
     }
 
-    public function get($name)
+    public function get(string $name): FilterInterface
     {
         return $this->datagrid->getFilter($name);
     }
 
-    public function has($key)
+    public function has(string $key): bool
     {
         return $this->datagrid->hasFilter($key);
     }
 
-    final public function keys()
+    final public function keys(): array
     {
         return array_keys($this->datagrid->getFilters());
     }
 
-    public function remove($key)
+    public function remove(string $key): self
     {
         $this->admin->removeFilterFieldDescription($key);
         $this->datagrid->removeFilter($key);
@@ -135,7 +133,7 @@ class DatagridMapper extends BaseMapper
         return $this;
     }
 
-    public function reorder(array $keys)
+    public function reorder(array $keys): self
     {
         $this->datagrid->reorderFilters($keys);
 

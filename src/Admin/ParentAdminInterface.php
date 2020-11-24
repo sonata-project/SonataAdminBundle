@@ -25,30 +25,20 @@ interface ParentAdminInterface
     /**
      * add an Admin child to the current one.
      */
-    public function addChild(AdminInterface $child);
+    public function addChild(AdminInterface $child, string $field): void;
 
     /**
      * Returns true or false if an Admin child exists for the given $code.
-     *
-     * @param string $code Admin code
-     *
-     * @return bool True if child exist, false otherwise
      */
-    public function hasChild($code);
+    public function hasChild(string $code): bool;
 
     /**
-     * Returns an collection of admin children.
-     *
-     * @return array<string, AdminInterface> list of Admin children
+     * @return AdminInterface[]
      */
-    public function getChildren();
+    public function getChildren(): array;
 
     /**
      * Returns an admin child with the given $code.
-     *
-     * @param string $code
-     *
-     * @return AdminInterface|null // NEXT_MAJOR: Return AdminInterface
      */
-    public function getChild($code);
+    public function getChild(string $code): AdminInterface;
 }

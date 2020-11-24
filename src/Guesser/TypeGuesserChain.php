@@ -20,17 +20,15 @@ use Symfony\Component\Form\Guess\TypeGuess;
 /**
  * The code is based on Symfony2 Form Components.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Bernhard Schussek <bernhard.schussek@symfony.com>
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class TypeGuesserChain implements TypeGuesserInterface
+final class TypeGuesserChain implements TypeGuesserInterface
 {
     /**
      * @var TypeGuesserInterface[]
      */
-    protected $guessers = [];
+    private $guessers = [];
 
     public function __construct(array $guessers)
     {
@@ -47,7 +45,7 @@ class TypeGuesserChain implements TypeGuesserInterface
         }
     }
 
-    public function guessType($class, $property, ModelManagerInterface $modelManager)
+    public function guessType(string $class, string $property, ModelManagerInterface $modelManager): ?TypeGuess
     {
         $guesses = [];
 

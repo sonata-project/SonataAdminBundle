@@ -20,11 +20,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 /**
  * Menu builder event. Used for extending the menus.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Martin Hasoň <martin.hason@gmail.com>
  */
-class ConfigureMenuEvent extends Event
+final class ConfigureMenuEvent extends Event
 {
     public const SIDEBAR = 'sonata.admin.event.configure.menu.sidebar';
 
@@ -44,18 +42,12 @@ class ConfigureMenuEvent extends Event
         $this->menu = $menu;
     }
 
-    /**
-     * @return FactoryInterface
-     */
-    public function getFactory()
+    public function getFactory(): FactoryInterface
     {
         return $this->factory;
     }
 
-    /**
-     * @return ItemInterface
-     */
-    public function getMenu()
+    public function getMenu(): ItemInterface
     {
         return $this->menu;
     }

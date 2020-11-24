@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Util;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Util\DummyObjectAclManipulator;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
-use Symfony\Component\Security\Acl\Model\AclInterface;
+use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 
 /**
@@ -27,6 +28,26 @@ use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
  */
 class ObjectAclManipulatorTest extends TestCase
 {
+    /**
+     * @var MockObject|OutputInterface
+     */
+    private $output;
+
+    /**
+     * @var MockObject|AdminInterface
+     */
+    private $admin;
+
+    /**
+     * @var \ArrayIterator
+     */
+    private $oids;
+
+    /**
+     * @var UserSecurityIdentity
+     */
+    private $securityIdentity;
+
     protected function setUp(): void
     {
         $this->output = $this->createMock(OutputInterface::class);
@@ -64,7 +85,7 @@ class ObjectAclManipulatorTest extends TestCase
         $acls = $this->createMock('SplObjectStorage');
         $acls->expects($this->atLeastOnce())->method('contains')->with($this->isInstanceOf(ObjectIdentityInterface::class))
             ->willReturn(false, true);
-        $acl = $this->createStub(AclInterface::class);
+        $acl = $this->createStub(MutableAclInterface::class);
         $acls->expects($this->once())->method('offsetGet')->with($this->isInstanceOf(ObjectIdentityInterface::class))
             ->willReturn($acl);
         $securityHandler->expects($this->once())->method('findObjectAcls')->with($this->oids)->willReturn($acls);

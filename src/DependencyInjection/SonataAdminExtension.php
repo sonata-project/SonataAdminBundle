@@ -15,11 +15,9 @@ namespace Sonata\AdminBundle\DependencyInjection;
 
 use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-// NEXT_MAJOR: Uncomment this line.
-//use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
+use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as SymfonyChoiceType;
@@ -32,14 +30,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextType as SymfonyTextType;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  * @author Michael Williams <michael.williams@funsational.com>
  */
-class SonataAdminExtension extends Extension implements PrependExtensionInterface
+final class SonataAdminExtension extends Extension
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $bundles = $container->getParameter('kernel.bundles');
 
@@ -84,8 +80,6 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
-        $this->configureTwigTextExtension($container, $loader, $config);
-
         $config['options']['javascripts'] = $this->buildJavascripts($config);
         $config['options']['stylesheets'] = $this->buildStylesheets($config);
         $config['options']['role_admin'] = $config['security']['role_admin'];
@@ -117,20 +111,10 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $container->setParameter('sonata.admin.configuration.default_icon', $config['options']['default_icon']);
         $container->setParameter('sonata.admin.configuration.breadcrumbs', $config['breadcrumbs']);
 
-        // NEXT_MAJOR: Remove this block and uncomment the one below.
-        if (null === $config['security']['acl_user_manager'] && isset($bundles['FOSUserBundle'])) {
-            $container->setParameter('sonata.admin.security.fos_user_autoconfigured', true);
-            $container->setParameter('sonata.admin.security.acl_user_manager', 'fos_user.user_manager');
-        } else {
-            $container->setParameter('sonata.admin.security.fos_user_autoconfigured', false);
-            $container->setParameter('sonata.admin.security.acl_user_manager', $config['security']['acl_user_manager']);
+        if (null !== $config['security']['acl_user_manager']) {
+            $container->setAlias('sonata.admin.security.acl_user_manager', $config['security']['acl_user_manager']);
+            $container->setAlias(AdminAclUserManagerInterface::class, 'sonata.admin.security.acl_user_manager');
         }
-
-        // NEXT_MAJOR: Uncomment this code.
-        //if (null !== $config['security']['acl_user_manager']) {
-        //    $container->setAlias('sonata.admin.security.acl_user_manager', $config['security']['acl_user_manager']);
-        //    $container->setAlias(AdminAclUserManagerInterface::class, 'sonata.admin.security.acl_user_manager');
-        //}
 
         $container->setAlias('sonata.admin.security.handler', $config['security']['handler']);
 
@@ -189,11 +173,6 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             ->replaceArgument(0, $classes)
             ->replaceArgument(1, $config['options']);
 
-        // NEXT_MAJOR: Remove this block
-        if (!isset($bundles['JMSTranslationBundle'])) {
-            $container->removeDefinition('sonata.admin.translator.extractor.jms_translator_bundle');
-        }
-
         // remove non-Mopa compatibility layer
         if (isset($bundles['MopaBootstrapBundle'])) {
             $container->removeDefinition('sonata.admin.form.extension.field.mopa');
@@ -205,8 +184,6 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
         $container->setParameter('sonata.admin.configuration.show.mosaic.button', $config['show_mosaic_button']);
 
-        $container->setParameter('sonata.admin.configuration.translate_group_label', $config['translate_group_label']);
-
         $this->replacePropertyAccessor($container);
 
         $container
@@ -214,23 +191,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             ->addTag(ModelManagerCompilerPass::MANAGER_TAG);
     }
 
-    /**
-     * Allow an extension to prepend the extension configurations.
-     */
-    public function prepend(ContainerBuilder $container)
-    {
-    }
-
-    /**
-     * NEXT_MAJOR: remove this property.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.56
-     */
-    public function configureClassesToCompile()
-    {
-    }
-
-    public function getNamespace()
+    public function getNamespace(): string
     {
         return 'https://sonata-project.org/schema/dic/admin';
     }
@@ -283,20 +244,5 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
         $modelChoice = $container->getDefinition('sonata.admin.form.type.model_choice');
         $modelChoice->replaceArgument(0, new Reference('form.property_accessor'));
-    }
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     */
-    private function configureTwigTextExtension(ContainerBuilder $container, PhpFileLoader $loader, array $config): void
-    {
-        $container->setParameter('sonata.admin.configuration.legacy_twig_text_extension', $config['options']['legacy_twig_text_extension']);
-        $loader->load('twig_string.php');
-
-        if (false !== $config['options']['legacy_twig_text_extension']) {
-            $container
-                ->getDefinition('sonata.string.twig.extension')
-                ->replaceArgument(0, new Reference('sonata.deprecated_text.twig.extension'));
-        }
     }
 }

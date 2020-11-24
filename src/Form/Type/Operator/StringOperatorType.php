@@ -27,10 +27,7 @@ final class StringOperatorType extends AbstractType
     public const TYPE_ENDS_WITH = 5;
     public const TYPE_NOT_EQUAL = 6;
 
-    /**
-     * @return void
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'choice_translation_domain' => 'SonataAdminBundle',
@@ -46,16 +43,14 @@ final class StringOperatorType extends AbstractType
     }
 
     /**
-     * @return string
-     *
      * @phpstan-return class-string<FormTypeInterface>
      */
-    public function getParent()
+    public function getParent(): string
     {
         return FormChoiceType::class;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_operator_string';
     }

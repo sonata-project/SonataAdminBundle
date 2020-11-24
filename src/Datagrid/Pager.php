@@ -16,6 +16,8 @@ namespace Sonata\AdminBundle\Datagrid;
 /**
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @implements \Iterator<object>
  */
 abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInterface
 {
@@ -58,7 +60,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     protected $currentMaxLink = 1;
 
     /**
-     * @var mixed bool|int
+     * @var int|false
      */
     protected $maxRecordLimit = false;
 
@@ -67,8 +69,9 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     protected $maxPageLinks = 0;
 
-    // used by iterator interface
     /**
+     * Results are null prior to its initialization in `initializeIterator()`.
+     *
      * @var object[]|null
      */
     protected $results;
@@ -91,17 +94,15 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * @param int $maxPerPage Number of records to display per page
      */
-    public function __construct($maxPerPage = 10)
+    public function __construct(int $maxPerPage = 10)
     {
         $this->setMaxPerPage($maxPerPage);
     }
 
     /**
      * Returns the current pager's max link.
-     *
-     * @return int
      */
-    public function getCurrentMaxLink()
+    public function getCurrentMaxLink(): int
     {
         return $this->currentMaxLink;
     }
@@ -109,7 +110,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Returns the current pager's max record limit.
      *
-     * @return int
+     * @return int|false
      */
     public function getMaxRecordLimit()
     {
@@ -118,10 +119,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * Sets the current pager's max record limit.
-     *
-     * @param int $limit
      */
-    public function setMaxRecordLimit($limit)
+    public function setMaxRecordLimit(int $limit): void
     {
         $this->maxRecordLimit = $limit;
     }
@@ -133,7 +132,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @return int[]
      */
-    public function getLinks($nbLinks = null)
+    public function getLinks(?int $nbLinks = null): array
     {
         if (null === $nbLinks) {
             $nbLinks = $this->getMaxPageLinks();
@@ -156,30 +155,24 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * Returns true if the current query requires pagination.
-     *
-     * @return bool
      */
-    public function haveToPaginate()
+    public function haveToPaginate(): bool
     {
         return $this->getMaxPerPage() && $this->getNbResults() > $this->getMaxPerPage();
     }
 
     /**
      * Returns the current cursor.
-     *
-     * @return int
      */
-    public function getCursor()
+    public function getCursor(): int
     {
         return $this->cursor;
     }
 
     /**
      * Sets the current cursor.
-     *
-     * @param int $pos
      */
-    public function setCursor($pos)
+    public function setCursor(int $pos): void
     {
         if ($pos < 1) {
             $this->cursor = 1;
@@ -194,12 +187,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * Returns an object by cursor position.
-     *
-     * @param int $pos
-     *
-     * @return object
      */
-    public function getObjectByCursor($pos)
+    public function getObjectByCursor(int $pos): ?object
     {
         $this->setCursor($pos);
 
@@ -208,20 +197,16 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * Returns the current object.
-     *
-     * @return object
      */
-    public function getCurrent()
+    public function getCurrent(): ?object
     {
         return $this->retrieveObject($this->cursor);
     }
 
     /**
      * Returns the next object.
-     *
-     * @return object|null
      */
-    public function getNext()
+    public function getNext(): ?object
     {
         if ($this->cursor + 1 > $this->nbResults) {
             return null;
@@ -232,10 +217,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * Returns the previous object.
-     *
-     * @return mixed|null
      */
-    public function getPrevious()
+    public function getPrevious(): ?object
     {
         if ($this->cursor - 1 < 1) {
             return null;
@@ -246,10 +229,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * Returns the first index on the current page.
-     *
-     * @return int
      */
-    public function getFirstIndex()
+    public function getFirstIndex(): int
     {
         if (0 === $this->page) {
             return 1;
@@ -259,27 +240,9 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.11, will be removed in 4.0
-     */
-    public function getFirstIndice()
-    {
-        @trigger_error(sprintf(
-            'Method %s is deprecated since version 3.11 and will be removed in 4.0,'
-            .' please use getFirstIndex() instead.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-
-        return $this->getFirstIndex();
-    }
-
-    /**
      * Returns the last index on the current page.
-     *
-     * @return int
      */
-    public function getLastIndex()
+    public function getLastIndex(): int
     {
         if (0 === $this->page) {
             return $this->nbResults;
@@ -291,73 +254,39 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return $this->page * $this->maxPerPage;
     }
 
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.11, will be removed in 4.0
-     */
-    public function getLastIndice()
-    {
-        @trigger_error(sprintf(
-            'Method %s is deprecated since version 3.11 and will be removed in 4.0,'
-            .' please use getLastIndex() instead.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-
-        return $this->getLastIndex();
-    }
-
-    /**
-     * @return int
-     */
-    public function getNbResults()
+    public function getNbResults(): int
     {
         return $this->nbResults;
     }
 
-    /**
-     * @return int
-     */
-    public function getFirstPage()
+    public function getFirstPage(): int
     {
         return 1;
     }
 
-    /**
-     * @return int
-     */
-    public function getLastPage()
+    public function getLastPage(): int
     {
         return $this->lastPage;
     }
 
-    /**
-     * @return int
-     */
-    public function getPage()
+    public function getPage(): int
     {
         return $this->page;
     }
 
-    /**
-     * @return int
-     */
-    public function getNextPage()
+    public function getNextPage(): int
     {
         return min($this->getPage() + 1, $this->getLastPage());
     }
 
-    /**
-     * @return int
-     */
-    public function getPreviousPage()
+    public function getPreviousPage(): int
     {
         return max($this->getPage() - 1, $this->getFirstPage());
     }
 
-    public function setPage($page)
+    public function setPage(int $page): void
     {
-        $this->page = (int) $page;
+        $this->page = $page;
 
         if ($this->page <= 0) {
             // set first page, which depends on a maximum set
@@ -365,12 +294,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         }
     }
 
-    public function getMaxPerPage()
+    public function getMaxPerPage(): int
     {
         return $this->maxPerPage;
     }
 
-    public function setMaxPerPage($max)
+    public function setMaxPerPage(int $max): void
     {
         if ($max > 0) {
             $this->maxPerPage = $max;
@@ -390,32 +319,28 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         }
     }
 
-    public function getMaxPageLinks()
+    public function getMaxPageLinks(): int
     {
         return $this->maxPageLinks;
     }
 
-    public function setMaxPageLinks($maxPageLinks)
+    public function setMaxPageLinks(int $maxPageLinks): void
     {
         $this->maxPageLinks = $maxPageLinks;
     }
 
     /**
      * Returns true if on the first page.
-     *
-     * @return bool
      */
-    public function isFirstPage()
+    public function isFirstPage(): bool
     {
         return 1 === $this->page;
     }
 
     /**
      * Returns true if on the last page.
-     *
-     * @return bool
      */
-    public function isLastPage()
+    public function isLastPage(): bool
     {
         return $this->page === $this->lastPage;
     }
@@ -425,7 +350,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @return array<string, mixed>
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -433,24 +358,19 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Returns a parameter.
      *
-     * @param string $name
-     * @param mixed  $default
+     * @param mixed $default
      *
      * @return mixed
      */
-    public function getParameter($name, $default = null)
+    public function getParameter(string $name, $default = null)
     {
         return $this->parameters[$name] ?? $default;
     }
 
     /**
      * Checks whether a parameter has been set.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
-    public function hasParameter($name)
+    public function hasParameter(string $name): bool
     {
         return isset($this->parameters[$name]);
     }
@@ -458,14 +378,16 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Sets a parameter.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      */
-    public function setParameter($name, $value)
+    public function setParameter(string $name, $value): void
     {
         $this->parameters[$name] = $value;
     }
 
+    /**
+     * @return object|false
+     */
     public function current()
     {
         if (!$this->isIteratorInitialized()) {
@@ -475,6 +397,9 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return current($this->results);
     }
 
+    /**
+     * @return int|string
+     */
     public function key()
     {
         if (!$this->isIteratorInitialized()) {
@@ -484,6 +409,9 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return key($this->results);
     }
 
+    /**
+     * @return object|false
+     */
     public function next()
     {
         if (!$this->isIteratorInitialized()) {
@@ -496,6 +424,9 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return next($this->results);
     }
 
+    /**
+     * @return object|false
+     */
     public function rewind()
     {
         if (!$this->isIteratorInitialized()) {
@@ -508,7 +439,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return reset($this->results);
     }
 
-    public function valid()
+    public function valid(): bool
     {
         if (!$this->isIteratorInitialized()) {
             $this->initializeIterator();
@@ -517,12 +448,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return $this->resultsCounter > 0;
     }
 
-    public function count()
+    public function count(): int
     {
         return $this->getNbResults();
     }
 
-    public function serialize()
+    public function serialize(): string
     {
         $vars = get_object_vars($this);
         unset($vars['query']);
@@ -530,7 +461,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return serialize($vars);
     }
 
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         $array = unserialize($serialized);
 
@@ -542,48 +473,35 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * @return string[]
      */
-    public function getCountColumn()
+    public function getCountColumn(): array
     {
         return $this->countColumn;
     }
 
     /**
-     * @return string[]
+     * @param string[] $countColumn
      */
-    public function setCountColumn(array $countColumn)
+    public function setCountColumn(array $countColumn): void
     {
-        return $this->countColumn = $countColumn;
+        $this->countColumn = $countColumn;
     }
 
-    public function setQuery($query)
+    public function setQuery(ProxyQueryInterface $query): void
     {
         $this->query = $query;
     }
 
-    /**
-     * @return ProxyQueryInterface|null
-     */
-    public function getQuery()
+    public function getQuery(): ?ProxyQueryInterface
     {
         return $this->query;
     }
 
-    /**
-     * @param int $nb
-     *
-     * @return void
-     */
-    protected function setNbResults($nb)
+    protected function setNbResults(int $nbResults): void
     {
-        $this->nbResults = $nb;
+        $this->nbResults = $nbResults;
     }
 
-    /**
-     * @param int $page
-     *
-     * @return void
-     */
-    protected function setLastPage($page)
+    protected function setLastPage(int $page): void
     {
         $this->lastPage = $page;
 
@@ -595,20 +513,16 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * Returns true if the properties used for iteration have been initialized.
-     *
-     * @return bool
      */
-    protected function isIteratorInitialized()
+    protected function isIteratorInitialized(): bool
     {
         return null !== $this->results;
     }
 
     /**
      * Loads data into properties used for iteration.
-     *
-     * @return void
      */
-    protected function initializeIterator()
+    protected function initializeIterator(): void
     {
         $this->results = $this->getResults();
         $this->resultsCounter = \count($this->results);
@@ -616,10 +530,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * Empties properties used for iteration.
-     *
-     * @return void
      */
-    protected function resetIterator()
+    protected function resetIterator(): void
     {
         $this->results = null;
         $this->resultsCounter = 0;
@@ -627,14 +539,16 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * Retrieve the object for a certain offset.
-     *
-     * @param int $offset
-     *
-     * @return object|null
      */
-    protected function retrieveObject($offset)
+    protected function retrieveObject(int $offset): ?object
     {
-        $queryForRetrieve = clone $this->getQuery();
+        $query = $this->getQuery();
+
+        if (null === $query) {
+            return null;
+        }
+
+        $queryForRetrieve = clone $query;
         $queryForRetrieve
             ->setFirstResult($offset - 1)
             ->setMaxResults(1);

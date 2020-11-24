@@ -84,49 +84,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     * @dataProvider getAdminGroups
-     */
-    public function testGroupMenuProviderWithoutChecker(array $adminGroups): void
-    {
-        $provider = new GroupMenuProvider($this->factory, $this->pool);
-
-        $this->pool
-            ->method('getInstance')
-            ->with($this->equalTo('sonata_admin_foo_service'))
-            ->willReturn($this->getAdminMock());
-
-        $menu = $provider->get(
-            'providerFoo',
-            [
-                'name' => 'foo',
-                'group' => $adminGroups,
-            ]
-        );
-
-        $this->assertInstanceOf(ItemInterface::class, $menu);
-        $this->assertSame('foo', $menu->getName());
-
-        $children = $menu->getChildren();
-
-        $this->assertCount(3, $children);
-        $this->assertArrayHasKey('foo_admin_label', $children);
-        $this->assertArrayHasKey('route_label', $children);
-        $this->assertInstanceOf(MenuItem::class, $menu['foo_admin_label']);
-        $this->assertSame('foo_admin_label', $menu['foo_admin_label']->getLabel());
-
-        $extras = $menu['foo_admin_label']->getExtras();
-        $this->assertArrayHasKey('label_catalogue', $extras);
-        $this->assertSame($extras['label_catalogue'], 'SonataAdminBundle');
-
-        $extras = $menu['route_label']->getExtras();
-        $this->assertArrayHasKey('label_catalogue', $extras);
-        $this->assertSame($extras['label_catalogue'], 'SonataAdminBundle');
-    }
-
-    /**
      * @dataProvider getAdminGroups
      */
     public function testGetMenuProviderWithCheckerGrantedGroupRoles(array $adminGroups): void
@@ -480,7 +437,7 @@ class GroupMenuProviderTest extends TestCase
                             'label' => 'route_label1',
                             'route' => 'FooRoute1',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
+                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
                             'roles' => ['foo', 'bar'],
                         ],
                         [
@@ -488,7 +445,7 @@ class GroupMenuProviderTest extends TestCase
                             'label' => 'route_label2',
                             'route' => 'FooRoute2',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
+                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
                             'roles' => ['foo'],
                         ],
                         [
@@ -496,7 +453,7 @@ class GroupMenuProviderTest extends TestCase
                             'label' => 'route_label3',
                             'route' => 'FooRoute3',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
+                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
                             'roles' => ['bar'],
                         ],
                         [
@@ -504,7 +461,7 @@ class GroupMenuProviderTest extends TestCase
                             'label' => 'route_label4',
                             'route' => 'FooRoute4',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
+                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
                             'roles' => ['baz'],
                         ],
                     ],
@@ -523,7 +480,7 @@ class GroupMenuProviderTest extends TestCase
                             'label' => 'route_label1',
                             'route' => 'FooRoute1',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
+                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
                             'roles' => ['foo', 'bar'],
                         ],
                         [
@@ -531,7 +488,7 @@ class GroupMenuProviderTest extends TestCase
                             'label' => 'route_label2',
                             'route' => 'FooRoute2',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
+                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
                             'roles' => ['foo'],
                         ],
                         [
@@ -539,7 +496,7 @@ class GroupMenuProviderTest extends TestCase
                             'label' => 'route_label3',
                             'route' => 'FooRoute3',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
+                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
                             'roles' => ['bar'],
                         ],
                         [
@@ -547,7 +504,7 @@ class GroupMenuProviderTest extends TestCase
                             'label' => 'route_label4',
                             'route' => 'FooRoute4',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
+                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
                             'roles' => ['baz'],
                         ],
                     ],
@@ -572,7 +529,7 @@ class GroupMenuProviderTest extends TestCase
                             'label' => 'route_label1',
                             'route' => 'FooRoute1',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
+                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
                         ],
                     ],
                     'item_adds' => [],
@@ -590,7 +547,7 @@ class GroupMenuProviderTest extends TestCase
                             'label' => 'route_label2',
                             'route' => 'FooRoute2',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
+                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
                         ],
                     ],
                     'item_adds' => [],
@@ -608,7 +565,7 @@ class GroupMenuProviderTest extends TestCase
                             'label' => 'route_label3',
                             'route' => 'FooRoute3',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
+                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
                         ],
                     ],
                     'item_adds' => [],
@@ -632,7 +589,7 @@ class GroupMenuProviderTest extends TestCase
                         [
                             'admin' => 'sonata_admin_foo_service',
                             'label' => 'fooLabel',
-                            'route_absolute' => true,
+                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
                             'route_params' => [],
                         ],
                     ],

@@ -18,27 +18,21 @@ use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\Resource\FileResource;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class RoutesCache
+final class RoutesCache
 {
     /**
      * @var string
      */
-    protected $cacheFolder;
+    private $cacheFolder;
 
     /**
      * @var bool
      */
-    protected $debug;
+    private $debug;
 
-    /**
-     * @param string $cacheFolder
-     * @param bool   $debug
-     */
-    public function __construct($cacheFolder, $debug)
+    public function __construct(string $cacheFolder, bool $debug)
     {
         $this->cacheFolder = $cacheFolder;
         $this->debug = $debug;
@@ -63,18 +57,8 @@ class RoutesCache
                 $resources[] = new FileResource($reflection->getFileName());
             }
 
-            if (!$admin->getRoutes()) {
-                throw new \RuntimeException(
-                    'Invalid data type, AdminInterface::getRoutes must return a RouteCollection'
-                );
-            }
-
             foreach ($admin->getRoutes()->getElements() as $code => $route) {
                 $routes[$code] = $route->getDefault('_sonata_name');
-            }
-
-            if (!\is_array($admin->getExtensions())) {
-                throw new \RuntimeException('extensions must be an array');
             }
 
             foreach ($admin->getExtensions() as $extension) {

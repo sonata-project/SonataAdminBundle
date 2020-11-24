@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 use Sonata\AdminBundle\Route\DefaultRouteGenerator;
 use Sonata\AdminBundle\Route\PathInfoBuilder;
-use Sonata\AdminBundle\Route\QueryStringBuilder;
 use Sonata\AdminBundle\Route\RoutesCache;
 use Sonata\AdminBundle\Route\RoutesCacheWarmUp;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -25,12 +24,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
 
         ->set('sonata.admin.route.path_info', PathInfoBuilder::class)
-            ->public()
-            ->args([
-                new ReferenceConfigurator('sonata.admin.audit.manager'),
-            ])
-
-        ->set('sonata.admin.route.query_string', QueryStringBuilder::class)
             ->public()
             ->args([
                 new ReferenceConfigurator('sonata.admin.audit.manager'),

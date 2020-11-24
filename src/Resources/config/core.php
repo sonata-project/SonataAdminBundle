@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Psr\Container\ContainerInterface;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Extension\LockExtension;
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Controller\HelperController;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Event\AdminEventExtension;
-use Sonata\AdminBundle\Export\Exporter;
 use Sonata\AdminBundle\Filter\FilterFactory;
 use Sonata\AdminBundle\Filter\FilterFactoryInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
@@ -31,14 +31,12 @@ use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\Extractor\AdminExtractor;
-use Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor as DeprecatedAdminExtractor;
 use Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 use Sonata\AdminBundle\Twig\GlobalVariables;
-use Sonata\AdminBundle\Util\BCDeprecationParameters;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 
@@ -55,9 +53,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 '',
                 [],
                 new ReferenceConfigurator('property_accessor'),
-            ])
-            ->call('setTemplateRegistry', [
-                new ReferenceConfigurator('sonata.admin.global_template_registry'),
             ])
 
         ->alias(Pool::class, 'sonata.admin.pool')
@@ -76,7 +71,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.helper', AdminHelper::class)
             ->public()
             ->args([
-                new ReferenceConfigurator('sonata.admin.pool'),
+                new ReferenceConfigurator('property_accessor'),
             ])
 
         ->alias(AdminHelper::class, 'sonata.admin.helper')
@@ -131,24 +126,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
         ->alias(FormLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.form_component')
 
-        // NEXT_MAJOR: Remove this service.
-        ->set('sonata.admin.translator.extractor.jms_translator_bundle', DeprecatedAdminExtractor::class)
-            ->public()
-            ->tag('jms_translation.extractor', [
-                'alias' => 'sonata_admin',
-            ])
-            ->deprecate(...BCDeprecationParameters::forConfig(sprintf(
-                'The service "%%service_id%%" is deprecated since sonata-project/admin-bundle 3.72 and will be removed in 4.0. Use "%s" service instead.',
-                Sonata\AdminBundle\Translator\Extractor\AdminExtractor::class
-            ), '3.72'))
-            ->args([
-                new ReferenceConfigurator('sonata.admin.pool'),
-                (new ReferenceConfigurator('logger'))->nullOnInvalid(),
-            ])
-            ->call('setBreadcrumbsBuilder', [
-                new ReferenceConfigurator('sonata.admin.breadcrumbs_builder'),
-            ])
-
         ->set(AdminExtractor::class)
             ->tag('translation.extractor', [
                 'alias' => 'sonata_admin',
@@ -156,21 +133,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
                 new ReferenceConfigurator('sonata.admin.breadcrumbs_builder'),
-            ])
-
-        // NEXT_MAJOR: Remove this service.
-        ->set('sonata.admin.controller.admin', HelperController::class)
-            ->public()
-            ->deprecate(...BCDeprecationParameters::forConfig(
-                'The controller service "%service_id%" is deprecated in favor of several action services since sonata-project/admin-bundle 3.38.0 and will be removed in 4.0.',
-                '3.38.0'
-            ))
-            ->args([
-                new ReferenceConfigurator('twig'),
-                new ReferenceConfigurator('sonata.admin.pool'),
-                new ReferenceConfigurator('sonata.admin.helper'),
-                new ReferenceConfigurator('validator'),
-                new ReferenceConfigurator('sonata.admin.form.data_transformer_resolver'),
             ])
 
         ->set('sonata.admin.audit.manager', AuditManager::class)
@@ -183,14 +145,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
         ->alias(AuditManagerInterface::class, 'sonata.admin.audit.manager')
 
-        // NEXT_MAJOR: Remove this service.
-        ->set('sonata.admin.exporter', Exporter::class)
-            ->public()
-            ->deprecate(...BCDeprecationParameters::forConfig(
-                'The service "%service_id%" is deprecated since sonata-project/admin-bundle 3.14.0 and will be removed in 4.0. Use "sonata.exporter.exporter" service instead.',
-                '3.14.0'
-            ))
-
         ->set('sonata.admin.search.handler', SearchHandler::class)
             ->public()
             ->args([
@@ -198,6 +152,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         ->alias(SearchHandler::class, 'sonata.admin.search.handler')
+
+        ->set('sonata.admin.controller.crud', CRUDController::class)
+            ->public()
+            ->tag('container.service_subscriber')
+            ->call('setContainer', [new ReferenceConfigurator(ContainerInterface::class)])
 
         ->set('sonata.admin.event.extension', AdminEventExtension::class)
             ->public()

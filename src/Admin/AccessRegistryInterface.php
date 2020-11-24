@@ -18,8 +18,6 @@ namespace Sonata\AdminBundle\Admin;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @method bool hasAccess(string $action, ?object $object = null)
- *
  * @phpstan-template T of object
  */
 interface AccessRegistryInterface
@@ -27,24 +25,21 @@ interface AccessRegistryInterface
     /**
      * Return the controller access mapping.
      *
-     * @return array<string, string|string[]>
+     * @return array<string, string[]|string>
      */
-    public function getAccessMapping();
+    public function getAccessMapping(): array;
 
     /**
      * Hook to handle access authorization.
      *
-     * @param string $action
-     * @param object $object
+     * @phpstan-param T|null $object
+     */
+    public function checkAccess(string $action, ?object $object = null): void;
+
+    /**
+     * Hook to handle access authorization, without throwing an exception.
      *
      * @phpstan-param T|null $object
      */
-    public function checkAccess($action, $object = null);
-
-    /*
-     * Hook to handle access authorization, without throwing an exception.
-     *
-     * NEXT_MAJOR: uncomment this method
-     */
-     // public function hasAccess(string $action, ?object $object = null): bool;
+    public function hasAccess(string $action, ?object $object = null): bool;
 }

@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 use Sonata\AdminBundle\Form\EventListener\MergeCollectionListener;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -30,16 +31,14 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 /**
  * This type define a standard select input with a + sign to add new associated object.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ModelType extends AbstractType
+final class ModelType extends AbstractType
 {
     /**
      * @var PropertyAccessorInterface
      */
-    protected $propertyAccessor;
+    private $propertyAccessor;
 
     public function __construct(PropertyAccessorInterface $propertyAccessor)
     {
@@ -49,7 +48,7 @@ class ModelType extends AbstractType
     /**
      * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($options['multiple']) {
             $builder->addViewTransformer(
@@ -57,9 +56,7 @@ class ModelType extends AbstractType
                 true
             );
 
-            $builder
-                ->addEventSubscriber(new MergeCollectionListener())
-            ;
+            $builder->addEventSubscriber(new MergeCollectionListener());
         } else {
             $builder
                 ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']), true)
@@ -67,7 +64,10 @@ class ModelType extends AbstractType
         }
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    /**
+     * @param array<string, mixed> $options
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['btn_add'] = $options['btn_add'];
         $view->vars['btn_list'] = $options['btn_list'];
@@ -75,25 +75,22 @@ class ModelType extends AbstractType
         $view->vars['btn_catalogue'] = $options['btn_catalogue'];
     }
 
-    /**
-     * @return void
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $options = [];
-        $propertyAccessor = $this->propertyAccessor;
-        $options['choice_loader'] = static function (Options $options, $previousValue) use ($propertyAccessor) {
+
+        $options['choice_loader'] = function (Options $options, ?ChoiceListInterface $previousValue) {
             if ($previousValue && \count($choices = $previousValue->getChoices())) {
                 return $choices;
             }
 
             return new ModelChoiceLoader(
                 $options['model_manager'],
+                $this->propertyAccessor,
                 $options['class'],
                 $options['property'],
                 $options['query'],
                 $options['choices'],
-                $propertyAccessor
             );
         };
 
@@ -135,26 +132,14 @@ class ModelType extends AbstractType
     }
 
     /**
-     * @return string
-     *
      * @phpstan-return class-string<FormTypeInterface>
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_model';
     }

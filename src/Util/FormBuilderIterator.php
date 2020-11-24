@@ -16,81 +16,66 @@ namespace Sonata\AdminBundle\Util;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class FormBuilderIterator extends \RecursiveArrayIterator
+final class FormBuilderIterator extends \RecursiveArrayIterator
 {
-    /**
-     * @var \ReflectionProperty
-     */
-    protected static $reflection;
-
     /**
      * @var FormBuilderInterface
      */
-    protected $formBuilder;
+    private $formBuilder;
 
     /**
-     * @var array
+     * @var string
      */
-    protected $keys = [];
-
-    /**
-     * @var bool|string
-     */
-    protected $prefix;
+    private $prefix;
 
     /**
      * @var \ArrayIterator
      */
-    protected $iterator;
+    private $iterator;
 
-    /**
-     * @param bool $prefix
-     */
-    public function __construct(FormBuilderInterface $formBuilder, $prefix = false)
+    public function __construct(FormBuilderInterface $formBuilder, ?string $prefix = null)
     {
         parent::__construct();
         $this->formBuilder = $formBuilder;
-        $this->prefix = $prefix ? $prefix : $formBuilder->getName();
+        $this->prefix = $prefix ?? $formBuilder->getName();
         $this->iterator = new \ArrayIterator(self::getKeys($formBuilder));
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->iterator->rewind();
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return $this->iterator->valid();
     }
 
-    public function key()
+    public function key(): string
     {
         $name = $this->iterator->current();
 
         return sprintf('%s_%s', $this->prefix, $name);
     }
 
-    public function next()
+    public function next(): void
     {
         $this->iterator->next();
     }
 
-    public function current()
+    public function current(): FormBuilderInterface
     {
         return $this->formBuilder->get($this->iterator->current());
     }
 
-    public function getChildren()
+    public function getChildren(): self
     {
-        return new self($this->formBuilder->get($this->iterator->current()), $this->current());
+        return new self($this->current());
     }
 
-    public function hasChildren()
+    public function hasChildren(): bool
     {
         return \count(self::getKeys($this->current())) > 0;
     }
@@ -100,7 +85,7 @@ class FormBuilderIterator extends \RecursiveArrayIterator
      *
      * @phpstan-return array-key[]
      */
-    private static function getKeys(FormBuilderInterface $formBuilder)
+    private static function getKeys(FormBuilderInterface $formBuilder): array
     {
         return array_keys($formBuilder->all());
     }

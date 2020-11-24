@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\App\Datagrid;
 
 use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Tests\App\Model\FooRepository;
 
 final class Pager implements PagerInterface
@@ -32,7 +33,7 @@ final class Pager implements PagerInterface
     {
     }
 
-    public function getMaxPerPage()
+    public function getMaxPerPage(): int
     {
         return 1;
     }
@@ -41,12 +42,27 @@ final class Pager implements PagerInterface
     {
     }
 
+    public function getPage(): int
+    {
+        return 1;
+    }
+
     public function setPage($page): void
     {
     }
 
-    public function setQuery($query): void
+    public function setQuery(ProxyQueryInterface $query): void
     {
+    }
+
+    public function isLastPage(): bool
+    {
+        return false;
+    }
+
+    public function getNbResults(): int
+    {
+        return \count($this->getResults());
     }
 
     public function getResults(): array
@@ -54,27 +70,12 @@ final class Pager implements PagerInterface
         return $this->repository->all();
     }
 
-    public function setMaxPageLinks($maxPageLinks): void
+    public function setMaxPageLinks(int $maxPageLinks): void
     {
     }
 
-    public function getMaxPageLinks()
+    public function getMaxPageLinks(): int
     {
         return 1;
-    }
-
-    public function getPage()
-    {
-        return 1;
-    }
-
-    public function isLastPage()
-    {
-        return true;
-    }
-
-    public function getNbResults()
-    {
-        return \count($this->getResults());
     }
 }

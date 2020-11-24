@@ -21,15 +21,6 @@ use Symfony\Component\DependencyInjection\Container;
 
 class FilterFactoryTest extends TestCase
 {
-    public function testEmptyType(): void
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('The type must be defined');
-
-        $filter = new FilterFactory(new Container(), []);
-        $filter->create('test', null);
-    }
-
     public function testUnknownType(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -60,24 +51,6 @@ class FilterFactoryTest extends TestCase
         $filter->create('test', DefaultType::class);
     }
 
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testInvalidTypeInstance(): void
-    {
-        $container = new Container();
-        $container->set('mytype', new \stdClass());
-
-        $filter = new FilterFactory($container, ['mytype' => 'mytype']);
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('The service `mytype` must implement `FilterInterface`');
-
-        $filter->create('test', 'mytype');
-    }
-
     public function testCreateFilter(): void
     {
         $filter = $this->createMock(FilterInterface::class);
@@ -91,21 +64,5 @@ class FilterFactoryTest extends TestCase
 
         $filter = new FilterFactory($container, [$fqcn => 'my.filter.id']);
         $filter->create('test', $fqcn);
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testCreateFilterWithTypeName(): void
-    {
-        $filter = $this->createMock(FilterInterface::class);
-        $filter->expects($this->once())
-            ->method('initialize');
-
-        $container = new Container();
-        $container->set('mytype', $filter);
-
-        $filter = new FilterFactory($container, ['mytype' => 'mytype']);
-        $filter->create('test', 'mytype');
     }
 }

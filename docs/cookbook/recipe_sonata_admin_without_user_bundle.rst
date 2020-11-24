@@ -203,11 +203,7 @@ more about it `here <https://symfony.com/doc/4.4/security/guard_authentication.h
 
         public function supports(Request $request): bool
         {
-            if ($request->getPathInfo() != '/admin/login' || $request->getMethod() != 'POST') {
-                return false;
-            }
-
-            return true;
+            return $request->attributes->get('_route') === 'admin_login' && $request->isMethod('POST');
         }
 
         public function getCredentials(Request $request): array
@@ -241,9 +237,9 @@ more about it `here <https://symfony.com/doc/4.4/security/guard_authentication.h
             return new RedirectResponse($this->router->generate('admin_login'));
         }
 
-        protected function getLoginUrl(): RedirectResponse
+        protected function getLoginUrl(): string
         {
-            return new RedirectResponse($this->router->generate('admin_login'));
+            return $this->router->generate('admin_login');
         }
 
         public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): RedirectResponse
@@ -260,13 +256,13 @@ this will be handled by Symfony, but we still need to register that route::
 
     namespace App\Controller;
 
-    use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+    use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use App\Form\AdminLoginForm;
     use Symfony\Component\Routing\Annotation\Route;
     use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
     use Symfony\Component\HttpFoundation\Response;
 
-    final class AdminLoginController extends Controller
+    final class AdminLoginController extends AbstractController
     {
         /**
          * @var AuthenticationUtils

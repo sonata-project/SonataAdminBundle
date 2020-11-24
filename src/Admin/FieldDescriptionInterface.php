@@ -15,241 +15,195 @@ namespace Sonata\AdminBundle\Admin;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
- *
- * @method string|null getTargetModel()
- * @method bool        hasAdmin()
- * @method bool        hasParent()
- * @method bool        hasAssociationAdmin()
  */
 interface FieldDescriptionInterface
 {
-    /**
-     * set the field name.
-     *
-     * @param string $fieldName
-     */
-    public function setFieldName($fieldName);
+    public function setFieldName(?string $fieldName): void;
 
     /**
      * Returns the field name.
      *
      * @return string|null the field name
      */
-    public function getFieldName();
+    public function getFieldName(): ?string;
+
+    public function setName(string $name): void;
 
     /**
-     * Set the name.
-     *
-     * @param string $name
-     */
-    public function setName($name);
-
-    /**
-     * NEXT_MAJOR: Restrict return type to string.
-     *
      * Returns the name, the name can be used as a form label or table header.
-     *
-     * @return string|null the name
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Returns the value represented by the provided name.
      *
-     * @param string     $name
-     * @param mixed|null $default
+     * @param mixed $default
      *
-     * @return mixed the value represented by the provided name
+     * @return mixed
      */
-    public function getOption($name, $default = null);
+    public function getOption(string $name, $default = null);
 
     /**
      * Define an option, an option is has a name and a value.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      */
-    public function setOption($name, $value);
+    public function setOption(string $name, $value): void;
 
     /**
      * Define the options value, if the options array contains the reserved keywords
      *   - type
      *   - template.
      *
-     * Then the value are copied across to the related property value
+     * Then the value are copied across to the related property value.
+     *
+     * @param array<string, mixed> $options
      */
-    public function setOptions(array $options);
+    public function setOptions(array $options): void;
 
     /**
      * Returns options.
      *
-     * @return array<string, mixed> options
+     * @return array<string, mixed>
      */
-    public function getOptions();
+    public function getOptions(): array;
 
     /**
-     * Returns the template used to render the field.
-     *
-     * @param string $template
+     * Sets the template used to render the field.
      */
-    public function setTemplate($template);
+    public function setTemplate(?string $template): void;
+
+    public function getTemplate(): ?string;
 
     /**
-     * Returns the template name.
-     *
-     * @return string|null the template name
-     */
-    public function getTemplate();
-
-    /**
-     * Returns the field type, the type is a mandatory field as it used to select the correct template
+     * Sets the field type. The type is a mandatory field as it's used to select the correct template
      * or the logic associated to the current FieldDescription object.
-     *
-     * @param string $type
      */
-    public function setType($type);
+    public function setType(?string $type): void;
 
     /**
      * Returns the type.
-     *
-     * @return int|string
      */
-    public function getType();
+    public function getType(): ?string;
 
     /**
      * set the parent Admin (only used in nested admin).
      */
-    public function setParent(AdminInterface $parent);
+    public function setParent(AdminInterface $parent): void;
 
     /**
      * Returns the parent Admin (only used in nested admin).
      *
-     * @return AdminInterface|null // NEXT_MAJOR: Return AdminInterface
+     * @throws \LogicException
      */
-    public function getParent();
+    public function getParent(): AdminInterface;
 
-    // NEXT_MAJOR: Uncomment the following line
-    // public function hasParent(): bool;
+    public function hasParent(): bool;
 
     /**
      * Define the association mapping definition.
      *
-     * @param array $associationMapping
+     * @param array<string, mixed> $associationMapping
      */
-    public function setAssociationMapping($associationMapping);
+    public function setAssociationMapping(array $associationMapping): void;
 
     /**
      * Returns the association mapping definition.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function getAssociationMapping();
+    public function getAssociationMapping(): array;
 
     /**
-     * NEXT_MAJOR: Remove this method in favor of `getTargetModel()`.
-     *
      * Returns the related Target object model.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.69. Use `getTargetModel()` instead.
-     *
-     * @return string|null
      */
-    public function getTargetEntity();
-
-    // public function getTargetModel(): ?string;
+    public function getTargetModel(): ?string;
 
     /**
-     * set the field mapping information.
+     * Sets the field mapping information.
      *
-     * @param array $fieldMapping
+     * @param array<string, mixed> $fieldMapping
      */
-    public function setFieldMapping($fieldMapping);
+    public function setFieldMapping(array $fieldMapping): void;
 
     /**
      * Returns the field mapping definition.
      *
-     * @return array the field mapping definition
+     * @return array<string, mixed>
      */
-    public function getFieldMapping();
+    public function getFieldMapping(): array;
 
     /**
      * set the parent association mappings information.
+     *
+     *  @param array<array<string, mixed>> $parentAssociationMappings
      */
-    public function setParentAssociationMappings(array $parentAssociationMappings);
+    public function setParentAssociationMappings(array $parentAssociationMappings): void;
 
     /**
      * Returns the parent association mapping definitions.
      *
-     * @return array the parent association mapping definitions
+     * @return array<array<string, mixed>>
      */
-    public function getParentAssociationMappings();
+    public function getParentAssociationMappings(): array;
 
     /**
-     * set the association admin instance (only used if the field is linked to an Admin).
-     *
-     * @param AdminInterface $associationAdmin the associated admin
+     * Set the association admin instance (only used if the field is linked to an Admin).
      */
-    public function setAssociationAdmin(AdminInterface $associationAdmin);
+    public function setAssociationAdmin(AdminInterface $associationAdmin): void;
 
     /**
      * Returns the associated Admin instance (only used if the field is linked to an Admin).
      *
-     * @return AdminInterface|null // NEXT_MAJOR: Return AdminInterface
+     * @throws \LogicException
      */
-    public function getAssociationAdmin();
+    public function getAssociationAdmin(): AdminInterface;
 
-    // NEXT_MAJOR: Uncomment the following line
-    // public function hasAssociationAdmin(): bool;
+    public function hasAssociationAdmin(): bool;
 
     /**
      * Returns true if the FieldDescription is linked to an identifier field.
-     *
-     * @return bool
      */
-    public function isIdentifier();
+    public function isIdentifier(): bool;
 
     /**
      * Returns the value linked to the description.
      *
-     * @param object $object
+     * @return mixed
+     */
+    public function getValue(object $object);
+
+    public function setAdmin(AdminInterface $admin): void;
+
+    /**
+     * @throws \LogicException
+     */
+    public function getAdmin(): AdminInterface;
+
+    public function hasAdmin(): bool;
+
+    /**
+     * Merge option values related to the provided option name.
      *
-     * @return bool|mixed
-     */
-    public function getValue($object);
-
-    /**
-     * set the admin class linked to this FieldDescription.
-     */
-    public function setAdmin(AdminInterface $admin);
-
-    /**
-     * @return AdminInterface the admin class linked to this FieldDescription
-     */
-    public function getAdmin();
-
-    // NEXT_MAJOR: Uncomment the following line
-    // public function hasAdmin(): bool;
-
-    /**
-     * merge option values related to the provided option name.
-     *
-     * @param string $name
+     * @param array<string, mixed> $options
      *
      * @throws \RuntimeException
      */
-    public function mergeOption($name, array $options = []);
+    public function mergeOption(string $name, array $options = []): void;
 
     /**
-     * merge options values.
+     * Merge options values.
+     *
+     * @param array<string, mixed> $options
      */
-    public function mergeOptions(array $options = []);
+    public function mergeOptions(array $options = []): void;
 
     /**
      * set the original mapping type (only used if the field is linked to an entity).
      *
-     * @param string|int $mappingType
+     * @param int|string $mappingType
      */
-    public function setMappingType($mappingType);
+    public function setMappingType($mappingType): void;
 
     /**
      * Returns the mapping type.
@@ -268,37 +222,30 @@ interface FieldDescriptionInterface
 
     /**
      * Returns the translation domain to use for the current field.
-     *
-     * @return string
      */
-    public function getTranslationDomain();
+    public function getTranslationDomain(): string;
 
     /**
      * Returns true if field is sortable.
-     *
-     * @return bool
      */
-    public function isSortable();
+    public function isSortable(): bool;
 
     /**
      * Returns the field mapping definition used when sorting.
      *
-     * @return array the field mapping definition
+     * @return array<string, mixed>
      */
-    public function getSortFieldMapping();
+    public function getSortFieldMapping(): array;
 
     /**
      * Returns the parent association mapping definitions used when sorting.
      *
-     * @return array the parent association mapping definitions
+     * @return array<string, mixed>
      */
-    public function getSortParentAssociationMapping();
+    public function getSortParentAssociationMapping(): array;
 
     /**
-     * @param object|null $object
-     * @param string      $fieldName
-     *
      * @return mixed
      */
-    public function getFieldValue($object, $fieldName);
+    public function getFieldValue(?object $object, ?string $fieldName);
 }

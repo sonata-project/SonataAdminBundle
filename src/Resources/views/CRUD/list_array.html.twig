@@ -15,7 +15,6 @@ file that was distributed with this source code.
 {% block field %}
     {{ list.render_array(
         value,
-        field_description.options.inline is not defined or field_description.options.inline,
-        { default_translation_domain : admin.translationDomain }|merge(field_description.options)
+        { default_translation_domain : admin.translationDomain, inline: true }|merge(field_description.options)
     ) }}
 {% endblock %}

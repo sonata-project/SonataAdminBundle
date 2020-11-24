@@ -19,11 +19,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ListAdminCommand extends Command
+final class ListAdminCommand extends Command
 {
     protected static $defaultName = 'sonata:admin:list';
 
@@ -39,12 +37,12 @@ class ListAdminCommand extends Command
         parent::__construct();
     }
 
-    public function configure()
+    public function configure(): void
     {
         $this->setDescription('List all admin services available');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Admin services:</info>');
         foreach ($this->pool->getAdminServiceIds() as $id) {

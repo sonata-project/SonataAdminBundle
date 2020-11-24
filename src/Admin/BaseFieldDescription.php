@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
-use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\Exception\NoValueException;
 
@@ -35,9 +34,6 @@ use Sonata\AdminBundle\Exception\NoValueException;
  *   - link_parameters (o) : add link parameter to the related Admin class when
  *                           the Admin.generateUrl is called
  *   - code : the method name to retrieve the related value
- *   - associated_tostring : (deprecated, use associated_property option)
- *                           the method to retrieve the "string" representation
- *                           of the collection element.
  *   - associated_property : property path to retrieve the "string" representation
  *                           of the collection element.
  *
@@ -68,7 +64,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $name;
 
     /**
-     * @var string|int the type
+     * @var string|null the type
      */
     protected $type;
 
@@ -78,32 +74,32 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $mappingType;
 
     /**
-     * @var string the field name (of the form)
+     * @var string|null the field name (of the form)
      */
     protected $fieldName;
 
     /**
-     * @var array the ORM association mapping
+     * @var array<string, mixed> the ORM association mapping
      */
     protected $associationMapping = [];
 
     /**
-     * @var array the ORM field information
+     * @var array<string, mixed> the ORM field information
      */
     protected $fieldMapping = [];
 
     /**
-     * @var array the ORM parent mapping association
+     * @var array<string, mixed> the ORM parent mapping association
      */
     protected $parentAssociationMappings = [];
 
     /**
-     * @var string the template name
+     * @var string|null the template name
      */
     protected $template;
 
     /**
-     * @var array the option collection
+     * @var array<string, mixed> the option collection
      */
     protected $options = [];
 
@@ -123,45 +119,29 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $associationAdmin;
 
     /**
-     * @var string the help message to display
-     */
-    protected $help;
-
-    /**
-     * @var array[] cached object field getters
+     * @var string[][]
+     *
+     * @phpstan-var array<string, array{method: 'getter'|'call'|'var', getter?: string}>
      */
     private static $fieldGetters = [];
 
-    /**
-     * NEXT_MAJOR: Remove the null default value and restrict param type to `string`.
-     */
-    public function __construct(?string $name = null, array $options = [])
+    public function __construct(string $name, array $options = [])
     {
-        // NEXT_MAJOR: Remove this check and keep the else part.
-        if (null === $name) {
-            @trigger_error(sprintf(
-                'Omitting the argument 1 for "%s()" or passing other type than "string" is deprecated'.
-                ' since sonata-project/admin-bundle 3.78. It will accept only string in version 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        } else {
-            $this->setName($name);
-        }
-
+        $this->setName($name);
         $this->setOptions($options);
     }
 
-    public function setFieldName($fieldName)
+    public function setFieldName(?string $fieldName): void
     {
         $this->fieldName = $fieldName;
     }
 
-    public function getFieldName()
+    public function getFieldName(): ?string
     {
         return $this->fieldName;
     }
 
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
 
@@ -170,22 +150,22 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function getOption($name, $default = null)
+    public function getOption(string $name, $default = null)
     {
         return $this->options[$name] ?? $default;
     }
 
-    public function setOption($name, $value)
+    public function setOption(string $name, $value): void
     {
         $this->options[$name] = $value;
     }
 
-    public function setOptions(array $options)
+    public function setOptions(array $options): void
     {
         // set the type if provided
         if (isset($options['type'])) {
@@ -197,20 +177,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         if (isset($options['template'])) {
             $this->setTemplate($options['template']);
             unset($options['template']);
-        }
-
-        // NEXT_MAJOR: Remove this block.
-        // set help if provided
-        if (isset($options['help'])) {
-            @trigger_error(sprintf(
-                'Passing "help" option to "%s()" is deprecated since sonata-project/admin-bundle 3.74'
-                .' and the option will be removed in 4.0.'
-                .' Use Symfony Form "help" option instead.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-
-            $this->setHelp($options['help'], 'sonata_deprecation_mute');
-            unset($options['help']);
         }
 
         // set default placeholder
@@ -225,115 +191,86 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->options = $options;
     }
 
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
 
-    public function setTemplate($template)
+    public function setTemplate(?string $template): void
     {
         $this->template = $template;
     }
 
-    public function getTemplate()
+    public function getTemplate(): ?string
     {
-        if (null !== $this->template && !\is_string($this->template) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
-            @trigger_error(sprintf(
-                'Returning other type than string or null in method %s() is deprecated since'
-                .' sonata-project/admin-bundle 3.65. It will return only those types in version 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
         return $this->template;
     }
 
-    public function setType($type)
+    public function setType(?string $type): void
     {
         $this->type = $type;
     }
 
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
 
-    public function setParent(AdminInterface $parent)
+    public function setParent(AdminInterface $parent): void
     {
         $this->parent = $parent;
     }
 
-    public function getParent()
+    public function getParent(): AdminInterface
     {
-        if (!$this->hasParent()) {
-            @trigger_error(
-                sprintf(
-                    'Calling %s() when there is no parent is deprecated since sonata-project/admin-bundle 3.69'
-                    .' and will throw an exception in 4.0. Use %s::hasParent() to know if there is a parent.',
-                    __METHOD__,
-                    __CLASS__
-                ),
-                E_USER_DEPRECATED
-            );
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following exception and declare AdminInterface as return type
-            // throw new \LogicException(sprintf('%s has no parent.', static::class));
+        if (null === $this->parent) {
+            throw new \LogicException(sprintf('%s has no parent.', static::class));
         }
 
         return $this->parent;
     }
 
-    public function hasParent()
+    public function hasParent(): bool
     {
         return null !== $this->parent;
     }
 
-    public function getAssociationMapping()
+    public function getAssociationMapping(): array
     {
         return $this->associationMapping;
     }
 
-    public function getFieldMapping()
+    public function getFieldMapping(): array
     {
         return $this->fieldMapping;
     }
 
-    public function getParentAssociationMappings()
+    public function getParentAssociationMappings(): array
     {
         return $this->parentAssociationMappings;
     }
 
-    public function setAssociationAdmin(AdminInterface $associationAdmin)
+    public function setAssociationAdmin(AdminInterface $associationAdmin): void
     {
         $this->associationAdmin = $associationAdmin;
         $this->associationAdmin->setParentFieldDescription($this);
     }
 
-    public function getAssociationAdmin()
+    public function getAssociationAdmin(): AdminInterface
     {
-        if (!$this->hasAssociationAdmin()) {
-            @trigger_error(
-                sprintf(
-                    'Calling %s() when there is no association admin is deprecated since'
-                    .' sonata-project/admin-bundle 3.69 and will throw an exception in 4.0.'
-                    .' Use %s::hasAssociationAdmin() to know if there is an association admin.',
-                    __METHOD__,
-                    __CLASS__
-                ),
-                E_USER_DEPRECATED
-            );
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following exception and declare AdminInterface as return type
-            // throw new \LogicException(sprintf('%s has no association admin.', static::class));
+        if (null === $this->associationAdmin) {
+            throw new \LogicException(sprintf('%s has no association admin.', static::class));
         }
 
         return $this->associationAdmin;
     }
 
-    public function hasAssociationAdmin()
+    public function hasAssociationAdmin(): bool
     {
         return null !== $this->associationAdmin;
     }
 
-    public function getFieldValue($object, $fieldName)
+    public function getFieldValue(?object $object, ?string $fieldName)
     {
         if ($this->isVirtual() || null === $object) {
             return null;
@@ -367,14 +304,14 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             if (method_exists($object, $getter) && \is_callable([$object, $getter])) {
                 $this->cacheFieldGetter($object, $fieldName, 'getter', $getter);
 
-                return $object->{$getter}(...$parameters);
+                return $object->$getter(...$parameters);
             }
         }
 
         if (method_exists($object, '__call')) {
             $this->cacheFieldGetter($object, $fieldName, 'call');
 
-            return $object->{$fieldName}(...$parameters);
+            return $object->$fieldName(...$parameters);
         }
 
         if (isset($object->{$fieldName})) {
@@ -391,36 +328,26 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         ));
     }
 
-    public function setAdmin(AdminInterface $admin)
+    public function setAdmin(AdminInterface $admin): void
     {
         $this->admin = $admin;
     }
 
-    public function getAdmin()
+    public function getAdmin(): AdminInterface
     {
-        if (!$this->hasAdmin()) {
-            @trigger_error(
-                sprintf(
-                    'Calling %s() when there is no admin is deprecated since sonata-project/admin-bundle 3.69'
-                    .' and will throw an exception in 4.0. Use %s::hasAdmin() to know if there is an admin.',
-                    __METHOD__,
-                    __CLASS__
-                ),
-                E_USER_DEPRECATED
-            );
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following exception and declare AdminInterface as return type
-            // throw new \LogicException(sprintf('%s has no admin.', static::class));
+        if (null === $this->admin) {
+            throw new \LogicException(sprintf('%s has no admin.', static::class));
         }
 
         return $this->admin;
     }
 
-    public function hasAdmin()
+    public function hasAdmin(): bool
     {
         return null !== $this->admin;
     }
 
-    public function mergeOption($name, array $options = [])
+    public function mergeOption(string $name, array $options = []): void
     {
         if (!isset($this->options[$name])) {
             $this->options[$name] = [];
@@ -433,12 +360,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->options[$name] = array_merge($this->options[$name], $options);
     }
 
-    public function mergeOptions(array $options = [])
+    public function mergeOptions(array $options = []): void
     {
         $this->setOptions(array_merge_recursive($this->options, $options));
     }
 
-    public function setMappingType($mappingType)
+    public function setMappingType($mappingType): void
     {
         $this->mappingType = $mappingType;
     }
@@ -449,111 +376,34 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * Camelize a string.
-     *
-     * NEXT_MAJOR: remove this method.
-     *
-     * @static
-     *
-     * @param string $property
-     *
-     * @return string
-     *
-     * @deprecated since sonata-project/admin-bundle 3.1. Use \Doctrine\Inflector\Inflector::classify() instead
+     * @return string|false|null
      */
-    public static function camelize($property)
-    {
-        @trigger_error(sprintf(
-            'The %s method is deprecated since 3.1 and will be removed in 4.0. Use %s::classify() instead.',
-            __METHOD__,
-            Inflector::class
-        ), E_USER_DEPRECATED);
-
-        return InflectorFactory::create()->build()->classify($property);
-    }
-
-    /**
-     * Defines the help message.
-     *
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0. Use Symfony Form "help" option instead.
-     *
-     * @param string $help
-     */
-    public function setHelp($help)
-    {
-        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
-            @trigger_error(sprintf(
-                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0.'
-                .' Use Symfony Form "help" option instead.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
-        $this->help = $help;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.76 and will be removed in version 4.0. Use Symfony Form "help" option instead.
-     *
-     * @return string
-     */
-    public function getHelp()
-    {
-        if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
-            @trigger_error(sprintf(
-                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0.'
-                .' Use Symfony Form "help" option instead.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
-        return $this->help;
-    }
-
     public function getLabel()
     {
-        $label = $this->getOption('label');
-        if (null !== $label && false !== $label && !\is_string($label) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
-            @trigger_error(sprintf(
-                'Returning other type than string, false or null in method %s() is deprecated since'
-                .' sonata-project/admin-bundle 3.65. It will return only those types in version 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
-        return $label;
+        return $this->getOption('label');
     }
 
-    public function isSortable()
+    public function isSortable(): bool
     {
         return false !== $this->getOption('sortable', false);
     }
 
-    public function getSortFieldMapping()
+    public function getSortFieldMapping(): array
     {
         return $this->getOption('sort_field_mapping');
     }
 
-    public function getSortParentAssociationMapping()
+    public function getSortParentAssociationMapping(): array
     {
         return $this->getOption('sort_parent_association_mappings');
     }
 
-    public function getTranslationDomain()
+    public function getTranslationDomain(): string
     {
         return $this->getOption('translation_domain') ?: $this->getAdmin()->getTranslationDomain();
     }
 
-    /**
-     * Return true if field is virtual.
-     *
-     * @return bool
-     */
-    public function isVirtual()
+    public function isVirtual(): bool
     {
         return false !== $this->getOption('virtual_field', false);
     }
@@ -563,7 +413,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         if (!\is_string($fieldName)) {
             return null;
         }
+
         $components = [\get_class($object), $fieldName];
+
         $code = $this->getOption('code');
         if (\is_string($code) && '' !== $code) {
             $components[] = $code;
@@ -579,20 +431,29 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         );
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     *
+     * @return mixed
+     */
     private function callCachedGetter(object $object, string $fieldName, array $parameters = [])
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
+
         if ('getter' === self::$fieldGetters[$getterKey]['method']) {
             return $object->{self::$fieldGetters[$getterKey]['getter']}(...$parameters);
         }
 
         if ('call' === self::$fieldGetters[$getterKey]['method']) {
-            return $object->{$fieldName}(...$parameters);
+            return $object->__call($fieldName, $parameters);
         }
 
         return $object->{$fieldName};
     }
 
+    /**
+     * @phpstan-param 'call'|'getter'|'var' $method
+     */
     private function cacheFieldGetter(object $object, ?string $fieldName, string $method, ?string $getter = null): void
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);

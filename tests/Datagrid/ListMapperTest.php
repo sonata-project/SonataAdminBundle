@@ -143,28 +143,10 @@ class ListMapperTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
-     * @expectedDeprecation Passing a non boolean value for the "identifier" option is deprecated since sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.
-     *
-     * @dataProvider getWrongIdentifierOptions
-     */
-    public function testAddOptionIdentifierWithDeprecatedValue(bool $expected, $value): void
-    {
-        $this->assertFalse($this->listMapper->has('fooName'));
-        $this->listMapper->add('fooName', null, ['identifier' => $value]);
-        $this->assertTrue($this->listMapper->has('fooName'));
-        $this->assertSame($expected, $this->listMapper->get('fooName')->getOption('identifier'));
-    }
-
-    /**
      * @dataProvider getWrongIdentifierOptions
      */
     public function testAddOptionIdentifierWithWrongValue(bool $expected, $value): void
     {
-        // NEXT_MAJOR: Remove the following `markTestSkipped()` call and the `testAddOptionIdentifierWithDeprecatedValue()` test
-        $this->markTestSkipped('This test must be run in 4.0');
-
         $this->assertFalse($this->listMapper->has('fooName'));
 
         $this->expectException(\InvalidArgumentException::class);
@@ -192,37 +174,19 @@ class ListMapperTest extends TestCase
     {
         $this->listMapper->add('fooName');
         $this->listMapper->add('fooNameLabelBar', null, ['label' => 'Foo Bar']);
-        $this->listMapper->add('fooNameLabelFalse', null, ['label' => false]);
+        $this->listMapper->add('fooNameLabelEmpty', null, ['label' => '']);
 
         $this->assertTrue($this->listMapper->has('fooName'));
 
         $fieldDescription = $this->listMapper->get('fooName');
         $fieldLabelBar = $this->listMapper->get('fooNameLabelBar');
-        $fieldLabelFalse = $this->listMapper->get('fooNameLabelFalse');
+        $fieldLabelFalse = $this->listMapper->get('fooNameLabelEmpty');
 
         $this->assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
         $this->assertSame('fooName', $fieldDescription->getName());
         $this->assertSame('fooName', $fieldDescription->getOption('label'));
         $this->assertSame('Foo Bar', $fieldLabelBar->getOption('label'));
-        $this->assertFalse($fieldLabelFalse->getOption('label'));
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testLegacyAddViewInlineAction(): void
-    {
-        $this->assertFalse($this->listMapper->has('_action'));
-        $this->listMapper->add('_action', 'actions', ['actions' => ['view' => []]]);
-
-        $this->assertTrue($this->listMapper->has('_action'));
-
-        $fieldDescription = $this->listMapper->get('_action');
-
-        $this->assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
-        $this->assertSame('_action', $fieldDescription->getName());
-        $this->assertCount(1, $fieldDescription->getOption('actions'));
-        $this->assertSame(['show' => []], $fieldDescription->getOption('actions'));
+        $this->assertEmpty($fieldLabelFalse->getOption('label'));
     }
 
     public function testAddViewInlineAction(): void

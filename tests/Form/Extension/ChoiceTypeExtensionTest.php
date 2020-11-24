@@ -15,65 +15,22 @@ namespace Sonata\AdminBundle\Tests\Form\Extension;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\Extension\ChoiceTypeExtension;
-use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
-use Sonata\CoreBundle\Form\Extension\DependencyInjectionExtension;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;
 
 class ChoiceTypeExtensionTest extends TestCase
 {
-    /**
-     * @var FormFactoryInterface
-     */
     private $factory;
 
-    protected function setUp(): void
+    protected function setup(): void
     {
-        if (class_exists(DependencyInjectionExtension::class)) {
-            $container = new Container();
-            $container->set('sonata.admin.form.choice_extension', new ChoiceTypeExtension());
-
-            $typeServiceIds = [];
-            $typeExtensionServiceIds = [];
-            $guesserServiceIds = [];
-            $mappingTypes = [
-                'choice' => ChoiceType::class,
-            ];
-            $extensionTypes = [
-                'choice' => [
-                    'sonata.admin.form.choice_extension',
-                ],
-            ];
-
-            $extension = new DependencyInjectionExtension(
-                $container,
-                $typeServiceIds,
-                $typeExtensionServiceIds,
-                $guesserServiceIds,
-                $mappingTypes,
-                $extensionTypes
-            );
-        } else {
-            $extension = new TestExtension(null);
-            $extension->addTypeExtension(new ChoiceTypeExtension());
-        }
-
         $this->factory = Forms::createFormFactoryBuilder()
-            ->addExtension($extension)
+            ->addTypeExtensions([new ChoiceTypeExtension()])
             ->getFormFactory();
     }
 
     public function testExtendedType(): void
     {
-        $extension = new ChoiceTypeExtension();
-
-        $this->assertSame(
-            ChoiceType::class,
-            $extension->getExtendedType()
-        );
-
         $this->assertSame(
             [ChoiceType::class],
             ChoiceTypeExtension::getExtendedTypes()

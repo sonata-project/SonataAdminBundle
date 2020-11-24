@@ -104,16 +104,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.form.filter.type.number', NumberType::class)
             ->public()
             ->tag('form.type', ['alias' => 'sonata_type_filter_number'])
-            ->args([
-                new ReferenceConfigurator('translator'),
-            ])
 
         ->set('sonata.admin.form.filter.type.choice', ChoiceType::class)
             ->public()
             ->tag('form.type', ['alias' => 'sonata_type_filter_choice'])
-            ->args([
-                new ReferenceConfigurator('translator'),
-            ])
 
         ->set('sonata.admin.form.filter.type.default', DefaultType::class)
             ->public()
@@ -122,30 +116,18 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.form.filter.type.date', DateType::class)
             ->public()
             ->tag('form.type', ['alias' => 'sonata_type_filter_date'])
-            ->args([
-                new ReferenceConfigurator('translator'),
-            ])
 
         ->set('sonata.admin.form.filter.type.daterange', DateRangeType::class)
             ->public()
             ->tag('form.type', ['alias' => 'sonata_type_filter_date_range'])
-            ->args([
-                new ReferenceConfigurator('translator'),
-            ])
 
         ->set('sonata.admin.form.filter.type.datetime', DateTimeType::class)
             ->public()
             ->tag('form.type', ['alias' => 'sonata_type_filter_datetime'])
-            ->args([
-                new ReferenceConfigurator('translator'),
-            ])
 
         ->set('sonata.admin.form.filter.type.datetime_range', DateTimeRangeType::class)
             ->public()
             ->tag('form.type', ['alias' => 'sonata_type_filter_datetime_range'])
-            ->args([
-                new ReferenceConfigurator('translator'),
-            ])
 
         ->set('sonata.admin.form.data_transformer.boolean_to_string', BooleanToStringTransformer::class)
             ->args([

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
 
@@ -28,67 +28,53 @@ interface UrlGeneratorInterface
 {
     /**
      * Returns the list of available urls.
-     *
-     * @return RouteCollection the list of available urls
      */
-    public function getRoutes();
+    public function getRoutes(): RouteCollectionInterface;
 
     /**
      * Return the parameter name used to represent the id in the url.
-     *
-     * @return string
      */
-    public function getRouterIdParameter();
+    public function getRouterIdParameter(): string;
 
-    public function setRouteGenerator(RouteGeneratorInterface $routeGenerator);
+    public function setRouteGenerator(RouteGeneratorInterface $routeGenerator): void;
 
     /**
      * Generates the object url with the given $name.
      *
-     * @param string               $name
-     * @param object               $object
      * @param array<string, mixed> $parameters
-     * @param int                  $referenceType
      *
      * @return string return a complete url
      *
      * @phpstan-param T $object
      */
     public function generateObjectUrl(
-        $name,
-        $object,
+        string $name,
+        object $object,
         array $parameters = [],
-        $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH
-    );
+        int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH
+    ): string;
 
     /**
      * Generates a url for the given parameters.
      *
-     * @param string               $name
      * @param array<string, mixed> $parameters
-     * @param int                  $referenceType
      *
      * @return string return a complete url
      */
-    public function generateUrl($name, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH);
+    public function generateUrl(string $name, array $parameters = [], int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH): string;
 
     /**
      * Generates a url for the given parameters.
      *
-     * @param string               $name
      * @param array<string, mixed> $parameters
-     * @param int                  $referenceType
      *
-     * @return array return url parts: 'route', 'routeParameters', 'routeAbsolute'
+     * @return array<string, mixed>
+     * @phpstan-return array{route: string, routeParameters: array<string, string>, routeAbsolute: bool}
      */
-    public function generateMenuUrl($name, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH);
+    public function generateMenuUrl(string $name, array $parameters = [], int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH): array;
 
     /**
-     * @param object $model
-     *
-     * @return string a string representation of the id that is safe to use in a url
-     *
      * @phpstan-param T $model
      */
-    public function getUrlSafeIdentifier($model);
+    public function getUrlSafeIdentifier(object $model): ?string;
 }

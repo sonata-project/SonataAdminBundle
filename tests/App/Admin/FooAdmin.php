@@ -25,7 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 final class FooAdmin extends AbstractAdmin
 {
-    public function getNewInstance()
+    public function getNewInstance(): object
     {
         return new Foo('test_id', 'foo_name');
     }
@@ -47,7 +47,7 @@ final class FooAdmin extends AbstractAdmin
         $show->add('name', TemplateRegistry::TYPE_STRING);
     }
 
-    protected function configureTabMenu(MenuItemInterface $menu, $action, ?AdminInterface $childAdmin = null)
+    protected function configureTabMenu(MenuItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
     {
         // Check conflict between `MenuItemInterface::getLabel()` method and menu item with a child with the key `label`
         $menu->addChild('label')->addChild('label');

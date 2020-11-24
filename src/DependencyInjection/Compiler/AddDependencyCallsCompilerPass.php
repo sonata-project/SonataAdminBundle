@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
 use Doctrine\Inflector\InflectorFactory;
-use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Symfony\Component\DependencyInjection\ChildDefinition;
@@ -27,19 +26,16 @@ use Symfony\Component\DependencyInjection\Reference;
  * Add all dependencies to the Admin class, this avoid to write too many lines
  * in the configuration files.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AddDependencyCallsCompilerPass implements CompilerPassInterface
+final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         // check if translator service exist
         if (!$container->has('translator')) {
             throw new \RuntimeException('The "translator" service is not yet enabled.
                 It\'s required by SonataAdmin to display all labels properly.
-
                 To learn how to enable the translator service please visit:
                 http://symfony.com/doc/current/translation.html#configuration
              ');
@@ -70,7 +66,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 $this->replaceDefaultArguments([
                     0 => $id,
-                    2 => CRUDController::class,
+                    2 => 'sonata.admin.controller.crud',
                 ], $definition, $parentDefinition);
                 $this->applyConfigurationFromAttribute($definition, $attributes);
                 $this->applyDefaults($container, $id, $attributes);
@@ -221,7 +217,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
      *
      * This method read the attribute keys and configure admin class to use the related dependency.
      */
-    public function applyConfigurationFromAttribute(Definition $definition, array $attributes)
+    public function applyConfigurationFromAttribute(Definition $definition, array $attributes): void
     {
         $keys = [
             'model_manager',
@@ -254,12 +250,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
      * NEXT_MAJOR: Change visibility to private.
      *
      * Apply the default values required by the AdminInterface to the Admin service definition.
-     *
-     * @param string $serviceId
-     *
-     * @return Definition
      */
-    public function applyDefaults(ContainerBuilder $container, $serviceId, array $attributes = [])
+    public function applyDefaults(ContainerBuilder $container, string $serviceId, array $attributes = []): Definition
     {
         $definition = $container->getDefinition($serviceId);
         $settings = $container->getParameter('sonata.admin.configuration.admin_services');
@@ -371,15 +363,13 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
     /**
      * NEXT_MAJOR: Change visibility to private.
-     *
-     * @param string $serviceId
      */
     public function fixTemplates(
-        $serviceId,
+        string $serviceId,
         ContainerBuilder $container,
         Definition $definition,
         array $overwrittenTemplates = []
-    ) {
+    ): void {
         $definedTemplates = $container->getParameter('sonata.admin.configuration.templates');
 
         $methods = [];

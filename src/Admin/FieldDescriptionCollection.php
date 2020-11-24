@@ -14,48 +14,39 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Admin;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @implements \ArrayAccess<string, FieldDescriptionInterface>
  */
-class FieldDescriptionCollection implements \ArrayAccess, \Countable
+final class FieldDescriptionCollection implements \ArrayAccess, \Countable
 {
     /**
      * @var array<string, FieldDescriptionInterface>
      */
-    protected $elements = [];
+    private $elements = [];
 
-    public function add(FieldDescriptionInterface $fieldDescription)
+    public function add(FieldDescriptionInterface $fieldDescription): void
     {
         $this->elements[$fieldDescription->getName()] = $fieldDescription;
     }
 
     /**
-     * @return array<string, FieldDescriptionInterface>
+     * @return FieldDescriptionInterface[]
      */
-    public function getElements()
+    public function getElements(): array
     {
         return $this->elements;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function has($name)
+    public function has(string $name): bool
     {
         return \array_key_exists($name, $this->elements);
     }
 
     /**
-     * @param string $name
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return FieldDescriptionInterface
      */
-    public function get($name)
+    public function get(string $name): FieldDescriptionInterface
     {
         if ($this->has($name)) {
             return $this->elements[$name];
@@ -64,42 +55,42 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
         throw new \InvalidArgumentException(sprintf('Element "%s" does not exist.', $name));
     }
 
-    /**
-     * @param string $name
-     */
-    public function remove($name)
+    public function remove(string $name): void
     {
         if ($this->has($name)) {
             unset($this->elements[$name]);
         }
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->has($offset);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): FieldDescriptionInterface
     {
         return $this->get($offset);
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new \RuntimeException('Cannot set value, use add');
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->remove($offset);
     }
 
-    public function count()
+    public function count(): int
     {
         return \count($this->elements);
     }
 
-    public function reorder(array $keys)
+    /**
+     * @param string[] $keys
+     */
+    public function reorder(array $keys): void
     {
         if ($this->has('batch')) {
             array_unshift($keys, 'batch');

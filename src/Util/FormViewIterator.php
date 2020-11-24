@@ -16,53 +16,51 @@ namespace Sonata\AdminBundle\Util;
 use Symfony\Component\Form\FormView;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class FormViewIterator implements \RecursiveIterator
+final class FormViewIterator implements \RecursiveIterator
 {
     /**
      * @var \ArrayIterator<string, FormView>
      */
-    protected $iterator;
+    private $iterator;
 
     public function __construct(FormView $formView)
     {
         $this->iterator = $formView->getIterator();
     }
 
-    public function getChildren()
+    public function getChildren(): self
     {
         return new self($this->current());
     }
 
-    public function hasChildren()
+    public function hasChildren(): bool
     {
         return \count($this->current()->children) > 0;
     }
 
-    public function current()
+    public function current(): FormView
     {
         return $this->iterator->current();
     }
 
-    public function next()
+    public function next(): void
     {
         $this->iterator->next();
     }
 
-    public function key()
+    public function key(): string
     {
         return $this->current()->vars['id'];
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return $this->iterator->valid();
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->iterator->rewind();
     }

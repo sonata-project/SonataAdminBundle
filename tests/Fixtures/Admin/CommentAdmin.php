@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Fixtures\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
 class CommentAdmin extends AbstractAdmin
 {
@@ -23,7 +23,7 @@ class CommentAdmin extends AbstractAdmin
         $this->classnameLabel = $label;
     }
 
-    public function configureRoutes(RouteCollection $collection): void
+    public function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('edit');
     }
