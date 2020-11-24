@@ -44,8 +44,6 @@ interface LifecycleHookProviderInterface
      */
     public function delete(object $object): void;
 
-    public function preValidate(object $object): void;
-
     /**
      * @phpstan-param T $object
      */

@@ -135,6 +135,10 @@ interface ModelManagerInterface
     public function getModelInstance(string $class): object;
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.80 and will be removed in 4.0.
+     *
      * @param array<string, mixed> $array
      *
      * @phpstan-template T of object
@@ -155,7 +159,7 @@ interface ModelManagerInterface
      *
      * @param string[] $fields
      *
-     * @deprecated since sonata-admin/admin-bundle 3.79 and will be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.79 and will be removed in 4.0.
      */
     public function getDataSourceIterator(
         DatagridInterface $datagrid,

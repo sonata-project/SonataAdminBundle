@@ -311,8 +311,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @deprecated this feature cannot be stable, use a custom validator,
-     *             the feature will be removed with Symfony 2.2
+     * @deprecated since sonata-project/admin-bundle 3.x.
      *
      * @phpstan-param T $object
      */
