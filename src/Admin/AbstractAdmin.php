@@ -45,8 +45,6 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -647,13 +645,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         foreach ($this->extensions as $extension) {
             $extension->postRemove($this, $object);
         }
-    }
-
-    /**
-     * @phpstan-param T $object
-     */
-    public function preValidate(object $object): void
-    {
     }
 
     public function preUpdate(object $object): void
@@ -2655,9 +2646,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->loaded['form'] = true;
 
         $formBuilder = $this->getFormBuilder();
-        $formBuilder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
-            $this->preValidate($event->getData());
-        }, 100);
 
         $this->form = $formBuilder->getForm();
     }
