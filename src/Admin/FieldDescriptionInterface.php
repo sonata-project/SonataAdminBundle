@@ -153,9 +153,14 @@ interface FieldDescriptionInterface
      * @deprecated since sonata-project/admin-bundle 3.69. Use `getTargetModel()` instead.
      *
      * @return string|null
+     *
+     * @phpstan-return class-string|null
      */
     public function getTargetEntity();
 
+    /**
+     * @phpstan-return class-string|null
+     */
     // public function getTargetModel(): ?string;
 
     /**
