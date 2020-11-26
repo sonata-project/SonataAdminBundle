@@ -9,8 +9,10 @@ file that was distributed with this source code.
 
 #}
 
-{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
-
-{% block field %}
-    {%- include '@SonataAdmin/CRUD/display_currency.html.twig' -%}
-{% endblock %}
+{%- apply spaceless %}
+    {%- if value is null -%}
+        &nbsp;
+    {%- else -%}
+        {{ field_description.options.currency }} {{ value }}
+    {%- endif -%}
+{% endapply -%}
