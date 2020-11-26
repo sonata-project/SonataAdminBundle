@@ -32,6 +32,7 @@ final class AdminLayoutTest extends AbstractLayoutTestCase
         $form = $this->factory->createNamed('name', TextType::class);
         $form->addError(new FormError('[trans]Error 1[/trans]'));
         $form->addError(new FormError('[trans]Error 2[/trans]'));
+        $form->submit([]);
         $view = $form->createView();
         $html = $this->renderRow($view);
 
