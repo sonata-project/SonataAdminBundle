@@ -1555,6 +1555,50 @@ class CRUDController implements ContainerAwareInterface
         return $this->get('translator')->trans($id, $parameters, $domain, $locale);
     }
 
+    protected function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): ?JsonResponse
+    {
+        if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
+            @trigger_error(sprintf(
+                'None of the passed values ("%s") in the "Accept" header when requesting %s %s is supported since sonata-project/admin-bundle 3.x.'
+                .' It will result in a response with the status code 406 (Not Acceptable) in 4.0. You must add "application/json".',
+                implode('", "', $request->getAcceptableContentTypes()),
+                $request->getMethod(),
+                $request->getUri()
+            ), E_USER_DEPRECATED);
+
+            return null;
+        }
+
+        $errors = [];
+        foreach ($form->getErrors(true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+
+        return $this->renderJson([
+            'result' => 'error',
+            'errors' => $errors,
+        ], Response::HTTP_BAD_REQUEST);
+    }
+
+    protected function handleXmlHttpRequestSuccessResponse(Request $request, object $object): JsonResponse
+    {
+        if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
+            @trigger_error(sprintf(
+                'None of the passed values ("%s") in the "Accept" header when requesting %s %s is supported since sonata-project/admin-bundle 3.x.'
+                .' It will result in a response with the status code 406 (Not Acceptable) in 4.0. You must add "application/json".',
+                implode('", "', $request->getAcceptableContentTypes()),
+                $request->getMethod(),
+                $request->getUri()
+            ), E_USER_DEPRECATED);
+        }
+
+        return $this->renderJson([
+            'result' => 'ok',
+            'objectId' => $this->admin->getNormalizedIdentifier($object),
+            'objectName' => $this->escapeHtml($this->admin->toString($object)),
+        ], Response::HTTP_OK);
+    }
+
     private function getSelectedTab(Request $request): array
     {
         return array_filter(['_tab' => $request->request->get('_tab')]);
@@ -1594,40 +1638,5 @@ class CRUDController implements ContainerAwareInterface
         $twig = $this->get('twig');
 
         $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
-    }
-
-    private function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): ?JsonResponse
-    {
-        if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
-            @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json` or `Accept: */*`', E_USER_DEPRECATED);
-
-            return null;
-        }
-
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
-
-        return $this->renderJson([
-            'result' => 'error',
-            'errors' => $errors,
-        ], Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
-     * @param object $object
-     */
-    private function handleXmlHttpRequestSuccessResponse(Request $request, $object): JsonResponse
-    {
-        if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
-            @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json` or `Accept: */*`', E_USER_DEPRECATED);
-        }
-
-        return $this->renderJson([
-            'result' => 'ok',
-            'objectId' => $this->admin->getNormalizedIdentifier($object),
-            'objectName' => $this->escapeHtml($this->admin->toString($object)),
-        ], Response::HTTP_OK);
     }
 }
