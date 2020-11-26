@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Tests\Form;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormError;
 
-final class AdminLayoutTestCase extends AbstractLayoutTest
+final class AdminLayoutTest extends AbstractLayoutTestCase
 {
     public function testRowSetId(): void
     {
