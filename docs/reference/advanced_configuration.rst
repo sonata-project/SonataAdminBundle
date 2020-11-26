@@ -11,6 +11,7 @@ the services which are injected by default are:
 Dependencies                  Service ID
 =========================     ===================================================================
 model_manager                 sonata.admin.manager.%manager-type%
+data_source                   sonata.admin.data_source.%manager-type%
 form_contractor               sonata.admin.builder.%manager-type%_form
 show_builder                  sonata.admin.builder.%manager-type%_show
 list_builder                  sonata.admin.builder.%manager-type%_list
