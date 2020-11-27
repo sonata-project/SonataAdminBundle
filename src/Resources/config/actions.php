@@ -89,6 +89,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('sonata.admin.pool'),
                 new ReferenceConfigurator('validator'),
                 new ReferenceConfigurator('sonata.admin.form.data_transformer_resolver'),
+                new ReferenceConfigurator('property_accessor'),
             ])
 
         ->set('sonata.admin.action.retrieve_autocomplete_items', RetrieveAutocompleteItemsAction::class)

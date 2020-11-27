@@ -51,6 +51,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 (new ReferenceConfigurator('logger'))->nullOnInvalid(),
                 new ReferenceConfigurator('translator'),
                 new ReferenceConfigurator('service_container'),
+                new ReferenceConfigurator('property_accessor'),
                 new ReferenceConfigurator('security.authorization_checker'),
             ])
             ->call('setXEditableTypeMapping', [

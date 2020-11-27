@@ -25,6 +25,7 @@ use Sonata\AdminBundle\Util\FormViewIterator;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * @final since sonata-project/admin-bundle 3.52
@@ -39,13 +40,57 @@ class AdminHelper
     private const FORM_FIELD_DELETE = '_delete';
 
     /**
-     * @var Pool
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @var Pool|null
      */
     protected $pool;
 
-    public function __construct(Pool $pool)
+    /**
+     * @var PropertyAccessorInterface
+     */
+    private $propertyAccessor;
+
+    /**
+     * NEXT_MAJOR: Change signature for (PropertyAccessorInterface $propertyAccessor).
+     */
+    public function __construct($poolOrPropertyAccessor)
     {
-        $this->pool = $pool;
+        // NEXT_MAJOR: Remove this block.
+        if (!$poolOrPropertyAccessor instanceof Pool && !$poolOrPropertyAccessor instanceof PropertyAccessorInterface) {
+            throw new \TypeError(sprintf(
+                'Argument 1 passed to "%s()" must be either an instance of %s or %s, %s given.',
+                __METHOD__,
+                Pool::class,
+                PropertyAccessorInterface::class,
+                \is_object($poolOrPropertyAccessor) ? 'instance of "'.\get_class($poolOrPropertyAccessor).'"' : '"'.\gettype($poolOrPropertyAccessor).'"'
+            ));
+        }
+
+        // NEXT_MAJOR: Remove this block.
+        if ($poolOrPropertyAccessor instanceof Pool) {
+            @trigger_error(sprintf(
+                'Passing an instance of "%s" as argument 1 for "%s()" is deprecated since'
+                .' sonata-project/admin-bundle 3.x and will throw a \TypeError error in version 4.0.'
+                .' You MUST pass an instance of %s instead.',
+                Pool::class,
+                __METHOD__,
+                PropertyAccessorInterface::class
+            ), E_USER_DEPRECATED);
+
+            $this->pool = $poolOrPropertyAccessor;
+            $this->propertyAccessor = $poolOrPropertyAccessor->getPropertyAccessor();
+
+            return;
+        }
+
+        // NEXT_MAJOR: Remove this block.
+        if ((\func_get_args()[1] ?? null) instanceof Pool) {
+            $this->pool = \func_get_args()[1];
+        }
+
+        // NEXT_MAJOR: Change $poolOrPropertyAccessor to $propertyAccessor.
+        $this->propertyAccessor = $poolOrPropertyAccessor;
     }
 
     /**
@@ -93,6 +138,15 @@ class AdminHelper
      */
     public function getAdmin($code)
     {
+        if (null === $this->pool) {
+            throw new \LogicException(sprintf(
+                'You MUST pass a "%s" instance as argument 2 when constructing "%s" to be able to call "%s()".',
+                Pool::class,
+                self::class,
+                __METHOD__
+            ));
+        }
+
         return $this->pool->getInstance($code);
     }
 
@@ -144,11 +198,9 @@ class AdminHelper
         //Child form not found (probably nested one)
         //if childFormBuilder was not found resulted in fatal error getName() method call on non object
         if (!$childFormBuilder) {
-            $propertyAccessor = $this->pool->getPropertyAccessor();
-
             $path = $this->getElementAccessPath($elementId, $subject);
 
-            $collection = $propertyAccessor->getValue($subject, $path);
+            $collection = $this->propertyAccessor->getValue($subject, $path);
 
             if ($collection instanceof DoctrinePersistentCollection || $collection instanceof PersistentCollection) {
                 //since doctrine 2.4
@@ -160,7 +212,7 @@ class AdminHelper
             }
 
             $collection->add(new $modelClassName());
-            $propertyAccessor->setValue($subject, $path, $collection);
+            $this->propertyAccessor->setValue($subject, $path, $collection);
 
             $fieldDescription = null;
         } else {
@@ -281,8 +333,6 @@ class AdminHelper
      */
     public function getElementAccessPath($elementId, $model)
     {
-        $propertyAccessor = $this->pool->getPropertyAccessor();
-
         $idWithoutIdentifier = preg_replace('/^[^_]*_/', '', $elementId);
         $initialPath = preg_replace('#(_(\d+)_)#', '[$2]_', $idWithoutIdentifier);
 
@@ -294,7 +344,7 @@ class AdminHelper
             $currentPath .= empty($currentPath) ? $part : '_'.$part;
             $separator = empty($totalPath) ? '' : '.';
 
-            if ($propertyAccessor->isReadable($model, $totalPath.$separator.$currentPath)) {
+            if ($this->propertyAccessor->isReadable($model, $totalPath.$separator.$currentPath)) {
                 $totalPath .= $separator.$currentPath;
                 $currentPath = '';
             }

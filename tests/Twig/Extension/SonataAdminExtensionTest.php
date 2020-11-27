@@ -24,12 +24,15 @@ use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
 use Symfony\Component\Routing\RequestContext;
@@ -49,6 +52,8 @@ use Twig\Extra\String\StringExtension;
  */
 class SonataAdminExtensionTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     /**
      * @var SonataAdminExtension
      */
@@ -114,6 +119,11 @@ class SonataAdminExtensionTest extends TestCase
      */
     private $securityChecker;
 
+    /**
+     * @var PropertyAccessor
+     */
+    private $propertyAccessor;
+
     protected function setUp(): void
     {
         date_default_timezone_set('Europe/London');
@@ -159,12 +169,14 @@ class SonataAdminExtensionTest extends TestCase
         $this->container->set('sonata_admin_foo_service.template_registry', $this->templateRegistry);
 
         $this->securityChecker = $this->createStub(AuthorizationCheckerInterface::class);
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
         $this->twigExtension = new SonataAdminExtension(
             $this->pool,
             $this->logger,
             $this->translator,
             $this->container,
+            $propertyAccessor,
             $this->securityChecker
         );
         $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping);
@@ -254,6 +266,48 @@ class SonataAdminExtensionTest extends TestCase
         $this->fieldDescription
             ->method('getLabel')
             ->willReturn('Data');
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
+    public function testConstructThrowsExceptionWithWrongPropertyAccessOrAuthorizationCheckerArgument(): void
+    {
+        $this->expectException(\TypeError::class);
+
+        new SonataAdminExtension(
+            $this->pool,
+            null,
+            $this->translator,
+            $this->container,
+            new \stdClass()
+        );
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @group legacy
+     */
+    public function testConstructTriggersDeprecationWithAuthorizationCheckerArgument(): void
+    {
+        $this->expectDeprecation(sprintf(
+            'Passing an instance of "%s" as argument 5 for "%s::__construct()" is deprecated since'
+            .' sonata-project/admin-bundle 3.x and will throw a \TypeError error in version 4.0. You MUST pass an instance'
+            .' of "%s" instead and pass an instance of "%s" as argument 6.',
+            AuthorizationCheckerInterface::class,
+            SonataAdminExtension::class,
+            PropertyAccessorInterface::class,
+            AuthorizationCheckerInterface::class
+        ));
+
+        new SonataAdminExtension(
+            $this->pool,
+            null,
+            $this->translator,
+            $this->container,
+            $this->securityChecker
+        );
     }
 
     /**

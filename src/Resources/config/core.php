@@ -54,7 +54,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 '',
                 '',
                 [],
-                new ReferenceConfigurator('property_accessor'),
             ])
             ->call('setTemplateRegistry', [
                 new ReferenceConfigurator('sonata.admin.global_template_registry'),
@@ -76,6 +75,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.helper', AdminHelper::class)
             ->public()
             ->args([
+                new ReferenceConfigurator('property_accessor'),
+                // NEXT_MAJOR: Remove next line.
                 new ReferenceConfigurator('sonata.admin.pool'),
             ])
 
