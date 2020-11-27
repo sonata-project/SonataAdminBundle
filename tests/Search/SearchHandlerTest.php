@@ -24,14 +24,14 @@ class SearchHandlerTest extends TestCase
 {
     public function testBuildPagerWithNoGlobalSearchField(): void
     {
-        $filter = $this->getMockForAbstractClass(FilterInterface::class);
-        $filter->expects($this->once())->method('getOption')->willReturn(false);
+        $filter = $this->createMock(FilterInterface::class);
+        $filter->expects($this->once())->method('getOption')->with('global_search')->willReturn(false);
         $filter->expects($this->never())->method('setOption');
 
-        $datagrid = $this->getMockForAbstractClass(DatagridInterface::class);
+        $datagrid = $this->createMock(DatagridInterface::class);
         $datagrid->expects($this->once())->method('getFilters')->willReturn([$filter]);
 
-        $admin = $this->getMockForAbstractClass(AdminInterface::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())->method('getDatagrid')->willReturn($datagrid);
 
         $handler = new SearchHandler(true);
@@ -45,19 +45,19 @@ class SearchHandlerTest extends TestCase
     {
         $filter = $this->getMockForAbstractClass(FilterInterface::class);
         $filter->expects($this->once())->method('getFormName')->willReturn('formName');
-        $filter->expects($this->once())->method('getOption')->willReturn(true);
+        $filter->expects($this->once())->method('getOption')->with('global_search')->willReturn(true);
         $filter->expects($this->once())->method('setOption')->with('case_sensitive', $caseSensitive);
 
-        $pager = $this->getMockForAbstractClass(PagerInterface::class);
+        $pager = $this->createMock(PagerInterface::class);
         $pager->expects($this->once())->method('setPage');
         $pager->expects($this->once())->method('setMaxPerPage');
 
-        $datagrid = $this->getMockForAbstractClass(DatagridInterface::class);
+        $datagrid = $this->createMock(DatagridInterface::class);
         $datagrid->expects($this->once())->method('getFilters')->willReturn([$filter]);
         $datagrid->expects($this->once())->method('setValue');
         $datagrid->expects($this->once())->method('getPager')->willReturn($pager);
 
-        $admin = $this->getMockForAbstractClass(AdminInterface::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())->method('getDatagrid')->willReturn($datagrid);
 
         $handler = new SearchHandler($caseSensitive);
@@ -70,5 +70,47 @@ class SearchHandlerTest extends TestCase
             [true],
             [false],
         ];
+    }
+
+    /**
+     * @dataProvider provideAdminSearchConfigurations
+     */
+    public function testAdminSearch($expected, $filterCallsCount, ?bool $enabled, string $adminCode): void
+    {
+        $filter = $this->createMock(FilterInterface::class);
+        $filter->expects($this->exactly($filterCallsCount))->method('getOption')->with('global_search')->willReturn(true);
+        $filter->expects($this->exactly($filterCallsCount))->method('setOption')->with('case_sensitive', true);
+
+        $pager = $this->createMock(PagerInterface::class);
+        $pager->expects($this->exactly($filterCallsCount))->method('setPage');
+        $pager->expects($this->exactly($filterCallsCount))->method('setMaxPerPage');
+
+        $datagrid = $this->createMock(DatagridInterface::class);
+        $datagrid->expects($this->exactly($filterCallsCount))->method('getFilters')->willReturn([$filter]);
+        $datagrid->expects($this->exactly($filterCallsCount))->method('setValue');
+        $datagrid->expects($this->exactly($filterCallsCount))->method('getPager')->willReturn($pager);
+
+        $admin = $this->createMock(AdminInterface::class);
+        $admin->expects($this->exactly($filterCallsCount))->method('getDatagrid')->willReturn($datagrid);
+        $admin->expects($this->once())->method('getCode')->willReturn($adminCode);
+
+        $handler = new SearchHandler(true);
+
+        if (null !== $enabled) {
+            $handler->configureAdminSearch([$adminCode => $enabled]);
+        }
+
+        if (null === $expected) {
+            $this->assertNull($handler->search($admin, 'myservice'));
+        } else {
+            $this->assertInstanceOf($expected, $handler->search($admin, 'myservice'));
+        }
+    }
+
+    public function provideAdminSearchConfigurations(): iterable
+    {
+        yield 'admin_search_enabled' => [PagerInterface::class, 1, true, 'admin.foo'];
+        yield 'admin_search_disabled' => [null, 0, false, 'admin.bar'];
+        yield 'admin_search_omitted' => [PagerInterface::class, 1, null, 'admin.baz'];
     }
 }

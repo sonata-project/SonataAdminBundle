@@ -381,8 +381,8 @@ class CRUDController extends AbstractController
 
         if ($data = json_decode((string) $request->get('data', ''), true)) {
             $action = $data['action'];
-            $idx = $data['idx'];
-            $allElements = (bool) $data['all_elements'];
+            $idx = (array) ($data['idx'] ?? []);
+            $allElements = (bool) ($data['all_elements'] ?? false);
             $forwardedRequest->request->replace(array_merge($forwardedRequest->request->all(), $data));
         } else {
             $action = $forwardedRequest->request->get('action');
@@ -392,7 +392,7 @@ class CRUDController extends AbstractController
                 // symfony 5.1+
                 $idx = $bag->all('idx');
             } else {
-                $idx = $bag->get('idx', []);
+                $idx = (array) $bag->get('idx', []);
             }
             $allElements = $forwardedRequest->request->getBoolean('all_elements');
 
@@ -400,6 +400,7 @@ class CRUDController extends AbstractController
             $forwardedRequest->request->set('all_elements', $allElements);
 
             $data = $forwardedRequest->request->all();
+            $data['all_elements'] = $allElements;
 
             unset($data['_sonata_csrf_token']);
         }
@@ -1290,6 +1291,36 @@ class CRUDController extends AbstractController
         return $this->get('translator')->trans($id, $parameters, $domain, $locale);
     }
 
+    protected function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): ?JsonResponse
+    {
+        if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
+            return $this->renderJson([], Response::HTTP_NOT_ACCEPTABLE);
+        }
+
+        $errors = [];
+        foreach ($form->getErrors(true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+
+        return $this->renderJson([
+            'result' => 'error',
+            'errors' => $errors,
+        ], Response::HTTP_BAD_REQUEST);
+    }
+
+    protected function handleXmlHttpRequestSuccessResponse(Request $request, object $object): JsonResponse
+    {
+        if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
+            return $this->renderJson([], Response::HTTP_NOT_ACCEPTABLE);
+        }
+
+        return $this->renderJson([
+            'result' => 'ok',
+            'objectId' => $this->admin->getNormalizedIdentifier($object),
+            'objectName' => $this->escapeHtml($this->admin->toString($object)),
+        ], Response::HTTP_OK);
+    }
+
     private function getSelectedTab(Request $request): array
     {
         return array_filter(['_tab' => $request->request->get('_tab')]);
@@ -1324,35 +1355,5 @@ class CRUDController extends AbstractController
         $twig = $this->get('twig');
 
         $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
-    }
-
-    private function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): JsonResponse
-    {
-        if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
-            return $this->renderJson([], Response::HTTP_NOT_ACCEPTABLE);
-        }
-
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
-
-        return $this->renderJson([
-            'result' => 'error',
-            'errors' => $errors,
-        ], Response::HTTP_BAD_REQUEST);
-    }
-
-    private function handleXmlHttpRequestSuccessResponse(Request $request, object $object): JsonResponse
-    {
-        if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
-            return $this->renderJson([], Response::HTTP_NOT_ACCEPTABLE);
-        }
-
-        return $this->renderJson([
-            'result' => 'ok',
-            'objectId' => $this->admin->getNormalizedIdentifier($object),
-            'objectName' => $this->escapeHtml($this->admin->toString($object)),
-        ], Response::HTTP_OK);
     }
 }

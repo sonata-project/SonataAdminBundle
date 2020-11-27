@@ -27,7 +27,7 @@ use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\RuntimeLoader\FactoryRuntimeLoader;
 
-abstract class AbstractLayoutTest extends FormIntegrationTestCase
+abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
 {
     /**
      * @var FormRenderer

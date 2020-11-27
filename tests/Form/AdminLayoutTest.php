@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Tests\Form;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormError;
 
-final class AdminLayoutTestCase extends AbstractLayoutTest
+final class AdminLayoutTest extends AbstractLayoutTestCase
 {
     public function testRowSetId(): void
     {
@@ -32,6 +32,7 @@ final class AdminLayoutTestCase extends AbstractLayoutTest
         $form = $this->factory->createNamed('name', TextType::class);
         $form->addError(new FormError('[trans]Error 1[/trans]'));
         $form->addError(new FormError('[trans]Error 2[/trans]'));
+        $form->submit([]);
         $view = $form->createView();
         $html = $this->renderRow($view);
 
@@ -71,6 +72,23 @@ EOD;
         $this->assertMatchesXpath(
             $html,
             $expression
+        );
+    }
+
+    public function testRowAttr(): void
+    {
+        $form = $this->factory->createNamed('name', TextType::class, '', [
+            'row_attr' => [
+                'class' => 'foo',
+                'data-value' => 'bar',
+            ],
+        ]);
+        $view = $form->createView();
+        $html = $this->renderRow($view);
+
+        $this->assertMatchesXpath(
+            $html,
+            '//div[@class="foo form-group"][@data-value="bar"][@id="sonata-ba-field-container-name"]'
         );
     }
 }

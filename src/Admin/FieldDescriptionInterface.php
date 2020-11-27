@@ -116,6 +116,8 @@ interface FieldDescriptionInterface
 
     /**
      * Returns the related Target object model.
+     *
+     * @phpstan-return class-string|null
      */
     public function getTargetModel(): ?string;
 

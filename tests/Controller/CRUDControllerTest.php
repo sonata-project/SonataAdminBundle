@@ -3390,15 +3390,25 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('list', $result->getTargetUrl());
     }
 
-    public function testBatchActionWithConfirmation(): void
+    public function provideConfirmationData(): iterable
+    {
+        yield 'normal data' => [['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false]];
+        yield 'without all elements' => [['action' => 'delete', 'idx' => ['123', '456']]];
+        yield 'all elements' => [['action' => 'delete', 'all_elements' => true]];
+        yield 'idx is null' => [['action' => 'delete', 'idx' => null, 'all_elements' => true]];
+        yield 'all_elements is null' => [['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => null]];
+    }
+
+    /**
+     * @dataProvider provideConfirmationData
+     */
+    public function testBatchActionWithConfirmation(array $data): void
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'translation_domain' => 'FooBarBaz', 'ask_confirmation' => true]];
 
         $this->admin->expects($this->once())
             ->method('getBatchActions')
             ->willReturn($batchActions);
-
-        $data = ['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false];
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode($data));
