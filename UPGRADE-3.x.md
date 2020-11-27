@@ -4,6 +4,10 @@ UPGRADE 3.x
 UPGRADE FROM 3.xx to 3.xx
 =========================
 
+### Deprecated `AdminInterface::getValidator()` and  `AdminInterface::setValidator()` methods, `AbstractAdmin::$validator` property.
+
+Methods are deprecated without replacement.
+
 ### Sonata\AdminBundle\Admin\Pool
 
 - Passing a `Symfony\Component\PropertyAccess\PropertyAccessorInterface` instance as 4 argument instantiating

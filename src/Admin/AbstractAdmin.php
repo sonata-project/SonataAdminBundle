@@ -392,7 +392,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $securityHandler;
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
      * @var ValidatorInterface
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
      */
     protected $validator;
 
@@ -2849,6 +2853,11 @@ EOT;
         return $this->getNormalizedIdentifier($model);
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
+     */
     public function setValidator($validator)
     {
         // NEXT_MAJOR: Move ValidatorInterface check to method signature
@@ -2862,8 +2871,18 @@ EOT;
         $this->validator = $validator;
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
+     */
     public function getValidator()
     {
+        @trigger_error(sprintf(
+            'The %s method is deprecated since version 3.x and will be removed in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         return $this->validator;
     }
 

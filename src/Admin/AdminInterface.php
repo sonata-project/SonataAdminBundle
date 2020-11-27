@@ -328,14 +328,22 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function id($model);
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
      * @param ValidatorInterface $validator
      *
      * @return void
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
      */
     public function setValidator($validator);
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
      * @return ValidatorInterface
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
      */
     public function getValidator();
 

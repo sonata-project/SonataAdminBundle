@@ -954,6 +954,11 @@ class AdminTest extends TestCase
         $this->assertSame(['FooTheme'], $admin->getFormTheme());
     }
 
+    /**
+     * NEXT_MAJOR: remove this method.
+     *
+     * @group legacy
+     */
     public function testGetValidator(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
@@ -963,6 +968,9 @@ class AdminTest extends TestCase
         $validator = $this->getMockForAbstractClass(ValidatorInterface::class);
 
         $admin->setValidator($validator);
+
+        $this->expectDeprecation('The Sonata\AdminBundle\Admin\AbstractAdmin::getValidator method is deprecated since version 3.x and will be removed in 4.0.');
+
         $this->assertSame($validator, $admin->getValidator());
     }
 
@@ -2838,6 +2846,7 @@ class AdminTest extends TestCase
         $pager = $this->createStub(PagerInterface::class);
         $admin->setDatagridBuilder(new DatagridBuilder($formFactory, $pager));
 
+        // NEXT_MAJOR: remove the following 3 lines
         $validator = $this->createMock(ValidatorInterface::class);
         $validator->method('getMetadataFor')->willReturn($this->createStub(MemberMetadata::class));
         $admin->setValidator($validator);
