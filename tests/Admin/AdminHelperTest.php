@@ -20,6 +20,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Bar;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\DataMapperInterface;
@@ -29,21 +30,49 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PropertyAccess\PropertyAccessorBuilder;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class AdminHelperTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     /**
      * @var AdminHelper
      */
     protected $helper;
 
+    /**
+     * @var PropertyAccessor
+     */
+    private $propertyAccessor;
+
     protected function setUp(): void
     {
-        $container = new Container();
+        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $this->helper = new AdminHelper($this->propertyAccessor);
+    }
 
-        $pool = new Pool($container, 'title', 'logo.png');
-        $this->helper = new AdminHelper($pool);
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
+    public function testDeprecatedConstructingWithoutPropertyAccessor(): void
+    {
+        $pool = new Pool(new Container(), 'title', 'logo.png');
+
+        $this->expectDeprecation(sprintf(
+            'Passing an instance of "%s" as argument 1 for "%s::__construct()" is deprecated since'
+            .' sonata-project/admin-bundle 3.x and will throw a \TypeError error in version 4.0. You MUST pass an instance'
+            .' of %s instead.',
+            Pool::class,
+            AdminHelper::class,
+            PropertyAccessorInterface::class
+        ));
+
+        new AdminHelper($pool);
     }
 
     public function testGetChildFormBuilder(): void
@@ -189,12 +218,7 @@ class AdminHelperTest extends TestCase
 
     public function testAppendFormFieldElement(): void
     {
-        $container = new Container();
-
-        $propertyAccessorBuilder = new PropertyAccessorBuilder();
-        $propertyAccessor = $propertyAccessorBuilder->getPropertyAccessor();
-        $pool = new Pool($container, 'title', 'logo.png', [], $propertyAccessor);
-        $helper = new AdminHelper($pool);
+        $helper = new AdminHelper($this->propertyAccessor);
 
         $admin = $this->createMock(AdminInterface::class);
         $admin

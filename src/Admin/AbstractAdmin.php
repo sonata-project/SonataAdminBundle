@@ -50,6 +50,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
@@ -3722,7 +3723,7 @@ EOT;
             $parentObject = $parentAdmin->getObject($this->request->get($parentAdmin->getIdParameter()));
 
             if (null !== $parentObject) {
-                $propertyAccessor = $this->getConfigurationPool()->getPropertyAccessor();
+                $propertyAccessor = PropertyAccess::createPropertyAccessor();
                 $propertyPath = new PropertyPath($this->getParentAssociationMapping());
 
                 $value = $propertyAccessor->getValue($object, $propertyPath);
