@@ -693,6 +693,12 @@ class SonataAdminExtensionTest extends TestCase
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-percent" objectId="12345"> 0 % </td>',
                 'percent',
+                0,
+                [],
+            ],
+            [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-percent" objectId="12345"> &nbsp; </td>',
+                'percent',
                 null,
                 [],
             ],
@@ -703,9 +709,9 @@ class SonataAdminExtensionTest extends TestCase
                 ['currency' => 'EUR'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-currency" objectId="12345"> </td>',
+                '<td class="sonata-ba-list-field sonata-ba-list-field-currency" objectId="12345"> EUR 0 </td>',
                 'currency',
-                null,
+                0,
                 ['currency' => 'EUR'],
             ],
             [
@@ -715,7 +721,7 @@ class SonataAdminExtensionTest extends TestCase
                 ['currency' => 'GBP'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-currency" objectId="12345"> </td>',
+                '<td class="sonata-ba-list-field sonata-ba-list-field-currency" objectId="12345"> &nbsp; </td>',
                 'currency',
                 null,
                 ['currency' => 'GBP'],
@@ -1657,9 +1663,11 @@ EOT
             ],
             ['<th>Data</th> <td>10.746135</td>', 'number', 10.746135, ['safe' => false]],
             ['<th>Data</th> <td>5678</td>', 'integer', 5678, ['safe' => false]],
-            ['<th>Data</th> <td> 1074.6135 % </td>', 'percent', 10.746135, []],
-            ['<th>Data</th> <td> EUR 10.746135 </td>', 'currency', 10.746135, ['currency' => 'EUR']],
-            ['<th>Data</th> <td> GBP 51.23456 </td>', 'currency', 51.23456, ['currency' => 'GBP']],
+            ['<th>Data</th> <td>1074.6135 %</td>', 'percent', 10.746135, []],
+            ['<th>Data</th> <td>0 %</td>', 'percent', 0, []],
+            ['<th>Data</th> <td>EUR 10.746135</td>', 'currency', 10.746135, ['currency' => 'EUR']],
+            ['<th>Data</th> <td>GBP 51.23456</td>', 'currency', 51.23456, ['currency' => 'GBP']],
+            ['<th>Data</th> <td>EUR 0</td>', 'currency', 0, ['currency' => 'EUR']],
             [
                 '<th>Data</th> <td> <ul><li>1&nbsp;=>&nbsp;First</li><li>2&nbsp;=>&nbsp;Second</li></ul> </td>',
                 'array',
@@ -2194,9 +2202,9 @@ EOT
             ['<th>Data</th> <td>&nbsp;</td>', 'time', []],
             ['<th>Data</th> <td></td>', 'number', ['safe' => false]],
             ['<th>Data</th> <td></td>', 'integer', ['safe' => false]],
-            ['<th>Data</th> <td> 0 % </td>', 'percent', []],
-            ['<th>Data</th> <td> </td>', 'currency', ['currency' => 'EUR']],
-            ['<th>Data</th> <td> </td>', 'currency', ['currency' => 'GBP']],
+            ['<th>Data</th> <td>&nbsp;</td>', 'percent', []],
+            ['<th>Data</th> <td>&nbsp;</td>', 'currency', ['currency' => 'EUR']],
+            ['<th>Data</th> <td>&nbsp;</td>', 'currency', ['currency' => 'GBP']],
             ['<th>Data</th> <td> <ul></ul> </td>', 'array', ['safe' => false]],
             [
                 '<th>Data</th> <td><span class="label label-danger">no</span></td>',
