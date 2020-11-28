@@ -32,9 +32,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * This interface should be implemented to work with the AddDependencyCallsCompilerPass.
  * All the setter are called by this compiler pass.
  *
+ * Note that the constructor should also have the following signature
+ * ```
+ * public function __construct(string $code, string $class, string $controller, ...);
+ * ```
+ * so that the admin class works correctly with the AddDependencyCallsCompilerPass. Indeed:
+ *     - The first and third argument are automatically injected by the AddDependencyCallsCompilerPass.
+ *     - The second one is used as a reference of the Admin in the Pool, with the `setAdminClasses` call.
+ *
  * @phpstan-template T of object
  *
- * @method void                          __construct(string $code, string $class, string $controller)
  * @method void                          initialize()
  * @method void                          setLabel(?string $label)
  * @method void                          showMosaicButton(bool $isShown)
@@ -58,15 +65,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 interface AdminTagInterface
 {
     public const ADMIN_TAG = 'sonata.admin';
-
-    /**
-     * NEXT_MAJOR: Uncomment this method.
-     *
-     * The first and third argument are automatically injected by the AddDependencyCallsCompilerPass.
-     *
-     * @phpstan-param class-string<T> $class
-     */
-//    public function __construct(string $code, string $class, string $controller);
 
     /**
      * NEXT_MAJOR: Uncomment this method.
