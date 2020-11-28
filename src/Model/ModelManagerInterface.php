@@ -102,7 +102,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @phpstan-param class-string $class
      */
-    public function batchDelete($class, ProxyQueryInterface $queryProxy);
+    public function batchDelete($class, ProxyQueryInterface $query);
 
     /**
      * NEXT_MAJOR: Remove this method.

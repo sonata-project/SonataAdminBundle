@@ -29,17 +29,21 @@ interface FilterInterface
      *
      * @deprecated since sonata-project/admin-bundle 3.78, to be removed with 4.0
      *
-     * Apply the filter to the QueryBuilder instance.
+     * Apply the filter to the ProxyQueryInterface instance.
      *
      * @param string  $alias
      * @param string  $field
      * @param mixed[] $value
+     *
+     * @phpstan array{type?: string, value?: mixed} $value
      */
-    public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $value);
+    public function filter(ProxyQueryInterface $query, $alias, $field, $value);
 
     /**
-     * @param mixed $query
-     * @param mixed $value
+     * @param ProxyQueryInterface $query
+     * @param mixed[]             $value
+     *
+     * @phpstan array{type?: string, value?: mixed} $value
      */
     public function apply($query, $value);
 
