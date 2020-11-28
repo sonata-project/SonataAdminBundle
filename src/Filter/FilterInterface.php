@@ -33,19 +33,19 @@ interface FilterInterface
      *
      * @param string  $alias
      * @param string  $field
-     * @param mixed[] $value
+     * @param mixed[] $data
      *
-     * @phpstan array{type?: string, value?: mixed} $value
+     * @phpstan array{type?: string, value?: mixed} $data
      */
-    public function filter(ProxyQueryInterface $query, $alias, $field, $value);
+    public function filter(ProxyQueryInterface $query, $alias, $field, $data);
 
     /**
      * @param ProxyQueryInterface $query
-     * @param mixed[]             $value
+     * @param mixed[]             $filterData
      *
-     * @phpstan array{type?: string, value?: mixed} $value
+     * @phpstan array{type?: string, value?: mixed} $filterData
      */
-    public function apply($query, $value);
+    public function apply($query, $filterData);
 
     /**
      * Returns the filter name.
