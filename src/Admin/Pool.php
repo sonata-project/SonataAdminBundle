@@ -62,7 +62,11 @@ class Pool
     protected $options = [];
 
     /**
-     * @var PropertyAccessorInterface|null
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @var PropertyAccessorInterface
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0.
      */
     protected $propertyAccessor;
 
@@ -74,6 +78,8 @@ class Pool
     private $templateRegistry;
 
     /**
+     * NEXT_MAJOR: Remove $propertyAccessor argument.
+     *
      * @param array<string, mixed> $options
      */
     public function __construct(
@@ -87,6 +93,17 @@ class Pool
         $this->title = $title;
         $this->titleLogo = $titleLogo;
         $this->options = $options;
+
+        // NEXT_MAJOR: Remove this block.
+        if (null !== $propertyAccessor) {
+            @trigger_error(sprintf(
+                'Passing an "%s" instance as argument 4 to "%s()" is deprecated since sonata-project/admin-bundle 3.x.',
+                PropertyAccessorInterface::class,
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
+        // NEXT_MAJOR: Remove next line.
         $this->propertyAccessor = $propertyAccessor;
     }
 
@@ -437,8 +454,16 @@ class Pool
         return $default;
     }
 
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0. Use Symfony "PropertyAccess" instead.
+     */
     public function getPropertyAccessor(): PropertyAccessorInterface
     {
+        @trigger_error(sprintf(
+            'The "%s" method is deprecated since version 3.x and will be removed in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         if (null === $this->propertyAccessor) {
             $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
         }

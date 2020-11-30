@@ -52,7 +52,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 '',
                 '',
                 [],
-                new ReferenceConfigurator('property_accessor'),
             ])
 
         ->alias(Pool::class, 'sonata.admin.pool')

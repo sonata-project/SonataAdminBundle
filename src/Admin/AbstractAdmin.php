@@ -53,6 +53,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -2823,7 +2824,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             $parentObject = $parentAdmin->getObject($this->request->get($parentAdmin->getIdParameter()));
 
             if (null !== $parentObject) {
-                $propertyAccessor = $this->getConfigurationPool()->getPropertyAccessor();
+                $propertyAccessor = PropertyAccess::createPropertyAccessor();
                 $parentAssociationMapping = $this->getParentAssociationMapping();
 
                 if (null !== $parentAssociationMapping) {

@@ -1,6 +1,32 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.xx to 3.xx
+=========================
+
+### Sonata\AdminBundle\Admin\Pool
+
+- Passing a `Symfony\Component\PropertyAccess\PropertyAccessorInterface` instance as 4 argument instantiating
+`Sonata\AdminBundle\Admin\Pool` is deprecated.
+- `Sonata\AdminBundle\Admin\Pool::getPropertyAccessor()` method has been deprecated. You SHOULD inject `Symfony\Component\PropertyAccess\PropertyAccessorInterface`
+where is needed.
+
+### Sonata\AdminBundle\Action\SetObjectFieldValueAction
+
+Not passing a `Symfony\Component\PropertyAccess\PropertyAccessorInterface` instance as argument 5 instantiating
+`Sonata\AdminBundle\Action\SetObjectFieldValueAction` is deprecated.
+
+### Sonata\AdminBundle\Admin\AdminHelper
+
+Not passing a `Symfony\Component\PropertyAccess\PropertyAccessorInterface` instance as argument 1 instantiating
+`Sonata\AdminBundle\Admin\AdminHelper` is deprecated.
+
+### Sonata\AdminBundle\Twig\Extension\SonataAdminExtension
+
+Argument 5 of `Sonata\AdminBundle\Admin\SonataAdminExtension` constructor SHOULD be a
+`Symfony\Component\PropertyAccess\PropertyAccessorInterface` instance and argument 6 SHOULD be a
+`Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface` instance or "null".
+
 UPGRADE FROM 3.80 to 3.81
 =========================
 

@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Twig\Environment;
@@ -48,12 +49,38 @@ final class SetObjectFieldValueAction
      */
     private $resolver;
 
-    public function __construct(Environment $twig, Pool $pool, ValidatorInterface $validator, DataTransformerResolverInterface $resolver)
-    {
+    /**
+     * @var PropertyAccessorInterface
+     */
+    private $propertyAccessor;
+
+    /**
+     * NEXT_MAJOR: Make all arguments mandatory.
+     */
+    public function __construct(
+        Environment $twig,
+        Pool $pool,
+        ValidatorInterface $validator,
+        DataTransformerResolverInterface $resolver,
+        ?PropertyAccessorInterface $propertyAccessor = null
+    ) {
+        // NEXT_MAJOR: Remove this check.
+        if (null === $propertyAccessor) {
+            @trigger_error(sprintf(
+                'Omitting the argument 5 for "%s()" or passing "null" is deprecated since sonata-project/admin-bundle'
+                .' 3.x and will throw a \TypeError error in version 4.0. You must pass an instance of %s instead.',
+                __METHOD__,
+                PropertyAccessorInterface::class
+            ), E_USER_DEPRECATED);
+
+            $propertyAccessor = $pool->getPropertyAccessor();
+        }
+
         $this->twig = $twig;
         $this->pool = $pool;
         $this->validator = $validator;
         $this->resolver = $resolver;
+        $this->propertyAccessor = $propertyAccessor;
     }
 
     /**
@@ -112,7 +139,7 @@ final class SetObjectFieldValueAction
 
         // If property path has more than 1 element, take the last object in order to validate it
         if ($propertyPath->getLength() > 1) {
-            $object = $this->pool->getPropertyAccessor()->getValue($object, $propertyPath->getParent());
+            $object = $this->propertyAccessor->getValue($object, $propertyPath->getParent());
 
             $elements = $propertyPath->getElements();
             $field = end($elements);
@@ -120,7 +147,7 @@ final class SetObjectFieldValueAction
         }
 
         if ('' === $value) {
-            $this->pool->getPropertyAccessor()->setValue($object, $propertyPath, null);
+            $this->propertyAccessor->setValue($object, $propertyPath, null);
         } else {
             $dataTransformer = $this->resolver->resolve($fieldDescription, $admin->getModelManager());
 
@@ -136,7 +163,7 @@ final class SetObjectFieldValueAction
                 ), Response::HTTP_NOT_FOUND);
             }
 
-            $this->pool->getPropertyAccessor()->setValue($object, $propertyPath, $value);
+            $this->propertyAccessor->setValue($object, $propertyPath, $value);
         }
 
         $violations = $this->validator->validate($object);
