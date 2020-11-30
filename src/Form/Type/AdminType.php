@@ -26,7 +26,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\NoSuchIndexException;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * @final since sonata-project/admin-bundle 3.52
@@ -80,7 +80,10 @@ class AdminType extends AbstractType
         // hack to make sure the subject is correctly set
         // https://github.com/sonata-project/SonataAdminBundle/pull/2076
         if (null === $builder->getData()) {
-            $p = new PropertyAccessor(false, true);
+            $propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
+                ->disableMagicCall()
+                ->enableExceptionOnInvalidIndex()
+                ->getPropertyAccessor();
 
             if ($admin->hasParentFieldDescription()) {
                 $parentFieldDescription = $admin->getParentFieldDescription();
@@ -107,7 +110,7 @@ class AdminType extends AbstractType
                     $parentSubject = $parentAdmin->getSubject();
 
                     try {
-                        $subject = $p->getValue($parentSubject, $parentPath.$path);
+                        $subject = $propertyAccessor->getValue($parentSubject, $parentPath.$path);
                     } catch (NoSuchIndexException $e) {
                         // no object here, we create a new one
                         $subject = $admin->getNewInstance();
