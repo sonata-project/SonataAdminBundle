@@ -81,7 +81,6 @@ use Symfony\Component\Form\FormRegistry;
 use Symfony\Component\Form\ResolvedFormTypeFactory;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Mapping\MemberMetadata;
@@ -1373,14 +1372,6 @@ class AdminTest extends TestCase
         $request = $this->createStub(Request::class);
         $tagAdmin->setRequest($request);
 
-        $configurationPool = $this->getMockBuilder(Pool::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $configurationPool->method('getPropertyAccessor')->willReturn(PropertyAccess::createPropertyAccessor());
-
-        $tagAdmin->setConfigurationPool($configurationPool);
-
         $tag = $tagAdmin->getNewInstance();
 
         $this->assertSame($post, $tag->getPost());
@@ -1408,14 +1399,6 @@ class AdminTest extends TestCase
 
         $request = $this->createStub(Request::class);
         $postCategoryAdmin->setRequest($request);
-
-        $configurationPool = $this->getMockBuilder(Pool::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $configurationPool->method('getPropertyAccessor')->willReturn(PropertyAccess::createPropertyAccessor());
-
-        $postCategoryAdmin->setConfigurationPool($configurationPool);
 
         $postCategory = $postCategoryAdmin->getNewInstance();
 
@@ -1451,14 +1434,6 @@ class AdminTest extends TestCase
 
         $request = $this->createStub(Request::class);
         $tagAdmin->setRequest($request);
-
-        $configurationPool = $this->getMockBuilder(Pool::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $configurationPool->method('getPropertyAccessor')->willReturn(PropertyAccess::createPropertyAccessor());
-
-        $tagAdmin->setConfigurationPool($configurationPool);
 
         $tag = $tagAdmin->getNewInstance();
 

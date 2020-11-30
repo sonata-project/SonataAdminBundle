@@ -76,61 +76,18 @@ final class SonataAdminExtension extends AbstractExtension
      */
     private $propertyAccessor;
 
-    /**
-     * NEXT_MAJOR: Make $propertyAccessor mandatory.
-     */
     public function __construct(
         Pool $pool,
         TranslatorInterface $translator,
-        ?ContainerInterface $templateRegistries = null,
-        $propertyAccessorOrSecurityChecker = null,
+        ContainerInterface $templateRegistries,
+        PropertyAccessorInterface $propertyAccessor,
         ?AuthorizationCheckerInterface $securityChecker = null
     ) {
-        // NEXT_MAJOR: Remove this block.
-        if (!$propertyAccessorOrSecurityChecker instanceof PropertyAccessorInterface
-            && !$propertyAccessorOrSecurityChecker instanceof AuthorizationCheckerInterface
-            && null !== $propertyAccessorOrSecurityChecker
-        ) {
-            throw new \TypeError(sprintf(
-                'Argument 5 must be an instance of "%s" or "%s" or null, %s given.',
-                PropertyAccessorInterface::class,
-                AuthorizationCheckerInterface::class,
-                \is_object($propertyAccessorOrSecurityChecker) ? 'instance of "'.\get_class($propertyAccessorOrSecurityChecker).'"' : '"'.\gettype($propertyAccessorOrSecurityChecker).'"'
-            ));
-        }
-
-        // NEXT_MAJOR: Remove this block and extract the else part outside.
-        if ($propertyAccessorOrSecurityChecker instanceof AuthorizationCheckerInterface) {
-            @trigger_error(sprintf(
-                'Passing an instance of "%s" as argument 5 for "%s()" is deprecated since sonata-project/admin-bundle'
-                .' 3.x and will throw a \TypeError error in version 4.0. You MUST pass an instance of "%s" instead and pass'
-                .' an instance of "%s" as argument 6.',
-                AuthorizationCheckerInterface::class,
-                __METHOD__,
-                PropertyAccessorInterface::class,
-                AuthorizationCheckerInterface::class
-            ), E_USER_DEPRECATED);
-
-            $this->securityChecker = $propertyAccessorOrSecurityChecker;
-            $this->propertyAccessor = $pool->getPropertyAccessor();
-        } elseif (null === $propertyAccessorOrSecurityChecker) {
-            @trigger_error(sprintf(
-                'Omitting the argument 5 for "%s()" or passing "null" is deprecated since sonata-project/admin-bundle'
-                .' 3.x and will throw a \TypeError error in version 4.0. You must pass an instance of "%s" instead.',
-                __METHOD__,
-                PropertyAccessorInterface::class
-            ), E_USER_DEPRECATED);
-
-            $this->propertyAccessor = $pool->getPropertyAccessor();
-            $this->securityChecker = $securityChecker;
-        } else {
-            $this->securityChecker = $securityChecker;
-            $this->propertyAccessor = $propertyAccessorOrSecurityChecker;
-        }
-
         $this->pool = $pool;
         $this->translator = $translator;
         $this->templateRegistries = $templateRegistries;
+        $this->propertyAccessor = $propertyAccessor;
+        $this->securityChecker = $securityChecker;
     }
 
     /**

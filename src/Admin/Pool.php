@@ -15,8 +15,6 @@ namespace Sonata\AdminBundle\Admin;
 
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * @final since sonata-project/admin-bundle 3.52
@@ -62,15 +60,6 @@ class Pool
     protected $options = [];
 
     /**
-     * NEXT_MAJOR: Remove this property.
-     *
-     * @var PropertyAccessorInterface
-     *
-     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0.
-     */
-    protected $propertyAccessor;
-
-    /**
      * NEXT_MAJOR: change to TemplateRegistryInterface.
      *
      * @var MutableTemplateRegistryInterface
@@ -78,33 +67,18 @@ class Pool
     private $templateRegistry;
 
     /**
-     * NEXT_MAJOR: Remove $propertyAccessor argument.
-     *
      * @param array<string, mixed> $options
      */
     public function __construct(
         ContainerInterface $container,
         string $title,
         string $titleLogo,
-        array $options = [],
-        ?PropertyAccessorInterface $propertyAccessor = null
+        array $options = []
     ) {
         $this->container = $container;
         $this->title = $title;
         $this->titleLogo = $titleLogo;
         $this->options = $options;
-
-        // NEXT_MAJOR: Remove this block.
-        if (null !== $propertyAccessor) {
-            @trigger_error(sprintf(
-                'Passing an "%s" instance as argument 4 to "%s()" is deprecated since sonata-project/admin-bundle 3.x.',
-                PropertyAccessorInterface::class,
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
-        // NEXT_MAJOR: Remove next line.
-        $this->propertyAccessor = $propertyAccessor;
     }
 
     /**
@@ -452,22 +426,5 @@ class Pool
         }
 
         return $default;
-    }
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0. Use Symfony "PropertyAccess" instead.
-     */
-    public function getPropertyAccessor(): PropertyAccessorInterface
-    {
-        @trigger_error(sprintf(
-            'The "%s" method is deprecated since version 3.x and will be removed in 4.0.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-
-        if (null === $this->propertyAccessor) {
-            $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
-        }
-
-        return $this->propertyAccessor;
     }
 }
