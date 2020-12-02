@@ -12,7 +12,5 @@ file that was distributed with this source code.
 {% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
 
 {% block field %}
-    {% if value is not null %}
-        {{ field_description.options.currency }} {{ value }}
-    {% endif %}
+    {%- include '@SonataAdmin/CRUD/display_currency.html.twig' -%}
 {% endblock %}
