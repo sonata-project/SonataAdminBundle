@@ -800,7 +800,7 @@ jQuery(document).on('sonata-admin-append-form-element', function(e) {
     Admin.setup_collection_counter(e.target);
 });
 
-jQuery(window).load(function() {
+jQuery(window).on('load', function() {
     if (Admin.get_config('CONFIRM_EXIT')) {
         jQuery('.sonata-ba-form form').each(function() {
             jQuery(this).confirmExit();
