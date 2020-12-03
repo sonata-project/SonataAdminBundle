@@ -135,10 +135,6 @@ interface ModelManagerInterface
     public function getModelInstance(string $class): object;
 
     /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.80 and will be removed in 4.0.
-     *
      * @param array<string, mixed> $array
      *
      * @phpstan-template T of object
