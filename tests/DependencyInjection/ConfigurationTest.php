@@ -81,6 +81,7 @@ class ConfigurationTest extends TestCase
 
         $this->assertSame([
             'model_manager' => null,
+            'data_source' => null,
             'form_contractor' => null,
             'show_builder' => null,
             'list_builder' => null,

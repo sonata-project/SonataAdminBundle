@@ -119,6 +119,7 @@ Full Configuration Options
                     class: col-md-4
             admin_services:
                 model_manager: null
+                data_source: null
                 form_contractor: null
                 show_builder: null
                 list_builder: null

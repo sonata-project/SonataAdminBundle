@@ -221,6 +221,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
     {
         $keys = [
             'model_manager',
+            'data_source',
             'form_contractor',
             'show_builder',
             'list_builder',

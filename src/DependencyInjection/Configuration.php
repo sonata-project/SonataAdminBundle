@@ -299,6 +299,7 @@ CASESENSITIVE;
                     ->prototype('array')
                         ->children()
                             ->scalarNode('model_manager')->defaultNull()->end()
+                            ->scalarNode('data_source')->defaultNull()->end()
                             ->scalarNode('form_contractor')->defaultNull()->end()
                             ->scalarNode('show_builder')->defaultNull()->end()
                             ->scalarNode('list_builder')->defaultNull()->end()
