@@ -2044,9 +2044,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->securityHandler;
     }
 
-    /**
-     *  @param string|string[] $name
-     */
     public function isGranted($name, ?object $object = null): bool
     {
         $objectRef = $object ? sprintf('/%s#%s', spl_object_hash($object), $this->id($object)) : '';
