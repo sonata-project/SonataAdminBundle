@@ -30,7 +30,6 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryAwareInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
-use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -307,15 +306,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Return true if the Admin is related to a subject.
      */
     public function hasSubject(): bool;
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.x.
-     *
-     * @phpstan-param T $object
-     */
-    public function validate(ErrorElement $errorElement, object $object): void;
 
     public function showIn(string $context): bool;
 

@@ -20,7 +20,6 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\Form\Validator\ErrorElement;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -49,19 +48,6 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
 
     public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
     {
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function validate(AdminInterface $admin, ErrorElement $errorElement, object $object): void
-    {
-        if ('sonata_deprecation_mute' !== (\func_get_args()[3] ?? null)) {
-            @trigger_error(sprintf(
-                'The %s method is deprecated since version 3.x and will be removed in 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
     }
 
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query): void

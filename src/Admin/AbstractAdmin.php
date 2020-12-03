@@ -43,12 +43,8 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
-use Sonata\Form\Validator\Constraints\InlineConstraint;
-use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -57,7 +53,6 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Validator\Mapping\GenericMetadata;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -590,19 +585,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function validate(ErrorElement $errorElement, object $object): void
-    {
-        if ('sonata_deprecation_mute' !== (\func_get_args()[2] ?? null)) {
-            @trigger_error(sprintf(
-                'The %s method is deprecated since version 3.x and will be removed in 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-    }
-
-    /**
      * define custom variable.
      */
     public function initialize(): void
@@ -663,23 +645,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->postRemove($object);
         foreach ($this->extensions as $extension) {
             $extension->postRemove($this, $object);
-        }
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.x, will be removed in 4.0.
-     *
-     * @phpstan-param T $object
-     */
-    public function preValidate(object $object): void
-    {
-        if ('sonata_deprecation_mute' !== \func_get_args()[1] ?? null) {
-            @trigger_error(sprintf(
-                'The %s method is deprecated since version 3.x and will be removed in 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
         }
     }
 
@@ -1162,9 +1127,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         foreach ($this->getExtensions() as $extension) {
             $extension->configureFormFields($mapper);
         }
-
-        // NEXT_MAJOR: Remove this line.
-        $this->attachInlineValidator('sonata_deprecation_mute');
     }
 
     public function attachAdminClass(FieldDescriptionInterface $fieldDescription): void
@@ -2684,13 +2646,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         $this->loaded['form'] = true;
 
-        $formBuilder = $this->getFormBuilder();
-        // NEXT_MAJOR: Remove this call.
-        $formBuilder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
-            $this->preValidate($event->getData(), 'sonata_deprecation_mute');
-        }, 100);
-
-        $this->form = $formBuilder->getForm();
+        $this->form = $this->getFormBuilder()->getForm();
     }
 
     /**
@@ -2705,60 +2661,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         throw new \LogicException(sprintf('Unable to find the subclass `%s` for admin `%s`', $name, static::class));
-    }
-
-    /**
-     * Attach the inline validator to the model metadata, this must be done once per admin.
-     *
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.x.
-     */
-    protected function attachInlineValidator(): void
-    {
-        if ('sonata_deprecation_mute' !== \func_get_args()[0] ?? null) {
-            @trigger_error(sprintf(
-                'The %s method is deprecated since version 3.x and will be removed in 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
-        $admin = $this;
-
-        // add the custom inline validation option
-        $metadata = $this->validator->getMetadataFor($this->getClass());
-        if (!$metadata instanceof GenericMetadata) {
-            throw new \UnexpectedValueException(
-                sprintf(
-                    'Cannot add inline validator for %s because its metadata is an instance of %s instead of %s',
-                    $this->getClass(),
-                    \get_class($metadata),
-                    GenericMetadata::class
-                )
-            );
-        }
-
-        $metadata->addConstraint(new InlineConstraint([
-            'service' => $this,
-            'method' => static function (ErrorElement $errorElement, object $object) use ($admin): void {
-                /* @var \Sonata\AdminBundle\Admin\AdminInterface $admin */
-
-                // This avoid the main validation to be cascaded to children
-                // The problem occurs when a model Page has a collection of Page as property
-                if ($admin->hasSubject() && spl_object_hash($object) !== spl_object_hash($admin->getSubject())) {
-                    return;
-                }
-
-                // @phpstan-ignore-next-line
-                $admin->validate($errorElement, $object, 'sonata_deprecation_mute');
-
-                foreach ($admin->getExtensions() as $extension) {
-                    /* @phpstan-ignore-next-line */
-                    $extension->validate($admin, $errorElement, $object, 'sonata_deprecation_mute');
-                }
-            },
-            'serializingWarning' => true,
-        ]));
     }
 
     /**
