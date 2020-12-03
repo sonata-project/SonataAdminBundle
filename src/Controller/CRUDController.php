@@ -47,6 +47,8 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
  */
 class CRUDController implements ContainerAwareInterface
 {
@@ -64,6 +66,8 @@ class CRUDController implements ContainerAwareInterface
      * The related Admin class.
      *
      * @var AdminInterface
+     *
+     * @phpstan-var AdminInterface<T>
      */
     protected $admin;
 
@@ -1246,6 +1250,8 @@ class CRUDController implements ContainerAwareInterface
      * @param object $object
      *
      * @return RedirectResponse
+     *
+     * @phpstan-param T $object
      */
     protected function redirectTo($object)
     {
@@ -1484,6 +1490,8 @@ class CRUDController implements ContainerAwareInterface
      * @param object $object
      *
      * @return Response|null
+     *
+     * @phpstan-param T $object
      */
     protected function preCreate(Request $request, $object)
     {
@@ -1497,6 +1505,8 @@ class CRUDController implements ContainerAwareInterface
      * @param object $object
      *
      * @return Response|null
+     *
+     * @phpstan-param T $object
      */
     protected function preEdit(Request $request, $object)
     {
@@ -1510,6 +1520,8 @@ class CRUDController implements ContainerAwareInterface
      * @param object $object
      *
      * @return Response|null
+     *
+     * @phpstan-param T $object
      */
     protected function preDelete(Request $request, $object)
     {
@@ -1523,6 +1535,8 @@ class CRUDController implements ContainerAwareInterface
      * @param object $object
      *
      * @return Response|null
+     *
+     * @phpstan-param T $object
      */
     protected function preShow(Request $request, $object)
     {
@@ -1581,6 +1595,9 @@ class CRUDController implements ContainerAwareInterface
         ], Response::HTTP_BAD_REQUEST);
     }
 
+    /**
+     * @phpstan-param T $object
+     */
     protected function handleXmlHttpRequestSuccessResponse(Request $request, object $object): JsonResponse
     {
         if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
@@ -1605,6 +1622,9 @@ class CRUDController implements ContainerAwareInterface
         return array_filter(['_tab' => $request->request->get('_tab')]);
     }
 
+    /**
+     * @phpstan-param T $object
+     */
     private function checkParentChildAssociation(Request $request, object $object): void
     {
         if (!$this->admin->isChild()) {
