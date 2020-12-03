@@ -31,6 +31,7 @@ interface LifecycleHookProviderInterface
      * @return object
      *
      * @phpstan-param T $object
+     * @phpstan-return T $object
      */
     public function update($object);
 
@@ -42,6 +43,7 @@ interface LifecycleHookProviderInterface
      * @return object
      *
      * @phpstan-param T $object
+     * @phpstan-return T $object
      */
     public function create($object);
 
