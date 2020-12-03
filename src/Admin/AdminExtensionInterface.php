@@ -20,7 +20,6 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\Form\Validator\ErrorElement;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -50,15 +49,6 @@ interface AdminExtensionInterface
         string $action,
         ?AdminInterface $childAdmin = null
     ): void;
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.x.
-     *
-     * @phpstan-param AdminInterface<object> $admin
-     */
-    public function validate(AdminInterface $admin, ErrorElement $errorElement, object $object): void;
 
     /**
      * @phpstan-param AdminInterface<object> $admin
