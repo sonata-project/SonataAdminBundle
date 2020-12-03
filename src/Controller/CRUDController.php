@@ -58,7 +58,7 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
-     * @var ContainerInterface
+     * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */
     protected $container;
 
