@@ -36,7 +36,6 @@ jobs:
 
             - name: PHPStan
               run: vendor/bin/phpstan --memory-limit=1G analyse
-
     psalm:
         name: Psalm
 
