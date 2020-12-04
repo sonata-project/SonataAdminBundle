@@ -59,6 +59,10 @@ use Sonata\AdminBundle\Exception\NoValueException;
  *   - field_options (o): the options to give to the widget
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @method void setFieldMapping(array $fieldMapping)
+ * @method void setAssociationMapping(array $associationMapping)
+ * @method void setParentAssociationMappings(array $parentAssociationMappings)
  */
 abstract class BaseFieldDescription implements FieldDescriptionInterface
 {
@@ -83,17 +87,17 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $fieldName;
 
     /**
-     * @var array the ORM association mapping
+     * @var array the association mapping
      */
     protected $associationMapping = [];
 
     /**
-     * @var array the ORM field information
+     * @var array the field information
      */
     protected $fieldMapping = [];
 
     /**
-     * @var array the ORM parent mapping association
+     * @var array the parent mapping association
      */
     protected $parentAssociationMappings = [];
 
@@ -135,8 +139,13 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * NEXT_MAJOR: Remove the null default value and restrict param type to `string`.
      */
-    public function __construct(?string $name = null, array $options = [])
-    {
+    public function __construct(
+        ?string $name = null,
+        array $options = [],
+        array $fieldMapping = [],
+        array $associationMapping = [],
+        array $parentAssociationMappings = []
+    ) {
         // NEXT_MAJOR: Remove this check and keep the else part.
         if (null === $name) {
             @trigger_error(sprintf(
@@ -149,7 +158,24 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
 
         $this->setOptions($options);
+
+        if ([] !== $fieldMapping) {
+            $this->setFieldMapping($fieldMapping);
+        }
+
+        if ([] !== $associationMapping) {
+            $this->setAssociationMapping($associationMapping);
+        }
+
+        if ([] !== $parentAssociationMappings) {
+            $this->setParentAssociationMappings($parentAssociationMappings);
+        }
     }
+
+    // NEXT_MAJOR: Uncomment the following lines.
+    // abstract protected function setFieldMapping(array $fieldMapping): void;
+    // abstract protected function setAssociationMapping(array $associationMapping): void;
+    // abstract protected function setParentAssociationMappings(array $parentAssociationMappings): void;
 
     public function setFieldName($fieldName)
     {
@@ -438,8 +464,18 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->setOptions(array_merge_recursive($this->options, $options));
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
+     */
     public function setMappingType($mappingType)
     {
+        @trigger_error(sprintf(
+            'The "%s()" method is deprecated since version 3.x and will be removed in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         $this->mappingType = $mappingType;
     }
 
