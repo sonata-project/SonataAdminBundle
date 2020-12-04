@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
@@ -27,8 +28,6 @@ final class AdminSearchCompilerPass implements CompilerPassInterface
 {
     public const TAG_ATTRIBUTE_TOGGLE_SEARCH = 'global_search';
 
-    private const TAG_ADMIN = 'sonata.admin';
-
     public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition('sonata.admin.search.handler')) {
@@ -37,7 +36,7 @@ final class AdminSearchCompilerPass implements CompilerPassInterface
 
         $adminSearch = [];
 
-        foreach ($container->findTaggedServiceIds(self::TAG_ADMIN) as $id => $tags) {
+        foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $tags) {
             $this->validateAdminClass($container, $id);
 
             foreach ($tags as $attributes) {
@@ -95,7 +94,7 @@ final class AdminSearchCompilerPass implements CompilerPassInterface
             throw new LogicException(sprintf(
                 'Attribute "%s" in tag "%s" at service "%s" must be of type boolean, "%s" given.',
                 self::TAG_ATTRIBUTE_TOGGLE_SEARCH,
-                self::TAG_ADMIN,
+                TaggedAdminInterface::ADMIN_TAG,
                 $id,
                 \gettype($globalSearch)
             ));

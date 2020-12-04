@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\DependencyInjection\Admin\AbstractAdminTag;
+use Sonata\AdminBundle\DependencyInjection\Admin\AbstractTaggedAdmin;
 use Sonata\AdminBundle\Exporter\DataSourceInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
@@ -50,10 +50,10 @@ use Symfony\Component\Validator\Mapping\GenericMetadata;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-template T of object
- * @phpstan-extends AbstractAdminTag<T>
+ * @phpstan-extends AbstractTaggedAdmin<T>
  * @phpstan-implements AdminInterface<T>
  */
-abstract class AbstractAdmin extends AbstractAdminTag implements AdminInterface, DomainObjectInterface, AdminTreeInterface
+abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterface, DomainObjectInterface, AdminTreeInterface
 {
     public const CONTEXT_MENU = 'menu';
     public const CONTEXT_DASHBOARD = 'dashboard';
