@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Admin;
 use Knp\Menu\ItemInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\DependencyInjection\Admin\AdminTagInterface;
+use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryAwareInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
@@ -52,12 +52,12 @@ use Symfony\Component\HttpFoundation\Request;
  * @method void                            defineFormBuilder(FormBuilderInterface $formBuilder)
  *
  * @phpstan-template T of object
- * @phpstan-extends AdminTagInterface<T>
+ * @phpstan-extends TaggedAdminInterface<T>
  * @phpstan-extends AccessRegistryInterface<T>
  * @phpstan-extends UrlGeneratorInterface<T>
  * @phpstan-extends LifecycleHookProviderInterface<T>
  */
-interface AdminInterface extends AdminTagInterface, AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface, MutableTemplateRegistryAwareInterface
+interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface, MutableTemplateRegistryAwareInterface
 {
     /**
      * Returns subjectClass/class/subclass name managed

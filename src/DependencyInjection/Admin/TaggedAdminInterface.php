@@ -63,7 +63,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @method void                          setRouteGenerator(RouteGeneratorInterface $routeGenerator)
  * @method RouteGeneratorInterface       getRouteGenerator()
  */
-interface AdminTagInterface
+interface TaggedAdminInterface
 {
     public const ADMIN_TAG = 'sonata.admin';
 

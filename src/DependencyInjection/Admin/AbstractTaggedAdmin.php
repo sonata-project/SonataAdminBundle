@@ -32,9 +32,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @phpstan-template T of object
- * @phpstan-implements AdminTagInterface<T>
+ * @phpstan-implements TaggedAdminInterface<T>
  */
-abstract class AbstractAdminTag implements AdminTagInterface
+abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 {
     public const MOSAIC_ICON_CLASS = 'fa fa-th-large fa-fw';
 

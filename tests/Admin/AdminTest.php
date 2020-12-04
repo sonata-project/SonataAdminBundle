@@ -962,7 +962,7 @@ class AdminTest extends TestCase
 
         $admin->setValidator($validator);
 
-        $this->expectDeprecation('The Sonata\AdminBundle\Admin\AbstractAdminTag::getValidator method is deprecated since version 3.83 and will be removed in 4.0.');
+        $this->expectDeprecation('The Sonata\AdminBundle\DependencyInjection\Admin\AbstractTaggedAdmin::getValidator method is deprecated since version 3.83 and will be removed in 4.0.');
 
         $this->assertSame($validator, $admin->getValidator());
     }
@@ -2836,7 +2836,7 @@ class AdminTest extends TestCase
      *
      * @dataProvider getDeprecatedAbstractAdminConstructorArgs
      *
-     * @expectedDeprecation  Passing other type than string as argument %d for method Sonata\AdminBundle\Admin\AbstractAdminTag::__construct() is deprecated since sonata-project/admin-bundle 3.%s. It will accept only string in version 4.0.
+     * @expectedDeprecation  Passing other type than string as argument %d for method Sonata\AdminBundle\DependencyInjection\Admin\AbstractTaggedAdmin::__construct() is deprecated since sonata-project/admin-bundle 3.%s. It will accept only string in version 4.0.
      *
      * @doesNotPerformAssertions
      */
