@@ -16,7 +16,7 @@ phpstan.neon
 src/Resources/public/vendor/admin-lte/bootstrap
 src/Resources/public/vendor/admin-lte/build
 src/Resources/public/vendor/admin-lte/dist/img
-!src/Resources/public/vendor/admin-lte/dist/img/boxed-bg.jpg # Only image called in AdminLTe.css
+!src/Resources/public/vendor/admin-lte/dist/img/boxed-bg.jpg # Only image called in AdminLTE.css
 src/Resources/public/vendor/admin-lte/dist/js/app.js
 src/Resources/public/vendor/admin-lte/dist/js/demo.js
 src/Resources/public/vendor/admin-lte/dist/js/pages
