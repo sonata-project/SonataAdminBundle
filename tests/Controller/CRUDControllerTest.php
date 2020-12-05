@@ -1746,7 +1746,7 @@ class CRUDControllerTest extends TestCase
             ->willReturn('flash message');
 
         $this->expectDeprecation(sprintf(
-            'None of the passed values ("%s") in the "Accept" header when requesting %s %s is supported since sonata-project/admin-bundle 3.x.'
+            'None of the passed values ("%s") in the "Accept" header when requesting %s %s is supported since sonata-project/admin-bundle 3.82.'
             .' It will result in a response with the status code 406 (Not Acceptable) in 4.0. You must add "application/json".',
             implode('", "', $this->request->getAcceptableContentTypes()),
             $this->request->getMethod(),
@@ -2454,7 +2454,7 @@ class CRUDControllerTest extends TestCase
             ->willReturn('flash message');
 
         $this->expectDeprecation(sprintf(
-            'None of the passed values ("%s") in the "Accept" header when requesting %s %s is supported since sonata-project/admin-bundle 3.x.'
+            'None of the passed values ("%s") in the "Accept" header when requesting %s %s is supported since sonata-project/admin-bundle 3.82.'
             .' It will result in a response with the status code 406 (Not Acceptable) in 4.0. You must add "application/json".',
             implode('", "', $this->request->getAcceptableContentTypes()),
             $this->request->getMethod(),
