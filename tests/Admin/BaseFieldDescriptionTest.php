@@ -21,9 +21,31 @@ use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooBoolean;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooCall;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 class BaseFieldDescriptionTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
+    public function testConstructingWithMapping(): void
+    {
+        $fieldMapping = ['field_name' => 'fieldName'];
+        $associationMapping = ['association_model' => 'association_bar'];
+        $parentAssociationMapping = ['parent_mapping' => 'parent_bar'];
+
+        $description = new FieldDescription(
+            'foo',
+            ['foo' => 'bar'],
+            $fieldMapping,
+            $associationMapping,
+            $parentAssociationMapping,
+        );
+
+        $this->assertSame($fieldMapping, $description->getFieldMapping());
+        $this->assertSame($associationMapping, $description->getAssociationMapping());
+        $this->assertSame($parentAssociationMapping, $description->getParentAssociationMappings());
+    }
+
     public function testSetName(): void
     {
         $description = new FieldDescription('foo');
@@ -65,9 +87,6 @@ class BaseFieldDescriptionTest extends TestCase
 
         $this->assertCount(2, $description->getOptions());
 
-        $description->setMappingType('int');
-        $this->assertSame('int', $description->getMappingType());
-
         $this->assertSame('short_object_description_placeholder', $description->getOption('placeholder'));
         $description->setOptions(['placeholder' => false]);
         $this->assertFalse($description->getOption('placeholder'));
@@ -77,6 +96,21 @@ class BaseFieldDescriptionTest extends TestCase
 
         $description->setOption('sortable', 'field_name');
         $this->assertTrue($description->isSortable());
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
+    public function testSetMappingType(): void
+    {
+        $description = new FieldDescription('name');
+
+        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\BaseFieldDescription::setMappingType()" method is deprecated since version 3.x and will be removed in 4.0.');
+
+        $description->setMappingType('int');
+        $this->assertSame('int', $description->getMappingType());
     }
 
     /**
