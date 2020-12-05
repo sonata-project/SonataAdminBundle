@@ -734,7 +734,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[2] ?? null)) {
             @trigger_error(sprintf(
-                'The %s method is deprecated since version 3.x and will be removed in 4.0.',
+                'The %s method is deprecated since version 3.82 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -827,7 +827,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, will be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.82, will be removed in 4.0.
      *
      * @param object $object
      *
@@ -837,7 +837,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if ('sonata_deprecation_mute' !== \func_get_args()[1] ?? null) {
             @trigger_error(sprintf(
-                'The %s method is deprecated since version 3.x and will be removed in 4.0.',
+                'The %s method is deprecated since version 3.82 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -3615,13 +3615,13 @@ EOT;
      *
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x.
+     * @deprecated since sonata-project/admin-bundle 3.82.
      */
     protected function attachInlineValidator()
     {
         if ('sonata_deprecation_mute' !== \func_get_args()[0] ?? null) {
             @trigger_error(sprintf(
-                'The %s method is deprecated since version 3.x and will be removed in 4.0.',
+                'The %s method is deprecated since version 3.82 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }

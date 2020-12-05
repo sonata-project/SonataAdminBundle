@@ -65,7 +65,7 @@ class AdminHelperTest extends TestCase
 
         $this->expectDeprecation(sprintf(
             'Passing an instance of "%s" as argument 1 for "%s::__construct()" is deprecated since'
-            .' sonata-project/admin-bundle 3.x and will throw a \TypeError error in version 4.0. You MUST pass an instance'
+            .' sonata-project/admin-bundle 3.82 and will throw a \TypeError error in version 4.0. You MUST pass an instance'
             .' of %s instead.',
             Pool::class,
             AdminHelper::class,
