@@ -27,7 +27,7 @@ interface FilterInterface
     /**
      * @phpstan-param array{type?: string, value?: mixed} $filterData
      */
-    public function apply(ProxyQueryInterface $query, $filterData): void;
+    public function apply(ProxyQueryInterface $query, array $filterData): void;
 
     /**
      * @throws \LogicException if the filter is not initialized
