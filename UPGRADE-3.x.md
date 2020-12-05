@@ -29,6 +29,29 @@ Argument 2 of `Sonata\AdminBundle\Model\ModelManagerInterface::createQuery()` me
 - `Sonata\AdminBundle\Admin\Pool::getOption()` method has been deprecated.
   Use `Sonata\AdminBundle\SonataConfiguration::getOption()` instead.
 
+### Sonata\AdminBundle\Filter\Filter
+
+Deprecate `Sonata\AdminBundle\Filter\Filter::setValue()` and `Sonata\AdminBundle\Filter\Filter::getValue()`
+without replacement.
+
+The implementation of the method `Sonata\AdminBundle\Filter\Filter::isActive()` will change from
+```
+public function isActive()
+{
+    $values = $this->value;
+
+    return isset($values['value']) && false !== $values['value'] && '' !== $values['value'];
+}
+```
+to
+```
+public function isActive()
+{
+    return $this->active;
+}
+```
+in next major. Currently we are supporting both properties so you SHOULD start using `$this->active`.
+
 ### Sonata\AdminBundle\Admin\FieldDescriptionInterface
 
 The following methods have been deprecated from the interface and will be added as abstract methods to
