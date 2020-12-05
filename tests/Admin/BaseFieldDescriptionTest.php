@@ -20,12 +20,9 @@ use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooBoolean;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooCall;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 class BaseFieldDescriptionTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
     public function testConstructingWithMapping(): void
     {
         $fieldMapping = ['field_name' => 'fieldName'];

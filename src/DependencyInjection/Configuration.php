@@ -307,8 +307,6 @@ CASESENSITIVE;
                             ->scalarNode('translator')->defaultNull()->end()
                             ->scalarNode('configuration_pool')->defaultNull()->end()
                             ->scalarNode('route_generator')->defaultNull()->end()
-                            // NEXT_MAJOR: remove validator option
-                            ->scalarNode('validator')->defaultNull()->end()
                             ->scalarNode('security_handler')->defaultNull()->end()
                             ->scalarNode('label')->defaultNull()->end()
                             ->scalarNode('menu_factory')->defaultNull()->end()

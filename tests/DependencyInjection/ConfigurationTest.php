@@ -89,7 +89,6 @@ class ConfigurationTest extends TestCase
             'translator' => null,
             'configuration_pool' => null,
             'route_generator' => null,
-            'validator' => null,
             'security_handler' => null,
             'label' => null,
             'menu_factory' => null,

@@ -55,10 +55,6 @@ use Sonata\AdminBundle\Exception\NoValueException;
  *   - field_options (o): the options to give to the widget
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
- *
- * @method void setFieldMapping(array $fieldMapping)
- * @method void setAssociationMapping(array $associationMapping)
- * @method void setParentAssociationMappings(array $parentAssociationMappings)
  */
 abstract class BaseFieldDescription implements FieldDescriptionInterface
 {
@@ -83,17 +79,17 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $fieldName;
 
     /**
-     * @var array<string, mixed> the association mapping
+     * @var array<string, mixed> association mapping
      */
     protected $associationMapping = [];
 
     /**
-     * @var array<string, mixed> the field information
+     * @var array<string, mixed> field information
      */
     protected $fieldMapping = [];
 
     /**
-     * @var array<string, mixed> ORM parent mapping association
+     * @var array<string, mixed> parent mapping association
      */
     protected $parentAssociationMappings = [];
 
@@ -151,11 +147,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             $this->setParentAssociationMappings($parentAssociationMappings);
         }
     }
-
-    // NEXT_MAJOR: Uncomment the following lines.
-    // abstract protected function setFieldMapping(array $fieldMapping): void;
-    // abstract protected function setAssociationMapping(array $associationMapping): void;
-    // abstract protected function setParentAssociationMappings(array $parentAssociationMappings): void;
 
     public function setFieldName(?string $fieldName): void
     {
@@ -391,21 +382,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->setOptions(array_merge_recursive($this->options, $options));
     }
 
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
-     */
-    public function setMappingType($mappingType): void
-    {
-        @trigger_error(sprintf(
-            'The "%s()" method is deprecated since version 3.x and will be removed in 4.0.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-
-        $this->mappingType = $mappingType;
-    }
-
     public function getMappingType()
     {
         return $this->mappingType;
@@ -443,6 +419,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     {
         return false !== $this->getOption('virtual_field', false);
     }
+
+    abstract protected function setFieldMapping(array $fieldMapping): void;
+
+    abstract protected function setAssociationMapping(array $associationMapping): void;
+
+    abstract protected function setParentAssociationMappings(array $parentAssociationMappings): void;
 
     private function getFieldGetterKey(object $object, ?string $fieldName): ?string
     {

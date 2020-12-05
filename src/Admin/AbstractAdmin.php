@@ -53,7 +53,6 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -313,15 +312,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * @var SecurityHandlerInterface
      */
     protected $securityHandler;
-
-    /**
-     * NEXT_MAJOR: Remove this property.
-     *
-     * @var ValidatorInterface|null
-     *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
-     */
-    protected $validator;
 
     /**
      * The configuration pool.
@@ -2073,31 +2063,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function id(object $model): ?string
     {
         return $this->getNormalizedIdentifier($model);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
-     */
-    public function setValidator(ValidatorInterface $validator): void
-    {
-        $this->validator = $validator;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
-     */
-    public function getValidator(): ?ValidatorInterface
-    {
-        @trigger_error(sprintf(
-            'The %s method is deprecated since version 3.x and will be removed in 4.0.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-
-        return $this->validator;
     }
 
     public function getShow(): FieldDescriptionCollection

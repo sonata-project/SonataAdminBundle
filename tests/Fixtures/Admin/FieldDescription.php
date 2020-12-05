@@ -17,8 +17,7 @@ use Sonata\AdminBundle\Admin\BaseFieldDescription;
 
 class FieldDescription extends BaseFieldDescription
 {
-    // NEXT_MAJOR: Make this method protected.
-    public function setAssociationMapping($associationMapping): void
+    protected function setAssociationMapping($associationMapping): void
     {
         $this->associationMapping = $associationMapping;
     }
@@ -33,8 +32,7 @@ class FieldDescription extends BaseFieldDescription
         throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
 
-    // NEXT_MAJOR: Make this method protected.
-    public function setFieldMapping($fieldMapping): void
+    protected function setFieldMapping($fieldMapping): void
     {
         $this->fieldMapping = $fieldMapping;
     }
@@ -44,12 +42,7 @@ class FieldDescription extends BaseFieldDescription
         throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
 
-    /**
-     * NEXT_MAJOR: Make this method protected.
-     *
-     * @param array $parentAssociationMappings
-     */
-    public function setParentAssociationMappings(array $parentAssociationMappings): void
+    protected function setParentAssociationMappings(array $parentAssociationMappings): void
     {
         $this->parentAssociationMappings = $parentAssociationMappings;
     }

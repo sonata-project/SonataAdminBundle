@@ -88,8 +88,6 @@ interface ModelManagerInterface
 
     /**
      * @phpstan-param class-string $class
-     *
-     * @phpstan-param class-string $class
      */
     public function createQuery(string $class): ProxyQueryInterface;
 

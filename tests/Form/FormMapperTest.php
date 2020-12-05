@@ -27,8 +27,6 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\ResolvedFormTypeInterface;
-use Symfony\Component\Validator\Mapping\MemberMetadata;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class FormMapperTest extends TestCase
 {
@@ -70,12 +68,6 @@ class FormMapperTest extends TestCase
 
         $this->admin = new CleanAdmin('code', \stdClass::class, 'controller');
         $this->admin->setSubject(new \stdClass());
-
-        $validator = $this->createMock(ValidatorInterface::class);
-        $validator
-            ->method('getMetadataFor')
-            ->willReturn($this->createMock(MemberMetadata::class));
-        $this->admin->setValidator($validator);
 
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler

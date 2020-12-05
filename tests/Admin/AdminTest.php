@@ -79,8 +79,6 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Validator\Mapping\MemberMetadata;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdminTest extends TestCase
@@ -815,26 +813,6 @@ class AdminTest extends TestCase
         $admin->setFormTheme(['FooTheme']);
 
         $this->assertSame(['FooTheme'], $admin->getFormTheme());
-    }
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @group legacy
-     */
-    public function testGetValidator(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $this->assertNull($admin->getValidator());
-
-        $validator = $this->getMockForAbstractClass(ValidatorInterface::class);
-
-        $admin->setValidator($validator);
-
-        $this->expectDeprecation('The Sonata\AdminBundle\Admin\AbstractAdmin::getValidator method is deprecated since version 3.x and will be removed in 4.0.');
-
-        $this->assertSame($validator, $admin->getValidator());
     }
 
     public function testGetSecurityHandler(): void
@@ -2189,11 +2167,6 @@ class AdminTest extends TestCase
         $pager = $this->createStub(PagerInterface::class);
         $proxyQuery = $this->createStub(ProxyQueryInterface::class);
         $admin->setDatagridBuilder(new DatagridBuilder($formFactory, $pager, $proxyQuery));
-
-        // NEXT_MAJOR: remove the following 3 lines
-        $validator = $this->createMock(ValidatorInterface::class);
-        $validator->method('getMetadataFor')->willReturn($this->createStub(MemberMetadata::class));
-        $admin->setValidator($validator);
 
         $routeGenerator = $this->createStub(RouteGeneratorInterface::class);
         $routeGenerator->method('hasAdminRoute')->willReturn(false);

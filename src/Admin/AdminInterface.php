@@ -33,7 +33,6 @@ use Sonata\Exporter\Source\SourceIteratorInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -189,22 +188,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @phpstan-param T $model
      */
     public function id(object $model): ?string;
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
-     */
-    public function setValidator(ValidatorInterface $validator): void;
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @return ValidatorInterface
-     *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
-     */
-    public function getValidator(): ?ValidatorInterface;
 
     public function getShow(): FieldDescriptionCollection;
 
