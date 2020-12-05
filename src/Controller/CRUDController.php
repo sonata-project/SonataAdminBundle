@@ -329,6 +329,7 @@ class CRUDController implements ContainerAwareInterface
 
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
+                /** @phpstan-var T $submittedObject */
                 $submittedObject = $form->getData();
                 $this->admin->setSubject($submittedObject);
 
@@ -598,6 +599,7 @@ class CRUDController implements ContainerAwareInterface
 
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
+                /** @phpstan-var T $submittedObject */
                 $submittedObject = $form->getData();
                 $this->admin->setSubject($submittedObject);
                 $this->admin->checkAccess('create', $submittedObject);
