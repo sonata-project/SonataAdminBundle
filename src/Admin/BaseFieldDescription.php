@@ -420,10 +420,19 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return false !== $this->getOption('virtual_field', false);
     }
 
+    /**
+     * @param array<string, mixed> $fieldMapping
+     */
     abstract protected function setFieldMapping(array $fieldMapping): void;
 
+    /**
+     * @param array<string, mixed> $associationMapping
+     */
     abstract protected function setAssociationMapping(array $associationMapping): void;
 
+    /**
+     *  @param array<array<string, mixed>> $parentAssociationMappings
+     */
     abstract protected function setParentAssociationMappings(array $parentAssociationMappings): void;
 
     private function getFieldGetterKey(object $object, ?string $fieldName): ?string
