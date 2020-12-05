@@ -2,6 +2,36 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.82.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.81.1...3.82.0) - 2020-12-05
+### Added
+- [[#6643](https://github.com/sonata-project/SonataAdminBundle/pull/6643)] Added generics to `CRUDController` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6631](https://github.com/sonata-project/SonataAdminBundle/pull/6631)] Option to globally override the data source of all the admin ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6547](https://github.com/sonata-project/SonataAdminBundle/pull/6547)] Added `row_attr` to the form_row container. ([@nieuwenhuisen](https://github.com/nieuwenhuisen))
+- [[#6609](https://github.com/sonata-project/SonataAdminBundle/pull/6609)] `AdminSearchCompilerPass` in order to configure which admins must support search. ([@phansys](https://github.com/phansys))
+- [[#6609](https://github.com/sonata-project/SonataAdminBundle/pull/6609)] Support for `global_search` attribute in `sonata.admin` tags, which admits boolean values. ([@phansys](https://github.com/phansys))
+
+### Changed
+- [[#6559](https://github.com/sonata-project/SonataAdminBundle/pull/6559)] Removed alias from `ModelManagerInterface::createQuery` method ([@neok](https://github.com/neok))
+- [[#6214](https://github.com/sonata-project/SonataAdminBundle/pull/6214)] `CRUDController::handleXmlHttpRequestSuccessResponse` method is now protected ([@nieuwenhuisen](https://github.com/nieuwenhuisen))
+- [[#6214](https://github.com/sonata-project/SonataAdminBundle/pull/6214)] `CRUDController::handleXmlHttpRequestErrorResponse` method is now protected ([@nieuwenhuisen](https://github.com/nieuwenhuisen))
+- [[#6630](https://github.com/sonata-project/SonataAdminBundle/pull/6630)] Replaced jQuery "load()" with "on()" in Admin.js ([@timwentzell](https://github.com/timwentzell))
+- [[#6632](https://github.com/sonata-project/SonataAdminBundle/pull/6632)] Twig templates: "list_percent", "show_percent", "list_currency" and "show_currency" ([@willemverspyck](https://github.com/willemverspyck))
+
+### Deprecated
+- [[#6618](https://github.com/sonata-project/SonataAdminBundle/pull/6618)] `AdminInterface::validate` method specification ([@tambait](https://github.com/tambait))
+- [[#6618](https://github.com/sonata-project/SonataAdminBundle/pull/6618)] `AbstractAdmin:validate` method implementation ([@tambait](https://github.com/tambait))
+- [[#6618](https://github.com/sonata-project/SonataAdminBundle/pull/6618)] `AbstractAdmin::attachInlineValidator()` method ([@tambait](https://github.com/tambait))
+- [[#6618](https://github.com/sonata-project/SonataAdminBundle/pull/6618)] `AdminExtensionInterface::validate()` method specification ([@tambait](https://github.com/tambait))
+- [[#6618](https://github.com/sonata-project/SonataAdminBundle/pull/6618)] `AbstractAdminExtension::validate()` method implementation ([@tambait](https://github.com/tambait))
+- [[#6622](https://github.com/sonata-project/SonataAdminBundle/pull/6622)] Referencing to DashboardAction and SearchAction by FQCN class instead of id. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6634](https://github.com/sonata-project/SonataAdminBundle/pull/6634)] Deprecated `Pool::getPropertyAccessor()` method. ([@franmomu](https://github.com/franmomu))
+- [[#6634](https://github.com/sonata-project/SonataAdminBundle/pull/6634)] Deprecated not passing and instance of `PropertyAccessor` as argument 1 to `Sonata\AdminBundle\Admin\AdminHelper` constructor. ([@franmomu](https://github.com/franmomu))
+- [[#6634](https://github.com/sonata-project/SonataAdminBundle/pull/6634)] Deprecated not passing and instance of `PropertyAccessor` as argument 5 to `Sonata\AdminBundle\Action\SetObjectFieldValueAction` constructor. ([@franmomu](https://github.com/franmomu))
+- [[#6634](https://github.com/sonata-project/SonataAdminBundle/pull/6634)] Deprecated not passing and instance of `PropertyAccessor` as argument 5 to `Sonata\AdminBundle\Twig\Extension\SonataAdminExtension` constructor. ([@franmomu](https://github.com/franmomu))
+
+### Fixed
+- [[#6529](https://github.com/sonata-project/SonataAdminBundle/pull/6529)] Explicitly cast types in `CRUDController::batchAction()` ([@peter-gribanov](https://github.com/peter-gribanov))
+
 ## [3.81.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.81.0...3.81.1) - 2020-11-21
 ### Fixed
 - [[#6597](https://github.com/sonata-project/SonataAdminBundle/pull/6597)] `AdminInterface` extends `MutableTemplateRegistryAwareInterface` instead of `TemplateRegistryAwareInterface` ([@VincentLanglet](https://github.com/VincentLanglet))

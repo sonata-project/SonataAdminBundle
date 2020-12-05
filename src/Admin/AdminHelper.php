@@ -71,7 +71,7 @@ class AdminHelper
         if ($poolOrPropertyAccessor instanceof Pool) {
             @trigger_error(sprintf(
                 'Passing an instance of "%s" as argument 1 for "%s()" is deprecated since'
-                .' sonata-project/admin-bundle 3.x and will throw a \TypeError error in version 4.0.'
+                .' sonata-project/admin-bundle 3.82 and will throw a \TypeError error in version 4.0.'
                 .' You MUST pass an instance of %s instead.',
                 Pool::class,
                 __METHOD__,

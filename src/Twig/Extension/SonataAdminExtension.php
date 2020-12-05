@@ -141,7 +141,7 @@ class SonataAdminExtension extends AbstractExtension
         if ($propertyAccessorOrSecurityChecker instanceof AuthorizationCheckerInterface) {
             @trigger_error(sprintf(
                 'Passing an instance of "%s" as argument 5 for "%s()" is deprecated since sonata-project/admin-bundle'
-                .' 3.x and will throw a \TypeError error in version 4.0. You MUST pass an instance of "%s" instead and pass'
+                .' 3.82 and will throw a \TypeError error in version 4.0. You MUST pass an instance of "%s" instead and pass'
                 .' an instance of "%s" as argument 6.',
                 AuthorizationCheckerInterface::class,
                 __METHOD__,
@@ -154,7 +154,7 @@ class SonataAdminExtension extends AbstractExtension
         } elseif (null === $propertyAccessorOrSecurityChecker) {
             @trigger_error(sprintf(
                 'Omitting the argument 5 for "%s()" or passing "null" is deprecated since sonata-project/admin-bundle'
-                .' 3.x and will throw a \TypeError error in version 4.0. You must pass an instance of "%s" instead.',
+                .' 3.82 and will throw a \TypeError error in version 4.0. You must pass an instance of "%s" instead.',
                 __METHOD__,
                 PropertyAccessorInterface::class
             ), E_USER_DEPRECATED);

@@ -4,6 +4,9 @@ UPGRADE 3.x
 UPGRADE FROM 3.xx to 3.xx
 =========================
 
+UPGRADE FROM 3.81 to 3.82
+=========================
+
 ### Sonata\AdminBundle\Model\ModelManagerInterface
 
 Argument 2 of `Sonata\AdminBundle\Model\ModelManagerInterface::createQuery()` method has been removed.
