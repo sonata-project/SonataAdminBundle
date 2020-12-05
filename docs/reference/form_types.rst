@@ -61,7 +61,7 @@ The available options are:
   string to designate which field to use for the choice values.
 
 ``query``
-  defaults to ``null``. You can set this to a QueryBuilder instance in order to
+  defaults to ``null``. You can set this to a ProxyQueryInterface instance in order to
   define a custom query for retrieving the available options.
 
 ``template``
@@ -272,9 +272,9 @@ The available options are:
               'property' => 'title',
               'callback' => static function (AdminInterface $admin, string $property, $value): void {
                   $datagrid = $admin->getDatagrid();
-                  $queryBuilder = $datagrid->getQuery();
-                  $queryBuilder
-                      ->andWhere($queryBuilder->getRootAlias() . '.foo=:barValue')
+                  $query = $datagrid->getQuery();
+                  $query
+                      ->andWhere($query->getRootAlias() . '.foo=:barValue')
                       ->setParameter('barValue', $admin->getRequest()->get('bar'))
                   ;
                   $datagrid->setValue($property, null, $value);

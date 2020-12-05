@@ -21,7 +21,7 @@ class FooFilter extends Filter
     /**
      * NEXT_MAJOR: Remove this method.
      */
-    public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $value): void
+    public function filter(ProxyQueryInterface $query, $alias, $field, $value): void
     {
     }
 

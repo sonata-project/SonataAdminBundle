@@ -84,12 +84,12 @@ Empty values are passed to datagrid filters. If you have custom datagrid filters
 
 ```php
 ->add('with_open_comments', CallbackFilter::class, [
-    'callback' => static function (ProxyQueryInterface $queryBuilder, string $alias, string $field, array $value): bool {
+    'callback' => static function (ProxyQueryInterface $query, string $alias, string $field, array $value): bool {
         if (!$value['value']) {
             return false;
         }
 
-        $queryBuilder
+        $query
             ->leftJoin(sprintf('%s.comments', $alias), 'c')
             ->andWhere('c.moderation = :moderation')
             ->setParameter('moderation', CommentModeration::APPROVED);

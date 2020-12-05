@@ -99,12 +99,12 @@ class SimplePager extends Pager
     /**
      * {@inheritdoc}
      *
-     * @throws \RuntimeException the QueryBuilder is uninitialized
+     * @throws \RuntimeException the query is uninitialized
      */
     public function init()
     {
         if (!$this->getQuery()) {
-            throw new \RuntimeException('Uninitialized QueryBuilder');
+            throw new \RuntimeException('Uninitialized query');
         }
         $this->resetIterator();
 
