@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Filter;
 
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
@@ -23,10 +25,9 @@ interface FilterInterface
     public const CONDITION_AND = 'AND';
 
     /**
-     * @param mixed $query
-     * @param mixed $value
+     * @phpstan-param array{type?: string, value?: mixed} $filterData
      */
-    public function apply($query, $value): void;
+    public function apply(ProxyQueryInterface $query, $filterData): void;
 
     /**
      * @throws \LogicException if the filter is not initialized

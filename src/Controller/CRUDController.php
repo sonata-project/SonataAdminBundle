@@ -51,6 +51,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
  */
 class CRUDController extends AbstractController
 {
@@ -58,6 +60,8 @@ class CRUDController extends AbstractController
      * The related Admin class.
      *
      * @var AdminInterface
+     *
+     * @phpstan-var AdminInterface<T>
      */
     protected $admin;
 
@@ -1045,6 +1049,8 @@ class CRUDController extends AbstractController
 
     /**
      * Redirect the user depend on this choice.
+     *
+     * @phpstan-param T $object
      */
     protected function redirectTo(object $object): RedirectResponse
     {
@@ -1239,6 +1245,8 @@ class CRUDController extends AbstractController
     /**
      * This method can be overloaded in your custom CRUD controller.
      * It's called from createAction.
+     *
+     * @phpstan-param T $object
      */
     protected function preCreate(Request $request, object $object): ?Response
     {
@@ -1248,6 +1256,8 @@ class CRUDController extends AbstractController
     /**
      * This method can be overloaded in your custom CRUD controller.
      * It's called from editAction.
+     *
+     * @phpstan-param T $object
      */
     protected function preEdit(Request $request, object $object): ?Response
     {
@@ -1257,6 +1267,8 @@ class CRUDController extends AbstractController
     /**
      * This method can be overloaded in your custom CRUD controller.
      * It's called from deleteAction.
+     *
+     * @phpstan-param T $object
      */
     protected function preDelete(Request $request, object $object): ?Response
     {
@@ -1266,6 +1278,8 @@ class CRUDController extends AbstractController
     /**
      * This method can be overloaded in your custom CRUD controller.
      * It's called from showAction.
+     *
+     * @phpstan-param T $object
      */
     protected function preShow(Request $request, object $object): ?Response
     {
@@ -1308,6 +1322,9 @@ class CRUDController extends AbstractController
         ], Response::HTTP_BAD_REQUEST);
     }
 
+    /**
+     * @phpstan-param T $object
+     */
     protected function handleXmlHttpRequestSuccessResponse(Request $request, object $object): JsonResponse
     {
         if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
@@ -1326,6 +1343,9 @@ class CRUDController extends AbstractController
         return array_filter(['_tab' => $request->request->get('_tab')]);
     }
 
+    /**
+     * @phpstan-param T $object
+     */
     private function checkParentChildAssociation(Request $request, object $object): void
     {
         if (!$this->admin->isChild()) {

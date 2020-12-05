@@ -104,6 +104,8 @@ interface FieldDescriptionInterface
      * Define the association mapping definition.
      *
      * @param array<string, mixed> $associationMapping
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
      */
     public function setAssociationMapping(array $associationMapping): void;
 
@@ -125,6 +127,8 @@ interface FieldDescriptionInterface
      * Sets the field mapping information.
      *
      * @param array<string, mixed> $fieldMapping
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
      */
     public function setFieldMapping(array $fieldMapping): void;
 
@@ -136,6 +140,8 @@ interface FieldDescriptionInterface
     public function getFieldMapping(): array;
 
     /**
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
+     *
      * set the parent association mappings information.
      *
      *  @param array<array<string, mixed>> $parentAssociationMappings
@@ -201,9 +207,13 @@ interface FieldDescriptionInterface
     public function mergeOptions(array $options = []): void;
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * set the original mapping type (only used if the field is linked to an entity).
      *
      * @param int|string $mappingType
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
      */
     public function setMappingType($mappingType): void;
 

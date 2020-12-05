@@ -84,12 +84,14 @@ interface ModelManagerInterface
      *
      * @phpstan-param class-string $class
      */
-    public function batchDelete(string $class, ProxyQueryInterface $queryProxy): void;
+    public function batchDelete(string $class, ProxyQueryInterface $query): void;
 
     /**
      * @phpstan-param class-string $class
+     *
+     * @phpstan-param class-string $class
      */
-    public function createQuery(string $class, string $alias = 'o'): ProxyQueryInterface;
+    public function createQuery(string $class): ProxyQueryInterface;
 
     /**
      * Get the identifiers of this model class.

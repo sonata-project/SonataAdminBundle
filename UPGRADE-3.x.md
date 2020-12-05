@@ -4,6 +4,43 @@ UPGRADE 3.x
 UPGRADE FROM 3.xx to 3.xx
 =========================
 
+### Sonata\AdminBundle\Admin\FieldDescriptionInterface
+
+The following methods have been deprecated from the interface and will be added as abstract methods to
+`Sonata\AdminBundle\Admin\BaseFieldDescription` in the next major version:
+- `setFieldMapping()`
+- `setAssociationMapping()`
+- `setParentAssociationMappings()`
+- `setMappingType()`
+
+### Sonata\AdminBundle\Admin\BaseFieldDescription
+
+Constructor has been modified to allow 3 more parameters
+(`$fieldMapping`, `$associationMapping` and `$parentAssociationMapping`):
+
+```php
+public function __construct(
+    ?string $name = null,
+    array $options = [],
+    array $fieldMapping = [],
+    array $associationMapping = [],
+    array $parentAssociationMappings = []
+) {
+```
+
+Deprecated `Sonata\AdminBundle\Admin\BaseFieldDescription::setMappingType()`.
+
+### Deprecated `AdminInterface::getValidator()` and  `AdminInterface::setValidator()` methods, `AbstractAdmin::$validator` property.
+
+Methods are deprecated without replacement.
+
+UPGRADE FROM 3.81 to 3.82
+=========================
+
+### Sonata\AdminBundle\Model\ModelManagerInterface
+
+Argument 2 of `Sonata\AdminBundle\Model\ModelManagerInterface::createQuery()` method has been removed.
+
 ### Sonata\AdminBundle\Admin\Pool
 
 - Passing a `Symfony\Component\PropertyAccess\PropertyAccessorInterface` instance as 4 argument instantiating
@@ -84,12 +121,12 @@ Empty values are passed to datagrid filters. If you have custom datagrid filters
 
 ```php
 ->add('with_open_comments', CallbackFilter::class, [
-    'callback' => static function (ProxyQueryInterface $queryBuilder, string $alias, string $field, array $value): bool {
+    'callback' => static function (ProxyQueryInterface $query, string $alias, string $field, array $value): bool {
         if (!$value['value']) {
             return false;
         }
 
-        $queryBuilder
+        $query
             ->leftJoin(sprintf('%s.comments', $alias), 'c')
             ->andWhere('c.moderation = :moderation')
             ->setParameter('moderation', CommentModeration::APPROVED);
