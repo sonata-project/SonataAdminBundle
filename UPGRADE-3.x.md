@@ -8,6 +8,10 @@ UPGRADE FROM 3.xx to 3.xx
 
 Methods are deprecated without replacement.
 
+### Sonata\AdminBundle\Model\ModelManagerInterface
+
+Argument 2 of `Sonata\AdminBundle\Model\ModelManagerInterface::createQuery()` method has been removed.
+
 ### Sonata\AdminBundle\Admin\Pool
 
 - Passing a `Symfony\Component\PropertyAccess\PropertyAccessorInterface` instance as 4 argument instantiating
