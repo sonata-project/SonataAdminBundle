@@ -135,8 +135,7 @@ Options
   than `[0] => 'Value'`; useful when a getter is not enough).
   Notice: works with string-like types (string, text, html)
 - ``associated_property`` (o): property path to retrieve the "string"
-  representation of the collection element, or a closure with the element
-  as argument and return a string.
+  representation of the collection element
 - ``sort_field_mapping`` (o): property of the collection element to sort on.
 - ``identifier`` (o): if set to true a link appears on the value to edit the element
 
