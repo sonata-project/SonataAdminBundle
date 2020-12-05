@@ -516,7 +516,7 @@ CASESENSITIVE;
 
                 ->arrayNode('extensions')
                 ->useAttributeAsKey('id')
-                ->defaultValue(['admins' => [], 'excludes' => [], 'implements' => [], 'extends' => [], 'instanceof' => [], 'uses' => []])
+                ->defaultValue([])
                     ->prototype('array')
                         ->fixXmlConfig('admin')
                         ->fixXmlConfig('exclude')
@@ -524,6 +524,7 @@ CASESENSITIVE;
                         ->fixXmlConfig('extend')
                         ->fixXmlConfig('use')
                         ->children()
+                            ->booleanNode('global')->defaultValue(false)->end()
                             ->arrayNode('admins')
                                 ->prototype('scalar')->end()
                             ->end()

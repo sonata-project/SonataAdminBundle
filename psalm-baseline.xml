@@ -34,6 +34,14 @@
             <code>new ArrayCollection(\array_slice($this-&gt;results, 0, $this-&gt;getMaxPerPage()))</code>
         </InvalidPropertyAssignmentValue>
     </file>
+    <file src="src/DependencyInjection/Compiler/ExtensionCompilerPass.php">
+        <InvalidReturnStatement occurrences="1">
+            <code>$extensionMap</code>
+        </InvalidReturnStatement>
+        <InvalidReturnType occurrences="1">
+            <code>array&lt;string, array&lt;string, array&lt;string, array&lt;string, array&lt;string, string&gt;&gt;&gt;&gt;&gt;</code>
+        </InvalidReturnType>
+    </file>
     <file src="src/Translator/Extractor/JMSTranslatorBundle/AdminExtractor.php">
         <InvalidReturnType occurrences="2">
             <code>buildSecurityInformation</code>

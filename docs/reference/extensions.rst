@@ -80,6 +80,9 @@ Using ``config/packages/sonata_admin.yaml`` file has some advantages, it allows 
 extra options you can use to wire your extensions in a more dynamic way. This means you can change the behavior of all
 admins that manage a class of a specific type.
 
+global:
+    adds the extension to all admins.
+
 admins:
     specify one or more admin service ids to which the Extension should be added
 
@@ -115,6 +118,7 @@ priority:
         sonata_admin:
             extensions:
                 app.publish.extension:
+                    global: true
                     admins:
                         - app.admin.article
                     implements:
