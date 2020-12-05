@@ -4,6 +4,10 @@ UPGRADE 3.x
 UPGRADE FROM 3.xx to 3.xx
 =========================
 
+### Deprecated `AdminInterface::getValidator()` and  `AdminInterface::setValidator()` methods, `AbstractAdmin::$validator` property.
+
+Methods are deprecated without replacement.
+
 UPGRADE FROM 3.81 to 3.82
 =========================
 
