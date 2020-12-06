@@ -153,8 +153,20 @@ class Pool
         $this->propertyAccessor = $propertyAccessor;
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
+     *
+     * @return array
+     */
     public function getGroups()
     {
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         $groups = $this->adminGroups;
 
         foreach ($this->adminGroups as $name => $adminGroup) {
