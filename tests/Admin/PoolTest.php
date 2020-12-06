@@ -43,6 +43,11 @@ class PoolTest extends TestCase
         $this->pool = new Pool($this->container, 'Sonata Admin', '/path/to/pic.png', ['foo' => 'bar']);
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @group legacy
+     */
     public function testGetGroups(): void
     {
         $this->container->set('sonata.user.admin.group1', $this->createMock(AdminInterface::class));
@@ -52,6 +57,8 @@ class PoolTest extends TestCase
         $this->pool->setAdminGroups([
             'adminGroup1' => ['sonata.user.admin.group1' => []],
         ]);
+
+        $this->expectDeprecation('Method "Sonata\AdminBundle\Admin\Pool::getGroups()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.');
 
         $result = $this->pool->getGroups();
         $this->assertArrayHasKey('adminGroup1', $result);

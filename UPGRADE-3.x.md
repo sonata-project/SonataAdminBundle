@@ -28,6 +28,7 @@ Argument 2 of `Sonata\AdminBundle\Model\ModelManagerInterface::createQuery()` me
   Use `Sonata\AdminBundle\SonataConfiguration::getLogo()` instead.
 - `Sonata\AdminBundle\Admin\Pool::getOption()` method has been deprecated.
   Use `Sonata\AdminBundle\SonataConfiguration::getOption()` instead.
+- `Sonata\AdminBundle\Admin\Pool::getGroups()` method has been deprecated.
 
 ### Sonata\AdminBundle\Admin\FieldDescriptionInterface
 
