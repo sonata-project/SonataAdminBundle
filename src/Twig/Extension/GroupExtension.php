@@ -44,13 +44,16 @@ final class GroupExtension extends AbstractExtension
     }
 
     /**
-     * @phpstan-return array{array{
-     *  roles: list<string>,
-     *  icon: string,
+     * @phpstan-return array<array{
      *  label: string,
      *  label_catalogue: string,
-     *  items: AdminInterface[]
-     * }}
+     *  icon: string,
+     *  item_adds: array,
+     *  items: AdminInterface[],
+     *  keep_open: bool,
+     *  on_top: bool,
+     *  roles: list<string>
+     * }>
      */
     public function getDashboardGroupsWithCreatableAdmins(): array
     {
