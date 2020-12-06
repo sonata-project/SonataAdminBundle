@@ -38,6 +38,23 @@ class Pool
 
     /**
      * @var array
+     * @phpstan-var array<string, array{
+     *  label: string,
+     *  label_catalogue: string,
+     *  icon: string,
+     *  item_adds: array,
+     *  items: array<array-key, array{
+     *      admin?: string,
+     *      label?: string,
+     *      roles: list<string>,
+     *      route?: string,
+     *      router_absolute: bool,
+     *      route_params: array<string, string>
+     *  }>,
+     *  keep_open: bool,
+     *  on_top: bool,
+     *  roles: list<string>
+     * }>
      */
     protected $adminGroups = [];
 
@@ -136,9 +153,6 @@ class Pool
         $this->propertyAccessor = $propertyAccessor;
     }
 
-    /**
-     * @return array<string, array<string, AdminInterface>>
-     */
     public function getGroups()
     {
         $groups = $this->adminGroups;
@@ -166,6 +180,16 @@ class Pool
 
     /**
      * @return array
+     * @phpstan-return array<string, array{
+     *  label: string,
+     *  label_catalogue: string,
+     *  icon: string,
+     *  item_adds: array,
+     *  items: array<array-key, AdminInterface>,
+     *  keep_open: bool,
+     *  on_top: bool,
+     *  roles: list<string>
+     * }>
      */
     public function getDashboardGroups()
     {
@@ -449,6 +473,24 @@ class Pool
     }
 
     /**
+     * @phpstan-param array<string, array{
+     *  label: string,
+     *  label_catalogue: string,
+     *  icon: string,
+     *  item_adds: array,
+     *  items: array<array-key, array{
+     *      admin?: string,
+     *      label?: string,
+     *      roles: list<string>,
+     *      route?: string,
+     *      router_absolute: bool,
+     *      route_params: array<string, string>
+     *  }>,
+     *  keep_open: bool,
+     *  on_top: bool,
+     *  roles: list<string>
+     * }> $adminGroups
+     *
      * @return void
      */
     public function setAdminGroups(array $adminGroups)
