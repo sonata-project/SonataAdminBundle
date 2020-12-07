@@ -182,6 +182,10 @@ class Pool
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
+     *
      * Returns whether an admin group exists or not.
      *
      * @param string $group
@@ -190,6 +194,11 @@ class Pool
      */
     public function hasGroup($group)
     {
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         return isset($this->adminGroups[$group]);
     }
 
@@ -237,6 +246,10 @@ class Pool
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
+     *
      * Returns all admins related to the given $group.
      *
      * @param string $group
@@ -247,6 +260,11 @@ class Pool
      */
     public function getAdminsByGroup($group)
     {
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         if (!isset($this->adminGroups[$group])) {
             throw new \InvalidArgumentException(sprintf('Group "%s" not found in admin pool.', $group));
         }
