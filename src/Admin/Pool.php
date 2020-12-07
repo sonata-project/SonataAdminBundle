@@ -554,12 +554,13 @@ class Pool
      */
     public function getTitleLogo()
     {
-        @trigger_error(sprintf(
-            'The "%s()" method is deprecated since version 3.x and will be removed in 4.0.'
-            .' Use "%s::getLogo()" instead.',
+        trigger_deprecation(
+            'sonata-project/admin-bundle',
+            '3.x',
+            'The "%s()" method is deprecated. Use "%s::getLogo()" instead.',
             __METHOD__,
             SonataConfiguration::class
-        ), E_USER_DEPRECATED);
+        );
 
         return $this->titleLogo;
     }

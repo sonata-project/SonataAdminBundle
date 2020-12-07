@@ -546,7 +546,7 @@ class PoolTest extends TestCase
      */
     public function testGetTitleLogo(): void
     {
-        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getTitleLogo()" method is deprecated since version 3.x and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getLogo()" instead.');
+        $this->expectDeprecation('Since sonata-project/admin-bundle 3.x: The "Sonata\AdminBundle\Admin\Pool::getTitleLogo()" method is deprecated. Use "Sonata\AdminBundle\SonataConfiguration::getLogo()" instead.');
 
         $this->assertSame('/path/to/pic.png', $this->pool->getTitleLogo());
     }
