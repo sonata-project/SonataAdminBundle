@@ -555,10 +555,10 @@ class Pool
     public function getTitleLogo()
     {
         @trigger_error(sprintf(
-            'The "%s" method is deprecated since version 3.x and will be removed in 4.0.'
-            .' Use "%s::getTitle()" instead.',
-            SonataConfiguration::class,
-            __METHOD__
+            'The "%s()" method is deprecated since version 3.x and will be removed in 4.0.'
+            .' Use "%s::getLogo()" instead.',
+            __METHOD__,
+            SonataConfiguration::class
         ), E_USER_DEPRECATED);
 
         return $this->titleLogo;
@@ -574,10 +574,10 @@ class Pool
     public function getTitle()
     {
         @trigger_error(sprintf(
-            'The "%s" method is deprecated since version 3.x and will be removed in 4.0.'
-            .' Use "%s::getLogo()" instead.',
-            SonataConfiguration::class,
-            __METHOD__
+            'The "%s()" method is deprecated since version 3.x and will be removed in 4.0.'
+            .' Use "%s::getTitle()" instead.',
+            __METHOD__,
+            SonataConfiguration::class
         ), E_USER_DEPRECATED);
 
         return $this->title;
@@ -596,10 +596,10 @@ class Pool
     public function getOption($name, $default = null)
     {
         @trigger_error(sprintf(
-            'The "%s" method is deprecated since version 3.x and will be removed in 4.0.'
+            'The "%s()" method is deprecated since version 3.x and will be removed in 4.0.'
             .' Use "%s::getOption()" instead.',
-            SonataConfiguration::class,
-            __METHOD__
+            __METHOD__,
+            SonataConfiguration::class
         ), E_USER_DEPRECATED);
 
         if (isset($this->options[$name])) {
