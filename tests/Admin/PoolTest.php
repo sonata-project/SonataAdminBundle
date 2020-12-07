@@ -18,11 +18,14 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class PoolTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     /**
      * @var Container
      */
@@ -543,6 +546,8 @@ class PoolTest extends TestCase
      */
     public function testGetTitleLogo(): void
     {
+        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getTitleLogo()" method is deprecated since version 3.x and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getLogo()" instead.');
+
         $this->assertSame('/path/to/pic.png', $this->pool->getTitleLogo());
     }
 
@@ -553,6 +558,8 @@ class PoolTest extends TestCase
      */
     public function testGetTitle(): void
     {
+        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getTitle()" method is deprecated since version 3.x and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getTitle()" instead.');
+
         $this->assertSame('Sonata Admin', $this->pool->getTitle());
     }
 
@@ -565,6 +572,8 @@ class PoolTest extends TestCase
     {
         $this->assertSame('bar', $this->pool->getOption('foo'));
 
+        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getOption()" method is deprecated since version 3.x and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getOption()" instead.');
+
         $this->assertNull($this->pool->getOption('non_existent_option'));
     }
 
@@ -575,6 +584,8 @@ class PoolTest extends TestCase
      */
     public function testOptionDefault(): void
     {
+        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getOption()" method is deprecated since version 3.x and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getOption()" instead.');
+
         $this->assertSame([], $this->pool->getOption('nonexistantarray', []));
     }
 
