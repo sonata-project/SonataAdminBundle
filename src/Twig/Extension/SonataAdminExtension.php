@@ -447,6 +447,7 @@ class SonataAdminExtension extends AbstractExtension
             'is_diff' => $isDiff,
             'admin' => $fieldDescription->getAdmin(),
             'object' => $baseObject,
+            'object_compare' => $compareObject,
         ], $environment);
     }
 
