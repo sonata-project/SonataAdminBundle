@@ -58,7 +58,7 @@ class PoolTest extends TestCase
             'adminGroup1' => ['sonata.user.admin.group1' => []],
         ]);
 
-        $this->expectDeprecation('Method "Sonata\AdminBundle\Admin\Pool::getGroups()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.');
+        $this->expectDeprecation('Method "Sonata\AdminBundle\Admin\Pool::getGroups()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.');
 
         $result = $this->pool->getGroups();
         $this->assertArrayHasKey('adminGroup1', $result);
@@ -76,7 +76,7 @@ class PoolTest extends TestCase
             'adminGroup1' => [],
         ]);
 
-        $this->expectDeprecation('Method "Sonata\AdminBundle\Admin\Pool::hasGroup()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.');
+        $this->expectDeprecation('Method "Sonata\AdminBundle\Admin\Pool::hasGroup()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.');
 
         $this->assertTrue($this->pool->hasGroup('adminGroup1'));
         $this->assertFalse($this->pool->hasGroup('adminGroup2'));
@@ -147,7 +147,7 @@ class PoolTest extends TestCase
                 'adminGroup1' => [],
             ]);
 
-        $this->expectDeprecation('Method "Sonata\AdminBundle\Admin\Pool::getAdminsByGroup()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.');
+        $this->expectDeprecation('Method "Sonata\AdminBundle\Admin\Pool::getAdminsByGroup()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.');
 
         $this->assertSame([], $this->pool->getAdminsByGroup('adminGroup1'));
     }
@@ -177,7 +177,7 @@ class PoolTest extends TestCase
             ],
         ]);
 
-        $this->expectDeprecation('Method "Sonata\AdminBundle\Admin\Pool::getAdminsByGroup()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.');
+        $this->expectDeprecation('Method "Sonata\AdminBundle\Admin\Pool::getAdminsByGroup()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.');
 
         $this->assertCount(2, $this->pool->getAdminsByGroup('adminGroup1'));
         $this->assertCount(1, $this->pool->getAdminsByGroup('adminGroup2'));
@@ -579,7 +579,7 @@ class PoolTest extends TestCase
      */
     public function testGetTitleLogo(): void
     {
-        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getTitleLogo()" method is deprecated since version 3.x and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getLogo()" instead.');
+        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getTitleLogo()" method is deprecated since version 3.83 and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getLogo()" instead.');
 
         $this->assertSame('/path/to/pic.png', $this->pool->getTitleLogo());
     }
@@ -591,7 +591,7 @@ class PoolTest extends TestCase
      */
     public function testGetTitle(): void
     {
-        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getTitle()" method is deprecated since version 3.x and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getTitle()" instead.');
+        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getTitle()" method is deprecated since version 3.83 and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getTitle()" instead.');
 
         $this->assertSame('Sonata Admin', $this->pool->getTitle());
     }
@@ -605,7 +605,7 @@ class PoolTest extends TestCase
     {
         $this->assertSame('bar', $this->pool->getOption('foo'));
 
-        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getOption()" method is deprecated since version 3.x and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getOption()" instead.');
+        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getOption()" method is deprecated since version 3.83 and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getOption()" instead.');
 
         $this->assertNull($this->pool->getOption('non_existent_option'));
     }
@@ -617,7 +617,7 @@ class PoolTest extends TestCase
      */
     public function testOptionDefault(): void
     {
-        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getOption()" method is deprecated since version 3.x and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getOption()" instead.');
+        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getOption()" method is deprecated since version 3.83 and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getOption()" instead.');
 
         $this->assertSame([], $this->pool->getOption('nonexistantarray', []));
     }
