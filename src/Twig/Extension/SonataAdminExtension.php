@@ -24,9 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Symfony\Component\Security\Acl\Voter\FieldVote;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Translation\TranslatorInterface as LegacyTranslationInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -44,6 +42,11 @@ use Twig\TwigFunction;
  */
 class SonataAdminExtension extends AbstractExtension
 {
+    /**
+     * NEXT_MAJOR: Remove this constant.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
+     */
     // @todo: there are more locales which are not supported by moment and they need to be translated/normalized/canonicalized here
     public const MOMENT_UNSUPPORTED_LOCALES = [
         'de' => ['de', 'de-at'],
@@ -68,7 +71,11 @@ class SonataAdminExtension extends AbstractExtension
     protected $translator;
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
      * @var string[]
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
      */
     private $xEditableTypeMapping = [];
 
@@ -78,7 +85,11 @@ class SonataAdminExtension extends AbstractExtension
     private $templateRegistries;
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
      * @var AuthorizationCheckerInterface
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
      */
     private $securityChecker;
 
@@ -88,7 +99,30 @@ class SonataAdminExtension extends AbstractExtension
     private $propertyAccessor;
 
     /**
-     * NEXT_MAJOR: Make $propertyAccessor mandatory.
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @var XEditableExtension|null
+     */
+    private $xEditableExtension;
+
+    /**
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @var SecurityExtension|null
+     */
+    private $securityExtension;
+
+    /**
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @var CanonicalizeExtension|null
+     */
+    private $canonicalizeExtension;
+
+    /**
+     * NEXT_MAJOR: Remove @internal tag, $translator & $securityChecker parameters and make propertyAccessor mandatory.
+     *
+     * @internal
      */
     public function __construct(
         Pool $pool,
@@ -96,14 +130,14 @@ class SonataAdminExtension extends AbstractExtension
         $translator = null,
         ?ContainerInterface $templateRegistries = null,
         $propertyAccessorOrSecurityChecker = null,
-        ?AuthorizationCheckerInterface $securityChecker = null
+        ?AuthorizationCheckerInterface $securityChecker = null //NEXT_MAJOR: Remove this parameter
     ) {
         // NEXT_MAJOR: make the translator parameter required, move TranslatorInterface check to method signature
         // and remove this block
 
         if (null === $translator) {
             @trigger_error(
-                'The $translator parameter will be required fields with the 4.0 release.',
+                'The $translator parameter will be required field with the 4.0 release.',
                 E_USER_DEPRECATED
             );
         } else {
@@ -162,7 +196,7 @@ class SonataAdminExtension extends AbstractExtension
             $this->propertyAccessor = $pool->getPropertyAccessor();
             $this->securityChecker = $securityChecker;
         } else {
-            $this->securityChecker = $securityChecker;
+            $this->securityChecker = $securityChecker; //NEXT_MAJOR: Remove this property
             $this->propertyAccessor = $propertyAccessorOrSecurityChecker;
         }
 
@@ -210,10 +244,12 @@ class SonataAdminExtension extends AbstractExtension
                 'sonata_urlsafeid',
                 [$this, 'getUrlSafeIdentifier']
             ),
+            //NEXT_MAJOR remove this filter
             new TwigFilter(
                 'sonata_xeditable_type',
                 [$this, 'getXEditableType']
             ),
+            //NEXT_MAJOR remove this filter
             new TwigFilter(
                 'sonata_xeditable_choices',
                 [$this, 'getXEditableChoices']
@@ -222,7 +258,11 @@ class SonataAdminExtension extends AbstractExtension
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * @return TwigFunction[]
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
      */
     public function getFunctions()
     {
@@ -533,22 +573,46 @@ class SonataAdminExtension extends AbstractExtension
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * @param string[] $xEditableTypeMapping
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
      */
     public function setXEditableTypeMapping($xEditableTypeMapping)
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
+            @trigger_error(sprintf(
+                'The %s method is deprecated in favor of XEditableExtension::setXEditableTypeMapping since version 3.x and will be removed in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         $this->xEditableTypeMapping = $xEditableTypeMapping;
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * @return string|bool
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
      */
     public function getXEditableType($type)
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
+            @trigger_error(sprintf(
+                'The %s method is deprecated in favor of XEditableExtension::getXEditableType since version 3.x and will be removed in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         return $this->xEditableTypeMapping[$type] ?? false;
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * Return xEditable choices based on the field description choices options & catalogue options.
      * With the following choice options:
      *     ['Status1' => 'Alias1', 'Status2' => 'Alias2']
@@ -556,139 +620,102 @@ class SonataAdminExtension extends AbstractExtension
      *     [['value' => 'Status1', 'text' => 'Alias1'], ['value' => 'Status2', 'text' => 'Alias2']].
      *
      * @return array
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
      */
     public function getXEditableChoices(FieldDescriptionInterface $fieldDescription)
     {
-        $choices = $fieldDescription->getOption('choices', []);
-        $catalogue = $fieldDescription->getOption('catalogue');
-        $xEditableChoices = [];
-        if (!empty($choices)) {
-            reset($choices);
-            $first = current($choices);
-            // the choices are already in the right format
-            if (\is_array($first) && \array_key_exists('value', $first) && \array_key_exists('text', $first)) {
-                $xEditableChoices = $choices;
-            } else {
-                foreach ($choices as $value => $text) {
-                    if ($catalogue) {
-                        if (null !== $this->translator) {
-                            $text = $this->translator->trans($text, [], $catalogue);
-                        // NEXT_MAJOR: Remove this check
-                        } elseif (method_exists($fieldDescription->getAdmin(), 'trans')) {
-                            $text = $fieldDescription->getAdmin()->trans($text, [], $catalogue);
-                        }
-                    }
-
-                    $xEditableChoices[] = [
-                        'value' => $value,
-                        'text' => $text,
-                    ];
-                }
-            }
+        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
+            @trigger_error(sprintf(
+                'The %s method is deprecated in favor of XEditableExtension::getXEditableChoices since version 3.x and will be removed in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
         }
 
-        if (false === $fieldDescription->getOption('required', true)
-            && false === $fieldDescription->getOption('multiple', false)
-        ) {
-            $xEditableChoices = array_merge([[
-                'value' => '',
-                'text' => '',
-            ]], $xEditableChoices);
+        if (null === $this->xEditableExtension) {
+            $this->xEditableExtension = new XEditableExtension($this->translator);
         }
 
-        return $xEditableChoices;
+        return $this->xEditableExtension->getXEditableChoices($fieldDescription);
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * Returns a canonicalized locale for "moment" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
      *
      * @return string|null
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
      */
     final public function getCanonicalizedLocaleForMoment(array $context)
     {
-        $locale = strtolower(str_replace('_', '-', $context['app']->getRequest()->getLocale()));
-
-        // "en" language doesn't require localization.
-        if (('en' === $lang = substr($locale, 0, 2)) && !\in_array($locale, ['en-au', 'en-ca', 'en-gb', 'en-ie', 'en-nz'], true)) {
-            return null;
+        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
+            @trigger_error(sprintf(
+                'The %s method is deprecated in favor of CanonicalizeExtension::getCanonicalizedLocaleForMoment since version 3.x and will be removed in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
         }
 
-        foreach (self::MOMENT_UNSUPPORTED_LOCALES as $language => $locales) {
-            if ($language === $lang && !\in_array($locale, $locales, true)) {
-                $locale = $language;
-            }
+        if (null === $this->canonicalizeExtension) {
+            $this->canonicalizeExtension = new CanonicalizeExtension();
         }
 
-        return $locale;
+        return $this->canonicalizeExtension->getCanonicalizedLocaleForMoment($context);
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * Returns a canonicalized locale for "select2" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
      *
      * @return string|null
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
      */
     final public function getCanonicalizedLocaleForSelect2(array $context)
     {
-        $locale = str_replace('_', '-', $context['app']->getRequest()->getLocale());
-
-        // "en" language doesn't require localization.
-        if ('en' === $lang = substr($locale, 0, 2)) {
-            return null;
+        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
+            @trigger_error(sprintf(
+                'The %s method is deprecated in favor of CanonicalizeExtension::getCanonicalizedLocaleForSelect2 since version 3.x and will be removed in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
         }
 
-        switch ($locale) {
-            case 'pt':
-                $locale = 'pt-PT';
-                break;
-            case 'ug':
-                $locale = 'ug-CN';
-                break;
-            case 'zh':
-                $locale = 'zh-CN';
-                break;
-            default:
-                if (!\in_array($locale, ['pt-BR', 'pt-PT', 'ug-CN', 'zh-CN', 'zh-TW'], true)) {
-                    $locale = $lang;
-                }
+        if (null === $this->canonicalizeExtension) {
+            $this->canonicalizeExtension = new CanonicalizeExtension();
         }
 
-        return $locale;
+        return $this->canonicalizeExtension->getCanonicalizedLocaleForSelect2($context);
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * @param string|array $role
      * @param object|null  $object
      * @param string|null  $field
      *
      * @return bool
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
      */
     public function isGrantedAffirmative($role, $object = null, $field = null)
     {
-        if (null === $this->securityChecker) {
-            return false;
+        if ('sonata_deprecation_mute' !== (\func_get_args()[3] ?? null)) {
+            @trigger_error(sprintf(
+                'The %s method is deprecated in favor of SecurityExtension::isGrantedAffirmative since version 3.x and will be removed in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
         }
 
-        if (null !== $field) {
-            $object = new FieldVote($object, $field);
+        if (null === $this->securityExtension) {
+            $this->securityExtension = new SecurityExtension($this->securityChecker);
         }
 
-        if (!\is_array($role)) {
-            $role = [$role];
-        }
-
-        foreach ($role as $oneRole) {
-            try {
-                if ($this->securityChecker->isGranted($oneRole, $object)) {
-                    return true;
-                }
-            } catch (AuthenticationCredentialsNotFoundException $e) {
-                // empty on purpose
-            }
-        }
-
-        return false;
+        return $this->securityExtension->isGrantedAffirmative($role, $object, $field);
     }
 
     /**

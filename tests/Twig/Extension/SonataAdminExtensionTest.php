@@ -177,7 +177,8 @@ class SonataAdminExtensionTest extends TestCase
             $propertyAccessor,
             $this->securityChecker
         );
-        $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping);
+
+        $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping, 'sonata_deprecation_mute');
 
         $request = $this->createMock(Request::class);
         $request->method('get')->with('_sonata_admin')->willReturn('sonata_admin_foo_service');
@@ -2786,6 +2787,9 @@ EOT
         $this->assertSame(1234567, $twigExtension->getUrlSafeIdentifier($model, $this->adminBar));
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function xEditableChoicesProvider()
     {
         return [
@@ -2832,7 +2836,11 @@ EOT
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * @dataProvider xEditablechoicesProvider
+     *
+     * @group legacy
      */
     public function testGetXEditableChoicesIsIdempotent(array $options, array $expectedChoices): void
     {
@@ -2850,6 +2858,8 @@ EOT
                 'MyCatalogue',
                 $options['multiple'] ?? null
             ));
+
+        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::getXEditableChoices method is deprecated in favor of XEditableExtension::getXEditableChoices since version 3.x and will be removed in 4.0.');
 
         $this->assertSame($expectedChoices, $this->twigExtension->getXEditableChoices($fieldDescription));
     }
@@ -2910,13 +2920,22 @@ EOT
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * @dataProvider select2LocalesProvider
+     *
+     * @group legacy
      */
     public function testCanonicalizedLocaleForSelect2(?string $expected, string $original): void
     {
+        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::getCanonicalizedLocaleForSelect2 method is deprecated in favor of CanonicalizeExtension::getCanonicalizedLocaleForSelect2 since version 3.x and will be removed in 4.0.');
+
         $this->assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForSelect2($this->mockExtensionContext($original)));
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function momentLocalesProvider(): array
     {
         return [
@@ -3039,15 +3058,28 @@ EOT
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * @dataProvider momentLocalesProvider
+     *
+     * @group legacy
      */
     public function testCanonicalizedLocaleForMoment(?string $expected, string $original): void
     {
+        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::getCanonicalizedLocaleForMoment method is deprecated in favor of CanonicalizeExtension::getCanonicalizedLocaleForMoment since version 3.x and will be removed in 4.0.');
+
         $this->assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForMoment($this->mockExtensionContext($original)));
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @group legacy
+     */
     public function testIsGrantedAffirmative(): void
     {
+        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::isGrantedAffirmative method is deprecated in favor of SecurityExtension::isGrantedAffirmative since version 3.x and will be removed in 4.0.');
+
         $this->securityChecker
             ->method('isGranted')
             ->withConsecutive(
