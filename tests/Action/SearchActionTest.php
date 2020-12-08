@@ -39,7 +39,7 @@ class SearchActionTest extends TestCase
     {
         $this->container = new Container();
 
-        $this->pool = new Pool($this->container, 'title', 'logo.png');
+        $this->pool = new Pool($this->container);
         $templateRegistry = new TemplateRegistry([
             'search' => 'search.html.twig',
             'layout' => 'layout.html.twig',

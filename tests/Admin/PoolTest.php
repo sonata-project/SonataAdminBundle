@@ -17,13 +17,10 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\DependencyInjection\Container;
 
 class PoolTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
     /**
      * @var Container
      */
@@ -37,47 +34,7 @@ class PoolTest extends TestCase
     protected function setUp(): void
     {
         $this->container = new Container();
-        // NEXT_MAJOR: Only pass the container to Pool: "new Pool($this->container)".
-        $this->pool = new Pool($this->container, 'Sonata Admin', '/path/to/pic.png', ['foo' => 'bar']);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     */
-    public function testGetGroups(): void
-    {
-        $this->container->set('sonata.user.admin.group1', $this->createMock(AdminInterface::class));
-
-        $this->pool->setAdminServiceIds(['sonata.user.admin.group1']);
-
-        $this->pool->setAdminGroups([
-            'adminGroup1' => ['sonata.user.admin.group1' => []],
-        ]);
-
-        $this->expectDeprecation('Method "Sonata\AdminBundle\Admin\Pool::getGroups()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.');
-
-        $result = $this->pool->getGroups();
-        $this->assertArrayHasKey('adminGroup1', $result);
-        $this->assertArrayHasKey('sonata.user.admin.group1', $result['adminGroup1']);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testHasGroup(): void
-    {
-        $this->pool->setAdminGroups([
-            'adminGroup1' => [],
-        ]);
-
-        $this->expectDeprecation('Method "Sonata\AdminBundle\Admin\Pool::hasGroup()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.');
-
-        $this->assertTrue($this->pool->hasGroup('adminGroup1'));
-        $this->assertFalse($this->pool->hasGroup('adminGroup2'));
+        $this->pool = new Pool($this->container);
     }
 
     public function testGetDashboardGroups(): void
@@ -116,69 +73,6 @@ class PoolTest extends TestCase
 
         $this->assertCount(1, $groups);
         $this->assertSame($adminGroup1, $groups['adminGroup1']['items']['itemKey']);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testGetAdminsByGroupWhenGroupNotSet(): void
-    {
-        $this->pool->setAdminGroups([
-                'adminGroup1' => [],
-            ]);
-
-        $this->expectException(\InvalidArgumentException::class);
-
-        $this->pool->getAdminsByGroup('adminGroup2');
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testGetAdminsByGroupWhenGroupIsEmpty(): void
-    {
-        $this->pool->setAdminGroups([
-                'adminGroup1' => [],
-            ]);
-
-        $this->expectDeprecation('Method "Sonata\AdminBundle\Admin\Pool::getAdminsByGroup()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.');
-
-        $this->assertSame([], $this->pool->getAdminsByGroup('adminGroup1'));
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testGetAdminsByGroup(): void
-    {
-        $this->container->set('sonata.admin1', $this->createMock(AdminInterface::class));
-        $this->container->set('sonata.admin2', $this->createMock(AdminInterface::class));
-        $this->container->set('sonata.admin3', $this->createMock(AdminInterface::class));
-
-        $this->pool->setAdminServiceIds(['sonata.admin1', 'sonata.admin2', 'sonata.admin3']);
-        $this->pool->setAdminGroups([
-            'adminGroup1' => [
-                'items' => [
-                    $this->getItemArray('sonata.admin1'),
-                    $this->getItemArray('sonata.admin2'),
-                    $this->getItemArray(),
-                ],
-            ],
-            'adminGroup2' => [
-                'items' => [$this->getItemArray('sonata.admin3')],
-            ],
-        ]);
-
-        $this->expectDeprecation('Method "Sonata\AdminBundle\Admin\Pool::getAdminsByGroup()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.');
-
-        $this->assertCount(2, $this->pool->getAdminsByGroup('adminGroup1'));
-        $this->assertCount(1, $this->pool->getAdminsByGroup('adminGroup2'));
     }
 
     public function testGetAdminForClassWithTooManyRegisteredAdmin(): void
@@ -507,56 +401,6 @@ class PoolTest extends TestCase
     {
         $this->pool->setAdminServiceIds(['sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3']);
         $this->assertSame(['sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3'], $this->pool->getAdminServiceIds());
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testGetTitleLogo(): void
-    {
-        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getTitleLogo()" method is deprecated since version 3.83 and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getLogo()" instead.');
-
-        $this->assertSame('/path/to/pic.png', $this->pool->getTitleLogo());
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testGetTitle(): void
-    {
-        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getTitle()" method is deprecated since version 3.83 and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getTitle()" instead.');
-
-        $this->assertSame('Sonata Admin', $this->pool->getTitle());
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testGetOption(): void
-    {
-        $this->assertSame('bar', $this->pool->getOption('foo'));
-
-        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getOption()" method is deprecated since version 3.83 and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getOption()" instead.');
-
-        $this->assertNull($this->pool->getOption('non_existent_option'));
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testOptionDefault(): void
-    {
-        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getOption()" method is deprecated since version 3.83 and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getOption()" instead.');
-
-        $this->assertSame([], $this->pool->getOption('nonexistantarray', []));
     }
 
     private function getItemArray(?string $serviceId = null): array

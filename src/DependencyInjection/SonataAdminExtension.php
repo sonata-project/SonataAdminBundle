@@ -86,12 +86,6 @@ final class SonataAdminExtension extends Extension
         $config['options']['role_super_admin'] = $config['security']['role_super_admin'];
         $config['options']['search'] = $config['search'];
 
-        // NEXT_MAJOR: Remove this Pool configuration.
-        $pool = $container->getDefinition('sonata.admin.pool');
-        $pool->replaceArgument(1, $config['title']);
-        $pool->replaceArgument(2, $config['title_logo']);
-        $pool->replaceArgument(3, $config['options']);
-
         $sonataConfiguration = $container->getDefinition('sonata.admin.configuration');
         $sonataConfiguration->replaceArgument(0, $config['title']);
         $sonataConfiguration->replaceArgument(1, $config['title_logo']);

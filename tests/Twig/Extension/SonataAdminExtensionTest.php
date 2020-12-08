@@ -113,7 +113,7 @@ class SonataAdminExtensionTest extends TestCase
 
         $container = new Container();
 
-        $this->pool = new Pool($container, '', '');
+        $this->pool = new Pool($container);
         $this->pool->setAdminServiceIds(['sonata_admin_foo_service']);
         $this->pool->setAdminClasses(['fooClass' => ['sonata_admin_foo_service']]);
 
