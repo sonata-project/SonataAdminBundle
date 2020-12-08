@@ -2,6 +2,38 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.83.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.82.0...3.83.0) - 2020-12-08
+### Added
+- [[#6651](https://github.com/sonata-project/SonataAdminBundle/pull/6651)] Add support for global admin extensions via config ([@core23](https://github.com/core23))
+- [[#6640](https://github.com/sonata-project/SonataAdminBundle/pull/6640)] Added `SonataConfiguration` class to handle sonata global configuration. ([@franmomu](https://github.com/franmomu))
+- [[#6640](https://github.com/sonata-project/SonataAdminBundle/pull/6640)] Added global Twig `sonata_config` to access global configuration from Twig. ([@franmomu](https://github.com/franmomu))
+- [[#6648](https://github.com/sonata-project/SonataAdminBundle/pull/6648)] Added 3 new arguments to `BaseFieldDescription::__construct()` to do create a FieldDescription with the mapping. ([@franmomu](https://github.com/franmomu))
+
+### Deprecated
+- [[#6659](https://github.com/sonata-project/SonataAdminBundle/pull/6659)] Deprecated `Pool::getGroups()` method. ([@franmomu](https://github.com/franmomu))
+- [[#6659](https://github.com/sonata-project/SonataAdminBundle/pull/6659)] Deprecated `Pool::hasGroup()` method. ([@franmomu](https://github.com/franmomu))
+- [[#6659](https://github.com/sonata-project/SonataAdminBundle/pull/6659)] Deprecated `Pool::getAdminsByGroup()` method. ([@franmomu](https://github.com/franmomu))
+- [[#6633](https://github.com/sonata-project/SonataAdminBundle/pull/6633)] `AbstractAdmin::$validator` property ([@tambait](https://github.com/tambait))
+- [[#6633](https://github.com/sonata-project/SonataAdminBundle/pull/6633)] `AdminInterface::getValidator` method specification ([@tambait](https://github.com/tambait))
+- [[#6633](https://github.com/sonata-project/SonataAdminBundle/pull/6633)] `AdminInterface::setValidator` method specification ([@tambait](https://github.com/tambait))
+- [[#6633](https://github.com/sonata-project/SonataAdminBundle/pull/6633)] `AbstractAdmin::getValidator` method implementation ([@tambait](https://github.com/tambait))
+- [[#6633](https://github.com/sonata-project/SonataAdminBundle/pull/6633)] `AbstractAdmin::setValidator` method implementation ([@tambait](https://github.com/tambait))
+- [[#6633](https://github.com/sonata-project/SonataAdminBundle/pull/6633)] `AddDependencyCallsCompilerPass` - validator related keys ([@tambait](https://github.com/tambait))
+- [[#6633](https://github.com/sonata-project/SonataAdminBundle/pull/6633)] `DependencyInjection/Configuration` - validator related config option ([@tambait](https://github.com/tambait))
+- [[#6640](https://github.com/sonata-project/SonataAdminBundle/pull/6640)] Deprecated `Pool::getTitle()` method. ([@franmomu](https://github.com/franmomu))
+- [[#6640](https://github.com/sonata-project/SonataAdminBundle/pull/6640)] Deprecated `Pool::getTitleLogo()` method. ([@franmomu](https://github.com/franmomu))
+- [[#6640](https://github.com/sonata-project/SonataAdminBundle/pull/6640)] Deprecated `Pool::getOption()` method. ([@franmomu](https://github.com/franmomu))
+- [[#6640](https://github.com/sonata-project/SonataAdminBundle/pull/6640)] Deprecated global Twig `sonata_admin` variable. ([@franmomu](https://github.com/franmomu))
+- [[#6648](https://github.com/sonata-project/SonataAdminBundle/pull/6648)] Deprecated `FieldDescriptionInterface::setFieldMapping()` method. ([@franmomu](https://github.com/franmomu))
+- [[#6648](https://github.com/sonata-project/SonataAdminBundle/pull/6648)] Deprecated `FieldDescriptionInterface::setAssociationMapping()` method. ([@franmomu](https://github.com/franmomu))
+- [[#6648](https://github.com/sonata-project/SonataAdminBundle/pull/6648)] Deprecated `FieldDescriptionInterface::setParentAssociationMappings()` method. ([@franmomu](https://github.com/franmomu))
+- [[#6648](https://github.com/sonata-project/SonataAdminBundle/pull/6648)] Deprecated `FieldDescriptionInterface::setMappingType()` method. ([@franmomu](https://github.com/franmomu))
+- [[#6648](https://github.com/sonata-project/SonataAdminBundle/pull/6648)] Deprecated `BaseFieldDescription::setMappingType()` method. ([@franmomu](https://github.com/franmomu))
+
+### Fixed
+- [[#6665](https://github.com/sonata-project/SonataAdminBundle/pull/6665)] Fixed triggering a deprecation in a check. ([@franmomu](https://github.com/franmomu))
+- [[#6662](https://github.com/sonata-project/SonataAdminBundle/pull/6662)] Incorrect object being passed to the view when rendering the history compare action ([@tamcy](https://github.com/tamcy))
+
 ## [3.82.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.81.1...3.82.0) - 2020-12-05
 ### Added
 - [[#6643](https://github.com/sonata-project/SonataAdminBundle/pull/6643)] Added generics to `CRUDController` ([@VincentLanglet](https://github.com/VincentLanglet))
