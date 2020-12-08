@@ -153,11 +153,12 @@ final class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param array<string, array<string, array<string, string>>> $config
+     * @param array<string, array<string, array<string, string>|bool>> $config
      *
      * @return array<string, array<string, array<string, array<string, array<string, string>>>>> an array with the following structure.
      *
      * [
+     *     'global'     => ['<admin_id>'  => ['<extension_id>' => ['priority' => <int>]]],
      *     'excludes'   => ['<admin_id>'  => ['<extension_id>' => ['priority' => <int>]]],
      *     'admins'     => ['<admin_id>'  => ['<extension_id>' => ['priority' => <int>]]],
      *     'implements' => ['<interface>' => ['<extension_id>' => ['priority' => <int>]]],
@@ -169,6 +170,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
     private function flattenExtensionConfiguration(array $config): array
     {
         $extensionMap = [
+            'global' => [],
             'excludes' => [],
             'admins' => [],
             'implements' => [],
@@ -178,6 +180,12 @@ final class ExtensionCompilerPass implements CompilerPassInterface
         ];
 
         foreach ($config as $extension => $options) {
+            if (true === $options['global']) {
+                $options['global'] = [$extension];
+            } else {
+                $options['global'] = [];
+            }
+
             $optionsMap = array_intersect_key($options, $extensionMap);
 
             foreach ($optionsMap as $key => $value) {
@@ -218,6 +226,8 @@ final class ExtensionCompilerPass implements CompilerPassInterface
         $classReflection = new \ReflectionClass($class);
 
         switch ($type) {
+            case 'global':
+                return true;
             case 'instanceof':
                 $subjectReflection = new \ReflectionClass($subject);
 

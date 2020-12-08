@@ -21,6 +21,10 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @author Ahmet Akbana <ahmetakbana@gmail.com>
+ *
+ * NEXT_MAJOR: Remove this class.
+ *
+ * @group legacy
  */
 class GlobalVariablesTest extends TestCase
 {

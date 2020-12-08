@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="3.13.1@afd8874a9e4562eac42a02de90e42e430c3a1db1">
+    <file src="src/DependencyInjection/Compiler/ExtensionCompilerPass.php">
+        <InvalidReturnStatement occurrences="1">
+            <code>$extensionMap</code>
+        </InvalidReturnStatement>
+        <InvalidReturnType occurrences="1">
+            <code>array&lt;string, array&lt;string, array&lt;string, array&lt;string, array&lt;string, string&gt;&gt;&gt;&gt;&gt;</code>
+        </InvalidReturnType>
+    </file>
     <!--The next error is due to not installed Doctrine ORM\ODM-->
     <file src="src/Admin/AdminHelper.php">
         <UndefinedClass occurrences="1">

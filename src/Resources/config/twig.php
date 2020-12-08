@@ -11,6 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Sonata\AdminBundle\Twig\Extension\GroupExtension;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -62,5 +63,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('sonata.admin.global_template_registry'),
                 new ReferenceConfigurator('service_container'),
             ])
+
+        ->set('sonata.admin.group.extension', GroupExtension::class)
+        ->tag('twig.extension')
+        ->args([
+            new ReferenceConfigurator('sonata.admin.pool'),
+        ])
     ;
 };

@@ -234,6 +234,7 @@ Full Configuration Options
 
                 # Prototype
                 id:
+                    global: false
                     admins: []
                     excludes: []
                     implements: []

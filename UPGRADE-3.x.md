@@ -1,8 +1,36 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.xx to 3.xx
+UPGRADE FROM 3.82 to 3.83
 =========================
+
+### Deprecated `admin_pool` parameter in `sonata.admin.dashboard.top` and `sonata.admin.dashboard.bottom` block events.
+
+This parameter will be removed in 4.0. If you are using it, you SHOULD inject `Pool` service instead.
+
+### Deprecated global Twig `sonata_admin` variable
+
+This variable has been deprecated in favor of `sonata_config` variable.
+
+### Sonata\AdminBundle\Twig\GlobalVariables
+
+This class has been deprecated without replacement.
+
+### Sonata\AdminBundle\Model\ModelManagerInterface
+
+Argument 2 of `Sonata\AdminBundle\Model\ModelManagerInterface::createQuery()` method has been removed.
+
+### Sonata\AdminBundle\Admin\Pool
+
+- `Sonata\AdminBundle\Admin\Pool::getTitle()` method has been deprecated.
+  Use `Sonata\AdminBundle\SonataConfiguration::getTitle()` instead.
+- `Sonata\AdminBundle\Admin\Pool::getTitleLogo()` method has been deprecated.
+  Use `Sonata\AdminBundle\SonataConfiguration::getLogo()` instead.
+- `Sonata\AdminBundle\Admin\Pool::getOption()` method has been deprecated.
+  Use `Sonata\AdminBundle\SonataConfiguration::getOption()` instead.
+- `Sonata\AdminBundle\Admin\Pool::getGroups()` method has been deprecated.
+- `Sonata\AdminBundle\Admin\Pool::hasGroup()` method has been deprecated.
+- `Sonata\AdminBundle\Admin\Pool::getAdminsByGroup()` method has been deprecated.
 
 ### Sonata\AdminBundle\Admin\FieldDescriptionInterface
 

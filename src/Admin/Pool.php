@@ -13,10 +13,29 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
+use Sonata\AdminBundle\SonataConfiguration;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
+ * @psalm-type Group = array{
+ *  label: string,
+ *  label_catalogue: string,
+ *  icon: string,
+ *  item_adds: array,
+ *  items: array<array-key, array{
+ *      admin?: string,
+ *      label?: string,
+ *      roles: list<string>,
+ *      route?: string,
+ *      router_absolute: bool,
+ *      route_params: array<string, string>
+ *  }>,
+ *  keep_open: bool,
+ *  on_top: bool,
+ *  roles: list<string>
+ * }
+ *
  * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -34,7 +53,9 @@ class Pool
     protected $adminServiceIds = [];
 
     /**
-     * @var array<string, array<string, mixed>>
+     * @var array
+     * @phpstan-var array<string, array<string, mixed>>
+     * @psalm-var array<string, Group>
      */
     protected $adminGroups = [];
 
@@ -45,16 +66,28 @@ class Pool
     protected $adminClasses = [];
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.83, will be dropped in 4.0.
+     *
      * @var string
      */
     protected $title;
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.83, will be dropped in 4.0.
+     *
      * @var string
      */
     protected $titleLogo;
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.83, will be dropped in 4.0.
+     *
      * @var array<string, mixed>
      */
     protected $options = [];
@@ -67,6 +100,8 @@ class Pool
     private $templateRegistry;
 
     /**
+     * NEXT_MAJOR: Remove $title, $logoTitle and $options.
+     *
      * @param array<string, mixed> $options
      */
     public function __construct(
@@ -82,10 +117,17 @@ class Pool
     }
 
     /**
-     * @return array<string, array<string, AdminInterface>>
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0.
      */
     public function getGroups(): array
     {
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         $groups = $this->adminGroups;
 
         foreach ($this->adminGroups as $name => $adminGroup) {
@@ -98,15 +140,33 @@ class Pool
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0.
+     *
      * Returns whether an admin group exists or not.
      */
     public function hasGroup(string $group): bool
     {
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         return isset($this->adminGroups[$group]);
     }
 
     /**
-     * @return array<string, array<string, AdminInterface[]>>
+     * @phpstan-return array<string, array{
+     *  label: string,
+     *  label_catalogue: string,
+     *  icon: string,
+     *  item_adds: array,
+     *  items: array<array-key, AdminInterface>,
+     *  keep_open: bool,
+     *  on_top: bool,
+     *  roles: list<string>
+     * }>
      */
     public function getDashboardGroups(): array
     {
@@ -139,6 +199,10 @@ class Pool
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0.
+     *
      * Returns all admins related to the given $group.
      *
      * @throws \InvalidArgumentException
@@ -147,6 +211,11 @@ class Pool
      */
     public function getAdminsByGroup(string $group): array
     {
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         if (!isset($this->adminGroups[$group])) {
             throw new \InvalidArgumentException(sprintf('Group "%s" not found in admin pool.', $group));
         }
@@ -313,7 +382,8 @@ class Pool
     }
 
     /**
-     * @param array<string, array<string, mixed>> $adminGroups
+     * @phpstan-param array<string, array<string, mixed>> $adminGroups
+     * @psalm-param array<string, Group> $adminGroups
      */
     public function setAdminGroups(array $adminGroups): void
     {
@@ -404,23 +474,58 @@ class Pool
         return $this->templateRegistry->getTemplate($name);
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.83, will be dropped in 4.0.
+     */
     public function getTitleLogo(): string
     {
+        @trigger_error(sprintf(
+            'The "%s()" method is deprecated since version 3.83 and will be removed in 4.0.'
+            .' Use "%s::getLogo()" instead.',
+            __METHOD__,
+            SonataConfiguration::class
+        ), E_USER_DEPRECATED);
+
         return $this->titleLogo;
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.83, will be dropped in 4.0.
+     */
     public function getTitle(): string
     {
+        @trigger_error(sprintf(
+            'The "%s()" method is deprecated since version 3.83 and will be removed in 4.0.'
+            .' Use "%s::getTitle()" instead.',
+            __METHOD__,
+            SonataConfiguration::class
+        ), E_USER_DEPRECATED);
+
         return $this->title;
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.83, will be dropped in 4.0.
+     *
      * @param mixed $default
      *
      * @return mixed
      */
     public function getOption(string $name, $default = null)
     {
+        @trigger_error(sprintf(
+            'The "%s()" method is deprecated since version 3.83 and will be removed in 4.0.'
+            .' Use "%s::getOption()" instead.',
+            __METHOD__,
+            SonataConfiguration::class
+        ), E_USER_DEPRECATED);
+
         if (isset($this->options[$name])) {
             return $this->options[$name];
         }
