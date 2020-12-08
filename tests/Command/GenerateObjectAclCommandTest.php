@@ -47,7 +47,7 @@ class GenerateObjectAclCommandTest extends TestCase
 
     public function testExecuteWithDeprecatedDoctrineService(): void
     {
-        $pool = new Pool($this->container, '', '');
+        $pool = new Pool($this->container);
 
         $command = new GenerateObjectAclCommand($pool, []);
 
@@ -63,7 +63,7 @@ class GenerateObjectAclCommandTest extends TestCase
 
     public function testExecuteWithEmptyManipulators(): void
     {
-        $pool = new Pool($this->container, '', '');
+        $pool = new Pool($this->container);
 
         $command = new GenerateObjectAclCommand($pool, []);
 

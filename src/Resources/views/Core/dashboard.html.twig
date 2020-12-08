@@ -50,8 +50,7 @@ file that was distributed with this source code.
         {% endif %}
     {% endfor %}
 
-    {# NEXT_MAJOR: Remove the admin_pool argument #}
-    {{ sonata_block_render_event('sonata.admin.dashboard.top', { 'admin_pool': sonata_admin.adminPool('sonata_deprecation_mute') }) }}
+    {{ sonata_block_render_event('sonata.admin.dashboard.top') }}
 
     {% if has_top %}
         <div class="row">
@@ -126,7 +125,6 @@ file that was distributed with this source code.
         </div>
     {% endif %}
 
-    {# NEXT_MAJOR: Remove the admin_pool argument #}
-    {{ sonata_block_render_event('sonata.admin.dashboard.bottom', { 'admin_pool': sonata_admin.adminPool('sonata_deprecation_mute') }) }}
+    {{ sonata_block_render_event('sonata.admin.dashboard.bottom') }}
 
 {% endblock %}

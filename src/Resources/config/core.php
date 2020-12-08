@@ -37,7 +37,6 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
-use Sonata\AdminBundle\Twig\GlobalVariables;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 
@@ -50,9 +49,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->public()
             ->args([
                 new ReferenceConfigurator('service_container'),
-                '',
-                '',
-                [],
             ])
 
         ->alias(Pool::class, 'sonata.admin.pool')
@@ -179,16 +175,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.lock.extension', LockExtension::class)
             ->public()
             ->tag('sonata.admin.extension', ['global' => true])
-
-        // NEXT_MAJOR: Remove this service definition and alias.
-        ->set('sonata.admin.twig.global', GlobalVariables::class)
-            ->public()
-            ->args([
-                new ReferenceConfigurator('sonata.admin.pool'),
-                '%sonata.admin.configuration.mosaic_background%',
-            ])
-
-        ->alias(GlobalVariables::class, 'sonata.admin.twig.global')
 
         ->set('sonata.admin.filter_persister.session', SessionFilterPersister::class)
             ->args([

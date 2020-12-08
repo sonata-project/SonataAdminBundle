@@ -39,7 +39,6 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
-use Sonata\AdminBundle\Twig\GlobalVariables;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
@@ -88,8 +87,6 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasService(AuditManagerInterface::class, AuditManager::class);
         $this->assertContainerBuilderHasService(SearchHandler::class);
         $this->assertContainerBuilderHasService(AdminEventExtension::class);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertContainerBuilderHasService(GlobalVariables::class);
         $this->assertContainerBuilderHasService('sonata.admin.group.extension');
         $this->assertContainerBuilderHasService(SessionFilterPersister::class);
         $this->assertContainerBuilderHasService(
@@ -158,12 +155,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        // NEXT_MAJOR: Remove next line.
-        $poolStylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($stylesheets, $poolStylesheets);
 
         $this->assertSame(
             array_merge($this->getDefaultStylesheets(), $extraStylesheets),
@@ -184,12 +176,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        // NEXT_MAJOR: Remove next line.
-        $poolStylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($stylesheets, $poolStylesheets);
 
         $this->assertSame(
             array_values(
@@ -209,12 +196,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        // NEXT_MAJOR: Remove next line.
-        $poolJavascripts = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['javascripts'];
         $javascripts = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['javascripts'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($javascripts, $poolJavascripts);
 
         $this->assertSame(
             array_merge($this->defaultConfiguration['assets']['javascripts'], $extraJavascripts),
@@ -235,12 +217,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        // NEXT_MAJOR: Remove next line.
-        $poolJavascripts = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['javascripts'];
         $javascripts = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['javascripts'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($javascripts, $poolJavascripts);
 
         $this->assertSame(
             array_values(
@@ -272,12 +249,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        // NEXT_MAJOR: Remove next line.
-        $poolStylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($stylesheets, $poolStylesheets);
 
         $this->assertSame(
             array_merge(
@@ -287,12 +259,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
             $stylesheets
         );
 
-        // NEXT_MAJOR: Remove next line.
-        $poolJavascripts = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['javascripts'];
         $javascripts = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['javascripts'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($javascripts, $poolJavascripts);
 
         $this->assertSame(
             array_merge(
@@ -364,19 +331,8 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->container->setParameter('kernel.bundles', []);
         $this->load();
 
-        // NEXT_MAJOR: Remove next line.
-        $poolStylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($stylesheets, $poolStylesheets);
-
-        // NEXT_MAJOR: Remove next line.
-        $poolSkin = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['skin'];
         $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($skin, $poolSkin);
 
         $this->assertSame($this->getDefaultStylesheets(), $stylesheets);
         $this->assertSame('skin-black', $skin);
@@ -391,19 +347,8 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        // NEXT_MAJOR: Remove next line.
-        $poolStylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($stylesheets, $poolStylesheets);
-
-        // NEXT_MAJOR: Remove next line.
-        $poolSkin = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['skin'];
         $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($skin, $poolSkin);
 
         $this->assertSame($this->getDefaultStylesheets('skin-blue'), $stylesheets);
         $this->assertSame('skin-blue', $skin);
@@ -418,15 +363,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        // NEXT_MAJOR: Remove next line.
-        $poolStylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($stylesheets, $poolStylesheets);
-
-        // NEXT_MAJOR: Remove next line.
-        $poolSkin = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['skin'];
         $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
 
         $this->assertSame($this->getDefaultStylesheets(), $stylesheets);
@@ -458,12 +395,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        // NEXT_MAJOR: Remove next line.
-        $poolSkin = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['skin'];
         $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($skin, $poolSkin);
 
         $defaultStylesheets = $this->defaultConfiguration['assets']['stylesheets'];
         $defaultStylesheets[] = sprintf(

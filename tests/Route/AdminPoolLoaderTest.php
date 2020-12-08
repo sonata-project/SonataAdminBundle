@@ -30,7 +30,7 @@ class AdminPoolLoaderTest extends TestCase
     public function testSupports(): void
     {
         $container = new Container();
-        $pool = new Pool($container, 'title', 'logoTitle');
+        $pool = new Pool($container);
 
         $adminPoolLoader = new AdminPoolLoader($pool, ['foo_admin', 'bar_admin'], $container);
 
@@ -41,7 +41,7 @@ class AdminPoolLoaderTest extends TestCase
     public function testLoad(): void
     {
         $container = new Container();
-        $pool = new Pool($container, 'title', 'logoTitle');
+        $pool = new Pool($container);
         $pool->setAdminServiceIds(['foo_admin', 'bar_admin']);
 
         $adminPoolLoader = new AdminPoolLoader($pool, ['foo_admin', 'bar_admin'], $container);

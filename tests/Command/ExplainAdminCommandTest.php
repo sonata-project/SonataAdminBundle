@@ -145,7 +145,7 @@ class ExplainAdminCommandTest extends TestCase
 
         $container->set('acme.admin.foo', $this->admin);
 
-        $pool = new Pool($container, '', '');
+        $pool = new Pool($container);
         $pool->setAdminServiceIds(['acme.admin.foo', 'acme.admin.bar']);
 
         $this->validatorFactory = $this->createMock(MetadataFactoryInterface::class);

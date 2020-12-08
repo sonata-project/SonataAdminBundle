@@ -39,7 +39,7 @@ final class GroupExtensionTest extends TestCase
     protected function setUp(): void
     {
         $this->container = new Container();
-        $this->pool = new Pool($this->container, '', '');
+        $this->pool = new Pool($this->container);
         $this->twigExtension = new GroupExtension($this->pool);
     }
 
