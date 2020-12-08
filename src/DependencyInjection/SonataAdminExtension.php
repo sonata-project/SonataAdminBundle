@@ -228,7 +228,7 @@ final class SonataAdminExtension extends Extension
     private function mergeArray(array $array, array $addArray, array $removeArray = []): array
     {
         foreach ($addArray as $toAdd) {
-            array_push($array, $toAdd);
+            $array[] = $toAdd;
         }
         foreach ($removeArray as $toRemove) {
             if (\in_array($toRemove, $array, true)) {

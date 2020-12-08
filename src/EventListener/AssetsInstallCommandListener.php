@@ -40,7 +40,7 @@ final class AssetsInstallCommandListener
     /**
      * @var string
      */
-    protected static $defaultName = 'assets:install';
+    private static $defaultName = 'assets:install';
 
     /**
      * @var Filesystem
@@ -77,7 +77,7 @@ final class AssetsInstallCommandListener
         $this->execute($event->getInput(), $event->getOutput(), $application);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output, FrameworkApplication $application): int
+    private function execute(InputInterface $input, OutputInterface $output, FrameworkApplication $application): int
     {
         /**
          * @var KernelInterface
