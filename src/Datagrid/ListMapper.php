@@ -86,7 +86,7 @@ class ListMapper extends BaseMapper
         // Default sort on "associated_property"
         if (isset($fieldDescriptionOptions['associated_property'])) {
             if (!isset($fieldDescriptionOptions['sortable'])) {
-                $fieldDescriptionOptions['sortable'] = true;
+                $fieldDescriptionOptions['sortable'] = !\is_callable($fieldDescriptionOptions['associated_property']);
             }
             if (!isset($fieldDescriptionOptions['sort_parent_association_mappings'])) {
                 $fieldDescriptionOptions['sort_parent_association_mappings'] = [[
