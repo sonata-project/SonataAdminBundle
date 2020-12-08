@@ -107,7 +107,7 @@ class BaseFieldDescriptionTest extends TestCase
     {
         $description = new FieldDescription('name');
 
-        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\BaseFieldDescription::setMappingType()" method is deprecated since version 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The "Sonata\AdminBundle\Admin\BaseFieldDescription::setMappingType()" method is deprecated since version 3.83 and will be removed in 4.0.');
 
         $description->setMappingType('int');
         $this->assertSame('int', $description->getMappingType());

@@ -1,7 +1,7 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.xx to 3.xx
+UPGRADE FROM 3.82 to 3.83
 =========================
 
 ### Deprecated `admin_pool` parameter in `sonata.admin.dashboard.top` and `sonata.admin.dashboard.bottom` block events.

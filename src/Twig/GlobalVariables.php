@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *
  * NEXT_MAJOR: Remove this class.
  *
- * @deprecated since sonata-project/admin-bundle 3.x, will be removed in 4.0.
+ * @deprecated since sonata-project/admin-bundle 3.83, will be removed in 4.0.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
@@ -80,7 +80,7 @@ class GlobalVariables
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -99,7 +99,7 @@ class GlobalVariables
     public function url($code, $action, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         @trigger_error(sprintf(
-            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -120,7 +120,7 @@ class GlobalVariables
     public function objectUrl($code, $action, $object, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         @trigger_error(sprintf(
-            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -132,7 +132,7 @@ class GlobalVariables
     public function getMosaicBackground(): ?string
     {
         @trigger_error(sprintf(
-            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.'
             .' Use "sonata_config.getOption(\'mosaic_background\')" instead.',
             __METHOD__
         ), E_USER_DEPRECATED);

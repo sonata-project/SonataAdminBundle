@@ -134,7 +134,7 @@ interface FieldDescriptionInterface
     /**
      * Define the association mapping definition.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0.
      *
      * @param array $associationMapping
      */
@@ -168,7 +168,7 @@ interface FieldDescriptionInterface
     /**
      * set the field mapping information.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0.
      *
      * @param array $fieldMapping
      */
@@ -182,7 +182,7 @@ interface FieldDescriptionInterface
     public function getFieldMapping();
 
     /**
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0.
      *
      * set the parent association mappings information.
      */
@@ -260,7 +260,7 @@ interface FieldDescriptionInterface
      *
      * set the original mapping type (only used if the field is linked to an entity).
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0.
      *
      * @param string|int $mappingType
      */

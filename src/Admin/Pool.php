@@ -83,7 +83,7 @@ class Pool
     /**
      * NEXT_MAJOR: Remove this property.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.83, will be dropped in 4.0.
      *
      * @var string
      */
@@ -92,7 +92,7 @@ class Pool
     /**
      * NEXT_MAJOR: Remove this property.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.83, will be dropped in 4.0.
      *
      * @var string
      */
@@ -101,7 +101,7 @@ class Pool
     /**
      * NEXT_MAJOR: Remove this property.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.83, will be dropped in 4.0.
      *
      * @var array
      */
@@ -159,14 +159,14 @@ class Pool
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0.
      *
      * @return array
      */
     public function getGroups()
     {
         @trigger_error(sprintf(
-            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -184,7 +184,7 @@ class Pool
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0.
      *
      * Returns whether an admin group exists or not.
      *
@@ -195,7 +195,7 @@ class Pool
     public function hasGroup($group)
     {
         @trigger_error(sprintf(
-            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -248,7 +248,7 @@ class Pool
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0.
      *
      * Returns all admins related to the given $group.
      *
@@ -261,7 +261,7 @@ class Pool
     public function getAdminsByGroup($group)
     {
         @trigger_error(sprintf(
-            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -608,14 +608,14 @@ class Pool
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.83, will be dropped in 4.0.
      *
      * @return string
      */
     public function getTitleLogo()
     {
         @trigger_error(sprintf(
-            'The "%s()" method is deprecated since version 3.x and will be removed in 4.0.'
+            'The "%s()" method is deprecated since version 3.83 and will be removed in 4.0.'
             .' Use "%s::getLogo()" instead.',
             __METHOD__,
             SonataConfiguration::class
@@ -627,14 +627,14 @@ class Pool
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.83, will be dropped in 4.0.
      *
      * @return string
      */
     public function getTitle()
     {
         @trigger_error(sprintf(
-            'The "%s()" method is deprecated since version 3.x and will be removed in 4.0.'
+            'The "%s()" method is deprecated since version 3.83 and will be removed in 4.0.'
             .' Use "%s::getTitle()" instead.',
             __METHOD__,
             SonataConfiguration::class
@@ -646,7 +646,7 @@ class Pool
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.83, will be dropped in 4.0.
      *
      * @param string $name
      * @param mixed  $default
@@ -656,7 +656,7 @@ class Pool
     public function getOption($name, $default = null)
     {
         @trigger_error(sprintf(
-            'The "%s()" method is deprecated since version 3.x and will be removed in 4.0.'
+            'The "%s()" method is deprecated since version 3.83 and will be removed in 4.0.'
             .' Use "%s::getOption()" instead.',
             __METHOD__,
             SonataConfiguration::class
