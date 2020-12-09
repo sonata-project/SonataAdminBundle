@@ -22,6 +22,11 @@ class FooFilter extends Filter
     {
     }
 
+    public function callSetActive(bool $active): void
+    {
+        $this->setActive($active);
+    }
+
     public function getDefaultOptions(): array
     {
         return [

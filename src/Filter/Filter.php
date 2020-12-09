@@ -26,7 +26,11 @@ abstract class Filter implements FilterInterface
     protected $name;
 
     /**
-     * @var mixed
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @var mixed|null
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
      */
     protected $value;
 
@@ -39,6 +43,11 @@ abstract class Filter implements FilterInterface
      * @var string|null
      */
     protected $condition;
+
+    /**
+     * @var bool
+     */
+    private $active = false;
 
     public function initialize(string $name, array $options = []): void
     {
@@ -187,28 +196,46 @@ abstract class Filter implements FilterInterface
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * @param mixed $value
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
      */
     public function setValue($value): void
     {
+        @trigger_error(sprintf(
+            'Method %s() is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+            __METHOD__,
+        ), E_USER_DEPRECATED);
+
         $this->value = $value;
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * @return mixed
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
      */
     public function getValue()
     {
+        @trigger_error(sprintf(
+            'Method %s() is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+            __METHOD__,
+        ), E_USER_DEPRECATED);
+
         return $this->value;
     }
 
     public function isActive(): bool
     {
-        $values = $this->getValue();
+        $values = $this->value;
 
-        return isset($values['value'])
-            && false !== $values['value']
-            && '' !== $values['value'];
+        // NEXT_MAJOR: Change for `return $this->active;`
+        return $this->active
+            || isset($values['value']) && false !== $values['value'] && '' !== $values['value'];
     }
 
     public function setCondition(string $condition): void
@@ -224,5 +251,10 @@ abstract class Filter implements FilterInterface
     public function getTranslationDomain(): ?string
     {
         return $this->getOption('translation_domain');
+    }
+
+    protected function setActive(bool $active): void
+    {
+        $this->active = $active;
     }
 }

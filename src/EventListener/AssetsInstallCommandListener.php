@@ -38,11 +38,6 @@ final class AssetsInstallCommandListener
     public const METHOD_RELATIVE_SYMLINK = 'relative symlink';
 
     /**
-     * @var string
-     */
-    protected static $defaultName = 'assets:install';
-
-    /**
      * @var Filesystem
      */
     private $filesystem;
@@ -77,7 +72,7 @@ final class AssetsInstallCommandListener
         $this->execute($event->getInput(), $event->getOutput(), $application);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output, FrameworkApplication $application): int
+    private function execute(InputInterface $input, OutputInterface $output, FrameworkApplication $application): int
     {
         /**
          * @var KernelInterface
@@ -170,9 +165,13 @@ final class AssetsInstallCommandListener
 
             switch ($ioMethod) {
                 case 'success':
-                case 'warning':$io->$ioMethod('All deprecated SonataCoreBundle assets from SonataAdminBundle were successfully installed.'); break;
+                case 'warning':
+                    $io->$ioMethod('All deprecated SonataCoreBundle assets from SonataAdminBundle were successfully installed.');
+                    break;
                 case 'error':
-                default: $io->$ioMethod('No deprecated SonataCoreBundle assets from SonataAdminBundle were provided by any bundle.'); break;
+                default:
+                    $io->$ioMethod('No deprecated SonataCoreBundle assets from SonataAdminBundle were provided by any bundle.');
+                    break;
             }
         }
 

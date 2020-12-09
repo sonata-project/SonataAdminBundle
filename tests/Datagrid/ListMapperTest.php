@@ -301,6 +301,32 @@ class ListMapperTest extends TestCase
         $this->assertSame('fooSortFieldMapping', $fieldManualSort->getOption('sort_field_mapping'));
     }
 
+    public function testCallableAssociationPropertyCannotBeSortable(): void
+    {
+        $this->listMapper->add(
+            'fooNameNotSortable',
+            null,
+            [
+                'associated_property' => static function ($value) {
+                    return (string) $value;
+                },
+            ]
+        );
+        $this->listMapper->add(
+            'fooNameSortable',
+            null,
+            [
+                'associated_property' => 'fooProperty',
+            ]
+        );
+
+        $fieldSortable = $this->listMapper->get('fooNameSortable');
+        $fieldNotSortable = $this->listMapper->get('fooNameNotSortable');
+
+        $this->assertTrue($fieldSortable->getOption('sortable'));
+        $this->assertFalse($fieldNotSortable->getOption('sortable'));
+    }
+
     public function testKeys(): void
     {
         $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
