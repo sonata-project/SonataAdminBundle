@@ -166,9 +166,13 @@ final class AssetsInstallCommandListener
 
             switch ($ioMethod) {
                 case 'success':
-                case 'warning':$io->$ioMethod('All deprecated SonataCoreBundle assets from SonataAdminBundle were successfully installed.'); break;
+                case 'warning':
+                    $io->$ioMethod('All deprecated SonataCoreBundle assets from SonataAdminBundle were successfully installed.');
+                    break;
                 case 'error':
-                default: $io->$ioMethod('No deprecated SonataCoreBundle assets from SonataAdminBundle were provided by any bundle.'); break;
+                default:
+                    $io->$ioMethod('No deprecated SonataCoreBundle assets from SonataAdminBundle were provided by any bundle.');
+                    break;
             }
         }
 
