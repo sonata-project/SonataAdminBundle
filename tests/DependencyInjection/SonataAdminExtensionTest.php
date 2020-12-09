@@ -386,8 +386,19 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->container->setParameter('kernel.bundles', []);
         $this->load();
 
-        $stylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
-        $skin = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['skin'];
+        // NEXT_MAJOR: Remove next line.
+        $poolStylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
+        $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
+
+        // NEXT_MAJOR: Remove this assertion.
+        $this->assertSame($stylesheets, $poolStylesheets);
+
+        // NEXT_MAJOR: Remove next line.
+        $poolSkin = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['skin'];
+        $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
+
+        // NEXT_MAJOR: Remove this assertion.
+        $this->assertSame($skin, $poolSkin);
 
         $this->assertSame($this->getDefaultStylesheets(), $stylesheets);
         $this->assertSame('skin-black', $skin);
