@@ -64,10 +64,11 @@ final class GetShortObjectDescriptionAction
 
         if (!$object) {
             // NEXT_MAJOR: Remove the deprecation and uncomment the exception.
-            @trigger_error(sprintf(
+            @trigger_error(
                 'Trying to get a short object description for a non found object is deprecated'
-                .' since sonata-project/admin-bundle 3.76 and will be throw a 404 in version 4.0.'
-            ), E_USER_DEPRECATED);
+                .' since sonata-project/admin-bundle 3.76 and will be throw a 404 in version 4.0.',
+                E_USER_DEPRECATED
+            );
             //throw new NotFoundHttpException(sprintf('Could not find subject for id "%s"', $objectId));
 
             // NEXT_MAJOR: Remove this.
