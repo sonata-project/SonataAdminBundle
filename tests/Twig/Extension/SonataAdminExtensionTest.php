@@ -2706,7 +2706,7 @@ EOT
         $this->assertSame(1234567, $this->twigExtension->getUrlSafeIdentifier($model));
     }
 
-    public function testGetUrlsafeIdentifierGivenAdminFoo(): void
+    public function testGetUrlsafeIdentifier_GivenAdmin_Foo(): void
     {
         $model = new \stdClass();
 
@@ -2731,7 +2731,7 @@ EOT
         $this->assertSame(1234567, $this->twigExtension->getUrlSafeIdentifier($model, $this->admin));
     }
 
-    public function testGetUrlsafeIdentifierGivenAdminBar(): void
+    public function testGetUrlsafeIdentifier_GivenAdmin_Bar(): void
     {
         $model = new \stdClass();
 
