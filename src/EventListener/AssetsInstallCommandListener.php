@@ -37,8 +37,6 @@ final class AssetsInstallCommandListener
     public const METHOD_ABSOLUTE_SYMLINK = 'absolute symlink';
     public const METHOD_RELATIVE_SYMLINK = 'relative symlink';
 
-    protected static $defaultName = 'assets:install';
-
     private $filesystem;
     private $projectDir;
 
