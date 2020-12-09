@@ -267,7 +267,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
     private function mergeArray(array $array, array $addArray, array $removeArray = []): array
     {
         foreach ($addArray as $toAdd) {
-            $array[] = $toAdd;
+            array_push($array, $toAdd);
         }
         foreach ($removeArray as $toRemove) {
             if (\in_array($toRemove, $array, true)) {

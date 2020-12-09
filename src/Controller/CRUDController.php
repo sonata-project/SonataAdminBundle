@@ -53,7 +53,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 class CRUDController implements ContainerAwareInterface
 {
     // NEXT_MAJOR: Don't use these traits anymore (inherit from Controller instead)
-    use ContainerAwareTrait, ControllerTrait {
+    use ControllerTrait, ContainerAwareTrait {
         ControllerTrait::render as originalRender;
     }
 
@@ -986,12 +986,11 @@ class CRUDController implements ContainerAwareInterface
 
         if ($this->container->hasParameter('sonata.admin.security.fos_user_autoconfigured')
             && $this->getParameter('sonata.admin.security.fos_user_autoconfigured')) {
-            @trigger_error(
+            @trigger_error(sprintf(
                 'Not configuring "acl_user_manager" and using ACL security handler is deprecated since'
                 .' sonata-project/admin-bundle 3.78 and will not work on 4.0. You MUST specify the service name'
-                .' under "sonata_admin.security.acl_user_manager" option.',
-                E_USER_DEPRECATED
-            );
+                .' under "sonata_admin.security.acl_user_manager" option.'
+            ), E_USER_DEPRECATED);
         }
 
         $request = $this->getRequest();
