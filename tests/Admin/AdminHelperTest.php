@@ -91,8 +91,8 @@ class AdminHelperTest extends TestCase
 
     public function testGetGrandChildFormBuilder(): void
     {
-        $formFactory = $this->createMock(FormFactoryInterface::class);
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $formFactory = $this->createStub(FormFactoryInterface::class);
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
 
         $formBuilder = new FormBuilder('parent', \stdClass::class, $eventDispatcher, $formFactory);
         $childFormBuilder = new FormBuilder('child', \stdClass::class, $eventDispatcher, $formFactory);
