@@ -44,7 +44,7 @@ class FormBuilderIteratorTest extends TestCase
     {
         $this->dispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
         $this->factory = $this->getMockForAbstractClass(FormFactoryInterface::class);
-        $this->builder = new TestFormBuilder('name', null, $this->dispatcher, $this->factory);
+        $this->builder = new FormBuilder('name', null, $this->dispatcher, $this->factory);
         $this->factory->method('createNamedBuilder')->willReturn($this->builder);
     }
 
@@ -60,6 +60,7 @@ class FormBuilderIteratorTest extends TestCase
         $this->builder->add('name', TextType::class);
         $iterator = new FormBuilderIterator($this->builder);
         $this->assertInstanceOf(\get_class($iterator), $iterator->getChildren());
+        $this->assertSame('name_name', $iterator->key());
     }
 
     public function testHasChildren(): void
@@ -68,8 +69,4 @@ class FormBuilderIteratorTest extends TestCase
         $iterator = new FormBuilderIterator($this->builder);
         $this->assertTrue($iterator->hasChildren());
     }
-}
-
-class TestFormBuilder extends FormBuilder
-{
 }

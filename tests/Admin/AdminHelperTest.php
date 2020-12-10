@@ -89,6 +89,21 @@ class AdminHelperTest extends TestCase
         $this->assertInstanceOf(FormBuilder::class, $this->helper->getChildFormBuilder($formBuilder, 'test_elementId'));
     }
 
+    public function testGetGrandChildFormBuilder(): void
+    {
+        $formFactory = $this->createMock(FormFactoryInterface::class);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+
+        $formBuilder = new FormBuilder('parent', \stdClass::class, $eventDispatcher, $formFactory);
+        $childFormBuilder = new FormBuilder('child', \stdClass::class, $eventDispatcher, $formFactory);
+        $grandchildFormBuilder = new FormBuilder('grandchild', \stdClass::class, $eventDispatcher, $formFactory);
+
+        $formBuilder->add($childFormBuilder);
+        $childFormBuilder->add($grandchildFormBuilder);
+
+        $this->assertInstanceOf(FormBuilder::class, $this->helper->getChildFormBuilder($formBuilder, 'parent_child_grandchild'));
+    }
+
     public function testGetChildFormView(): void
     {
         $formView = new FormView();
