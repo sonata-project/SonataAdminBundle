@@ -38,7 +38,7 @@ class FormBuilderIterator extends \RecursiveArrayIterator
     protected $keys = [];
 
     /**
-     * @var bool|string
+     * @var string
      */
     protected $prefix;
 
@@ -48,13 +48,18 @@ class FormBuilderIterator extends \RecursiveArrayIterator
     protected $iterator;
 
     /**
-     * @param bool $prefix
+     * NEXT_MAJOR: Change argument 2 to ?string $prefix = null.
+     *
+     * @param string|false $prefix
      */
     public function __construct(FormBuilderInterface $formBuilder, $prefix = false)
     {
         parent::__construct();
         $this->formBuilder = $formBuilder;
-        $this->prefix = $prefix ?: $formBuilder->getName();
+        // NEXT_MAJOR: Remove next line.
+        $this->prefix = \is_string($prefix) ? $prefix : $formBuilder->getName();
+        // NEXT_MAJOR: Uncomment next line.
+        // $this->prefix = $prefix ?? $formBuilder->getName();
         $this->iterator = new \ArrayIterator(self::getKeys($formBuilder));
     }
 
@@ -87,7 +92,7 @@ class FormBuilderIterator extends \RecursiveArrayIterator
 
     public function getChildren()
     {
-        return new self($this->formBuilder->get($this->iterator->current()), $this->current());
+        return new self($this->formBuilder->get($this->iterator->current()), $this->key());
     }
 
     public function hasChildren()
