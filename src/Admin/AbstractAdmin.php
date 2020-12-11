@@ -871,14 +871,19 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
     }
 
-    public function getFilterParameters()
+    final public function getDefaultFilterParameters(): array
     {
-        $parameters = array_merge(
+        return array_merge(
             $this->getModelManager()->getDefaultSortValues($this->getClass()), // NEXT_MAJOR: Remove this line.
             $this->datagridValues, // NEXT_MAJOR: Remove this line.
             $this->getDefaultSortValues(),
             $this->getDefaultFilterValues()
         );
+    }
+
+    public function getFilterParameters()
+    {
+        $parameters = $this->getDefaultFilterParameters();
 
         // build the values array
         if ($this->hasRequest()) {
