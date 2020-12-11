@@ -88,6 +88,7 @@ final class SearchActionTest extends TestCase
         $this->twig->method('render')->with('search.html.twig', [
             'base_template' => 'layout.html.twig',
             'breadcrumbs_builder' => $this->breadcrumbsBuilder,
+            // NEXT_MAJOR: Remove next line.
             'admin_pool' => $this->pool,
             'query' => 'some search',
             'groups' => [],

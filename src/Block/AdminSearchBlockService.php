@@ -169,6 +169,7 @@ class AdminSearchBlockService extends AbstractBlockService
         return $this->renderPrivateResponse($admin->getTemplate('search_result_block'), [
             'block' => $blockContext->getBlock(),
             'settings' => $blockContext->getSettings(),
+            // NEXT_MAJOR: Remove next line.
             'admin_pool' => $this->pool,
             'pager' => $pager,
             'admin' => $admin,
