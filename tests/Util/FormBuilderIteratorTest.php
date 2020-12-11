@@ -45,8 +45,8 @@ class FormBuilderIteratorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->dispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
-        $this->factory = $this->getMockForAbstractClass(FormFactoryInterface::class);
+        $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
+        $this->factory = $this->createStub(FormFactoryInterface::class);
         $this->builder = new FormBuilder('name', null, $this->dispatcher, $this->factory);
         $this->factory->method('createNamedBuilder')->willReturn($this->builder);
     }
