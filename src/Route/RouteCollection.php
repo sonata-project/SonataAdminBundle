@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Route;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class RouteCollection
+class RouteCollection implements RouteCollectionInterface
 {
     /**
      * @var array<string, Route|callable():Route>
