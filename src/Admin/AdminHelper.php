@@ -48,9 +48,14 @@ class AdminHelper
 
     public function getChildFormBuilder(FormBuilderInterface $formBuilder, string $elementId): ?FormBuilderInterface
     {
-        foreach (new FormBuilderIterator($formBuilder) as $name => $formBuilder) {
+        $iterator = new \RecursiveIteratorIterator(
+            new FormBuilderIterator($formBuilder),
+            \RecursiveIteratorIterator::SELF_FIRST
+        );
+
+        foreach ($iterator as $name => $currentFormBuilder) {
             if ($name === $elementId) {
-                return $formBuilder;
+                return $currentFormBuilder;
             }
         }
 

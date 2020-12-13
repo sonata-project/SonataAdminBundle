@@ -39,7 +39,20 @@ final class FormBuilderIterator extends \RecursiveArrayIterator
     {
         parent::__construct();
         $this->formBuilder = $formBuilder;
-        $this->prefix = $prefix ?: $formBuilder->getName();
+
+        // NEXT_MAJOR: Remove this block.
+        if (null !== $prefix && !\is_string($prefix)) {
+            @trigger_error(sprintf(
+                'Passing other type than string or null as argument 2 for method %s() is deprecated since'
+                .' sonata-project/admin-bundle 3.x. It will accept only string and null in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
+        // NEXT_MAJOR: Remove next line.
+        $this->prefix = \is_string($prefix) ? $prefix : $formBuilder->getName();
+        // NEXT_MAJOR: Uncomment next line.
+        // $this->prefix = $prefix ?? $formBuilder->getName();
         $this->iterator = new \ArrayIterator(self::getKeys($formBuilder));
     }
 
@@ -72,7 +85,7 @@ final class FormBuilderIterator extends \RecursiveArrayIterator
 
     public function getChildren(): self
     {
-        return new self($this->current());
+        return new self($this->current(), $this->key());
     }
 
     public function hasChildren(): bool

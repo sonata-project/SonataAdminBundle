@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Util;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
@@ -30,12 +32,27 @@ use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 /**
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  */
-class AdminObjectAclManipulatorTest extends TestCase
+final class AdminObjectAclManipulatorTest extends TestCase
 {
+    /**
+     * @var Stub&FormFactoryInterface
+     */
+    private $formFactory;
+
+    /**
+     * @var MockObject&AdminObjectAclData
+     */
+    private $aclData;
+
+    /**
+     * @var AdminObjectAclManipulator
+     */
+    private $adminObjectAclManipulator;
+
     protected function setUp(): void
     {
         $this->formFactory = $this->createStub(FormFactoryInterface::class);
-        $this->data = $this->createMock(AdminObjectAclData::class);
+        $this->aclData = $this->createMock(AdminObjectAclData::class);
 
         $this->adminObjectAclManipulator = new AdminObjectAclManipulator(
             $this->formFactory,
@@ -70,19 +87,19 @@ class AdminObjectAclManipulatorTest extends TestCase
 
         $acl->expects($this->once())->method('insertObjectAce')->with($this->isInstanceOf(RoleSecurityIdentity::class), 64);
         $securityHandler->expects($this->once())->method('updateAcl')->with($acl);
-        $this->data->method('getAclRolesForm')->willReturn($form);
-        $this->data->method('getAclRoles')->willReturn(new \ArrayIterator());
-        $this->data->method('getMasks')->willReturn([
+        $this->aclData->method('getAclRolesForm')->willReturn($form);
+        $this->aclData->method('getAclRoles')->willReturn(new \ArrayIterator());
+        $this->aclData->method('getMasks')->willReturn([
             'MASTER' => 'MASTER_MASK',
             'OWNER' => 'OWNER_MASK',
         ]);
-        $this->data->method('getAcl')->willReturn($acl);
-        $this->data->method('getUserPermissions')->willReturn(['VIEW']);
-        $this->data->method('isOwner')->willReturn(false);
-        $this->data->method('getOwnerPermissions')->willReturn(['MASTER', 'OWNER']);
-        $this->data->method('getSecurityHandler')->willReturn($securityHandler);
+        $this->aclData->method('getAcl')->willReturn($acl);
+        $this->aclData->method('getUserPermissions')->willReturn(['VIEW']);
+        $this->aclData->method('isOwner')->willReturn(false);
+        $this->aclData->method('getOwnerPermissions')->willReturn(['MASTER', 'OWNER']);
+        $this->aclData->method('getSecurityHandler')->willReturn($securityHandler);
 
-        $this->adminObjectAclManipulator->updateAclRoles($this->data);
+        $this->adminObjectAclManipulator->updateAclRoles($this->aclData);
     }
 
     public function testCreateAclUsersForm(): void
@@ -93,17 +110,17 @@ class AdminObjectAclManipulatorTest extends TestCase
         $securityHandler = $this->createStub(AclSecurityHandlerInterface::class);
         $acl = $this->createStub(Acl::class);
 
-        $this->data->method('getAclRoles')->willReturn(new \ArrayIterator());
-        $this->data->method('getAclUsers')->willReturn(new \ArrayIterator());
-        $this->data->expects($this->once())->method('setAclUsersForm')->with($form);
-        $this->data->method('getObject')->willReturn($object);
-        $this->data->method('getSecurityHandler')->willReturn($securityHandler);
-        $this->data->expects($this->once())->method('setAcl')->with($acl);
-        $this->data->method('getMasks')->willReturn([
+        $this->aclData->method('getAclRoles')->willReturn(new \ArrayIterator());
+        $this->aclData->method('getAclUsers')->willReturn(new \ArrayIterator());
+        $this->aclData->expects($this->once())->method('setAclUsersForm')->with($form);
+        $this->aclData->method('getObject')->willReturn($object);
+        $this->aclData->method('getSecurityHandler')->willReturn($securityHandler);
+        $this->aclData->expects($this->once())->method('setAcl')->with($acl);
+        $this->aclData->method('getMasks')->willReturn([
             'MASTER' => 'MASTER_MASK',
             'OWNER' => 'OWNER_MASK',
         ]);
-        $this->data->method('getSecurityInformation')->willReturn([]);
+        $this->aclData->method('getSecurityInformation')->willReturn([]);
         $this->formFactory->method('createNamedBuilder')->with(
             AdminObjectAclManipulator::ACL_USERS_FORM_NAME,
             FormType::class
@@ -111,7 +128,7 @@ class AdminObjectAclManipulatorTest extends TestCase
         $formBuilder->method('getForm')->willReturn($form);
         $securityHandler->method('getObjectAcl')->with($this->isInstanceOf(ObjectIdentityInterface::class))->willReturn($acl);
 
-        $resultForm = $this->adminObjectAclManipulator->createAclUsersForm($this->data);
+        $resultForm = $this->adminObjectAclManipulator->createAclUsersForm($this->aclData);
 
         $this->assertSame($form, $resultForm);
     }
@@ -124,17 +141,17 @@ class AdminObjectAclManipulatorTest extends TestCase
         $securityHandler = $this->createStub(AclSecurityHandlerInterface::class);
         $acl = $this->createStub(Acl::class);
 
-        $this->data->method('getAclRoles')->willReturn(new \ArrayIterator());
-        $this->data->method('getAclUsers')->willReturn(new \ArrayIterator());
-        $this->data->expects($this->once())->method('setAclRolesForm')->with($form);
-        $this->data->method('getObject')->willReturn($object);
-        $this->data->method('getSecurityHandler')->willReturn($securityHandler);
-        $this->data->expects($this->once())->method('setAcl')->with($acl);
-        $this->data->method('getMasks')->willReturn([
+        $this->aclData->method('getAclRoles')->willReturn(new \ArrayIterator());
+        $this->aclData->method('getAclUsers')->willReturn(new \ArrayIterator());
+        $this->aclData->expects($this->once())->method('setAclRolesForm')->with($form);
+        $this->aclData->method('getObject')->willReturn($object);
+        $this->aclData->method('getSecurityHandler')->willReturn($securityHandler);
+        $this->aclData->expects($this->once())->method('setAcl')->with($acl);
+        $this->aclData->method('getMasks')->willReturn([
             'MASTER' => 'MASTER_MASK',
             'OWNER' => 'OWNER_MASK',
         ]);
-        $this->data->method('getSecurityInformation')->willReturn([]);
+        $this->aclData->method('getSecurityInformation')->willReturn([]);
         $this->formFactory->method('createNamedBuilder')->with(
             AdminObjectAclManipulator::ACL_ROLES_FORM_NAME,
             FormType::class
@@ -142,7 +159,7 @@ class AdminObjectAclManipulatorTest extends TestCase
         $formBuilder->method('getForm')->willReturn($form);
         $securityHandler->method('getObjectAcl')->willReturn($acl);
 
-        $resultForm = $this->adminObjectAclManipulator->createAclRolesForm($this->data);
+        $resultForm = $this->adminObjectAclManipulator->createAclRolesForm($this->aclData);
 
         $this->assertSame($form, $resultForm);
     }
