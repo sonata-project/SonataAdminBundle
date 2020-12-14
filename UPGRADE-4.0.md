@@ -158,3 +158,6 @@ Method `SimplePager::getResults` is always returning an array
 
 ## SearchHandler
 When there is no searchable filters, `SearchHandler::search()` returns `null`. Previously, it was returning `false`.
+
+## Sonata\AdminBundle\Controller\CRUDController
+When the service `security.csrf.token_manager` is not available, `getCsrfToken()` returns `null`. Previously, it was returning `false`.
