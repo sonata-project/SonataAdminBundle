@@ -46,7 +46,7 @@ class SearchActionTest extends TestCase
         ]);
 
         $this->breadcrumbsBuilder = $this->createMock(BreadcrumbsBuilderInterface::class);
-        $this->searchHandler = $this->createMock(SearchHandler::class);
+        $this->searchHandler = new SearchHandler(true);
         $this->twig = $this->createStub(Environment::class);
 
         $this->action = new SearchAction(
@@ -74,7 +74,10 @@ class SearchActionTest extends TestCase
 
     public function testAjaxCall(): void
     {
-        $admin = new CleanAdmin('code', 'class', 'controller');
+        $adminCode = 'code';
+
+        $this->searchHandler->configureAdminSearch([$adminCode => false]);
+        $admin = new CleanAdmin($adminCode, 'class', 'controller');
         $this->container->set('foo', $admin);
         $this->pool->setAdminServiceIds(['foo']);
         $request = new Request(['admin' => 'foo']);

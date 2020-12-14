@@ -44,7 +44,7 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
         parent::setUp();
 
         $this->pool = $this->createMock(Pool::class);
-        $this->searchHandler = $this->createMock(SearchHandler::class);
+        $this->searchHandler = new SearchHandler(true);
     }
 
     public function testDefaultSettings(): void
@@ -93,7 +93,12 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
 
     public function testGlobalSearchReturnsEmptyWhenFiltersAreDisabled(): void
     {
+        $adminCode = 'code';
+
         $admin = $this->createMock(AbstractAdmin::class);
+        $admin
+            ->method('getCode')
+            ->willReturn($adminCode);
 
         $blockService = new AdminSearchBlockService(
             $this->createMock(Environment::class),
@@ -103,7 +108,7 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
         );
         $blockContext = $this->getBlockContext($blockService);
 
-        $this->searchHandler->expects(self::once())->method('search')->willReturn(false);
+        $this->searchHandler->configureAdminSearch([$adminCode => false]);
         $this->pool->expects(self::once())->method('getAdminByAdminCode')->willReturn($admin);
         $admin->expects(self::once())->method('checkAccess')->with('list')->willReturn(true);
 
