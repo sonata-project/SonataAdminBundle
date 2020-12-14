@@ -25,7 +25,7 @@ use Twig\Environment;
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-class AdminSearchBlockServiceTest extends BlockServiceTestCase
+final class AdminSearchBlockServiceTest extends BlockServiceTestCase
 {
     use ExpectDeprecationTrait;
 
@@ -101,7 +101,7 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
             ->willReturn($adminCode);
 
         $blockService = new AdminSearchBlockService(
-            $this->createMock(Environment::class),
+            $this->createStub(Environment::class),
             $this->pool,
             $this->searchHandler,
             'show'
