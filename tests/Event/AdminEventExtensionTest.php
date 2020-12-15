@@ -16,6 +16,12 @@ namespace Sonata\AdminBundle\Tests\Event;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminExtensionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
+use Sonata\AdminBundle\Builder\FormContractorInterface;
+use Sonata\AdminBundle\Builder\ListBuilderInterface;
+use Sonata\AdminBundle\Builder\ShowBuilderInterface;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -25,6 +31,7 @@ use Sonata\AdminBundle\Event\ConfigureQueryEvent;
 use Sonata\AdminBundle\Event\PersistenceEvent;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdminEventExtensionTest extends TestCase
@@ -36,14 +43,6 @@ class AdminEventExtensionTest extends TestCase
         $stub->with(...$args);
 
         return new AdminEventExtension($eventDispatcher);
-    }
-
-    public function getMapper($class)
-    {
-        $mapper = $this->getMockBuilder($class)->disableOriginalConstructor()->getMock();
-        $mapper->expects($this->once())->method('getAdmin')->willReturn($this->createMock(AdminInterface::class));
-
-        return $mapper;
     }
 
     public function getConfigureEventClosure(string $type): callable
@@ -83,7 +82,11 @@ class AdminEventExtensionTest extends TestCase
                 $this->callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_FORM)),
                 $this->equalTo('sonata.admin.event.configure.form'),
             ])
-            ->configureFormFields($this->getMapper(FormMapper::class));
+            ->configureFormFields(new FormMapper(
+                $this->createStub(FormContractorInterface::class),
+                $this->createStub(FormBuilderInterface::class),
+                $this->createStub(AdminInterface::class)
+            ));
     }
 
     public function testConfigureListFields(): void
@@ -93,7 +96,11 @@ class AdminEventExtensionTest extends TestCase
                 $this->callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_LIST)),
                 $this->equalTo('sonata.admin.event.configure.list'),
             ])
-            ->configureListFields($this->getMapper(ListMapper::class));
+            ->configureListFields(new ListMapper(
+                $this->createStub(ListBuilderInterface::class),
+                new FieldDescriptionCollection(),
+                $this->createStub(AdminInterface::class)
+            ));
     }
 
     public function testConfigureDatagridFields(): void
@@ -103,7 +110,11 @@ class AdminEventExtensionTest extends TestCase
                 $this->callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_DATAGRID)),
                 $this->equalTo('sonata.admin.event.configure.datagrid'),
             ])
-            ->configureDatagridFilters($this->getMapper(DatagridMapper::class));
+            ->configureDatagridFilters(new DatagridMapper(
+                $this->createStub(DatagridBuilderInterface::class),
+                $this->createStub(DatagridInterface::class),
+                $this->createStub(AdminInterface::class)
+            ));
     }
 
     public function testConfigureShowFields(): void
@@ -113,7 +124,11 @@ class AdminEventExtensionTest extends TestCase
                 $this->callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_SHOW)),
                 $this->equalTo('sonata.admin.event.configure.show'),
             ])
-            ->configureShowFields($this->getMapper(ShowMapper::class));
+            ->configureShowFields(new ShowMapper(
+                $this->createStub(ShowBuilderInterface::class),
+                new FieldDescriptionCollection(),
+                $this->createStub(AdminInterface::class)
+            ));
     }
 
     public function testPreUpdate(): void

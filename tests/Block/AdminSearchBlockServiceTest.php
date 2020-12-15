@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-class AdminSearchBlockServiceTest extends BlockServiceTestCase
+final class AdminSearchBlockServiceTest extends BlockServiceTestCase
 {
     /**
      * @var Pool
@@ -47,7 +47,7 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
         parent::setUp();
 
         $this->pool = $this->createMock(Pool::class);
-        $this->searchHandler = $this->createMock(SearchHandler::class);
+        $this->searchHandler = new SearchHandler(true);
         $this->templateRegistry = $this->createMock(TemplateRegistryInterface::class);
         $this->templateRegistry->method('getTemplate')->willReturn('@SonataAdmin/Block/block_search_result.html.twig');
     }
@@ -98,7 +98,12 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
 
     public function testGlobalSearchReturnsEmptyWhenFiltersAreDisabled(): void
     {
+        $adminCode = 'code';
+
         $admin = $this->createMock(AbstractAdmin::class);
+        $admin
+            ->method('getCode')
+            ->willReturn($adminCode);
 
         $blockService = new AdminSearchBlockService(
             $this->twig,
@@ -109,7 +114,7 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
         );
         $blockContext = $this->getBlockContext($blockService);
 
-        $this->searchHandler->expects(self::once())->method('search')->willReturn(null);
+        $this->searchHandler->configureAdminSearch([$adminCode => false]);
         $this->pool->expects(self::once())->method('getAdminByAdminCode')->willReturn($admin);
         $admin->expects(self::once())->method('checkAccess')->with('list');
 
