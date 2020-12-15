@@ -325,7 +325,7 @@ var Admin = {
             var $form = jQuery(this);
             $form.find('[sonata-filter="true"]:hidden :input').val('');
 
-            if (! this.dataset.defaultValues) {
+            if (!this.dataset.defaultValues) {
                 return;
             }
 
