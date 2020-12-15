@@ -32,7 +32,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @method array                           configureActionButtons(string $action, ?object $object = null)
  * @method string                          getSearchResultLink(object $object)
- * @method array                           getDefaultFilterParameters()                                          // NEXT_MAJOR: Remove this
+ * @method array                           getDefaultFilterParameters()                                    // NEXT_MAJOR: Remove this
  * @method bool                            isCurrentRoute(string $name, ?string $adminCode)
  * @method bool                            canAccessObject(string $action, object $object)
  * @method mixed                           getPersistentParameter(string $name)
