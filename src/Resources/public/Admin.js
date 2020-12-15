@@ -332,13 +332,13 @@ var Admin = {
             var defaultValues = $.param({'filter': JSON.parse(this.dataset.defaultValues)}).split('&'),
                 submittedValues = $form.serialize().split('&');
 
-            // Compare default and submitted filter values in keyValue representation. (keyValue ex: filter[publish][value][end]=2020-12-12)
-            // Allow submit next values: non default & non empty values because empty values equals not present.
+            // Compare default and submitted filter values in `keyValue` representation. (`keyValue` ex: "filter[publish][value][end]=2020-12-12")
+            // Only allow to submit non default and non empty values, because empty values means they are not present.
             var changedValues = submittedValues.filter(function (keyValue) {
                 return defaultValues.indexOf(keyValue) === -1 && keyValue.split('=')[1] !== '';
             });
 
-            // Disable all inputs and enabled only needed
+            // Disable all inputs and enable only the required ones
             $form.find('[name*=filter]').attr('disabled', 'disabled');
             changedValues
                 .map(function (keyValue) { return decodeURIComponent(keyValue.split('=')[0]); })

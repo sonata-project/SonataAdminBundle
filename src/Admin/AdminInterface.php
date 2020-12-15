@@ -541,7 +541,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @return array<string, mixed>
      */
-    // public function getDefaultFilterParameters();
+    // public function getDefaultFilterParameters(): array;
 
     /**
      * Return array of filter parameters.
