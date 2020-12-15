@@ -16,7 +16,9 @@ namespace Sonata\AdminBundle\Tests\Block;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminSearchBlockService;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\BlockBundle\Test\BlockServiceTestCase;
@@ -74,8 +76,26 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
 
     public function testGlobalSearchReturnsResponse(): void
     {
+        $datagrid = $this->createStub(DatagridInterface::class);
+
         $admin = $this->createMock(AbstractAdmin::class);
-        $pagerInterface = $this->createMock(PagerInterface::class);
+        $admin
+            ->method('getDatagrid')
+            ->willReturn($datagrid);
+
+        $filter = $this->createStub(FilterInterface::class);
+        $filter
+            ->method('getOption')
+            ->with('global_search')
+            ->willReturn(true);
+
+        $datagrid
+            ->method('getFilters')
+            ->willReturn([$filter]);
+
+        $datagrid
+            ->method('getPager')
+            ->willReturn($this->createStub(PagerInterface::class));
 
         $blockService = new AdminSearchBlockService(
             $this->twig,
@@ -86,7 +106,6 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
         );
         $blockContext = $this->getBlockContext($blockService);
 
-        $this->searchHandler->expects(self::once())->method('search')->willReturn($pagerInterface);
         $this->pool->expects(self::once())->method('getAdminByAdminCode')->willReturn($admin);
         $admin->expects(self::once())->method('checkAccess')->with('list');
 
