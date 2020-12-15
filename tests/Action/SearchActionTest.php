@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\SearchAction;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
@@ -26,13 +27,36 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-class SearchActionTest extends TestCase
+final class SearchActionTest extends TestCase
 {
+    /**
+     * @var Container
+     */
     private $container;
+
+    /**
+     * @var Pool
+     */
     private $pool;
+
+    /**
+     * @var SearchHandler
+     */
     private $searchHandler;
+
+    /**
+     * @var SearchAction
+     */
     private $action;
+
+    /**
+     * @var Stub&Environment
+     */
     private $twig;
+
+    /**
+     * @var Stub&BreadcrumbsBuilderInterface
+     */
     private $breadcrumbsBuilder;
 
     protected function setUp(): void
@@ -45,8 +69,8 @@ class SearchActionTest extends TestCase
             'layout' => 'layout.html.twig',
         ]);
 
-        $this->breadcrumbsBuilder = $this->createMock(BreadcrumbsBuilderInterface::class);
-        $this->searchHandler = $this->createMock(SearchHandler::class);
+        $this->breadcrumbsBuilder = $this->createStub(BreadcrumbsBuilderInterface::class);
+        $this->searchHandler = new SearchHandler(true);
         $this->twig = $this->createStub(Environment::class);
 
         $this->action = new SearchAction(
@@ -74,7 +98,10 @@ class SearchActionTest extends TestCase
 
     public function testAjaxCall(): void
     {
-        $admin = new CleanAdmin('code', 'class', 'controller');
+        $adminCode = 'code';
+
+        $this->searchHandler->configureAdminSearch([$adminCode => false]);
+        $admin = new CleanAdmin($adminCode, 'class', 'controller');
         $this->container->set('foo', $admin);
         $this->pool->setAdminServiceIds(['foo']);
         $request = new Request(['admin' => 'foo']);

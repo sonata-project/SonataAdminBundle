@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
+use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -53,7 +54,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
         $extensionConfig = $container->getParameter('sonata.admin.extension.map');
         $extensionMap = $this->flattenExtensionConfiguration($extensionConfig);
 
-        foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $attributes) {
             $admin = $container->getDefinition($id);
 
             if (!isset($targets[$id])) {

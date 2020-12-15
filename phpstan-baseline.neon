@@ -32,12 +32,6 @@ parameters:
 
         -
             # will be fixed in v4. Code is marked as deprecated
-            message: "#^Result of \\&\\& is always false\\.$#"
-            count: 1
-            path: src/Admin/AbstractAdmin.php
-
-        -
-            # will be fixed in v4. Code is marked as deprecated
             message: "#^Strict comparison using \\!\\=\\= between 'Sonata\\\\\\\\AdminBundle\\\\\\\\Admin\\\\\\\\AdminHelper' and 'Sonata\\\\\\\\AdminBundle\\\\\\\\Admin\\\\\\\\AdminHelper' will always evaluate to false\\.$#"
             count: 1
             path: src/Admin/AdminHelper.php
@@ -138,12 +132,6 @@ parameters:
             message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\<object\\>\\:\\:getFormTabs\\(\\) invoked with 1 parameter, 0 required\\.$#"
             count: 1
             path: src/Form/FormMapper.php
-
-        -
-            # will be fixed in v4. Code is marked as deprecated
-            message: "#^Right side of && is always true\\.$#"
-            count: 1
-            path: src/Mapper/BaseGroupedMapper.php
 
         -
             # will be fixed in v4. Currently BC break
