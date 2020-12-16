@@ -211,6 +211,9 @@ class AdminObjectAclData
         return $securityHandler;
     }
 
+    /**
+     * @return array<string, string[]>
+     */
     public function getSecurityInformation(): array
     {
         return $this->getSecurityHandler()->buildSecurityInformation($this->admin);

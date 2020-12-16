@@ -20,7 +20,6 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\DependencyInjection\Admin\AbstractTaggedAdmin;
-use Sonata\AdminBundle\Exporter\DataSourceInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
 use Sonata\AdminBundle\Manipulator\ObjectManipulator;
@@ -381,20 +380,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 //            $fields[$key] = $field;
         }
 
-        if ($this->getDataSource()) {
-            $query = $datagrid->getQuery();
+        $query = $datagrid->getQuery();
 
-            return $this->getDataSource()->createIterator($query, $fields);
-        }
-
-        @trigger_error(sprintf(
-            'Using "%s()" without setting a "%s" instance in the admin is deprecated since sonata-project/admin-bundle 3.79'
-            .' and won\'t be possible in 4.0.',
-            __METHOD__,
-            DataSourceInterface::class
-        ), E_USER_DEPRECATED);
-
-        return $this->getModelManager()->getDataSourceIterator($datagrid, $fields);
+        return $this->getDataSource()->createIterator($query, $fields);
     }
 
     /**
@@ -819,11 +807,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     public function hasRoute(string $name): bool
     {
-        // NEXT_MAJOR: Remove this check.
-        if (!$this->routeGenerator) {
-            throw new \RuntimeException('RouteGenerator cannot be null');
-        }
-
         return $this->getRouteGenerator()->hasAdminRoute($this, $name);
     }
 
@@ -860,12 +843,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     public function generateUrl(string $name, array $parameters = [], int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH): string
     {
-        return $this->routeGenerator->generateUrl($this, $name, $parameters, $referenceType);
+        return $this->getRouteGenerator()->generateUrl($this, $name, $parameters, $referenceType);
     }
 
     public function generateMenuUrl(string $name, array $parameters = [], int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH): array
     {
-        return $this->routeGenerator->generateMenuUrl($this, $name, $parameters, $referenceType);
+        return $this->getRouteGenerator()->generateMenuUrl($this, $name, $parameters, $referenceType);
     }
 
     final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void

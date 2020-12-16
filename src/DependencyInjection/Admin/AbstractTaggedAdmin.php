@@ -254,7 +254,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     /**
      * @final since sonata-admin/admin-bundle 3.x
      *
-     * @param array<string, string[]|string> $information
+     * @param array<string, string[]> $information
      */
     public function setSecurityInformation(array $information): void
     {
@@ -264,7 +264,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     /**
      * @final since sonata-admin/admin-bundle 3.x
      *
-     * @return array<string, string[]|string>
+     * @return array<string, string[]>
      */
     public function getSecurityInformation(): array
     {

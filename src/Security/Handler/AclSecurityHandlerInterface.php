@@ -66,6 +66,8 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
 
     /**
      * Add the object class ACE's to the object ACL.
+     *
+     * @param array<string, string[]> $roleInformation
      */
     public function addObjectClassAces(MutableAclInterface $acl, array $roleInformation = []): void;
 
