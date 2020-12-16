@@ -159,13 +159,13 @@ class SimplePager extends Pager
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      */
     protected function resetIterator()
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+                'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }

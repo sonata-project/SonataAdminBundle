@@ -227,7 +227,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         if (!\is_string($baseControllerName)) {
             @trigger_error(sprintf(
                 'Passing other type than string as argument 3 for method %s() is deprecated since'
-                .' sonata-project/admin-bundle 3.x. It will accept only string in version 4.0.',
+                .' sonata-project/admin-bundle 3.84. It will accept only string in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -237,7 +237,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     abstract public function initialize();
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setLabel($label)
     {
@@ -245,7 +245,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getLabel()
     {
@@ -262,7 +262,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getListModes()
     {
@@ -270,7 +270,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setPagerType($pagerType)
     {
@@ -278,7 +278,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      *
      * @return string
      */
@@ -288,7 +288,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setManagerType($type)
     {
@@ -296,14 +296,14 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getManagerType()
     {
         if (null === $this->managerType) {
             // NEXT_MAJOR: Remove this deprecation and uncomment the following exception
             @trigger_error(sprintf(
-                'Calling %s() when no manager type is set is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s() when no manager type is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
             ), E_USER_DEPRECATED);
@@ -317,7 +317,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setSecurityInformation(array $information)
     {
@@ -325,7 +325,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getSecurityInformation()
     {
@@ -333,7 +333,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setFilterPersister(?FilterPersisterInterface $filterPersister = null)
     {
@@ -357,7 +357,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setModelManager(ModelManagerInterface $modelManager)
     {
@@ -365,14 +365,14 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getModelManager()
     {
         if (null === $this->modelManager) {
             // NEXT_MAJOR: Remove this deprecation and uncomment the following exception
             @trigger_error(sprintf(
-                'Calling %s() when no model manager is set is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s() when no model manager is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
             ), E_USER_DEPRECATED);
@@ -386,7 +386,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setDataSource(DataSourceInterface $dataSource)
     {
@@ -401,7 +401,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         if (null === $this->dataSource) {
             // NEXT_MAJOR: Remove this deprecation and uncomment the following exception
             @trigger_error(sprintf(
-                'Calling %s() when no data source is set is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s() when no data source is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
             ), E_USER_DEPRECATED);
@@ -415,7 +415,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setFormContractor(FormContractorInterface $formBuilder)
     {
@@ -423,14 +423,14 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getFormContractor()
     {
         if (null === $this->formContractor) {
             // NEXT_MAJOR: Remove this deprecation and uncomment the following exception
             @trigger_error(sprintf(
-                'Calling %s() when no form contractor is set is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s() when no form contractor is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
             ), E_USER_DEPRECATED);
@@ -444,7 +444,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setShowBuilder(ShowBuilderInterface $showBuilder)
     {
@@ -452,14 +452,14 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getShowBuilder()
     {
         if (null === $this->showBuilder) {
             // NEXT_MAJOR: Remove this deprecation and uncomment the following exception
             @trigger_error(sprintf(
-                'Calling %s() when no show builder is set is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s() when no show builder is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
             ), E_USER_DEPRECATED);
@@ -473,7 +473,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setListBuilder(ListBuilderInterface $listBuilder)
     {
@@ -481,14 +481,14 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getListBuilder()
     {
         if (null === $this->listBuilder) {
             // NEXT_MAJOR: Remove this deprecation and uncomment the following exception
             @trigger_error(sprintf(
-                'Calling %s() when no list build is set is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s() when no list build is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
             ), E_USER_DEPRECATED);
@@ -502,7 +502,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder)
     {
@@ -510,14 +510,14 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getDatagridBuilder()
     {
         if (null === $this->datagridBuilder) {
             // NEXT_MAJOR: Remove this deprecation and uncomment the following exception
             @trigger_error(sprintf(
-                'Calling %s() when no datagrid builder is set is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s() when no datagrid builder is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
             ), E_USER_DEPRECATED);
@@ -546,7 +546,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         if (null === $this->translator) {
             // NEXT_MAJOR: Remove this deprecation and uncomment the following exception
             @trigger_error(sprintf(
-                'Calling %s() when no translator is set is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s() when no translator is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
             ), E_USER_DEPRECATED);
@@ -560,7 +560,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setConfigurationPool(Pool $configurationPool)
     {
@@ -568,7 +568,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getConfigurationPool()
     {
@@ -576,7 +576,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
             // NEXT_MAJOR: Remove this deprecation and uncomment the following exception
             if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
                 @trigger_error(sprintf(
-                    'Calling %s() when no pool is set is deprecated since sonata-project/admin-bundle 3.x'
+                    'Calling %s() when no pool is set is deprecated since sonata-project/admin-bundle 3.84'
                     .' and will throw a LogicException in 4.0',
                     __METHOD__,
                 ), E_USER_DEPRECATED);
@@ -591,7 +591,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setRouteGenerator(RouteGeneratorInterface $routeGenerator)
     {
@@ -599,14 +599,14 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getRouteGenerator()
     {
         if (null === $this->routeGenerator) {
             // NEXT_MAJOR: Remove this deprecation and uncomment the following exception
             @trigger_error(sprintf(
-                'Calling %s() when no route generator is set is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s() when no route generator is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
             ), E_USER_DEPRECATED);
@@ -653,7 +653,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setSecurityHandler(SecurityHandlerInterface $securityHandler)
     {
@@ -661,14 +661,14 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getSecurityHandler()
     {
         if (null === $this->securityHandler) {
             // NEXT_MAJOR: Remove this deprecation and uncomment the following exception
             @trigger_error(sprintf(
-                'Calling %s() when no security handler is set is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s() when no security handler is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
             ), E_USER_DEPRECATED);
@@ -682,7 +682,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setMenuFactory(FactoryInterface $menuFactory)
     {
@@ -690,14 +690,14 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getMenuFactory()
     {
         if (null === $this->menuFactory) {
             // NEXT_MAJOR: Remove this deprecation and uncomment the following exception
             @trigger_error(sprintf(
-                'Calling %s() when no security handler is set is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s() when no security handler is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
             ), E_USER_DEPRECATED);
@@ -711,7 +711,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setRouteBuilder(RouteBuilderInterface $routeBuilder)
     {
@@ -719,14 +719,14 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getRouteBuilder()
     {
         if (null === $this->routeBuilder) {
             // NEXT_MAJOR: Remove this deprecation and uncomment the following exception
             @trigger_error(sprintf(
-                'Calling %s() when no route builder is set is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s() when no route builder is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
             ), E_USER_DEPRECATED);
@@ -740,7 +740,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy)
     {
@@ -748,14 +748,14 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getLabelTranslatorStrategy()
     {
         if (null === $this->labelTranslatorStrategy) {
             // NEXT_MAJOR: Remove this deprecation and uncomment the following exception
             @trigger_error(sprintf(
-                'Calling %s() when no label translator strategy is set is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s() when no label translator strategy is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
             ), E_USER_DEPRECATED);

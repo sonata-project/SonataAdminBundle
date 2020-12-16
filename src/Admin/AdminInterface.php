@@ -382,7 +382,7 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-admin/admin-bundle 3.x
+     * @deprecated since sonata-admin/admin-bundle 3.84
      *
      * @return void
      */

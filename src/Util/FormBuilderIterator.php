@@ -61,7 +61,7 @@ class FormBuilderIterator extends \RecursiveArrayIterator
         if (null !== $prefix && !\is_string($prefix)) {
             @trigger_error(sprintf(
                 'Passing other type than string or null as argument 2 for method %s() is deprecated since'
-                .' sonata-project/admin-bundle 3.x. It will accept only string and null in version 4.0.',
+                .' sonata-project/admin-bundle 3.84. It will accept only string and null in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }

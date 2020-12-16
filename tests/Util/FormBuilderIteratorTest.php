@@ -80,7 +80,7 @@ class FormBuilderIteratorTest extends TestCase
      */
     public function testTriggersADeprecationWithWrongPrefixType(): void
     {
-        $this->expectDeprecation('Passing other type than string or null as argument 2 for method Sonata\AdminBundle\Util\FormBuilderIterator::__construct() is deprecated since sonata-project/admin-bundle 3.x. It will accept only string and null in version 4.0.');
+        $this->expectDeprecation('Passing other type than string or null as argument 2 for method Sonata\AdminBundle\Util\FormBuilderIterator::__construct() is deprecated since sonata-project/admin-bundle 3.84. It will accept only string and null in version 4.0.');
 
         $this->builder->add('name', TextType::class);
         $iterator = new FormBuilderIterator($this->builder, new \stdClass());

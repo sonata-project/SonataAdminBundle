@@ -525,7 +525,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function initialize()
     {
@@ -2122,7 +2122,7 @@ EOT;
         if (null === $this->classnameLabel) {
             // NEXT_MAJOR: Remove this deprecation and uncomment the following exception
             @trigger_error(sprintf(
-                'Calling %s() when no classname label is set is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s() when no classname label is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
             ), E_USER_DEPRECATED);

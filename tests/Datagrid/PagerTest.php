@@ -107,7 +107,7 @@ class PagerTest extends TestCase
      */
     public function testGetCurrentMaxLink(): void
     {
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getCurrentMaxLink()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getCurrentMaxLink()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->assertSame(1, $this->pager->getCurrentMaxLink());
 
         $this->pager->getLinks();
@@ -129,7 +129,7 @@ class PagerTest extends TestCase
      */
     public function testGetMaxRecordLimit(): void
     {
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getMaxRecordLimit()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getMaxRecordLimit()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->assertFalse($this->pager->getMaxRecordLimit());
 
         $this->pager->setMaxRecordLimit(99);
@@ -152,7 +152,7 @@ class PagerTest extends TestCase
      */
     public function testCount(): void
     {
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::count()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::count()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->assertSame(0, $this->pager->count());
 
         $this->callMethod($this->pager, 'setNbResults', [100]);
@@ -175,10 +175,10 @@ class PagerTest extends TestCase
      */
     public function testGetCountColumn(): void
     {
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getCountColumn()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getCountColumn()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->assertSame(['id'], $this->pager->getCountColumn());
 
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::setCountColumn()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::setCountColumn()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->pager->setCountColumn(['foo']);
         $this->assertSame(['foo'], $this->pager->getCountColumn());
     }
@@ -190,14 +190,14 @@ class PagerTest extends TestCase
      */
     public function testParameters(): void
     {
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getParameter()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getParameter()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->assertNull($this->pager->getParameter('foo', null));
         $this->assertSame('bar', $this->pager->getParameter('foo', 'bar'));
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::hasParameter()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::hasParameter()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->assertFalse($this->pager->hasParameter('foo'));
         $this->assertSame([], $this->pager->getParameters());
 
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::setParameter()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::setParameter()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->pager->setParameter('foo', 'foo_value');
 
         $this->assertTrue($this->pager->hasParameter('foo'));
@@ -332,7 +332,7 @@ class PagerTest extends TestCase
         $this->assertSame($object3, $value);
         $this->assertSame($expectedObjects, $values);
 
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::valid()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::valid()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->assertFalse($this->pager->valid());
 
         $this->callMethod($this->pager, 'resetIterator');
@@ -350,7 +350,7 @@ class PagerTest extends TestCase
             ->method('getResults')
             ->willReturn([]);
 
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::valid()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::valid()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->assertFalse($this->pager->valid());
     }
 
@@ -365,7 +365,7 @@ class PagerTest extends TestCase
             ->method('getResults')
             ->willReturn([]);
 
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::next()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::next()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->assertFalse($this->pager->next());
     }
 
@@ -380,7 +380,7 @@ class PagerTest extends TestCase
             ->method('getResults')
             ->willReturn([123 => new \stdClass()]);
 
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::key()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::key()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->assertSame(123, $this->pager->key());
     }
 
@@ -397,7 +397,7 @@ class PagerTest extends TestCase
             ->method('getResults')
             ->willReturn([$object]);
 
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::current()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::current()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->assertSame($object, $this->pager->current());
     }
 
@@ -408,7 +408,7 @@ class PagerTest extends TestCase
      */
     public function testGetCursor(): void
     {
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getCursor()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getCursor()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->assertSame(1, $this->pager->getCursor());
 
         $this->pager->setCursor(0);
@@ -474,9 +474,9 @@ class PagerTest extends TestCase
 
         $this->pager->setQuery($query);
 
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getObjectByCursor()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getObjectByCursor()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->assertSame($object1, $this->pager->getObjectByCursor(1));
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getCursor()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getCursor()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->assertSame(1, $this->pager->getCursor());
 
         $id = 1;
@@ -527,7 +527,7 @@ class PagerTest extends TestCase
      */
     public function testGetFirstIndex(): void
     {
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getFirstIndex()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getFirstIndex()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->assertSame(1, $this->pager->getFirstIndex());
 
         $this->pager->setMaxPerPage(0);
@@ -550,7 +550,7 @@ class PagerTest extends TestCase
      */
     public function testGetLastIndex(): void
     {
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getLastIndex()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getLastIndex()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->assertSame(0, $this->pager->getLastIndex());
 
         $this->pager->setMaxPerPage(0);
@@ -578,7 +578,7 @@ class PagerTest extends TestCase
      */
     public function testGetNext(): void
     {
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getNext()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getNext()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->assertNull($this->pager->getNext());
 
         $object1 = new \stdClass();
@@ -642,7 +642,7 @@ class PagerTest extends TestCase
      */
     public function testGetPrevious(): void
     {
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getPrevious()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getPrevious()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->assertNull($this->pager->getPrevious());
 
         $object1 = new \stdClass();
@@ -707,7 +707,7 @@ class PagerTest extends TestCase
     public function testSerialize(): void
     {
         $pagerClone = clone $this->pager;
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::serialize()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::serialize()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $data = $this->pager->serialize();
         $this->assertNotEmpty($data);
 
@@ -746,7 +746,7 @@ class PagerTest extends TestCase
             ->willReturn([]);
         $this->pager->current();
 
-        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::unserialize()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::unserialize()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->pager->unserialize(serialize($serialized));
 
         $this->assertSame(7, $this->pager->getMaxPerPage());
