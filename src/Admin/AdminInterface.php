@@ -699,11 +699,6 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     public function getObjectMetadata($object);
 
     /**
-     * @return array<string, array<string, mixed>>
-     */
-    public function getListModes();
-
-    /**
      * Check the current request is given route or not.
      *
      * NEXT_MAJOR: uncomment this method

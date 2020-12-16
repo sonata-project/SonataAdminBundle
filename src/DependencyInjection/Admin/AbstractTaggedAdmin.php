@@ -264,6 +264,14 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     /**
      * @final since sonata-admin/admin-bundle 3.x
      */
+    public function getListModes()
+    {
+        return $this->listModes;
+    }
+
+    /**
+     * @final since sonata-admin/admin-bundle 3.x
+     */
     public function setPagerType($pagerType)
     {
         $this->pagerType = $pagerType;
