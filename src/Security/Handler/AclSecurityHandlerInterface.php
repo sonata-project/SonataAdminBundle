@@ -86,7 +86,8 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
      *
      * NEXT_MAJOR: change signature to `addObjectClassAces(MutableAclInterface $acl, array $roleInformation = []): void`.
      *
-     * @param MutableAclInterface $acl
+     * @param MutableAclInterface     $acl
+     * @param array<string, string[]> $roleInformation
      *
      * @return void
      */

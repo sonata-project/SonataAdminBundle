@@ -68,6 +68,8 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 
     /**
      * @var array<string, array<string, string>>
+     *
+     * @phpstan-var array{list: array{class: string}, mosaic: array{class: string}}
      */
     protected $listModes = [
         'list' => ['class' => 'fa fa-list fa-fw'],
@@ -318,6 +320,8 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 
     /**
      * @final since sonata-admin/admin-bundle 3.84
+     *
+     * @param array<string, string[]> $information
      */
     public function setSecurityInformation(array $information)
     {
@@ -326,6 +330,8 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 
     /**
      * @final since sonata-admin/admin-bundle 3.84
+     *
+     * @return array<string, string[]>
      */
     public function getSecurityInformation()
     {

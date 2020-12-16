@@ -1177,12 +1177,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     public function generateUrl($name, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        return $this->routeGenerator->generateUrl($this, $name, $parameters, $referenceType);
+        return $this->getRouteGenerator()->generateUrl($this, $name, $parameters, $referenceType);
     }
 
     public function generateMenuUrl($name, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        return $this->routeGenerator->generateMenuUrl($this, $name, $parameters, $referenceType);
+        return $this->getRouteGenerator()->generateMenuUrl($this, $name, $parameters, $referenceType);
     }
 
     final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void
