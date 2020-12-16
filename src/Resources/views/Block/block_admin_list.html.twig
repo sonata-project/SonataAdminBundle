@@ -25,18 +25,20 @@ file that was distributed with this source code.
                         <tbody>
                             {% for admin in group.items %}
                                 {% if admin.dashboardActions|length > 0 %}
-                                            <tr>
-                                                <td class="sonata-ba-list-label" width="40%">
-                                                    {{ admin.label|trans({}, admin.translationdomain) }}
-                                                </td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        {% for action in admin.dashboardActions %}
-                                                            {% include action.template|default('@SonataAdmin/CRUD/dashboard__action.html.twig') with {'action': action} %}
-                                                        {% endfor %}
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                    <tr>
+                                        <td class="sonata-ba-list-label" width="40%">
+                                            {% if admin.label is not empty %}
+                                                {{ admin.label|trans({}, admin.translationdomain) }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                {% for action in admin.dashboardActions %}
+                                                    {% include action.template|default('@SonataAdmin/CRUD/dashboard__action.html.twig') with {'action': action} %}
+                                                {% endfor %}
+                                            </div>
+                                        </td>
+                                    </tr>
                                 {% endif %}
                             {% endfor %}
                         </tbody>

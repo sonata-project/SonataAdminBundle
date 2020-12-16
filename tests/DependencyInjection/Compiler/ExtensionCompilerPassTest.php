@@ -475,7 +475,7 @@ class MockAbstractServiceAdmin extends AbstractAdmin
 {
     private $extraArgument;
 
-    public function __construct($code, $class, $baseControllerName, $extraArgument)
+    public function __construct($code, $class, $baseControllerName, $extraArgument = null)
     {
         $this->extraArgument = $extraArgument;
 

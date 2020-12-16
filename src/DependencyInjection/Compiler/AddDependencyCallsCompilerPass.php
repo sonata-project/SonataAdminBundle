@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
 use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\Datagrid\Pager;
+use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -52,7 +53,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'icon' => $container->getParameter('sonata.admin.configuration.default_icon'),
         ];
 
-        foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $tags) {
+        foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $tags) {
             foreach ($tags as $attributes) {
                 $definition = $container->getDefinition($id);
                 $parentDefinition = null;
@@ -299,49 +300,26 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             }
         }
 
-        if (isset($overwriteAdminConfiguration['pager_type'])) {
-            $pagerType = $overwriteAdminConfiguration['pager_type'];
-        } elseif (isset($attributes['pager_type'])) {
-            $pagerType = $attributes['pager_type'];
-        } else {
-            $pagerType = Pager::TYPE_DEFAULT;
-        }
-
+        $pagerType = $overwriteAdminConfiguration['pager_type'] ?? $attributes['pager_type'] ?? Pager::TYPE_DEFAULT;
         $definition->addMethodCall('setPagerType', [$pagerType]);
 
-        if (isset($overwriteAdminConfiguration['label'])) {
-            $label = $overwriteAdminConfiguration['label'];
-        } elseif (isset($attributes['label'])) {
-            $label = $attributes['label'];
-        } else {
-            $label = '-';
-        }
-
+        // NEXT_MAJOR: Default to null
+        $label = $overwriteAdminConfiguration['label'] ?? $attributes['label'] ?? '-';
         $definition->addMethodCall('setLabel', [$label]);
 
-        $persistFilters = $container->getParameter('sonata.admin.configuration.filters.persist');
-        // override default configuration with admin config if set
-        if (isset($attributes['persist_filters'])) {
-            $persistFilters = $attributes['persist_filters'];
-        }
-        $filtersPersister = $container->getParameter('sonata.admin.configuration.filters.persister');
-        // override default configuration with admin config if set
-        if (isset($attributes['filter_persister'])) {
-            $filtersPersister = $attributes['filter_persister'];
-        }
+        $persistFilters = $attributes['persist_filters']
+            ?? $container->getParameter('sonata.admin.configuration.filters.persist');
+        $filtersPersister = $attributes['filter_persister']
+            ?? $container->getParameter('sonata.admin.configuration.filters.persister');
+
         // configure filters persistence, if configured to
         if ($persistFilters) {
             $definition->addMethodCall('setFilterPersister', [new Reference($filtersPersister)]);
         }
 
-        if (isset($overwriteAdminConfiguration['show_mosaic_button'])) {
-            $showMosaicButton = $overwriteAdminConfiguration['show_mosaic_button'];
-        } elseif (isset($attributes['show_mosaic_button'])) {
-            $showMosaicButton = $attributes['show_mosaic_button'];
-        } else {
-            $showMosaicButton = $container->getParameter('sonata.admin.configuration.show.mosaic.button');
-        }
-
+        $showMosaicButton = $overwriteAdminConfiguration['show_mosaic_button']
+            ?? $attributes['show_mosaic_button']
+            ?? $container->getParameter('sonata.admin.configuration.show.mosaic.button');
         $definition->addMethodCall('showMosaicButton', [$showMosaicButton]);
 
         $this->fixTemplates(

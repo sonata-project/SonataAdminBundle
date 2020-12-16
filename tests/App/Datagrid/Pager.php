@@ -38,7 +38,7 @@ final class Pager implements PagerInterface
         return 1;
     }
 
-    public function setMaxPerPage($max): void
+    public function setMaxPerPage(int $max): void
     {
     }
 
@@ -47,12 +47,33 @@ final class Pager implements PagerInterface
         return 1;
     }
 
-    public function setPage($page): void
+    public function setPage(int $page): void
     {
     }
 
-    public function setQuery(ProxyQueryInterface $query): void
+    public function getNextPage(): int
     {
+        return 1;
+    }
+
+    public function getPreviousPage(): int
+    {
+        return 1;
+    }
+
+    public function getFirstPage(): int
+    {
+        return 1;
+    }
+
+    public function isFirstPage(): bool
+    {
+        return true;
+    }
+
+    public function getLastPage(): int
+    {
+        return 2;
     }
 
     public function isLastPage(): bool
@@ -60,14 +81,33 @@ final class Pager implements PagerInterface
         return false;
     }
 
-    public function getNbResults(): int
+    public function getQuery(): ProxyQueryInterface
     {
-        return \count($this->getResults());
+        return new ProxyQuery();
+    }
+
+    public function setQuery(ProxyQueryInterface $query): void
+    {
+    }
+
+    public function haveToPaginate(): bool
+    {
+        return false;
     }
 
     public function getResults(): array
     {
         return $this->repository->all();
+    }
+
+    public function getNbResults(): int
+    {
+        return 1;
+    }
+
+    public function getLinks(?int $nbLinks = null): array
+    {
+        return [];
     }
 
     public function setMaxPageLinks(int $maxPageLinks): void

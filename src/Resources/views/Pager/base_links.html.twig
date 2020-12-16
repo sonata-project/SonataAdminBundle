@@ -20,7 +20,7 @@ file that was distributed with this source code.
         {% endif %}
 
         {# Set the number of pages to display in the pager #}
-        {% for page in admin.datagrid.pager.getLinks(admin_pool.getOption('pager_links')) %}
+        {% for page in admin.datagrid.pager.getLinks(sonata_config.getOption('pager_links')) %}
             {% if page == admin.datagrid.pager.page %}
                 <li class="active"><a href="{{ admin.generateUrl(action, admin.datagrid.paginationparameters(page)) }}">{{ page }}</a></li>
             {% else %}
