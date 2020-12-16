@@ -47,7 +47,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this property.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * @var int
      */
@@ -56,7 +56,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this property.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * @var array<string, mixed>
      */
@@ -65,7 +65,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this property.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * @var int
      */
@@ -74,7 +74,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this property.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * @var mixed bool|int
      */
@@ -88,7 +88,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this property.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Used by iterator interface
      *
@@ -99,7 +99,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this property.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Used by iterator interface
      *
@@ -115,7 +115,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this property.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * @var string[]
      */
@@ -132,7 +132,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Returns the current pager's max link.
      *
@@ -141,7 +141,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function getCurrentMaxLink()
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -151,7 +151,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Returns the current pager's max record limit.
      *
@@ -160,7 +160,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function getMaxRecordLimit()
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -170,7 +170,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Sets the current pager's max record limit.
      *
@@ -179,7 +179,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function setMaxRecordLimit($limit)
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -228,7 +228,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Returns the current cursor.
      *
@@ -237,7 +237,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function getCursor()
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -247,7 +247,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Sets the current cursor.
      *
@@ -256,7 +256,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function setCursor($pos)
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -274,7 +274,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Returns an object by cursor position.
      *
@@ -285,7 +285,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function getObjectByCursor($pos)
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -297,7 +297,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Returns the current object.
      *
@@ -306,7 +306,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function getCurrent()
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -316,7 +316,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Returns the next object.
      *
@@ -325,7 +325,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function getNext()
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -339,7 +339,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Returns the previous object.
      *
@@ -348,7 +348,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function getPrevious()
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -362,7 +362,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Returns the first index on the current page.
      *
@@ -371,7 +371,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function getFirstIndex()
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -401,7 +401,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Returns the last index on the current page.
      *
@@ -410,7 +410,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function getLastIndex()
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -556,7 +556,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Returns the current pager's parameter holder.
      *
@@ -565,7 +565,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function getParameters()
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -575,7 +575,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Returns a parameter.
      *
@@ -587,7 +587,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function getParameter($name, $default = null)
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -597,7 +597,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Checks whether a parameter has been set.
      *
@@ -608,7 +608,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function hasParameter($name)
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -618,7 +618,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Sets a parameter.
      *
@@ -628,7 +628,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function setParameter($name, $value)
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -638,12 +638,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      */
     public function current()
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -657,12 +657,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      */
     public function key()
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -676,12 +676,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      */
     public function next()
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -698,12 +698,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      */
     public function rewind()
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -720,12 +720,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      */
     public function valid()
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -739,12 +739,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, use getNbResults instead
+     * @deprecated since sonata-project/admin-bundle 3.84, use getNbResults instead
      */
     public function count()
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -754,12 +754,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      */
     public function serialize()
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -772,12 +772,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      */
     public function unserialize($serialized)
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -791,14 +791,14 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * @return string[]
      */
     public function getCountColumn()
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -808,14 +808,14 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * @return string[]
      */
     public function setCountColumn(array $countColumn)
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -863,7 +863,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Returns true if the properties used for iteration have been initialized.
      *
@@ -872,7 +872,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     protected function isIteratorInitialized()
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -882,7 +882,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Loads data into properties used for iteration.
      *
@@ -892,7 +892,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+                'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -904,7 +904,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Empties properties used for iteration.
      *
@@ -914,7 +914,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+                'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -926,7 +926,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.84
      *
      * Retrieve the object for a certain offset.
      *
@@ -937,7 +937,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     protected function retrieveObject($offset)
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 

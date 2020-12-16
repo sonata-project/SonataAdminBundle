@@ -30,7 +30,7 @@ abstract class Filter implements FilterInterface
      *
      * @var mixed|null
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.84, to be removed in 4.0.
      */
     protected $value;
 
@@ -194,12 +194,12 @@ abstract class Filter implements FilterInterface
      *
      * @param mixed $value
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.84, to be removed in 4.0.
      */
     public function setValue($value)
     {
         @trigger_error(sprintf(
-            'Method %s() is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+            'Method %s() is deprecated since sonata-project/admin-bundle 3.84 and will be removed in version 4.0.',
             __METHOD__,
         ), E_USER_DEPRECATED);
 
@@ -211,12 +211,12 @@ abstract class Filter implements FilterInterface
      *
      * @return mixed
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.84, to be removed in 4.0.
      */
     public function getValue()
     {
         @trigger_error(sprintf(
-            'Method %s() is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+            'Method %s() is deprecated since sonata-project/admin-bundle 3.84 and will be removed in version 4.0.',
             __METHOD__,
         ), E_USER_DEPRECATED);
 
