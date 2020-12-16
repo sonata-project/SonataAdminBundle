@@ -18,17 +18,17 @@ namespace Sonata\AdminBundle\Datagrid;
  *
  * NEXT_MAJOR: Remove these comments and uncomment corresponding methods.
  *
- * @method int                 getPage()
- * @method int                 getFirstPage()
- * @method int                 getLastPage()
- * @method int                 getNextPage()
- * @method int                 getPreviousPage()
- * @method bool                isFirstPage()
- * @method bool                isLastPage()
- * @method int                 getNbResults()
- * @method array               getLinks(?int $nbLinks = null)
- * @method bool                haveToPaginate()
- * @method ProxyQueryInterface getQuery()
+ * @method int                      getPage()
+ * @method int                      getFirstPage()
+ * @method int                      getLastPage()
+ * @method int                      getNextPage()
+ * @method int                      getPreviousPage()
+ * @method bool                     isFirstPage()
+ * @method bool                     isLastPage()
+ * @method int                      getNbResults()
+ * @method array                    getLinks(?int $nbLinks = null)
+ * @method bool                     haveToPaginate()
+ * @method ProxyQueryInterface|null getQuery()
  */
 interface PagerInterface
 {
@@ -78,7 +78,7 @@ interface PagerInterface
 //    public function isLastPage(): bool;
 
 //    NEXT_MAJOR: uncomment this method in 4.0
-//    public function getQuery(): ProxyQueryInterface;
+//    public function getQuery(): ?ProxyQueryInterface;
 
     /**
      * @param ProxyQueryInterface $query
