@@ -92,6 +92,11 @@ interface TaggedAdminInterface
 //    public function showMosaicButton(bool $isShown): void;
 
     /**
+     * @return array<string, array<string, mixed>>
+     */
+    public function getListModes();
+
+    /**
      * NEXT_MAJOR: Uncomment this method.
      */
 //    public function setPagerType(string $pagerType): void;

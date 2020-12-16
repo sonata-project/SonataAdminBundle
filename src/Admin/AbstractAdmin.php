@@ -2587,11 +2587,6 @@ EOT;
         return new Metadata($this->toString($object));
     }
 
-    public function getListModes()
-    {
-        return $this->listModes;
-    }
-
     public function setListMode($mode)
     {
         if (!$this->hasRequest()) {
