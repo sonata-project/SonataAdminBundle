@@ -24,6 +24,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 class SimplePager extends Pager
 {
     /**
+     * @var object[]|null
+     */
+    protected $results;
+
+    /**
      * @var bool
      */
     protected $haveToPaginate;
@@ -106,7 +111,10 @@ class SimplePager extends Pager
         if (!$this->getQuery()) {
             throw new \RuntimeException('Uninitialized query');
         }
-        $this->resetIterator();
+
+        // NEXT_MAJOR: Remove this line and uncomment the following one instead.
+        $this->resetIterator('sonata_deprecation_mute');
+//        $this->haveToPaginate = false;
 
         if (0 === $this->getPage() || 0 === $this->getMaxPerPage()) {
             $this->setLastPage(0);
@@ -120,7 +128,10 @@ class SimplePager extends Pager
                 ? $this->getMaxPerPage() * $this->threshold + 1 : $this->getMaxPerPage() + 1;
 
             $this->getQuery()->setMaxResults($maxOffset);
-            $this->initializeIterator();
+
+            // NEXT_MAJOR: Remove this line and uncomment the following one instead.
+            $this->initializeIterator('sonata_deprecation_mute');
+//            $this->results = $this->getResults();
 
             $t = (int) ceil($this->thresholdCount / $this->getMaxPerPage()) + $this->getPage() - 1;
             $this->setLastPage(max(1, $t));
@@ -145,9 +156,21 @@ class SimplePager extends Pager
         return $this->threshold;
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x
+     */
     protected function resetIterator()
     {
-        parent::resetIterator();
+        if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
+        parent::resetIterator('sonata_deprecation_mute');
         $this->haveToPaginate = false;
     }
 }
