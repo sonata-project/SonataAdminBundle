@@ -47,8 +47,7 @@ final class XEditableExtensionTest extends TestCase
             'url' => 'url',
         ];
 
-        $twigExtension = new XEditableExtension(new Translator('en'));
-        $twigExtension->setXEditableTypeMapping($xEditableTypeMapping);
+        $twigExtension = new XEditableExtension(new Translator('en'), $xEditableTypeMapping);
 
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
         $fieldDescription

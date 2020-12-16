@@ -30,10 +30,15 @@ final class XEditableExtension extends AbstractExtension
      */
     private $translator;
 
+    /**
+     * @param string[] $xEditableTypeMapping
+     */
     public function __construct(
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        array $xEditableTypeMapping
     ) {
         $this->translator = $translator;
+        $this->xEditableTypeMapping = $xEditableTypeMapping;
     }
 
     /**
@@ -54,14 +59,6 @@ final class XEditableExtension extends AbstractExtension
             ),
             */
         ];
-    }
-
-    /**
-     * @param string[] $xEditableTypeMapping
-     */
-    public function setXEditableTypeMapping(array $xEditableTypeMapping): void
-    {
-        $this->xEditableTypeMapping = $xEditableTypeMapping;
     }
 
     /**

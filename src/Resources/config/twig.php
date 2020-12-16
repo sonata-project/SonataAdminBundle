@@ -62,6 +62,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
             ->call('setXEditableTypeMapping', [
                 '%sonata.admin.twig.extension.x_editable_type_mapping%',
+                'sonata_deprecation_mute',
             ])
 
         ->set('sonata.templates.twig.extension', TemplateRegistryExtension::class)
@@ -94,6 +95,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('twig.extension')
             ->args([
                 new ReferenceConfigurator('translator'),
+                '%sonata.admin.twig.extension.x_editable_type_mapping%',
             ])
     ;
 };

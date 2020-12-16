@@ -247,12 +247,16 @@ class SonataAdminExtension extends AbstractExtension
             //NEXT_MAJOR remove this filter
             new TwigFilter(
                 'sonata_xeditable_type',
-                [$this, 'getXEditableType']
+                function ($type) {
+                    return $this->getXEditableType($type, 'sonata_deprecation_mute');
+                }
             ),
             //NEXT_MAJOR remove this filter
             new TwigFilter(
                 'sonata_xeditable_choices',
-                [$this, 'getXEditableChoices']
+                function (FieldDescriptionInterface $fieldDescription) {
+                    return $this->getXEditableChoices($fieldDescription, 'sonata_deprecation_mute');
+                }
             ),
         ];
     }
@@ -267,9 +271,15 @@ class SonataAdminExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('canonicalize_locale_for_moment', [$this, 'getCanonicalizedLocaleForMoment'], ['needs_context' => true]),
-            new TwigFunction('canonicalize_locale_for_select2', [$this, 'getCanonicalizedLocaleForSelect2'], ['needs_context' => true]),
-            new TwigFunction('is_granted_affirmative', [$this, 'isGrantedAffirmative']),
+            new TwigFunction('canonicalize_locale_for_moment', function (array $context) {
+                return $this->getCanonicalizedLocaleForMoment($context, 'sonata_deprecation_mute');
+            }, ['needs_context' => true]),
+            new TwigFunction('canonicalize_locale_for_select2', function (array $context) {
+                return $this->getCanonicalizedLocaleForSelect2($context, 'sonata_deprecation_mute');
+            }, ['needs_context' => true]),
+            new TwigFunction('is_granted_affirmative', function ($role, $object = null, $field = null) {
+                return $this->isGrantedAffirmative($role, $object, $field, 'sonata_deprecation_mute');
+            }),
         ];
     }
 
@@ -633,7 +643,7 @@ class SonataAdminExtension extends AbstractExtension
         }
 
         if (null === $this->xEditableExtension) {
-            $this->xEditableExtension = new XEditableExtension($this->translator);
+            $this->xEditableExtension = new XEditableExtension($this->translator, $this->xEditableTypeMapping);
         }
 
         return $this->xEditableExtension->getXEditableChoices($fieldDescription);
