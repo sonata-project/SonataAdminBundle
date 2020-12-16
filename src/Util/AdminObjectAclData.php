@@ -321,7 +321,7 @@ class AdminObjectAclData
     }
 
     /**
-     * @return array
+     * @return array<string, string[]>
      */
     public function getSecurityInformation()
     {

@@ -36,7 +36,7 @@ interface SecurityHandlerInterface
     public function getBaseRole(AdminInterface $admin);
 
     /**
-     * @return array<string, mixed>
+     * @return array<string, string[]>
      */
     public function buildSecurityInformation(AdminInterface $admin);
 
