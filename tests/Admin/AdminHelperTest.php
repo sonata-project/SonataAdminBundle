@@ -61,7 +61,7 @@ class AdminHelperTest extends TestCase
      */
     public function testDeprecatedConstructingWithoutPropertyAccessor(): void
     {
-        $pool = new Pool(new Container(), 'title', 'logo.png');
+        $pool = new Pool(new Container());
 
         $this->expectDeprecation(sprintf(
             'Passing an instance of "%s" as argument 1 for "%s::__construct()" is deprecated since'

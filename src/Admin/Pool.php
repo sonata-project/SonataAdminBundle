@@ -125,23 +125,61 @@ class Pool
 
     /**
      * NEXT_MAJOR: Remove $propertyAccessor argument.
-     * NEXT_MAJOR: Remove $title, $logoTitle and $options.
+     * NEXT_MAJOR: Rename $titleOrAdminServiceIds to $adminServices, $logoTitleOrAdminGroups to $adminGroups and
+     * $optionsOrAdminClasses to $adminClasses and add "array" type declaration.
      *
-     * @param string $title
-     * @param string $logoTitle
-     * @param array  $options
+     * @param string|array $titleOrAdminServiceIds
+     * @param string|array $logoTitleOrAdminGroups
+     * @param array        $optionsOrAdminClasses
      */
     public function __construct(
         ContainerInterface $container,
-        $title,
-        $logoTitle,
-        $options = [],
+        $titleOrAdminServiceIds = [],
+        $logoTitleOrAdminGroups = [],
+        $optionsOrAdminClasses = [],
         ?PropertyAccessorInterface $propertyAccessor = null
     ) {
         $this->container = $container;
-        $this->title = $title;
-        $this->titleLogo = $logoTitle;
-        $this->options = $options;
+
+        // NEXT_MAJOR: Uncomment the following lines
+        // $this->adminServiceIds = $titleOrAdminServiceIds;
+        // $this->adminGroups = $logoTitleOrAdminGroups;
+        // $this->adminClasses = $optionsOrAdminClasses;
+
+        // NEXT_MAJOR: Remove this block.
+        if (\is_array($titleOrAdminServiceIds)) {
+            $this->adminServiceIds = $titleOrAdminServiceIds;
+        } else {
+            @trigger_error(sprintf(
+                'Passing other type than array as argument 2 to "%s()" is deprecated since'
+                .' sonata-project/admin-bundle 3.x and will throw "%s" exception in 4.0.',
+                __METHOD__,
+                \TypeError::class
+            ), E_USER_DEPRECATED);
+
+            $this->title = $titleOrAdminServiceIds;
+        }
+
+        // NEXT_MAJOR: Remove this block.
+        if (\is_array($logoTitleOrAdminGroups)) {
+            $this->adminGroups = $logoTitleOrAdminGroups;
+        } else {
+            @trigger_error(sprintf(
+                'Passing other type than array as argument 3 to "%s()" is deprecated since'
+                .' sonata-project/admin-bundle 3.x and will throw "%s" exception in 4.0.',
+                __METHOD__,
+                \TypeError::class
+            ), E_USER_DEPRECATED);
+
+            $this->titleLogo = $logoTitleOrAdminGroups;
+        }
+
+        // NEXT_MAJOR: Remove this block.
+        if (\is_array($titleOrAdminServiceIds) && \is_array($logoTitleOrAdminGroups)) {
+            $this->adminClasses = $optionsOrAdminClasses;
+        } else {
+            $this->options = $optionsOrAdminClasses;
+        }
 
         // NEXT_MAJOR: Remove this block.
         if (null !== $propertyAccessor) {
@@ -154,6 +192,18 @@ class Pool
 
         // NEXT_MAJOR: Remove next line.
         $this->propertyAccessor = $propertyAccessor;
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @internal
+     */
+    public function setDeprecatedPropertiesForBC(string $title, string $titleLogo, array $options): void
+    {
+        $this->title = $title;
+        $this->titleLogo = $titleLogo;
+        $this->options = $options;
     }
 
     /**
@@ -506,6 +556,11 @@ class Pool
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0. Pass $adminGroups as argument 3
+     * to the __construct method instead.
+     *
      * @phpstan-param array<string, array<string, mixed>> $adminGroups
      * @psalm-param array<string, Group> $adminGroups
      *
@@ -513,6 +568,13 @@ class Pool
      */
     public function setAdminGroups(array $adminGroups)
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
+            @trigger_error(sprintf(
+                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         $this->adminGroups = $adminGroups;
     }
 
@@ -525,10 +587,22 @@ class Pool
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0. Pass $adminGroups as argument 2
+     * to the __construct method instead.
+     *
      * @return void
      */
     public function setAdminServiceIds(array $adminServiceIds)
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
+            @trigger_error(sprintf(
+                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         $this->adminServiceIds = $adminServiceIds;
     }
 
@@ -541,6 +615,11 @@ class Pool
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0. Pass $adminGroups as argument 4
+     * to the __construct method instead.
+     *
      * @param array<string, string[]> $adminClasses
      *
      * @phpstan-param array<class-string, string[]> $adminClasses
@@ -549,6 +628,13 @@ class Pool
      */
     public function setAdminClasses(array $adminClasses)
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
+            @trigger_error(sprintf(
+                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         $this->adminClasses = $adminClasses;
     }
 

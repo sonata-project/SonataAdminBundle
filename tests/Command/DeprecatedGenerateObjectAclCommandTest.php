@@ -53,7 +53,7 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
 
     public function testExecuteWithDeprecatedDoctrineService(): void
     {
-        $pool = new Pool($this->container, '', '');
+        $pool = new Pool($this->container);
 
         $registry = $this->createStub(RegistryInterface::class);
         $this->expectDeprecation('Passing a third argument to Sonata\AdminBundle\Command\GenerateObjectAclCommand::__construct() is deprecated since sonata-project/admin-bundle 3.77.');
@@ -71,7 +71,7 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
 
     public function testExecuteWithEmptyManipulators(): void
     {
-        $pool = new Pool($this->container, '', '');
+        $pool = new Pool($this->container);
 
         $registry = $this->createStub(ManagerRegistry::class);
         $this->expectDeprecation('Passing a third argument to Sonata\AdminBundle\Command\GenerateObjectAclCommand::__construct() is deprecated since sonata-project/admin-bundle 3.77.');
@@ -198,7 +198,7 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
 
     public function testExecuteWithDeprecatedUserModelNotation(): void
     {
-        $pool = new Pool($this->container, '', '');
+        $pool = new Pool($this->container);
 
         $registry = $this->createStub(ManagerRegistry::class);
         $this->expectDeprecation('Passing a third argument to Sonata\AdminBundle\Command\GenerateObjectAclCommand::__construct() is deprecated since sonata-project/admin-bundle 3.77.');
@@ -223,7 +223,7 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
 
     public function testExecuteWithDeprecatedUserModelNotationAndWithoutDoctrineService(): void
     {
-        $pool = new Pool($this->container, '', '');
+        $pool = new Pool($this->container);
 
         $command = new GenerateObjectAclCommand($pool, []);
 
@@ -249,7 +249,7 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
 
     public function testExecuteWithDeprecatedUserModelNotationAndInternalSetter(): void
     {
-        $pool = new Pool($this->container, '', '');
+        $pool = new Pool($this->container);
 
         $registry = $this->createStub(ManagerRegistry::class);
         $command = new GenerateObjectAclCommand($pool, []);

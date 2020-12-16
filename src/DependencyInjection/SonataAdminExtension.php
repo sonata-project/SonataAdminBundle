@@ -97,6 +97,11 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $pool->replaceArgument(1, $config['title']);
         $pool->replaceArgument(2, $config['title_logo']);
         $pool->replaceArgument(3, $config['options']);
+        $pool->addMethodCall('setDeprecatedPropertiesForBC', [
+            $config['title'],
+            $config['title_logo'],
+            $config['options'],
+        ]);
 
         $sonataConfiguration = $container->getDefinition('sonata.admin.configuration');
         $sonataConfiguration->replaceArgument(0, $config['title']);

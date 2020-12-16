@@ -20,6 +20,15 @@ They have been moved to `Sonata\AdminBundle\Admin\FieldDescriptionInterface`.
 
 Deprecated `configure()` method for configuring the associated admin, you MUST call `configureAdmin()` method instead.
 
+### Sonata\AdminBundle\Admin\Pool
+
+- `Sonata\AdminBundle\Admin\Pool::setAdminServiceIds()` method has been deprecated. You MUST pass service ids as
+  argument 2 to the constructor.
+- `Sonata\AdminBundle\Admin\Pool::setAdminGroups()` method has been deprecated. You MUST pass admin groups as
+  argument 3 to the constructor.
+- `Sonata\AdminBundle\Admin\Pool::setAdminClasses()` method has been deprecated. You MUST pass admin classes as
+  argument 4 to the constructor.
+
 UPGRADE FROM 3.83 to 3.84
 =========================
 

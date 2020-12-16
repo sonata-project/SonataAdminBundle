@@ -41,7 +41,7 @@ class CoreControllerTest extends TestCase
             ['layout', 'layout.html'],
         ]);
 
-        $pool = new Pool($container, 'title', 'logo.png');
+        $pool = new Pool($container);
         $pool->setTemplateRegistry($templateRegistry);
 
         $twig = $this->createMock(Environment::class);
@@ -82,7 +82,7 @@ class CoreControllerTest extends TestCase
         ]);
         $breadcrumbsBuilder = $this->createStub(BreadcrumbsBuilderInterface::class);
 
-        $pool = new Pool($container, 'title', 'logo.png');
+        $pool = new Pool($container);
         $pool->setTemplateRegistry($templateRegistry);
 
         $twig = $this->createMock(Environment::class);
