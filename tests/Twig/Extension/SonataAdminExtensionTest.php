@@ -130,9 +130,7 @@ class SonataAdminExtensionTest extends TestCase
 
         $container = new Container();
 
-        $this->pool = new Pool($container, '', '');
-        $this->pool->setAdminServiceIds(['sonata_admin_foo_service']);
-        $this->pool->setAdminClasses(['fooClass' => ['sonata_admin_foo_service']]);
+        $this->pool = new Pool($container, ['sonata_admin_foo_service'], [], ['fooClass' => ['sonata_admin_foo_service']]);
 
         $this->logger = $this->getMockForAbstractClass(LoggerInterface::class);
         $this->xEditableTypeMapping = [
@@ -2694,31 +2692,47 @@ EOT
     {
         $model = new \stdClass();
 
-        // set admin to pool
-        $this->pool->setAdminServiceIds(['sonata_admin_foo_service']);
-        $this->pool->setAdminClasses([\stdClass::class => ['sonata_admin_foo_service']]);
+        $pool = new Pool(
+            $this->container,
+            ['sonata_admin_foo_service'],
+            [],
+            [\stdClass::class => ['sonata_admin_foo_service']]
+        );
 
         $this->admin->expects($this->once())
             ->method('getUrlSafeIdentifier')
             ->with($this->equalTo($model))
             ->willReturn(1234567);
 
-        $this->assertSame(1234567, $this->twigExtension->getUrlSafeIdentifier($model));
+        $this->container->set('sonata_admin_foo_service', $this->admin);
+
+        $twigExtension = new SonataAdminExtension(
+            $pool,
+            $this->logger,
+            $this->translator,
+            $this->container,
+            PropertyAccess::createPropertyAccessor()
+        );
+
+        $this->assertSame(1234567, $twigExtension->getUrlSafeIdentifier($model));
     }
 
     public function testGetUrlsafeIdentifier_GivenAdmin_Foo(): void
     {
         $model = new \stdClass();
 
-        // set admin to pool
-        $this->pool->setAdminServiceIds([
-            'sonata_admin_foo_service',
-            'sonata_admin_bar_service',
-        ]);
-        $this->pool->setAdminClasses([\stdClass::class => [
-            'sonata_admin_foo_service',
-            'sonata_admin_bar_service',
-        ]]);
+        $pool = new Pool(
+            $this->container,
+            [
+                'sonata_admin_foo_service',
+                'sonata_admin_bar_service',
+            ],
+            [],
+            [\stdClass::class => [
+                'sonata_admin_foo_service',
+                'sonata_admin_bar_service',
+            ]]
+        );
 
         $this->admin->expects($this->once())
             ->method('getUrlSafeIdentifier')
@@ -2728,19 +2742,30 @@ EOT
         $this->adminBar->expects($this->never())
             ->method('getUrlSafeIdentifier');
 
-        $this->assertSame(1234567, $this->twigExtension->getUrlSafeIdentifier($model, $this->admin));
+        $twigExtension = new SonataAdminExtension(
+            $pool,
+            $this->logger,
+            $this->translator,
+            $this->container,
+            PropertyAccess::createPropertyAccessor()
+        );
+
+        $this->assertSame(1234567, $twigExtension->getUrlSafeIdentifier($model, $this->admin));
     }
 
     public function testGetUrlsafeIdentifier_GivenAdmin_Bar(): void
     {
         $model = new \stdClass();
 
-        // set admin to pool
-        $this->pool->setAdminServiceIds(['sonata_admin_foo_service', 'sonata_admin_bar_service']);
-        $this->pool->setAdminClasses([\stdClass::class => [
-            'sonata_admin_foo_service',
-            'sonata_admin_bar_service',
-        ]]);
+        $pool = new Pool(
+            $this->container,
+            ['sonata_admin_foo_service', 'sonata_admin_bar_service'],
+            [],
+            [\stdClass::class => [
+                'sonata_admin_foo_service',
+                'sonata_admin_bar_service',
+            ]]
+        );
 
         $this->admin->expects($this->never())
             ->method('getUrlSafeIdentifier');
@@ -2750,7 +2775,15 @@ EOT
             ->with($this->equalTo($model))
             ->willReturn(1234567);
 
-        $this->assertSame(1234567, $this->twigExtension->getUrlSafeIdentifier($model, $this->adminBar));
+        $twigExtension = new SonataAdminExtension(
+            $pool,
+            $this->logger,
+            $this->translator,
+            $this->container,
+            PropertyAccess::createPropertyAccessor()
+        );
+
+        $this->assertSame(1234567, $twigExtension->getUrlSafeIdentifier($model, $this->adminBar));
     }
 
     public function xEditableChoicesProvider()

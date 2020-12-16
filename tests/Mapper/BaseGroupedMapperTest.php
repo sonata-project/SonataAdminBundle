@@ -56,7 +56,7 @@ class BaseGroupedMapperTest extends TestCase
 
         $container = new Container();
         $container->setParameter('sonata.admin.configuration.translate_group_label', '');
-        $configurationPool = new Pool($container, 'myTitle', 'myLogoTitle');
+        $configurationPool = new Pool($container);
 
         $admin
             ->method('getConfigurationPool')

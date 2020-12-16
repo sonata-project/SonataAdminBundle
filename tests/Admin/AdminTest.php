@@ -555,7 +555,7 @@ class AdminTest extends TestCase
         );
 
         $container = new Container();
-        $pool = new Pool($container, 'Sonata Admin', '/path/to/pic.png');
+        $pool = new Pool($container);
 
         $pathInfo = new PathInfoBuilder($this->createMock(AuditManagerInterface::class));
         $postAdmin = new PostAdmin('sonata.post.admin.post', $objFqn, 'Sonata\NewsBundle\Controller\PostAdminController');

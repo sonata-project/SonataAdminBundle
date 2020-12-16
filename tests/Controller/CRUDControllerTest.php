@@ -179,8 +179,7 @@ class CRUDControllerTest extends TestCase
         $this->httpMethodParameterOverride = Request::getHttpMethodParameterOverride();
         $this->container = new Container();
         $this->request = new Request();
-        $this->pool = new Pool($this->container, 'title', 'logo.png');
-        $this->pool->setAdminServiceIds(['foo.admin']);
+        $this->pool = new Pool($this->container, ['foo.admin']);
         $this->request->attributes->set('_sonata_admin', 'foo.admin');
         $this->admin = $this->getMockBuilder(AbstractAdmin::class)
             ->disableOriginalConstructor()

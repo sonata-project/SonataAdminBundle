@@ -62,8 +62,8 @@ final class SearchActionTest extends TestCase
     protected function setUp(): void
     {
         $this->container = new Container();
+        $this->pool = new Pool($this->container, ['foo']);
 
-        $this->pool = new Pool($this->container, 'title', 'logo.png');
         $templateRegistry = new TemplateRegistry([
             'search' => 'search.html.twig',
             'layout' => 'layout.html.twig',
@@ -104,7 +104,6 @@ final class SearchActionTest extends TestCase
         $this->searchHandler->configureAdminSearch([$adminCode => false]);
         $admin = new CleanAdmin($adminCode, 'class', 'controller');
         $this->container->set('foo', $admin);
-        $this->pool->setAdminServiceIds(['foo']);
         $request = new Request(['admin' => 'foo']);
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
