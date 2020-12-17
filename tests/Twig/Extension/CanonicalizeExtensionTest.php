@@ -15,24 +15,29 @@ namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Twig\Extension\CanonicalizeExtension;
-use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Test for SonataAdminExtension.
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
 final class CanonicalizeExtensionTest extends TestCase
 {
     /**
-     * @var SonataAdminExtension
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    /**
+     * @var CanonicalizeExtension
      */
     private $twigExtension;
 
     protected function setUp(): void
     {
-        $this->twigExtension = new CanonicalizeExtension();
+        $this->requestStack = new RequestStack();
+        $this->requestStack->push(new Request());
+        $this->twigExtension = new CanonicalizeExtension($this->requestStack);
     }
 
     /**
@@ -40,7 +45,8 @@ final class CanonicalizeExtensionTest extends TestCase
      */
     public function testCanonicalizedLocaleForMoment(?string $expected, string $original): void
     {
-        $this->assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForMoment($this->mockExtensionContext($original)));
+        $this->changeLocale($original);
+        $this->assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForMoment());
     }
 
     /**
@@ -48,9 +54,13 @@ final class CanonicalizeExtensionTest extends TestCase
      */
     public function testCanonicalizedLocaleForSelect2(?string $expected, string $original): void
     {
-        $this->assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForSelect2($this->mockExtensionContext($original)));
+        $this->changeLocale($original);
+        $this->assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForSelect2());
     }
 
+    /**
+     * @return array<array{?string, string}>
+     */
     public function momentLocalesProvider(): array
     {
         return [
@@ -172,6 +182,9 @@ final class CanonicalizeExtensionTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<array{?string, string}>
+     */
     public function select2LocalesProvider()
     {
         return [
@@ -227,13 +240,8 @@ final class CanonicalizeExtensionTest extends TestCase
         ];
     }
 
-    private function mockExtensionContext(string $locale): array
+    private function changeLocale(string $locale): void
     {
-        $request = $this->createMock(Request::class);
-        $request->method('getLocale')->willReturn($locale);
-        $appVariable = $this->createMock(AppVariable::class);
-        $appVariable->method('getRequest')->willReturn($request);
-
-        return ['app' => $appVariable];
+        $this->requestStack->getCurrentRequest()->setLocale($locale);
     }
 }

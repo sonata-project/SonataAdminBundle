@@ -23,6 +23,7 @@ use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface as LegacyTranslationInterface;
@@ -669,10 +670,12 @@ class SonataAdminExtension extends AbstractExtension
         }
 
         if (null === $this->canonicalizeExtension) {
-            $this->canonicalizeExtension = new CanonicalizeExtension();
+            $requestStack = new RequestStack();
+            $requestStack->push($context['app']->getRequest());
+            $this->canonicalizeExtension = new CanonicalizeExtension($requestStack);
         }
 
-        return $this->canonicalizeExtension->getCanonicalizedLocaleForMoment($context);
+        return $this->canonicalizeExtension->getCanonicalizedLocaleForMoment();
     }
 
     /**
@@ -695,10 +698,12 @@ class SonataAdminExtension extends AbstractExtension
         }
 
         if (null === $this->canonicalizeExtension) {
-            $this->canonicalizeExtension = new CanonicalizeExtension();
+            $requestStack = new RequestStack();
+            $requestStack->push($context['app']->getRequest());
+            $this->canonicalizeExtension = new CanonicalizeExtension($requestStack);
         }
 
-        return $this->canonicalizeExtension->getCanonicalizedLocaleForSelect2($context);
+        return $this->canonicalizeExtension->getCanonicalizedLocaleForSelect2();
     }
 
     /**

@@ -19,8 +19,6 @@ use Sonata\AdminBundle\Twig\Extension\XEditableExtension;
 use Symfony\Component\Translation\Translator;
 
 /**
- * Test for SonataAdminExtension.
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
 final class XEditableExtensionTest extends TestCase
@@ -67,6 +65,12 @@ final class XEditableExtensionTest extends TestCase
         $this->assertSame($expectedChoices, $twigExtension->getXEditableChoices($fieldDescription));
     }
 
+    /**
+     * @phpstan-return array<string, array{
+     *	array<string, mixed>,
+     *	array<array{value: string, text: string}>
+     * }>
+     */
     public function xEditableChoicesProvider()
     {
         return [

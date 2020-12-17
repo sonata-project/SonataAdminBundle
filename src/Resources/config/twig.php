@@ -90,6 +90,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
         ->set('sonata.canonicalize.twig.extension', CanonicalizeExtension::class)
             ->tag('twig.extension')
+            ->args([
+                new ReferenceConfigurator('request_stack'),
+            ])
 
         ->set('sonata.xeditable.twig.extension', XEditableExtension::class)
             ->tag('twig.extension')

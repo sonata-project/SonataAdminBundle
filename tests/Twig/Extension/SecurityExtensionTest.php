@@ -18,8 +18,6 @@ use Sonata\AdminBundle\Twig\Extension\SecurityExtension;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Test for SonataAdminExtension.
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
 final class SecurityExtensionTest extends TestCase

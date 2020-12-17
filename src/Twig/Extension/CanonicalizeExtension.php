@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Twig\Extension;
 
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -25,6 +26,16 @@ final class CanonicalizeExtension extends AbstractExtension
         'nl' => ['nl', 'nl-be'],
         'fr' => ['fr', 'fr-ca', 'fr-ch'],
     ];
+
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    public function __construct(RequestStack $requestStack)
+    {
+        $this->requestStack = $requestStack;
+    }
 
     /**
      * @return TwigFunction[]
@@ -42,9 +53,9 @@ final class CanonicalizeExtension extends AbstractExtension
      * Returns a canonicalized locale for "moment" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
      */
-    public function getCanonicalizedLocaleForMoment(array $context): ?string
+    public function getCanonicalizedLocaleForMoment(): ?string
     {
-        $locale = strtolower(str_replace('_', '-', $context['app']->getRequest()->getLocale()));
+        $locale = strtolower(str_replace('_', '-', $this->requestStack->getCurrentRequest()->getLocale()));
 
         // "en" language doesn't require localization.
         if (('en' === $lang = substr($locale, 0, 2)) && !\in_array($locale, ['en-au', 'en-ca', 'en-gb', 'en-ie', 'en-nz'], true)) {
@@ -64,9 +75,9 @@ final class CanonicalizeExtension extends AbstractExtension
      * Returns a canonicalized locale for "select2" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
      */
-    public function getCanonicalizedLocaleForSelect2(array $context): ?string
+    public function getCanonicalizedLocaleForSelect2(): ?string
     {
-        $locale = str_replace('_', '-', $context['app']->getRequest()->getLocale());
+        $locale = str_replace('_', '-', $this->requestStack->getCurrentRequest()->getLocale());
 
         // "en" language doesn't require localization.
         if ('en' === $lang = substr($locale, 0, 2)) {
