@@ -14,6 +14,7 @@ declare(strict_types=1);
 use Sonata\AdminBundle\Twig\Extension\CanonicalizeExtension;
 use Sonata\AdminBundle\Twig\Extension\GroupExtension;
 use Sonata\AdminBundle\Twig\Extension\PaginationExtension;
+use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
 use Sonata\AdminBundle\Twig\Extension\SecurityExtension;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension;
@@ -52,6 +53,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('twig.extension')
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
+                // NEXT_MAJOR: Remove next line.
                 (new ReferenceConfigurator('logger'))->nullOnInvalid(),
                 // NEXT_MAJOR: Remove next line.
                 new ReferenceConfigurator('translator'),
@@ -99,6 +101,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 new ReferenceConfigurator('translator'),
                 '%sonata.admin.twig.extension.x_editable_type_mapping%',
+            ])
+
+        ->set('sonata.renderElement.twig.extension', RenderElementExtension::class)
+            ->tag('twig.extension')
+            ->args([
+                new ReferenceConfigurator('property_accessor'),
+                new ReferenceConfigurator('service_container'),
+                (new ReferenceConfigurator('logger'))->nullOnInvalid(),
             ])
     ;
 };
