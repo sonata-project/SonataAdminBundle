@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
+use Sonata\AdminBundle\Exception\NoValueException;
+
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -228,7 +230,9 @@ interface FieldDescriptionInterface
      *
      * @param object $object
      *
-     * @return bool|mixed
+     * @throws NoValueException if the value cannot be determined
+     *
+     * @return mixed
      */
     public function getValue($object);
 
@@ -314,6 +318,10 @@ interface FieldDescriptionInterface
     public function getSortParentAssociationMapping();
 
     /**
+     * NEXT_MAJOR: Remove this method from the interface.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     *
      * @param object|null $object
      * @param string      $fieldName
      *

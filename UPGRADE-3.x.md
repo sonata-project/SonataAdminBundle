@@ -4,6 +4,10 @@ UPGRADE 3.x
 UPGRADE FROM 3.xx to 3.xx
 =========================
 
+### Deprecated `FieldDescriptionInterface::getFieldValue()`
+
+`BaseFieldDescription::getFieldValue()` will become protected.
+
 ### `RouteCollection` now implements `RouteCollectionInterface`
 
 In 4.0, `AbstractAdmin::configureRoutes` and `AdminExtensionInterface::configureRoutes` will receive a
