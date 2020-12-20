@@ -137,14 +137,15 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     private static $fieldGetters = [];
 
     /**
-     * NEXT_MAJOR: Remove the null default value and restrict param type to `string`.
+     * NEXT_MAJOR: Remove the null default value for $name and restrict param type to `string`.
      */
     public function __construct(
         ?string $name = null,
         array $options = [],
         array $fieldMapping = [],
         array $associationMapping = [],
-        array $parentAssociationMappings = []
+        array $parentAssociationMappings = [],
+        ?string $fieldName = null
     ) {
         // NEXT_MAJOR: Remove this check and keep the else part.
         if (null === $name) {
@@ -155,6 +156,15 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             ), E_USER_DEPRECATED);
         } else {
             $this->setName($name);
+
+            if (null === $fieldName) {
+                // NEXT_MAJOR: Remove this line and uncomment the following.
+                $fieldName = substr(strrchr('.'.$name, '.'), 1);
+//                $fieldName = $name;
+            }
+
+            // NEXT_MAJOR: Remove 'sonata_deprecation_mute' and the phpstan-ignore.
+            $this->setFieldName($fieldName, 'sonata_deprecation_mute');
         }
 
         $this->setOptions($options);
@@ -177,8 +187,19 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     // abstract protected function setAssociationMapping(array $associationMapping): void;
     // abstract protected function setParentAssociationMappings(array $parentAssociationMappings): void;
 
+    /**
+     * NEXT_MAJOR: Change the visibility to private.
+     */
     public function setFieldName($fieldName)
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
+            @trigger_error(sprintf(
+                'The %s() method is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will become private in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         $this->fieldName = $fieldName;
     }
 
@@ -191,8 +212,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     {
         $this->name = $name;
 
+        // NEXT_MAJOR: Remove this code since the field name will be set in the construct.
         if (!$this->getFieldName()) {
-            $this->setFieldName(substr(strrchr('.'.$name, '.'), 1));
+            $this->setFieldName(substr(strrchr('.'.$name, '.'), 1), 'sonata_deprecation_mute');
         }
     }
 
