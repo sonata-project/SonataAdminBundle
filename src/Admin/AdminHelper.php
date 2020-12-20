@@ -94,13 +94,12 @@ class AdminHelper
     }
 
     /**
-     * @param string $elementId
-     *
-     * @throws \RuntimeException
+     * @param FormBuilderInterface $formBuilder
+     * @param string               $elementId
      *
      * @return FormBuilderInterface|null
      */
-    public function getChildFormBuilder(FormBuilderInterface $formBuilder, $elementId)
+    public function getChildFormBuilder(FormBuilderInterface $formBuilder, string $elementId): ?FormBuilderInterface
     {
         foreach (new FormBuilderIterator($formBuilder) as $name => $formBuilder) {
             if ($name === $elementId) {
@@ -112,11 +111,12 @@ class AdminHelper
     }
 
     /**
-     * @param string $elementId
+     * @param FormView $formView
+     * @param string   $elementId
      *
      * @return FormView|null
      */
-    public function getChildFormView(FormView $formView, $elementId)
+    public function getChildFormView(FormView $formView, string $elementId): ?FormView
     {
         foreach (new \RecursiveIteratorIterator(new FormViewIterator($formView), \RecursiveIteratorIterator::SELF_FIRST) as $name => $formView) {
             if ($name === $elementId) {
@@ -136,7 +136,7 @@ class AdminHelper
      *
      * @return AdminInterface
      */
-    public function getAdmin($code)
+    public function getAdmin(string $code): AdminInterface
     {
         if (null === $this->pool) {
             throw new \LogicException(sprintf(
@@ -154,17 +154,16 @@ class AdminHelper
      * Note:
      *   This code is ugly, but there is no better way of doing it.
      *
-     * @param object $subject
-     * @param string $elementId
-     *
-     * @throws \RuntimeException
-     * @throws \Exception
+     * @param AdminInterface $admin
+     * @param object         $subject
+     * @param string         $elementId
      *
      * @return array
      *
+     * @throws \Exception
      * @phpstan-return array{\Sonata\AdminBundle\Admin\FieldDescriptionInterface|null, \Symfony\Component\Form\FormInterface}
      */
-    public function appendFormFieldElement(AdminInterface $admin, $subject, $elementId)
+    public function appendFormFieldElement(AdminInterface $admin, object $subject, string $elementId): array
     {
         // child rows marked as toDelete
         $toDelete = [];
@@ -272,17 +271,16 @@ class AdminHelper
     /**
      * NEXT_MAJOR: remove this method.
      *
+     * @param object                    $object
+     * @param FieldDescriptionInterface $fieldDescription
+     *
+     * @return object
      * @deprecated since sonata-project/admin-bundle 3.72, use to be removed with 4.0.
      *
      * Add a new instance to the related FieldDescriptionInterface value.
      *
-     * @param object $object
-     *
-     * @throws \RuntimeException
-     *
-     * @return object
      */
-    public function addNewInstance($object, FieldDescriptionInterface $fieldDescription)
+    public function addNewInstance(object $object, FieldDescriptionInterface $fieldDescription): object
     {
         @trigger_error(sprintf(
             'Method %s() is deprecated since sonata-project/admin-bundle 3.72. It will be removed in version 4.0.'
@@ -309,7 +307,7 @@ class AdminHelper
      *
      * @deprecated since sonata-project/admin-bundle 3.1. Use \Doctrine\Inflector\Inflector::classify() instead
      */
-    public function camelize($property)
+    public function camelize(string $property): string
     {
         @trigger_error(sprintf(
             'The %s method is deprecated since 3.1 and will be removed in 4.0. Use %s::classify() instead.',
@@ -331,7 +329,7 @@ class AdminHelper
      *
      * @return string
      */
-    public function getElementAccessPath($elementId, $model)
+    public function getElementAccessPath(string $elementId, $model): string
     {
         $idWithoutIdentifier = preg_replace('/^[^_]*_/', '', $elementId);
         $initialPath = preg_replace('#(_(\d+)_)#', '[$2]_', $idWithoutIdentifier);
@@ -363,6 +361,11 @@ class AdminHelper
 
     /**
      * Recursively find the class name of the admin responsible for the element at the end of an association chain.
+     *
+     * @param AdminInterface $admin
+     * @param array          $elements
+     *
+     * @return string
      */
     protected function getModelClassName(AdminInterface $admin, array $elements): string
     {
@@ -372,13 +375,14 @@ class AdminHelper
     /**
      * NEXT_MAJOR: Remove this method and move its body to `getModelClassName()`.
      *
-     * @deprecated since sonata-project/admin-bundle 3.69. Use `getModelClassName()` instead.
-     *
-     * @param array $elements
+     * @param AdminInterface $admin
+     * @param array          $elements
      *
      * @return string
+     * @deprecated since sonata-project/admin-bundle 3.69. Use `getModelClassName()` instead.
+     *
      */
-    protected function getEntityClassName(AdminInterface $admin, $elements)
+    protected function getEntityClassName(AdminInterface $admin, array $elements): string
     {
         if (self::class !== static::class) {
             @trigger_error(sprintf(

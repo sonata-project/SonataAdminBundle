@@ -23,7 +23,7 @@ interface AdminTreeInterface
      *
      * @return AdminInterface
      */
-    public function getRootAncestor();
+    public function getRootAncestor(): AdminInterface;
 
     /**
      * Returns the depth of the admin.
@@ -31,7 +31,7 @@ interface AdminTreeInterface
      *
      * @return int
      */
-    public function getChildDepth();
+    public function getChildDepth(): int;
 
     /**
      * Returns the current leaf child admin instance,
@@ -39,5 +39,5 @@ interface AdminTreeInterface
      *
      * @return AdminInterface|null
      */
-    public function getCurrentLeafChildAdmin();
+    public function getCurrentLeafChildAdmin(): ?AdminInterface;
 }

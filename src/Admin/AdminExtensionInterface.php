@@ -35,38 +35,52 @@ use Sonata\Form\Validator\ErrorElement;
 interface AdminExtensionInterface
 {
     /**
+     * @param FormMapper $formMapper
+     *
      * @return void
      */
-    public function configureFormFields(FormMapper $formMapper);
+    public function configureFormFields(FormMapper $formMapper): void;
 
     /**
+     * @param ListMapper $listMapper
+     *
      * @return void
      */
-    public function configureListFields(ListMapper $listMapper);
+    public function configureListFields(ListMapper $listMapper): void;
 
     /**
+     * @param DatagridMapper $datagridMapper
+     *
      * @return void
      */
-    public function configureDatagridFilters(DatagridMapper $datagridMapper);
+    public function configureDatagridFilters(DatagridMapper $datagridMapper): void;
 
     /**
+     * @param ShowMapper $showMapper
+     *
      * @return void
      */
-    public function configureShowFields(ShowMapper $showMapper);
+    public function configureShowFields(ShowMapper $showMapper): void;
 
     /**
+     * @param AdminInterface  $admin
+     * @param RouteCollection $collection
+     *
      * @return void
      *
      * @phpstan-param AdminInterface<object> $admin
      */
-    public function configureRoutes(AdminInterface $admin, RouteCollection $collection);
+    public function configureRoutes(AdminInterface $admin, RouteCollection $collection): void;
 
     /**
      * DEPRECATED: Use configureTabMenu instead.
      *
      * NEXT_MAJOR: remove this method.
      *
-     * @param string $action
+     * @param AdminInterface      $admin
+     * @param MenuItemInterface   $menu
+     * @param string              $action
+     * @param AdminInterface|null $childAdmin
      *
      * @return void
      *
@@ -78,14 +92,17 @@ interface AdminExtensionInterface
     public function configureSideMenu(
         AdminInterface $admin,
         MenuItemInterface $menu,
-        $action,
+        string $action,
         ?AdminInterface $childAdmin = null
-    );
+    ): void;
 
     /**
      * Builds the tab menu.
      *
-     * @param string $action
+     * @param AdminInterface      $admin
+     * @param MenuItemInterface   $menu
+     * @param string              $action
+     * @param AdminInterface|null $childAdmin
      *
      * @return void
      *
@@ -95,62 +112,70 @@ interface AdminExtensionInterface
     public function configureTabMenu(
         AdminInterface $admin,
         MenuItemInterface $menu,
-        $action,
+        string $action,
         ?AdminInterface $childAdmin = null
-    );
+    ): void;
 
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @param object $object
+     * @param AdminInterface $admin
+     * @param ErrorElement   $errorElement
+     * @param object         $object
      *
      * @return void
      *
-     * @deprecated since sonata-project/admin-bundle 3.x.
+     * @deprecated    since sonata-project/admin-bundle 3.x.
      *
      * @phpstan-param AdminInterface<object> $admin
      */
-    public function validate(AdminInterface $admin, ErrorElement $errorElement, $object);
+    public function validate(AdminInterface $admin, ErrorElement $errorElement, object $object): void;
 
     /**
-     * @param string $context
+     * @param AdminInterface      $admin
+     * @param ProxyQueryInterface $query
+     * @param string              $context
      *
      * @return void
      *
      * @phpstan-param AdminInterface<object> $admin
      */
-    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list');
+    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, string $context = 'list'): void;
 
     /**
      * Get a chance to modify a newly created instance.
      *
-     * @param object $object
+     * @param AdminInterface $admin
+     * @param object         $object
      *
      * @return void
      *
      * @phpstan-param AdminInterface<object> $admin
      */
-    public function alterNewInstance(AdminInterface $admin, $object);
+    public function alterNewInstance(AdminInterface $admin, object $object): void;
 
     /**
      * Get a chance to modify object instance.
      *
-     * @param object $object
+     * @param AdminInterface $admin
+     * @param object         $object
      *
      * @return void
      *
      * @phpstan-param AdminInterface<object> $admin
      */
-    public function alterObject(AdminInterface $admin, $object);
+    public function alterObject(AdminInterface $admin, object $object): void;
 
     /**
      * Get a chance to add persistent parameters.
+     *
+     * @param AdminInterface $admin
      *
      * @return array<string, mixed>
      *
      * @phpstan-param AdminInterface<object> $admin
      */
-    public function getPersistentParameters(AdminInterface $admin);
+    public function getPersistentParameters(AdminInterface $admin): array;
 
     /**
      * Return the controller access mapping.
@@ -181,58 +206,64 @@ interface AdminExtensionInterface
     // public function configureExportFields(AdminInterface $admin, array $fields): array;
 
     /**
-     * @param object $object
+     * @param AdminInterface $admin
+     * @param object         $object
      *
      * @return void
      *
      * @phpstan-param AdminInterface<object> $admin
      */
-    public function preUpdate(AdminInterface $admin, $object);
+    public function preUpdate(AdminInterface $admin, object $object): void;
 
     /**
-     * @param object $object
+     * @param AdminInterface $admin
+     * @param object         $object
      *
      * @return void
      *
      * @phpstan-param AdminInterface<object> $admin
      */
-    public function postUpdate(AdminInterface $admin, $object);
+    public function postUpdate(AdminInterface $admin, object $object): void;
 
     /**
-     * @param object $object
+     * @param AdminInterface $admin
+     * @param object         $object
      *
      * @return void
      *
      * @phpstan-param AdminInterface<object> $admin
      */
-    public function prePersist(AdminInterface $admin, $object);
+    public function prePersist(AdminInterface $admin, object $object): void;
 
     /**
-     * @param object $object
+     * @param AdminInterface $admin
+     * @param object         $object
      *
      * @return void
      *
      * @phpstan-param AdminInterface<object> $admin
      */
-    public function postPersist(AdminInterface $admin, $object);
+    public function postPersist(AdminInterface $admin, object $object): void;
 
     /**
-     * @param object $object
+     * @param AdminInterface $admin
+     * @param object         $object
      *
      * @return void
      *
      * @phpstan-param AdminInterface<object> $admin
      */
-    public function preRemove(AdminInterface $admin, $object);
+    public function preRemove(AdminInterface $admin, object $object): void;
 
     /**
-     * @param object $object
+     * @param AdminInterface $admin
+     * @param object         $object
      *
      * @return void
      *
      * @phpstan-param AdminInterface<object> $admin
      */
-    public function postRemove(AdminInterface $admin, $object);
+    public function postRemove(AdminInterface $admin, object $object): void;
 
     /*
      * Get all action buttons for an action

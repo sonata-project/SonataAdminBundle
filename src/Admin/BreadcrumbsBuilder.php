@@ -46,7 +46,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         ]);
     }
 
-    public function getBreadcrumbs(AdminInterface $admin, $action): array
+    public function getBreadcrumbs(AdminInterface $admin, string $action): array
     {
         $breadcrumbs = [];
         if ($admin->isChild()) {
@@ -71,7 +71,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
      */
     public function buildBreadcrumbs(
         AdminInterface $admin,
-        $action,
+        string $action,
         ?ItemInterface $menu = null
     ): ItemInterface {
         if (!$menu) {
@@ -148,8 +148,10 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
      * @param AdminInterface       $admin             used for translation
      * @param ItemInterface        $menu              will be modified and returned
      * @param string               $name              the source of the final label
-     * @param string               $translationDomain for label translation
+     * @param string|null          $translationDomain for label translation
      * @param array<string, mixed> $options           menu item options
+     *
+     * @return ItemInterface
      */
     private function createMenuItem(
         AdminInterface $admin,

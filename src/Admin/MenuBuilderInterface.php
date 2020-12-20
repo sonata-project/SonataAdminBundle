@@ -25,20 +25,22 @@ interface MenuBuilderInterface
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @param string $action
+     * @param string              $action
+     * @param AdminInterface|null $childAdmin
      *
      * @return ItemInterface|bool
      *
      * @deprecated Use buildTabMenu instead
      */
-    public function buildSideMenu($action, ?AdminInterface $childAdmin = null);
+    public function buildSideMenu(string $action, ?AdminInterface $childAdmin = null);
 
     /**
      * Build the tab menu related to the current action.
      *
-     * @param string $action
+     * @param string              $action
+     * @param AdminInterface|null $childAdmin
      *
      * @return ItemInterface|bool
      */
-    public function buildTabMenu($action, ?AdminInterface $childAdmin = null);
+    public function buildTabMenu(string $action, ?AdminInterface $childAdmin = null);
 }

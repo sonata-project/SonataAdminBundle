@@ -32,7 +32,7 @@ interface LifecycleHookProviderInterface
      *
      * @phpstan-param T $object
      */
-    public function update($object);
+    public function update(object $object): object;
 
     /**
      * This method should call prePersist, do the creation, and call postPersist.
@@ -43,7 +43,7 @@ interface LifecycleHookProviderInterface
      *
      * @phpstan-param T $object
      */
-    public function create($object);
+    public function create(object $object): object;
 
     /**
      * This method should call preRemove, do the removal, and call postRemove.
@@ -52,47 +52,47 @@ interface LifecycleHookProviderInterface
      *
      * @phpstan-param T $object
      */
-    public function delete($object);
+    public function delete(object $object);
 
     /**
      * @param object $object
      *
      * @phpstan-param T $object
      */
-    public function preUpdate($object);
+    public function preUpdate(object $object);
 
     /**
      * @param object $object
      *
      * @phpstan-param T $object
      */
-    public function postUpdate($object);
+    public function postUpdate(object $object);
 
     /**
      * @param object $object
      *
      * @phpstan-param T $object
      */
-    public function prePersist($object);
+    public function prePersist(object $object);
 
     /**
      * @param object $object
      *
      * @phpstan-param T $object
      */
-    public function postPersist($object);
+    public function postPersist(object $object);
 
     /**
      * @param object $object
      *
      * @phpstan-param T $object
      */
-    public function preRemove($object);
+    public function preRemove(object $object);
 
     /**
      * @param object $object
      *
      * @phpstan-param T $object
      */
-    public function postRemove($object);
+    public function postRemove(object $object);
 }

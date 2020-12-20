@@ -28,21 +28,21 @@ interface FieldDescriptionInterface
      *
      * @param string $fieldName
      */
-    public function setFieldName($fieldName);
+    public function setFieldName(string $fieldName);
 
     /**
      * Returns the field name.
      *
      * @return string|null the field name
      */
-    public function getFieldName();
+    public function getFieldName(): ?string;
 
     /**
      * Set the name.
      *
      * @param string $name
      */
-    public function setName($name);
+    public function setName(string $name);
 
     /**
      * NEXT_MAJOR: Restrict return type to string.
@@ -51,7 +51,7 @@ interface FieldDescriptionInterface
      *
      * @return string|null the name
      */
-    public function getName();
+    public function getName(): ?string;
 
     /**
      * Returns the value represented by the provided name.
@@ -61,7 +61,7 @@ interface FieldDescriptionInterface
      *
      * @return mixed the value represented by the provided name
      */
-    public function getOption($name, $default = null);
+    public function getOption(string $name, $default = null);
 
     /**
      * Define an option, an option is has a name and a value.
@@ -69,7 +69,7 @@ interface FieldDescriptionInterface
      * @param string $name
      * @param mixed  $value
      */
-    public function setOption($name, $value);
+    public function setOption(string $name, $value);
 
     /**
      * Define the options value, if the options array contains the reserved keywords
@@ -77,6 +77,8 @@ interface FieldDescriptionInterface
      *   - template.
      *
      * Then the value are copied across to the related property value
+     *
+     * @param array $options
      */
     public function setOptions(array $options);
 
@@ -85,21 +87,21 @@ interface FieldDescriptionInterface
      *
      * @return array<string, mixed> options
      */
-    public function getOptions();
+    public function getOptions(): array;
 
     /**
      * Returns the template used to render the field.
      *
      * @param string $template
      */
-    public function setTemplate($template);
+    public function setTemplate(string $template);
 
     /**
      * Returns the template name.
      *
      * @return string|null the template name
      */
-    public function getTemplate();
+    public function getTemplate(): ?string;
 
     /**
      * Returns the field type, the type is a mandatory field as it used to select the correct template
@@ -107,7 +109,7 @@ interface FieldDescriptionInterface
      *
      * @param string $type
      */
-    public function setType($type);
+    public function setType(string $type);
 
     /**
      * Returns the type.
@@ -118,6 +120,8 @@ interface FieldDescriptionInterface
 
     /**
      * set the parent Admin (only used in nested admin).
+     *
+     * @param AdminInterface $parent
      */
     public function setParent(AdminInterface $parent);
 
@@ -126,7 +130,7 @@ interface FieldDescriptionInterface
      *
      * @return AdminInterface|null // NEXT_MAJOR: Return AdminInterface
      */
-    public function getParent();
+    public function getParent(): ?AdminInterface;
 
     // NEXT_MAJOR: Uncomment the following line
     // public function hasParent(): bool;
@@ -136,14 +140,14 @@ interface FieldDescriptionInterface
      *
      * @param array $associationMapping
      */
-    public function setAssociationMapping($associationMapping);
+    public function setAssociationMapping(array $associationMapping);
 
     /**
      * Returns the association mapping definition.
      *
      * @return array
      */
-    public function getAssociationMapping();
+    public function getAssociationMapping(): array;
 
     /**
      * NEXT_MAJOR: Remove this method in favor of `getTargetModel()`.
@@ -168,17 +172,19 @@ interface FieldDescriptionInterface
      *
      * @param array $fieldMapping
      */
-    public function setFieldMapping($fieldMapping);
+    public function setFieldMapping(array $fieldMapping);
 
     /**
      * Returns the field mapping definition.
      *
      * @return array the field mapping definition
      */
-    public function getFieldMapping();
+    public function getFieldMapping(): array;
 
     /**
      * set the parent association mappings information.
+     *
+     * @param array $parentAssociationMappings
      */
     public function setParentAssociationMappings(array $parentAssociationMappings);
 
@@ -187,7 +193,7 @@ interface FieldDescriptionInterface
      *
      * @return array the parent association mapping definitions
      */
-    public function getParentAssociationMappings();
+    public function getParentAssociationMappings(): array;
 
     /**
      * set the association admin instance (only used if the field is linked to an Admin).
@@ -201,7 +207,7 @@ interface FieldDescriptionInterface
      *
      * @return AdminInterface|null // NEXT_MAJOR: Return AdminInterface
      */
-    public function getAssociationAdmin();
+    public function getAssociationAdmin(): ?AdminInterface;
 
     // NEXT_MAJOR: Uncomment the following line
     // public function hasAssociationAdmin(): bool;
@@ -211,7 +217,7 @@ interface FieldDescriptionInterface
      *
      * @return bool
      */
-    public function isIdentifier();
+    public function isIdentifier(): bool;
 
     /**
      * Returns the value linked to the description.
@@ -220,17 +226,19 @@ interface FieldDescriptionInterface
      *
      * @return bool|mixed
      */
-    public function getValue($object);
+    public function getValue(object $object);
 
     /**
      * set the admin class linked to this FieldDescription.
+     *
+     * @param AdminInterface $admin
      */
     public function setAdmin(AdminInterface $admin);
 
     /**
      * @return AdminInterface the admin class linked to this FieldDescription
      */
-    public function getAdmin();
+    public function getAdmin(): AdminInterface;
 
     // NEXT_MAJOR: Uncomment the following line
     // public function hasAdmin(): bool;
@@ -239,13 +247,16 @@ interface FieldDescriptionInterface
      * merge option values related to the provided option name.
      *
      * @param string $name
+     * @param array  $options
      *
      * @throws \RuntimeException
      */
-    public function mergeOption($name, array $options = []);
+    public function mergeOption(string $name, array $options = []);
 
     /**
      * merge options values.
+     *
+     * @param array $options
      */
     public function mergeOptions(array $options = []);
 
@@ -276,28 +287,28 @@ interface FieldDescriptionInterface
      *
      * @return string
      */
-    public function getTranslationDomain();
+    public function getTranslationDomain(): string;
 
     /**
      * Returns true if field is sortable.
      *
      * @return bool
      */
-    public function isSortable();
+    public function isSortable(): bool;
 
     /**
      * Returns the field mapping definition used when sorting.
      *
      * @return array the field mapping definition
      */
-    public function getSortFieldMapping();
+    public function getSortFieldMapping(): array;
 
     /**
      * Returns the parent association mapping definitions used when sorting.
      *
      * @return array the parent association mapping definitions
      */
-    public function getSortParentAssociationMapping();
+    public function getSortParentAssociationMapping(): array;
 
     /**
      * @param object|null $object
@@ -305,5 +316,5 @@ interface FieldDescriptionInterface
      *
      * @return mixed
      */
-    public function getFieldValue($object, $fieldName);
+    public function getFieldValue(?object $object, string $fieldName);
 }

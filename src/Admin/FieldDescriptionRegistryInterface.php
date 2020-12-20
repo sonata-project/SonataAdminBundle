@@ -36,7 +36,7 @@ interface FieldDescriptionRegistryInterface
      *
      * @return FieldDescriptionInterface|null // NEXT_MAJOR: Return FieldDescriptionInterface
      */
-    public function getFormFieldDescription($name);
+    public function getFormFieldDescription(string $name): ?FieldDescriptionInterface;
 
     // NEXT_MAJOR: Uncomment the following line.
     //public function hasFormFieldDescription(string $name): bool;
@@ -52,7 +52,7 @@ interface FieldDescriptionRegistryInterface
      *
      * @return FieldDescriptionInterface[] collection of form FieldDescription
      */
-    public function getFormFieldDescriptions();
+    public function getFormFieldDescriptions(): array;
 
     // NEXT_MAJOR: Uncomment the following line.
     //public function getShowFieldDescription(string $name): FieldDescriptionInterface;
@@ -64,16 +64,17 @@ interface FieldDescriptionRegistryInterface
      *
      * @return bool
      */
-    public function hasShowFieldDescription($name);
+    public function hasShowFieldDescription(string $name): bool;
 
     /**
      * Adds a FieldDescription.
      *
-     * @param string $name
+     * @param string                    $name
+     * @param FieldDescriptionInterface $fieldDescription
      *
      * @return void
      */
-    public function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+    public function addShowFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void;
 
     /**
      * Removes a ShowFieldDescription.
@@ -82,7 +83,7 @@ interface FieldDescriptionRegistryInterface
      *
      * @return void
      */
-    public function removeShowFieldDescription($name);
+    public function removeShowFieldDescription(string $name): void;
 
     // NEXT_MAJOR: Uncomment the following line.
     //public function getShowFieldDescriptions(): array;
@@ -96,11 +97,12 @@ interface FieldDescriptionRegistryInterface
     /**
      * Adds a list FieldDescription.
      *
-     * @param string $name
+     * @param string                    $name
+     * @param FieldDescriptionInterface $fieldDescription
      *
      * @return void
      */
-    public function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+    public function addListFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void;
 
     /**
      * Removes a list FieldDescription.
@@ -109,7 +111,7 @@ interface FieldDescriptionRegistryInterface
      *
      * @return void
      */
-    public function removeListFieldDescription($name);
+    public function removeListFieldDescription(string $name): void;
 
     // NEXT_MAJOR: Uncomment the following line.
     //public function getListFieldDescriptions(): array;
@@ -119,7 +121,7 @@ interface FieldDescriptionRegistryInterface
      *
      * @return FieldDescriptionCollection
      */
-    public function getList();
+    public function getList(): FieldDescriptionCollection;
 
     /**
      * Returns a filter FieldDescription.
@@ -128,7 +130,7 @@ interface FieldDescriptionRegistryInterface
      *
      * @return FieldDescriptionInterface|null // NEXT_MAJOR: Remove the null return type
      */
-    public function getFilterFieldDescription($name);
+    public function getFilterFieldDescription(string $name): ?FieldDescriptionInterface;
 
     /**
      * Returns true if the filter FieldDescription exists.
@@ -137,16 +139,17 @@ interface FieldDescriptionRegistryInterface
      *
      * @return bool
      */
-    public function hasFilterFieldDescription($name);
+    public function hasFilterFieldDescription(string $name): bool;
 
     /**
      * Adds a filter FieldDescription.
      *
-     * @param string $name
+     * @param string                    $name
+     * @param FieldDescriptionInterface $fieldDescription
      *
      * @return void
      */
-    public function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+    public function addFilterFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void;
 
     /**
      * Removes a filter FieldDescription.
@@ -155,12 +158,12 @@ interface FieldDescriptionRegistryInterface
      *
      * @return void
      */
-    public function removeFilterFieldDescription($name);
+    public function removeFilterFieldDescription(string $name): void;
 
     /**
      * Returns the filter FieldDescription collection.
      *
      * @return FieldDescriptionInterface[]
      */
-    public function getFilterFieldDescriptions();
+    public function getFilterFieldDescriptions(): array;
 }

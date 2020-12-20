@@ -29,7 +29,7 @@ interface AccessRegistryInterface
      *
      * @return array<string, string|string[]>
      */
-    public function getAccessMapping();
+    public function getAccessMapping(): array;
 
     /**
      * Hook to handle access authorization.
@@ -39,7 +39,7 @@ interface AccessRegistryInterface
      *
      * @phpstan-param T|null $object
      */
-    public function checkAccess($action, $object = null);
+    public function checkAccess(string $action, $object = null): void;
 
     /*
      * Hook to handle access authorization, without throwing an exception.

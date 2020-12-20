@@ -99,9 +99,9 @@ class Pool
      */
     public function __construct(
         ContainerInterface $container,
-        $title,
-        $logoTitle,
-        $options = [],
+        string $title,
+        string $logoTitle,
+        array $options = [],
         ?PropertyAccessorInterface $propertyAccessor = null
     ) {
         $this->container = $container;
@@ -125,7 +125,7 @@ class Pool
     /**
      * @return array<string, array<string, AdminInterface>>
      */
-    public function getGroups()
+    public function getGroups(): array
     {
         $groups = $this->adminGroups;
 
@@ -145,7 +145,7 @@ class Pool
      *
      * @return bool
      */
-    public function hasGroup($group)
+    public function hasGroup(string $group): bool
     {
         return isset($this->adminGroups[$group]);
     }
@@ -153,7 +153,7 @@ class Pool
     /**
      * @return array
      */
-    public function getDashboardGroups()
+    public function getDashboardGroups(): array
     {
         $groups = $this->adminGroups;
 
@@ -192,7 +192,7 @@ class Pool
      *
      * @return AdminInterface[]
      */
-    public function getAdminsByGroup($group)
+    public function getAdminsByGroup(string $group): array
     {
         if (!isset($this->adminGroups[$group])) {
             throw new \InvalidArgumentException(sprintf('Group "%s" not found in admin pool.', $group));
@@ -224,7 +224,7 @@ class Pool
      * @phpstan-param class-string<T> $class
      * @phpstan-return AdminInterface<T>|null
      */
-    public function getAdminByClass($class)
+    public function getAdminByClass(string $class): ?AdminInterface
     {
         if (!$this->hasAdminByClass($class)) {
             @trigger_error(sprintf(
@@ -261,13 +261,17 @@ class Pool
      *
      * @phpstan-param class-string $class
      */
-    public function hasAdminByClass($class)
+    public function hasAdminByClass(string $class): bool
     {
         return isset($this->adminClasses[$class]);
     }
 
     /**
      * @phpstan-param class-string $class
+     *
+     * @param string $class
+     *
+     * @return bool
      */
     public function hasSingleAdminByClass(string $class): bool
     {
@@ -288,7 +292,7 @@ class Pool
      *
      * @return AdminInterface|false
      */
-    public function getAdminByAdminCode($adminCode)
+    public function getAdminByAdminCode(string $adminCode)
     {
         if (!\is_string($adminCode)) {
             @trigger_error(sprintf(
@@ -352,6 +356,10 @@ class Pool
 
     /**
      * Checks if an admin with a certain admin code exists.
+     *
+     * @param string $adminCode
+     *
+     * @return bool
      */
     final public function hasAdminByAdminCode(string $adminCode): bool
     {
@@ -376,7 +384,7 @@ class Pool
      *
      * @return AdminInterface
      */
-    public function getInstance($id)
+    public function getInstance(string $id): AdminInterface
     {
         if (!\in_array($id, $this->adminServiceIds, true)) {
             $msg = sprintf('Admin service "%s" not found in admin pool.', $id);
@@ -422,7 +430,7 @@ class Pool
      *
      * @return ContainerInterface
      */
-    public function getContainer()
+    public function getContainer(): ContainerInterface
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
@@ -435,9 +443,11 @@ class Pool
     }
 
     /**
+     * @param array $adminGroups
+     *
      * @return void
      */
-    public function setAdminGroups(array $adminGroups)
+    public function setAdminGroups(array $adminGroups): void
     {
         $this->adminGroups = $adminGroups;
     }
@@ -445,15 +455,17 @@ class Pool
     /**
      * @return array
      */
-    public function getAdminGroups()
+    public function getAdminGroups(): array
     {
         return $this->adminGroups;
     }
 
     /**
+     * @param array $adminServiceIds
+     *
      * @return void
      */
-    public function setAdminServiceIds(array $adminServiceIds)
+    public function setAdminServiceIds(array $adminServiceIds): void
     {
         $this->adminServiceIds = $adminServiceIds;
     }
@@ -461,7 +473,7 @@ class Pool
     /**
      * @return string[]
      */
-    public function getAdminServiceIds()
+    public function getAdminServiceIds(): array
     {
         return $this->adminServiceIds;
     }
@@ -473,7 +485,7 @@ class Pool
      *
      * @return void
      */
-    public function setAdminClasses(array $adminClasses)
+    public function setAdminClasses(array $adminClasses): void
     {
         $this->adminClasses = $adminClasses;
     }
@@ -483,13 +495,15 @@ class Pool
      *
      * @phpstan-return array<class-string, string[]>
      */
-    public function getAdminClasses()
+    public function getAdminClasses(): array
     {
         return $this->adminClasses;
     }
 
     /**
      * NEXT_MAJOR: change to TemplateRegistryInterface.
+     *
+     * @param MutableTemplateRegistryInterface $templateRegistry
      */
     final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void
     {
@@ -497,11 +511,13 @@ class Pool
     }
 
     /**
-     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     * @param array<string, string> $templates
      *
      * @return void
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     *
      */
-    public function setTemplates(array $templates)
+    public function setTemplates(array $templates): void
     {
         // NEXT MAJOR: Remove this line
         $this->templates = $templates;
@@ -514,7 +530,7 @@ class Pool
      *
      * @return array<string, string>
      */
-    public function getTemplates()
+    public function getTemplates(): array
     {
         return $this->templateRegistry->getTemplates();
     }
@@ -526,7 +542,7 @@ class Pool
      *
      * @return string|null
      */
-    public function getTemplate($name)
+    public function getTemplate(string $name): ?string
     {
         return $this->templateRegistry->getTemplate($name);
     }
@@ -534,7 +550,7 @@ class Pool
     /**
      * @return string
      */
-    public function getTitleLogo()
+    public function getTitleLogo(): string
     {
         return $this->titleLogo;
     }
@@ -542,7 +558,7 @@ class Pool
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -553,7 +569,7 @@ class Pool
      *
      * @return mixed
      */
-    public function getOption($name, $default = null)
+    public function getOption(string $name, $default = null)
     {
         if (isset($this->options[$name])) {
             return $this->options[$name];
@@ -565,7 +581,7 @@ class Pool
     /**
      * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0. Use Symfony "PropertyAccess" instead.
      */
-    public function getPropertyAccessor()
+    public function getPropertyAccessor(): ?PropertyAccessorInterface
     {
         @trigger_error(sprintf(
             'The "%s" method is deprecated since version 3.x and will be removed in 4.0.',
