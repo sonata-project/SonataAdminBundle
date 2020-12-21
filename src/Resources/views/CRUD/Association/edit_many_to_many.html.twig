@@ -17,7 +17,7 @@ file that was distributed with this source code.
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    {% for field_name, nested_field in form.children[0].children %}
+                                    {% for field_name, nested_field in (form.children|first).children %}
                                         {% if field_name == '_delete' %}
                                             <th>{{ 'action_delete'|trans({}, 'SonataAdminBundle') }}</th>
                                         {% else %}
