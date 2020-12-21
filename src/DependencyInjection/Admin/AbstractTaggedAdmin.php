@@ -358,6 +358,8 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 
     /**
      * @final since sonata-admin/admin-bundle 3.x
+     *
+     * @phpstan-return ModelManagerInterface<T>
      */
     public function getModelManager()
     {

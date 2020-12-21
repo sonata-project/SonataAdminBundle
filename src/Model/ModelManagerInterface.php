@@ -25,6 +25,8 @@ use Sonata\Exporter\Source\SourceIteratorInterface;
  * A model manager is a bridge between the model classes and the admin functionality.
  *
  * @method bool supportsQuery(object $query)
+ *
+ * @phpstan-template T of object
  */
 interface ModelManagerInterface extends DatagridManagerInterface
 {
@@ -34,7 +36,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return FieldDescriptionInterface
      *
-     * @phpstan-param class-string $class
+     * @phpstan-param class-string<T> $class
      */
     public function getNewFieldDescriptionInstance($class, $name, array $options = []);
 
@@ -42,6 +44,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param object $object
      *
      * @throws ModelManagerException
+     *
+     * @phpstan-param T $object
      */
     public function create($object);
 
@@ -49,6 +53,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param object $object
      *
      * @throws ModelManagerException
+     *
+     * @phpstan-param T $object
      */
     public function update($object);
 
@@ -56,6 +62,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param object $object
      *
      * @throws ModelManagerException
+     *
+     * @phpstan-param T $object
      */
     public function delete($object);
 
@@ -65,7 +73,6 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object[] all objects matching the criteria
      *
-     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T[]
      */
@@ -77,7 +84,6 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object|null an object matching the criteria or null if none match
      *
-     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T|null
      */
@@ -89,7 +95,6 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object|null the object with id or null if not found
      *
-     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T|null
      */
@@ -100,7 +105,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @throws ModelManagerException
      *
-     * @phpstan-param class-string $class
+     * @phpstan-param class-string<T> $class
      */
     public function batchDelete($class, ProxyQueryInterface $query);
 
@@ -122,7 +127,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return ProxyQueryInterface
      *
-     * @phpstan-param class-string $class
+     * @phpstan-param class-string<T> $class
      */
     public function createQuery($class);
 
@@ -151,6 +156,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param object $model
      *
      * @return array<int|string> list of all identifiers of this model
+     *
+     * @phpstan-param T $model
      */
     public function getIdentifierValues($model);
 
@@ -162,7 +169,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return string[]
      *
-     * @phpstan-param class-string $class
+     * @phpstan-param class-string<T> $class
      */
     public function getIdentifierFieldNames($class);
 
@@ -173,6 +180,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return string|null a string representation of the identifiers for this
      *                     instance
+     *
+     * @phpstan-param T $model
      */
     public function getNormalizedIdentifier($model);
 
@@ -185,6 +194,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param object $model
      *
      * @return string|null string representation of the id that is safe to use in a url
+     *
+     * @phpstan-param T $model
      */
     public function getUrlSafeIdentifier($model);
 
@@ -195,7 +206,6 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object
      *
-     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T
      */
@@ -278,7 +288,6 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object
      *
-     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T
      */
@@ -294,7 +303,6 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object
      *
-     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T
      */
@@ -350,7 +358,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param string                 $class
      * @param array<int, int|string> $idx
      *
-     * @phpstan-param class-string $class
+     * @phpstan-param class-string<T> $class
      */
     public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx);
 }

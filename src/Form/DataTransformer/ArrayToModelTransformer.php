@@ -26,7 +26,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 class ArrayToModelTransformer implements DataTransformerInterface
 {
     /**
-     * @var ModelManagerInterface
+     * @var ModelManagerInterface<T>
      */
     protected $modelManager;
 
