@@ -710,7 +710,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             }
         }
 
-        if (!$this->determinedPerPageValue($parameters['_per_page'])) {
+        if (!isset($parameters['_per_page']) || !$this->determinedPerPageValue($parameters['_per_page'])) {
             $parameters['_per_page'] = $this->getMaxPerPage();
         }
 
