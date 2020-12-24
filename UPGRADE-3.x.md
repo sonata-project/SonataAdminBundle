@@ -1,6 +1,44 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.xx to 3.xx
+=========================
+
+### `RouteCollection` now implements `RouteCollectionInterface`
+
+In 4.0, `AbstractAdmin::configureRoutes` and `AdminExtensionInterface::configureRoutes` will receive a
+`RouteCollectionInterface` instance instead of a `RouteCollection` instance, you can update your code before ugprading
+to 4.0.
+
+Before:
+```php
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Route\RouteCollection;
+
+final class MyAdmin extends AbstractAdmin
+{
+    protected function configureRoutes(RouteCollection $collection): void
+    {
+        $collection->add('my_route');
+    }
+}
+```
+
+After:
+```php
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
+
+final class MyAdmin extends AbstractAdmin
+{
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
+        $collection->add('my_route');
+    }
+}
+```
+This only will work with PHP >= 7.4, where fully support to contravariance was added.
+
 ### Sonata\AdminBundle\Admin\BaseFieldDescription
 
 Method `__construct()` has been updated to receive the field name as argument 6:
