@@ -79,6 +79,7 @@ final class DashboardAction
             'base_template' => $request->isXmlHttpRequest() ?
                 $this->templateRegistry->getTemplate('ajax') :
                 $this->templateRegistry->getTemplate('layout'),
+            // NEXT_MAJOR: Remove next line.
             'admin_pool' => $this->pool,
             'blocks' => $blocks,
         ];

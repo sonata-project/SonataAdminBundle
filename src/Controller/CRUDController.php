@@ -1080,6 +1080,7 @@ class CRUDController implements ContainerAwareInterface
 
         $parameters['admin'] = $parameters['admin'] ?? $this->admin;
         $parameters['base_template'] = $parameters['base_template'] ?? $this->getBaseTemplate();
+        // NEXT_MAJOR: Remove next line.
         $parameters['admin_pool'] = $this->get('sonata.admin.pool');
 
         return $parameters;

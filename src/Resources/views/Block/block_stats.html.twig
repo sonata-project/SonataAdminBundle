@@ -17,10 +17,10 @@ file that was distributed with this source code.
     <!-- small box -->
     <div class="small-box {{ settings.color }}">
         <div class="inner">
-            <h3>{{ pager.count() }}</h3>
+            <h3>{{ pager.getNbResults() }}</h3>
             <p>
                 {% if translation_domain %}
-                    {{ settings.text|trans({'%count%': pager.count()}, translation_domain) }}
+                    {{ settings.text|trans({'%count%': pager.getNbResults()}, translation_domain) }}
                 {% else %}
                     {{ settings.text }}
                 {% endif %}

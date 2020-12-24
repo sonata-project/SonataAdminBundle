@@ -38,12 +38,18 @@
                     {% if admin.hasRoute('create') and admin.hasAccess('create') %}
                         {% if admin.subClasses is empty %}
                             <li role="presentation">
-                                <a role="menuitem" tabindex="-1" href="{{ admin.generateUrl('create') }}">{{ admin.label|trans({}, admin.translationdomain) }}</a>
+                                <a role="menuitem" tabindex="-1" href="{{ admin.generateUrl('create') }}">
+                                    {% if admin.label is not empty %}
+                                        {{ admin.label|trans({}, admin.translationdomain) }}
+                                    {% endif %}
+                                </a>
                             </li>
                         {% else %}
                             {% for subclass in admin.subclasses|keys %}
                                 <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">{{ subclass|trans({}, admin.translationdomain) }}</a>
+                                    <a role="menuitem" tabindex="-1" href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">
+                                        {{ subclass|trans({}, admin.translationdomain) }}
+                                    </a>
                                 </li>
                             {% endfor %}
                         {% endif %}

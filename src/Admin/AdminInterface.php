@@ -13,37 +13,25 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
-use Knp\Menu\FactoryInterface as MenuFactoryInterface;
 use Knp\Menu\ItemInterface;
-use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
-use Sonata\AdminBundle\Builder\FormContractorInterface;
-use Sonata\AdminBundle\Builder\ListBuilderInterface;
-use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Exporter\DataSourceInterface;
-use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\Object\MetadataInterface;
-use Sonata\AdminBundle\Route\RouteGeneratorInterface;
-use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryAwareInterface;
-use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
+ * NEXT_MAJOR: Add all these methods to the interface by uncommenting them.
+ *
  * @method array                           configureActionButtons(string $action, ?object $object = null)
  * @method string                          getSearchResultLink(object $object)
- * @method void                            showMosaicButton(bool $isShown)
- * @method bool                            isDefaultFilter(string $name)                                         // NEXT_MAJOR: Remove this
  * @method bool                            isCurrentRoute(string $name, ?string $adminCode)
  * @method bool                            canAccessObject(string $action, object $object)
  * @method mixed                           getPersistentParameter(string $name)
@@ -53,82 +41,24 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @method string                          getRootCode()
  * @method array                           getActionButtons(string $action, ?object $object)
  * @method FieldDescriptionCollection|null getList()
- * @method void                            setFilterPersister(?FilterPersisterInterface $filterPersister = null)
  * @method string                          getBaseRoutePattern()
  * @method string                          getBaseRouteName()
  * @method ItemInterface                   getSideMenu(string $action, ?AdminInterface $childAdmin = null)
  * @method void                            addParentAssociationMapping(string $code, string $value)
- * @method RouteGeneratorInterface         getRouteGenerator()
  * @method string                          getClassnameLabel()
  * @method AdminInterface|null             getCurrentChildAdmin()
  * @method string|null                     getParentAssociationMapping()
  * @method void                            reorderFormGroup(string $group, array $keys)
  * @method void                            defineFormBuilder(FormBuilderInterface $formBuilder)
- * @method string                          getPagerType()
- * @method DataSourceInterface|null        getDataSource()
  *
  * @phpstan-template T of object
+ * @phpstan-extends TaggedAdminInterface<T>
  * @phpstan-extends AccessRegistryInterface<T>
  * @phpstan-extends UrlGeneratorInterface<T>
  * @phpstan-extends LifecycleHookProviderInterface<T>
  */
-interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface, MutableTemplateRegistryAwareInterface
+interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface, MutableTemplateRegistryAwareInterface
 {
-    /**
-     * @return void
-     */
-    public function setMenuFactory(MenuFactoryInterface $menuFactory);
-
-    /**
-     * @return MenuFactoryInterface
-     */
-    public function getMenuFactory();
-
-    /**
-     * @return void
-     */
-    public function setFormContractor(FormContractorInterface $formContractor);
-
-    /**
-     * @return void
-     */
-    public function setListBuilder(ListBuilderInterface $listBuilder);
-
-    /**
-     * @return ListBuilderInterface
-     */
-    public function getListBuilder();
-
-    /**
-     * @return void
-     */
-    public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder);
-
-    /**
-     * @return DatagridBuilderInterface
-     */
-    public function getDatagridBuilder();
-
-    /**
-     * @return void
-     */
-    public function setTranslator(TranslatorInterface $translator);
-
-    /**
-     * @return TranslatorInterface
-     */
-    public function getTranslator();
-
-    /**
-     * @return void
-     */
-    public function setRequest(Request $request);
-
-    /**
-     * @return void
-     */
-    public function setConfigurationPool(Pool $pool);
-
     /**
      * Returns subjectClass/class/subclass name managed
      * - subclass name if subclass parameter is defined
@@ -145,9 +75,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @return void
      */
     public function attachAdminClass(FieldDescriptionInterface $fieldDescription);
-
-    // NEXT_MAJOR: uncomment this method in 4.0
-    //public function getPagerType(): string;
 
     /**
      * @return DatagridInterface
@@ -171,19 +98,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getBaseControllerName();
 
     /**
-     * @return ModelManagerInterface
-     */
-    public function getModelManager();
-
-    // NEXT_MAJOR: Uncomment the next line.
-    // public function getDataSource(): DataSourceInterface;
-
-    /**
-     * @return string the manager type of the admin
-     */
-    public function getManagerType();
-
-    /**
      * @param string $context NEXT_MAJOR: remove this argument
      *
      * @return ProxyQueryInterface
@@ -201,6 +115,11 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @return FormInterface
      */
     public function getForm();
+
+    /**
+     * @return void
+     */
+    public function setRequest(Request $request);
 
     /**
      * NEXT MAJOR: Remove the throws tag.
@@ -226,16 +145,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @return string
      */
     public function getBaseCodeRoute();
-
-    /**
-     * Return the roles and permissions per role
-     * - different permissions per role for the acl handler
-     * - one permission that has the same name as the role for the role handler
-     * This should be used by experimented users.
-     *
-     * @return array<string, string[]> 'role' => ['permission', 'permission']
-     */
-    public function getSecurityInformation();
 
     /**
      * @return void
@@ -288,16 +197,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function hasRoute($name);
 
     /**
-     * @return void
-     */
-    public function setSecurityHandler(SecurityHandlerInterface $securityHandler);
-
-    /**
-     * @return SecurityHandlerInterface|null
-     */
-    public function getSecurityHandler();
-
-    /**
      * @param string|array $name
      * @param object|null  $object
      *
@@ -326,26 +225,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @phpstan-param T $model
      */
     public function id($model);
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @param ValidatorInterface $validator
-     *
-     * @return void
-     *
-     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0
-     */
-    public function setValidator($validator);
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @return ValidatorInterface
-     *
-     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0
-     */
-    public function getValidator();
 
     /**
      * @return FieldDescriptionCollection|null
@@ -390,16 +269,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getExtensions();
 
     /**
-     * @return void
-     */
-    public function setRouteBuilder(RouteBuilderInterface $routeBuilder);
-
-    /**
-     * @return RouteBuilderInterface
-     */
-    public function getRouteBuilder();
-
-    /**
      * @param object|null $object NEXT_MAJOR: Use `object` as type declaration for argument 1
      *
      * @return string
@@ -407,16 +276,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @phpstan-param T $object
      */
     public function toString($object);
-
-    /**
-     * @return void
-     */
-    public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy);
-
-    /**
-     * @return LabelTranslatorStrategyInterface
-     */
-    public function getLabelTranslatorStrategy();
 
     /**
      * Returning true will enable preview mode for
@@ -521,6 +380,10 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getDataSourceIterator();
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-admin/admin-bundle 3.x
+     *
      * @return void
      */
     public function configure();
@@ -781,13 +644,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getBatchActions();
 
     /**
-     * Returns Admin`s label.
-     *
-     * @return string
-     */
-    public function getLabel();
-
-    /**
      * Returns an array of persistent parameters.
      *
      * @return array<string, mixed>
@@ -884,16 +740,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
 //    NEXT_MAJOR: uncomment this method in 4.0
 //    /**
-//     * Setting to true will enable mosaic button for the admin screen.
-//     * Setting to false will hide mosaic button for the admin screen.
-//     */
-//    public function showMosaicButton(bool $isShown): void;
-
-//    NEXT_MAJOR: uncomment this method in 4.0
-//    public function setFilterPersister(?\Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface\FilterPersisterInterface $filterPersister = null): void;
-
-//    NEXT_MAJOR: uncomment this method in 4.0
-//    /**
 //     * Returns the baseRoutePattern used to generate the routing information.
 //     */
 //    public function getBaseRoutePattern(): string;
@@ -909,9 +755,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
 //    NEXT_MAJOR: uncomment this method in 4.0
 //    public function addParentAssociationMapping(string $code, string $value): void;
-
-//    NEXT_MAJOR: uncomment this method in 4.0
-//    public function getRouteGenerator(): \Sonata\AdminBundle\Route\RouteGeneratorInterface;
 
 //    NEXT_MAJOR: uncomment this method in 4.0
 //    /**

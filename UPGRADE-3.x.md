@@ -39,6 +39,23 @@ final class MyAdmin extends AbstractAdmin
 ```
 This only will work with PHP >= 7.4, where fully support to contravariance was added.
 
+### Sonata\AdminBundle\Admin\BaseFieldDescription
+
+Method `__construct()` has been updated to receive the field name as argument 6:
+
+```php
+public function __construct(
+    ?string $name = null,
+    array $options = [],
+    array $fieldMapping = [],
+    array $associationMapping = [],
+    array $parentAssociationMappings = [],
+    ?string $fieldName = null
+) {
+```
+
+Deprecated `Sonata\AdminBundle\Admin\BaseFieldDescription::setFieldName()`.
+
 UPGRADE FROM 3.82 to 3.83
 =========================
 
