@@ -30,12 +30,12 @@ use Twig\TwigFilter;
 final class RenderElementExtension extends AbstractExtension
 {
     /**
-     * @var LoggerInterface
+     * @var LoggerInterface|null
      */
-    protected $logger;
+    private $logger;
 
     /**
-     * @var ContainerInterface
+     * @var ContainerInterface|null
      */
     private $templateRegistries;
 
@@ -45,6 +45,8 @@ final class RenderElementExtension extends AbstractExtension
     private $propertyAccessor;
 
     /**
+     * NEXT_MAJOR: Make $templateRegistries mandatory.
+     *
      * @internal This class should only be used through Twig
      */
     public function __construct(
@@ -268,8 +270,9 @@ final class RenderElementExtension extends AbstractExtension
 
         if (null === $propertyPath) {
             // For BC kept associated_tostring option behavior
+            // NEXT_MAJOR Remove next line.
             $method = $fieldDescription->getOption('associated_tostring');
-
+            // NEXT_MAJOR: Remove the "if" part and leave the "else" part
             if ($method) {
                 @trigger_error(
                     'Option "associated_tostring" is deprecated since version 2.3 and will be removed in 4.0. Use "associated_property" instead.',
@@ -300,8 +303,9 @@ final class RenderElementExtension extends AbstractExtension
     }
 
     /**
-     * NEXT_MAJOR: Make this method protected
-     * Get template.
+     * NEXT_MAJOR: Make this method private.
+     *
+     * @internal This method will be private in the next major version
      *
      * @param string $defaultTemplate
      *
@@ -339,8 +343,6 @@ final class RenderElementExtension extends AbstractExtension
     }
 
     /**
-     * NEXT MAJOR: Make this method private.
-     *
      * Extracts the object and requested value from the $listElement.
      *
      * @param object|array $listElement
@@ -349,7 +351,7 @@ final class RenderElementExtension extends AbstractExtension
      *
      * @return array An array containing object and value
      */
-    public function getObjectAndValueFromListElement(
+    private function getObjectAndValueFromListElement(
         $listElement,
         FieldDescriptionInterface $fieldDescription
     ): array {

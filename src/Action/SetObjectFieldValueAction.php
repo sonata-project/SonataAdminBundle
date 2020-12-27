@@ -210,6 +210,7 @@ final class SetObjectFieldValueAction
         $extension = $this->twig->getExtension(SonataAdminExtension::class);
         \assert($extension instanceof SonataAdminExtension);
 
+        // NEXT_MAJOR: Remove the last two arguments
         $content = $extension->renderListElement($this->twig, $rootObject, $fieldDescription, [], 'sonata_deprecation_mute');
 
         return new JsonResponse($content, Response::HTTP_OK);

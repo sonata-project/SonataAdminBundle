@@ -476,7 +476,7 @@ class SonataAdminExtensionTest extends TestCase
     {
         $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderListElement method is deprecated in favor of RenderElementExtension::renderListElement since version 3.x and will be removed in 4.0.');
 
-        $this->expectDeprecation('Accessing a non existing value is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.');
+        $this->expectDeprecation('Accessing a non existing value for the field "fd_name" is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.');
 
         // NEXT_MAJOR: Remove this line
         $this->admin

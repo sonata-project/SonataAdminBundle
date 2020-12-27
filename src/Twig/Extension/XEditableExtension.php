@@ -72,14 +72,6 @@ final class XEditableExtension extends AbstractExtension
     }
 
     /**
-     * @param string[] $xEditableTypeMapping
-     */
-    public function setXEditableTypeMapping($xEditableTypeMapping)
-    {
-        $this->xEditableTypeMapping = $xEditableTypeMapping;
-    }
-
-    /**
      * Return xEditable choices based on the field description choices options & catalogue options.
      * With the following choice options:
      *     ['Status1' => 'Alias1', 'Status2' => 'Alias2']

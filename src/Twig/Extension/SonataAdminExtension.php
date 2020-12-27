@@ -754,34 +754,4 @@ EOT;
 
         return $this->renderElementExtension->getTemplate($fieldDescription, $defaultTemplate, $$environment);
     }
-
-    /**
-     * NEXT_MAJOR: Remove this method
-     * Extracts the object and requested value from the $listElement.
-     *
-     * @param object|array $listElement
-     *
-     * @throws \TypeError when $listElement is not an object or an array with an object on offset 0
-     *
-     * @return array An array containing object and value
-     *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
-     */
-    private function getObjectAndValueFromListElement(
-        $listElement,
-        FieldDescriptionInterface $fieldDescription
-    ): array {
-        if ('sonata_deprecation_mute' !== (\func_get_args()[2] ?? null)) {
-            @trigger_error(sprintf(
-                'The %s method is deprecated in favor of RenderElementExtension::getObjectAndValueFromListElement since version 3.x and will be removed in 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
-        if (null === $this->renderElementExtension) {
-            $this->renderElementExtension = new RenderElementExtension($this->propertyAccessor, $this->templateRegistries, $this->logger);
-        }
-
-        return $this->renderElementExtension->getObjectAndValueFromListElement($listElement, $fieldDescription);
-    }
 }

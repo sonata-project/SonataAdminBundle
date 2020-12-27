@@ -33,6 +33,8 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
 use Symfony\Component\Routing\RequestContext;
@@ -50,6 +52,22 @@ use Twig\Extra\String\StringExtension;
 final class RenderElementExtensionTest extends TestCase
 {
     use ExpectDeprecationTrait;
+    private const X_EDITABLE_TYPE_MAPPING = [
+        'choice' => 'select',
+        'boolean' => 'select',
+        'text' => 'text',
+        'textarea' => 'textarea',
+        'html' => 'textarea',
+        'email' => 'email',
+        'string' => 'text',
+        'smallint' => 'text',
+        'bigint' => 'text',
+        'integer' => 'number',
+        'decimal' => 'number',
+        'currency' => 'number',
+        'percent' => 'number',
+        'url' => 'url',
+    ];
 
     /**
      * @var RenderElementExtension
@@ -115,28 +133,14 @@ final class RenderElementExtensionTest extends TestCase
     {
         date_default_timezone_set('Europe/London');
 
-        $xEditableTypeMapping = [
-            'choice' => 'select',
-            'boolean' => 'select',
-            'text' => 'text',
-            'textarea' => 'textarea',
-            'html' => 'textarea',
-            'email' => 'email',
-            'string' => 'text',
-            'smallint' => 'text',
-            'bigint' => 'text',
-            'integer' => 'number',
-            'decimal' => 'number',
-            'currency' => 'number',
-            'percent' => 'number',
-            'url' => 'url',
-        ];
-
         $container = new Container();
 
-        $this->pool = new Pool($container, '', '');
-        $this->pool->setAdminServiceIds(['sonata_admin_foo_service']);
-        $this->pool->setAdminClasses(['fooClass' => ['sonata_admin_foo_service']]);
+        $this->pool = new Pool(
+            $container,
+            ['sonata_admin_foo_service'],
+            [],
+            ['fooClass' => ['sonata_admin_foo_service']]
+        );
 
         $this->logger = $this->getMockForAbstractClass(LoggerInterface::class);
 
@@ -174,53 +178,13 @@ final class RenderElementExtensionTest extends TestCase
             'optimizations' => 0,
         ]);
 
-        //NEXT_MAJOR: Remove follwing block
-        /**
-         * @var AuthorizationCheckerInterface
-         */
-        $securityChecker = $this->createStub(AuthorizationCheckerInterface::class);
-        $this->twigExtension = new SonataAdminExtension(
-            $this->pool,
-            $this->logger,
-            $this->translator,
-            $this->container,
-            $propertyAccessor,
-            $securityChecker
-        );
-        $this->twigExtension->setXEditableTypeMapping($xEditableTypeMapping, 'sonata_deprecation_mute');
-        $this->environment->addExtension($this->twigExtension);
-        // block ends
-
-        //NEXT_MAJOR: Uncomment block below
-        /*
         $this->twigExtension = new RenderElementExtension(
             $propertyAccessor,
             $this->container,
             $this->logger,
         );
-        $this->environment->addExtension($this->twigExtension);
-        // xeditable extension
-        $xEditableExtension = new XEditableExtension($translator, $xEditableTypeMapping);
-        $xEditableExtension->setXEditableTypeMapping($xEditableTypeMapping);
-        $this->environment->addExtension($xEditableExtension);
-        */
 
-        $this->environment->addExtension(new TranslationExtension($translator));
-        $this->environment->addExtension(new FakeTemplateRegistryExtension());
-
-        // routing extension
-        $xmlFileLoader = new XmlFileLoader(new FileLocator([sprintf('%s/../../../src/Resources/config/routing', __DIR__)]));
-        $routeCollection = $xmlFileLoader->load('sonata_admin.xml');
-
-        $xmlFileLoader = new XmlFileLoader(new FileLocator([sprintf('%s/../../Fixtures/Resources/config/routing', __DIR__)]));
-
-        $testRouteCollection = $xmlFileLoader->load('routing.xml');
-
-        $routeCollection->addCollection($testRouteCollection);
-        $requestContext = new RequestContext();
-        $urlGenerator = new UrlGenerator($routeCollection, $requestContext);
-        $this->environment->addExtension(new RoutingExtension($urlGenerator));
-        $this->environment->addExtension(new StringExtension());
+        $this->registerRequiredTwigExtensions($propertyAccessor);
 
         // initialize object
         $this->object = new \stdClass();
@@ -241,12 +205,6 @@ final class RenderElementExtensionTest extends TestCase
             ->method('getNormalizedIdentifier')
             ->with($this->equalTo($this->object))
             ->willReturn(12345);
-
-        $this->admin
-            ->method('trans')
-            ->willReturnCallback(static function ($id, $parameters = [], $domain = null) use ($translator) {
-                return $translator->trans($id, $parameters, $domain);
-            });
 
         $this->adminBar = $this->createMock(AbstractAdmin::class);
         $this->adminBar
@@ -277,8 +235,9 @@ final class RenderElementExtensionTest extends TestCase
     }
 
     /**
+     * NEXT_MAJOR: Remove legacy group.
+     *
      * @group legacy
-     * @expectedDeprecation The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
      * @dataProvider getRenderListElementTests
      */
     public function testRenderListElement(string $expected, string $type, $value, array $options): void
@@ -356,6 +315,9 @@ final class RenderElementExtensionTest extends TestCase
                 }
             });
 
+        // NEXT_MAJOR: Remove next line.
+        $this->expectDeprecation('The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).');
+
         $this->assertSame(
             $this->removeExtraWhitespace($expected),
             $this->removeExtraWhitespace($this->twigExtension->renderListElement(
@@ -367,10 +329,9 @@ final class RenderElementExtensionTest extends TestCase
     }
 
     /**
-     * NEXT_MAJOR: Remove @expectedDeprecation.
+     * NEXT_MAJOR: Remove legacy group.
      *
      * @group legacy
-     * @expectedDeprecation The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
      */
     public function testRenderListElementWithAdditionalValuesInArray(): void
     {
@@ -387,6 +348,9 @@ final class RenderElementExtensionTest extends TestCase
             ->method('getTemplate')
             ->willReturn('@SonataAdmin/CRUD/list_string.html.twig');
 
+        // NEXT_MAJOR: Remove next line.
+        $this->expectDeprecation('The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).');
+
         $this->assertSame(
             $this->removeExtraWhitespace('<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> Extra value </td>'),
             $this->removeExtraWhitespace($this->twigExtension->renderListElement(
@@ -398,10 +362,9 @@ final class RenderElementExtensionTest extends TestCase
     }
 
     /**
-     * NEXT_MAJOR: Remove @expectedDeprecation.
+     * NEXT_MAJOR: Remove legacy group.
      *
      * @group legacy
-     * @expectedDeprecation Accessing a non existing value is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.
      */
     public function testRenderListElementWithNoValueException(): void
     {
@@ -420,6 +383,9 @@ final class RenderElementExtensionTest extends TestCase
                 throw new NoValueException();
             });
 
+        // NEXT_MAJOR: Remove next line.
+        $this->expectDeprecation('Accessing a non existing value for the field "fd_name" is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.');
+
         $this->assertSame(
             $this->removeExtraWhitespace('<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> </td>'),
             $this->removeExtraWhitespace($this->twigExtension->renderListElement(
@@ -431,6 +397,8 @@ final class RenderElementExtensionTest extends TestCase
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * @dataProvider getDeprecatedRenderListElementTests
      * @group legacy
      */
@@ -883,6 +851,8 @@ EOT
     }
 
     /**
+     * NEXT_MAJOR: Remove this test.
+     *
      * @group legacy
      */
     public function testDeprecatedRelationElementToString(): void
@@ -902,44 +872,44 @@ EOT
         );
     }
 
-    /**
-     * @group legacy
-     */
     public function testRenderRelationElementCustomToString(): void
     {
-        $this->fieldDescription->expects($this->exactly(2))
+        $this->fieldDescription->expects($this->once())
             ->method('getOption')
             ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
-                    return $default;
-                }
-
-                if ('associated_tostring' === $value) {
                     return 'customToString';
                 }
             });
 
-        $element = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['customToString'])
-            ->getMock();
-        $element
-            ->method('customToString')
-            ->willReturn('fooBar');
+        $element = new class() {
+            public function customToString(): string
+            {
+                return 'fooBar';
+            }
+        };
 
         $this->assertSame('fooBar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
     /**
+     * NEXT_MAJOR: Remove legacy group.
+     *
      * @group legacy
      */
     public function testRenderRelationElementMethodNotExist(): void
     {
+        // NEXT_MAJOR: change $this->exactly(2) for $this->once()
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
 
             ->willReturnCallback(static function ($value, $default = null) {
+                if ('associated_property' === $value) {
+                    return null;
+                }
+                // NEXT_MAJOR: Remove next block.
                 if ('associated_tostring' === $value) {
-                    return 'nonExistedMethod';
+                    return null;
                 }
             });
 
@@ -948,6 +918,35 @@ EOT
         $this->expectExceptionMessage('You must define an `associated_property` option or create a `stdClass::__toString');
 
         $this->twigExtension->renderRelationElement($element, $this->fieldDescription);
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @group legacy
+     */
+    public function testRenderRelationElementMethodWithDeprecatedAssociatedToString(): void
+    {
+        $this->fieldDescription->expects($this->exactly(2))
+            ->method('getOption')
+            ->willReturnCallback(static function ($value, $default = null) {
+                if ('associated_property' === $value) {
+                    return null;
+                }
+
+                if ('associated_tostring' === $value) {
+                    return 'customToString';
+                }
+            });
+
+        $element = new class() {
+            public function customToString(): string
+            {
+                return 'fooBar';
+            }
+        };
+
+        $this->assertSame('fooBar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
     public function testRenderRelationElementWithPropertyPath(): void
@@ -989,7 +988,7 @@ EOT
         );
     }
 
-    public function getRenderListElementTests()
+    public function getRenderListElementTests(): array
     {
         return [
             [
@@ -1964,7 +1963,8 @@ EOT
         ];
     }
 
-    public function getDeprecatedRenderListElementTests()
+    // NEXT_MAJOR: Remove this method.
+    public function getDeprecatedRenderListElementTests(): array
     {
         return [
             [
@@ -1980,7 +1980,7 @@ EOT
         ];
     }
 
-    public function getRenderViewElementTests()
+    public function getRenderViewElementTests(): array
     {
         return [
             ['<th>Data</th> <td>Example</td>', 'string', 'Example', ['safe' => false]],
@@ -2534,5 +2534,57 @@ EOT
             ' ',
             $string
         ));
+    }
+
+    private function registerRequiredTwigExtensions(PropertyAccessorInterface $propertyAccessor): void
+    {
+        //NEXT_MAJOR: Remove next line.
+        $this->registerSonataAdminExtension($propertyAccessor);
+
+        $this->environment->addExtension($this->twigExtension);
+        $this->environment->addExtension(new XEditableExtension($this->translator, self::X_EDITABLE_TYPE_MAPPING));
+        $this->environment->addExtension(new TranslationExtension($this->translator));
+        $this->environment->addExtension(new FakeTemplateRegistryExtension());
+        $this->environment->addExtension(new StringExtension());
+
+        $this->registerRoutingExtension();
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
+    private function registerSonataAdminExtension(PropertyAccessor $propertyAccessor): void
+    {
+        $securityChecker = $this->createStub(AuthorizationCheckerInterface::class);
+
+        $sonataAdminExtension = new SonataAdminExtension(
+            $this->pool,
+            $this->logger,
+            $this->translator,
+            $this->container,
+            $propertyAccessor,
+            $securityChecker
+        );
+        $sonataAdminExtension->setXEditableTypeMapping(self::X_EDITABLE_TYPE_MAPPING, 'sonata_deprecation_mute');
+        $this->environment->addExtension($sonataAdminExtension);
+    }
+
+    private function registerRoutingExtension(): void
+    {
+        $xmlFileLoader = new XmlFileLoader(new FileLocator([
+            sprintf('%s/../../../src/Resources/config/routing', __DIR__),
+        ]));
+        $routeCollection = $xmlFileLoader->load('sonata_admin.xml');
+
+        $xmlFileLoader = new XmlFileLoader(new FileLocator([
+            sprintf('%s/../../Fixtures/Resources/config/routing', __DIR__),
+        ]));
+
+        $testRouteCollection = $xmlFileLoader->load('routing.xml');
+
+        $routeCollection->addCollection($testRouteCollection);
+        $requestContext = new RequestContext();
+        $urlGenerator = new UrlGenerator($routeCollection, $requestContext);
+        $this->environment->addExtension(new RoutingExtension($urlGenerator));
     }
 }
