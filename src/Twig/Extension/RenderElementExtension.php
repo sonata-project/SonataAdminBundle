@@ -44,8 +44,11 @@ final class RenderElementExtension extends AbstractExtension
      */
     private $propertyAccessor;
 
+    /**
+     * @internal This class should only be used through Twig
+     */
     public function __construct(
-        ?PropertyAccessorInterface $propertyAccessor = null,
+        PropertyAccessorInterface $propertyAccessor,
         ?ContainerInterface $templateRegistries = null,
         ?LoggerInterface $logger = null
     ) {
@@ -385,10 +388,7 @@ final class RenderElementExtension extends AbstractExtension
         return [$object, $value];
     }
 
-    /**
-     * NEXT MAJOR: Make this method private.
-     */
-    public function render(
+    private function render(
         FieldDescriptionInterface $fieldDescription,
         TemplateWrapper $template,
         array $parameters,

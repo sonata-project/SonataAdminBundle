@@ -388,12 +388,36 @@ class SonataAdminExtension extends AbstractExtension
         array $parameters,
         Environment $environment
     ) {
-        return $this->render(
-            $fieldDescription,
-            new TemplateWrapper($environment, $template),
-            $parameters,
-            $environment
-        );
+        @trigger_error(sprintf(
+            'The %s method is deprecated since version 3.33 and will be removed in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
+        $content = $template->render($parameters);
+
+        if ($environment->isDebug()) {
+            $commentTemplate = <<<'EOT'
+
+<!-- START
+    fieldName: %s
+    template: %s
+    compiled template: %s
+    -->
+    %s
+<!-- END - fieldName: %s -->
+EOT;
+
+            return sprintf(
+                $commentTemplate,
+                $fieldDescription->getFieldName(),
+                $fieldDescription->getTemplate(),
+                $template->getSourceContext()->getName(),
+                $content,
+                $fieldDescription->getFieldName()
+            );
+        }
+
+        return $content;
     }
 
     /**
@@ -729,29 +753,6 @@ class SonataAdminExtension extends AbstractExtension
         }
 
         return $this->renderElementExtension->getTemplate($fieldDescription, $defaultTemplate, $$environment);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    private function render(
-        FieldDescriptionInterface $fieldDescription,
-        TemplateWrapper $template,
-        array $parameters,
-        Environment $environment
-    ): string {
-        if ('sonata_deprecation_mute' !== (\func_get_args()[4] ?? null)) {
-            @trigger_error(sprintf(
-                'The %s method is deprecated in favor of RenderElementExtension::render since version 3.x and will be removed in 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
-        if (null === $this->renderElementExtension) {
-            $this->renderElementExtension = new RenderElementExtension($this->propertyAccessor, $this->templateRegistries, $this->logger);
-        }
-
-        return $this->renderElementExtension->render($fieldDescription, $template, $parameters, $environment);
     }
 
     /**

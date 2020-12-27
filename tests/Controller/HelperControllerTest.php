@@ -224,7 +224,7 @@ class HelperControllerTest extends TestCase
         $container->set('sonata.post.admin.template_registry', $templateRegistry);
         $this->pool->method('getPropertyAccessor')->willReturn($propertyAccessor);
         $this->twig->method('getExtension')->with(SonataAdminExtension::class)->willReturn(
-            new SonataAdminExtension($pool, null, $translator, $container)
+            new SonataAdminExtension($pool, null, $translator, $container, $propertyAccessor)
         );
         $this->twig->method('load')->with('admin_template')->willReturn(new TemplateWrapper($this->twig, $template));
         $this->twig->method('isDebug')->willReturn(false);
@@ -280,7 +280,7 @@ class HelperControllerTest extends TestCase
         $this->admin->method('getModelManager')->willReturn($modelManager);
         $this->validator->method('validate')->with($object)->willReturn(new ConstraintViolationList([]));
         $this->twig->method('getExtension')->with(SonataAdminExtension::class)->willReturn(
-            new SonataAdminExtension($this->pool, null, $translator, $container)
+            new SonataAdminExtension($this->pool, null, $translator, $container, $propertyAccessor)
         );
         $this->twig->method('load')->with('field_template')->willReturn(new TemplateWrapper($this->twig, $template));
         $this->twig->method('isDebug')->willReturn(false);

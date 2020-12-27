@@ -32,6 +32,9 @@ final class CanonicalizeExtension extends AbstractExtension
      */
     private $requestStack;
 
+    /**
+     * @internal This class should only be used through Twig
+     */
     public function __construct(RequestStack $requestStack)
     {
         $this->requestStack = $requestStack;
@@ -44,8 +47,8 @@ final class CanonicalizeExtension extends AbstractExtension
     {
         return [
             //NEXT_MAJOR: Uncomment lines below
-            //new TwigFunction('canonicalize_locale_for_moment', [$this, 'getCanonicalizedLocaleForMoment'], ['needs_context' => true]),
-            //new TwigFunction('canonicalize_locale_for_select2', [$this, 'getCanonicalizedLocaleForSelect2'], ['needs_context' => true]),
+            //new TwigFunction('canonicalize_locale_for_moment', [$this, 'getCanonicalizedLocaleForMoment']),
+            //new TwigFunction('canonicalize_locale_for_select2', [$this, 'getCanonicalizedLocaleForSelect2']),
         ];
     }
 

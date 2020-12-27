@@ -26,6 +26,9 @@ final class SecurityExtension extends AbstractExtension
      */
     private $securityChecker;
 
+    /**
+     * @internal This class should only be used through Twig
+     */
     public function __construct(
         ?AuthorizationCheckerInterface $securityChecker = null
     ) {

@@ -32,6 +32,8 @@ final class XEditableExtension extends AbstractExtension
 
     /**
      * @param string[] $xEditableTypeMapping
+     *
+     * @internal This class should only be used through Twig
      */
     public function __construct(
         TranslatorInterface $translator,
@@ -67,6 +69,14 @@ final class XEditableExtension extends AbstractExtension
     public function getXEditableType(string $type)
     {
         return $this->xEditableTypeMapping[$type] ?? false;
+    }
+
+    /**
+     * @param string[] $xEditableTypeMapping
+     */
+    public function setXEditableTypeMapping($xEditableTypeMapping)
+    {
+        $this->xEditableTypeMapping = $xEditableTypeMapping;
     }
 
     /**

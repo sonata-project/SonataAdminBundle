@@ -62,6 +62,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 // NEXT_MAJOR: Remove next line.
                 new ReferenceConfigurator('security.authorization_checker'),
             ])
+             // NEXT_MAJOR: Remove next call.
             ->call('setXEditableTypeMapping', [
                 '%sonata.admin.twig.extension.x_editable_type_mapping%',
                 'sonata_deprecation_mute',
@@ -103,7 +104,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 '%sonata.admin.twig.extension.x_editable_type_mapping%',
             ])
 
-        ->set('sonata.renderElement.twig.extension', RenderElementExtension::class)
+        ->set('sonata.render_element.twig.extension', RenderElementExtension::class)
             ->tag('twig.extension')
             ->args([
                 new ReferenceConfigurator('property_accessor'),
