@@ -32,7 +32,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @phpstan-template T of object
- * @phpstan-implements TaggedAdminInterface<T>
  */
 abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 {
