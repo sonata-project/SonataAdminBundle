@@ -41,8 +41,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *     - The first and third argument are automatically injected by the AddDependencyCallsCompilerPass.
  *     - The second one is used as a reference of the Admin in the Pool, with the `setAdminClasses` call.
  *
- * @phpstan-template T of object
- *
  * @method void                          initialize()
  * @method void                          setLabel(?string $label)
  * @method void                          showMosaicButton(bool $isShown)

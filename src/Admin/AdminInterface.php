@@ -52,7 +52,6 @@ use Symfony\Component\HttpFoundation\Request;
  * @method void                            defineFormBuilder(FormBuilderInterface $formBuilder)
  *
  * @phpstan-template T of object
- * @phpstan-extends TaggedAdminInterface<T>
  * @phpstan-extends AccessRegistryInterface<T>
  * @phpstan-extends UrlGeneratorInterface<T>
  * @phpstan-extends LifecycleHookProviderInterface<T>
