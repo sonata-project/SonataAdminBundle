@@ -42,6 +42,9 @@ class FormViewIterator implements \RecursiveIterator
         return \count($this->current()->children) > 0;
     }
 
+    /**
+     * @return FormView
+     */
     public function current()
     {
         return $this->iterator->current();
