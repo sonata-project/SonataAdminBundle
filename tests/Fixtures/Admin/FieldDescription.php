@@ -44,23 +44,12 @@ class FieldDescription extends BaseFieldDescription
         throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
 
-    /**
-     * NEXT_MAJOR: Make this method protected.
-     *
-     * @param array $parentAssociationMappings
-     */
+    // NEXT_MAJOR: Make this method protected.
     public function setParentAssociationMappings(array $parentAssociationMappings): void
     {
         $this->parentAssociationMappings = $parentAssociationMappings;
     }
 
-    /**
-     * return the value linked to the description.
-     *
-     * @param  $object
-     *
-     * @return bool|mixed
-     */
     public function getValue($object)
     {
         throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
