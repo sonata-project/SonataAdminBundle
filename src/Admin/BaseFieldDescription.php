@@ -381,6 +381,16 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return null !== $this->associationAdmin;
     }
 
+    /**
+     * NEXT_MAJOR: Change the visibility to protected.
+     *
+     * @param object|null $object
+     * @param string      $fieldName
+     *
+     * @throws NoValueException
+     *
+     * @return mixed
+     */
     public function getFieldValue($object, $fieldName)
     {
         if ($this->isVirtual() || null === $object) {
