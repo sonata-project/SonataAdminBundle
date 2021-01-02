@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.85.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.84.0...3.85.0) - 2021-01-02
+### Added
+- [[#6576](https://github.com/sonata-project/SonataAdminBundle/pull/6576)] Added generics to `AdminExtensionInterface`. ([@franmomu](https://github.com/franmomu))
+
+### Fixed
+- [[#6727](https://github.com/sonata-project/SonataAdminBundle/pull/6727)] Variable "admin" does not exist in `CRUD/Association/edit_many_script.html.twig` ([@ggabrovski](https://github.com/ggabrovski))
+
 ## [3.84.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.83.0...3.84.0) - 2021-01-02
 ### Added
 - [[#6724](https://github.com/sonata-project/SonataAdminBundle/pull/6724)] Added support for fieldName with dot for `BaseFieldDescription::getFieldValue()` ([@VincentLanglet](https://github.com/VincentLanglet))
