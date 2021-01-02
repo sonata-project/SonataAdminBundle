@@ -194,7 +194,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
             @trigger_error(sprintf(
-                'The %s() method is deprecated since sonata-project/admin-bundle 3.x'
+                'The %s() method is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will become private in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
