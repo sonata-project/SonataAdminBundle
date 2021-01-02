@@ -28,7 +28,6 @@ use Symfony\Component\HttpFoundation\Request;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-template T of object
- * @phpstan-extends TaggedAdminInterface<T>
  * @phpstan-extends AccessRegistryInterface<T>
  * @phpstan-extends UrlGeneratorInterface<T>
  * @phpstan-extends LifecycleHookProviderInterface<T>

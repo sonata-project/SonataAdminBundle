@@ -31,7 +31,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @phpstan-template T of object
- * @phpstan-implements TaggedAdminInterface<T>
  */
 abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 {
@@ -67,6 +66,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 
     /**
      * @var array<string, array<string, string>>
+     *
      * @phpstan-var array{list: array{class: string}, mosaic: array{class: string}}
      */
     protected $listModes = [
@@ -191,7 +191,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     abstract public function initialize(): void;
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setLabel(?string $label): void
     {
@@ -199,7 +199,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getLabel(): ?string
     {
@@ -216,7 +216,15 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
+     */
+    public function getListModes(): array
+    {
+        return $this->listModes;
+    }
+
+    /**
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setPagerType(string $pagerType): void
     {
@@ -224,7 +232,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getPagerType(): string
     {
@@ -232,7 +240,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setManagerType($type): void
     {
@@ -240,7 +248,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getManagerType(): string
     {
@@ -252,7 +260,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      *
      * @param array<string, string[]> $information
      */
@@ -262,7 +270,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      *
      * @return array<string, string[]>
      */
@@ -272,7 +280,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setFilterPersister(?FilterPersisterInterface $filterPersister = null): void
     {
@@ -294,7 +302,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setModelManager(ModelManagerInterface $modelManager): void
     {
@@ -302,7 +310,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getModelManager(): ModelManagerInterface
     {
@@ -314,7 +322,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setDataSource(DataSourceInterface $dataSource): void
     {
@@ -334,7 +342,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setFormContractor(FormContractorInterface $formBuilder): void
     {
@@ -342,7 +350,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getFormContractor(): FormContractorInterface
     {
@@ -354,7 +362,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setShowBuilder(ShowBuilderInterface $showBuilder): void
     {
@@ -362,7 +370,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getShowBuilder(): ShowBuilderInterface
     {
@@ -374,7 +382,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setListBuilder(ListBuilderInterface $listBuilder): void
     {
@@ -382,7 +390,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getListBuilder(): ListBuilderInterface
     {
@@ -394,7 +402,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder): void
     {
@@ -402,7 +410,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getDatagridBuilder(): DatagridBuilderInterface
     {
@@ -434,7 +442,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setConfigurationPool(Pool $configurationPool): void
     {
@@ -442,7 +450,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getConfigurationPool(): Pool
     {
@@ -454,7 +462,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setRouteGenerator(RouteGeneratorInterface $routeGenerator): void
     {
@@ -462,7 +470,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getRouteGenerator(): RouteGeneratorInterface
     {
@@ -474,7 +482,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setSecurityHandler(SecurityHandlerInterface $securityHandler): void
     {
@@ -482,7 +490,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getSecurityHandler(): SecurityHandlerInterface
     {
@@ -494,7 +502,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setMenuFactory(FactoryInterface $menuFactory): void
     {
@@ -502,7 +510,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getMenuFactory(): FactoryInterface
     {
@@ -514,7 +522,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setRouteBuilder(RouteBuilderInterface $routeBuilder): void
     {
@@ -522,7 +530,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getRouteBuilder(): RouteBuilderInterface
     {
@@ -534,7 +542,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy): void
     {
@@ -542,7 +550,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.x
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function getLabelTranslatorStrategy(): LabelTranslatorStrategyInterface
     {

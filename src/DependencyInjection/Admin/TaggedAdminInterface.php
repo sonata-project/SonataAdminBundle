@@ -39,8 +39,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * so that the admin class works correctly with the AddDependencyCallsCompilerPass. Indeed:
  *     - The first and third argument are automatically injected by the AddDependencyCallsCompilerPass.
  *     - The second one is used as a reference of the Admin in the Pool, with the `setAdminClasses` call.
- *
- * @phpstan-template T of object
  */
 interface TaggedAdminInterface
 {
@@ -60,6 +58,11 @@ interface TaggedAdminInterface
      */
     public function showMosaicButton(bool $isShown): void;
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
+    public function getListModes(): array;
+
     public function setPagerType(string $pagerType): void;
 
     public function getPagerType(): string;
@@ -70,6 +73,8 @@ interface TaggedAdminInterface
 
     /**
      * Set the roles and permissions per role.
+     *
+     * @param array<string, string[]> $information
      */
     public function setSecurityInformation(array $information): void;
 

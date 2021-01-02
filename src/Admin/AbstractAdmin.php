@@ -386,7 +386,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * define custom variable.
+     * @final since sonata-admin/admin-bundle 3.84
      */
     public function initialize(): void
     {
@@ -1535,7 +1535,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         if (null === $this->classnameLabel) {
             // NEXT_MAJOR: Remove this deprecation and uncomment the following exception
             @trigger_error(sprintf(
-                'Calling %s() when no classname label is set is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s() when no classname label is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
             ), E_USER_DEPRECATED);
@@ -1784,11 +1784,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     public function getObjectMetadata(object $object): MetadataInterface
     {
         return new Metadata($this->toString($object));
-    }
-
-    public function getListModes(): array
-    {
-        return $this->listModes;
     }
 
     public function setListMode(string $mode): void

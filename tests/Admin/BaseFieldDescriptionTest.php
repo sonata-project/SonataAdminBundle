@@ -23,6 +23,16 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\FooCall;
 
 class BaseFieldDescriptionTest extends TestCase
 {
+    public function testConstruct(): void
+    {
+        $description = new FieldDescription('foo.bar');
+
+        $this->assertSame('foo.bar', $description->getName());
+        // NEXT_MAJOR: Remove this line and uncomment the following
+        $this->assertSame('bar', $description->getFieldName());
+//        $this->assertSame('foo.bar', $description->getFieldName());
+    }
+
     public function testConstructingWithMapping(): void
     {
         $fieldMapping = ['field_name' => 'fieldName'];
@@ -35,11 +45,13 @@ class BaseFieldDescriptionTest extends TestCase
             $fieldMapping,
             $associationMapping,
             $parentAssociationMapping,
+            'bar'
         );
 
         $this->assertSame($fieldMapping, $description->getFieldMapping());
         $this->assertSame($associationMapping, $description->getAssociationMapping());
         $this->assertSame($parentAssociationMapping, $description->getParentAssociationMappings());
+        $this->assertSame('bar', $description->getFieldName());
     }
 
     public function testSetName(): void
