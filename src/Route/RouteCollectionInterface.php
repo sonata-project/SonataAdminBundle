@@ -20,6 +20,9 @@ use Symfony\Component\Routing\Route;
  */
 interface RouteCollectionInterface
 {
+    /**
+     * @return static
+     */
     public function add(
         string $name,
         ?string $pattern = null,
@@ -34,6 +37,9 @@ interface RouteCollectionInterface
 
     public function getCode(string $name): string;
 
+    /**
+     * @return static
+     */
     public function addCollection(self $collection): self;
 
     /**
@@ -50,10 +56,15 @@ interface RouteCollectionInterface
      */
     public function get(string $name): Route;
 
+    /**
+     * @return static
+     */
     public function remove(string $name): self;
 
     /**
      * @throws \InvalidArgumentException
+     *
+     * @return static
      */
     public function restore(string $name): self;
 
@@ -61,9 +72,14 @@ interface RouteCollectionInterface
      * Remove all routes except routes in $routeList.
      *
      * @param string[]|string $routeList
+     *
+     * @return static
      */
     public function clearExcept($routeList): self;
 
+    /**
+     * @return static
+     */
     public function clear(): self;
 
     /**
