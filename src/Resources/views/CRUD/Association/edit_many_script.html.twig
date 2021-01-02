@@ -131,7 +131,7 @@ This code manages the many-to-[one|many] association field popup
 
                 // populate the popup container
                 field_dialog_content_{{ id }}.html(html);
-                {% if admin.label is not empty %}
+                {% if associationadmin.label is not empty %}
                     field_dialog_title_{{ id }}.html("{{ associationadmin.label|trans({}, associationadmin.translationdomain) }}");
                 {% endif %}
 
@@ -170,7 +170,7 @@ This code manages the many-to-[one|many] association field popup
 
                 // populate the popup container
                 field_dialog_content_{{ id }}.html(html);
-                {% if admin.label is not empty %}
+                {% if associationadmin.label is not empty %}
                     field_dialog_title_{{ id }}.html("{{ associationadmin.label|trans({}, associationadmin.translationdomain) }}");
                 {% endif %}
 
@@ -212,7 +212,7 @@ This code manages the many-to-[one|many] association field popup
 
                 // populate the popup container
                 field_dialog_content_{{ id }}.html(html);
-                {% if admin.label is not empty %}
+                {% if associationadmin.label is not empty %}
                     field_dialog_title_{{ id }}.html("{{ associationadmin.label|trans({}, associationadmin.translationdomain) }}");
                 {% endif %}
 
