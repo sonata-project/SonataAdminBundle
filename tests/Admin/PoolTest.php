@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Admin;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
@@ -191,10 +190,11 @@ class PoolTest extends TestCase
             'someclass' => ['sonata.user.admin.group1', 'sonata.user.admin.group2'],
         ]);
 
-        $this->expectException(\RuntimeException::class);
-
         $this->assertTrue($pool->hasAdminByClass('someclass'));
         $this->assertFalse($pool->hasSingleAdminByClass('someclass'));
+
+        $this->expectException(\RuntimeException::class);
+
         $pool->getAdminByClass('someclass');
     }
 
@@ -337,18 +337,11 @@ class PoolTest extends TestCase
         $adminMock->expects($this->never())
             ->method('hasChild');
 
-        /** @var MockObject|Pool $poolMock */
-        $poolMock = $this->getMockBuilder(Pool::class)
-            ->setConstructorArgs([$this->container, 'Sonata', '/path/to/logo.png'])
-            ->disableOriginalClone()
-            ->setMethodsExcept(['getAdminByAdminCode'])
-            ->getMock();
-        $poolMock->expects($this->never())
-            ->method('getInstance');
+        $pool = new Pool($this->container, [$adminId]);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Root admin code must contain a valid admin reference, empty string given.');
-        $poolMock->getAdminByAdminCode($adminId);
+        $pool->getAdminByAdminCode($adminId);
     }
 
     public function getEmptyRootAdminServiceNames()

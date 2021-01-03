@@ -77,15 +77,22 @@ final class SetObjectFieldValueActionTest extends TestCase
      */
     private $propertyAccessor;
 
+    /**
+     * @var string
+     */
+    private $adminCode;
+
     protected function setUp(): void
     {
         $this->twig = new Environment(new ArrayLoader([
             'admin_template' => 'renderedTemplate',
             'field_template' => 'renderedTemplate',
         ]));
-        $this->pool = $this->createStub(Pool::class);
+        $this->adminCode = 'sonata.post.admin';
         $this->admin = $this->createMock(AbstractAdmin::class);
-        $this->pool->method('getInstance')->willReturn($this->admin);
+        $container = new Container();
+        $container->set($this->adminCode, $this->admin);
+        $this->pool = new Pool($container, [$this->adminCode]);
         $this->admin->expects($this->once())->method('setRequest');
         $this->validator = $this->createStub(ValidatorInterface::class);
         $this->modelManager = $this->createStub(ModelManagerInterface::class);
@@ -105,7 +112,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     {
         $object = new Foo();
         $request = new Request([
-            'code' => 'sonata.post.admin',
+            'code' => $this->adminCode,
             'objectId' => 42,
             'field' => 'enabled',
             'value' => 1,
@@ -113,13 +120,12 @@ final class SetObjectFieldValueActionTest extends TestCase
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
-        $pool = $this->createStub(Pool::class);
         $translator = $this->createStub(TranslatorInterface::class);
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
         $container = new Container();
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('getCode')->willReturn('sonata.post.admin');
+        $this->admin->method('getCode')->willReturn($this->adminCode);
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);
         $this->admin->expects($this->once())->method('update')->with($object);
@@ -128,7 +134,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $container->set('sonata.post.admin.template_registry', $templateRegistry);
         $this->twig->addExtension(new SonataAdminExtension(
-            $pool,
+            new Pool(new Container()),
             null,
             $translator,
             $container,
@@ -172,7 +178,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     {
         $object = new Bafoo();
         $request = new Request([
-            'code' => 'sonata.post.admin',
+            'code' => $this->adminCode,
             'objectId' => 42,
             'field' => 'dateProp',
             'value' => '2020-12-12',
@@ -180,13 +186,12 @@ final class SetObjectFieldValueActionTest extends TestCase
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
-        $pool = $this->createStub(Pool::class);
         $translator = $this->createStub(TranslatorInterface::class);
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
         $container = new Container();
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('getCode')->willReturn('sonata.post.admin');
+        $this->admin->method('getCode')->willReturn($this->adminCode);
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('dateProp')->willReturn($fieldDescription);
         $this->admin->expects($this->once())->method('update')->with($object);
@@ -195,7 +200,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $container->set('sonata.post.admin.template_registry', $templateRegistry);
         $this->twig->addExtension(new SonataAdminExtension(
-            $pool,
+            new Pool(new Container()),
             null,
             $translator,
             $container,
@@ -231,7 +236,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $object = new Baz();
         $associationObject = new Bar();
         $request = new Request([
-            'code' => 'sonata.post.admin',
+            'code' => $this->adminCode,
             'objectId' => 42,
             'field' => 'bar',
             'value' => 1,
@@ -247,7 +252,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $container = new Container();
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('getCode')->willReturn('sonata.post.admin');
+        $this->admin->method('getCode')->willReturn($this->adminCode);
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('bar')->willReturn($fieldDescription);
         $this->admin->method('getClass')->willReturn(\get_class($object));
@@ -290,7 +295,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $object = new Baz();
         $object->setBar($bar);
         $request = new Request([
-            'code' => 'sonata.post.admin',
+            'code' => $this->adminCode,
             'objectId' => 42,
             'field' => 'bar.enabled',
             'value' => 1,
@@ -322,7 +327,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     {
         $object = new StatusMultiple();
         $request = new Request([
-            'code' => 'sonata.post.admin',
+            'code' => $this->adminCode,
             'objectId' => 42,
             'field' => 'status',
             'value' => [1, 2],
@@ -330,13 +335,12 @@ final class SetObjectFieldValueActionTest extends TestCase
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
-        $pool = $this->createStub(Pool::class);
         $translator = $this->createStub(TranslatorInterface::class);
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
         $container = new Container();
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('getCode')->willReturn('sonata.post.admin');
+        $this->admin->method('getCode')->willReturn($this->adminCode);
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('status')->willReturn($fieldDescription);
         $this->admin->expects($this->once())->method('update')->with($object);
@@ -345,7 +349,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $container->set('sonata.post.admin.template_registry', $templateRegistry);
         $this->twig->addExtension(new SonataAdminExtension(
-            $pool,
+            new Pool(new Container()),
             null,
             $translator,
             $container,
@@ -374,7 +378,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     {
         $object = new Foo();
         $request = new Request([
-            'code' => 'sonata.post.admin',
+            'code' => $this->adminCode,
             'objectId' => 42,
             'field' => 'enabled',
             'value' => 'yes',
@@ -388,13 +392,12 @@ final class SetObjectFieldValueActionTest extends TestCase
         });
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
-        $pool = $this->createStub(Pool::class);
         $translator = $this->createStub(TranslatorInterface::class);
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
         $container = new Container();
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('getCode')->willReturn('sonata.post.admin');
+        $this->admin->method('getCode')->willReturn($this->adminCode);
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);
         $this->admin->expects($this->once())->method('update')->with($object);
@@ -403,7 +406,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $container->set('sonata.post.admin.template_registry', $templateRegistry);
         $this->twig->addExtension(new SonataAdminExtension(
-            $pool,
+            new Pool(new Container()),
             null,
             $translator,
             $container,
@@ -431,7 +434,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     {
         $object = new Foo();
         $request = new Request([
-            'code' => 'sonata.post.admin',
+            'code' => $this->adminCode,
             'objectId' => 42,
             'field' => 'enabled',
             'value' => 'yes',
@@ -448,13 +451,12 @@ final class SetObjectFieldValueActionTest extends TestCase
         });
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
-        $pool = $this->createStub(Pool::class);
         $translator = $this->createStub(TranslatorInterface::class);
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
         $container = new Container();
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('getCode')->willReturn('sonata.post.admin');
+        $this->admin->method('getCode')->willReturn($this->adminCode);
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);
         $this->admin->expects($this->once())->method('update')->with($object);
@@ -463,7 +465,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $container->set('sonata.post.admin.template_registry', $templateRegistry);
         $this->twig->addExtension(new SonataAdminExtension(
-            $pool,
+            new Pool(new Container()),
             null,
             $translator,
             $container,

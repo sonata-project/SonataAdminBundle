@@ -83,7 +83,6 @@ use Symfony\Component\Form\FormRegistry;
 use Symfony\Component\Form\ResolvedFormTypeFactory;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -1062,9 +1061,7 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $pool = $this->getMockBuilder(Pool::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $pool = new Pool(new Container());
 
         $admin->setConfigurationPool($pool);
         $this->assertSame($pool, $admin->getConfigurationPool());
@@ -1614,14 +1611,6 @@ class AdminTest extends TestCase
         $request = $this->createStub(Request::class);
         $tagAdmin->setRequest($request);
 
-        $configurationPool = $this->getMockBuilder(Pool::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $configurationPool->method('getPropertyAccessor')->willReturn(PropertyAccess::createPropertyAccessor());
-
-        $tagAdmin->setConfigurationPool($configurationPool);
-
         $tag = $tagAdmin->getNewInstance();
 
         $this->assertSame($post, $tag->getPost());
@@ -1649,14 +1638,6 @@ class AdminTest extends TestCase
 
         $request = $this->createStub(Request::class);
         $postCategoryAdmin->setRequest($request);
-
-        $configurationPool = $this->getMockBuilder(Pool::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $configurationPool->method('getPropertyAccessor')->willReturn(PropertyAccess::createPropertyAccessor());
-
-        $postCategoryAdmin->setConfigurationPool($configurationPool);
 
         $postCategory = $postCategoryAdmin->getNewInstance();
 
@@ -1692,14 +1673,6 @@ class AdminTest extends TestCase
 
         $request = $this->createStub(Request::class);
         $tagAdmin->setRequest($request);
-
-        $configurationPool = $this->getMockBuilder(Pool::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $configurationPool->method('getPropertyAccessor')->willReturn(PropertyAccess::createPropertyAccessor());
-
-        $tagAdmin->setConfigurationPool($configurationPool);
 
         $tag = $tagAdmin->getNewInstance();
 

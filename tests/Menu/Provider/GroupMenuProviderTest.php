@@ -24,13 +24,14 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Menu\Provider\GroupMenuProvider;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class GroupMenuProviderTest extends TestCase
 {
     /**
-     * @var MockObject|Pool
+     * @var Pool
      */
     private $pool;
     /**
@@ -47,14 +48,16 @@ class GroupMenuProviderTest extends TestCase
      */
     private $checker;
 
+    /**
+     * @var Container
+     */
+    private $container;
+
     protected function setUp(): void
     {
-        $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
-        $this->checker = $this
-            ->getMockBuilder(AuthorizationCheckerInterface::class)
-            ->setMethods(['isGranted'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->container = new Container();
+        $this->pool = new Pool($this->container, ['sonata_admin_foo_service', 'sonata_admin_absolute_url']);
+        $this->checker = $this->createStub(AuthorizationCheckerInterface::class);
 
         $this->factory = new MenuFactory();
 
@@ -93,10 +96,7 @@ class GroupMenuProviderTest extends TestCase
     {
         $provider = new GroupMenuProvider($this->factory, $this->pool);
 
-        $this->pool
-            ->method('getInstance')
-            ->with($this->equalTo('sonata_admin_foo_service'))
-            ->willReturn($this->getAdminMock());
+        $this->container->set('sonata_admin_foo_service', $this->getAdminMock());
 
         $menu = $provider->get(
             'providerFoo',
@@ -131,10 +131,7 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGetMenuProviderWithCheckerGrantedGroupRoles(array $adminGroups): void
     {
-        $this->pool
-            ->method('getInstance')
-            ->with($this->equalTo('sonata_admin_foo_service'))
-            ->willReturn($this->getAdminMock());
+        $this->container->set('sonata_admin_foo_service', $this->getAdminMock());
 
         $this->checker
             ->method('isGranted')
@@ -252,10 +249,7 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGetMenuProviderWithAdmin(array $adminGroups): void
     {
-        $this->pool
-            ->method('getInstance')
-            ->with($this->equalTo('sonata_admin_foo_service'))
-            ->willReturn($this->getAdminMock());
+        $this->container->set('sonata_admin_foo_service', $this->getAdminMock());
 
         $this->checker
             ->method('isGranted')
@@ -297,10 +291,7 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGetKnpMenuWithListRoute(array $adminGroups): void
     {
-        $this->pool
-            ->method('getInstance')
-            ->with($this->equalTo('sonata_admin_foo_service'))
-            ->willReturn($this->getAdminMock(false));
+        $this->container->set('sonata_admin_foo_service', $this->getAdminMock(false));
 
         $this->checker
             ->method('isGranted')
@@ -325,10 +316,7 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGetKnpMenuWithGrantedList(array $adminGroups): void
     {
-        $this->pool
-            ->method('getInstance')
-            ->with($this->equalTo('sonata_admin_foo_service'))
-            ->willReturn($this->getAdminMock(true, false));
+        $this->container->set('sonata_admin_foo_service', $this->getAdminMock(true, false));
 
         $this->checker
             ->method('isGranted')
@@ -353,10 +341,7 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGetMenuProviderOnTopOptions(array $adminGroupsOnTopOption): void
     {
-        $this->pool
-            ->method('getInstance')
-            ->with($this->equalTo('sonata_admin_foo_service'))
-            ->willReturn($this->getAdminMock(true, false));
+        $this->container->set('sonata_admin_foo_service', $this->getAdminMock(true, false));
 
         $menu = $this->provider->get(
             'providerFoo',
@@ -375,10 +360,7 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGetMenuProviderKeepOpenOption(array $adminGroups): void
     {
-        $this->pool
-            ->method('getInstance')
-            ->with($this->equalTo('sonata_admin_foo_service'))
-            ->willReturn($this->getAdminMock());
+        $this->container->set('sonata_admin_foo_service', $this->getAdminMock());
 
         $this->checker
             ->method('isGranted')
@@ -404,10 +386,7 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testRootMenuItemUrl(string $expectedUrl, array $item): void
     {
-        $this->pool
-            ->method('getInstance')
-            ->with($this->equalTo('sonata_admin_absolute_url'))
-            ->willReturn($this->getAdminMock());
+        $this->container->set('sonata_admin_absolute_url', $this->getAdminMock());
 
         $this->checker
             ->method('isGranted')

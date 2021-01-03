@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Block\AdminListBlockService;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Block\FakeBlockService;
 use Sonata\BlockBundle\Test\BlockServiceTestCase;
+use Symfony\Component\DependencyInjection\Container;
 use Twig\Environment;
 
 /**
@@ -29,7 +30,7 @@ class AdminListBlockServiceTest extends BlockServiceTestCase
     {
         $blockService = new AdminListBlockService(
             $this->createStub(Environment::class),
-            $this->createStub(Pool::class),
+            new Pool(new Container()),
             $this->createStub(TemplateRegistryInterface::class)
         );
         $blockContext = $this->getBlockContext($blockService);
@@ -46,7 +47,7 @@ class AdminListBlockServiceTest extends BlockServiceTestCase
     {
         $blockService = new FakeBlockService(
             $this->createStub(Environment::class),
-            $this->createStub(Pool::class),
+            new Pool(new Container()),
             $this->createStub(TemplateRegistryInterface::class)
         );
         $blockContext = $this->getBlockContext($blockService);
