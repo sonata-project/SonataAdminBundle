@@ -26,6 +26,7 @@ namespace Sonata\AdminBundle\Datagrid;
  * @method bool                     isFirstPage()
  * @method bool                     isLastPage()
  * @method int                      getNbResults()
+ * @method int                      countResults()
  * @method array                    getLinks(?int $nbLinks = null)
  * @method bool                     haveToPaginate()
  * @method ProxyQueryInterface|null getQuery()
@@ -99,7 +100,7 @@ interface PagerInterface
     public function getResults();
 
 //    NEXT_MAJOR: uncomment this method in 4.0
-//    public function getNbResults(): int;
+//    public function countResults(): int;
 
 //    NEXT_MAJOR: uncomment this method 4.0
 //    /**

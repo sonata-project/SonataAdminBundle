@@ -31,8 +31,8 @@ file that was distributed with this source code.
                 </h3>
 
                 <div class="box-tools pull-right">
-                    {% if pager and pager.getNbResults() > 0 %}
-                        <span class="badge">{{ pager.getNbResults() }}</span>
+                    {% if pager and (pager.countResults is defined ? pager.countResults() : pager.getNbResults()) > 0 %}
+                        <span class="badge">{{ pager.countResults is defined ? pager.countResults() : pager.getNbResults() }}</span>
                     {% elseif admin.hasRoute('create') and admin.hasAccess('create') %}
                         <a href="{{ admin.generateUrl('create') }}" class="btn btn-box-tool">
                             <i class="fa fa-plus" aria-hidden="true"></i>

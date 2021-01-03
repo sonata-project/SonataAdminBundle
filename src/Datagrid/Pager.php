@@ -222,7 +222,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     public function haveToPaginate()
     {
-        return $this->getMaxPerPage() && $this->getNbResults() > $this->getMaxPerPage();
+        return $this->getMaxPerPage() && $this->countResults() > $this->getMaxPerPage();
     }
 
     /**
@@ -441,9 +441,21 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
+     * @deprecated since sonata-project/admin-bundle 3.86, use countResults instead
+     *
      * @return int
      */
     public function getNbResults()
+    {
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.86 and will be removed in 4.0. Use countResults() instead.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
+        return $this->countResults();
+    }
+
+    public function countResults(): int
     {
         return $this->nbResults;
     }
@@ -739,7 +751,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.84, use getNbResults instead
+     * @deprecated since sonata-project/admin-bundle 3.84, use countResults instead
      */
     public function count()
     {
@@ -748,7 +760,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
             __METHOD__
         ), E_USER_DEPRECATED);
 
-        return $this->getNbResults();
+        return $this->countResults();
     }
 
     /**
@@ -838,10 +850,17 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * @param int $nb
      *
+     * @deprecated since sonata-project/admin-bundle 3.86
+     *
      * @return void
      */
     protected function setNbResults($nb)
     {
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.86 and will be removed in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         $this->nbResults = $nb;
     }
 

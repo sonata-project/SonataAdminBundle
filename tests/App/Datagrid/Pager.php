@@ -100,7 +100,7 @@ final class Pager implements PagerInterface
         return $this->repository->all();
     }
 
-    public function getNbResults()
+    public function countResults(): int
     {
         return \count($this->getResults());
     }
