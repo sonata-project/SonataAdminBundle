@@ -4,6 +4,10 @@ UPGRADE 3.x
 UPGRADE FROM 3.xx to 3.xx
 =========================
 
+### Deprecated `DateOperatorType::TYPE_NULL` and `DateOperatorType::TYPE_NOT_NULL`
+
+We recommend using a specific filter for null values instead.
+
 ### Sonata\AdminBundle\Twig\Extension\SonataAdminExtension
 
 - Deprecated `SonataAdminExtension::MOMENT_UNSUPPORTED_LOCALES` constant.
