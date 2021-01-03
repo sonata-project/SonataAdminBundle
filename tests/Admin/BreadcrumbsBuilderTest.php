@@ -53,9 +53,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
         $routeGenerator = $this->getMockForAbstractClass(RouteGeneratorInterface::class);
         $container = new Container();
-        $pool = $this->getMockBuilder(Pool::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $pool = new Pool($container);
 
         $menu
             ->method('addChild')
@@ -79,10 +77,6 @@ class BreadcrumbsBuilderTest extends TestCase
         $commentAdmin->setCurrentChild(true);
 
         $container->setParameter('sonata.admin.configuration.breadcrumbs', []);
-
-        $pool
-            ->method('getContainer')
-            ->willReturn($container);
 
         $postAdmin->setConfigurationPool($pool);
         $postAdmin->setMenuFactory($menuFactory);
@@ -218,9 +212,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $routeGenerator = $this->getMockForAbstractClass(RouteGeneratorInterface::class);
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
         $container = new Container();
-        $pool = $this->getMockBuilder(Pool::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $pool = new Pool($container);
 
         $postAdmin = new PostAdmin('sonata.post.admin.post', DummySubject::class, 'Sonata\NewsBundle\Controller\PostAdminController');
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'Sonata\NewsBundle\Controller\CommentAdminController');
@@ -271,10 +263,6 @@ class BreadcrumbsBuilderTest extends TestCase
             ->willReturn($menu);
 
         $container->setParameter('sonata.admin.configuration.breadcrumbs', []);
-
-        $pool
-            ->method('getContainer')
-            ->willReturn($container);
 
         $postAdmin->setConfigurationPool($pool);
 

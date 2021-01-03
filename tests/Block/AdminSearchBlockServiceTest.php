@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Block\AdminSearchBlockService;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\BlockBundle\Test\BlockServiceTestCase;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
@@ -43,7 +44,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
     {
         parent::setUp();
 
-        $this->pool = $this->createMock(Pool::class);
+        $this->pool = new Pool(new Container());
         $this->searchHandler = new SearchHandler(true);
     }
 
@@ -100,16 +101,20 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
             ->method('getCode')
             ->willReturn($adminCode);
 
+        $container = new Container();
+        $container->set($adminCode, $admin);
+        $pool = new Pool($container, [$adminCode]);
+
         $blockService = new AdminSearchBlockService(
             $this->createStub(Environment::class),
-            $this->pool,
+            $pool,
             $this->searchHandler,
             'show'
         );
         $blockContext = $this->getBlockContext($blockService);
+        $blockContext->setSetting('admin_code', $adminCode);
 
         $this->searchHandler->configureAdminSearch([$adminCode => false]);
-        $this->pool->expects(self::once())->method('getAdminByAdminCode')->willReturn($admin);
         $admin->expects(self::once())->method('checkAccess')->with('list')->willReturn(true);
 
         $response = $blockService->execute($blockContext);

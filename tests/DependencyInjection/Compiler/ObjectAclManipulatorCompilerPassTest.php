@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Command\GenerateObjectAclCommand;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ObjectAclManipulatorCompilerPass;
 use Sonata\AdminBundle\Util\ObjectAclManipulator;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -62,7 +63,7 @@ class ObjectAclManipulatorCompilerPassTest extends TestCase
 
     private function createContainer(): ContainerBuilder
     {
-        $pool = $this->createStub(Pool::class);
+        $pool = new Pool(new Container());
         $container = new ContainerBuilder();
         $container
             ->register(GenerateObjectAclCommand::class)
