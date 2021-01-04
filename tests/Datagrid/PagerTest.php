@@ -32,7 +32,15 @@ class PagerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->pager = $this->getMockForAbstractClass(Pager::class);
+        $this->pager = $this->getMockForAbstractClass(
+            Pager::class,
+            [],
+            '',
+            true,
+            true,
+            true,
+            ['countResults']
+        );
     }
 
     /**
@@ -291,11 +299,6 @@ class PagerTest extends TestCase
         $this->assertSame([45, 46, 47, 48, 49, 50], $this->pager->getLinks());
     }
 
-    /**
-     * NEXT_MAJOR: remove legacy group.
-     *
-     * @group legacy
-     */
     public function testHaveToPaginate(): void
     {
         $this->assertFalse($this->pager->haveToPaginate());
@@ -303,7 +306,13 @@ class PagerTest extends TestCase
         $this->pager->setMaxPerPage(10);
         $this->assertFalse($this->pager->haveToPaginate());
 
-        $this->setProperty($this->pager, 'nbResults', 100);
+        $this->pager->expects($this->once())
+            ->method('countResults')
+            ->willReturnCallback(static function () {
+                return 100;
+            })
+        ;
+
         $this->assertTrue($this->pager->haveToPaginate());
     }
 
