@@ -24,7 +24,7 @@
         }
     ],
     "require": {
-        "php": "^7.3",
+        "php": ">=7.3",
         "ext-json": "*",
         "doctrine/collections": "^1.6",
         "doctrine/common": "^2.7 || ^3.0",
