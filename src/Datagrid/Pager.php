@@ -773,7 +773,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
             __METHOD__
         ), E_USER_DEPRECATED);
 
-        return $this->nbResults;
+        return $this->getNbResults();
     }
 
     /**

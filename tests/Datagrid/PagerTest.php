@@ -137,7 +137,7 @@ class PagerTest extends TestCase
     }
 
     /**
-     * NEXT_MAJOR: Remove this test and the setProperty method.
+     * NEXT_MAJOR: Remove this test.
      *
      * @group legacy
      */
@@ -781,6 +781,9 @@ class PagerTest extends TestCase
         return $method->invokeArgs($obj, $args);
     }
 
+    /**
+     * NEXT_MAJOR: remove this method.
+     */
     private function setProperty(object $obj, string $name, $value)
     {
         $class = new \ReflectionClass($obj);
