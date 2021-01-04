@@ -114,6 +114,8 @@ final class SearchAction
                 ];
             }
             $page = (int) $pager->getPage();
+
+            // NEXT_MAJOR: remove the existence check and the else part
             if (method_exists($pager, 'countResults')) {
                 $total = (int) $pager->countResults();
             } else {

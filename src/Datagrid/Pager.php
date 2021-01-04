@@ -40,6 +40,10 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     protected $lastPage = 1;
 
     /**
+     * NEXT_MAJOR: Remove this property and add a private "countResults" property.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.86
+     *
      * @var int
      */
     protected $nbResults = 0;

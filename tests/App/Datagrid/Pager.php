@@ -100,6 +100,12 @@ final class Pager implements PagerInterface
         return $this->repository->all();
     }
 
+    // NEXT_MAJOR: remove this method
+    public function getNbResults(): int
+    {
+        return $this->countResults();
+    }
+
     public function countResults(): int
     {
         return \count($this->getResults());

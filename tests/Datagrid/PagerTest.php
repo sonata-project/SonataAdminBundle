@@ -137,6 +137,8 @@ class PagerTest extends TestCase
     }
 
     /**
+     * NEXT_MAJOR: Remove this test.
+     *
      * @group legacy
      */
     public function testGetNbResults(): void
