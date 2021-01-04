@@ -82,7 +82,7 @@
         "symfony/maker-bundle": "^1.17",
         "symfony/phpunit-bridge": "^5.1.8",
         "symfony/yaml": "^4.4 || ^5.1",
-        "vimeo/psalm": "^4.1"
+        "vimeo/psalm": "^4.3.2"
     },
     "suggest": {
         "twig/extra-bundle": "Auto configures the Twig Intl extension"

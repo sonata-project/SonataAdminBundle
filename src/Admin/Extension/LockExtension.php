@@ -23,6 +23,8 @@ use Symfony\Component\Form\FormEvents;
 
 /**
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
+ *
+ * @phpstan-extends AbstractAdminExtension<object>
  */
 final class LockExtension extends AbstractAdminExtension
 {

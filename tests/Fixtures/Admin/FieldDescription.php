@@ -47,13 +47,6 @@ class FieldDescription extends BaseFieldDescription
         $this->parentAssociationMappings = $parentAssociationMappings;
     }
 
-    /**
-     * return the value linked to the description.
-     *
-     * @param  $object
-     *
-     * @return bool|mixed
-     */
     public function getValue($object)
     {
         throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));

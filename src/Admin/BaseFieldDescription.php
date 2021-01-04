@@ -171,7 +171,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
             @trigger_error(sprintf(
-                'The %s() method is deprecated since sonata-project/admin-bundle 3.x'
+                'The %s() method is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will become private in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
@@ -326,6 +326,25 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     {
         if ($this->isVirtual() || null === $object) {
             return null;
+        }
+
+        $dotPos = strpos($fieldName, '.');
+        if ($dotPos > 0) {
+            $child = $this->getFieldValue($object, substr($fieldName, 0, $dotPos));
+            if (null !== $child && !\is_object($child)) {
+                throw new NoValueException(sprintf(
+                    <<<'EXCEPTION'
+                    Unexpected value when accessing to the property "%s" on the class "%s" for the field "%s".
+                    Expected object|null, got %s.
+                    EXCEPTION,
+                    $fieldName,
+                    \get_class($object),
+                    $this->getName(),
+                    \gettype($child)
+                ));
+            }
+
+            return $this->getFieldValue($child, substr($fieldName, $dotPos + 1));
         }
 
         $getters = [];

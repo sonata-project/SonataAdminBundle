@@ -24,6 +24,8 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-extends AbstractAdminExtension<object>
  */
 final class AdminEventExtension extends AbstractAdminExtension
 {

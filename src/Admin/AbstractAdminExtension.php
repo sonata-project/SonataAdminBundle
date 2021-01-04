@@ -23,6 +23,9 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
+ * @template-implements AdminExtensionInterface<T>
  */
 abstract class AbstractAdminExtension implements AdminExtensionInterface
 {
@@ -70,7 +73,7 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     /**
      * @return array<string, string|string[]>
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function getAccessMapping(AdminInterface $admin): array
     {
@@ -78,7 +81,7 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     }
 
     /**
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function configureBatchActions(AdminInterface $admin, array $actions): array
     {
@@ -86,7 +89,7 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     }
 
     /**
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function configureExportFields(AdminInterface $admin, array $fields): array
     {
@@ -122,7 +125,7 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
      *
      * @return array<string, mixed>
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function configureActionButtons(
         AdminInterface $admin,
@@ -136,14 +139,14 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     /**
      * Returns a list of default filters.
      *
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues): void
     {
     }
 
     /**
-     * @phpstan-param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function configureDefaultSortValues(AdminInterface $admin, array &$sortValues): void
     {
