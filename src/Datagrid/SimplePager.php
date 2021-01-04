@@ -63,6 +63,9 @@ class SimplePager extends Pager
         $this->setThreshold($threshold);
     }
 
+    /**
+     * NEXT_MAJOR: remove this method.
+     */
     public function getNbResults()
     {
         @trigger_error(sprintf(

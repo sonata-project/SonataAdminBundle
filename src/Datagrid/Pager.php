@@ -445,6 +445,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
      * @deprecated since sonata-project/admin-bundle 3.86, use countResults instead
      *
      * @return int
@@ -852,6 +854,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
      * @param int $nb
      *
      * @deprecated since sonata-project/admin-bundle 3.86
