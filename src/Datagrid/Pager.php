@@ -40,7 +40,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     protected $lastPage = 1;
 
     /**
-     * NEXT_MAJOR: Remove this property and add a private "countResults" property.
+     * NEXT_MAJOR: Remove this property.
      *
      * @deprecated since sonata-project/admin-bundle 3.86
      *
@@ -226,7 +226,19 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     public function haveToPaginate()
     {
-        return $this->getMaxPerPage() && $this->countResults() > $this->getMaxPerPage();
+        // NEXT_MAJOR: remove the existence check and the else part
+        if (method_exists($this, 'countResults')) {
+            $countResults = (int) $this->countResults();
+        } else {
+            @trigger_error(sprintf(
+                'Not implementing "%s::countResults()" is deprecated since sonata-project/admin-bundle 3.86 and will fail in 4.0.',
+                'Sonata\AdminBundle\Datagrid\PagerInterface'
+            ), E_USER_DEPRECATED);
+
+            $countResults = (int) $this->getNbResults();
+        }
+
+        return $this->getMaxPerPage() && $countResults > $this->getMaxPerPage();
     }
 
     /**
@@ -458,11 +470,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
             __METHOD__
         ), E_USER_DEPRECATED);
 
-        return $this->countResults();
-    }
-
-    public function countResults(): int
-    {
         return $this->nbResults;
     }
 
@@ -766,7 +773,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
             __METHOD__
         ), E_USER_DEPRECATED);
 
-        return $this->countResults();
+        return $this->nbResults;
     }
 
     /**

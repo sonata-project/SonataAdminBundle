@@ -137,7 +137,7 @@ class PagerTest extends TestCase
     }
 
     /**
-     * NEXT_MAJOR: Remove this test.
+     * NEXT_MAJOR: Remove this test and the setProperty method.
      *
      * @group legacy
      */
@@ -291,6 +291,11 @@ class PagerTest extends TestCase
         $this->assertSame([45, 46, 47, 48, 49, 50], $this->pager->getLinks());
     }
 
+    /**
+     * NEXT_MAJOR: remove legacy group.
+     *
+     * @group legacy
+     */
     public function testHaveToPaginate(): void
     {
         $this->assertFalse($this->pager->haveToPaginate());
