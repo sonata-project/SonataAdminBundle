@@ -24,6 +24,6 @@ setlocale(LC_ALL, 'en_US.UTF-8');
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-if (file_exists($file = __DIR__.'/custom_boostrap.php')) {
+if (file_exists($file = __DIR__.'/custom_bootstrap.php')) {
     require_once $file;
 }

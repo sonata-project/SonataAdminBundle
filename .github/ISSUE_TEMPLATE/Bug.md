@@ -18,17 +18,29 @@ labels: bug, unconfirmed
 
 #### Sonata packages
 
+<details><summary>show</summary>
+<p>
+
 ```
 $ composer show --latest 'sonata-project/*'
 # Put the result here.
 ```
 
+</p>
+</details>
+
 #### Symfony packages
+
+<details><summary>show</summary>
+<p>
 
 ```
 $ composer show --latest 'symfony/*'
 # Put the result here.
 ```
+
+</p>
+</details>
 
 #### PHP version
 
