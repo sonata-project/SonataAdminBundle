@@ -226,7 +226,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     public function haveToPaginate()
     {
-        // NEXT_MAJOR: remove the existence check and the else part
+        // NEXT_MAJOR: remove the existence check and just use $pager->countResults() without casting to int
         if (method_exists($this, 'countResults')) {
             $countResults = (int) $this->countResults();
         } else {

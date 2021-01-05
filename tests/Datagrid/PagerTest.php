@@ -791,7 +791,7 @@ class PagerTest extends TestCase
     /**
      * NEXT_MAJOR: remove this method.
      */
-    private function setProperty(object $obj, string $name, $value)
+    private function setProperty(object $obj, string $name, $value): void
     {
         $class = new \ReflectionClass($obj);
         $property = $class->getProperty($name);
