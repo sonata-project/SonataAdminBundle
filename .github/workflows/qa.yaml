@@ -18,7 +18,7 @@ jobs:
     phpstan:
         name: PHPStan
 
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-latest
 
         steps:
             - name: Checkout
@@ -42,7 +42,7 @@ jobs:
     psalm:
         name: Psalm
 
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-latest
 
         steps:
             - name: Checkout code
