@@ -1,6 +1,17 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.85 to 3.86
+=========================
+
+### Deprecated
+- `PagerInterface::getNbResults()`
+- `PagerInterface::setNbResults(...)`
+- `PagerInterface::$nbResults`
+
+The method `PagerInterface::getNbResults()` was deprecated in favour of a new method `PagerInterface::countResults()`.
+Not implementing this new method is deprecated and will throw an error on 4.0.
+
 UPGRADE FROM 3.83 to 3.84
 =========================
 
