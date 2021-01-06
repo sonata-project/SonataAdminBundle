@@ -63,7 +63,20 @@ class SimplePager extends Pager
         $this->setThreshold($threshold);
     }
 
+    /**
+     * NEXT_MAJOR: remove this method.
+     */
     public function getNbResults()
+    {
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.86 and will be removed in 4.0. Use countResults() instead.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
+        return $this->countResults();
+    }
+
+    public function countResults(): int
     {
         $n = ($this->getLastPage() - 1) * $this->getMaxPerPage();
         if ($this->getLastPage() === $this->getPage()) {

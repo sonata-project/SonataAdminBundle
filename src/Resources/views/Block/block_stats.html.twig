@@ -17,10 +17,12 @@ file that was distributed with this source code.
     <!-- small box -->
     <div class="small-box {{ settings.color }}">
         <div class="inner">
-            <h3>{{ pager.getNbResults() }}</h3>
+            {# NEXT_MAJOR: remove the attribute check and just use .countResults() #}
+            <h3>{{ attribute(pager, 'countResults') is defined ? pager.countResults() : pager.getNbResults() }}</h3>
             <p>
                 {% if translation_domain %}
-                    {{ settings.text|trans({'%count%': pager.getNbResults()}, translation_domain) }}
+                    {# NEXT_MAJOR: remove the attribute check and just use .countResults() #}
+                    {{ settings.text|trans({'%count%': attribute(pager, 'countResults') is defined ? pager.countResults() : pager.getNbResults()}, translation_domain) }}
                 {% else %}
                     {{ settings.text }}
                 {% endif %}

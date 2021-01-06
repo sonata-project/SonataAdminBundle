@@ -32,7 +32,15 @@ class PagerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->pager = $this->getMockForAbstractClass(Pager::class);
+        $this->pager = $this->getMockForAbstractClass(
+            Pager::class,
+            [],
+            '',
+            true,
+            true,
+            true,
+            ['countResults']
+        );
     }
 
     /**
@@ -136,11 +144,16 @@ class PagerTest extends TestCase
         $this->assertSame(99, $this->pager->getMaxRecordLimit());
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testGetNbResults(): void
     {
         $this->assertSame(0, $this->pager->getNbResults());
 
-        $this->callMethod($this->pager, 'setNbResults', [100]);
+        $this->setProperty($this->pager, 'nbResults', 100);
 
         $this->assertSame(100, $this->pager->getNbResults());
     }
@@ -155,7 +168,7 @@ class PagerTest extends TestCase
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::count()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->assertSame(0, $this->pager->count());
 
-        $this->callMethod($this->pager, 'setNbResults', [100]);
+        $this->setProperty($this->pager, 'nbResults', 100);
 
         $this->assertSame(100, $this->pager->count());
     }
@@ -293,7 +306,11 @@ class PagerTest extends TestCase
         $this->pager->setMaxPerPage(10);
         $this->assertFalse($this->pager->haveToPaginate());
 
-        $this->callMethod($this->pager, 'setNbResults', [100]);
+        $this->pager->expects($this->once())
+            ->method('countResults')
+            ->willReturn(100)
+        ;
+
         $this->assertTrue($this->pager->haveToPaginate());
     }
 
@@ -417,7 +434,7 @@ class PagerTest extends TestCase
         $this->pager->setCursor(300);
         $this->assertSame(0, $this->pager->getCursor());
 
-        $this->callMethod($this->pager, 'setNbResults', [100]);
+        $this->setProperty($this->pager, 'nbResults', 100);
 
         $this->pager->setCursor(5);
         $this->assertSame(5, $this->pager->getCursor());
@@ -442,7 +459,7 @@ class PagerTest extends TestCase
         $object3 = new \stdClass();
         $object3->foo = 'bar3';
 
-        $this->callMethod($this->pager, 'setNbResults', [3]);
+        $this->setProperty($this->pager, 'nbResults', 3);
 
         $query = $this->createMock(ProxyQueryInterface::class);
 
@@ -557,7 +574,7 @@ class PagerTest extends TestCase
         $this->pager->setPage(0);
         $this->assertSame(0, $this->pager->getLastIndex());
 
-        $this->callMethod($this->pager, 'setNbResults', [100]);
+        $this->setProperty($this->pager, 'nbResults', 100);
 
         $this->assertSame(100, $this->pager->getLastIndex());
 
@@ -590,7 +607,7 @@ class PagerTest extends TestCase
         $object3 = new \stdClass();
         $object3->foo = 'bar3';
 
-        $this->callMethod($this->pager, 'setNbResults', [3]);
+        $this->setProperty($this->pager, 'nbResults', 3);
 
         $query = $this->createMock(ProxyQueryInterface::class);
 
@@ -654,7 +671,7 @@ class PagerTest extends TestCase
         $object3 = new \stdClass();
         $object3->foo = 'bar3';
 
-        $this->callMethod($this->pager, 'setNbResults', [3]);
+        $this->setProperty($this->pager, 'nbResults', 3);
 
         $query = $this->createMock(ProxyQueryInterface::class);
 
@@ -769,5 +786,16 @@ class PagerTest extends TestCase
         $method->setAccessible(true);
 
         return $method->invokeArgs($obj, $args);
+    }
+
+    /**
+     * NEXT_MAJOR: remove this method.
+     */
+    private function setProperty(object $obj, string $name, $value): void
+    {
+        $class = new \ReflectionClass($obj);
+        $property = $class->getProperty($name);
+        $property->setAccessible(true);
+        $property->setValue($obj, $value);
     }
 }
