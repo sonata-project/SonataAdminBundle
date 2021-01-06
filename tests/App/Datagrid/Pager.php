@@ -105,6 +105,14 @@ final class Pager implements PagerInterface
         return 1;
     }
 
+    /**
+     * NEXT_MAJOR: remove this method.
+     */
+    public function getNbResults(): int
+    {
+        return $this->countResults();
+    }
+
     public function getLinks(?int $nbLinks = null): array
     {
         return [];

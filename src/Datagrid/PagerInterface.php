@@ -74,6 +74,11 @@ interface PagerInterface
     public function countResults(): int;
 
     /**
+     * NEXT_MAJOR: remove this method.
+     */
+    public function getNbResults(): int;
+
+    /**
      * Returns an array of page numbers to use in pagination links.
      *
      * @param int|null $nbLinks The maximum number of page numbers to return

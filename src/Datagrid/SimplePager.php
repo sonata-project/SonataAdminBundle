@@ -70,6 +70,14 @@ final class SimplePager extends Pager
         return $n;
     }
 
+    /**
+     * NEXT_MAJOR: remove this method.
+     */
+    public function getNbResults(): int
+    {
+        return $this->countResults();
+    }
+
     public function getResults(?int $hydrationMode = null): array
     {
         if ($this->results) {
