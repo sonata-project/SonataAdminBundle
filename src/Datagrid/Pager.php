@@ -589,10 +589,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     public function getParameters()
     {
-        @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
+        if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
 
         return $this->parameters;
     }
