@@ -464,7 +464,7 @@ class SonataAdminExtensionTest extends TestCase
      * NEXT_MAJOR: Remove @expectedDeprecation.
      *
      * @group legacy
-     * @expectedDeprecation Accessing a non existing value is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.
+     * @expectedDeprecation Accessing a non existing value for the field "fd_name" is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.
      */
     public function testRenderListElementWithNoValueException(): void
     {
@@ -2171,7 +2171,7 @@ EOT
 
     /**
      * @group legacy
-     * @assertDeprecation Accessing a non existing value is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.
+     * @assertDeprecation Accessing a non existing value for the field "fd_name" is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.
      *
      * @dataProvider getRenderViewElementWithNoValueTests
      */
@@ -2419,7 +2419,7 @@ EOT
      * NEXT_MAJOR: Remove this test.
      *
      * @group legacy
-     * @expectedDeprecation Accessing a non existing value is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.
+     * @expectedDeprecation Accessing a non existing value for the field "" is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.
      */
     public function testGetValueFromFieldDescriptionWithNoValueException(): void
     {
