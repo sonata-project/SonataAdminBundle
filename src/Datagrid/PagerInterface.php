@@ -71,7 +71,7 @@ interface PagerInterface
      */
     public function getResults(): array;
 
-    public function getNbResults(): int;
+    public function countResults(): int;
 
     /**
      * Returns an array of page numbers to use in pagination links.

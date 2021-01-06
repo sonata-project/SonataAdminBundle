@@ -172,7 +172,8 @@ file that was distributed with this source code.
                                             <label class="checkbox" for="{{ admin.uniqid }}_all_elements">
                                                 <input type="checkbox" name="all_elements" id="{{ admin.uniqid }}_all_elements">
                                                 {{ 'all_elements'|trans({}, 'SonataAdminBundle') }}
-                                                ({{ admin.datagrid.pager.nbresults }})
+                                                {# NEXT_MAJOR: remove the attribute check and just use .countResults() #}
+                                                ({{ attribute(admin.datagrid.pager, 'countResults') is defined ? admin.datagrid.pager.countResults() : admin.datagrid.pager.getNbResults() }})
                                             </label>
 
                                             <select name="action" style="width: auto; height: auto" class="form-control">

@@ -42,6 +42,10 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     protected $lastPage = 1;
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.86
+     *
      * @var int
      */
     protected $nbResults = 0;
@@ -220,7 +224,19 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     public function haveToPaginate(): bool
     {
-        return $this->getMaxPerPage() && $this->getNbResults() > $this->getMaxPerPage();
+        // NEXT_MAJOR: remove the existence check and just use $pager->countResults() without casting to int
+        if (method_exists($this, 'countResults')) {
+            $countResults = (int) $this->countResults();
+        } else {
+            @trigger_error(sprintf(
+                'Not implementing "%s::countResults()" is deprecated since sonata-project/admin-bundle 3.86 and will fail in 4.0.',
+                'Sonata\AdminBundle\Datagrid\PagerInterface'
+            ), E_USER_DEPRECATED);
+
+            $countResults = (int) $this->getNbResults();
+        }
+
+        return $this->getMaxPerPage() && $countResults > $this->getMaxPerPage();
     }
 
     /**
@@ -390,6 +406,11 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     public function getNbResults(): int
     {
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.86 and will be removed in 4.0. Use countResults() instead.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         return $this->nbResults;
     }
 
@@ -490,10 +511,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     public function getParameters(): array
     {
-        @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
+        if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
 
         return $this->parameters;
     }
@@ -667,7 +690,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.84, use getNbResults instead
+     * @deprecated since sonata-project/admin-bundle 3.84, use countResults instead
      */
     public function count(): int
     {

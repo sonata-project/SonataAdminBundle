@@ -1,6 +1,17 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.85 to 3.86
+=========================
+
+### Sonata\AdminBundle\Datagrid\PagerInterface
+
+Deprecated `getNbResults()` method in favor of `countResults()`.
+
+### Sonata\AdminBundle\Datagrid\Pager and Sonata\AdminBundle\Datagrid\SimplePager
+
+Deprecated `$nbResults` property, `getNbResults()` and `setNbResults()` methods.
+
 UPGRADE FROM 3.83 to 3.84
 =========================
 

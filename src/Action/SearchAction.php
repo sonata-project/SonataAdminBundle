@@ -114,7 +114,17 @@ final class SearchAction
                 ];
             }
             $page = (int) $pager->getPage();
-            $total = (int) $pager->getNbResults();
+
+            // NEXT_MAJOR: remove the existence check and just use $pager->countResults() without casting to int
+            if (method_exists($pager, 'countResults')) {
+                $total = (int) $pager->countResults();
+            } else {
+                @trigger_error(sprintf(
+                    'Not implementing "%s::countResults()" is deprecated since sonata-project/admin-bundle 3.86 and will fail in 4.0.',
+                    'Sonata\AdminBundle\Datagrid\PagerInterface'
+                ), E_USER_DEPRECATED);
+                $total = (int) $pager->getNbResults();
+            }
         }
 
         $response = new JsonResponse([
