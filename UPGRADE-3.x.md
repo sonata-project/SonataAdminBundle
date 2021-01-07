@@ -16,6 +16,10 @@ Deprecated `$nbResults` property, `getNbResults()` and `setNbResults()` methods.
 
 They have been moved to `Sonata\AdminBundle\Admin\FieldDescriptionInterface`.
 
+### Sonata\AdminBundle\Controller\CRUDController
+
+Deprecated `configure()` method for configuring the associated admin, you MUST call `configureAdmin()` method instead.
+
 UPGRADE FROM 3.83 to 3.84
 =========================
 

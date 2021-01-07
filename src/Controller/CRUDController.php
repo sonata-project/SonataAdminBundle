@@ -78,11 +78,14 @@ class CRUDController implements ContainerAwareInterface
      */
     private $templateRegistry;
 
+    /**
+     * NEXT_MAJOR: We should not use this method for configuration, create a listener to call configureAdmin method.
+     */
     public function setContainer(?ContainerInterface $container = null)
     {
         $this->container = $container;
 
-        $this->configure();
+        $this->configure('sonata_deprecation_mute');
     }
 
     /**
@@ -1068,6 +1071,54 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
+     * Contextualize the admin class depends on the current request.
+     *
+     * @throws \RuntimeException
+     */
+    final public function configureAdmin(Request $request): void
+    {
+        $adminCode = $request->get('_sonata_admin');
+
+        if (!$adminCode) {
+            throw new \RuntimeException(sprintf(
+                'There is no `_sonata_admin` defined for the controller `%s` and the current route `%s`',
+                static::class,
+                $request->get('_route')
+            ));
+        }
+
+        $this->admin = $this->container->get('sonata.admin.pool')->getAdminByAdminCode($adminCode);
+
+        if (!$this->admin) {
+            throw new \RuntimeException(sprintf(
+                'Unable to find the admin class related to the current controller (%s)',
+                static::class
+            ));
+        }
+
+        $this->templateRegistry = $this->container->get(sprintf('%s.template_registry', $this->admin->getCode()));
+        if (!$this->templateRegistry instanceof TemplateRegistryInterface) {
+            throw new \RuntimeException(sprintf(
+                'Unable to find the template registry related to the current admin (%s)',
+                $this->admin->getCode()
+            ));
+        }
+
+        $rootAdmin = $this->admin;
+
+        while ($rootAdmin->isChild()) {
+            $rootAdmin->setCurrentChild(true);
+            $rootAdmin = $rootAdmin->getParent();
+        }
+
+        $rootAdmin->setRequest($request);
+
+        if ($request->get('uniqid')) {
+            $this->admin->setUniqid($request->get('uniqid'));
+        }
+    }
+
+    /**
      * @param array<string, mixed> $parameters
      *
      * @return array<string, mixed>
@@ -1147,53 +1198,20 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
-     * Contextualize the admin class depends on the current request.
-     *
-     * @throws \RuntimeException
+     * @deprecated since sonata-project/admin-bundle 3.x, will be removed in 4.0. Use configureAdmin method instead.
      */
     protected function configure()
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'The "%s()" method is deprecated since version 3.x and will be removed in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         $request = $this->getRequest();
 
-        $adminCode = $request->get('_sonata_admin');
-
-        if (!$adminCode) {
-            throw new \RuntimeException(sprintf(
-                'There is no `_sonata_admin` defined for the controller `%s` and the current route `%s`',
-                static::class,
-                $request->get('_route')
-            ));
-        }
-
-        $this->admin = $this->container->get('sonata.admin.pool')->getAdminByAdminCode($adminCode);
-
-        if (!$this->admin) {
-            throw new \RuntimeException(sprintf(
-                'Unable to find the admin class related to the current controller (%s)',
-                static::class
-            ));
-        }
-
-        $this->templateRegistry = $this->container->get(sprintf('%s.template_registry', $this->admin->getCode()));
-        if (!$this->templateRegistry instanceof TemplateRegistryInterface) {
-            throw new \RuntimeException(sprintf(
-                'Unable to find the template registry related to the current admin (%s)',
-                $this->admin->getCode()
-            ));
-        }
-
-        $rootAdmin = $this->admin;
-
-        while ($rootAdmin->isChild()) {
-            $rootAdmin->setCurrentChild(true);
-            $rootAdmin = $rootAdmin->getParent();
-        }
-
-        $rootAdmin->setRequest($request);
-
-        if ($request->get('uniqid')) {
-            $this->admin->setUniqid($request->get('uniqid'));
-        }
+        $this->configureAdmin($request);
     }
 
     /**
