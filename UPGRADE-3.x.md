@@ -12,6 +12,10 @@ Deprecated `getNbResults()` method in favor of `countResults()`.
 
 Deprecated `$nbResults` property, `getNbResults()` and `setNbResults()` methods.
 
+### Deprecated `Sonata\AdminBundle\Templating\TemplateRegistryInterface::TYPE_*` constants.
+
+They have been moved to `Sonata\AdminBundle\Admin\FieldDescriptionInterface`.
+
 UPGRADE FROM 3.83 to 3.84
 =========================
 
