@@ -366,6 +366,7 @@ class CRUDControllerTest extends TestCase
         $testedMethods = [
             'renderJson',
             'isXmlHttpRequest',
+            // NEXT_MAJOR: Remove next line.
             'configure',
             'getBaseTemplate',
             'redirectTo',
@@ -445,7 +446,22 @@ class CRUDControllerTest extends TestCase
         $this->assertTrue($this->protectedTestedMethods['isXmlHttpRequest']->invoke($this->controller, $this->request));
     }
 
-    public function testConfigure(): void
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
+    public function testConfigureCallsConfigureAdmin(): void
+    {
+        $this->admin->expects($this->once())
+            ->method('setRequest');
+
+        $this->expectDeprecation('The "Sonata\AdminBundle\Controller\CRUDController::configure()" method is deprecated since sonata-project/admin-bundle version 3.x and will be removed in 4.0 version.');
+
+        $this->protectedTestedMethods['configure']->invoke($this->controller);
+    }
+
+    public function testConfigureAdmin(): void
     {
         $uniqueId = '';
 
@@ -456,12 +472,12 @@ class CRUDControllerTest extends TestCase
             });
 
         $this->request->query->set('uniqid', 123456);
-        $this->protectedTestedMethods['configure']->invoke($this->controller);
+        $this->controller->configureAdmin($this->request);
 
         $this->assertSame(123456, $uniqueId);
     }
 
-    public function testConfigureChild(): void
+    public function testConfigureAdminChild(): void
     {
         $uniqueId = '';
 
@@ -483,12 +499,12 @@ class CRUDControllerTest extends TestCase
             ->willReturn($adminParent);
 
         $this->request->query->set('uniqid', 123456);
-        $this->protectedTestedMethods['configure']->invoke($this->controller);
+        $this->controller->configureAdmin($this->request);
 
         $this->assertSame(123456, $uniqueId);
     }
 
-    public function testConfigureWithException(): void
+    public function testConfigureAdminWithException(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
@@ -496,17 +512,17 @@ class CRUDControllerTest extends TestCase
         );
 
         $this->request->attributes->remove('_sonata_admin');
-        $this->protectedTestedMethods['configure']->invoke($this->controller);
+        $this->controller->configureAdmin($this->request);
     }
 
-    public function testConfigureWithException2(): void
+    public function testConfigureAdminWithException2(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('You have requested a non-existent service "nonexistent.admin".');
 
         $this->pool->setAdminServiceIds(['nonexistent.admin']);
         $this->request->attributes->set('_sonata_admin', 'nonexistent.admin');
-        $this->protectedTestedMethods['configure']->invoke($this->controller);
+        $this->controller->configureAdmin($this->request);
     }
 
     public function testGetBaseTemplate(): void
