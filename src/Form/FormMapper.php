@@ -192,45 +192,6 @@ class FormMapper extends BaseGroupedMapper
         return $this;
     }
 
-    /**
-     * @param string $group          The group to delete
-     * @param string $tab            The tab the group belongs to, defaults to 'default'
-     * @param bool   $deleteEmptyTab Whether or not the Tab should be deleted, when the deleted group leaves the tab empty after deletion
-     *
-     * @return static
-     */
-    public function removeGroup(string $group, string $tab = 'default', bool $deleteEmptyTab = false): self
-    {
-        $groups = $this->getGroups();
-
-        // When the default tab is used, the tabname is not prepended to the index in the group array
-        if ('default' !== $tab) {
-            $group = sprintf('%s.%s', $tab, $group);
-        }
-
-        if (isset($groups[$group])) {
-            foreach ($groups[$group]['fields'] as $field) {
-                $this->remove($field);
-            }
-        }
-        unset($groups[$group]);
-
-        $tabs = $this->getTabs();
-        $key = array_search($group, $tabs[$tab]['groups'], true);
-
-        if (false !== $key) {
-            unset($tabs[$tab]['groups'][$key]);
-        }
-        if ($deleteEmptyTab && 0 === \count($tabs[$tab]['groups'])) {
-            unset($tabs[$tab]);
-        }
-
-        $this->setTabs($tabs);
-        $this->setGroups($groups);
-
-        return $this;
-    }
-
     public function getFormBuilder(): FormBuilderInterface
     {
         return $this->formBuilder;

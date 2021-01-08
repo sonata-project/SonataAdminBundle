@@ -51,7 +51,7 @@ Here is an example::
 
             // you may specify the field type directly as the
             // second argument instead of in the options
-            ->add('isVariation', TemplateRegistry::TYPE_BOOLEAN)
+            ->add('isVariation', FieldDescriptionInterface::TYPE_BOOLEAN)
 
             // if null, the type will be guessed
             ->add('enabled', null, [
@@ -59,7 +59,7 @@ Here is an example::
             ])
 
             // editable association field
-            ->add('status', TemplateRegistry::TYPE_CHOICE, [
+            ->add('status', FieldDescriptionInterface::TYPE_CHOICE, [
                 'editable' => true,
                 'class' => 'Vendor\ExampleBundle\Entity\ExampleStatus',
                 'choices' => [
@@ -70,7 +70,7 @@ Here is an example::
             ])
 
             // editable multiple field
-            ->add('winner', TemplateRegistry::TYPE_CHOICE, [
+            ->add('winner', FieldDescriptionInterface::TYPE_CHOICE, [
                 'editable' => true,
                 'multiple' => true,
                 'choices' => [
@@ -81,7 +81,7 @@ Here is an example::
             ])
 
             // we can add options to the field depending on the type
-            ->add('price', TemplateRegistry::TYPE_CURRENCY, [
+            ->add('price', FieldDescriptionInterface::TYPE_CURRENCY, [
                 'currency' => $this->currencyDetector->getCurrency()->getLabel()
             ])
 
@@ -143,21 +143,21 @@ Options
 Available types and associated options
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-+--------------------------------------+---------------------+-----------------------------------------------------------------------+
-| Type                                 | Options             | Description                                                           |
-+======================================+=====================+=======================================================================+
-| ``ListMapper::TYPE_ACTIONS``         | actions             | List of available actions                                             |
-+                                      +                     +                                                                       +
-|                                      |   edit              | Name of the action (``show``, ``edit``, ``history``, ``delete``, etc) |
-+                                      +                     +                                                                       +
-|                                      |     link_parameters | Route parameters                                                      |
-+--------------------------------------+---------------------+-----------------------------------------------------------------------+
-| ``ListMapper::TYPE_BATCH``           |                     | Renders a checkbox                                                    |
-+--------------------------------------+---------------------+-----------------------------------------------------------------------+
-| ``ListMapper::TYPE_SELECT``          |                     | Renders a select box                                                  |
-+--------------------------------------+---------------------+-----------------------------------------------------------------------+
-| ``TemplateRegistry::TYPE_*``         |                     | See :doc:`Field Types <field_types>`                                  |
-+--------------------------------------+---------------------+-----------------------------------------------------------------------+
++---------------------------------------+---------------------+-----------------------------------------------------------------------+
+| Type                                  | Options             | Description                                                           |
++=======================================+=====================+=======================================================================+
+| ``ListMapper::TYPE_ACTIONS``          | actions             | List of available actions                                             |
++                                       +                     +                                                                       +
+|                                       |   edit              | Name of the action (``show``, ``edit``, ``history``, ``delete``, etc) |
++                                       +                     +                                                                       +
+|                                       |     link_parameters | Route parameters                                                      |
++---------------------------------------+---------------------+-----------------------------------------------------------------------+
+| ``ListMapper::TYPE_BATCH``            |                     | Renders a checkbox                                                    |
++---------------------------------------+---------------------+-----------------------------------------------------------------------+
+| ``ListMapper::TYPE_SELECT``           |                     | Renders a select box                                                  |
++---------------------------------------+---------------------+-----------------------------------------------------------------------+
+| ``FieldDescriptionInterface::TYPE_*`` |                     | See :doc:`Field Types <field_types>`                                  |
++---------------------------------------+---------------------+-----------------------------------------------------------------------+
 
 Symfony Data Transformers
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -614,10 +614,10 @@ Example::
                 'header_style' => 'width: 5%; text-align: center',
                 'row_align' => 'center'
             ])
-            ->add('name', TemplateRegistry::TYPE_STRING, [
+            ->add('name', FieldDescriptionInterface::TYPE_STRING, [
                 'header_style' => 'width: 35%'
             ])
-            ->add('description', TemplateRegistry::TYPE_STRING, [
+            ->add('description', FieldDescriptionInterface::TYPE_STRING, [
                 'header_style' => 'width: 35%',
                 'collapse' => true
             ])

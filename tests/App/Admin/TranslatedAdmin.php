@@ -14,17 +14,17 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\App\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 final class TranslatedAdmin extends AbstractAdmin
 {
     protected function configureListFields(ListMapper $list): void
     {
-        $list->add('name_list', TemplateRegistry::TYPE_STRING);
+        $list->add('name_list', FieldDescriptionInterface::TYPE_STRING);
     }
 
     protected function configureFormFields(FormMapper $form): void
@@ -38,6 +38,6 @@ final class TranslatedAdmin extends AbstractAdmin
 
     protected function configureShowFields(ShowMapper $show): void
     {
-        $show->add('name_show', TemplateRegistry::TYPE_STRING);
+        $show->add('name_show', FieldDescriptionInterface::TYPE_STRING);
     }
 }

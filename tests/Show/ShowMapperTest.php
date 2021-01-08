@@ -513,6 +513,17 @@ class ShowMapperTest extends TestCase
         $this->assertSame([], $this->admin->getShowTabs());
     }
 
+    public function testTabRemoving(): void
+    {
+        $this->cleanShowMapper();
+
+        $this->showMapper->tab('mytab2')->with('groupfoo4');
+        $this->showMapper->removeTab('mytab2');
+
+        $this->assertSame([], $this->admin->getShowGroups());
+        $this->assertSame([], $this->admin->getShowTabs());
+    }
+
     public function testEmptyFieldLabel(): void
     {
         $this->showMapper->add('foo', null, ['label' => false]);

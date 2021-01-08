@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Action;
 
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Form\DataTransformerResolverInterface;
-use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -140,7 +140,7 @@ final class SetObjectFieldValueAction
                 $value = $dataTransformer->reverseTransform($value);
             }
 
-            if (!$value && TemplateRegistry::TYPE_CHOICE === $fieldDescription->getType()) {
+            if (!$value && FieldDescriptionInterface::TYPE_CHOICE === $fieldDescription->getType()) {
                 return new JsonResponse(sprintf(
                     'Edit failed, object with id: %s not found in association: %s.',
                     $originalValue,

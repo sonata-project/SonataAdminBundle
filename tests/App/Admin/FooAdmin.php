@@ -16,10 +16,10 @@ namespace Sonata\AdminBundle\Tests\App\Admin;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Tests\App\Model\Foo;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -32,7 +32,7 @@ final class FooAdmin extends AbstractAdmin
 
     protected function configureListFields(ListMapper $list): void
     {
-        $list->add('name', TemplateRegistry::TYPE_STRING, [
+        $list->add('name', FieldDescriptionInterface::TYPE_STRING, [
             'sortable' => true,
         ]);
     }
@@ -44,7 +44,7 @@ final class FooAdmin extends AbstractAdmin
 
     protected function configureShowFields(ShowMapper $show): void
     {
-        $show->add('name', TemplateRegistry::TYPE_STRING);
+        $show->add('name', FieldDescriptionInterface::TYPE_STRING);
     }
 
     protected function configureTabMenu(MenuItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void

@@ -16,7 +16,6 @@ namespace Sonata\AdminBundle\Form;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer;
 
@@ -64,7 +63,7 @@ final class DataTransformerResolver implements DataTransformerResolverInterface
         }
 
         // Handle date type has setter expect a DateTime object
-        if (TemplateRegistry::TYPE_DATE === $fieldType) {
+        if (FieldDescriptionInterface::TYPE_DATE === $fieldType) {
             $this->globalCustomTransformers[$fieldType] = new DateTimeToStringTransformer(
                 null,
                 $this->getOutputTimezone($fieldDescription),
@@ -75,7 +74,7 @@ final class DataTransformerResolver implements DataTransformerResolverInterface
         }
 
         // Handle entity choice association type, transforming the value into entity
-        if (TemplateRegistry::TYPE_CHOICE === $fieldType) {
+        if (FieldDescriptionInterface::TYPE_CHOICE === $fieldType) {
             $className = $fieldDescription->getOption('class');
 
             if (null !== $className && $className === $fieldDescription->getTargetModel()) {
