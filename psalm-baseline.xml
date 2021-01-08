@@ -73,25 +73,6 @@
         </UndefinedClass>
         <UnrecognizedStatement occurrences="1"/>
     </file>
-    <!-- ignore template files-->
-    <file src="src/Resources/skeleton/Admin.tpl.php">
-        <UndefinedGlobalVariable occurrences="6">
-            <code>$namespace</code>
-            <code>$class_name</code>
-            <code>$fields</code>
-            <code>$fields</code>
-            <code>$fields</code>
-            <code>$fields</code>
-        </UndefinedGlobalVariable>
-    </file>
-    <file src="src/Resources/skeleton/AdminController.tpl.php">
-        <UndefinedGlobalVariable occurrences="4">
-            <code>$namespace</code>
-            <code>$class_name</code>
-            <code>$default_controller</code>
-            <code>$default_controller_short_name</code>
-        </UndefinedGlobalVariable>
-    </file>
     <!--will be removed in v4. Currently BC break-->
     <file src="src/Twig/Extension/StringExtension.php">
         <UndefinedClass occurrences="2">
