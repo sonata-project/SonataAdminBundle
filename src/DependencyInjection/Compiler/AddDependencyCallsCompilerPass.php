@@ -19,6 +19,7 @@ use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -43,7 +44,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         }
 
         $parameterBag = $container->getParameterBag();
-        $groupDefaults = $admins = $classes = [];
+        $groupDefaults = $admins = $adminServices = $classes = [];
 
         $pool = $container->getDefinition('sonata.admin.pool');
 
@@ -54,12 +55,11 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         ];
 
         foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $tags) {
+            $adminServices[$id] = new Reference($id);
+
             foreach ($tags as $attributes) {
                 $definition = $container->getDefinition($id);
                 $parentDefinition = null;
-
-                // Temporary fix until we can support service locators
-                $definition->setPublic(true);
 
                 if ($definition instanceof ChildDefinition) {
                     $parentDefinition = $container->getDefinition($definition->getParent());
@@ -205,6 +205,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $groups = $groupDefaults;
         }
 
+        $pool->replaceArgument(0, ServiceLocatorTagPass::register($container, $adminServices));
         $pool->addMethodCall('setAdminServiceIds', [$admins]);
         $pool->addMethodCall('setAdminGroups', [$groups]);
         $pool->addMethodCall('setAdminClasses', [$classes]);

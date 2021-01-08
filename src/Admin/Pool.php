@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
+use Psr\Container\ContainerInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @psalm-type Group = array{
