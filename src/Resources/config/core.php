@@ -52,9 +52,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->public()
             ->args([
                 new ReferenceConfigurator('service_container'),
-                '',
-                '',
-                [],
+                [], // admin service ids
+                [], // admin service groups
+                [], // admin service classes
             ])
             ->call('setTemplateRegistry', [
                 new ReferenceConfigurator('sonata.admin.global_template_registry'),
