@@ -564,8 +564,8 @@ class PoolTest extends TestCase
      */
     public function testDeprecatedConstructor(): void
     {
-        $this->expectDeprecation('Passing other type than array as argument 2 to "Sonata\AdminBundle\Admin\Pool::__construct()" is deprecated since sonata-project/admin-bundle 3.x and will throw "TypeError" exception in 4.0.');
-        $this->expectDeprecation('Passing other type than array as argument 3 to "Sonata\AdminBundle\Admin\Pool::__construct()" is deprecated since sonata-project/admin-bundle 3.x and will throw "TypeError" exception in 4.0.');
+        $this->expectDeprecation('Passing other type than array as argument 2 to "Sonata\AdminBundle\Admin\Pool::__construct()" is deprecated since sonata-project/admin-bundle 3.86 and will throw "TypeError" exception in 4.0.');
+        $this->expectDeprecation('Passing other type than array as argument 3 to "Sonata\AdminBundle\Admin\Pool::__construct()" is deprecated since sonata-project/admin-bundle 3.86 and will throw "TypeError" exception in 4.0.');
 
         new Pool($this->container, 'Sonata Admin', '/path/to/pic.png', ['foo' => 'bar']);
     }
