@@ -98,14 +98,20 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
             ->method('getPager')
             ->willReturn($this->createStub(PagerInterface::class));
 
+        $adminCode = 'code';
+        $container = new Container();
+        $container->set($adminCode, $admin);
+        $pool = new Pool($container, [$adminCode]);
+
         $blockService = new AdminSearchBlockService(
             $this->twig,
-            $this->pool,
+            $pool,
             $this->searchHandler,
             $this->templateRegistry,
             'show'
         );
         $blockContext = $this->getBlockContext($blockService);
+        $blockContext->setSetting('admin_code', $adminCode);
 
         $admin->expects(self::once())->method('checkAccess')->with('list');
 
@@ -142,7 +148,6 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
         $admin->expects(self::once())->method('checkAccess')->with('list');
 
         $this->twig->expects(self::never())->method('render');
-        $admin->expects(self::once())->method('checkAccess')->with('list')->willReturn(true);
 
         $response = $blockService->execute($blockContext);
 

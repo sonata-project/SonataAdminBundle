@@ -458,7 +458,6 @@ class CRUDControllerTest extends TestCase
 
     public function testConfigureAdminWithException2(): void
     {
-        $this->pool->setAdminServiceIds(['nonexistent.admin']);
         $this->request->attributes->set('_sonata_admin', 'nonexistent.admin');
 
         $this->expectException(\RuntimeException::class);

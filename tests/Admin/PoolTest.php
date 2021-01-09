@@ -160,12 +160,12 @@ class PoolTest extends TestCase
             ->willReturn(false);
 
         $this->container->set('sonata.news.admin.post', $adminMock);
-        $this->pool->setAdminServiceIds(['sonata.news.admin.post']);
+        $pool = new Pool($this->container, ['sonata.news.admin.post']);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Argument 1 passed to Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() must contain a valid admin reference, "sonata.news.admin.invalid" found at "sonata.news.admin.post|sonata.news.admin.invalid".');
 
-        $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid');
+        $pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid');
     }
 
     public function testGetAdminByAdminCodeWithCodeNotChild(): void
@@ -179,12 +179,12 @@ class PoolTest extends TestCase
             ->willReturn('sonata.news.admin.post');
 
         $this->container->set('sonata.news.admin.post', $adminMock);
-        $this->pool->setAdminServiceIds(['sonata.news.admin.post', 'sonata.news.admin.valid']);
+        $pool = new Pool($this->container, ['sonata.news.admin.post', 'sonata.news.admin.valid']);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Argument 1 passed to Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() must contain a valid admin hierarchy, "sonata.news.admin.valid" is not a valid child for "sonata.news.admin.post"');
 
-        $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.valid');
+        $pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.valid');
     }
 
     /**
@@ -355,8 +355,6 @@ class PoolTest extends TestCase
             ->method('getChild');
 
         $this->container->set('sonata.news.admin.post', $adminMock);
-
-        $this->pool->setAdminServiceIds(['sonata.news.admin.post']);
 
         $this->assertFalse($this->pool->hasAdminByAdminCode($adminId));
     }

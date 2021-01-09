@@ -1971,7 +1971,7 @@ EOT
             PropertyAccess::createPropertyAccessor()
         );
 
-        $this->assertSame(1234567, $twigExtension->getUrlSafeIdentifier($model));
+        $this->assertSame('1234567', $twigExtension->getUrlSafeIdentifier($model));
     }
 
     public function testGetUrlsafeIdentifier_GivenAdmin_Foo(): void
@@ -2006,7 +2006,7 @@ EOT
             PropertyAccess::createPropertyAccessor()
         );
 
-        $this->assertSame(1234567, $twigExtension->getUrlSafeIdentifier($model, $this->admin));
+        $this->assertSame('1234567', $twigExtension->getUrlSafeIdentifier($model, $this->admin));
     }
 
     public function testGetUrlsafeIdentifier_GivenAdmin_Bar(): void
@@ -2038,7 +2038,7 @@ EOT
             PropertyAccess::createPropertyAccessor()
         );
 
-        $this->assertSame(1234567, $twigExtension->getUrlSafeIdentifier($model, $this->adminBar));
+        $this->assertSame('1234567', $twigExtension->getUrlSafeIdentifier($model, $this->adminBar));
     }
 
     public function xEditableChoicesProvider()
