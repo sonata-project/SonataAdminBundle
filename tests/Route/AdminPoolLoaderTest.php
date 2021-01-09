@@ -41,8 +41,7 @@ class AdminPoolLoaderTest extends TestCase
     public function testLoad(): void
     {
         $container = new Container();
-        $pool = new Pool($container);
-        $pool->setAdminServiceIds(['foo_admin', 'bar_admin']);
+        $pool = new Pool($container, ['foo_admin', 'bar_admin']);
 
         $adminPoolLoader = new AdminPoolLoader($pool, ['foo_admin', 'bar_admin'], $container);
 

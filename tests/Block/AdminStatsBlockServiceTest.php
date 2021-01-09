@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\Block;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminStatsBlockService;
 use Sonata\BlockBundle\Test\BlockServiceTestCase;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -31,7 +32,7 @@ class AdminStatsBlockServiceTest extends BlockServiceTestCase
     {
         parent::setUp();
 
-        $this->pool = $this->createMock(Pool::class);
+        $this->pool = new Pool(new Container());
     }
 
     public function testDefaultSettings(): void

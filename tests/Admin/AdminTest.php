@@ -70,6 +70,7 @@ use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 use Sonata\Doctrine\Adapter\AdapterInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactory;
@@ -914,9 +915,7 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $pool = $this->getMockBuilder(Pool::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $pool = new Pool(new Container());
 
         $admin->setConfigurationPool($pool);
         $this->assertSame($pool, $admin->getConfigurationPool());

@@ -477,12 +477,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
     }
 
-    public function getFilterParameters(): array
+    final public function getDefaultFilterParameters(): array
     {
-        $parameters = array_merge(
+        return array_merge(
             $this->getDefaultSortValues(),
             $this->getDefaultFilterValues()
         );
+    }
+
+    public function getFilterParameters(): array
+    {
+        $parameters = $this->getDefaultFilterParameters();
 
         // build the values array
         if ($this->hasRequest()) {

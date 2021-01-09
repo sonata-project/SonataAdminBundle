@@ -63,9 +63,7 @@ final class AdminExtractorTest extends TestCase
         $container->set('foo_admin', $this->fooAdmin);
         $container->set('bar_admin', $this->barAdmin);
 
-        $this->pool = new Pool($container);
-        $this->pool->setAdminServiceIds(['foo_admin', 'bar_admin']);
-        $this->pool->setAdminGroups(['group' => [
+        $this->pool = new Pool($container, ['foo_admin', 'bar_admin'], ['group' => [
             'label_catalogue' => 'admin_domain',
         ]]);
 

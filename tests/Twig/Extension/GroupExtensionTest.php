@@ -45,12 +45,26 @@ final class GroupExtensionTest extends TestCase
 
     public function testGetDashboardGroupsWithCreatableAdmins(): void
     {
+        $container = new Container();
+        $pool = new Pool($container, ['sonata_admin_non_creatable', 'sonata_admin_creatable'], [
+            'group_without_creatable' => [
+                'items' => [
+                    'itemKey' => ['admin' => 'sonata_admin_non_creatable'],
+                ],
+            ],
+            'group_with_creatable' => [
+                'items' => [
+                    'itemKey' => ['admin' => 'sonata_admin_creatable'],
+                ],
+            ],
+        ]);
+        $twigExtension = new GroupExtension($pool);
+
         $adminNonCreatable = $this->createMock(AbstractAdmin::class);
         $adminCreatable = $this->createMock(AbstractAdmin::class);
 
-        $this->container->set('sonata_admin_non_creatable', $adminNonCreatable);
-        $this->container->set('sonata_admin_creatable', $adminCreatable);
-        $this->pool->setAdminServiceIds(['sonata_admin_non_creatable', 'sonata_admin_creatable']);
+        $container->set('sonata_admin_non_creatable', $adminNonCreatable);
+        $container->set('sonata_admin_creatable', $adminCreatable);
 
         $adminCreatable
             ->method('showIn')
@@ -72,25 +86,12 @@ final class GroupExtensionTest extends TestCase
             ->with('create')
             ->willReturn(false);
 
-        $this->pool->setAdminGroups([
-            'group_without_creatable' => [
-                'items' => [
-                    'itemKey' => ['admin' => 'sonata_admin_non_creatable'],
-                ],
-            ],
-            'group_with_creatable' => [
-                'items' => [
-                    'itemKey' => ['admin' => 'sonata_admin_creatable'],
-                ],
-            ],
-        ]);
-
         $this->assertSame([
             [
                 'items' => [
                     'itemKey' => $adminCreatable,
                 ],
             ],
-        ], $this->twigExtension->getDashboardGroupsWithCreatableAdmins());
+        ], $twigExtension->getDashboardGroupsWithCreatableAdmins());
     }
 }

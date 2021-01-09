@@ -27,6 +27,9 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
+ * NEXT_MAJOR: Add all these methods to the interface by uncommenting them.
+ *
+ * @method array getDefaultFilterParameters()
  * @phpstan-template T of object
  * @phpstan-extends AccessRegistryInterface<T>
  * @phpstan-extends UrlGeneratorInterface<T>
@@ -232,6 +235,15 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      * @param mixed[] $idx
      */
     public function preBatchAction(string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements = false): void;
+
+    /**
+     * Return array of default filter parameters.
+     *
+     * NEXT_MAJOR: uncomment this method
+     *
+     * @return array<string, mixed>
+     */
+    // public function getDefaultFilterParameters(): array;
 
     /**
      * Return array of filter parameters.

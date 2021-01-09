@@ -24,6 +24,7 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,8 +52,9 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     {
         $this->admin = $this->createMock(AbstractAdmin::class);
         $this->admin->expects($this->once())->method('setRequest');
-        $this->pool = $this->createStub(Pool::class);
-        $this->pool->method('getInstance')->willReturn($this->admin);
+        $container = new Container();
+        $container->set('foo.admin', $this->admin);
+        $this->pool = new Pool($container, ['foo.admin']);
         $this->action = new RetrieveAutocompleteItemsAction($this->pool);
     }
 

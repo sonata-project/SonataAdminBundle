@@ -22,6 +22,7 @@ use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\BlockBundle\Test\BlockServiceTestCase;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -48,7 +49,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
     {
         parent::setUp();
 
-        $this->pool = $this->createMock(Pool::class);
+        $this->pool = new Pool(new Container());
         $this->searchHandler = new SearchHandler(true);
         $this->templateRegistry = $this->createMock(TemplateRegistryInterface::class);
         $this->templateRegistry->method('getTemplate')->willReturn('@SonataAdmin/Block/block_search_result.html.twig');
@@ -106,7 +107,6 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
         );
         $blockContext = $this->getBlockContext($blockService);
 
-        $this->pool->expects(self::once())->method('getAdminByAdminCode')->willReturn($admin);
         $admin->expects(self::once())->method('checkAccess')->with('list');
 
         $response = $blockService->execute($blockContext);
@@ -124,20 +124,25 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
             ->method('getCode')
             ->willReturn($adminCode);
 
+        $container = new Container();
+        $container->set($adminCode, $admin);
+        $pool = new Pool($container, [$adminCode]);
+
         $blockService = new AdminSearchBlockService(
             $this->twig,
-            $this->pool,
+            $pool,
             $this->searchHandler,
             $this->templateRegistry,
             'show'
         );
         $blockContext = $this->getBlockContext($blockService);
+        $blockContext->setSetting('admin_code', $adminCode);
 
         $this->searchHandler->configureAdminSearch([$adminCode => false]);
-        $this->pool->expects(self::once())->method('getAdminByAdminCode')->willReturn($admin);
         $admin->expects(self::once())->method('checkAccess')->with('list');
 
         $this->twig->expects(self::never())->method('render');
+        $admin->expects(self::once())->method('checkAccess')->with('list')->willReturn(true);
 
         $response = $blockService->execute($blockContext);
 

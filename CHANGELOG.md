@@ -2,6 +2,26 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.86.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.85.0...3.86.0) - 2021-01-09
+### Added
+- [[#6732](https://github.com/sonata-project/SonataAdminBundle/pull/6732)] Added `PagerInterface::countResults` ([@dmaicher](https://github.com/dmaicher))
+- [[#6700](https://github.com/sonata-project/SonataAdminBundle/pull/6700)] Added `AbstractAdmin::getDefaultFilterParameters()` to get default filter parameters ([@kirya-dev](https://github.com/kirya-dev))
+- [[#6746](https://github.com/sonata-project/SonataAdminBundle/pull/6746)] `Added BaseGroupMapper::removeGroup()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6746](https://github.com/sonata-project/SonataAdminBundle/pull/6746)] `Added BaseGroupMapper::removeTab()` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Changed
+- [[#6700](https://github.com/sonata-project/SonataAdminBundle/pull/6700)] Only changed (non default, non empty) filters will be submitted ([@kirya-dev](https://github.com/kirya-dev))
+
+### Deprecated
+- [[#6732](https://github.com/sonata-project/SonataAdminBundle/pull/6732)] `PagerInterface::getNbResults()` in favour of `countResults()` ([@dmaicher](https://github.com/dmaicher))
+- [[#6732](https://github.com/sonata-project/SonataAdminBundle/pull/6732)] `PagerInterface::setNbResults(...)` ([@dmaicher](https://github.com/dmaicher))
+- [[#6732](https://github.com/sonata-project/SonataAdminBundle/pull/6732)] `PagerInterface::$nbResults` ([@dmaicher](https://github.com/dmaicher))
+- [[#6735](https://github.com/sonata-project/SonataAdminBundle/pull/6735)] Deprecated `Pool::setAdminServiceIds` in favor of passing service ids as argument 2 to the constructor ([@franmomu](https://github.com/franmomu))
+- [[#6735](https://github.com/sonata-project/SonataAdminBundle/pull/6735)] Deprecated `Pool::setAdminGroups` in favor of passing service ids as argument 3 to the constructor ([@franmomu](https://github.com/franmomu))
+- [[#6735](https://github.com/sonata-project/SonataAdminBundle/pull/6735)] Deprecated `Pool::setAdminClasses` in favor of passing service ids as argument 4 to the constructor ([@franmomu](https://github.com/franmomu))
+- [[#6751](https://github.com/sonata-project/SonataAdminBundle/pull/6751)] Deprecated `CRUDController::configure()` method, to configure the associated admin, you should call `CRUDController::configureAdmin()` instead ([@franmomu](https://github.com/franmomu))
+- [[#6752](https://github.com/sonata-project/SonataAdminBundle/pull/6752)] Deprecated `TemplateRegistryInterface::TYPE_*` constants, they have been moved to `FieldDescriptionInterface` ([@franmomu](https://github.com/franmomu))
+
 ## [3.85.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.84.0...3.85.0) - 2021-01-02
 ### Added
 - [[#6576](https://github.com/sonata-project/SonataAdminBundle/pull/6576)] Added generics to `AdminExtensionInterface`. ([@franmomu](https://github.com/franmomu))

@@ -1009,17 +1009,13 @@ class CRUDController extends AbstractController
     }
 
     /**
-     * Contextualize the admin class depends on the current request.
-     *
-     * @throws \RuntimeException
-     *
-     * @deprecated since sonata-project/admin-bundle 3.x, will be removed in 4.0. Use configureAdmin method instead.
+     * @deprecated since sonata-project/admin-bundle 3.86, will be removed in 4.0. Use configureAdmin method instead.
      */
     protected function configure(): void
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'The "%s()" method is deprecated since sonata-project/admin-bundle version 3.x and will be'
+                'The "%s()" method is deprecated since sonata-project/admin-bundle version 3.86 and will be'
                 .' removed in 4.0 version.',
                 __METHOD__
             ), E_USER_DEPRECATED);

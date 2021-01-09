@@ -313,7 +313,29 @@ var Admin = {
         });
 
         jQuery('.sonata-filter-form', subject).on('submit', function () {
-            jQuery(this).find('[sonata-filter="true"]:hidden :input').val('');
+            var $form = jQuery(this);
+            $form.find('[sonata-filter="true"]:hidden :input').val('');
+
+            if (!this.dataset.defaultValues) {
+                return;
+            }
+
+            var defaultValues = $.param({'filter': JSON.parse(this.dataset.defaultValues)}).split('&'),
+                submittedValues = $form.serialize().split('&');
+
+            // Compare default and submitted filter values in `keyValue` representation. (`keyValue` ex: "filter[publish][value][end]=2020-12-12")
+            // Only allow to submit non default and non empty values, because empty values means they are not present.
+            var changedValues = submittedValues.filter(function (keyValue) {
+                return defaultValues.indexOf(keyValue) === -1 && keyValue.split('=')[1] !== '';
+            });
+
+            // Disable all inputs and enable only the required ones
+            $form.find('[name*=filter]').attr('disabled', 'disabled');
+            changedValues
+                .map(function (keyValue) { return decodeURIComponent(keyValue.split('=')[0]); })
+                .forEach(function (key) {
+                    $form.find('[name="' + key + '"]').removeAttr('disabled');
+                });
         });
 
         /* Advanced filters */

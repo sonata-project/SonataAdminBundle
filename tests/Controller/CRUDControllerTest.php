@@ -170,8 +170,7 @@ class CRUDControllerTest extends TestCase
         $this->httpMethodParameterOverride = Request::getHttpMethodParameterOverride();
         $this->container = new Container();
         $this->request = new Request();
-        $this->pool = new Pool($this->container);
-        $this->pool->setAdminServiceIds(['foo.admin']);
+        $this->pool = new Pool($this->container, ['foo.admin']);
         $this->request->attributes->set('_sonata_admin', 'foo.admin');
         $this->admin = $this->createMock(AdminInterface::class);
         $this->translator = $this->createMock(TranslatorInterface::class);
@@ -398,7 +397,7 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('setRequest');
 
-        $this->expectDeprecation('The "Sonata\AdminBundle\Controller\CRUDController::configure()" method is deprecated since sonata-project/admin-bundle version 3.x and will be removed in 4.0 version.');
+        $this->expectDeprecation('The "Sonata\AdminBundle\Controller\CRUDController::configure()" method is deprecated since sonata-project/admin-bundle version 3.86 and will be removed in 4.0 version.');
 
         $this->protectedTestedMethods['configure']->invoke($this->controller);
     }

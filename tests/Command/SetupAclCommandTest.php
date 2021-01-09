@@ -42,8 +42,7 @@ class SetupAclCommandTest extends TestCase
 
     public function testExecute(): void
     {
-        $pool = new Pool($this->container);
-        $pool->setAdminServiceIds(['acme.admin.foo']);
+        $pool = new Pool($this->container, ['acme.admin.foo']);
 
         $command = new SetupAclCommand($pool, $this->createMock(AdminAclManipulatorInterface::class));
 
@@ -60,8 +59,7 @@ class SetupAclCommandTest extends TestCase
     public function testExecuteWithException1(): void
     {
         $this->container->set('acme.admin.foo', null);
-        $pool = new Pool($this->container);
-        $pool->setAdminServiceIds(['acme.admin.foo']);
+        $pool = new Pool($this->container, ['acme.admin.foo']);
 
         $command = new SetupAclCommand($pool, $this->createMock(AdminAclManipulatorInterface::class));
 

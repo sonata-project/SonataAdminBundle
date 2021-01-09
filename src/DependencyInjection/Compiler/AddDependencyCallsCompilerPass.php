@@ -206,9 +206,14 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         }
 
         $pool->replaceArgument(0, ServiceLocatorTagPass::register($container, $adminServices));
-        $pool->addMethodCall('setAdminServiceIds', [$admins]);
-        $pool->addMethodCall('setAdminGroups', [$groups]);
-        $pool->addMethodCall('setAdminClasses', [$classes]);
+        // NEXT_MAJOR: Remove the following 3 lines
+        $pool->addMethodCall('setAdminServiceIds', [$admins, 'sonata_deprecation_mute']);
+        $pool->addMethodCall('setAdminGroups', [$groups, 'sonata_deprecation_mute']);
+        $pool->addMethodCall('setAdminClasses', [$classes, 'sonata_deprecation_mute']);
+
+        $pool->replaceArgument(1, [$admins]);
+        $pool->replaceArgument(2, [$groups]);
+        $pool->replaceArgument(3, [$classes]);
 
         $routeLoader = $container->getDefinition('sonata.admin.route_loader');
         $routeLoader->replaceArgument(1, $admins);

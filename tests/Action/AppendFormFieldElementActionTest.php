@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
@@ -58,10 +59,11 @@ final class AppendFormFieldElementActionTest extends TestCase
     protected function setUp(): void
     {
         $this->twig = $this->createStub(Environment::class);
-        $this->pool = $this->createStub(Pool::class);
         $this->admin = $this->createMock(AbstractAdmin::class);
-        $this->pool->method('getInstance')->willReturn($this->admin);
         $this->admin->expects($this->once())->method('setRequest');
+        $container = new Container();
+        $container->set('sonata.post.admin', $this->admin);
+        $this->pool = new Pool($container, ['sonata.post.admin']);
         $this->helper = $this->createStub(AdminHelper::class);
         $this->action = new AppendFormFieldElementAction(
             $this->twig,

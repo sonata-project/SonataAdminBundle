@@ -271,7 +271,16 @@ file that was distributed with this source code.
         <div class="col-xs-12 col-md-12 sonata-filters-box" style="display: {{ admin.datagrid.hasDisplayableFilters ? 'block' : 'none' }}" id="filter-container-{{ admin.uniqid() }}">
             <div class="box box-primary" >
                 <div class="box-body">
-                    <form class="sonata-filter-form form-horizontal {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET" role="form">
+                    <form
+                        class="sonata-filter-form form-horizontal {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}"
+                        action="{{ admin.generateUrl('list') }}"
+                        method="GET"
+                        role="form"
+                        {# NEXT_MAJOR: Remove condition #}
+                        {% if attribute(admin, 'getDefaultFilterParameters') is defined %}
+                            data-default-values="{{ admin.defaultFilterParameters|json_encode }}"
+                        {% endif %}
+                    >
                         {{ form_errors(form) }}
 
                         <div class="row">

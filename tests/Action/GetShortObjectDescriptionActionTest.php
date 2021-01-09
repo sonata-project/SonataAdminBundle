@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Twig\Environment;
@@ -45,12 +46,19 @@ final class GetShortObjectDescriptionActionTest extends TestCase
      */
     private $admin;
 
+    /**
+     * @var string
+     */
+    private $adminCode;
+
     protected function setUp(): void
     {
         $this->twig = new Environment(new ArrayLoader(['short_object_description' => 'renderedTemplate']));
-        $this->pool = $this->createStub(Pool::class);
+        $this->adminCode = 'sonata.post.admin';
         $this->admin = $this->createMock(AbstractAdmin::class);
-        $this->pool->method('getInstance')->willReturn($this->admin);
+        $container = new Container();
+        $container->set($this->adminCode, $this->admin);
+        $this->pool = new Pool($container, [$this->adminCode]);
 
         $this->action = new GetShortObjectDescriptionAction(
             $this->twig,
@@ -60,15 +68,12 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
     public function testGetShortObjectDescriptionActionInvalidAdmin(): void
     {
-        $code = 'sonata.post.admin';
-
         $request = new Request([
-            'code' => $code,
+            'code' => 'non_existing_code',
             'objectId' => 42,
             'uniqid' => 'asdasd123',
         ]);
 
-        $this->pool->method('getInstance')->with($code)->willThrowException(new \InvalidArgumentException());
         $this->admin->expects($this->never())->method('setRequest');
 
         $this->expectException(NotFoundHttpException::class);
@@ -79,7 +84,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
     public function testGetShortObjectDescriptionActionObjectDoesNotExist(): void
     {
         $request = new Request([
-            'code' => 'sonata.post.admin',
+            'code' => $this->adminCode,
             'objectId' => 42,
             'uniqid' => 'asdasd123',
         ]);
@@ -95,7 +100,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
     public function testGetShortObjectDescriptionActionEmptyObjectId(): void
     {
         $request = new Request([
-            'code' => 'sonata.post.admin',
+            'code' => $this->adminCode,
             'uniqid' => 'asdasd123',
             '_format' => 'html',
         ]);
@@ -115,7 +120,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         ]);
 
         $request = new Request([
-            'code' => 'sonata.post.admin',
+            'code' => $this->adminCode,
             'objectId' => 42,
             'uniqid' => 'asdasd123',
             '_format' => 'html',
@@ -137,7 +142,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
     public function testGetShortObjectDescriptionActionEmptyObjectIdAsJson(): void
     {
         $request = new Request([
-            'code' => 'sonata.post.admin',
+            'code' => $this->adminCode,
             'uniqid' => 'asdasd123',
             '_format' => 'json',
         ]);
@@ -155,7 +160,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
     public function testGetShortObjectDescriptionActionObjectAsJson(): void
     {
         $request = new Request([
-            'code' => 'sonata.post.admin',
+            'code' => $this->adminCode,
             'objectId' => 42,
             'uniqid' => 'asdasd123',
             '_format' => 'json',
