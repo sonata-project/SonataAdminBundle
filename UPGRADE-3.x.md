@@ -1,6 +1,32 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.xx to 3.xx
+=========================
+
+### Sonata\AdminBundle\Twig\Extension\SonataAdminExtension
+
+- Deprecated `SonataAdminExtension::MOMENT_UNSUPPORTED_LOCALES` constant.
+- Deprecated `SonataAdminExtension::setXEditableTypeMapping()` method.
+- Deprecated `SonataAdminExtension::getXEditableType()` method.
+- Deprecated `SonataAdminExtension::getXEditableChoices()` method.
+- Deprecated `SonataAdminExtension::getCanonicalizedLocaleForMoment()` method in favor of
+  `CanonicalizerExtension::getCanonicalizedLocaleForMoment()`.
+- Deprecated `SonataAdminExtension::getCanonicalizedLocaleForSelect2()` method in favor of
+  `CanonicalizerExtension::getCanonicalizedLocaleForSelect2()`.
+- Deprecated `SonataAdminExtension::isGrantedAffirmative()` method in favor of
+  `SecurityExtension::isGrantedAffirmative()`.
+- Deprecated `SonataAdminExtension::renderListElement()` method in favor of
+  `RenderElementExtension::renderListElement()`.
+- Deprecated `SonataAdminExtension::renderViewElement()` method in favor of
+  `RenderElementExtension::renderViewElement()`.
+- Deprecated `SonataAdminExtension::renderViewElementCompare()` method in favor of
+  `RenderElementExtension::renderViewElementCompare()`.
+- Deprecated `SonataAdminExtension::renderRelationElement()` method in favor of
+  `RenderElementExtension::renderRelationElement()`.
+- Deprecated `SonataAdminExtension::getTemplate()` method.
+- Deprecated `SonataAdminExtension::getTemplateRegistry()` method.
+
 UPGRADE FROM 3.85 to 3.86
 =========================
 
