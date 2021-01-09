@@ -455,7 +455,7 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('setRequest');
 
-        $this->expectDeprecation('The "Sonata\AdminBundle\Controller\CRUDController::configure()" method is deprecated since sonata-project/admin-bundle version 3.x and will be removed in 4.0 version.');
+        $this->expectDeprecation('The "Sonata\AdminBundle\Controller\CRUDController::configure()" method is deprecated since sonata-project/admin-bundle version 3.86 and will be removed in 4.0 version.');
 
         $this->protectedTestedMethods['configure']->invoke($this->controller);
     }

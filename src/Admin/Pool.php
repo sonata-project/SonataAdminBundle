@@ -152,7 +152,7 @@ class Pool
         } else {
             @trigger_error(sprintf(
                 'Passing other type than array as argument 2 to "%s()" is deprecated since'
-                .' sonata-project/admin-bundle 3.x and will throw "%s" exception in 4.0.',
+                .' sonata-project/admin-bundle 3.86 and will throw "%s" exception in 4.0.',
                 __METHOD__,
                 \TypeError::class
             ), E_USER_DEPRECATED);
@@ -166,7 +166,7 @@ class Pool
         } else {
             @trigger_error(sprintf(
                 'Passing other type than array as argument 3 to "%s()" is deprecated since'
-                .' sonata-project/admin-bundle 3.x and will throw "%s" exception in 4.0.',
+                .' sonata-project/admin-bundle 3.86 and will throw "%s" exception in 4.0.',
                 __METHOD__,
                 \TypeError::class
             ), E_USER_DEPRECATED);
@@ -558,7 +558,7 @@ class Pool
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0. Pass $adminGroups as argument 3
+     * @deprecated since sonata-project/admin-bundle 3.86, will be dropped in 4.0. Pass $adminGroups as argument 3
      * to the __construct method instead.
      *
      * @phpstan-param array<string, array<string, mixed>> $adminGroups
@@ -570,7 +570,7 @@ class Pool
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
             @trigger_error(sprintf(
-                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.86 and will be removed in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -589,7 +589,7 @@ class Pool
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0. Pass $adminGroups as argument 2
+     * @deprecated since sonata-project/admin-bundle 3.86, will be dropped in 4.0. Pass $adminGroups as argument 2
      * to the __construct method instead.
      *
      * @return void
@@ -598,7 +598,7 @@ class Pool
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
             @trigger_error(sprintf(
-                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.86 and will be removed in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -617,7 +617,7 @@ class Pool
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, will be dropped in 4.0. Pass $adminGroups as argument 4
+     * @deprecated since sonata-project/admin-bundle 3.86, will be dropped in 4.0. Pass $adminGroups as argument 4
      * to the __construct method instead.
      *
      * @param array<string, string[]> $adminClasses
@@ -630,7 +630,7 @@ class Pool
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
             @trigger_error(sprintf(
-                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.86 and will be removed in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
