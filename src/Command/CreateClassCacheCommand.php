@@ -70,7 +70,7 @@ class CreateClassCacheCommand extends Command
 
         $output->write('<info>Writing cache file ...</info>');
         ClassCollectionLoader::load(
-            include ($classmap),
+            include($classmap),
             $this->cacheDir,
             $name,
             $this->debug,

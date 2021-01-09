@@ -13,40 +13,57 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Templating;
 
-/**
- * @author Timo Bakx <timobakx@gmail.com>
- *
- * NEXT_MAJOR: remove `MutableTemplateRegistryInterface` implementation.
- */
-final class TemplateRegistry extends AbstractTemplateRegistry implements MutableTemplateRegistryInterface
-{
+if (!class_exists(\Sonata\Twig\Templating\TemplateRegistry::class, false)) {
+    @trigger_error(
+        'The '.__NAMESPACE__.'\TemplateRegistry class is deprecated since version 3.x and will be removed in 4.0.'
+        .' Use Sonata\Twig\Templating\TemplateRegistry instead.',
+        E_USER_DEPRECATED
+    );
+}
+
+class_alias(
+    \Sonata\Twig\Templating\TemplateRegistry::class,
+    __NAMESPACE__.'\TemplateRegistry'
+);
+
+if (false) {
     /**
-     * NEXT_MAJOR: remove this method.
+     * @author Timo Bakx <timobakx@gmail.com>
      *
-     * @deprecated since version sonata-project/admin-bundle 3.39.0 and will be removed in 4.0. Use Sonata\AdminBundle\Templating\MutableTemplateRegistry instead.
-     */
-    public function setTemplates(array $templates)
-    {
-        $this->templates = $templates;
-
-        @trigger_error(sprintf(
-            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.39 and will be removed in 4.0.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-    }
-
-    /**
-     * NEXT_MAJOR: remove this method.
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
      *
-     * @deprecated since version sonata-project/admin-bundle 3.39.0 and will be removed in 4.0. Use Sonata\AdminBundle\Templating\MutableTemplateRegistry instead.
+     * NEXT_MAJOR: remove `MutableTemplateRegistryInterface` implementation.
      */
-    public function setTemplate($name, $template)
+    final class TemplateRegistry extends AbstractTemplateRegistry implements MutableTemplateRegistryInterface
     {
-        $this->templates[$name] = $template;
+        /**
+         * NEXT_MAJOR: remove this method.
+         *
+         * @deprecated since version sonata-project/admin-bundle 3.39.0 and will be removed in 4.0. Use Sonata\AdminBundle\Templating\MutableTemplateRegistry instead.
+         */
+        public function setTemplates(array $templates)
+        {
+            $this->templates = $templates;
 
-        @trigger_error(sprintf(
-            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.39 and will be removed in 4.0.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
+            @trigger_error(sprintf(
+                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.39 and will be removed in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
+        /**
+         * NEXT_MAJOR: remove this method.
+         *
+         * @deprecated since version sonata-project/admin-bundle 3.39.0 and will be removed in 4.0. Use Sonata\AdminBundle\Templating\MutableTemplateRegistry instead.
+         */
+        public function setTemplate($name, $template)
+        {
+            $this->templates[$name] = $template;
+
+            @trigger_error(sprintf(
+                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.39 and will be removed in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
     }
 }

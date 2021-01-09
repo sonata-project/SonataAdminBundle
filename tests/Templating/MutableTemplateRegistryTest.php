@@ -18,6 +18,9 @@ use Sonata\AdminBundle\Templating\MutableTemplateRegistry;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
+/**
+ * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+ */
 final class MutableTemplateRegistryTest extends TestCase
 {
     use ExpectDeprecationTrait;
