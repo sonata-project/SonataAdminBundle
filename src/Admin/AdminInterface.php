@@ -32,6 +32,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @method array                           configureActionButtons(string $action, ?object $object = null)
  * @method string                          getSearchResultLink(object $object)
+ * @method array                           getDefaultFilterParameters()
  * @method bool                            isCurrentRoute(string $name, ?string $adminCode)
  * @method bool                            canAccessObject(string $action, object $object)
  * @method mixed                           getPersistentParameter(string $name)
@@ -394,6 +395,15 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      * @param bool   $allElements
      */
     public function preBatchAction($actionName, ProxyQueryInterface $query, array &$idx, $allElements);
+
+    /**
+     * Return array of default filter parameters.
+     *
+     * NEXT_MAJOR: uncomment this method
+     *
+     * @return array<string, mixed>
+     */
+    // public function getDefaultFilterParameters(): array;
 
     /**
      * Return array of filter parameters.
