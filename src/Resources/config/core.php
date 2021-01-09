@@ -49,6 +49,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->public()
             ->args([
                 null, // admin service locator
+                [], // admin service ids
+                [], // admin service groups
+                [], // admin service classes
             ])
 
         ->alias(Pool::class, 'sonata.admin.pool')
