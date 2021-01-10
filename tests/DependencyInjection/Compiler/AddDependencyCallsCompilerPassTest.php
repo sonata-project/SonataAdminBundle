@@ -168,6 +168,12 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertContains('sonata_article_admin', $adminServiceIds);
         $this->assertContains('sonata_news_admin', $adminServiceIds);
 
+        $poolDefinition = $container->getDefinition('sonata.admin.pool');
+
+        $this->assertContains('sonata_post_admin', $poolDefinition->getArgument(1));
+        $this->assertArrayHasKey('sonata_group_one', $poolDefinition->getArgument(2));
+        $this->assertArrayHasKey(News::class, $poolDefinition->getArgument(3));
+
         $this->assertArrayHasKey('sonata_group_one', $adminGroups);
         $this->assertArrayHasKey('label', $adminGroups['sonata_group_one']);
         $this->assertArrayHasKey('label_catalogue', $adminGroups['sonata_group_one']);
