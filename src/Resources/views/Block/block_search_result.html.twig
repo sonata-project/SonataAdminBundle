@@ -15,7 +15,8 @@ file that was distributed with this source code.
     {# NEXT_MAJOR: Remove the following line #}
     {% set show_empty_boxes = show_empty_boxes|default(sonata_admin.adminPool.container.getParameter('sonata.admin.configuration.global_search.empty_boxes')) %}
     {% set visibility_class = 'sonata-search-result-' ~ show_empty_boxes %}
-    {% if pager and pager.getResults()|length %}
+    {# NEXT_MAJOR: remove the attribute check and just use .currentPageResults #}
+    {% if pager and (attribute(pager, 'getCurrentPageResults') is defined ? pager.currentPageResults : pager.results)|length %}
         {% set visibility_class = 'sonata-search-result-show' %}
     {% endif %}
 
@@ -47,10 +48,12 @@ file that was distributed with this source code.
                     {% endif %}
                 </div>
             </div>
-            {% if pager and pager.getResults()|length %}
+            {# NEXT_MAJOR: remove the attribute check and just use .currentPageResults #}
+            {% if pager and (attribute(pager, 'getCurrentPageResults') is defined ? pager.currentPageResults : pager.results)|length %}
                 <div class="box-body no-padding">
                     <ul class="nav nav-stacked sonata-search-result-list">
-                        {% for result in pager.getResults() %}
+                        {# NEXT_MAJOR: remove the attribute check and just use .currentPageResults #}
+                        {% for result in (attribute(pager, 'getCurrentPageResults') is defined ? pager.currentPageResults : pager.results) %}
                             {% set link = admin.getSearchResultLink(result) %}
                             {% if link %}
                                 <li><a href="{{ link }}">{{ admin.toString(result) }}</a></li>

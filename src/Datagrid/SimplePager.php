@@ -24,7 +24,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class SimplePager extends Pager
 {
     /**
-     * @var object[]|null
+     * @var iterable<object>|null
      */
     protected $results;
 
@@ -86,13 +86,13 @@ class SimplePager extends Pager
         return $n;
     }
 
-    public function getResults($hydrationMode = null)
+    public function getCurrentPageResults(): iterable
     {
         if ($this->results) {
             return $this->results;
         }
 
-        $this->results = $this->getQuery()->execute([], $hydrationMode);
+        $this->results = $this->getQuery()->execute();
         $this->thresholdCount = \count($this->results);
         if (\count($this->results) > $this->getMaxPerPage()) {
             $this->haveToPaginate = true;
@@ -107,6 +107,21 @@ class SimplePager extends Pager
         }
 
         return $this->results;
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use getCurrentPageResults() instead.
+     */
+    public function getResults($hydrationMode = null)
+    {
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0. Use getCurrentPageResults() instead.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
+        return $this->getCurrentPageResults();
     }
 
     public function haveToPaginate()

@@ -113,7 +113,7 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="progress-description">
                                     <ul class="list-inline">
-                                        {%- if admin.datagrid.pager.results|length > 0 -%}
+                                        {%- if admin.datagrid.results|length > 0 -%}
                                             <li>
                                                 <a href="{{ admin.generateUrl('list') }}">
                                                     {{- 'go_to_the_first_page'|trans({}, 'SonataAdminBundle') -}}

@@ -37,7 +37,7 @@ interface DatagridInterface
     public function getQuery();
 
     /**
-     * @return object[]
+     * @return iterable<object>
      */
     public function getResults();
 

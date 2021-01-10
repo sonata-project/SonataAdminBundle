@@ -30,6 +30,7 @@ namespace Sonata\AdminBundle\Datagrid;
  * @method array                    getLinks(?int $nbLinks = null)
  * @method bool                     haveToPaginate()
  * @method ProxyQueryInterface|null getQuery()
+ * @method iterable                 getCurrentPageResults()
  *
  * @phpstan-template T of ProxyQueryInterface
  */
@@ -102,11 +103,23 @@ interface PagerInterface
 //    public function haveToPaginate(): bool;
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use getCurrentPageResults() instead.
+     *
      * Returns an array of results on the given page.
      *
-     * @return object[]
+     * @return iterable<object>
      */
     public function getResults();
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    /**
+//     * Returns an array of results on the given page.
+//     *
+//     * @return iterable<object>
+//     */
+//    public function getCurrentPageResults(): iterable;
 
 //    NEXT_MAJOR: uncomment this method in 4.0
 //    public function countResults(): int;

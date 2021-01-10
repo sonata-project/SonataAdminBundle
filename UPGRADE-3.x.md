@@ -27,6 +27,10 @@ UPGRADE FROM 3.xx to 3.xx
 - Deprecated `SonataAdminExtension::getTemplate()` method.
 - Deprecated `SonataAdminExtension::getTemplateRegistry()` method.
 
+### Sonata\AdminBundle\Datagrid\PagerInterface
+
+Deprecated `getResults()` method in favor of `getCurrentPageResults()`.
+
 UPGRADE FROM 3.85 to 3.86
 =========================
 
