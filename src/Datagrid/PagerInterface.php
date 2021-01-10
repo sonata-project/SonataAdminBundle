@@ -30,6 +30,8 @@ namespace Sonata\AdminBundle\Datagrid;
  * @method array                    getLinks(?int $nbLinks = null)
  * @method bool                     haveToPaginate()
  * @method ProxyQueryInterface|null getQuery()
+ *
+ * @phpstan-template T of ProxyQueryInterface
  */
 interface PagerInterface
 {
@@ -79,10 +81,17 @@ interface PagerInterface
 //    public function isLastPage(): bool;
 
 //    NEXT_MAJOR: uncomment this method in 4.0
+//    /**
+//     * @return ProxyQueryInterface|null
+//     *
+//     * @phpstan-return T|null
+//     */
 //    public function getQuery(): ?ProxyQueryInterface;
 
     /**
      * @param ProxyQueryInterface $query
+     *
+     * @phpstan-param T $query
      */
     public function setQuery($query);
 

@@ -18,6 +18,9 @@ namespace Sonata\AdminBundle\Datagrid;
  *
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of ProxyQueryInterface
+ * @phpstan-implements PagerInterface<T>
  */
 abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInterface
 {
@@ -113,6 +116,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * @var ProxyQueryInterface|null
+     *
+     * @phpstan-var T|null
      */
     protected $query;
 
@@ -856,6 +861,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * @return ProxyQueryInterface|null
+     *
+     * @phpstan-return T|null $query
      */
     public function getQuery()
     {
