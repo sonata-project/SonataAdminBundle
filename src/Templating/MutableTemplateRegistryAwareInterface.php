@@ -30,4 +30,23 @@ interface MutableTemplateRegistryAwareInterface
 
     // NEXT_MAJOR: uncomment this method in 4.0
     //public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void;
+
+    /**
+     * NEXT_MAJOR: remove this method declaration with docblock and uncomment code below.
+     *
+     * @param string $name
+     * @param string $template
+     */
+    public function setTemplate($name, $template);
+
+    //public function setTemplate(string $name, string $template);
+
+    /**
+     * NEXT_MAJOR: remove this method declaration and uncomment code below.
+     *
+     * @param array<string, string> $templates
+     */
+    public function setTemplates(array $templates);
+
+    //public function setTemplates(array $templates): void;
 }
