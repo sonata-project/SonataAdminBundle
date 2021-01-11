@@ -121,7 +121,25 @@ class SimplePager extends Pager
             __METHOD__
         ), E_USER_DEPRECATED);
 
-        return $this->getCurrentPageResults();
+        if ($this->results) {
+            return $this->results;
+        }
+
+        $this->results = $this->getQuery()->execute([], $hydrationMode);
+        $this->thresholdCount = \count($this->results);
+        if (\count($this->results) > $this->getMaxPerPage()) {
+            $this->haveToPaginate = true;
+
+            if ($this->results instanceof ArrayCollection) {
+                $this->results = new ArrayCollection($this->results->slice(0, $this->getMaxPerPage()));
+            } else {
+                $this->results = new ArrayCollection(\array_slice($this->results, 0, $this->getMaxPerPage()));
+            }
+        } else {
+            $this->haveToPaginate = false;
+        }
+
+        return $this->results;
     }
 
     public function haveToPaginate()
