@@ -88,7 +88,7 @@ class SimplePager extends Pager
 
     public function getCurrentPageResults(): iterable
     {
-        if ($this->results) {
+        if (null !== $this->results) {
             return $this->results;
         }
 
@@ -121,7 +121,7 @@ class SimplePager extends Pager
             __METHOD__
         ), E_USER_DEPRECATED);
 
-        if ($this->results) {
+        if (null !== $this->results) {
             return $this->results;
         }
 
@@ -177,7 +177,7 @@ class SimplePager extends Pager
 
             // NEXT_MAJOR: Remove this line and uncomment the following one instead.
             $this->initializeIterator('sonata_deprecation_mute');
-//            $this->results = $this->getResults();
+//            $this->results = $this->getCurrentPageResults();
 
             $t = (int) ceil($this->thresholdCount / $this->getMaxPerPage()) + $this->getPage() - 1;
             $this->setLastPage(max(1, $t));
