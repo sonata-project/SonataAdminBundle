@@ -206,10 +206,12 @@ final class SetObjectFieldValueAction
 
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
+        // NEXT_MAJOR: Modify lines below to use RenderElementExtension instead of SonataAdminExtension
         $extension = $this->twig->getExtension(SonataAdminExtension::class);
         \assert($extension instanceof SonataAdminExtension);
 
-        $content = $extension->renderListElement($this->twig, $rootObject, $fieldDescription);
+        // NEXT_MAJOR: Remove the last two arguments
+        $content = $extension->renderListElement($this->twig, $rootObject, $fieldDescription, [], 'sonata_deprecation_mute');
 
         return new JsonResponse($content, Response::HTTP_OK);
     }

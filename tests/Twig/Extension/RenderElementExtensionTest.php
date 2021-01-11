@@ -23,15 +23,17 @@ use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
+use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
+use Sonata\AdminBundle\Twig\Extension\XEditableExtension;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
-use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
@@ -39,23 +41,36 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\Translator;
-use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Extra\String\StringExtension;
 
 /**
- * Test for SonataAdminExtension.
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class SonataAdminExtensionTest extends TestCase
+final class RenderElementExtensionTest extends TestCase
 {
     use ExpectDeprecationTrait;
+    private const X_EDITABLE_TYPE_MAPPING = [
+        'choice' => 'select',
+        'boolean' => 'select',
+        'text' => 'text',
+        'textarea' => 'textarea',
+        'html' => 'textarea',
+        'email' => 'email',
+        'string' => 'text',
+        'smallint' => 'text',
+        'bigint' => 'text',
+        'integer' => 'number',
+        'decimal' => 'number',
+        'currency' => 'number',
+        'percent' => 'number',
+        'url' => 'url',
+    ];
 
     /**
-     * @var SonataAdminExtension
+     * @var RenderElementExtension
      */
     private $twigExtension;
 
@@ -95,11 +110,6 @@ class SonataAdminExtensionTest extends TestCase
     private $logger;
 
     /**
-     * @var string[]
-     */
-    private $xEditableTypeMapping;
-
-    /**
      * @var TranslatorInterface
      */
     private $translator;
@@ -115,11 +125,6 @@ class SonataAdminExtensionTest extends TestCase
     private $templateRegistry;
 
     /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $securityChecker;
-
-    /**
      * @var PropertyAccessor
      */
     private $propertyAccessor;
@@ -130,25 +135,14 @@ class SonataAdminExtensionTest extends TestCase
 
         $container = new Container();
 
-        $this->pool = new Pool($container, ['sonata_admin_foo_service'], [], ['fooClass' => ['sonata_admin_foo_service']]);
+        $this->pool = new Pool(
+            $container,
+            ['sonata_admin_foo_service'],
+            [],
+            ['fooClass' => ['sonata_admin_foo_service']]
+        );
 
         $this->logger = $this->getMockForAbstractClass(LoggerInterface::class);
-        $this->xEditableTypeMapping = [
-            'choice' => 'select',
-            'boolean' => 'select',
-            'text' => 'text',
-            'textarea' => 'textarea',
-            'html' => 'textarea',
-            'email' => 'email',
-            'string' => 'text',
-            'smallint' => 'text',
-            'bigint' => 'text',
-            'integer' => 'number',
-            'decimal' => 'number',
-            'currency' => 'number',
-            'percent' => 'number',
-            'url' => 'url',
-        ];
 
         // translation extension
         $translator = new Translator('en');
@@ -165,20 +159,7 @@ class SonataAdminExtensionTest extends TestCase
         $this->templateRegistry = $this->createStub(TemplateRegistryInterface::class);
         $this->container = new Container();
         $this->container->set('sonata_admin_foo_service.template_registry', $this->templateRegistry);
-
-        $this->securityChecker = $this->createStub(AuthorizationCheckerInterface::class);
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
-
-        $this->twigExtension = new SonataAdminExtension(
-            $this->pool,
-            $this->logger,
-            $this->translator,
-            $this->container,
-            $propertyAccessor,
-            $this->securityChecker
-        );
-
-        $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping, 'sonata_deprecation_mute');
 
         $request = $this->createMock(Request::class);
         $request->method('get')->with('_sonata_admin')->willReturn('sonata_admin_foo_service');
@@ -196,22 +177,14 @@ class SonataAdminExtensionTest extends TestCase
             'autoescape' => 'html',
             'optimizations' => 0,
         ]);
-        $this->environment->addExtension($this->twigExtension);
-        $this->environment->addExtension(new TranslationExtension($translator));
-        $this->environment->addExtension(new FakeTemplateRegistryExtension());
 
-        // routing extension
-        $xmlFileLoader = new XmlFileLoader(new FileLocator([sprintf('%s/../../../src/Resources/config/routing', __DIR__)]));
-        $routeCollection = $xmlFileLoader->load('sonata_admin.xml');
+        $this->twigExtension = new RenderElementExtension(
+            $propertyAccessor,
+            $this->container,
+            $this->logger,
+        );
 
-        $xmlFileLoader = new XmlFileLoader(new FileLocator([sprintf('%s/../../Fixtures/Resources/config/routing', __DIR__)]));
-        $testRouteCollection = $xmlFileLoader->load('routing.xml');
-
-        $routeCollection->addCollection($testRouteCollection);
-        $requestContext = new RequestContext();
-        $urlGenerator = new UrlGenerator($routeCollection, $requestContext);
-        $this->environment->addExtension(new RoutingExtension($urlGenerator));
-        $this->environment->addExtension(new StringExtension());
+        $this->registerRequiredTwigExtensions($propertyAccessor);
 
         // initialize object
         $this->object = new \stdClass();
@@ -232,12 +205,6 @@ class SonataAdminExtensionTest extends TestCase
             ->method('getNormalizedIdentifier')
             ->with($this->equalTo($this->object))
             ->willReturn(12345);
-
-        $this->admin
-            ->method('trans')
-            ->willReturnCallback(static function ($id, $parameters = [], $domain = null) use ($translator) {
-                return $translator->trans($id, $parameters, $domain);
-            });
 
         $this->adminBar = $this->createMock(AbstractAdmin::class);
         $this->adminBar
@@ -268,88 +235,13 @@ class SonataAdminExtensionTest extends TestCase
     }
 
     /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function testConstructThrowsExceptionWithWrongPropertyAccessOrAuthorizationCheckerArgument(): void
-    {
-        $this->expectException(\TypeError::class);
-
-        new SonataAdminExtension(
-            $this->pool,
-            null,
-            $this->translator,
-            $this->container,
-            new \stdClass()
-        );
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     */
-    public function testConstructTriggersDeprecationWithAuthorizationCheckerArgument(): void
-    {
-        $this->expectDeprecation(sprintf(
-            'Passing an instance of "%s" as argument 5 for "%s::__construct()" is deprecated since'
-            .' sonata-project/admin-bundle 3.82 and will throw a \TypeError error in version 4.0. You MUST pass an instance'
-            .' of "%s" instead and pass an instance of "%s" as argument 6.',
-            AuthorizationCheckerInterface::class,
-            SonataAdminExtension::class,
-            PropertyAccessorInterface::class,
-            AuthorizationCheckerInterface::class
-        ));
-
-        new SonataAdminExtension(
-            $this->pool,
-            null,
-            $this->translator,
-            $this->container,
-            $this->securityChecker
-        );
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     */
-    public function testConstructThrowsExceptionWithWrongTranslationArgument(): void
-    {
-        $this->expectException(\TypeError::class);
-
-        new SonataAdminExtension(
-            $this->pool,
-            null,
-            new \stdClass()
-        );
-    }
-
-    /**
-     * @doesNotPerformAssertions
-     * @group legacy
-     */
-    public function testConstructWithLegacyTranslator(): void
-    {
-        new SonataAdminExtension(
-            $this->pool,
-            null,
-            $this->createStub(LegacyTranslatorInterface::class)
-        );
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
+     * NEXT_MAJOR: Remove legacy group.
      *
      * @group legacy
      * @dataProvider getRenderListElementTests
      */
     public function testRenderListElement(string $expected, string $type, $value, array $options): void
     {
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderListElement method is deprecated in favor of RenderElementExtension::renderListElement since version 3.x and will be removed in 4.0.');
-
-        $this->expectDeprecation('The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).');
-
         $this->admin
             ->method('getPersistentParameters')
             ->willReturn(['context' => 'foo']);
@@ -423,27 +315,26 @@ class SonataAdminExtensionTest extends TestCase
                 }
             });
 
+        // NEXT_MAJOR: Remove next line.
+        $this->expectDeprecation('The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).');
+
         $this->assertSame(
             $this->removeExtraWhitespace($expected),
             $this->removeExtraWhitespace($this->twigExtension->renderListElement(
                 $this->environment,
                 $this->object,
-                $this->fieldDescription
+                $this->fieldDescription,
             ))
         );
     }
 
     /**
-     * NEXT_MAJOR: Remove this method.
+     * NEXT_MAJOR: Remove legacy group.
      *
      * @group legacy
      */
     public function testRenderListElementWithAdditionalValuesInArray(): void
     {
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderListElement method is deprecated in favor of RenderElementExtension::renderListElement since version 3.x and will be removed in 4.0.');
-
-        $this->expectDeprecation('The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).');
-
         // NEXT_MAJOR: Remove this line
         $this->admin
             ->method('getTemplate')
@@ -457,6 +348,9 @@ class SonataAdminExtensionTest extends TestCase
             ->method('getTemplate')
             ->willReturn('@SonataAdmin/CRUD/list_string.html.twig');
 
+        // NEXT_MAJOR: Remove next line.
+        $this->expectDeprecation('The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).');
+
         $this->assertSame(
             $this->removeExtraWhitespace('<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> Extra value </td>'),
             $this->removeExtraWhitespace($this->twigExtension->renderListElement(
@@ -468,16 +362,12 @@ class SonataAdminExtensionTest extends TestCase
     }
 
     /**
-     * NEXT_MAJOR: Remove this method.
+     * NEXT_MAJOR: Remove legacy group.
      *
      * @group legacy
      */
     public function testRenderListElementWithNoValueException(): void
     {
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderListElement method is deprecated in favor of RenderElementExtension::renderListElement since version 3.x and will be removed in 4.0.');
-
-        $this->expectDeprecation('Accessing a non existing value for the field "fd_name" is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.');
-
         // NEXT_MAJOR: Remove this line
         $this->admin
             ->method('getTemplate')
@@ -492,6 +382,9 @@ class SonataAdminExtensionTest extends TestCase
             ->willReturnCallback(static function (): void {
                 throw new NoValueException();
             });
+
+        // NEXT_MAJOR: Remove next line.
+        $this->expectDeprecation('Accessing a non existing value for the field "fd_name" is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.');
 
         $this->assertSame(
             $this->removeExtraWhitespace('<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> </td>'),
@@ -546,8 +439,6 @@ class SonataAdminExtensionTest extends TestCase
             ->method('getTemplate')
             ->willReturn('@SonataAdmin/CRUD/list_nonexistent_template.html.twig');
 
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderListElement method is deprecated in favor of RenderElementExtension::renderListElement since version 3.x and will be removed in 4.0.');
-
         $this->assertSame(
             $this->removeExtraWhitespace($expected),
             $this->removeExtraWhitespace($this->twigExtension->renderListElement(
@@ -559,28 +450,545 @@ class SonataAdminExtensionTest extends TestCase
     }
 
     /**
-     * NEXT_MAJOR: Remove this method.
+     * @group legacy
      */
-    public function getDeprecatedRenderListElementTests()
+    public function testRenderListElementNonExistentTemplate(): void
+    {
+        // NEXT_MAJOR: Remove this line
+        $this->admin->method('getTemplate')
+            ->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+
+        $this->templateRegistry->method('getTemplate')->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+
+        $this->fieldDescription->expects($this->once())
+            ->method('getValue')
+            ->willReturn('Foo');
+
+        $this->fieldDescription->expects($this->once())
+            ->method('getFieldName')
+            ->willReturn('Foo_name');
+
+        $this->fieldDescription->expects($this->exactly(2))
+            ->method('getType')
+            ->willReturn('nonexistent');
+
+        $this->fieldDescription->expects($this->once())
+            ->method('getTemplate')
+            ->willReturn('@SonataAdmin/CRUD/list_nonexistent_template.html.twig');
+
+        $this->logger->expects($this->once())
+            ->method('warning')
+            ->with(($this->stringStartsWith($this->removeExtraWhitespace(
+                'An error occured trying to load the template
+                "@SonataAdmin/CRUD/list_nonexistent_template.html.twig"
+                for the field "Foo_name", the default template
+                    "@SonataAdmin/CRUD/base_list_field.html.twig" was used
+                    instead.'
+            ))));
+
+        $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription);
+    }
+
+    /**
+     * @group legacy
+     */
+    public function testRenderListElementErrorLoadingTemplate(): void
+    {
+        $this->expectException(LoaderError::class);
+        $this->expectExceptionMessage('Unable to find template "@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig"');
+
+        // NEXT_MAJOR: Remove this line
+        $this->admin->method('getTemplate')
+            ->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig');
+
+        $this->templateRegistry->method('getTemplate')->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig');
+
+        $this->fieldDescription->expects($this->once())
+            ->method('getTemplate')
+            ->willReturn('@SonataAdmin/CRUD/list_nonexistent_template.html.twig');
+
+        $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription);
+
+        $this->templateRegistry->getTemplate('base_list_field')->shouldHaveBeenCalled();
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
+     */
+    public function testRenderWithDebug(): void
+    {
+        $this->fieldDescription
+            ->method('getTemplate')
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+
+        $this->fieldDescription
+            ->method('getFieldName')
+            ->willReturn('fd_name');
+
+        $this->fieldDescription
+            ->method('getValue')
+            ->willReturn('foo');
+
+        $parameters = [
+            'admin' => $this->admin,
+            'value' => 'foo',
+            'field_description' => $this->fieldDescription,
+            'object' => $this->object,
+        ];
+
+        $this->environment->enableDebug();
+
+        $this->assertSame(
+            $this->removeExtraWhitespace(
+                <<<'EOT'
+<!-- START
+    fieldName: fd_name
+    template: @SonataAdmin/CRUD/base_list_field.html.twig
+    compiled template: @SonataAdmin/CRUD/base_list_field.html.twig
+-->
+    <td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td>
+<!-- END - fieldName: fd_name -->
+EOT
+            ),
+            $this->removeExtraWhitespace(
+                $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription, $parameters)
+            )
+        );
+    }
+
+    /**
+     * @dataProvider getRenderViewElementTests
+     */
+    public function testRenderViewElement(string $expected, string $type, $value, array $options): void
+    {
+        $this->admin
+            ->method('getTemplate')
+            ->willReturn('@SonataAdmin/CRUD/base_show_field.html.twig');
+
+        $this->fieldDescription
+            ->method('getValue')
+            ->willReturn($value);
+
+        $this->fieldDescription
+            ->method('getType')
+            ->willReturn($type);
+
+        $this->fieldDescription
+            ->method('getOptions')
+            ->willReturn($options);
+
+        $this->fieldDescription
+            ->method('getTemplate')
+            ->willReturnCallback(static function () use ($type): ?string {
+                switch ($type) {
+                    case 'boolean':
+                        return '@SonataAdmin/CRUD/show_boolean.html.twig';
+                    case 'datetime':
+                        return '@SonataAdmin/CRUD/show_datetime.html.twig';
+                    case 'date':
+                        return '@SonataAdmin/CRUD/show_date.html.twig';
+                    case 'time':
+                        return '@SonataAdmin/CRUD/show_time.html.twig';
+                    case 'currency':
+                        return '@SonataAdmin/CRUD/show_currency.html.twig';
+                    case 'percent':
+                        return '@SonataAdmin/CRUD/show_percent.html.twig';
+                    case 'email':
+                        return '@SonataAdmin/CRUD/show_email.html.twig';
+                    case 'choice':
+                        return '@SonataAdmin/CRUD/show_choice.html.twig';
+                    case 'array':
+                        return '@SonataAdmin/CRUD/show_array.html.twig';
+                    case 'trans':
+                        return '@SonataAdmin/CRUD/show_trans.html.twig';
+                    case 'url':
+                        return '@SonataAdmin/CRUD/show_url.html.twig';
+                    case 'html':
+                        return '@SonataAdmin/CRUD/show_html.html.twig';
+                    default:
+                        return null;
+                }
+            });
+
+        $this->assertSame(
+            $this->removeExtraWhitespace($expected),
+            $this->removeExtraWhitespace(
+                $this->twigExtension->renderViewElement(
+                    $this->environment,
+                    $this->fieldDescription,
+                    $this->object
+                )
+            )
+        );
+    }
+
+    /**
+     * @group legacy
+     * @assertDeprecation Accessing a non existing value is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.
+     *
+     * @dataProvider getRenderViewElementWithNoValueTests
+     */
+    public function testRenderViewElementWithNoValue(string $expected, string $type, array $options): void
+    {
+        $this->admin
+            ->method('getTemplate')
+            ->willReturn('@SonataAdmin/CRUD/base_show_field.html.twig');
+
+        $this->fieldDescription
+            ->method('getValue')
+            ->willThrowException(new NoValueException());
+
+        $this->fieldDescription
+            ->method('getType')
+            ->willReturn($type);
+
+        $this->fieldDescription
+            ->method('getOptions')
+            ->willReturn($options);
+
+        $this->fieldDescription
+            ->method('getTemplate')
+            ->willReturnCallback(static function () use ($type): ?string {
+                switch ($type) {
+                    case 'boolean':
+                        return '@SonataAdmin/CRUD/show_boolean.html.twig';
+                    case 'datetime':
+                        return '@SonataAdmin/CRUD/show_datetime.html.twig';
+                    case 'date':
+                        return '@SonataAdmin/CRUD/show_date.html.twig';
+                    case 'time':
+                        return '@SonataAdmin/CRUD/show_time.html.twig';
+                    case 'currency':
+                        return '@SonataAdmin/CRUD/show_currency.html.twig';
+                    case 'percent':
+                        return '@SonataAdmin/CRUD/show_percent.html.twig';
+                    case 'email':
+                        return '@SonataAdmin/CRUD/show_email.html.twig';
+                    case 'choice':
+                        return '@SonataAdmin/CRUD/show_choice.html.twig';
+                    case 'array':
+                        return '@SonataAdmin/CRUD/show_array.html.twig';
+                    case 'trans':
+                        return '@SonataAdmin/CRUD/show_trans.html.twig';
+                    case 'url':
+                        return '@SonataAdmin/CRUD/show_url.html.twig';
+                    case 'html':
+                        return '@SonataAdmin/CRUD/show_html.html.twig';
+                    default:
+                        return null;
+                }
+            });
+
+        $this->assertSame(
+            $this->removeExtraWhitespace($expected),
+            $this->removeExtraWhitespace(
+                $this->twigExtension->renderViewElement(
+                    $this->environment,
+                    $this->fieldDescription,
+                    $this->object
+                )
+            )
+        );
+    }
+
+    public function getRenderViewElementWithNoValueTests(): iterable
     {
         return [
+            // NoValueException
+            ['<th>Data</th> <td></td>', 'string', ['safe' => false]],
+            ['<th>Data</th> <td></td>', 'text', ['safe' => false]],
+            ['<th>Data</th> <td></td>', 'textarea', ['safe' => false]],
+            ['<th>Data</th> <td>&nbsp;</td>', 'datetime', []],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-nonexistent" objectId="12345"> Example </td>',
-                'Example',
+                '<th>Data</th> <td>&nbsp;</td>',
+                'datetime',
+                ['format' => 'd.m.Y H:i:s'],
+            ],
+            ['<th>Data</th> <td>&nbsp;</td>', 'date', []],
+            ['<th>Data</th> <td>&nbsp;</td>', 'date', ['format' => 'd.m.Y']],
+            ['<th>Data</th> <td>&nbsp;</td>', 'time', []],
+            ['<th>Data</th> <td></td>', 'number', ['safe' => false]],
+            ['<th>Data</th> <td></td>', 'integer', ['safe' => false]],
+            ['<th>Data</th> <td>&nbsp;</td>', 'percent', []],
+            ['<th>Data</th> <td>&nbsp;</td>', 'currency', ['currency' => 'EUR']],
+            ['<th>Data</th> <td>&nbsp;</td>', 'currency', ['currency' => 'GBP']],
+            ['<th>Data</th> <td> <ul></ul> </td>', 'array', ['safe' => false]],
+            [
+                '<th>Data</th> <td><span class="label label-danger">no</span></td>',
+                'boolean',
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-nonexistent" objectId="12345"> </td>',
-                null,
-                [],
+                '<th>Data</th> <td> </td>',
+                'trans',
+                ['safe' => false, 'catalogue' => 'SonataAdminBundle'],
+            ],
+            [
+                '<th>Data</th> <td></td>',
+                'choice',
+                ['safe' => false, 'choices' => []],
+            ],
+            [
+                '<th>Data</th> <td></td>',
+                'choice',
+                ['safe' => false, 'choices' => [], 'multiple' => true],
+            ],
+            ['<th>Data</th> <td>&nbsp;</td>', 'url', []],
+            [
+                '<th>Data</th> <td>&nbsp;</td>',
+                'url',
+                ['url' => 'http://example.com'],
+            ],
+            [
+                '<th>Data</th> <td>&nbsp;</td>',
+                'url',
+                ['route' => ['name' => 'sonata_admin_foo']],
             ],
         ];
     }
 
     /**
-     * NEXT_MAJOR: Remove this method.
+     * @dataProvider getRenderViewElementCompareTests
      */
-    public function getRenderListElementTests()
+    public function testRenderViewElementCompare(string $expected, string $type, $value, array $options, ?string $objectName = null): void
+    {
+        $this->admin
+            ->method('getTemplate')
+            ->willReturn('@SonataAdmin/CRUD/base_show_compare.html.twig');
+
+        $this->fieldDescription
+            ->method('getValue')
+            ->willReturn($value);
+
+        $this->fieldDescription
+            ->method('getType')
+            ->willReturn($type);
+
+        $this->fieldDescription
+            ->method('getOptions')
+            ->willReturn($options);
+
+        $this->fieldDescription
+            ->method('getTemplate')
+            ->willReturnCallback(static function () use ($type, $options): ?string {
+                if (isset($options['template'])) {
+                    return $options['template'];
+                }
+
+                switch ($type) {
+                    case 'boolean':
+                        return '@SonataAdmin/CRUD/show_boolean.html.twig';
+                    case 'datetime':
+                        return '@SonataAdmin/CRUD/show_datetime.html.twig';
+                    case 'date':
+                        return '@SonataAdmin/CRUD/show_date.html.twig';
+                    case 'time':
+                        return '@SonataAdmin/CRUD/show_time.html.twig';
+                    case 'currency':
+                        return '@SonataAdmin/CRUD/show_currency.html.twig';
+                    case 'percent':
+                        return '@SonataAdmin/CRUD/show_percent.html.twig';
+                    case 'email':
+                        return '@SonataAdmin/CRUD/show_email.html.twig';
+                    case 'choice':
+                        return '@SonataAdmin/CRUD/show_choice.html.twig';
+                    case 'array':
+                        return '@SonataAdmin/CRUD/show_array.html.twig';
+                    case 'trans':
+                        return '@SonataAdmin/CRUD/show_trans.html.twig';
+                    case 'url':
+                        return '@SonataAdmin/CRUD/show_url.html.twig';
+                    case 'html':
+                        return '@SonataAdmin/CRUD/show_html.html.twig';
+                    default:
+                        return null;
+                }
+            });
+
+        $this->object->name = 'SonataAdmin';
+
+        $comparedObject = clone $this->object;
+
+        if (null !== $objectName) {
+            $comparedObject->name = $objectName;
+        }
+
+        $this->assertSame(
+            $this->removeExtraWhitespace($expected),
+            $this->removeExtraWhitespace(
+                $this->twigExtension->renderViewElementCompare(
+                    $this->environment,
+                    $this->fieldDescription,
+                    $this->object,
+                    $comparedObject
+                )
+            )
+        );
+    }
+
+    public function testRenderRelationElementNoObject(): void
+    {
+        $this->assertSame('foo', $this->twigExtension->renderRelationElement('foo', $this->fieldDescription));
+    }
+
+    public function testRenderRelationElementToString(): void
+    {
+        $this->fieldDescription->expects($this->exactly(2))
+            ->method('getOption')
+            ->willReturnCallback(static function ($value, $default = null) {
+                if ('associated_property' === $value) {
+                    return $default;
+                }
+            });
+
+        $element = new FooToString();
+        $this->assertSame('salut', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
+    public function testDeprecatedRelationElementToString(): void
+    {
+        $this->fieldDescription->expects($this->exactly(2))
+            ->method('getOption')
+            ->willReturnCallback(static function ($value, $default = null) {
+                if ('associated_tostring' === $value) {
+                    return '__toString';
+                }
+            });
+
+        $element = new FooToString();
+        $this->assertSame(
+            'salut',
+            $this->twigExtension->renderRelationElement($element, $this->fieldDescription)
+        );
+    }
+
+    public function testRenderRelationElementCustomToString(): void
+    {
+        $this->fieldDescription->expects($this->once())
+            ->method('getOption')
+            ->willReturnCallback(static function ($value, $default = null) {
+                if ('associated_property' === $value) {
+                    return 'customToString';
+                }
+            });
+
+        $element = new class() {
+            public function customToString(): string
+            {
+                return 'fooBar';
+            }
+        };
+
+        $this->assertSame('fooBar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
+    }
+
+    /**
+     * NEXT_MAJOR: Remove legacy group.
+     *
+     * @group legacy
+     */
+    public function testRenderRelationElementMethodNotExist(): void
+    {
+        // NEXT_MAJOR: change $this->exactly(2) for $this->once()
+        $this->fieldDescription->expects($this->exactly(2))
+            ->method('getOption')
+
+            ->willReturnCallback(static function ($value, $default = null) {
+                if ('associated_property' === $value) {
+                    return null;
+                }
+                // NEXT_MAJOR: Remove next block.
+                if ('associated_tostring' === $value) {
+                    return null;
+                }
+            });
+
+        $element = new \stdClass();
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You must define an `associated_property` option or create a `stdClass::__toString');
+
+        $this->twigExtension->renderRelationElement($element, $this->fieldDescription);
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @group legacy
+     */
+    public function testRenderRelationElementMethodWithDeprecatedAssociatedToString(): void
+    {
+        $this->fieldDescription->expects($this->exactly(2))
+            ->method('getOption')
+            ->willReturnCallback(static function ($value, $default = null) {
+                if ('associated_property' === $value) {
+                    return null;
+                }
+
+                if ('associated_tostring' === $value) {
+                    return 'customToString';
+                }
+            });
+
+        $element = new class() {
+            public function customToString(): string
+            {
+                return 'fooBar';
+            }
+        };
+
+        $this->assertSame('fooBar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
+    }
+
+    public function testRenderRelationElementWithPropertyPath(): void
+    {
+        $this->fieldDescription->expects($this->once())
+            ->method('getOption')
+
+            ->willReturnCallback(static function ($value, $default = null) {
+                if ('associated_property' === $value) {
+                    return 'foo';
+                }
+            });
+
+        $element = new \stdClass();
+        $element->foo = 'bar';
+
+        $this->assertSame('bar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
+    }
+
+    public function testRenderRelationElementWithClosure(): void
+    {
+        $this->fieldDescription->expects($this->once())
+            ->method('getOption')
+
+            ->willReturnCallback(static function ($value, $default = null) {
+                if ('associated_property' === $value) {
+                    return static function ($element): string {
+                        return sprintf('closure %s', $element->foo);
+                    };
+                }
+            });
+
+        $element = new \stdClass();
+        $element->foo = 'bar';
+
+        $this->assertSame(
+            'closure bar',
+            $this->twigExtension->renderRelationElement($element, $this->fieldDescription)
+        );
+    }
+
+    public function getRenderListElementTests(): array
     {
         return [
             [
@@ -1555,156 +1963,24 @@ EOT
         ];
     }
 
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     */
-    public function testRenderListElementNonExistentTemplate(): void
+    // NEXT_MAJOR: Remove this method.
+    public function getDeprecatedRenderListElementTests(): array
     {
-        // NEXT_MAJOR: Remove this line
-        $this->admin->method('getTemplate')
-            ->with('base_list_field')
-            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
-
-        $this->templateRegistry->method('getTemplate')->with('base_list_field')
-            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
-
-        $this->fieldDescription->expects($this->once())
-            ->method('getValue')
-            ->willReturn('Foo');
-
-        $this->fieldDescription->expects($this->once())
-            ->method('getFieldName')
-            ->willReturn('Foo_name');
-
-        $this->fieldDescription->expects($this->exactly(2))
-            ->method('getType')
-            ->willReturn('nonexistent');
-
-        $this->fieldDescription->expects($this->once())
-            ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/list_nonexistent_template.html.twig');
-
-        $this->logger->expects($this->once())
-            ->method('warning')
-            ->with(($this->stringStartsWith($this->removeExtraWhitespace(
-                'An error occured trying to load the template
-                "@SonataAdmin/CRUD/list_nonexistent_template.html.twig"
-                for the field "Foo_name", the default template
-                    "@SonataAdmin/CRUD/base_list_field.html.twig" was used
-                    instead.'
-            ))));
-
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderListElement method is deprecated in favor of RenderElementExtension::renderListElement since version 3.x and will be removed in 4.0.');
-
-        $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription);
+        return [
+            [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-nonexistent" objectId="12345"> Example </td>',
+                'Example',
+                [],
+            ],
+            [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-nonexistent" objectId="12345"> </td>',
+                null,
+                [],
+            ],
+        ];
     }
 
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     */
-    public function testRenderListElementErrorLoadingTemplate(): void
-    {
-        $this->expectException(LoaderError::class);
-        $this->expectExceptionMessage('Unable to find template "@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig"');
-
-        // NEXT_MAJOR: Remove this line
-        $this->admin->method('getTemplate')
-            ->with('base_list_field')
-            ->willReturn('@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig');
-
-        $this->templateRegistry->method('getTemplate')->with('base_list_field')
-            ->willReturn('@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig');
-
-        $this->fieldDescription->expects($this->once())
-            ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/list_nonexistent_template.html.twig');
-
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderListElement method is deprecated in favor of RenderElementExtension::renderListElement since version 3.x and will be removed in 4.0.');
-
-        $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription);
-
-        $this->templateRegistry->getTemplate('base_list_field')->shouldHaveBeenCalled();
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     * @dataProvider getRenderViewElementTests
-     */
-    public function testRenderViewElement(string $expected, string $type, $value, array $options): void
-    {
-        $this->admin
-            ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/base_show_field.html.twig');
-
-        $this->fieldDescription
-            ->method('getValue')
-            ->willReturn($value);
-
-        $this->fieldDescription
-            ->method('getType')
-            ->willReturn($type);
-
-        $this->fieldDescription
-            ->method('getOptions')
-            ->willReturn($options);
-
-        $this->fieldDescription
-            ->method('getTemplate')
-            ->willReturnCallback(static function () use ($type): ?string {
-                switch ($type) {
-                    case 'boolean':
-                        return '@SonataAdmin/CRUD/show_boolean.html.twig';
-                    case 'datetime':
-                        return '@SonataAdmin/CRUD/show_datetime.html.twig';
-                    case 'date':
-                        return '@SonataAdmin/CRUD/show_date.html.twig';
-                    case 'time':
-                        return '@SonataAdmin/CRUD/show_time.html.twig';
-                    case 'currency':
-                        return '@SonataAdmin/CRUD/show_currency.html.twig';
-                    case 'percent':
-                        return '@SonataAdmin/CRUD/show_percent.html.twig';
-                    case 'email':
-                        return '@SonataAdmin/CRUD/show_email.html.twig';
-                    case 'choice':
-                        return '@SonataAdmin/CRUD/show_choice.html.twig';
-                    case 'array':
-                        return '@SonataAdmin/CRUD/show_array.html.twig';
-                    case 'trans':
-                        return '@SonataAdmin/CRUD/show_trans.html.twig';
-                    case 'url':
-                        return '@SonataAdmin/CRUD/show_url.html.twig';
-                    case 'html':
-                        return '@SonataAdmin/CRUD/show_html.html.twig';
-                    default:
-                        return null;
-                }
-            });
-
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderViewElement method is deprecated in favor of RenderElementExtension::renderViewElement since version 3.x and will be removed in 4.0.');
-
-        $this->assertSame(
-            $this->removeExtraWhitespace($expected),
-            $this->removeExtraWhitespace(
-                $this->twigExtension->renderViewElement(
-                    $this->environment,
-                    $this->fieldDescription,
-                    $this->object
-                )
-            )
-        );
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function getRenderViewElementTests()
+    public function getRenderViewElementTests(): array
     {
         return [
             ['<th>Data</th> <td>Example</td>', 'string', 'Example', ['safe' => false]],
@@ -2205,1084 +2481,6 @@ EOT
         ];
     }
 
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     * @assertDeprecation Accessing a non existing value for the field "fd_name" is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.
-     *
-     * @dataProvider getRenderViewElementWithNoValueTests
-     */
-    public function testRenderViewElementWithNoValue(string $expected, string $type, array $options): void
-    {
-        $this->admin
-            ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/base_show_field.html.twig');
-
-        $this->fieldDescription
-            ->method('getValue')
-            ->willThrowException(new NoValueException());
-
-        $this->fieldDescription
-            ->method('getType')
-            ->willReturn($type);
-
-        $this->fieldDescription
-            ->method('getOptions')
-            ->willReturn($options);
-
-        $this->fieldDescription
-            ->method('getTemplate')
-            ->willReturnCallback(static function () use ($type): ?string {
-                switch ($type) {
-                    case 'boolean':
-                        return '@SonataAdmin/CRUD/show_boolean.html.twig';
-                    case 'datetime':
-                        return '@SonataAdmin/CRUD/show_datetime.html.twig';
-                    case 'date':
-                        return '@SonataAdmin/CRUD/show_date.html.twig';
-                    case 'time':
-                        return '@SonataAdmin/CRUD/show_time.html.twig';
-                    case 'currency':
-                        return '@SonataAdmin/CRUD/show_currency.html.twig';
-                    case 'percent':
-                        return '@SonataAdmin/CRUD/show_percent.html.twig';
-                    case 'email':
-                        return '@SonataAdmin/CRUD/show_email.html.twig';
-                    case 'choice':
-                        return '@SonataAdmin/CRUD/show_choice.html.twig';
-                    case 'array':
-                        return '@SonataAdmin/CRUD/show_array.html.twig';
-                    case 'trans':
-                        return '@SonataAdmin/CRUD/show_trans.html.twig';
-                    case 'url':
-                        return '@SonataAdmin/CRUD/show_url.html.twig';
-                    case 'html':
-                        return '@SonataAdmin/CRUD/show_html.html.twig';
-                    default:
-                        return null;
-                }
-            });
-
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderViewElement method is deprecated in favor of RenderElementExtension::renderViewElement since version 3.x and will be removed in 4.0.');
-
-        $this->assertSame(
-            $this->removeExtraWhitespace($expected),
-            $this->removeExtraWhitespace(
-                $this->twigExtension->renderViewElement(
-                    $this->environment,
-                    $this->fieldDescription,
-                    $this->object
-                )
-            )
-        );
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function getRenderViewElementWithNoValueTests(): iterable
-    {
-        return [
-            // NoValueException
-            ['<th>Data</th> <td></td>', 'string', ['safe' => false]],
-            ['<th>Data</th> <td></td>', 'text', ['safe' => false]],
-            ['<th>Data</th> <td></td>', 'textarea', ['safe' => false]],
-            ['<th>Data</th> <td>&nbsp;</td>', 'datetime', []],
-            [
-                '<th>Data</th> <td>&nbsp;</td>',
-                'datetime',
-                ['format' => 'd.m.Y H:i:s'],
-            ],
-            ['<th>Data</th> <td>&nbsp;</td>', 'date', []],
-            ['<th>Data</th> <td>&nbsp;</td>', 'date', ['format' => 'd.m.Y']],
-            ['<th>Data</th> <td>&nbsp;</td>', 'time', []],
-            ['<th>Data</th> <td></td>', 'number', ['safe' => false]],
-            ['<th>Data</th> <td></td>', 'integer', ['safe' => false]],
-            ['<th>Data</th> <td>&nbsp;</td>', 'percent', []],
-            ['<th>Data</th> <td>&nbsp;</td>', 'currency', ['currency' => 'EUR']],
-            ['<th>Data</th> <td>&nbsp;</td>', 'currency', ['currency' => 'GBP']],
-            ['<th>Data</th> <td> <ul></ul> </td>', 'array', ['safe' => false]],
-            [
-                '<th>Data</th> <td><span class="label label-danger">no</span></td>',
-                'boolean',
-                [],
-            ],
-            [
-                '<th>Data</th> <td> </td>',
-                'trans',
-                ['safe' => false, 'catalogue' => 'SonataAdminBundle'],
-            ],
-            [
-                '<th>Data</th> <td></td>',
-                'choice',
-                ['safe' => false, 'choices' => []],
-            ],
-            [
-                '<th>Data</th> <td></td>',
-                'choice',
-                ['safe' => false, 'choices' => [], 'multiple' => true],
-            ],
-            ['<th>Data</th> <td>&nbsp;</td>', 'url', []],
-            [
-                '<th>Data</th> <td>&nbsp;</td>',
-                'url',
-                ['url' => 'http://example.com'],
-            ],
-            [
-                '<th>Data</th> <td>&nbsp;</td>',
-                'url',
-                ['route' => ['name' => 'sonata_admin_foo']],
-            ],
-        ];
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     *
-     * @dataProvider getDeprecatedTextExtensionItems
-     */
-    public function testDeprecatedTextExtension(string $expected, string $type, $value, array $options): void
-    {
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderViewElement method is deprecated in favor of RenderElementExtension::renderViewElement since version 3.x and will be removed in 4.0.');
-
-        $this->expectDeprecation('The "truncate.preserve" option is deprecated since sonata-project/admin-bundle 3.65, to be removed in 4.0. Use "truncate.cut" instead. ("@SonataAdmin/CRUD/show_html.html.twig" at line %d).');
-
-        $this->expectDeprecation('The "truncate.separator" option is deprecated since sonata-project/admin-bundle 3.65, to be removed in 4.0. Use "truncate.ellipsis" instead. ("@SonataAdmin/CRUD/show_html.html.twig" at line %d).');
-
-        $loader = new StubFilesystemLoader([
-            sprintf('%s/../../../src/Resources/views/CRUD', __DIR__),
-        ]);
-        $loader->addPath(sprintf('%s/../../../src/Resources/views/', __DIR__), 'SonataAdmin');
-        $environment = new Environment($loader, [
-            'strict_variables' => true,
-            'cache' => false,
-            'autoescape' => 'html',
-            'optimizations' => 0,
-        ]);
-        $environment->addExtension($this->twigExtension);
-        $environment->addExtension(new TranslationExtension($this->translator));
-        $environment->addExtension(new StringExtension());
-
-        $this->admin
-            ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/base_show_field.html.twig');
-
-        $this->fieldDescription
-            ->method('getValue')
-            ->willReturn($value);
-
-        $this->fieldDescription
-            ->method('getType')
-            ->willReturn($type);
-
-        $this->fieldDescription
-            ->method('getOptions')
-            ->willReturn($options);
-
-        $this->fieldDescription
-            ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/show_html.html.twig');
-
-        $this->assertSame(
-            $this->removeExtraWhitespace($expected),
-            $this->removeExtraWhitespace(
-                $this->twigExtension->renderViewElement(
-                    $environment,
-                    $this->fieldDescription,
-                    $this->object
-                )
-            )
-        );
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function getDeprecatedTextExtensionItems(): iterable
-    {
-        yield 'default_separator' => [
-            '<th>Data</th> <td> Creating a Template for the Field... </td>',
-            'html',
-            '<p><strong>Creating a Template for the Field</strong> and form</p>',
-            ['truncate' => ['preserve' => true, 'separator' => '...']],
-        ];
-
-        yield 'custom_length' => [
-            '<th>Data</th> <td> Creating a Template[...] </td>',
-            'html',
-            '<p><strong>Creating a Template for the Field</strong> and form</p>',
-            [
-                'truncate' => [
-                    'length' => 20,
-                    'preserve' => true,
-                    'separator' => '[...]',
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testGetValueFromFieldDescription(): void
-    {
-        $object = new \stdClass();
-        $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
-
-        $fieldDescription
-            ->method('getValue')
-            ->willReturn('test123');
-
-        $this->assertSame('test123', $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testGetValueFromFieldDescriptionWithRemoveLoopException(): void
-    {
-        $object = $this->createMock(\ArrayAccess::class);
-        $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('remove the loop requirement');
-
-        $this->assertSame(
-            'anything',
-            $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription, ['loop' => true])
-        );
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     * @expectedDeprecation Accessing a non existing value for the field "" is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.
-     */
-    public function testGetValueFromFieldDescriptionWithNoValueException(): void
-    {
-        $object = new \stdClass();
-        $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
-
-        $fieldDescription
-            ->method('getValue')
-            ->willReturnCallback(static function (): void {
-                throw new NoValueException();
-            });
-
-        $fieldDescription
-            ->method('getAssociationAdmin')
-            ->willReturn(null);
-
-        $this->assertNull($this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testGetValueFromFieldDescriptionWithNoValueExceptionNewAdminInstance(): void
-    {
-        $object = new \stdClass();
-        $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
-
-        $fieldDescription
-            ->method('getValue')
-            ->willReturnCallback(static function (): void {
-                throw new NoValueException();
-            });
-
-        $fieldDescription
-            ->method('getAssociationAdmin')
-            ->willReturn($this->admin);
-
-        $this->admin->expects($this->once())
-            ->method('getNewInstance')
-            ->willReturn('foo');
-
-        $this->assertSame('foo', $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     */
-    public function testOutput(): void
-    {
-        $this->fieldDescription
-            ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
-
-        $this->fieldDescription
-            ->method('getFieldName')
-            ->willReturn('fd_name');
-
-        $this->environment->disableDebug();
-
-        $parameters = [
-            'admin' => $this->admin,
-            'value' => 'foo',
-            'field_description' => $this->fieldDescription,
-            'object' => $this->object,
-        ];
-
-        $template = $this->environment->load('@SonataAdmin/CRUD/base_list_field.html.twig')->unwrap();
-
-        $this->assertSame(
-            '<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td>',
-            $this->removeExtraWhitespace($this->twigExtension->output(
-                $this->fieldDescription,
-                $template,
-                $parameters,
-                $this->environment
-            ))
-        );
-
-        $this->environment->enableDebug();
-
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::output method is deprecated since version 3.33 and will be removed in 4.0.');
-
-        $this->assertSame(
-            $this->removeExtraWhitespace(
-                <<<'EOT'
-<!-- START
-    fieldName: fd_name
-    template: @SonataAdmin/CRUD/base_list_field.html.twig
-    compiled template: @SonataAdmin/CRUD/base_list_field.html.twig
--->
-    <td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td>
-<!-- END - fieldName: fd_name -->
-EOT
-            ),
-            $this->removeExtraWhitespace(
-                $this->twigExtension->output($this->fieldDescription, $template, $parameters, $this->environment)
-            )
-        );
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     */
-    public function testRenderWithDebug(): void
-    {
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderListElement method is deprecated in favor of RenderElementExtension::renderListElement since version 3.x and will be removed in 4.0.');
-
-        $this->expectDeprecation('The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).');
-
-        $this->fieldDescription
-            ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
-
-        $this->fieldDescription
-            ->method('getFieldName')
-            ->willReturn('fd_name');
-
-        $this->fieldDescription
-            ->method('getValue')
-            ->willReturn('foo');
-
-        $parameters = [
-            'admin' => $this->admin,
-            'value' => 'foo',
-            'field_description' => $this->fieldDescription,
-            'object' => $this->object,
-        ];
-
-        $this->environment->enableDebug();
-
-        $this->assertSame(
-            $this->removeExtraWhitespace(
-                <<<'EOT'
-<!-- START
-    fieldName: fd_name
-    template: @SonataAdmin/CRUD/base_list_field.html.twig
-    compiled template: @SonataAdmin/CRUD/base_list_field.html.twig
--->
-    <td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td>
-<!-- END - fieldName: fd_name -->
-EOT
-            ),
-            $this->removeExtraWhitespace(
-                $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription, $parameters)
-            )
-        );
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     */
-    public function testRenderRelationElementNoObject(): void
-    {
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderRelationElement method is deprecated in favor of RenderElementExtension::renderRelationElement since version 3.x and will be removed in 4.0.');
-
-        $this->assertSame('foo', $this->twigExtension->renderRelationElement('foo', $this->fieldDescription));
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     */
-    public function testRenderRelationElementToString(): void
-    {
-        $this->fieldDescription->expects($this->exactly(2))
-            ->method('getOption')
-            ->willReturnCallback(static function ($value, $default = null) {
-                if ('associated_property' === $value) {
-                    return $default;
-                }
-            });
-
-        $element = new FooToString();
-
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderRelationElement method is deprecated in favor of RenderElementExtension::renderRelationElement since version 3.x and will be removed in 4.0.');
-
-        $this->assertSame('salut', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     */
-    public function testDeprecatedRelationElementToString(): void
-    {
-        $this->fieldDescription->expects($this->exactly(2))
-            ->method('getOption')
-            ->willReturnCallback(static function ($value, $default = null) {
-                if ('associated_tostring' === $value) {
-                    return '__toString';
-                }
-            });
-
-        $element = new FooToString();
-
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderRelationElement method is deprecated in favor of RenderElementExtension::renderRelationElement since version 3.x and will be removed in 4.0.');
-
-        $this->assertSame(
-            'salut',
-            $this->twigExtension->renderRelationElement($element, $this->fieldDescription)
-        );
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     */
-    public function testRenderRelationElementCustomToString(): void
-    {
-        $this->fieldDescription->expects($this->exactly(2))
-            ->method('getOption')
-            ->willReturnCallback(static function ($value, $default = null) {
-                if ('associated_property' === $value) {
-                    return $default;
-                }
-
-                if ('associated_tostring' === $value) {
-                    return 'customToString';
-                }
-            });
-
-        $element = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['customToString'])
-            ->getMock();
-        $element
-            ->method('customToString')
-            ->willReturn('fooBar');
-
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderRelationElement method is deprecated in favor of RenderElementExtension::renderRelationElement since version 3.x and will be removed in 4.0.');
-
-        $this->assertSame('fooBar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     */
-    public function testRenderRelationElementMethodNotExist(): void
-    {
-        $this->fieldDescription->expects($this->exactly(2))
-            ->method('getOption')
-
-            ->willReturnCallback(static function ($value, $default = null) {
-                if ('associated_tostring' === $value) {
-                    return 'nonExistedMethod';
-                }
-            });
-
-        $element = new \stdClass();
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('You must define an `associated_property` option or create a `stdClass::__toString');
-
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderRelationElement method is deprecated in favor of RenderElementExtension::renderRelationElement since version 3.x and will be removed in 4.0.');
-
-        $this->twigExtension->renderRelationElement($element, $this->fieldDescription);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     */
-    public function testRenderRelationElementWithPropertyPath(): void
-    {
-        $this->fieldDescription->expects($this->once())
-            ->method('getOption')
-
-            ->willReturnCallback(static function ($value, $default = null) {
-                if ('associated_property' === $value) {
-                    return 'foo';
-                }
-            });
-
-        $element = new \stdClass();
-        $element->foo = 'bar';
-
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderRelationElement method is deprecated in favor of RenderElementExtension::renderRelationElement since version 3.x and will be removed in 4.0.');
-
-        $this->assertSame('bar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     */
-    public function testRenderRelationElementWithClosure(): void
-    {
-        $this->fieldDescription->expects($this->once())
-            ->method('getOption')
-
-            ->willReturnCallback(static function ($value, $default = null) {
-                if ('associated_property' === $value) {
-                    return static function ($element): string {
-                        return sprintf('closure %s', $element->foo);
-                    };
-                }
-            });
-
-        $element = new \stdClass();
-        $element->foo = 'bar';
-
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderRelationElement method is deprecated in favor of RenderElementExtension::renderRelationElement since version 3.x and will be removed in 4.0.');
-
-        $this->assertSame(
-            'closure bar',
-            $this->twigExtension->renderRelationElement($element, $this->fieldDescription)
-        );
-    }
-
-    public function testGetUrlsafeIdentifier(): void
-    {
-        $model = new \stdClass();
-
-        $pool = new Pool(
-            $this->container,
-            ['sonata_admin_foo_service'],
-            [],
-            [\stdClass::class => ['sonata_admin_foo_service']]
-        );
-
-        $this->admin->expects($this->once())
-            ->method('getUrlSafeIdentifier')
-            ->with($this->equalTo($model))
-            ->willReturn(1234567);
-
-        $this->container->set('sonata_admin_foo_service', $this->admin);
-
-        $twigExtension = new SonataAdminExtension(
-            $pool,
-            $this->logger,
-            $this->translator,
-            $this->container,
-            PropertyAccess::createPropertyAccessor()
-        );
-
-        $this->assertSame(1234567, $twigExtension->getUrlSafeIdentifier($model));
-    }
-
-    public function testGetUrlsafeIdentifier_GivenAdmin_Foo(): void
-    {
-        $model = new \stdClass();
-
-        $pool = new Pool(
-            $this->container,
-            [
-                'sonata_admin_foo_service',
-                'sonata_admin_bar_service',
-            ],
-            [],
-            [\stdClass::class => [
-                'sonata_admin_foo_service',
-                'sonata_admin_bar_service',
-            ]]
-        );
-
-        $this->admin->expects($this->once())
-            ->method('getUrlSafeIdentifier')
-            ->with($this->equalTo($model))
-            ->willReturn(1234567);
-
-        $this->adminBar->expects($this->never())
-            ->method('getUrlSafeIdentifier');
-
-        $twigExtension = new SonataAdminExtension(
-            $pool,
-            $this->logger,
-            $this->translator,
-            $this->container,
-            PropertyAccess::createPropertyAccessor()
-        );
-
-        $this->assertSame(1234567, $twigExtension->getUrlSafeIdentifier($model, $this->admin));
-    }
-
-    public function testGetUrlsafeIdentifier_GivenAdmin_Bar(): void
-    {
-        $model = new \stdClass();
-
-        $pool = new Pool(
-            $this->container,
-            ['sonata_admin_foo_service', 'sonata_admin_bar_service'],
-            [],
-            [\stdClass::class => [
-                'sonata_admin_foo_service',
-                'sonata_admin_bar_service',
-            ]]
-        );
-
-        $this->admin->expects($this->never())
-            ->method('getUrlSafeIdentifier');
-
-        $this->adminBar->expects($this->once())
-            ->method('getUrlSafeIdentifier')
-            ->with($this->equalTo($model))
-            ->willReturn(1234567);
-
-        $twigExtension = new SonataAdminExtension(
-            $pool,
-            $this->logger,
-            $this->translator,
-            $this->container,
-            PropertyAccess::createPropertyAccessor()
-        );
-
-        $this->assertSame(1234567, $twigExtension->getUrlSafeIdentifier($model, $this->adminBar));
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function xEditableChoicesProvider()
-    {
-        return [
-            'needs processing' => [
-                ['choices' => ['Status1' => 'Alias1', 'Status2' => 'Alias2']],
-                [
-                    ['value' => 'Status1', 'text' => 'Alias1'],
-                    ['value' => 'Status2', 'text' => 'Alias2'],
-                ],
-            ],
-            'already processed' => [
-                ['choices' => [
-                    ['value' => 'Status1', 'text' => 'Alias1'],
-                    ['value' => 'Status2', 'text' => 'Alias2'],
-                ]],
-                [
-                    ['value' => 'Status1', 'text' => 'Alias1'],
-                    ['value' => 'Status2', 'text' => 'Alias2'],
-                ],
-            ],
-            'not required' => [
-                [
-                    'required' => false,
-                    'choices' => ['' => '', 'Status1' => 'Alias1', 'Status2' => 'Alias2'],
-                ],
-                [
-                    ['value' => '', 'text' => ''],
-                    ['value' => 'Status1', 'text' => 'Alias1'],
-                    ['value' => 'Status2', 'text' => 'Alias2'],
-                ],
-            ],
-            'not required multiple' => [
-                [
-                    'required' => false,
-                    'multiple' => true,
-                    'choices' => ['Status1' => 'Alias1', 'Status2' => 'Alias2'],
-                ],
-                [
-                    ['value' => 'Status1', 'text' => 'Alias1'],
-                    ['value' => 'Status2', 'text' => 'Alias2'],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @dataProvider xEditablechoicesProvider
-     *
-     * @group legacy
-     */
-    public function testGetXEditableChoicesIsIdempotent(array $options, array $expectedChoices): void
-    {
-        $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
-        $fieldDescription
-            ->method('getOption')
-            ->withConsecutive(
-                ['choices', []],
-                ['catalogue'],
-                ['required'],
-                ['multiple']
-            )
-            ->will($this->onConsecutiveCalls(
-                $options['choices'],
-                'MyCatalogue',
-                $options['multiple'] ?? null
-            ));
-
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::getXEditableChoices method is deprecated in favor of XEditableExtension::getXEditableChoices since version 3.x and will be removed in 4.0.');
-
-        $this->assertSame($expectedChoices, $this->twigExtension->getXEditableChoices($fieldDescription));
-    }
-
-    public function select2LocalesProvider()
-    {
-        return [
-            ['ar', 'ar'],
-            ['az', 'az'],
-            ['bg', 'bg'],
-            ['ca', 'ca'],
-            ['cs', 'cs'],
-            ['da', 'da'],
-            ['de', 'de'],
-            ['el', 'el'],
-            [null, 'en'],
-            ['es', 'es'],
-            ['et', 'et'],
-            ['eu', 'eu'],
-            ['fa', 'fa'],
-            ['fi', 'fi'],
-            ['fr', 'fr'],
-            ['gl', 'gl'],
-            ['he', 'he'],
-            ['hr', 'hr'],
-            ['hu', 'hu'],
-            ['id', 'id'],
-            ['is', 'is'],
-            ['it', 'it'],
-            ['ja', 'ja'],
-            ['ka', 'ka'],
-            ['ko', 'ko'],
-            ['lt', 'lt'],
-            ['lv', 'lv'],
-            ['mk', 'mk'],
-            ['ms', 'ms'],
-            ['nb', 'nb'],
-            ['nl', 'nl'],
-            ['pl', 'pl'],
-            ['pt-PT', 'pt'],
-            ['pt-BR', 'pt-BR'],
-            ['pt-PT', 'pt-PT'],
-            ['ro', 'ro'],
-            ['rs', 'rs'],
-            ['ru', 'ru'],
-            ['sk', 'sk'],
-            ['sv', 'sv'],
-            ['th', 'th'],
-            ['tr', 'tr'],
-            ['ug-CN', 'ug'],
-            ['ug-CN', 'ug-CN'],
-            ['uk', 'uk'],
-            ['vi', 'vi'],
-            ['zh-CN', 'zh'],
-            ['zh-CN', 'zh-CN'],
-            ['zh-TW', 'zh-TW'],
-        ];
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @dataProvider select2LocalesProvider
-     *
-     * @group legacy
-     */
-    public function testCanonicalizedLocaleForSelect2(?string $expected, string $original): void
-    {
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::getCanonicalizedLocaleForSelect2 method is deprecated in favor of CanonicalizeExtension::getCanonicalizedLocaleForSelect2 since version 3.x and will be removed in 4.0.');
-
-        $this->assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForSelect2($this->mockExtensionContext($original)));
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function momentLocalesProvider(): array
-    {
-        return [
-            ['af', 'af'],
-            ['ar-dz', 'ar-dz'],
-            ['ar', 'ar'],
-            ['ar-ly', 'ar-ly'],
-            ['ar-ma', 'ar-ma'],
-            ['ar-sa', 'ar-sa'],
-            ['ar-tn', 'ar-tn'],
-            ['az', 'az'],
-            ['be', 'be'],
-            ['bg', 'bg'],
-            ['bn', 'bn'],
-            ['bo', 'bo'],
-            ['br', 'br'],
-            ['bs', 'bs'],
-            ['ca', 'ca'],
-            ['cs', 'cs'],
-            ['cv', 'cv'],
-            ['cy', 'cy'],
-            ['da', 'da'],
-            ['de-at', 'de-at'],
-            ['de', 'de'],
-            ['de', 'de-de'],
-            ['dv', 'dv'],
-            ['el', 'el'],
-            [null, 'en'],
-            [null, 'en-us'],
-            ['en-au', 'en-au'],
-            ['en-ca', 'en-ca'],
-            ['en-gb', 'en-gb'],
-            ['en-ie', 'en-ie'],
-            ['en-nz', 'en-nz'],
-            ['eo', 'eo'],
-            ['es-do', 'es-do'],
-            ['es', 'es-ar'],
-            ['es', 'es-mx'],
-            ['es', 'es'],
-            ['et', 'et'],
-            ['eu', 'eu'],
-            ['fa', 'fa'],
-            ['fi', 'fi'],
-            ['fo', 'fo'],
-            ['fr-ca', 'fr-ca'],
-            ['fr-ch', 'fr-ch'],
-            ['fr', 'fr-fr'],
-            ['fr', 'fr'],
-            ['fy', 'fy'],
-            ['gd', 'gd'],
-            ['gl', 'gl'],
-            ['he', 'he'],
-            ['hi', 'hi'],
-            ['hr', 'hr'],
-            ['hu', 'hu'],
-            ['hy-am', 'hy-am'],
-            ['id', 'id'],
-            ['is', 'is'],
-            ['it', 'it'],
-            ['ja', 'ja'],
-            ['jv', 'jv'],
-            ['ka', 'ka'],
-            ['kk', 'kk'],
-            ['km', 'km'],
-            ['ko', 'ko'],
-            ['ky', 'ky'],
-            ['lb', 'lb'],
-            ['lo', 'lo'],
-            ['lt', 'lt'],
-            ['lv', 'lv'],
-            ['me', 'me'],
-            ['mi', 'mi'],
-            ['mk', 'mk'],
-            ['ml', 'ml'],
-            ['mr', 'mr'],
-            ['ms', 'ms'],
-            ['ms-my', 'ms-my'],
-            ['my', 'my'],
-            ['nb', 'nb'],
-            ['ne', 'ne'],
-            ['nl-be', 'nl-be'],
-            ['nl', 'nl'],
-            ['nl', 'nl-nl'],
-            ['nn', 'nn'],
-            ['pa-in', 'pa-in'],
-            ['pl', 'pl'],
-            ['pt-br', 'pt-br'],
-            ['pt', 'pt'],
-            ['ro', 'ro'],
-            ['ru', 'ru'],
-            ['se', 'se'],
-            ['si', 'si'],
-            ['sk', 'sk'],
-            ['sl', 'sl'],
-            ['sq', 'sq'],
-            ['sr-cyrl', 'sr-cyrl'],
-            ['sr', 'sr'],
-            ['ss', 'ss'],
-            ['sv', 'sv'],
-            ['sw', 'sw'],
-            ['ta', 'ta'],
-            ['te', 'te'],
-            ['tet', 'tet'],
-            ['th', 'th'],
-            ['tlh', 'tlh'],
-            ['tl-ph', 'tl-ph'],
-            ['tr', 'tr'],
-            ['tzl', 'tzl'],
-            ['tzm', 'tzm'],
-            ['tzm-latn', 'tzm-latn'],
-            ['uk', 'uk'],
-            ['uz', 'uz'],
-            ['vi', 'vi'],
-            ['x-pseudo', 'x-pseudo'],
-            ['yo', 'yo'],
-            ['zh-cn', 'zh-cn'],
-            ['zh-hk', 'zh-hk'],
-            ['zh-tw', 'zh-tw'],
-        ];
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @dataProvider momentLocalesProvider
-     *
-     * @group legacy
-     */
-    public function testCanonicalizedLocaleForMoment(?string $expected, string $original): void
-    {
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::getCanonicalizedLocaleForMoment method is deprecated in favor of CanonicalizeExtension::getCanonicalizedLocaleForMoment since version 3.x and will be removed in 4.0.');
-
-        $this->assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForMoment($this->mockExtensionContext($original)));
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     */
-    public function testIsGrantedAffirmative(): void
-    {
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::isGrantedAffirmative method is deprecated in favor of SecurityExtension::isGrantedAffirmative since version 3.x and will be removed in 4.0.');
-
-        $this->securityChecker
-            ->method('isGranted')
-            ->withConsecutive(
-                ['foo', null],
-                ['bar', null],
-                ['foo', null],
-                ['bar', null]
-            )
-            ->willReturnMap([
-                ['foo', null, false],
-                ['bar', null, true],
-            ]);
-
-        $this->assertTrue($this->twigExtension->isGrantedAffirmative(['foo', 'bar']));
-        $this->assertFalse($this->twigExtension->isGrantedAffirmative('foo'));
-        $this->assertTrue($this->twigExtension->isGrantedAffirmative('bar'));
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     * @dataProvider getRenderViewElementCompareTests
-     */
-    public function testRenderViewElementCompare(string $expected, string $type, $value, array $options, ?string $objectName = null): void
-    {
-        $this->admin
-            ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/base_show_compare.html.twig');
-
-        $this->fieldDescription
-            ->method('getValue')
-            ->willReturn($value);
-
-        $this->fieldDescription
-            ->method('getType')
-            ->willReturn($type);
-
-        $this->fieldDescription
-            ->method('getOptions')
-            ->willReturn($options);
-
-        $this->fieldDescription
-            ->method('getTemplate')
-            ->willReturnCallback(static function () use ($type, $options): ?string {
-                if (isset($options['template'])) {
-                    return $options['template'];
-                }
-
-                switch ($type) {
-                    case 'boolean':
-                        return '@SonataAdmin/CRUD/show_boolean.html.twig';
-                    case 'datetime':
-                        return '@SonataAdmin/CRUD/show_datetime.html.twig';
-                    case 'date':
-                        return '@SonataAdmin/CRUD/show_date.html.twig';
-                    case 'time':
-                        return '@SonataAdmin/CRUD/show_time.html.twig';
-                    case 'currency':
-                        return '@SonataAdmin/CRUD/show_currency.html.twig';
-                    case 'percent':
-                        return '@SonataAdmin/CRUD/show_percent.html.twig';
-                    case 'email':
-                        return '@SonataAdmin/CRUD/show_email.html.twig';
-                    case 'choice':
-                        return '@SonataAdmin/CRUD/show_choice.html.twig';
-                    case 'array':
-                        return '@SonataAdmin/CRUD/show_array.html.twig';
-                    case 'trans':
-                        return '@SonataAdmin/CRUD/show_trans.html.twig';
-                    case 'url':
-                        return '@SonataAdmin/CRUD/show_url.html.twig';
-                    case 'html':
-                        return '@SonataAdmin/CRUD/show_html.html.twig';
-                    default:
-                        return null;
-                }
-            });
-
-        $this->object->name = 'SonataAdmin';
-
-        $comparedObject = clone $this->object;
-
-        if (null !== $objectName) {
-            $comparedObject->name = $objectName;
-        }
-
-        $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderViewElementCompare method is deprecated in favor of RenderElementExtension::renderViewElementCompare since version 3.x and will be removed in 4.0.');
-
-        $this->assertSame(
-            $this->removeExtraWhitespace($expected),
-            $this->removeExtraWhitespace(
-                $this->twigExtension->renderViewElementCompare(
-                    $this->environment,
-                    $this->fieldDescription,
-                    $this->object,
-                    $comparedObject
-                )
-            )
-        );
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
     public function getRenderViewElementCompareTests(): iterable
     {
         return [
@@ -3338,13 +2536,55 @@ EOT
         ));
     }
 
-    private function mockExtensionContext(string $locale): array
+    private function registerRequiredTwigExtensions(PropertyAccessorInterface $propertyAccessor): void
     {
-        $request = $this->createMock(Request::class);
-        $request->method('getLocale')->willReturn($locale);
-        $appVariable = $this->createMock(AppVariable::class);
-        $appVariable->method('getRequest')->willReturn($request);
+        //NEXT_MAJOR: Remove next line.
+        $this->registerSonataAdminExtension($propertyAccessor);
 
-        return ['app' => $appVariable];
+        $this->environment->addExtension($this->twigExtension);
+        $this->environment->addExtension(new XEditableExtension($this->translator, self::X_EDITABLE_TYPE_MAPPING));
+        $this->environment->addExtension(new TranslationExtension($this->translator));
+        $this->environment->addExtension(new FakeTemplateRegistryExtension());
+        $this->environment->addExtension(new StringExtension());
+
+        $this->registerRoutingExtension();
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
+    private function registerSonataAdminExtension(PropertyAccessor $propertyAccessor): void
+    {
+        $securityChecker = $this->createStub(AuthorizationCheckerInterface::class);
+
+        $sonataAdminExtension = new SonataAdminExtension(
+            $this->pool,
+            $this->logger,
+            $this->translator,
+            $this->container,
+            $propertyAccessor,
+            $securityChecker
+        );
+        $sonataAdminExtension->setXEditableTypeMapping(self::X_EDITABLE_TYPE_MAPPING, 'sonata_deprecation_mute');
+        $this->environment->addExtension($sonataAdminExtension);
+    }
+
+    private function registerRoutingExtension(): void
+    {
+        $xmlFileLoader = new XmlFileLoader(new FileLocator([
+            sprintf('%s/../../../src/Resources/config/routing', __DIR__),
+        ]));
+        $routeCollection = $xmlFileLoader->load('sonata_admin.xml');
+
+        $xmlFileLoader = new XmlFileLoader(new FileLocator([
+            sprintf('%s/../../Fixtures/Resources/config/routing', __DIR__),
+        ]));
+
+        $testRouteCollection = $xmlFileLoader->load('routing.xml');
+
+        $routeCollection->addCollection($testRouteCollection);
+        $requestContext = new RequestContext();
+        $urlGenerator = new UrlGenerator($routeCollection, $requestContext);
+        $this->environment->addExtension(new RoutingExtension($urlGenerator));
     }
 }
