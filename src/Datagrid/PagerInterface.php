@@ -107,7 +107,7 @@ interface PagerInterface
      *
      * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use getCurrentPageResults() instead.
      *
-     * Returns an array of results on the given page.
+     * Returns a collection of results on the given page.
      *
      * @return iterable<object>
      */
@@ -115,7 +115,7 @@ interface PagerInterface
 
 //    NEXT_MAJOR: uncomment this method in 4.0
 //    /**
-//     * Returns an array of results on the given page.
+//     * Returns a collection of results on the given page.
 //     *
 //     * @return iterable<object>
 //     */
