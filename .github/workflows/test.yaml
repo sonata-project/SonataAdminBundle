@@ -46,6 +46,10 @@ jobs:
                     - php-version: '7.4'
                       dependencies: highest
                       allowed-to-fail: false
+                      variant: 'symfony/symfony:"5.2.*"'
+                    - php-version: '7.4'
+                      dependencies: highest
+                      allowed-to-fail: false
                       variant: 'sonata-project/block-bundle:"4.*"'
 
         steps:
