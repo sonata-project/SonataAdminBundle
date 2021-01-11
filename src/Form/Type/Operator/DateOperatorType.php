@@ -25,7 +25,13 @@ final class DateOperatorType extends AbstractType
     public const TYPE_EQUAL = 3;
     public const TYPE_LESS_EQUAL = 4;
     public const TYPE_LESS_THAN = 5;
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0
+     */
     public const TYPE_NULL = 6;
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0
+     */
     public const TYPE_NOT_NULL = 7;
 
     /**
@@ -41,6 +47,7 @@ final class DateOperatorType extends AbstractType
                 'label_date_type_greater_than' => self::TYPE_GREATER_THAN,
                 'label_date_type_less_equal' => self::TYPE_LESS_EQUAL,
                 'label_date_type_less_than' => self::TYPE_LESS_THAN,
+                // NEXT_MAJOR: Remove the two following lines and remove all the translations.
                 'label_date_type_null' => self::TYPE_NULL,
                 'label_date_type_not_null' => self::TYPE_NOT_NULL,
             ],
