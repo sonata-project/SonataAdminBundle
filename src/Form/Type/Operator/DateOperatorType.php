@@ -26,11 +26,11 @@ final class DateOperatorType extends AbstractType
     public const TYPE_LESS_EQUAL = 4;
     public const TYPE_LESS_THAN = 5;
     /**
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0
+     * @deprecated since sonata-project/admin-bundle 3.87, to be removed with 4.0
      */
     public const TYPE_NULL = 6;
     /**
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0
+     * @deprecated since sonata-project/admin-bundle 3.87, to be removed with 4.0
      */
     public const TYPE_NOT_NULL = 7;
 

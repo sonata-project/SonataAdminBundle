@@ -112,7 +112,7 @@ final class SearchAction
                 $pageResults = $pager->getCurrentPageResults();
             } else {
                 @trigger_error(sprintf(
-                    'Not implementing "%s::getCurrentPageResults()" is deprecated since sonata-project/admin-bundle 3.x and will fail in 4.0.',
+                    'Not implementing "%s::getCurrentPageResults()" is deprecated since sonata-project/admin-bundle 3.87 and will fail in 4.0.',
                     PagerInterface::class
                 ), E_USER_DEPRECATED);
 

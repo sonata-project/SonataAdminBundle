@@ -2,6 +2,37 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.87.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.86.0...3.87.0) - 2021-01-12
+### Added
+- [[#6676](https://github.com/sonata-project/SonataAdminBundle/pull/6676)] Added `Sonata\AdminBundle\Twig\Extension\SecurityExtension` ([@tambait](https://github.com/tambait))
+- [[#6676](https://github.com/sonata-project/SonataAdminBundle/pull/6676)] Added `Sonata\AdminBundle\Twig\Extension\CanonicalizeExtension` ([@tambait](https://github.com/tambait))
+- [[#6676](https://github.com/sonata-project/SonataAdminBundle/pull/6676)] Added `Sonata\AdminBundle\Twig\Extension\XEditableExtension` ([@tambait](https://github.com/tambait))
+- [[#6676](https://github.com/sonata-project/SonataAdminBundle/pull/6676)] Added `Sonata\AdminBundle\Twig\Extension\RenderElementExtension` ([@tambait](https://github.com/tambait))
+- [[#6760](https://github.com/sonata-project/SonataAdminBundle/pull/6760)] Added `PagerInterface::getCurrentPageResults()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6759](https://github.com/sonata-project/SonataAdminBundle/pull/6759)] Add generics to `PagerInterface`. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6729](https://github.com/sonata-project/SonataAdminBundle/pull/6729)] Added `default_controller` to configure the default controlled used by the admins. ([@franmomu](https://github.com/franmomu))
+
+### Deprecated
+- [[#6676](https://github.com/sonata-project/SonataAdminBundle/pull/6676)] Deprecated `SonataAdminExtension::MOMENT_UNSUPPORTED_LOCALES` constant ([@tambait](https://github.com/tambait))
+- [[#6676](https://github.com/sonata-project/SonataAdminBundle/pull/6676)] Deprecated `SonataAdminExtension::setXEditableTypeMapping()` method ([@tambait](https://github.com/tambait))
+- [[#6676](https://github.com/sonata-project/SonataAdminBundle/pull/6676)] Deprecated `SonataAdminExtension::getXEditableType()` method ([@tambait](https://github.com/tambait))
+- [[#6676](https://github.com/sonata-project/SonataAdminBundle/pull/6676)] Deprecated `SonataAdminExtension::getXEditableChoices()` method ([@tambait](https://github.com/tambait))
+- [[#6676](https://github.com/sonata-project/SonataAdminBundle/pull/6676)] Deprecated `SonataAdminExtension::getCanonicalizedLocaleForMoment()` method ([@tambait](https://github.com/tambait))
+- [[#6676](https://github.com/sonata-project/SonataAdminBundle/pull/6676)] Deprecated `SonataAdminExtension::getCanonicalizedLocaleForSelect2()` method ([@tambait](https://github.com/tambait))
+- [[#6676](https://github.com/sonata-project/SonataAdminBundle/pull/6676)] Deprecated `SonataAdminExtension::isGrantedAffirmative()` method ([@tambait](https://github.com/tambait))
+- [[#6676](https://github.com/sonata-project/SonataAdminBundle/pull/6676)] Deprecated `SonataAdminExtension::renderListElement()` method ([@tambait](https://github.com/tambait))
+- [[#6676](https://github.com/sonata-project/SonataAdminBundle/pull/6676)] Deprecated `SonataAdminExtension::renderViewElement()` method ([@tambait](https://github.com/tambait))
+- [[#6676](https://github.com/sonata-project/SonataAdminBundle/pull/6676)] Deprecated `SonataAdminExtension::renderViewElementCompare()` method ([@tambait](https://github.com/tambait))
+- [[#6676](https://github.com/sonata-project/SonataAdminBundle/pull/6676)] Deprecated `SonataAdminExtension::renderRelationElement()` method ([@tambait](https://github.com/tambait))
+- [[#6676](https://github.com/sonata-project/SonataAdminBundle/pull/6676)] Deprecated `SonataAdminExtension::getTemplate()` method ([@tambait](https://github.com/tambait))
+- [[#6676](https://github.com/sonata-project/SonataAdminBundle/pull/6676)] Deprecated `SonataAdminExtension::getTemplateRegistry()` method ([@tambait](https://github.com/tambait))
+- [[#6734](https://github.com/sonata-project/SonataAdminBundle/pull/6734)] Deprecate `DateOperatorType::TYPE_NULL` and `DateOperatorType::TYPE_NOT_NULL` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6760](https://github.com/sonata-project/SonataAdminBundle/pull/6760)] Added `PagerInterface::getResults()` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#6764](https://github.com/sonata-project/SonataAdminBundle/pull/6764)] Added missing phpdoc type declarations. ([@franmomu](https://github.com/franmomu))
+- [[#6758](https://github.com/sonata-project/SonataAdminBundle/pull/6758)] Fixed `Pool` definition arguments. ([@franmomu](https://github.com/franmomu))
+
 ## [3.86.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.85.0...3.86.0) - 2021-01-09
 ### Added
 - [[#6732](https://github.com/sonata-project/SonataAdminBundle/pull/6732)] Added `PagerInterface::countResults` ([@dmaicher](https://github.com/dmaicher))

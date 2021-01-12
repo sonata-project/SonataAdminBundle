@@ -105,7 +105,7 @@ interface PagerInterface
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use getCurrentPageResults() instead.
+     * @deprecated since sonata-project/admin-bundle 3.87. To be removed in 4.0. Use getCurrentPageResults() instead.
      *
      * Returns a collection of results on the given page.
      *

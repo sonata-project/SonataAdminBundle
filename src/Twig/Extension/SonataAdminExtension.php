@@ -42,7 +42,7 @@ class SonataAdminExtension extends AbstractExtension
     /**
      * NEXT_MAJOR: Remove this constant.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0
      */
     // @todo: there are more locales which are not supported by moment and they need to be translated/normalized/canonicalized here
     public const MOMENT_UNSUPPORTED_LOCALES = [
@@ -74,7 +74,7 @@ class SonataAdminExtension extends AbstractExtension
      *
      * @var string[]
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0
      */
     private $xEditableTypeMapping = [];
 
@@ -90,7 +90,7 @@ class SonataAdminExtension extends AbstractExtension
      *
      * @var AuthorizationCheckerInterface
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0
      */
     private $securityChecker;
 
@@ -324,7 +324,7 @@ class SonataAdminExtension extends AbstractExtension
      *
      * @return TwigFunction[]
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0
      */
     public function getFunctions()
     {
@@ -355,7 +355,7 @@ class SonataAdminExtension extends AbstractExtension
      *
      * @return string
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0
      */
     public function renderListElement(
         Environment $environment,
@@ -365,7 +365,7 @@ class SonataAdminExtension extends AbstractExtension
     ) {
         if ('sonata_deprecation_mute' !== (\func_get_args()[4] ?? null)) {
             @trigger_error(sprintf(
-                'The %s method is deprecated in favor of RenderElementExtension::renderListElement since version 3.x and will be removed in 4.0.',
+                'The %s method is deprecated in favor of RenderElementExtension::renderListElement since version 3.87 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -480,7 +480,7 @@ EOT;
      *
      * @return string
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0
      */
     public function renderViewElement(
         Environment $environment,
@@ -489,7 +489,7 @@ EOT;
     ) {
         if ('sonata_deprecation_mute' !== (\func_get_args()[3] ?? null)) {
             @trigger_error(sprintf(
-                'The %s method is deprecated in favor of RenderElementExtension::renderViewElement since version 3.x and will be removed in 4.0.',
+                'The %s method is deprecated in favor of RenderElementExtension::renderViewElement since version 3.87 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -510,7 +510,7 @@ EOT;
      *
      * @return string
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0
      */
     public function renderViewElementCompare(
         Environment $environment,
@@ -520,7 +520,7 @@ EOT;
     ) {
         if ('sonata_deprecation_mute' !== (\func_get_args()[4] ?? null)) {
             @trigger_error(sprintf(
-                'The %s method is deprecated in favor of RenderElementExtension::renderViewElementCompare since version 3.x and will be removed in 4.0.',
+                'The %s method is deprecated in favor of RenderElementExtension::renderViewElementCompare since version 3.87 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -540,13 +540,13 @@ EOT;
      *
      * @return mixed
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0
      */
     public function renderRelationElement($element, FieldDescriptionInterface $fieldDescription)
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[2] ?? null)) {
             @trigger_error(sprintf(
-                'The %s method is deprecated in favor of RenderElementExtension::renderRelationElement since version 3.x and will be removed in 4.0.',
+                'The %s method is deprecated in favor of RenderElementExtension::renderRelationElement since version 3.87 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -584,13 +584,13 @@ EOT;
      *
      * @param string[] $xEditableTypeMapping
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0
      */
     public function setXEditableTypeMapping($xEditableTypeMapping)
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
             @trigger_error(sprintf(
-                'The %s method is deprecated in favor of XEditableExtension::setXEditableTypeMapping since version 3.x and will be removed in 4.0.',
+                'The %s method is deprecated in favor of XEditableExtension::setXEditableTypeMapping since version 3.87 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -603,13 +603,13 @@ EOT;
      *
      * @return string|bool
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0
      */
     public function getXEditableType($type)
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
             @trigger_error(sprintf(
-                'The %s method is deprecated in favor of XEditableExtension::getXEditableType since version 3.x and will be removed in 4.0.',
+                'The %s method is deprecated in favor of XEditableExtension::getXEditableType since version 3.87 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -628,13 +628,13 @@ EOT;
      *
      * @return array
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0
      */
     public function getXEditableChoices(FieldDescriptionInterface $fieldDescription)
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
             @trigger_error(sprintf(
-                'The %s method is deprecated in favor of XEditableExtension::getXEditableChoices since version 3.x and will be removed in 4.0.',
+                'The %s method is deprecated in favor of XEditableExtension::getXEditableChoices since version 3.87 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -654,13 +654,13 @@ EOT;
      *
      * @return string|null
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0
      */
     final public function getCanonicalizedLocaleForMoment(array $context)
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
             @trigger_error(sprintf(
-                'The %s method is deprecated in favor of CanonicalizeExtension::getCanonicalizedLocaleForMoment since version 3.x and will be removed in 4.0.',
+                'The %s method is deprecated in favor of CanonicalizeExtension::getCanonicalizedLocaleForMoment since version 3.87 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -682,13 +682,13 @@ EOT;
      *
      * @return string|null
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0
      */
     final public function getCanonicalizedLocaleForSelect2(array $context)
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
             @trigger_error(sprintf(
-                'The %s method is deprecated in favor of CanonicalizeExtension::getCanonicalizedLocaleForSelect2 since version 3.x and will be removed in 4.0.',
+                'The %s method is deprecated in favor of CanonicalizeExtension::getCanonicalizedLocaleForSelect2 since version 3.87 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -711,13 +711,13 @@ EOT;
      *
      * @return bool
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0
      */
     public function isGrantedAffirmative($role, $object = null, $field = null)
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[3] ?? null)) {
             @trigger_error(sprintf(
-                'The %s method is deprecated in favor of SecurityExtension::isGrantedAffirmative since version 3.x and will be removed in 4.0.',
+                'The %s method is deprecated in favor of SecurityExtension::isGrantedAffirmative since version 3.87 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -738,7 +738,7 @@ EOT;
      *
      * @return TemplateWrapper
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0
      */
     protected function getTemplate(
         FieldDescriptionInterface $fieldDescription,
@@ -747,7 +747,7 @@ EOT;
     ) {
         if ('sonata_deprecation_mute' !== (\func_get_args()[3] ?? null)) {
             @trigger_error(sprintf(
-                'The %s method is deprecated in favor of RenderElementExtension::getTemplate since version 3.x and will be removed in 4.0.',
+                'The %s method is deprecated in favor of RenderElementExtension::getTemplate since version 3.87 and will be removed in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
