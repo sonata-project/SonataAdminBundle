@@ -112,12 +112,12 @@ class SimplePager extends Pager
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use getCurrentPageResults() instead.
+     * @deprecated since sonata-project/admin-bundle 3.87. To be removed in 4.0. Use getCurrentPageResults() instead.
      */
     public function getResults($hydrationMode = null)
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0. Use getCurrentPageResults() instead.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0. Use getCurrentPageResults() instead.',
             __METHOD__
         ), E_USER_DEPRECATED);
 

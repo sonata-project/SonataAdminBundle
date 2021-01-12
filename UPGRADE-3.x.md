@@ -1,7 +1,7 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.xx to 3.xx
+UPGRADE FROM 3.86 to 3.87
 =========================
 
 ### Deprecated `DateOperatorType::TYPE_NULL` and `DateOperatorType::TYPE_NOT_NULL`
