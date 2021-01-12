@@ -47,6 +47,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $groupDefaults = $admins = $adminServices = $classes = [];
 
         $pool = $container->getDefinition('sonata.admin.pool');
+        $defaultController = $container->getParameter('sonata.admin.configuration.default_controller');
 
         $defaultValues = [
             'group' => $container->getParameter('sonata.admin.configuration.default_group'),
@@ -67,7 +68,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 $this->replaceDefaultArguments([
                     0 => $id,
-                    2 => 'sonata.admin.controller.crud',
+                    2 => $defaultController,
                 ], $definition, $parentDefinition);
                 $this->applyConfigurationFromAttribute($definition, $attributes);
                 $this->applyDefaults($container, $id, $attributes);

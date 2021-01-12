@@ -17,7 +17,6 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Filter\FilterInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -148,7 +147,7 @@ final class RetrieveAutocompleteItemsAction
         $pager = $datagrid->getPager();
 
         $items = [];
-        $results = $pager->getResults();
+        $results = $pager->getCurrentPageResults();
 
         foreach ($results as $model) {
             if (null !== $toStringCallback) {

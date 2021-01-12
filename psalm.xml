@@ -3,7 +3,7 @@
     <projectFiles>
         <directory name="src"/>
         <ignoreFiles>
-            <file name="src/Resources/skeleton"/>
+            <directory name="src/Resources/skeleton"/>
             <directory name="vendor"/>
         </ignoreFiles>
     </projectFiles>

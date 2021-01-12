@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Maker;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Maker\AdminMaker;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
@@ -92,7 +93,7 @@ class AdminMakerTest extends TestCase
      */
     public function testExecute(): void
     {
-        $maker = new AdminMaker($this->projectDirectory, $this->modelManagers);
+        $maker = new AdminMaker($this->projectDirectory, CRUDController::class, $this->modelManagers);
 
         $in = [
             'model' => Foo::class,

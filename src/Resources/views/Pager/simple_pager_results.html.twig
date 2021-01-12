@@ -16,7 +16,7 @@ file that was distributed with this source code.
         {{ 'list_results_count_prefix'|trans({}, 'SonataAdminBundle') }}
     {% endif %}
     {# NEXT_MAJOR: remove the attribute check and just use .countResults() #}
-    {% trans with {'%count%': attribute(admin.datagrid.pager, 'countResults') is defined ? admin.datagrid.pager.countResults() : admin.datagrid.pager.getNbResults()} from 'SonataAdminBundle' %}list_results_count{% endtrans %}
+    {% trans with {'%count%': admin.datagrid.pager.countResults()} from 'SonataAdminBundle' %}list_results_count{% endtrans %}
     &nbsp;-&nbsp;
 {% endblock %}
 

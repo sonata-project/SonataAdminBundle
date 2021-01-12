@@ -11,9 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Sonata\AdminBundle\Twig\Extension\CanonicalizeExtension;
 use Sonata\AdminBundle\Twig\Extension\GroupExtension;
+use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
+use Sonata\AdminBundle\Twig\Extension\SecurityExtension;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension;
+use Sonata\AdminBundle\Twig\Extension\XEditableExtension;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 
@@ -48,13 +52,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('twig.extension')
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
-                new ReferenceConfigurator('translator'),
-                new ReferenceConfigurator('service_container'),
-                new ReferenceConfigurator('property_accessor'),
-                new ReferenceConfigurator('security.authorization_checker'),
-            ])
-            ->call('setXEditableTypeMapping', [
-                '%sonata.admin.twig.extension.x_editable_type_mapping%',
             ])
 
         ->set('sonata.templates.twig.extension', TemplateRegistryExtension::class)
@@ -69,5 +66,32 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->args([
             new ReferenceConfigurator('sonata.admin.pool'),
         ])
+
+        ->set('sonata.security.twig.extension', SecurityExtension::class)
+            ->tag('twig.extension')
+            ->args([
+                new ReferenceConfigurator('security.authorization_checker'),
+            ])
+
+        ->set('sonata.canonicalize.twig.extension', CanonicalizeExtension::class)
+            ->tag('twig.extension')
+            ->args([
+                new ReferenceConfigurator('request_stack'),
+            ])
+
+        ->set('sonata.xeditable.twig.extension', XEditableExtension::class)
+            ->tag('twig.extension')
+            ->args([
+                new ReferenceConfigurator('translator'),
+                '%sonata.admin.twig.extension.x_editable_type_mapping%',
+            ])
+
+        ->set('sonata.render_element.twig.extension', RenderElementExtension::class)
+            ->tag('twig.extension')
+            ->args([
+                new ReferenceConfigurator('property_accessor'),
+                new ReferenceConfigurator('service_container'),
+                (new ReferenceConfigurator('logger'))->nullOnInvalid(),
+            ])
     ;
 };

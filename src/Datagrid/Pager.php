@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Datagrid;
 
 /**
- * NEXT_MAJOR: Remove the \Iterator, \Countable and \Serializable implementation.
- *
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @implements \Iterator<object>
+ * @phpstan-template T of ProxyQueryInterface
+ * @phpstan-implements PagerInterface<T>
  */
-abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInterface
+abstract class Pager implements PagerInterface
 {
     public const TYPE_DEFAULT = 'default';
     public const TYPE_SIMPLE = 'simple';
@@ -117,6 +116,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * @var ProxyQueryInterface|null
+     *
+     * @phpstan-var T|null
      */
     protected $query;
 
@@ -224,17 +225,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     public function haveToPaginate(): bool
     {
-        // NEXT_MAJOR: remove the existence check and just use $pager->countResults() without casting to int
-        if (method_exists($this, 'countResults')) {
-            $countResults = (int) $this->countResults();
-        } else {
-            @trigger_error(sprintf(
-                'Not implementing "%s::countResults()" is deprecated since sonata-project/admin-bundle 3.86 and will fail in 4.0.',
-                'Sonata\AdminBundle\Datagrid\PagerInterface'
-            ), E_USER_DEPRECATED);
-
-            $countResults = (int) $this->getNbResults();
-        }
+        $countResults = $this->countResults();
 
         return $this->getMaxPerPage() && $countResults > $this->getMaxPerPage();
     }
@@ -778,6 +769,9 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         $this->query = $query;
     }
 
+    /**
+     * @phpstan-return T|null $query
+     */
     public function getQuery(): ?ProxyQueryInterface
     {
         return $this->query;
@@ -831,7 +825,14 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
             ), E_USER_DEPRECATED);
         }
 
-        $this->results = $this->getResults();
+        $results = $this->getCurrentPageResults();
+
+        if (\is_array($results)) {
+            $this->results = $results;
+        } else {
+            $this->results = iterator_to_array($results);
+        }
+
         $this->resultsCounter = \count($this->results);
     }
 

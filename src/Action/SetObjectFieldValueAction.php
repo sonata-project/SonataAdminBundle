@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Action;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Form\DataTransformerResolverInterface;
-use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
+use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -167,8 +167,8 @@ final class SetObjectFieldValueAction
 
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
-        $extension = $this->twig->getExtension(SonataAdminExtension::class);
-        \assert($extension instanceof SonataAdminExtension);
+        $extension = $this->twig->getExtension(RenderElementExtension::class);
+        \assert($extension instanceof RenderElementExtension);
 
         $content = $extension->renderListElement($this->twig, $rootObject, $fieldDescription);
 

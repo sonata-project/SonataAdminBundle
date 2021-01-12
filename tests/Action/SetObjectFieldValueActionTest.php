@@ -21,7 +21,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Form\DataTransformerResolver;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
-use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
+use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +31,6 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 
@@ -120,7 +119,6 @@ final class SetObjectFieldValueActionTest extends TestCase
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
-        $translator = $this->createStub(TranslatorInterface::class);
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
         $container = new Container();
 
@@ -132,11 +130,9 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->expects($this->once())->method('update')->with($object);
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $container->set('sonata.post.admin.template_registry', $templateRegistry);
-        $this->twig->addExtension(new SonataAdminExtension(
-            new Pool(new Container()),
-            $translator,
-            $container,
+        $this->twig->addExtension(new RenderElementExtension(
             $this->propertyAccessor,
+            $container,
             null
         ));
         $fieldDescription->method('getOption')->willReturnMap([
@@ -184,7 +180,6 @@ final class SetObjectFieldValueActionTest extends TestCase
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
-        $translator = $this->createStub(TranslatorInterface::class);
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
         $container = new Container();
 
@@ -197,11 +192,9 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $container->set('sonata.post.admin.template_registry', $templateRegistry);
-        $this->twig->addExtension(new SonataAdminExtension(
-            new Pool(new Container()),
-            $translator,
-            $container,
+        $this->twig->addExtension(new RenderElementExtension(
             $this->propertyAccessor,
+            $container,
             null
         ));
         $fieldDescription->method('getOption')->willReturnMap([
@@ -241,7 +234,6 @@ final class SetObjectFieldValueActionTest extends TestCase
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
-        $translator = $this->createStub(TranslatorInterface::class);
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
         $container = new Container();
 
@@ -254,11 +246,9 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->expects($this->once())->method('update')->with($object);
         $container->set('sonata.post.admin.template_registry', $templateRegistry);
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
-        $this->twig->addExtension(new SonataAdminExtension(
-            $this->pool,
-            $translator,
-            $container,
+        $this->twig->addExtension(new RenderElementExtension(
             $this->propertyAccessor,
+            $container,
             null
         ));
         $fieldDescription->method('getType')->willReturn('choice');
@@ -328,7 +318,6 @@ final class SetObjectFieldValueActionTest extends TestCase
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
-        $translator = $this->createStub(TranslatorInterface::class);
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
         $container = new Container();
 
@@ -340,11 +329,9 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->expects($this->once())->method('update')->with($object);
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $container->set('sonata.post.admin.template_registry', $templateRegistry);
-        $this->twig->addExtension(new SonataAdminExtension(
-            new Pool(new Container()),
-            $translator,
-            $container,
+        $this->twig->addExtension(new RenderElementExtension(
             $this->propertyAccessor,
+            $container,
             null
         ));
         $fieldDescription->method('getOption')->willReturnMap([
@@ -383,7 +370,6 @@ final class SetObjectFieldValueActionTest extends TestCase
         });
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
-        $translator = $this->createStub(TranslatorInterface::class);
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
         $container = new Container();
 
@@ -395,11 +381,9 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->expects($this->once())->method('update')->with($object);
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $container->set('sonata.post.admin.template_registry', $templateRegistry);
-        $this->twig->addExtension(new SonataAdminExtension(
-            new Pool(new Container()),
-            $translator,
-            $container,
+        $this->twig->addExtension(new RenderElementExtension(
             $this->propertyAccessor,
+            $container,
             null
         ));
         $fieldDescription->method('getOption')->willReturnMap([
@@ -440,7 +424,6 @@ final class SetObjectFieldValueActionTest extends TestCase
         });
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
-        $translator = $this->createStub(TranslatorInterface::class);
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
         $container = new Container();
 
@@ -452,11 +435,9 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->expects($this->once())->method('update')->with($object);
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $container->set('sonata.post.admin.template_registry', $templateRegistry);
-        $this->twig->addExtension(new SonataAdminExtension(
-            new Pool(new Container()),
-            $translator,
-            $container,
+        $this->twig->addExtension(new RenderElementExtension(
             $this->propertyAccessor,
+            $container,
             null
         ));
         $fieldDescription->method('getOption')->willReturnMap([

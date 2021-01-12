@@ -106,7 +106,9 @@ final class SearchAction
             $request->get('page'),
             $request->get('offset')
         )) {
-            foreach ($pager->getResults() as $result) {
+            $pageResults = $pager->getCurrentPageResults();
+
+            foreach ($pageResults as $result) {
                 $results[] = [
                     'label' => $admin->toString($result),
                     'link' => $admin->getSearchResultLink($result),
@@ -114,17 +116,7 @@ final class SearchAction
                 ];
             }
             $page = (int) $pager->getPage();
-
-            // NEXT_MAJOR: remove the existence check and just use $pager->countResults() without casting to int
-            if (method_exists($pager, 'countResults')) {
-                $total = (int) $pager->countResults();
-            } else {
-                @trigger_error(sprintf(
-                    'Not implementing "%s::countResults()" is deprecated since sonata-project/admin-bundle 3.86 and will fail in 4.0.',
-                    'Sonata\AdminBundle\Datagrid\PagerInterface'
-                ), E_USER_DEPRECATED);
-                $total = (int) $pager->getNbResults();
-            }
+            $total = $pager->countResults();
         }
 
         $response = new JsonResponse([

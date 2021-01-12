@@ -28,9 +28,9 @@ interface DatagridInterface
     public function getQuery(): ProxyQueryInterface;
 
     /**
-     * @return object[]
+     * @return iterable<object>
      */
-    public function getResults(): array;
+    public function getResults(): iterable;
 
     public function buildPager(): void;
 

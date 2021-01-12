@@ -21,6 +21,7 @@ use Symfony\Bundle\MakerBundle\DependencyBuilder;
 use Symfony\Bundle\MakerBundle\Generator;
 use Symfony\Bundle\MakerBundle\InputConfiguration;
 use Symfony\Bundle\MakerBundle\Maker\AbstractMaker;
+use Symfony\Bundle\MakerBundle\Str;
 use Symfony\Bundle\MakerBundle\Util\ClassNameDetails;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -79,13 +80,19 @@ final class AdminMaker extends AbstractMaker
     private $modelManager;
 
     /**
+     * @var string
+     */
+    private $defaultController;
+
+    /**
      * @param array<string, ModelManagerInterface> $modelManagers
      */
-    public function __construct(string $projectDirectory, array $modelManagers = [])
+    public function __construct(string $projectDirectory, string $defaultController, array $modelManagers = [])
     {
         $this->projectDirectory = $projectDirectory;
         $this->availableModelManagers = $modelManagers;
         $this->skeletonDirectory = sprintf('%s/../Resources/skeleton', __DIR__);
+        $this->defaultController = $defaultController;
     }
 
     public static function getCommandName(): string
@@ -244,7 +251,10 @@ final class AdminMaker extends AbstractMaker
         $generator->generateClass(
             $controllerClassFullName,
             sprintf('%s/AdminController.tpl.php', $this->skeletonDirectory),
-            []
+            [
+                'default_controller' => $this->defaultController,
+                'default_controller_short_name' => Str::getShortClassName($this->defaultController),
+            ]
         );
         $generator->writeChanges();
         $io->writeln(sprintf(

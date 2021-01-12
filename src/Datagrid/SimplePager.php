@@ -22,7 +22,7 @@ use Doctrine\Common\Collections\Collection;
 final class SimplePager extends Pager
 {
     /**
-     * @var object[]|null
+     * @var iterable<object>|null
      */
     protected $results;
 
@@ -39,7 +39,7 @@ final class SimplePager extends Pager
     private $threshold;
 
     /**
-     * thresholdCount is null prior to its initialization in `getResults()`.
+     * thresholdCount is null prior to its initialization in `getCurrentPageResults()`.
      *
      * @var int|null
      */
@@ -78,12 +78,50 @@ final class SimplePager extends Pager
         return $this->countResults();
     }
 
-    public function getResults(?int $hydrationMode = null): array
+    public function getCurrentPageResults(): iterable
     {
-        if ($this->results) {
+        if (null !== $this->results) {
             return $this->results;
         }
 
+        /** @var array<object>|Collection<array-key, object> $results */
+        $results = $this->getQuery()->execute();
+
+        // doctrine/phpcr-odm returns ArrayCollection
+        if ($results instanceof Collection) {
+            $results = $results->toArray();
+        }
+
+        $this->thresholdCount = \count($results);
+
+        if (\count($results) > $this->getMaxPerPage()) {
+            $this->haveToPaginate = true;
+            $this->results = \array_slice($results, 0, $this->getMaxPerPage());
+        } else {
+            $this->haveToPaginate = false;
+            $this->results = $results;
+        }
+
+        return $this->results;
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.87. To be removed in 4.0. Use getCurrentPageResults() instead.
+     */
+    public function getResults(?int $hydrationMode = null): iterable
+    {
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0. Use getCurrentPageResults() instead.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
+        if (null !== $this->results) {
+            return $this->results;
+        }
+
+        /** @var array<object>|Collection<array-key, object> $results */
         $results = $this->getQuery()->execute([], $hydrationMode);
 
         // doctrine/phpcr-odm returns ArrayCollection
@@ -137,7 +175,7 @@ final class SimplePager extends Pager
 
             // NEXT_MAJOR: Remove this line and uncomment the following one instead.
             $this->initializeIterator('sonata_deprecation_mute');
-//            $this->results = $this->getResults();
+//            $this->results = $this->getCurrentPageResults();
 
             $t = (int) ceil($this->thresholdCount / $this->getMaxPerPage()) + $this->getPage() - 1;
             $this->setLastPage(max(1, $t));

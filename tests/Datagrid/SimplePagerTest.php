@@ -124,10 +124,9 @@ class SimplePagerTest extends TestCase
         $this->pager->init();
     }
 
-    public function testGetResultsAlwaysReturnsAnArray(): void
+    public function testGetCurrentPageResultsAlwaysReturnsAnArray(): void
     {
         // phpcr odm returns ArrayCollection
-
         $this->proxyQuery->expects($this->once())
             ->method('execute')
             ->with([], null)
@@ -136,6 +135,6 @@ class SimplePagerTest extends TestCase
         $this->pager->setQuery($this->proxyQuery);
         $this->pager->setMaxPerPage(2);
 
-        $this->assertSame(range(0, 1), $this->pager->getResults());
+        $this->assertSame(range(0, 1), $this->pager->getCurrentPageResults());
     }
 }

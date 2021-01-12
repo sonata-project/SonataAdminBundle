@@ -17,9 +17,11 @@ use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Knp\Menu\Silex\RouterAwareFactory;
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\Route\RoutesCache;
+use Sonata\AdminBundle\Tests\Fixtures\Controller\FooAdminController;
 use Sonata\BlockBundle\DependencyInjection\SonataBlockExtension;
 use Sonata\DoctrinePHPCRAdminBundle\Route\PathInfoBuilderSlashes;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -559,14 +561,32 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $definition = $container->getDefinition('sonata_post_one_admin');
         $this->assertSame('sonata_post_one_admin', $definition->getArgument(0));
         $this->assertSame(Post::class, $definition->getArgument(1));
-        $this->assertSame('sonata.admin.controller.crud', $definition->getArgument(2));
+        $this->assertSame(CRUDController::class, $definition->getArgument(2));
         $this->assertSame('extra_argument_1', $definition->getArgument(3));
 
         $definition = $container->getDefinition('sonata_post_two_admin');
         $this->assertSame('sonata_post_two_admin', $definition->getArgument(0));
         $this->assertSame(Post::class, $definition->getArgument(1));
-        $this->assertSame('sonata.admin.controller.crud', $definition->getArgument(2));
+        $this->assertSame(CRUDController::class, $definition->getArgument(2));
         $this->assertSame('extra_argument_2', $definition->getArgument(3));
+    }
+
+    public function testDefaultControllerCanBeChanged(): void
+    {
+        $container = $this->getContainer();
+
+        $config = $this->config;
+        $config['default_controller'] = FooAdminController::class;
+
+        $this->extension->load([$config], $container);
+
+        $compilerPass = new AddDependencyCallsCompilerPass();
+
+        $compilerPass->process($container);
+        $container->compile();
+
+        $definition = $container->getDefinition('sonata_without_controller');
+        $this->assertSame(FooAdminController::class, $definition->getArgument(2));
     }
 
     /**
@@ -758,6 +778,11 @@ class AddDependencyCallsCompilerPassTest extends TestCase
             ->setClass(MockAdmin::class)
             ->setArguments(['', ReportTwo::class, 'sonata.admin.controller.crud'])
             ->addTag('sonata.admin', ['group' => 'sonata_report_two_group', 'manager_type' => 'orm', 'show_mosaic_button' => true]);
+        $container
+            ->register('sonata_without_controller')
+            ->setClass(MockAdmin::class)
+            ->setArguments(['', ReportTwo::class, ''])
+            ->addTag('sonata.admin', ['group' => 'sonata_report_two_group', 'manager_type' => 'orm']);
 
         // translator
         $container

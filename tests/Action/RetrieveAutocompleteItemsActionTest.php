@@ -21,7 +21,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
-use Sonata\AdminBundle\Datagrid\Pager;
+use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
 use Symfony\Component\DependencyInjection\Container;
@@ -237,7 +237,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $targetAdmin = $this->createMock(AbstractAdmin::class);
         $datagrid = $this->createStub(DatagridInterface::class);
         $metadata = $this->createStub(MetadataInterface::class);
-        $pager = $this->createStub(Pager::class);
+        $pager = $this->createStub(PagerInterface::class);
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getNewInstance')->willReturn($model);
@@ -254,7 +254,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $metadata->method('getTitle')->willReturn('FOO');
 
         $datagrid->method('getPager')->willReturn($pager);
-        $pager->method('getResults')->willReturn([$model]);
+        $pager->method('getCurrentPageResults')->willReturn([$model]);
         $pager->method('isLastPage')->willReturn(true);
         $fieldDescription->method('getTargetModel')->willReturn(Foo::class);
         $fieldDescription->method('getName')->willReturn('barField');

@@ -15,6 +15,8 @@ namespace Sonata\AdminBundle\Datagrid;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of ProxyQueryInterface
  */
 interface PagerInterface
 {
@@ -55,8 +57,14 @@ interface PagerInterface
 
     public function isLastPage(): bool;
 
+    /**
+     * @phpstan-return T|null
+     */
     public function getQuery(): ?ProxyQueryInterface;
 
+    /**
+     * @phpstan-param T $query
+     */
     public function setQuery(ProxyQueryInterface $query): void;
 
     /**
@@ -65,18 +73,13 @@ interface PagerInterface
     public function haveToPaginate(): bool;
 
     /**
-     * Returns an array of results on the given page.
+     * Returns a collection of results on the given page.
      *
-     * @return object[]
+     * @return iterable<object>
      */
-    public function getResults(): array;
+    public function getCurrentPageResults(): iterable;
 
     public function countResults(): int;
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     */
-    public function getNbResults(): int;
 
     /**
      * Returns an array of page numbers to use in pagination links.

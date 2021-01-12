@@ -73,7 +73,7 @@ final class Datagrid implements DatagridInterface
     /**
      * Results are null prior to its initialization in `getResults()`.
      *
-     * @var object[]|null
+     * @var iterable<object>|null
      */
     private $results;
 
@@ -99,12 +99,12 @@ final class Datagrid implements DatagridInterface
         return $this->pager;
     }
 
-    public function getResults(): array
+    public function getResults(): iterable
     {
         $this->buildPager();
 
         if (null === $this->results) {
-            $this->results = $this->pager->getResults();
+            $this->results = $this->pager->getCurrentPageResults();
         }
 
         return $this->results;
@@ -116,7 +116,7 @@ final class Datagrid implements DatagridInterface
             return;
         }
 
-        foreach ($this->getFilters() as $name => $filter) {
+        foreach ($this->getFilters() as $filter) {
             [$type, $options] = $filter->getRenderSettings();
 
             $this->formBuilder->add($filter->getFormName(), $type, $options);
@@ -214,7 +214,7 @@ final class Datagrid implements DatagridInterface
 
     public function hasActiveFilters(): bool
     {
-        foreach ($this->filters as $name => $filter) {
+        foreach ($this->filters as $filter) {
             if ($filter->isActive()) {
                 return true;
             }
@@ -225,7 +225,7 @@ final class Datagrid implements DatagridInterface
 
     public function hasDisplayableFilters(): bool
     {
-        foreach ($this->filters as $name => $filter) {
+        foreach ($this->filters as $filter) {
             $showFilter = $filter->getOption('show_filter', null);
             if (($filter->isActive() && null === $showFilter) || (true === $showFilter)) {
                 return true;

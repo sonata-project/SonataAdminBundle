@@ -323,7 +323,7 @@ class DatagridTest extends TestCase
     public function testGetResults(): void
     {
         $this->pager->expects($this->once())
-            ->method('getResults')
+            ->method('getCurrentPageResults')
             ->willReturn(['foo', 'bar']);
 
         $this->assertSame(['foo', 'bar'], $this->datagrid->getResults());
@@ -332,7 +332,7 @@ class DatagridTest extends TestCase
     public function testEmptyResults(): void
     {
         $this->pager->expects($this->once())
-            ->method('getResults')
+            ->method('getCurrentPageResults')
             ->willReturn([]);
 
         $this->assertSame([], $this->datagrid->getResults());
