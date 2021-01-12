@@ -20,6 +20,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Bar;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\DataMapperInterface;
@@ -29,27 +30,55 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PropertyAccess\PropertyAccessorBuilder;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class AdminHelperTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     /**
      * @var AdminHelper
      */
     protected $helper;
 
+    /**
+     * @var PropertyAccessor
+     */
+    private $propertyAccessor;
+
     protected function setUp(): void
     {
-        $container = new Container();
+        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $this->helper = new AdminHelper($this->propertyAccessor);
+    }
 
-        $pool = new Pool($container, 'title', 'logo.png');
-        $this->helper = new AdminHelper($pool);
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
+    public function testDeprecatedConstructingWithoutPropertyAccessor(): void
+    {
+        $pool = new Pool(new Container());
+
+        $this->expectDeprecation(sprintf(
+            'Passing an instance of "%s" as argument 1 for "%s::__construct()" is deprecated since'
+            .' sonata-project/admin-bundle 3.82 and will throw a \TypeError error in version 4.0. You MUST pass an instance'
+            .' of %s instead.',
+            Pool::class,
+            AdminHelper::class,
+            PropertyAccessorInterface::class
+        ));
+
+        new AdminHelper($pool);
     }
 
     public function testGetChildFormBuilder(): void
     {
-        $formFactory = $this->createMock(FormFactoryInterface::class);
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $formFactory = $this->createStub(FormFactoryInterface::class);
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
 
         $formBuilder = new FormBuilder('test', \stdClass::class, $eventDispatcher, $formFactory);
 
@@ -58,6 +87,21 @@ class AdminHelperTest extends TestCase
 
         $this->assertNull($this->helper->getChildFormBuilder($formBuilder, 'foo'));
         $this->assertInstanceOf(FormBuilder::class, $this->helper->getChildFormBuilder($formBuilder, 'test_elementId'));
+    }
+
+    public function testGetGrandChildFormBuilder(): void
+    {
+        $formFactory = $this->createStub(FormFactoryInterface::class);
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
+
+        $formBuilder = new FormBuilder('parent', \stdClass::class, $eventDispatcher, $formFactory);
+        $childFormBuilder = new FormBuilder('child', \stdClass::class, $eventDispatcher, $formFactory);
+        $grandchildFormBuilder = new FormBuilder('grandchild', \stdClass::class, $eventDispatcher, $formFactory);
+
+        $formBuilder->add($childFormBuilder);
+        $childFormBuilder->add($grandchildFormBuilder);
+
+        $this->assertInstanceOf(FormBuilder::class, $this->helper->getChildFormBuilder($formBuilder, 'parent_child_grandchild'));
     }
 
     public function testGetChildFormView(): void
@@ -189,14 +233,9 @@ class AdminHelperTest extends TestCase
 
     public function testAppendFormFieldElement(): void
     {
-        $container = new Container();
+        $helper = new AdminHelper($this->propertyAccessor);
 
-        $propertyAccessorBuilder = new PropertyAccessorBuilder();
-        $propertyAccessor = $propertyAccessorBuilder->getPropertyAccessor();
-        $pool = new Pool($container, 'title', 'logo.png', [], $propertyAccessor);
-        $helper = new AdminHelper($pool);
-
-        $admin = $this->createMock(AdminInterface::class);
+        $admin = $this->createStub(AdminInterface::class);
         $admin
             ->method('getClass')
             ->willReturn(Foo::class);
@@ -213,7 +252,7 @@ class AdminHelperTest extends TestCase
             'isOwningSide' => false,
         ];
 
-        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
+        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
         $fieldDescription->method('getAssociationAdmin')->willReturn($associationAdmin);
         $fieldDescription->method('getAssociationMapping')->willReturn($associationMapping);
         $fieldDescription->method('getParentAssociationMappings')->willReturn([]);
@@ -228,7 +267,7 @@ class AdminHelperTest extends TestCase
                 'bar' => $fieldDescription,
             ]);
 
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
         $request
             ->method('get')
             ->willReturn([
@@ -246,7 +285,7 @@ class AdminHelperTest extends TestCase
 
         $admin
             ->method('getRequest')
-            ->will($this->onConsecutiveCalls($request, $request, $request, null, $request, $request, $request, $request, null, $request));
+            ->willReturnOnConsecutiveCalls($request, $request, $request, null, $request, $request, $request, $request, null, $request);
 
         $foo = $this->createMock(Foo::class);
         $admin
@@ -264,9 +303,9 @@ class AdminHelperTest extends TestCase
 
         $foo->expects($this->atLeastOnce())->method('addBar')->with($bar);
 
-        $dataMapper = $this->createMock(DataMapperInterface::class);
-        $formFactory = $this->createMock(FormFactoryInterface::class);
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $dataMapper = $this->createStub(DataMapperInterface::class);
+        $formFactory = $this->createStub(FormFactoryInterface::class);
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
         $formBuilder = new FormBuilder('test', \get_class($foo), $eventDispatcher, $formFactory);
         $childFormBuilder = new FormBuilder('bar', \stdClass::class, $eventDispatcher, $formFactory);
         $childFormBuilder->setCompound(true);
@@ -304,21 +343,21 @@ class AdminHelperTest extends TestCase
     {
         $admin = $this->createMock(AdminInterface::class);
         $object = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['getSubObject'])
+            ->addMethods(['getSubObject'])
             ->getMock();
 
         $subObject = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['getAnd'])
+            ->addMethods(['getAnd'])
             ->getMock();
         $sub2Object = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['getMore'])
+            ->addMethods(['getMore'])
             ->getMock();
         $sub3Object = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['getFinalData'])
+            ->addMethods(['getFinalData'])
             ->getMock();
-        $dataMapper = $this->createMock(DataMapperInterface::class);
-        $formFactory = $this->createMock(FormFactoryInterface::class);
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $dataMapper = $this->createStub(DataMapperInterface::class);
+        $formFactory = $this->createStub(FormFactoryInterface::class);
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
         $formBuilder = new FormBuilder('test', \get_class($object), $eventDispatcher, $formFactory);
         $childFormBuilder = new FormBuilder('subObject', \get_class($subObject), $eventDispatcher, $formFactory);
 

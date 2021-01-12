@@ -9,7 +9,7 @@
 {% block item %}
     {%- if item.displayed -%}
         {#- check role of the group #}
-        {%- set display = item.extra('roles') is empty or is_granted(sonata_admin.adminPool.getOption('role_super_admin')) or item.extra('roles')|filter(role => is_granted(role))|length > 0 -%}
+        {%- set display = item.extra('roles') is empty or is_granted(sonata_config.getOption('role_super_admin')) or item.extra('roles')|filter(role => is_granted(role))|length > 0 -%}
     {%- endif -%}
 
     {%- if item.displayed and display|default -%}
@@ -52,11 +52,13 @@
         {%- if is_link|default(false) -%}
             {{ icon|default|raw }}
         {%- endif -%}
+        {# We use method accessor instead of ".label" since `item` implements `ArrayAccess` and could have a property called "label". #}
+        {%- set item_label = item.getLabel() -%}
         {%- if options.allow_safe_labels and item.extra('safe_label', false) -%}
-            {{ item.label|raw }}
+            {{ item_label|raw }}
         {%- else -%}
             {%- set translation_domain = item.extra('label_catalogue', 'messages') -%}
-            {{ item.label|trans(item.extra('label_translation_parameters', {}), translation_domain) }}
+            {{ item_label|trans(item.extra('label_translation_parameters', {}), translation_domain) }}
         {%- endif -%}
     {% endapply %}
 {% endblock %}

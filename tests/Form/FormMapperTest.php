@@ -57,6 +57,7 @@ class FormMapperTest extends TestCase
     protected function setUp(): void
     {
         $this->contractor = $this->createMock(FormContractorInterface::class);
+        $this->contractor->method('getDefaultOptions')->willReturn([]);
 
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
@@ -95,8 +96,7 @@ class FormMapperTest extends TestCase
         $this->modelManager
             ->method('getNewFieldDescriptionInstance')
             ->willReturnCallback(function (string $class, string $name, array $options = []): BaseFieldDescription {
-                $fieldDescription = $this->getFieldDescriptionMock();
-                $fieldDescription->setName($name);
+                $fieldDescription = $this->getFieldDescriptionMock($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
@@ -494,6 +494,16 @@ class FormMapperTest extends TestCase
         $this->assertSame([], $this->admin->getFormTabs());
     }
 
+    public function testTabRemoving(): void
+    {
+        $this->formMapper->tab('mytab')->with('foobar');
+
+        $this->formMapper->removeTab('mytab');
+
+        $this->assertSame([], $this->admin->getFormGroups());
+        $this->assertSame([], $this->admin->getFormTabs());
+    }
+
     public function testKeys(): void
     {
         $this->contractor
@@ -527,11 +537,14 @@ class FormMapperTest extends TestCase
         $this->formMapper->add('bar', 'bar');
 
         $this->assertTrue($this->formMapper->has('bar'));
+        $this->assertTrue($this->admin->hasFormFieldDescription('bar'));
 
         $this->formMapper->add('quux', 'bar', [], ['role' => 'ROLE_QUX']);
 
         $this->assertTrue($this->formMapper->has('bar'));
         $this->assertFalse($this->formMapper->has('quux'));
+
+        $this->formMapper->end(); // Close default
 
         $this->formMapper
             ->with('qux')
@@ -541,21 +554,23 @@ class FormMapperTest extends TestCase
             ->end();
 
         $this->assertArrayHasKey('qux', $this->admin->getFormGroups());
+
         $this->assertTrue($this->formMapper->has('foobar'));
+        $this->assertTrue($this->admin->hasFormFieldDescription('foobar'));
+
         $this->assertFalse($this->formMapper->has('foo'));
+        $this->assertFalse($this->admin->hasFormFieldDescription('foo'));
+
         $this->assertTrue($this->formMapper->has('baz'));
+        $this->assertTrue($this->admin->hasFormFieldDescription('baz'));
     }
 
     private function getFieldDescriptionMock(
-        ?string $name = null,
+        string $name,
         ?string $label = null,
         ?string $translationDomain = null
     ): BaseFieldDescription {
-        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class);
-
-        if (null !== $name) {
-            $fieldDescription->setName($name);
-        }
+        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name, []]);
 
         if (null !== $label) {
             $fieldDescription->setOption('label', $label);

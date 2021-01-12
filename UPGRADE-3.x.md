@@ -1,8 +1,426 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.x to 3.x
-=======================
+UPGRADE FROM 3.86 to 3.87
+=========================
+
+### Deprecated `DateOperatorType::TYPE_NULL` and `DateOperatorType::TYPE_NOT_NULL`
+
+We recommend using a specific filter for null values instead.
+
+### Sonata\AdminBundle\Twig\Extension\SonataAdminExtension
+
+- Deprecated `SonataAdminExtension::MOMENT_UNSUPPORTED_LOCALES` constant.
+- Deprecated `SonataAdminExtension::setXEditableTypeMapping()` method.
+- Deprecated `SonataAdminExtension::getXEditableType()` method.
+- Deprecated `SonataAdminExtension::getXEditableChoices()` method.
+- Deprecated `SonataAdminExtension::getCanonicalizedLocaleForMoment()` method in favor of
+  `CanonicalizerExtension::getCanonicalizedLocaleForMoment()`.
+- Deprecated `SonataAdminExtension::getCanonicalizedLocaleForSelect2()` method in favor of
+  `CanonicalizerExtension::getCanonicalizedLocaleForSelect2()`.
+- Deprecated `SonataAdminExtension::isGrantedAffirmative()` method in favor of
+  `SecurityExtension::isGrantedAffirmative()`.
+- Deprecated `SonataAdminExtension::renderListElement()` method in favor of
+  `RenderElementExtension::renderListElement()`.
+- Deprecated `SonataAdminExtension::renderViewElement()` method in favor of
+  `RenderElementExtension::renderViewElement()`.
+- Deprecated `SonataAdminExtension::renderViewElementCompare()` method in favor of
+  `RenderElementExtension::renderViewElementCompare()`.
+- Deprecated `SonataAdminExtension::renderRelationElement()` method in favor of
+  `RenderElementExtension::renderRelationElement()`.
+- Deprecated `SonataAdminExtension::getTemplate()` method.
+- Deprecated `SonataAdminExtension::getTemplateRegistry()` method.
+
+### Sonata\AdminBundle\Datagrid\PagerInterface
+
+Deprecated `getResults()` method in favor of `getCurrentPageResults()`.
+
+UPGRADE FROM 3.85 to 3.86
+=========================
+
+### Sonata\AdminBundle\Datagrid\PagerInterface
+
+Deprecated `getNbResults()` method in favor of `countResults()`.
+
+### Sonata\AdminBundle\Datagrid\Pager and Sonata\AdminBundle\Datagrid\SimplePager
+
+Deprecated `$nbResults` property, `getNbResults()` and `setNbResults()` methods.
+
+### Deprecated `Sonata\AdminBundle\Templating\TemplateRegistryInterface::TYPE_*` constants.
+
+They have been moved to `Sonata\AdminBundle\Admin\FieldDescriptionInterface`.
+
+### Sonata\AdminBundle\Controller\CRUDController
+
+Deprecated `configure()` method for configuring the associated admin, you MUST call `configureAdmin()` method instead.
+
+### Sonata\AdminBundle\Admin\Pool
+
+- `Sonata\AdminBundle\Admin\Pool::setAdminServiceIds()` method has been deprecated. You MUST pass service ids as
+  argument 2 to the constructor.
+- `Sonata\AdminBundle\Admin\Pool::setAdminGroups()` method has been deprecated. You MUST pass admin groups as
+  argument 3 to the constructor.
+- `Sonata\AdminBundle\Admin\Pool::setAdminClasses()` method has been deprecated. You MUST pass admin classes as
+  argument 4 to the constructor.
+
+UPGRADE FROM 3.83 to 3.84
+=========================
+
+### Deprecated `FieldDescriptionInterface::getFieldValue()`
+
+`BaseFieldDescription::getFieldValue()` will become protected.
+
+### `RouteCollection` now implements `RouteCollectionInterface`
+
+In 4.0, `AbstractAdmin::configureRoutes` and `AdminExtensionInterface::configureRoutes` will receive a
+`RouteCollectionInterface` instance instead of a `RouteCollection` instance, you can update your code before ugprading
+to 4.0.
+
+Before:
+```php
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Route\RouteCollection;
+
+final class MyAdmin extends AbstractAdmin
+{
+    protected function configureRoutes(RouteCollection $collection): void
+    {
+        $collection->add('my_route');
+    }
+}
+```
+
+After:
+```php
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
+
+final class MyAdmin extends AbstractAdmin
+{
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
+        $collection->add('my_route');
+    }
+}
+```
+This only will work with PHP >= 7.4, where fully support to contravariance was added.
+
+### Sonata\AdminBundle\Admin\BaseFieldDescription
+
+Method `__construct()` has been updated to receive the field name as argument 6:
+
+```php
+public function __construct(
+    ?string $name = null,
+    array $options = [],
+    array $fieldMapping = [],
+    array $associationMapping = [],
+    array $parentAssociationMappings = [],
+    ?string $fieldName = null
+) {
+```
+
+Deprecated `Sonata\AdminBundle\Admin\BaseFieldDescription::setFieldName()`.
+
+UPGRADE FROM 3.82 to 3.83
+=========================
+
+### Deprecated `admin_pool` parameter in `sonata.admin.dashboard.top` and `sonata.admin.dashboard.bottom` block events.
+
+This parameter will be removed in 4.0. If you are using it, you SHOULD inject `Pool` service instead.
+
+### Deprecated global Twig `sonata_admin` variable
+
+This variable has been deprecated in favor of `sonata_config` variable.
+
+### Sonata\AdminBundle\Twig\GlobalVariables
+
+This class has been deprecated without replacement.
+
+### Sonata\AdminBundle\Model\ModelManagerInterface
+
+Argument 2 of `Sonata\AdminBundle\Model\ModelManagerInterface::createQuery()` method has been removed.
+
+### Sonata\AdminBundle\Admin\Pool
+
+- `Sonata\AdminBundle\Admin\Pool::getTitle()` method has been deprecated.
+  Use `Sonata\AdminBundle\SonataConfiguration::getTitle()` instead.
+- `Sonata\AdminBundle\Admin\Pool::getTitleLogo()` method has been deprecated.
+  Use `Sonata\AdminBundle\SonataConfiguration::getLogo()` instead.
+- `Sonata\AdminBundle\Admin\Pool::getOption()` method has been deprecated.
+  Use `Sonata\AdminBundle\SonataConfiguration::getOption()` instead.
+- `Sonata\AdminBundle\Admin\Pool::getGroups()` method has been deprecated.
+- `Sonata\AdminBundle\Admin\Pool::hasGroup()` method has been deprecated.
+- `Sonata\AdminBundle\Admin\Pool::getAdminsByGroup()` method has been deprecated.
+
+### Sonata\AdminBundle\Filter\Filter
+
+Deprecate `Sonata\AdminBundle\Filter\Filter::setValue()` and `Sonata\AdminBundle\Filter\Filter::getValue()`
+without replacement.
+
+The implementation of the method `Sonata\AdminBundle\Filter\Filter::isActive()` will change from
+```
+public function isActive()
+{
+    $values = $this->value;
+
+    return isset($values['value']) && false !== $values['value'] && '' !== $values['value'];
+}
+```
+to
+```
+public function isActive()
+{
+    return $this->active;
+}
+```
+in next major. Currently we are supporting both properties so you SHOULD start using `$this->active`.
+
+### Sonata\AdminBundle\Admin\FieldDescriptionInterface
+
+The following methods have been deprecated from the interface and will be added as abstract methods to
+`Sonata\AdminBundle\Admin\BaseFieldDescription` in the next major version:
+- `setFieldMapping()`
+- `setAssociationMapping()`
+- `setParentAssociationMappings()`
+- `setMappingType()`
+
+### Sonata\AdminBundle\Admin\BaseFieldDescription
+
+Constructor has been modified to allow 3 more parameters
+(`$fieldMapping`, `$associationMapping` and `$parentAssociationMapping`):
+
+```php
+public function __construct(
+    ?string $name = null,
+    array $options = [],
+    array $fieldMapping = [],
+    array $associationMapping = [],
+    array $parentAssociationMappings = []
+) {
+```
+
+Deprecated `Sonata\AdminBundle\Admin\BaseFieldDescription::setMappingType()`.
+
+### Deprecated `AdminInterface::getValidator()` and  `AdminInterface::setValidator()` methods, `AbstractAdmin::$validator` property.
+
+Methods are deprecated without replacement.
+
+UPGRADE FROM 3.81 to 3.82
+=========================
+
+### Sonata\AdminBundle\Model\ModelManagerInterface
+
+Argument 2 of `Sonata\AdminBundle\Model\ModelManagerInterface::createQuery()` method has been removed.
+
+### Sonata\AdminBundle\Admin\Pool
+
+- Passing a `Symfony\Component\PropertyAccess\PropertyAccessorInterface` instance as 4 argument instantiating
+`Sonata\AdminBundle\Admin\Pool` is deprecated.
+- `Sonata\AdminBundle\Admin\Pool::getPropertyAccessor()` method has been deprecated. You SHOULD inject `Symfony\Component\PropertyAccess\PropertyAccessorInterface`
+where is needed.
+
+### Sonata\AdminBundle\Action\SetObjectFieldValueAction
+
+Not passing a `Symfony\Component\PropertyAccess\PropertyAccessorInterface` instance as argument 5 instantiating
+`Sonata\AdminBundle\Action\SetObjectFieldValueAction` is deprecated.
+
+### Sonata\AdminBundle\Admin\AdminHelper
+
+Not passing a `Symfony\Component\PropertyAccess\PropertyAccessorInterface` instance as argument 1 instantiating
+`Sonata\AdminBundle\Admin\AdminHelper` is deprecated.
+
+### Sonata\AdminBundle\Twig\Extension\SonataAdminExtension
+
+Argument 5 of `Sonata\AdminBundle\Admin\SonataAdminExtension` constructor SHOULD be a
+`Symfony\Component\PropertyAccess\PropertyAccessorInterface` instance and argument 6 SHOULD be a
+`Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface` instance or "null".
+
+UPGRADE FROM 3.80 to 3.81
+=========================
+
+### Sonata\AdminBundle\Block\AdminSearchBlockService
+
+Not passing the `empty_boxes` option as argument 4 to `Sonata\AdminBundle\Block\AdminSearchBlockService()` is deprecated.
+
+### Deprecated `Sonata\AdminBundle\Admin\AdminInterface::validate()` method.
+
+Use `Symfony\Component\Validator\Validation::validate()` instead.
+
+### Deprecated `Sonata\AdminBundle\Admin\AbstractAdmin::attachInlineValidator()` method.
+
+This method has been deprecated without replacement.
+
+### Deprecated `Sonata\AdminBundle\Admin\AdminExtensionInterface::validate()` method.
+
+This method has been deprecated without replacement.
+
+UPGRADE FROM 3.79 to 3.80
+=========================
+
+### Sonata\AdminBundle\Form\Type\Operator\StringOperatorType
+
+Added "Not equal" in the default list for "choices" option in order to allow filtering by strings that are not equal to the model data.
+
+### Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface::modelTransform()`
+
+This method has been deprecated without replacement.
+
+UPGRADE FROM 3.78 to 3.79
+=========================
+
+### Template registry structure and responsibilities.
+
+The `Sonata\AdminBundle\Templating\TemplateRegistry` class has been splitted into 3 classes:
+   - `TemplateRegistry`, implementing `Sonata\AdminBundle\Templating\TemplateRegistryInterface`
+   - `MutableTemplateRegistry`, implementing `Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface`
+   - `AbstractTemplateRegistry`, implementing `Sonata\AdminBundle\Templating\TemplateRegistryInterface`. You MUST extend this class if you want to create your own template registry.
+
+The interface `Sonata\AdminBundle\Templating\TemplateRegistryAwareInterface` was updated in order to handle instances of `TemplateRegistryInterface`.
+The interface `Sonata\AdminBundle\Templating\MutableTemplateRegistryAwareInterface` was added to provide a simple contract for classes depending on a `MutableTemplateRegistryInterface`.
+
+`TemplateRegistry` will stop implementing `MutableTemplateRegistryInterface` in version 4.0. If you are using `setTemplate()` or `setTemplates()` methods, you MUST use `MutableTemplateRegistry` instead.
+
+### Deprecated `Sonata\AdminBundle\Model\DatagridManagerInterface` interface.
+
+This interface has been deprecated without replacement.
+
+`ModelManagerInterface::getDefaultSortValues()` won't be used anymore.
+
+### Empty values in datagrid filters
+
+Empty values are passed to datagrid filters. If you have custom datagrid filters, you MUST add empty string checks to them.
+
+```php
+->add('with_open_comments', CallbackFilter::class, [
+    'callback' => static function (ProxyQueryInterface $query, string $alias, string $field, array $value): bool {
+        if (!$value['value']) {
+            return false;
+        }
+
+        $query
+            ->leftJoin(sprintf('%s.comments', $alias), 'c')
+            ->andWhere('c.moderation = :moderation')
+            ->setParameter('moderation', CommentModeration::APPROVED);
+
+        return true;
+    },
+    'field_type' => CheckboxType::class,
+]);
+```
+
+The `!$value['value']` check is required to avoid the filtering by `''` if you didn't used the filter.
+
+UPGRADE FROM 3.77 to 3.78
+=========================
+
+### Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface::getDataSourceIterator()`
+
+As replacement, you MUST inject an instance of `Sonata\AdminBundle\Exporter\DataSourceInterface` in your admin. This way, the method `DataSourceInterface::createIterator()` will be used instead.
+
+Setting a `DataSourceInterface` instance in your admin will be mandatory in version 4.0.
+
+### Deprecated `Sonata\AdminBundle\Command\Validators::validateEntityName()`
+
+In version 3.77, the shortcut notation for model class names (`AppBundle:User`)
+has been deprecated in favor of its FQCN (`App\Model\User`) when passing `user_model`
+option to `sonata:admin:generate-object-acl` command, so this method SHOULD not
+be called if that deprecation is addressed.
+
+### Deprecated not configuring `acl_user_manager` and using ACL security handler when `friendsofsymfony/user-bundle` is installed.
+
+If you are using `friendsofsymfony/user-bundle` and using ACL security handler, you MUST explicitly configure the `acl_user_manager`.
+
+```yaml
+sonata_admin:
+    security:
+        acl_user_manager: App\Manager\AclFOSUserManager # this service MUST implement "AdminAclUserManagerInterface"
+```
+
+### Deprecated configuring `acl_user_manager` with a service that does not implement `AdminAclUserManagerInterface`.
+
+Given this configuration:
+```yaml
+sonata_admin:
+    security:
+        acl_user_manager: 'App\Manager\AclUserManager'
+```
+
+`App\Manager\AclUserManager` MUST implement `AdminAclUserManagerInterface`, if you are using `fos_user_manager`, this could
+be an example:
+```php
+<?php
+
+namespace App\Manager;
+
+use FOS\UserBundle\Model\UserManagerInterface;
+use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
+
+final class AclUserManager implements AdminAclUserManagerInterface
+{
+    /**
+     * @var UserManagerInterface
+     */
+    private $userManager;
+
+    public function __construct(UserManagerInterface $userManager)
+    {
+        $this->userManager = $userManager;
+    }
+
+    public function findUsers(): iterable
+    {
+        return $this->userManager->findUsers();
+    }
+}
+```
+
+UPGRADE FROM 3.76 to 3.77
+=========================
+
+### Deprecated `Sonata\AdminBundle\Admin\Pool::getContainer()` method.
+
+This method has been deprecated without replacement.
+
+### Deprecated using shortcut notation when specifying the `user_model` option in `sonata:admin:generate-object-acl` command.
+
+The shortcut notation (`AppBundle:User`) has been deprecated in favor of the FQCN (`App\Model\User`) when passing
+`user_model` option to `sonata:admin:generate-object-acl` command.
+
+UPGRADE FROM 3.75 to 3.76
+=========================
+
+## Deprecated `Sonata\AdminBundle\Datagrid\ProxyQueryInterface::getUniqueParameterId()`
+
+This method has been deprecated without replacement.
+
+## Deprecated `Sonata\AdminBundle\Datagrid\ProxyQueryInterface::entityJoin()`
+
+This method has been deprecated without replacement.
+
+UPGRADE FROM 3.74 to 3.75
+=========================
+
+## Deprecated `Sonata\AdminBundle\Controller\CRUDController::getRestMethod()` method
+
+`Sonata\AdminBundle\Controller\CRUDController::getRestMethod()` method is deprecated.
+Use `Symfony\Component\HttpFoundation\Request::getMethod()` instead.
+
+## Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface` collection-related methods.
+
+Use:
+- `new \Doctrine\Common\Collections\ArrayCollection()` instead of `getModelCollectionInstance($class)`
+- `$collection->removeElement($element)` instead of `collectionRemoveElement($collection, $element)`
+- `$collection->add($element)` instead of `collectionAddElement($collection, $element)`
+- `$collection->contains($element)` instead of `collectionHasElement($collection, $element)`
+- `$collection->clear()` instead of `collectionClear($collection)`
+
+UPGRADE FROM 3.73 to 3.74
+=========================
+
+## Deprecated `Sonata\AdminBundle\Datagrid\ProxyQueryInterface::getSingleScalarResult`
+
+Use `Sonata\AdminBundle\Datagrid\ProxyQueryInterface::execute` instead.
 
 ## The following templates have been deprecated
 
@@ -24,8 +442,14 @@ You MUST use Symfony's [`help`](https://symfony.com/doc/4.4/reference/forms/type
 Before:
 ```php
 $formMapper
-    ->add('field', null, [
+    ->add('field', null, [], [
         'help' => 'Help text <small>Please!</small>',
+    ])
+    ->add('field2')
+    ->addHelp('field2', 'This field is required.')
+    ->add('field3')
+    ->setHelps([
+        'field3' => 'Great day to great work!',
     ]);
 ```
 
@@ -35,6 +459,12 @@ $formMapper
     ->add('field', null, [
         'help' => 'Help text <small>Please!</small>',
         'help_html' => true,
+    ])
+    ->add('field2', null, [
+        'help' => 'This field is required.'
+    ])
+    ->add('field3', null, [
+        'help' => 'Great day to great work!'
     ]);
 ```
 
@@ -44,6 +474,10 @@ We added compatibility with SonataBlockBundle 4.0, make sure you are explicitly 
 with `sonata-project/block-bundle` on your composer.json in order to avoid unwanted upgrades.
 
 There is a minimal BC Break on `AdminListBlockService`, `AdminSearchBlockService` and `AdminStatsBlockService`. If you are extending those clases (keep in mind that they will become final on 4.0) you should add return type hints to `execute()` and `configureSettings()`.
+
+## Deprecated passing `callable` that does not return `Symfony\Component\Routing\Route` as `$element` (2nd argument) to `Sonata\AdminBundle\Route\RouteCollection::addElement($code, $element)`
+
+When calling a `Sonata\AdminBundle\Route\RouteCollection::addElement($code, $element)`, please pass `$element` of type `Route|callable():Route`. Passing `callable` that returns non instance of `Route` is deprecated.
 
 UPGRADE FROM 3.72 to 3.73
 =========================

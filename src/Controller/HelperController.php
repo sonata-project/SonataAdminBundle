@@ -20,6 +20,8 @@ use Sonata\AdminBundle\Action\RetrieveFormFieldElementAction;
 use Sonata\AdminBundle\Action\SetObjectFieldValueAction;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Form\DataTransformerResolver;
+use Sonata\AdminBundle\Form\DataTransformerResolverInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -64,9 +66,15 @@ class HelperController
     protected $validator;
 
     /**
-     * @param ValidatorInterface $validator
+     * @var DataTransformerResolver
      */
-    public function __construct(Environment $twig, Pool $pool, AdminHelper $helper, $validator)
+    private $resolver;
+
+    /**
+     * @param ValidatorInterface           $validator
+     * @param DataTransformerResolver|null $resolver
+     */
+    public function __construct(Environment $twig, Pool $pool, AdminHelper $helper, $validator, $resolver = null)
     {
         // NEXT_MAJOR: Move ValidatorInterface check to method signature
         if (!($validator instanceof ValidatorInterface)) {
@@ -77,10 +85,22 @@ class HelperController
             ));
         }
 
+        // NEXT_MAJOR: Move DataTransformerResolver check to method signature
+        if (!$resolver instanceof DataTransformerResolverInterface) {
+            @trigger_error(sprintf(
+                'Passing other type than %s in argument 4 to %s() is deprecated since sonata-project/admin-bundle 3.76 and will throw %s exception in 4.0.',
+                DataTransformerResolverInterface::class,
+                __METHOD__,
+                \TypeError::class
+            ), E_USER_DEPRECATED);
+            $resolver = new DataTransformerResolver();
+        }
+
         $this->twig = $twig;
         $this->pool = $pool;
         $this->helper = $helper;
         $this->validator = $validator;
+        $this->resolver = $resolver;
     }
 
     /**
@@ -124,7 +144,7 @@ class HelperController
      */
     public function setObjectFieldValueAction(Request $request)
     {
-        $action = new SetObjectFieldValueAction($this->twig, $this->pool, $this->validator);
+        $action = new SetObjectFieldValueAction($this->twig, $this->pool, $this->validator, $this->resolver);
 
         return $action($request);
     }

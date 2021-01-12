@@ -46,7 +46,7 @@ class AdminVoter implements VoterInterface
     /**
      * @deprecated since sonata-project/admin-bundle 3.31. Pass a RequestStack to the constructor instead.
      *
-     * @return $this
+     * @return static
      */
     public function setRequest($request)
     {
@@ -61,7 +61,7 @@ class AdminVoter implements VoterInterface
         return $this;
     }
 
-    public function matchItem(ItemInterface $item)
+    public function matchItem(ItemInterface $item): ?bool
     {
         $admin = $item->getExtra('admin');
 

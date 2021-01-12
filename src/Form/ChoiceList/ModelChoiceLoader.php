@@ -17,6 +17,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
+use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface;
 use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -33,23 +34,34 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
     public $identifier;
 
     /**
-     * @var \Sonata\AdminBundle\Model\ModelManagerInterface
+     * @var ModelManagerInterface
      */
     private $modelManager;
 
     /**
      * @var string
+     *
+     * @phpstan-var class-string
      */
     private $class;
 
+    /**
+     * @var string|null
+     */
     private $property;
 
+    /**
+     * @var object|null
+     */
     private $query;
 
+    /**
+     * @var object[]|null
+     */
     private $choices;
 
     /**
-     * @var PropertyPath
+     * @var PropertyPath|null
      */
     private $propertyPath;
 
@@ -58,27 +70,48 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
      */
     private $propertyAccessor;
 
+    /**
+     * @var ChoiceListInterface|null
+     */
     private $choiceList;
 
     /**
-     * @param string      $class
-     * @param string|null $property
-     * @param mixed|null  $query
-     * @param array       $choices
+     * @param string        $class
+     * @param string|null   $property
+     * @param object|null   $query
+     * @param object[]|null $choices
+     *
+     * @phpstan-param class-string $class
      */
     public function __construct(
         ModelManagerInterface $modelManager,
         $class,
         $property = null,
         $query = null,
-        $choices = [],
+        $choices = null,
         ?PropertyAccessorInterface $propertyAccessor = null
     ) {
         $this->modelManager = $modelManager;
         $this->class = $class;
         $this->property = $property;
-        $this->query = $query;
         $this->choices = $choices;
+
+        if ($query) {
+            // NEXT_MAJOR: Remove the method_exists check.
+            if (method_exists($this->modelManager, 'supportsQuery')) {
+                if (!$this->modelManager->supportsQuery($query)) {
+                    // NEXT_MAJOR: Remove the deprecation and uncomment the exception.
+                    @trigger_error(
+                        'Passing a query which is not supported by the model manager is deprecated since'
+                        .' sonata-project/admin-bundle 3.76 and will throw an exception in version 4.0.',
+                        E_USER_DEPRECATED
+                    );
+                    // throw new \InvalidArgumentException('The model manager does not support the query.');
+                }
+            }
+
+            $this->query = $query;
+        }
 
         $this->identifier = $this->modelManager->getIdentifierFieldNames($this->class);
 
@@ -95,14 +128,14 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
         if (!$this->choiceList) {
             if ($this->query) {
                 $entities = $this->modelManager->executeQuery($this->query);
-            } elseif (\is_array($this->choices) && \count($this->choices) > 0) {
+            } elseif (\is_array($this->choices)) {
                 $entities = $this->choices;
             } else {
                 $entities = $this->modelManager->findBy($this->class);
             }
 
             $choices = [];
-            foreach ($entities as $key => $model) {
+            foreach ($entities as $model) {
                 if ($this->propertyPath) {
                     // If the property option was given, use it
                     $valueObject = $this->propertyAccessor->getValue($model, $this->propertyPath);
@@ -157,6 +190,8 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
 
     /**
      * @param object $model
+     *
+     * @return mixed[]
      */
     private function getIdentifierValues($model): array
     {

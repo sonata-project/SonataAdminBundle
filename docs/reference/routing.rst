@@ -281,7 +281,7 @@ Any single registered route can be removed by name::
 Removing all routes except named ones
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you want to disable all default Sonata routes except few whitelisted ones, you can use
+If you want to disable all default Sonata routes except few allowed ones, you can use
 the ``clearExcept()`` method. This method accepts an array of routes you want to keep active::
 
     // src/Admin/MediaAdmin.php

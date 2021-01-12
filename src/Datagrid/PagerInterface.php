@@ -15,6 +15,24 @@ namespace Sonata\AdminBundle\Datagrid;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * NEXT_MAJOR: Remove these comments and uncomment corresponding methods.
+ *
+ * @method int                      getPage()
+ * @method int                      getFirstPage()
+ * @method int                      getLastPage()
+ * @method int                      getNextPage()
+ * @method int                      getPreviousPage()
+ * @method bool                     isFirstPage()
+ * @method bool                     isLastPage()
+ * @method int                      getNbResults()
+ * @method int                      countResults()
+ * @method array                    getLinks(?int $nbLinks = null)
+ * @method bool                     haveToPaginate()
+ * @method ProxyQueryInterface|null getQuery()
+ * @method iterable                 getCurrentPageResults()
+ *
+ * @phpstan-template T of ProxyQueryInterface
  */
 interface PagerInterface
 {
@@ -37,26 +55,84 @@ interface PagerInterface
      */
     public function setMaxPerPage($max);
 
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    public function getPage(): int;
+
     /**
-     * Sets the current page.
-     *
      * @param int $page
      */
     public function setPage($page);
 
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    public function getNextPage(): int;
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    public function getPreviousPage(): int;
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    public function getFirstPage(): int;
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    public function isFirstPage(): bool;
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    public function getLastPage(): int;
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    public function isLastPage(): bool;
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    /**
+//     * @return ProxyQueryInterface|null
+//     *
+//     * @phpstan-return T|null
+//     */
+//    public function getQuery(): ?ProxyQueryInterface;
+
     /**
-     * Set query.
-     *
      * @param ProxyQueryInterface $query
+     *
+     * @phpstan-param T $query
      */
     public function setQuery($query);
 
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    /**
+//     * Returns true if the current query requires pagination.
+//     */
+//    public function haveToPaginate(): bool;
+
     /**
-     * Returns an array of results on the given page.
+     * NEXT_MAJOR: Remove this method.
      *
-     * @return array
+     * @deprecated since sonata-project/admin-bundle 3.87. To be removed in 4.0. Use getCurrentPageResults() instead.
+     *
+     * Returns a collection of results on the given page.
+     *
+     * @return iterable<object>
      */
     public function getResults();
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    /**
+//     * Returns a collection of results on the given page.
+//     *
+//     * @return iterable<object>
+//     */
+//    public function getCurrentPageResults(): iterable;
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    public function countResults(): int;
+
+//    NEXT_MAJOR: uncomment this method 4.0
+//    /**
+//     * Returns an array of page numbers to use in pagination links.
+//     *
+//     * @param int $nbLinks The maximum number of page numbers to return
+//     *
+//     * @return int[]
+//     */
+//    public function getLinks(?int $nbLinks = null): array
 
     /**
      * Sets the maximum number of page numbers.
@@ -71,15 +147,4 @@ interface PagerInterface
      * @return int
      */
     public function getMaxPageLinks();
-
-//    NEXT_MAJOR: uncomment this method in 4.0
-//    /**
-//     * Returns true if on the last page.
-//     *
-//     * @return bool
-//     */
-//    public function isLastPage(): bool;
-
-//    NEXT_MAJOR: uncomment this method in 4.0
-//    public function getNbResults(): int;
 }

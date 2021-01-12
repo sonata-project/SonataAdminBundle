@@ -21,8 +21,9 @@ file that was distributed with this source code.
 {% set _actions = block('actions') is defined ? block('actions')|trim : null %}
 {% set _navbar_title = block('navbar_title') is defined ? block('navbar_title')|trim : null %}
 {% set _list_filters_actions = block('list_filters_actions') is defined ? block('list_filters_actions')|trim : null -%}
-{% set _use_select2 = sonata_admin.adminPool.getOption('use_select2') %}
-{% set _use_icheck = sonata_admin.adminPool.getOption('use_icheck') %}
+{% set _skin = sonata_config.getOption('skin') %}
+{% set _use_select2 = sonata_config.getOption('use_select2') %}
+{% set _use_icheck = sonata_config.getOption('use_icheck') %}
 
 <!DOCTYPE html>
 <html {% block html_attributes %}class="no-js"{% endblock %}>
@@ -35,11 +36,12 @@ file that was distributed with this source code.
 
         <meta data-sonata-admin='{{ {
             config: {
-                CONFIRM_EXIT: sonata_admin.adminPool.getOption('confirm_exit'),
+                SKIN: _skin,
+                CONFIRM_EXIT: sonata_config.getOption('confirm_exit'),
                 USE_SELECT2: _use_select2,
                 USE_ICHECK: _use_icheck,
-                USE_STICKYFORMS: sonata_admin.adminPool.getOption('use_stickyforms'),
-                DEBUG: sonata_admin.adminPool.getOption('js_debug'),
+                USE_STICKYFORMS: sonata_config.getOption('use_stickyforms'),
+                DEBUG: sonata_config.getOption('js_debug'),
             },
             translations: {
                 CONFIRM_EXIT: 'confirm_exit'|trans({}, 'SonataAdminBundle'),
@@ -48,7 +50,7 @@ file that was distributed with this source code.
         >
 
         {% block stylesheets %}
-            {% for stylesheet in sonata_admin.adminPool.getOption('stylesheets', []) %}
+            {% for stylesheet in sonata_config.getOption('stylesheets', []) %}
                 <link rel="stylesheet" href="{{ asset(stylesheet) }}">
             {% endfor %}
         {% endblock %}
@@ -58,7 +60,7 @@ file that was distributed with this source code.
             {% endblock %}
 
             {% block sonata_javascript_pool %}
-                {% for javascript in sonata_admin.adminPool.getOption('javascripts', []) %}
+                {% for javascript in sonata_config.getOption('javascripts', []) %}
                     <script src="{{ asset(javascript) }}"></script>
                 {% endfor %}
             {% endblock %}
@@ -74,7 +76,7 @@ file that was distributed with this source code.
             {% endif %}
 
             {# localize select2 #}
-            {% if sonata_admin.adminPool.getOption('use_select2') %}
+            {% if sonata_config.getOption('use_select2') %}
                 {% set localeForSelect2 = canonicalize_locale_for_select2() %}
                 {% if localeForSelect2 %}
                     <script src="{{ asset('bundles/sonatacore/vendor/select2/select2_locale_' ~ localeForSelect2 ~ '.js') }}"></script>
@@ -98,7 +100,8 @@ file that was distributed with this source code.
                             {% endif %}
 
                             {%- set translation_domain = menu.extra('translation_domain', 'messages') -%}
-                            {%- set label = menu.label -%}
+                            {# We use method accessor instead of ".label" since `menu` implements `ArrayAccess` and could have a property called "label". #}
+                            {%- set label = menu.getLabel() -%}
                             {%- if translation_domain is not same as(false) -%}
                                 {%- set label = label|trans(menu.extra('translation_params', {}), translation_domain) -%}
                             {%- endif -%}
@@ -113,7 +116,7 @@ file that was distributed with this source code.
     </head>
     <body
             {% block body_attributes -%}
-                class="sonata-bc skin-black fixed
+                class="sonata-bc {% block admin_lte_skin_class %}{{ _skin }}{% endblock %} fixed
                 {% if _use_select2 %}sonata-select2{% endif %}
                 {% if _use_icheck %}sonata-icheck{% endif %}
                 {% if app.request.cookies.get('sonata_sidebar_hide') -%}
@@ -136,11 +139,11 @@ file that was distributed with this source code.
                 {% block logo %}
                     {% apply spaceless %}
                         <a class="logo" href="{{ path('sonata_admin_dashboard') }}">
-                            {% if 'single_image' == sonata_admin.adminPool.getOption('title_mode') or 'both' == sonata_admin.adminPool.getOption('title_mode') %}
-                                <img src="{{ asset(sonata_admin.adminPool.titlelogo) }}" alt="{{ sonata_admin.adminPool.title }}">
+                            {% if 'single_image' == sonata_config.getOption('title_mode') or 'both' == sonata_config.getOption('title_mode') %}
+                                <img src="{{ asset(sonata_config.logo) }}" alt="{{ sonata_config.title }}">
                             {% endif %}
-                            {% if 'single_text' == sonata_admin.adminPool.getOption('title_mode') or 'both' == sonata_admin.adminPool.getOption('title_mode') %}
-                                <span>{{ sonata_admin.adminPool.title }}</span>
+                            {% if 'single_text' == sonata_config.getOption('title_mode') or 'both' == sonata_config.getOption('title_mode') %}
+                                <span>{{ sonata_config.title }}</span>
                             {% endif %}
                         </a>
                     {% endapply %}
@@ -161,7 +164,8 @@ file that was distributed with this source code.
                                                 {% if action is defined %}
                                                     {% for menu in breadcrumbs_builder.breadcrumbs(admin, action) %}
                                                         {%- set translation_domain = menu.extra('translation_domain', 'messages') -%}
-                                                        {%- set label = menu.label -%}
+                                                        {# We use method accessor instead of ".label" since `menu` implements `ArrayAccess` and could have a property called "label". #}
+                                                        {%- set label = menu.getLabel() -%}
                                                         {%- if translation_domain is not same as(false) -%}
                                                             {%- set label = label|trans(menu.extra('translation_params', {}), translation_domain) -%}
                                                         {%- endif -%}
@@ -173,15 +177,15 @@ file that was distributed with this source code.
                                                                         {% if menu.extra('safe_label', true) %}
                                                                             {{- label|raw -}}
                                                                         {% else %}
-                                                                            {{- label|u.truncate(100) -}}
+                                                                            {{- label|u.truncate(100, '...') -}}
                                                                         {% endif %}
                                                                     </a>
                                                                 {% else %}
-                                                                    <span>{{ label|u.truncate(100) }}</span>
+                                                                    <span>{{ label|u.truncate(100, '...') }}</span>
                                                                 {% endif %}
                                                             </li>
                                                         {% else %}
-                                                            <li class="active"><span>{{ label|u.truncate(100) }}</span></li>
+                                                            <li class="active"><span>{{ label|u.truncate(100, '...') }}</span></li>
                                                         {% endif %}
                                                     {% endfor %}
                                                 {% endif %}
@@ -195,7 +199,7 @@ file that was distributed with this source code.
                         </div>
 
                         {% block sonata_top_nav_menu %}
-                            {% if app.user and is_granted(sonata_admin.adminPool.getOption('role_admin')) %}
+                            {% if app.user and is_granted(sonata_config.getOption('role_admin')) %}
                                 <div class="navbar-custom-menu">
                                     <ul class="nav navbar-nav">
                                         {% block sonata_top_nav_menu_add_block %}
@@ -231,7 +235,7 @@ file that was distributed with this source code.
                     <section class="sidebar">
                         {% block sonata_side_nav %}
                             {% block sonata_sidebar_search %}
-                                {% if sonata_admin.adminPool.getOption('search') %}
+                                {% if sonata_config.getOption('search') %}
                                     <form action="{{ path('sonata_admin_search') }}" method="GET" class="sidebar-form" role="search">
                                         <div class="input-group custom-search-form">
                                             <input type="text" name="q" value="{{ app.request.get('q') }}" class="form-control" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
@@ -365,7 +369,7 @@ file that was distributed with this source code.
         {% endblock sonata_wrapper %}
     </div>
 
-    {% if sonata_admin.adminPool.getOption('use_bootlint') %}
+    {% if sonata_config.getOption('use_bootlint') %}
         {% block bootlint %}
             {# Bootlint - https://github.com/twbs/bootlint#in-the-browser #}
             <script type="text/javascript">

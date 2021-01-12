@@ -70,6 +70,7 @@ Full Configuration Options
             title: 'Sonata Admin'
             title_logo: bundles/sonataadmin/logo_title.png
             search: true
+            default_controller: Sonata\AdminBundle\Controller\CRUDController
             options:
                 html5_validate: true
 
@@ -77,6 +78,7 @@ Full Configuration Options
                 sort_admins: false
                 confirm_exit: true
                 js_debug: false
+                skin: 'skin-black'
                 use_select2: true
                 use_icheck: true
                 use_bootlint: false
@@ -119,6 +121,7 @@ Full Configuration Options
                     class: col-md-4
             admin_services:
                 model_manager: null
+                data_source: null
                 form_contractor: null
                 show_builder: null
                 list_builder: null
@@ -181,7 +184,6 @@ Full Configuration Options
                     - bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css
                     - bundles/sonatacore/vendor/ionicons/css/ionicons.min.css
                     - bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css
-                    - bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css
                     - bundles/sonataadmin/vendor/iCheck/skins/square/blue.css
                     - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css
                     - bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css
@@ -234,6 +236,7 @@ Full Configuration Options
 
                 # Prototype
                 id:
+                    global: false
                     admins: []
                     excludes: []
                     implements: []

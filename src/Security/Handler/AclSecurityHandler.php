@@ -165,6 +165,8 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     {
         try {
             $acl = $this->aclProvider->findAcl($objectIdentity);
+            // todo - remove `assert` statement after https://github.com/phpstan/phpstan-symfony/pull/92 is released
+            \assert($acl instanceof MutableAclInterface);
         } catch (AclNotFoundException $e) {
             return null;
         }
@@ -187,6 +189,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
 
     public function addObjectOwner(AclInterface $acl, ?UserSecurityIdentity $securityIdentity = null)
     {
+        // NEXT_MAJOR: remove `if` condition
         if (!$acl instanceof MutableAclInterface) {
             throw new \TypeError(sprintf(
                 'Argument 1 passed to "%s()" must implement "%s".',
@@ -202,6 +205,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
 
     public function addObjectClassAces(AclInterface $acl, array $roleInformation = [])
     {
+        // NEXT_MAJOR: remove `assert` statement
         \assert($acl instanceof MutableAclInterface);
         $builder = new $this->maskBuilderClass();
 
@@ -238,6 +242,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
 
     public function updateAcl(AclInterface $acl)
     {
+        // NEXT_MAJOR: remove `assert` statement
         \assert($acl instanceof MutableAclInterface);
         $this->aclProvider->updateAcl($acl);
     }

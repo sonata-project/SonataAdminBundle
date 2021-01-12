@@ -41,11 +41,7 @@ final class ModelManager implements ModelManagerInterface
             $options['route']['parameters'] = [];
         }
 
-        $fieldDescription = new FieldDescription();
-        $fieldDescription->setName($name);
-        $fieldDescription->setOptions($options);
-
-        return $fieldDescription;
+        return new FieldDescription($name, $options);
     }
 
     public function create($object): void
@@ -124,37 +120,64 @@ final class ModelManager implements ModelManagerInterface
         }
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function getModelCollectionInstance($class)
     {
         return [];
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function collectionRemoveElement(&$collection, &$element): void
     {
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function collectionAddElement(&$collection, &$element): void
     {
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function collectionHasElement(&$collection, &$element): void
     {
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function collectionClear(&$collection): void
     {
     }
 
+    // NEXT_MAJOR: Remove this method.
     public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid)
     {
+        @trigger_error(sprintf(
+            'Method %s() is deprecated since sonata-project/admin-bundle 3.66. To be removed in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         return [];
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function getDefaultSortValues($class)
     {
         return [];
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function getDefaultPerPageOptions(string $class): array
     {
         return [];
@@ -165,9 +188,17 @@ final class ModelManager implements ModelManagerInterface
         throw new \BadMethodCallException('Not implemented.');
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function modelTransform($class, $instance): object
     {
         throw new \BadMethodCallException('Not implemented.');
+    }
+
+    public function supportsQuery(object $query): bool
+    {
+        return true;
     }
 
     public function executeQuery($query): void
@@ -183,8 +214,14 @@ final class ModelManager implements ModelManagerInterface
         return [];
     }
 
+    // NEXT_MAJOR: Remove this method.
     public function getPaginationParameters(DatagridInterface $datagrid, $page)
     {
+        @trigger_error(sprintf(
+            'Method %s() is deprecated since sonata-project/admin-bundle 3.66. To be removed in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         return [];
     }
 

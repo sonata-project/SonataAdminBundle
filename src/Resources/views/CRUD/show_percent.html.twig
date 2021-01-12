@@ -12,6 +12,5 @@ file that was distributed with this source code.
 {% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
 
 {% block field %}
-    {% set value = value * 100 %}
-    {{ value }} %
+    {%- include '@SonataAdmin/CRUD/display_percent.html.twig' -%}
 {% endblock %}

@@ -16,7 +16,9 @@ namespace Sonata\AdminBundle\Util;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Acl\Domain\Acl;
+use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 
 /**
  * AdminObjectAclData holds data manipulated by {@link AdminObjectAclManipulator}.
@@ -28,7 +30,7 @@ use Symfony\Component\Security\Acl\Domain\Acl;
 class AdminObjectAclData
 {
     /**
-     * @var array Permissions managed only by a OWNER
+     * @var string[] Permissions managed only by a OWNER
      */
     protected static $ownerPermissions = ['MASTER', 'OWNER'];
 
@@ -53,33 +55,37 @@ class AdminObjectAclData
     protected $aclRoles;
 
     /**
-     * @var array Cache of masks
+     * @var array<string, mixed> Cache of masks
      */
     protected $masks = [];
 
     /**
-     * @var Form
+     * @var FormInterface|null
      */
     protected $aclUsersForm;
 
     /**
-     * @var Form
+     * @var FormInterface|null
      */
     protected $aclRolesForm;
 
     /**
-     * @var Acl
+     * @var MutableAclInterface|null
      */
     protected $acl;
 
     /**
      * @var string
+     *
+     * @phpstan-var class-string
      */
     protected $maskBuilderClass;
 
     /**
      * @param object $object
      * @param string $maskBuilderClass
+     *
+     * @phpstan-param class-string $maskBuilderClass
      */
     public function __construct(
         AdminInterface $admin,
@@ -145,7 +151,7 @@ class AdminObjectAclData
      *
      * @return AdminObjectAclData
      */
-    public function setAcl(Acl $acl)
+    public function setAcl(MutableAclInterface $acl)
     {
         $this->acl = $acl;
 
@@ -155,7 +161,7 @@ class AdminObjectAclData
     /**
      * Gets ACL.
      *
-     * @return Acl
+     * @return MutableAclInterface|null
      */
     public function getAcl()
     {
@@ -165,7 +171,7 @@ class AdminObjectAclData
     /**
      * Gets masks.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getMasks()
     {
@@ -196,7 +202,7 @@ class AdminObjectAclData
      *
      * NEXT_MAJOR: remove this method.
      *
-     * @return Form
+     * @return FormInterface
      *
      * @deprecated since sonata-project/admin-bundle version 3.0. Use getAclUsersForm() instead
      */
@@ -215,7 +221,7 @@ class AdminObjectAclData
      *
      * @return AdminObjectAclData
      */
-    public function setAclUsersForm(Form $form)
+    public function setAclUsersForm(FormInterface $form)
     {
         $this->aclUsersForm = $form;
 
@@ -225,7 +231,7 @@ class AdminObjectAclData
     /**
      * Gets ACL users form.
      *
-     * @return Form
+     * @return FormInterface|null
      */
     public function getAclUsersForm()
     {
@@ -237,7 +243,7 @@ class AdminObjectAclData
      *
      * @return AdminObjectAclData
      */
-    public function setAclRolesForm(Form $form)
+    public function setAclRolesForm(FormInterface $form)
     {
         $this->aclRolesForm = $form;
 
@@ -247,7 +253,7 @@ class AdminObjectAclData
     /**
      * Gets ACL roles form.
      *
-     * @return Form
+     * @return FormInterface|null
      */
     public function getAclRolesForm()
     {
@@ -315,7 +321,7 @@ class AdminObjectAclData
     }
 
     /**
-     * @return array
+     * @return array<string, string[]>
      */
     public function getSecurityInformation()
     {

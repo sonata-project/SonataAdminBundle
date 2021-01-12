@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Maker;
 
 use Sonata\AdminBundle\Command\Validators;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Manipulator\ServicesManipulator;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
@@ -21,6 +22,7 @@ use Symfony\Bundle\MakerBundle\DependencyBuilder;
 use Symfony\Bundle\MakerBundle\Generator;
 use Symfony\Bundle\MakerBundle\InputConfiguration;
 use Symfony\Bundle\MakerBundle\Maker\AbstractMaker;
+use Symfony\Bundle\MakerBundle\Str;
 use Symfony\Bundle\MakerBundle\Util\ClassNameDetails;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -38,7 +40,7 @@ final class AdminMaker extends AbstractMaker
      */
     private $projectDirectory;
     /**
-     * @var string[]
+     * @var array<string, ModelManagerInterface>
      */
     private $availableModelManagers;
     /**
@@ -70,11 +72,24 @@ final class AdminMaker extends AbstractMaker
      */
     private $modelManager;
 
-    public function __construct($projectDirectory, array $modelManagers = [])
+    /**
+     * @var string
+     */
+    private $defaultController;
+
+    /**
+     * NEXT_MAJOR: Make $defaultController mandatory.
+     *
+     * @param string                               $projectDirectory
+     * @param array<string, ModelManagerInterface> $modelManagers
+     */
+    public function __construct($projectDirectory, array $modelManagers = [], ?string $defaultController = null)
     {
         $this->projectDirectory = $projectDirectory;
         $this->availableModelManagers = $modelManagers;
         $this->skeletonDirectory = sprintf('%s/../Resources/skeleton', __DIR__);
+        // NEXT_MAJOR: Remove the CRUDController part.
+        $this->defaultController = $defaultController ?? CRUDController::class;
     }
 
     public static function getCommandName(): string
@@ -176,7 +191,7 @@ final class AdminMaker extends AbstractMaker
                 'Controller'
             );
 
-            $this->generateController($input, $io, $generator, $controllerClassNameDetails);
+            $this->generateController($io, $generator, $controllerClassNameDetails);
 
             $controllerClassFullName = $controllerClassNameDetails->getFullName();
         }
@@ -225,27 +240,26 @@ final class AdminMaker extends AbstractMaker
     }
 
     private function generateController(
-        InputInterface $input,
         ConsoleStyle $io,
         Generator $generator,
         ClassNameDetails $controllerClassNameDetails
     ): void {
-        $controllerClassFullName = null;
-        if ($controllerClassNameDetails) {
-            $controllerClassFullName = $controllerClassNameDetails->getFullName();
-            $generator->generateClass(
-                $controllerClassFullName,
-                sprintf('%s/AdminController.tpl.php', $this->skeletonDirectory),
-                []
-            );
-            $generator->writeChanges();
-            $io->writeln(sprintf(
-                '%sThe controller class "<info>%s</info>" has been generated under the file "<info>%s</info>".',
-                PHP_EOL,
-                $controllerClassNameDetails->getShortName(),
-                $controllerClassFullName
-            ));
-        }
+        $controllerClassFullName = $controllerClassNameDetails->getFullName();
+        $generator->generateClass(
+            $controllerClassFullName,
+            sprintf('%s/AdminController.tpl.php', $this->skeletonDirectory),
+            [
+                'default_controller' => $this->defaultController,
+                'default_controller_short_name' => Str::getShortClassName($this->defaultController),
+            ]
+        );
+        $generator->writeChanges();
+        $io->writeln(sprintf(
+            '%sThe controller class "<info>%s</info>" has been generated under the file "<info>%s</info>".',
+            PHP_EOL,
+            $controllerClassNameDetails->getShortName(),
+            $controllerClassFullName
+        ));
     }
 
     private function generateAdmin(
@@ -296,6 +310,6 @@ final class AdminMaker extends AbstractMaker
         }
 
         $this->managerType = $input->getOption('manager') ?: array_keys($this->availableModelManagers)[0];
-        $this->modelManager = $this->availableModelManagers[$this->managerType] ?: current($this->availableModelManagers);
+        $this->modelManager = $this->availableModelManagers[$this->managerType] ?? current($this->availableModelManagers);
     }
 }

@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Util\TraversableToCollection;
 use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\Form\ChoiceList\LazyChoiceList;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -27,6 +30,8 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
  * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
  */
 class ModelsToArrayTransformer implements DataTransformerInterface
 {
@@ -37,6 +42,8 @@ class ModelsToArrayTransformer implements DataTransformerInterface
 
     /**
      * @var string
+     *
+     * @phpstan-var class-string<T>
      */
     protected $class;
 
@@ -49,13 +56,11 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     protected $choiceList;
 
     /**
-     * ModelsToArrayTransformer constructor.
-     *
      * @param LazyChoiceList|ModelChoiceLoader $choiceList
      * @param ModelManagerInterface            $modelManager
      * @param string                           $class
      *
-     * @phpstan-param class-string $class
+     * @phpstan-param class-string<T> $class
      *
      * @throws RuntimeException
      */
@@ -124,14 +129,21 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         unset($this->$name);
     }
 
-    public function transform($collection)
+    /**
+     * @param object[]|null $value
+     *
+     * @return string[]
+     *
+     * @phpstan-param T[]|null $value
+     */
+    public function transform($value)
     {
-        if (null === $collection) {
+        if (null === $value) {
             return [];
         }
 
         $array = [];
-        foreach ($collection as $key => $model) {
+        foreach ($value as $model) {
             $id = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($model));
 
             $array[] = $id;
@@ -140,28 +152,40 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         return $array;
     }
 
-    public function reverseTransform($keys)
+    /**
+     * @return Collection<int|string, object>|null
+     *
+     * @phpstan-return Collection<array-key, T>|null
+     */
+    public function reverseTransform($value)
     {
-        if (!\is_array($keys)) {
-            throw new UnexpectedTypeException($keys, 'array');
+        if (null === $value) {
+            return null;
         }
 
-        $collection = $this->modelManager->getModelCollectionInstance($this->class);
-        $notFound = [];
-
-        // optimize this into a SELECT WHERE IN query
-        foreach ($keys as $key) {
-            if ($model = $this->modelManager->find($this->class, $key)) {
-                $collection[] = $model;
-            } else {
-                $notFound[] = $key;
-            }
+        if (!\is_array($value)) {
+            throw new UnexpectedTypeException($value, 'array');
         }
 
-        if (\count($notFound) > 0) {
+        if ([] === $value) {
+            $result = $value;
+        } else {
+            $value = array_map('strval', $value);
+            $query = $this->modelManager->createQuery($this->class);
+            $this->modelManager->addIdentifiersToQuery($this->class, $query, $value);
+            $result = $this->modelManager->executeQuery($query);
+        }
+
+        /** @phpstan-var ArrayCollection<array-key, T> $collection */
+        $collection = TraversableToCollection::transform($result);
+
+        $diffCount = \count($value) - $collection->count();
+
+        if (0 !== $diffCount) {
             throw new TransformationFailedException(sprintf(
-                'The entities with keys "%s" could not be found',
-                implode('", "', $notFound)
+                '%u keys could not be found in the provided values: "%s".',
+                $diffCount,
+                implode('", "', $value)
             ));
         }
 
@@ -192,6 +216,10 @@ class ModelsToArrayTransformer implements DataTransformerInterface
 
     /**
      * @param object $model
+     *
+     * @return mixed[]
+     *
+     * @phpstan-param T $model
      */
     private function getIdentifierValues($model): array
     {

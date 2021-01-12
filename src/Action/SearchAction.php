@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Action;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
@@ -79,6 +80,7 @@ final class SearchAction
                     $this->templateRegistry->getTemplate('ajax') :
                     $this->templateRegistry->getTemplate('layout'),
                 'breadcrumbs_builder' => $this->breadcrumbsBuilder,
+                // NEXT_MAJOR: Remove next line.
                 'admin_pool' => $this->pool,
                 'query' => $request->get('q'),
                 'groups' => $this->pool->getDashboardGroups(),
@@ -105,7 +107,19 @@ final class SearchAction
             $request->get('page'),
             $request->get('offset')
         )) {
-            foreach ($pager->getResults() as $result) {
+            // NEXT_MAJOR: remove the existence check and just use $pager->getCurrentPageResults()
+            if (method_exists($pager, 'getCurrentPageResults')) {
+                $pageResults = $pager->getCurrentPageResults();
+            } else {
+                @trigger_error(sprintf(
+                    'Not implementing "%s::getCurrentPageResults()" is deprecated since sonata-project/admin-bundle 3.87 and will fail in 4.0.',
+                    PagerInterface::class
+                ), E_USER_DEPRECATED);
+
+                $pageResults = $pager->getResults();
+            }
+
+            foreach ($pageResults as $result) {
                 $results[] = [
                     'label' => $admin->toString($result),
                     'link' => $admin->getSearchResultLink($result),
@@ -113,7 +127,17 @@ final class SearchAction
                 ];
             }
             $page = (int) $pager->getPage();
-            $total = (int) $pager->getNbResults();
+
+            // NEXT_MAJOR: remove the existence check and just use $pager->countResults() without casting to int
+            if (method_exists($pager, 'countResults')) {
+                $total = (int) $pager->countResults();
+            } else {
+                @trigger_error(sprintf(
+                    'Not implementing "%s::countResults()" is deprecated since sonata-project/admin-bundle 3.86 and will fail in 4.0.',
+                    'Sonata\AdminBundle\Datagrid\PagerInterface'
+                ), E_USER_DEPRECATED);
+                $total = (int) $pager->getNbResults();
+            }
         }
 
         $response = new JsonResponse([

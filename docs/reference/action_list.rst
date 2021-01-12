@@ -51,7 +51,7 @@ Here is an example::
 
             // you may specify the field type directly as the
             // second argument instead of in the options
-            ->add('isVariation', TemplateRegistry::TYPE_BOOLEAN)
+            ->add('isVariation', FieldDescriptionInterface::TYPE_BOOLEAN)
 
             // if null, the type will be guessed
             ->add('enabled', null, [
@@ -59,7 +59,7 @@ Here is an example::
             ])
 
             // editable association field
-            ->add('status', TemplateRegistry::TYPE_CHOICE, [
+            ->add('status', FieldDescriptionInterface::TYPE_CHOICE, [
                 'editable' => true,
                 'class' => 'Vendor\ExampleBundle\Entity\ExampleStatus',
                 'choices' => [
@@ -70,7 +70,7 @@ Here is an example::
             ])
 
             // editable multiple field
-            ->add('winner', TemplateRegistry::TYPE_CHOICE, [
+            ->add('winner', FieldDescriptionInterface::TYPE_CHOICE, [
                 'editable' => true,
                 'multiple' => true,
                 'choices' => [
@@ -81,7 +81,7 @@ Here is an example::
             ])
 
             // we can add options to the field depending on the type
-            ->add('price', TemplateRegistry::TYPE_CURRENCY, [
+            ->add('price', FieldDescriptionInterface::TYPE_CURRENCY, [
                 'currency' => $this->currencyDetector->getCurrency()->getLabel()
             ])
 
@@ -143,21 +143,130 @@ Options
 Available types and associated options
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-+--------------------------------------+---------------------+-----------------------------------------------------------------------+
-| Type                                 | Options             | Description                                                           |
-+======================================+=====================+=======================================================================+
-| ``ListMapper::TYPE_ACTIONS``         | actions             | List of available actions                                             |
-+                                      +                     +                                                                       +
-|                                      |   edit              | Name of the action (``show``, ``edit``, ``history``, ``delete``, etc) |
-+                                      +                     +                                                                       +
-|                                      |     link_parameters | Route parameters                                                      |
-+--------------------------------------+---------------------+-----------------------------------------------------------------------+
-| ``ListMapper::TYPE_BATCH``           |                     | Renders a checkbox                                                    |
-+--------------------------------------+---------------------+-----------------------------------------------------------------------+
-| ``ListMapper::TYPE_SELECT``          |                     | Renders a select box                                                  |
-+--------------------------------------+---------------------+-----------------------------------------------------------------------+
-| ``TemplateRegistry::TYPE_*``         |                     | See :doc:`Field Types <field_types>`                                  |
-+--------------------------------------+---------------------+-----------------------------------------------------------------------+
++---------------------------------------+---------------------+-----------------------------------------------------------------------+
+| Type                                  | Options             | Description                                                           |
++=======================================+=====================+=======================================================================+
+| ``ListMapper::TYPE_ACTIONS``          | actions             | List of available actions                                             |
++                                       +                     +                                                                       +
+|                                       |   edit              | Name of the action (``show``, ``edit``, ``history``, ``delete``, etc) |
++                                       +                     +                                                                       +
+|                                       |     link_parameters | Route parameters                                                      |
++---------------------------------------+---------------------+-----------------------------------------------------------------------+
+| ``ListMapper::TYPE_BATCH``            |                     | Renders a checkbox                                                    |
++---------------------------------------+---------------------+-----------------------------------------------------------------------+
+| ``ListMapper::TYPE_SELECT``           |                     | Renders a select box                                                  |
++---------------------------------------+---------------------+-----------------------------------------------------------------------+
+| ``FieldDescriptionInterface::TYPE_*`` |                     | See :doc:`Field Types <field_types>`                                  |
++---------------------------------------+---------------------+-----------------------------------------------------------------------+
+
+Symfony Data Transformers
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If the model field has a limited list of values (enumeration), it is convenient to use a value object to control
+the available values. For example, consider the value object of moderation status with the following values:
+``awaiting``, ``approved``, ``rejected``::
+
+    final class ModerationStatus
+    {
+        public const AWAITING = 'awaiting';
+        public const APPROVED = 'approved';
+        public const REJECTED = 'rejected';
+
+        private static $instances = [];
+
+        private string $value;
+
+        private function __construct(string $value)
+        {
+            if (!array_key_exists($value, self::choices())) {
+                throw new \DomainException(sprintf('The value "%s" is not a valid moderation status.', $value));
+            }
+
+            $this->value = $value;
+        }
+
+        public static function byValue(string $value): ModerationStatus
+        {
+            // limitation of count object instances
+            if (!isset(self::$instances[$value])) {
+                self::$instances[$value] = new static($value);
+            }
+
+            return self::$instances[$value];
+        }
+
+        public function getValue(): string
+        {
+            return $this->value;
+        }
+
+        public static function choices(): array
+        {
+            return [
+                self::AWAITING => 'moderation_status.awaiting',
+                self::APPROVED => 'moderation_status.approved',
+                self::REJECTED => 'moderation_status.rejected',
+            ];
+        }
+
+        public function __toString(): string
+        {
+            return self::choices()[$this->value];
+        }
+    }
+
+To use this Value Object in the _`Symfony Form`: https://symfony.com/doc/current/forms.html component, we need a
+_`Data Transformer`: https://symfony.com/doc/current/form/data_transformers.html ::
+
+    use Symfony\Component\Form\DataTransformerInterface;
+    use Symfony\Component\Form\Exception\TransformationFailedException;
+
+    final class ModerationStatusDataTransformer implements DataTransformerInterface
+    {
+        public function transform($value): ?string
+        {
+            $status = $this->reverseTransform($value);
+
+            return $status instanceof ModerationStatus ? $status->value() : null;
+        }
+
+        public function reverseTransform($value): ?ModerationStatus
+        {
+            if (null === $value || '' === $value) {
+                return null;
+            }
+
+            if ($value instanceof ModerationStatus) {
+                return $value;
+            }
+
+            try {
+                return ModerationStatus::byValue($value);
+            } catch (\Throwable $e) {
+                throw new TransformationFailedException($e->getMessage(), $e->getCode(), $e);
+            }
+        }
+    }
+
+For quick moderation of objects, it is convenient to do this on the page for viewing all objects. But if we just
+indicate the field as editable, then when editing we get in the object a string with the value itself (``awaiting``,
+``approved``, ``rejected``), and not the Value Object (``ModerationStatus``). To solve this problem, you must specify
+the Data Transformer in the ``data_transformer`` field so that it correctly converts the input data into the data
+expected by your object::
+
+    // ...
+
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper
+            ->add('moderation_status', 'choice', [
+                'editable' => true,
+                'choices' => ModerationStatus::choices(),
+                'data_transformer' => new ModerationStatusDataTransformer(),
+            ])
+        ;
+    }
+
 
 Customizing the query used to generate the list
 -----------------------------------------------
@@ -171,10 +280,14 @@ You can customize the list query thanks to the ``configureQuery`` method::
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
         $query = parent::configureQuery($query);
+
+        $rootAlias = current($query->getRootAliases());
+
         $query->andWhere(
-            $query->expr()->eq($query->getRootAliases()[0] . '.my_field', ':my_param')
+            $query->expr()->eq($rootAlias . '.my_field', ':my_param')
         );
         $query->setParameter('my_param', 'my_value');
+
         return $query;
     }
 
@@ -243,8 +356,12 @@ Configuring the default ordering column can be achieved by overriding the
 
             protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
             {
-                $query->addOrderBy('author', 'ASC');
-                $query->addOrderBy('createdAt', 'ASC');
+                $rootAlias = current($query->getRootAliases());
+
+                $query->addOrderBy($rootAlias.'.author', 'ASC');
+                $query->addOrderBy($rootAlias.'.createdAt', 'ASC');
+
+                return $query;
             }
 
             // ...
@@ -424,17 +541,17 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the
                 ]);
         }
 
-        public function getFullTextFilter($queryBuilder, $alias, $field, $value)
+        public function getFullTextFilter($query, $alias, $field, $value)
         {
             if (!$value['value']) {
                 return false;
             }
 
             // Use `andWhere` instead of `where` to prevent overriding existing `where` conditions
-            $queryBuilder->andWhere($queryBuilder->expr()->orX(
-                $queryBuilder->expr()->like($alias.'.username', $queryBuilder->expr()->literal('%' . $value['value'] . '%')),
-                $queryBuilder->expr()->like($alias.'.firstName', $queryBuilder->expr()->literal('%' . $value['value'] . '%')),
-                $queryBuilder->expr()->like($alias.'.lastName', $queryBuilder->expr()->literal('%' . $value['value'] . '%'))
+            $query->andWhere($query->expr()->orX(
+                $query->expr()->like($alias.'.username', $query->expr()->literal('%' . $value['value'] . '%')),
+                $query->expr()->like($alias.'.firstName', $query->expr()->literal('%' . $value['value'] . '%')),
+                $query->expr()->like($alias.'.lastName', $query->expr()->literal('%' . $value['value'] . '%'))
             ));
 
             return true;
@@ -450,7 +567,7 @@ type of your condition(s)::
 
     final class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        public function getFullTextFilter($queryBuilder, $alias, $field, $value)
+        public function getFullTextFilter($query, $alias, $field, $value)
         {
             if (!$value['value']) {
                 return;
@@ -458,7 +575,7 @@ type of your condition(s)::
 
             $operator = $value['type'] == EqualType::TYPE_IS_EQUAL ? '=' : '!=';
 
-            $queryBuilder
+            $query
                 ->andWhere($alias.'.username '.$operator.' :username')
                 ->setParameter('username', $value['value'])
             ;
@@ -497,10 +614,10 @@ Example::
                 'header_style' => 'width: 5%; text-align: center',
                 'row_align' => 'center'
             ])
-            ->add('name', TemplateRegistry::TYPE_STRING, [
+            ->add('name', FieldDescriptionInterface::TYPE_STRING, [
                 'header_style' => 'width: 35%'
             ])
-            ->add('description', TemplateRegistry::TYPE_STRING, [
+            ->add('description', FieldDescriptionInterface::TYPE_STRING, [
                 'header_style' => 'width: 35%',
                 'collapse' => true
             ])

@@ -26,12 +26,16 @@ abstract class Filter implements FilterInterface
     protected $name;
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
      * @var mixed|null
+     *
+     * @deprecated since sonata-project/admin-bundle 3.84, to be removed in 4.0.
      */
     protected $value;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected $options = [];
 
@@ -39,6 +43,11 @@ abstract class Filter implements FilterInterface
      * @var string
      */
     protected $condition;
+
+    /**
+     * @var bool
+     */
+    private $active = false;
 
     public function initialize($name, array $options = [])
     {
@@ -173,7 +182,7 @@ abstract class Filter implements FilterInterface
     /**
      * Get options.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getOptions()
     {
@@ -181,32 +190,46 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * Set value.
+     * NEXT_MAJOR: Remove this method.
      *
      * @param mixed $value
+     *
+     * @deprecated since sonata-project/admin-bundle 3.84, to be removed in 4.0.
      */
     public function setValue($value)
     {
+        @trigger_error(sprintf(
+            'Method %s() is deprecated since sonata-project/admin-bundle 3.84 and will be removed in version 4.0.',
+            __METHOD__,
+        ), E_USER_DEPRECATED);
+
         $this->value = $value;
     }
 
     /**
-     * Get value.
+     * NEXT_MAJOR: Remove this method.
      *
      * @return mixed
+     *
+     * @deprecated since sonata-project/admin-bundle 3.84, to be removed in 4.0.
      */
     public function getValue()
     {
+        @trigger_error(sprintf(
+            'Method %s() is deprecated since sonata-project/admin-bundle 3.84 and will be removed in version 4.0.',
+            __METHOD__,
+        ), E_USER_DEPRECATED);
+
         return $this->value;
     }
 
     public function isActive()
     {
-        $values = $this->getValue();
+        $values = $this->value;
 
-        return isset($values['value'])
-            && false !== $values['value']
-            && '' !== $values['value'];
+        // NEXT_MAJOR: Change for `return $this->active;`
+        return $this->active
+            || isset($values['value']) && false !== $values['value'] && '' !== $values['value'];
     }
 
     public function setCondition($condition)
@@ -222,5 +245,10 @@ abstract class Filter implements FilterInterface
     public function getTranslationDomain()
     {
         return $this->getOption('translation_domain');
+    }
+
+    protected function setActive(bool $active): void
+    {
+        $this->active = $active;
     }
 }

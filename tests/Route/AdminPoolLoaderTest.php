@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Route\AdminPoolLoader;
 use Sonata\AdminBundle\Route\RouteCollection;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
 
@@ -29,11 +29,8 @@ class AdminPoolLoaderTest extends TestCase
 {
     public function testSupports(): void
     {
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $pool = $this->getMockBuilder(Pool::class)
-            ->setMethods([])
-            ->setConstructorArgs([$container, 'title', 'logoTitle'])
-            ->getMock();
+        $container = new Container();
+        $pool = new Pool($container);
 
         $adminPoolLoader = new AdminPoolLoader($pool, ['foo_admin', 'bar_admin'], $container);
 
@@ -43,11 +40,8 @@ class AdminPoolLoaderTest extends TestCase
 
     public function testLoad(): void
     {
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $pool = $this->getMockBuilder(Pool::class)
-            ->setMethods([])
-            ->setConstructorArgs([$container, 'title', 'logoTitle'])
-            ->getMock();
+        $container = new Container();
+        $pool = new Pool($container, ['foo_admin', 'bar_admin']);
 
         $adminPoolLoader = new AdminPoolLoader($pool, ['foo_admin', 'bar_admin'], $container);
 
@@ -63,21 +57,14 @@ class AdminPoolLoaderTest extends TestCase
             ->method('getRoutes')
             ->willReturn($routeCollection1);
 
+        $container->set('foo_admin', $admin1);
+
         $admin2 = $this->getMockForAbstractClass(AdminInterface::class);
         $admin2->expects($this->once())
             ->method('getRoutes')
             ->willReturn($routeCollection2);
 
-        $pool
-            ->method('getInstance')
-            ->willReturnCallback(static function (string $id) use ($admin1, $admin2): AdminInterface {
-                switch ($id) {
-                    case 'foo_admin':
-                        return $admin1;
-                    case 'bar_admin':
-                        return $admin2;
-                }
-            });
+        $container->set('bar_admin', $admin2);
 
         $collection = $adminPoolLoader->load('foo', 'sonata_admin');
 

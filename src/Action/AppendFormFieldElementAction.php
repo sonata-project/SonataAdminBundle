@@ -63,18 +63,18 @@ final class AppendFormFieldElementAction
             $admin->setUniqid($uniqid);
         }
 
-        $subject = $admin->getObject($objectId);
-        if ($objectId && !$subject) {
-            throw new NotFoundHttpException(sprintf('Could not find subject for id "%s"', $objectId));
-        }
-
-        if (!$subject) {
+        if ($objectId) {
+            $subject = $admin->getObject($objectId);
+            if (!$subject) {
+                throw new NotFoundHttpException(sprintf('Could not find subject for id "%s"', $objectId));
+            }
+        } else {
             $subject = $admin->getNewInstance();
         }
 
         $admin->setSubject($subject);
 
-        list(, $form) = $this->helper->appendFormFieldElement($admin, $subject, $elementId);
+        [, $form] = $this->helper->appendFormFieldElement($admin, $subject, $elementId);
 
         \assert($form instanceof Form);
         $view = $this->helper->getChildFormView($form->createView(), $elementId);

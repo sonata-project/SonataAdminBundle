@@ -47,7 +47,7 @@ class FilterFactory implements FilterFactoryInterface
             throw new \RuntimeException('The type must be defined');
         }
 
-        $id = isset($this->types[$type]) ? $this->types[$type] : false;
+        $id = $this->types[$type] ?? false;
 
         if ($id) {
             $filter = $this->container->get($id);

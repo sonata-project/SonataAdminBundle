@@ -38,7 +38,8 @@ injected by the bundle:
 Class                           Description
 =========================       =========================================================================
 ConfigurationPool               configuration pool where all Admin class instances are stored
-ModelManager                    service which handles specific code relating to your persistence layer (e.g. Doctrine ORM)
+ModelManager                    handles specific code relating to your persistence layer (e.g. Doctrine ORM)
+DataSource                      handles code related to the sonata exporter
 FormContractor                  builds the forms for the edit/create views using the Symfony ``FormBuilder``
 ShowBuilder                     builds the show fields
 ListBuilder                     builds the list fields

@@ -80,7 +80,9 @@ final class StringExtension extends AbstractExtension
 
         if ($this->legacyExtension instanceof TextExtension) {
             return twig_truncate_filter($env, $text, $length, $preserve, $ellipsis);
-        } elseif ($this->legacyExtension instanceof DeprecatedTextExtension) {
+        }
+
+        if ($this->legacyExtension instanceof DeprecatedTextExtension) {
             return $this->legacyExtension->twigTruncateFilter($env, $text, $length, $preserve, $ellipsis);
         }
 

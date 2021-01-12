@@ -498,6 +498,10 @@
                 <source>label_type_ends_with</source>
                 <target>acaba amb</target>
             </trans-unit>
+            <trans-unit id="go_to_the_first_page">
+                <source>go_to_the_first_page</source>
+                <target>Aneu a la primera pàgina</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

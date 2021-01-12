@@ -13,18 +13,28 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\App\Admin;
 
+use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\AdminBundle\Templating\TemplateRegistry;
+use Sonata\AdminBundle\Tests\App\Model\Foo;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 final class FooAdmin extends AbstractAdmin
 {
+    public function getNewInstance()
+    {
+        return new Foo('test_id', 'foo_name');
+    }
+
     protected function configureListFields(ListMapper $list): void
     {
-        $list->add('name', TemplateRegistry::TYPE_STRING);
+        $list->add('name', FieldDescriptionInterface::TYPE_STRING, [
+            'sortable' => true,
+        ]);
     }
 
     protected function configureFormFields(FormMapper $form): void
@@ -34,6 +44,12 @@ final class FooAdmin extends AbstractAdmin
 
     protected function configureShowFields(ShowMapper $show): void
     {
-        $show->add('name', TemplateRegistry::TYPE_STRING);
+        $show->add('name', FieldDescriptionInterface::TYPE_STRING);
+    }
+
+    protected function configureTabMenu(MenuItemInterface $menu, $action, ?AdminInterface $childAdmin = null)
+    {
+        // Check conflict between `MenuItemInterface::getLabel()` method and menu item with a child with the key `label`
+        $menu->addChild('label')->addChild('label');
     }
 }

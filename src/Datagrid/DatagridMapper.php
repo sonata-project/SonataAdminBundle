@@ -99,6 +99,11 @@ class DatagridMapper extends BaseMapper
             );
         }
 
+        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+        if (null === $fieldDescription->getLabel('sonata_deprecation_mute')) {
+            $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'filter', 'label'));
+        }
+
         if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
             // add the field with the DatagridBuilder
             $this->builder->addFilter($this->datagrid, $type, $fieldDescription, $this->admin);

@@ -33,7 +33,7 @@ class Datagrid implements DatagridInterface
     /**
      * The filter instances.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected $filters = [];
 
@@ -73,7 +73,7 @@ class Datagrid implements DatagridInterface
     protected $form;
 
     /**
-     * @var array|null
+     * @var iterable<object>|null
      */
     protected $results;
 
@@ -101,7 +101,17 @@ class Datagrid implements DatagridInterface
         $this->buildPager();
 
         if (null === $this->results) {
-            $this->results = $this->pager->getResults();
+            // NEXT_MAJOR: remove the existence check and just use $pager->getCurrentPageResults()
+            if (method_exists($this->pager, 'getCurrentPageResults')) {
+                $this->results = $this->pager->getCurrentPageResults();
+            } else {
+                @trigger_error(sprintf(
+                    'Not implementing "%s::getCurrentPageResults()" is deprecated since sonata-project/admin-bundle 3.87 and will fail in 4.0.',
+                    PagerInterface::class
+                ), E_USER_DEPRECATED);
+
+                $this->results = $this->pager->getResults();
+            }
         }
 
         return $this->results;
@@ -113,8 +123,8 @@ class Datagrid implements DatagridInterface
             return;
         }
 
-        foreach ($this->getFilters() as $name => $filter) {
-            list($type, $options) = $filter->getRenderSettings();
+        foreach ($this->getFilters() as $filter) {
+            [$type, $options] = $filter->getRenderSettings();
 
             $this->formBuilder->add($filter->getFormName(), $type, $options);
         }
@@ -146,50 +156,11 @@ class Datagrid implements DatagridInterface
         $this->form = $this->formBuilder->getForm();
         $this->form->submit($this->values);
 
-        $data = $this->form->getData();
+        $this->applyFilters($this->form->getData() ?? []);
+        $this->applySorting();
 
-        foreach ($this->getFilters() as $name => $filter) {
-            $this->values[$name] = isset($this->values[$name]) ? $this->values[$name] : null;
-            $filterFormName = $filter->getFormName();
-            if (isset($this->values[$filterFormName]['value']) && '' !== $this->values[$filterFormName]['value']) {
-                $filter->apply($this->query, $data[$filterFormName]);
-            }
-        }
-
-        if (isset($this->values['_sort_by'])) {
-            if (!$this->values['_sort_by'] instanceof FieldDescriptionInterface) {
-                throw new UnexpectedTypeException($this->values['_sort_by'], FieldDescriptionInterface::class);
-            }
-
-            if ($this->values['_sort_by']->isSortable()) {
-                $this->query->setSortBy($this->values['_sort_by']->getSortParentAssociationMapping(), $this->values['_sort_by']->getSortFieldMapping());
-
-                $this->values['_sort_order'] = $this->values['_sort_order'] ?? 'ASC';
-                $this->query->setSortOrder($this->values['_sort_order']);
-            }
-        }
-
-        $maxPerPage = 25;
-        if (isset($this->values['_per_page'])) {
-            if (isset($this->values['_per_page']['value'])) {
-                $maxPerPage = $this->values['_per_page']['value'];
-            } else {
-                $maxPerPage = $this->values['_per_page'];
-            }
-        }
-        $this->pager->setMaxPerPage($maxPerPage);
-
-        $page = 1;
-        if (isset($this->values['_page'])) {
-            if (isset($this->values['_page']['value'])) {
-                $page = $this->values['_page']['value'];
-            } else {
-                $page = $this->values['_page'];
-            }
-        }
-
-        $this->pager->setPage($page);
-
+        $this->pager->setMaxPerPage($this->getMaxPerPage(25));
+        $this->pager->setPage($this->getPage(1));
         $this->pager->setQuery($this->query);
         $this->pager->init();
 
@@ -199,6 +170,8 @@ class Datagrid implements DatagridInterface
     public function addFilter(FilterInterface $filter)
     {
         $this->filters[$filter->getName()] = $filter;
+
+        return $filter;
     }
 
     public function hasFilter($name)
@@ -257,7 +230,7 @@ class Datagrid implements DatagridInterface
 
     public function hasActiveFilters()
     {
-        foreach ($this->filters as $name => $filter) {
+        foreach ($this->filters as $filter) {
             if ($filter->isActive()) {
                 return true;
             }
@@ -268,7 +241,7 @@ class Datagrid implements DatagridInterface
 
     public function hasDisplayableFilters()
     {
-        foreach ($this->filters as $name => $filter) {
+        foreach ($this->filters as $filter) {
             $showFilter = $filter->getOption('show_filter', null);
             if (($filter->isActive() && null === $showFilter) || (true === $showFilter)) {
                 return true;
@@ -326,6 +299,70 @@ class Datagrid implements DatagridInterface
         $values['_page'] = $page;
 
         return ['filter' => $values];
+    }
+
+    private function applyFilters(array $data): void
+    {
+        foreach ($this->getFilters() as $name => $filter) {
+            $this->values[$name] = $this->values[$name] ?? null;
+            $filterFormName = $filter->getFormName();
+
+            $value = $this->values[$filterFormName]['value'] ?? '';
+            $type = $this->values[$filterFormName]['type'] ?? '';
+
+            if ('' !== $value || '' !== $type) {
+                $filter->apply($this->query, $data[$filterFormName]);
+            }
+        }
+    }
+
+    private function applySorting(): void
+    {
+        if (!isset($this->values['_sort_by'])) {
+            return;
+        }
+
+        if (!$this->values['_sort_by'] instanceof FieldDescriptionInterface) {
+            throw new UnexpectedTypeException($this->values['_sort_by'], FieldDescriptionInterface::class);
+        }
+
+        if (!$this->values['_sort_by']->isSortable()) {
+            return;
+        }
+
+        $this->query->setSortBy(
+            $this->values['_sort_by']->getSortParentAssociationMapping(),
+            $this->values['_sort_by']->getSortFieldMapping()
+        );
+
+        $this->values['_sort_order'] = $this->values['_sort_order'] ?? 'ASC';
+        $this->query->setSortOrder($this->values['_sort_order']);
+    }
+
+    private function getMaxPerPage(int $default): int
+    {
+        if (!isset($this->values['_per_page'])) {
+            return $default;
+        }
+
+        if (isset($this->values['_per_page']['value'])) {
+            return (int) $this->values['_per_page']['value'];
+        }
+
+        return (int) $this->values['_per_page'];
+    }
+
+    private function getPage(int $default): int
+    {
+        if (!isset($this->values['_page'])) {
+            return $default;
+        }
+
+        if (isset($this->values['_page']['value'])) {
+            return (int) $this->values['_page']['value'];
+        }
+
+        return (int) $this->values['_page'];
     }
 
     private function isFieldAlreadySorted(FieldDescriptionInterface $fieldDescription): bool

@@ -33,11 +33,13 @@ file that was distributed with this source code.
 {% endapply %}
 {% endblock %}
 
-{% block form_help %}
-    {% apply spaceless %}
-        <span class="help-block sonata-ba-field-widget-help sonata-ba-field-help">{{ parent() }}</span>
-    {% endapply %}
-{% endblock %}
+{% block form_help -%}
+    {% if help is not empty %}
+        {# NEXT_MAJOR: Remove class sonata-ba-field-widget-help #}
+        {% set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' help-block sonata-ba-field-widget-help sonata-ba-field-help')}) %}
+        {{ parent() }}
+    {% endif %}
+{%- endblock form_help %}
 
 {% block form_widget -%}
     {{ parent() }}
@@ -153,13 +155,13 @@ file that was distributed with this source code.
         {% endif %}
 
         <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
-            {% if translation_domain is same as(false) %}
+            {%- if translation_domain is same as(false) -%}
                 {{- label -}}
-            {% elseif not sonata_admin.admin %}
+            {%- elseif not sonata_admin.admin -%}
                 {{- label|trans(label_translation_parameters, translation_domain) -}}
-            {% else %}
-                {{ label|trans(label_translation_parameters, sonata_admin.field_description.translationDomain ?: admin.translationDomain) }}
-            {% endif %}
+            {%- else -%}
+                {{- label|trans(label_translation_parameters, sonata_admin.field_description.translationDomain ?: admin.translationDomain) -}}
+            {%- endif -%}
         </label>
     {% endif %}
 {% endapply %}
@@ -355,7 +357,9 @@ file that was distributed with this source code.
 
 {% block form_row %}
     {% set show_label = show_label ?? true %}
-    <div class="form-group{% if errors|length > 0 %} has-error{% endif %}" id="sonata-ba-field-container-{{ id }}">
+    {% set row_id = 'sonata-ba-field-container-'~id %}
+    {% set row_class = (row_attr.class|default('') ~ ' form-group' ~ (errors|length > 0 ? ' has-error'))|trim %}
+    <div{% with {attr: row_attr|merge({id: row_id, class: row_class})} %}{{ block('attributes') }}{% endwith %}>
         {% if sonata_admin.field_description.options is defined %}
             {% set label = sonata_admin.field_description.options.name|default(label) %}
         {% endif %}
@@ -401,8 +405,7 @@ file that was distributed with this source code.
             {% endif %}
 
             {# NEXT_MAJOR: Remove this block #}
-            {% if sonata_admin is defined and sonata_admin_enabled and sonata_admin.field_description.help|default(false) %}
-                {% deprecated 'The "help" option is deprecated in field description since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use Symfony Form "help" option instead.' %}
+            {% if sonata_admin is defined and sonata_admin_enabled and sonata_admin.field_description.getHelp('sonata_deprecation_mute')|default(false) %}
                 <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|trans(help_translation_parameters, sonata_admin.field_description.translationDomain ?: admin.translationDomain)|raw }}</span>
             {% endif %}
 

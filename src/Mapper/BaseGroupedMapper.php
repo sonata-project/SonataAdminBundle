@@ -40,11 +40,12 @@ abstract class BaseGroupedMapper extends BaseMapper
     /**
      * Add new group or tab (if parameter "tab=true" is available in options).
      *
-     * @param string $name
+     * @param string               $name
+     * @param array<string, mixed> $options
      *
      * @throws \LogicException
      *
-     * @return $this
+     * @return static
      */
     public function with($name, array $options = [])
     {
@@ -86,8 +87,8 @@ abstract class BaseGroupedMapper extends BaseMapper
         ];
 
         // NEXT_MAJOR: remove this code
-        if ($this->admin instanceof AbstractAdmin && $pool = $this->admin->getConfigurationPool()) {
-            if ($pool->getContainer()->getParameter('sonata.admin.configuration.translate_group_label')) {
+        if ($this->admin instanceof AbstractAdmin && $pool = $this->admin->getConfigurationPool('sonata_deprecation_mute')) {
+            if ($pool->getContainer('sonata_deprecation_mute')->getParameter('sonata.admin.configuration.translate_group_label')) {
                 $defaultOptions['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($name, $this->getName(), 'group');
             }
         }
@@ -176,7 +177,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * @param bool $bool
      *
-     * @return $this
+     * @return static
      */
     public function ifTrue($bool)
     {
@@ -190,7 +191,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * @param bool $bool
      *
-     * @return $this
+     * @return static
      */
     public function ifFalse($bool)
     {
@@ -202,7 +203,7 @@ abstract class BaseGroupedMapper extends BaseMapper
     /**
      * @throws \LogicException
      *
-     * @return $this
+     * @return static
      */
     public function ifEnd()
     {
@@ -218,9 +219,10 @@ abstract class BaseGroupedMapper extends BaseMapper
     /**
      * Add new tab.
      *
-     * @param string $name
+     * @param string               $name
+     * @param array<string, mixed> $options
      *
-     * @return $this
+     * @return static
      */
     public function tab($name, array $options = [])
     {
@@ -232,7 +234,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * @throws \LogicException
      *
-     * @return $this
+     * @return static
      */
     public function end()
     {
@@ -262,17 +264,92 @@ abstract class BaseGroupedMapper extends BaseMapper
     }
 
     /**
-     * @return array
+     * Removes a group.
+     *
+     * @param string $group          The group to delete
+     * @param string $tab            The tab the group belongs to, defaults to 'default'
+     * @param bool   $deleteEmptyTab Whether or not the Tab should be deleted, when the deleted group leaves the tab empty after deletion
+     *
+     * @return static
+     */
+    public function removeGroup($group, $tab = 'default', $deleteEmptyTab = false)
+    {
+        $groups = $this->getGroups();
+
+        // When the default tab is used, the tabname is not prepended to the index in the group array
+        if ('default' !== $tab) {
+            $group = sprintf('%s.%s', $tab, $group);
+        }
+
+        if (isset($groups[$group])) {
+            foreach ($groups[$group]['fields'] as $field) {
+                $this->remove($field);
+            }
+        }
+        unset($groups[$group]);
+
+        $tabs = $this->getTabs();
+        $key = array_search($group, $tabs[$tab]['groups'], true);
+
+        if (false !== $key) {
+            unset($tabs[$tab]['groups'][$key]);
+        }
+        if ($deleteEmptyTab && 0 === \count($tabs[$tab]['groups'])) {
+            unset($tabs[$tab]);
+        }
+
+        $this->setTabs($tabs);
+        $this->setGroups($groups);
+
+        return $this;
+    }
+
+    /**
+     * Removes a tab.
+     *
+     * @return static
+     */
+    public function removeTab(string $tab): self
+    {
+        $groups = $this->getGroups();
+        $tabs = $this->getTabs();
+
+        foreach ($tabs[$tab]['groups'] as $group) {
+            if (isset($groups[$group])) {
+                foreach ($groups[$group]['fields'] as $field) {
+                    $this->remove($field);
+                }
+            }
+
+            unset($groups[$group]);
+        }
+
+        unset($tabs[$tab]);
+
+        $this->setTabs($tabs);
+        $this->setGroups($groups);
+
+        return $this;
+    }
+
+    /**
+     * @return array<string, array<string, mixed>>
      */
     abstract protected function getGroups();
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
     abstract protected function getTabs();
 
+    /**
+     * @param array<string, array<string, mixed>> $groups
+     */
     abstract protected function setGroups(array $groups);
 
+    /**
+     * @param array<string, array<string, mixed>> $tabs
+     */
     abstract protected function setTabs(array $tabs);
 
     /**
@@ -294,6 +371,8 @@ abstract class BaseGroupedMapper extends BaseMapper
      * Add the field name to the current group.
      *
      * @param string $fieldName
+     *
+     * @return array<string, mixed>
      */
     protected function addFieldToCurrentGroup($fieldName)
     {
@@ -319,7 +398,16 @@ abstract class BaseGroupedMapper extends BaseMapper
     protected function getCurrentGroupName()
     {
         if (!$this->currentGroup) {
-            $this->with($this->admin->getLabel(), ['auto_created' => true]);
+            $label = $this->admin->getLabel();
+
+            if (null === $label) {
+                $this->with('default', ['auto_created' => true]);
+            } else {
+                $this->with($label, [
+                    'auto_created' => true,
+                    'translation_domain' => $this->admin->getTranslationDomain(),
+                ]);
+            }
         }
 
         return $this->currentGroup;

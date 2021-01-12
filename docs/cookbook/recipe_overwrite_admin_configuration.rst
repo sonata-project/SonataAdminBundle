@@ -14,11 +14,12 @@ with the following templates:
         admin_services:
             id.of.admin.service:
                 # service configuration
-                model_manager:              sonata.admin.manager.doctrine_orm
-                form_contractor:            sonata.admin.builder.doctrine_orm
-                show_builder:               sonata.admin.builder.doctrine_orm
-                list_builder:               sonata.admin.builder.doctrine_orm
-                datagrid_builder:           sonata.admin.builder.doctrine_orm
+                model_manager:              sonata.admin.manager.orm
+                data_source:                sonata.admin.data_source.orm
+                form_contractor:            sonata.admin.builder.orm_form
+                show_builder:               sonata.admin.builder.orm_show
+                list_builder:               sonata.admin.builder.orm_list
+                datagrid_builder:           sonata.admin.builder.orm_datagrid
                 translator:                 translator
                 configuration_pool:         sonata.admin.pool
                 route_generator:            sonata.admin.route.default_generator

@@ -69,8 +69,7 @@ class ListMapperTest extends TestCase
         $modelManager
             ->method('getNewFieldDescriptionInstance')
             ->willReturnCallback(function (?string $class, string $name, array $options = []): BaseFieldDescription {
-                $fieldDescription = $this->getFieldDescriptionMock();
-                $fieldDescription->setName($name);
+                $fieldDescription = $this->getFieldDescriptionMock($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
@@ -338,6 +337,32 @@ class ListMapperTest extends TestCase
         $this->assertSame('fooSortFieldMapping', $fieldManualSort->getOption('sort_field_mapping'));
     }
 
+    public function testCallableAssociationPropertyCannotBeSortable(): void
+    {
+        $this->listMapper->add(
+            'fooNameNotSortable',
+            null,
+            [
+                'associated_property' => static function ($value) {
+                    return (string) $value;
+                },
+            ]
+        );
+        $this->listMapper->add(
+            'fooNameSortable',
+            null,
+            [
+                'associated_property' => 'fooProperty',
+            ]
+        );
+
+        $fieldSortable = $this->listMapper->get('fooNameSortable');
+        $fieldNotSortable = $this->listMapper->get('fooNameNotSortable');
+
+        $this->assertTrue($fieldSortable->getOption('sortable'));
+        $this->assertFalse($fieldNotSortable->getOption('sortable'));
+    }
+
     public function testKeys(): void
     {
         $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
@@ -412,13 +437,9 @@ class ListMapperTest extends TestCase
         );
     }
 
-    private function getFieldDescriptionMock(?string $name = null, ?string $label = null): BaseFieldDescription
+    private function getFieldDescriptionMock(string $name, ?string $label = null): BaseFieldDescription
     {
-        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class);
-
-        if (null !== $name) {
-            $fieldDescription->setName($name);
-        }
+        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name, []]);
 
         if (null !== $label) {
             $fieldDescription->setOption('label', $label);

@@ -77,19 +77,18 @@ class GroupMenuProvider implements MenuProviderInterface
     /**
      * Retrieves the menu based on the group options.
      *
-     * @param string $name
-     *
      * @throws \InvalidArgumentException if the menu does not exists
-     *
-     * @return \Knp\Menu\ItemInterface
      */
-    public function get($name, array $options = [])
+    public function get(string $name, array $options = []): ItemInterface
     {
+        /**
+         * @var array{ label: string, label_catalogue: string, icon: string, on_top?: bool, keep_open: bool, provider: string, items: list }
+         */
         $group = $options['group'];
 
         $menuItem = $this->menuFactory->createItem($options['name']);
 
-        if (empty($group['on_top']) || false === $group['on_top']) {
+        if (!\array_key_exists('on_top', $group) || false === $group['on_top']) {
             foreach ($group['items'] as $item) {
                 if ($this->canGenerateMenuItem($item, $group)) {
                     $menuItem->addChild($this->generateMenuItem($item, $group));
@@ -117,12 +116,8 @@ class GroupMenuProvider implements MenuProviderInterface
 
     /**
      * Checks whether a menu exists in this provider.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
-    public function has($name, array $options = [])
+    public function has(string $name, array $options = []): bool
     {
         return 'sonata_group_menu' === $name;
     }
@@ -184,7 +179,7 @@ class GroupMenuProvider implements MenuProviderInterface
                 'admin' => $admin,
             ];
 
-            return $this->menuFactory->createItem($admin->getLabel(), $options);
+            return $this->menuFactory->createItem($admin->getLabel() ?? '', $options);
         }
 
         return $this->menuFactory->createItem($item['label'], [

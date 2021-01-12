@@ -53,7 +53,7 @@ final class ObjectManipulator
         object $object,
         FieldDescriptionInterface $parentFieldDescription
     ): object {
-        $mappedBy = $parentFieldDescription->getAssociationMapping()['mappedBy'];
+        $mappedBy = $parentFieldDescription->getAssociationMapping()['mappedBy'] ?? null;
         if (null === $mappedBy) {
             return $instance;
         }
@@ -75,16 +75,24 @@ final class ObjectManipulator
         $inflector = InflectorFactory::create()->build();
         $method = sprintf('get%s', $inflector->classify($fieldName));
 
-        if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
-            /*
-             * NEXT_MAJOR: Use BadMethodCallException instead
-             */
-            throw new \RuntimeException(
-                sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
-            );
+        if (\is_callable([$object, $method]) && method_exists($object, $method)) {
+            return $object->$method();
         }
 
-        return $object->$method();
+        if (property_exists($object, $fieldName)) {
+            $ref = new \ReflectionProperty($object, $fieldName);
+
+            if ($ref->isPublic()) {
+                return $object->$fieldName;
+            }
+        }
+
+        /*
+         * NEXT_MAJOR: Use BadMethodCallException instead
+         */
+        throw new \RuntimeException(
+            sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
+        );
     }
 
     /**
@@ -99,18 +107,28 @@ final class ObjectManipulator
         $inflector = InflectorFactory::create()->build();
         $method = sprintf('set%s', $inflector->classify($mappedBy));
 
-        if (!(\is_callable([$instance, $method]) && method_exists($instance, $method))) {
-            /*
-             * NEXT_MAJOR: Use BadMethodCallException instead
-             */
-            throw new \RuntimeException(
-                sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($instance), $method)
-            );
+        if (\is_callable([$instance, $method]) && method_exists($instance, $method)) {
+            $instance->$method($object);
+
+            return $instance;
         }
 
-        $instance->$method($object);
+        if (property_exists($instance, $mappedBy)) {
+            $ref = new \ReflectionProperty($instance, $mappedBy);
 
-        return $instance;
+            if ($ref->isPublic()) {
+                $instance->$mappedBy = $object;
+
+                return $instance;
+            }
+        }
+
+        /*
+         * NEXT_MAJOR: Use BadMethodCallException instead
+         */
+        throw new \RuntimeException(
+            sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($instance), $method)
+        );
     }
 
     /**

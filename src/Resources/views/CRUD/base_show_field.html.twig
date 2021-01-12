@@ -42,6 +42,7 @@ file that was distributed with this source code.
     {% apply spaceless %}
         {% if(value_compare is defined) %}
             {% set value = value_compare %}
+            {% set object = object_compare %}
             <td>{{ block('field') }}</td>
         {% endif %}
     {% endapply %}

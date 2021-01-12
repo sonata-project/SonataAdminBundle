@@ -11,6 +11,7 @@ the services which are injected by default are:
 Dependencies                  Service ID
 =========================     ===================================================================
 model_manager                 sonata.admin.manager.%manager-type%
+data_source                   sonata.admin.data_source.%manager-type%
 form_contractor               sonata.admin.builder.%manager-type%_form
 show_builder                  sonata.admin.builder.%manager-type%_show
 list_builder                  sonata.admin.builder.%manager-type%_list
@@ -449,5 +450,20 @@ by overriding ``checkAccess`` function::
             $this->customAccessLogic();
         }
     }
+
+Use your own custom controller as default
+-----------------------------------------
+
+By default, ``CRUDController`` is the controller used when no controller has been specified. You can modify this by
+adding the following in the configuration:
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # config/packages/sonata_admin.yaml
+
+        sonata_admin:
+            default_controller: App\Controller\DefaultCRUDController
 
 .. _`Core's documentation`: https://sonata-project.org/bundles/core/master/doc/reference/form_types.html#sonata-type-translatable-choice

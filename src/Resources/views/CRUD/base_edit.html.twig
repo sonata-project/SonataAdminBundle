@@ -14,18 +14,18 @@ file that was distributed with this source code.
 {% block title %}
     {# NEXT_MAJOR: remove default filter #}
     {% if objectId|default(admin.id(object)) is not null %}
-        {{ 'title_edit'|trans({'%name%': admin.toString(object)|u.truncate(15) }, 'SonataAdminBundle') }}
+        {{ 'title_edit'|trans({'%name%': admin.toString(object)|u.truncate(15, '...') }, 'SonataAdminBundle') }}
     {% else %}
-        {{ 'title_create'|trans({}, 'SonataAdminBundle')|u.truncate(15) }}
+        {{ 'title_create'|trans({}, 'SonataAdminBundle')|u.truncate(15, '...') }}
     {% endif %}
 {% endblock %}
 
 {% block navbar_title %}
     {# NEXT_MAJOR: remove default filter #}
     {% if objectId|default(admin.id(object)) is not null %}
-        {{ 'title_edit'|trans({'%name%': admin.toString(object)|u.truncate(100) }, 'SonataAdminBundle') }}
+        {{ 'title_edit'|trans({'%name%': admin.toString(object)|u.truncate(100, '...') }, 'SonataAdminBundle') }}
     {% else %}
-        {{ 'title_create'|trans({}, 'SonataAdminBundle')|u.truncate(100) }}
+        {{ 'title_create'|trans({}, 'SonataAdminBundle')|u.truncate(100, '...') }}
     {% endif %}
 {% endblock %}
 

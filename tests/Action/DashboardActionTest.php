@@ -26,6 +26,11 @@ use Twig\Environment;
 class DashboardActionTest extends TestCase
 {
     /**
+     * @var MutableTemplateRegistryInterface
+     */
+    private $templateRegistry;
+
+    /**
      * @var DashboardAction
      */
     private $action;
@@ -34,22 +39,19 @@ class DashboardActionTest extends TestCase
     {
         $container = new Container();
 
-        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->getTemplate('ajax')->willReturn('ajax.html');
-        $templateRegistry->getTemplate('dashboard')->willReturn('dashboard.html');
-        $templateRegistry->getTemplate('layout')->willReturn('layout.html');
+        $this->templateRegistry = $this->createStub(MutableTemplateRegistryInterface::class);
 
-        $pool = new Pool($container, 'title', 'logo.png');
-        $pool->setTemplateRegistry($templateRegistry->reveal());
+        $pool = new Pool($container);
+        $pool->setTemplateRegistry($this->templateRegistry);
 
         $twig = $this->createMock(Environment::class);
 
-        $breadcrumbsBuilder = $this->getMockForAbstractClass(BreadcrumbsBuilderInterface::class);
+        $breadcrumbsBuilder = $this->createStub(BreadcrumbsBuilderInterface::class);
 
         $this->action = new DashboardAction(
             [],
             $breadcrumbsBuilder,
-            $templateRegistry->reveal(),
+            $this->templateRegistry,
             $pool,
             $twig
         );
@@ -59,6 +61,11 @@ class DashboardActionTest extends TestCase
     {
         $request = new Request();
 
+        $this->templateRegistry->method('getTemplate')->willReturnMap([
+            ['layout', 'layout.html'],
+            ['dashboard', 'dashboard.html'],
+        ]);
+
         $this->assertInstanceOf(Response::class, ($this->action)($request));
     }
 
@@ -66,6 +73,11 @@ class DashboardActionTest extends TestCase
     {
         $request = new Request();
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
+
+        $this->templateRegistry->method('getTemplate')->willReturnMap([
+            ['ajax', 'ajax.html'],
+            ['dashboard', 'dashboard.html'],
+        ]);
 
         $this->assertInstanceOf(Response::class, ($this->action)($request));
     }

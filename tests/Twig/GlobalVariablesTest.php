@@ -17,11 +17,15 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Twig\GlobalVariables;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @author Ahmet Akbana <ahmetakbana@gmail.com>
+ *
+ * NEXT_MAJOR: Remove this class.
+ *
+ * @group legacy
  */
 class GlobalVariablesTest extends TestCase
 {
@@ -88,13 +92,12 @@ class GlobalVariablesTest extends TestCase
             ->with('sonata.page.admin.page')
             ->willReturn($this->admin);
 
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $container->expects($this->once())
-            ->method('get')
-            ->with('sonata.admin.pool')
-            ->willReturn($this->pool);
+        $container = new Container();
+        $container->set('sonata.admin.pool', $this->pool);
 
         $globalVariables = new GlobalVariables($container);
+
+        $this->assertSame($this->pool, $globalVariables->getAdminPool());
 
         $globalVariables->url($this->code, $this->action, ['foo']);
     }

@@ -30,34 +30,15 @@ use Twig\Environment;
 class DeprecatedAdminListBlockServiceTest extends BlockServiceTestCase
 {
     /**
-     * @var Pool
-     */
-    private $pool;
-
-    /**
-     * @var TemplateRegistryInterface
-     */
-    private $templateRegistry;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->pool = $this->createMock(Pool::class);
-
-        $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
-    }
-
-    /**
-     * @expectedDeprecation Passing null as argument 2 to Sonata\AdminBundle\Block\AdminListBlockService::__construct() is deprecated since sonata-project/admin-bundle 3.x and will throw a \TypeError in version 4.0. You must pass an instance of Sonata\AdminBundle\Admin\Pool instead.
+     * @expectedDeprecation Passing null as argument 2 to Sonata\AdminBundle\Block\AdminListBlockService::__construct() is deprecated since sonata-project/admin-bundle 3.76 and will throw a \TypeError in version 4.0. You must pass an instance of Sonata\AdminBundle\Admin\Pool instead.
      */
     public function testDefaultSettings(): void
     {
         $blockService = new AdminListBlockService(
-            $this->createMock(Environment::class),
+            $this->createStub(Environment::class),
             null,
-            $this->pool,
-            $this->templateRegistry->reveal()
+            $this->createStub(Pool::class),
+            $this->createStub(TemplateRegistryInterface::class)
         );
         $blockContext = $this->getBlockContext($blockService);
 
@@ -67,15 +48,15 @@ class DeprecatedAdminListBlockServiceTest extends BlockServiceTestCase
     }
 
     /**
-     * @expectedDeprecation Passing null as argument 2 to Sonata\AdminBundle\Block\AdminListBlockService::__construct() is deprecated since sonata-project/admin-bundle 3.x and will throw a \TypeError in version 4.0. You must pass an instance of Sonata\AdminBundle\Admin\Pool instead.
+     * @expectedDeprecation Passing null as argument 2 to Sonata\AdminBundle\Block\AdminListBlockService::__construct() is deprecated since sonata-project/admin-bundle 3.76 and will throw a \TypeError in version 4.0. You must pass an instance of Sonata\AdminBundle\Admin\Pool instead.
      */
     public function testOverriddenDefaultSettings(): void
     {
         $blockService = new FakeBlockService(
-            $this->createMock(Environment::class),
+            $this->createStub(Environment::class),
             null,
-            $this->pool,
-            $this->templateRegistry->reveal()
+            $this->createStub(Pool::class),
+            $this->createStub(TemplateRegistryInterface::class)
         );
         $blockContext = $this->getBlockContext($blockService);
 

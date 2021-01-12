@@ -58,12 +58,18 @@ class FormMapper extends BaseGroupedMapper
     /**
      * @param FormBuilderInterface|string $name
      * @param string|null                 $type
+     * @param array<string, mixed>        $options
+     * @param array<string, mixed>        $fieldDescriptionOptions
      *
-     * @return $this
+     * @return static
      */
     public function add($name, $type = null, array $options = [], array $fieldDescriptionOptions = [])
     {
         if (!$this->shouldApply()) {
+            return $this;
+        }
+
+        if (isset($fieldDescriptionOptions['role']) && !$this->admin->isGranted($fieldDescriptionOptions['role'])) {
             return $this;
         }
 
@@ -87,9 +93,7 @@ class FormMapper extends BaseGroupedMapper
             $type = CollectionType::class;
         }
 
-        $label = $fieldName;
-
-        $group = $this->addFieldToCurrentGroup($label);
+        $group = $this->addFieldToCurrentGroup($fieldName);
 
         // Try to autodetect type
         if ($name instanceof FormBuilderInterface && null === $type) {
@@ -118,13 +122,17 @@ class FormMapper extends BaseGroupedMapper
         }
 
         if ($name instanceof FormBuilderInterface) {
+            $child = $name;
             $type = null;
             $options = [];
         } else {
-            $name = $fieldDescription->getName();
+            $child = $fieldDescription->getName();
 
             // Note that the builder var is actually the formContractor:
-            $options = array_replace_recursive($this->builder->getDefaultOptions($type, $fieldDescription) ?? [], $options);
+            $options = array_replace_recursive(
+                $this->builder->getDefaultOptions($type, $fieldDescription, $options),
+                $options
+            );
 
             // be compatible with mopa if not installed, avoid generating an exception for invalid option
             // force the default to false ...
@@ -133,17 +141,27 @@ class FormMapper extends BaseGroupedMapper
             }
 
             if (!isset($options['label'])) {
-                $options['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($name, 'form', 'label');
+                /*
+                 * NEXT_MAJOR: Replace $child by $name in the next line.
+                 * And add the following BC-break in the upgrade note:
+                 *
+                 * The form label are now correctly using the label translator strategy
+                 * for field with `.` (which won't be replaced by `__`). For instance,
+                 * with the underscore label strategy, the label `foo.barBaz` was
+                 * previously `form.label_foo__bar_baz` and now is `form.label_foo_bar_baz`
+                 * to be consistent with others labels like `show.label_foo_bar_baz`.
+                 */
+                $options['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($child, 'form', 'label');
             }
 
             // NEXT_MAJOR: Remove this block.
-            if (isset($options['help'])) {
+            if (isset($options['help']) && !isset($options['help_html'])) {
                 $containsHtml = $options['help'] !== strip_tags($options['help']);
 
-                if (!isset($options['help_html']) && $containsHtml) {
+                if ($containsHtml) {
                     @trigger_error(
                         'Using HTML syntax within the "help" option and not setting the "help_html" option to "true" is deprecated'
-                        .' since sonata-project/admin-bundle 3.x and it will not work in version 4.0.',
+                        .' since sonata-project/admin-bundle 3.74 and it will not work in version 4.0.',
                         E_USER_DEPRECATED
                     );
 
@@ -153,10 +171,7 @@ class FormMapper extends BaseGroupedMapper
         }
 
         $this->admin->addFormFieldDescription($fieldName, $fieldDescription);
-
-        if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
-            $this->formBuilder->add($name, $type, $options);
-        }
+        $this->formBuilder->add($child, $type, $options);
 
         return $this;
     }
@@ -175,6 +190,9 @@ class FormMapper extends BaseGroupedMapper
         return $this->formBuilder->has($key);
     }
 
+    /**
+     * @return string[]
+     */
     final public function keys()
     {
         return array_keys($this->formBuilder->all());
@@ -191,47 +209,6 @@ class FormMapper extends BaseGroupedMapper
     }
 
     /**
-     * Removes a group.
-     *
-     * @param string $group          The group to delete
-     * @param string $tab            The tab the group belongs to, defaults to 'default'
-     * @param bool   $deleteEmptyTab Whether or not the Tab should be deleted, when the deleted group leaves the tab empty after deletion
-     *
-     * @return $this
-     */
-    public function removeGroup($group, $tab = 'default', $deleteEmptyTab = false)
-    {
-        $groups = $this->getGroups();
-
-        // When the default tab is used, the tabname is not prepended to the index in the group array
-        if ('default' !== $tab) {
-            $group = sprintf('%s.%s', $tab, $group);
-        }
-
-        if (isset($groups[$group])) {
-            foreach ($groups[$group]['fields'] as $field) {
-                $this->remove($field);
-            }
-        }
-        unset($groups[$group]);
-
-        $tabs = $this->getTabs();
-        $key = array_search($group, $tabs[$tab]['groups'], true);
-
-        if (false !== $key) {
-            unset($tabs[$tab]['groups'][$key]);
-        }
-        if ($deleteEmptyTab && 0 === \count($tabs[$tab]['groups'])) {
-            unset($tabs[$tab]);
-        }
-
-        $this->setTabs($tabs);
-        $this->setGroups($groups);
-
-        return $this;
-    }
-
-    /**
      * @return FormBuilderInterface
      */
     public function getFormBuilder()
@@ -240,8 +217,9 @@ class FormMapper extends BaseGroupedMapper
     }
 
     /**
-     * @param string $name
-     * @param mixed  $type
+     * @param string               $name
+     * @param mixed                $type
+     * @param array<string, mixed> $options
      *
      * @return FormBuilderInterface
      */
@@ -253,14 +231,14 @@ class FormMapper extends BaseGroupedMapper
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0. Use Symfony Form "help" option instead.
+     * @deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0. Use Symfony Form "help" option instead.
      *
      * @return FormMapper
      */
     public function setHelps(array $helps = [])
     {
         @trigger_error(sprintf(
-            'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+            'The "%s()" method is deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0.'
             .' Use Symfony Form "help" option instead.',
             __METHOD__
         ), E_USER_DEPRECATED);
@@ -275,7 +253,7 @@ class FormMapper extends BaseGroupedMapper
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0. Use Symfony Form "help" option instead.
+     * @deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0. Use Symfony Form "help" option instead.
      *
      * @return FormMapper
      */
@@ -283,7 +261,7 @@ class FormMapper extends BaseGroupedMapper
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[2] ?? null)) {
             @trigger_error(sprintf(
-                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0.'
                 .' Use Symfony Form "help" option instead.',
                 __METHOD__
             ), E_USER_DEPRECATED);

@@ -75,12 +75,7 @@ class ExtensionCompilerPassTest extends TestCase
         $this->assertTrue($container->hasParameter(sprintf('%s.extension.map', $this->root)));
         $this->assertIsArray($extensionMap = $container->getParameter(sprintf('%s.extension.map', $this->root)));
 
-        $this->assertArrayHasKey('admins', $extensionMap);
-        $this->assertArrayHasKey('excludes', $extensionMap);
-        $this->assertArrayHasKey('implements', $extensionMap);
-        $this->assertArrayHasKey('extends', $extensionMap);
-        $this->assertArrayHasKey('instanceof', $extensionMap);
-        $this->assertArrayHasKey('uses', $extensionMap);
+        $this->assertSame([], $extensionMap);
     }
 
     /**
@@ -106,6 +101,7 @@ class ExtensionCompilerPassTest extends TestCase
         $this->assertArrayHasKey('instanceof', $extensionMap);
         $this->assertArrayHasKey('uses', $extensionMap);
 
+        $this->assertEmpty($extensionMap['global']);
         $this->assertEmpty($extensionMap['admins']);
         $this->assertEmpty($extensionMap['excludes']);
         $this->assertEmpty($extensionMap['implements']);
@@ -245,6 +241,7 @@ class ExtensionCompilerPassTest extends TestCase
         $extensionsPass->process($container);
         $container->compile();
 
+        $this->assertTrue($container->hasDefinition('sonata_extension_global'));
         $this->assertTrue($container->hasDefinition('sonata_extension_publish'));
         $this->assertTrue($container->hasDefinition('sonata_extension_history'));
         $this->assertTrue($container->hasDefinition('sonata_extension_order'));
@@ -255,6 +252,7 @@ class ExtensionCompilerPassTest extends TestCase
         $this->assertTrue($container->hasDefinition('sonata_article_admin'));
         $this->assertTrue($container->hasDefinition('sonata_news_admin'));
 
+        $globalExtension = $container->get('sonata_extension_global');
         $securityExtension = $container->get('sonata_extension_security');
         $publishExtension = $container->get('sonata_extension_publish');
         $historyExtension = $container->get('sonata_extension_history');
@@ -263,28 +261,31 @@ class ExtensionCompilerPassTest extends TestCase
 
         $def = $container->get('sonata_post_admin');
         $extensions = $def->getExtensions();
-        $this->assertCount(4, $extensions);
+        $this->assertCount(5, $extensions);
 
         $this->assertSame($historyExtension, $extensions[0]);
         $this->assertSame($publishExtension, $extensions[2]);
         $this->assertSame($securityExtension, $extensions[3]);
+        $this->assertSame($globalExtension, $extensions[4]);
 
         $def = $container->get('sonata_article_admin');
         $extensions = $def->getExtensions();
-        $this->assertCount(5, $extensions);
+        $this->assertCount(6, $extensions);
 
         $this->assertSame($filterExtension, $extensions[0]);
         $this->assertSame($securityExtension, $extensions[1]);
         $this->assertSame($publishExtension, $extensions[2]);
         $this->assertSame($orderExtension, $extensions[4]);
+        $this->assertSame($globalExtension, $extensions[5]);
 
         $def = $container->get('sonata_news_admin');
         $extensions = $def->getExtensions();
-        $this->assertCount(5, $extensions);
+        $this->assertCount(6, $extensions);
         $this->assertSame($historyExtension, $extensions[0]);
-        $this->assertSame($securityExtension, $extensions[1]);
-        $this->assertSame($filterExtension, $extensions[2]);
+        $this->assertSame($securityExtension, $extensions[2]);
+        $this->assertSame($filterExtension, $extensions[3]);
         $this->assertSame($orderExtension, $extensions[4]);
+        $this->assertSame($globalExtension, $extensions[5]);
     }
 
     /**
@@ -308,13 +309,14 @@ class ExtensionCompilerPassTest extends TestCase
         $container->compile();
     }
 
-    /**
-     * @return array
-     */
-    protected function getConfig()
+    protected function getConfig(): array
     {
         $config = [
             'extensions' => [
+                'sonata_extension_global' => [
+                    'global' => true,
+                    'priority' => -255,
+                ],
                 'sonata_extension_publish' => [
                     'admins' => ['sonata_post_admin'],
                     'implements' => [Publishable::class],
@@ -419,6 +421,10 @@ class ExtensionCompilerPassTest extends TestCase
         $extensionClass = \get_class($this->createMock(AdminExtensionInterface::class));
 
         $container
+            ->register('sonata_extension_global')
+            ->setPublic(true)
+            ->setClass($extensionClass);
+        $container
             ->register('sonata_extension_publish')
             ->setPublic(true)
             ->setClass($extensionClass);
@@ -469,7 +475,7 @@ class MockAbstractServiceAdmin extends AbstractAdmin
 {
     private $extraArgument;
 
-    public function __construct($code, $class, $baseControllerName, $extraArgument)
+    public function __construct($code, $class, $baseControllerName, $extraArgument = null)
     {
         $this->extraArgument = $extraArgument;
 

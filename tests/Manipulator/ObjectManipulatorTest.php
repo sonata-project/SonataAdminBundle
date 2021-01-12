@@ -88,10 +88,18 @@ class ObjectManipulatorTest extends TestCase
         ObjectManipulator::setObject($instance, $object, $fieldDescription);
     }
 
-    public function testSetObjectWithoutMappedBy(): void
+    public function testSetObjectWithNullMapped(): void
     {
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['mappedBy' => null]);
+
+        ObjectManipulator::setObject(new \stdClass(), new \stdClass(), $fieldDescription);
+    }
+
+    public function testSetObjectWithoutMappedBy(): void
+    {
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
+        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn([]);
 
         ObjectManipulator::setObject(new \stdClass(), new \stdClass(), $fieldDescription);
     }
@@ -111,5 +119,39 @@ class ObjectManipulatorTest extends TestCase
         $object1->expects($this->once())->method('getParent')->willReturn($object2);
 
         ObjectManipulator::setObject($instance, $object1, $fieldDescription);
+    }
+
+    public function testSetObjectProperty(): void
+    {
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
+        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['mappedBy' => 'parent']);
+        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([]);
+
+        $object = new \stdClass();
+        $instance = new \stdClass();
+        $instance->parent = null;
+
+        ObjectManipulator::setObject($instance, $object, $fieldDescription);
+
+        self::assertSame($object, $instance->parent);
+    }
+
+    public function testSetObjectPropertyWithParentAssociation(): void
+    {
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
+        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['mappedBy' => 'fooBar']);
+        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([['fieldName' => 'parent']]);
+
+        $object2 = new \stdClass();
+
+        $instance = new \stdClass();
+        $instance->fooBar = null;
+
+        $object1 = new \stdClass();
+        $object1->parent = $object2;
+
+        ObjectManipulator::setObject($instance, $object1, $fieldDescription);
+
+        self::assertSame($object2, $instance->fooBar);
     }
 }

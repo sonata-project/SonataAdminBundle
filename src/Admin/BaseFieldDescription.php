@@ -59,6 +59,10 @@ use Sonata\AdminBundle\Exception\NoValueException;
  *   - field_options (o): the options to give to the widget
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @method void setFieldMapping(array $fieldMapping)
+ * @method void setAssociationMapping(array $associationMapping)
+ * @method void setParentAssociationMappings(array $parentAssociationMappings)
  */
 abstract class BaseFieldDescription implements FieldDescriptionInterface
 {
@@ -83,17 +87,17 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $fieldName;
 
     /**
-     * @var array the ORM association mapping
+     * @var array the association mapping
      */
     protected $associationMapping = [];
 
     /**
-     * @var array the ORM field information
+     * @var array the field information
      */
     protected $fieldMapping = [];
 
     /**
-     * @var array the ORM parent mapping association
+     * @var array the parent mapping association
      */
     protected $parentAssociationMappings = [];
 
@@ -132,8 +136,70 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     private static $fieldGetters = [];
 
+    /**
+     * NEXT_MAJOR: Remove the null default value for $name and restrict param type to `string`.
+     */
+    public function __construct(
+        ?string $name = null,
+        array $options = [],
+        array $fieldMapping = [],
+        array $associationMapping = [],
+        array $parentAssociationMappings = [],
+        ?string $fieldName = null
+    ) {
+        // NEXT_MAJOR: Remove this check and keep the else part.
+        if (null === $name) {
+            @trigger_error(sprintf(
+                'Omitting the argument 1 for "%s()" or passing other type than "string" is deprecated'.
+                ' since sonata-project/admin-bundle 3.78. It will accept only string in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        } else {
+            $this->setName($name);
+
+            if (null === $fieldName) {
+                // NEXT_MAJOR: Remove this line and uncomment the following.
+                $fieldName = substr(strrchr('.'.$name, '.'), 1);
+//                $fieldName = $name;
+            }
+
+            // NEXT_MAJOR: Remove 'sonata_deprecation_mute' and the phpstan-ignore.
+            $this->setFieldName($fieldName, 'sonata_deprecation_mute');
+        }
+
+        $this->setOptions($options);
+
+        if ([] !== $fieldMapping) {
+            $this->setFieldMapping($fieldMapping);
+        }
+
+        if ([] !== $associationMapping) {
+            $this->setAssociationMapping($associationMapping);
+        }
+
+        if ([] !== $parentAssociationMappings) {
+            $this->setParentAssociationMappings($parentAssociationMappings);
+        }
+    }
+
+    // NEXT_MAJOR: Uncomment the following lines.
+    // abstract protected function setFieldMapping(array $fieldMapping): void;
+    // abstract protected function setAssociationMapping(array $associationMapping): void;
+    // abstract protected function setParentAssociationMappings(array $parentAssociationMappings): void;
+
+    /**
+     * NEXT_MAJOR: Change the visibility to private.
+     */
     public function setFieldName($fieldName)
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
+            @trigger_error(sprintf(
+                'The %s() method is deprecated since sonata-project/admin-bundle 3.84'
+                .' and will become private in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         $this->fieldName = $fieldName;
     }
 
@@ -146,8 +212,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     {
         $this->name = $name;
 
+        // NEXT_MAJOR: Remove this code since the field name will be set in the construct.
         if (!$this->getFieldName()) {
-            $this->setFieldName(substr(strrchr('.'.$name, '.'), 1));
+            $this->setFieldName(substr(strrchr('.'.$name, '.'), 1), 'sonata_deprecation_mute');
         }
     }
 
@@ -158,7 +225,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function getOption($name, $default = null)
     {
-        return isset($this->options[$name]) ? $this->options[$name] : $default;
+        return $this->options[$name] ?? $default;
     }
 
     public function setOption($name, $value)
@@ -184,7 +251,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         // set help if provided
         if (isset($options['help'])) {
             @trigger_error(sprintf(
-                'Passing "help" option to "%s()" is deprecated since sonata-project/admin-bundle 3.x'
+                'Passing "help" option to "%s()" is deprecated since sonata-project/admin-bundle 3.74'
                 .' and the option will be removed in 4.0.'
                 .' Use Symfony Form "help" option instead.',
                 __METHOD__
@@ -314,10 +381,39 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return null !== $this->associationAdmin;
     }
 
+    /**
+     * NEXT_MAJOR: Change the visibility to protected.
+     *
+     * @param object|null $object
+     * @param string      $fieldName
+     *
+     * @throws NoValueException
+     *
+     * @return mixed
+     */
     public function getFieldValue($object, $fieldName)
     {
         if ($this->isVirtual() || null === $object) {
             return null;
+        }
+
+        $dotPos = strpos($fieldName, '.');
+        if ($dotPos > 0) {
+            $child = $this->getFieldValue($object, substr($fieldName, 0, $dotPos));
+            if (null !== $child && !\is_object($child)) {
+                throw new NoValueException(sprintf(
+                    <<<'EXCEPTION'
+                    Unexpected value when accessing to the property "%s" on the class "%s" for the field "%s".
+                    Expected object|null, got %s.
+                    EXCEPTION,
+                    $fieldName,
+                    \get_class($object),
+                    $this->getName(),
+                    \gettype($child)
+                ));
+            }
+
+            return $this->getFieldValue($child, substr($fieldName, $dotPos + 1));
         }
 
         $getters = [];
@@ -419,8 +515,18 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->setOptions(array_merge_recursive($this->options, $options));
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0.
+     */
     public function setMappingType($mappingType)
     {
+        @trigger_error(sprintf(
+            'The "%s()" method is deprecated since version 3.83 and will be removed in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         $this->mappingType = $mappingType;
     }
 
@@ -458,7 +564,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      *
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0. Use Symfony Form "help" option instead.
+     * @deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0. Use Symfony Form "help" option instead.
      *
      * @param string $help
      */
@@ -466,7 +572,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
             @trigger_error(sprintf(
-                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0.'
                 .' Use Symfony Form "help" option instead.',
                 __METHOD__
             ), E_USER_DEPRECATED);
@@ -475,13 +581,22 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->help = $help;
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.76 and will be removed in version 4.0. Use Symfony Form "help" option instead.
+     *
+     * @return string
+     */
     public function getHelp()
     {
-        @trigger_error(sprintf(
-            'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
-            .' Use Symfony Form "help" option instead.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
+        if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0.'
+                .' Use Symfony Form "help" option instead.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
 
         return $this->help;
     }
@@ -556,7 +671,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
         if ('getter' === self::$fieldGetters[$getterKey]['method']) {
             return $object->{self::$fieldGetters[$getterKey]['getter']}(...$parameters);
-        } elseif ('call' === self::$fieldGetters[$getterKey]['method']) {
+        }
+
+        if ('call' === self::$fieldGetters[$getterKey]['method']) {
             return $object->{$fieldName}(...$parameters);
         }
 

@@ -28,6 +28,9 @@ use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
  */
 class ShowMapper extends BaseGroupedMapper
 {
+    /**
+     * @var FieldDescriptionCollection
+     */
     protected $list;
 
     /**
@@ -47,10 +50,11 @@ class ShowMapper extends BaseGroupedMapper
     /**
      * @param FieldDescriptionInterface|string $name
      * @param string|null                      $type
+     * @param array<string, mixed>             $fieldDescriptionOptions
      *
      * @throws \LogicException
      *
-     * @return $this
+     * @return static
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = [])
     {
@@ -81,7 +85,7 @@ class ShowMapper extends BaseGroupedMapper
         } else {
             throw new \TypeError(
                 'Unknown field name in show mapper.'
-                .' Field name should be either of FieldDescriptionInterface interface or string.'
+                    .' Field name should be either of FieldDescriptionInterface interface or string.'
             );
         }
 
@@ -114,48 +118,6 @@ class ShowMapper extends BaseGroupedMapper
     {
         $this->admin->removeShowFieldDescription($key);
         $this->list->remove($key);
-
-        return $this;
-    }
-
-    /**
-     * Removes a group.
-     *
-     * @param string $group          The group to delete
-     * @param string $tab            The tab the group belongs to, defaults to 'default'
-     * @param bool   $deleteEmptyTab Whether or not the parent Tab should be deleted too,
-     *                               when the deleted group leaves the tab empty after deletion
-     *
-     * @return $this
-     */
-    public function removeGroup($group, $tab = 'default', $deleteEmptyTab = false)
-    {
-        $groups = $this->getGroups();
-
-        // When the default tab is used, the tabname is not prepended to the index in the group array
-        if ('default' !== $tab) {
-            $group = sprintf('%s.%s', $tab, $group);
-        }
-
-        if (isset($groups[$group])) {
-            foreach ($groups[$group]['fields'] as $field) {
-                $this->remove($field);
-            }
-        }
-        unset($groups[$group]);
-
-        $tabs = $this->getTabs();
-        $key = array_search($group, $tabs[$tab]['groups'], true);
-
-        if (false !== $key) {
-            unset($tabs[$tab]['groups'][$key]);
-        }
-        if ($deleteEmptyTab && 0 === \count($tabs[$tab]['groups'])) {
-            unset($tabs[$tab]);
-        }
-
-        $this->setTabs($tabs);
-        $this->setGroups($groups);
 
         return $this;
     }

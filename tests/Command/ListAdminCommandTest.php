@@ -45,8 +45,7 @@ class ListAdminCommandTest extends TestCase
         $container->set('acme.admin.foo', $admin1);
         $container->set('acme.admin.bar', $admin2);
 
-        $pool = new Pool($container, '', '');
-        $pool->setAdminServiceIds(['acme.admin.foo', 'acme.admin.bar']);
+        $pool = new Pool($container, ['acme.admin.foo', 'acme.admin.bar']);
         $command = new ListAdminCommand($pool);
 
         $application->add($command);
@@ -55,6 +54,6 @@ class ListAdminCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertRegExp('@Admin services:\s+acme.admin.foo\s+Acme\\\Entity\\\Foo\s+acme.admin.bar\s+Acme\\\Entity\\\Bar@', $commandTester->getDisplay());
+        $this->assertMatchesRegularExpression('@Admin services:\s+acme.admin.foo\s+Acme\\\Entity\\\Foo\s+acme.admin.bar\s+Acme\\\Entity\\\Bar@', $commandTester->getDisplay());
     }
 }

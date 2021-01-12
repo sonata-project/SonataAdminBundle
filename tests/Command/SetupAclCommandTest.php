@@ -42,8 +42,7 @@ class SetupAclCommandTest extends TestCase
 
     public function testExecute(): void
     {
-        $pool = new Pool($this->container, '', '');
-        $pool->setAdminServiceIds(['acme.admin.foo']);
+        $pool = new Pool($this->container, ['acme.admin.foo']);
 
         $command = new SetupAclCommand($pool, $this->createMock(AdminAclManipulatorInterface::class));
 
@@ -54,14 +53,13 @@ class SetupAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertRegExp('/Starting ACL AdminBundle configuration/', $commandTester->getDisplay());
+        $this->assertMatchesRegularExpression('/Starting ACL AdminBundle configuration/', $commandTester->getDisplay());
     }
 
     public function testExecuteWithException1(): void
     {
         $this->container->set('acme.admin.foo', null);
-        $pool = new Pool($this->container, '', '');
-        $pool->setAdminServiceIds(['acme.admin.foo']);
+        $pool = new Pool($this->container, ['acme.admin.foo']);
 
         $command = new SetupAclCommand($pool, $this->createMock(AdminAclManipulatorInterface::class));
 
@@ -72,19 +70,9 @@ class SetupAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             '@Starting ACL AdminBundle configuration\s+Warning : The admin class cannot be initiated from the command line\s+You have requested a non-existent service "acme.admin.foo".@',
             $commandTester->getDisplay()
         );
-    }
-
-    public function testExecuteWithException2(): void
-    {
-        $pool = new Pool($this->container, '', '');
-
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(sprintf('Argument 2 passed to %s::__construct() must implement interface %s, instance of %s given', SetupAclCommand::class, AdminAclManipulatorInterface::class, \stdClass::class));
-
-        new SetupAclCommand($pool, new \stdClass());
     }
 }

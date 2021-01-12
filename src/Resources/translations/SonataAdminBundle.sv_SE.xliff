@@ -498,6 +498,10 @@
                 <source>label_type_ends_with</source>
                 <target>slutar med</target>
             </trans-unit>
+            <trans-unit id="go_to_first_page">
+                <source>go_to_first_page</source>
+                <target>Gå till första sidan</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

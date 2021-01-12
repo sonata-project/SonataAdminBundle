@@ -25,9 +25,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchIndexException;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * @final since sonata-project/admin-bundle 3.52
@@ -59,6 +58,9 @@ class AdminType extends AbstractType
         $this->adminHelper = $adminHelper;
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $admin = clone $this->getAdmin($options);
@@ -78,7 +80,10 @@ class AdminType extends AbstractType
         // hack to make sure the subject is correctly set
         // https://github.com/sonata-project/SonataAdminBundle/pull/2076
         if (null === $builder->getData()) {
-            $p = new PropertyAccessor(false, true);
+            $propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
+                ->disableMagicCall()
+                ->enableExceptionOnInvalidIndex()
+                ->getPropertyAccessor();
 
             if ($admin->hasParentFieldDescription()) {
                 $parentFieldDescription = $admin->getParentFieldDescription();
@@ -105,10 +110,16 @@ class AdminType extends AbstractType
                     $parentSubject = $parentAdmin->getSubject();
 
                     try {
-                        $subject = $p->getValue($parentSubject, $parentPath.$path);
+                        $subject = $propertyAccessor->getValue($parentSubject, $parentPath.$path);
                     } catch (NoSuchIndexException $e) {
                         // no object here, we create a new one
-                        $subject = ObjectManipulator::setObject($admin->getNewInstance(), $parentSubject, $parentFieldDescription);
+                        $subject = $admin->getNewInstance();
+
+                        if ($options['collection_by_reference']) {
+                            $subject = ObjectManipulator::addInstance($parentSubject, $subject, $parentFieldDescription);
+                        } else {
+                            $subject = ObjectManipulator::setObject($subject, $parentSubject, $parentFieldDescription);
+                        }
                     }
                 }
             }
@@ -123,6 +134,9 @@ class AdminType extends AbstractType
         $builder->addModelTransformer(new ArrayToModelTransformer($admin->getModelManager(), $admin->getClass()));
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['btn_add'] = $options['btn_add'];
@@ -132,15 +146,8 @@ class AdminType extends AbstractType
     }
 
     /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
+     * @return void
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
-    }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -159,13 +166,14 @@ class AdminType extends AbstractType
             'btn_list' => 'link_list',
             'btn_delete' => 'link_delete',
             'btn_catalogue' => 'SonataAdminBundle',
+            'collection_by_reference' => true,
         ]);
     }
 
     /**
      * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
      *
-     * {@inheritdoc}
+     * @return string
      */
     public function getName()
     {
@@ -178,6 +186,8 @@ class AdminType extends AbstractType
     }
 
     /**
+     * @param array<string, mixed> $options
+     *
      * @throws \RuntimeException
      *
      * @return FieldDescriptionInterface
@@ -192,6 +202,8 @@ class AdminType extends AbstractType
     }
 
     /**
+     * @param array<string, mixed> $options
+     *
      * @return AdminInterface
      */
     protected function getAdmin(array $options)

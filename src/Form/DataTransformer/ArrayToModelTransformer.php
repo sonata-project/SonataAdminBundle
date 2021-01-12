@@ -20,6 +20,8 @@ use Symfony\Component\Form\DataTransformerInterface;
  * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
  */
 class ArrayToModelTransformer implements DataTransformerInterface
 {
@@ -30,11 +32,15 @@ class ArrayToModelTransformer implements DataTransformerInterface
 
     /**
      * @var string
+     *
+     * @phpstan-var class-string<T>
      */
     protected $className;
 
     /**
      * @param string $className
+     *
+     * @phpstan-param class-string<T> $className
      */
     public function __construct(ModelManagerInterface $modelManager, $className)
     {
@@ -42,23 +48,41 @@ class ArrayToModelTransformer implements DataTransformerInterface
         $this->className = $className;
     }
 
-    public function reverseTransform($array)
+    /**
+     * @param object|array<string, mixed>|null $value
+     *
+     * @return object
+     *
+     * @phpstan-param T|array<string, mixed>|null $value
+     *
+     * @phpstan-return T
+     */
+    public function reverseTransform($value)
     {
         // when the object is created the form return an array
         // one the object is persisted, the edit $array is the user instance
-        if ($array instanceof $this->className) {
-            return $array;
+        if ($value instanceof $this->className) {
+            return $value;
         }
 
         $instance = new $this->className();
 
-        if (!\is_array($array)) {
+        if (!\is_array($value)) {
             return $instance;
         }
 
-        return $this->modelManager->modelReverseTransform($this->className, $array);
+        return $this->modelManager->modelReverseTransform($this->className, $value);
     }
 
+    /**
+     * @param object|null $value
+     *
+     * @return object|null
+     *
+     * @phpstan-param T|null $value
+     *
+     * @phpstan-return T|null
+     */
     public function transform($value)
     {
         return $value;

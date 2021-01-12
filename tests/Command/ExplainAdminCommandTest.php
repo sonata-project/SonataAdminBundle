@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Command;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
@@ -146,8 +145,7 @@ class ExplainAdminCommandTest extends TestCase
 
         $container->set('acme.admin.foo', $this->admin);
 
-        $pool = new Pool($container, '', '');
-        $pool->setAdminServiceIds(['acme.admin.foo', 'acme.admin.bar']);
+        $pool = new Pool($container, ['acme.admin.foo', 'acme.admin.bar']);
 
         $this->validatorFactory = $this->createMock(MetadataFactoryInterface::class);
 
@@ -278,7 +276,7 @@ class ExplainAdminCommandTest extends TestCase
         $command = $this->application->find('sonata:admin:explain');
         $commandTester = new CommandTester($command);
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Admin service "nonexistent.service" not found in admin pool. Did you mean "acme.admin.bar" or one of those: []');
 
         $commandTester->execute(['command' => $command->getName(), 'admin' => 'nonexistent.service']);

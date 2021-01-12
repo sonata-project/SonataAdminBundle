@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\AdminSearchCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
@@ -33,11 +34,9 @@ class SonataAdminBundleTest extends TestCase
 {
     public function testBuild(): void
     {
-        $containerBuilder = $this->getMockBuilder(ContainerBuilder::class)
-            ->setMethods(['addCompilerPass'])
-            ->getMock();
+        $containerBuilder = $this->createMock(ContainerBuilder::class);
 
-        $containerBuilder->expects($this->exactly(7))
+        $containerBuilder->expects($this->exactly(8))
             ->method('addCompilerPass')
             ->willReturnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION): void {
                 if ($pass instanceof AddDependencyCallsCompilerPass) {
@@ -45,6 +44,10 @@ class SonataAdminBundleTest extends TestCase
                 }
 
                 if ($pass instanceof AddFilterTypeCompilerPass) {
+                    return;
+                }
+
+                if ($pass instanceof AdminSearchCompilerPass) {
                     return;
                 }
 
@@ -72,6 +75,7 @@ class SonataAdminBundleTest extends TestCase
                     'CompilerPass is not one of the expected types. Expects "%s", "%s", "%s", "%s", "%s", "%s" or "%s", but got "%s".',
                     AddDependencyCallsCompilerPass::class,
                     AddFilterTypeCompilerPass::class,
+                    AdminSearchCompilerPass::class,
                     ExtensionCompilerPass::class,
                     GlobalVariablesCompilerPass::class,
                     ModelManagerCompilerPass::class,

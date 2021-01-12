@@ -34,6 +34,9 @@ services:
             - '@form.factory'
             - '@sonata.admin.pager.test'
 
+    sonata.admin.data_source.test:
+        class: Sonata\AdminBundle\Tests\App\Exporter\DataSource
+
     Sonata\AdminBundle\Tests\App\Admin\FooAdmin:
         arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, ~]
         tags:

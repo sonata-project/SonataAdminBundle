@@ -19,7 +19,7 @@ file that was distributed with this source code.
     <div id="field_container_{{ id }}" class="field-container">
         {% if sonata_admin.edit == 'list' %}
             <span id="field_widget_{{ id }}" class="field-short-description">
-                {% if sonata_admin.admin.id(sonata_admin.value) %}
+                {% if sonata_admin.value and sonata_admin.field_description.associationadmin.id(sonata_admin.value) is not null %}
                     {{ render(path('sonata_admin_short_object_information', {
                         'code':     sonata_admin.field_description.associationadmin.code,
                         'objectId': sonata_admin.field_description.associationadmin.id(sonata_admin.value),

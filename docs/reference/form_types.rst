@@ -61,7 +61,7 @@ The available options are:
   string to designate which field to use for the choice values.
 
 ``query``
-  defaults to ``null``. You can set this to a QueryBuilder instance in order to
+  defaults to ``null``. You can set this to a ProxyQueryInterface instance in order to
   define a custom query for retrieving the available options.
 
 ``template``
@@ -267,20 +267,41 @@ The available options are:
 
   From the ``$admin`` parameter it is possible to get the ``Datagrid`` and the ``Request``::
 
-    $formMapper
-        ->add('category', ModelAutocompleteType::class, [
-            'property' => 'title',
-            'callback' => function ($admin, $property, $value) {
-                $datagrid = $admin->getDatagrid();
-                $queryBuilder = $datagrid->getQuery();
-                $queryBuilder
-                    ->andWhere($queryBuilder->getRootAlias() . '.foo=:barValue')
-                    ->setParameter('barValue', $admin->getRequest()->get('bar'))
-                ;
-                $datagrid->setValue($property, null, $value);
-            },
-        ])
-    ;
+      $formMapper
+          ->add('category', ModelAutocompleteType::class, [
+              'property' => 'title',
+              'callback' => static function (AdminInterface $admin, string $property, $value): void {
+                  $datagrid = $admin->getDatagrid();
+                  $query = $datagrid->getQuery();
+                  $query
+                      ->andWhere($query->getRootAlias() . '.foo=:barValue')
+                      ->setParameter('barValue', $admin->getRequest()->get('bar'))
+                  ;
+                  $datagrid->setValue($property, null, $value);
+              },
+          ])
+      ;
+
+  If you want to dynamically change the ``property`` being filtered on to something else,
+  you can use a prefix system, as follows.
+  When the user types **id: 20** the property used for filtering is "id".
+  When they type **username: awesome_user_name**, it will be "username"::
+
+      $formMapper
+          ->add('category', ModelAutocompleteType::class, [
+              'property' => 'title',
+              'callback' => static function (AdminInterface $admin, string $property, string $value): void {
+                  $datagrid = $admin->getDatagrid();
+
+                  $valueParts = explode(':', $value);
+                  if (count($valueParts) === 2 && in_array($valueParts[0], ['id', 'email', 'username'])) {
+                      [$property, $value] = $valueParts;
+                  }
+
+                  $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $value);
+              },
+          ])
+      ;
 
 ``to_string_callback``
   defaults to ``null``. Callable function that can be used to change the default toString behavior of entity::

@@ -26,6 +26,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Filter;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilder;
 
@@ -86,8 +87,7 @@ class DatagridMapperTest extends TestCase
         $modelManager
             ->method('getNewFieldDescriptionInstance')
             ->willReturnCallback(function (?string $class, string $name, array $options = []): BaseFieldDescription {
-                $fieldDescription = $this->getFieldDescriptionMock();
-                $fieldDescription->setName($name);
+                $fieldDescription = $this->getFieldDescriptionMock($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
@@ -102,6 +102,17 @@ class DatagridMapperTest extends TestCase
             ->willReturnCallback(static function (string $name, ?object $object = null): bool {
                 return self::DEFAULT_GRANTED_ROLE === $name;
             });
+
+        $labelTranslatorStrategy = $this->createStub(LabelTranslatorStrategyInterface::class);
+        $labelTranslatorStrategy->method('getLabel')->willReturnCallback(
+            static function ($label, $context = '', $type = ''): string {
+                return sprintf('%s.%s_%s', $context, $type, $label);
+            }
+        );
+
+        $admin
+            ->method('getLabelTranslatorStrategy')
+            ->willReturn($labelTranslatorStrategy);
 
         $this->datagridMapper = new DatagridMapper($datagridBuilder, $this->datagrid, $admin);
     }
@@ -134,10 +145,10 @@ class DatagridMapperTest extends TestCase
             'show_filter' => null,
             'advanced_filter' => true,
             'foo_default_option' => 'bar_default',
-            'label' => 'fooLabel',
-            'field_name' => 'fooFilterName',
             'placeholder' => 'short_object_description_placeholder',
             'link_parameters' => [],
+            'label' => 'fooLabel',
+            'field_name' => 'fooFilterName',
         ], $filter->getOptions());
     }
 
@@ -160,13 +171,13 @@ class DatagridMapperTest extends TestCase
             'show_filter' => null,
             'advanced_filter' => true,
             'foo_default_option' => 'bar_custom',
+            'placeholder' => 'short_object_description_placeholder',
+            'link_parameters' => [],
             'label' => 'fooLabel',
             'field_name' => 'fooFilterName',
             'foo_filter_option' => 'foo_filter_option_value',
             'field_options' => ['foo_field_option' => 'baz'],
             'field_type' => 'foo_field_type',
-            'placeholder' => 'short_object_description_placeholder',
-            'link_parameters' => [],
         ], $filter->getOptions());
     }
 
@@ -176,10 +187,11 @@ class DatagridMapperTest extends TestCase
 
         $this->assertTrue($this->datagridMapper->has('fooName'));
 
-        $fieldDescription = $this->datagridMapper->get('fooName');
+        $filter = $this->datagridMapper->get('fooName');
 
-        $this->assertInstanceOf(FilterInterface::class, $fieldDescription);
-        $this->assertSame('fooName', $fieldDescription->getName());
+        $this->assertInstanceOf(FilterInterface::class, $filter);
+        $this->assertSame('fooName', $filter->getName());
+        $this->assertSame('filter.label_fooName', $filter->getLabel());
     }
 
     public function testAddWithoutFieldName(): void
@@ -188,11 +200,11 @@ class DatagridMapperTest extends TestCase
 
         $this->assertTrue($this->datagridMapper->has('foo.bar'));
 
-        $fieldDescription = $this->datagridMapper->get('foo.bar');
+        $filter = $this->datagridMapper->get('foo.bar');
 
-        $this->assertInstanceOf(FilterInterface::class, $fieldDescription);
-        $this->assertSame('foo.bar', $fieldDescription->getName());
-        $this->assertSame('bar', $fieldDescription->getOption('field_name'));
+        $this->assertInstanceOf(FilterInterface::class, $filter);
+        $this->assertSame('foo.bar', $filter->getName());
+        $this->assertSame('bar', $filter->getOption('field_name'));
     }
 
     public function testAddRemove(): void
@@ -302,13 +314,9 @@ class DatagridMapperTest extends TestCase
         $this->assertTrue($this->datagridMapper->has('baz'));
     }
 
-    private function getFieldDescriptionMock(?string $name = null, ?string $label = null): BaseFieldDescription
+    private function getFieldDescriptionMock(string $name, ?string $label = null): BaseFieldDescription
     {
-        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class);
-
-        if (null !== $name) {
-            $fieldDescription->setName($name);
-        }
+        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name, []]);
 
         if (null !== $label) {
             $fieldDescription->setOption('label', $label);

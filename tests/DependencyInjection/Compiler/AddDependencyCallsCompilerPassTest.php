@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\Route\RoutesCache;
+use Sonata\AdminBundle\Tests\Fixtures\Controller\FooAdminController;
 use Sonata\BlockBundle\DependencyInjection\SonataBlockExtension;
 use Sonata\DoctrinePHPCRAdminBundle\Route\PathInfoBuilderSlashes;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -115,27 +116,21 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertTrue($dashboardGroupsSettings['sonata_group_three']['on_top']);
         $this->assertFalse($dashboardGroupsSettings['sonata_group_one']['keep_open']);
         $this->assertArrayHasKey('admin', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
-        $this->assertArrayHasKey('route', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
-        $this->assertArrayHasKey('label', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
         $this->assertArrayHasKey('route_params', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
         $this->assertContains('sonata_post_admin', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
-        $this->assertArrayHasKey('admin', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
         $this->assertArrayHasKey('route', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
         $this->assertArrayHasKey('label', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
         $this->assertArrayHasKey('route_params', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
         $this->assertContains('blog_name', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
         $this->assertContains('Blog', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
-        $this->assertSame('', $dashboardGroupsSettings['sonata_group_one']['items'][1]['admin']);
         $this->assertSame('blog_name', $dashboardGroupsSettings['sonata_group_one']['items'][1]['route']);
         $this->assertSame('Blog', $dashboardGroupsSettings['sonata_group_one']['items'][1]['label']);
         $this->assertSame([], $dashboardGroupsSettings['sonata_group_one']['items'][1]['route_params']);
-        $this->assertArrayHasKey('admin', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
         $this->assertArrayHasKey('route', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
         $this->assertArrayHasKey('label', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
         $this->assertArrayHasKey('route_params', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
         $this->assertContains('blog_article', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
         $this->assertContains('Article', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
-        $this->assertSame('', $dashboardGroupsSettings['sonata_group_one']['items'][2]['admin']);
         $this->assertSame('blog_article', $dashboardGroupsSettings['sonata_group_one']['items'][2]['route']);
         $this->assertSame('Article', $dashboardGroupsSettings['sonata_group_one']['items'][2]['label']);
         $this->assertSame(['articleId' => 3], $dashboardGroupsSettings['sonata_group_one']['items'][2]['route_params']);
@@ -175,6 +170,12 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertContains('sonata_post_admin', $adminServiceIds);
         $this->assertContains('sonata_article_admin', $adminServiceIds);
         $this->assertContains('sonata_news_admin', $adminServiceIds);
+
+        $poolDefinition = $container->getDefinition('sonata.admin.pool');
+
+        $this->assertContains('sonata_post_admin', $poolDefinition->getArgument(1));
+        $this->assertArrayHasKey('sonata_group_one', $poolDefinition->getArgument(2));
+        $this->assertArrayHasKey(News::class, $poolDefinition->getArgument(3));
 
         $this->assertArrayHasKey('sonata_group_one', $adminGroups);
         $this->assertArrayHasKey('label', $adminGroups['sonata_group_one']);
@@ -300,7 +301,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $callsPostAdmin = $container->getDefinition('sonata_post_admin')->getMethodCalls();
 
         foreach ($callsPostAdmin as $call) {
-            list($name, $parameters) = $call;
+            [$name, $parameters] = $call;
 
             switch ($name) {
                 case 'setTemplates':
@@ -325,7 +326,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $callsNewsAdmin = $container->getDefinition('sonata_news_admin')->getMethodCalls();
 
         foreach ($callsNewsAdmin as $call) {
-            list($name, $parameters) = $call;
+            [$name, $parameters] = $call;
 
             switch ($name) {
                 case 'setTemplates':
@@ -359,7 +360,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $callsReportOneAdmin = $container->getDefinition('sonata_report_one_admin')->getMethodCalls();
 
         foreach ($callsReportOneAdmin as $call) {
-            list($name, $parameters) = $call;
+            [$name, $parameters] = $call;
 
             if ('showMosaicButton' === $name) {
                 $this->assertFalse($parameters[0]);
@@ -369,7 +370,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $callsReportTwoAdmin = $container->getDefinition('sonata_report_two_admin')->getMethodCalls();
 
         foreach ($callsReportTwoAdmin as $call) {
-            list($name, $parameters) = $call;
+            [$name, $parameters] = $call;
 
             if ('showMosaicButton' === $name) {
                 $this->assertTrue($parameters[0]);
@@ -571,6 +572,24 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertSame('extra_argument_2', $definition->getArgument(3));
     }
 
+    public function testDefaultControllerCanBeChanged(): void
+    {
+        $container = $this->getContainer();
+
+        $config = $this->config;
+        $config['default_controller'] = FooAdminController::class;
+
+        $this->extension->load([$config], $container);
+
+        $compilerPass = new AddDependencyCallsCompilerPass();
+
+        $compilerPass->process($container);
+        $container->compile();
+
+        $definition = $container->getDefinition('sonata_without_controller');
+        $this->assertSame(FooAdminController::class, $definition->getArgument(2));
+    }
+
     /**
      * @return array
      */
@@ -767,6 +786,11 @@ class AddDependencyCallsCompilerPassTest extends TestCase
             ->setClass(MockAdmin::class)
             ->setArguments(['', ReportTwo::class, CRUDController::class])
             ->addTag('sonata.admin', ['group' => 'sonata_report_two_group', 'manager_type' => 'orm', 'show_mosaic_button' => true]);
+        $container
+            ->register('sonata_without_controller')
+            ->setClass(MockAdmin::class)
+            ->setArguments(['', ReportTwo::class, ''])
+            ->addTag('sonata.admin', ['group' => 'sonata_report_two_group', 'manager_type' => 'orm']);
 
         // translator
         $container

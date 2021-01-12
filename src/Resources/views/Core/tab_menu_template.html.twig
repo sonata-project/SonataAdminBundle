@@ -119,8 +119,9 @@
 {% endblock %}
 
 {% block label %}
+{# We use method accessor instead of ".label" since `item` implements `ArrayAccess` and could have a property called "label". #}
 {{-
-    item.label|trans(
+    item.getLabel()|trans(
         item.getExtra('translation_params', {}),
         item.getExtra(
             'translation_domain',

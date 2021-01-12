@@ -18,7 +18,6 @@ use Sonata\Form\Type\DateTimeRangeType as FormDateTimeRangeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -55,7 +54,7 @@ class DateTimeRangeType extends AbstractType
     /**
      * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
      *
-     * {@inheritdoc}
+     * @return string
      */
     public function getName()
     {
@@ -67,6 +66,9 @@ class DateTimeRangeType extends AbstractType
         return 'sonata_type_filter_datetime_range';
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -76,15 +78,8 @@ class DateTimeRangeType extends AbstractType
     }
 
     /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
+     * @return void
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
-    }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

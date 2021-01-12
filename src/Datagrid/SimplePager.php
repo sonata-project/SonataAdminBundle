@@ -24,6 +24,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 class SimplePager extends Pager
 {
     /**
+     * @var iterable<object>|null
+     */
+    protected $results;
+
+    /**
      * @var bool
      */
     protected $haveToPaginate;
@@ -58,7 +63,20 @@ class SimplePager extends Pager
         $this->setThreshold($threshold);
     }
 
+    /**
+     * NEXT_MAJOR: remove this method.
+     */
     public function getNbResults()
+    {
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.86 and will be removed in 4.0. Use countResults() instead.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
+        return $this->countResults();
+    }
+
+    public function countResults(): int
     {
         $n = ($this->getLastPage() - 1) * $this->getMaxPerPage();
         if ($this->getLastPage() === $this->getPage()) {
@@ -68,9 +86,42 @@ class SimplePager extends Pager
         return $n;
     }
 
+    public function getCurrentPageResults(): iterable
+    {
+        if (null !== $this->results) {
+            return $this->results;
+        }
+
+        $this->results = $this->getQuery()->execute();
+        $this->thresholdCount = \count($this->results);
+        if (\count($this->results) > $this->getMaxPerPage()) {
+            $this->haveToPaginate = true;
+
+            if ($this->results instanceof ArrayCollection) {
+                $this->results = new ArrayCollection($this->results->slice(0, $this->getMaxPerPage()));
+            } else {
+                $this->results = new ArrayCollection(\array_slice($this->results, 0, $this->getMaxPerPage()));
+            }
+        } else {
+            $this->haveToPaginate = false;
+        }
+
+        return $this->results;
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.87. To be removed in 4.0. Use getCurrentPageResults() instead.
+     */
     public function getResults($hydrationMode = null)
     {
-        if ($this->results) {
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0. Use getCurrentPageResults() instead.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
+        if (null !== $this->results) {
             return $this->results;
         }
 
@@ -99,14 +150,17 @@ class SimplePager extends Pager
     /**
      * {@inheritdoc}
      *
-     * @throws \RuntimeException the QueryBuilder is uninitialized
+     * @throws \RuntimeException the query is uninitialized
      */
     public function init()
     {
         if (!$this->getQuery()) {
-            throw new \RuntimeException('Uninitialized QueryBuilder');
+            throw new \RuntimeException('Uninitialized query');
         }
-        $this->resetIterator();
+
+        // NEXT_MAJOR: Remove this line and uncomment the following one instead.
+        $this->resetIterator('sonata_deprecation_mute');
+//        $this->haveToPaginate = false;
 
         if (0 === $this->getPage() || 0 === $this->getMaxPerPage()) {
             $this->setLastPage(0);
@@ -120,7 +174,10 @@ class SimplePager extends Pager
                 ? $this->getMaxPerPage() * $this->threshold + 1 : $this->getMaxPerPage() + 1;
 
             $this->getQuery()->setMaxResults($maxOffset);
-            $this->initializeIterator();
+
+            // NEXT_MAJOR: Remove this line and uncomment the following one instead.
+            $this->initializeIterator('sonata_deprecation_mute');
+//            $this->results = $this->getCurrentPageResults();
 
             $t = (int) ceil($this->thresholdCount / $this->getMaxPerPage()) + $this->getPage() - 1;
             $this->setLastPage(max(1, $t));
@@ -145,9 +202,21 @@ class SimplePager extends Pager
         return $this->threshold;
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.84
+     */
     protected function resetIterator()
     {
-        parent::resetIterator();
+        if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
+        parent::resetIterator('sonata_deprecation_mute');
         $this->haveToPaginate = false;
     }
 }

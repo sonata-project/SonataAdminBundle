@@ -78,7 +78,7 @@ class AdminListBlockService extends AbstractBlockService
             $this->templateRegistry = $templateRegistryOrPool ?: new TemplateRegistry();
         } elseif (null === $poolOrTemplating || $poolOrTemplating instanceof EngineInterface) {
             @trigger_error(sprintf(
-                'Passing %s as argument 2 to %s() is deprecated since sonata-project/admin-bundle 3.x'
+                'Passing %s as argument 2 to %s() is deprecated since sonata-project/admin-bundle 3.76'
                 .' and will throw a \TypeError in version 4.0. You must pass an instance of %s instead.',
                 null === $poolOrTemplating ? 'null' : EngineInterface::class,
                 __METHOD__,
@@ -125,6 +125,7 @@ class AdminListBlockService extends AbstractBlockService
         return $this->renderPrivateResponse($this->templateRegistry->getTemplate('list_block'), [
             'block' => $blockContext->getBlock(),
             'settings' => $settings,
+            // NEXT_MAJOR: Remove next line.
             'admin_pool' => $this->pool,
             'groups' => $visibleGroups,
         ], $response);

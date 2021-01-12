@@ -20,7 +20,11 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 
 /**
+ * NEXT_MAJOR: Stop to extend DatagridManagerInterface.
+ *
  * A model manager is a bridge between the model classes and the admin functionality.
+ *
+ * @method bool supportsQuery(object $query)
  */
 interface ModelManagerInterface extends DatagridManagerInterface
 {
@@ -29,6 +33,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param string $name
      *
      * @return FieldDescriptionInterface
+     *
+     * @phpstan-param class-string $class
      */
     public function getNewFieldDescriptionInstance($class, $name, array $options = []);
 
@@ -54,24 +60,38 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function delete($object);
 
     /**
-     * @param string $class
+     * @param string               $class
+     * @param array<string, mixed> $criteria
      *
-     * @return array all objects matching the criteria
+     * @return object[] all objects matching the criteria
+     *
+     * @phpstan-template T of object
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T[]
      */
     public function findBy($class, array $criteria = []);
 
     /**
-     * @param string $class
+     * @param string               $class
+     * @param array<string, mixed> $criteria
      *
      * @return object|null an object matching the criteria or null if none match
+     *
+     * @phpstan-template T of object
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T|null
      */
     public function findOneBy($class, array $criteria = []);
 
     /**
-     * @param string $class
-     * @param mixed  $id
+     * @param string     $class
+     * @param int|string $id
      *
      * @return object|null the object with id or null if not found
+     *
+     * @phpstan-template T of object
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T|null
      */
     public function find($class, $id);
 
@@ -79,8 +99,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param string $class
      *
      * @throws ModelManagerException
+     *
+     * @phpstan-param class-string $class
      */
-    public function batchDelete($class, ProxyQueryInterface $queryProxy);
+    public function batchDelete($class, ProxyQueryInterface $query);
 
     /**
      * NEXT_MAJOR: Remove this method.
@@ -90,16 +112,19 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @param array  $parentAssociationMapping
      * @param string $class
+     *
+     * @phpstan-param class-string $class
      */
     public function getParentFieldDescription($parentAssociationMapping, $class);
 
     /**
      * @param string $class
-     * @param string $alias
      *
      * @return ProxyQueryInterface
+     *
+     * @phpstan-param class-string $class
      */
-    public function createQuery($class, $alias = 'o');
+    public function createQuery($class);
 
     /**
      * Get the identifier for the model type of this class.
@@ -111,6 +136,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param string $class fully qualified class name
      *
      * @return string
+     *
+     * @phpstan-param class-string $class
      */
     public function getModelIdentifier($class);
 
@@ -123,7 +150,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @param object $model
      *
-     * @return array list of all identifiers of this model
+     * @return array<int|string> list of all identifiers of this model
      */
     public function getIdentifierValues($model);
 
@@ -133,7 +160,9 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @param string $class fully qualified class name
      *
-     * @return array
+     * @return string[]
+     *
+     * @phpstan-param class-string $class
      */
     public function getIdentifierFieldNames($class);
 
@@ -142,8 +171,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @param object $model
      *
-     * @return string a string representation of the identifiers for this
-     *                instance
+     * @return string|null a string representation of the identifiers for this
+     *                     instance
      */
     public function getNormalizedIdentifier($model);
 
@@ -155,7 +184,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @param object $model
      *
-     * @return string string representation of the id that is safe to use in a url
+     * @return string|null string representation of the id that is safe to use in a url
      */
     public function getUrlSafeIdentifier($model);
 
@@ -165,10 +194,18 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param string $class
      *
      * @return object
+     *
+     * @phpstan-template T of object
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T
      */
     public function getModelInstance($class);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * @param string $class
      *
      * @return array|\ArrayAccess
@@ -176,6 +213,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function getModelCollectionInstance($class);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * Removes an element from the collection.
      *
      * @param array  $collection
@@ -184,6 +225,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function collectionRemoveElement(&$collection, &$element);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * Add an element from the collection.
      *
      * @param array  $collection
@@ -192,6 +237,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function collectionAddElement(&$collection, &$element);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * Check if the element exists in the collection.
      *
      * @param array  $collection
@@ -202,6 +251,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function collectionHasElement(&$collection, &$element);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * Clear the collection.
      *
      * @param array $collection
@@ -224,25 +277,44 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param string $class
      *
      * @return object
+     *
+     * @phpstan-template T of object
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T
      */
     public function modelReverseTransform($class, array $array = []);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.80 and will be removed in 4.0.
+     *
      * @param string $class
      * @param object $instance
      *
      * @return object
+     *
+     * @phpstan-template T of object
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T
      */
     public function modelTransform($class, $instance);
 
+    // NEXT_MAJOR: Uncomment this.
+//    public function supportsQuery(object $query): bool;
+
     /**
-     * @param mixed $query
+     * @param object $query
      */
     public function executeQuery($query);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * @param int|null $firstResult
      * @param int|null $maxResult
+     *
+     * @deprecated since sonata-project/admin-bundle 3.79 and will be removed in 4.0.
      *
      * @return SourceIteratorInterface
      */
@@ -257,6 +329,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param string $class
      *
      * @return string[]
+     *
+     * @phpstan-param class-string $class
      */
     public function getExportFields($class);
 
@@ -273,7 +347,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function getPaginationParameters(DatagridInterface $datagrid, $page);
 
     /**
-     * @param string $class
+     * @param string                 $class
+     * @param array<int, int|string> $idx
+     *
+     * @phpstan-param class-string $class
      */
     public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx);
 }

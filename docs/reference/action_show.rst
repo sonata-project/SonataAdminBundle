@@ -116,9 +116,9 @@ The following is a working example of a ShowAction::
                  // The boolean option is actually very cool
                  // true   shows a check mark and the 'yes' label
                  // false  shows a check mark and the 'no' label
-                ->add('dateCafe', TemplateRegistry::TYPE_BOOLEAN)
-                ->add('datePub', TemplateRegistry::TYPE_BOOLEAN)
-                ->add('dateClub', TemplateRegistry::TYPE_BOOLEAN)
+                ->add('dateCafe', FieldDescriptionInterface::TYPE_BOOLEAN)
+                ->add('datePub', FieldDescriptionInterface::TYPE_BOOLEAN)
+                ->add('dateClub', FieldDescriptionInterface::TYPE_BOOLEAN)
             ;
 
         }

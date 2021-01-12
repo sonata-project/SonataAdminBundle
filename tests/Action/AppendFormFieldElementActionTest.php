@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Action;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Sonata\AdminBundle\Action\AppendFormFieldElementAction;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -22,12 +21,12 @@ use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Twig\Environment;
 
 final class AppendFormFieldElementActionTest extends TestCase
@@ -53,28 +52,23 @@ final class AppendFormFieldElementActionTest extends TestCase
     private $admin;
 
     /**
-     * @var ValidatorInterface
-     */
-    private $validator;
-
-    /**
      * @var AdminHelper
      */
     private $helper;
 
     protected function setUp(): void
     {
-        $this->twig = $this->prophesize(Environment::class);
-        $this->pool = $this->prophesize(Pool::class);
-        $this->admin = $this->prophesize(AbstractAdmin::class);
-        $this->pool->getInstance(Argument::any())->willReturn($this->admin->reveal());
-        $this->admin->setRequest(Argument::type(Request::class))->shouldBeCalled();
-        $this->validator = $this->prophesize(ValidatorInterface::class);
-        $this->helper = $this->prophesize(AdminHelper::class);
+        $this->twig = $this->createStub(Environment::class);
+        $this->admin = $this->createMock(AbstractAdmin::class);
+        $this->admin->expects($this->once())->method('setRequest');
+        $container = new Container();
+        $container->set('sonata.post.admin', $this->admin);
+        $this->pool = new Pool($container, ['sonata.post.admin']);
+        $this->helper = $this->createStub(AdminHelper::class);
         $this->action = new AppendFormFieldElementAction(
-            $this->twig->reveal(),
-            $this->pool->reveal(),
-            $this->helper->reveal()
+            $this->twig,
+            $this->pool,
+            $this->helper
         );
     }
 
@@ -89,26 +83,26 @@ final class AppendFormFieldElementActionTest extends TestCase
             'context' => 'list',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST]);
 
-        $modelManager = $this->prophesize(ModelManagerInterface::class);
+        $modelManager = $this->createStub(ModelManagerInterface::class);
         $formView = new FormView();
-        $form = $this->prophesize(Form::class);
+        $form = $this->createStub(Form::class);
 
         $renderer = $this->configureFormRenderer();
 
-        $this->admin->getObject(42)->willReturn($object);
-        $this->admin->getClass()->willReturn(\get_class($object));
-        $this->admin->setSubject($object)->shouldBeCalled();
-        $this->admin->getFormTheme()->willReturn($formView);
-        $this->helper->appendFormFieldElement($this->admin->reveal(), $object, null)->willReturn([
-            $this->prophesize(FieldDescriptionInterface::class),
-            $form->reveal(),
+        $this->admin->method('getObject')->with(42)->willReturn($object);
+        $this->admin->method('getClass')->willReturn(\get_class($object));
+        $this->admin->expects($this->once())->method('setSubject')->with($object);
+        $this->admin->method('getFormTheme')->willReturn($formView);
+        $this->helper->method('appendFormFieldElement')->with($this->admin, $object, null)->willReturn([
+            $this->createStub(FieldDescriptionInterface::class),
+            $form,
         ]);
-        $this->helper->getChildFormView($formView, null)
+        $this->helper->method('getChildFormView')->with($formView, null)
             ->willReturn($formView);
-        $modelManager->find(\get_class($object), 42)->willReturn($object);
-        $form->createView()->willReturn($formView);
-        $renderer->setTheme($formView, $formView)->shouldBeCalled();
-        $renderer->searchAndRenderBlock($formView, 'widget')->willReturn('block');
+        $modelManager->method('find')->with(\get_class($object), 42)->willReturn($object);
+        $form->method('createView')->willReturn($formView);
+        $renderer->expects($this->once())->method('setTheme')->with($formView);
+        $renderer->method('searchAndRenderBlock')->with($formView, 'widget')->willReturn('block');
 
         $response = ($this->action)($request);
 
@@ -118,9 +112,9 @@ final class AppendFormFieldElementActionTest extends TestCase
 
     private function configureFormRenderer()
     {
-        $runtime = $this->prophesize(FormRenderer::class);
+        $runtime = $this->createMock(FormRenderer::class);
 
-        $this->twig->getRuntime(FormRenderer::class)->willReturn($runtime->reveal());
+        $this->twig->method('getRuntime')->with(FormRenderer::class)->willReturn($runtime);
 
         return $runtime;
     }

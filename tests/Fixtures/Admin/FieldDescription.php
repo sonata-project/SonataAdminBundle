@@ -17,9 +17,10 @@ use Sonata\AdminBundle\Admin\BaseFieldDescription;
 
 class FieldDescription extends BaseFieldDescription
 {
+    // NEXT_MAJOR: Make this method protected.
     public function setAssociationMapping($associationMapping): void
     {
-        throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
+        $this->associationMapping = $associationMapping;
     }
 
     public function getTargetEntity(): void
@@ -32,9 +33,10 @@ class FieldDescription extends BaseFieldDescription
         throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
 
+    // NEXT_MAJOR: Make this method protected.
     public function setFieldMapping($fieldMapping): void
     {
-        throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
+        $this->fieldMapping = $fieldMapping;
     }
 
     public function isIdentifier(): void
@@ -42,23 +44,12 @@ class FieldDescription extends BaseFieldDescription
         throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
 
-    /**
-     * set the parent association mappings information.
-     *
-     * @param array $parentAssociationMappings
-     */
+    // NEXT_MAJOR: Make this method protected.
     public function setParentAssociationMappings(array $parentAssociationMappings): void
     {
-        throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
+        $this->parentAssociationMappings = $parentAssociationMappings;
     }
 
-    /**
-     * return the value linked to the description.
-     *
-     * @param  $object
-     *
-     * @return bool|mixed
-     */
     public function getValue($object)
     {
         throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
