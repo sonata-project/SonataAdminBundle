@@ -88,7 +88,7 @@ final class RetrieveAutocompleteItemsAction
             $reqParamPageNumber = $formAutocompleteConfig->getAttribute('req_param_name_page_number');
             $toStringCallback = $formAutocompleteConfig->getAttribute('to_string_callback');
             $targetAdminAccessAction = $formAutocompleteConfig->getAttribute('target_admin_access_action');
-            $resultItemCallback = $formAutocompleteConfig->getAttribute('response_item_callback');
+            $responseItemCallback = $formAutocompleteConfig->getAttribute('response_item_callback');
         }
 
         $searchText = $request->get('q', '');
@@ -175,12 +175,12 @@ final class RetrieveAutocompleteItemsAction
             }
 
             $item = [
-                'id'    => $admin->id($model),
+                'id' => $admin->id($model),
                 'label' => $label,
             ];
 
             if (\is_callable($responseItemCallback)) {
-                \call_user_func($responseItemCallback, $admin, $entity, $item);
+                \call_user_func($responseItemCallback, $admin, $model, $item);
             }
 
             $items[] = $item;
