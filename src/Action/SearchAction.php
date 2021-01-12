@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Action;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
@@ -106,7 +107,19 @@ final class SearchAction
             $request->get('page'),
             $request->get('offset')
         )) {
-            foreach ($pager->getResults() as $result) {
+            // NEXT_MAJOR: remove the existence check and just use $pager->getCurrentPageResults()
+            if (method_exists($pager, 'getCurrentPageResults')) {
+                $pageResults = $pager->getCurrentPageResults();
+            } else {
+                @trigger_error(sprintf(
+                    'Not implementing "%s::getCurrentPageResults()" is deprecated since sonata-project/admin-bundle 3.x and will fail in 4.0.',
+                    PagerInterface::class
+                ), E_USER_DEPRECATED);
+
+                $pageResults = $pager->getResults();
+            }
+
+            foreach ($pageResults as $result) {
                 $results[] = [
                     'label' => $admin->toString($result),
                     'link' => $admin->getSearchResultLink($result),

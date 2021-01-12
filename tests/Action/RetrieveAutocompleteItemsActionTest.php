@@ -21,7 +21,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
-use Sonata\AdminBundle\Datagrid\Pager;
+use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
 use Symfony\Component\DependencyInjection\Container;
@@ -242,7 +242,10 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $targetAdmin = $this->createMock(AbstractAdmin::class);
         $datagrid = $this->createStub(DatagridInterface::class);
         $metadata = $this->createStub(MetadataInterface::class);
-        $pager = $this->createStub(Pager::class);
+        // NEXT_MAJOR: Use createMock instead.
+        $pager = $this->getMockBuilder(PagerInterface::class)
+            ->addMethods(['getCurrentPageResults', 'isLastPage'])
+            ->getMockForAbstractClass();
         // NEXT_MAJOR: Use `createStub` instead of using mock builder
         $fieldDescription = $this->getMockBuilder(FieldDescriptionInterface::class)
             ->addMethods(['getTargetModel'])
@@ -262,7 +265,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
         $datagrid->method('buildPager')->willReturn(null);
         $datagrid->method('getPager')->willReturn($pager);
-        $pager->method('getResults')->willReturn([$model]);
+        $pager->method('getCurrentPageResults')->willReturn([$model]);
         $pager->method('isLastPage')->willReturn(true);
         $fieldDescription->method('getTargetModel')->willReturn(Foo::class);
         $fieldDescription->method('getName')->willReturn('barField');

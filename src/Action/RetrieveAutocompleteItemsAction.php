@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Action;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -148,7 +149,17 @@ final class RetrieveAutocompleteItemsAction
         $pager = $datagrid->getPager();
 
         $items = [];
-        $results = $pager->getResults();
+        // NEXT_MAJOR: remove the existence check and just use $pager->getCurrentPageResults()
+        if (method_exists($pager, 'getCurrentPageResults')) {
+            $results = $pager->getCurrentPageResults();
+        } else {
+            @trigger_error(sprintf(
+                'Not implementing "%s::getCurrentPageResults()" is deprecated since sonata-project/admin-bundle 3.x and will fail in 4.0.',
+                PagerInterface::class
+            ), E_USER_DEPRECATED);
+
+            $results = $pager->getResults();
+        }
 
         foreach ($results as $model) {
             if (null !== $toStringCallback) {

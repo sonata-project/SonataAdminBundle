@@ -73,7 +73,7 @@ final class Pager implements PagerInterface
 
     public function getLastPage(): int
     {
-        return 2;
+        return 1;
     }
 
     public function isLastPage(): bool
@@ -95,7 +95,15 @@ final class Pager implements PagerInterface
         return false;
     }
 
-    public function getResults(): array
+    /**
+     * NEXT_MAJOR: remove this method.
+     */
+    public function getResults(): iterable
+    {
+        return $this->getCurrentPageResults();
+    }
+
+    public function getCurrentPageResults(): iterable
     {
         return $this->repository->all();
     }
@@ -110,7 +118,7 @@ final class Pager implements PagerInterface
 
     public function countResults(): int
     {
-        return \count($this->getResults());
+        return 1;
     }
 
     public function getLinks(?int $nbLinks = null): array

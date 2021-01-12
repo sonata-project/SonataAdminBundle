@@ -73,7 +73,7 @@ class Datagrid implements DatagridInterface
     protected $form;
 
     /**
-     * @var object[]|null
+     * @var iterable<object>|null
      */
     protected $results;
 
@@ -101,7 +101,17 @@ class Datagrid implements DatagridInterface
         $this->buildPager();
 
         if (null === $this->results) {
-            $this->results = $this->pager->getResults();
+            // NEXT_MAJOR: remove the existence check and just use $pager->getCurrentPageResults()
+            if (method_exists($this->pager, 'getCurrentPageResults')) {
+                $this->results = $this->pager->getCurrentPageResults();
+            } else {
+                @trigger_error(sprintf(
+                    'Not implementing "%s::getCurrentPageResults()" is deprecated since sonata-project/admin-bundle 3.x and will fail in 4.0.',
+                    PagerInterface::class
+                ), E_USER_DEPRECATED);
+
+                $this->results = $this->pager->getResults();
+            }
         }
 
         return $this->results;
@@ -113,7 +123,7 @@ class Datagrid implements DatagridInterface
             return;
         }
 
-        foreach ($this->getFilters() as $name => $filter) {
+        foreach ($this->getFilters() as $filter) {
             [$type, $options] = $filter->getRenderSettings();
 
             $this->formBuilder->add($filter->getFormName(), $type, $options);
@@ -220,7 +230,7 @@ class Datagrid implements DatagridInterface
 
     public function hasActiveFilters()
     {
-        foreach ($this->filters as $name => $filter) {
+        foreach ($this->filters as $filter) {
             if ($filter->isActive()) {
                 return true;
             }
@@ -231,7 +241,7 @@ class Datagrid implements DatagridInterface
 
     public function hasDisplayableFilters()
     {
-        foreach ($this->filters as $name => $filter) {
+        foreach ($this->filters as $filter) {
             $showFilter = $filter->getOption('show_filter', null);
             if (($filter->isActive() && null === $showFilter) || (true === $showFilter)) {
                 return true;

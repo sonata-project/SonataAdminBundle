@@ -127,7 +127,7 @@ class SimplePagerTest extends TestCase
     /**
      * NEXT_MAJOR: Remove this test along with fixes to SimplePager.
      */
-    public function testGetResultsReturnTypeArrayCollection(): void
+    public function testGetCurrentPageResultsReturnTypeArrayCollection(): void
     {
         $this->proxyQuery->expects($this->once())
             ->method('execute')
@@ -137,10 +137,10 @@ class SimplePagerTest extends TestCase
         $this->pager->setQuery($this->proxyQuery);
         $this->pager->setMaxPerPage(1);
 
-        $this->assertInstanceOf(ArrayCollection::class, $this->pager->getResults());
+        $this->assertInstanceOf(ArrayCollection::class, $this->pager->getCurrentPageResults());
     }
 
-    public function getResultsReturnType(): array
+    public function getCurrentPageResultsReturnType(): array
     {
         return [
             [['foo', 'bar'], 2],
@@ -149,9 +149,9 @@ class SimplePagerTest extends TestCase
     }
 
     /**
-     * @dataProvider getResultsReturnType
+     * @dataProvider getCurrentPageResultsReturnType
      */
-    public function testGetResultsReturnTypeArray(array $queryReturnValues, ?int $maxPerPage): void
+    public function testGetCurrentPageResultsReturnTypeArray(array $queryReturnValues, ?int $maxPerPage): void
     {
         $this->proxyQuery->expects($this->once())
             ->method('execute')
@@ -161,6 +161,6 @@ class SimplePagerTest extends TestCase
         $this->pager->setQuery($this->proxyQuery);
         $this->pager->setMaxPerPage($maxPerPage);
 
-        $this->assertIsArray($this->pager->getResults());
+        $this->assertIsArray($this->pager->getCurrentPageResults());
     }
 }

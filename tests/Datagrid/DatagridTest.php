@@ -70,7 +70,10 @@ class DatagridTest extends TestCase
     {
         $this->query = $this->createMock(ProxyQueryInterface::class);
         $this->columns = new FieldDescriptionCollection();
-        $this->pager = $this->createMock(PagerInterface::class);
+        // NEXT_MAJOR: Use createMock instead.
+        $this->pager = $this->getMockBuilder(PagerInterface::class)
+            ->addMethods(['getCurrentPageResults'])
+            ->getMockForAbstractClass();
 
         $this->formData = [];
         $this->formTypes = [];
@@ -331,7 +334,7 @@ class DatagridTest extends TestCase
         $this->assertNull($this->datagrid->getResults());
 
         $this->pager->expects($this->once())
-            ->method('getResults')
+            ->method('getCurrentPageResults')
             ->willReturn(['foo', 'bar']);
 
         $this->assertSame(['foo', 'bar'], $this->datagrid->getResults());
@@ -340,7 +343,7 @@ class DatagridTest extends TestCase
     public function testEmptyResults(): void
     {
         $this->pager->expects($this->once())
-            ->method('getResults')
+            ->method('getCurrentPageResults')
             ->willReturn([]);
 
         $this->assertSame([], $this->datagrid->getResults());

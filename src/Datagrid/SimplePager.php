@@ -24,7 +24,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class SimplePager extends Pager
 {
     /**
-     * @var object[]|null
+     * @var iterable<object>|null
      */
     protected $results;
 
@@ -86,9 +86,42 @@ class SimplePager extends Pager
         return $n;
     }
 
+    public function getCurrentPageResults(): iterable
+    {
+        if (null !== $this->results) {
+            return $this->results;
+        }
+
+        $this->results = $this->getQuery()->execute();
+        $this->thresholdCount = \count($this->results);
+        if (\count($this->results) > $this->getMaxPerPage()) {
+            $this->haveToPaginate = true;
+
+            if ($this->results instanceof ArrayCollection) {
+                $this->results = new ArrayCollection($this->results->slice(0, $this->getMaxPerPage()));
+            } else {
+                $this->results = new ArrayCollection(\array_slice($this->results, 0, $this->getMaxPerPage()));
+            }
+        } else {
+            $this->haveToPaginate = false;
+        }
+
+        return $this->results;
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use getCurrentPageResults() instead.
+     */
     public function getResults($hydrationMode = null)
     {
-        if ($this->results) {
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0. Use getCurrentPageResults() instead.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
+        if (null !== $this->results) {
             return $this->results;
         }
 
@@ -144,7 +177,7 @@ class SimplePager extends Pager
 
             // NEXT_MAJOR: Remove this line and uncomment the following one instead.
             $this->initializeIterator('sonata_deprecation_mute');
-//            $this->results = $this->getResults();
+//            $this->results = $this->getCurrentPageResults();
 
             $t = (int) ceil($this->thresholdCount / $this->getMaxPerPage()) + $this->getPage() - 1;
             $this->setLastPage(max(1, $t));

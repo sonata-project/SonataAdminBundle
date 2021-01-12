@@ -940,7 +940,23 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
             ), E_USER_DEPRECATED);
         }
 
-        $this->results = $this->getResults();
+        if (method_exists($this, 'getCurrentPageResults')) {
+            $results = $this->getCurrentPageResults();
+        } else {
+            @trigger_error(sprintf(
+                'Not implementing "%s::getCurrentPageResults()" is deprecated since sonata-project/admin-bundle 3.x and will fail in 4.0.',
+                PagerInterface::class
+            ), E_USER_DEPRECATED);
+
+            $results = $this->getResults();
+        }
+
+        if (\is_array($results)) {
+            $this->results = $results;
+        } else {
+            $this->results = iterator_to_array($results);
+        }
+
         $this->resultsCounter = \count($this->results);
     }
 
