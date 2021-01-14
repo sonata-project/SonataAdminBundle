@@ -78,7 +78,7 @@ final class AdminMaker extends AbstractMaker
     private $defaultController;
 
     /**
-     * NEXT_MAJOR: Make $defaultController mandatory.
+     * NEXT_MAJOR: Make $modelManagers and $defaultController mandatory.
      *
      * @param string                               $projectDirectory
      * @param array<string, ModelManagerInterface> $modelManagers
