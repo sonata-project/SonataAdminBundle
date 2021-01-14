@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\AdminMakerCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AdminSearchCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
@@ -36,7 +37,7 @@ class SonataAdminBundleTest extends TestCase
     {
         $containerBuilder = $this->createMock(ContainerBuilder::class);
 
-        $containerBuilder->expects($this->exactly(8))
+        $containerBuilder->expects($this->exactly(9))
             ->method('addCompilerPass')
             ->willReturnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION): void {
                 if ($pass instanceof AddDependencyCallsCompilerPass) {
@@ -71,8 +72,12 @@ class SonataAdminBundleTest extends TestCase
                     return;
                 }
 
+                if ($pass instanceof AdminMakerCompilerPass) {
+                    return;
+                }
+
                 $this->fail(sprintf(
-                    'CompilerPass is not one of the expected types. Expects "%s", "%s", "%s", "%s", "%s", "%s" or "%s", but got "%s".',
+                    'CompilerPass is not one of the expected types. Expects "%s", "%s", "%s", "%s", "%s", "%s", "%s" or "%s", but got "%s".',
                     AddDependencyCallsCompilerPass::class,
                     AddFilterTypeCompilerPass::class,
                     AdminSearchCompilerPass::class,
@@ -81,6 +86,7 @@ class SonataAdminBundleTest extends TestCase
                     ModelManagerCompilerPass::class,
                     ObjectAclManipulatorCompilerPass::class,
                     TwigStringExtensionCompilerPass::class,
+                    AdminMakerCompilerPass::class,
                     \get_class($pass)
                 ));
             });
