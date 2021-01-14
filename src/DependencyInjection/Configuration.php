@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
-use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -114,7 +113,7 @@ CASESENSITIVE;
                 ->end()
 
                 ->scalarNode('default_controller')
-                    ->defaultValue(CRUDController::class)
+                    ->defaultValue('sonata.admin.controller.crud')
                     ->cannotBeEmpty()
                     ->info('Name of the controller class to be used as a default in admin definitions')
                 ->end()

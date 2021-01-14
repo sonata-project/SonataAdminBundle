@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\DependencyInjection\Configuration;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\FooAdminController;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
@@ -262,7 +261,7 @@ class ConfigurationTest extends TestCase
     {
         $config = $this->process([]);
 
-        $this->assertSame(CRUDController::class, $config['default_controller']);
+        $this->assertSame('sonata.admin.controller.crud', $config['default_controller']);
     }
 
     public function testSettingDefaultController(): void
