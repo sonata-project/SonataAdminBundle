@@ -24,8 +24,6 @@ use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ObjectAclManipulatorCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\TwigStringExtensionCompilerPass;
 use Sonata\AdminBundle\SonataAdminBundle;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -39,57 +37,18 @@ class SonataAdminBundleTest extends TestCase
 
         $containerBuilder->expects($this->exactly(9))
             ->method('addCompilerPass')
-            ->willReturnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION): void {
-                if ($pass instanceof AddDependencyCallsCompilerPass) {
-                    return;
-                }
-
-                if ($pass instanceof AddFilterTypeCompilerPass) {
-                    return;
-                }
-
-                if ($pass instanceof AdminSearchCompilerPass) {
-                    return;
-                }
-
-                if ($pass instanceof ExtensionCompilerPass) {
-                    return;
-                }
-
-                if ($pass instanceof GlobalVariablesCompilerPass) {
-                    return;
-                }
-
-                if ($pass instanceof ModelManagerCompilerPass) {
-                    return;
-                }
-
-                if ($pass instanceof ObjectAclManipulatorCompilerPass) {
-                    return;
-                }
-
-                if ($pass instanceof TwigStringExtensionCompilerPass) {
-                    return;
-                }
-
-                if ($pass instanceof AdminMakerCompilerPass) {
-                    return;
-                }
-
-                $this->fail(sprintf(
-                    'CompilerPass is not one of the expected types. Expects "%s", "%s", "%s", "%s", "%s", "%s", "%s" or "%s", but got "%s".',
-                    AddDependencyCallsCompilerPass::class,
-                    AddFilterTypeCompilerPass::class,
-                    AdminSearchCompilerPass::class,
-                    ExtensionCompilerPass::class,
-                    GlobalVariablesCompilerPass::class,
-                    ModelManagerCompilerPass::class,
-                    ObjectAclManipulatorCompilerPass::class,
-                    TwigStringExtensionCompilerPass::class,
-                    AdminMakerCompilerPass::class,
-                    \get_class($pass)
-                ));
-            });
+            ->withConsecutive(
+                [new AddDependencyCallsCompilerPass()],
+                [new AddFilterTypeCompilerPass()],
+                [new AdminSearchCompilerPass()],
+                [new ExtensionCompilerPass()],
+                [new GlobalVariablesCompilerPass()],
+                [new ModelManagerCompilerPass()],
+                [new ObjectAclManipulatorCompilerPass()],
+                [new TwigStringExtensionCompilerPass()],
+                [new AdminMakerCompilerPass()],
+            )
+        ;
 
         $bundle = new SonataAdminBundle();
         $bundle->build($containerBuilder);
