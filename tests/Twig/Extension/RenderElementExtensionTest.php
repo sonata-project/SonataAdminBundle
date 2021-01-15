@@ -19,7 +19,6 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
@@ -40,7 +39,6 @@ use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\Translator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
-use Twig\Error\LoaderError;
 use Twig\Extra\String\StringExtension;
 
 /**
@@ -332,89 +330,6 @@ final class RenderElementExtensionTest extends TestCase
         );
     }
 
-    /**
-     * @group legacy
-     */
-    public function testRenderListElementWithNoValueException(): void
-    {
-        $this->expectDeprecation('Accessing a non existing value for the field "fd_name" is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.');
-
-        $this->templateRegistry->method('getTemplate')->with('base_list_field')
-            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
-
-        $this->fieldDescription
-            ->method('getValue')
-            ->willReturnCallback(static function (): void {
-                throw new NoValueException();
-            });
-
-        $this->assertSame(
-            $this->removeExtraWhitespace('<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> </td>'),
-            $this->removeExtraWhitespace($this->twigExtension->renderListElement(
-                $this->environment,
-                $this->object,
-                $this->fieldDescription
-            ))
-        );
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testRenderListElementNonExistentTemplate(): void
-    {
-        $this->templateRegistry->method('getTemplate')->with('base_list_field')
-            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
-
-        $this->fieldDescription->expects($this->once())
-            ->method('getValue')
-            ->willReturn('Foo');
-
-        $this->fieldDescription->expects($this->once())
-            ->method('getFieldName')
-            ->willReturn('Foo_name');
-
-        $this->fieldDescription->expects($this->exactly(2))
-            ->method('getType')
-            ->willReturn('nonexistent');
-
-        $this->fieldDescription->expects($this->once())
-            ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/list_nonexistent_template.html.twig');
-
-        $this->logger->expects($this->once())
-            ->method('warning')
-            ->with(($this->stringStartsWith($this->removeExtraWhitespace(
-                'An error occured trying to load the template
-                "@SonataAdmin/CRUD/list_nonexistent_template.html.twig"
-                for the field "Foo_name", the default template
-                    "@SonataAdmin/CRUD/base_list_field.html.twig" was used
-                    instead.'
-            ))));
-
-        $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription);
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testRenderListElementErrorLoadingTemplate(): void
-    {
-        $this->expectException(LoaderError::class);
-        $this->expectExceptionMessage('Unable to find template "@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig"');
-
-        $this->templateRegistry->method('getTemplate')->with('base_list_field')
-            ->willReturn('@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig');
-
-        $this->fieldDescription->expects($this->once())
-            ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/list_nonexistent_template.html.twig');
-
-        $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription);
-
-        $this->templateRegistry->getTemplate('base_list_field')->shouldHaveBeenCalled();
-    }
-
     public function testRenderWithDebug(): void
     {
         $this->fieldDescription
@@ -516,127 +431,6 @@ EOT
                 )
             )
         );
-    }
-
-    /**
-     * @group legacy
-     * @assertDeprecation Accessing a non existing value is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.
-     *
-     * @dataProvider getRenderViewElementWithNoValueTests
-     */
-    public function testRenderViewElementWithNoValue(string $expected, string $type, array $options): void
-    {
-        $this->fieldDescription
-            ->method('getValue')
-            ->willThrowException(new NoValueException());
-
-        $this->fieldDescription
-            ->method('getType')
-            ->willReturn($type);
-
-        $this->fieldDescription
-            ->method('getOptions')
-            ->willReturn($options);
-
-        $this->fieldDescription
-            ->method('getTemplate')
-            ->willReturnCallback(static function () use ($type): ?string {
-                switch ($type) {
-                    case 'boolean':
-                        return '@SonataAdmin/CRUD/show_boolean.html.twig';
-                    case 'datetime':
-                        return '@SonataAdmin/CRUD/show_datetime.html.twig';
-                    case 'date':
-                        return '@SonataAdmin/CRUD/show_date.html.twig';
-                    case 'time':
-                        return '@SonataAdmin/CRUD/show_time.html.twig';
-                    case 'currency':
-                        return '@SonataAdmin/CRUD/show_currency.html.twig';
-                    case 'percent':
-                        return '@SonataAdmin/CRUD/show_percent.html.twig';
-                    case 'email':
-                        return '@SonataAdmin/CRUD/show_email.html.twig';
-                    case 'choice':
-                        return '@SonataAdmin/CRUD/show_choice.html.twig';
-                    case 'array':
-                        return '@SonataAdmin/CRUD/show_array.html.twig';
-                    case 'trans':
-                        return '@SonataAdmin/CRUD/show_trans.html.twig';
-                    case 'url':
-                        return '@SonataAdmin/CRUD/show_url.html.twig';
-                    case 'html':
-                        return '@SonataAdmin/CRUD/show_html.html.twig';
-                    default:
-                        return null;
-                }
-            });
-
-        $this->assertSame(
-            $this->removeExtraWhitespace($expected),
-            $this->removeExtraWhitespace(
-                $this->twigExtension->renderViewElement(
-                    $this->environment,
-                    $this->fieldDescription,
-                    $this->object
-                )
-            )
-        );
-    }
-
-    public function getRenderViewElementWithNoValueTests(): iterable
-    {
-        return [
-            // NoValueException
-            ['<th>Data</th> <td></td>', 'string', ['safe' => false]],
-            ['<th>Data</th> <td></td>', 'text', ['safe' => false]],
-            ['<th>Data</th> <td></td>', 'textarea', ['safe' => false]],
-            ['<th>Data</th> <td>&nbsp;</td>', 'datetime', []],
-            [
-                '<th>Data</th> <td>&nbsp;</td>',
-                'datetime',
-                ['format' => 'd.m.Y H:i:s'],
-            ],
-            ['<th>Data</th> <td>&nbsp;</td>', 'date', []],
-            ['<th>Data</th> <td>&nbsp;</td>', 'date', ['format' => 'd.m.Y']],
-            ['<th>Data</th> <td>&nbsp;</td>', 'time', []],
-            ['<th>Data</th> <td></td>', 'number', ['safe' => false]],
-            ['<th>Data</th> <td></td>', 'integer', ['safe' => false]],
-            ['<th>Data</th> <td>&nbsp;</td>', 'percent', []],
-            ['<th>Data</th> <td>&nbsp;</td>', 'currency', ['currency' => 'EUR']],
-            ['<th>Data</th> <td>&nbsp;</td>', 'currency', ['currency' => 'GBP']],
-            ['<th>Data</th> <td> <ul></ul> </td>', 'array', ['safe' => false]],
-            [
-                '<th>Data</th> <td><span class="label label-danger">no</span></td>',
-                'boolean',
-                [],
-            ],
-            [
-                '<th>Data</th> <td> </td>',
-                'trans',
-                ['safe' => false, 'catalogue' => 'SonataAdminBundle'],
-            ],
-            [
-                '<th>Data</th> <td></td>',
-                'choice',
-                ['safe' => false, 'choices' => []],
-            ],
-            [
-                '<th>Data</th> <td></td>',
-                'choice',
-                ['safe' => false, 'choices' => [], 'multiple' => true],
-            ],
-            ['<th>Data</th> <td>&nbsp;</td>', 'url', []],
-            [
-                '<th>Data</th> <td>&nbsp;</td>',
-                'url',
-                ['url' => 'http://example.com'],
-            ],
-            [
-                '<th>Data</th> <td>&nbsp;</td>',
-                'url',
-                ['route' => ['name' => 'sonata_admin_foo']],
-            ],
-        ];
     }
 
     /**

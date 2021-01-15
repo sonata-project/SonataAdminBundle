@@ -93,7 +93,7 @@ class AdminMakerTest extends TestCase
      */
     public function testExecute(): void
     {
-        $maker = new AdminMaker($this->projectDirectory, CRUDController::class, $this->modelManagers);
+        $maker = new AdminMaker($this->projectDirectory, $this->modelManagers, CRUDController::class);
 
         $in = [
             'model' => Foo::class,

@@ -23,8 +23,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('maker.command')
             ->args([
                 '%kernel.project_dir%',
-                '%sonata.admin.configuration.default_controller%',
                 [],
+                '%sonata.admin.configuration.default_controller%',
             ])
     ;
 };
