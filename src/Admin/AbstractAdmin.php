@@ -828,7 +828,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * Returns the baseRoutePattern used to generate the routing information.
      *
-     * @throws \RuntimeException
+     * @throws \RuntimeException // NEXT_MAJOR: Remove this tag
      *
      * @return string the baseRoutePattern used to generate the routing information
      */
@@ -844,6 +844,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
+                    // NEXT_MAJOR: Throw \LogicException instead
                     throw new \RuntimeException(sprintf(
                         'Please define a default `baseRoutePattern` value for the admin class `%s`',
                         static::class
@@ -864,6 +865,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             preg_match(self::CLASS_REGEX, $this->class, $matches);
 
             if (!$matches) {
+                // NEXT_MAJOR: Throw \LogicException instead
                 throw new \RuntimeException(sprintf(
                     'Please define a default `baseRoutePattern` value for the admin class `%s`',
                     static::class
@@ -884,7 +886,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * Returns the baseRouteName used to generate the routing information.
      *
-     * @throws \RuntimeException
+     * @throws \RuntimeException // NEXT_MAJOR: Remove this tag
      *
      * @return string the baseRouteName used to generate the routing information
      */
@@ -900,6 +902,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
+                    // NEXT_MAJOR: Throw \LogicException instead
                     throw new \RuntimeException(sprintf(
                         'Cannot automatically determine base route name,'
                         .' please define a default `baseRouteName` value for the admin class `%s`',
@@ -920,6 +923,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             preg_match(self::CLASS_REGEX, $this->class, $matches);
 
             if (!$matches) {
+                // NEXT_MAJOR: Throw \LogicException instead
                 throw new \RuntimeException(sprintf(
                     'Cannot automatically determine base route name,'
                     .' please define a default `baseRouteName` value for the admin class `%s`',
@@ -955,12 +959,14 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
         if ($this->hasActiveSubClass()) {
             if ($this->hasParentFieldDescription()) {
+                // NEXT_MAJOR: Throw \LogicException instead
                 throw new \RuntimeException('Feature not implemented: an embedded admin cannot have subclass');
             }
 
             $subClass = $this->getRequest()->query->get('subclass');
 
             if (!$this->hasSubClass($subClass)) {
+                // NEXT_MAJOR: Throw \LogicException instead
                 throw new \RuntimeException(sprintf('Subclass "%s" is not defined.', $subClass));
             }
 
@@ -1955,6 +1961,7 @@ EOT;
         }
 
         if ($parentAdmin->getCode() === $child->getCode()) {
+            // NEXT_MAJOR: Throw \LogicException instead
             throw new \RuntimeException(sprintf(
                 'Circular reference detected! The child admin `%s` is already in the parent tree of the `%s` admin.',
                 $child->getCode(),
@@ -2136,6 +2143,7 @@ EOT;
         foreach ($this->getExtensions() as $extension) {
             $params = $extension->getPersistentParameters($this);
 
+            // NEXT_MAJOR: Remove this check, since return typehint is added
             if (!\is_array($params)) {
                 throw new \RuntimeException(sprintf(
                     'The %s::getPersistentParameters must return an array',
@@ -2583,10 +2591,6 @@ EOT;
 
     public function setListMode($mode)
     {
-        if (!$this->hasRequest()) {
-            throw new \RuntimeException(sprintf('No request attached to the current admin: %s', $this->getCode()));
-        }
-
         $this->getRequest()->getSession()->set(sprintf('%s.list_mode', $this->getCode()), $mode);
     }
 
