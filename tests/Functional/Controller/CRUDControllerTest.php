@@ -40,6 +40,14 @@ final class CRUDControllerTest extends WebTestCase
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 
+    public function testCustomControllerList(): void
+    {
+        $client = static::createClient();
+        $client->request(Request::METHOD_GET, '/admin/tests/app/foo-with-custom-controller/list');
+
+        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+    }
+
     public function testCreate(): void
     {
         $client = static::createClient();
@@ -64,6 +72,14 @@ final class CRUDControllerTest extends WebTestCase
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 
+    public function testCustomControllerCreate(): void
+    {
+        $client = static::createClient();
+        $client->request(Request::METHOD_GET, '/admin/tests/app/foo-with-custom-controller/create');
+
+        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+    }
+
     public function testShow(): void
     {
         $client = static::createClient();
@@ -84,6 +100,14 @@ final class CRUDControllerTest extends WebTestCase
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 
+    public function testCustomControllerShow(): void
+    {
+        $client = static::createClient();
+        $client->request(Request::METHOD_GET, '/admin/tests/app/foo-with-custom-controller/test_id/show');
+
+        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+    }
+
     public function testEdit(): void
     {
         $client = static::createClient();
@@ -100,6 +124,14 @@ final class CRUDControllerTest extends WebTestCase
     {
         $client = static::createClient();
         $client->request(Request::METHOD_GET, '/admin/empty/test_id/edit');
+
+        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+    }
+
+    public function testCustomControllerEdit(): void
+    {
+        $client = static::createClient();
+        $client->request(Request::METHOD_GET, '/admin/tests/app/foo-with-custom-controller/test_id/edit');
 
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
