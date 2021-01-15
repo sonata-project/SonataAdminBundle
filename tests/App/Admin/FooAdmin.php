@@ -23,7 +23,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Tests\App\Model\Foo;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-final class FooAdmin extends AbstractAdmin
+class FooAdmin extends AbstractAdmin
 {
     public function getNewInstance()
     {
