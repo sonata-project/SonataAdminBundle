@@ -44,7 +44,9 @@ final class MutableTemplateRegistryTest extends TestCase
         ];
 
         $this->templateRegistry->setTemplates($templates);
+        // NEXT_MAJOR: remove this first assert and uncomment second
         $this->assertSame($templates, $this->templateRegistry->getTemplates());
+        //$this->assertSame($templates + ['list' => '@FooAdmin/CRUD/list.html.twig'], $this->templateRegistry->getTemplates());
     }
 
     /**

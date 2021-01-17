@@ -1195,11 +1195,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->templateRegistry = $templateRegistry;
     }
 
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.76, will be dropped in 4.0. Use TemplateRegistry services instead
-     *
-     * @param array<string, string> $templates
-     */
     public function setTemplates(array $templates)
     {
         // NEXT_MAJOR: Remove this line
@@ -1208,12 +1203,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->getTemplateRegistry()->setTemplates($templates);
     }
 
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.76, will be dropped in 4.0. Use TemplateRegistry services instead
-     *
-     * @param string $name
-     * @param string $template
-     */
     public function setTemplate($name, $template)
     {
         // NEXT_MAJOR: Remove this line
