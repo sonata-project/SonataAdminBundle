@@ -22,7 +22,7 @@ final class MutableTemplateRegistry extends AbstractTemplateRegistry implements 
     // public function setTemplates(array $templates): void
     public function setTemplates(array $templates)
     {
-        //NEXT_MAJOR: use array merge and update the doc https://github.com/sonata-project/SonataAdminBundle/blob/3.x/docs/reference/templates.rst
+        //NEXT_MAJOR: merge arrays and update the doc https://github.com/sonata-project/SonataAdminBundle/blob/3.x/docs/reference/templates.rst
         $this->templates = $templates;
         //$this->templates = $templates + $this->templates;
     }
