@@ -16,8 +16,6 @@ namespace Sonata\AdminBundle\Admin;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
-use Doctrine\ODM\MongoDB\PersistentCollection;
-use Doctrine\ORM\PersistentCollection as DoctrinePersistentCollection;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Manipulator\ObjectManipulator;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
@@ -184,7 +182,7 @@ class AdminHelper
             if (\array_key_exists($childFormBuilder->getName(), $formData)) {
                 $formData = $admin->getRequest()->get($formBuilder->getName(), []);
                 $i = 0;
-                foreach ($formData[$childFormBuilder->getName()] as $name => &$field) {
+                foreach ($formData[$childFormBuilder->getName()] as &$field) {
                     $toDelete[$i] = false;
                     if (\array_key_exists(self::FORM_FIELD_DELETE, $field)) {
                         $toDelete[$i] = true;
@@ -200,27 +198,7 @@ class AdminHelper
         $form->setData($subject);
         $form->handleRequest($admin->getRequest());
 
-        //Child form not found (probably nested one)
-        //if childFormBuilder was not found resulted in fatal error getName() method call on non object
-        if (!$childFormBuilder) {
-            $path = $this->getElementAccessPath($elementId, $subject);
-
-            $collection = $this->propertyAccessor->getValue($subject, $path);
-
-            if ($collection instanceof DoctrinePersistentCollection || $collection instanceof PersistentCollection) {
-                //since doctrine 2.4
-                $modelClassName = $collection->getTypeClass()->getName();
-            } elseif ($collection instanceof Collection) {
-                $modelClassName = $this->getEntityClassName($admin, explode('.', preg_replace('#\[\d*?\]#', '', $path)));
-            } else {
-                throw new \Exception('unknown collection class');
-            }
-
-            $collection->add(new $modelClassName());
-            $this->propertyAccessor->setValue($subject, $path, $collection);
-
-            $fieldDescription = null;
-        } else {
+        if ($childFormBuilder && $admin->hasFormFieldDescription($childFormBuilder->getName())) {
             // retrieve the FieldDescription
             $fieldDescription = $admin->getFormFieldDescription($childFormBuilder->getName());
 
@@ -252,6 +230,33 @@ class AdminHelper
             $newInstance = ObjectManipulator::addInstance($form->getData(), $associationAdmin->getNewInstance(), $fieldDescription);
 
             $associationAdmin->setSubject($newInstance);
+        } else {
+            // The `else` branch is executed when child form was not found (probably nested one).
+            // If `$childFormBuilder` was not found resulted in fatal error `getName()` method call on non object
+            // or if `$childFormBuilder` was found, but the admin object does not have a formFieldDescription with
+            // same name as `$childFormBuilder`.
+
+            $path = $this->getElementAccessPath($elementId, $subject);
+
+            $collection = $this->propertyAccessor->getValue($subject, $path);
+
+            if (!($collection instanceof Collection)) {
+                throw new \TypeError(sprintf(
+                    'Collection must be an instance of %s, %s given.',
+                    Collection::class,
+                    \is_object($collection) ? 'instance of "'.\get_class($collection).'"' : '"'.\gettype($collection).'"'
+                ));
+            }
+
+            $modelClassName = $this->getEntityClassName(
+                $admin,
+                explode('.', preg_replace('#\[\d*?]#', '', $path))
+            );
+
+            $collection->add(new $modelClassName());
+            $this->propertyAccessor->setValue($subject, $path, $collection);
+
+            $fieldDescription = null;
         }
 
         $finalForm = $admin->getFormBuilder()->getForm();
