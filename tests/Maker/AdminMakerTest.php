@@ -23,6 +23,7 @@ use Symfony\Bundle\MakerBundle\FileManager;
 use Symfony\Bundle\MakerBundle\Generator;
 use Symfony\Bundle\MakerBundle\Util\AutoloaderUtil;
 use Symfony\Bundle\MakerBundle\Util\MakerFileLinkFormatter;
+use Symfony\Bundle\MakerBundle\Util\PhpCompatUtil;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -132,7 +133,11 @@ class AdminMakerTest extends TestCase
         );
         $fileManager->setIO($this->io);
 
-        $this->generator = new Generator($fileManager, 'Sonata\AdminBundle\Tests');
+        $this->generator = new Generator(
+            $fileManager,
+            'Sonata\AdminBundle\Tests',
+            new PhpCompatUtil($fileManager)
+        );
         $maker->generate($this->input, $this->io, $this->generator);
     }
 }

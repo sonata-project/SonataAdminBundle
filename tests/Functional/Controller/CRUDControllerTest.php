@@ -32,14 +32,6 @@ final class CRUDControllerTest extends WebTestCase
         );
     }
 
-    public function testEmptyList(): void
-    {
-        $client = static::createClient();
-        $client->request(Request::METHOD_GET, '/admin/empty/list');
-
-        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-    }
-
     public function testCreate(): void
     {
         $client = static::createClient();
@@ -56,14 +48,6 @@ final class CRUDControllerTest extends WebTestCase
         );
     }
 
-    public function testEmptyCreate(): void
-    {
-        $client = static::createClient();
-        $client->request(Request::METHOD_GET, '/admin/empty/create');
-
-        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-    }
-
     public function testShow(): void
     {
         $client = static::createClient();
@@ -74,14 +58,6 @@ final class CRUDControllerTest extends WebTestCase
             1,
             $crawler->filter('td:contains("foo_name")')->count()
         );
-    }
-
-    public function testEmptyShow(): void
-    {
-        $client = static::createClient();
-        $client->request(Request::METHOD_GET, '/admin/empty/test_id/show');
-
-        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 
     public function testEdit(): void
@@ -96,12 +72,29 @@ final class CRUDControllerTest extends WebTestCase
         );
     }
 
-    public function testEmptyEdit(): void
+    /**
+     * @dataProvider urlIsSuccessfulDataProvider
+     */
+    public function testUrlIsSuccessful(string $url): void
     {
         $client = static::createClient();
-        $client->request(Request::METHOD_GET, '/admin/empty/test_id/edit');
+        $client->request(Request::METHOD_GET, $url);
 
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+    }
+
+    public function urlIsSuccessfulDataProvider(): iterable
+    {
+        return [
+            ['/admin/empty/list'],
+            ['/admin/empty/create'],
+            ['/admin/empty/test_id/show'],
+            ['/admin/empty/test_id/edit'],
+            ['/admin/tests/app/foo-with-custom-controller/list'],
+            ['/admin/tests/app/foo-with-custom-controller/create'],
+            ['/admin/tests/app/foo-with-custom-controller/test_id/show'],
+            ['/admin/tests/app/foo-with-custom-controller/test_id/edit'],
+        ];
     }
 
     protected static function getKernelClass()

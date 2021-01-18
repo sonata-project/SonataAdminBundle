@@ -42,7 +42,12 @@ services:
         class: Sonata\AdminBundle\Tests\App\Datagrid\ProxyQuery
 
     Sonata\AdminBundle\Tests\App\Admin\FooAdmin:
-        arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, ~]
+        arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, Sonata\AdminBundle\Controller\CRUDController]
+        tags:
+            - {name: sonata.admin, manager_type: test, label: Foo}
+
+    Sonata\AdminBundle\Tests\App\Admin\FooAdminWithCustomController:
+        arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, Sonata\AdminBundle\Tests\App\Controller\CustomCRUDController]
         tags:
             - {name: sonata.admin, manager_type: test, label: Foo}
 

@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle;
 
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\AdminMakerCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AdminSearchCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
@@ -37,5 +38,6 @@ final class SonataAdminBundle extends Bundle
         $container->addCompilerPass(new ModelManagerCompilerPass());
         $container->addCompilerPass(new ObjectAclManipulatorCompilerPass());
         $container->addCompilerPass(new TwigStringExtensionCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 1);
+        $container->addCompilerPass(new AdminMakerCompilerPass());
     }
 }
