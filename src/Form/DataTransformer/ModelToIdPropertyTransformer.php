@@ -44,7 +44,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
     protected $className;
 
     /**
-     * @var string
+     * @var string|string[]
      */
     protected $property;
 
@@ -59,13 +59,14 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
     protected $toStringCallback;
 
     /**
-     * @param string        $className
-     * @param string        $property
-     * @param bool          $multiple
-     * @param callable|null $toStringCallback
+     * @param string          $className
+     * @param string|string[] $property
+     * @param bool            $multiple
+     * @param callable|null   $toStringCallback
      *
+     * @phpstan-template P
      * @phpstan-param class-string<T> $className
-     * @phpstan-param null|callable(object, string): string $toStringCallback
+     * @phpstan-param null|callable(object, P): string $toStringCallback
      */
     public function __construct(
         ModelManagerInterface $modelManager,
