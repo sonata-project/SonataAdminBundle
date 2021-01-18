@@ -431,7 +431,7 @@ class CRUDControllerTest extends TestCase
 
     public function testConfigureAdminWithException(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
             'There is no `_sonata_admin` defined for the controller `Sonata\AdminBundle\Controller\CRUDController`'
         );
