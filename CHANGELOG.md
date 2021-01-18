@@ -2,6 +2,21 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.88.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.87.0...3.88.0) - 2021-01-18
+### Added
+- [[#6767](https://github.com/sonata-project/SonataAdminBundle/pull/6767)] Allow PHP 8 ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6766](https://github.com/sonata-project/SonataAdminBundle/pull/6766)] Added `Sonata\AdminBundle\Templating\MutableTemplateRegistryAwareInterface::setTemplate()` ([@wbloszyk](https://github.com/wbloszyk))
+- [[#6766](https://github.com/sonata-project/SonataAdminBundle/pull/6766)] Added `Sonata\AdminBundle\Templating\MutableTemplateRegistryAwareInterface::setTemplates()` ([@wbloszyk](https://github.com/wbloszyk))
+- [[#6769](https://github.com/sonata-project/SonataAdminBundle/pull/6769)] Translation file for `bs` (Bosnian) ([@tambait](https://github.com/tambait))
+- [[#6769](https://github.com/sonata-project/SonataAdminBundle/pull/6769)] Translation files for `sr_Latn` & `sr_Cyrl` (Serbian Latin & Cyrillic script) ([@tambait](https://github.com/tambait))
+
+### Fixed
+- [[#6772](https://github.com/sonata-project/SonataAdminBundle/pull/6772)] Fixed using admin maker command having a default controller service ([@franmomu](https://github.com/franmomu))
+
+### Removed
+- [[#6766](https://github.com/sonata-project/SonataAdminBundle/pull/6766)] Removed deprecations for `Sonata\AdminBundle\Admin\AbstractAdmin::setTemplate()` ([@wbloszyk](https://github.com/wbloszyk))
+- [[#6766](https://github.com/sonata-project/SonataAdminBundle/pull/6766)] Removed deprecations for `Sonata\AdminBundle\Admin\AbstractAdmin::setTemplates()` ([@wbloszyk](https://github.com/wbloszyk))
+
 ## [3.87.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.86.0...3.87.0) - 2021-01-12
 ### Added
 - [[#6676](https://github.com/sonata-project/SonataAdminBundle/pull/6676)] Added `Sonata\AdminBundle\Twig\Extension\SecurityExtension` ([@tambait](https://github.com/tambait))
