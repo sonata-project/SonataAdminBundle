@@ -126,7 +126,7 @@ abstract class AbstractSonataAdminExtension extends Extension
                 FieldDescriptionInterface::TYPE_INTEGER => '@SonataIntl/CRUD/show_decimal.html.twig',
                 /* NEXT_MAJOR: Remove this line. */
                 TemplateRegistry::TYPE_DECIMAL => '@SonataIntl/CRUD/show_decimal.html.twig',
-                FieldDescriptionInterface::TYPE_FLOAT => '@SonataIntl/CRUD/list_decimal.html.twig',
+                FieldDescriptionInterface::TYPE_FLOAT => '@SonataIntl/CRUD/show_decimal.html.twig',
                 FieldDescriptionInterface::TYPE_CURRENCY => '@SonataIntl/CRUD/show_currency.html.twig',
                 FieldDescriptionInterface::TYPE_PERCENT => '@SonataIntl/CRUD/show_percent.html.twig',
             ]);
