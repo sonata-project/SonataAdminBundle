@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 
 use Sonata\AdminBundle\EventListener\AssetsInstallCommandListener;
+use Sonata\AdminBundle\EventListener\ConfigureCRUDControllerListener;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
@@ -30,5 +31,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('filesystem'),
                 '%kernel.project_dir%',
             ])
+
+        ->set('sonata.admin.event_listener.configure_crud_controller', ConfigureCRUDControllerListener::class)
+            ->tag('kernel.event_subscriber')
     ;
 };
