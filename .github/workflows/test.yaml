@@ -27,6 +27,7 @@ jobs:
                 php-version:
                     - '7.3'
                     - '7.4'
+                    - '8.0'
                 dependencies: [highest]
                 allowed-to-fail: [false]
                 variant: [normal]
@@ -34,10 +35,6 @@ jobs:
                     - php-version: '7.3'
                       dependencies: lowest
                       allowed-to-fail: false
-                      variant: normal
-                    - php-version: '8.0'
-                      dependencies: highest
-                      allowed-to-fail: true
                       variant: normal
                     - php-version: '7.4'
                       dependencies: highest
@@ -61,10 +58,6 @@ jobs:
 
             - name: Add PHPUnit matcher
               run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-
-            - name: Configuration required for PHP 8.0
-              if: matrix.php-version == '8.0'
-              run: composer config platform.php 7.4.99
 
             - name: Install variant
               if: matrix.variant != 'normal'
