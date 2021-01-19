@@ -1176,7 +1176,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             return false;
         }
 
-        return sprintf('%s_%s', $admin->getBaseRouteName(), $name) === $route;
+        return $admin->getRoutes()->getRouteName($name) === $route;
     }
 
     public function generateObjectUrl($name, $object, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
