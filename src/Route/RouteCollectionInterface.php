@@ -17,6 +17,8 @@ use Symfony\Component\Routing\Route;
 
 /**
  * @author Jordi Sala <jordism91@gmail.com>
+ *
+ * @method string getRouteName(string $name)
  */
 interface RouteCollectionInterface
 {
@@ -122,6 +124,9 @@ interface RouteCollectionInterface
      * @return string
      */
     public function getBaseRouteName();
+
+    // NEXT_MAJOR: Uncomment the following line and remove corresponding @method annotation.
+//    public function getRouteName(string $name): string;
 
     /**
      * @return string
