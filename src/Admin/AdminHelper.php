@@ -76,7 +76,7 @@ class AdminHelper
                 Pool::class,
                 __METHOD__,
                 PropertyAccessorInterface::class
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 
             $this->pool = $poolOrPropertyAccessor;
             $this->propertyAccessor = $poolOrPropertyAccessor->getPropertyAccessor();
@@ -294,7 +294,7 @@ class AdminHelper
             .' Use %s::addInstance() instead.',
             __METHOD__,
             ObjectManipulator::class
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
 
@@ -320,7 +320,7 @@ class AdminHelper
             'The %s method is deprecated since 3.1 and will be removed in 4.0. Use %s::classify() instead.',
             __METHOD__,
             Inflector::class
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return InflectorFactory::create()->build()->classify($property);
     }
@@ -391,7 +391,7 @@ class AdminHelper
                 .' Use %s::getModelClassName() instead.',
                 __METHOD__,
                 __CLASS__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         $element = array_shift($elements);

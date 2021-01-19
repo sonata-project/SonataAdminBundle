@@ -162,7 +162,7 @@ final class ModelManager implements ModelManagerInterface
         @trigger_error(sprintf(
             'Method %s() is deprecated since sonata-project/admin-bundle 3.66. To be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return [];
     }
@@ -220,7 +220,7 @@ final class ModelManager implements ModelManagerInterface
         @trigger_error(sprintf(
             'Method %s() is deprecated since sonata-project/admin-bundle 3.66. To be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return [];
     }

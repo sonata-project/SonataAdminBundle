@@ -40,6 +40,6 @@ final class BooleanToStringTransformer implements DataTransformerInterface
 
     public function reverseTransform($value): bool
     {
-        return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+        return filter_var($value, \FILTER_VALIDATE_BOOLEAN);
     }
 }

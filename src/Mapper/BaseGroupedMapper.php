@@ -362,7 +362,7 @@ abstract class BaseGroupedMapper extends BaseMapper
         @trigger_error(sprintf(
             '%s should be implemented and will be abstract in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return 'default';
     }

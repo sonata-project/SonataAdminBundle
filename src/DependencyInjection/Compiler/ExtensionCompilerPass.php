@@ -150,7 +150,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
 
             @trigger_error(
                 sprintf('The admin "%s" does not have a valid manager.', $admin->getClass()),
-                E_USER_DEPRECATED
+                \E_USER_DEPRECATED
             );
         }
 
@@ -170,7 +170,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
                     $admin->getClass(),
                     \is_object($class) ? \get_class($class) : \gettype($class)
                 ),
-                E_USER_DEPRECATED
+                \E_USER_DEPRECATED
             );
         }
 

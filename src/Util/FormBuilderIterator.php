@@ -63,7 +63,7 @@ class FormBuilderIterator extends \RecursiveArrayIterator
                 'Passing other type than string or null as argument 2 for method %s() is deprecated since'
                 .' sonata-project/admin-bundle 3.84. It will accept only string and null in version 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         // NEXT_MAJOR: Remove next line.

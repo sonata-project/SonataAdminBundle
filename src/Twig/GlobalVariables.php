@@ -59,7 +59,7 @@ class GlobalVariables
                 'Using an instance of %s is deprecated since version 3.5 and will be removed in 4.0. Use %s instead.',
                 ContainerInterface::class,
                 Pool::class
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 
             $adminPool = $adminPool->get('sonata.admin.pool');
         }
@@ -82,7 +82,7 @@ class GlobalVariables
             @trigger_error(sprintf(
                 'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         return $this->adminPool;
@@ -101,7 +101,7 @@ class GlobalVariables
         @trigger_error(sprintf(
             'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         [$action, $code] = $this->getCodeAction($code, $action);
 
@@ -122,7 +122,7 @@ class GlobalVariables
         @trigger_error(sprintf(
             'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         [$action, $code] = $this->getCodeAction($code, $action);
 
@@ -135,7 +135,7 @@ class GlobalVariables
             'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.'
             .' Use "sonata_config.getOption(\'mosaic_background\')" instead.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return $this->mosaicBackground;
     }

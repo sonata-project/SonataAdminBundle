@@ -114,7 +114,7 @@ final class SearchAction
                 @trigger_error(sprintf(
                     'Not implementing "%s::getCurrentPageResults()" is deprecated since sonata-project/admin-bundle 3.87 and will fail in 4.0.',
                     PagerInterface::class
-                ), E_USER_DEPRECATED);
+                ), \E_USER_DEPRECATED);
 
                 $pageResults = $pager->getResults();
             }
@@ -135,7 +135,7 @@ final class SearchAction
                 @trigger_error(sprintf(
                     'Not implementing "%s::countResults()" is deprecated since sonata-project/admin-bundle 3.86 and will fail in 4.0.',
                     'Sonata\AdminBundle\Datagrid\PagerInterface'
-                ), E_USER_DEPRECATED);
+                ), \E_USER_DEPRECATED);
                 $total = (int) $pager->getNbResults();
             }
         }

@@ -89,7 +89,7 @@ class AdminSearchBlockService extends AbstractBlockService
                     'Not passing a string as argument 4 to %s() is deprecated since sonata-project/admin-bundle 3.81'
                     .' and will throw a \TypeError in version 4.0.',
                     __METHOD__
-                ), E_USER_DEPRECATED);
+                ), \E_USER_DEPRECATED);
             }
 
             $this->pool = $poolOrTemplating;
@@ -102,7 +102,7 @@ class AdminSearchBlockService extends AbstractBlockService
                 null === $poolOrTemplating ? 'null' : EngineInterface::class,
                 __METHOD__,
                 Pool::class
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 
             if (!$searchHandlerOrPool instanceof Pool) {
                 throw new \TypeError(sprintf(

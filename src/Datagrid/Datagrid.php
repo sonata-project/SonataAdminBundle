@@ -108,7 +108,7 @@ class Datagrid implements DatagridInterface
                 @trigger_error(sprintf(
                     'Not implementing "%s::getCurrentPageResults()" is deprecated since sonata-project/admin-bundle 3.87 and will fail in 4.0.',
                     PagerInterface::class
-                ), E_USER_DEPRECATED);
+                ), \E_USER_DEPRECATED);
 
                 $this->results = $this->pager->getResults();
             }
@@ -191,7 +191,7 @@ class Datagrid implements DatagridInterface
                 'Passing a nonexistent filter name as argument 1 to %s() is deprecated since'
                 .' sonata-project/admin-bundle 3.52 and will throw an exception in 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 
             // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare FilterInterface as return type
             // throw new \InvalidArgumentException(sprintf(

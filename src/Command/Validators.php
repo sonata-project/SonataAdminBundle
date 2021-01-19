@@ -59,7 +59,7 @@ class Validators
             'Method "%s()" is deprecated since sonata-project/admin-bundle 3.78'
             .' and will be removed in version 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         $model = str_replace('/', '\\', $shortcut);
 

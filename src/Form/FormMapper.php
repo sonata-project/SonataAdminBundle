@@ -162,7 +162,7 @@ class FormMapper extends BaseGroupedMapper
                     @trigger_error(
                         'Using HTML syntax within the "help" option and not setting the "help_html" option to "true" is deprecated'
                         .' since sonata-project/admin-bundle 3.74 and it will not work in version 4.0.',
-                        E_USER_DEPRECATED
+                        \E_USER_DEPRECATED
                     );
 
                     $options['help_html'] = true;
@@ -241,7 +241,7 @@ class FormMapper extends BaseGroupedMapper
             'The "%s()" method is deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0.'
             .' Use Symfony Form "help" option instead.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         foreach ($helps as $name => $help) {
             $this->addHelp($name, $help, 'sonata_deprecation_mute');
@@ -264,7 +264,7 @@ class FormMapper extends BaseGroupedMapper
                 'The "%s()" method is deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0.'
                 .' Use Symfony Form "help" option instead.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         if ($this->admin->hasFormFieldDescription($name)) {
