@@ -54,7 +54,7 @@ class AdminVoter implements VoterInterface
             'The %s() method is deprecated since version 3.31. Pass a %s in the constructor instead.',
             __METHOD__,
             RequestStack::class
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         $this->request = $request;
 

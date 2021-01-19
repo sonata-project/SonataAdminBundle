@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 @trigger_error(sprintf(
     'The %s\CreateClassCacheCommand class is deprecated since version 3.39.0 and will be removed in 4.0.',
     __NAMESPACE__
-), E_USER_DEPRECATED);
+), \E_USER_DEPRECATED);
 
 /**
  * NEXT_MAJOR: Remove this class.

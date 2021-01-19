@@ -54,7 +54,7 @@ class SearchHandler
                 .' It will accept only bool in version 4.0.',
                 Pool::class,
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 
             $this->pool = $deprecatedPoolOrCaseSensitive;
             $this->caseSensitive = $caseSensitive;

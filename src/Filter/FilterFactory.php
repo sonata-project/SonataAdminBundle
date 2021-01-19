@@ -58,7 +58,7 @@ class FilterFactory implements FilterFactoryInterface
                     .' Use the fully-qualified type class name instead (%s)',
                     $type,
                     \get_class($filter)
-                ), E_USER_DEPRECATED);
+                ), \E_USER_DEPRECATED);
             }
         } elseif (class_exists($type)) {
             $filter = new $type();

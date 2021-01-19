@@ -191,7 +191,7 @@ class AdminObjectAclData
     {
         @trigger_error(
             'setForm() is deprecated since version 3.0 and will be removed in 4.0. Use setAclUsersForm() instead.',
-            E_USER_DEPRECATED
+            \E_USER_DEPRECATED
         );
 
         return $this->setAclUsersForm($form);
@@ -210,7 +210,7 @@ class AdminObjectAclData
     {
         @trigger_error(
             'getForm() is deprecated since version 3.0 and will be removed in 4.0. Use getAclUsersForm() instead.',
-            E_USER_DEPRECATED
+            \E_USER_DEPRECATED
         );
 
         return $this->getAclUsersForm();

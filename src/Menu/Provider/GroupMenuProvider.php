@@ -63,7 +63,7 @@ class GroupMenuProvider implements MenuProviderInterface
                 'Passing no 3rd argument is deprecated since version 3.10 and will be mandatory in 4.0.'
                 .' Pass %s as 3rd argument.',
                 AuthorizationCheckerInterface::class
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         } elseif (!$checker instanceof AuthorizationCheckerInterface) {
             throw new \InvalidArgumentException(sprintf(
                 'Argument 3 must be an instance of %s',

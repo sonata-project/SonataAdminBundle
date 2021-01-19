@@ -241,6 +241,6 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         @trigger_error(sprintf(
             'Using the "%s::$choiceList" property is deprecated since version 3.12 and will be removed in 4.0.',
             __CLASS__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
     }
 }

@@ -30,7 +30,7 @@ if (class_exists(CoreExporter::class)) {
                 'The %s\Exporter class is deprecated since version 3.14 and will be removed in 4.0.'
                 .' Use \Sonata\Exporter\Exporter instead',
                 __NAMESPACE__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
     }
 } else {

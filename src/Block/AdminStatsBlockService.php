@@ -61,7 +61,7 @@ class AdminStatsBlockService extends AbstractBlockService
                 null === $poolOrTemplating ? 'null' : EngineInterface::class,
                 __METHOD__,
                 Pool::class
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 
             if (null === $pool) {
                 throw new \TypeError(sprintf(

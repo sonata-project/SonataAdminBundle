@@ -75,7 +75,7 @@ final class StringExtension extends AbstractExtension
         @trigger_error(
             'The "sonata_truncate" twig filter is deprecated'
             .' since sonata-project/admin-bundle 3.69 and will be removed in 4.0. Use "u.truncate" instead.',
-            E_USER_DEPRECATED
+            \E_USER_DEPRECATED
         );
 
         if ($this->legacyExtension instanceof TextExtension) {

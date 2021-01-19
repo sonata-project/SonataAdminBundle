@@ -83,7 +83,7 @@ class AdminListBlockService extends AbstractBlockService
                 null === $poolOrTemplating ? 'null' : EngineInterface::class,
                 __METHOD__,
                 Pool::class
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 
             if (!$templateRegistryOrPool instanceof Pool) {
                 throw new \TypeError(sprintf(

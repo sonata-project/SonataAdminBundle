@@ -17,7 +17,7 @@ namespace Sonata\AdminBundle\Admin;
     'The %1$s\AdminExtension class is deprecated since version 3.1 and will be removed in 4.0.'
     .' Use %1$s\AbstractAdminExtension instead.',
     __NAMESPACE__
-), E_USER_DEPRECATED);
+), \E_USER_DEPRECATED);
 
 /**
  * NEXT_MAJOR: remove this class.

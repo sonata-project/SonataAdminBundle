@@ -84,7 +84,7 @@ class AdminObjectAclManipulator
     {
         @trigger_error(
             'createForm() is deprecated since version 3.0 and will be removed in 4.0. Use createAclUsersForm() instead.',
-            E_USER_DEPRECATED
+            \E_USER_DEPRECATED
         );
 
         return $this->createAclUsersForm($data);
@@ -153,7 +153,7 @@ class AdminObjectAclManipulator
     {
         @trigger_error(
             'updateAcl() is deprecated since version 3.0 and will be removed in 4.0. Use updateAclUsers() instead.',
-            E_USER_DEPRECATED
+            \E_USER_DEPRECATED
         );
 
         $this->updateAclUsers($data);

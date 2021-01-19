@@ -47,7 +47,7 @@ final class CheckAclUserManagerCompilerPass implements CompilerPassInterface
                 .' is deprecated since sonata-project/admin-bundle 3.78 and will throw an "%s" exception in 4.0.',
                 AdminAclUserManagerInterface::class,
                 \InvalidArgumentException::class
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
     }
 }
