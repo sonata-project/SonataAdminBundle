@@ -76,7 +76,7 @@ final class DataTransformerResolverTest extends TestCase
         $customDataTransformer = new CallbackTransformer(static function ($value): string {
             return (string) (int) $value;
         }, static function ($value): bool {
-            return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+            return filter_var($value, \FILTER_VALIDATE_BOOLEAN);
         });
         $this->fieldDescription->method('getOption')->with('data_transformer')->willReturn($customDataTransformer);
         $this->fieldDescription->method('getType')->willReturn($fieldType);
@@ -181,7 +181,7 @@ final class DataTransformerResolverTest extends TestCase
         $customDataTransformer = new CallbackTransformer(static function ($value): string {
             return (string) (int) $value;
         }, static function ($value): bool {
-            return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+            return filter_var($value, \FILTER_VALIDATE_BOOLEAN);
         });
 
         $this->fieldDescription->method('getType')->willReturn($fieldType);
@@ -204,7 +204,7 @@ final class DataTransformerResolverTest extends TestCase
         $customDataTransformer = new CallbackTransformer(static function ($value): string {
             return (string) (int) $value;
         }, static function ($value): bool {
-            return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+            return filter_var($value, \FILTER_VALIDATE_BOOLEAN);
         });
 
         $this->fieldDescription->method('getType')->willReturn($fieldType);

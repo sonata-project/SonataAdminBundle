@@ -52,7 +52,7 @@ class AdminType extends AbstractType
                 'Passing argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.72'
                 .' and will be ignored in version 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         $this->adminHelper = $adminHelper;

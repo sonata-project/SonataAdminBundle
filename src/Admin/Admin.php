@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Admin;
 @trigger_error(sprintf(
     'The %1$s\Admin class is deprecated since version 3.1 and will be removed in 4.0. Use %1$s\AbstractAdmin instead.',
     __NAMESPACE__
-), E_USER_DEPRECATED);
+), \E_USER_DEPRECATED);
 
 /**
  * NEXT_MAJOR: remove this class.

@@ -84,7 +84,7 @@ final class SetObjectFieldValueAction
                 DataTransformerResolverInterface::class,
                 __METHOD__,
                 \TypeError::class
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
             $resolver = new DataTransformerResolver();
         }
 
@@ -95,7 +95,7 @@ final class SetObjectFieldValueAction
                 .' 3.82 and will throw a \TypeError error in version 4.0. You must pass an instance of %s instead.',
                 __METHOD__,
                 PropertyAccessorInterface::class
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 
             $propertyAccessor = $pool->getPropertyAccessor();
         }

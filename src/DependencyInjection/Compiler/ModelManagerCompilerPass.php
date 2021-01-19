@@ -56,7 +56,7 @@ final class ModelManagerCompilerPass implements CompilerPassInterface
                     .' sonata-project/admin-bundle 3.60.',
                     self::MANAGER_TAG,
                     $id
-                ), E_USER_DEPRECATED);
+                ), \E_USER_DEPRECATED);
 
                 $definition->addTag(self::MANAGER_TAG);
             }

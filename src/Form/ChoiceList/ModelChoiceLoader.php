@@ -104,7 +104,7 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
                     @trigger_error(
                         'Passing a query which is not supported by the model manager is deprecated since'
                         .' sonata-project/admin-bundle 3.76 and will throw an exception in version 4.0.',
-                        E_USER_DEPRECATED
+                        \E_USER_DEPRECATED
                     );
                     // throw new \InvalidArgumentException('The model manager does not support the query.');
                 }

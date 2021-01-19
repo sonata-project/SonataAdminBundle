@@ -17,7 +17,7 @@ namespace Sonata\AdminBundle\Form\Type;
     'The %s1$\ModelTypeList class is deprecated since version 3.5 and will be removed in 4.0.'
     .' Use %1$s\ModelListType instead.',
     __NAMESPACE__
-), E_USER_DEPRECATED);
+), \E_USER_DEPRECATED);
 
 /**
  * This type is used to render an hidden input text and 3 links

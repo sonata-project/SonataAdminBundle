@@ -71,7 +71,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
             @trigger_error(sprintf(
                 'Passing a third argument to %s() is deprecated since sonata-project/admin-bundle 3.77.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 
             if (!$registry instanceof RegistryInterface && !$registry instanceof ManagerRegistry) {
                 throw new \TypeError(sprintf(
@@ -196,7 +196,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
             @trigger_error(
                 'Option "user_entity" is deprecated since sonata-project/admin-bundle 3.69 and will be removed in version 4.0.'
                 .' Use "user_model" option instead.',
-                E_USER_DEPRECATED
+                \E_USER_DEPRECATED
             );
 
             if (null === $input->getOption('user_model')) {
@@ -225,7 +225,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
                 .' Use %s::getUserModelClass() instead.',
                 __METHOD__,
                 __CLASS__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         if ('' === $this->userEntityClass) {
@@ -247,7 +247,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
                     .' sonata-project/admin-bundle 3.77 and will throw an exception in 4.0.'
                     .' Pass a fully qualified class name instead (e.g. App\Model\User).',
                     $userModelFromInput
-                ), E_USER_DEPRECATED);
+                ), \E_USER_DEPRECATED);
 
 //                throw new \InvalidArgumentException(sprintf(
 //                    'The "user_model" name be a fully qualified class name'

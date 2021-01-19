@@ -105,7 +105,7 @@ class CRUDController implements ContainerAwareInterface
         @trigger_error(sprintf(
             'Method %1$s::render has been renamed to %1$s::renderWithExtraParams.',
             __CLASS__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return $this->renderWithExtraParams($view, $parameters, $response);
     }
@@ -296,7 +296,7 @@ class CRUDController implements ContainerAwareInterface
                 .' sonata-project/admin-bundle 3.62 and will be removed in 4.0,'
                 .' use `AdminInterface::getIdParameter()` instead.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         // the key used to lookup the template
@@ -465,7 +465,7 @@ class CRUDController implements ContainerAwareInterface
                 'Override %1$s::getBatchActions method is deprecated since version 3.2.'
                 .' Use %1$s::configureBatchActions instead. The method will be final in 4.0.',
                 AbstractAdmin::class
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
         $batchActions = $this->admin->getBatchActions();
         if (!\array_key_exists($action, $batchActions)) {
@@ -687,7 +687,7 @@ class CRUDController implements ContainerAwareInterface
                 .' sonata-project/admin-bundle 3.62 and will be removed in 4.0,'
                 .' use `AdminInterface::getIdParameter()` instead.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         $request = $this->getRequest();
@@ -741,7 +741,7 @@ class CRUDController implements ContainerAwareInterface
                 .' sonata-project/admin-bundle 3.62 and will be removed in 4.0,'
                 .' use `AdminInterface::getIdParameter()` instead.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         $request = $this->getRequest();
@@ -927,7 +927,7 @@ class CRUDController implements ContainerAwareInterface
         if (!$this->has('sonata.admin.admin_exporter')) {
             @trigger_error(
                 'Not registering the exporter bundle is deprecated since version 3.14. You must register it to be able to use the export action in 4.0.',
-                E_USER_DEPRECATED
+                \E_USER_DEPRECATED
             );
             $allowedExportFormats = (array) $this->admin->getExportFormats();
 
@@ -980,7 +980,7 @@ class CRUDController implements ContainerAwareInterface
                 .' sonata-project/admin-bundle 3.62 and will be removed in 4.0,'
                 .' use `AdminInterface::getIdParameter()` instead.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         if (!$this->admin->isAclEnabled()) {
@@ -993,7 +993,7 @@ class CRUDController implements ContainerAwareInterface
                 'Not configuring "acl_user_manager" and using ACL security handler is deprecated since'
                 .' sonata-project/admin-bundle 3.78 and will not work on 4.0. You MUST specify the service name'
                 .' under "sonata_admin.security.acl_user_manager" option.',
-                E_USER_DEPRECATED
+                \E_USER_DEPRECATED
             );
         }
 
@@ -1195,7 +1195,7 @@ class CRUDController implements ContainerAwareInterface
             .', to be removed in 4.0. Use `%s::getMethod()` instead.',
             __METHOD__,
             Request::class
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return $this->getRequest()->getMethod();
     }
@@ -1210,7 +1210,7 @@ class CRUDController implements ContainerAwareInterface
                 'The "%s()" method is deprecated since sonata-project/admin-bundle version 3.86 and will be'
                 .' removed in 4.0 version.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         $request = $this->getRequest();
@@ -1490,7 +1490,7 @@ class CRUDController implements ContainerAwareInterface
      */
     protected function escapeHtml($s)
     {
-        return htmlspecialchars((string) $s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        return htmlspecialchars((string) $s, \ENT_QUOTES | \ENT_SUBSTITUTE, 'UTF-8');
     }
 
     /**
@@ -1605,7 +1605,7 @@ class CRUDController implements ContainerAwareInterface
                 implode('", "', $request->getAcceptableContentTypes()),
                 $request->getMethod(),
                 $request->getUri()
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 
             return null;
         }
@@ -1633,7 +1633,7 @@ class CRUDController implements ContainerAwareInterface
                 implode('", "', $request->getAcceptableContentTypes()),
                 $request->getMethod(),
                 $request->getUri()
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         return $this->renderJson([
@@ -1672,7 +1672,7 @@ class CRUDController implements ContainerAwareInterface
             // NEXT_MAJOR: make this exception
             @trigger_error(
                 'Accessing a child that isn\'t connected to a given parent is deprecated since sonata-project/admin-bundle 3.34 and won\'t be allowed in 4.0.',
-                E_USER_DEPRECATED
+                \E_USER_DEPRECATED
             );
         }
     }

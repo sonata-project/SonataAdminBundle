@@ -156,7 +156,7 @@ final class RetrieveAutocompleteItemsAction
             @trigger_error(sprintf(
                 'Not implementing "%s::getCurrentPageResults()" is deprecated since sonata-project/admin-bundle 3.87 and will fail in 4.0.',
                 PagerInterface::class
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 
             $results = $pager->getResults();
         }

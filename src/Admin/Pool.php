@@ -155,7 +155,7 @@ class Pool
                 .' sonata-project/admin-bundle 3.86 and will throw "%s" exception in 4.0.',
                 __METHOD__,
                 \TypeError::class
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 
             $this->title = $titleOrAdminServiceIds;
         }
@@ -169,7 +169,7 @@ class Pool
                 .' sonata-project/admin-bundle 3.86 and will throw "%s" exception in 4.0.',
                 __METHOD__,
                 \TypeError::class
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 
             $this->titleLogo = $logoTitleOrAdminGroups;
         }
@@ -187,7 +187,7 @@ class Pool
                 'Passing an "%s" instance as argument 4 to "%s()" is deprecated since sonata-project/admin-bundle 3.82.',
                 PropertyAccessorInterface::class,
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         // NEXT_MAJOR: Remove next line.
@@ -218,7 +218,7 @@ class Pool
         @trigger_error(sprintf(
             'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         $groups = $this->adminGroups;
 
@@ -247,7 +247,7 @@ class Pool
         @trigger_error(sprintf(
             'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return isset($this->adminGroups[$group]);
     }
@@ -313,7 +313,7 @@ class Pool
         @trigger_error(sprintf(
             'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         if (!isset($this->adminGroups[$group])) {
             throw new \InvalidArgumentException(sprintf('Group "%s" not found in admin pool.', $group));
@@ -354,7 +354,7 @@ class Pool
                 __METHOD__,
                 $class,
                 __CLASS__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 
             // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement,
             // uncomment the following exception and declare AdminInterface as return type
@@ -417,7 +417,7 @@ class Pool
                 .' sonata-project/admin-bundle 3.51 and will cause a %s in 4.0.',
                 __METHOD__,
                 \TypeError::class
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 
             return false;
 
@@ -441,7 +441,7 @@ class Pool
                     'Passing an invalid admin code as argument 1 for %s() is deprecated since'
                     .' sonata-project/admin-bundle 3.50 and will throw an exception in 4.0.',
                     __METHOD__
-                ), E_USER_DEPRECATED);
+                ), \E_USER_DEPRECATED);
 
                 // NEXT_MAJOR : throw `\InvalidArgumentException` instead
             }
@@ -451,7 +451,7 @@ class Pool
                     'Passing an invalid admin hierarchy inside argument 1 for %s() is deprecated since'
                     .' sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.',
                     __METHOD__
-                ), E_USER_DEPRECATED);
+                ), \E_USER_DEPRECATED);
 
                 // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following exception and declare AdminInterface as return type
                 // throw new \InvalidArgumentException(sprintf(
@@ -549,7 +549,7 @@ class Pool
             @trigger_error(sprintf(
                 'Method "%s()" is deprecated since sonata-project/admin-bundle 3.77 and will be removed in version 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         return $this->container;
@@ -572,7 +572,7 @@ class Pool
             @trigger_error(sprintf(
                 'Method "%s()" is deprecated since sonata-project/admin-bundle 3.86 and will be removed in version 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         $this->adminGroups = $adminGroups;
@@ -600,7 +600,7 @@ class Pool
             @trigger_error(sprintf(
                 'Method "%s()" is deprecated since sonata-project/admin-bundle 3.86 and will be removed in version 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         $this->adminServiceIds = $adminServiceIds;
@@ -632,7 +632,7 @@ class Pool
             @trigger_error(sprintf(
                 'Method "%s()" is deprecated since sonata-project/admin-bundle 3.86 and will be removed in version 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         $this->adminClasses = $adminClasses;
@@ -705,7 +705,7 @@ class Pool
             .' Use "%s::getLogo()" instead.',
             __METHOD__,
             SonataConfiguration::class
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return $this->titleLogo;
     }
@@ -724,7 +724,7 @@ class Pool
             .' Use "%s::getTitle()" instead.',
             __METHOD__,
             SonataConfiguration::class
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return $this->title;
     }
@@ -746,7 +746,7 @@ class Pool
             .' Use "%s::getOption()" instead.',
             __METHOD__,
             SonataConfiguration::class
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         if (isset($this->options[$name])) {
             return $this->options[$name];
@@ -763,7 +763,7 @@ class Pool
         @trigger_error(sprintf(
             'The "%s" method is deprecated since version 3.82 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         if (null === $this->propertyAccessor) {
             $this->propertyAccessor = PropertyAccess::createPropertyAccessor();

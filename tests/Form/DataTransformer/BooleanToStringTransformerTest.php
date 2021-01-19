@@ -63,7 +63,7 @@ final class BooleanToStringTransformerTest extends TestCase
             // invalid values
             ['foo', false],
             [new \DateTime(), false],
-            [PHP_INT_MAX, false],
+            [\PHP_INT_MAX, false],
         ];
     }
 

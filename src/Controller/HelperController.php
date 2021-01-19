@@ -34,7 +34,7 @@ use Twig\Environment;
     'The %s\HelperController class is deprecated since version 3.38.0 and will be removed in 4.0.'
     .' Use actions inside Sonata\AdminBundle\Action instead.',
     __NAMESPACE__
-), E_USER_DEPRECATED);
+), \E_USER_DEPRECATED);
 
 /**
  * NEXT_MAJOR: remove this class.
@@ -92,7 +92,7 @@ class HelperController
                 DataTransformerResolverInterface::class,
                 __METHOD__,
                 \TypeError::class
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
             $resolver = new DataTransformerResolver();
         }
 

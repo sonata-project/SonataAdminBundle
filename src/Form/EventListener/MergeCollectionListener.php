@@ -41,7 +41,7 @@ class MergeCollectionListener implements EventSubscriberInterface
                 'Passing argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.75'
                 .' and will be ignored in version 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         $this->modelManager = $modelManager;
