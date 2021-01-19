@@ -36,11 +36,11 @@ jobs:
                       dependencies: lowest
                       allowed-to-fail: false
                       variant: normal
-                    - php-version: '7.4'
+                    - php-version: '8.0'
                       dependencies: highest
                       allowed-to-fail: false
                       variant: 'symfony/symfony:"4.4.*"'
-                    - php-version: '7.4'
+                    - php-version: '8.0'
                       dependencies: highest
                       allowed-to-fail: false
                       variant: 'sonata-project/block-bundle:"3.*"'
