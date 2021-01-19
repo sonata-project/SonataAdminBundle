@@ -2524,7 +2524,7 @@ EOT
      */
     private function buildTwigLikeUrl(array $url): string
     {
-        return htmlspecialchars(http_build_query($url, '', '&', PHP_QUERY_RFC3986));
+        return htmlspecialchars(http_build_query($url, '', '&', \PHP_QUERY_RFC3986));
     }
 
     private function removeExtraWhitespace(string $string): string

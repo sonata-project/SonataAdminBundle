@@ -153,7 +153,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
                 'Omitting the argument 1 for "%s()" or passing other type than "string" is deprecated'.
                 ' since sonata-project/admin-bundle 3.78. It will accept only string in version 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         } else {
             $this->setName($name);
 
@@ -197,7 +197,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
                 'The %s() method is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will become private in version 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         $this->fieldName = $fieldName;
@@ -255,7 +255,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
                 .' and the option will be removed in 4.0.'
                 .' Use Symfony Form "help" option instead.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 
             $this->setHelp($options['help'], 'sonata_deprecation_mute');
             unset($options['help']);
@@ -290,7 +290,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
                 'Returning other type than string or null in method %s() is deprecated since'
                 .' sonata-project/admin-bundle 3.65. It will return only those types in version 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         return $this->template;
@@ -321,7 +321,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
                     __METHOD__,
                     __CLASS__
                 ),
-                E_USER_DEPRECATED
+                \E_USER_DEPRECATED
             );
             // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following exception and declare AdminInterface as return type
             // throw new \LogicException(sprintf('%s has no parent.', static::class));
@@ -367,7 +367,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
                     __METHOD__,
                     __CLASS__
                 ),
-                E_USER_DEPRECATED
+                \E_USER_DEPRECATED
             );
             // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following exception and declare AdminInterface as return type
             // throw new \LogicException(sprintf('%s has no association admin.', static::class));
@@ -483,7 +483,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
                     __METHOD__,
                     __CLASS__
                 ),
-                E_USER_DEPRECATED
+                \E_USER_DEPRECATED
             );
             // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following exception and declare AdminInterface as return type
             // throw new \LogicException(sprintf('%s has no admin.', static::class));
@@ -525,7 +525,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         @trigger_error(sprintf(
             'The "%s()" method is deprecated since version 3.83 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         $this->mappingType = $mappingType;
     }
@@ -554,7 +554,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             'The %s method is deprecated since 3.1 and will be removed in 4.0. Use %s::classify() instead.',
             __METHOD__,
             Inflector::class
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return InflectorFactory::create()->build()->classify($property);
     }
@@ -575,7 +575,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
                 'The "%s()" method is deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0.'
                 .' Use Symfony Form "help" option instead.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         $this->help = $help;
@@ -595,7 +595,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
                 'The "%s()" method is deprecated since sonata-project/admin-bundle 3.74 and will be removed in version 4.0.'
                 .' Use Symfony Form "help" option instead.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         return $this->help;
@@ -609,7 +609,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
                 'Returning other type than string, false or null in method %s() is deprecated since'
                 .' sonata-project/admin-bundle 3.65. It will return only those types in version 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         return $label;
