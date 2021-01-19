@@ -235,7 +235,7 @@ final class AdminMaker extends AbstractMaker
 
             $io->writeln(sprintf(
                 '%sThe service "<info>%s</info>" has been appended to the file <info>"%s</info>".',
-                PHP_EOL,
+                \PHP_EOL,
                 $id,
                 realpath($file)
             ));
@@ -259,7 +259,7 @@ final class AdminMaker extends AbstractMaker
         $generator->writeChanges();
         $io->writeln(sprintf(
             '%sThe controller class "<info>%s</info>" has been generated under the file "<info>%s</info>".',
-            PHP_EOL,
+            \PHP_EOL,
             $controllerClassNameDetails->getShortName(),
             $controllerClassFullName
         ));
@@ -275,7 +275,7 @@ final class AdminMaker extends AbstractMaker
         $fields = $this->modelManager->getExportFields($this->modelClass);
         $fieldString = '';
         foreach ($fields as $field) {
-            $fieldString = $fieldString.sprintf('%12s', '')."->add('".$field."')".PHP_EOL;
+            $fieldString = $fieldString.sprintf('%12s', '')."->add('".$field."')".\PHP_EOL;
         }
 
         $fieldString .= sprintf('%12s', '');
@@ -290,7 +290,7 @@ final class AdminMaker extends AbstractMaker
 
         $io->writeln(sprintf(
             '%sThe admin class "<info>%s</info>" has been generated under the file "<info>%s</info>".',
-            PHP_EOL,
+            \PHP_EOL,
             $adminClassNameDetails->getShortName(),
             $adminClassFullName
         ));

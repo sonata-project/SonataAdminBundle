@@ -150,7 +150,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return $this->currentMaxLink;
     }
@@ -169,7 +169,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return $this->maxRecordLimit;
     }
@@ -186,7 +186,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         $this->maxRecordLimit = $limit;
     }
@@ -242,7 +242,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return $this->cursor;
     }
@@ -259,7 +259,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         if ($pos < 1) {
             $this->cursor = 1;
@@ -284,7 +284,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         $this->setCursor($pos);
 
@@ -303,7 +303,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return $this->retrieveObject($this->cursor);
     }
@@ -320,7 +320,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         if ($this->cursor + 1 > $this->nbResults) {
             return null;
@@ -341,7 +341,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         if ($this->cursor - 1 < 1) {
             return null;
@@ -362,7 +362,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         if (0 === $this->page) {
             return 1;
@@ -383,7 +383,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         if (0 === $this->page) {
             return $this->nbResults;
@@ -400,7 +400,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.86 and will be removed in 4.0. Use countResults() instead.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return $this->nbResults;
     }
@@ -506,7 +506,7 @@ abstract class Pager implements PagerInterface
             @trigger_error(sprintf(
                 'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         return $this->parameters;
@@ -528,7 +528,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return $this->parameters[$name] ?? $default;
     }
@@ -545,7 +545,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return isset($this->parameters[$name]);
     }
@@ -564,7 +564,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         $this->parameters[$name] = $value;
     }
@@ -581,7 +581,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         if (!$this->isIteratorInitialized()) {
             $this->initializeIterator();
@@ -602,7 +602,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         if (!$this->isIteratorInitialized()) {
             $this->initializeIterator();
@@ -623,7 +623,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         if (!$this->isIteratorInitialized()) {
             $this->initializeIterator();
@@ -647,7 +647,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         if (!$this->isIteratorInitialized()) {
             $this->initializeIterator();
@@ -669,7 +669,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         if (!$this->isIteratorInitialized()) {
             $this->initializeIterator();
@@ -688,7 +688,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return $this->getNbResults();
     }
@@ -703,7 +703,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         $vars = get_object_vars($this);
         unset($vars['query']);
@@ -721,7 +721,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         $array = unserialize($serialized);
 
@@ -742,7 +742,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return $this->countColumn;
     }
@@ -759,7 +759,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         $this->countColumn = $countColumn;
     }
@@ -804,7 +804,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return null !== $this->results;
     }
@@ -822,7 +822,7 @@ abstract class Pager implements PagerInterface
             @trigger_error(sprintf(
                 'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         $results = $this->getCurrentPageResults();
@@ -849,7 +849,7 @@ abstract class Pager implements PagerInterface
             @trigger_error(sprintf(
                 'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         $this->results = null;
@@ -868,7 +868,7 @@ abstract class Pager implements PagerInterface
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         $query = $this->getQuery();
 

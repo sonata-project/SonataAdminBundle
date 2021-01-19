@@ -294,7 +294,7 @@ class Pool
             @trigger_error(sprintf(
                 'Method "%s()" is deprecated since sonata-project/admin-bundle 3.86 and will be removed in version 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         $this->adminGroups = $adminGroups;
@@ -321,7 +321,7 @@ class Pool
             @trigger_error(sprintf(
                 'Method "%s()" is deprecated since sonata-project/admin-bundle 3.86 and will be removed in version 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         $this->adminServiceIds = $adminServiceIds;
@@ -351,7 +351,7 @@ class Pool
             @trigger_error(sprintf(
                 'Method "%s()" is deprecated since sonata-project/admin-bundle 3.86 and will be removed in version 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         $this->adminClasses = $adminClasses;

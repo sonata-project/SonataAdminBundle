@@ -289,7 +289,7 @@ The `NEXT_MAJOR` tag SHOULD also be used for deprecations, it will be searched f
 You have three ways to deprecate things.
 
 For class definitions and properties, use the `@deprecated` tag.
-For methods, use the `@deprecated` tag and trigger a deprecation with `@trigger_error('...', E_USER_DEPRECATED)`:
+For methods, use the `@deprecated` tag and trigger a deprecation with `@trigger_error('...', \E_USER_DEPRECATED)`:
 
 ```php
 /**
@@ -320,7 +320,7 @@ final class StillUsedClass
         @trigger_error(sprintf(
             'Method %s() is deprecated since sonata-project/foo-lib 42.x and will be removed in version 43.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         echo "But this is not Gotham here.";
     }
@@ -348,7 +348,7 @@ you **MUST** still trigger a deprecation message (and add a `NEXT_MAJOR` comment
 if (/* some condition showing the user is using the legacy way */) {
     @trigger_error(
         'This is deprecated since sonata-project/bar-bundle 42.x and will not be supported in version 43.0.',
-        E_USER_DEPRECATED
+        \E_USER_DEPRECATED
     );
 } else {
     // new way of doing things

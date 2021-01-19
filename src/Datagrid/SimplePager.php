@@ -115,7 +115,7 @@ final class SimplePager extends Pager
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0. Use getCurrentPageResults() instead.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         if (null !== $this->results) {
             return $this->results;
@@ -206,7 +206,7 @@ final class SimplePager extends Pager
             @trigger_error(sprintf(
                 'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         parent::resetIterator('sonata_deprecation_mute');

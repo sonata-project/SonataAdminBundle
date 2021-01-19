@@ -1018,7 +1018,7 @@ class CRUDController extends AbstractController
                 'The "%s()" method is deprecated since sonata-project/admin-bundle version 3.86 and will be'
                 .' removed in 4.0 version.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         $request = $this->getRequest();
@@ -1252,7 +1252,7 @@ class CRUDController extends AbstractController
      */
     protected function escapeHtml(string $s): string
     {
-        return htmlspecialchars((string) $s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        return htmlspecialchars((string) $s, \ENT_QUOTES | \ENT_SUBSTITUTE, 'UTF-8');
     }
 
     /**

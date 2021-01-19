@@ -262,7 +262,7 @@ final class RouteCollection implements RouteCollectionInterface
                     'Element resolved by code "%s" is not instance of "%s"; This is deprecated since sonata-project/admin-bundle 3.75 and will be removed in 4.0.',
                     $code,
                     Route::class
-                ), E_USER_DEPRECATED);
+                ), \E_USER_DEPRECATED);
                 // NEXT_MAJOR : remove the previous `trigger_error()` and throw exception
             }
 

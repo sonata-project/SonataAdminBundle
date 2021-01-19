@@ -580,6 +580,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
+                    // NEXT_MAJOR: Throw \LogicException instead
                     throw new \RuntimeException(sprintf(
                         'Please define a default `baseRoutePattern` value for the admin class `%s`',
                         static::class
@@ -600,6 +601,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             preg_match(self::CLASS_REGEX, $this->class, $matches);
 
             if (!$matches) {
+                // NEXT_MAJOR: Throw \LogicException instead
                 throw new \RuntimeException(sprintf(
                     'Please define a default `baseRoutePattern` value for the admin class `%s`',
                     static::class
@@ -620,7 +622,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * Returns the baseRouteName used to generate the routing information.
      *
-     * @throws \RuntimeException
+     * @throws \RuntimeException // NEXT_MAJOR: Remove this tag
      *
      * @return string the baseRouteName used to generate the routing information
      */
@@ -636,6 +638,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
+                    // NEXT_MAJOR: Throw \LogicException instead
                     throw new \RuntimeException(sprintf(
                         'Cannot automatically determine base route name,'
                         .' please define a default `baseRouteName` value for the admin class `%s`',
@@ -656,6 +659,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             preg_match(self::CLASS_REGEX, $this->class, $matches);
 
             if (!$matches) {
+                // NEXT_MAJOR: Throw \LogicException instead
                 throw new \RuntimeException(sprintf(
                     'Cannot automatically determine base route name,'
                     .' please define a default `baseRouteName` value for the admin class `%s`',
@@ -678,12 +682,14 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
         if ($this->hasActiveSubClass()) {
             if ($this->hasParentFieldDescription()) {
+                // NEXT_MAJOR: Throw \LogicException instead
                 throw new \RuntimeException('Feature not implemented: an embedded admin cannot have subclass');
             }
 
             $subClass = $this->getRequest()->query->get('subclass');
 
             if (!$this->hasSubClass($subClass)) {
+                // NEXT_MAJOR: Throw \LogicException instead
                 throw new \RuntimeException(sprintf('Subclass "%s" is not defined.', $subClass));
             }
 
@@ -1405,6 +1411,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         if ($parentAdmin->getCode() === $child->getCode()) {
+            // NEXT_MAJOR: Throw \LogicException instead
             throw new \RuntimeException(sprintf(
                 'Circular reference detected! The child admin `%s` is already in the parent tree of the `%s` admin.',
                 $child->getCode(),
@@ -1535,7 +1542,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 'Calling %s() when no classname label is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 //            throw new \LogicException(sprintf(
 //                'Admin "%s" has no classname label. Did you forgot to initialize the admin ?',
 //                static::class
@@ -1785,10 +1792,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     public function setListMode(string $mode): void
     {
-        if (!$this->hasRequest()) {
-            throw new \RuntimeException(sprintf('No request attached to the current admin: %s', $this->getCode()));
-        }
-
         $this->getRequest()->getSession()->set(sprintf('%s.list_mode', $this->getCode()), $mode);
     }
 

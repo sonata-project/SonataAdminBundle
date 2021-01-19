@@ -366,7 +366,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $dataTransformer = new CallbackTransformer(static function ($value): string {
             return (string) (int) $value;
         }, static function ($value): bool {
-            return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+            return filter_var($value, \FILTER_VALIDATE_BOOLEAN);
         });
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
@@ -420,7 +420,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         }, static function ($value) use (&$isOverridden): bool {
             $isOverridden = true;
 
-            return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+            return filter_var($value, \FILTER_VALIDATE_BOOLEAN);
         });
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
