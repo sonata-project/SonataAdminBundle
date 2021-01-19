@@ -146,14 +146,14 @@ class SonataAdminExtension extends AbstractExtension
         if (null === $translator) {
             @trigger_error(
                 'The $translator parameter will be required field with the 4.0 release.',
-                E_USER_DEPRECATED
+                \E_USER_DEPRECATED
             );
         } else {
             if (!$translator instanceof TranslatorInterface) {
                 @trigger_error(sprintf(
                     'The $translator parameter should be an instance of "%s" and will be mandatory in 4.0.',
                     TranslatorInterface::class
-                ), E_USER_DEPRECATED);
+                ), \E_USER_DEPRECATED);
             }
 
             if (!$translator instanceof TranslatorInterface && !$translator instanceof LegacyTranslationInterface) {
@@ -189,7 +189,7 @@ class SonataAdminExtension extends AbstractExtension
                 __METHOD__,
                 PropertyAccessorInterface::class,
                 AuthorizationCheckerInterface::class
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 
             $this->securityChecker = $propertyAccessorOrSecurityChecker;
             $this->propertyAccessor = $pool->getPropertyAccessor();
@@ -199,7 +199,7 @@ class SonataAdminExtension extends AbstractExtension
                 .' 3.82 and will throw a \TypeError error in version 4.0. You must pass an instance of "%s" instead.',
                 __METHOD__,
                 PropertyAccessorInterface::class
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 
             $this->propertyAccessor = $pool->getPropertyAccessor();
             $this->securityChecker = $securityChecker;
@@ -367,7 +367,7 @@ class SonataAdminExtension extends AbstractExtension
             @trigger_error(sprintf(
                 'The %s method is deprecated in favor of RenderElementExtension::renderListElement since version 3.87 and will be removed in 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         if (null === $this->renderElementExtension) {
@@ -391,7 +391,7 @@ class SonataAdminExtension extends AbstractExtension
         @trigger_error(sprintf(
             'The %s method is deprecated since version 3.33 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         $content = $template->render($parameters);
 
@@ -443,7 +443,7 @@ EOT;
             'The %s() method is deprecated since sonata-project/admin-bundle 3.73 and will be removed in version 4.0.'
             .' There is no replacement.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         if (isset($params['loop']) && $object instanceof \ArrayAccess) {
             throw new \RuntimeException('remove the loop requirement');
@@ -464,7 +464,7 @@ EOT;
                         .' since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.',
                         $fieldDescription->getName(),
                     ),
-                    E_USER_DEPRECATED
+                    \E_USER_DEPRECATED
                 );
             }
         }
@@ -491,7 +491,7 @@ EOT;
             @trigger_error(sprintf(
                 'The %s method is deprecated in favor of RenderElementExtension::renderViewElement since version 3.87 and will be removed in 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         if (null === $this->renderElementExtension) {
@@ -522,7 +522,7 @@ EOT;
             @trigger_error(sprintf(
                 'The %s method is deprecated in favor of RenderElementExtension::renderViewElementCompare since version 3.87 and will be removed in 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
         if (null === $this->renderElementExtension) {
             $this->renderElementExtension = new RenderElementExtension($this->propertyAccessor, $this->templateRegistries, $this->logger);
@@ -548,7 +548,7 @@ EOT;
             @trigger_error(sprintf(
                 'The %s method is deprecated in favor of RenderElementExtension::renderRelationElement since version 3.87 and will be removed in 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         if (null === $this->renderElementExtension) {
@@ -592,7 +592,7 @@ EOT;
             @trigger_error(sprintf(
                 'The %s method is deprecated in favor of XEditableExtension::setXEditableTypeMapping since version 3.87 and will be removed in 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         $this->xEditableTypeMapping = $xEditableTypeMapping;
@@ -611,7 +611,7 @@ EOT;
             @trigger_error(sprintf(
                 'The %s method is deprecated in favor of XEditableExtension::getXEditableType since version 3.87 and will be removed in 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         return $this->xEditableTypeMapping[$type] ?? false;
@@ -636,7 +636,7 @@ EOT;
             @trigger_error(sprintf(
                 'The %s method is deprecated in favor of XEditableExtension::getXEditableChoices since version 3.87 and will be removed in 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         if (null === $this->xEditableExtension) {
@@ -662,7 +662,7 @@ EOT;
             @trigger_error(sprintf(
                 'The %s method is deprecated in favor of CanonicalizeExtension::getCanonicalizedLocaleForMoment since version 3.87 and will be removed in 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         if (null === $this->canonicalizeExtension) {
@@ -690,7 +690,7 @@ EOT;
             @trigger_error(sprintf(
                 'The %s method is deprecated in favor of CanonicalizeExtension::getCanonicalizedLocaleForSelect2 since version 3.87 and will be removed in 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         if (null === $this->canonicalizeExtension) {
@@ -719,7 +719,7 @@ EOT;
             @trigger_error(sprintf(
                 'The %s method is deprecated in favor of SecurityExtension::isGrantedAffirmative since version 3.87 and will be removed in 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         if (null === $this->securityExtension) {
@@ -749,7 +749,7 @@ EOT;
             @trigger_error(sprintf(
                 'The %s method is deprecated in favor of RenderElementExtension::getTemplate since version 3.87 and will be removed in 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
 
         return $this->renderElementExtension->getTemplate($fieldDescription, $defaultTemplate, $$environment);

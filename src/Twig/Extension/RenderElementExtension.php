@@ -159,7 +159,7 @@ final class RenderElementExtension extends AbstractExtension
                     .' since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.',
                     $fieldDescription->getName(),
                 ),
-                E_USER_DEPRECATED
+                \E_USER_DEPRECATED
             );
 
             $value = null;
@@ -203,7 +203,7 @@ final class RenderElementExtension extends AbstractExtension
                     .' since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.',
                     $fieldDescription->getName(),
                 ),
-                E_USER_DEPRECATED
+                \E_USER_DEPRECATED
             );
 
             $baseValue = null;
@@ -219,7 +219,7 @@ final class RenderElementExtension extends AbstractExtension
                     .' since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.',
                     $fieldDescription->getName(),
                 ),
-                E_USER_DEPRECATED
+                \E_USER_DEPRECATED
             );
 
             $compareValue = null;
@@ -276,7 +276,7 @@ final class RenderElementExtension extends AbstractExtension
             if ($method) {
                 @trigger_error(
                     'Option "associated_tostring" is deprecated since version 2.3 and will be removed in 4.0. Use "associated_property" instead.',
-                    E_USER_DEPRECATED
+                    \E_USER_DEPRECATED
                 );
             } else {
                 $method = '__toString';
@@ -325,7 +325,7 @@ final class RenderElementExtension extends AbstractExtension
                 'Relying on default template loading on field template loading exception is deprecated since 3.1'
                 .' and will be removed in 4.0. A %s exception will be thrown instead',
                 LoaderError::class
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
             $template = $environment->load($defaultTemplate);
 
             if (null !== $this->logger) {
@@ -380,7 +380,7 @@ final class RenderElementExtension extends AbstractExtension
                         .' since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.',
                         $fieldDescription->getName(),
                     ),
-                    E_USER_DEPRECATED
+                    \E_USER_DEPRECATED
                 );
 
                 $value = null;

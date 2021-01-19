@@ -216,7 +216,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
                 'Passing other type than string as argument 1 for method %s() is deprecated since'
                 .' sonata-project/admin-bundle 3.65. It will accept only string in version 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
         $this->code = $code;
 
@@ -225,7 +225,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
                 'Passing other type than string as argument 2 for method %s() is deprecated since'
                 .' sonata-project/admin-bundle 3.65. It will accept only string in version 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
         $this->class = $class;
 
@@ -234,7 +234,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
                 'Passing other type than string as argument 3 for method %s() is deprecated since'
                 .' sonata-project/admin-bundle 3.84. It will accept only string in version 4.0.',
                 __METHOD__
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
         }
         $this->baseControllerName = $baseControllerName;
     }
@@ -311,7 +311,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
                 'Calling %s() when no manager type is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 //            throw new \LogicException(sprintf(
 //                'Admin "%s" has no manager type.',
 //                static::class
@@ -384,7 +384,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
                 'Calling %s() when no model manager is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 //            throw new \LogicException(sprintf(
 //                'Admin "%s" has no model manager.',
 //                static::class
@@ -413,7 +413,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
                 'Calling %s() when no data source is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 //            throw new \LogicException(sprintf(
 //                'Admin "%s" has no data source.',
 //                static::class
@@ -442,7 +442,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
                 'Calling %s() when no form contractor is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 //            throw new \LogicException(sprintf(
 //                'Admin "%s" has no form contractor.',
 //                static::class
@@ -471,7 +471,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
                 'Calling %s() when no show builder is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 //            throw new \LogicException(sprintf(
 //                'Admin "%s" has no show builder.',
 //                static::class
@@ -500,7 +500,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
                 'Calling %s() when no list build is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 //            throw new \LogicException(sprintf(
 //                'Admin "%s" has no list builder.',
 //                static::class
@@ -529,7 +529,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
                 'Calling %s() when no datagrid builder is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 //            throw new \LogicException(sprintf(
 //                'Admin "%s" has no datagrid builder.',
 //                static::class
@@ -558,7 +558,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
                 'Calling %s() when no translator is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 //            throw new \LogicException(sprintf(
 //                'Admin "%s" has no translator.',
 //                static::class
@@ -588,7 +588,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
                     'Calling %s() when no pool is set is deprecated since sonata-project/admin-bundle 3.84'
                     .' and will throw a LogicException in 4.0',
                     __METHOD__,
-                ), E_USER_DEPRECATED);
+                ), \E_USER_DEPRECATED);
             }
 //            throw new \LogicException(sprintf(
 //                'Admin "%s" has no pool.',
@@ -618,7 +618,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
                 'Calling %s() when no route generator is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 //            throw new \LogicException(sprintf(
 //                'Admin "%s" has no route generator.',
 //                static::class
@@ -656,7 +656,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         @trigger_error(sprintf(
             'The %s method is deprecated since version 3.83 and will be removed in 4.0.',
             __METHOD__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
 
         return $this->validator;
     }
@@ -680,7 +680,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
                 'Calling %s() when no security handler is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 //            throw new \LogicException(sprintf(
 //                'Admin "%s" has no security handler.',
 //                static::class
@@ -709,7 +709,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
                 'Calling %s() when no security handler is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 //            throw new \LogicException(sprintf(
 //                'Admin "%s" has no security handler.',
 //                static::class
@@ -738,7 +738,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
                 'Calling %s() when no route builder is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 //            throw new \LogicException(sprintf(
 //                'Admin "%s" has no route builder.',
 //                static::class
@@ -767,7 +767,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
                 'Calling %s() when no label translator strategy is set is deprecated since sonata-project/admin-bundle 3.84'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
-            ), E_USER_DEPRECATED);
+            ), \E_USER_DEPRECATED);
 //            throw new \LogicException(sprintf(
 //                'Admin "%s" has no label translator strategy.',
 //                static::class
