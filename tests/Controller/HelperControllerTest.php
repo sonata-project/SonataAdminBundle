@@ -660,7 +660,7 @@ class HelperControllerTest extends TestCase
             ['req_param_name_page_number', null, '_page'],
             ['to_string_callback', null, null],
             ['target_admin_access_action', null, 'list'],
-            ['response_string_callback', null, null],
+            ['response_item_callback', null, null],
         ]);
     }
 
@@ -683,7 +683,7 @@ class HelperControllerTest extends TestCase
             ['req_param_name_page_number', null, '_page'],
             ['to_string_callback', null, null],
             ['target_admin_access_action', null, 'list'],
-            ['response_string_callback', null, null],
+            ['response_item_callback', null, null],
         ]);
     }
 
@@ -706,7 +706,7 @@ class HelperControllerTest extends TestCase
             ['req_param_name_page_number', null, '_page'],
             ['to_string_callback', null, null],
             ['target_admin_access_action', null, 'list'],
-            ['response_string_callback', null, null],
+            ['response_item_callback', null, null],
         ]);
     }
 
