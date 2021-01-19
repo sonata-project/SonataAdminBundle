@@ -311,4 +311,33 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $transformer->transform($collection);
     }
+
+    public function testTransformWithMultipleProperties(): void
+    {
+        $properties = ['bar', 'baz'];
+
+        $transformer = new ModelToIdPropertyTransformer(
+            $this->modelManager,
+            Foo::class,
+            $properties,
+            false,
+            function ($model, $property) use ($properties) {
+                $this->assertSame($properties, $property);
+
+                return 'nice_label';
+            }
+        );
+
+        $model = new Foo();
+        $this->modelManager->expects($this->once())
+            ->method('getIdentifierValues')
+            ->willReturn([123])
+        ;
+
+        $value = $transformer->transform($model);
+        $this->assertSame([
+            123,
+            '_labels' => ['nice_label'],
+        ], $value);
+    }
 }
