@@ -571,22 +571,24 @@ var Admin = {
         return '100%';
     },
 
-    setup_sortable_select2: function(subject, data) {
+    setup_sortable_select2: function(subject, data, customOptions) {
         var transformedData = [];
         for (var i = 0 ; i < data.length ; i++) {
             transformedData[i] = {id: data[i].data, text: data[i].label};
         }
 
-        subject.select2({
+        var options = Object.assign({
             width: function(){
-                // Select2 v3 and v4 BC. If window.Select2 is defined, then the v3 is installed.
-                // NEXT_MAJOR: Remove Select2 v3 support.
-                return Admin.get_select2_width(window.Select2 ? this.element : subject);
+              // Select2 v3 and v4 BC. If window.Select2 is defined, then the v3 is installed.
+              // NEXT_MAJOR: Remove Select2 v3 support.
+              return Admin.get_select2_width(window.Select2 ? this.element : subject);
             },
             dropdownAutoWidth: true,
             data: transformedData,
             multiple: true
-        });
+        }, customOptions);
+
+        subject.select2(options);
 
         subject.select2("container").find("ul.select2-choices").sortable({
             containment: 'parent',
