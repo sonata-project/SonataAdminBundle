@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Admin;
 
 use Psr\Container\ContainerInterface;
-use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 
 /**
  * @psalm-type Group = array{
@@ -62,31 +61,16 @@ final class Pool
      */
     private $adminClasses = [];
 
-    /**
-     * NEXT_MAJOR: change to TemplateRegistryInterface.
-     *
-     * @var MutableTemplateRegistryInterface
-     */
-    private $templateRegistry;
-
-    /**
-     * NEXT_MAJOR: Rename $titleOrAdminServiceIds to $adminServices, $logoTitleOrAdminGroups to $adminGroups and
-     * $optionsOrAdminClasses to $adminClasses and add "array" type declaration.
-     *
-     * @param string|array $titleOrAdminServiceIds
-     * @param string|array $logoTitleOrAdminGroups
-     * @param array        $optionsOrAdminClasses
-     */
     public function __construct(
         ContainerInterface $container,
-        $titleOrAdminServiceIds = [],
-        $logoTitleOrAdminGroups = [],
-        $optionsOrAdminClasses = []
+        array $adminServices = [],
+        array $adminGroups = [],
+        array $adminClasses = []
     ) {
         $this->container = $container;
-        $this->adminServiceIds = $titleOrAdminServiceIds;
-        $this->adminGroups = $logoTitleOrAdminGroups;
-        $this->adminClasses = $optionsOrAdminClasses;
+        $this->adminServiceIds = $adminServices;
+        $this->adminGroups = $adminGroups;
+        $this->adminClasses = $adminClasses;
     }
 
     /**
@@ -278,51 +262,11 @@ final class Pool
     }
 
     /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.86, will be dropped in 4.0. Pass $adminGroups as argument 3
-     * to the __construct method instead.
-     *
-     * @phpstan-param array<string, array<string, mixed>> $adminGroups
-     * @psalm-param array<string, Group> $adminGroups
-     */
-    public function setAdminGroups(array $adminGroups): void
-    {
-        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
-            @trigger_error(sprintf(
-                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.86 and will be removed in version 4.0.',
-                __METHOD__
-            ), \E_USER_DEPRECATED);
-        }
-
-        $this->adminGroups = $adminGroups;
-    }
-
-    /**
      * @return array<string, array<string, mixed>>
      */
     public function getAdminGroups(): array
     {
         return $this->adminGroups;
-    }
-
-    /**
-     * @param string[] $adminServiceIds
-     *                                  NEXT_MAJOR: Remove this method
-     *
-     * @deprecated since sonata-project/admin-bundle 3.86, will be dropped in 4.0. Pass $adminGroups as argument 2
-     * to the __construct method instead.
-     */
-    public function setAdminServiceIds(array $adminServiceIds): void
-    {
-        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
-            @trigger_error(sprintf(
-                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.86 and will be removed in version 4.0.',
-                __METHOD__
-            ), \E_USER_DEPRECATED);
-        }
-
-        $this->adminServiceIds = $adminServiceIds;
     }
 
     /**
@@ -334,28 +278,6 @@ final class Pool
     }
 
     /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.86, will be dropped in 4.0. Pass $adminGroups as argument 4
-     * to the __construct method instead.
-     *
-     * @param array<string, string[]> $adminClasses
-     *
-     * @phpstan-param array<class-string, string[]> $adminClasses
-     */
-    public function setAdminClasses(array $adminClasses): void
-    {
-        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
-            @trigger_error(sprintf(
-                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.86 and will be removed in version 4.0.',
-                __METHOD__
-            ), \E_USER_DEPRECATED);
-        }
-
-        $this->adminClasses = $adminClasses;
-    }
-
-    /**
      * @return array<string, string[]>
      *
      * @phpstan-return array<class-string, string[]>
@@ -363,45 +285,5 @@ final class Pool
     public function getAdminClasses(): array
     {
         return $this->adminClasses;
-    }
-
-    /**
-     * NEXT_MAJOR: change to TemplateRegistryInterface.
-     */
-    public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void
-    {
-        $this->templateRegistry = $templateRegistry;
-    }
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
-     *
-     * @return void
-     */
-    public function setTemplates(array $templates)
-    {
-        $this->templateRegistry->setTemplates($templates);
-    }
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
-     *
-     * @return array<string, string>
-     */
-    public function getTemplates()
-    {
-        return $this->templateRegistry->getTemplates();
-    }
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
-     *
-     * @param string $name
-     *
-     * @return string|null
-     */
-    public function getTemplate($name)
-    {
-        return $this->templateRegistry->getTemplate($name);
     }
 }
