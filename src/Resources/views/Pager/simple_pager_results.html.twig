@@ -15,7 +15,6 @@ file that was distributed with this source code.
     {% if admin.datagrid.pager.lastPage != admin.datagrid.pager.page %}
         {{ 'list_results_count_prefix'|trans({}, 'SonataAdminBundle') }}
     {% endif %}
-    {# NEXT_MAJOR: remove the attribute check and just use .countResults() #}
     {% trans with {'%count%': admin.datagrid.pager.countResults()} from 'SonataAdminBundle' %}list_results_count{% endtrans %}
     &nbsp;-&nbsp;
 {% endblock %}

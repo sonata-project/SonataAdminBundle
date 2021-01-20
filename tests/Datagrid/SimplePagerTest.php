@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Datagrid\SimplePager;
@@ -26,6 +27,16 @@ use Sonata\AdminBundle\Datagrid\SimplePager;
  */
 class SimplePagerTest extends TestCase
 {
+    /**
+     * @var SimplePager
+     */
+    private $pager;
+
+    /**
+     * @var MockObject&ProxyQueryInterface
+     */
+    private $proxyQuery;
+
     protected function setUp(): void
     {
         $this->pager = new SimplePager(10, 2);
