@@ -35,34 +35,32 @@ use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
  *  roles: list<string>
  * }
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class Pool
+final class Pool
 {
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    private $container;
 
     /**
      * @var string[]
      */
-    protected $adminServiceIds = [];
+    private $adminServiceIds = [];
 
     /**
      * @var array
      * @phpstan-var array<string, array<string, mixed>>
      * @psalm-var array<string, Group>
      */
-    protected $adminGroups = [];
+    private $adminGroups = [];
 
     /**
      * @var array<string, string[]>
      * @phpstan-var array<class-string, string[]>
      */
-    protected $adminClasses = [];
+    private $adminClasses = [];
 
     /**
      * NEXT_MAJOR: change to TemplateRegistryInterface.
@@ -224,7 +222,7 @@ class Pool
     /**
      * Checks if an admin with a certain admin code exists.
      */
-    final public function hasAdminByAdminCode(string $adminCode): bool
+    public function hasAdminByAdminCode(string $adminCode): bool
     {
         try {
             $this->getAdminByAdminCode($adminCode);
@@ -370,7 +368,7 @@ class Pool
     /**
      * NEXT_MAJOR: change to TemplateRegistryInterface.
      */
-    final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void
+    public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void
     {
         $this->templateRegistry = $templateRegistry;
     }

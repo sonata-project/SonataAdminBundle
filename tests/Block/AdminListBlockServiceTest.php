@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminListBlockService;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\BlockBundle\Test\BlockServiceTestCase;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -37,7 +38,7 @@ class AdminListBlockServiceTest extends BlockServiceTestCase
     {
         parent::setUp();
 
-        $this->pool = $this->createMock(Pool::class);
+        $this->pool = new Pool(new Container());
         $this->templateRegistry = $this->createMock(TemplateRegistryInterface::class);
     }
 
