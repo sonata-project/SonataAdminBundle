@@ -62,7 +62,7 @@ final class Datagrid implements DatagridInterface
 
     public function getResults(): array
     {
-        return $this->pager->getResults();
+        return $this->pager->getCurrentPageResults();
     }
 
     public function buildPager(): void

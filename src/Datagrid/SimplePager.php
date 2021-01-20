@@ -70,14 +70,6 @@ final class SimplePager extends Pager
         return $n;
     }
 
-    /**
-     * NEXT_MAJOR: remove this method.
-     */
-    public function getNbResults(): int
-    {
-        return $this->countResults();
-    }
-
     public function getCurrentPageResults(): iterable
     {
         if (null !== $this->results) {
@@ -86,43 +78,6 @@ final class SimplePager extends Pager
 
         /** @var array<object>|Collection<array-key, object> $results */
         $results = $this->getQuery()->execute();
-
-        // doctrine/phpcr-odm returns ArrayCollection
-        if ($results instanceof Collection) {
-            $results = $results->toArray();
-        }
-
-        $this->thresholdCount = \count($results);
-
-        if (\count($results) > $this->getMaxPerPage()) {
-            $this->haveToPaginate = true;
-            $this->results = \array_slice($results, 0, $this->getMaxPerPage());
-        } else {
-            $this->haveToPaginate = false;
-            $this->results = $results;
-        }
-
-        return $this->results;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.87. To be removed in 4.0. Use getCurrentPageResults() instead.
-     */
-    public function getResults(?int $hydrationMode = null): iterable
-    {
-        @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.87 and will be removed in 4.0. Use getCurrentPageResults() instead.',
-            __METHOD__
-        ), \E_USER_DEPRECATED);
-
-        if (null !== $this->results) {
-            return $this->results;
-        }
-
-        /** @var array<object>|Collection<array-key, object> $results */
-        $results = $this->getQuery()->execute([], $hydrationMode);
 
         // doctrine/phpcr-odm returns ArrayCollection
         if ($results instanceof Collection) {
@@ -156,9 +111,7 @@ final class SimplePager extends Pager
             throw new \RuntimeException('Uninitialized query');
         }
 
-        // NEXT_MAJOR: Remove this line and uncomment the following one instead.
-        $this->resetIterator('sonata_deprecation_mute');
-//        $this->haveToPaginate = false;
+        $this->haveToPaginate = false;
 
         if (0 === $this->getPage() || 0 === $this->getMaxPerPage()) {
             $this->setLastPage(0);
@@ -173,9 +126,7 @@ final class SimplePager extends Pager
 
             $this->getQuery()->setMaxResults($maxOffset);
 
-            // NEXT_MAJOR: Remove this line and uncomment the following one instead.
-            $this->initializeIterator('sonata_deprecation_mute');
-//            $this->results = $this->getCurrentPageResults();
+            $this->results = $this->getCurrentPageResults();
 
             $t = (int) ceil($this->thresholdCount / $this->getMaxPerPage()) + $this->getPage() - 1;
             $this->setLastPage(max(1, $t));
@@ -193,23 +144,5 @@ final class SimplePager extends Pager
     public function getThreshold(): int
     {
         return $this->threshold;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.84
-     */
-    protected function resetIterator(): void
-    {
-        if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
-            @trigger_error(sprintf(
-                'The method "%s()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.',
-                __METHOD__
-            ), \E_USER_DEPRECATED);
-        }
-
-        parent::resetIterator('sonata_deprecation_mute');
-        $this->haveToPaginate = false;
     }
 }

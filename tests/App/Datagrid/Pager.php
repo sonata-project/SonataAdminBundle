@@ -95,14 +95,6 @@ final class Pager implements PagerInterface
         return false;
     }
 
-    /**
-     * NEXT_MAJOR: remove this method.
-     */
-    public function getResults(): iterable
-    {
-        return $this->getCurrentPageResults();
-    }
-
     public function getCurrentPageResults(): iterable
     {
         return $this->repository->all();
