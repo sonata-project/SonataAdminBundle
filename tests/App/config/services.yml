@@ -1,9 +1,16 @@
 services:
-    # Under real conditions, this service is registered by "doctrine/doctrine-bundle"
-    database_connection:
-        class: Sonata\AdminBundle\Tests\Fixtures\DoctrineBundle\Connection
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
 
-    Sonata\AdminBundle\Tests\App\Model\FooRepository: ~
+    Sonata\AdminBundle\Tests\App\:
+        resource: ../*
+        exclude: ../{Entity,config,AppKernel.php}
+
+    Sonata\AdminBundle\Tests\App\Controller\:
+        resource: ../Controller
+        tags: [controller.service_arguments]
 
     sonata.admin.manager.test:
         class: Sonata\AdminBundle\Tests\App\Model\ModelManager
@@ -42,7 +49,7 @@ services:
         class: Sonata\AdminBundle\Tests\App\Datagrid\ProxyQuery
 
     Sonata\AdminBundle\Tests\App\Admin\FooAdmin:
-        arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, Sonata\AdminBundle\Controller\CRUDController]
+        arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, 'sonata.admin.controller.crud']
         tags:
             - {name: sonata.admin, manager_type: test, label: Foo}
 
