@@ -22,8 +22,6 @@ final class CRUDControllerTest extends WebTestCase
 {
     public function testList(): void
     {
-        $this->markTestSkipped('Need to fix https://github.com/sonata-project/SonataAdminBundle/issues/6773');
-
         $client = static::createClient();
         $crawler = $client->request(Request::METHOD_GET, '/admin/tests/app/foo/list');
 
@@ -36,8 +34,6 @@ final class CRUDControllerTest extends WebTestCase
 
     public function testCreate(): void
     {
-        $this->markTestSkipped('Need to fix https://github.com/sonata-project/SonataAdminBundle/issues/6773');
-
         $client = static::createClient();
         $crawler = $client->request(Request::METHOD_GET, '/admin/tests/app/foo/create');
 
@@ -54,8 +50,6 @@ final class CRUDControllerTest extends WebTestCase
 
     public function testShow(): void
     {
-        $this->markTestSkipped('Need to fix https://github.com/sonata-project/SonataAdminBundle/issues/6773');
-
         $client = static::createClient();
         $crawler = $client->request(Request::METHOD_GET, '/admin/tests/app/foo/test_id/show');
 
@@ -68,8 +62,6 @@ final class CRUDControllerTest extends WebTestCase
 
     public function testEdit(): void
     {
-        $this->markTestSkipped('Need to fix https://github.com/sonata-project/SonataAdminBundle/issues/6773');
-
         $client = static::createClient();
         $crawler = $client->request(Request::METHOD_GET, '/admin/tests/app/foo/test_id/edit');
 
@@ -98,11 +90,10 @@ final class CRUDControllerTest extends WebTestCase
             ['/admin/empty/create'],
             ['/admin/empty/test_id/show'],
             ['/admin/empty/test_id/edit'],
-            // Uncomment when https://github.com/sonata-project/SonataAdminBundle/issues/6773 is fixed
-//            ['/admin/tests/app/foo-with-custom-controller/list'],
-//            ['/admin/tests/app/foo-with-custom-controller/create'],
-//            ['/admin/tests/app/foo-with-custom-controller/test_id/show'],
-//            ['/admin/tests/app/foo-with-custom-controller/test_id/edit'],
+            ['/admin/tests/app/foo-with-custom-controller/list'],
+            ['/admin/tests/app/foo-with-custom-controller/create'],
+            ['/admin/tests/app/foo-with-custom-controller/test_id/show'],
+            ['/admin/tests/app/foo-with-custom-controller/test_id/edit'],
         ];
     }
 
