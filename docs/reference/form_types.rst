@@ -315,6 +315,18 @@ The available options are:
         ])
     ;
 
+``response_item_callback``
+  defaults to ``null``. Callable function that can be used to customize each item individually returned in JSON::
+
+    $formMapper
+        ->add('category', ModelAutocompleteType::class, [
+            'property' => 'title',
+            'response_item_callback' => function ($admin, $entity, &$item) {
+                $item['type'] = $entity->getType();
+            },
+        ])
+    ;
+
 ``multiple``
   defaults to ``false``. Set to ``true``, if your field is in a many-to-many relation.
 
@@ -407,6 +419,12 @@ The available options are:
 
     {# change the default selection format #}
     {% block sonata_type_model_autocomplete_selection_format %}'<b>'+item.label+'</b>'{% endblock %}
+
+    {# customize select2 options #}
+    {% block sonata_type_model_autocomplete_select2_options_js %}
+    options.multiple = false;
+    options.dropdownAutoWidth = false;
+    {% endblock %}
 
 ``target_admin_access_action``
   defaults to ``list``.
