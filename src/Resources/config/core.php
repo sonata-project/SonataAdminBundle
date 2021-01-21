@@ -56,8 +56,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 [], // admin service groups
                 [], // admin service classes
             ])
+            // NEXT_MAJOR: Remove this call.
             ->call('setTemplateRegistry', [
                 new ReferenceConfigurator('sonata.admin.global_template_registry'),
+                'sonata_deprecation_mute',
             ])
 
         ->alias(Pool::class, 'sonata.admin.pool')

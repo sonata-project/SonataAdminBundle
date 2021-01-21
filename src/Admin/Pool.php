@@ -117,7 +117,9 @@ class Pool
     protected $propertyAccessor;
 
     /**
-     * NEXT_MAJOR: change to TemplateRegistryInterface.
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
      *
      * @var MutableTemplateRegistryInterface
      */
@@ -649,10 +651,19 @@ class Pool
     }
 
     /**
-     * NEXT_MAJOR: change to TemplateRegistryInterface.
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
      */
     final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
+            @trigger_error(sprintf(
+                'The "%s()" method is deprecated since version 3.x and will be removed in 4.0.',
+                __METHOD__,
+            ), \E_USER_DEPRECATED);
+        }
+
         $this->templateRegistry = $templateRegistry;
     }
 
