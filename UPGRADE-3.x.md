@@ -1,6 +1,13 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.xx to 3.xx
+=========================
+
+### Deprecated `Sonata\AdminBundle\Admin\Pool::setTemplateRegistry()` method.
+
+This method has been deprecated without replacement.
+
 UPGRADE FROM 3.86 to 3.87
 =========================
 

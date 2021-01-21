@@ -42,7 +42,6 @@ class DashboardActionTest extends TestCase
         $this->templateRegistry = $this->createStub(MutableTemplateRegistryInterface::class);
 
         $pool = new Pool($container);
-        $pool->setTemplateRegistry($this->templateRegistry);
 
         $twig = $this->createMock(Environment::class);
 
