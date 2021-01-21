@@ -3284,14 +3284,20 @@ EOT;
 
         $this->loaded['routes'] = true;
 
-        $this->routes = new RouteCollection(
-            $this->getBaseCodeRoute(),
-            $this->getBaseRouteName(),
-            $this->getBaseRoutePattern(),
-            $this->getBaseControllerName()
-        );
+        $routeBuilder = $this->getRouteBuilder();
 
-        $this->getRouteBuilder()->build($this, $this->routes);
+        if (method_exists($routeBuilder, 'create')) {
+            $this->routes = $routeBuilder->create($this);
+        } else {
+            $this->routes = new RouteCollection(
+                $this->getBaseCodeRoute(),
+                $this->getBaseRouteName(),
+                $this->getBaseRoutePattern(),
+                $this->getBaseControllerName()
+            );
+        }
+
+        $routeBuilder->build($this, $this->routes);
 
         $this->configureRoutes($this->routes);
 

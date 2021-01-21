@@ -42,6 +42,15 @@ services:
         tags:
             - {name: sonata.admin, manager_type: test, label: Foo}
 
+    Sonata\AdminBundle\Tests\App\Controller\CustomServiceCRUDController:
+        public: true
+        autoconfigure: true
+
+    Sonata\AdminBundle\Tests\App\Admin\FooAdminWithCustomServiceControllerAdmin:
+        arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, ~]
+        tags:
+            - {name: sonata.admin, manager_type: test, label: Foo}
+
     Sonata\AdminBundle\Tests\App\Admin\FooAdminWithCustomController:
         arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, Sonata\AdminBundle\Tests\App\Controller\CustomCRUDController]
         tags:

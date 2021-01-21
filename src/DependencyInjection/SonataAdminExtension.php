@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
+use Sonata\AdminBundle\Controller\CRUDControllerInterface;
+use Sonata\AdminBundle\DependencyInjection\Compiler\ControllerRegistryCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 // NEXT_MAJOR: Uncomment this line.
@@ -224,6 +226,10 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $container
             ->registerForAutoconfiguration(ModelManagerInterface::class)
             ->addTag(ModelManagerCompilerPass::MANAGER_TAG);
+
+        $container
+            ->registerForAutoconfiguration(CRUDControllerInterface::class)
+            ->addTag(ControllerRegistryCompilerPass::CONTROLLER_TAG);
     }
 
     /**

@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Route;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
+use Sonata\AdminBundle\Controller\ControllerRegistry;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 
 /**
@@ -29,9 +30,25 @@ class PathInfoBuilder implements RouteBuilderInterface
      */
     protected $manager;
 
-    public function __construct(AuditManagerInterface $manager)
+    /**
+     * @var ControllerRegistry|null
+     */
+    private $controllerRegistry;
+
+    public function __construct(AuditManagerInterface $manager, ?ControllerRegistry $controllerRegistry = null)
     {
         $this->manager = $manager;
+        $this->controllerRegistry = $controllerRegistry;
+    }
+
+    public function create(AdminInterface $admin): RouteCollection
+    {
+        return new RouteCollection(
+            $admin->getBaseCodeRoute(),
+            $admin->getBaseRouteName(),
+            $admin->getBaseRoutePattern(),
+            $this->getBaseControllerName($admin)
+        );
     }
 
     public function build(AdminInterface $admin, RouteCollection $collection)
@@ -58,5 +75,14 @@ class PathInfoBuilder implements RouteBuilderInterface
         foreach ($admin->getChildren() as $children) {
             $collection->addCollection($children->getRoutes());
         }
+    }
+
+    private function getBaseControllerName(AdminInterface $admin): string
+    {
+        if (null === $this->controllerRegistry) {
+            return $admin->getBaseControllerName();
+        }
+
+        return $this->controllerRegistry->byAdmin($admin);
     }
 }

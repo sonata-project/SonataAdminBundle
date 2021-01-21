@@ -18,6 +18,7 @@ use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPa
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AdminMakerCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AdminSearchCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\ControllerRegistryCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
@@ -35,7 +36,7 @@ class SonataAdminBundleTest extends TestCase
     {
         $containerBuilder = $this->createMock(ContainerBuilder::class);
 
-        $containerBuilder->expects($this->exactly(9))
+        $containerBuilder->expects($this->exactly(10))
             ->method('addCompilerPass')
             ->withConsecutive(
                 [new AddDependencyCallsCompilerPass()],
@@ -47,6 +48,7 @@ class SonataAdminBundleTest extends TestCase
                 [new ObjectAclManipulatorCompilerPass()],
                 [new TwigStringExtensionCompilerPass()],
                 [new AdminMakerCompilerPass()],
+                [new ControllerRegistryCompilerPass()],
             )
         ;
 

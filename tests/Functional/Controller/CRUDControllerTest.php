@@ -94,6 +94,7 @@ final class CRUDControllerTest extends WebTestCase
             ['/admin/tests/app/foo-with-custom-controller/create'],
             ['/admin/tests/app/foo-with-custom-controller/test_id/show'],
             ['/admin/tests/app/foo-with-custom-controller/test_id/edit'],
+            ['/admin/tests/app/foo-with-custom-service-controller/custom'],
         ];
     }
 
