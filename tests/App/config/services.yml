@@ -49,7 +49,7 @@ services:
         class: Sonata\AdminBundle\Tests\App\Datagrid\ProxyQuery
 
     Sonata\AdminBundle\Tests\App\Admin\FooAdmin:
-        arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, 'sonata.admin.controller.crud']
+        arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, Sonata\AdminBundle\Controller\CRUDController]
         tags:
             - {name: sonata.admin, manager_type: test, label: Foo}
 
