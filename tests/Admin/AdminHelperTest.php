@@ -249,9 +249,7 @@ class AdminHelperTest extends TestCase
 
     public function testAppendFormFieldElementWithoutFormFieldDescriptionInAdminAndNoCollectionClass(): void
     {
-        $admin = $this->getMockBuilder(AdminInterface::class)
-            ->addMethods(['hasFormFieldDescription'])
-            ->getMockForAbstractClass();
+        $admin = $this->createStub(AdminInterface::class);
         $admin
             ->method('getClass')
             ->willReturn(Foo::class);
@@ -307,7 +305,7 @@ class AdminHelperTest extends TestCase
 
         $admin
             ->method('getRequest')
-            ->willReturnOnConsecutiveCalls($request, $request, $request, null, $request, $request, $request, $request, null, $request);
+            ->willReturn($request);
 
         $foo = new Foo();
         $admin
@@ -321,6 +319,7 @@ class AdminHelperTest extends TestCase
         $formFactory = $this->createStub(FormFactoryInterface::class);
         $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
         $formBuilder = new FormBuilder('test', \get_class($foo), $eventDispatcher, $formFactory);
+        $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
         $childFormBuilder = new FormBuilder('bar', \stdClass::class, $eventDispatcher, $formFactory);
         $childFormBuilder->setCompound(true);
         $childFormBuilder->setDataMapper($dataMapper);
@@ -342,9 +341,7 @@ class AdminHelperTest extends TestCase
 
     public function testAppendFormFieldElementWithCollection(): void
     {
-        $admin = $this->getMockBuilder(AdminInterface::class)
-            ->addMethods(['hasFormFieldDescription'])
-            ->getMockForAbstractClass();
+        $admin = $this->createStub(AdminInterface::class);
         $admin
             ->method('getClass')
             ->willReturn(Foo::class);
@@ -400,7 +397,7 @@ class AdminHelperTest extends TestCase
 
         $admin
             ->method('getRequest')
-            ->willReturnOnConsecutiveCalls($request, $request, $request, null, $request, $request, $request, $request, null, $request);
+            ->willReturn($request);
 
         $foo = new class() {
             private $bar;
@@ -432,6 +429,7 @@ class AdminHelperTest extends TestCase
         $formFactory = $this->createStub(FormFactoryInterface::class);
         $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
         $formBuilder = new FormBuilder('test', \get_class($foo), $eventDispatcher, $formFactory);
+        $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
         $childFormBuilder = new FormBuilder('bar', \stdClass::class, $eventDispatcher, $formFactory);
         $childFormBuilder->setCompound(true);
         $childFormBuilder->setDataMapper($dataMapper);
@@ -446,7 +444,7 @@ class AdminHelperTest extends TestCase
 
         $admin->method('getFormBuilder')->willReturn($formBuilder);
 
-        $finalForm = $helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
+        $finalForm = $this->helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
 
         foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
             $this->assertFalse($childField->has('_delete'));
