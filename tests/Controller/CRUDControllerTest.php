@@ -501,8 +501,6 @@ class CRUDControllerTest extends TestCase
         );
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
         $this->assertSame('@FooAdmin/foo.html.twig', $this->template);
     }
 
@@ -517,8 +515,6 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('bar', $responseResult->headers->get('X-foo'));
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
         $this->assertSame('@FooAdmin/foo.html.twig', $this->template);
     }
 
@@ -535,8 +531,6 @@ class CRUDControllerTest extends TestCase
         );
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
         $this->assertSame('bar', $this->parameters['foo']);
         $this->assertSame('@FooAdmin/foo.html.twig', $this->template);
     }
@@ -555,8 +549,6 @@ class CRUDControllerTest extends TestCase
         );
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
         $this->assertSame('bar', $this->parameters['foo']);
         $this->assertSame('@FooAdmin/foo.html.twig', $this->template);
     }
@@ -626,8 +618,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('list', $this->parameters['action']);
         $this->assertInstanceOf(FormView::class, $this->parameters['form']);
@@ -786,8 +776,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('show', $this->parameters['action']);
         $this->assertInstanceOf(FieldDescriptionCollection::class, $this->parameters['elements']);
@@ -935,8 +923,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('delete', $this->parameters['action']);
         $this->assertSame($object, $this->parameters['object']);
@@ -1008,8 +994,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('delete', $this->parameters['action']);
         $this->assertSame($object, $this->parameters['object']);
@@ -1257,8 +1241,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('delete', $this->parameters['action']);
         $this->assertSame($object, $this->parameters['object']);
@@ -1407,8 +1389,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('edit', $this->parameters['action']);
         $this->assertInstanceOf(FormView::class, $this->parameters['form']);
@@ -1528,8 +1508,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('edit', $this->parameters['action']);
         $this->assertInstanceOf(FormView::class, $this->parameters['form']);
@@ -1731,8 +1709,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('edit', $this->parameters['action']);
         $this->assertInstanceOf(FormView::class, $this->parameters['form']);
@@ -1787,8 +1763,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('edit', $this->parameters['action']);
         $this->assertInstanceOf(FormView::class, $this->parameters['form']);
@@ -1927,8 +1901,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('create', $this->parameters['action']);
         $this->assertInstanceOf(FormView::class, $this->parameters['form']);
@@ -2123,8 +2095,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('create', $this->parameters['action']);
         $this->assertInstanceOf(FormView::class, $this->parameters['form']);
@@ -2192,8 +2162,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('create', $this->parameters['action']);
         $this->assertInstanceOf(FormView::class, $this->parameters['form']);
@@ -2412,8 +2380,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('create', $this->parameters['action']);
         $this->assertInstanceOf(FormView::class, $this->parameters['form']);
@@ -2582,8 +2548,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('history', $this->parameters['action']);
         $this->assertSame([], $this->parameters['revisions']);
@@ -2705,8 +2669,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('acl', $this->parameters['action']);
         $this->assertSame([], $this->parameters['permissions']);
@@ -2794,8 +2756,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('acl', $this->parameters['action']);
         $this->assertSame([], $this->parameters['permissions']);
@@ -3046,8 +3006,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('show', $this->parameters['action']);
         $this->assertSame($objectRevision, $this->parameters['object']);
@@ -3261,8 +3219,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('show', $this->parameters['action']);
         $this->assertSame($objectRevision, $this->parameters['object']);
@@ -3488,8 +3444,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('list', $this->parameters['action']);
         $this->assertSame($datagrid, $this->parameters['datagrid']);

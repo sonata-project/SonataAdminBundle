@@ -79,8 +79,6 @@ final class SearchAction
                     $this->templateRegistry->getTemplate('ajax') :
                     $this->templateRegistry->getTemplate('layout'),
                 'breadcrumbs_builder' => $this->breadcrumbsBuilder,
-                // NEXT_MAJOR: Remove next line.
-                'admin_pool' => $this->pool,
                 'query' => $request->get('q'),
                 'groups' => $this->pool->getDashboardGroups(),
             ]));
