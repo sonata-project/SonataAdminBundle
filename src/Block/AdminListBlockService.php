@@ -63,8 +63,6 @@ final class AdminListBlockService extends AbstractBlockService
         return $this->renderPrivateResponse($this->templateRegistry->getTemplate('list_block'), [
             'block' => $blockContext->getBlock(),
             'settings' => $settings,
-            // NEXT_MAJOR: Remove next line.
-            'admin_pool' => $this->pool,
             'groups' => $visibleGroups,
         ], $response);
     }
