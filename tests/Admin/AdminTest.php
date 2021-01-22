@@ -1957,6 +1957,8 @@ class AdminTest extends TestCase
         $admin->setRequest($request);
 
         $this->assertSame([
+            '_page' => 1,
+            '_per_page' => 25,
             'foo' => [
                 'type' => '1',
                 'value' => 'bar',
@@ -1968,7 +1970,6 @@ class AdminTest extends TestCase
             'a' => [
                 'value' => 'b',
             ],
-            '_per_page' => 25,
         ], $admin->getFilterParameters());
     }
 
