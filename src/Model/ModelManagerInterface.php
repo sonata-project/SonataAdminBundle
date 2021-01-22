@@ -14,10 +14,8 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Model;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\ModelManagerException;
-use Sonata\Exporter\Source\SourceIteratorInterface;
 
 /**
  * A model manager is a bridge between the model classes and the admin functionality.
@@ -149,20 +147,6 @@ interface ModelManagerInterface
      * @return mixed
      */
     public function executeQuery(object $query);
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @param string[] $fields
-     *
-     * @deprecated since sonata-project/admin-bundle 3.79 and will be removed in 4.0.
-     */
-    public function getDataSourceIterator(
-        DatagridInterface $datagrid,
-        array $fields,
-        ?int $firstResult = null,
-        ?int $maxResult = null
-    ): SourceIteratorInterface;
 
     /**
      * @return string[]
