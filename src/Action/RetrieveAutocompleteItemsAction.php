@@ -67,6 +67,7 @@ final class RetrieveAutocompleteItemsAction
             $reqParamPageNumber = $filterAutocomplete->getFieldOption('req_param_name_page_number', '_page');
             $toStringCallback = $filterAutocomplete->getFieldOption('to_string_callback');
             $targetAdminAccessAction = $filterAutocomplete->getFieldOption('target_admin_access_action', 'list');
+            $responseItemCallback = $filterAutocomplete->getFieldOption('response_item_callback');
         } else {
             // create/edit form
             $fieldDescription = $this->retrieveFormFieldDescription($admin, $request->get('field'));
@@ -86,6 +87,7 @@ final class RetrieveAutocompleteItemsAction
             $reqParamPageNumber = $formAutocompleteConfig->getAttribute('req_param_name_page_number');
             $toStringCallback = $formAutocompleteConfig->getAttribute('to_string_callback');
             $targetAdminAccessAction = $formAutocompleteConfig->getAttribute('target_admin_access_action');
+            $responseItemCallback = $formAutocompleteConfig->getAttribute('response_item_callback');
         }
 
         $searchText = $request->get('q', '');
@@ -161,10 +163,16 @@ final class RetrieveAutocompleteItemsAction
                 $label = $resultMetadata->getTitle();
             }
 
-            $items[] = [
+            $item = [
                 'id' => $admin->id($model),
                 'label' => $label,
             ];
+
+            if (\is_callable($responseItemCallback)) {
+                \call_user_func($responseItemCallback, $admin, $model, $item);
+            }
+
+            $items[] = $item;
         }
 
         return new JsonResponse([

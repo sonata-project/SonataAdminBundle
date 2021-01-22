@@ -106,6 +106,7 @@ final class ModelAutocompleteType extends AbstractType
         $resolver->setDefaults([
             'attr' => [],
             'compound' => $compound,
+            'error_bubbling' => false,
             'model_manager' => null,
             'class' => null,
             'admin_code' => null,
@@ -121,6 +122,7 @@ final class ModelAutocompleteType extends AbstractType
             'cache' => false,
 
             'to_string_callback' => null,
+            'response_item_callback' => null,
 
             // add button
             'btn_add' => 'link_add',

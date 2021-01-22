@@ -94,7 +94,7 @@ abstract class AbstractSonataAdminExtension extends Extension
                 FieldDescriptionInterface::TYPE_DATE => '@SonataIntl/CRUD/show_date.html.twig',
                 FieldDescriptionInterface::TYPE_DATETIME => '@SonataIntl/CRUD/show_datetime.html.twig',
                 FieldDescriptionInterface::TYPE_INTEGER => '@SonataIntl/CRUD/show_decimal.html.twig',
-                FieldDescriptionInterface::TYPE_FLOAT => '@SonataIntl/CRUD/list_decimal.html.twig',
+                FieldDescriptionInterface::TYPE_FLOAT => '@SonataIntl/CRUD/show_decimal.html.twig',
                 FieldDescriptionInterface::TYPE_CURRENCY => '@SonataIntl/CRUD/show_currency.html.twig',
                 FieldDescriptionInterface::TYPE_PERCENT => '@SonataIntl/CRUD/show_percent.html.twig',
             ]);
