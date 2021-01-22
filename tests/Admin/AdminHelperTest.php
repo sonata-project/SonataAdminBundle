@@ -351,9 +351,7 @@ class AdminHelperTest extends TestCase
 
     public function testAppendFormFieldElementWithoutFormFieldDescriptionInAdminAndNoCollectionClass(): void
     {
-        $propertyAccessor = $this->createMock(PropertyAccessor::class);
-
-        $helper = new AdminHelper($propertyAccessor);
+        $helper = new AdminHelper($this->propertyAccessor);
 
         $admin = $this->getMockBuilder(AdminInterface::class)
             ->addMethods(['hasFormFieldDescription'])
@@ -415,12 +413,7 @@ class AdminHelperTest extends TestCase
             ->method('getRequest')
             ->willReturnOnConsecutiveCalls($request, $request, $request, null, $request, $request, $request, $request, null, $request);
 
-        $foo = $this->createMock(Foo::class);
-        $propertyAccessor
-            ->method('isReadable')
-            ->with($foo, 'bar')
-            ->willReturn(true)
-        ;
+        $foo = new Foo();
         $admin
             ->method('hasSubject')
             ->willReturn(true);
@@ -453,9 +446,7 @@ class AdminHelperTest extends TestCase
 
     public function testAppendFormFieldElementWithCollection(): void
     {
-        $propertyAccessor = $this->createMock(PropertyAccessor::class);
-
-        $helper = new AdminHelper($propertyAccessor);
+        $helper = new AdminHelper($this->propertyAccessor);
 
         $admin = $this->getMockBuilder(AdminInterface::class)
             ->addMethods(['hasFormFieldDescription'])
@@ -517,18 +508,25 @@ class AdminHelperTest extends TestCase
             ->method('getRequest')
             ->willReturnOnConsecutiveCalls($request, $request, $request, null, $request, $request, $request, $request, null, $request);
 
-        $foo = $this->createMock(Foo::class);
-        $propertyAccessor
-            ->method('isReadable')
-            ->with($foo, 'bar')
-            ->willReturn(true)
-        ;
-        $propertyAccessor
-            ->expects($this->once())
-            ->method('getValue')
-            ->with($foo, 'bar')
-            ->willReturn(new ArrayCollection())
-        ;
+        $foo = new class() {
+            private $bar;
+
+            public function __construct()
+            {
+                $this->bar = new ArrayCollection();
+            }
+
+            public function getBar(): Collection
+            {
+                return $this->bar;
+            }
+
+            public function setBar(Collection $bar): void
+            {
+                $this->bar = $bar;
+            }
+        };
+
         $admin
             ->method('hasSubject')
             ->willReturn(true);
