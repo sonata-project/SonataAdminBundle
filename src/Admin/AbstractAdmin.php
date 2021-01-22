@@ -2040,9 +2040,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     final protected function getDefaultSortValues(): array
     {
-        // NEXT_MAJOR: Use the next line instead.
-        $defaultSortValues = [];
-        // $defaultSortValues = ['_page' => 1, '_per_page' => 25];
+        $defaultSortValues = ['_page' => 1, '_per_page' => 25];
 
         $this->configureDefaultSortValues($defaultSortValues);
 
