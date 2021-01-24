@@ -13,3 +13,7 @@ parameters:
         - .phpstan/stubs/MetadataInterface.file
         - .phpstan/stubs/Exporter.file
         - .phpstan/stubs/TextExtension.file
+    checkGenericClassInNonGenericObjectType: true
+    checkMissingIterableValueType: true
+    checkMissingVarTagTypehint: true
+    checkMissingTypehints: true

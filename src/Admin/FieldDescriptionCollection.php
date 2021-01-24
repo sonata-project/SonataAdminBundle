@@ -17,14 +17,22 @@ namespace Sonata\AdminBundle\Admin;
  * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template TValue of FieldDescriptionInterface
+ * @phpstan-implements \ArrayAccess<string,TValue>
  */
 class FieldDescriptionCollection implements \ArrayAccess, \Countable
 {
     /**
      * @var array<string, FieldDescriptionInterface>
+     *
+     * @phpstan-var array<string, TValue>
      */
     protected $elements = [];
 
+    /**
+     * @phpstan-param TValue $fieldDescription
+     */
     public function add(FieldDescriptionInterface $fieldDescription)
     {
         $this->elements[$fieldDescription->getName()] = $fieldDescription;
@@ -32,6 +40,8 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
 
     /**
      * @return array<string, FieldDescriptionInterface>
+     *
+     * @phpstan-return array<string, TValue>
      */
     public function getElements()
     {
@@ -54,6 +64,8 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
      * @throws \InvalidArgumentException
      *
      * @return FieldDescriptionInterface
+     *
+     * @phpstan-return TValue
      */
     public function get($name)
     {
@@ -79,6 +91,13 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
         return $this->has($offset);
     }
 
+    /**
+     * @param string $offset
+     *
+     * @return FieldDescriptionInterface
+     *
+     * @phpstan-return TValue
+     */
     public function offsetGet($offset)
     {
         return $this->get($offset);

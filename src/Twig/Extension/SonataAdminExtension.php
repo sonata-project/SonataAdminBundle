@@ -568,6 +568,7 @@ EOT;
     public function getUrlSafeIdentifier($model, ?AdminInterface $admin = null)
     {
         if (null === $admin) {
+            /** @phpstan-var class-string $class */
             $class = ClassUtils::getClass($model);
             if (!$this->pool->hasAdminByClass($class)) {
                 throw new \InvalidArgumentException('You must pass an admin.');
