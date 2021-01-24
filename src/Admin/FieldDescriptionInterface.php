@@ -43,15 +43,6 @@ interface FieldDescriptionInterface
     public const TYPE_ONE_TO_ONE = 'one_to_one';
 
     /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.
-     *
-     * set the field name.
-     */
-    public function setFieldName(?string $fieldName): void;
-
-    /**
      * Returns the field name.
      *
      * @return string|null the field name
@@ -250,13 +241,4 @@ interface FieldDescriptionInterface
      * @return array<string, mixed>
      */
     public function getSortParentAssociationMapping(): array;
-
-    /**
-     * NEXT_MAJOR: Remove this method from the interface.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.84, to be removed in 4.0.
-     *
-     * @return mixed
-     */
-    public function getFieldValue(?object $object, ?string $fieldName);
 }

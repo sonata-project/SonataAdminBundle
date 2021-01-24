@@ -55,19 +55,6 @@ class FilterTest extends TestCase
         $this->assertSame('>', $filter->getCondition());
     }
 
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testFilterLegacyMethod(): void
-    {
-        $filter = new FooFilter();
-
-        $filter->setValue(42);
-        $this->assertSame(42, $filter->getValue());
-    }
-
     public function testGetFieldOption(): void
     {
         $filter = new FooFilter();
@@ -145,33 +132,6 @@ class FilterTest extends TestCase
 
         $filter->callSetActive(true);
         $this->assertTrue($filter->isActive());
-    }
-
-    /**
-     * @dataProvider isActiveData
-     *
-     * @param $expected
-     * @param $value
-     *
-     * @group legacy
-     */
-    public function testDeprecatedIsActive(bool $expected, array $value): void
-    {
-        $filter = new FooFilter();
-        $filter->setValue($value);
-
-        $this->assertSame($expected, $filter->isActive());
-    }
-
-    public function isActiveData(): array
-    {
-        return [
-            [false, []],
-            [false, ['value' => null]],
-            [false, ['value' => '']],
-            [false, ['value' => false]],
-            [true, ['value' => 'active']],
-        ];
     }
 
     public function testGetTranslationDomain(): void

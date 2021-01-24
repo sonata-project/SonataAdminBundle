@@ -275,10 +275,7 @@ file that was distributed with this source code.
                         action="{{ admin.generateUrl('list') }}"
                         method="GET"
                         role="form"
-                        {# NEXT_MAJOR: Remove condition #}
-                        {% if attribute(admin, 'getDefaultFilterParameters') is defined %}
-                            data-default-values="{{ admin.defaultFilterParameters|json_encode }}"
-                        {% endif %}
+                        data-default-values="{{ admin.defaultFilterParameters|json_encode }}"
                     >
                         {{ form_errors(form) }}
 

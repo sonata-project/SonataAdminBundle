@@ -216,11 +216,9 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * NEXT_MAJOR: Change visibility to private.
-     *
      * This method read the attribute keys and configure admin class to use the related dependency.
      */
-    public function applyConfigurationFromAttribute(Definition $definition, array $attributes): void
+    private function applyConfigurationFromAttribute(Definition $definition, array $attributes): void
     {
         $keys = [
             'model_manager',
@@ -250,11 +248,9 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * NEXT_MAJOR: Change visibility to private.
-     *
      * Apply the default values required by the AdminInterface to the Admin service definition.
      */
-    public function applyDefaults(ContainerBuilder $container, string $serviceId, array $attributes = []): Definition
+    private function applyDefaults(ContainerBuilder $container, string $serviceId, array $attributes = []): Definition
     {
         $definition = $container->getDefinition($serviceId);
         $settings = $container->getParameter('sonata.admin.configuration.admin_services');
@@ -285,11 +281,6 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $definition->addMethodCall('setManagerType', [$managerType]);
 
         foreach ($defaultAddServices as $attr => $addServiceId) {
-            // NEXT_MAJOR: Remove this check
-            if ('data_source' === $attr && !$container->has($addServiceId)) {
-                continue;
-            }
-
             $method = $this->generateSetterMethodName($attr);
 
             if (isset($overwriteAdminConfiguration[$attr]) || !$definition->hasMethodCall($method)) {
@@ -305,8 +296,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $pagerType = $overwriteAdminConfiguration['pager_type'] ?? $attributes['pager_type'] ?? Pager::TYPE_DEFAULT;
         $definition->addMethodCall('setPagerType', [$pagerType]);
 
-        // NEXT_MAJOR: Default to null
-        $label = $overwriteAdminConfiguration['label'] ?? $attributes['label'] ?? '-';
+        $label = $overwriteAdminConfiguration['label'] ?? $attributes['label'] ?? null;
         $definition->addMethodCall('setLabel', [$label]);
 
         $persistFilters = $attributes['persist_filters']
@@ -340,10 +330,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         return $definition;
     }
 
-    /**
-     * NEXT_MAJOR: Change visibility to private.
-     */
-    public function fixTemplates(
+    private function fixTemplates(
         string $serviceId,
         ContainerBuilder $container,
         Definition $definition,

@@ -580,8 +580,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
-                    // NEXT_MAJOR: Throw \LogicException instead
-                    throw new \RuntimeException(sprintf(
+                    throw new \LogicException(sprintf(
                         'Please define a default `baseRoutePattern` value for the admin class `%s`',
                         static::class
                     ));
@@ -601,8 +600,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             preg_match(self::CLASS_REGEX, $this->class, $matches);
 
             if (!$matches) {
-                // NEXT_MAJOR: Throw \LogicException instead
-                throw new \RuntimeException(sprintf(
+                throw new \LogicException(sprintf(
                     'Please define a default `baseRoutePattern` value for the admin class `%s`',
                     static::class
                 ));
@@ -622,8 +620,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * Returns the baseRouteName used to generate the routing information.
      *
-     * @throws \RuntimeException // NEXT_MAJOR: Remove this tag
-     *
      * @return string the baseRouteName used to generate the routing information
      */
     public function getBaseRouteName(): string
@@ -638,8 +634,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
-                    // NEXT_MAJOR: Throw \LogicException instead
-                    throw new \RuntimeException(sprintf(
+                    throw new \LogicException(sprintf(
                         'Cannot automatically determine base route name,'
                         .' please define a default `baseRouteName` value for the admin class `%s`',
                         static::class
@@ -659,8 +654,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             preg_match(self::CLASS_REGEX, $this->class, $matches);
 
             if (!$matches) {
-                // NEXT_MAJOR: Throw \LogicException instead
-                throw new \RuntimeException(sprintf(
+                throw new \LogicException(sprintf(
                     'Cannot automatically determine base route name,'
                     .' please define a default `baseRouteName` value for the admin class `%s`',
                     static::class
@@ -682,15 +676,13 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
         if ($this->hasActiveSubClass()) {
             if ($this->hasParentFieldDescription()) {
-                // NEXT_MAJOR: Throw \LogicException instead
-                throw new \RuntimeException('Feature not implemented: an embedded admin cannot have subclass');
+                throw new \LogicException('Feature not implemented: an embedded admin cannot have subclass');
             }
 
             $subClass = $this->getRequest()->query->get('subclass');
 
             if (!$this->hasSubClass($subClass)) {
-                // NEXT_MAJOR: Throw \LogicException instead
-                throw new \RuntimeException(sprintf('Subclass "%s" is not defined.', $subClass));
+                throw new \LogicException(sprintf('Subclass "%s" is not defined.', $subClass));
             }
 
             return $this->getSubClass($subClass);
@@ -934,9 +926,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         if (null !== $adminCode) {
             if (!$pool->hasAdminByAdminCode($adminCode)) {
-                return;
-                // NEXT_MAJOR: Uncomment the following exception instead.
-//                throw new \InvalidArgumentException(sprintf('No admin found for the admin_code "%s"', $adminCode));
+                throw new \InvalidArgumentException(sprintf('No admin found for the admin_code "%s"', $adminCode));
             }
 
             $admin = $pool->getAdminByAdminCode($adminCode);
@@ -944,12 +934,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             $targetModel = $fieldDescription->getTargetModel();
 
             if (!$pool->hasAdminByClass($targetModel)) {
-                return;
-                // NEXT_MAJOR: Uncomment the following exception instead.
-//                throw new \InvalidArgumentException(sprintf(
-//                    'No admin found for the class "%s", please use the admin_code option instead',
-//                    $targetModel
-//                ));
+                throw new \InvalidArgumentException(sprintf(
+                    'No admin found for the class "%s", please use the admin_code option instead',
+                    $targetModel
+                ));
             }
 
             if (!$pool->hasSingleAdminByClass($targetModel)) {
@@ -1411,8 +1399,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         if ($parentAdmin->getCode() === $child->getCode()) {
-            // NEXT_MAJOR: Throw \LogicException instead
-            throw new \RuntimeException(sprintf(
+            throw new \LogicException(sprintf(
                 'Circular reference detected! The child admin `%s` is already in the parent tree of the `%s` admin.',
                 $child->getCode(),
                 $this->getCode()
@@ -1537,16 +1524,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     public function getClassnameLabel(): string
     {
         if (null === $this->classnameLabel) {
-            // NEXT_MAJOR: Remove this deprecation and uncomment the following exception
-            @trigger_error(sprintf(
-                'Calling %s() when no classname label is set is deprecated since sonata-project/admin-bundle 3.84'
-                .' and will throw a LogicException in 4.0',
-                __METHOD__,
-            ), \E_USER_DEPRECATED);
-//            throw new \LogicException(sprintf(
-//                'Admin "%s" has no classname label. Did you forgot to initialize the admin ?',
-//                static::class
-//            ));
+            throw new \LogicException(sprintf(
+                'Admin "%s" has no classname label. Did you forgot to initialize the admin ?',
+                static::class
+            ));
         }
 
         return $this->classnameLabel;
