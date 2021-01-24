@@ -217,6 +217,24 @@ parameters:
             count: 1
             path: src/Datagrid/Pager.php
 
+        -
+            # will be fixed in v4. This class will be removed
+            message: "#^Class Sonata\\\\AdminBundle\\\\Admin\\\\Admin extends generic class Sonata\\\\AdminBundle\\\\Admin\\\\AbstractAdmin but does not specify its types\\: T$#"
+            count: 1
+            path: src/Admin/Admin.php
+
+        -
+            # will be fixed in v4. This class will be removed
+            message: "#^Class Sonata\\\\AdminBundle\\\\Admin\\\\AdminExtension extends generic class Sonata\\\\AdminBundle\\\\Admin\\\\AbstractAdminExtension but does not specify its types\\: T$#"
+            count: 1
+            path: src/Admin/AdminExtension.php
+
+        -
+            # will be fixed in v4. Iterator interface will be removed
+            message: "#^Class Sonata\\\\AdminBundle\\\\Datagrid\\\\Pager implements generic interface Iterator but does not specify its types\\: TKey, TValue$#"
+            count: 1
+            path: src/Datagrid/Pager.php
+
 # Symfony related errors
         -
             message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeParentInterface\\:\\:arrayNode\\(\\)\\.$#"

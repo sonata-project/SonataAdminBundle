@@ -20,6 +20,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Sjoerd Peters <sjoerd.peters@gmail.com>
+ *
+ * @phpstan-template T of ProxyQueryInterface
+ * @phpstan-extends Pager<T>
  */
 class SimplePager extends Pager
 {
