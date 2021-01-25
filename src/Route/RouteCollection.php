@@ -62,6 +62,11 @@ final class RouteCollection implements RouteCollectionInterface
         $this->baseControllerName = $baseControllerName;
     }
 
+    public function getRouteName(string $name): string
+    {
+        return sprintf('%s_%s', $this->baseRouteName, $name);
+    }
+
     public function add(
         string $name,
         ?string $pattern = null,
@@ -75,7 +80,6 @@ final class RouteCollection implements RouteCollectionInterface
     ): RouteCollectionInterface {
         $pattern = sprintf('%s/%s', $this->baseRoutePattern, $pattern ?: $name);
         $code = $this->getCode($name);
-        $routeName = sprintf('%s_%s', $this->baseRouteName, $name);
 
         if (!isset($defaults['_controller'])) {
             $actionJoiner = false === strpos($this->baseControllerName, '\\') ? ':' : '::';
@@ -90,7 +94,7 @@ final class RouteCollection implements RouteCollectionInterface
             $defaults['_sonata_admin'] = $this->baseCodeRoute;
         }
 
-        $defaults['_sonata_name'] = $routeName;
+        $defaults['_sonata_name'] = $this->getRouteName($name);
 
         $element = static function () use ($pattern, $defaults, $requirements, $options, $host, $schemes, $methods, $condition) {
             return new Route($pattern, $defaults, $requirements, $options, $host, $schemes, $methods, $condition);

@@ -18,6 +18,9 @@ use Doctrine\Common\Collections\Collection;
 /**
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Sjoerd Peters <sjoerd.peters@gmail.com>
+ *
+ * @phpstan-template T of ProxyQueryInterface
+ * @phpstan-extends Pager<T>
  */
 final class SimplePager extends Pager
 {

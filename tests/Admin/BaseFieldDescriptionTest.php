@@ -157,41 +157,15 @@ class BaseFieldDescriptionTest extends TestCase
         $this->assertSame(42, $description->getFieldValue($mock, 'fake'));
     }
 
-    public function testGetFieldValueWithParametersForGetter(): void
-    {
-        $arg1 = 38;
-        $description1 = new FieldDescription('name', [
-            'code' => 'getWithOneParameter',
-            'parameters' => [$arg1],
-        ]);
-
-        $mock1 = $this->getMockBuilder(\stdClass::class)->addMethods(['getWithOneParameter'])->getMock();
-        $mock1->expects($this->once())->method('getWithOneParameter')->with($arg1)->willReturn($arg1 + 2);
-
-        $this->assertSame(40, $description1->getFieldValue($mock1, 'fake'));
-
-        $arg2 = 4;
-        $description2 = new FieldDescription('name', [
-            'code' => 'getWithTwoParameters',
-            'parameters' => [$arg1, $arg2],
-        ]);
-
-        $mock2 = $this->getMockBuilder(\stdClass::class)->addMethods(['getWithTwoParameters'])->getMock();
-        $mock2->method('getWithTwoParameters')->with($arg1, $arg2)->willReturn($arg1 + $arg2);
-        $this->assertSame(42, $description2->getFieldValue($mock2, 'fake'));
-    }
-
     public function testGetFieldValueWithMagicCall(): void
     {
-        $parameters = ['foo', 'bar'];
         $foo = new FooCall();
 
         $description = new FieldDescription('name');
-        $description->setOption('parameters', $parameters);
-        $this->assertSame(['fake', $parameters], $description->getFieldValue($foo, 'fake'));
+        $this->assertSame(['getFake', []], $description->getFieldValue($foo, 'fake'));
 
         // repeating to cover retrieving cached getter
-        $this->assertSame(['fake', $parameters], $description->getFieldValue($foo, 'fake'));
+        $this->assertSame(['getFake', []], $description->getFieldValue($foo, 'fake'));
     }
 
     /**

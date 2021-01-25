@@ -16,22 +16,30 @@ namespace Sonata\AdminBundle\Admin;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @implements \ArrayAccess<string, FieldDescriptionInterface>
+ * @phpstan-template TValue of FieldDescriptionInterface
+ * @phpstan-implements \ArrayAccess<string,TValue>
  */
 final class FieldDescriptionCollection implements \ArrayAccess, \Countable
 {
     /**
      * @var array<string, FieldDescriptionInterface>
+     *
+     * @phpstan-var array<string, TValue>
      */
     private $elements = [];
 
+    /**
+     * @phpstan-param TValue $fieldDescription
+     */
     public function add(FieldDescriptionInterface $fieldDescription): void
     {
         $this->elements[$fieldDescription->getName()] = $fieldDescription;
     }
 
     /**
-     * @return FieldDescriptionInterface[]
+     * @return array<string, FieldDescriptionInterface>
+     *
+     * @phpstan-return array<string, TValue>
      */
     public function getElements(): array
     {
@@ -45,6 +53,8 @@ final class FieldDescriptionCollection implements \ArrayAccess, \Countable
 
     /**
      * @throws \InvalidArgumentException
+     *
+     * @phpstan-return TValue
      */
     public function get(string $name): FieldDescriptionInterface
     {
@@ -62,11 +72,19 @@ final class FieldDescriptionCollection implements \ArrayAccess, \Countable
         }
     }
 
+    /**
+     * @param string $offset
+     */
     public function offsetExists($offset): bool
     {
         return $this->has($offset);
     }
 
+    /**
+     * @param string $offset
+     *
+     * @phpstan-return TValue
+     */
     public function offsetGet($offset): FieldDescriptionInterface
     {
         return $this->get($offset);
@@ -77,6 +95,9 @@ final class FieldDescriptionCollection implements \ArrayAccess, \Countable
         throw new \RuntimeException('Cannot set value, use add');
     }
 
+    /**
+     * @param string $offset
+     */
     public function offsetUnset($offset): void
     {
         $this->remove($offset);

@@ -15,6 +15,8 @@ namespace Sonata\AdminBundle\Admin;
 
 use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\Exception\NoValueException;
+use Symfony\Component\PropertyAccess\Exception\ExceptionInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * A FieldDescription hold the information about a field. A typical
@@ -318,17 +320,66 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             return $this->getFieldValue($child, substr($fieldName, $dotPos + 1));
         }
 
-        $getters = [];
-        $parameters = [];
-
         // prefer method name given in the code option
         if ($this->getOption('code')) {
-            $getters[] = $this->getOption('code');
+            $getter = $this->getOption('code');
+
+            if (!method_exists($object, $getter)) {
+                @trigger_error(
+                    'Passing a non-existing method in the "code" option is deprecated'
+                    .' since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
+                    \E_USER_DEPRECATED
+                );
+
+            // NEXT_MAJOR: Remove the deprecation and uncomment the next line.
+//                throw new \LogicException('The method "%s"() does not exist.', $getter);
+            } elseif (!\is_callable([$object, $getter])) {
+                @trigger_error(
+                    'Passing a non-callable method in the "code" option is deprecated'
+                    .' since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
+                    \E_USER_DEPRECATED
+                );
+
+            // NEXT_MAJOR: Remove the deprecation and uncomment the next line.
+//                throw new \LogicException('The method "%s"() does not have public access.', $getter);
+            } else {
+                if ($this->getOption('parameters')) {
+                    @trigger_error(
+                        'The option "parameters" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+                        \E_USER_DEPRECATED
+                    );
+
+                    return $object->{$getter}(...$this->getOption('parameters'));
+                }
+
+                return $object->{$getter}();
+            }
         }
-        // parameters for the method given in the code option
-        if ($this->getOption('parameters')) {
-            $parameters = $this->getOption('parameters');
+
+        // NEXT_MAJOR: Remove the condition code and the else part
+        if (!$this->getOption('parameters')) {
+            $propertyAccesor = PropertyAccess::createPropertyAccessorBuilder()
+                ->enableMagicCall()
+                ->getPropertyAccessor();
+
+            try {
+                return $propertyAccesor->getValue($object, $fieldName);
+            } catch (ExceptionInterface $exception) {
+                throw new NoValueException(
+                    sprintf('Cannot access property "%s" in class "%s".', $this->getName(), \get_class($object)),
+                    $exception->getCode(),
+                    $exception
+                );
+            }
         }
+
+        @trigger_error(
+            'The option "parameters" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            \E_USER_DEPRECATED
+        );
+
+        $getters = [];
+        $parameters = $this->getOption('parameters');
 
         if (\is_string($fieldName) && '' !== $fieldName) {
             if ($this->hasCachedFieldGetter($object, $fieldName)) {
@@ -337,6 +388,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
             $camelizedFieldName = InflectorFactory::create()->build()->classify($fieldName);
 
+            $getters[] = lcfirst($camelizedFieldName);
             $getters[] = sprintf('get%s', $camelizedFieldName);
             $getters[] = sprintf('is%s', $camelizedFieldName);
             $getters[] = sprintf('has%s', $camelizedFieldName);

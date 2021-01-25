@@ -95,5 +95,7 @@ interface RouteCollectionInterface
 
     public function getBaseRouteName(): string;
 
+    public function getRouteName(string $name): string;
+
     public function getBaseRoutePattern(): string;
 }

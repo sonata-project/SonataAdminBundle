@@ -8,3 +8,7 @@ parameters:
     excludes_analyse:
         # temporarily ignore template files
         - src/Resources/**.tpl.php
+    checkGenericClassInNonGenericObjectType: true
+    checkMissingIterableValueType: true
+    checkMissingVarTagTypehint: true
+    checkMissingTypehints: true
