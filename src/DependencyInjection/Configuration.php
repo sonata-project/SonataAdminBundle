@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\DependencyInjection;
 
 use Sonata\AdminBundle\Controller\CRUDController;
-use Sonata\AdminBundle\Util\BCDeprecationParameters;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -193,10 +192,6 @@ CASESENSITIVE;
                         // NEXT_MAJOR : remove this option
                         ->booleanNode('legacy_twig_text_extension')
                             ->info('Use text filters from "twig/extensions" instead of those provided by "twig/string-extra".')
-                            ->setDeprecated(...BCDeprecationParameters::forConfig(
-                                'The child node "%node%" at path "%path%" is deprecated since sonata-project/admin-bundle 3.70 and will be removed in 4.0.',
-                                '3.70'
-                            ))
                             ->defaultValue(static function (): bool {
                                 @trigger_error(
                                     'Using `true` as value for "sonata_admin.options.legacy_twig_text_extension" option is deprecated since sonata-project/admin-bundle 3.64. '
@@ -210,7 +205,7 @@ CASESENSITIVE;
                                 ->then(static function (bool $v): bool {
                                     @trigger_error(
                                         'Using `true` as value for "sonata_admin.options.legacy_twig_text_extension" option is deprecated since sonata-project/admin-bundle 3.64 and will be remove in 4.0'
-                                        .'You should set it to `false` before upgrade process.'
+                                        .'You MUST set it to `false` before upgrade sonata-project/admin-bundle to version 4.0.'
                                     );
 
                                     return $v;

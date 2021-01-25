@@ -309,6 +309,9 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             $container
                 ->getDefinition('sonata.string.twig.extension')
                 ->replaceArgument(0, new Reference('sonata.deprecated_text.twig.extension'));
+        } else {
+            $container
+                ->removeDefinition('sonata.deprecated_text.twig.extension');
         }
     }
 }

@@ -104,6 +104,10 @@ final class AppKernel extends Kernel
             'form_themes' => ['@SonataAdmin/Form/form_admin_fields.html.twig'],
         ]);
 
+        $containerBuilder->loadFromExtension('sonata_admin', [
+            'options' => ['legacy_twig_text_extension' => false],
+        ]);
+
         $loader->load(sprintf('%s/config/services.yml', $this->getProjectDir()));
     }
 
