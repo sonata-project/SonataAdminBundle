@@ -310,7 +310,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
                     break;
 
                 case 'setLabel':
-                    $this->assertSame('-', $parameters[0]);
+                    $this->assertNull($parameters[0]);
 
                     break;
 
@@ -696,6 +696,12 @@ class AddDependencyCallsCompilerPassTest extends TestCase
                 ->register(sprintf('sonata.admin.manager.%s', $key))
                 ->setClass(sprintf(
                     'Sonata\Doctrine%sAdminBundle\Model\ModelManager',
+                    $bundleSubstring
+                ));
+            $container
+                ->register(sprintf('sonata.admin.data_source.%s', $key))
+                ->setClass(sprintf(
+                    'Sonata\Doctrine%sAdminBundle\Exporter\DataSource',
                     $bundleSubstring
                 ));
             $container

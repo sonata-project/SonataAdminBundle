@@ -136,13 +136,10 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->setName($name);
 
         if (null === $fieldName) {
-            // NEXT_MAJOR: Remove this line and uncomment the following.
-            $fieldName = substr(strrchr('.'.$name, '.'), 1);
-//            $fieldName = $name;
+            $fieldName = $name;
         }
 
-        // NEXT_MAJOR: Remove 'sonata_deprecation_mute' and the phpstan-ignore.
-        $this->setFieldName($fieldName, 'sonata_deprecation_mute');
+        $this->fieldName = $fieldName;
 
         $this->setOptions($options);
 
@@ -159,27 +156,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
     }
 
-    // NEXT_MAJOR: Uncomment the following lines.
-    // abstract protected function setFieldMapping(array $fieldMapping): void;
-    // abstract protected function setAssociationMapping(array $associationMapping): void;
-    // abstract protected function setParentAssociationMappings(array $parentAssociationMappings): void;
-
-    /**
-     * NEXT_MAJOR: Change the visibility to private.
-     */
-    public function setFieldName(?string $fieldName): void
-    {
-        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
-            @trigger_error(sprintf(
-                'The %s() method is deprecated since sonata-project/admin-bundle 3.84'
-                .' and will become private in version 4.0.',
-                __METHOD__
-            ), \E_USER_DEPRECATED);
-        }
-
-        $this->fieldName = $fieldName;
-    }
-
     public function getFieldName(): ?string
     {
         return $this->fieldName;
@@ -188,11 +164,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     public function setName(string $name): void
     {
         $this->name = $name;
-
-        // NEXT_MAJOR: Remove this code since the field name will be set in the construct.
-        if (!$this->getFieldName()) {
-            $this->setFieldName(substr(strrchr('.'.$name, '.'), 1), 'sonata_deprecation_mute');
-        }
     }
 
     public function getName(): string

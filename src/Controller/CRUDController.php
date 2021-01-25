@@ -916,17 +916,14 @@ class CRUDController extends AbstractController
     /**
      * Contextualize the admin class depends on the current request.
      *
-     * NEXT_MAJOR: Change \RuntimeException by \InvalidArgumentException in the next line.
-     *
-     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
      */
     final public function configureAdmin(Request $request): void
     {
         $adminCode = $request->get('_sonata_admin');
 
         if (null === $adminCode) {
-            // NEXT_MAJOR: Change \RuntimeException by \InvalidArgumentException in the next line.
-            throw new \RuntimeException(sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 'There is no `_sonata_admin` defined for the controller `%s` and the current route `%s`.',
                 static::class,
                 $request->get('_route')

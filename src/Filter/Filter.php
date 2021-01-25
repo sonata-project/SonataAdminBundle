@@ -26,15 +26,6 @@ abstract class Filter implements FilterInterface
     protected $name;
 
     /**
-     * NEXT_MAJOR: Remove this property.
-     *
-     * @var mixed|null
-     *
-     * @deprecated since sonata-project/admin-bundle 3.84, to be removed in 4.0.
-     */
-    protected $value;
-
-    /**
      * @var array<string, mixed>
      */
     protected $options = [];
@@ -195,47 +186,9 @@ abstract class Filter implements FilterInterface
         return $this->options;
     }
 
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @param mixed $value
-     *
-     * @deprecated since sonata-project/admin-bundle 3.84, to be removed in 4.0.
-     */
-    public function setValue($value): void
-    {
-        @trigger_error(sprintf(
-            'Method %s() is deprecated since sonata-project/admin-bundle 3.84 and will be removed in version 4.0.',
-            __METHOD__,
-        ), \E_USER_DEPRECATED);
-
-        $this->value = $value;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @return mixed
-     *
-     * @deprecated since sonata-project/admin-bundle 3.84, to be removed in 4.0.
-     */
-    public function getValue()
-    {
-        @trigger_error(sprintf(
-            'Method %s() is deprecated since sonata-project/admin-bundle 3.84 and will be removed in version 4.0.',
-            __METHOD__,
-        ), \E_USER_DEPRECATED);
-
-        return $this->value;
-    }
-
     public function isActive(): bool
     {
-        $values = $this->value;
-
-        // NEXT_MAJOR: Change for `return $this->active;`
-        return $this->active
-            || isset($values['value']) && false !== $values['value'] && '' !== $values['value'];
+        return $this->active;
     }
 
     public function setCondition(string $condition): void

@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
-use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooCall;
 
 class BaseFieldDescriptionTest extends TestCase
@@ -27,9 +26,7 @@ class BaseFieldDescriptionTest extends TestCase
         $description = new FieldDescription('foo.bar');
 
         $this->assertSame('foo.bar', $description->getName());
-        // NEXT_MAJOR: Remove this line and uncomment the following
-        $this->assertSame('bar', $description->getFieldName());
-//        $this->assertSame('foo.bar', $description->getFieldName());
+        $this->assertSame('foo.bar', $description->getFieldName());
     }
 
     public function testConstructingWithMapping(): void
