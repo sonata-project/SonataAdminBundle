@@ -145,6 +145,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * Options to set to the form (ie, validation_groups).
      *
+     * @deprecated since sonata-project/admin-bundle 3.x, use configureFormOptions() instead.
+     *
      * @var array<string, mixed>
      */
     protected $formOptions = [];
@@ -1258,7 +1260,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         $formBuilder = $this->getFormContractor()->getFormBuilder(
             $this->getUniqid(),
-            $this->formOptions
+            // NEXT_MAJOR : remove the merge with $this->formOptions
+            array_merge($this->getFormOptions(), $this->formOptions)
         );
 
         $this->defineFormBuilder($formBuilder);
@@ -2945,6 +2948,27 @@ EOT;
         return $defaultFilterValues;
     }
 
+    /**
+     * Returns a list of form options.
+     *
+     * @return array<string, mixed>
+     */
+    final protected function getFormOptions()
+    {
+        $formOptions = [];
+
+        $this->configureFormOptions($formOptions);
+
+        foreach ($this->getExtensions() as $extension) {
+            // NEXT_MAJOR: remove method check
+            if (method_exists($extension, 'configureFormOptions')) {
+                $extension->configureFormOptions($this, $formOptions);
+            }
+        }
+
+        return $formOptions;
+    }
+
     protected function configureFormFields(FormMapper $form)
     {
     }
@@ -3223,6 +3247,15 @@ EOT;
      * @param array<string, mixed> $filterValues
      */
     protected function configureDefaultFilterValues(array &$filterValues)
+    {
+    }
+
+    /**
+     * Configures a list of form options.
+     *
+     * @param array<string, mixed> $formOptions
+     */
+    protected function configureFormOptions(array &$formOptions)
     {
     }
 

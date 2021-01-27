@@ -31,6 +31,7 @@ use Sonata\Form\Validator\ErrorElement;
  * @method array configureActionButtons(AdminInterface $admin, array $list, string $action, object $object)
  * @method void  configureDefaultFilterValues(AdminInterface $admin, array &$filterValues)
  * @method void  configureDefaultSortValues(AdminInterface $admin, array &$sortValues)
+ * @method void  configureFormOptions(AdminInterface $admin, array &$formOptions)
  *
  * @phpstan-template T of object
  */
@@ -271,6 +272,15 @@ interface AdminExtensionInterface
      * @phpstan-param AdminInterface<T> $admin
      */
     // public function configureDefaultSortValues(AdminInterface $admin, array &$sortValues): void;
+
+    /*
+     * NEXT_MAJOR: Uncomment this method and remove the corresponding @method annotation.
+     *
+     * Returns a list of form options
+     *
+     * @phpstan-param AdminInterface<T> $admin
+     */
+    // public function configureFormOptions(AdminInterface $admin, array &$formOptions): void;
 }
 
 class_exists(\Sonata\Form\Validator\ErrorElement::class);

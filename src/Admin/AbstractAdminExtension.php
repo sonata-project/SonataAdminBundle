@@ -168,6 +168,13 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     public function configureDefaultSortValues(AdminInterface $admin, array &$sortValues): void
     {
     }
+
+    /**
+     * @phpstan-param AdminInterface<T> $admin
+     */
+    public function configureFormOptions(AdminInterface $admin, array &$formOptions): void
+    {
+    }
 }
 
 class_exists(\Sonata\Form\Validator\ErrorElement::class);
