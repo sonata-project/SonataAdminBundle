@@ -148,6 +148,7 @@ If your PR contains an addition, a new feature, this one has to be fully covered
 
 Some rules have to be respected about the test:
 
+* Prefer [the built-in test doubles implementation](https://phpunit.de/manual/current/en/test-doubles.html) over prophecy.
 * Annotations about coverage are prohibited. This concerns:
   * `@covers`
   * `@coversDefaultClass`
@@ -160,22 +161,6 @@ Some rules have to be respected about the test:
 * All test method names MUST be in camel case format.
 * Most of the time, the test class SHOULD have the same name as the targeted class, suffixed by `Test`.
 * The `@expectedException*` annotations are prohibited. Use `PHPUnit_Framework_TestCase::setExpectedException()`.
-
-##### Using test doubles
-
-Historically, Sonata has been using [the built-in test doubles implementation](https://phpunit.de/manual/current/en/test-doubles.html),
-but [started to use Prophecy](https://github.com/sonata-project/dev-kit/issues/89).
-This means the current Sonata codebase currently uses both implementations.
-
-If you want to contribute a test that uses test doubles, please follow these rules :
-
-1. All new test classes MUST use built-in test double implementation.
-2. If you are changing an existing test method, you MUST use the same implementation it already uses,
-and focus on the goal of your PR and only on that.
-3. If you are changing an existing test class, you MUST use the same implementation it already uses,
-to be more consistent.
-4. You MAY submit a PR that migrates a test class from Prophecy to the built-in test double implementation,
-but it MUST migrate it entirely. The PR SHOULD only be about the migration.
 
 ### Writing a Pull Request
 
