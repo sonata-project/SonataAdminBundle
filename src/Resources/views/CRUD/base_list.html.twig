@@ -46,7 +46,8 @@ file that was distributed with this source code.
                 {% block list_header %}{% endblock %}
 
                 {% if admin.datagrid.results|length > 0 %}
-                    <table class="table table-bordered table-striped table-hover sonata-ba-list">
+                    {% block table %}
+                        <table class="table table-bordered table-striped table-hover sonata-ba-list">
                         {% block table_header %}
                             <thead>
                                 <tr class="sonata-ba-list-field-header">
@@ -102,6 +103,7 @@ file that was distributed with this source code.
                         {% block table_footer %}
                         {% endblock %}
                     </table>
+                    {% endblock %}
                 {% else %}
                     {% block no_result_content %}
                         <div class="info-box">
