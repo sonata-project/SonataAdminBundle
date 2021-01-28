@@ -377,7 +377,7 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     /**
      * Returns the list of batchs actions.
      *
-     * @return array<string, mixed> the list of batchs actions
+     * @return array<string, array<string, mixed>> the list of batchs actions
      */
     public function getBatchActions(): array;
 
