@@ -1324,12 +1324,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             }
 
             if (!$pool->hasAdminByClass($targetModel)) {
+                // This case should not throw an exception because there is no easy way
+                // to check if there is an admin class to attach without calling this method.
                 return;
-                // NEXT_MAJOR: Uncomment the following exception instead.
-//                throw new \InvalidArgumentException(sprintf(
-//                    'No admin found for the class "%s", please use the admin_code option instead',
-//                    $targetModel
-//                ));
             }
 
             if (!$pool->hasSingleAdminByClass($targetModel)) {
