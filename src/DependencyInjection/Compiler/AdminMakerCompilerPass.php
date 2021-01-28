@@ -29,7 +29,7 @@ final class AdminMakerCompilerPass implements CompilerPassInterface
         }
 
         $defaultController = $container->getParameter('sonata.admin.configuration.default_controller');
-        assert(is_string($defaultController));
+        \assert(\is_string($defaultController));
 
         if (!$container->hasDefinition($defaultController)) {
             return;

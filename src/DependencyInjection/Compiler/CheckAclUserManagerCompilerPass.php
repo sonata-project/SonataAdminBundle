@@ -32,7 +32,7 @@ final class CheckAclUserManagerCompilerPass implements CompilerPassInterface
         }
 
         $userManagerServiceName = $container->getParameter('sonata.admin.security.acl_user_manager');
-        assert(null === $userManagerServiceName || is_string($userManagerServiceName));
+        \assert(null === $userManagerServiceName || \is_string($userManagerServiceName));
 
         if (null === $userManagerServiceName
             || !$container->hasDefinition($userManagerServiceName)

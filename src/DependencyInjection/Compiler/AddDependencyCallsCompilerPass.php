@@ -96,7 +96,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 $resolvedGroupName = isset($attributes['group']) ?
                     $parameterBag->resolveValue($attributes['group']) :
                     $defaultValues['group'];
-                assert(is_string($resolvedGroupName));
+                \assert(\is_string($resolvedGroupName));
 
                 $labelCatalogue = $attributes['label_catalogue'] ?? $defaultValues['label_catalogue'];
                 $icon = $attributes['icon'] ?? $defaultValues['icon'];
@@ -133,14 +133,14 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         }
 
         $dashboardGroupsSettings = $container->getParameter('sonata.admin.configuration.dashboard_groups');
-        assert(is_array($dashboardGroupsSettings));
+        \assert(\is_array($dashboardGroupsSettings));
 
         if (!empty($dashboardGroupsSettings)) {
             $groups = $dashboardGroupsSettings;
 
             foreach ($dashboardGroupsSettings as $groupName => $group) {
                 $resolvedGroupName = $parameterBag->resolveValue($groupName);
-                assert(is_string($resolvedGroupName));
+                \assert(\is_string($resolvedGroupName));
 
                 if (!isset($groupDefaults[$resolvedGroupName])) {
                     $groupDefaults[$resolvedGroupName] = [

@@ -66,7 +66,7 @@ final class AdminSearchCompilerPass implements CompilerPassInterface
         $adminClass = trim($definition->getClass(), '%');
         if (!class_exists($adminClass) && $container->hasParameter($adminClass)) {
             $adminClass = $container->getParameter($adminClass);
-            assert(is_string($adminClass));
+            \assert(\is_string($adminClass));
         }
 
         if (!is_subclass_of($adminClass, AdminInterface::class)) {
