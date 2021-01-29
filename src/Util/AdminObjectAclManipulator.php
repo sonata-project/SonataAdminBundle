@@ -28,12 +28,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * A manipulator for updating ACL related to an object.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  * @author Baptiste Meyer <baptiste@les-tilleuls.coop>
  */
-class AdminObjectAclManipulator
+final class AdminObjectAclManipulator
 {
     public const ACL_USERS_FORM_NAME = 'acl_users_form';
     public const ACL_ROLES_FORM_NAME = 'acl_roles_form';
@@ -41,14 +39,14 @@ class AdminObjectAclManipulator
     /**
      * @var FormFactoryInterface
      */
-    protected $formFactory;
+    private $formFactory;
 
     /**
      * @var string
      *
      * @phpstan-var class-string
      */
-    protected $maskBuilderClass;
+    private $maskBuilderClass;
 
     /**
      * @phpstan-param class-string $maskBuilderClass
@@ -105,7 +103,7 @@ class AdminObjectAclManipulator
      *
      * @phpstan-param \Traversable<array-key, UserInterface|string> $aclValues
      */
-    protected function buildAcl(AdminObjectAclData $data, FormInterface $form, \Traversable $aclValues): void
+    private function buildAcl(AdminObjectAclData $data, FormInterface $form, \Traversable $aclValues): void
     {
         $masks = $data->getMasks();
         $acl = $data->getAcl();
@@ -174,7 +172,7 @@ class AdminObjectAclManipulator
      *
      * @phpstan-param \Traversable<array-key, UserInterface|string> $aclValues
      */
-    protected function buildForm(AdminObjectAclData $data, FormBuilderInterface $formBuilder, \Traversable $aclValues): FormInterface
+    private function buildForm(AdminObjectAclData $data, FormBuilderInterface $formBuilder, \Traversable $aclValues): FormInterface
     {
         // Retrieve object identity
         $objectIdentity = ObjectIdentity::fromDomainObject($data->getObject());
@@ -233,7 +231,7 @@ class AdminObjectAclManipulator
      *
      * @return RoleSecurityIdentity|UserSecurityIdentity
      */
-    protected function getSecurityIdentity($aclValue): SecurityIdentityInterface
+    private function getSecurityIdentity($aclValue): SecurityIdentityInterface
     {
         return ($aclValue instanceof UserInterface)
             ? UserSecurityIdentity::fromAccount($aclValue)
