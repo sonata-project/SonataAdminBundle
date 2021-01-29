@@ -46,7 +46,8 @@ file that was distributed with this source code.
                 {% block list_header %}{% endblock %}
 
                 {% if admin.datagrid.results|length > 0 %}
-                    <table class="table table-bordered table-striped table-hover sonata-ba-list">
+                    {% block table %}
+                        <table class="table table-bordered table-striped table-hover sonata-ba-list">
                         {% block table_header %}
                             <thead>
                                 <tr class="sonata-ba-list-field-header">
@@ -100,6 +101,7 @@ file that was distributed with this source code.
                         {% block table_footer %}
                         {% endblock %}
                     </table>
+                    {% endblock %}
                 {% else %}
                     {% block no_result_content %}
                         <div class="info-box">
@@ -234,7 +236,8 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block list_filters_actions %}
-    {%- if admin.datagrid.filters|length %}
+    {% set displayableFilters = admin.datagrid.filters|filter(filter => filter.options['show_filter'] is not same as (false)) %}
+    {%- if displayableFilters|length %}
         <ul class="nav navbar-nav navbar-right">
 
             <li class="dropdown sonata-actions">
@@ -246,7 +249,7 @@ file that was distributed with this source code.
                 </a>
 
                 <ul class="dropdown-menu dropdown-menu-scrollable" role="menu">
-                    {% for filter in admin.datagrid.filters|filter(filter => filter.options['show_filter'] is not same as (false)) %}
+                    {% for filter in displayableFilters %}
                         {% set filterDisplayed = filter.isActive() or filter.options['show_filter'] is same as (true) %}
                         <li>
                             <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">

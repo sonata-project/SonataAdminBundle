@@ -39,6 +39,7 @@ final class ObjectAclManipulatorCompilerPass implements CompilerPassInterface
 
             if (!class_exists($class, false) && $container->hasParameter($class)) {
                 $class = $container->getParameter($class);
+                \assert(\is_string($class));
             }
 
             if (!is_subclass_of($class, ObjectAclManipulatorInterface::class)) {

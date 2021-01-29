@@ -130,6 +130,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * Options to set to the form (ie, validation_groups).
      *
+     * @deprecated since sonata-project/admin-bundle 3.x, use configureFormOptions() instead.
+     *
      * @var array<string, mixed>
      */
     protected $formOptions = [];
@@ -888,7 +890,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         $formBuilder = $this->getFormContractor()->getFormBuilder(
             $this->getUniqid(),
-            $this->formOptions
+            // NEXT_MAJOR : remove the merge with $this->formOptions
+            array_merge($this->getFormOptions(), $this->formOptions)
         );
 
         $this->defineFormBuilder($formBuilder);
@@ -934,10 +937,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             $targetModel = $fieldDescription->getTargetModel();
 
             if (!$pool->hasAdminByClass($targetModel)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'No admin found for the class "%s", please use the admin_code option instead',
-                    $targetModel
-                ));
+                // This case should not throw an exception because there is no easy way
+                // to check if there is an admin class to attach without calling this method.
+                return;
             }
 
             if (!$pool->hasSingleAdminByClass($targetModel)) {
@@ -2050,6 +2052,22 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $defaultFilterValues;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
+    final protected function getFormOptions(): array
+    {
+        $formOptions = [];
+
+        $this->configureFormOptions($formOptions);
+
+        foreach ($this->getExtensions() as $extension) {
+            $extension->configureFormOptions($this, $formOptions);
+        }
+
+        return $formOptions;
+    }
+
     protected function configureFormFields(FormMapper $form): void
     {
     }
@@ -2229,6 +2247,15 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * @param array<string, array<string, mixed>> $filterValues
      */
     protected function configureDefaultFilterValues(array &$filterValues): void
+    {
+    }
+
+    /**
+     * Configures a list of form options.
+     *
+     * @param array<string, mixed> $formOptions
+     */
+    protected function configureFormOptions(array &$formOptions)
     {
     }
 

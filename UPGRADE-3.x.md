@@ -4,6 +4,35 @@ UPGRADE 3.x
 UPGRADE FROM 3.xx to 3.xx
 =========================
 
+### Deprecated `Sonata\AdminBundle\Admin\AbstractAdmin::formOptions` property.
+
+This property has been replaced by the new method `Sonata\AdminBundle\Admin\AbstractAdmin::configureFormOptions()`
+
+Before:
+```php
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+
+final class MyAdmin extends AbstractAdmin
+{
+    protected $formOptions = [
+        'validation_groups' => ['Default', 'MyAdmin'],
+    ];
+}
+```
+
+After:
+```php
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+
+final class MyAdmin extends AbstractAdmin
+{
+    protected function configureFormOptions(array &$formOptions): void
+    {
+        $formOptions['validation_groups'] = ['Default', 'MyAdmin'];
+    }
+}
+```
+
 ### Deprecated `Sonata\AdminBundle\Admin\Pool::setTemplateRegistry()` method.
 
 This method has been deprecated without replacement.

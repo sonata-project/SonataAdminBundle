@@ -181,4 +181,11 @@ interface AdminExtensionInterface
      * @phpstan-param AdminInterface<T> $admin
      */
     public function configureDefaultSortValues(AdminInterface $admin, array &$sortValues): void;
+
+    /**
+     * Returns a list of form options.
+     *
+     * @phpstan-param AdminInterface<T> $admin
+     */
+    public function configureFormOptions(AdminInterface $admin, array &$formOptions): void;
 }
