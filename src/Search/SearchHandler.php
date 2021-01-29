@@ -18,11 +18,9 @@ use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class SearchHandler
+final class SearchHandler
 {
     /**
      * @var bool
@@ -83,7 +81,7 @@ class SearchHandler
      *
      * @param array<string, bool> $adminsSearchConfig
      */
-    final public function configureAdminSearch(array $adminsSearchConfig): void
+    public function configureAdminSearch(array $adminsSearchConfig): void
     {
         $this->adminsSearchConfig = $adminsSearchConfig;
     }

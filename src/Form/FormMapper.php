@@ -23,21 +23,19 @@ use Symfony\Component\Form\FormBuilderInterface;
 /**
  * This class is use to simulate the Form API.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class FormMapper extends BaseGroupedMapper
+final class FormMapper extends BaseGroupedMapper
 {
-    /**
-     * @var FormBuilderInterface
-     */
-    protected $formBuilder;
-
     /**
      * @var FormContractorInterface
      */
     protected $builder;
+
+    /**
+     * @var FormBuilderInterface
+     */
+    private $formBuilder;
 
     public function __construct(
         FormContractorInterface $formContractor,
@@ -177,7 +175,7 @@ class FormMapper extends BaseGroupedMapper
     /**
      * @return string[]
      */
-    final public function keys(): array
+    public function keys(): array
     {
         return array_keys($this->formBuilder->all());
     }
@@ -205,17 +203,6 @@ class FormMapper extends BaseGroupedMapper
         return $this->formBuilder->create($name, $type, $options);
     }
 
-    /**
-     * Symfony default form class sadly can't handle
-     * form element with dots in its name (when data
-     * get bound, the default dataMapper is a PropertyPathMapper).
-     * So use this trick to avoid any issue.
-     */
-    protected function sanitizeFieldName(string $fieldName): string
-    {
-        return str_replace(['__', '.'], ['____', '__'], $fieldName);
-    }
-
     protected function getGroups(): array
     {
         return $this->admin->getFormGroups();
@@ -239,5 +226,16 @@ class FormMapper extends BaseGroupedMapper
     protected function getName(): string
     {
         return 'form';
+    }
+
+    /**
+     * Symfony default form class sadly can't handle
+     * form element with dots in its name (when data
+     * get bound, the default dataMapper is a PropertyPathMapper).
+     * So use this trick to avoid any issue.
+     */
+    private function sanitizeFieldName(string $fieldName): string
+    {
+        return str_replace(['__', '.'], ['____', '__'], $fieldName);
     }
 }
