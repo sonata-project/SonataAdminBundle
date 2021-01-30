@@ -868,10 +868,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
         $formBuilder = $this->getFormContractor()->getFormBuilder(
             $this->getUniqid(),
-            array_merge(
-                $this->getFormOptions(),
-                ['data_class' => $this->getClass()]
-            )
+            ['data_class' => $this->getClass()] + $this->getFormOptions(),
         );
 
         $this->defineFormBuilder($formBuilder);

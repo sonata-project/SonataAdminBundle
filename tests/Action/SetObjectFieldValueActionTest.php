@@ -104,7 +104,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             $this->resolver,
             $this->propertyAccessor
         );
-        $this->admin->method('getModelManager')->willReturn($this->modelManager);
+        $this->admin->setModelManager($this->modelManager);
     }
 
     public function testSetObjectFieldValueAction(): void

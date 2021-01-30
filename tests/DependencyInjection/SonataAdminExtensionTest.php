@@ -93,7 +93,6 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
             SessionFilterPersister::class
         );
         $this->assertContainerBuilderHasService(TemplateRegistry::class);
-        $this->assertContainerBuilderHasService(TemplateRegistry::class);
         $this->assertContainerBuilderHasService(AdminExtractor::class);
     }
 

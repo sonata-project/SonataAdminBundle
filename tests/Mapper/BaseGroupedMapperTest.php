@@ -50,17 +50,13 @@ class BaseGroupedMapperTest extends TestCase
                 return sprintf('label_%s', strtolower($label));
             });
 
-        $admin
-            ->method('getLabelTranslatorStrategy')
-            ->willReturn($labelStrategy);
+        $admin->setLabelTranslatorStrategy($labelStrategy);
 
         $container = new Container();
         $container->setParameter('sonata.admin.configuration.translate_group_label', '');
         $configurationPool = new Pool($container);
 
-        $admin
-            ->method('getConfigurationPool')
-            ->willReturn($configurationPool);
+        $admin->setConfigurationPool($configurationPool);
 
         $builder = $this->getMockForAbstractClass(BuilderInterface::class);
 

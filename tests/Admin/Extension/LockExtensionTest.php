@@ -130,6 +130,7 @@ class LockExtensionTest extends TestCase
     {
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
+        $this->configureAdmin($this->modelManager);
         $event = new FormEvent($form, $this->object);
 
         $form->method('getParent')->willReturn('parent');
@@ -240,7 +241,7 @@ class LockExtensionTest extends TestCase
         ?Request $request = null
     ): void {
         $this->admin->method('getUniqid')->willReturn($uniqid);
-        $this->admin->method('getModelManager')->willReturn($modelManager);
+        $this->admin->setModelManager($modelManager);
 
         $this->admin->method('hasRequest')->willReturn(null !== $request);
         if (null !== $request) {

@@ -163,8 +163,10 @@ When there is no searchable filters, `SearchHandler::search()` returns `null`. P
 When the service `security.csrf.token_manager` is not available, `getCsrfToken()` returns `null`. Previously, it was returning `false`.
 
 ## FormMapper labels
-
 The form label are now correctly using the label translator strategy for field with `.`
 (which won't be replaced by `__`). For instance, with the underscore label strategy, the
 label `foo.barBaz` was previously `form.label_foo__bar_baz` and now is `form.label_foo_bar_baz`
 to be consistent with others labels like `show.label_foo_bar_baz`.
+
+## MutableTemplateRegistry::setTemplates and AbstractAdmin::setTemplates
+They don't reset the existing templates anymore.

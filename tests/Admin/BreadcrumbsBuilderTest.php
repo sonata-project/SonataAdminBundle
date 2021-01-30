@@ -38,13 +38,13 @@ class BreadcrumbsBuilderTest extends TestCase
         $admin = $this->createStub(AbstractAdmin::class);
         $admin->method('isChild')->willReturn(false);
 
-        $admin->method('getMenuFactory')->willReturn(new MenuFactory());
+        $admin->setMenuFactory(new MenuFactory());
         $labelTranslatorStrategy = $this->createStub(LabelTranslatorStrategyInterface::class);
 
         $routeGenerator = $this->createStub(RouteGeneratorInterface::class);
         $routeGenerator->method('generate')->with('sonata_admin_dashboard')->willReturn('/dashboard');
 
-        $admin->method('getRouteGenerator')->willReturn($routeGenerator);
+        $admin->setRouteGenerator($routeGenerator);
         $labelTranslatorStrategy->method('getLabel')->willReturnMap([
             ['my_class_name_list', 'breadcrumb', 'link', 'My class'],
             ['my_child_class_name_list', 'breadcrumb', 'link', 'My child class'],
@@ -57,8 +57,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $childAdmin->method('isChild')->willReturn(true);
         $childAdmin->method('getParent')->willReturn($admin);
         $childAdmin->method('getTranslationDomain')->willReturn('ChildBundle');
-        $childAdmin->expects($this->atLeastOnce())->method('getLabelTranslatorStrategy')
-            ->willReturn($labelTranslatorStrategy);
+        $childAdmin->setLabelTranslatorStrategy($labelTranslatorStrategy);
         $childAdmin->method('getClassnameLabel')->willReturn('my_child_class_name');
         $childAdmin->method('hasRoute')->with('list')->willReturn(true);
         $childAdmin->method('hasAccess')->with('list')->willReturn(true);
@@ -94,7 +93,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $admin->method('getSubject')->willReturn($subject);
         $admin->method('toString')->with($subject)->willReturn('My subject');
         $admin->method('getTranslationDomain')->willReturn('FooBundle');
-        $admin->method('getLabelTranslatorStrategy')->willReturn($labelTranslatorStrategy);
+        $admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
         $admin->method('getClassnameLabel')->willReturn('my_class_name');
 
         $breadcrumbs = $breadcrumbsBuilder->getBreadcrumbs($childAdmin, $action);
@@ -157,12 +156,12 @@ class BreadcrumbsBuilderTest extends TestCase
         $menuFactory = $this->createStub(MenuFactory::class);
         $menuFactory->method('createItem')->with('root')->willReturn($menu);
         $admin = $this->createStub(AbstractAdmin::class);
-        $admin->method('getMenuFactory')->willReturn($menuFactory);
+        $admin->setMenuFactory($menuFactory);
         $labelTranslatorStrategy = $this->createStub(LabelTranslatorStrategyInterface::class);
 
         $routeGenerator = $this->createStub(RouteGeneratorInterface::class);
         $routeGenerator->method('generate')->with('sonata_admin_dashboard')->willReturn('/dashboard');
-        $admin->method('getRouteGenerator')->willReturn($routeGenerator);
+        $admin->setRouteGenerator($routeGenerator);
 
         $menu->method('addChild')->willReturnMap([
             ['link_breadcrumb_dashboard', [
@@ -203,7 +202,7 @@ class BreadcrumbsBuilderTest extends TestCase
 
         $childAdmin = $this->createStub(AbstractAdmin::class);
         $childAdmin->method('getTranslationDomain')->willReturn('ChildBundle');
-        $childAdmin->method('getLabelTranslatorStrategy')->willReturn($labelTranslatorStrategy);
+        $childAdmin->setLabelTranslatorStrategy($labelTranslatorStrategy);
         $childAdmin->method('getClassnameLabel')->willReturn('my_child_class_name');
         $childAdmin->method('hasRoute')->with('list')->willReturn(false);
         $childAdmin->method('getCurrentChildAdmin')->willReturn(null);
@@ -233,9 +232,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $admin->method('getSubject')->willReturn($subject);
         $admin->method('toString')->with($subject)->willReturn('My subject');
         $admin->method('getTranslationDomain')->willReturn('FooBundle');
-        $admin->method('getLabelTranslatorStrategy')->willReturn(
-            $labelTranslatorStrategy
-        );
+        $admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
         $admin->method('getClassnameLabel')->willReturn('my_class_name');
 
         $breadcrumbsBuilder->buildBreadcrumbs($admin, $action);
