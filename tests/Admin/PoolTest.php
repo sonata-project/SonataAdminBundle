@@ -16,6 +16,8 @@ namespace Sonata\AdminBundle\Tests\Admin;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Exception\AdminCodeNotFoundException;
+use Sonata\AdminBundle\Exception\TooManyAdminClassException;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\DependencyInjection\Container;
@@ -193,7 +195,7 @@ class PoolTest extends TestCase
         $this->assertTrue($pool->hasAdminByClass('someclass'));
         $this->assertFalse($pool->hasSingleAdminByClass('someclass'));
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(TooManyAdminClassException::class);
 
         $pool->getAdminByClass('someclass');
     }
@@ -205,13 +207,12 @@ class PoolTest extends TestCase
         $pool = new Pool($this->container, ['sonata.user.admin.group1'], [], ['someclass' => ['sonata.user.admin.group1']]);
 
         $this->assertTrue($pool->hasAdminByClass('someclass'));
-        $this->assertTrue($pool->hasSingleAdminByClass('someclass'));
         $this->assertInstanceOf(AdminInterface::class, $pool->getAdminByClass('someclass'));
     }
 
     public function testGetInstanceWithUndefinedServiceId(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(AdminCodeNotFoundException::class);
         $this->expectExceptionMessage('Admin service "sonata.news.admin.post" not found in admin pool.');
 
         $this->pool->getInstance('sonata.news.admin.post');
@@ -276,7 +277,7 @@ class PoolTest extends TestCase
         $this->pool->setAdminServiceIds(['sonata.news.admin.post']);
 
         // NEXT_MAJOR: remove the assertion around getAdminByAdminCode(), remove the "@group" and "@expectedDeprecation" annotations, and uncomment the following line
-        // $this->expectException(\InvalidArgumentException::class);
+        // $this->expectException(AdminCodeNotFoundException::class);
         $this->assertFalse($this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid'));
     }
 
@@ -322,7 +323,7 @@ class PoolTest extends TestCase
         $this->assertFalse($this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid'));
 
         // NEXT_MAJOR: remove the "@group" and "@expectedDeprecation" annotations, the previous assertion and uncomment the following lines
-        // $this->expectException(\InvalidArgumentException::class);
+        // $this->expectException(AdminCodeNotFoundException::class);
         // $this->expectExceptionMessage('Argument 1 passed to Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() must contain a valid admin hierarchy, "sonata.news.admin.valid" is not a valid child for "sonata.news.admin.post"');
         //
         // $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.valid');
@@ -340,7 +341,7 @@ class PoolTest extends TestCase
         $pool = new Pool($this->container, [$adminId]);
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Root admin code must contain a valid admin reference, empty string given.');
+        $this->expectExceptionMessage('Admin code must contain a valid admin reference, empty string given.');
         $pool->getAdminByAdminCode($adminId);
     }
 
@@ -373,7 +374,7 @@ class PoolTest extends TestCase
         $pool = new Pool($this->container, ['admin1']);
 
         // NEXT_MAJOR: remove the assertion around getAdminByAdminCode(), remove the "@group" and "@expectedDeprecation" annotations, and uncomment the following line
-        // $this->expectException(\InvalidArgumentException::class);
+        // $this->expectException(AdminCodeNotFoundException::class);
         $this->assertFalse($pool->getAdminByAdminCode($adminId));
     }
 
