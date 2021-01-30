@@ -590,6 +590,28 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertSame(FooAdminController::class, $definition->getArgument(2));
     }
 
+    public function testMultipleDefaultAdmin(): void
+    {
+        $container = $this->getContainer();
+        $container
+            ->register('sonata_post_admin_2')
+            ->setClass(MockAdmin::class)
+            ->setPublic(true)
+            ->setArguments(['', Post::class, CRUDController::class])
+            ->addTag('sonata.admin', ['default' => true, 'group' => 'sonata_group_one', 'manager_type' => 'orm']);
+
+        $config = $this->config;
+
+        $this->extension->load([$config], $container);
+
+        $compilerPass = new AddDependencyCallsCompilerPass();
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The class Sonata\AdminBundle\Tests\DependencyInjection\Compiler\Post has two default admins sonata_post_admin and sonata_post_admin_2.');
+        $compilerPass->process($container);
+        $container->compile();
+    }
+
     /**
      * @return array
      */
@@ -763,7 +785,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
             ->setClass(MockAdmin::class)
             ->setPublic(true)
             ->setArguments(['', Post::class, CRUDController::class])
-            ->addTag('sonata.admin', ['group' => 'sonata_group_one', 'manager_type' => 'orm']);
+            ->addTag('sonata.admin', ['default' => true, 'group' => 'sonata_group_one', 'manager_type' => 'orm']);
         $container
             ->register('sonata_article_admin')
             ->setPublic(true)

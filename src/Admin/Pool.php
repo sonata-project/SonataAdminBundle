@@ -47,6 +47,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  */
 class Pool
 {
+    public const DEFAULT_ADMIN_KEY = 'default';
+
     /**
      * @var ContainerInterface
      */
@@ -369,9 +371,14 @@ class Pool
             return null;
         }
 
-        if (!$this->hasSingleAdminByClass($class)) {
-            throw new \RuntimeException(sprintf(
-                'Unable to find a valid admin for the class: %s, there are too many registered: %s',
+        if (isset($this->adminClasses[$class][self::DEFAULT_ADMIN_KEY])) {
+            return $this->getInstance($this->adminClasses[$class][self::DEFAULT_ADMIN_KEY]);
+        }
+
+        if (1 !== \count($this->adminClasses[$class])) {
+            throw new TooManyAdminClassException(sprintf(
+                'Unable to find a valid admin for the class: %s, there are too many registered: %s.'
+                .' Please define a default one with the tag attribute `default: true` in your admin configuration.',
                 $class,
                 implode(', ', $this->adminClasses[$class])
             ));
@@ -389,14 +396,21 @@ class Pool
      */
     public function hasAdminByClass($class)
     {
-        return isset($this->adminClasses[$class]);
+        return isset($this->adminClasses[$class]) && \count($this->adminClasses[$class]) > 0;
     }
 
     /**
      * @phpstan-param class-string $class
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x
      */
     public function hasSingleAdminByClass(string $class): bool
     {
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+            __METHOD__
+        ), \E_USER_DEPRECATED);
+
         if (!$this->hasAdminByClass($class)) {
             return false;
         }
