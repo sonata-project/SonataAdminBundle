@@ -262,12 +262,11 @@ final class RouteCollection implements RouteCollectionInterface
         if (\is_callable($element)) {
             $resolvedElement = $element();
             if (!$resolvedElement instanceof Route) {
-                @trigger_error(sprintf(
-                    'Element resolved by code "%s" is not instance of "%s"; This is deprecated since sonata-project/admin-bundle 3.75 and will be removed in 4.0.',
+                throw new \TypeError(sprintf(
+                    'Element resolved by code "%s" must be an instance of "%s"',
                     $code,
                     Route::class
-                ), \E_USER_DEPRECATED);
-                // NEXT_MAJOR : remove the previous `trigger_error()` and throw exception
+                ));
             }
 
             $this->elements[$code] = $resolvedElement;
