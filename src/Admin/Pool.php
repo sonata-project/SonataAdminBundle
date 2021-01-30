@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
+use Sonata\AdminBundle\Exception\AdminClassNotFoundException;
+use Sonata\AdminBundle\Exception\AdminCodeNotFoundException;
+use Sonata\AdminBundle\Exception\TooManyAdminClassException;
 use Sonata\AdminBundle\SonataConfiguration;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -339,6 +342,9 @@ class Pool
      *
      * @param string $class
      *
+     * @throws AdminClassNotFoundException if there is no admin class for the class provided
+     * @throws TooManyAdminClassException  if there is multiple admin class for the class provided
+     *
      * @return AdminInterface|null
      *
      * @phpstan-param class-string $class
@@ -358,7 +364,7 @@ class Pool
             // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement,
             // uncomment the following exception and declare AdminInterface as return type
             //
-            // throw new \LogicException(sprintf('Pool has no admin for the class %s.', $class));
+            // throw new AdminClassNotFoundException(sprintf('Pool has no admin for the class %s.', $class));
 
             return null;
         }
@@ -371,7 +377,7 @@ class Pool
             ));
         }
 
-        return $this->getInstance($this->adminClasses[$class][0]);
+        return $this->getInstance(reset($this->adminClasses[$class]));
     }
 
     /**
@@ -404,7 +410,7 @@ class Pool
      *
      * @param string $adminCode
      *
-     * @throws \InvalidArgumentException if the root admin code is an empty string
+     * @throws AdminCodeNotFoundException
      *
      * @return AdminInterface|false
      */
@@ -425,13 +431,6 @@ class Pool
 
         $codes = explode('|', $adminCode);
         $code = trim(array_shift($codes));
-
-        if ('' === $code) {
-            throw new \InvalidArgumentException(
-                'Root admin code must contain a valid admin reference, empty string given.'
-            );
-        }
-
         $admin = $this->getInstance($code);
 
         foreach ($codes as $code) {
@@ -442,7 +441,7 @@ class Pool
                     __METHOD__
                 ), \E_USER_DEPRECATED);
 
-                // NEXT_MAJOR : throw `\InvalidArgumentException` instead
+                // NEXT_MAJOR : throw `AdminCodeNotFoundException` instead
             }
 
             if (!$admin->hasChild($code)) {
@@ -453,7 +452,7 @@ class Pool
                 ), \E_USER_DEPRECATED);
 
                 // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following exception and declare AdminInterface as return type
-                // throw new \InvalidArgumentException(sprintf(
+                // throw new AdminCodeNotFoundException(sprintf(
                 //    'Argument 1 passed to %s() must contain a valid admin hierarchy,'
                 //    .' "%s" is not a valid child for "%s"',
                 //    __METHOD__,
@@ -488,21 +487,54 @@ class Pool
     }
 
     /**
+     * @throws AdminClassNotFoundException if there is no admin for the field description target model
+     * @throws TooManyAdminClassException  if there is too many admin for the field description target model
+     * @throws AdminCodeNotFoundException  if the admin_code option is invalid
+     *
+     * @return AdminInterface
+     */
+    final public function getAdminByFieldDescription(FieldDescriptionInterface $fieldDescription)
+    {
+        $adminCode = $fieldDescription->getOption('admin_code');
+
+        if (null !== $adminCode) {
+            return $this->getAdminByAdminCode($adminCode);
+        }
+
+        // NEXT_MAJOR: Remove the check and use `getTargetModel`.
+        if (method_exists($fieldDescription, 'getTargetModel')) {
+            /** @var class-string $targetModel */
+            $targetModel = $fieldDescription->getTargetModel();
+        } else {
+            $targetModel = $fieldDescription->getTargetEntity();
+        }
+
+        return $this->getAdminByClass($targetModel);
+    }
+
+    /**
      * Returns a new admin instance depends on the given code.
      *
      * @param string $id
      *
-     * @throws \InvalidArgumentException
+     * @throws AdminCodeNotFoundException if the code is not found in admin pool
      *
      * @return AdminInterface
      */
     public function getInstance($id)
     {
+        if ('' === $id) {
+            throw new \InvalidArgumentException(
+                'Admin code must contain a valid admin reference, empty string given.'
+            );
+        }
+
         if (!\in_array($id, $this->adminServiceIds, true)) {
             $msg = sprintf('Admin service "%s" not found in admin pool.', $id);
             $shortest = -1;
             $closest = null;
             $alternatives = [];
+
             foreach ($this->adminServiceIds as $adminServiceId) {
                 $lev = levenshtein($id, $adminServiceId);
                 if ($lev <= $shortest || $shortest < 0) {
@@ -513,6 +545,7 @@ class Pool
                     $alternatives[$adminServiceId] = $lev;
                 }
             }
+
             if (null !== $closest) {
                 asort($alternatives);
                 unset($alternatives[$closest]);
@@ -523,7 +556,8 @@ class Pool
                     implode(', ', array_keys($alternatives))
                 );
             }
-            throw new \InvalidArgumentException($msg);
+
+            throw new AdminCodeNotFoundException($msg);
         }
 
         $admin = $this->container->get($id);
