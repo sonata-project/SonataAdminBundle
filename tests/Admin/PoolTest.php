@@ -188,16 +188,27 @@ class PoolTest extends TestCase
 
     public function testGetAdminForClassWithTooManyRegisteredAdmin(): void
     {
-        $pool = new Pool($this->container, [], [], [
+        $pool = new Pool($this->container, ['sonata.user.admin.group1'], [], [
             'someclass' => ['sonata.user.admin.group1', 'sonata.user.admin.group2'],
         ]);
 
         $this->assertTrue($pool->hasAdminByClass('someclass'));
-        $this->assertFalse($pool->hasSingleAdminByClass('someclass'));
 
         $this->expectException(TooManyAdminClassException::class);
 
         $pool->getAdminByClass('someclass');
+    }
+
+    public function testGetAdminForClassWithTooManyRegisteredAdminButOneDefaultAdmin(): void
+    {
+        $this->container->set('sonata.user.admin.group1', $this->createMock(AdminInterface::class));
+
+        $pool = new Pool($this->container, ['sonata.user.admin.group1'], [], [
+            'someclass' => [Pool::DEFAULT_ADMIN_KEY => 'sonata.user.admin.group1', 'sonata.user.admin.group2'],
+        ]);
+
+        $this->assertTrue($pool->hasAdminByClass('someclass'));
+        $this->assertInstanceOf(AdminInterface::class, $pool->getAdminByClass('someclass'));
     }
 
     public function testGetAdminForClassWhenAdminClassIsSet(): void
