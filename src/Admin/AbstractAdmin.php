@@ -366,20 +366,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $fields = [];
 
         foreach ($this->getExportFields() as $key => $field) {
-            // NEXT_MAJOR: Remove the following code in favor of the commented one.
-            $label = $this->getTranslationLabel($field, 'export', 'label');
-            $transLabel = $this->getTranslator()->trans($label, [], $this->getTranslationDomain());
-            if ($transLabel === $label) {
-                $fields[$key] = $field;
-            } else {
-                $fields[$transLabel] = $field;
+            if (!\is_string($key)) {
+                $label = $this->getTranslationLabel($field, 'export', 'label');
+                $key = $this->getTranslator()->trans($label, [], $this->getTranslationDomain());
             }
-//            if (!\is_string($key)) {
-//                $label = $this->getTranslationLabel($field, 'export', 'label');
-//                $key = $this->getTranslator()->trans($label, [], $this->getTranslationDomain());
-//            }
-//
-//            $fields[$key] = $field;
+
+            $fields[$key] = $field;
         }
 
         $query = $datagrid->getQuery();

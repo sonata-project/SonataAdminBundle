@@ -194,11 +194,7 @@ can specify the templates to use in the ``Admin`` service definition:
 .. note::
 
     A ``setTemplates(array $templates)`` (notice the plural) method also
-    exists, that allows you to set multiple templates at once. Notice that,
-    if used outside of the service definition context,
-    ``setTemplates(array $templates)`` will replace the whole template list
-    for that ``Admin`` class, meaning you have to explicitly pass the full
-    template list in the ``$templates`` argument.
+    exists, that allows you to set multiple templates at once.
 
 Changes made using the ``setTemplate()`` and ``setTemplates()`` methods
 override the customizations made in the configuration file, so you can specify

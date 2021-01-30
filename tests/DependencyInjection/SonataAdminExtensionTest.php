@@ -30,7 +30,6 @@ use Sonata\AdminBundle\Model\AuditManager;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Route\AdminPoolLoader;
 use Sonata\AdminBundle\Search\SearchHandler;
-use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\Extractor\AdminExtractor;
@@ -94,10 +93,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
             SessionFilterPersister::class
         );
         $this->assertContainerBuilderHasService(TemplateRegistry::class);
-        $this->assertContainerBuilderHasService(
-            MutableTemplateRegistryInterface::class,
-            TemplateRegistry::class
-        );
+        $this->assertContainerBuilderHasService(TemplateRegistry::class);
         $this->assertContainerBuilderHasService(AdminExtractor::class);
     }
 

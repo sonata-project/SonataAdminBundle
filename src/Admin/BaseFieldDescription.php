@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
-use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Symfony\Component\PropertyAccess\Exception\ExceptionInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -119,13 +118,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      * @var AdminInterface|null the associated admin class if the object is associated to another entity
      */
     protected $associationAdmin;
-
-    /**
-     * @var string[][]
-     *
-     * @phpstan-var array<string, array{method: 'getter'|'call'|'var', getter?: string}>
-     */
-    private static $fieldGetters = [];
 
     public function __construct(
         string $name,
@@ -288,140 +280,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return null !== $this->associationAdmin;
     }
 
-    /**
-     * NEXT_MAJOR: Change the visibility to protected.
-     *
-     * @throws NoValueException
-     *
-     * @return mixed
-     */
-    public function getFieldValue(?object $object, ?string $fieldName)
-    {
-        if ($this->isVirtual() || null === $object) {
-            return null;
-        }
-
-        $dotPos = strpos($fieldName, '.');
-        if ($dotPos > 0) {
-            $child = $this->getFieldValue($object, substr($fieldName, 0, $dotPos));
-            if (null !== $child && !\is_object($child)) {
-                throw new NoValueException(sprintf(
-                    <<<'EXCEPTION'
-                    Unexpected value when accessing to the property "%s" on the class "%s" for the field "%s".
-                    Expected object|null, got %s.
-                    EXCEPTION,
-                    $fieldName,
-                    \get_class($object),
-                    $this->getName(),
-                    \gettype($child)
-                ));
-            }
-
-            return $this->getFieldValue($child, substr($fieldName, $dotPos + 1));
-        }
-
-        // prefer method name given in the code option
-        if ($this->getOption('code')) {
-            $getter = $this->getOption('code');
-
-            if (!method_exists($object, $getter)) {
-                @trigger_error(
-                    'Passing a non-existing method in the "code" option is deprecated'
-                    .' since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
-                    \E_USER_DEPRECATED
-                );
-
-            // NEXT_MAJOR: Remove the deprecation and uncomment the next line.
-//                throw new \LogicException('The method "%s"() does not exist.', $getter);
-            } elseif (!\is_callable([$object, $getter])) {
-                @trigger_error(
-                    'Passing a non-callable method in the "code" option is deprecated'
-                    .' since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
-                    \E_USER_DEPRECATED
-                );
-
-            // NEXT_MAJOR: Remove the deprecation and uncomment the next line.
-//                throw new \LogicException('The method "%s"() does not have public access.', $getter);
-            } else {
-                if ($this->getOption('parameters')) {
-                    @trigger_error(
-                        'The option "parameters" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                        \E_USER_DEPRECATED
-                    );
-
-                    return $object->{$getter}(...$this->getOption('parameters'));
-                }
-
-                return $object->{$getter}();
-            }
-        }
-
-        // NEXT_MAJOR: Remove the condition code and the else part
-        if (!$this->getOption('parameters')) {
-            $propertyAccesor = PropertyAccess::createPropertyAccessorBuilder()
-                ->enableMagicCall()
-                ->getPropertyAccessor();
-
-            try {
-                return $propertyAccesor->getValue($object, $fieldName);
-            } catch (ExceptionInterface $exception) {
-                throw new NoValueException(
-                    sprintf('Cannot access property "%s" in class "%s".', $this->getName(), \get_class($object)),
-                    $exception->getCode(),
-                    $exception
-                );
-            }
-        }
-
-        @trigger_error(
-            'The option "parameters" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-            \E_USER_DEPRECATED
-        );
-
-        $getters = [];
-        $parameters = $this->getOption('parameters');
-
-        if (\is_string($fieldName) && '' !== $fieldName) {
-            if ($this->hasCachedFieldGetter($object, $fieldName)) {
-                return $this->callCachedGetter($object, $fieldName, $parameters);
-            }
-
-            $camelizedFieldName = InflectorFactory::create()->build()->classify($fieldName);
-
-            $getters[] = lcfirst($camelizedFieldName);
-            $getters[] = sprintf('get%s', $camelizedFieldName);
-            $getters[] = sprintf('is%s', $camelizedFieldName);
-            $getters[] = sprintf('has%s', $camelizedFieldName);
-        }
-
-        foreach ($getters as $getter) {
-            if (method_exists($object, $getter) && \is_callable([$object, $getter])) {
-                $this->cacheFieldGetter($object, $fieldName, 'getter', $getter);
-
-                return $object->$getter(...$parameters);
-            }
-        }
-
-        if (method_exists($object, '__call')) {
-            $this->cacheFieldGetter($object, $fieldName, 'call');
-
-            return $object->$fieldName(...$parameters);
-        }
-
-        if (isset($object->{$fieldName})) {
-            $this->cacheFieldGetter($object, $fieldName, 'var');
-
-            return $object->{$fieldName};
-        }
-
-        throw new NoValueException(sprintf(
-            'Neither the property "%s" nor one of the methods "%s()" exist and have public access in class "%s".',
-            $this->getName(),
-            implode('()", "', $getters),
-            \get_class($object)
-        ));
-    }
-
     public function setAdmin(AdminInterface $admin): void
     {
         $this->admin = $admin;
@@ -512,62 +370,62 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     abstract protected function setParentAssociationMappings(array $parentAssociationMappings): void;
 
-    private function getFieldGetterKey(object $object, ?string $fieldName): ?string
-    {
-        if (!\is_string($fieldName)) {
-            return null;
-        }
-
-        $components = [\get_class($object), $fieldName];
-
-        $code = $this->getOption('code');
-        if (\is_string($code) && '' !== $code) {
-            $components[] = $code;
-        }
-
-        return implode('-', $components);
-    }
-
-    private function hasCachedFieldGetter(object $object, string $fieldName): bool
-    {
-        return isset(
-            self::$fieldGetters[$this->getFieldGetterKey($object, $fieldName)]
-        );
-    }
-
     /**
-     * @param array<string, mixed> $parameters
+     * @throws NoValueException
      *
      * @return mixed
      */
-    private function callCachedGetter(object $object, string $fieldName, array $parameters = [])
+    protected function getFieldValue(?object $object, ?string $fieldName)
     {
-        $getterKey = $this->getFieldGetterKey($object, $fieldName);
-
-        if ('getter' === self::$fieldGetters[$getterKey]['method']) {
-            return $object->{self::$fieldGetters[$getterKey]['getter']}(...$parameters);
+        if ($this->isVirtual() || null === $object) {
+            return null;
         }
 
-        if ('call' === self::$fieldGetters[$getterKey]['method']) {
-            return $object->__call($fieldName, $parameters);
-        }
-
-        return $object->{$fieldName};
-    }
-
-    /**
-     * @phpstan-param 'call'|'getter'|'var' $method
-     */
-    private function cacheFieldGetter(object $object, ?string $fieldName, string $method, ?string $getter = null): void
-    {
-        $getterKey = $this->getFieldGetterKey($object, $fieldName);
-        if (null !== $getterKey) {
-            self::$fieldGetters[$getterKey] = [
-                'method' => $method,
-            ];
-            if (null !== $getter) {
-                self::$fieldGetters[$getterKey]['getter'] = $getter;
+        $dotPos = strpos($fieldName, '.');
+        if ($dotPos > 0) {
+            $child = $this->getFieldValue($object, substr($fieldName, 0, $dotPos));
+            if (null !== $child && !\is_object($child)) {
+                throw new NoValueException(sprintf(
+                    <<<'EXCEPTION'
+                    Unexpected value when accessing to the property "%s" on the class "%s" for the field "%s".
+                    Expected object|null, got %s.
+                    EXCEPTION,
+                    $fieldName,
+                    \get_class($object),
+                    $this->getName(),
+                    \gettype($child)
+                ));
             }
+
+            return $this->getFieldValue($child, substr($fieldName, $dotPos + 1));
+        }
+
+        // prefer method name given in the code option
+        if ($this->getOption('code')) {
+            $getter = $this->getOption('code');
+
+            if (!method_exists($object, $getter)) {
+                throw new \LogicException('The method "%s"() does not exist.', $getter);
+            }
+            if (!\is_callable([$object, $getter])) {
+                throw new \LogicException('The method "%s"() does not have public access.', $getter);
+            }
+
+            return $object->{$getter}();
+        }
+
+        $propertyAccesor = PropertyAccess::createPropertyAccessorBuilder()
+            ->enableMagicCall()
+            ->getPropertyAccessor();
+
+        try {
+            return $propertyAccesor->getValue($object, $fieldName);
+        } catch (ExceptionInterface $exception) {
+            throw new NoValueException(
+                sprintf('Cannot access property "%s" in class "%s".', $this->getName(), \get_class($object)),
+                $exception->getCode(),
+                $exception
+            );
         }
     }
 }

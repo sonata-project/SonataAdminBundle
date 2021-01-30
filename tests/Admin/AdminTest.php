@@ -2192,19 +2192,23 @@ class AdminTest extends TestCase
         $datagridBuilder = new DatagridBuilder($formFactory, $pager, $proxyQuery);
 
         $translator->method('trans')->willReturnCallback(static function (string $label): string {
-            if ('export.label_field' === $label) {
-                return 'Feld';
-            }
-
-            return $label;
+            return sprintf('trans(%s)', $label);
         });
 
-        $modelManager->expects(self::once())->method('getExportFields')->willReturn(['field', 'foo', 'bar']);
+        $modelManager->expects(self::once())->method('getExportFields')->willReturn([
+            'key' => 'field',
+            'foo',
+            'bar',
+        ]);
 
         $dataSource
             ->expects(self::once())
             ->method('createIterator')
-            ->with($proxyQuery, ['Feld' => 'field', 1 => 'foo', 2 => 'bar'])
+            ->with($proxyQuery, [
+                'key' => 'field',
+                'trans(export.label_foo)' => 'foo',
+                'trans(export.label_bar)' => 'bar',
+            ])
             ->willReturn($sourceIterator);
 
         $admin->setTranslator($translator);
