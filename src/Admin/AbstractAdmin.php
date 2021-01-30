@@ -128,15 +128,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     protected $translationDomain = 'messages';
 
     /**
-     * Options to set to the form (ie, validation_groups).
-     *
-     * @deprecated since sonata-project/admin-bundle 3.x, use configureFormOptions() instead.
-     *
-     * @var array<string, mixed>
-     */
-    protected $formOptions = [];
-
-    /**
      * Array of routes related to this admin.
      *
      * @var RouteCollectionInterface|null
@@ -379,10 +370,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getDataSource()->createIterator($query, $fields);
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function initialize(): void
+    final public function initialize(): void
     {
         if (!$this->classnameLabel) {
             $this->classnameLabel = substr($this->getClass(), strrpos($this->getClass(), '\\') + 1);
@@ -878,12 +866,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     public function getFormBuilder(): FormBuilderInterface
     {
-        $this->formOptions['data_class'] = $this->getClass();
-
         $formBuilder = $this->getFormContractor()->getFormBuilder(
             $this->getUniqid(),
-            // NEXT_MAJOR : remove the merge with $this->formOptions
-            array_merge($this->getFormOptions(), $this->formOptions)
+            array_merge(
+                $this->getFormOptions(),
+                ['data_class' => $this->getClass()]
+            )
         );
 
         $this->defineFormBuilder($formBuilder);
