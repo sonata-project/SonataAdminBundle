@@ -209,7 +209,9 @@ file that was distributed with this source code.
                                             </ul>
                                         </div>
 
-                                        &nbsp;-&nbsp;
+                                        {% if block('pager_results') is not empty %}
+                                            &nbsp;-&nbsp;
+                                        {% endif %}
                                     {% endif %}
 
                                     {% block pager_results %}
