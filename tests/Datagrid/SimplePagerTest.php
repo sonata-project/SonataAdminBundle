@@ -39,7 +39,6 @@ class SimplePagerTest extends TestCase
         $pager = new SimplePager(10, 2);
         $this->proxyQuery->expects($this->once())
                 ->method('execute')
-                ->with([], null)
                 ->willReturn(new ArrayCollection(range(0, 12)));
 
         $this->proxyQuery->expects($this->once())
@@ -60,7 +59,6 @@ class SimplePagerTest extends TestCase
     {
         $this->proxyQuery->expects($this->once())
             ->method('execute')
-            ->with([], null)
             ->willReturn(new ArrayCollection(range(0, 12)));
 
         $this->proxyQuery->expects($this->once())
@@ -102,7 +100,6 @@ class SimplePagerTest extends TestCase
     {
         $this->proxyQuery->expects($this->once())
             ->method('execute')
-            ->with([], null)
             ->willReturn([]);
 
         $this->proxyQuery->expects($this->once())
@@ -131,7 +128,6 @@ class SimplePagerTest extends TestCase
     {
         $this->proxyQuery->expects($this->once())
             ->method('execute')
-            ->with([], null)
             ->willReturn(['foo', 'bar']);
 
         $this->pager->setQuery($this->proxyQuery);
@@ -155,7 +151,6 @@ class SimplePagerTest extends TestCase
     {
         $this->proxyQuery->expects($this->once())
             ->method('execute')
-            ->with([], null)
             ->willReturn($queryReturnValues);
 
         $this->pager->setQuery($this->proxyQuery);
