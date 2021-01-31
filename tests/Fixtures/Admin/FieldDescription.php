@@ -17,11 +17,6 @@ use Sonata\AdminBundle\Admin\BaseFieldDescription;
 
 class FieldDescription extends BaseFieldDescription
 {
-    protected function setAssociationMapping($associationMapping): void
-    {
-        $this->associationMapping = $associationMapping;
-    }
-
     public function getTargetEntity(): ?string
     {
         throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
@@ -32,23 +27,33 @@ class FieldDescription extends BaseFieldDescription
         throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
 
-    protected function setFieldMapping($fieldMapping): void
-    {
-        $this->fieldMapping = $fieldMapping;
-    }
-
     public function isIdentifier(): bool
     {
         throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
 
-    protected function setParentAssociationMappings(array $parentAssociationMappings): void
-    {
-        $this->parentAssociationMappings = $parentAssociationMappings;
-    }
-
     public function getValue($object)
     {
         throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
+    }
+
+    public function getFieldValue(?object $object, ?string $fieldName)
+    {
+        return parent::getFieldValue($object, $fieldName);
+    }
+
+    protected function setFieldMapping($fieldMapping): void
+    {
+        $this->fieldMapping = $fieldMapping;
+    }
+
+    protected function setAssociationMapping($associationMapping): void
+    {
+        $this->associationMapping = $associationMapping;
+    }
+
+    protected function setParentAssociationMappings(array $parentAssociationMappings): void
+    {
+        $this->parentAssociationMappings = $parentAssociationMappings;
     }
 }

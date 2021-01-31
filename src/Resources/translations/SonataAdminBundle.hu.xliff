@@ -294,14 +294,6 @@
                 <source>label_date_type_less_than</source>
                 <target>&lt;</target>
             </trans-unit>
-            <trans-unit id="label_date_type_null">
-                <source>label_date_type_null</source>
-                <target>üres</target>
-            </trans-unit>
-            <trans-unit id="label_date_type_not_null">
-                <source>label_date_type_not_null</source>
-                <target>nem üres</target>
-            </trans-unit>
             <trans-unit id="label_date_type_between">
                 <source>label_date_type_between</source>
                 <target>között</target>

@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
-use Sonata\AdminBundle\Templating\TemplateRegistry;
+use Sonata\AdminBundle\Templating\MutableTemplateRegistry;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
@@ -380,7 +380,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $templateRegistryId = sprintf('%s.template_registry', $serviceId);
         $templateRegistryDefinition = $container
-            ->register($templateRegistryId, TemplateRegistry::class)
+            ->register($templateRegistryId, MutableTemplateRegistry::class)
             ->addTag('sonata.admin.template_registry')
             ->setPublic(true); // Temporary fix until we can support service locators
 

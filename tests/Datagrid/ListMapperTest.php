@@ -75,15 +75,11 @@ class ListMapperTest extends TestCase
                 return $fieldDescription;
             });
 
-        $this->admin
-            ->method('getModelManager')
-            ->willReturn($modelManager);
+        $this->admin->setModelManager($modelManager);
 
         $labelTranslatorStrategy = new NoopLabelTranslatorStrategy();
 
-        $this->admin
-            ->method('getLabelTranslatorStrategy')
-            ->willReturn($labelTranslatorStrategy);
+        $this->admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
 
         $this->admin
             ->method('isGranted')

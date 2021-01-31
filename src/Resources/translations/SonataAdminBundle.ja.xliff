@@ -294,14 +294,6 @@
                 <source>label_date_type_less_than</source>
                 <target>&lt;</target>
             </trans-unit>
-            <trans-unit id="label_date_type_null">
-                <source>label_date_type_null</source>
-                <target>未指定</target>
-            </trans-unit>
-            <trans-unit id="label_date_type_not_null">
-                <source>label_date_type_not_null</source>
-                <target>未指定以外</target>
-            </trans-unit>
             <trans-unit id="label_date_type_between">
                 <source>label_date_type_between</source>
                 <target>範囲内</target>

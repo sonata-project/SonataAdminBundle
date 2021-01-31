@@ -74,7 +74,7 @@ class AdminTypeTest extends TypeTestCase
         $admin->expects($this->exactly(2))->method('getParentFieldDescription')->willReturn($parentField);
         $admin->expects($this->once())->method('hasAccess')->with('delete')->willReturn(false);
         $admin->expects($this->once())->method('defineFormBuilder');
-        $admin->expects($this->once())->method('getModelManager')->willReturn($modelManager);
+        $admin->setModelManager($modelManager);
         $admin->expects($this->once())->method('getClass')->willReturn(Foo::class);
         $admin->expects($this->once())->method('getNewInstance')->willReturn($foo);
         $admin->expects($this->once())->method('setSubject')->with($foo);
@@ -125,7 +125,7 @@ class AdminTypeTest extends TypeTestCase
         $admin->expects($this->exactly(2))->method('getParentFieldDescription')->willReturn($parentField);
         $admin->expects($this->once())->method('setSubject')->with($bar);
         $admin->expects($this->once())->method('defineFormBuilder');
-        $admin->expects($this->once())->method('getModelManager')->willReturn($modelManager);
+        $admin->setModelManager($modelManager);
         $admin->expects($this->once())->method('getClass')->willReturn(Foo::class);
 
         $field = $this->createMock(FieldDescriptionInterface::class);
@@ -166,7 +166,7 @@ class AdminTypeTest extends TypeTestCase
         $admin->expects($this->exactly(2))->method('hasParentFieldDescription')->willReturn(true);
         $admin->expects($this->exactly(2))->method('getParentFieldDescription')->willReturn($parentField);
         $admin->expects($this->once())->method('defineFormBuilder');
-        $admin->expects($this->once())->method('getModelManager')->willReturn($modelManager);
+        $admin->setModelManager($modelManager);
         $admin->expects($this->once())->method('getClass')->willReturn(Foo::class);
         $admin->expects($this->once())->method('setSubject')->with($foo);
 
@@ -215,7 +215,7 @@ class AdminTypeTest extends TypeTestCase
         $admin->expects($this->exactly(2))->method('hasParentFieldDescription')->willReturn(true);
         $admin->expects($this->exactly(2))->method('getParentFieldDescription')->willReturn($parentField);
         $admin->expects($this->once())->method('defineFormBuilder');
-        $admin->expects($this->once())->method('getModelManager')->willReturn($modelManager);
+        $admin->setModelManager($modelManager);
         $admin->expects($this->once())->method('getClass')->willReturn(Foo::class);
         $admin->expects($this->once())->method('setSubject')->with($newInstance);
         $admin->expects($this->once())->method('getNewInstance')->willReturn($newInstance);
@@ -266,7 +266,7 @@ class AdminTypeTest extends TypeTestCase
         $admin->expects($this->exactly(2))->method('hasParentFieldDescription')->willReturn(true);
         $admin->expects($this->exactly(2))->method('getParentFieldDescription')->willReturn($parentField);
         $admin->expects($this->once())->method('defineFormBuilder');
-        $admin->expects($this->once())->method('getModelManager')->willReturn($modelManager);
+        $admin->setModelManager($modelManager);
         $admin->expects($this->once())->method('getClass')->willReturn(Foo::class);
         $admin->expects($this->once())->method('setSubject')->with($newInstance);
         $admin->expects($this->once())->method('getNewInstance')->willReturn($newInstance);

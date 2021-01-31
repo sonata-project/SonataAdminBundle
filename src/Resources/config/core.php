@@ -28,7 +28,6 @@ use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Route\AdminPoolLoader;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\SonataConfiguration;
-use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\Extractor\AdminExtractor;
@@ -195,8 +194,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         ->alias(TemplateRegistry::class, 'sonata.admin.global_template_registry')
-
-        // NEXT_MAJOR: remove this alias, global template registry SHOULD NOT be mutable
-        ->alias(MutableTemplateRegistryInterface::class, 'sonata.admin.global_template_registry')
     ;
 };

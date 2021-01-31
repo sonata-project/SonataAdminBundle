@@ -138,17 +138,7 @@ final class FormMapper extends BaseGroupedMapper
             }
 
             if (!isset($options['label'])) {
-                /*
-                 * NEXT_MAJOR: Replace $child by $name in the next line.
-                 * And add the following BC-break in the upgrade note:
-                 *
-                 * The form label are now correctly using the label translator strategy
-                 * for field with `.` (which won't be replaced by `__`). For instance,
-                 * with the underscore label strategy, the label `foo.barBaz` was
-                 * previously `form.label_foo__bar_baz` and now is `form.label_foo_bar_baz`
-                 * to be consistent with others labels like `show.label_foo_bar_baz`.
-                 */
-                $options['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($child, 'form', 'label');
+                $options['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($name, 'form', 'label');
             }
         }
 

@@ -128,15 +128,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     protected $translationDomain = 'messages';
 
     /**
-     * Options to set to the form (ie, validation_groups).
-     *
-     * @deprecated since sonata-project/admin-bundle 3.x, use configureFormOptions() instead.
-     *
-     * @var array<string, mixed>
-     */
-    protected $formOptions = [];
-
-    /**
      * Array of routes related to this admin.
      *
      * @var RouteCollectionInterface|null
@@ -366,20 +357,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $fields = [];
 
         foreach ($this->getExportFields() as $key => $field) {
-            // NEXT_MAJOR: Remove the following code in favor of the commented one.
-            $label = $this->getTranslationLabel($field, 'export', 'label');
-            $transLabel = $this->getTranslator()->trans($label, [], $this->getTranslationDomain());
-            if ($transLabel === $label) {
-                $fields[$key] = $field;
-            } else {
-                $fields[$transLabel] = $field;
+            if (!\is_string($key)) {
+                $label = $this->getTranslationLabel($field, 'export', 'label');
+                $key = $this->getTranslator()->trans($label, [], $this->getTranslationDomain());
             }
-//            if (!\is_string($key)) {
-//                $label = $this->getTranslationLabel($field, 'export', 'label');
-//                $key = $this->getTranslator()->trans($label, [], $this->getTranslationDomain());
-//            }
-//
-//            $fields[$key] = $field;
+
+            $fields[$key] = $field;
         }
 
         $query = $datagrid->getQuery();
@@ -387,10 +370,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getDataSource()->createIterator($query, $fields);
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function initialize(): void
+    final public function initialize(): void
     {
         if (!$this->classnameLabel) {
             $this->classnameLabel = substr($this->getClass(), strrpos($this->getClass(), '\\') + 1);
@@ -886,12 +866,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     public function getFormBuilder(): FormBuilderInterface
     {
-        $this->formOptions['data_class'] = $this->getClass();
-
         $formBuilder = $this->getFormContractor()->getFormBuilder(
             $this->getUniqid(),
-            // NEXT_MAJOR : remove the merge with $this->formOptions
-            array_merge($this->getFormOptions(), $this->formOptions)
+            ['data_class' => $this->getClass()] + $this->getFormOptions(),
         );
 
         $this->defineFormBuilder($formBuilder);

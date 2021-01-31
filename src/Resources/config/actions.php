@@ -18,7 +18,6 @@ use Sonata\AdminBundle\Action\RetrieveAutocompleteItemsAction;
 use Sonata\AdminBundle\Action\RetrieveFormFieldElementAction;
 use Sonata\AdminBundle\Action\SearchAction;
 use Sonata\AdminBundle\Action\SetObjectFieldValueAction;
-use Sonata\AdminBundle\Util\BCDeprecationParameters;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 
@@ -36,12 +35,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('sonata.admin.pool'),
                 new ReferenceConfigurator('twig'),
             ])
-            // NEXT_MAJOR: Remove the alias.
-            ->alias(DashboardAction::class, 'sonata.admin.action.dashboard')
-            ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.82 and will be removed in 4.0.',
-                '3.82'
-            ))
 
         ->set('sonata.admin.action.search', SearchAction::class)
             ->public()
@@ -52,12 +45,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('sonata.admin.breadcrumbs_builder'),
                 new ReferenceConfigurator('twig'),
             ])
-            // NEXT_MAJOR: Remove the alias.
-            ->alias(SearchAction::class, 'sonata.admin.action.search')
-            ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.82 and will be removed in 4.0.',
-                '3.82'
-            ))
 
         ->set('sonata.admin.action.append_form_field_element', AppendFormFieldElementAction::class)
             ->public()

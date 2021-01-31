@@ -636,9 +636,7 @@ class GroupMenuProviderTest extends TestCase
             ->with($this->equalTo('list'))
             ->willReturn($isGranted);
 
-        $admin
-            ->method('getLabel')
-            ->willReturn('foo_admin_label');
+        $admin->setLabel('foo_admin_label');
 
         $admin
             ->method('generateMenuUrl')

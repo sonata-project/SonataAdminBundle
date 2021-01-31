@@ -190,18 +190,12 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 
     abstract public function initialize(): void;
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function setLabel(?string $label): void
+    final public function setLabel(?string $label): void
     {
         $this->label = $label;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function getLabel(): ?string
+    final public function getLabel(): ?string
     {
         return $this->label;
     }
@@ -215,42 +209,27 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         }
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function getListModes(): array
+    final public function getListModes(): array
     {
         return $this->listModes;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function setPagerType(string $pagerType): void
+    final public function setPagerType(string $pagerType): void
     {
         $this->pagerType = $pagerType;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function getPagerType(): string
+    final public function getPagerType(): string
     {
         return $this->pagerType;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function setManagerType($type): void
+    final public function setManagerType($type): void
     {
         $this->managerType = $type;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function getManagerType(): string
+    final public function getManagerType(): string
     {
         if (null === $this->managerType) {
             throw new \LogicException(sprintf('Admin "%s" has no manager type.', static::class));
@@ -260,29 +239,22 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.84
-     *
      * @param array<string, string[]> $information
      */
-    public function setSecurityInformation(array $information): void
+    final public function setSecurityInformation(array $information): void
     {
         $this->securityInformation = $information;
     }
 
     /**
-     * @final since sonata-admin/admin-bundle 3.84
-     *
      * @return array<string, string[]>
      */
-    public function getSecurityInformation(): array
+    final public function getSecurityInformation(): array
     {
         return $this->securityInformation;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function setFilterPersister(?FilterPersisterInterface $filterPersister = null): void
+    final public function setFilterPersister(?FilterPersisterInterface $filterPersister = null): void
     {
         $this->filterPersister = $filterPersister;
     }
@@ -301,18 +273,12 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         return null !== $this->filterPersister;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function setModelManager(ModelManagerInterface $modelManager): void
+    final public function setModelManager(ModelManagerInterface $modelManager): void
     {
         $this->modelManager = $modelManager;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function getModelManager(): ModelManagerInterface
+    final public function getModelManager(): ModelManagerInterface
     {
         if (null === $this->modelManager) {
             throw new \LogicException(sprintf('Admin "%s" has no model manager.', static::class));
@@ -321,18 +287,12 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         return $this->modelManager;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function setDataSource(DataSourceInterface $dataSource): void
+    final public function setDataSource(DataSourceInterface $dataSource): void
     {
         $this->dataSource = $dataSource;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.x
-     */
-    public function getDataSource(): DataSourceInterface
+    final public function getDataSource(): DataSourceInterface
     {
         if (null === $this->dataSource) {
             throw new \LogicException(sprintf('Admin "%s" has no data source.', static::class));
@@ -341,18 +301,12 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         return $this->dataSource;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function setFormContractor(FormContractorInterface $formBuilder): void
+    final public function setFormContractor(FormContractorInterface $formBuilder): void
     {
         $this->formContractor = $formBuilder;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function getFormContractor(): FormContractorInterface
+    final public function getFormContractor(): FormContractorInterface
     {
         if (null === $this->formContractor) {
             throw new \LogicException(sprintf('Admin "%s" has no form contractor.', static::class));
@@ -361,18 +315,12 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         return $this->formContractor;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function setShowBuilder(ShowBuilderInterface $showBuilder): void
+    final public function setShowBuilder(ShowBuilderInterface $showBuilder): void
     {
         $this->showBuilder = $showBuilder;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function getShowBuilder(): ShowBuilderInterface
+    final public function getShowBuilder(): ShowBuilderInterface
     {
         if (null === $this->showBuilder) {
             throw new \LogicException(sprintf('Admin "%s" has no show builder.', static::class));
@@ -381,18 +329,12 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         return $this->showBuilder;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function setListBuilder(ListBuilderInterface $listBuilder): void
+    final public function setListBuilder(ListBuilderInterface $listBuilder): void
     {
         $this->listBuilder = $listBuilder;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function getListBuilder(): ListBuilderInterface
+    final public function getListBuilder(): ListBuilderInterface
     {
         if (null === $this->listBuilder) {
             throw new \LogicException(sprintf('Admin "%s" has no list builder.', static::class));
@@ -401,18 +343,12 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         return $this->listBuilder;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder): void
+    final public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder): void
     {
         $this->datagridBuilder = $datagridBuilder;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function getDatagridBuilder(): DatagridBuilderInterface
+    final public function getDatagridBuilder(): DatagridBuilderInterface
     {
         if (null === $this->datagridBuilder) {
             throw new \LogicException(sprintf('Admin "%s" has no datagrid builder.', static::class));
@@ -421,18 +357,12 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         return $this->datagridBuilder;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.x
-     */
-    public function setTranslator(TranslatorInterface $translator): void
+    final public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.x
-     */
-    public function getTranslator(): TranslatorInterface
+    final public function getTranslator(): TranslatorInterface
     {
         if (null === $this->translator) {
             throw new \LogicException(sprintf('Admin "%s" has no translator.', static::class));
@@ -441,18 +371,12 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         return $this->translator;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function setConfigurationPool(Pool $configurationPool): void
+    final public function setConfigurationPool(Pool $configurationPool): void
     {
         $this->configurationPool = $configurationPool;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function getConfigurationPool(): Pool
+    final public function getConfigurationPool(): Pool
     {
         if (null === $this->configurationPool) {
             throw new \LogicException(sprintf('Admin "%s" has no pool.', static::class));
@@ -461,18 +385,12 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         return $this->configurationPool;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function setRouteGenerator(RouteGeneratorInterface $routeGenerator): void
+    final public function setRouteGenerator(RouteGeneratorInterface $routeGenerator): void
     {
         $this->routeGenerator = $routeGenerator;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function getRouteGenerator(): RouteGeneratorInterface
+    final public function getRouteGenerator(): RouteGeneratorInterface
     {
         if (null === $this->routeGenerator) {
             throw new \LogicException(sprintf('Admin "%s" has no route generator.', static::class));
@@ -481,18 +399,12 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         return $this->routeGenerator;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function setSecurityHandler(SecurityHandlerInterface $securityHandler): void
+    final public function setSecurityHandler(SecurityHandlerInterface $securityHandler): void
     {
         $this->securityHandler = $securityHandler;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function getSecurityHandler(): SecurityHandlerInterface
+    final public function getSecurityHandler(): SecurityHandlerInterface
     {
         if (null === $this->securityHandler) {
             throw new \LogicException(sprintf('Admin "%s" has no security handler.', static::class));
@@ -501,18 +413,12 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         return $this->securityHandler;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function setMenuFactory(FactoryInterface $menuFactory): void
+    final public function setMenuFactory(FactoryInterface $menuFactory): void
     {
         $this->menuFactory = $menuFactory;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function getMenuFactory(): FactoryInterface
+    final public function getMenuFactory(): FactoryInterface
     {
         if (null === $this->menuFactory) {
             throw new \LogicException(sprintf('Admin "%s" has no security handler.', static::class));
@@ -521,18 +427,12 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         return $this->menuFactory;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function setRouteBuilder(RouteBuilderInterface $routeBuilder): void
+    final public function setRouteBuilder(RouteBuilderInterface $routeBuilder): void
     {
         $this->routeBuilder = $routeBuilder;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function getRouteBuilder(): RouteBuilderInterface
+    final public function getRouteBuilder(): RouteBuilderInterface
     {
         if (null === $this->routeBuilder) {
             throw new \LogicException(sprintf('Admin "%s" has no route builder.', static::class));
@@ -541,18 +441,12 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         return $this->routeBuilder;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy): void
+    final public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy): void
     {
         $this->labelTranslatorStrategy = $labelTranslatorStrategy;
     }
 
-    /**
-     * @final since sonata-admin/admin-bundle 3.84
-     */
-    public function getLabelTranslatorStrategy(): LabelTranslatorStrategyInterface
+    final public function getLabelTranslatorStrategy(): LabelTranslatorStrategyInterface
     {
         if (null === $this->labelTranslatorStrategy) {
             throw new \LogicException(sprintf('Admin "%s" has no label translator strategy.', static::class));
