@@ -29,11 +29,9 @@ interface ProxyQueryInterface
     public function __call($name, $args);
 
     /**
-     * @param int|null $hydrationMode
-     *
      * @return mixed
      */
-    public function execute(array $params = [], $hydrationMode = null);
+    public function execute();
 
     /**
      * @param array $parentAssociationMappings

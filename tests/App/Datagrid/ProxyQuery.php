@@ -21,7 +21,7 @@ final class ProxyQuery implements ProxyQueryInterface
     {
     }
 
-    public function execute(array $params = [], $hydrationMode = null)
+    public function execute()
     {
         throw new \BadMethodCallException('Not implemented.');
     }
