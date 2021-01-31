@@ -92,7 +92,7 @@ abstract class Filter implements FilterInterface
 
     public function getFieldOptions(): array
     {
-        return $this->getOption('field_options', ['required' => false]);
+        return $this->getOption('field_options', []);
     }
 
     public function getFieldOption(string $name, $default = null)

@@ -140,7 +140,7 @@ class DatagridMapperTest extends TestCase
         $this->assertSame('foo__name', $filter->getFormName());
         $this->assertSame(TextType::class, $filter->getFieldType());
         $this->assertSame('fooLabel', $filter->getLabel());
-        $this->assertSame(['required' => false], $filter->getFieldOptions());
+        $this->assertSame([], $filter->getFieldOptions());
         $this->assertSame([
             'show_filter' => null,
             'advanced_filter' => true,
