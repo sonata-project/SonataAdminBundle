@@ -405,10 +405,10 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             $getter = $this->getOption('code');
 
             if (!method_exists($object, $getter)) {
-                throw new \LogicException('The method "%s"() does not exist.', $getter);
+                throw new \LogicException(sprintf('The method "%s"() does not exist.', $getter));
             }
             if (!\is_callable([$object, $getter])) {
-                throw new \LogicException('The method "%s"() does not have public access.', $getter);
+                throw new \LogicException(sprintf('The method "%s"() does not have public access.', $getter));
             }
 
             return $object->{$getter}();
