@@ -25,7 +25,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 new ReferenceConfigurator('sonata.exporter.exporter'),
             ])
-        
+
         ->alias(AdminExporter::class, 'sonata.admin.admin_exporter')
     ;
 };
