@@ -34,6 +34,10 @@ final class MyAdmin extends AbstractAdmin
 }
 ```
 
+### Deprecated the `Sonata\AdminBundle\AdminFieldDescription` `'code'` option.
+
+Use the `accessor` option instead.
+
 ### Deprecated `Sonata\AdminBundle\Admin\AbstractAdmin::formOptions` property.
 
 This property has been replaced by the new method `Sonata\AdminBundle\Admin\AbstractAdmin::configureFormOptions()`

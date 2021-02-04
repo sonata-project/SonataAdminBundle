@@ -36,7 +36,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  *   - name (o) : the name used (label in the form, title in the list)
  *   - link_parameters (o) : add link parameter to the related Admin class when
  *                           the Admin.generateUrl is called
- *   - code : the method name to retrieve the related value
+ *   - accessor : the method or the method name to retrieve the related value
  *   - associated_tostring : (deprecated, use associated_property option)
  *                           the method to retrieve the "string" representation
  *                           of the collection element.
@@ -418,9 +418,23 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             return $this->getFieldValue($child, substr($fieldName, $dotPos + 1));
         }
 
-        // prefer method name given in the code option
+        // NEXT_MAJOR: Remove this code.
         if ($this->getOption('code')) {
-            $getter = $this->getOption('code');
+            @trigger_error(
+                'The "code" option is deprecated since sonata-project/admin-bundle 3.x.'
+                .' Use the "accessor" code instead',
+                \E_USER_DEPRECATED
+            );
+        }
+
+        // prefer method name given in the code option
+        // NEXT_MAJOR: Remove this line and uncomment the following
+        $getter = $this->getOption('accessor', $this->getOption('code'));
+//        $getter = $this->getOption('accessor');
+        if ($getter) {
+            if (\is_callable($getter)) {
+                return $getter($object);
+            }
 
             if (!method_exists($object, $getter)) {
                 @trigger_error(
