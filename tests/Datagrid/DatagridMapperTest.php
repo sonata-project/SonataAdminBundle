@@ -204,7 +204,7 @@ class DatagridMapperTest extends TestCase
 
         $this->assertInstanceOf(FilterInterface::class, $filter);
         $this->assertSame('foo.bar', $filter->getName());
-        $this->assertSame('bar', $filter->getOption('field_name'));
+        $this->assertNull($filter->getOption('field_name'));
     }
 
     public function testAddRemove(): void

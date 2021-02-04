@@ -80,10 +80,6 @@ final class DatagridMapper extends BaseMapper
                 ));
             }
 
-            if (!isset($filterOptions['field_name'])) {
-                $filterOptions['field_name'] = substr(strrchr('.'.$name, '.'), 1);
-            }
-
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
                 $this->admin->getClass(),
                 $name,
