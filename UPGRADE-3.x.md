@@ -4,6 +4,14 @@ UPGRADE 3.x
 UPGRADE FROM 3.xx to 3.xx
 =========================
 
+### Deprecated `Sonata\AdminBundle\Guesser\TypeGuesserInterface::guessType()` method.
+
+Deprecated `guessType()` method in favor of `guessTypeForFieldDescription()`.
+
+### Deprecated `Sonata\AdminBundle\Guesser\TypeGuesserChain::guessType()` method.
+
+Deprecated `guessType()` method in favor of `guessTypeForFieldDescription()`.
+
 ### Deprecated `Sonata\AdminBundle\Admin\AbstractAdmin::formOptions` property.
 
 This property has been replaced by the new method `Sonata\AdminBundle\Admin\AbstractAdmin::configureFormOptions()`

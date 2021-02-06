@@ -13,15 +13,20 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Guesser;
 
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\Guess\TypeGuess;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @method TypeGuess|null guessTypeForFieldDescription(FieldDescriptionInterface $fieldDescription)
  */
 interface TypeGuesserInterface
 {
     /**
+     * @deprecated since sonata-project/admin-bundle 3.x. Use guessTypeForFieldDescription instead.
+     *
      * @param string $class
      * @param string $property
      *
@@ -30,4 +35,7 @@ interface TypeGuesserInterface
      * @phpstan-param class-string $class
      */
     public function guessType($class, $property, ModelManagerInterface $modelManager);
+
+    // NEXT_MAJOR: Uncomment next line.
+    // public function guessTypeForFieldDescription(FieldDescriptionInterface $fieldDescription): ?TypeGuess;
 }
