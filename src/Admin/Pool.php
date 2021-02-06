@@ -376,7 +376,8 @@ class Pool
         }
 
         if (1 !== \count($this->adminClasses[$class])) {
-            throw new TooManyAdminClassException(sprintf(
+            // NEXT_MAJOR: Throw TooManyAdminClassException instead.
+            throw new \RuntimeException(sprintf(
                 'Unable to find a valid admin for the class: %s, there are too many registered: %s.'
                 .' Please define a default one with the tag attribute `default: true` in your admin configuration.',
                 $class,
