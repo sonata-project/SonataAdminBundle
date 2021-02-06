@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\AdminCodeNotFoundException;
-use Sonata\AdminBundle\Exception\TooManyAdminClassException;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\DependencyInjection\Container;
@@ -194,7 +193,9 @@ class PoolTest extends TestCase
 
         $this->assertTrue($pool->hasAdminByClass('someclass'));
 
-        $this->expectException(TooManyAdminClassException::class);
+        // NEXT_MAJOR: Remove this line and uncomment the following one.
+        $this->expectException(\RuntimeException::class);
+        // $this->expectException(TooManyAdminClassException::class);
 
         $pool->getAdminByClass('someclass');
     }
