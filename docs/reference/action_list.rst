@@ -101,7 +101,7 @@ Here is an example::
 
             // you may also use a custom accessor
             ->add('description1', null, [
-                'accessor' => 'getDescription'
+                'accessor' => 'description'
             ])
             ->add('description2', null, [
                 'accessor' => function ($subject) {
