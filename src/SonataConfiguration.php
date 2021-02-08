@@ -61,7 +61,6 @@ final class SonataConfiguration
     private $options;
 
     /**
-     * @var array
      * @psalm-param SonataConfigurationOptions $options
      * @phpstan-param array<string, mixed> $options
      */
