@@ -28,11 +28,9 @@ interface ProxyQueryInterface
     public function __call(string $name, array $args);
 
     /**
-     * @param array<string, mixed> $params
-     *
      * @return mixed
      */
-    public function execute(array $params = [], ?int $hydrationMode = null);
+    public function execute();
 
     /**
      * @param mixed[] $parentAssociationMappings
