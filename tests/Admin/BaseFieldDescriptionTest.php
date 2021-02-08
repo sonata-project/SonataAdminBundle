@@ -188,7 +188,7 @@ class BaseFieldDescriptionTest extends TestCase
 
     public function testGetFieldValueWithAccessor(): void
     {
-        $description = new FieldDescription('name', ['accessor' => 'getFoo']);
+        $description = new FieldDescription('name', ['accessor' => 'foo']);
         $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getFoo'])->getMock();
         $mock->expects($this->once())->method('getFoo')->willReturn(42);
         $this->assertSame(42, $description->getFieldValue($mock, 'fake'));

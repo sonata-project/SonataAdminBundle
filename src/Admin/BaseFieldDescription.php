@@ -18,6 +18,7 @@ use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Symfony\Component\PropertyAccess\Exception\ExceptionInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
 /**
  * A FieldDescription hold the information about a field. A typical
@@ -36,7 +37,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  *   - name (o) : the name used (label in the form, title in the list)
  *   - link_parameters (o) : add link parameter to the related Admin class when
  *                           the Admin.generateUrl is called
- *   - accessor : the method or the method name to retrieve the related value
+ *   - accessor : the method or the property path to retrieve the related value
  *   - associated_tostring : (deprecated, use associated_property option)
  *                           the method to retrieve the "string" representation
  *                           of the collection element.
@@ -425,47 +426,30 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
                 .' Use the "accessor" code instead',
                 \E_USER_DEPRECATED
             );
+
+            $getter = $this->getOption('code');
+            if ($this->getOption('parameters')) {
+                @trigger_error(
+                    'The option "parameters" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+                    \E_USER_DEPRECATED
+                );
+
+                return $object->{$getter}(...$this->getOption('parameters'));
+            }
+
+            return $object->{$getter}();
         }
 
-        // prefer method name given in the code option
-        // NEXT_MAJOR: Remove this line and uncomment the following
-        $getter = $this->getOption('accessor', $this->getOption('code'));
-//        $getter = $this->getOption('accessor');
-        if ($getter) {
-            if (\is_callable($getter)) {
-                return $getter($object);
-            }
-
-            if (!method_exists($object, $getter)) {
-                @trigger_error(
-                    'Passing a non-existing method in the "code" option is deprecated'
-                    .' since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
-                    \E_USER_DEPRECATED
-                );
-
-            // NEXT_MAJOR: Remove the deprecation and uncomment the next line.
-//                throw new \LogicException('The method "%s"() does not exist.', $getter);
-            } elseif (!\is_callable([$object, $getter])) {
-                @trigger_error(
-                    'Passing a non-callable method in the "code" option is deprecated'
-                    .' since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
-                    \E_USER_DEPRECATED
-                );
-
-            // NEXT_MAJOR: Remove the deprecation and uncomment the next line.
-//                throw new \LogicException('The method "%s"() does not have public access.', $getter);
-            } else {
-                if ($this->getOption('parameters')) {
-                    @trigger_error(
-                        'The option "parameters" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                        \E_USER_DEPRECATED
-                    );
-
-                    return $object->{$getter}(...$this->getOption('parameters'));
-                }
-
-                return $object->{$getter}();
-            }
+        // prefer the method or the property path given in the code option
+        $accessor = $this->getOption('accessor', $fieldName);
+        if (\is_callable($accessor)) {
+            return $accessor($object);
+        } elseif (!\is_string($accessor) && !$accessor instanceof PropertyPathInterface) {
+            throw new \TypeError(sprintf(
+                'The option "accessor" must be a string, a callable or a %s, %s given.',
+                PropertyPathInterface::class,
+                \is_object($accessor) ? 'instance of '.\get_class($accessor) : \gettype($accessor)
+            ));
         }
 
         // NEXT_MAJOR: Remove the condition code and the else part
@@ -475,7 +459,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
                 ->getPropertyAccessor();
 
             try {
-                return $propertyAccesor->getValue($object, $fieldName);
+                return $propertyAccesor->getValue($object, $accessor);
             } catch (ExceptionInterface $exception) {
                 throw new NoValueException(
                     sprintf('Cannot access property "%s" in class "%s".', $this->getName(), \get_class($object)),
