@@ -137,7 +137,6 @@ class SimplePagerTest extends TestCase
         // phpcr odm returns ArrayCollection
         $this->proxyQuery->expects($this->once())
             ->method('execute')
-            ->with([], null)
             ->willReturn(new ArrayCollection(range(0, 12)));
 
         $this->pager->setQuery($this->proxyQuery);
