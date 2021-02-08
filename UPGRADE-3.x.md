@@ -4,6 +4,36 @@ UPGRADE 3.x
 UPGRADE FROM 3.xx to 3.xx
 =========================
 
+### Deprecated passing the field type and options to `DatagridMapper::add` as parameters 4 and 5.
+
+Before:
+```php
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+
+final class MyAdmin extends AbstractAdmin
+{
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper->add('foo', null, [], MyFormType::class, ['foo' => 'bar']);
+    }
+}
+```
+After
+```php
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+
+final class MyAdmin extends AbstractAdmin
+{
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        datagridMapper->add('foo', null, [
+            'field_type' => MyFormType::class,
+            'field_options' => ['foo' => 'bar'],
+        ]);
+    }
+}
+```
+
 ### Deprecated `Sonata\AdminBundle\Admin\AbstractAdmin::formOptions` property.
 
 This property has been replaced by the new method `Sonata\AdminBundle\Admin\AbstractAdmin::configureFormOptions()`

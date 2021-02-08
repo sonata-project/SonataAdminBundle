@@ -222,7 +222,7 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
             $datagridMapper
                 ->add('title')
                 ->add('author')
-                ->add('privateNotes', null, [], null, null, [
+                ->add('privateNotes', null, [], [
                     'role' => 'ROLE_ADMIN_MODERATOR'
                 ])
             ;

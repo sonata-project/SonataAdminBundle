@@ -47,10 +47,13 @@ class DatagridMapper extends BaseMapper
     }
 
     /**
+     * NEXT_MAJOR: Change signature for ($name, ?string $type = null, array $filterOptions = [], array $fieldDescriptionOptions = []).
+     *
      * @param FieldDescriptionInterface|string $name
      * @param string|null                      $type
-     * @param string|null                      $fieldType
-     * @param array|null                       $fieldOptions
+     * @param array|string|null                $fieldDescriptionOptionsOrDeprecatedFieldType
+     * @param array|null                       $deprecatedFieldOptions
+     * @param array|null                       $deprecatedFieldDescriptionOptions
      *
      * @throws \LogicException
      *
@@ -60,16 +63,40 @@ class DatagridMapper extends BaseMapper
         $name,
         $type = null,
         array $filterOptions = [],
-        $fieldType = null,
-        $fieldOptions = null,
-        array $fieldDescriptionOptions = []
+        $fieldDescriptionOptionsOrDeprecatedFieldType = [],
+        $deprecatedFieldOptions = null,
+        $deprecatedFieldDescriptionOptions = []
     ) {
-        if (\is_array($fieldOptions)) {
-            $filterOptions['field_options'] = $fieldOptions;
-        }
+        // NEXT_MAJOR remove the check and the else part.
+        if (\is_array($fieldDescriptionOptionsOrDeprecatedFieldType)) {
+            $fieldDescriptionOptions = $fieldDescriptionOptionsOrDeprecatedFieldType;
+        } else {
+            @trigger_error(
+                'Not passing an array as argument 4 is deprecated since sonata-project/admin-bundle 3.x.',
+                \E_USER_DEPRECATED
+            );
 
-        if ($fieldType) {
-            $filterOptions['field_type'] = $fieldType;
+            if (\is_array($deprecatedFieldOptions)) {
+                @trigger_error(
+                    'Passing the field_options as argument 5 is deprecated since sonata-project/admin-bundle 3.x.'.
+                    'Use the `field_options` option of the third argument instead.',
+                    \E_USER_DEPRECATED
+                );
+
+                $filterOptions['field_options'] = $deprecatedFieldOptions;
+            }
+
+            if ($fieldDescriptionOptionsOrDeprecatedFieldType) {
+                @trigger_error(
+                    'Passing the field_type as argument 4 is deprecated since sonata-project/admin-bundle 3.x.'.
+                    'Use the `field_type` option of the third argument instead.',
+                    \E_USER_DEPRECATED
+                );
+
+                $filterOptions['field_type'] = $fieldDescriptionOptionsOrDeprecatedFieldType;
+            }
+
+            $fieldDescriptionOptions = $deprecatedFieldDescriptionOptions;
         }
 
         if ($name instanceof FieldDescriptionInterface) {
