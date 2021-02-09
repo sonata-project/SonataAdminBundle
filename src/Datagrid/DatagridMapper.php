@@ -48,7 +48,6 @@ final class DatagridMapper extends BaseMapper
     /**
      * @param FieldDescriptionInterface|string $name
      * @param array<string, mixed>             $filterOptions
-     * @param array<string, mixed>|null        $fieldOptions
      * @param array<string, mixed>             $fieldDescriptionOptions
      *
      * @throws \LogicException
@@ -57,18 +56,8 @@ final class DatagridMapper extends BaseMapper
         $name,
         ?string $type = null,
         array $filterOptions = [],
-        ?string $fieldType = null,
-        ?array $fieldOptions = null,
         array $fieldDescriptionOptions = []
     ): self {
-        if (null !== $fieldOptions) {
-            $filterOptions['field_options'] = $fieldOptions;
-        }
-
-        if (null !== $fieldType) {
-            $filterOptions['field_type'] = $fieldType;
-        }
-
         if ($name instanceof FieldDescriptionInterface) {
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($filterOptions);

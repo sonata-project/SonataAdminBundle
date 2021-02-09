@@ -2338,7 +2338,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                     'model_manager' => $this->getModelManager(),
                 ],
                 'operator_type' => HiddenType::class,
-            ], null, null, [
+            ], [
                 'admin_code' => $this->getParent()->getCode(),
             ]);
         }
