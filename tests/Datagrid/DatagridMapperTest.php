@@ -158,7 +158,13 @@ class DatagridMapperTest extends TestCase
 
         $fieldDescription = $this->getFieldDescriptionMock('fooName', 'fooLabel');
 
-        $this->datagridMapper->add($fieldDescription, 'foo_type', ['field_name' => 'fooFilterName', 'foo_filter_option' => 'foo_filter_option_value', 'foo_default_option' => 'bar_custom'], 'foo_field_type', ['foo_field_option' => 'baz']);
+        $this->datagridMapper->add($fieldDescription, 'foo_type', [
+            'field_name' => 'fooFilterName',
+            'field_type' => 'foo_field_type',
+            'field_options' => ['foo_field_option' => 'baz'],
+            'foo_filter_option' => 'foo_filter_option_value',
+            'foo_default_option' => 'bar_custom',
+        ]);
 
         $filter = $this->datagridMapper->get('fooName');
         $this->assertInstanceOf(FilterInterface::class, $filter);
@@ -175,9 +181,9 @@ class DatagridMapperTest extends TestCase
             'link_parameters' => [],
             'label' => 'fooLabel',
             'field_name' => 'fooFilterName',
-            'foo_filter_option' => 'foo_filter_option_value',
-            'field_options' => ['foo_field_option' => 'baz'],
             'field_type' => 'foo_field_type',
+            'field_options' => ['foo_field_option' => 'baz'],
+            'foo_filter_option' => 'foo_filter_option_value',
         ], $filter->getOptions());
     }
 
@@ -299,14 +305,14 @@ class DatagridMapperTest extends TestCase
 
         $this->assertTrue($this->datagridMapper->has('bar'));
 
-        $this->datagridMapper->add('quux', 'bar', [], null, null, ['role' => 'ROLE_QUX']);
+        $this->datagridMapper->add('quux', 'bar', [], ['role' => 'ROLE_QUX']);
 
         $this->assertTrue($this->datagridMapper->has('bar'));
         $this->assertFalse($this->datagridMapper->has('quux'));
 
         $this->datagridMapper
-            ->add('foobar', 'bar', [], null, null, ['role' => self::DEFAULT_GRANTED_ROLE])
-            ->add('foo', 'bar', [], null, null, ['role' => 'ROLE_QUX'])
+            ->add('foobar', 'bar', [], ['role' => self::DEFAULT_GRANTED_ROLE])
+            ->add('foo', 'bar', [], ['role' => 'ROLE_QUX'])
             ->add('baz', 'bar');
 
         $this->assertTrue($this->datagridMapper->has('foobar'));
