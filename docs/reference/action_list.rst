@@ -99,6 +99,16 @@ Here is an example::
             // specific properties of a relation to the entity
             ->add('image.name')
 
+            // you may also use a custom accessor
+            ->add('description1', null, [
+                'accessor' => 'description'
+            ])
+            ->add('description2', null, [
+                'accessor' => function ($subject) {
+                    return $this->customService->formatDescription($subject);
+                }
+            ])
+
             // You may also specify the actions you want to be displayed in the list
             ->add('_action', null, [
                 'actions' => [

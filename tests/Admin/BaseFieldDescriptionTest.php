@@ -186,6 +186,31 @@ class BaseFieldDescriptionTest extends TestCase
         $this->assertNull($description->getFieldValue(null, 'fake'));
     }
 
+    public function testGetFieldValueWithAccessor(): void
+    {
+        $description = new FieldDescription('name', ['accessor' => 'foo']);
+        $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getFoo'])->getMock();
+        $mock->expects($this->once())->method('getFoo')->willReturn(42);
+        $this->assertSame(42, $description->getFieldValue($mock, 'fake'));
+    }
+
+    public function testGetFieldValueWithCallableAccessor(): void
+    {
+        $description = new FieldDescription('name', [
+            'accessor' => static function (object $object): int {
+                return $object->getFoo();
+            },
+        ]);
+        $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getFoo'])->getMock();
+        $mock->expects($this->once())->method('getFoo')->willReturn(42);
+        $this->assertSame(42, $description->getFieldValue($mock, 'fake'));
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testGetFieldValueWithCode(): void
     {
         $description = new FieldDescription('name', ['code' => 'getFoo']);
