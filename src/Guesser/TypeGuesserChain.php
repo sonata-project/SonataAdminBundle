@@ -40,7 +40,7 @@ class TypeGuesserChain implements TypeGuesserInterface
             }
 
             if ($guesser instanceof self) {
-                $this->guessers = array_merge($this->guessers, $guesser->guessers);
+                $this->guessers = array_merge($this->guessers, $guesser->getGuessers());
             } else {
                 $this->guessers[] = $guesser;
             }
@@ -60,5 +60,13 @@ class TypeGuesserChain implements TypeGuesserInterface
         }
 
         return TypeGuess::getBestGuess($guesses);
+    }
+
+    /**
+     * @phpstan-return array<TypeGuesserInterface>
+     */
+    protected function getGuessers(): array
+    {
+        return $this->guessers;
     }
 }
