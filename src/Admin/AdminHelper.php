@@ -23,7 +23,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
+ * @internal
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
