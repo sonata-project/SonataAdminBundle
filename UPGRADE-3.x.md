@@ -26,7 +26,7 @@ final class MyAdmin extends AbstractAdmin
 {
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        datagridMapper->add('foo', null, [
+        $datagridMapper->add('foo', null, [
             'field_type' => MyFormType::class,
             'field_options' => ['foo' => 'bar'],
         ]);
