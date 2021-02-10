@@ -1329,6 +1329,7 @@ class AdminTest extends TestCase
         $post = new Post();
 
         $postAdmin = $this->getMockBuilder(PostAdmin::class)->disableOriginalConstructor()->getMock();
+        $postAdmin->method('getCode')->willReturn('post');
         $postAdmin->method('getObject')->willReturn($post);
         $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
@@ -1343,6 +1344,7 @@ class AdminTest extends TestCase
         $tagAdmin = new TagAdmin('admin.tag', Tag::class, 'MyBundle\MyController');
         $tagAdmin->setModelManager($modelManager);
         $tagAdmin->setParent($postAdmin);
+        $tagAdmin->addParentAssociationMapping('post', 'post');
 
         $request = $this->createStub(Request::class);
         $tagAdmin->setRequest($request);
@@ -1357,6 +1359,7 @@ class AdminTest extends TestCase
         $post = new Post();
 
         $postAdmin = $this->getMockBuilder(PostAdmin::class)->disableOriginalConstructor()->getMock();
+        $postAdmin->method('getCode')->willReturn('post');
         $postAdmin->method('getObject')->willReturn($post);
         $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
@@ -1371,6 +1374,7 @@ class AdminTest extends TestCase
         $postCategoryAdmin = new PostCategoryAdmin('admin.post_category', PostCategoryAdmin::class, 'MyBundle\MyController');
         $postCategoryAdmin->setModelManager($modelManager);
         $postCategoryAdmin->setParent($postAdmin);
+        $postCategoryAdmin->addParentAssociationMapping('post', 'posts');
 
         $request = $this->createStub(Request::class);
         $postCategoryAdmin->setRequest($request);

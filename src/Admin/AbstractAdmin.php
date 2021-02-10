@@ -526,7 +526,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      *
      * @throws \InvalidArgumentException
      */
-    public function getParentAssociationMapping(): ?string
+    final public function getParentAssociationMapping(): ?string
     {
         if ($this->isChild()) {
             $parent = $this->getParent()->getCode();
