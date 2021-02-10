@@ -4,6 +4,10 @@ UPGRADE 3.x
 UPGRADE FROM 3.xx to 3.xx
 =========================
 
+### Deprecated overriding `AbstractAdmin::getNewInstance()`.
+
+Use `AbstractAdmin::alterNewInstance()` instead.
+
 ### Deprecated passing the field type and options to `DatagridMapper::add` as parameters 4 and 5.
 
 Before:
