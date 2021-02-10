@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Action\AppendFormFieldElementAction;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminHelper;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -47,7 +48,7 @@ final class AppendFormFieldElementActionTest extends TestCase
     private $action;
 
     /**
-     * @var AbstractAdmin
+     * @var AdminInterface
      */
     private $admin;
 
@@ -59,7 +60,7 @@ final class AppendFormFieldElementActionTest extends TestCase
     protected function setUp(): void
     {
         $this->twig = $this->createStub(Environment::class);
-        $this->admin = $this->createMock(AbstractAdmin::class);
+        $this->admin = $this->createMock(AdminInterface::class);
         $this->admin->expects($this->once())->method('setRequest');
         $container = new Container();
         $container->set('sonata.post.admin', $this->admin);

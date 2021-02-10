@@ -654,7 +654,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->cachedBaseRouteName;
     }
 
-    public function getClass(): string
+    final public function getClass(): string
     {
         if ($this->hasActiveSubClass()) {
             if ($this->hasParentFieldDescription()) {

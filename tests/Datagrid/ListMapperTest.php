@@ -50,15 +50,15 @@ class ListMapperTest extends TestCase
     {
         $listBuilder = $this->createMock(ListBuilderInterface::class);
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
-        $this->admin = $this->createMock(AbstractAdmin::class);
+        $this->admin = $this->createMock(AdminInterface::class);
 
         $listBuilder
             ->method('addField')
             ->willReturnCallback(static function (
                 FieldDescriptionCollection $list,
                 ?string $type,
-                BaseFieldDescription $fieldDescription,
-                AbstractAdmin $admin
+                FieldDescriptionInterface $fieldDescription,
+                AdminInterface $admin
             ): void {
                 $fieldDescription->setType($type);
                 $list->add($fieldDescription);
@@ -75,11 +75,11 @@ class ListMapperTest extends TestCase
                 return $fieldDescription;
             });
 
-        $this->admin->setModelManager($modelManager);
+        $this->admin->method('getModelManager')->willReturn($modelManager);
 
         $labelTranslatorStrategy = new NoopLabelTranslatorStrategy();
 
-        $this->admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
+        $this->admin->method('getLabelTranslatorStrategy')->willReturn($labelTranslatorStrategy);
 
         $this->admin
             ->method('isGranted')
@@ -138,32 +138,14 @@ class ListMapperTest extends TestCase
         $this->assertFalse($this->listMapper->get('bazName')->getOption('identifier'));
     }
 
-    /**
-     * @dataProvider getWrongIdentifierOptions
-     */
-    public function testAddOptionIdentifierWithWrongValue(bool $expected, $value): void
+    public function testAddOptionIdentifierWithWrongValue(): void
     {
         $this->assertFalse($this->listMapper->has('fooName'));
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/^Value for "identifier" option must be boolean, .+ given.$/');
 
-        $this->listMapper->add('fooName', null, ['identifier' => $value]);
-    }
-
-    public function getWrongIdentifierOptions(): iterable
-    {
-        return [
-            [true, 1],
-            [true, 'string'],
-            [true, new \stdClass()],
-            [true, [null]],
-            [false, 0],
-            [false, null],
-            [false, ''],
-            [false, '0'],
-            [false, []],
-        ];
+        $this->listMapper->add('fooName', null, ['identifier' => 1]);
     }
 
     public function testAdd(): void

@@ -69,7 +69,7 @@ class AdminTypeTest extends TypeTestCase
 
         $foo = new Foo();
 
-        $admin = $this->createMock(AbstractAdmin::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->exactly(2))->method('hasParentFieldDescription')->willReturn(true);
         $admin->expects($this->exactly(2))->method('getParentFieldDescription')->willReturn($parentField);
         $admin->expects($this->once())->method('hasAccess')->with('delete')->willReturn(false);
@@ -120,7 +120,7 @@ class AdminTypeTest extends TypeTestCase
 
         $modelManager = $this->createStub(ModelManagerInterface::class);
 
-        $admin = $this->createMock(AbstractAdmin::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->exactly(2))->method('hasParentFieldDescription')->willReturn(true);
         $admin->expects($this->exactly(2))->method('getParentFieldDescription')->willReturn($parentField);
         $admin->expects($this->once())->method('setSubject')->with($bar);
@@ -162,7 +162,7 @@ class AdminTypeTest extends TypeTestCase
 
         $modelManager = $this->createStub(ModelManagerInterface::class);
 
-        $admin = $this->createMock(AbstractAdmin::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->exactly(2))->method('hasParentFieldDescription')->willReturn(true);
         $admin->expects($this->exactly(2))->method('getParentFieldDescription')->willReturn($parentField);
         $admin->expects($this->once())->method('defineFormBuilder');
@@ -211,7 +211,7 @@ class AdminTypeTest extends TypeTestCase
             }
         };
 
-        $admin = $this->createMock(AbstractAdmin::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->exactly(2))->method('hasParentFieldDescription')->willReturn(true);
         $admin->expects($this->exactly(2))->method('getParentFieldDescription')->willReturn($parentField);
         $admin->expects($this->once())->method('defineFormBuilder');
@@ -262,7 +262,7 @@ class AdminTypeTest extends TypeTestCase
 
         $newInstance = new \stdClass();
 
-        $admin = $this->createMock(AbstractAdmin::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->exactly(2))->method('hasParentFieldDescription')->willReturn(true);
         $admin->expects($this->exactly(2))->method('getParentFieldDescription')->willReturn($parentField);
         $admin->expects($this->once())->method('defineFormBuilder');
