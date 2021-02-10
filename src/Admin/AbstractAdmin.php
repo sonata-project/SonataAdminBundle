@@ -379,7 +379,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->configure();
     }
 
-    public function update(object $object): object
+    final public function update(object $object): object
     {
         $this->preUpdate($object);
         foreach ($this->getExtensions() as $extension) {
@@ -396,7 +396,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $object;
     }
 
-    public function create(object $object): object
+    final public function create(object $object): object
     {
         $this->prePersist($object);
         foreach ($this->getExtensions() as $extension) {
@@ -415,7 +415,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $object;
     }
 
-    public function delete(object $object): void
+    final public function delete(object $object): void
     {
         $this->preRemove($object);
         foreach ($this->getExtensions() as $extension) {

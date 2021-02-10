@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\Action;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\SetObjectFieldValueAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Form\DataTransformerResolver;
@@ -52,7 +53,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     private $action;
 
     /**
-     * @var AbstractAdmin
+     * @var AdminInterface
      */
     private $admin;
 
@@ -88,7 +89,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             'field_template' => 'renderedTemplate',
         ]));
         $this->adminCode = 'sonata.post.admin';
-        $this->admin = $this->createMock(AbstractAdmin::class);
+        $this->admin = $this->createMock(AdminInterface::class);
         $container = new Container();
         $container->set($this->adminCode, $this->admin);
         $this->pool = new Pool($container, [$this->adminCode]);
@@ -104,7 +105,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             $this->resolver,
             $this->propertyAccessor
         );
-        $this->admin->setModelManager($this->modelManager);
+        $this->admin->method('getModelManager')->willReturn($this->modelManager);
     }
 
     public function testSetObjectFieldValueAction(): void
