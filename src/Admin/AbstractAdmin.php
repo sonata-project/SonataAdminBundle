@@ -679,22 +679,22 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->class;
     }
 
-    public function getSubClasses(): array
+    final public function getSubClasses(): array
     {
         return $this->subClasses;
     }
 
-    public function setSubClasses(array $subClasses): void
+    final public function setSubClasses(array $subClasses): void
     {
         $this->subClasses = $subClasses;
     }
 
-    public function hasSubClass(string $name): bool
+    final public function hasSubClass(string $name): bool
     {
         return isset($this->subClasses[$name]);
     }
 
-    public function hasActiveSubClass(): bool
+    final public function hasActiveSubClass(): bool
     {
         if (\count($this->subClasses) > 0 && $this->hasRequest()) {
             return null !== $this->getRequest()->query->get('subclass');
@@ -703,7 +703,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return false;
     }
 
-    public function getActiveSubClass(): string
+    final public function getActiveSubClass(): string
     {
         if (!$this->hasActiveSubClass()) {
             throw new \LogicException(sprintf(
@@ -715,7 +715,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getSubClass($this->getActiveSubclassCode());
     }
 
-    public function getActiveSubclassCode(): string
+    final public function getActiveSubclassCode(): string
     {
         if (!$this->hasActiveSubClass()) {
             throw new \LogicException(sprintf(
