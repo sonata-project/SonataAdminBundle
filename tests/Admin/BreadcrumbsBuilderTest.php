@@ -17,6 +17,7 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuFactory;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
@@ -35,16 +36,16 @@ class BreadcrumbsBuilderTest extends TestCase
     {
         $action = 'my_action';
         $breadcrumbsBuilder = new BreadcrumbsBuilder(['child_admin_route' => 'show']);
-        $admin = $this->createStub(AbstractAdmin::class);
+        $admin = $this->createStub(AdminInterface::class);
         $admin->method('isChild')->willReturn(false);
 
-        $admin->setMenuFactory(new MenuFactory());
+        $admin->method('getMenuFactory')->willReturn(new MenuFactory());
         $labelTranslatorStrategy = $this->createStub(LabelTranslatorStrategyInterface::class);
 
         $routeGenerator = $this->createStub(RouteGeneratorInterface::class);
         $routeGenerator->method('generate')->with('sonata_admin_dashboard')->willReturn('/dashboard');
 
-        $admin->setRouteGenerator($routeGenerator);
+        $admin->method('getRouteGenerator')->willReturn($routeGenerator);
         $labelTranslatorStrategy->method('getLabel')->willReturnMap([
             ['my_class_name_list', 'breadcrumb', 'link', 'My class'],
             ['my_child_class_name_list', 'breadcrumb', 'link', 'My child class'],
@@ -53,11 +54,11 @@ class BreadcrumbsBuilderTest extends TestCase
         $subject = new \stdClass();
         $childSubject = new \stdClass();
 
-        $childAdmin = $this->createMock(AbstractAdmin::class);
+        $childAdmin = $this->createMock(AdminInterface::class);
         $childAdmin->method('isChild')->willReturn(true);
         $childAdmin->method('getParent')->willReturn($admin);
         $childAdmin->method('getTranslationDomain')->willReturn('ChildBundle');
-        $childAdmin->setLabelTranslatorStrategy($labelTranslatorStrategy);
+        $childAdmin->method('getLabelTranslatorStrategy')->willReturn($labelTranslatorStrategy);
         $childAdmin->method('getClassnameLabel')->willReturn('my_child_class_name');
         $childAdmin->method('hasRoute')->with('list')->willReturn(true);
         $childAdmin->method('hasAccess')->with('list')->willReturn(true);
@@ -93,7 +94,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $admin->method('getSubject')->willReturn($subject);
         $admin->method('toString')->with($subject)->willReturn('My subject');
         $admin->method('getTranslationDomain')->willReturn('FooBundle');
-        $admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
+        $admin->method('getLabelTranslatorStrategy')->willReturn($labelTranslatorStrategy);
         $admin->method('getClassnameLabel')->willReturn('my_class_name');
 
         $breadcrumbs = $breadcrumbsBuilder->getBreadcrumbs($childAdmin, $action);
@@ -155,13 +156,13 @@ class BreadcrumbsBuilderTest extends TestCase
         $menu = $this->createMock(ItemInterface::class);
         $menuFactory = $this->createStub(MenuFactory::class);
         $menuFactory->method('createItem')->with('root')->willReturn($menu);
-        $admin = $this->createStub(AbstractAdmin::class);
-        $admin->setMenuFactory($menuFactory);
+        $admin = $this->createStub(AdminInterface::class);
+        $admin->method('getMenuFactory')->willReturn($menuFactory);
         $labelTranslatorStrategy = $this->createStub(LabelTranslatorStrategyInterface::class);
 
         $routeGenerator = $this->createStub(RouteGeneratorInterface::class);
         $routeGenerator->method('generate')->with('sonata_admin_dashboard')->willReturn('/dashboard');
-        $admin->setRouteGenerator($routeGenerator);
+        $admin->method('getRouteGenerator')->willReturn($routeGenerator);
 
         $menu->method('addChild')->willReturnMap([
             ['link_breadcrumb_dashboard', [
@@ -200,9 +201,9 @@ class BreadcrumbsBuilderTest extends TestCase
             ['my_class_name_create', 'breadcrumb', 'link', 'create my object'],
         ]);
 
-        $childAdmin = $this->createStub(AbstractAdmin::class);
+        $childAdmin = $this->createStub(AdminInterface::class);
         $childAdmin->method('getTranslationDomain')->willReturn('ChildBundle');
-        $childAdmin->setLabelTranslatorStrategy($labelTranslatorStrategy);
+        $childAdmin->method('getLabelTranslatorStrategy')->willReturn($labelTranslatorStrategy);
         $childAdmin->method('getClassnameLabel')->willReturn('my_child_class_name');
         $childAdmin->method('hasRoute')->with('list')->willReturn(false);
         $childAdmin->method('getCurrentChildAdmin')->willReturn(null);
@@ -232,7 +233,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $admin->method('getSubject')->willReturn($subject);
         $admin->method('toString')->with($subject)->willReturn('My subject');
         $admin->method('getTranslationDomain')->willReturn('FooBundle');
-        $admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
+        $admin->method('getLabelTranslatorStrategy')->willReturn($labelTranslatorStrategy);
         $admin->method('getClassnameLabel')->willReturn('my_class_name');
 
         $breadcrumbsBuilder->buildBreadcrumbs($admin, $action);

@@ -1764,7 +1764,10 @@ class AdminTest extends TestCase
         $admin->method('isAclEnabled')->willReturn(true);
         $admin->method('getExtensions')->willReturn([]);
 
-        $admin->expects($this->exactly(9))->method('hasRoute')->willReturn(false);
+        $routerGenerator = $this->createMock(RouteGeneratorInterface::class);
+        $routerGenerator->expects($this->exactly(9))->method('hasAdminRoute')->willReturn(false);
+        $admin->setRouteGenerator($routerGenerator);
+
         $admin->expects($this->never())->method('hasAccess');
         $admin->expects($this->never())->method('getShow');
 

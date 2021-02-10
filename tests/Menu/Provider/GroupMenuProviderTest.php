@@ -22,6 +22,7 @@ use Knp\Menu\Provider\MenuProviderInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Menu\Provider\GroupMenuProvider;
 use Symfony\Component\DependencyInjection\Container;
@@ -623,9 +624,9 @@ class GroupMenuProviderTest extends TestCase
         ];
     }
 
-    private function getAdminMock(bool $hasRoute = true, bool $isGranted = true): AbstractAdmin
+    private function getAdminMock(bool $hasRoute = true, bool $isGranted = true): AdminInterface
     {
-        $admin = $this->createMock(AbstractAdmin::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())
             ->method('hasRoute')
             ->with($this->equalTo('list'))
@@ -636,7 +637,7 @@ class GroupMenuProviderTest extends TestCase
             ->with($this->equalTo('list'))
             ->willReturn($isGranted);
 
-        $admin->setLabel('foo_admin_label');
+        $admin->method('getLabel')->willReturn('foo_admin_label');
 
         $admin
             ->method('generateMenuUrl')
