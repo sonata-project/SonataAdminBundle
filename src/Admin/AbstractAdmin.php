@@ -767,7 +767,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $actions;
     }
 
-    public function getRoutes(): RouteCollectionInterface
+    final public function getRoutes(): RouteCollectionInterface
     {
         $this->buildRoutes();
 
@@ -790,12 +790,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $parameter;
     }
 
-    public function hasRoute(string $name): bool
+    final public function hasRoute(string $name): bool
     {
         return $this->getRouteGenerator()->hasAdminRoute($this, $name);
     }
 
-    public function isCurrentRoute(string $name, ?string $adminCode = null): bool
+    final public function isCurrentRoute(string $name, ?string $adminCode = null): bool
     {
         if (!$this->hasRequest()) {
             return false;
@@ -819,19 +819,19 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $admin->getRoutes()->getRouteName($name) === $route;
     }
 
-    public function generateObjectUrl(string $name, object $object, array $parameters = [], int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH): string
+    final public function generateObjectUrl(string $name, object $object, array $parameters = [], int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH): string
     {
         $parameters['id'] = $this->getUrlSafeIdentifier($object);
 
         return $this->generateUrl($name, $parameters, $referenceType);
     }
 
-    public function generateUrl(string $name, array $parameters = [], int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH): string
+    final public function generateUrl(string $name, array $parameters = [], int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH): string
     {
         return $this->getRouteGenerator()->generateUrl($this, $name, $parameters, $referenceType);
     }
 
-    public function generateMenuUrl(string $name, array $parameters = [], int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH): array
+    final public function generateMenuUrl(string $name, array $parameters = [], int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH): array
     {
         return $this->getRouteGenerator()->generateMenuUrl($this, $name, $parameters, $referenceType);
     }

@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\Menu\Matcher\Voter;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Menu\Matcher\Voter\AdminVoter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -78,9 +79,9 @@ class AdminVoterTest extends AbstractVoterTest
     /**
      * {@inheritdoc}
      */
-    private function getAdmin(string $code, bool $list = false, bool $granted = false): AbstractAdmin
+    private function getAdmin(string $code, bool $list = false, bool $granted = false): AdminInterface
     {
-        $admin = $this->createMock(AbstractAdmin::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin
             ->method('hasRoute')
             ->with('list')
@@ -111,8 +112,8 @@ class AdminVoterTest extends AbstractVoterTest
         string $childCode,
         bool $list = false,
         bool $granted = false
-    ): AbstractAdmin {
-        $parentAdmin = $this->createMock(AbstractAdmin::class);
+    ): AdminInterface {
+        $parentAdmin = $this->createMock(AdminInterface::class);
         $parentAdmin
             ->method('hasRoute')
             ->with('list')
@@ -128,7 +129,7 @@ class AdminVoterTest extends AbstractVoterTest
             ->willReturn($parentCode)
         ;
 
-        $childAdmin = $this->createMock(AbstractAdmin::class);
+        $childAdmin = $this->createMock(AdminInterface::class);
         $childAdmin
             ->method('getBaseCodeRoute')
             ->willReturn(sprintf('%s|%s', $parentCode, $childCode))
