@@ -37,7 +37,7 @@ class AdminHelper
     /**
      * @var PropertyAccessorInterface
      */
-    protected $propertyAccessor;
+    private $propertyAccessor;
 
     public function __construct(PropertyAccessorInterface $propertyAccessor)
     {
@@ -197,7 +197,7 @@ class AdminHelper
      *
      * @param string[] $elements
      */
-    protected function getModelClassName(AdminInterface $admin, array $elements): string
+    private function getModelClassName(AdminInterface $admin, array $elements): string
     {
         $element = array_shift($elements);
         $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();
