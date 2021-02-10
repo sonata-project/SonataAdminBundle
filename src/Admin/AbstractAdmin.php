@@ -841,12 +841,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->templateRegistry = $templateRegistry;
     }
 
-    public function setTemplates(array $templates): void
+    final public function setTemplates(array $templates): void
     {
         $this->getTemplateRegistry()->setTemplates($templates);
     }
 
-    public function setTemplate(string $name, string $template): void
+    final public function setTemplate(string $name, string $template): void
     {
         $this->getTemplateRegistry()->setTemplate($name, $template);
     }
