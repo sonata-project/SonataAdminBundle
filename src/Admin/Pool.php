@@ -269,28 +269,26 @@ class Pool
      */
     public function getDashboardGroups()
     {
-        $groups = $this->adminGroups;
+        $groups = [];
 
         foreach ($this->adminGroups as $name => $adminGroup) {
             if (isset($adminGroup['items'])) {
-                foreach ($adminGroup['items'] as $key => $item) {
-                    // Only Admin Group should be returned
-                    if (isset($item['admin']) && !empty($item['admin'])) {
-                        $admin = $this->getInstance($item['admin']);
-
-                        if ($admin->showIn(AbstractAdmin::CONTEXT_DASHBOARD)) {
-                            $groups[$name]['items'][$key] = $admin;
-                        } else {
-                            unset($groups[$name]['items'][$key]);
-                        }
-                    } else {
-                        unset($groups[$name]['items'][$key]);
+                $items = array_filter(array_map(function (array $item): ?AdminInterface {
+                    if (!isset($item['admin']) || empty($item['admin'])) {
+                        return null;
                     }
-                }
-            }
 
-            if (empty($groups[$name]['items'])) {
-                unset($groups[$name]);
+                    $admin = $this->getInstance($item['admin']);
+                    if (!$admin->showIn(AbstractAdmin::CONTEXT_DASHBOARD)) {
+                        return null;
+                    }
+
+                    return $admin;
+                }, $adminGroup['items']));
+
+                if ([] !== $items) {
+                    $groups[$name] = ['items' => $items] + $adminGroup;
+                }
             }
         }
 
@@ -343,9 +341,8 @@ class Pool
      *
      * @return AdminInterface|null
      *
-     * @phpstan-template T of object
-     * @phpstan-param class-string<T> $class
-     * @phpstan-return AdminInterface<T>|null
+     * @phpstan-param class-string $class
+     * @phpstan-return AdminInterface|null
      */
     public function getAdminByClass($class)
     {

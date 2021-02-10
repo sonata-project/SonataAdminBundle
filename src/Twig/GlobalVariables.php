@@ -61,6 +61,7 @@ class GlobalVariables
                 Pool::class
             ), \E_USER_DEPRECATED);
 
+            /** @psalm-suppress UndefinedMethod */
             $adminPool = $adminPool->get('sonata.admin.pool');
         }
 
