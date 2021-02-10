@@ -467,7 +467,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         );
     }
 
-    public function getFilterParameters(): array
+    final public function getFilterParameters(): array
     {
         $parameters = $this->getDefaultFilterParameters();
 
