@@ -25,7 +25,7 @@ class FilterTest extends TestCase
         $filter = new FooFilter();
 
         $this->assertSame(TextType::class, $filter->getFieldType());
-        $this->assertSame(['required' => false], $filter->getFieldOptions());
+        $this->assertSame([], $filter->getFieldOptions());
         $this->assertNull($filter->getLabel());
 
         $options = [
@@ -70,7 +70,7 @@ class FilterTest extends TestCase
     public function testSetFieldOption(): void
     {
         $filter = new FooFilter();
-        $this->assertSame(['required' => false], $filter->getFieldOptions());
+        $this->assertSame([], $filter->getFieldOptions());
 
         $filter->setFieldOption('foo', 'bar');
         $filter->setFieldOption('baz', 12345);

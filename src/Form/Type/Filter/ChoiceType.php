@@ -35,8 +35,8 @@ final class ChoiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('type', $options['operator_type'], array_merge(['required' => false], $options['operator_options']))
-            ->add('value', $options['field_type'], array_merge(['required' => false], $options['field_options']))
+            ->add('type', $options['operator_type'], $options['operator_options'] + ['required' => false])
+            ->add('value', $options['field_type'], $options['field_options'] + ['required' => false])
         ;
     }
 

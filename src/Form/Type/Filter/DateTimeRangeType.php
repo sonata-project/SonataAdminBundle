@@ -36,7 +36,7 @@ final class DateTimeRangeType extends AbstractType
     {
         $builder
             ->add('type', DateRangeOperatorType::class, ['required' => false])
-            ->add('value', $options['field_type'], $options['field_options'])
+            ->add('value', $options['field_type'], $options['field_options'] + ['required' => false])
         ;
     }
 
