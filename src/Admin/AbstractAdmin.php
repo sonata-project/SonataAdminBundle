@@ -550,7 +550,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->parentAssociationMapping[$code] = $value;
     }
 
-    public function getBaseRoutePattern(): string
+    final public function getBaseRoutePattern(): string
     {
         if (null !== $this->cachedBaseRoutePattern) {
             return $this->cachedBaseRoutePattern;
@@ -604,7 +604,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      *
      * @return string the baseRouteName used to generate the routing information
      */
-    public function getBaseRouteName(): string
+    final public function getBaseRouteName(): string
     {
         if (null !== $this->cachedBaseRouteName) {
             return $this->cachedBaseRouteName;
