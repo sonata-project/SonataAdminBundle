@@ -736,7 +736,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $subClass;
     }
 
-    public function getBatchActions(): array
+    final public function getBatchActions(): array
     {
         $actions = [];
 
@@ -754,7 +754,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             $actions = $extension->configureBatchActions($this, $actions);
         }
 
-        foreach ($actions  as $name => &$action) {
+        foreach ($actions as $name => &$action) {
             if (!\array_key_exists('label', $action)) {
                 $action['label'] = $this->getTranslationLabel($name, 'batch', 'label');
             }
