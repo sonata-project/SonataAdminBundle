@@ -22,7 +22,7 @@ class Baz
         $this->bar = $bar;
     }
 
-    public function getBar(): Bar
+    public function getBar(): ?Bar
     {
         return $this->bar;
     }
