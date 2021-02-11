@@ -58,18 +58,6 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function getBaseControllerName(): string;
 
-    /**
-     * Sets a list of templates.
-     *
-     * @param array<string, string> $templates
-     */
-    public function setTemplates(array $templates): void;
-
-    /**
-     * Sets a specific template.
-     */
-    public function setTemplate(string $name, string $template): void;
-
     public function createQuery(): ProxyQueryInterface;
 
     public function getFormBuilder(): FormBuilderInterface;
