@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Tests\Action;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\SetObjectFieldValueAction;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;

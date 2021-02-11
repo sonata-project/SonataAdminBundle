@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
