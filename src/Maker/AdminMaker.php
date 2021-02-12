@@ -100,10 +100,14 @@ final class AdminMaker extends AbstractMaker
         return 'make:sonata:admin';
     }
 
+    public static function getCommandDescription(): string
+    {
+        return 'Generates an admin class based on the given model class';
+    }
+
     public function configureCommand(Command $command, InputConfiguration $inputConfig): void
     {
         $command
-            ->setDescription('Generates an admin class based on the given model class')
             ->addArgument('model', InputArgument::REQUIRED, 'The fully qualified model class')
             ->addOption('admin', 'a', InputOption::VALUE_OPTIONAL, 'The admin class basename')
             ->addOption('controller', 'c', InputOption::VALUE_OPTIONAL, 'The controller class basename')

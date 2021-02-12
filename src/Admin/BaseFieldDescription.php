@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Admin;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Symfony\Component\PropertyAccess\Exception\ExceptionInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
 /**
  * A FieldDescription hold the information about a field. A typical
@@ -34,7 +35,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  *   - name (o) : the name used (label in the form, title in the list)
  *   - link_parameters (o) : add link parameter to the related Admin class when
  *                           the Admin.generateUrl is called
- *   - code : the method name to retrieve the related value
+ *   - accessor (o) : the method or the property path to retrieve the related value
  *   - associated_property : property path to retrieve the "string" representation
  *                           of the collection element.
  *
@@ -401,17 +402,15 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
 
         // prefer method name given in the code option
-        if ($this->getOption('code')) {
-            $getter = $this->getOption('code');
-
-            if (!method_exists($object, $getter)) {
-                throw new \LogicException(sprintf('The method "%s"() does not exist.', $getter));
-            }
-            if (!\is_callable([$object, $getter])) {
-                throw new \LogicException(sprintf('The method "%s"() does not have public access.', $getter));
-            }
-
-            return $object->{$getter}();
+        $accessor = $this->getOption('accessor', $fieldName);
+        if (\is_callable($accessor)) {
+            return $accessor($object);
+        } elseif (!\is_string($accessor) && !$accessor instanceof PropertyPathInterface) {
+            throw new \TypeError(sprintf(
+                'The option "accessor" must be a string, a callable or a %s, %s given.',
+                PropertyPathInterface::class,
+                \is_object($accessor) ? 'instance of '.\get_class($accessor) : \gettype($accessor)
+            ));
         }
 
         $propertyAccesor = PropertyAccess::createPropertyAccessorBuilder()
@@ -419,7 +418,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             ->getPropertyAccessor();
 
         try {
-            return $propertyAccesor->getValue($object, $fieldName);
+            return $propertyAccesor->getValue($object, $accessor);
         } catch (ExceptionInterface $exception) {
             throw new NoValueException(
                 sprintf('Cannot access property "%s" in class "%s".', $this->getName(), \get_class($object)),
