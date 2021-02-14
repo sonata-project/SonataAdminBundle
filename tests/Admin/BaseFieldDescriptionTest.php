@@ -224,6 +224,19 @@ class BaseFieldDescriptionTest extends TestCase
      *
      * @group legacy
      */
+    public function testGetFieldValueWithWrongCode(): void
+    {
+        $description = new FieldDescription('name', ['code' => 'getFoo']);
+        $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getFake'])->getMock();
+        $mock->expects($this->once())->method('getFake')->willReturn(42);
+        $this->assertSame(42, $description->getFieldValue($mock, 'fake'));
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testGetFieldValueWithParametersForGetter(): void
     {
         $arg1 = 38;

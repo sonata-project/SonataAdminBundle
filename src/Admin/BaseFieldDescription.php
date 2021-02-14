@@ -428,16 +428,19 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             );
 
             $getter = $this->getOption('code');
-            if ($this->getOption('parameters')) {
+            if (null !== $this->getOption('parameters')) {
                 @trigger_error(
                     'The option "parameters" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
                     \E_USER_DEPRECATED
                 );
-
-                return $object->{$getter}(...$this->getOption('parameters'));
             }
 
-            return $object->{$getter}();
+            $parameters = $this->getOption('parameters', []);
+            if (method_exists($object, $getter) && \is_callable([$object, $getter])) {
+                $this->cacheFieldGetter($object, $fieldName, 'getter', $getter);
+
+                return $object->{$getter}(...$parameters);
+            }
         }
 
         // prefer the method or the property path given in the code option
@@ -453,7 +456,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
 
         // NEXT_MAJOR: Remove the condition code and the else part
-        if (!$this->getOption('parameters')) {
+        if (null === $this->getOption('parameters')) {
             $propertyAccesor = PropertyAccess::createPropertyAccessorBuilder()
                 ->enableMagicCall()
                 ->getPropertyAccessor();
