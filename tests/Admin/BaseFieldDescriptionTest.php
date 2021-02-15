@@ -157,6 +157,14 @@ class BaseFieldDescriptionTest extends TestCase
         $this->assertSame(42, $description->getFieldValue($mock, 'fake'));
     }
 
+    public function testGetFieldValueWithTopLevelFunctionName(): void
+    {
+        $description = new FieldDescription('microtime');
+        $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getMicrotime'])->getMock();
+        $mock->expects($this->once())->method('getMicrotime')->willReturn(42);
+        $this->assertSame(42, $description->getFieldValue($mock, 'microtime'));
+    }
+
     public function testGetFieldValueWithCallableAccessor(): void
     {
         $description = new FieldDescription('name', [

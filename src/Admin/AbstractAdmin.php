@@ -851,11 +851,15 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->getTemplateRegistry()->setTemplate($name, $template);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x
+     */
     public function getNewInstance(): object
     {
         $object = $this->getModelManager()->getModelInstance($this->getClass());
 
         $this->appendParentObject($object);
+        $this->alterNewInstance($object);
 
         foreach ($this->getExtensions() as $extension) {
             $extension->alterNewInstance($this, $object);
@@ -1967,6 +1971,13 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * Hook to run after initialization.
      */
     protected function configure(): void
+    {
+    }
+
+    /**
+     * @phpstan-param T $object
+     */
+    protected function alterNewInstance(object $object): void
     {
     }
 

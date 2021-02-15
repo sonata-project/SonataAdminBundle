@@ -403,7 +403,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
         // prefer method name given in the code option
         $accessor = $this->getOption('accessor', $fieldName);
-        if (\is_callable($accessor)) {
+        if (!\is_string($accessor) && \is_callable($accessor)) {
             return $accessor($object);
         } elseif (!\is_string($accessor) && !$accessor instanceof PropertyPathInterface) {
             throw new \TypeError(sprintf(
