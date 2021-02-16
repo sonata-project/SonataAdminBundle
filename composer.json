@@ -67,12 +67,14 @@
     },
     "conflict": {
         "doctrine/doctrine-bundle": ">=3",
+        "sensio/framework-extra-bundle": "<5.6",
         "sonata-project/core-bundle": "<3.20",
         "sonata-project/doctrine-extensions": "<1.8",
         "sonata-project/media-bundle": "<3.7",
         "sonata-project/user-bundle": "<3.3"
     },
     "require-dev": {
+        "doctrine/annotations": "^1.7",
         "jms/translation-bundle": "^1.4",
         "matthiasnoback/symfony-config-test": "^4.2",
         "matthiasnoback/symfony-dependency-injection-test": "^4.2",
@@ -81,6 +83,7 @@
         "phpstan/phpstan-symfony": "^0.12.10",
         "psalm/plugin-symfony": "^2.0",
         "psr/event-dispatcher": "^1.0",
+        "sensio/framework-extra-bundle": "^5.6 || ^6.1",
         "sonata-project/intl-bundle": "^2.4",
         "symfony/browser-kit": "^4.4 || ^5.1",
         "symfony/css-selector": "^4.4 || ^5.1",

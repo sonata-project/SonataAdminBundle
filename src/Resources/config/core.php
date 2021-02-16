@@ -26,6 +26,8 @@ use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Filter\Persister\SessionFilterPersister;
 use Sonata\AdminBundle\Model\AuditManager;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
+use Sonata\AdminBundle\Request\AdminFetcher;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Route\AdminPoolLoader;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\SonataConfiguration;
@@ -384,5 +386,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ))
 
         // NEXT_MAJOR: remove this alias, global template registry SHOULD NOT be mutable
-        ->alias(MutableTemplateRegistryInterface::class, 'sonata.admin.global_template_registry');
+        ->alias(MutableTemplateRegistryInterface::class, 'sonata.admin.global_template_registry')
+
+        ->set('sonata.admin.request.fetcher', AdminFetcher::class)
+            ->args([
+                new ReferenceConfigurator('sonata.admin.pool'),
+            ])
+
+        ->alias(AdminFetcherInterface::class, 'sonata.admin.request.fetcher');
 };

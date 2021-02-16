@@ -50,6 +50,11 @@ services:
         tags:
             - {name: sonata.admin, manager_type: test, label: Foo}
 
+    Sonata\AdminBundle\Tests\App\Admin\TestingParamConverterAdmin:
+        arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, ~]
+        tags:
+            - {name: sonata.admin, manager_type: test}
+
     Sonata\AdminBundle\Tests\App\Admin\EmptyAdmin:
         arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, ~]
         tags:

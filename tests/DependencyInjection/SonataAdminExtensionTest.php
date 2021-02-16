@@ -32,6 +32,7 @@ use Sonata\AdminBundle\Model\AuditManager;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\AuditReaderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Request\ParamConverter\AdminParamConverter;
 use Sonata\AdminBundle\Route\AdminPoolLoader;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
@@ -129,6 +130,21 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasService(
             'sonata.admin.admin_exporter',
             AdminExporter::class
+        );
+    }
+
+    public function testLoadsParamConverterServiceDefinitionWhenSensioFrameworkExtraBundleIsRegistered(): void
+    {
+        $this->container->setParameter('kernel.bundles', ['SensioFrameworkExtraBundle' => 'whatever']);
+        $this->load();
+        $this->assertContainerBuilderHasService(
+            'sonata.admin.param_converter',
+            AdminParamConverter::class
+        );
+        $this->assertContainerBuilderHasServiceDefinitionWithTag(
+            'sonata.admin.param_converter',
+            'request.param_converter',
+            ['converter' => 'sonata_admin']
         );
     }
 
