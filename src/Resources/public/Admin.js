@@ -226,6 +226,11 @@ var Admin = {
                     .replaceWith(html);
             },
             error: function(xhr, statusText, errorThrown) {
+                // On some error responses, we return JSON.
+                if ('application/json' === xhr.getResponseHeader('Content-Type')) {
+                    return JSON.parse(xhr.responseText);
+                }
+
                 return xhr.responseText;
             }
         });
