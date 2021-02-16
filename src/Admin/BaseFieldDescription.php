@@ -422,7 +422,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         // NEXT_MAJOR: Remove this code.
         if ($this->getOption('code')) {
             @trigger_error(
-                'The "code" option is deprecated since sonata-project/admin-bundle 3.x.'
+                'The "code" option is deprecated since sonata-project/admin-bundle 3.89.'
                 .' Use the "accessor" code instead',
                 \E_USER_DEPRECATED
             );
@@ -430,7 +430,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             $getter = $this->getOption('code');
             if (null !== $this->getOption('parameters')) {
                 @trigger_error(
-                    'The option "parameters" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+                    'The option "parameters" is deprecated since sonata-project/admin-bundle 3.89 and will be removed in 4.0.',
                     \E_USER_DEPRECATED
                 );
             }
@@ -473,7 +473,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
 
         @trigger_error(
-            'The option "parameters" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The option "parameters" is deprecated since sonata-project/admin-bundle 3.89 and will be removed in 4.0.',
             \E_USER_DEPRECATED
         );
 

@@ -72,13 +72,13 @@ class DatagridMapper extends BaseMapper
             $fieldDescriptionOptions = $fieldDescriptionOptionsOrDeprecatedFieldType;
         } else {
             @trigger_error(
-                'Not passing an array as argument 4 is deprecated since sonata-project/admin-bundle 3.x.',
+                'Not passing an array as argument 4 is deprecated since sonata-project/admin-bundle 3.89.',
                 \E_USER_DEPRECATED
             );
 
             if (\is_array($deprecatedFieldOptions)) {
                 @trigger_error(
-                    'Passing the field_options as argument 5 is deprecated since sonata-project/admin-bundle 3.x.'.
+                    'Passing the field_options as argument 5 is deprecated since sonata-project/admin-bundle 3.89.'.
                     'Use the `field_options` option of the third argument instead.',
                     \E_USER_DEPRECATED
                 );
@@ -88,7 +88,7 @@ class DatagridMapper extends BaseMapper
 
             if ($fieldDescriptionOptionsOrDeprecatedFieldType) {
                 @trigger_error(
-                    'Passing the field_type as argument 4 is deprecated since sonata-project/admin-bundle 3.x.'.
+                    'Passing the field_type as argument 4 is deprecated since sonata-project/admin-bundle 3.89.'.
                     'Use the `field_type` option of the third argument instead.',
                     \E_USER_DEPRECATED
                 );
