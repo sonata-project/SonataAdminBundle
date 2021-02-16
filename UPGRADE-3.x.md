@@ -11,6 +11,10 @@ Use `Sonata\AdminBundle\Admin\AbstractAdmin::createNewInstance()` method instead
 UPGRADE FROM 3.88 to 3.89
 =========================
 
+### Deprecated `Sonata\AdminBundle\Model\ModelManager::getNewFieldDescriptionInstance()` method.
+
+This method has been deprecated in favor of `FieldFactoryInterface::create()`.
+
 ### Deprecated overriding `AbstractAdmin::getNewInstance()`.
 
 Use `AbstractAdmin::alterNewInstance()` instead.

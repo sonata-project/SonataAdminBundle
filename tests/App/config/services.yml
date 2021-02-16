@@ -37,6 +37,9 @@ services:
     sonata.admin.data_source.test:
         class: Sonata\AdminBundle\Tests\App\Exporter\DataSource
 
+    sonata.admin.field_description_factory.test:
+        class: Sonata\AdminBundle\Tests\App\FieldDescription\FieldDescriptionFactory
+
     Sonata\AdminBundle\Tests\App\Admin\FooAdmin:
         arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, Sonata\AdminBundle\Controller\CRUDController]
         tags:

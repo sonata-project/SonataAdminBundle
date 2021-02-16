@@ -746,10 +746,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             if ($this->hasListFieldDescription($filterParameters['_sort_by'])) {
                 $filterParameters['_sort_by'] = $this->getListFieldDescription($filterParameters['_sort_by']);
             } else {
-                $filterParameters['_sort_by'] = $this->getModelManager()->getNewFieldDescriptionInstance(
-                    $this->getClass(),
-                    $filterParameters['_sort_by'],
-                    []
+                $filterParameters['_sort_by'] = $this->createFieldDescription(
+                    $filterParameters['_sort_by']
                 );
 
                 $this->getListBuilder()->buildField(null, $filterParameters['_sort_by'], $this);
@@ -3096,8 +3094,7 @@ EOT;
         $mapper = new ListMapper($this->getListBuilder(), $this->list, $this);
 
         if (\count($this->getBatchActions()) > 0 && $this->hasRequest() && !$this->getRequest()->isXmlHttpRequest()) {
-            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance(
-                $this->getClass(),
+            $fieldDescription = $this->createFieldDescription(
                 'batch',
                 [
                     'label' => 'batch',
@@ -3107,7 +3104,6 @@ EOT;
                 ]
             );
 
-            $fieldDescription->setAdmin($this);
             // NEXT_MAJOR: Remove this line and use commented line below it instead
             $fieldDescription->setTemplate($this->getTemplate('batch'));
             // $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('batch'));
@@ -3122,8 +3118,7 @@ EOT;
         }
 
         if ($this->hasRequest() && $this->getRequest()->isXmlHttpRequest()) {
-            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance(
-                $this->getClass(),
+            $fieldDescription = $this->createFieldDescription(
                 'select',
                 [
                     'label' => false,
@@ -3133,7 +3128,6 @@ EOT;
                 ]
             );
 
-            $fieldDescription->setAdmin($this);
             // NEXT_MAJOR: Remove this line and use commented line below it instead
             $fieldDescription->setTemplate($this->getTemplate('select'));
             // $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('select'));
@@ -3369,6 +3363,26 @@ EOT;
         foreach ($this->getExtensions() as $extension) {
             $extension->configureRoutes($this, $this->routes);
         }
+    }
+
+    private function createFieldDescription(string $name, array $options = []): FieldDescriptionInterface
+    {
+        $fieldDescriptionFactory = $this->getFieldDescriptionFactory();
+
+        // NEXT_MAJOR: Remove the "if" block and leave the "else" one.
+        if (null === $fieldDescriptionFactory) {
+            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance(
+                $this->getClass(),
+                $name,
+                $options
+            );
+        } else {
+            $fieldDescription = $fieldDescriptionFactory->create($this->getClass(), $name, $options);
+        }
+
+        $fieldDescription->setAdmin($this);
+
+        return $fieldDescription;
     }
 }
 

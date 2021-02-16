@@ -22,6 +22,7 @@ use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Exporter\DataSourceInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
@@ -201,6 +202,11 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
      * @var LabelTranslatorStrategyInterface|null
      */
     protected $labelTranslatorStrategy;
+
+    /**
+     * @var FieldDescriptionFactoryInterface|null
+     */
+    private $fieldDescriptionFactory;
 
     /**
      * NEXT_MAJOR: Change signature to __construct(string $code, string $class, string $baseControllerName).
@@ -421,6 +427,32 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         }
 
         return $this->dataSource;
+    }
+
+    final public function setFieldDescriptionFactory(FieldDescriptionFactoryInterface $fieldDescriptionFactory): void
+    {
+        $this->fieldDescriptionFactory = $fieldDescriptionFactory;
+    }
+
+    /**
+     * NEXT_MAJOR: Change typehint for FieldDescriptionFactoryInterface.
+     */
+    public function getFieldDescriptionFactory(): ?FieldDescriptionFactoryInterface
+    {
+        if (null === $this->fieldDescriptionFactory) {
+            // NEXT_MAJOR: Remove this deprecation and uncomment the following exception
+            @trigger_error(sprintf(
+                'Calling %s() when no field description factory is set is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will throw a LogicException in 4.0',
+                __METHOD__,
+            ), \E_USER_DEPRECATED);
+//            throw new \LogicException(sprintf(
+//                'Admin "%s" has no field description factory.',
+//                static::class
+//            ));
+        }
+
+        return $this->fieldDescriptionFactory;
     }
 
     /**
