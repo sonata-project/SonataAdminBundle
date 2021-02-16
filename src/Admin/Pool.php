@@ -124,7 +124,7 @@ class Pool
     /**
      * NEXT_MAJOR: Remove this property.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.89 and will be removed in 4.0.
      *
      * @var MutableTemplateRegistryInterface
      */
@@ -403,12 +403,12 @@ class Pool
     /**
      * @phpstan-param class-string $class
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.89
      */
     public function hasSingleAdminByClass(string $class): bool
     {
         @trigger_error(sprintf(
-            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.89 and will be removed in version 4.0.',
             __METHOD__
         ), \E_USER_DEPRECATED);
 
@@ -699,13 +699,13 @@ class Pool
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.89 and will be removed in 4.0.
      */
     final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
             @trigger_error(sprintf(
-                'The "%s()" method is deprecated since version 3.x and will be removed in 4.0.',
+                'The "%s()" method is deprecated since version 3.89 and will be removed in 4.0.',
                 __METHOD__,
             ), \E_USER_DEPRECATED);
         }

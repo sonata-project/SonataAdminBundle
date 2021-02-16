@@ -146,7 +146,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * Options to set to the form (ie, validation_groups).
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, use configureFormOptions() instead.
+     * @deprecated since sonata-project/admin-bundle 3.89, use configureFormOptions() instead.
      *
      * @var array<string, mixed>
      */
@@ -1243,7 +1243,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x
+     * @final since sonata-project/admin-bundle 3.89
      */
     public function getNewInstance()
     {

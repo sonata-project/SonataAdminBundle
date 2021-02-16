@@ -256,7 +256,7 @@ class BaseFieldDescriptionTest extends TestCase
         $mock1 = $this->getMockBuilder(\stdClass::class)->addMethods(['getWithOneParameter'])->getMock();
         $mock1->expects($this->once())->method('getWithOneParameter')->with($arg1)->willReturn($arg1 + 2);
 
-        $this->expectDeprecation('The option "parameters" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.');
+        $this->expectDeprecation('The option "parameters" is deprecated since sonata-project/admin-bundle 3.89 and will be removed in 4.0.');
         $this->assertSame(40, $description1->getFieldValue($mock1, 'fake'));
 
         $arg2 = 4;
