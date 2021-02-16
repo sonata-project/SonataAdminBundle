@@ -16,6 +16,8 @@ namespace Sonata\AdminBundle\Tests\Admin;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Exception\AdminCodeNotFoundException;
+use Sonata\AdminBundle\Exception\TooManyAdminClassException;
 use Symfony\Component\DependencyInjection\Container;
 
 class PoolTest extends TestCase
@@ -78,16 +80,27 @@ class PoolTest extends TestCase
 
     public function testGetAdminForClassWithTooManyRegisteredAdmin(): void
     {
-        $pool = new Pool($this->container, [], [], [
+        $pool = new Pool($this->container, ['sonata.user.admin.group1'], [], [
             'someclass' => ['sonata.user.admin.group1', 'sonata.user.admin.group2'],
         ]);
 
         $this->assertTrue($pool->hasAdminByClass('someclass'));
-        $this->assertFalse($pool->hasSingleAdminByClass('someclass'));
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(TooManyAdminClassException::class);
 
         $pool->getAdminByClass('someclass');
+    }
+
+    public function testGetAdminForClassWithTooManyRegisteredAdminButOneDefaultAdmin(): void
+    {
+        $this->container->set('sonata.user.admin.group1', $this->createMock(AdminInterface::class));
+
+        $pool = new Pool($this->container, ['sonata.user.admin.group1'], [], [
+            'someclass' => [Pool::DEFAULT_ADMIN_KEY => 'sonata.user.admin.group1', 'sonata.user.admin.group2'],
+        ]);
+
+        $this->assertTrue($pool->hasAdminByClass('someclass'));
+        $this->assertInstanceOf(AdminInterface::class, $pool->getAdminByClass('someclass'));
     }
 
     public function testGetAdminForClassWhenAdminClassIsSet(): void
@@ -97,13 +110,12 @@ class PoolTest extends TestCase
         $pool = new Pool($this->container, ['sonata.user.admin.group1'], [], ['someclass' => ['sonata.user.admin.group1']]);
 
         $this->assertTrue($pool->hasAdminByClass('someclass'));
-        $this->assertTrue($pool->hasSingleAdminByClass('someclass'));
         $this->assertInstanceOf(AdminInterface::class, $pool->getAdminByClass('someclass'));
     }
 
     public function testGetInstanceWithUndefinedServiceId(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(AdminCodeNotFoundException::class);
         $this->expectExceptionMessage('Admin service "sonata.news.admin.post" not found in admin pool.');
 
         $this->pool->getInstance('sonata.news.admin.post');
@@ -181,7 +193,7 @@ class PoolTest extends TestCase
         $this->container->set('sonata.news.admin.post', $adminMock);
         $pool = new Pool($this->container, ['sonata.news.admin.post', 'sonata.news.admin.valid']);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(AdminCodeNotFoundException::class);
         $this->expectExceptionMessage('Argument 1 passed to Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() must contain a valid admin hierarchy, "sonata.news.admin.valid" is not a valid child for "sonata.news.admin.post"');
 
         $pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.valid');
@@ -220,7 +232,7 @@ class PoolTest extends TestCase
         $pool = new Pool($this->container, [$adminId]);
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Root admin code must contain a valid admin reference, empty string given.');
+        $this->expectExceptionMessage('Admin code must contain a valid admin reference, empty string given.');
         $pool->getAdminByAdminCode($adminId);
     }
 
@@ -248,7 +260,7 @@ class PoolTest extends TestCase
         $this->container->set('admin1', $adminMock);
         $pool = new Pool($this->container, ['admin1']);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(AdminCodeNotFoundException::class);
         $this->expectExceptionMessageMatches(sprintf(
             '{^Argument 1 passed to Sonata\\\AdminBundle\\\Admin\\\Pool::getAdminByAdminCode\(\) must contain a valid admin reference, "[^"]+" found at "%s"\.$}',
             $adminId

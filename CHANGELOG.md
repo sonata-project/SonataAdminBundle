@@ -2,6 +2,48 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.89.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.89.0...3.89.1) - 2021-02-16
+### Fixed
+- [[#6867](https://github.com/sonata-project/SonataAdminBundle/pull/6867)] Handle case when `attachAdminClass()` does not find an admin to attach ([@VincentLanglet](https://github.com/VincentLanglet))
+
+## [3.89.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.88.0...3.89.0) - 2021-02-16
+### Added
+- [[#6821](https://github.com/sonata-project/SonataAdminBundle/pull/6821)] `Pool::getAdminByFieldDescription()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6821](https://github.com/sonata-project/SonataAdminBundle/pull/6821)] `AdminClassNotFoundException` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6821](https://github.com/sonata-project/SonataAdminBundle/pull/6821)] `AdminCodeNotFoundException` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6821](https://github.com/sonata-project/SonataAdminBundle/pull/6821)] `TooManyAdminClassException` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6821](https://github.com/sonata-project/SonataAdminBundle/pull/6821)] A tag attribute `default: true` for the tag `sonata.admin` to define a default admin for a specific class ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6776](https://github.com/sonata-project/SonataAdminBundle/pull/6776)] Added `RouteCollection::getRouteName` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6776](https://github.com/sonata-project/SonataAdminBundle/pull/6776)] Added `RouteCollectionInterface::getRouteName` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6814](https://github.com/sonata-project/SonataAdminBundle/pull/6814)] Added some `Sonata\AdminBundle\Admin\AbstractAdmin::configureFormOptions()` to do great stuff. ([@rgrassian](https://github.com/rgrassian))
+- [[#6817](https://github.com/sonata-project/SonataAdminBundle/pull/6817)] A block `table` to override the whole datagrid table in the `base_list.html.twig` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6789](https://github.com/sonata-project/SonataAdminBundle/pull/6789)] A callback with a possibility to modify each individual item in the response. ([@keshancs](https://github.com/keshancs))
+- [[#6789](https://github.com/sonata-project/SonataAdminBundle/pull/6789)] A way to customize any autocomplete select2 properties in js via adding sonata_type_model_autocomplete_select2_options_js block before initializing select2 element because select2 doesn't allow modification of several options after it has been initialized, you can only destroy it and initialize again from scratch. ([@keshancs](https://github.com/keshancs))
+- [[#6789](https://github.com/sonata-project/SonataAdminBundle/pull/6789)] Set error bubbling to false - prevent passing error to parent form elements, which occurs by default for compound form types. ([@keshancs](https://github.com/keshancs))
+- [[#6837](https://github.com/sonata-project/SonataAdminBundle/pull/6837)] `FieldDescription` `accessor` option ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6850](https://github.com/sonata-project/SonataAdminBundle/pull/6850)] Added `AbstractAdmin::alterNewInstance()` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Changed
+- [[#6789](https://github.com/sonata-project/SonataAdminBundle/pull/6789)] The autocomplete item list is now independent of filters set in the corresponding list via removing its filters. Before these changes, it returned only items that matched the selected filter. ([@keshancs](https://github.com/keshancs))
+- [[#6844](https://github.com/sonata-project/SonataAdminBundle/pull/6844)] From `DatagridMapper::add($name, $type, $filterOptions = [], $fieldType = null, $fieldOptions = null, $fieldDescriptionOptions = [])` to `DatagridMapper::add($name, $type, $filterOptions = [], $fieldDescriptionOptions = [])` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6827](https://github.com/sonata-project/SonataAdminBundle/pull/6827)] `ProxyQueryInterface::execute(array $params = [], ?int $hydrationMode = null)` signature to `ProxyQueryInterface::execute()` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Deprecated
+- [[#6821](https://github.com/sonata-project/SonataAdminBundle/pull/6821)] `Pool::hasSingleAdminByClass()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6798](https://github.com/sonata-project/SonataAdminBundle/pull/6798)] FieldDescription `parameters` option. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6814](https://github.com/sonata-project/SonataAdminBundle/pull/6814)] Deprecated `Sonata\AdminBundle\Admin\AbstractAdmin::formOptions` property. ([@rgrassian](https://github.com/rgrassian))
+- [[#6837](https://github.com/sonata-project/SonataAdminBundle/pull/6837)] `FieldDescription` `code` option ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6850](https://github.com/sonata-project/SonataAdminBundle/pull/6850)] Overriding `AbstractAdmin::getNewInstance()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6794](https://github.com/sonata-project/SonataAdminBundle/pull/6794)] Deprecated `Pool::setTemplateRegistry()` method. ([@franmomu](https://github.com/franmomu))
+
+### Fixed
+- [[#6856](https://github.com/sonata-project/SonataAdminBundle/pull/6856)] Handling of JSON responses at `Admin.setup_xeditable()`. ([@phansys](https://github.com/phansys))
+- [[#6783](https://github.com/sonata-project/SonataAdminBundle/pull/6783)] Fixed phpdoc for `Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer::$property` which can be `string[]` as well ([@dmaicher](https://github.com/dmaicher))
+- [[#6818](https://github.com/sonata-project/SonataAdminBundle/pull/6818)] Stop displaying the filter dropdown with no usable filters ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6824](https://github.com/sonata-project/SonataAdminBundle/pull/6824)] Do not add a '-' between the export button and the pager results if there is no pager results. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6778](https://github.com/sonata-project/SonataAdminBundle/pull/6778)] How `AdminHelper::appendFormFieldElement` renders nested forms. ([@vladyslavstartsev](https://github.com/vladyslavstartsev))
+- [[#6784](https://github.com/sonata-project/SonataAdminBundle/pull/6784)] Default "show" template for type "float" from SonataIntlBundle. ([@phansys](https://github.com/phansys))
+
 ## [3.88.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.87.0...3.88.0) - 2021-01-18
 ### Added
 - [[#6767](https://github.com/sonata-project/SonataAdminBundle/pull/6767)] Allow PHP 8 ([@VincentLanglet](https://github.com/VincentLanglet))

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
 use Doctrine\Inflector\InflectorFactory;
+use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistry;
@@ -83,7 +84,21 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $classes[$arguments[1]] = [];
                 }
 
-                $classes[$arguments[1]][] = $id;
+                $default = (bool) (isset($attributes['default']) ? $parameterBag->resolveValue($attributes['default']) : false);
+                if ($default) {
+                    if (isset($classes[$arguments[1]][Pool::DEFAULT_ADMIN_KEY])) {
+                        throw new \RuntimeException(sprintf(
+                            'The class %s has two default admins %s and %s.',
+                            $arguments[1],
+                            $classes[$arguments[1]][Pool::DEFAULT_ADMIN_KEY],
+                            $id
+                        ));
+                    }
+
+                    $classes[$arguments[1]][Pool::DEFAULT_ADMIN_KEY] = $id;
+                } else {
+                    $classes[$arguments[1]][] = $id;
+                }
 
                 $showInDashboard = (bool) (isset($attributes['show_in_dashboard']) ? $parameterBag->resolveValue($attributes['show_in_dashboard']) : true);
                 if (!$showInDashboard) {

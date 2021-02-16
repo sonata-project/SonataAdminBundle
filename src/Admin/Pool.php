@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Admin;
 
 use Psr\Container\ContainerInterface;
+use Sonata\AdminBundle\Exception\AdminClassNotFoundException;
+use Sonata\AdminBundle\Exception\AdminCodeNotFoundException;
+use Sonata\AdminBundle\Exception\TooManyAdminClassException;
 
 /**
  * @psalm-type Group = array{
@@ -38,6 +41,8 @@ use Psr\Container\ContainerInterface;
  */
 final class Pool
 {
+    public const DEFAULT_ADMIN_KEY = 'default';
+
     /**
      * @var ContainerInterface
      */
@@ -116,24 +121,32 @@ final class Pool
     /**
      * Return the admin related to the given $class.
      *
+     * @throws AdminClassNotFoundException if there is no admin class for the class provided
+     * @throws TooManyAdminClassException  if there is multiple admin class for the class provided
+     *
      * @phpstan-param class-string $class
      * @phpstan-return AdminInterface
      */
     public function getAdminByClass(string $class): AdminInterface
     {
         if (!$this->hasAdminByClass($class)) {
-            throw new \LogicException(sprintf('Pool has no admin for the class %s.', $class));
+            throw new AdminClassNotFoundException(sprintf('Pool has no admin for the class %s.', $class));
         }
 
-        if (!$this->hasSingleAdminByClass($class)) {
-            throw new \RuntimeException(sprintf(
-                'Unable to find a valid admin for the class: %s, there are too many registered: %s',
+        if (isset($this->adminClasses[$class][self::DEFAULT_ADMIN_KEY])) {
+            return $this->getInstance($this->adminClasses[$class][self::DEFAULT_ADMIN_KEY]);
+        }
+
+        if (1 !== \count($this->adminClasses[$class])) {
+            throw new TooManyAdminClassException(sprintf(
+                'Unable to find a valid admin for the class: %s, there are too many registered: %s.'
+                .' Please define a default one with the tag attribute `default: true` in your admin configuration.',
                 $class,
                 implode(', ', $this->adminClasses[$class])
             ));
         }
 
-        return $this->getInstance($this->adminClasses[$class][0]);
+        return $this->getInstance(reset($this->adminClasses[$class]));
     }
 
     /**
@@ -141,14 +154,21 @@ final class Pool
      */
     public function hasAdminByClass(string $class): bool
     {
-        return isset($this->adminClasses[$class]);
+        return isset($this->adminClasses[$class]) && \count($this->adminClasses[$class]) > 0;
     }
 
     /**
      * @phpstan-param class-string $class
+     *
+     * @deprecated since sonata-project/admin-bundle 3.89
      */
     public function hasSingleAdminByClass(string $class): bool
     {
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.89 and will be removed in version 4.0.',
+            __METHOD__
+        ), \E_USER_DEPRECATED);
+
         if (!$this->hasAdminByClass($class)) {
             return false;
         }
@@ -160,24 +180,17 @@ final class Pool
      * Returns an admin class by its Admin code
      * ie : sonata.news.admin.post|sonata.news.admin.comment => return the child class of post.
      *
-     * @throws \InvalidArgumentException if the root admin code is an empty string
+     * @throws AdminCodeNotFoundException
      */
     public function getAdminByAdminCode(string $adminCode): AdminInterface
     {
         $codes = explode('|', $adminCode);
         $code = trim(array_shift($codes));
-
-        if ('' === $code) {
-            throw new \InvalidArgumentException(
-                'Root admin code must contain a valid admin reference, empty string given.'
-            );
-        }
-
         $admin = $this->getInstance($code);
 
         foreach ($codes as $code) {
             if (!\in_array($code, $this->adminServiceIds, true)) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new AdminCodeNotFoundException(sprintf(
                     'Argument 1 passed to %s() must contain a valid admin reference, "%s" found at "%s".',
                     __METHOD__,
                     $code,
@@ -186,8 +199,9 @@ final class Pool
             }
 
             if (!$admin->hasChild($code)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Argument 1 passed to %s() must contain a valid admin hierarchy, "%s" is not a valid child for "%s"',
+                throw new AdminCodeNotFoundException(sprintf(
+                    'Argument 1 passed to %s() must contain a valid admin hierarchy,'
+                    .' "%s" is not a valid child for "%s"',
                     __METHOD__,
                     $code,
                     $admin->getCode()
@@ -215,17 +229,40 @@ final class Pool
     }
 
     /**
+     * @throws AdminClassNotFoundException if there is no admin for the field description target model
+     * @throws TooManyAdminClassException  if there is too many admin for the field description target model
+     * @throws AdminCodeNotFoundException  if the admin_code option is invalid
+     */
+    public function getAdminByFieldDescription(FieldDescriptionInterface $fieldDescription): AdminInterface
+    {
+        $adminCode = $fieldDescription->getOption('admin_code');
+
+        if (null !== $adminCode) {
+            return $this->getAdminByAdminCode($adminCode);
+        }
+
+        return $this->getAdminByClass($fieldDescription->getTargetModel());
+    }
+
+    /**
      * Returns a new admin instance depends on the given code.
      *
-     * @throws \InvalidArgumentException
+     * @throws AdminCodeNotFoundException if the code is not found in admin pool
      */
     public function getInstance(string $id): AdminInterface
     {
+        if ('' === $id) {
+            throw new \InvalidArgumentException(
+                'Admin code must contain a valid admin reference, empty string given.'
+            );
+        }
+
         if (!\in_array($id, $this->adminServiceIds, true)) {
             $msg = sprintf('Admin service "%s" not found in admin pool.', $id);
             $shortest = -1;
             $closest = null;
             $alternatives = [];
+
             foreach ($this->adminServiceIds as $adminServiceId) {
                 $lev = levenshtein($id, $adminServiceId);
                 if ($lev <= $shortest || $shortest < 0) {
@@ -236,6 +273,7 @@ final class Pool
                     $alternatives[$adminServiceId] = $lev;
                 }
             }
+
             if (null !== $closest) {
                 asort($alternatives);
                 unset($alternatives[$closest]);
@@ -246,7 +284,8 @@ final class Pool
                     implode(', ', array_keys($alternatives))
                 );
             }
-            throw new \InvalidArgumentException($msg);
+
+            throw new AdminCodeNotFoundException($msg);
         }
 
         $admin = $this->container->get($id);

@@ -20,6 +20,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\DependencyInjection\Admin\AbstractTaggedAdmin;
+use Sonata\AdminBundle\Exception\AdminClassNotFoundException;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
 use Sonata\AdminBundle\Manipulator\ObjectManipulator;
@@ -126,6 +127,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * @var string
      */
     protected $translationDomain = 'messages';
+
+    /**
+     * NEXT_MAJOR: Remove this property.
+     *
+     * Options to set to the form (ie, validation_groups).
+     *
+     * @deprecated since sonata-project/admin-bundle 3.89, use configureFormOptions() instead.
+     *
+     * @var array<string, mixed>
+     */
+    protected $formOptions = [];
 
     /**
      * Array of routes related to this admin.
@@ -828,7 +840,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x
+     * @final since sonata-project/admin-bundle 3.89
      */
     public function getNewInstance(): object
     {
@@ -882,31 +894,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
         $pool = $this->getConfigurationPool();
 
-        $adminCode = $fieldDescription->getOption('admin_code');
-
-        if (null !== $adminCode) {
-            if (!$pool->hasAdminByAdminCode($adminCode)) {
-                throw new \InvalidArgumentException(sprintf('No admin found for the admin_code "%s"', $adminCode));
-            }
-
-            $admin = $pool->getAdminByAdminCode($adminCode);
-        } else {
-            $targetModel = $fieldDescription->getTargetModel();
-
-            if (!$pool->hasAdminByClass($targetModel)) {
-                // This case should not throw an exception because there is no easy way
-                // to check if there is an admin class to attach without calling this method.
-                return;
-            }
-
-            if (!$pool->hasSingleAdminByClass($targetModel)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Too many admins found for the class "%s", please use the admin_code option instead',
-                    $targetModel
-                ));
-            }
-
-            $admin = $pool->getAdminByClass($targetModel);
+        try {
+            $admin = $pool->getAdminByFieldDescription($fieldDescription);
+        } catch (AdminClassNotFoundException $exception) {
+            // Using a fieldDescription with no admin class for the target model is a valid case.
+            // Since there is no easy way to check for this case, we catch the exception instead.
+            return;
         }
 
         if ($this->hasRequest()) {
@@ -917,6 +910,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x
+     *
      * @param string|int|null $id
      *
      * @phpstan-return T|null
@@ -928,6 +923,11 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         $object = $this->getModelManager()->find($this->getClass(), $id);
+        if (null === $object) {
+            return null;
+        }
+
+        $this->alterObject($object);
         foreach ($this->getExtensions() as $extension) {
             $extension->alterObject($this, $object);
         }
@@ -1954,6 +1954,13 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * @phpstan-param T $object
      */
     protected function alterNewInstance(object $object): void
+    {
+    }
+
+    /**
+     * @phpstan-param T $object
+     */
+    protected function alterObject(object $object): void
     {
     }
 

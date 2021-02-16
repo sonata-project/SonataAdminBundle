@@ -1,7 +1,7 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.xx to 3.xx
+UPGRADE FROM 3.88 to 3.89
 =========================
 
 ### Deprecated overriding `AbstractAdmin::getNewInstance()`.
