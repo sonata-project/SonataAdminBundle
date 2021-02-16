@@ -1335,8 +1335,11 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         $object = $this->getModelManager()->find($this->getClass(), $id);
-        $this->alterObject($object);
+        if (null === $object) {
+            return null;
+        }
 
+        $this->alterObject($object);
         foreach ($this->getExtensions() as $extension) {
             $extension->alterObject($this, $object);
         }
