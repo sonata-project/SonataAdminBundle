@@ -1318,6 +1318,11 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             return;
         }
 
+        // NEXT_MAJOR: Remove this check
+        if (!$admin) {
+            return;
+        }
+
         if ($this->hasRequest()) {
             $admin->setRequest($this->getRequest());
         }

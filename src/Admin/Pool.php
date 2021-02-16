@@ -506,7 +506,7 @@ class Pool
      * @throws TooManyAdminClassException  if there is too many admin for the field description target model
      * @throws AdminCodeNotFoundException  if the admin_code option is invalid
      *
-     * @return AdminInterface
+     * @return AdminInterface|false|null NEXT_MAJOR: Restrict to AdminInterface
      */
     final public function getAdminByFieldDescription(FieldDescriptionInterface $fieldDescription)
     {
