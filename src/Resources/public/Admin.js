@@ -334,22 +334,16 @@ var Admin = {
                 return;
             }
 
-            var defaultValues = $.param({'filter': JSON.parse(this.dataset.defaultValues)}).split('&'),
-                submittedValues = $form.serialize().split('&');
+            var defaults = Admin.convert_query_string_to_object(
+                $.param({'filter': JSON.parse(this.dataset.defaultValues)})
+            );
 
-            // Compare default and submitted filter values in `keyValue` representation. (`keyValue` ex: "filter[publish][value][end]=2020-12-12")
-            // Only allow to submit non default and non empty values, because empty values means they are not present.
-            var changedValues = submittedValues.filter(function (keyValue) {
-                return defaultValues.indexOf(keyValue) === -1 && keyValue.split('=')[1] !== '';
+            // Keep only changed values
+            $form.find('[name*=filter]').each(function (i, field) {
+                if ((defaults[field.name] || '') === field.value) {
+                    field.removeAttribute('name');
+                }
             });
-
-            // Disable all inputs and enable only the required ones
-            $form.find('[name*=filter]').attr('disabled', 'disabled');
-            changedValues
-                .map(function (keyValue) { return decodeURIComponent(keyValue.split('=')[0]); })
-                .forEach(function (key) {
-                    $form.find('[name="' + key + '"]').removeAttr('disabled');
-                });
         });
 
         /* Advanced filters */
@@ -781,6 +775,13 @@ var Admin = {
                 form.find('input[name="_tab"]').val(tabSelected.attr('aria-controls'));
             }
         });
+    },
+    convert_query_string_to_object: function (str) {
+        return str.split('&').reduce(function (accumulator, keyValue) {
+            accumulator[decodeURIComponent(keyValue.split('=')[0])] = keyValue.split('=')[1];
+
+            return accumulator;
+        }, {});
     },
     /**
      * Remember open tab after refreshing page.
