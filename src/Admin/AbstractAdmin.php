@@ -431,30 +431,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
     }
 
-    public function preUpdate(object $object): void
-    {
-    }
-
-    public function postUpdate(object $object): void
-    {
-    }
-
-    public function prePersist(object $object): void
-    {
-    }
-
-    public function postPersist(object $object): void
-    {
-    }
-
-    public function preRemove(object $object): void
-    {
-    }
-
-    public function postRemove(object $object): void
-    {
-    }
-
     public function preBatchAction(string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements = false): void
     {
     }
@@ -1978,6 +1954,48 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * @phpstan-param T $object
      */
     protected function alterNewInstance(object $object): void
+    {
+    }
+
+    /**
+     * @phpstan-param T $object
+     */
+    protected function preUpdate(object $object): void
+    {
+    }
+
+    /**
+     * @phpstan-param T $object
+     */
+    protected function postUpdate(object $object): void
+    {
+    }
+
+    /**
+     * @phpstan-param T $object
+     */
+    protected function prePersist(object $object): void
+    {
+    }
+
+    /**
+     * @phpstan-param T $object
+     */
+    protected function postPersist(object $object): void
+    {
+    }
+
+    /**
+     * @phpstan-param T $object
+     */
+    protected function preRemove(object $object): void
+    {
+    }
+
+    /**
+     * @phpstan-param T $object
+     */
+    protected function postRemove(object $object): void
     {
     }
 

@@ -45,34 +45,4 @@ interface LifecycleHookProviderInterface
      * @phpstan-param T $object
      */
     public function delete(object $object): void;
-
-    /**
-     * @phpstan-param T $object
-     */
-    public function preUpdate(object $object): void;
-
-    /**
-     * @phpstan-param T $object
-     */
-    public function postUpdate(object $object): void;
-
-    /**
-     * @phpstan-param T $object
-     */
-    public function prePersist(object $object): void;
-
-    /**
-     * @phpstan-param T $object
-     */
-    public function postPersist(object $object): void;
-
-    /**
-     * @phpstan-param T $object
-     */
-    public function preRemove(object $object): void;
-
-    /**
-     * @phpstan-param T $object
-     */
-    public function postRemove(object $object): void;
 }
