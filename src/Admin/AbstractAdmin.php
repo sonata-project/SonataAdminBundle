@@ -1330,6 +1330,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $fieldDescription->setAssociationAdmin($admin);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x
+     */
     public function getObject($id)
     {
         if (null === $id) {
@@ -1337,6 +1340,11 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         $object = $this->getModelManager()->find($this->getClass(), $id);
+        if (null === $object) {
+            return null;
+        }
+
+        $this->alterObject($object);
         foreach ($this->getExtensions() as $extension) {
             $extension->alterObject($this, $object);
         }
@@ -2876,6 +2884,13 @@ EOT;
      * @phpstan-param T $object
      */
     protected function alterNewInstance(object $object): void
+    {
+    }
+
+    /**
+     * @phpstan-param T $object
+     */
+    protected function alterObject(object $object): void
     {
     }
 
