@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Exporter\DataSourceInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
@@ -41,25 +42,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *     - The first and third argument are automatically injected by the AddDependencyCallsCompilerPass.
  *     - The second one is used as a reference of the Admin in the Pool, with the `setAdminClasses` call.
  *
- * @method void                          initialize()
- * @method void                          setLabel(?string $label)
- * @method void                          showMosaicButton(bool $isShown)
- * @method void                          setPagerType(string $pagerType)
- * @method string                        getPagerType()
- * @method void                          setManagerType(string $managerType)
- * @method void                          setSecurityInformation(array $information)
- * @method void                          setFilterPersister(?FilterPersisterInterface $filterPersister = null)
- * @method FilterPersisterInterface|null getFilterPersister()
- * @method bool                          hasFilterPersister()
- * @method void                          setModelManager(ModelManagerInterface $modelManager)
- * @method void                          setDataSource(DataSourceInterface $dataSource)
- * @method DataSourceInterface           getDataSource()
- * @method FormContractorInterface       getFormContractor()
- * @method void                          setShowBuilder(ShowBuilderInterface $showBuilder)
- * @method ShowBuilderInterface          getShowBuilder()
- * @method Pool                          getConfigurationPool()
- * @method void                          setRouteGenerator(RouteGeneratorInterface $routeGenerator)
- * @method RouteGeneratorInterface       getRouteGenerator()
+ * @method void                             initialize()
+ * @method void                             setLabel(?string $label)
+ * @method void                             showMosaicButton(bool $isShown)
+ * @method void                             setPagerType(string $pagerType)
+ * @method string                           getPagerType()
+ * @method void                             setManagerType(string $managerType)
+ * @method void                             setSecurityInformation(array $information)
+ * @method void                             setFilterPersister(?FilterPersisterInterface $filterPersister = null)
+ * @method FilterPersisterInterface|null    getFilterPersister()
+ * @method bool                             hasFilterPersister()
+ * @method void                             setModelManager(ModelManagerInterface $modelManager)
+ * @method void                             setDataSource(DataSourceInterface $dataSource)
+ * @method DataSourceInterface              getDataSource()
+ * @method void                             setFieldDescriptionFactory(FieldDescriptionFactoryInterface $fieldDescriptionFactory)
+ * @method FieldDescriptionFactoryInterface getFieldDescriptionFactory()
+ * @method FormContractorInterface          getFormContractor()
+ * @method void                             setShowBuilder(ShowBuilderInterface $showBuilder)
+ * @method ShowBuilderInterface             getShowBuilder()
+ * @method Pool                             getConfigurationPool()
+ * @method void                             setRouteGenerator(RouteGeneratorInterface $routeGenerator)
+ * @method RouteGeneratorInterface          getRouteGenerator()
  */
 interface TaggedAdminInterface
 {
@@ -167,6 +170,16 @@ interface TaggedAdminInterface
      * NEXT_MAJOR: Uncomment this method.
      */
 //    public function getDataSource(): DataSourceInterface;
+
+    /**
+     * NEXT_MAJOR: Uncomment this method.
+     */
+//    public function setFieldDescriptionFactory(FieldDescriptionFactoryInterface $fieldDescriptionFactory): void;
+
+    /**
+     * NEXT_MAJOR: Uncomment this method.
+     */
+//    public function getFieldDescriptionFactory(): FieldDescriptionFactoryInterface;
 
     /**
      * @return void

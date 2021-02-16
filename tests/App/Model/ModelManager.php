@@ -31,6 +31,7 @@ final class ModelManager implements ModelManagerInterface
         $this->repository = $repository;
     }
 
+    // NEXT_MAJOR: Remove this method.
     public function getNewFieldDescriptionInstance($class, $name, array $options = [])
     {
         if (!isset($options['route']['name'])) {

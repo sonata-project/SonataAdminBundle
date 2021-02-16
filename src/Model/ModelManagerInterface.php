@@ -29,6 +29,8 @@ use Sonata\Exporter\Source\SourceIteratorInterface;
 interface ModelManagerInterface extends DatagridManagerInterface
 {
     /**
+     * @deprecated since sonata-project/admin-bundle 3.x.
+     *
      * @param string $class
      * @param string $name
      *
