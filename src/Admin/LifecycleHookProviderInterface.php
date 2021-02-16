@@ -57,6 +57,10 @@ interface LifecycleHookProviderInterface
     public function delete($object);
 
     /**
+     * NEXT_MAJOR: Remove this.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x
+     *
      * @param object $object
      *
      * @phpstan-param T $object
@@ -64,6 +68,10 @@ interface LifecycleHookProviderInterface
     public function preUpdate($object);
 
     /**
+     * NEXT_MAJOR: Remove this.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x
+     *
      * @param object $object
      *
      * @phpstan-param T $object
@@ -71,6 +79,10 @@ interface LifecycleHookProviderInterface
     public function postUpdate($object);
 
     /**
+     * NEXT_MAJOR: Remove this.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x
+     *
      * @param object $object
      *
      * @phpstan-param T $object
@@ -78,6 +90,10 @@ interface LifecycleHookProviderInterface
     public function prePersist($object);
 
     /**
+     * NEXT_MAJOR: Remove this.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x
+     *
      * @param object $object
      *
      * @phpstan-param T $object
@@ -85,6 +101,10 @@ interface LifecycleHookProviderInterface
     public function postPersist($object);
 
     /**
+     * NEXT_MAJOR: Remove this.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x
+     *
      * @param object $object
      *
      * @phpstan-param T $object
@@ -92,6 +112,10 @@ interface LifecycleHookProviderInterface
     public function preRemove($object);
 
     /**
+     * NEXT_MAJOR: Remove this.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x
+     *
      * @param object $object
      *
      * @phpstan-param T $object
