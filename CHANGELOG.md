@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.89.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.89.0...3.89.1) - 2021-02-16
+### Fixed
+- [[#6867](https://github.com/sonata-project/SonataAdminBundle/pull/6867)] Handle case when `attachAdminClass()` does not find an admin to attach ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [3.89.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.88.0...3.89.0) - 2021-02-16
 ### Added
 - [[#6821](https://github.com/sonata-project/SonataAdminBundle/pull/6821)] `Pool::getAdminByFieldDescription()` ([@VincentLanglet](https://github.com/VincentLanglet))
