@@ -111,6 +111,10 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
+     * NEXT_MAJOR: Change visibility to protected.
+     *
+     * @final since sonata-project/admin-bundle 3.x
+     *
      * Renders a view while passing mandatory parameters on to the template.
      *
      * @param string               $view       The view name
@@ -164,7 +168,7 @@ class CRUDController implements ContainerAwareInterface
             'export_formats' => $this->has('sonata.admin.admin_exporter') ?
                 $this->get('sonata.admin.admin_exporter')->getAvailableFormats($this->admin) :
                 $this->admin->getExportFormats(),
-        ], null);
+        ]);
     }
 
     /**
@@ -275,7 +279,7 @@ class CRUDController implements ContainerAwareInterface
             'object' => $object,
             'action' => 'delete',
             'csrf_token' => $this->getCsrfToken('sonata.delete'),
-        ], null);
+        ]);
     }
 
     /**
@@ -401,7 +405,7 @@ class CRUDController implements ContainerAwareInterface
             'form' => $formView,
             'object' => $existingObject,
             'objectId' => $objectId,
-        ], null);
+        ]);
     }
 
     /**
@@ -524,7 +528,7 @@ class CRUDController implements ContainerAwareInterface
                 'form' => $formView,
                 'data' => $data,
                 'csrf_token' => $this->getCsrfToken('sonata.batch'),
-            ], null);
+            ]);
         }
 
         // execute the action, batchActionXxxxx
@@ -578,8 +582,7 @@ class CRUDController implements ContainerAwareInterface
                     'base_template' => $this->getBaseTemplate(),
                     'admin' => $this->admin,
                     'action' => 'create',
-                ],
-                null
+                ]
             );
         }
 
@@ -666,7 +669,7 @@ class CRUDController implements ContainerAwareInterface
             'form' => $formView,
             'object' => $newObject,
             'objectId' => null,
-        ], null);
+        ]);
     }
 
     /**
@@ -776,7 +779,7 @@ class CRUDController implements ContainerAwareInterface
             'object' => $object,
             'revisions' => $revisions,
             'currentRevision' => $revisions ? current($revisions) : false,
-        ], null);
+        ]);
     }
 
     /**
@@ -835,7 +838,7 @@ class CRUDController implements ContainerAwareInterface
             'action' => 'show',
             'object' => $object,
             'elements' => $this->admin->getShow(),
-        ], null);
+        ]);
     }
 
     /**
@@ -906,7 +909,7 @@ class CRUDController implements ContainerAwareInterface
             'object' => $base_object,
             'object_compare' => $compare_object,
             'elements' => $this->admin->getShow(),
-        ], null);
+        ]);
     }
 
     /**
@@ -1059,7 +1062,7 @@ class CRUDController implements ContainerAwareInterface
             'roles' => $aclRoles,
             'aclUsersForm' => $aclUsersForm->createView(),
             'aclRolesForm' => $aclRolesForm->createView(),
-        ], null);
+        ]);
     }
 
     /**
