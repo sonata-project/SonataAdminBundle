@@ -509,6 +509,7 @@ class CRUDController implements ContainerAwareInterface
             $batchTranslationDomain = $batchActions[$action]['translation_domain'] ??
                 $this->admin->getTranslationDomain();
 
+            // NEXT_MAJOR: Remove the two following line.
             $formView = $datagrid->getForm()->createView();
             $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
@@ -525,6 +526,7 @@ class CRUDController implements ContainerAwareInterface
                 'action_label' => $actionLabel,
                 'batch_translation_domain' => $batchTranslationDomain,
                 'datagrid' => $datagrid,
+                // NEXT_MAJOR: Remove the next line.
                 'form' => $formView,
                 'data' => $data,
                 'csrf_token' => $this->getCsrfToken('sonata.batch'),
