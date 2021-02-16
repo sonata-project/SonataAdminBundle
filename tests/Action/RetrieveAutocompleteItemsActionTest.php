@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Action\RetrieveAutocompleteItemsAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
@@ -44,13 +45,13 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     private $action;
 
     /**
-     * @var AbstractAdmin
+     * @var AdminInterface
      */
     private $admin;
 
     protected function setUp(): void
     {
-        $this->admin = $this->createMock(AbstractAdmin::class);
+        $this->admin = $this->createMock(AdminInterface::class);
         $this->admin->expects($this->once())->method('setRequest');
         $container = new Container();
         $container->set('foo.admin', $this->admin);
@@ -234,7 +235,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     {
         $model = new \stdClass();
 
-        $targetAdmin = $this->createMock(AbstractAdmin::class);
+        $targetAdmin = $this->createMock(AdminInterface::class);
         $datagrid = $this->createStub(DatagridInterface::class);
         $metadata = $this->createStub(MetadataInterface::class);
         $pager = $this->createStub(PagerInterface::class);

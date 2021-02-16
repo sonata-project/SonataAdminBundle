@@ -856,7 +856,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $object;
     }
 
-    public function getFormBuilder(): FormBuilderInterface
+    final public function getFormBuilder(): FormBuilderInterface
     {
         $formBuilder = $this->getFormContractor()->getFormBuilder(
             $this->getUniqid(),
@@ -872,7 +872,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * This method is being called by the main admin class and the child class,
      * the getFormBuilder is only call by the main admin class.
      */
-    public function defineFormBuilder(FormBuilderInterface $formBuilder): void
+    final public function defineFormBuilder(FormBuilderInterface $formBuilder): void
     {
         if (!$this->hasSubject()) {
             throw new \LogicException(sprintf(
@@ -890,7 +890,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
     }
 
-    public function attachAdminClass(FieldDescriptionInterface $fieldDescription): void
+    final public function attachAdminClass(FieldDescriptionInterface $fieldDescription): void
     {
         $pool = $this->getConfigurationPool();
 
@@ -935,7 +935,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $object;
     }
 
-    public function getForm(): FormInterface
+    final public function getForm(): FormInterface
     {
         $this->buildForm();
 
@@ -944,7 +944,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->form;
     }
 
-    public function getList(): FieldDescriptionCollection
+    final public function getList(): FieldDescriptionCollection
     {
         $this->buildList();
 
@@ -965,7 +965,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $query;
     }
 
-    public function getDatagrid(): DatagridInterface
+    final public function getDatagrid(): DatagridInterface
     {
         $this->buildDatagrid();
 
@@ -974,7 +974,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->datagrid;
     }
 
-    public function buildTabMenu(string $action, ?AdminInterface $childAdmin = null): ItemInterface
+    final public function buildTabMenu(string $action, ?AdminInterface $childAdmin = null): ItemInterface
     {
         if ($this->loaded['tab_menu']) {
             return $this->menu;
@@ -1002,7 +1002,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->menu;
     }
 
-    public function getSideMenu(string $action, ?AdminInterface $childAdmin = null): ItemInterface
+    final public function getSideMenu(string $action, ?AdminInterface $childAdmin = null): ItemInterface
     {
         if ($this->isChild()) {
             return $this->getParent()->getSideMenu($action, $this);
@@ -1013,12 +1013,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->menu;
     }
 
-    public function getRootCode(): string
+    final public function getRootCode(): string
     {
         return $this->getRoot()->getCode();
     }
 
-    public function getRoot(): AdminInterface
+    final public function getRoot(): AdminInterface
     {
         if (!$this->hasParentFieldDescription()) {
             return $this;
@@ -1027,44 +1027,44 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getParentFieldDescription()->getAdmin()->getRoot();
     }
 
-    public function setBaseControllerName(string $baseControllerName): void
+    final public function setBaseControllerName(string $baseControllerName): void
     {
         $this->baseControllerName = $baseControllerName;
     }
 
-    public function getBaseControllerName(): string
+    final public function getBaseControllerName(): string
     {
         return $this->baseControllerName;
     }
 
-    public function getMaxPerPage(): int
+    final public function getMaxPerPage(): int
     {
         $sortValues = $this->getDefaultSortValues();
 
         return $sortValues['_per_page'] ?? 25;
     }
 
-    public function setMaxPageLinks(int $maxPageLinks): void
+    final public function setMaxPageLinks(int $maxPageLinks): void
     {
         $this->maxPageLinks = $maxPageLinks;
     }
 
-    public function getMaxPageLinks(): int
+    final public function getMaxPageLinks(): int
     {
         return $this->maxPageLinks;
     }
 
-    public function getFormGroups(): array
+    final public function getFormGroups(): array
     {
         return $this->formGroups;
     }
 
-    public function setFormGroups(array $formGroups): void
+    final public function setFormGroups(array $formGroups): void
     {
         $this->formGroups = $formGroups;
     }
 
-    public function removeFieldFromFormGroup(string $key): void
+    final public function removeFieldFromFormGroup(string $key): void
     {
         foreach ($this->formGroups as $name => $formGroup) {
             unset($this->formGroups[$name]['fields'][$key]);
@@ -1075,56 +1075,56 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
     }
 
-    public function reorderFormGroup(string $group, array $keys): void
+    final public function reorderFormGroup(string $group, array $keys): void
     {
         $formGroups = $this->getFormGroups();
         $formGroups[$group]['fields'] = array_merge(array_flip($keys), $formGroups[$group]['fields']);
         $this->setFormGroups($formGroups);
     }
 
-    public function getFormTabs(): array
+    final public function getFormTabs(): array
     {
         return $this->formTabs;
     }
 
-    public function setFormTabs(array $formTabs): void
+    final public function setFormTabs(array $formTabs): void
     {
         $this->formTabs = $formTabs;
     }
 
-    public function getShowTabs(): array
+    final public function getShowTabs(): array
     {
         return $this->showTabs;
     }
 
-    public function setShowTabs(array $showTabs): void
+    final public function setShowTabs(array $showTabs): void
     {
         $this->showTabs = $showTabs;
     }
 
-    public function getShowGroups(): array
+    final public function getShowGroups(): array
     {
         return $this->showGroups;
     }
 
-    public function setShowGroups(array $showGroups): void
+    final public function setShowGroups(array $showGroups): void
     {
         $this->showGroups = $showGroups;
     }
 
-    public function reorderShowGroup(string $group, array $keys): void
+    final public function reorderShowGroup(string $group, array $keys): void
     {
         $showGroups = $this->getShowGroups();
         $showGroups[$group]['fields'] = array_merge(array_flip($keys), $showGroups[$group]['fields']);
         $this->setShowGroups($showGroups);
     }
 
-    public function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription): void
+    final public function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription): void
     {
         $this->parentFieldDescription = $parentFieldDescription;
     }
 
-    public function getParentFieldDescription(): FieldDescriptionInterface
+    final public function getParentFieldDescription(): FieldDescriptionInterface
     {
         if (!$this->hasParentFieldDescription()) {
             throw new \LogicException(sprintf(
@@ -1136,12 +1136,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->parentFieldDescription;
     }
 
-    public function hasParentFieldDescription(): bool
+    final public function hasParentFieldDescription(): bool
     {
         return $this->parentFieldDescription instanceof FieldDescriptionInterface;
     }
 
-    public function setSubject(?object $subject): void
+    final public function setSubject(?object $subject): void
     {
         if (null !== $subject && !is_a($subject, $this->getClass(), true)) {
             throw new \LogicException(sprintf(
@@ -1155,7 +1155,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->subject = $subject;
     }
 
-    public function getSubject(): object
+    final public function getSubject(): object
     {
         if (!$this->hasSubject()) {
             throw new \LogicException(sprintf(
@@ -1167,7 +1167,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->subject;
     }
 
-    public function hasSubject(): bool
+    final public function hasSubject(): bool
     {
         if (null === $this->subject && $this->hasRequest() && !$this->hasParentFieldDescription()) {
             $id = $this->getRequest()->get($this->getIdParameter());
@@ -1180,14 +1180,14 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return null !== $this->subject;
     }
 
-    public function getFormFieldDescriptions(): array
+    final public function getFormFieldDescriptions(): array
     {
         $this->buildForm();
 
         return $this->formFieldDescriptions;
     }
 
-    public function getFormFieldDescription(string $name): FieldDescriptionInterface
+    final public function getFormFieldDescription(string $name): FieldDescriptionInterface
     {
         $this->buildForm();
 
@@ -1205,14 +1205,14 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * Returns true if the admin has a FieldDescription with the given $name.
      */
-    public function hasFormFieldDescription(string $name): bool
+    final public function hasFormFieldDescription(string $name): bool
     {
         $this->buildForm();
 
         return \array_key_exists($name, $this->formFieldDescriptions) ? true : false;
     }
 
-    public function addFormFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void
+    final public function addFormFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void
     {
         $this->formFieldDescriptions[$name] = $fieldDescription;
     }
@@ -1220,7 +1220,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * remove a FieldDescription.
      */
-    public function removeFormFieldDescription(string $name): void
+    final public function removeFormFieldDescription(string $name): void
     {
         unset($this->formFieldDescriptions[$name]);
     }
@@ -1230,7 +1230,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      *
      * @return FieldDescriptionInterface[] collection of form FieldDescription
      */
-    public function getShowFieldDescriptions(): array
+    final public function getShowFieldDescriptions(): array
     {
         $this->buildShow();
 
@@ -1240,7 +1240,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * Returns the form FieldDescription with the given $name.
      */
-    public function getShowFieldDescription(string $name): FieldDescriptionInterface
+    final public function getShowFieldDescription(string $name): FieldDescriptionInterface
     {
         $this->buildShow();
 
@@ -1255,31 +1255,31 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->showFieldDescriptions[$name];
     }
 
-    public function hasShowFieldDescription(string $name): bool
+    final public function hasShowFieldDescription(string $name): bool
     {
         $this->buildShow();
 
         return \array_key_exists($name, $this->showFieldDescriptions);
     }
 
-    public function addShowFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void
+    final public function addShowFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void
     {
         $this->showFieldDescriptions[$name] = $fieldDescription;
     }
 
-    public function removeShowFieldDescription(string $name): void
+    final public function removeShowFieldDescription(string $name): void
     {
         unset($this->showFieldDescriptions[$name]);
     }
 
-    public function getListFieldDescriptions(): array
+    final public function getListFieldDescriptions(): array
     {
         $this->buildList();
 
         return $this->listFieldDescriptions;
     }
 
-    public function getListFieldDescription(string $name): FieldDescriptionInterface
+    final public function getListFieldDescription(string $name): FieldDescriptionInterface
     {
         $this->buildList();
 
@@ -1294,24 +1294,24 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->listFieldDescriptions[$name];
     }
 
-    public function hasListFieldDescription(string $name): bool
+    final public function hasListFieldDescription(string $name): bool
     {
         $this->buildList();
 
         return \array_key_exists($name, $this->listFieldDescriptions) ? true : false;
     }
 
-    public function addListFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void
+    final public function addListFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void
     {
         $this->listFieldDescriptions[$name] = $fieldDescription;
     }
 
-    public function removeListFieldDescription(string $name): void
+    final public function removeListFieldDescription(string $name): void
     {
         unset($this->listFieldDescriptions[$name]);
     }
 
-    public function getFilterFieldDescription(string $name): FieldDescriptionInterface
+    final public function getFilterFieldDescription(string $name): FieldDescriptionInterface
     {
         $this->buildDatagrid();
 
@@ -1326,31 +1326,31 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->filterFieldDescriptions[$name];
     }
 
-    public function hasFilterFieldDescription(string $name): bool
+    final public function hasFilterFieldDescription(string $name): bool
     {
         $this->buildDatagrid();
 
         return \array_key_exists($name, $this->filterFieldDescriptions) ? true : false;
     }
 
-    public function addFilterFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void
+    final public function addFilterFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void
     {
         $this->filterFieldDescriptions[$name] = $fieldDescription;
     }
 
-    public function removeFilterFieldDescription(string $name): void
+    final public function removeFilterFieldDescription(string $name): void
     {
         unset($this->filterFieldDescriptions[$name]);
     }
 
-    public function getFilterFieldDescriptions(): array
+    final public function getFilterFieldDescriptions(): array
     {
         $this->buildDatagrid();
 
         return $this->filterFieldDescriptions;
     }
 
-    public function addChild(AdminInterface $child, string $field): void
+    final public function addChild(AdminInterface $child, string $field): void
     {
         $parentAdmin = $this;
         while ($parentAdmin->isChild() && $parentAdmin->getCode() !== $child->getCode()) {
@@ -1371,17 +1371,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $child->addParentAssociationMapping($this->getCode(), $field);
     }
 
-    public function hasChild(string $code): bool
+    final public function hasChild(string $code): bool
     {
         return isset($this->children[$code]);
     }
 
-    public function getChildren(): array
+    final public function getChildren(): array
     {
         return $this->children;
     }
 
-    public function getChild(string $code): AdminInterface
+    final public function getChild(string $code): AdminInterface
     {
         if (!$this->hasChild($code)) {
             throw new \LogicException(sprintf(
@@ -1394,12 +1394,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getChildren()[$code];
     }
 
-    public function setParent(AdminInterface $parent): void
+    final public function setParent(AdminInterface $parent): void
     {
         $this->parent = $parent;
     }
 
-    public function getParent(): AdminInterface
+    final public function getParent(): AdminInterface
     {
         if (null === $this->parent) {
             throw new \LogicException(sprintf(
@@ -1450,7 +1450,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $child;
     }
 
-    public function isChild(): bool
+    final public function isChild(): bool
     {
         return $this->parent instanceof AdminInterface;
     }
@@ -1458,17 +1458,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * Returns true if the admin has children, false otherwise.
      */
-    public function hasChildren(): bool
+    final public function hasChildren(): bool
     {
         return \count($this->children) > 0;
     }
 
-    public function setUniqid(string $uniqid): void
+    final public function setUniqid(string $uniqid): void
     {
         $this->uniqid = $uniqid;
     }
 
-    public function getUniqid(): string
+    final public function getUniqid(): string
     {
         if (!$this->uniqid) {
             $this->uniqid = sprintf('s%s', uniqid());
@@ -1477,10 +1477,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->uniqid;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassnameLabel(): string
+    final public function getClassnameLabel(): string
     {
         if (null === $this->classnameLabel) {
             throw new \LogicException(sprintf(
@@ -1505,22 +1502,19 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $parameters;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPersistentParameter(string $name)
+    final public function getPersistentParameter(string $name)
     {
         $parameters = $this->getPersistentParameters();
 
         return $parameters[$name] ?? null;
     }
 
-    public function setCurrentChild(bool $currentChild): void
+    final public function setCurrentChild(bool $currentChild): void
     {
         $this->currentChild = $currentChild;
     }
 
-    public function isCurrentChild(): bool
+    final public function isCurrentChild(): bool
     {
         return $this->currentChild;
     }
@@ -1530,7 +1524,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      *
      * @return AdminInterface|null the current child admin instance
      */
-    public function getCurrentChildAdmin(): ?AdminInterface
+    final public function getCurrentChildAdmin(): ?AdminInterface
     {
         foreach ($this->getChildren() as $child) {
             if ($child->isCurrentChild()) {
@@ -1541,22 +1535,22 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return null;
     }
 
-    public function setTranslationDomain(string $translationDomain): void
+    final public function setTranslationDomain(string $translationDomain): void
     {
         $this->translationDomain = $translationDomain;
     }
 
-    public function getTranslationDomain(): string
+    final public function getTranslationDomain(): string
     {
         return $this->translationDomain;
     }
 
-    public function getTranslationLabel(string $label, string $context = '', string $type = ''): string
+    final public function getTranslationLabel(string $label, string $context = '', string $type = ''): string
     {
         return $this->getLabelTranslatorStrategy()->getLabel($label, $context, $type);
     }
 
-    public function setRequest(Request $request): void
+    final public function setRequest(Request $request): void
     {
         $this->request = $request;
 
@@ -1565,7 +1559,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
     }
 
-    public function getRequest(): Request
+    final public function getRequest(): Request
     {
         if (!$this->request) {
             throw new \LogicException('The Request object has not been set');
@@ -1574,17 +1568,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->request;
     }
 
-    public function hasRequest(): bool
+    final public function hasRequest(): bool
     {
         return null !== $this->request;
     }
 
-    public function getCode(): string
+    final public function getCode(): string
     {
         return $this->code;
     }
 
-    public function getBaseCodeRoute(): string
+    final public function getBaseCodeRoute(): string
     {
         if ($this->isChild()) {
             return $this->getParent()->getBaseCodeRoute().'|'.$this->getCode();

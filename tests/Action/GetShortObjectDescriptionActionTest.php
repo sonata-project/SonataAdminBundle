@@ -15,7 +15,7 @@ namespace Sonata\AdminBundle\Tests\Action;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistry;
 use Symfony\Component\DependencyInjection\Container;
@@ -42,7 +42,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
     private $action;
 
     /**
-     * @var AbstractAdmin
+     * @var AdminInterface
      */
     private $admin;
 
@@ -55,7 +55,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
     {
         $this->twig = new Environment(new ArrayLoader(['short_object_description' => 'renderedTemplate']));
         $this->adminCode = 'sonata.post.admin';
-        $this->admin = $this->createMock(AbstractAdmin::class);
+        $this->admin = $this->createMock(AdminInterface::class);
         $container = new Container();
         $container->set($this->adminCode, $this->admin);
         $this->pool = new Pool($container, [$this->adminCode]);
@@ -132,7 +132,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('toString')->with($object)->willReturn('bar');
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
-        $this->admin->setTemplateRegistry($templateRegistry);
+        $this->admin->method('getTemplateRegistry')->willReturn($templateRegistry);
 
         $response = ($this->action)($request);
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Block;
 
-use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminSearchBlockService;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
@@ -79,7 +79,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
     {
         $datagrid = $this->createStub(DatagridInterface::class);
 
-        $admin = $this->createMock(AbstractAdmin::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin
             ->method('getDatagrid')
             ->willReturn($datagrid);
@@ -125,7 +125,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
     {
         $adminCode = 'code';
 
-        $admin = $this->createMock(AbstractAdmin::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin
             ->method('getCode')
             ->willReturn($adminCode);
