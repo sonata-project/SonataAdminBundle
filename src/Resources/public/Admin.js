@@ -668,6 +668,7 @@ var Admin = {
             Admin.handleScroll(footer, navbar, wrapper);
         }
     },
+
     handleScroll: function(footer, navbar, wrapper) {
         if (footer.length && jQuery(window).scrollTop() + jQuery(window).height() != jQuery(document).height()) {
             jQuery(footer).addClass('stuck');
@@ -697,6 +698,7 @@ var Admin = {
             }, 250)
         );
     },
+
     handleResize: function(footer, navbar, wrapper) {
         if (navbar.length && jQuery(navbar).hasClass('stuck')) {
             jQuery(navbar).width(jQuery(wrapper).outerWidth());
@@ -706,6 +708,7 @@ var Admin = {
             jQuery(footer).width(jQuery(wrapper).outerWidth());
         }
     },
+
     refreshNavbarStuckClass: function(topNavbar) {
         var stuck = jQuery('#navbar-stuck');
 
@@ -718,6 +721,7 @@ var Admin = {
 
         stuck.html('body.fixed .content-header .navbar.stuck { top: ' + jQuery(topNavbar).outerHeight() + 'px; }');
     },
+
     // http://davidwalsh.name/javascript-debounce-function
     debounce: function (func, wait, immediate) {
         var timeout;
@@ -744,6 +748,7 @@ var Admin = {
             }
         };
     },
+
     setup_readmore_elements: function(subject) {
         Admin.log('[core|setup_readmore_elements] setup readmore elements on', subject);
 
@@ -755,9 +760,11 @@ var Admin = {
             });
         });
     },
+
     handle_top_navbar_height: function() {
         jQuery('body.fixed .content-wrapper').css('padding-top', jQuery('.navbar-static-top').outerHeight());
     },
+
     setup_form_submit: function(subject) {
         Admin.log('[core|setup_form_submit] setup form submit on', subject);
 
@@ -776,6 +783,7 @@ var Admin = {
             }
         });
     },
+
     convert_query_string_to_object: function (str) {
         return str.split('&').reduce(function (accumulator, keyValue) {
             accumulator[decodeURIComponent(keyValue.split('=')[0])] = keyValue.split('=')[1];
@@ -783,6 +791,7 @@ var Admin = {
             return accumulator;
         }, {});
     },
+
     /**
      * Remember open tab after refreshing page.
      */
