@@ -17,7 +17,6 @@ use Doctrine\Common\Collections\Collection;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminExtensionInterface;
@@ -2962,7 +2961,7 @@ class AdminTest extends TestCase
     {
         $admin = new FilteredAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'Sonata\FooBundle\Controller\ModelAdminController');
 
-        $reflectionClass = new ReflectionClass($admin);
+        $reflectionClass = new \ReflectionClass($admin);
 
         $method = $reflectionClass->getMethod('mergeParameters');
         $method->setAccessible(true);
