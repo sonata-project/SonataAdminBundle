@@ -30,6 +30,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
+use Sonata\AdminBundle\Util\ParametersManipulator;
 use Sonata\Form\Validator\Constraints\InlineConstraint;
 use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -709,7 +710,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 }
             }
 
-            $parameters = $this->mergeParameters($parameters, $filters);
+            $parameters = ParametersManipulator::merge($parameters, $filters);
 
             // always force the parent value
             if ($this->isChild() && $this->getParentAssociationMapping()) {
@@ -3334,22 +3335,6 @@ EOT;
         foreach ($this->getExtensions() as $extension) {
             $extension->configureRoutes($this, $this->routes);
         }
-    }
-
-    /**
-     * Merge parameters but replace them when it's a subarray.
-     */
-    private function mergeParameters(array $parameters, array $filters): array
-    {
-        foreach (array_intersect_key($parameters, $filters) as $key => $parameter) {
-            if (\is_array($parameter)) {
-                $parameters[$key] = array_replace($parameter, $filters[$key]);
-            } else {
-                $parameters[$key] = $filters[$key];
-            }
-        }
-
-        return array_merge($parameters, array_diff_key($filters, $parameters));
     }
 }
 
