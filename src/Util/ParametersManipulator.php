@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Util;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-
 /**
  * @author Willem Verspyck
  */
@@ -23,11 +20,6 @@ final class ParametersManipulator
 {
     /**
      * Merge parameters, but replace them when it's a subarray.
-     *
-     * @param array $parameters
-     * @param array $filters
-     *
-     * @return array
      */
     public static function merge(array $parameters, array $filters): array
     {
