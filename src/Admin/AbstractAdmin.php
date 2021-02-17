@@ -709,7 +709,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 }
             }
 
-            $parameters = array_merge($parameters, $filters);
+            $parameters = array_replace_recursive($parameters, $filters);
 
             // always force the parent value
             if ($this->isChild() && $this->getParentAssociationMapping()) {

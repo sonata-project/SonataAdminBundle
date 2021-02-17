@@ -334,22 +334,16 @@ var Admin = {
                 return;
             }
 
-            var defaultValues = $.param({'filter': JSON.parse(this.dataset.defaultValues)}).split('&'),
-                submittedValues = $form.serialize().split('&');
+            var defaults = Admin.convert_query_string_to_object(
+                $.param({'filter': JSON.parse(this.dataset.defaultValues)})
+            );
 
-            // Compare default and submitted filter values in `keyValue` representation. (`keyValue` ex: "filter[publish][value][end]=2020-12-12")
-            // Only allow to submit non default and non empty values, because empty values means they are not present.
-            var changedValues = submittedValues.filter(function (keyValue) {
-                return defaultValues.indexOf(keyValue) === -1 && keyValue.split('=')[1] !== '';
+            // Keep only changed values
+            $form.find('[name*=filter]').each(function (i, field) {
+                if ((defaults[field.name] || '') === field.value) {
+                    field.removeAttribute('name');
+                }
             });
-
-            // Disable all inputs and enable only the required ones
-            $form.find('[name*=filter]').attr('disabled', 'disabled');
-            changedValues
-                .map(function (keyValue) { return decodeURIComponent(keyValue.split('=')[0]); })
-                .forEach(function (key) {
-                    $form.find('[name="' + key + '"]').removeAttr('disabled');
-                });
         });
 
         /* Advanced filters */
@@ -674,6 +668,7 @@ var Admin = {
             Admin.handleScroll(footer, navbar, wrapper);
         }
     },
+
     handleScroll: function(footer, navbar, wrapper) {
         if (footer.length && jQuery(window).scrollTop() + jQuery(window).height() != jQuery(document).height()) {
             jQuery(footer).addClass('stuck');
@@ -703,6 +698,7 @@ var Admin = {
             }, 250)
         );
     },
+
     handleResize: function(footer, navbar, wrapper) {
         if (navbar.length && jQuery(navbar).hasClass('stuck')) {
             jQuery(navbar).width(jQuery(wrapper).outerWidth());
@@ -712,6 +708,7 @@ var Admin = {
             jQuery(footer).width(jQuery(wrapper).outerWidth());
         }
     },
+
     refreshNavbarStuckClass: function(topNavbar) {
         var stuck = jQuery('#navbar-stuck');
 
@@ -724,6 +721,7 @@ var Admin = {
 
         stuck.html('body.fixed .content-header .navbar.stuck { top: ' + jQuery(topNavbar).outerHeight() + 'px; }');
     },
+
     // http://davidwalsh.name/javascript-debounce-function
     debounce: function (func, wait, immediate) {
         var timeout;
@@ -750,6 +748,7 @@ var Admin = {
             }
         };
     },
+
     setup_readmore_elements: function(subject) {
         Admin.log('[core|setup_readmore_elements] setup readmore elements on', subject);
 
@@ -761,9 +760,11 @@ var Admin = {
             });
         });
     },
+
     handle_top_navbar_height: function() {
         jQuery('body.fixed .content-wrapper').css('padding-top', jQuery('.navbar-static-top').outerHeight());
     },
+
     setup_form_submit: function(subject) {
         Admin.log('[core|setup_form_submit] setup form submit on', subject);
 
@@ -782,6 +783,15 @@ var Admin = {
             }
         });
     },
+
+    convert_query_string_to_object: function (str) {
+        return str.split('&').reduce(function (accumulator, keyValue) {
+            accumulator[decodeURIComponent(keyValue.split('=')[0])] = keyValue.split('=')[1];
+
+            return accumulator;
+        }, {});
+    },
+
     /**
      * Remember open tab after refreshing page.
      */
