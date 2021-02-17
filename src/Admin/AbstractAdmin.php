@@ -3342,7 +3342,7 @@ EOT;
     private function mergeParameters(array $parameters, array $filters): array
     {
         foreach (array_intersect_key($parameters, $filters) as $key => $parameter) {
-            if (is_array($parameter)) {
+            if (\is_array($parameter)) {
                 $parameters[$key] = array_replace($parameter, $filters[$key]);
             } else {
                 $parameters[$key] = $filters[$key];
