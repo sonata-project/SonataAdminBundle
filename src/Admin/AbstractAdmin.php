@@ -3338,7 +3338,6 @@ EOT;
 
     /**
      *  Merge parameters but replace them when it's a subarray
-     *  Merge parameters but replace them when it's a subarray
      */
     private function mergeParameters(array $parameters, array $filters): array
     {
