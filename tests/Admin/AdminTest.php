@@ -2832,4 +2832,135 @@ class AdminTest extends TestCase
             [1, 1, 1],
         ];
     }
+
+    public function provideMergeParameters()
+    {
+        return [
+            [
+                [
+                    '_sort_order' => 'DESC',
+                    '_sort_by' => 'id',
+                    'status' => [
+                        'type' => '1',
+                        'value' => 'foo',
+                    ],
+                ],
+                [
+                    'status' => [
+                        'type' => '2',
+                        'value' => 'foo',
+                    ],
+                ],
+                [
+                    '_sort_order' => 'DESC',
+                    '_sort_by' => 'id',
+                    'status' => [
+                        'type' => '2',
+                        'value' => 'foo',
+                    ],
+                ],
+            ],
+            [
+                [
+                    'status' => [
+                        'type' => '1',
+                    ],
+                ],
+                [
+                    'status' => [
+                        'value' => 'foo',
+                    ],
+                ],
+                [
+                    'status' => [
+                        'type' => '1',
+                        'value' => 'foo',
+                    ],
+                ],
+            ],
+            [
+                [
+                    'status' => [
+                        'type' => '1',
+                        'value' => 'foo',
+                    ],
+                ],
+                [
+                    'status' => [
+                        'type' => '2',
+                    ],
+                    '_page' => 2,
+                    '_per_page' => 25,
+                ],
+                [
+                    'status' => [
+                        'type' => '2',
+                        'value' => 'foo',
+                    ],
+                    '_page' => 2,
+                    '_per_page' => 25,
+                ],
+            ],
+            [
+                [
+                    'status' => [
+                        'type' => '1',
+                        'value' => [
+                            'foo',
+                            'bar',
+                        ],
+                    ],
+                ],
+                [
+                    'status' => [
+                        'value' => [
+                            'foo',
+                        ],
+                    ],
+                ],
+                [
+                    'status' => [
+                        'type' => '1',
+                        'value' => [
+                            'foo',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                [
+                    'status' => [
+                        'value' => [
+                            'foo',
+                            'bar',
+                        ],
+                    ],
+                ],
+                [
+                    'status' => [
+                        'value' => [
+                            'baz',
+                        ],
+                    ],
+                ],
+                [
+                    'status' => [
+                        'value' => [
+                            'baz',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideMergeParameters
+     */
+    public function testMergeParameters(array $parameters, array $filters, array $result): void
+    {
+        $admin = new FilteredAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'Sonata\FooBundle\Controller\ModelAdminController');
+
+        $this->assertSame($result, $admin->mergeParameters($parameters, $filters));
+    }
 }

@@ -709,7 +709,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 }
             }
 
-            $parameters = array_replace_recursive($parameters, $filters);
+            $parameters = $this->mergeParameters($parameters, $filters);
 
             // always force the parent value
             if ($this->isChild() && $this->getParentAssociationMapping()) {
@@ -3334,6 +3334,23 @@ EOT;
         foreach ($this->getExtensions() as $extension) {
             $extension->configureRoutes($this, $this->routes);
         }
+    }
+
+    /**
+     *  Merge parameters but replace them when it's a subarray
+     *  Merge parameters but replace them when it's a subarray
+     */
+    private function mergeParameters(array $parameters, array $filters): array
+    {
+        foreach (array_intersect_key($parameters, $filters) as $key => $parameter) {
+            if (is_array($parameter)) {
+                $parameters[$key] = array_replace($parameter, $filters[$key]);
+            } else {
+                $parameters[$key] = $filters[$key];
+            }
+        }
+
+        return array_merge($parameters, array_diff_key($filters, $parameters));
     }
 }
 
