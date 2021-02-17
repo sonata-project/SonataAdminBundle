@@ -62,8 +62,6 @@ $rules = [
 
 $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
-    ->exclude('Tests/Fixtures')
-    ->exclude('tests/Fixtures')
     ->exclude('Resources/skeleton')
     ->exclude('Resources/public/vendor')
 ;
