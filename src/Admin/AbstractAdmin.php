@@ -2128,22 +2128,29 @@ EOT;
         return $this->classnameLabel;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x
+     */
     public function getPersistentParameters()
     {
-        $parameters = [];
-
+        $parameters = $this->configurePersistentParameters();
         foreach ($this->getExtensions() as $extension) {
-            $params = $extension->getPersistentParameters($this);
+            // NEXT_MAJOR: Remove the check and the else part.
+            if (method_exists($extension, 'configurePersistentParameters')) {
+                $parameters = $extension->configurePersistentParameters($this, $parameters);
+            } else {
+                $params = $extension->getPersistentParameters($this);
 
-            // NEXT_MAJOR: Remove this check, since return typehint is added
-            if (!\is_array($params)) {
-                throw new \RuntimeException(sprintf(
-                    'The %s::getPersistentParameters must return an array',
-                    \get_class($extension)
-                ));
+                // NEXT_MAJOR: Remove this check, since return typehint is added
+                if (!\is_array($params)) {
+                    throw new \RuntimeException(sprintf(
+                        'Method "%s::getPersistentParameters()" must return an array.',
+                        \get_class($extension)
+                    ));
+                }
+
+                $parameters = array_merge($parameters, $params);
             }
-
-            $parameters = array_merge($parameters, $params);
         }
 
         return $parameters;
@@ -2892,6 +2899,14 @@ EOT;
      */
     protected function alterObject(object $object): void
     {
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function configurePersistentParameters(): array
+    {
+        return [];
     }
 
     /**

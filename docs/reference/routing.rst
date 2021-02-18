@@ -363,14 +363,14 @@ Persistent parameters
 
 In some cases, the interface might be required to pass the same parameters
 across the different ``Admin``'s actions. Instead of setting them in the
-template or doing other weird hacks, you can define a ``getPersistentParameters``
+template or doing other weird hacks, you can define a ``configurePersistentParameters()``
 method. This method will be used when a link is being generated::
 
     // src/Admin/MediaAdmin.php
 
     final class MediaAdmin extends AbstractAdmin
     {
-        public function getPersistentParameters()
+        public function configurePersistentParameters(): array
         {
             if (!$this->getRequest()) {
                 return [];
