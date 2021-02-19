@@ -28,6 +28,7 @@ use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -1328,8 +1329,11 @@ class AdminTest extends TestCase
     {
         $post = new Post();
 
-        $postAdmin = $this->getMockBuilder(PostAdmin::class)->disableOriginalConstructor()->getMock();
-        $postAdmin->method('getCode')->willReturn('post');
+        $postAdmin = $this->getMockBuilder(PostAdmin::class)->setConstructorArgs([
+            'post',
+            Post::class,
+            CRUDController::class,
+        ])->getMock();
         $postAdmin->method('getObject')->willReturn($post);
         $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
@@ -1358,8 +1362,11 @@ class AdminTest extends TestCase
     {
         $post = new Post();
 
-        $postAdmin = $this->getMockBuilder(PostAdmin::class)->disableOriginalConstructor()->getMock();
-        $postAdmin->method('getCode')->willReturn('post');
+        $postAdmin = $this->getMockBuilder(PostAdmin::class)->setConstructorArgs([
+            'post',
+            Post::class,
+            CRUDController::class,
+        ])->getMock();
         $postAdmin->method('getObject')->willReturn($post);
         $postAdmin->method('getIdParameter')->willReturn('parent_id');
 

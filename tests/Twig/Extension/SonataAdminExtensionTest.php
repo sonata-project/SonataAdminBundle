@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
@@ -111,7 +110,7 @@ class SonataAdminExtensionTest extends TestCase
         $this->object = new \stdClass();
 
         // initialize admin
-        $this->admin = $this->createMock(AbstractAdmin::class);
+        $this->admin = $this->createMock(AdminInterface::class);
 
         $this->admin
             ->method('getCode')
@@ -127,7 +126,7 @@ class SonataAdminExtensionTest extends TestCase
             ->with($this->equalTo($this->object))
             ->willReturn('12345');
 
-        $this->adminBar = $this->createMock(AbstractAdmin::class);
+        $this->adminBar = $this->createMock(AdminInterface::class);
         $this->adminBar
             ->method('hasAccess')
             ->willReturn(true);

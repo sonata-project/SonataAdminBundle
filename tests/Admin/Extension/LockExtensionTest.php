@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Tests\Admin\Extension;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Extension\LockExtension;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
@@ -67,7 +66,7 @@ class LockExtensionTest extends TestCase
     protected function setUp(): void
     {
         $this->modelManager = $this->createMock(LockInterface::class);
-        $this->admin = $this->createStub(AbstractAdmin::class);
+        $this->admin = $this->createStub(AdminInterface::class);
 
         $this->eventDispatcher = new EventDispatcher();
         $this->request = new Request();
@@ -241,7 +240,7 @@ class LockExtensionTest extends TestCase
         ?Request $request = null
     ): void {
         $this->admin->method('getUniqid')->willReturn($uniqid);
-        $this->admin->setModelManager($modelManager);
+        $this->admin->method('getModelManager')->willReturn($modelManager);
 
         $this->admin->method('hasRequest')->willReturn(null !== $request);
         if (null !== $request) {
