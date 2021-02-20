@@ -1432,6 +1432,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * @param string $action
      *
      * @return ItemInterface
+     *
+     * @phpstan-param AdminInterface<object>|null $childAdmin
      */
     public function getSideMenu($action, ?AdminInterface $childAdmin = null)
     {
@@ -3023,6 +3025,8 @@ EOT;
      * NEXT_MAJOR: remove this method.
      *
      * @deprecated Use configureTabMenu instead
+     *
+     * @phpstan-param AdminInterface<object>|null $childAdmin
      */
     protected function configureSideMenu(ItemInterface $menu, string $action, ?AdminInterface $childAdmin = null)
     {
@@ -3032,6 +3036,8 @@ EOT;
      * Configures the tab menu in your admin.
      *
      * @param string $action
+     *
+     * @phpstan-param AdminInterface<object>|null $childAdmin
      */
     protected function configureTabMenu(ItemInterface $menu, $action, ?AdminInterface $childAdmin = null)
     {
