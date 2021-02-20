@@ -75,7 +75,7 @@ interface AdminExtensionInterface
      * @return void
      *
      * @phpstan-param AdminInterface<T> $admin
-     * @phpstan-param AdminInterface<T>|null $childAdmin
+     * @phpstan-param AdminInterface<object>|null $childAdmin
      *
      * @deprecated
      */
@@ -94,7 +94,7 @@ interface AdminExtensionInterface
      * @return void
      *
      * @phpstan-param AdminInterface<T> $admin
-     * @phpstan-param AdminInterface<T>|null $childAdmin
+     * @phpstan-param AdminInterface<object>|null $childAdmin
      */
     public function configureTabMenu(
         AdminInterface $admin,
