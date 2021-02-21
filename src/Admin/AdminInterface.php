@@ -30,7 +30,6 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * NEXT_MAJOR: Add all these methods to the interface by uncommenting them.
  *
- * @method array                           configureActionButtons(string $action, ?object $object = null)
  * @method string                          getSearchResultLink(object $object)
  * @method array                           getDefaultFilterParameters()
  * @method bool                            isCurrentRoute(string $name, ?string $adminCode)
@@ -730,11 +729,6 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      * @return string
      */
     public function getListMode();
-
-    /*
-     * Configure buttons for an action
-     */
-    // public function configureActionButtons(string $action, ?object $object = null): array;
 
     // NEXT_MAJOR: uncomment this method for 4.0
     /*
