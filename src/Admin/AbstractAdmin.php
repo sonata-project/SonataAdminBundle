@@ -2458,6 +2458,8 @@ EOT;
     }
 
     /**
+     * NEXT_MAJOR: Change visibility to protected.
+     *
      * Return the list of permissions the user should have in order to display the admin.
      *
      * @param string $context
