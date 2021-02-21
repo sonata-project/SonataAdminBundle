@@ -34,6 +34,7 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exporter\DataSourceInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -1693,11 +1694,11 @@ class AdminTest extends TestCase
                 ->willReturn($this->createMock(MemberMetadata::class));
         $modelAdmin->setValidator($validator);
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-        $modelManager
-            ->method('getNewFieldDescriptionInstance')
+        $fieldDescriptionFactory = $this->createStub(FieldDescriptionFactoryInterface::class);
+        $fieldDescriptionFactory
+            ->method('create')
             ->willReturn(new FieldDescription('name'));
-        $modelAdmin->setModelManager($modelManager);
+        $modelAdmin->setFieldDescriptionFactory($fieldDescriptionFactory);
 
         // a Admin class to test that preValidate is called
         $testAdminPreValidate = $this->createMock(AbstractAdmin::class);
@@ -1763,11 +1764,11 @@ class AdminTest extends TestCase
             ->willReturn($metadata);
         $modelAdmin->setValidator($validator);
 
-        $modelManager = $this->createStub(ModelManagerInterface::class);
-        $modelManager
-            ->method('getNewFieldDescriptionInstance')
+        $fieldDescriptionFactory = $this->createStub(FieldDescriptionFactoryInterface::class);
+        $fieldDescriptionFactory
+            ->method('create')
             ->willReturn(new FieldDescription('name'));
-        $modelAdmin->setModelManager($modelManager);
+        $modelAdmin->setFieldDescriptionFactory($fieldDescriptionFactory);
 
         $event = $this->createStub(FormEvent::class);
         $event
@@ -1902,13 +1903,10 @@ class AdminTest extends TestCase
         $barFieldDescription = new FieldDescription('bar');
         $bazFieldDescription = new FieldDescription('baz');
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-        $modelManager
-            ->method('getDefaultSortValues')
-            ->willReturn([]);
-
-        $modelManager->expects($this->exactly(3))
-            ->method('getNewFieldDescriptionInstance')
+        $fieldDescriptionFactory = $this->createMock(FieldDescriptionFactoryInterface::class);
+        $fieldDescriptionFactory
+            ->expects($this->exactly(3))
+            ->method('create')
             ->willReturnCallback(static function ($adminClass, string $name, $filterOptions) use ($fooFieldDescription, $barFieldDescription, $bazFieldDescription) {
                 switch ($name) {
                     case 'foo':
@@ -1935,6 +1933,13 @@ class AdminTest extends TestCase
 
                 return $fieldDescription;
             });
+
+        $modelAdmin->setFieldDescriptionFactory($fieldDescriptionFactory);
+
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager
+            ->method('getDefaultSortValues')
+            ->willReturn([]);
 
         $modelAdmin->setModelManager($modelManager);
 

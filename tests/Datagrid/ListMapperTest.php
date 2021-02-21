@@ -14,14 +14,12 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 
 /**
@@ -50,34 +48,31 @@ class ListMapperTest extends TestCase
     {
         $listBuilder = $this->createMock(ListBuilderInterface::class);
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
-        $this->admin = $this->createMock(AbstractAdmin::class);
+
+        // NEXT_MAJOR: Change to $this->createStub(AdminInterface::class).
+        $this->admin = $this->getMockBuilder(AdminInterface::class)
+            ->addMethods(['createFieldDescription', 'hasAccess'])
+            ->getMockForAbstractClass();
 
         $listBuilder
             ->method('addField')
             ->willReturnCallback(static function (
                 FieldDescriptionCollection $list,
                 ?string $type,
-                BaseFieldDescription $fieldDescription,
-                AbstractAdmin $admin
+                BaseFieldDescription $fieldDescription
             ): void {
                 $fieldDescription->setType($type);
                 $list->add($fieldDescription);
             });
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-
-        $modelManager
-            ->method('getNewFieldDescriptionInstance')
-            ->willReturnCallback(function (?string $class, string $name, array $options = []): BaseFieldDescription {
+        $this->admin
+            ->method('createFieldDescription')
+            ->willReturnCallback(function (string $name, array $options = []): FieldDescriptionInterface {
                 $fieldDescription = $this->getFieldDescriptionMock($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
             });
-
-        $this->admin
-            ->method('getModelManager')
-            ->willReturn($modelManager);
 
         $labelTranslatorStrategy = new NoopLabelTranslatorStrategy();
 

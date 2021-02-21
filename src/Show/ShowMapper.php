@@ -71,11 +71,20 @@ class ShowMapper extends BaseGroupedMapper
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
         } elseif (\is_string($name)) {
             if (!$this->admin->hasShowFieldDescription($name)) {
-                $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
-                    $this->admin->getClass(),
-                    $name,
-                    $fieldDescriptionOptions
-                );
+
+                // NEXT_MAJOR: Remove the check and use `createFieldDescription`.
+                if (method_exists($this->admin, 'createFieldDescription')) {
+                    $fieldDescription = $this->admin->createFieldDescription(
+                        $name,
+                        $fieldDescriptionOptions
+                    );
+                } else {
+                    $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
+                        $this->admin->getClass(),
+                        $name,
+                        $fieldDescriptionOptions
+                    );
+                }
             } else {
                 throw new \LogicException(sprintf(
                     'Duplicate field name "%s" in show mapper. Names should be unique.',

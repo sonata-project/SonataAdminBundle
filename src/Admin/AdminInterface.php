@@ -51,6 +51,7 @@ use Symfony\Component\HttpFoundation\Request;
  * @method string|null                     getParentAssociationMapping()
  * @method void                            reorderFormGroup(string $group, array $keys)
  * @method void                            defineFormBuilder(FormBuilderInterface $formBuilder)
+ * @method FieldDescriptionInterface       createFieldDescription(string $propertyName, array $options = [])
  *
  * @phpstan-template T of object
  * @phpstan-extends AccessRegistryInterface<T>
@@ -789,6 +790,9 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
 //     * the getFormBuilder is only call by the main admin class.
 //     */
 //    public function defineFormBuilder(FormBuilderInterface $formBuilder): void;
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    public function createFieldDescription(string $propertyName, array $options = []): FieldDescriptionInterface;
 }
 
 class_exists(\Sonata\Form\Validator\ErrorElement::class);

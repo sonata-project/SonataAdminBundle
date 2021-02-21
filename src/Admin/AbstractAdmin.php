@@ -2890,6 +2890,26 @@ EOT;
         return null !== $this->templateRegistry;
     }
 
+    final public function createFieldDescription(string $propertyName, array $options = []): FieldDescriptionInterface
+    {
+        $fieldDescriptionFactory = $this->getFieldDescriptionFactory();
+
+        // NEXT_MAJOR: Remove the "if" block and leave the "else" one.
+        if (null === $fieldDescriptionFactory) {
+            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance(
+                $this->getClass(),
+                $propertyName,
+                $options
+            );
+        } else {
+            $fieldDescription = $fieldDescriptionFactory->create($this->getClass(), $propertyName, $options);
+        }
+
+        $fieldDescription->setAdmin($this);
+
+        return $fieldDescription;
+    }
+
     /**
      * @phpstan-return T
      */
@@ -3363,26 +3383,6 @@ EOT;
         foreach ($this->getExtensions() as $extension) {
             $extension->configureRoutes($this, $this->routes);
         }
-    }
-
-    private function createFieldDescription(string $name, array $options = []): FieldDescriptionInterface
-    {
-        $fieldDescriptionFactory = $this->getFieldDescriptionFactory();
-
-        // NEXT_MAJOR: Remove the "if" block and leave the "else" one.
-        if (null === $fieldDescriptionFactory) {
-            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance(
-                $this->getClass(),
-                $name,
-                $options
-            );
-        } else {
-            $fieldDescription = $fieldDescriptionFactory->create($this->getClass(), $name, $options);
-        }
-
-        $fieldDescription->setAdmin($this);
-
-        return $fieldDescription;
     }
 }
 

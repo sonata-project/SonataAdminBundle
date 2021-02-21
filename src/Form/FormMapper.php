@@ -108,11 +108,19 @@ class FormMapper extends BaseGroupedMapper
             $fieldDescriptionOptions['translation_domain'] = $group['translation_domain'];
         }
 
-        $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
-            $this->admin->getClass(),
-            $name instanceof FormBuilderInterface ? $name->getName() : $name,
-            $fieldDescriptionOptions
-        );
+        // NEXT_MAJOR: Remove the check and use `createFieldDescription`.
+        if (method_exists($this->admin, 'createFieldDescription')) {
+            $fieldDescription = $this->admin->createFieldDescription(
+                $name instanceof FormBuilderInterface ? $name->getName() : $name,
+                $fieldDescriptionOptions
+            );
+        } else {
+            $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
+                $this->admin->getClass(),
+                $name instanceof FormBuilderInterface ? $name->getName() : $name,
+                $fieldDescriptionOptions
+            );
+        }
 
         // Note that the builder var is actually the formContractor:
         $this->builder->fixFieldDescription($this->admin, $fieldDescription);

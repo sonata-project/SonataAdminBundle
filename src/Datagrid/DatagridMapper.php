@@ -114,11 +114,19 @@ class DatagridMapper extends BaseMapper
                 $filterOptions['field_name'] = substr(strrchr('.'.$name, '.'), 1);
             }
 
-            $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
-                $this->admin->getClass(),
-                $name,
-                array_merge($filterOptions, $fieldDescriptionOptions)
-            );
+            // NEXT_MAJOR: Remove the check and use `createFieldDescription`.
+            if (method_exists($this->admin, 'createFieldDescription')) {
+                $fieldDescription = $this->admin->createFieldDescription(
+                    $name,
+                    array_merge($filterOptions, $fieldDescriptionOptions)
+                );
+            } else {
+                $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
+                    $this->admin->getClass(),
+                    $name,
+                    array_merge($filterOptions, $fieldDescriptionOptions)
+                );
+            }
         } else {
             throw new \TypeError(
                 'Unknown field name in datagrid mapper.'
