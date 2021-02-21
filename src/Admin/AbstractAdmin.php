@@ -354,7 +354,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $fields;
     }
 
-    public function getDataSourceIterator(): SourceIteratorInterface
+    final public function getDataSourceIterator(): SourceIteratorInterface
     {
         $datagrid = $this->getDatagrid();
         $datagrid->buildPager();
@@ -838,10 +838,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->getTemplateRegistry()->setTemplate($name, $template);
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.89
-     */
-    public function getNewInstance(): object
+    final public function getNewInstance(): object
     {
         $object = $this->createNewInstance();
 
@@ -909,13 +906,11 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.90
-     *
      * @param string|int|null $id
      *
      * @phpstan-return T|null
      */
-    public function getObject($id): ?object
+    final public function getObject($id): ?object
     {
         if (null === $id) {
             return null;
@@ -1491,10 +1486,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->classnameLabel;
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.90
-     */
-    public function getPersistentParameters(): array
+    final public function getPersistentParameters(): array
     {
         $parameters = $this->configurePersistentParameters();
         foreach ($this->getExtensions() as $extension) {
@@ -1594,17 +1586,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getCode();
     }
 
-    public function showIn(string $context): bool
+    final public function showIn(string $context): bool
     {
         return $this->isGranted($this->getPermissionsShow($context));
     }
 
-    public function createObjectSecurity(object $object): void
+    final public function createObjectSecurity(object $object): void
     {
         $this->getSecurityHandler()->createObjectSecurity($this, $object);
     }
 
-    public function isGranted($name, ?object $object = null): bool
+    final public function isGranted($name, ?object $object = null): bool
     {
         $objectRef = $object ? sprintf('/%s#%s', spl_object_hash($object), $this->id($object)) : '';
         $key = md5(json_encode($name).$objectRef);
@@ -1616,12 +1608,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->cacheIsGranted[$key];
     }
 
-    public function getUrlSafeIdentifier(object $model): ?string
+    final public function getUrlSafeIdentifier(object $model): ?string
     {
         return $this->getModelManager()->getUrlSafeIdentifier($model);
     }
 
-    public function getNormalizedIdentifier(object $model): ?string
+    final public function getNormalizedIdentifier(object $model): ?string
     {
         return $this->getModelManager()->getNormalizedIdentifier($model);
     }
@@ -1631,39 +1623,39 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getNormalizedIdentifier($model);
     }
 
-    public function getShow(): FieldDescriptionCollection
+    final public function getShow(): FieldDescriptionCollection
     {
         $this->buildShow();
 
         return $this->show;
     }
 
-    public function setFormTheme(array $formTheme): void
+    final public function setFormTheme(array $formTheme): void
     {
         $this->formTheme = $formTheme;
     }
 
-    public function getFormTheme(): array
+    final public function getFormTheme(): array
     {
         return $this->formTheme;
     }
 
-    public function setFilterTheme(array $filterTheme): void
+    final public function setFilterTheme(array $filterTheme): void
     {
         $this->filterTheme = $filterTheme;
     }
 
-    public function getFilterTheme(): array
+    final public function getFilterTheme(): array
     {
         return $this->filterTheme;
     }
 
-    public function addExtension(AdminExtensionInterface $extension): void
+    final public function addExtension(AdminExtensionInterface $extension): void
     {
         $this->extensions[] = $extension;
     }
 
-    public function getExtensions(): array
+    final public function getExtensions(): array
     {
         return $this->extensions;
     }
@@ -1677,7 +1669,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return sprintf('%s:%s', ClassUtils::getClass($object), spl_object_hash($object));
     }
 
-    public function supportsPreviewMode(): bool
+    final public function supportsPreviewMode(): bool
     {
         return $this->supportsPreviewMode;
     }
@@ -1701,12 +1693,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * Returns true if the per page value is allowed, false otherwise.
      */
-    public function determinedPerPageValue(int $perPage): bool
+    final public function determinedPerPageValue(int $perPage): bool
     {
         return \in_array($perPage, $this->getPerPageOptions(), true);
     }
 
-    public function isAclEnabled(): bool
+    final public function isAclEnabled(): bool
     {
         return $this->getSecurityHandler() instanceof AclSecurityHandlerInterface;
     }
@@ -1716,12 +1708,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return new Metadata($this->toString($object));
     }
 
-    public function setListMode(string $mode): void
+    final public function setListMode(string $mode): void
     {
         $this->getRequest()->getSession()->set(sprintf('%s.list_mode', $this->getCode()), $mode);
     }
 
-    public function getListMode(): string
+    final public function getListMode(): string
     {
         if (!$this->hasRequest()) {
             return 'list';
@@ -1730,12 +1722,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getRequest()->getSession()->get(sprintf('%s.list_mode', $this->getCode()), 'list');
     }
 
-    public function getAccessMapping(): array
+    final public function getAccessMapping(): array
     {
         return $this->accessMapping;
     }
 
-    public function checkAccess(string $action, ?object $object = null): void
+    final public function checkAccess(string $action, ?object $object = null): void
     {
         $access = $this->getAccess();
 
@@ -1758,7 +1750,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
     }
 
-    public function hasAccess(string $action, ?object $object = null): bool
+    final public function hasAccess(string $action, ?object $object = null): bool
     {
         $access = $this->getAccess();
 
@@ -1866,7 +1858,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      *
      * @return array<string, array<string, mixed>>
      */
-    public function getDashboardActions(): array
+    final public function getDashboardActions(): array
     {
         $actions = [];
 
@@ -2165,7 +2157,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      *
      * @return array<string, string|string[]>
      */
-    protected function getAccess(): array
+    final protected function getAccess(): array
     {
         $access = array_merge([
             'acl' => 'MASTER',
@@ -2404,9 +2396,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->form = $this->getFormBuilder()->getForm();
     }
 
-    /**
-     * Build all the related urls to the current admin.
-     */
     private function buildRoutes(): void
     {
         if ($this->loaded['routes']) {
