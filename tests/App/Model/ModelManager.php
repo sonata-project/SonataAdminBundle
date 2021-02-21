@@ -110,6 +110,9 @@ final class ModelManager implements ModelManagerInterface
         return $model->getId();
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function getModelInstance($class)
     {
         switch ($class) {

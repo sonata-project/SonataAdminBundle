@@ -191,6 +191,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * Create a new instance of the model of the specified class.
      *
+     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0. Use AdminInterface::createNewInstance instead.
+     *
      * @param string $class
      *
      * @return object
