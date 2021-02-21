@@ -741,10 +741,18 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * NEXT_MAJOR: Change the visibility to protected (similar to buildShow, buildForm, ...).
+     * NEXT_MAJOR: Change the visibility to private.
      */
     public function buildDatagrid()
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'The %s() method is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will become private in version 4.0.',
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+        }
+
         if ($this->loaded['datagrid']) {
             return;
         }
@@ -1367,14 +1375,16 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     public function getForm()
     {
-        $this->buildForm();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildForm('sonata_deprecation_mute');
 
         return $this->form;
     }
 
     public function getList()
     {
-        $this->buildList();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildList('sonata_deprecation_mute');
 
         return $this->list;
     }
@@ -1403,7 +1413,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     public function getDatagrid()
     {
-        $this->buildDatagrid();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildDatagrid('sonata_deprecation_mute');
 
         return $this->datagrid;
     }
@@ -1741,14 +1752,16 @@ EOT;
 
     public function getFormFieldDescriptions()
     {
-        $this->buildForm();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildForm('sonata_deprecation_mute');
 
         return $this->formFieldDescriptions;
     }
 
     public function getFormFieldDescription($name)
     {
-        $this->buildForm();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildForm('sonata_deprecation_mute');
 
         if (!$this->hasFormFieldDescription($name)) {
             @trigger_error(sprintf(
@@ -1780,7 +1793,8 @@ EOT;
      */
     public function hasFormFieldDescription($name)
     {
-        $this->buildForm();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildForm('sonata_deprecation_mute');
 
         return \array_key_exists($name, $this->formFieldDescriptions);
     }
@@ -1807,7 +1821,8 @@ EOT;
      */
     public function getShowFieldDescriptions()
     {
-        $this->buildShow();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildShow('sonata_deprecation_mute');
 
         return $this->showFieldDescriptions;
     }
@@ -1821,7 +1836,8 @@ EOT;
      */
     public function getShowFieldDescription($name)
     {
-        $this->buildShow();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildShow('sonata_deprecation_mute');
 
         if (!$this->hasShowFieldDescription($name)) {
             @trigger_error(sprintf(
@@ -1846,7 +1862,8 @@ EOT;
 
     public function hasShowFieldDescription($name)
     {
-        $this->buildShow();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildShow('sonata_deprecation_mute');
 
         return \array_key_exists($name, $this->showFieldDescriptions);
     }
@@ -1863,14 +1880,16 @@ EOT;
 
     public function getListFieldDescriptions()
     {
-        $this->buildList();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildList('sonata_deprecation_mute');
 
         return $this->listFieldDescriptions;
     }
 
     public function getListFieldDescription($name)
     {
-        $this->buildList();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildList('sonata_deprecation_mute');
 
         if (!$this->hasListFieldDescription($name)) {
             @trigger_error(sprintf(
@@ -1896,7 +1915,8 @@ EOT;
 
     public function hasListFieldDescription($name)
     {
-        $this->buildList();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildList('sonata_deprecation_mute');
 
         return \array_key_exists($name, $this->listFieldDescriptions);
     }
@@ -1913,7 +1933,8 @@ EOT;
 
     public function getFilterFieldDescription($name)
     {
-        $this->buildDatagrid();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildDatagrid('sonata_deprecation_mute');
 
         if (!$this->hasFilterFieldDescription($name)) {
             @trigger_error(sprintf(
@@ -1938,7 +1959,8 @@ EOT;
 
     public function hasFilterFieldDescription($name)
     {
-        $this->buildDatagrid();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildDatagrid('sonata_deprecation_mute');
 
         return \array_key_exists($name, $this->filterFieldDescriptions);
     }
@@ -1955,7 +1977,8 @@ EOT;
 
     public function getFilterFieldDescriptions()
     {
-        $this->buildDatagrid();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildDatagrid('sonata_deprecation_mute');
 
         return $this->filterFieldDescriptions;
     }
@@ -2485,7 +2508,8 @@ EOT;
 
     public function getShow()
     {
-        $this->buildShow();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildShow('sonata_deprecation_mute');
 
         return $this->show;
     }
@@ -3101,10 +3125,18 @@ EOT;
     }
 
     /**
-     * build the view FieldDescription array.
+     * NEXT_MAJOR: Change the visibility to private.
      */
     protected function buildShow()
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'The %s() method is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will become private in version 4.0.',
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+        }
+
         if ($this->loaded['show']) {
             return;
         }
@@ -3122,10 +3154,18 @@ EOT;
     }
 
     /**
-     * build the list FieldDescription array.
+     * NEXT_MAJOR: Change visibility to private.
      */
     protected function buildList()
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'The %s() method is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will become private in version 4.0.',
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+        }
+
         if ($this->loaded['list']) {
             return;
         }
@@ -3179,10 +3219,18 @@ EOT;
     }
 
     /**
-     * Build the form FieldDescription collection.
+     * NEXT_MAJOR: Change visibility to private.
      */
     protected function buildForm()
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'The %s() method is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will become private in version 4.0.',
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+        }
+
         if ($this->loaded['form']) {
             return;
         }
