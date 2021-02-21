@@ -33,7 +33,6 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
 use Sonata\AdminBundle\Tests\Fixtures\Util\DummyDomainObject;
@@ -979,7 +978,7 @@ class CRUDControllerTest extends TestCase
 
         $object2 = new \stdClass();
 
-        $admin = $this->createMock(PostAdmin::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin->method('getIdParameter')->willReturn('parent_id');
 
         $admin->expects($this->exactly(2))
@@ -1368,7 +1367,7 @@ class CRUDControllerTest extends TestCase
         $child = new \stdClass();
         $child->parents = [$parent];
 
-        $parentAdmin = $this->createMock(PostAdmin::class);
+        $parentAdmin = $this->createMock(AdminInterface::class);
         $parentAdmin->method('getIdParameter')->willReturn('parent_id');
 
         $childAdmin = $this->admin;

@@ -1326,19 +1326,22 @@ class AdminTest extends TestCase
             Post::class,
             CRUDController::class,
         ])->getMock();
-        $postAdmin->method('getObject')->willReturn($post);
+
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager->method('find')->willReturn($post);
+        $postAdmin->setModelManager($modelManager);
+
         $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
         $formBuilder = $this->createStub(FormBuilderInterface::class);
         $formBuilder->method('getForm')->willReturn(null);
-
-        $tag = new Tag();
 
         $tagAdmin = new TagAdmin('admin.tag', Tag::class, 'MyBundle\MyController');
         $tagAdmin->setParent($postAdmin);
         $tagAdmin->addParentAssociationMapping('post', 'post');
 
         $request = $this->createStub(Request::class);
+        $request->method('get')->with('parent_id')->willReturn(42);
         $tagAdmin->setRequest($request);
 
         $tag = $tagAdmin->getNewInstance();
@@ -1355,7 +1358,11 @@ class AdminTest extends TestCase
             Post::class,
             CRUDController::class,
         ])->getMock();
-        $postAdmin->method('getObject')->willReturn($post);
+
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager->method('find')->willReturn($post);
+        $postAdmin->setModelManager($modelManager);
+
         $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
         $formBuilder = $this->createStub(FormBuilderInterface::class);
@@ -1366,6 +1373,7 @@ class AdminTest extends TestCase
         $postCategoryAdmin->addParentAssociationMapping('post', 'posts');
 
         $request = $this->createStub(Request::class);
+        $request->method('get')->with('parent_id')->willReturn(42);
         $postCategoryAdmin->setRequest($request);
 
         $postCategory = $postCategoryAdmin->getNewInstance();
@@ -1379,8 +1387,16 @@ class AdminTest extends TestCase
     {
         $post = new Post();
 
-        $postAdmin = $this->getMockBuilder(PostAdmin::class)->disableOriginalConstructor()->getMock();
-        $postAdmin->method('getObject')->willReturn($post);
+        $postAdmin = $this->getMockBuilder(PostAdmin::class)->setConstructorArgs([
+            'post',
+            Post::class,
+            CRUDController::class,
+        ])->getMock();
+
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager->method('find')->willReturn($post);
+        $postAdmin->setModelManager($modelManager);
+
         $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
         $formBuilder = $this->createStub(FormBuilderInterface::class);
@@ -1395,6 +1411,7 @@ class AdminTest extends TestCase
         $tagAdmin->setParentFieldDescription($parentField);
 
         $request = $this->createStub(Request::class);
+        $request->method('get')->with('parent_id')->willReturn(42);
         $tagAdmin->setRequest($request);
 
         $tag = $tagAdmin->getNewInstance();
@@ -1746,15 +1763,12 @@ class AdminTest extends TestCase
             ->setMethodsExcept(['getActionButtons', 'configureActionButtons'])
             ->getMockForAbstractClass();
 
-        $admin->method('isAclEnabled')->willReturn(true);
-        $admin->method('getExtensions')->willReturn([]);
+        $securityHandler = $this->createStub(AclSecurityHandlerInterface::class);
+        $admin->setSecurityHandler($securityHandler);
 
         $routerGenerator = $this->createMock(RouteGeneratorInterface::class);
         $routerGenerator->expects($this->exactly(9))->method('hasAdminRoute')->willReturn(false);
         $admin->setRouteGenerator($routerGenerator);
-
-        $admin->expects($this->never())->method('hasAccess');
-        $admin->expects($this->never())->method('getShow');
 
         $this->assertSame([], $admin->getActionButtons('show'));
         $this->assertSame([], $admin->getActionButtons('edit'));
