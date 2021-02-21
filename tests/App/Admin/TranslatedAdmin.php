@@ -18,10 +18,16 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Tests\App\Model\Translated;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 final class TranslatedAdmin extends AbstractAdmin
 {
+    protected function createNewInstance(): object
+    {
+        return new Translated();
+    }
+
     protected function configureListFields(ListMapper $list): void
     {
         $list->add('name_list', FieldDescriptionInterface::TYPE_STRING);

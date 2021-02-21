@@ -30,6 +30,8 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
+// NEXT_MAJOR: Uncomment next line.
+// use Sonata\AdminBundle\Util\Instantiator;
 use Sonata\Form\Validator\Constraints\InlineConstraint;
 use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -1247,7 +1249,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     public function getNewInstance()
     {
-        $object = $this->getModelManager()->getModelInstance($this->getClass());
+        $object = $this->createNewInstance();
 
         $this->appendParentObject($object);
         $this->alterNewInstance($object);
@@ -2887,6 +2889,17 @@ EOT;
     final public function hasTemplateRegistry(): bool
     {
         return null !== $this->templateRegistry;
+    }
+
+    /**
+     * @phpstan-return T
+     */
+    protected function createNewInstance(): object
+    {
+        // NEXT_MAJOR: Uncomment next line and remove the other one.
+        // return Instantiator::instantiate($this->getClass());
+        /* @phpstan-ignore-next-line */
+        return $this->getModelManager()->getModelInstance($this->getClass(), 'sonata_deprecation_mute');
     }
 
     /**
