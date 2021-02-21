@@ -2725,7 +2725,9 @@ EOT;
 
         if (\in_array($action, ['show', 'delete', 'acl', 'history'], true)
             && $this->hasRoute('edit')
-            && $this->canAccessObject('edit', $object)
+            && null !== $object
+            // NEXT_MAJOR: Replace by `$this->hasAccess`
+            && $this->canAccessObject('edit', $object, 'sonata_deprecation_mute')
         ) {
             $list['edit'] = [
                 // NEXT_MAJOR: Remove this line and use commented line below it instead
@@ -2736,7 +2738,9 @@ EOT;
 
         if (\in_array($action, ['show', 'edit', 'acl'], true)
             && $this->hasRoute('history')
-            && $this->canAccessObject('history', $object)
+            && null !== $object
+            // NEXT_MAJOR: Replace by `$this->hasAccess`
+            && $this->canAccessObject('history', $object, 'sonata_deprecation_mute')
         ) {
             $list['history'] = [
                 // NEXT_MAJOR: Remove this line and use commented line below it instead
@@ -2748,7 +2752,9 @@ EOT;
         if (\in_array($action, ['edit', 'history'], true)
             && $this->isAclEnabled()
             && $this->hasRoute('acl')
-            && $this->canAccessObject('acl', $object)
+            && null !== $object
+            // NEXT_MAJOR: Replace by `$this->hasAccess`
+            && $this->canAccessObject('acl', $object, 'sonata_deprecation_mute')
         ) {
             $list['acl'] = [
                 // NEXT_MAJOR: Remove this line and use commented line below it instead
@@ -2759,7 +2765,9 @@ EOT;
 
         if (\in_array($action, ['edit', 'history', 'acl'], true)
             && $this->hasRoute('show')
-            && $this->canAccessObject('show', $object)
+            && null !== $object
+            // NEXT_MAJOR: Replace by `$this->hasAccess`
+            && $this->canAccessObject('show', $object, 'sonata_deprecation_mute')
             && \count($this->getShow()) > 0
         ) {
             $list['show'] = [
@@ -2881,6 +2889,8 @@ EOT;
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * Check object existence and access, without throw Exception.
      *
      * @param string $action
@@ -2892,6 +2902,14 @@ EOT;
      */
     public function canAccessObject($action, $object)
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[2] ?? null)) {
+            @trigger_error(sprintf(
+                'The method %s() is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will be removed an in 4.0. Use `hasAccess` instead',
+                __METHOD__,
+            ), \E_USER_DEPRECATED);
+        }
+
         if (!\is_object($object)) {
             return false;
         }

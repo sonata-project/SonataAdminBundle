@@ -34,7 +34,6 @@ use Symfony\Component\HttpFoundation\Request;
  * @method string                          getSearchResultLink(object $object)
  * @method array                           getDefaultFilterParameters()
  * @method bool                            isCurrentRoute(string $name, ?string $adminCode)
- * @method bool                            canAccessObject(string $action, object $object)
  * @method mixed                           getPersistentParameter(string $name)
  * @method string[]                        getExportFields()
  * @method array                           getSubClasses()
