@@ -144,11 +144,19 @@ class ListMapper extends BaseMapper
                 ));
             }
 
-            $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
-                $this->admin->getClass(),
-                $name,
-                $fieldDescriptionOptions
-            );
+            // NEXT_MAJOR: Remove the check and use `createFieldDescription`.
+            if (method_exists($this->admin, 'createFieldDescription')) {
+                $fieldDescription = $this->admin->createFieldDescription(
+                    $name,
+                    $fieldDescriptionOptions
+                );
+            } else {
+                $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
+                    $this->admin->getClass(),
+                    $name,
+                    $fieldDescriptionOptions
+                );
+            }
         } else {
             throw new \TypeError(
                 'Unknown field name in list mapper.'
