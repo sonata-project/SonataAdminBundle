@@ -21,7 +21,7 @@ use Sonata\AdminBundle\Util\ParametersManipulator;
  */
 class ParametersManipulatorTest extends TestCase
 {
-    public function provideMergeParameters(): array
+    public function provideMergeParameters(): iterable
     {
         return [
             [
