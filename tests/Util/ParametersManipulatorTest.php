@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Util\ParametersManipulator;
 
 /**
- * @author Willem Verspyck
+ * @author Willem Verspyck <willemverspyck@users.noreply.github.com>
  */
 class ParametersManipulatorTest extends TestCase
 {
