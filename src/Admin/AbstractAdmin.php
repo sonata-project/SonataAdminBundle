@@ -32,6 +32,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 // NEXT_MAJOR: Uncomment next line.
 // use Sonata\AdminBundle\Util\Instantiator;
+use Sonata\AdminBundle\Util\ParametersManipulator;
 use Sonata\Form\Validator\Constraints\InlineConstraint;
 use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -711,7 +712,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 }
             }
 
-            $parameters = array_replace_recursive($parameters, $filters);
+            $parameters = ParametersManipulator::merge($parameters, $filters);
 
             // always force the parent value
             if ($this->isChild() && $this->getParentAssociationMapping()) {
