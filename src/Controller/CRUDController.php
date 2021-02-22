@@ -1690,7 +1690,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @return bool true when $haystack equals $needle or $haystack is iterable and contains $needle
      */
-    private function equalsOrInList(object $needle, $haystack): bool
+    private function equalsOrContains($haystack, object $needle): bool
     {
         if ($needle === $haystack) {
             return true;
