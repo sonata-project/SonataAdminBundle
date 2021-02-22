@@ -43,7 +43,7 @@ interface FilterInterface
      * @param ProxyQueryInterface $query
      * @param mixed[]             $filterData
      *
-     * @phpstan array{type?: string, value?: mixed} $filterData
+     * @phpstan array{type?: string|int, value?: mixed} $filterData
      */
     public function apply($query, $filterData);
 
