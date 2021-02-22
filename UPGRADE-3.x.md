@@ -4,6 +4,10 @@ UPGRADE 3.x
 UPGRADE FROM 3.x to 3.x
 =======================
 
+### Deprecated `Sonata\AdminBundle\Model\AdminInterface::canAccessObject()` method.
+
+Use `Sonata\AdminBundle\Admin\AdminInterface::hasAccess()` instead.
+
 ### `Sonata\AdminBundle\Controller\CRUDController::historyCompareRevisionsAction()`
 
 - Deprecated route parameter "base_revision" in favor of "baseRevision";
