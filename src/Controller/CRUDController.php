@@ -1686,8 +1686,7 @@ class CRUDController implements ContainerAwareInterface
     /**
      * Checks whether $needle is equal to $haystack or part of it.
      *
-     * @param object          $needle   Object to compare with $haystack
-     * @param object|iterable $haystack Object to compare with $needle
+     * @param object|iterable $haystack
      *
      * @return bool true when $haystack equals $needle or $haystack is iterable and contains $needle
      */
