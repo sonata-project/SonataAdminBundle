@@ -21,16 +21,16 @@ final class ParametersManipulator
     /**
      * Merge parameters, but replace them when it's a subarray.
      */
-    public static function merge(array $parameters, array $filters): array
+    public static function merge(array $parameters, array $newParameters): array
     {
-        foreach (array_intersect_key($parameters, $filters) as $key => $parameter) {
+        foreach (array_intersect_key($parameters, $newParameters) as $key => $parameter) {
             if (\is_array($parameter)) {
-                $parameters[$key] = array_replace($parameter, $filters[$key]);
+                $parameters[$key] = array_replace($parameter, $newParameters[$key]);
             } else {
-                $parameters[$key] = $filters[$key];
+                $parameters[$key] = $newParameters[$key];
             }
         }
 
-        return array_merge($parameters, array_diff_key($filters, $parameters));
+        return array_merge($parameters, array_diff_key($newParameters, $parameters));
     }
 }
