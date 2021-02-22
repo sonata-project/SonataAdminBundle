@@ -1672,7 +1672,7 @@ class CRUDController implements ContainerAwareInterface
         $objectParent = $propertyAccessor->getValue($object, $propertyPath);
 
         // $objectParent may be an array or a Collection when the parent association is many to many.
-        $parentObjectMatches = $this->equalsOrInList($parentAdminObject, $objectParent);
+        $parentObjectMatches = $this->equalsOrContains($objectParent, $parentAdminObject);
 
         if (!$parentObjectMatches) {
             // NEXT_MAJOR: make this exception
