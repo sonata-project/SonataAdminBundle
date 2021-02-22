@@ -1627,13 +1627,13 @@ class AdminTest extends TestCase
         $formBuilder = $this->createStub(FormBuilderInterface::class);
         $formBuilder->method('getForm')->willReturn(null);
 
-        $postCategory = new PostCategory();
+        $postCategoryAdmin = new PostCategoryAdmin('admin.post_category', PostCategory::class, 'MyBundle\MyController');
 
+        // NEXT_MAJOR: Remove next three lines related to model manager.
         $modelManager = $this->createStub(ModelManagerInterface::class);
-        $modelManager->method('getModelInstance')->willReturn($postCategory);
-
-        $postCategoryAdmin = new PostCategoryAdmin('admin.post_category', PostCategoryAdmin::class, 'MyBundle\MyController');
+        $modelManager->method('getModelInstance')->willReturn(new PostCategory());
         $postCategoryAdmin->setModelManager($modelManager);
+
         $postCategoryAdmin->setParent($postAdmin);
 
         $request = $this->createStub(Request::class);
@@ -1662,13 +1662,13 @@ class AdminTest extends TestCase
         $parentField->method('getParentAssociationMappings')->willReturn([]);
         $parentField->method('getAssociationMapping')->willReturn(['fieldName' => 'tag', 'mappedBy' => 'post']);
 
-        $tag = new Tag();
-
-        $modelManager = $this->createStub(ModelManagerInterface::class);
-        $modelManager->method('getModelInstance')->willReturn($tag);
-
         $tagAdmin = new TagAdmin('admin.tag', Tag::class, 'MyBundle\MyController');
+
+        // NEXT_MAJOR: Remove next three lines related to model manager.
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager->method('getModelInstance')->willReturn(new Tag());
         $tagAdmin->setModelManager($modelManager);
+
         $tagAdmin->setParentFieldDescription($parentField);
 
         $request = $this->createStub(Request::class);

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Util;
 
 /**
- * @author Willem Verspyck
+ * @author Willem Verspyck <willemverspyck@users.noreply.github.com>
  */
 final class ParametersManipulator
 {

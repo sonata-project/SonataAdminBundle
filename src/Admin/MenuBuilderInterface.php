@@ -30,6 +30,8 @@ interface MenuBuilderInterface
      * @return ItemInterface|bool
      *
      * @deprecated Use buildTabMenu instead
+     *
+     * @phpstan-param AdminInterface<object>|null $childAdmin
      */
     public function buildSideMenu($action, ?AdminInterface $childAdmin = null);
 
@@ -39,6 +41,8 @@ interface MenuBuilderInterface
      * @param string $action
      *
      * @return ItemInterface|bool
+     *
+     * @phpstan-param AdminInterface<object>|null $childAdmin
      */
     public function buildTabMenu($action, ?AdminInterface $childAdmin = null);
 }

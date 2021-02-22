@@ -30,6 +30,8 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
+// NEXT_MAJOR: Uncomment next line.
+// use Sonata\AdminBundle\Util\Instantiator;
 use Sonata\AdminBundle\Util\ParametersManipulator;
 use Sonata\Form\Validator\Constraints\InlineConstraint;
 use Sonata\Form\Validator\ErrorElement;
@@ -1248,7 +1250,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     public function getNewInstance()
     {
-        $object = $this->getModelManager()->getModelInstance($this->getClass());
+        $object = $this->createNewInstance();
 
         $this->appendParentObject($object);
         $this->alterNewInstance($object);
@@ -1433,6 +1435,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * @param string $action
      *
      * @return ItemInterface
+     *
+     * @phpstan-param AdminInterface<object>|null $childAdmin
      */
     public function getSideMenu($action, ?AdminInterface $childAdmin = null)
     {
@@ -2129,22 +2133,29 @@ EOT;
         return $this->classnameLabel;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x
+     */
     public function getPersistentParameters()
     {
-        $parameters = [];
-
+        $parameters = $this->configurePersistentParameters();
         foreach ($this->getExtensions() as $extension) {
-            $params = $extension->getPersistentParameters($this);
+            // NEXT_MAJOR: Remove the check and the else part.
+            if (method_exists($extension, 'configurePersistentParameters')) {
+                $parameters = $extension->configurePersistentParameters($this, $parameters);
+            } else {
+                $params = $extension->getPersistentParameters($this);
 
-            // NEXT_MAJOR: Remove this check, since return typehint is added
-            if (!\is_array($params)) {
-                throw new \RuntimeException(sprintf(
-                    'The %s::getPersistentParameters must return an array',
-                    \get_class($extension)
-                ));
+                // NEXT_MAJOR: Remove this check, since return typehint is added
+                if (!\is_array($params)) {
+                    throw new \RuntimeException(sprintf(
+                        'Method "%s::getPersistentParameters()" must return an array.',
+                        \get_class($extension)
+                    ));
+                }
+
+                $parameters = array_merge($parameters, $params);
             }
-
-            $parameters = array_merge($parameters, $params);
         }
 
         return $parameters;
@@ -2882,6 +2893,17 @@ EOT;
     }
 
     /**
+     * @phpstan-return T
+     */
+    protected function createNewInstance(): object
+    {
+        // NEXT_MAJOR: Uncomment next line and remove the other one.
+        // return Instantiator::instantiate($this->getClass());
+        /* @phpstan-ignore-next-line */
+        return $this->getModelManager()->getModelInstance($this->getClass(), 'sonata_deprecation_mute');
+    }
+
+    /**
      * @phpstan-param T $object
      */
     protected function alterNewInstance(object $object): void
@@ -2893,6 +2915,14 @@ EOT;
      */
     protected function alterObject(object $object): void
     {
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function configurePersistentParameters(): array
+    {
+        return [];
     }
 
     /**
@@ -3009,6 +3039,8 @@ EOT;
      * NEXT_MAJOR: remove this method.
      *
      * @deprecated Use configureTabMenu instead
+     *
+     * @phpstan-param AdminInterface<object>|null $childAdmin
      */
     protected function configureSideMenu(ItemInterface $menu, string $action, ?AdminInterface $childAdmin = null)
     {
@@ -3018,6 +3050,8 @@ EOT;
      * Configures the tab menu in your admin.
      *
      * @param string $action
+     *
+     * @phpstan-param AdminInterface<object>|null $childAdmin
      */
     protected function configureTabMenu(ItemInterface $menu, $action, ?AdminInterface $childAdmin = null)
     {
