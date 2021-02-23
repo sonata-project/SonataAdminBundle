@@ -2728,6 +2728,7 @@ EOT;
         if (\in_array($action, ['show', 'delete', 'acl', 'history'], true)
             && $this->hasRoute('edit')
             && null !== $object
+            && null !== $this->id($object)
             // NEXT_MAJOR: Replace by `$this->hasAccess`
             && $this->canAccessObject('edit', $object, 'sonata_deprecation_mute')
         ) {
@@ -2741,6 +2742,7 @@ EOT;
         if (\in_array($action, ['show', 'edit', 'acl'], true)
             && $this->hasRoute('history')
             && null !== $object
+            && null !== $this->id($object)
             // NEXT_MAJOR: Replace by `$this->hasAccess`
             && $this->canAccessObject('history', $object, 'sonata_deprecation_mute')
         ) {
@@ -2755,6 +2757,7 @@ EOT;
             && $this->isAclEnabled()
             && $this->hasRoute('acl')
             && null !== $object
+            && null !== $this->id($object)
             // NEXT_MAJOR: Replace by `$this->hasAccess`
             && $this->canAccessObject('acl', $object, 'sonata_deprecation_mute')
         ) {
@@ -2768,6 +2771,7 @@ EOT;
         if (\in_array($action, ['edit', 'history', 'acl'], true)
             && $this->hasRoute('show')
             && null !== $object
+            && null !== $this->id($object)
             // NEXT_MAJOR: Replace by `$this->hasAccess`
             && $this->canAccessObject('show', $object, 'sonata_deprecation_mute')
             && \count($this->getShow()) > 0

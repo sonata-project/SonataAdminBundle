@@ -12,6 +12,7 @@ file that was distributed with this source code.
 {# NEXT_MAJOR: Replace canAccessObject by hasAccess #}
 {% if admin.isAclEnabled()
     and object is not null
+    and admin.id(object) is not null
     and admin.canAccessObject('acl', object, 'sonata_deprecation_mute')
     and admin.hasRoute('acl')
 %}
