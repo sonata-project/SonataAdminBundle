@@ -1772,7 +1772,7 @@ EOT;
     {
         $this->buildForm();
 
-        return \array_key_exists($name, $this->formFieldDescriptions) ? true : false;
+        return \array_key_exists($name, $this->formFieldDescriptions);
     }
 
     public function addFormFieldDescription($name, FieldDescriptionInterface $fieldDescription)
@@ -1888,7 +1888,7 @@ EOT;
     {
         $this->buildList();
 
-        return \array_key_exists($name, $this->listFieldDescriptions) ? true : false;
+        return \array_key_exists($name, $this->listFieldDescriptions);
     }
 
     public function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription)
@@ -1930,7 +1930,7 @@ EOT;
     {
         $this->buildDatagrid();
 
-        return \array_key_exists($name, $this->filterFieldDescriptions) ? true : false;
+        return \array_key_exists($name, $this->filterFieldDescriptions);
     }
 
     public function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription)
