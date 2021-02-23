@@ -15,27 +15,28 @@ namespace Sonata\AdminBundle\Tests\Form\Type\Filter;
 
 use Sonata\AdminBundle\Form\Type\Filter\DateTimeRangeType;
 use Sonata\Form\Type\DateTimeRangeType as FormDateTimeRangeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class DateTimeRangeTypeTest extends TypeTestCase
+final class DateTimeRangeTypeTest extends TypeTestCase
 {
     public function testGetDefaultOptions(): void
     {
-        $stub = $this->getMockForAbstractClass(TranslatorInterface::class);
+        $translator = $this->createStub(TranslatorInterface::class);
 
-        $type = new DateTimeRangeType($stub);
+        $type = new DateTimeRangeType($translator);
 
-        $optionResolver = new OptionsResolver();
+        $optionsResolver = new OptionsResolver();
 
-        $type->configureOptions($optionResolver);
+        $type->configureOptions($optionsResolver);
 
-        $options = $optionResolver->resolve();
+        $options = $optionsResolver->resolve();
 
         $expected = [
             'field_type' => FormDateTimeRangeType::class,
-            'field_options' => ['date_format' => 'yyyy-MM-dd'],
+            'field_options' => ['date_format' => DateType::HTML5_FORMAT],
         ];
         $this->assertSame($expected, $options);
     }
