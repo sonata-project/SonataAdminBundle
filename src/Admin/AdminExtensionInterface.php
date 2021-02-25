@@ -153,7 +153,7 @@ interface AdminExtensionInterface
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, use configurePersistentParameters() instead.
+     * @deprecated since sonata-project/admin-bundle 3.90, use configurePersistentParameters() instead.
      *
      * Get a chance to add persistent parameters.
      *
