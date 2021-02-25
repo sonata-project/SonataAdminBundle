@@ -280,6 +280,12 @@ This code manages the many-to-[one|many] association field popup
 
         Admin.log('[{{ id }}|field_dialog_form_action] execute ajax call');
 
+        var oldErrorMessages = jQuery(field_dialog_content_{{ id }}).find('div.alert-danger');
+        // Remove old error messages.
+        if (oldErrorMessages.length > 0) {
+          oldErrorMessages.remove();
+        }
+
         // the ajax post
         jQuery(form).ajaxSubmit({
             url: url,
@@ -343,6 +349,37 @@ This code manages the many-to-[one|many] association field popup
 
                 // reattach the event
                 jQuery('form', field_dialog_{{ id }}).submit(field_dialog_form_action_{{ id }});
+            },
+            error: function(xhr) {
+                var content = '';
+
+                if ('application/json' === xhr.getResponseHeader('Content-Type')) {
+                    var jsonContent = JSON.parse(xhr.responseText);
+
+                    if (jsonContent.message) {
+                        content += '<div class="alert alert-danger alert-dismissable">'
+                            + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'
+                            + jsonContent.message
+                            + '</div>';
+                    }
+
+                    if (jsonContent.errors) {
+                        for (error of jsonContent.errors) {
+                            content += '<div class="alert alert-danger alert-dismissable">'
+                                + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'
+                                + error
+                                + '</div>';
+                        }
+                    }
+                } else {
+                    content += xhr.responseText;
+                }
+
+                // Display the error.
+                field_dialog_content_{{ id }}.prepend(content);
+
+                // Reset the submit buttons.
+                $(form).find('button[type="submit"]').removeAttr('disabled');
             }
         });
 
