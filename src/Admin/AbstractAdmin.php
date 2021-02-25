@@ -1334,7 +1334,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x
+     * @final since sonata-project/admin-bundle 3.90
      */
     public function getObject($id)
     {
@@ -2134,7 +2134,7 @@ EOT;
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x
+     * @final since sonata-project/admin-bundle 3.90
      */
     public function getPersistentParameters()
     {

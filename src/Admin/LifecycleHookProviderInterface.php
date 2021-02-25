@@ -59,7 +59,7 @@ interface LifecycleHookProviderInterface
     /**
      * NEXT_MAJOR: Remove this.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.90
      *
      * @param object $object
      *
@@ -70,7 +70,7 @@ interface LifecycleHookProviderInterface
     /**
      * NEXT_MAJOR: Remove this.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.90
      *
      * @param object $object
      *
@@ -81,7 +81,7 @@ interface LifecycleHookProviderInterface
     /**
      * NEXT_MAJOR: Remove this.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.90
      *
      * @param object $object
      *
@@ -92,7 +92,7 @@ interface LifecycleHookProviderInterface
     /**
      * NEXT_MAJOR: Remove this.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.90
      *
      * @param object $object
      *
@@ -103,7 +103,7 @@ interface LifecycleHookProviderInterface
     /**
      * NEXT_MAJOR: Remove this.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.90
      *
      * @param object $object
      *
@@ -114,7 +114,7 @@ interface LifecycleHookProviderInterface
     /**
      * NEXT_MAJOR: Remove this.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.90
      *
      * @param object $object
      *
