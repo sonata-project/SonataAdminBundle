@@ -4,6 +4,14 @@ UPGRADE 3.x
 UPGRADE FROM 3.89 to 3.90
 =========================
 
+### Deprecated `Sonata\AdminBundle\Guesser\TypeGuesserInterface` interface.
+
+Use `Sonata\AdminBundle\FieldDescription\TypeGuesserInterface` interface instead.
+
+### Deprecated `Sonata\AdminBundle\Guesser\TypeGuesserChain` class.
+
+Use `Sonata\AdminBundle\FieldDescription\TypeGuesserChain` class instead.
+
 ### Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface::getModelInstance()` method.
 
 Use `Sonata\AdminBundle\Admin\AbstractAdmin::createNewInstance()` method instead.
