@@ -340,7 +340,7 @@ var Admin = {
 
             // Keep only changed values
             $form.find('[name*=filter]').each(function (i, field) {
-                if ((defaults[field.name] || '') === field.value) {
+                if (JSON.stringify(defaults[field.name] || '') === JSON.stringify($(field).val())) {
                     field.removeAttribute('name');
                 }
             });
@@ -786,7 +786,17 @@ var Admin = {
 
     convert_query_string_to_object: function (str) {
         return str.split('&').reduce(function (accumulator, keyValue) {
-            accumulator[decodeURIComponent(keyValue.split('=')[0])] = keyValue.split('=')[1];
+            var key = decodeURIComponent(keyValue.split('=')[0]);
+            var val = keyValue.split('=')[1];
+
+            if (key.endsWith('[]')) {
+                if (!accumulator.hasOwnProperty(key)) {
+                    accumulator[key] = [];
+                }
+                accumulator[key].push(val);
+            } else {
+                accumulator[key] = val;
+            }
 
             return accumulator;
         }, {});
