@@ -25,7 +25,7 @@ interface FilterInterface
     public const CONDITION_AND = 'AND';
 
     /**
-     * @phpstan-param array{type?: string, value?: mixed} $filterData
+     * @phpstan-param array{type?: string|int, value?: mixed} $filterData
      */
     public function apply(ProxyQueryInterface $query, array $filterData): void;
 

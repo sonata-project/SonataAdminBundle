@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Form\Type\Filter;
 use Sonata\AdminBundle\Form\Type\Operator\DateOperatorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType as FormDateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -44,7 +45,7 @@ final class DateTimeType extends AbstractType
     {
         $resolver->setDefaults([
             'field_type' => FormDateTimeType::class,
-            'field_options' => ['date_format' => 'yyyy-MM-dd'],
+            'field_options' => ['date_format' => DateType::HTML5_FORMAT],
         ]);
     }
 }

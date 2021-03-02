@@ -1,6 +1,13 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.xx to 3.xx
+=========================
+
+### Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface::getModelInstance()` method.
+
+Use `Sonata\AdminBundle\Admin\AbstractAdmin::createNewInstance()` method instead.
+
 UPGRADE FROM 3.88 to 3.89
 =========================
 

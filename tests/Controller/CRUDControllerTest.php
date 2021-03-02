@@ -1300,6 +1300,42 @@ class CRUDControllerTest extends TestCase
         $this->assertSame(Request::METHOD_DELETE, $this->request->getMethod());
     }
 
+    public function testDeleteActionChildManyToMany(): void
+    {
+        $parent = new \stdClass();
+
+        $child = new \stdClass();
+        $child->parents = [$parent];
+
+        $parentAdmin = $this->createMock(PostAdmin::class);
+        $parentAdmin->method('getIdParameter')->willReturn('parent_id');
+
+        $childAdmin = $this->admin;
+        $childAdmin->method('getIdParameter')->willReturn('parent_id');
+
+        $parentAdmin->expects($this->once())
+            ->method('getObject')
+            ->willReturn($parent);
+
+        $childAdmin->expects($this->once())
+            ->method('getObject')
+            ->willReturn($child);
+
+        $childAdmin->expects($this->once())
+            ->method('isChild')
+            ->willReturn(true);
+
+        $childAdmin->expects($this->once())
+            ->method('getParent')
+            ->willReturn($parentAdmin);
+
+        $childAdmin->expects($this->once())
+            ->method('getParentAssociationMapping')
+            ->willReturn('parents');
+
+        $this->controller->deleteAction($this->request);
+    }
+
     public function testEditActionNotFoundException(): void
     {
         $this->expectException(NotFoundHttpException::class);
@@ -3544,7 +3580,7 @@ class CRUDControllerTest extends TestCase
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
-        $this->expectTranslate('flash_batch_empty', [], 'SonataAdminBundle');
+        $this->expectTranslate('flash_foo_error', [], 'SonataAdminBundle');
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('action', 'foo');
@@ -3554,7 +3590,7 @@ class CRUDControllerTest extends TestCase
         $result = $controller->batchAction($this->request);
 
         $this->assertInstanceOf(RedirectResponse::class, $result);
-        $this->assertSame(['flash_batch_empty'], $this->session->getFlashBag()->get('sonata_flash_info'));
+        $this->assertSame(['flash_foo_error'], $this->session->getFlashBag()->get('sonata_flash_info'));
         $this->assertSame('list', $result->getTargetUrl());
     }
 

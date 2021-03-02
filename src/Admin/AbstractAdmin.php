@@ -31,6 +31,8 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
+use Sonata\AdminBundle\Util\Instantiator;
+use Sonata\AdminBundle\Util\ParametersManipulator;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -492,7 +494,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 }
             }
 
-            $parameters = array_merge($parameters, $filters);
+            $parameters = ParametersManipulator::merge($parameters, $filters);
 
             // always force the parent value
             if ($this->isChild() && null !== $this->getParentAssociationMapping()) {
@@ -844,7 +846,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     public function getNewInstance(): object
     {
-        $object = $this->getModelManager()->getModelInstance($this->getClass());
+        $object = $this->createNewInstance();
 
         $this->appendParentObject($object);
         $this->alterNewInstance($object);
@@ -910,7 +912,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x
+     * @final since sonata-project/admin-bundle 3.90
      *
      * @param string|int|null $id
      *
@@ -1002,6 +1004,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->menu;
     }
 
+    /**
+     * @phpstan-param AdminInterface<object>|null $childAdmin
+     */
     final public function getSideMenu(string $action, ?AdminInterface $childAdmin = null): ItemInterface
     {
         if ($this->isChild()) {
@@ -1209,7 +1214,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
         $this->buildForm();
 
-        return \array_key_exists($name, $this->formFieldDescriptions) ? true : false;
+        return \array_key_exists($name, $this->formFieldDescriptions);
     }
 
     final public function addFormFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void
@@ -1298,7 +1303,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
         $this->buildList();
 
-        return \array_key_exists($name, $this->listFieldDescriptions) ? true : false;
+        return \array_key_exists($name, $this->listFieldDescriptions);
     }
 
     final public function addListFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void
@@ -1330,7 +1335,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
         $this->buildDatagrid();
 
-        return \array_key_exists($name, $this->filterFieldDescriptions) ? true : false;
+        return \array_key_exists($name, $this->filterFieldDescriptions);
     }
 
     final public function addFilterFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void
@@ -1489,14 +1494,14 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->classnameLabel;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.90
+     */
     public function getPersistentParameters(): array
     {
-        $parameters = [];
-
+        $parameters = $this->configurePersistentParameters();
         foreach ($this->getExtensions() as $extension) {
-            $params = $extension->getPersistentParameters($this);
-
-            $parameters = array_merge($parameters, $params);
+            $parameters = $extension->configurePersistentParameters($this, $parameters);
         }
 
         return $parameters;
@@ -1945,6 +1950,14 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
+     * @phpstan-return T
+     */
+    protected function createNewInstance(): object
+    {
+        return Instantiator::instantiate($this->getClass());
+    }
+
+    /**
      * @phpstan-param T $object
      */
     protected function alterNewInstance(object $object): void
@@ -1998,6 +2011,14 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     protected function postRemove(object $object): void
     {
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function configurePersistentParameters(): array
+    {
+        return [];
     }
 
     /**
@@ -2109,6 +2130,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     /**
      * Configures the tab menu in your admin.
+     *
+     * @phpstan-param AdminInterface<object>|null $childAdmin
      */
     protected function configureTabMenu(ItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
     {

@@ -124,15 +124,6 @@ interface ModelManagerInterface
     public function getUrlSafeIdentifier(object $model): ?string;
 
     /**
-     * Create a new instance of the model of the specified class.
-     *
-     * @phpstan-template T of object
-     * @phpstan-param class-string<T> $class
-     * @phpstan-return T
-     */
-    public function getModelInstance(string $class): object;
-
-    /**
      * @param array<string, mixed> $array
      *
      * @phpstan-template T of object

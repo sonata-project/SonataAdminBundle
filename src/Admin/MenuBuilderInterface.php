@@ -24,6 +24,8 @@ interface MenuBuilderInterface
 {
     /**
      * Build the tab menu related to the current action.
+     *
+     * @phpstan-param AdminInterface<object>|null $childAdmin
      */
     public function buildTabMenu(string $action, ?AdminInterface $childAdmin = null): ItemInterface;
 }

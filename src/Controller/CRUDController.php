@@ -1347,13 +1347,43 @@ class CRUDController extends AbstractController
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $propertyPath = new PropertyPath($this->admin->getParentAssociationMapping());
 
-        if ($parentAdmin->getObject($parentId) !== $propertyAccessor->getValue($object, $propertyPath)) {
+        $parentAdminObject = $parentAdmin->getObject($parentId);
+        $objectParent = $propertyAccessor->getValue($object, $propertyPath);
+
+        // $objectParent may be an array or a Collection when the parent association is many to many.
+        $parentObjectMatches = $this->equalsOrContains($objectParent, $parentAdminObject);
+
+        if (!$parentObjectMatches) {
             throw new \RuntimeException(sprintf(
                 'There is no association between "%s" and "%s"',
                 $parentAdmin->toString($parentAdmin->getObject($parentId)),
                 $this->admin->toString($object)
             ));
         }
+    }
+
+    /**
+     * Checks whether $needle is equal to $haystack or part of it.
+     *
+     * @param object|iterable $haystack
+     *
+     * @return bool true when $haystack equals $needle or $haystack is iterable and contains $needle
+     */
+    private function equalsOrContains($haystack, object $needle): bool
+    {
+        if ($needle === $haystack) {
+            return true;
+        }
+
+        if (is_iterable($haystack)) {
+            foreach ($haystack as $haystackItem) {
+                if ($haystackItem === $needle) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

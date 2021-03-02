@@ -42,8 +42,10 @@ interface AdminExtensionInterface
     public function configureRoutes(AdminInterface $admin, RouteCollectionInterface $collection): void;
 
     /**
+     * Builds the tab menu.
+     *
      * @phpstan-param AdminInterface<T> $admin
-     * @phpstan-param AdminInterface<T>|null $childAdmin
+     * @phpstan-param AdminInterface<object>|null $childAdmin
      */
     public function configureTabMenu(
         AdminInterface $admin,
@@ -76,11 +78,13 @@ interface AdminExtensionInterface
     /**
      * Get a chance to add persistent parameters.
      *
+     * @param array<string, mixed> $parameters
+     *
      * @return array<string, mixed>
      *
      * @phpstan-param AdminInterface<T> $admin
      */
-    public function getPersistentParameters(AdminInterface $admin): array;
+    public function configurePersistentParameters(AdminInterface $admin, array $parameters);
 
     /**
      * Return the controller access mapping.

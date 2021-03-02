@@ -25,7 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class FooAdmin extends AbstractAdmin
 {
-    public function getNewInstance(): object
+    protected function createNewInstance(): object
     {
         return new Foo('test_id', 'foo_name');
     }

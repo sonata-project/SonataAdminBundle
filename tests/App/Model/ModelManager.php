@@ -102,16 +102,6 @@ class ModelManager implements ModelManagerInterface, LockInterface
         return $this->getNormalizedIdentifier($model);
     }
 
-    public function getModelInstance(string $class): object
-    {
-        switch ($class) {
-            case Translated::class:
-                return new Translated();
-            default:
-                return new Foo('test_id', 'foo_name');
-        }
-    }
-
     public function modelReverseTransform(string $class, array $array = []): object
     {
         throw new \BadMethodCallException('Not implemented.');

@@ -1318,7 +1318,7 @@ class AdminTest extends TestCase
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
         $extension = $this->createMock(AdminExtensionInterface::class);
-        $extension->expects($this->once())->method('getPersistentParameters')->willReturn($expected);
+        $extension->expects($this->once())->method('configurePersistentParameters')->willReturn($expected);
 
         $admin->addExtension($extension);
 
@@ -1342,11 +1342,7 @@ class AdminTest extends TestCase
 
         $tag = new Tag();
 
-        $modelManager = $this->createStub(ModelManagerInterface::class);
-        $modelManager->method('getModelInstance')->willReturn($tag);
-
         $tagAdmin = new TagAdmin('admin.tag', Tag::class, 'MyBundle\MyController');
-        $tagAdmin->setModelManager($modelManager);
         $tagAdmin->setParent($postAdmin);
         $tagAdmin->addParentAssociationMapping('post', 'post');
 
@@ -1373,13 +1369,7 @@ class AdminTest extends TestCase
         $formBuilder = $this->createStub(FormBuilderInterface::class);
         $formBuilder->method('getForm')->willReturn(null);
 
-        $postCategory = new PostCategory();
-
-        $modelManager = $this->createStub(ModelManagerInterface::class);
-        $modelManager->method('getModelInstance')->willReturn($postCategory);
-
-        $postCategoryAdmin = new PostCategoryAdmin('admin.post_category', PostCategoryAdmin::class, 'MyBundle\MyController');
-        $postCategoryAdmin->setModelManager($modelManager);
+        $postCategoryAdmin = new PostCategoryAdmin('admin.post_category', PostCategory::class, 'MyBundle\MyController');
         $postCategoryAdmin->setParent($postAdmin);
         $postCategoryAdmin->addParentAssociationMapping('post', 'posts');
 
@@ -1409,13 +1399,7 @@ class AdminTest extends TestCase
         $parentField->method('getParentAssociationMappings')->willReturn([]);
         $parentField->method('getAssociationMapping')->willReturn(['fieldName' => 'tag', 'mappedBy' => 'post']);
 
-        $tag = new Tag();
-
-        $modelManager = $this->createStub(ModelManagerInterface::class);
-        $modelManager->method('getModelInstance')->willReturn($tag);
-
         $tagAdmin = new TagAdmin('admin.tag', Tag::class, 'MyBundle\MyController');
-        $tagAdmin->setModelManager($modelManager);
         $tagAdmin->setParentFieldDescription($parentField);
 
         $request = $this->createStub(Request::class);

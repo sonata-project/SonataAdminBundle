@@ -65,9 +65,9 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     {
     }
 
-    public function getPersistentParameters(AdminInterface $admin): array
+    public function configurePersistentParameters(AdminInterface $admin, array $parameters): array
     {
-        return [];
+        return $parameters;
     }
 
     /**
