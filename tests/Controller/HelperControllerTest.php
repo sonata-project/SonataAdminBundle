@@ -138,7 +138,7 @@ class HelperControllerTest extends TestCase
 
         $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
         $this->admin->expects($this->once())->method('setUniqid')->with('asdasd123');
-        $this->admin->method('getObject')->with(42)->willReturn(false);
+        $this->admin->method('getObject')->with(42)->willReturn(null);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Invalid format');
@@ -156,7 +156,7 @@ class HelperControllerTest extends TestCase
 
         $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
         $this->admin->expects($this->once())->method('setUniqid')->with('asdasd123');
-        $this->admin->method('getObject')->with(null)->willReturn(false);
+        $this->admin->method('getObject')->with(null)->willReturn(null);
 
         $response = $this->controller->getShortObjectDescriptionAction($request);
 

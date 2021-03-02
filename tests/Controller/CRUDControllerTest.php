@@ -1470,7 +1470,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('getObject')
-            ->willReturn(false);
+            ->willReturn(null);
 
         $this->controller->editAction(null);
     }
@@ -2694,7 +2694,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('getObject')
-            ->willReturn(false);
+            ->willReturn(null);
 
         $this->controller->historyAction(null);
     }

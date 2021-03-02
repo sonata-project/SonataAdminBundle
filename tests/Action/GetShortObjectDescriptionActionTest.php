@@ -102,7 +102,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
         $this->admin->expects($this->once())->method('setRequest')->with($request);
         $this->admin->expects($this->once())->method('setUniqid')->with('asdasd123');
-        $this->admin->method('getObject')->with(42)->willReturn(false);
+        $this->admin->method('getObject')->with(42)->willReturn(null);
 
         ($this->action)($request);
     }
