@@ -125,7 +125,7 @@ dialog with the admin of the referenced model in it::
     // src/Admin/BlogPostAdmin.php
 
     use App\Entity\Category;
-    use Sonata\AdminBundle\Form\Type\ModelType
+    use Sonata\AdminBundle\Form\Type\ModelType;
 
     protected function configureFormFields(FormMapper $formMapper)
     {

@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.91.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.90.0...3.91.0) - 2021-03-02
+### Deprecated
+- [[#6878](https://github.com/sonata-project/SonataAdminBundle/pull/6878)] Passing a fieldDescription option `name` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#6895](https://github.com/sonata-project/SonataAdminBundle/pull/6895)] Fix computing changed filter values ([@kirya-dev](https://github.com/kirya-dev))
+
 ## [3.90.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.89.1...3.90.0) - 2021-02-25
 ### Added
 - [[#6877](https://github.com/sonata-project/SonataAdminBundle/pull/6877)] Added `AbstractAdmin::mergeParameters()` to merge parameters but replace them when it's a subarray. ([@willemverspyck](https://github.com/willemverspyck))
