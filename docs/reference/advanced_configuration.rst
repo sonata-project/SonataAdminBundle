@@ -185,7 +185,7 @@ Inherited classes
 
 You can manage inherited classes by injecting subclasses using the service configuration.
 
-Lets consider a base class named `Person` and its subclasses `Student` and `Teacher`:
+Lets consider a base class named ``Person`` and its subclasses ``Student`` and ``Teacher``:
 
 .. configuration-block::
 
@@ -253,7 +253,7 @@ ACL
 ^^^
 
 Though the route linked by a menu may be protected the Tab Menu will not automatically check the ACl for you.
-The link will still appear unless you manually check it using the `hasAccess` method::
+The link will still appear unless you manually check it using the ``hasAccess`` method::
 
     protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
@@ -359,7 +359,7 @@ You can add or override filter parameters to the Tab Menu::
         }
     }
 
-The `Delivery` class is based on the `sonata_type_translatable_choice` example inside the `Core's documentation`_.
+The ``Delivery`` class is based on the ``sonata_type_translatable_choice`` example inside the `Core's documentation`_.
 
 Actions Menu
 ------------

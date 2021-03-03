@@ -141,7 +141,7 @@ Options
 - ``link_parameters`` (o): add link parameter to the related Admin class
   when the ``Admin::generateUrl`` is called
 - ``code`` (o): the method name to retrieve the related value (for example,
-  if you have an `array` type field, you would like to show info prettier
+  if you have an ``array`` type field, you would like to show info prettier
   than `[0] => 'Value'`; useful when a getter is not enough).
   Notice: works with string-like types (string, text, html)
 - ``associated_property`` (o): property path to retrieve the "string"
@@ -641,7 +641,7 @@ Example::
         ;
     }
 
-If you want to customise the `collapse` option, you can also give an array
+If you want to customise the ``collapse`` option, you can also give an array
 to override the default parameters::
 
             ->add('description', TextType::class, [
@@ -658,7 +658,7 @@ to override the default parameters::
                 ]
             ])
 
-If you want to show only the `label_icon`::
+If you want to show only the ``label_icon``::
 
             ->add('upvotes', null, [
                 'label' => false,

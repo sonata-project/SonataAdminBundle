@@ -303,8 +303,8 @@ this will be handled by Symfony, but we still need to register that route::
         }
     }
 
-Setup firewall in `security.yaml`
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Setup firewall in ``security.yaml``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: yaml
 
