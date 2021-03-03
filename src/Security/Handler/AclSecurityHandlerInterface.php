@@ -17,6 +17,7 @@ use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
+use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -26,6 +27,8 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
     /**
      * Set the permissions not related to an object instance and also to be available when objects do not exist.
      *
+     * @param string[] $permissions
+     *
      * @return void
      */
     public function setAdminPermissions(array $permissions);
@@ -33,12 +36,14 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
     /**
      * Return the permissions not related to an object instance and also to be available when objects do not exist.
      *
-     * @return array
+     * @return string[]
      */
     public function getAdminPermissions();
 
     /**
      * Set the permissions related to an object instance.
+     *
+     * @param string[] $permissions
      *
      * @return void
      */
@@ -47,7 +52,7 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
     /**
      * Return the permissions related to an object instance.
      *
-     * @return array
+     * @return string[]
      */
     public function getObjectPermissions();
 
@@ -61,12 +66,12 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
     /**
      * Find the ACLs for the passed object identities.
      *
-     * @param \Traversable $oids a collection of ObjectIdentityInterface implementations
-     * @param array        $sids an array of SecurityIdentityInterface implementations
+     * @param \Traversable<ObjectIdentityInterface> $oids
+     * @param SecurityIdentityInterface[]           $sids
      *
      * @throws \Exception
      *
-     * @return \SplObjectStorage mapping the passed object identities to ACLs
+     * @return \SplObjectStorage<ObjectIdentityInterface, SecurityIdentityInterface> mapping the passed object identities to ACLs
      */
     public function findObjectAcls(\Traversable $oids, array $sids = []);
 

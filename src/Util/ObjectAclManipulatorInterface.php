@@ -26,6 +26,8 @@ interface ObjectAclManipulatorInterface
     /**
      * Batch configure the ACLs for all objects handled by an Admin.
      *
+     * @param AdminInterface<object> $admin
+     *
      * @throws ModelManagerException
      *
      * @return void
