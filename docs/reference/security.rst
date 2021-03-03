@@ -546,7 +546,7 @@ Vocabulary used for Access Control Lists:
   prevent that multiple voters vote on the same class with overlapping bitmasks.
 
 See the cookbook article "`Advanced ACL concepts
-<https://symfony.com/doc/current/cookbook/security/acl_advanced.html#pre-authorization-decisions.>`_"
+<https://symfony.com/doc/current/cookbook/security/acl_advanced.html#pre-authorization-decisions>`_"
 for the meaning of the different permissions.
 
 How is access granted?
