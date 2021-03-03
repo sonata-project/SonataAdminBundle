@@ -148,7 +148,7 @@ You can specify your templates in the config file:
                 button_list:                '@SonataAdmin/Button/list_button.html.twig'
                 button_show:                '@SonataAdmin/Button/show_button.html.twig'
 
-.. important::
+.. warning::
 
     Notice that this is a global change, meaning it will affect all model mappings
     automatically, both for ``Admin`` mappings defined by you and by other bundles.
