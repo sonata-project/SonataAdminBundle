@@ -78,6 +78,15 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     {
     }
 
+    /**
+     * @phpstan-param AdminInterface<T> $admin
+     */
+    public function configurePersistentParameters(AdminInterface $admin, array $parameters): array
+    {
+        // NEXT_MAJOR: Return $parameters instead.
+        return array_merge($parameters, $this->getPersistentParameters($admin));
+    }
+
     public function alterNewInstance(AdminInterface $admin, $object)
     {
     }
