@@ -23,7 +23,7 @@ class StringOperatorTypeTest extends TypeTestCase
     {
         $formType = new StringOperatorType();
         $optionsResolver = new OptionsResolver();
-        $expected_choices = [
+        $expectedChoices = [
             'label_type_contains' => StringOperatorType::TYPE_CONTAINS,
             'label_type_not_contains' => StringOperatorType::TYPE_NOT_CONTAINS,
             'label_type_equals' => StringOperatorType::TYPE_EQUAL,
@@ -33,7 +33,7 @@ class StringOperatorTypeTest extends TypeTestCase
         ];
         $formType->configureOptions($optionsResolver);
         $options = $optionsResolver->resolve([]);
-        $this->assertSame($expected_choices, $options['choices']);
+        $this->assertSame($expectedChoices, $options['choices']);
         $this->assertSame('SonataAdminBundle', $options['choice_translation_domain']);
     }
 }
