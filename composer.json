@@ -67,6 +67,7 @@
     },
     "conflict": {
         "doctrine/doctrine-bundle": ">=3",
+        "psr/container": "1.1.0",
         "sonata-project/core-bundle": "<3.20",
         "sonata-project/doctrine-extensions": "<1.8",
         "sonata-project/media-bundle": "<3.7",
