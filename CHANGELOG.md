@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.91.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.91.0...3.91.1) - 2021-03-06
+### Added
+- [[#6911](https://github.com/sonata-project/SonataAdminBundle/pull/6911)] Added `AbstractAdminExtension::configurePersistentParameters()` method stub ([@core23](https://github.com/core23))
+
+### Fixed
+- [[#6902](https://github.com/sonata-project/SonataAdminBundle/pull/6902)] Possibility to access nonexistent parent objects from child admins ([@phansys](https://github.com/phansys))
+
 ## [3.91.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.90.0...3.91.0) - 2021-03-02
 ### Deprecated
 - [[#6878](https://github.com/sonata-project/SonataAdminBundle/pull/6878)] Passing a fieldDescription option `name` ([@VincentLanglet](https://github.com/VincentLanglet))

@@ -31,7 +31,7 @@ final class FormBuilderIterator extends \RecursiveArrayIterator
     private $prefix;
 
     /**
-     * @var \ArrayIterator
+     * @var \ArrayIterator<string|int, string|int>
      */
     private $iterator;
 
@@ -82,9 +82,7 @@ final class FormBuilderIterator extends \RecursiveArrayIterator
     }
 
     /**
-     * @return array<int|string, int|string>
-     *
-     * @phpstan-return array-key[]
+     * @return array<string|int, string|int>
      */
     private static function getKeys(FormBuilderInterface $formBuilder): array
     {

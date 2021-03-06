@@ -693,11 +693,13 @@ class CRUDControllerTest extends TestCase
 
     public function testShowActionNotFoundException(): void
     {
-        $this->expectException(NotFoundHttpException::class);
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getObject')
             ->willReturn(null);
+
+        $this->expectException(NotFoundHttpException::class);
 
         $this->controller->showAction($this->request);
     }
@@ -769,6 +771,55 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame([], $this->session->getFlashBag()->all());
         $this->assertSame('@SonataAdmin/CRUD/show.html.twig', $this->template);
+    }
+
+    public function testShowActionWithParentAdminAndNonexistentObject(): void
+    {
+        $object = new \stdClass();
+
+        $this->admin->expects($this->exactly(2))
+            ->method('getObject')
+            ->willReturn($object);
+
+        $this->admin->expects($this->never())
+            ->method('checkAccess');
+
+        $this->admin->expects($this->never())
+            ->method('getShow');
+
+        $this->admin->expects($this->once())
+            ->method('isChild')
+            ->willReturn(true);
+
+        $adminIdParameter = 'id';
+        $this->request->attributes->set($adminIdParameter, 42);
+
+        $parentAdmin = $this->createMock(AdminInterface::class);
+
+        $parentAdmin->expects($this->once())
+            ->method('getObject')
+            ->willReturn(null);
+
+        $parentAdminIdParameter = 'parentId';
+
+        $parentAdmin->expects($this->once())
+            ->method('getIdParameter')
+            ->willReturn($parentAdminIdParameter);
+
+        $parentAdmin->expects($this->once())
+            ->method('getClassnameLabel')
+            ->willReturn('NonexistentParentObject');
+
+        $this->request->attributes->set($parentAdminIdParameter, 21);
+
+        $this->admin->expects($this->once())
+            ->method('getParent')
+            ->willReturn($parentAdmin);
+
+        $this->expectException(NotFoundHttpException::class);
+        $this->expectExceptionMessage('Unable to find NonexistentParentObject object with id: 21.');
+
+        $this->controller->showAction($this->request);
     }
 
     /**
@@ -847,11 +898,13 @@ class CRUDControllerTest extends TestCase
 
     public function testDeleteActionNotFoundException(): void
     {
-        $this->expectException(NotFoundHttpException::class);
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getObject')
             ->willReturn(null);
+
+        $this->expectException(NotFoundHttpException::class);
 
         $this->controller->deleteAction($this->request);
     }
@@ -941,11 +994,11 @@ class CRUDControllerTest extends TestCase
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('isChild')
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getParent')
             ->willReturn($admin);
 
@@ -957,10 +1010,18 @@ class CRUDControllerTest extends TestCase
             ->method('toString')
             ->willReturn('childObject');
 
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->willReturn($object);
+
+        $this->admin->expects($this->exactly(2))
+            ->method('isChild')
+            ->willReturn(true);
+
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('There is no association between "parentObject" and "childObject"');
 
-        $this->controller->deleteAction($this->request, 1);
+        $this->controller->deleteAction($this->request);
     }
 
     public function testDeleteActionNoCsrfToken(): void
@@ -1321,11 +1382,11 @@ class CRUDControllerTest extends TestCase
             ->method('getObject')
             ->willReturn($child);
 
-        $childAdmin->expects($this->once())
+        $childAdmin->expects($this->exactly(2))
             ->method('isChild')
             ->willReturn(true);
 
-        $childAdmin->expects($this->once())
+        $childAdmin->expects($this->exactly(2))
             ->method('getParent')
             ->willReturn($parentAdmin);
 
@@ -1338,11 +1399,13 @@ class CRUDControllerTest extends TestCase
 
     public function testEditActionNotFoundException(): void
     {
-        $this->expectException(NotFoundHttpException::class);
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getObject')
             ->willReturn(null);
+
+        $this->expectException(NotFoundHttpException::class);
 
         $this->controller->editAction($this->request);
     }
@@ -2507,9 +2570,6 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryActionNoReader(): void
     {
-        $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage('unable to find the audit reader for class : Foo');
-
         $this->request->query->set('id', 123);
 
         $this->admin->expects($this->once())
@@ -2518,7 +2578,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getObject')
             ->willReturn($object);
 
@@ -2530,6 +2590,9 @@ class CRUDControllerTest extends TestCase
             ->method('hasReader')
             ->with($this->equalTo('Foo'))
             ->willReturn(false);
+
+        $this->expectException(NotFoundHttpException::class);
+        $this->expectExceptionMessage('unable to find the audit reader for class : Foo');
 
         $this->controller->historyAction($this->request);
     }
@@ -2544,7 +2607,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getObject')
             ->willReturn($object);
 
@@ -2592,15 +2655,17 @@ class CRUDControllerTest extends TestCase
 
     public function testAclActionNotFoundException(): void
     {
-        $this->expectException(NotFoundHttpException::class);
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
         $this->admin->expects($this->once())
             ->method('isAclEnabled')
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getObject')
             ->willReturn(null);
+
+        $this->expectException(NotFoundHttpException::class);
 
         $this->controller->aclAction($this->request);
     }
@@ -2637,7 +2702,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new DummyDomainObject();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getObject')
             ->willReturn($object);
 
@@ -2718,7 +2783,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new DummyDomainObject();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getObject')
             ->willReturn($object);
 
@@ -2805,7 +2870,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new DummyDomainObject();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getObject')
             ->willReturn($object);
 
@@ -2898,21 +2963,22 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->query->set('id', 123);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getObject')
             ->willReturn(null);
 
+        $this->admin->expects($this->once())
+            ->method('getClassnameLabel')
+            ->willReturn('NonexistentObject');
+
         $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage('unable to find the object with id: 123');
+        $this->expectExceptionMessage('Unable to find NonexistentObject object with id: 123');
 
         $this->controller->historyViewRevisionAction($this->request, 'fooRevision');
     }
 
     public function testHistoryViewRevisionActionNoReader(): void
     {
-        $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage('unable to find the audit reader for class : Foo');
-
         $this->request->query->set('id', 123);
 
         $this->admin->expects($this->once())
@@ -2921,7 +2987,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getObject')
             ->willReturn($object);
 
@@ -2934,16 +3000,14 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('Foo'))
             ->willReturn(false);
 
+        $this->expectException(NotFoundHttpException::class);
+        $this->expectExceptionMessage('unable to find the audit reader for class : Foo');
+
         $this->controller->historyViewRevisionAction($this->request, 'fooRevision');
     }
 
     public function testHistoryViewRevisionActionNotFoundRevision(): void
     {
-        $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage(
-            'unable to find the targeted object `123` from the revision `fooRevision` with classname : `Foo`'
-        );
-
         $this->request->query->set('id', 123);
 
         $this->admin->expects($this->once())
@@ -2952,7 +3016,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getObject')
             ->willReturn($object);
 
@@ -2977,6 +3041,11 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo('fooRevision'))
             ->willReturn(null);
 
+        $this->expectException(NotFoundHttpException::class);
+        $this->expectExceptionMessage(
+            'unable to find the targeted object `123` from the revision `fooRevision` with classname : `Foo`'
+        );
+
         $this->controller->historyViewRevisionAction($this->request, 'fooRevision');
     }
 
@@ -2990,7 +3059,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getObject')
             ->willReturn($object);
 
@@ -3054,27 +3123,28 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryCompareRevisionsActionNotFoundException(): void
     {
-        $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage('unable to find the object with id: 123');
-
         $this->request->query->set('id', 123);
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('historyCompareRevisions'));
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getObject')
             ->willReturn(null);
+
+        $this->admin->expects($this->once())
+            ->method('getClassnameLabel')
+            ->willReturn('MyObjectWithRevisions');
+
+        $this->expectException(NotFoundHttpException::class);
+        $this->expectExceptionMessage('Unable to find MyObjectWithRevisions object with id: 123.');
 
         $this->controller->historyCompareRevisionsAction($this->request, 'fooBaseRevision', 'fooCompareRevision');
     }
 
     public function testHistoryCompareRevisionsActionNoReader(): void
     {
-        $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage('unable to find the audit reader for class : Foo');
-
         $this->request->query->set('id', 123);
 
         $this->admin->expects($this->once())
@@ -3083,7 +3153,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getObject')
             ->willReturn($object);
 
@@ -3096,16 +3166,14 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('Foo'))
             ->willReturn(false);
 
+        $this->expectException(NotFoundHttpException::class);
+        $this->expectExceptionMessage('unable to find the audit reader for class : Foo');
+
         $this->controller->historyCompareRevisionsAction($this->request, 'fooBaseRevision', 'fooCompareRevision');
     }
 
     public function testHistoryCompareRevisionsActionNotFoundBaseRevision(): void
     {
-        $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage(
-            'unable to find the targeted object `123` from the revision `fooBaseRevision` with classname : `Foo`'
-        );
-
         $this->request->query->set('id', 123);
 
         $this->admin->expects($this->once())
@@ -3114,7 +3182,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getObject')
             ->willReturn($object);
 
@@ -3140,16 +3208,16 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo('fooBaseRevision'))
             ->willReturn(null);
 
+        $this->expectException(NotFoundHttpException::class);
+        $this->expectExceptionMessage(
+            'unable to find the targeted object `123` from the revision `fooBaseRevision` with classname : `Foo`'
+        );
+
         $this->controller->historyCompareRevisionsAction($this->request, 'fooBaseRevision', 'fooCompareRevision');
     }
 
     public function testHistoryCompareRevisionsActionNotFoundCompareRevision(): void
     {
-        $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage(
-            'unable to find the targeted object `123` from the revision `fooCompareRevision` with classname : `Foo`'
-        );
-
         $this->request->query->set('id', 123);
 
         $this->admin->expects($this->once())
@@ -3158,7 +3226,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getObject')
             ->willReturn($object);
 
@@ -3187,6 +3255,11 @@ class CRUDControllerTest extends TestCase
             ['Foo', 123, 'fooCompareRevision', null],
         ]);
 
+        $this->expectException(NotFoundHttpException::class);
+        $this->expectExceptionMessage(
+            'unable to find the targeted object `123` from the revision `fooCompareRevision` with classname : `Foo`'
+        );
+
         $this->controller->historyCompareRevisionsAction($this->request, 'fooBaseRevision', 'fooCompareRevision');
     }
 
@@ -3200,7 +3273,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getObject')
             ->willReturn($object);
 

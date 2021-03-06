@@ -107,6 +107,8 @@ class CRUDController extends AbstractController
      */
     public function listAction(Request $request): Response
     {
+        $this->assertObjectExists($request);
+
         $this->admin->checkAccess('list');
 
         $preResponse = $this->preList($request);
@@ -176,9 +178,7 @@ class CRUDController extends AbstractController
         $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
-        if (!$object) {
-            throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
-        }
+        $this->assertObjectExists($request);
 
         $this->checkParentChildAssociation($request, $object);
 
@@ -253,9 +253,7 @@ class CRUDController extends AbstractController
         $id = $request->get($this->admin->getIdParameter());
         $existingObject = $this->admin->getObject($id);
 
-        if (!$existingObject) {
-            throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
-        }
+        $this->assertObjectExists($request);
 
         $this->checkParentChildAssociation($request, $existingObject);
 
@@ -490,10 +488,12 @@ class CRUDController extends AbstractController
      */
     public function createAction(Request $request): Response
     {
-        // the key used to lookup the template
-        $templateKey = 'edit';
+        $this->assertObjectExists($request);
 
         $this->admin->checkAccess('create');
+
+        // the key used to lookup the template
+        $templateKey = 'edit';
 
         $class = new \ReflectionClass($this->admin->hasActiveSubClass() ? $this->admin->getActiveSubClass() : $this->admin->getClass());
 
@@ -604,9 +604,7 @@ class CRUDController extends AbstractController
         $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
-        if (!$object) {
-            throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
-        }
+        $this->assertObjectExists($request);
 
         $this->checkParentChildAssociation($request, $object);
 
@@ -642,9 +640,7 @@ class CRUDController extends AbstractController
         $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
-        if (!$object) {
-            throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
-        }
+        $this->assertObjectExists($request);
 
         $this->admin->checkAccess('history', $object);
 
@@ -682,9 +678,7 @@ class CRUDController extends AbstractController
         $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
-        if (!$object) {
-            throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
-        }
+        $this->assertObjectExists($request);
 
         $this->admin->checkAccess('historyViewRevision', $object);
 
@@ -735,9 +729,7 @@ class CRUDController extends AbstractController
         $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
-        if (!$object) {
-            throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
-        }
+        $this->assertObjectExists($request);
 
         $manager = $this->get('sonata.admin.audit.manager');
 
@@ -836,9 +828,7 @@ class CRUDController extends AbstractController
         $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
-        if (!$object) {
-            throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
-        }
+        $this->assertObjectExists($request);
 
         $this->admin->checkAccess('acl', $object);
 
@@ -1325,6 +1315,27 @@ class CRUDController extends AbstractController
             'objectId' => $this->admin->getNormalizedIdentifier($object),
             'objectName' => $this->escapeHtml($this->admin->toString($object)),
         ], Response::HTTP_OK);
+    }
+
+    final protected function assertObjectExists(Request $request): void
+    {
+        $admin = $this->admin;
+
+        do {
+            $objectId = $request->get($admin->getIdParameter());
+
+            if (null !== $objectId) {
+                $adminObject = $admin->getObject($objectId);
+
+                if (null === $adminObject) {
+                    throw $this->createNotFoundException(sprintf(
+                        'Unable to find %s object with id: %s.',
+                        $admin->getClassnameLabel(),
+                        $objectId
+                    ));
+                }
+            }
+        } while ($admin->isChild() && $admin = $admin->getParent());
     }
 
     private function getSelectedTab(Request $request): array

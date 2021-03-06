@@ -5,6 +5,7 @@ parameters:
     excludes_analyse:
         # temporarily ignore template files
         - src/Resources/**.tpl.php
+    treatPhpDocTypesAsCertain: false
     checkGenericClassInNonGenericObjectType: true
     checkMissingIterableValueType: true
     checkMissingVarTagTypehint: true

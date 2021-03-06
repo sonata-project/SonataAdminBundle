@@ -25,6 +25,8 @@ interface AdminAclManipulatorInterface
 {
     /**
      * Batch configure the ACLs for all objects handled by an Admin.
+     *
+     * @param AdminInterface<object> $admin
      */
     public function configureAcls(OutputInterface $output, AdminInterface $admin): void;
 

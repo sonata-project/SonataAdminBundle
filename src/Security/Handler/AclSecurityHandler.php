@@ -47,17 +47,17 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
     private $aclProvider;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $superAdminRoles = [];
 
     /**
-     * @var array
+     * @var string[]
      */
     private $adminPermissions = [];
 
     /**
-     * @var array
+     * @var string[]
      */
     private $objectPermissions = [];
 
