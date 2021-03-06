@@ -49,7 +49,7 @@ final class GroupExtension extends AbstractExtension
      *  label_catalogue: string,
      *  icon: string,
      *  item_adds: array,
-     *  items: AdminInterface[],
+     *  items: array<AdminInterface<object>>,
      *  keep_open: bool,
      *  on_top: bool,
      *  roles: list<string>
