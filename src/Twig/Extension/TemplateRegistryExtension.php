@@ -105,6 +105,8 @@ final class TemplateRegistryExtension extends AbstractExtension
      *
      * @throws ServiceNotFoundException
      * @throws ServiceCircularReferenceException
+     *
+     * @return AdminInterface<object>
      */
     private function getAdmin(string $adminCode): AdminInterface
     {

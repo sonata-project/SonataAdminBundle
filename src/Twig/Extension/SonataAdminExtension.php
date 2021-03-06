@@ -341,6 +341,9 @@ class SonataAdminExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'sonata_admin';
@@ -564,6 +567,10 @@ EOT;
      * @param object $model
      *
      * @return string string representation of the id that is safe to use in a url
+     *
+     * @phpstan-template T of object
+     * @phpstan-param T $model
+     * @phpstan-param AdminInterface<T>|null $admin
      */
     public function getUrlSafeIdentifier($model, ?AdminInterface $admin = null)
     {
