@@ -50,55 +50,6 @@ parameters:
 
         -
             # will be fixed in v4. Code is marked as deprecated
-            message: "#^Call to function is_object\\(\\) with string will always evaluate to false\\.$#"
-            count: 1
-            path: src/Block/AdminListBlockService.php
-
-        -
-            # will be fixed in v4. Code is marked as deprecated
-            message: "#^Result of \\|\\| is always true\\.$#"
-            count: 1
-            path: src/Block/AdminListBlockService.php
-
-        -
-            # will be fixed in v4. Code is marked as deprecated
-            message: "#^Call to function is_object\\(\\) with string will always evaluate to false\\.$#"
-            count: 1
-            path: src/Block/AdminSearchBlockService.php
-
-        -
-            # will be fixed in v4. Code is marked as deprecated
-            message: "#^Result of \\|\\| is always true\\.$#"
-            count: 1
-            path: src/Block/AdminSearchBlockService.php
-
-        -
-            # will be fixed in v4. Code is marked as deprecated
-            message: "#^Call to function is_object\\(\\) with string will always evaluate to false\\.$#"
-            count: 1
-            path: src/Block/AdminStatsBlockService.php
-
-        -
-            # will be fixed in v4. Code is marked as deprecated
-            message: "#^Result of \\|\\| is always true\\.$#"
-            count: 1
-            path: src/Block/AdminStatsBlockService.php
-
-
-        -
-            # will be fixed in v4. Code is marked as deprecated
-            message: "#^Result of && is always false\\.$#"
-            count: 1
-            path: src/Command/GenerateObjectAclCommand.php
-
-        -
-            # will be fixed in v4. Code is marked as deprecated
-            message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
-            count: 1
-            path: src/Command/GenerateObjectAclCommand.php
-
-        -
-            # will be fixed in v4. Code is marked as deprecated
             message: "#^Strict comparison using \\!\\=\\= between 'Sonata\\\\\\\\AdminBundle\\\\\\\\Command\\\\\\\\GenerateObjectAclCommand' and 'Sonata\\\\\\\\AdminBundle\\\\\\\\Command\\\\\\\\GenerateObjectAclCommand' will always evaluate to false\\.$#"
             count: 1
             path: src/Command/GenerateObjectAclCommand.php
