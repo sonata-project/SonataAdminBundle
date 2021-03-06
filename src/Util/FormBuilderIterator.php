@@ -33,7 +33,11 @@ class FormBuilderIterator extends \RecursiveArrayIterator
     protected $formBuilder;
 
     /**
-     * @var array
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @deprecated since sonata-project/sonata-admin-bundle 3.x
+     *
+     * @var mixed[]
      */
     protected $keys = [];
 
@@ -43,7 +47,7 @@ class FormBuilderIterator extends \RecursiveArrayIterator
     protected $prefix;
 
     /**
-     * @var \ArrayIterator
+     * @var \ArrayIterator<string|int, string|int>
      */
     protected $iterator;
 
@@ -83,6 +87,9 @@ class FormBuilderIterator extends \RecursiveArrayIterator
         return $this->iterator->valid();
     }
 
+    /**
+     * @return string
+     */
     public function key()
     {
         $name = $this->iterator->current();
@@ -95,11 +102,17 @@ class FormBuilderIterator extends \RecursiveArrayIterator
         $this->iterator->next();
     }
 
+    /**
+     * @return FormBuilderInterface
+     */
     public function current()
     {
         return $this->formBuilder->get($this->iterator->current());
     }
 
+    /**
+     * @return FormBuilderIterator
+     */
     public function getChildren()
     {
         return new self($this->formBuilder->get($this->iterator->current()), $this->key());
@@ -111,9 +124,7 @@ class FormBuilderIterator extends \RecursiveArrayIterator
     }
 
     /**
-     * @return array<int|string, int|string>
-     *
-     * @phpstan-return array-key[]
+     * @return array<string|int, string|int>
      */
     private static function getKeys(FormBuilderInterface $formBuilder)
     {

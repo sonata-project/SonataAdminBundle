@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Util;
 
+use Symfony\Component\Security\Core\User\UserInterface;
+
 /**
  * @author Mathieu Petrini <mathieupetrini@gmail.com>
  */
@@ -20,6 +22,8 @@ interface AdminAclUserManagerInterface
 {
     /**
      * Batch configure the ACLs for all objects handled by an Admin.
+     *
+     * @return iterable<UserInterface|string>
      */
     public function findUsers(): iterable;
 }

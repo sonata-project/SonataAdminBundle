@@ -121,7 +121,7 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Updates ACL users.
+     * @return void
      */
     public function updateAclUsers(AdminObjectAclData $data)
     {
@@ -132,7 +132,7 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Updates ACL roles.
+     * @return void
      */
     public function updateAclRoles(AdminObjectAclData $data)
     {
@@ -143,11 +143,11 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Updates ACl.
-     *
      * NEXT_MAJOR: remove this method.
      *
      * @deprecated since sonata-project/admin-bundle 3.0. Use updateAclUsers() instead
+     *
+     * @return void
      */
     public function updateAcl(AdminObjectAclData $data)
     {
@@ -161,6 +161,8 @@ class AdminObjectAclManipulator
 
     /**
      * @param \Traversable<int|string, UserInterface|string> $aclValues
+     *
+     * @return void
      *
      * @phpstan-param \Traversable<array-key, UserInterface|string> $aclValues
      */

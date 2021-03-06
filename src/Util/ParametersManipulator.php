@@ -20,6 +20,11 @@ final class ParametersManipulator
 {
     /**
      * Merge parameters, but replace them when it's a subarray.
+     *
+     * @param mixed[] $parameters
+     * @param mixed[] $newParameters
+     *
+     * @return mixed[]
      */
     public static function merge(array $parameters, array $newParameters): array
     {

@@ -19,6 +19,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Acl\Domain\Acl;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * AdminObjectAclData holds data manipulated by {@link AdminObjectAclManipulator}.
@@ -35,7 +36,7 @@ class AdminObjectAclData
     protected static $ownerPermissions = ['MASTER', 'OWNER'];
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface<object>
      */
     protected $admin;
 
@@ -45,12 +46,12 @@ class AdminObjectAclData
     protected $object;
 
     /**
-     * @var \Traversable Users to set ACL for
+     * @var \Traversable<UserInterface|string> Users to set ACL for
      */
     protected $aclUsers;
 
     /**
-     * @var \Traversable Roles to set ACL for
+     * @var \Traversable<string> Roles to set ACL for
      */
     protected $aclRoles;
 
@@ -82,8 +83,11 @@ class AdminObjectAclData
     protected $maskBuilderClass;
 
     /**
-     * @param object $object
-     * @param string $maskBuilderClass
+     * @param AdminInterface<object>             $admin
+     * @param object                             $object
+     * @param string                             $maskBuilderClass
+     * @param \Traversable<UserInterface|string> $aclUsers
+     * @param \Traversable<string>|null          $aclRoles
      *
      * @phpstan-param class-string $maskBuilderClass
      */
@@ -109,7 +113,7 @@ class AdminObjectAclData
     /**
      * Gets admin.
      *
-     * @return AdminInterface
+     * @return AdminInterface<object>
      */
     public function getAdmin()
     {
@@ -127,9 +131,7 @@ class AdminObjectAclData
     }
 
     /**
-     * Gets ACL users.
-     *
-     * @return \Traversable
+     * @return \Traversable<UserInterface|string>
      */
     public function getAclUsers()
     {
@@ -137,9 +139,7 @@ class AdminObjectAclData
     }
 
     /**
-     * Gets ACL roles.
-     *
-     * @return \Traversable
+     * @return \Traversable<string>
      */
     public function getAclRoles()
     {
@@ -147,8 +147,6 @@ class AdminObjectAclData
     }
 
     /**
-     * Sets ACL.
-     *
      * @return AdminObjectAclData
      */
     public function setAcl(MutableAclInterface $acl)
@@ -159,8 +157,6 @@ class AdminObjectAclData
     }
 
     /**
-     * Gets ACL.
-     *
      * @return MutableAclInterface|null
      */
     public function getAcl()
@@ -169,8 +165,6 @@ class AdminObjectAclData
     }
 
     /**
-     * Gets masks.
-     *
      * @return array<string, mixed>
      */
     public function getMasks()
@@ -179,8 +173,6 @@ class AdminObjectAclData
     }
 
     /**
-     * Sets form.
-     *
      * NEXT_MAJOR: remove this method.
      *
      * @return AdminObjectAclData
@@ -198,8 +190,6 @@ class AdminObjectAclData
     }
 
     /**
-     * Gets form.
-     *
      * NEXT_MAJOR: remove this method.
      *
      * @return FormInterface
@@ -217,8 +207,6 @@ class AdminObjectAclData
     }
 
     /**
-     * Sets ACL users form.
-     *
      * @return AdminObjectAclData
      */
     public function setAclUsersForm(FormInterface $form)
@@ -229,8 +217,6 @@ class AdminObjectAclData
     }
 
     /**
-     * Gets ACL users form.
-     *
      * @return FormInterface|null
      */
     public function getAclUsersForm()
@@ -239,8 +225,6 @@ class AdminObjectAclData
     }
 
     /**
-     * Sets ACL roles form.
-     *
      * @return AdminObjectAclData
      */
     public function setAclRolesForm(FormInterface $form)
@@ -251,8 +235,6 @@ class AdminObjectAclData
     }
 
     /**
-     * Gets ACL roles form.
-     *
      * @return FormInterface|null
      */
     public function getAclRolesForm()
@@ -261,9 +243,7 @@ class AdminObjectAclData
     }
 
     /**
-     * Gets permissions.
-     *
-     * @return array
+     * @return string[]
      */
     public function getPermissions()
     {
@@ -271,9 +251,7 @@ class AdminObjectAclData
     }
 
     /**
-     * Get permissions that the current user can set.
-     *
-     * @return array
+     * @return string[]
      */
     public function getUserPermissions()
     {
@@ -291,6 +269,9 @@ class AdminObjectAclData
         return $permissions;
     }
 
+    /**
+     * @return string[]
+     */
     public function getOwnerPermissions()
     {
         return self::$ownerPermissions;
@@ -308,8 +289,6 @@ class AdminObjectAclData
     }
 
     /**
-     * Gets security handler.
-     *
      * @return AclSecurityHandlerInterface
      */
     public function getSecurityHandler()
@@ -330,6 +309,8 @@ class AdminObjectAclData
 
     /**
      * Cache masks.
+     *
+     * @return void
      */
     protected function updateMasks()
     {
