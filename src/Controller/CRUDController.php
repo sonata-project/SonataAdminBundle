@@ -1638,7 +1638,7 @@ class CRUDController implements ContainerAwareInterface
     {
         $admin = $this->admin;
 
-        do {
+        while (null !== $admin) {
             $objectId = $request->get($admin->getIdParameter());
 
             if (null !== $objectId) {
@@ -1652,7 +1652,9 @@ class CRUDController implements ContainerAwareInterface
                     ));
                 }
             }
-        } while ($admin->isChild() && $admin = $admin->getParent());
+
+            $admin = $admin->isChild() ? $admin->getParent() : null;
+        }
     }
 
     private function getSelectedTab(Request $request): array
