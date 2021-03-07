@@ -63,6 +63,8 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
+ * @psalm-import-type FieldDescriptionOptions from FieldDescriptionInterface
+ *
  * @method void setFieldMapping(array $fieldMapping)
  * @method void setAssociationMapping(array $associationMapping)
  * @method void setParentAssociationMappings(array $parentAssociationMappings)
@@ -141,6 +143,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     /**
      * NEXT_MAJOR: Remove the null default value for $name and restrict param type to `string`.
+     *
+     * @psalm-param FieldDescriptionOptions $options
+     * @phpstan-param array<string, mixed> $options
      */
     public function __construct(
         ?string $name = null,
