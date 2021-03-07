@@ -725,7 +725,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             $parameters['_per_page'] = $this->getMaxPerPage();
         }
 
-        return $parameters;
+        return $this->configureFilterParameters($parameters);
     }
 
     /**
@@ -2936,6 +2936,11 @@ EOT;
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
         return $query;
+    }
+
+    protected function configureFilterParameters(array $parameters): array
+    {
+        return $parameters;
     }
 
     /**
