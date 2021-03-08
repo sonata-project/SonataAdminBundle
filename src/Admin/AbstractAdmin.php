@@ -674,6 +674,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getFilterParameters()
     {
         $parameters = $this->getDefaultFilterParameters();
@@ -723,6 +726,15 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         if (!isset($parameters['_per_page']) || !$this->determinedPerPageValue($parameters['_per_page'])) {
             $parameters['_per_page'] = $this->getMaxPerPage();
+        }
+
+        $parameters = $this->configureFilterParameters($parameters);
+
+        foreach ($this->getExtensions() as $extension) {
+            // NEXT_MAJOR: remove method_exists check
+            if (method_exists($extension, 'configureFilterParameters')) {
+                $parameters = $extension->configureFilterParameters($parameters);
+            }
         }
 
         return $parameters;
@@ -2936,6 +2948,16 @@ EOT;
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
         return $query;
+    }
+
+    /**
+     * @param array<string, mixed> $parameters
+     *
+     * @return array<string, mixed>
+     */
+    protected function configureFilterParameters(array $parameters): array
+    {
+        return $parameters;
     }
 
     /**
