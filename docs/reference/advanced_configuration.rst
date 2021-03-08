@@ -253,7 +253,7 @@ ACL
 ^^^
 
 Though the route linked by a menu may be protected the Tab Menu will not automatically check the ACl for you.
-The link will still appear unless you manually check it using the ``hasAccess`` method::
+The link will still appear unless you manually check it using the ``hasAccess()`` method::
 
     protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
