@@ -111,7 +111,7 @@ to implement a ``clone`` action::
         }
     }
 
-If you want to add the current filter parameters to the redirect url you can add them to the ``generateUrl`` method::
+If you want to add the current filter parameters to the redirect url you can add them to the ``generateUrl()`` method::
 
     return new RedirectResponse(
         $this->admin->generateUrl('list', ['filter' => $this->admin->getFilterParameters()])
