@@ -512,7 +512,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         foreach ($this->getExtensions() as $extension) {
             // NEXT_MAJOR: remove method_exists check
             if (method_exists($extension, 'configureFilterParameters')) {
-                $parameters = $extension->configureFilterParameters($parameters);
+                $parameters = $extension->configureFilterParameters($this, $parameters);
             }
         }
 

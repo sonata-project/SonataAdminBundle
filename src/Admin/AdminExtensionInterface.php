@@ -101,6 +101,7 @@ interface AdminExtensionInterface
      * @param array<string, array<string, mixed>> $actions
      *
      * @return array<string, array<string, mixed>>
+     *
      * @phpstan-param AdminInterface<T> $admin
      */
     public function configureBatchActions(AdminInterface $admin, array $actions): array;
@@ -175,6 +176,7 @@ interface AdminExtensionInterface
      * Returns a list of default filters.
      *
      * @param array<string, array<string, mixed>> $filterValues
+     *
      * @phpstan-param AdminInterface<T> $admin
      */
     public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues): void;
@@ -182,12 +184,17 @@ interface AdminExtensionInterface
     /**
      * Returns a list of default sort values.
      *
+     * @param array<string, string|int> $sortValues
+     *
      * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param array{_page?: int, _per_page?: int, _sort_by?: string, _sort_order?: string} $sortValues
      */
     public function configureDefaultSortValues(AdminInterface $admin, array &$sortValues): void;
 
     /**
      * Returns a list of form options.
+     *
+     * @param array<string, mixed> $formOptions
      *
      * @phpstan-param AdminInterface<T> $admin
      */
@@ -197,6 +204,8 @@ interface AdminExtensionInterface
      * @param array<string, mixed> $parameters
      *
      * @return array<string, mixed>
+     *
+     * @phpstan-param AdminInterface<T> $admin
      */
-    public function configureFilterParameters(array $parameters): array;
+    public function configureFilterParameters(AdminInterface $admin, array $parameters): array;
 }

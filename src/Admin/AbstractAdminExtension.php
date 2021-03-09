@@ -70,27 +70,16 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
         return $parameters;
     }
 
-    /**
-     * @return array<string, string|string[]>
-     *
-     * @phpstan-param AdminInterface<T> $admin
-     */
     public function getAccessMapping(AdminInterface $admin): array
     {
         return [];
     }
 
-    /**
-     * @phpstan-param AdminInterface<T> $admin
-     */
     public function configureBatchActions(AdminInterface $admin, array $actions): array
     {
         return $actions;
     }
 
-    /**
-     * @phpstan-param AdminInterface<T> $admin
-     */
     public function configureExportFields(AdminInterface $admin, array $fields): array
     {
         return $fields;
@@ -120,13 +109,6 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     {
     }
 
-    /**
-     * @param array<string, mixed> $list
-     *
-     * @return array<string, mixed>
-     *
-     * @phpstan-param AdminInterface<T> $admin
-     */
     public function configureActionButtons(
         AdminInterface $admin,
         array $list,
@@ -136,35 +118,19 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
         return $list;
     }
 
-    /**
-     * Returns a list of default filters.
-     *
-     * @phpstan-param AdminInterface<T> $admin
-     */
     public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues): void
     {
     }
 
-    /**
-     * @phpstan-param AdminInterface<T> $admin
-     */
     public function configureDefaultSortValues(AdminInterface $admin, array &$sortValues): void
     {
     }
 
-    /**
-     * @phpstan-param AdminInterface<T> $admin
-     */
     public function configureFormOptions(AdminInterface $admin, array &$formOptions): void
     {
     }
 
-    /**
-     * @param array<string, mixed> $parameters
-     *
-     * @return array<string, mixed>
-     */
-    public function configureFilterParameters(array $parameters): array
+    public function configureFilterParameters(AdminInterface $admin, array $parameters): array
     {
         return $parameters;
     }
