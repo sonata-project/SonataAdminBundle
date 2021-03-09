@@ -33,7 +33,7 @@ use Sonata\Form\Validator\ErrorElement;
  * @method void  configureDefaultSortValues(AdminInterface $admin, array &$sortValues)
  * @method void  configureFormOptions(AdminInterface $admin, array &$formOptions)
  * @method array configurePersistentParameters(AdminInterface $admin, array $parameters)
- * @method array configureFilterParameters(array $parameters)
+ * @method array configureFilterParameters(AdminInterface $admin, array $parameters)
  *
  * @phpstan-template T of object
  */
@@ -305,8 +305,10 @@ interface AdminExtensionInterface
      * @param array<string, mixed> $parameters
      *
      * @return array<string, mixed>
+     *
+     * @phpstan-param AdminInterface<T> $admin
      */
-    //public function configureFilterParameters(array $parameters): array;
+    //public function configureFilterParameters(AdminInterface $admin, array $parameters): array;
 }
 
 class_exists(\Sonata\Form\Validator\ErrorElement::class);

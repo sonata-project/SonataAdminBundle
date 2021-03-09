@@ -189,8 +189,10 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
      * @param array<string, mixed> $parameters
      *
      * @return array<string, mixed>
+     *
+     * @phpstan-param AdminInterface<T> $admin
      */
-    public function configureFilterParameters(array $parameters): array
+    public function configureFilterParameters(AdminInterface $admin, array $parameters): array
     {
         return $parameters;
     }
