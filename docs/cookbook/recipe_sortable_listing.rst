@@ -43,7 +43,7 @@ First of all we are going to add a position field in our ``Client`` entity::
 
 Then we need to inject the Sortable listener.
 If you only have the Gedmo bundle enabled, you only have to add the listener
-to your `services.yaml` file and skip this step.
+to your ``services.yaml`` file and skip this step.
 
 .. code-block:: yaml
 

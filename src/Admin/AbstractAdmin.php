@@ -507,6 +507,15 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             $parameters['_per_page'] = $this->getMaxPerPage();
         }
 
+        $parameters = $this->configureFilterParameters($parameters);
+
+        foreach ($this->getExtensions() as $extension) {
+            // NEXT_MAJOR: remove method_exists check
+            if (method_exists($extension, 'configureFilterParameters')) {
+                $parameters = $extension->configureFilterParameters($parameters);
+            }
+        }
+
         return $parameters;
     }
 
@@ -2042,6 +2051,16 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final protected function urlize(string $word, string $sep = '_'): string
     {
         return strtolower(preg_replace('/[^a-z0-9_]/i', $sep.'$1', $word));
+    }
+
+    /**
+     * @param array<string, mixed> $parameters
+     *
+     * @return array<string, mixed>
+     */
+    protected function configureFilterParameters(array $parameters): array
+    {
+        return $parameters;
     }
 
     /**

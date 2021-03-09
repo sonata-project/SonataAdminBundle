@@ -546,7 +546,7 @@ Vocabulary used for Access Control Lists:
   prevent that multiple voters vote on the same class with overlapping bitmasks.
 
 See the cookbook article "`Advanced ACL concepts
-<https://symfony.com/doc/current/cookbook/security/acl_advanced.html#pre-authorization-decisions.>`_"
+<https://symfony.com/doc/current/cookbook/security/acl_advanced.html#pre-authorization-decisions>`_"
 for the meaning of the different permissions.
 
 How is access granted?
@@ -724,7 +724,7 @@ List filtering
 
 List filtering using ACL is available as a third party bundle:
 `CoopTilleulsAclSonataAdminExtensionBundle <https://github.com/coopTilleuls/CoopTilleulsAclSonataAdminExtensionBundle>`_.
-When enabled, the logged in user will only see the objects for which it has the `VIEW` right (or superior).
+When enabled, the logged in user will only see the objects for which it has the ``VIEW`` right (or superior).
 
 ACL editor
 ----------
@@ -734,10 +734,10 @@ interface.
 It will be automatically available if the ``sonata.admin.security.handler.acl``
 security handler is used and properly configured.
 
-The ACL editor is only available for users with `OWNER` or `MASTER` permissions
+The ACL editor is only available for users with ``OWNER`` or ``MASTER`` permissions
 on the object instance.
-The `OWNER` and `MASTER` permissions can only be edited by an user with the
-`OWNER` permission on the object instance.
+The ``OWNER`` and ``MASTER`` permissions can only be edited by an user with the
+``OWNER`` permission on the object instance.
 
 .. figure:: ../images/acl_editor.png
    :align: center

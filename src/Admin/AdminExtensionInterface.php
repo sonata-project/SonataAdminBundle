@@ -192,4 +192,11 @@ interface AdminExtensionInterface
      * @phpstan-param AdminInterface<T> $admin
      */
     public function configureFormOptions(AdminInterface $admin, array &$formOptions): void;
+
+    /**
+     * @param array<string, mixed> $parameters
+     *
+     * @return array<string, mixed>
+     */
+    public function configureFilterParameters(array $parameters): array;
 }

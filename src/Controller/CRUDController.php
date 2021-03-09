@@ -1321,7 +1321,7 @@ class CRUDController extends AbstractController
     {
         $admin = $this->admin;
 
-        do {
+        while (null !== $admin) {
             $objectId = $request->get($admin->getIdParameter());
 
             if (null !== $objectId) {
@@ -1335,7 +1335,9 @@ class CRUDController extends AbstractController
                     ));
                 }
             }
-        } while ($admin->isChild() && $admin = $admin->getParent());
+
+            $admin = $admin->isChild() ? $admin->getParent() : null;
+        }
     }
 
     private function getSelectedTab(Request $request): array

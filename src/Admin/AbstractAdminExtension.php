@@ -158,4 +158,14 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     public function configureFormOptions(AdminInterface $admin, array &$formOptions): void
     {
     }
+
+    /**
+     * @param array<string, mixed> $parameters
+     *
+     * @return array<string, mixed>
+     */
+    public function configureFilterParameters(array $parameters): array
+    {
+        return $parameters;
+    }
 }

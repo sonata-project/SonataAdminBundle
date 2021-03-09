@@ -34,7 +34,7 @@ Enable the Bundle
 -----------------
 
 Then, enable the bundle and the bundles it relies on by adding the following
-line in `bundles.php` file of your project::
+line in ``bundles.php`` file of your project::
 
     // config/bundles.php
 

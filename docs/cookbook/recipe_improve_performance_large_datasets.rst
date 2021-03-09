@@ -7,13 +7,13 @@ by SonataAdmin may become very slow. Here are tips how to improve the performanc
 Change default Pager to SimplePager
 -----------------------------------
 
-Default `Pager` is counting all rows in the table, so the user can navigate
+Default ``Pager`` is counting all rows in the table, so the user can navigate
 to any page in the Datagrid. But counting thousands or millions of records
 can be slow operation. If you don't need to know the number of all records,
-you can use `SimplePager` instead. It doesn't count all rows, but gives user only
+you can use ``SimplePager`` instead. It doesn't count all rows, but gives user only
 information if there is next page or not.
 
-To use `SimplePager` in your admin,  define ``pager_type`` in the service definition:
+To use ``SimplePager`` in your admin,  define ``pager_type`` in the service definition:
 
 .. configuration-block::
 

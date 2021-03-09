@@ -357,7 +357,7 @@ The available options are:
   defaults to "". Controls the width style attribute of the Select2 container div.
 
 ``dropdown_auto_width``
-  defaults to ``false``. Set to ``true`` to enable the `dropdownAutoWidth` Select2 option,
+  defaults to ``false``. Set to ``true`` to enable the ``dropdownAutoWidth`` Select2 option,
   which allows the drop downs to be wider than the parent input, sized according to their content.
 
 ``container_css_class``

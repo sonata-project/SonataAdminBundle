@@ -38,7 +38,7 @@ behavior for a specific admin, you can override the ``configureExportFields()`` 
 
 .. note::
 
-    Note that you can use `contact.phone` to access the `phone` property
+    Note that you can use ``contact.phone`` to access the ``phone`` property
     of `Contact` entity. Or use a getter if you have some virtual field.
 
 You can also tweak the list by creating an admin extension that implements the
