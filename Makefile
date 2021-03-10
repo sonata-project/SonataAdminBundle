@@ -14,7 +14,7 @@ lint-composer:
 .PHONY: lint-composer
 
 lint-yaml:
-	yaml-lint --ignore-non-yaml-files --quiet --exclude vendor .
+	yamllint .
 
 .PHONY: lint-yaml
 
