@@ -3562,6 +3562,81 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('@SonataAdmin/CRUD/show_compare.html.twig', $this->template);
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
+    public function testHistoryCompareRevisionsActionWithDeprecatedRouteParams()
+    {
+        $subjectId = 123;
+        $baseRevision = 456;
+        $compareRevision = 789;
+
+        $this->request->query->set('id', $subjectId);
+        $this->request->attributes->set('base_revision', $baseRevision);
+        $this->request->attributes->set('compare_revision', $compareRevision);
+
+        $this->admin->expects($this->once())
+            ->method('checkAccess')
+            ->with($this->equalTo('historyCompareRevisions'))
+            ->willReturn(true);
+
+        $object = new \stdClass();
+
+        $this->admin->expects($this->exactly(2))
+            ->method('getObject')
+            ->willReturn($object);
+
+        $this->admin
+            ->method('getClass')
+            ->willReturn('Foo');
+
+        $this->auditManager->expects($this->once())
+            ->method('hasReader')
+            ->with($this->equalTo('Foo'))
+            ->willReturn(true);
+
+        $reader = $this->createMock(AuditReaderInterface::class);
+
+        $this->auditManager->expects($this->once())
+            ->method('getReader')
+            ->with($this->equalTo('Foo'))
+            ->willReturn($reader);
+
+        $objectRevision = new \stdClass();
+        $objectRevision->revision = $baseRevision;
+
+        $compareObjectRevision = new \stdClass();
+        $compareObjectRevision->revision = $compareRevision;
+
+        $reader->expects($this->exactly(2))->method('find')->willReturnMap([
+            ['Foo', $subjectId, $baseRevision, $objectRevision],
+            ['Foo', $subjectId, $compareRevision, $compareObjectRevision],
+        ]);
+
+        $this->admin->expects($this->once())
+            ->method('setSubject')
+            ->with($this->equalTo($objectRevision));
+
+        $fieldDescriptionCollection = new FieldDescriptionCollection();
+        $this->admin->expects($this->once())
+            ->method('getShow')
+            ->willReturn($fieldDescriptionCollection);
+
+        $this->expectDeprecation(
+            'Route parameter "base_revision" for action "Sonata\AdminBundle\Controller\CRUDController::historyCompareRevisionsAction()"'.
+            ' is deprecated since sonata-project/admin-bundle 3.x. Use "baseRevision" parameter instead.'
+        );
+
+        $this->expectDeprecation(
+            'Route parameter "compare_revision" for action "Sonata\AdminBundle\Controller\CRUDController::historyCompareRevisionsAction()"'.
+            ' is deprecated since sonata-project/admin-bundle 3.x. Use "compareRevision" parameter instead.'
+        );
+
+        $this->assertInstanceOf(Response::class, $this->controller->historyCompareRevisionsAction());
+    }
+
     public function testBatchActionWrongMethod(): void
     {
         $this->expectException(NotFoundHttpException::class);

@@ -1,6 +1,30 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.x to 3.x
+=======================
+
+### `Sonata\AdminBundle\Controller\CRUDController::historyCompareRevisionsAction()`
+
+- Deprecated route parameter "base_revision" in favor of "baseRevision";
+- Deprecated route parameter "compare_revision" in favor of "compareRevision".
+
+Before:
+```php
+$admin->generateObjectUrl('history_compare_revisions', $subject, [
+    'base_revision' => $currentRev,
+    'compare_revision' => $rev,
+]);
+```
+
+After:
+```php
+$admin->generateObjectUrl('history_compare_revisions', $subject, [
+    'baseRevision' => $currentRev,
+    'compareRevision' => $rev,
+]);
+```
+
 UPGRADE FROM 3.89 to 3.90
 =========================
 
