@@ -52,13 +52,8 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
 
-            - name: Install Ruby 2.6
-              uses: actions/setup-ruby@v1
-              with:
-                  ruby-version: '2.6'
-
-            - name: Install required gem
-              run: gem install yaml-lint
+            - name: Install
+              run: sudo apt-get install yamllint
 
             - name: Lint files
               run: make lint-yaml
