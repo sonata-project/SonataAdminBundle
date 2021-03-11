@@ -127,10 +127,10 @@ interface ModelManagerInterface
      * @param array<string, mixed> $array
      *
      * @phpstan-template T of object
-     * @phpstan-param class-string<T> $class
+     * @phpstan-param T $model
      * @phpstan-return T
      */
-    public function modelReverseTransform(string $class, array $array = []): object;
+    public function modelReverseTransform(object $model, array $array = []): object;
 
     public function supportsQuery(object $query): bool;
 

@@ -153,6 +153,9 @@ Method `SimplePager::getResults` is always returning an array
 ## LockInterface
 `LockInterface` extends from `ModelManagerInterface`.
 
+## ModelManagerInterface
+The type of argument 1 of `modelReverseTransform` method has changed from `string` to `object`.
+
 ## RouteCollectionInterface
 `RouteCollection` implements `RouteCollectionInterface`.
 
