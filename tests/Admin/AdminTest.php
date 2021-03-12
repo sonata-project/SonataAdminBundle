@@ -33,6 +33,7 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exporter\DataSourceInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -1493,10 +1494,10 @@ class AdminTest extends TestCase
         $barFieldDescription = new FieldDescription('bar');
         $bazFieldDescription = new FieldDescription('baz');
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-
-        $modelManager->expects($this->exactly(3))
-            ->method('getNewFieldDescriptionInstance')
+        $fieldDescriptionFactory = $this->createMock(FieldDescriptionFactoryInterface::class);
+        $fieldDescriptionFactory
+            ->expects($this->exactly(3))
+            ->method('create')
             ->willReturnCallback(static function ($adminClass, string $name, $filterOptions) use ($fooFieldDescription, $barFieldDescription, $bazFieldDescription) {
                 switch ($name) {
                     case 'foo':
@@ -1516,7 +1517,6 @@ class AdminTest extends TestCase
 
                     default:
                         throw new \RuntimeException(sprintf('Unknown filter name "%s"', $name));
-                        break;
                 }
 
                 $fieldDescription->setName($name);
@@ -1524,6 +1524,9 @@ class AdminTest extends TestCase
                 return $fieldDescription;
             });
 
+        $modelAdmin->setFieldDescriptionFactory($fieldDescriptionFactory);
+
+        $modelManager = $this->createStub(ModelManagerInterface::class);
         $modelAdmin->setModelManager($modelManager);
 
         $pager = $this->createMock(PagerInterface::class);

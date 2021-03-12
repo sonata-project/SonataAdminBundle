@@ -1951,6 +1951,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return null !== $this->templateRegistry;
     }
 
+    final public function createFieldDescription(string $propertyName, array $options = []): FieldDescriptionInterface
+    {
+        $fieldDescriptionFactory = $this->getFieldDescriptionFactory();
+
+        $fieldDescription = $fieldDescriptionFactory->create($this->getClass(), $propertyName, $options);
+
+        $fieldDescription->setAdmin($this);
+
+        return $fieldDescription;
+    }
+
     /**
      * Hook to run after initialization.
      */
@@ -2192,8 +2203,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $mapper = new ListMapper($this->getListBuilder(), $this->list, $this);
 
         if (\count($this->getBatchActions()) > 0 && $this->hasRequest() && !$this->getRequest()->isXmlHttpRequest()) {
-            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance(
-                $this->getClass(),
+            $fieldDescription = $this->createFieldDescription(
                 'batch',
                 [
                     'label' => 'batch',
@@ -2216,8 +2226,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         if ($this->hasRequest() && $this->getRequest()->isXmlHttpRequest()) {
-            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance(
-                $this->getClass(),
+            $fieldDescription = $this->createFieldDescription(
                 'select',
                 [
                     'label' => false,
@@ -2376,10 +2385,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             if ($this->hasListFieldDescription($filterParameters['_sort_by'])) {
                 $filterParameters['_sort_by'] = $this->getListFieldDescription($filterParameters['_sort_by']);
             } else {
-                $filterParameters['_sort_by'] = $this->getModelManager()->getNewFieldDescriptionInstance(
-                    $this->getClass(),
-                    $filterParameters['_sort_by'],
-                    []
+                $filterParameters['_sort_by'] = $this->createFieldDescription(
+                    $filterParameters['_sort_by']
                 );
 
                 $this->getListBuilder()->buildField(null, $filterParameters['_sort_by'], $this);

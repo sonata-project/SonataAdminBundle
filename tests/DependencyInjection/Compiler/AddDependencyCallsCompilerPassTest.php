@@ -727,6 +727,12 @@ class AddDependencyCallsCompilerPassTest extends TestCase
                     $bundleSubstring
                 ));
             $container
+                ->register(sprintf('sonata.admin.field_description_factory.%s', $key))
+                ->setClass(sprintf(
+                    'Sonata\Doctrine%sAdminBundle\FieldDescription\FieldDescriptionFactory',
+                    $bundleSubstring
+                ));
+            $container
                 ->register(sprintf('sonata.admin.builder.%s_form', $key))
                 ->setClass(sprintf(
                     'Sonata\Doctrine%sAdminBundle\Builder\FormContractor',

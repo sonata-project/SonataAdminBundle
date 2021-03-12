@@ -17,6 +17,11 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\Guess\TypeGuess;
 
 /**
+ * NEXT_MAJOR: Remove this class.
+ *
+ * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+ * Use Sonata\AdminBundle\FieldDescription\TypeGuesserInterface instead.
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface TypeGuesserInterface

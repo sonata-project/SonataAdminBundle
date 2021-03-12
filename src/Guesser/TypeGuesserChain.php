@@ -20,6 +20,11 @@ use Symfony\Component\Form\Guess\TypeGuess;
 /**
  * The code is based on Symfony2 Form Components.
  *
+ * NEXT_MAJOR: Remove this class.
+ *
+ * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+ * Use Sonata\AdminBundle\FieldDescription\TypeGuesserChain instead.
+ *
  * @author Bernhard Schussek <bernhard.schussek@symfony.com>
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */

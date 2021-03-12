@@ -105,8 +105,7 @@ final class FormMapper extends BaseGroupedMapper
             $fieldDescriptionOptions['translation_domain'] = $group['translation_domain'];
         }
 
-        $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
-            $this->admin->getClass(),
+        $fieldDescription = $this->admin->createFieldDescription(
             $name instanceof FormBuilderInterface ? $name->getName() : $name,
             $fieldDescriptionOptions
         );

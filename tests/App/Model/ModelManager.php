@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\App\Model;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Model\LockInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Tests\App\Admin\FieldDescription;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 
 class ModelManager implements ModelManagerInterface, LockInterface
@@ -31,19 +29,6 @@ class ModelManager implements ModelManagerInterface, LockInterface
     public function __construct(FooRepository $repository)
     {
         $this->repository = $repository;
-    }
-
-    public function getNewFieldDescriptionInstance(string $class, string $name, array $options = []): FieldDescriptionInterface
-    {
-        if (!isset($options['route']['name'])) {
-            $options['route']['name'] = 'edit';
-        }
-
-        if (!isset($options['route']['parameters'])) {
-            $options['route']['parameters'] = [];
-        }
-
-        return new FieldDescription($name, $options);
     }
 
     public function create(object $object): void

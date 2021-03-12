@@ -20,7 +20,6 @@ use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 
 /**
@@ -56,25 +55,20 @@ class ListMapperTest extends TestCase
             ->willReturnCallback(static function (
                 FieldDescriptionCollection $list,
                 ?string $type,
-                FieldDescriptionInterface $fieldDescription,
-                AdminInterface $admin
+                FieldDescriptionInterface $fieldDescription
             ): void {
                 $fieldDescription->setType($type);
                 $list->add($fieldDescription);
             });
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-
-        $modelManager
-            ->method('getNewFieldDescriptionInstance')
-            ->willReturnCallback(function (?string $class, string $name, array $options = []): BaseFieldDescription {
+        $this->admin
+            ->method('createFieldDescription')
+            ->willReturnCallback(function (string $name, array $options = []): FieldDescriptionInterface {
                 $fieldDescription = $this->getFieldDescriptionMock($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
             });
-
-        $this->admin->method('getModelManager')->willReturn($modelManager);
 
         $labelTranslatorStrategy = new NoopLabelTranslatorStrategy();
 

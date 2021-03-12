@@ -64,8 +64,7 @@ final class ShowMapper extends BaseGroupedMapper
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
         } elseif (\is_string($name)) {
             if (!$this->admin->hasShowFieldDescription($name)) {
-                $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
-                    $this->admin->getClass(),
+                $fieldDescription = $this->admin->createFieldDescription(
                     $name,
                     $fieldDescriptionOptions
                 );

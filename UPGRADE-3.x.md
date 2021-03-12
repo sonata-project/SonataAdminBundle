@@ -1,8 +1,40 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.x to 3.x
+=======================
+
+### `Sonata\AdminBundle\Controller\CRUDController::historyCompareRevisionsAction()`
+
+- Deprecated route parameter "base_revision" in favor of "baseRevision";
+- Deprecated route parameter "compare_revision" in favor of "compareRevision".
+
+Before:
+```php
+$admin->generateObjectUrl('history_compare_revisions', $subject, [
+    'base_revision' => $currentRev,
+    'compare_revision' => $rev,
+]);
+```
+
+After:
+```php
+$admin->generateObjectUrl('history_compare_revisions', $subject, [
+    'baseRevision' => $currentRev,
+    'compareRevision' => $rev,
+]);
+```
+
 UPGRADE FROM 3.89 to 3.90
 =========================
+
+### Deprecated `Sonata\AdminBundle\Guesser\TypeGuesserInterface` interface.
+
+Use `Sonata\AdminBundle\FieldDescription\TypeGuesserInterface` interface instead.
+
+### Deprecated `Sonata\AdminBundle\Guesser\TypeGuesserChain` class.
+
+Use `Sonata\AdminBundle\FieldDescription\TypeGuesserChain` class instead.
 
 ### Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface::getModelInstance()` method.
 
@@ -10,6 +42,10 @@ Use `Sonata\AdminBundle\Admin\AbstractAdmin::createNewInstance()` method instead
 
 UPGRADE FROM 3.88 to 3.89
 =========================
+
+### Deprecated `Sonata\AdminBundle\Model\ModelManager::getNewFieldDescriptionInstance()` method.
+
+This method has been deprecated in favor of `FieldFactoryInterface::create()`.
 
 ### Deprecated overriding `AbstractAdmin::getNewInstance()`.
 

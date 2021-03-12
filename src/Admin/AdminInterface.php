@@ -511,4 +511,9 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      * the getFormBuilder is only call by the main admin class.
      */
     public function defineFormBuilder(FormBuilderInterface $formBuilder): void;
+
+    /**
+     * @param array<string, mixed> $options
+     */
+    public function createFieldDescription(string $propertyName, array $options = []): FieldDescriptionInterface;
 }

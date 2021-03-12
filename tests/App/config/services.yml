@@ -47,6 +47,9 @@ services:
     sonata.admin.datagrid.proxy_query:
         class: Sonata\AdminBundle\Tests\App\Datagrid\ProxyQuery
 
+    sonata.admin.field_description_factory.test:
+        class: Sonata\AdminBundle\Tests\App\FieldDescription\FieldDescriptionFactory
+
     Sonata\AdminBundle\Tests\App\Admin\FooAdmin:
         arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, 'sonata.admin.controller.crud']
         tags:

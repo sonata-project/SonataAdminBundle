@@ -78,6 +78,8 @@ final class XEditableExtension extends AbstractExtension
      *     ['Status1' => 'Alias1', 'Status2' => 'Alias2']
      * The method will return:
      *     [['value' => 'Status1', 'text' => 'Alias1'], ['value' => 'Status2', 'text' => 'Alias2']].
+     *
+     * @phpstan-return array<array{value: string, text: string}>
      */
     public function getXEditableChoices(FieldDescriptionInterface $fieldDescription): array
     {

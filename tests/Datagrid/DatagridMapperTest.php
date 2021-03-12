@@ -25,7 +25,6 @@ use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Filter;
 use Sonata\AdminBundle\Filter\FilterInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilder;
@@ -60,7 +59,7 @@ class DatagridMapperTest extends TestCase
 
         $this->datagrid = new Datagrid($proxyQuery, $fieldDescriptionCollection, $pager, $formBuilder, []);
 
-        $admin = $this->createMock(AdminInterface::class);
+        $admin = $this->createStub(AdminInterface::class);
 
         $datagridBuilder
             ->method('addFilter')
@@ -82,20 +81,14 @@ class DatagridMapperTest extends TestCase
                 $datagrid->addFilter($filter);
             });
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-
-        $modelManager
-            ->method('getNewFieldDescriptionInstance')
-            ->willReturnCallback(function (?string $class, string $name, array $options = []): BaseFieldDescription {
+        $admin
+            ->method('createFieldDescription')
+            ->willReturnCallback(function (string $name, array $options = []): FieldDescriptionInterface {
                 $fieldDescription = $this->getFieldDescriptionMock($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
             });
-
-        $admin
-            ->method('getModelManager')
-            ->willReturn($modelManager);
 
         $admin
             ->method('isGranted')

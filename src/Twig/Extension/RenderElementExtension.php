@@ -95,8 +95,8 @@ final class RenderElementExtension extends AbstractExtension
     /**
      * render a list element from the FieldDescription.
      *
-     * @param object|array $listElement
-     * @param array        $params
+     * @param object|mixed[]       $listElement
+     * @param array<string, mixed> $params
      *
      * @return string
      */
@@ -238,11 +238,13 @@ final class RenderElementExtension extends AbstractExtension
     /**
      * Extracts the object and requested value from the $listElement.
      *
-     * @param object|array $listElement
+     * @param object|mixed[] $listElement
      *
      * @throws \TypeError when $listElement is not an object or an array with an object on offset 0
      *
-     * @return array An array containing object and value
+     * @return mixed[] An array containing object and value
+     *
+     * @phpstan-return array{0: object, 1: mixed}
      */
     private function getObjectAndValueFromListElement(
         $listElement,
@@ -269,6 +271,9 @@ final class RenderElementExtension extends AbstractExtension
         return [$object, $value];
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     private function render(
         FieldDescriptionInterface $fieldDescription,
         TemplateWrapper $template,

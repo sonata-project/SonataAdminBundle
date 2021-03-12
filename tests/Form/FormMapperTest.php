@@ -16,7 +16,9 @@ namespace Sonata\AdminBundle\Tests\Form;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
@@ -79,18 +81,17 @@ class FormMapperTest extends TestCase
         $this->admin->setSecurityHandler($securityHandler);
         $this->admin->setFormContractor($this->contractor);
 
-        $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-
-        $this->modelManager
-            ->method('getNewFieldDescriptionInstance')
-            ->willReturnCallback(function (string $class, string $name, array $options = []): BaseFieldDescription {
+        $fieldDescriptionFactory = $this->createStub(FieldDescriptionFactoryInterface::class);
+        $fieldDescriptionFactory
+            ->method('create')
+            ->willReturnCallback(function (string $class, string $name, array $options = []): FieldDescriptionInterface {
                 $fieldDescription = $this->getFieldDescriptionMock($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
             });
 
-        $this->admin->setModelManager($this->modelManager);
+        $this->admin->setFieldDescriptionFactory($fieldDescriptionFactory);
 
         $this->admin->setLabelTranslatorStrategy(new NoopLabelTranslatorStrategy());
 

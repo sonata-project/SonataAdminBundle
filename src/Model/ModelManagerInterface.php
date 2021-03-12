@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Model;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 
@@ -22,13 +21,6 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
  */
 interface ModelManagerInterface
 {
-    /**
-     * @param array<string, mixed> $options
-     *
-     * @phpstan-param class-string $class
-     */
-    public function getNewFieldDescriptionInstance(string $class, string $name, array $options = []): FieldDescriptionInterface;
-
     /**
      * @throws ModelManagerException
      */

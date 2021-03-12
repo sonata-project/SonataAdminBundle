@@ -57,6 +57,8 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
  *   - field_options (o): the options to give to the widget
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @psalm-import-type FieldDescriptionOptions from FieldDescriptionInterface
  */
 abstract class BaseFieldDescription implements FieldDescriptionInterface
 {
@@ -120,6 +122,10 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     protected $associationAdmin;
 
+    /**
+     * @psalm-param FieldDescriptionOptions $options
+     * @phpstan-param array<string, mixed> $options
+     */
     public function __construct(
         string $name,
         array $options = [],

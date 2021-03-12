@@ -46,7 +46,7 @@ final class SecurityExtension extends AbstractExtension
     }
 
     /**
-     * @param string|array $role
+     * @param string|string[] $role
      */
     public function isGrantedAffirmative($role, ?object $object = null, ?string $field = null): bool
     {

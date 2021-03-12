@@ -69,8 +69,7 @@ final class DatagridMapper extends BaseMapper
                 ));
             }
 
-            $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
-                $this->admin->getClass(),
+            $fieldDescription = $this->admin->createFieldDescription(
                 $name,
                 array_merge($filterOptions, $fieldDescriptionOptions)
             );

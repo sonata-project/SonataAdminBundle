@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Exporter\DataSourceInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
@@ -101,6 +102,10 @@ interface TaggedAdminInterface
     public function setDataSource(DataSourceInterface $dataSource): void;
 
     public function getDataSource(): DataSourceInterface;
+
+    public function setFieldDescriptionFactory(FieldDescriptionFactoryInterface $fieldDescriptionFactory): void;
+
+    public function getFieldDescriptionFactory(): FieldDescriptionFactoryInterface;
 
     public function setFormContractor(FormContractorInterface $formContractor): void;
 

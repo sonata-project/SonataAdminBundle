@@ -118,8 +118,7 @@ final class ListMapper extends BaseMapper
                 ));
             }
 
-            $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
-                $this->admin->getClass(),
+            $fieldDescription = $this->admin->createFieldDescription(
                 $name,
                 $fieldDescriptionOptions
             );

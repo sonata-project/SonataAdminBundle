@@ -22,6 +22,7 @@ use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Exporter\DataSourceInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
@@ -181,6 +182,11 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
      */
     protected $labelTranslatorStrategy;
 
+    /**
+     * @var FieldDescriptionFactoryInterface|null
+     */
+    private $fieldDescriptionFactory;
+
     public function __construct(string $code, string $class, string $baseControllerName)
     {
         $this->code = $code;
@@ -299,6 +305,23 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         }
 
         return $this->dataSource;
+    }
+
+    final public function setFieldDescriptionFactory(FieldDescriptionFactoryInterface $fieldDescriptionFactory): void
+    {
+        $this->fieldDescriptionFactory = $fieldDescriptionFactory;
+    }
+
+    public function getFieldDescriptionFactory(): FieldDescriptionFactoryInterface
+    {
+        if (null === $this->fieldDescriptionFactory) {
+            throw new \LogicException(sprintf(
+                'Admin "%s" has no field description factory.',
+                static::class
+            ));
+        }
+
+        return $this->fieldDescriptionFactory;
     }
 
     final public function setFormContractor(FormContractorInterface $formBuilder): void

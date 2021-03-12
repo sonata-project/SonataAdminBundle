@@ -14,9 +14,45 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Admin;
 
 use Sonata\AdminBundle\Exception\NoValueException;
+use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @psalm-type FieldDescriptionOptions = array{
+ *  accessor?: string|callable|PropertyPathInterface,
+ *  actions?: array,
+ *  admin_code?: string,
+ *  associated_property?: string,
+ *  block_name?: string,
+ *  catalogue?: string,
+ *  data_transformer?: DataTransformerInterface,
+ *  edit?: string,
+ *  editable?: bool,
+ *  field_name?: string,
+ *  field_options?: array,
+ *  field_type?: string,
+ *  header_class?: string,
+ *  identifier?: bool,
+ *  inline?: string,
+ *  label?: bool|string|null,
+ *  link_parameters?: array,
+ *  multiple?: bool,
+ *  placeholder?: string,
+ *  required?: bool,
+ *  role?: string|string[],
+ *  route?: array,
+ *  safe?: bool,
+ *  sort_field_mapping?: array,
+ *  sort_parent_association_mappings?: array,
+ *  sortable?: bool,
+ *  template?: string,
+ *  timezone?: string|\DateTimeZone,
+ *  translation_domain?: string,
+ *  type?: string,
+ *  virtual_field?: bool
+ * }
  */
 interface FieldDescriptionInterface
 {
@@ -77,9 +113,10 @@ interface FieldDescriptionInterface
      *   - type
      *   - template.
      *
-     * Then the value are copied across to the related property value.
+     * Then the value are copied across to the related property value
      *
-     * @param array<string, mixed> $options
+     * @psalm-param FieldDescriptionOptions $options
+     * @phpstan-param array<string, mixed> $options
      */
     public function setOptions(array $options): void;
 
@@ -87,6 +124,9 @@ interface FieldDescriptionInterface
      * Returns options.
      *
      * @return array<string, mixed>
+     *
+     * @psalm-return FieldDescriptionOptions
+     * @phpstan-return array<string, mixed>
      */
     public function getOptions(): array;
 

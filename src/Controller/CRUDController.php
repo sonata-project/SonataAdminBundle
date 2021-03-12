@@ -742,30 +742,50 @@ class CRUDController extends AbstractController
 
         $reader = $manager->getReader($this->admin->getClass());
 
+        // NEXT_MAJOR: Remove this condition.
+        if ($request->attributes->has('base_revision')) {
+            // BC layer for "base_revision" route parameter.
+            $baseRevision = $baseRevision ?? $request->attributes->get('base_revision');
+
+            @trigger_error(sprintf(
+                'Route parameter "base_revision" for action "%s()" is deprecated since sonata-project/admin-bundle 3.x.'
+                .' Use "baseRevision" parameter instead.',
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+        }
+
+        // NEXT_MAJOR: Remove this condition.
+        if ($request->attributes->has('compare_revision')) {
+            // BC layer for "compare_revision" route parameter.
+            $compareRevision = $compareRevision ?? $request->attributes->get('compare_revision');
+
+            @trigger_error(sprintf(
+                'Route parameter "compare_revision" for action "%s()" is deprecated since sonata-project/admin-bundle 3.x.'
+                .' Use "compareRevision" parameter instead.',
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+        }
+
         // retrieve the base revision
         $baseObject = $reader->find($this->admin->getClass(), $id, $baseRevision);
         if (!$baseObject) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
-                    $id,
-                    $baseRevision,
-                    $this->admin->getClass()
-                )
-            );
+            throw $this->createNotFoundException(sprintf(
+                'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
+                $id,
+                $baseRevision,
+                $this->admin->getClass()
+            ));
         }
 
         // retrieve the compare revision
         $compareObject = $reader->find($this->admin->getClass(), $id, $compareRevision);
         if (!$compareObject) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
-                    $id,
-                    $compareRevision,
-                    $this->admin->getClass()
-                )
-            );
+            throw $this->createNotFoundException(sprintf(
+                'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
+                $id,
+                $compareRevision,
+                $this->admin->getClass()
+            ));
         }
 
         $this->admin->setSubject($baseObject);

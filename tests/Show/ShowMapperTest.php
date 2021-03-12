@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Tests\App\Builder\ShowBuilder;
@@ -69,7 +69,7 @@ class ShowMapperTest extends TestCase
     {
         $this->showBuilder = $this->getMockForAbstractClass(ShowBuilderInterface::class);
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
-        $this->admin = $this->getMockForAbstractClass(AdminInterface::class);
+        $this->admin = $this->createStub(AdminInterface::class);
 
         $this->admin
             ->method('getLabel')
@@ -100,20 +100,14 @@ class ShowMapperTest extends TestCase
                 $this->groups[$group]['fields'] = array_merge(array_flip($keys), $this->groups[$group]['fields']);
             });
 
-        $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-
-        $modelManager
-            ->method('getNewFieldDescriptionInstance')
-            ->willReturnCallback(function (?string $class, string $name, array $options = []) {
+        $this->admin
+            ->method('createFieldDescription')
+            ->willReturnCallback(function (string $name, array $options = []): FieldDescriptionInterface {
                 $fieldDescription = $this->getFieldDescriptionMock($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
             });
-
-        $this->admin
-            ->method('getModelManager')
-            ->willReturn($modelManager);
 
         $labelTranslatorStrategy = new NoopLabelTranslatorStrategy();
 
@@ -584,10 +578,9 @@ class ShowMapperTest extends TestCase
 
         $this->showMapper = new ShowMapper($this->showBuilder, $this->fieldDescriptionCollection, $this->admin);
 
-        $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-
-        $modelManager
-            ->method('getNewFieldDescriptionInstance')
+        $fieldDescriptionFactory = $this->createStub(FieldDescriptionFactoryInterface::class);
+        $fieldDescriptionFactory
+            ->method('create')
             ->willReturnCallback(function (string $class, string $name, array $options = []): FieldDescriptionInterface {
                 $fieldDescription = $this->getFieldDescriptionMock($name);
                 $fieldDescription->setOptions($options);
@@ -595,7 +588,7 @@ class ShowMapperTest extends TestCase
                 return $fieldDescription;
             });
 
-        $this->admin->setModelManager($modelManager);
+        $this->admin->setFieldDescriptionFactory($fieldDescriptionFactory);
         $this->admin->setLabelTranslatorStrategy(new NoopLabelTranslatorStrategy());
 
         $this->admin->setShowBuilder(new ShowBuilder());
