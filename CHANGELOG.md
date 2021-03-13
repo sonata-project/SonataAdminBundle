@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - [[#6922](https://github.com/sonata-project/SonataAdminBundle/pull/6922)] Added extension point `AbstractAdmin::configureFilterParameters()` to configure/modify filter parameters ([@dmaicher](https://github.com/dmaicher))
 - [[#6854](https://github.com/sonata-project/SonataAdminBundle/pull/6854)] Added `FieldDescriptionFactoryInterface` to create FieldDescription instances ([@franmomu](https://github.com/franmomu))
-- [[#6854](https://github.com/sonata-project/SonataAdminBundle/pull/6854)] Added `TypeGuesserInterface` to guess the proper FieldDescription type based on its properties. ([@franmomu](https://github.com/franmomu))
+- [[#6854](https://github.com/sonata-project/SonataAdminBundle/pull/6854)] Added `TypeGuesserInterface` to guess the proper FieldDescription type based on its properties ([@franmomu](https://github.com/franmomu))
 - [[#6913](https://github.com/sonata-project/SonataAdminBundle/pull/6913)] Route parameters "baseRevision" and "compareRevision" for `CRUDController::historyCompareRevisionsAction()`. ([@phansys](https://github.com/phansys))
 
 ### Deprecated
