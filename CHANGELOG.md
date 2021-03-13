@@ -18,7 +18,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - [[#6885](https://github.com/sonata-project/SonataAdminBundle/pull/6885)] `AdminInterface::canAccessObject()` ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#6885](https://github.com/sonata-project/SonataAdminBundle/pull/6885)] `AdminInterface::configureActionButtons()` and `AbstractAdmin::configureActionButtons()` will become protected ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#6854](https://github.com/sonata-project/SonataAdminBundle/pull/6854)] Deprecated `ModelManagerInterface::getNewFieldDescriptionInstance()` ([@franmomu](https://github.com/franmomu))
-- [[#6913](https://github.com/sonata-project/SonataAdminBundle/pull/6913)] Route parameters "base_revision" and "compare_revision" for `CRUDController::historyCompareRevisionsAction()`. ([@phansys](https://github.com/phansys))
+- [[#6913](https://github.com/sonata-project/SonataAdminBundle/pull/6913)] Route parameters "base_revision" and "compare_revision" for `CRUDController::historyCompareRevisionsAction()` ([@phansys](https://github.com/phansys))
 
 ### Fixed
 - [[#6928](https://github.com/sonata-project/SonataAdminBundle/pull/6928)] Fix wrong phpstan param on `FilterInterface::filter() method` ([@core23](https://github.com/core23))
