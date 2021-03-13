@@ -742,30 +742,6 @@ class CRUDController extends AbstractController
 
         $reader = $manager->getReader($this->admin->getClass());
 
-        // NEXT_MAJOR: Remove this condition.
-        if ($request->attributes->has('base_revision')) {
-            // BC layer for "base_revision" route parameter.
-            $baseRevision = $baseRevision ?? $request->attributes->get('base_revision');
-
-            @trigger_error(sprintf(
-                'Route parameter "base_revision" for action "%s()" is deprecated since sonata-project/admin-bundle 3.92.'
-                .' Use "baseRevision" parameter instead.',
-                __METHOD__
-            ), \E_USER_DEPRECATED);
-        }
-
-        // NEXT_MAJOR: Remove this condition.
-        if ($request->attributes->has('compare_revision')) {
-            // BC layer for "compare_revision" route parameter.
-            $compareRevision = $compareRevision ?? $request->attributes->get('compare_revision');
-
-            @trigger_error(sprintf(
-                'Route parameter "compare_revision" for action "%s()" is deprecated since sonata-project/admin-bundle 3.92.'
-                .' Use "compareRevision" parameter instead.',
-                __METHOD__
-            ), \E_USER_DEPRECATED);
-        }
-
         // retrieve the base revision
         $baseObject = $reader->find($this->admin->getClass(), $id, $baseRevision);
         if (!$baseObject) {

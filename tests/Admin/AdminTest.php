@@ -1770,53 +1770,6 @@ class AdminTest extends TestCase
     }
 
     /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testCantAccessObjectIfNullPassed(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $this->assertFalse($admin->canAccessObject('list', null));
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testCantAccessObjectIfRandomObjectPassed(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-        $admin->setModelManager($modelManager);
-
-        $this->assertFalse($admin->canAccessObject('list', new \stdClass()));
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testCanAccessObject(): void
-    {
-        $model = new \stdClass();
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-        $modelManager
-            ->method('getNormalizedIdentifier')
-            ->willReturn('identifier');
-        $admin->setModelManager($modelManager);
-        $securityHandler = $this->createMock(SecurityHandlerInterface::class);
-        $securityHandler->method('isGranted')->with($admin, 'LIST', $model)->willReturn(true);
-        $admin->setSecurityHandler($securityHandler);
-
-        $this->assertTrue($admin->canAccessObject('list', $model));
-    }
-
-    /**
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::configureBatchActions
      */
     public function testGetBatchActions(): void

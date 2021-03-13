@@ -9,10 +9,9 @@ file that was distributed with this source code.
 
 #}
 
-{# NEXT_MAJOR: Replace canAccessObject by hasAccess #}
 {% if object is not null
     and admin.id(object) is not null
-    and admin.canAccessObject('show', object, 'sonata_deprecation_mute')
+    and admin.hasAccess('show', object)
     and admin.show|length > 0
     and admin.hasRoute('show')
 %}
