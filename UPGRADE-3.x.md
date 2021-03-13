@@ -8,6 +8,10 @@ UPGRADE FROM 3.xx to 3.xx
 
 Override `Sonata\AdminBundle\Admin\AbstractAdmin::configureActionButtons()` instead.
 
+### Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface::modelReverseTransform()` method.
+
+Use `Sonata\AdminBundle\Model\ModelManagerInterface::reverseTransform()` instead.
+
 UPGRADE FROM 3.91 to 3.92
 =========================
 
