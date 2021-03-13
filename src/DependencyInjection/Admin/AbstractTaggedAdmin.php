@@ -442,7 +442,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         if (null === $this->fieldDescriptionFactory) {
             // NEXT_MAJOR: Remove this deprecation and uncomment the following exception
             @trigger_error(sprintf(
-                'Calling %s() when no field description factory is set is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s() when no field description factory is set is deprecated since sonata-project/admin-bundle 3.92'
                 .' and will throw a LogicException in 4.0',
                 __METHOD__,
             ), \E_USER_DEPRECATED);

@@ -872,7 +872,7 @@ class CRUDController implements ContainerAwareInterface
             $baseRevision = $baseRevision ?? $request->attributes->get('base_revision');
 
             @trigger_error(sprintf(
-                'Route parameter "base_revision" for action "%s()" is deprecated since sonata-project/admin-bundle 3.x.'
+                'Route parameter "base_revision" for action "%s()" is deprecated since sonata-project/admin-bundle 3.92.'
                 .' Use "baseRevision" parameter instead.',
                 __METHOD__
             ), \E_USER_DEPRECATED);
@@ -884,7 +884,7 @@ class CRUDController implements ContainerAwareInterface
             $compareRevision = $compareRevision ?? $request->attributes->get('compare_revision');
 
             @trigger_error(sprintf(
-                'Route parameter "compare_revision" for action "%s()" is deprecated since sonata-project/admin-bundle 3.x.'
+                'Route parameter "compare_revision" for action "%s()" is deprecated since sonata-project/admin-bundle 3.92.'
                 .' Use "compareRevision" parameter instead.',
                 __METHOD__
             ), \E_USER_DEPRECATED);

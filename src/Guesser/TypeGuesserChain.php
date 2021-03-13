@@ -22,7 +22,7 @@ use Symfony\Component\Form\Guess\TypeGuess;
  *
  * NEXT_MAJOR: Remove this class.
  *
- * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+ * @deprecated since sonata-project/admin-bundle 3.92, to be removed in 4.0.
  * Use Sonata\AdminBundle\FieldDescription\TypeGuesserChain instead.
  *
  * @final since sonata-project/admin-bundle 3.52
