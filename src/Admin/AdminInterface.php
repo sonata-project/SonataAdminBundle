@@ -454,20 +454,6 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     public function getSearchResultLink(object $object): ?string;
 
     /**
-     * @param array<string, array<string, mixed>> $buttonList
-     *
-     * @return array<string, array<string, mixed>>
-     */
-    public function configureActionButtons(array $buttonList, string $action, ?object $object = null): array;
-
-    /**
-     * Check object existence and access, without throwing Exception.
-     *
-     * @phpstan-param T $object
-     */
-    public function canAccessObject(string $action, ?object $object = null): bool;
-
-    /**
      * Returns the master admin.
      */
     public function getRoot(): self;

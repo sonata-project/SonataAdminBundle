@@ -1769,6 +1769,11 @@ class AdminTest extends TestCase
         $this->assertSame([], $admin->getActionButtons('edit'));
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testCantAccessObjectIfNullPassed(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
@@ -1776,6 +1781,11 @@ class AdminTest extends TestCase
         $this->assertFalse($admin->canAccessObject('list', null));
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testCantAccessObjectIfRandomObjectPassed(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
@@ -1785,6 +1795,11 @@ class AdminTest extends TestCase
         $this->assertFalse($admin->canAccessObject('list', new \stdClass()));
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testCanAccessObject(): void
     {
         $model = new \stdClass();

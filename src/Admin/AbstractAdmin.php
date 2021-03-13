@@ -948,7 +948,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function getForm(): FormInterface
     {
-        $this->buildForm();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildForm('sonata_deprecation_mute');
 
         \assert(null !== $this->form);
 
@@ -957,7 +958,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function getList(): FieldDescriptionCollection
     {
-        $this->buildList();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildList('sonata_deprecation_mute');
 
         \assert(null !== $this->list);
 
@@ -1196,14 +1198,16 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function getFormFieldDescriptions(): array
     {
-        $this->buildForm();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildForm('sonata_deprecation_mute');
 
         return $this->formFieldDescriptions;
     }
 
     final public function getFormFieldDescription(string $name): FieldDescriptionInterface
     {
-        $this->buildForm();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildForm('sonata_deprecation_mute');
 
         if (!$this->hasFormFieldDescription($name)) {
             throw new \LogicException(sprintf(
@@ -1221,7 +1225,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     final public function hasFormFieldDescription(string $name): bool
     {
-        $this->buildForm();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildForm('sonata_deprecation_mute');
 
         return \array_key_exists($name, $this->formFieldDescriptions);
     }
@@ -1246,7 +1251,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     final public function getShowFieldDescriptions(): array
     {
-        $this->buildShow();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildShow('sonata_deprecation_mute');
 
         return $this->showFieldDescriptions;
     }
@@ -1256,7 +1262,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     final public function getShowFieldDescription(string $name): FieldDescriptionInterface
     {
-        $this->buildShow();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildShow('sonata_deprecation_mute');
 
         if (!$this->hasShowFieldDescription($name)) {
             throw new \LogicException(sprintf(
@@ -1271,7 +1278,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function hasShowFieldDescription(string $name): bool
     {
-        $this->buildShow();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildShow('sonata_deprecation_mute');
 
         return \array_key_exists($name, $this->showFieldDescriptions);
     }
@@ -1288,14 +1296,16 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function getListFieldDescriptions(): array
     {
-        $this->buildList();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildList('sonata_deprecation_mute');
 
         return $this->listFieldDescriptions;
     }
 
     final public function getListFieldDescription(string $name): FieldDescriptionInterface
     {
-        $this->buildList();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildList('sonata_deprecation_mute');
 
         if (!$this->hasListFieldDescription($name)) {
             throw new \LogicException(sprintf(
@@ -1310,7 +1320,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function hasListFieldDescription(string $name): bool
     {
-        $this->buildList();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildList('sonata_deprecation_mute');
 
         return \array_key_exists($name, $this->listFieldDescriptions);
     }
@@ -1607,6 +1618,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
+     * NEXT_MAJOR: Change visibility to protected.
+     *
      * Return the list of permissions the user should have in order to display the admin.
      *
      * @return string[]
@@ -1655,7 +1668,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     public function getShow(): FieldDescriptionCollection
     {
-        $this->buildShow();
+        // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
+        $this->buildShow('sonata_deprecation_mute');
 
         return $this->show;
     }
@@ -1821,7 +1835,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         if (\in_array($action, ['show', 'delete', 'acl', 'history'], true)
             && $this->hasRoute('edit')
-            && $this->canAccessObject('edit', $object)
+            && null !== $object
+            && null !== $this->id($object)
+            // NEXT_MAJOR: Replace by `$this->hasAccess`
+            && $this->canAccessObject('edit', $object, 'sonata_deprecation_mute')
         ) {
             $buttonList['edit'] = [
                 'template' => $this->getTemplateRegistry()->getTemplate('button_edit'),
@@ -1830,7 +1847,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         if (\in_array($action, ['show', 'edit', 'acl'], true)
             && $this->hasRoute('history')
-            && $this->canAccessObject('history', $object)
+            && null !== $object
+            && null !== $this->id($object)
+            // NEXT_MAJOR: Replace by `$this->hasAccess`
+            && $this->canAccessObject('history', $object, 'sonata_deprecation_mute')
         ) {
             $buttonList['history'] = [
                 'template' => $this->getTemplateRegistry()->getTemplate('button_history'),
@@ -1840,7 +1860,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         if (\in_array($action, ['edit', 'history'], true)
             && $this->isAclEnabled()
             && $this->hasRoute('acl')
-            && $this->canAccessObject('acl', $object)
+            && null !== $object
+            && null !== $this->id($object)
+            // NEXT_MAJOR: Replace by `$this->hasAccess`
+            && $this->canAccessObject('acl', $object, 'sonata_deprecation_mute')
         ) {
             $buttonList['acl'] = [
                 'template' => $this->getTemplateRegistry()->getTemplate('button_acl'),
@@ -1849,7 +1872,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         if (\in_array($action, ['edit', 'history', 'acl'], true)
             && $this->hasRoute('show')
-            && $this->canAccessObject('show', $object)
+            && null !== $object
+            && null !== $this->id($object)
+            // NEXT_MAJOR: Replace by `$this->hasAccess`
+            && $this->canAccessObject('show', $object, 'sonata_deprecation_mute')
             && \count($this->getShow()) > 0
         ) {
             $buttonList['show'] = [
@@ -1920,8 +1946,28 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return null;
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * Check object existence and access, without throw Exception.
+     *
+     * @param string $action
+     * @param object $object
+     *
+     * @return bool
+     *
+     * @phpstan-param T $object
+     */
     public function canAccessObject(string $action, ?object $object = null): bool
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[2] ?? null)) {
+            @trigger_error(sprintf(
+                'The method %s() is deprecated since sonata-project/admin-bundle 3.92'
+                .' and will be removed an in 4.0. Use `hasAccess()` instead',
+                __METHOD__,
+            ), \E_USER_DEPRECATED);
+        }
+
         if (!\is_object($object)) {
             return false;
         }
@@ -2168,10 +2214,18 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * build the view FieldDescription array.
+     * NEXT_MAJOR: Change the visibility to private.
      */
     protected function buildShow(): void
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'The %s() method is deprecated since sonata-project/admin-bundle 3.92'
+                .' and will become private in version 4.0.',
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+        }
+
         if ($this->loaded['show']) {
             return;
         }
@@ -2189,10 +2243,20 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * build the list FieldDescription array.
+     * NEXT_MAJOR: Change visibility to private.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.92 will be private in 4.0
      */
     protected function buildList(): void
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'The %s() method is deprecated since sonata-project/admin-bundle 3.92'
+                .' and will become private in version 4.0.',
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+        }
+
         if ($this->loaded['list']) {
             return;
         }
@@ -2244,10 +2308,20 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * Build the form FieldDescription collection.
+     * NEXT_MAJOR: Change visibility to private.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.92 will be private in 4.0
      */
     protected function buildForm(): void
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'The %s() method is deprecated since sonata-project/admin-bundle 3.92'
+                .' and will become private in version 4.0.',
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+        }
+
         if ($this->loaded['form']) {
             return;
         }
@@ -2367,9 +2441,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     private function buildDatagrid(): void
     {
         if ($this->loaded['datagrid']) {

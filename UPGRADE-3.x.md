@@ -1,8 +1,12 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.x to 3.x
-=======================
+UPGRADE FROM 3.91 to 3.92
+=========================
+
+### Deprecated `Sonata\AdminBundle\Model\AdminInterface::canAccessObject()` method.
+
+Use `Sonata\AdminBundle\Admin\AdminInterface::hasAccess()` instead.
 
 ### `Sonata\AdminBundle\Controller\CRUDController::historyCompareRevisionsAction()`
 
