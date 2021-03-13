@@ -18,7 +18,7 @@ use Doctrine\Common\Collections\Collection;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Bar;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

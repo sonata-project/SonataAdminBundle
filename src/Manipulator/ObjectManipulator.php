@@ -15,7 +15,7 @@ namespace Sonata\AdminBundle\Manipulator;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Inflector\InflectorFactory;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
 final class ObjectManipulator
 {

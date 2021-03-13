@@ -78,7 +78,7 @@ class AdminHelper
      * @throws \RuntimeException
      * @throws \Exception
      *
-     * @phpstan-return array{\Sonata\AdminBundle\Admin\FieldDescriptionInterface|null, \Symfony\Component\Form\FormInterface}
+     * @phpstan-return array{\Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface|null, \Symfony\Component\Form\FormInterface}
      */
     public function appendFormFieldElement(AdminInterface $admin, object $subject, string $elementId): array
     {

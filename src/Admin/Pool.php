@@ -17,6 +17,7 @@ use Psr\Container\ContainerInterface;
 use Sonata\AdminBundle\Exception\AdminClassNotFoundException;
 use Sonata\AdminBundle\Exception\AdminCodeNotFoundException;
 use Sonata\AdminBundle\Exception\TooManyAdminClassException;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
 /**
  * @psalm-type Group = array{
