@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Util\Instantiator;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
@@ -65,13 +66,20 @@ class ArrayToModelTransformer implements DataTransformerInterface
             return $value;
         }
 
-        $instance = new $this->className();
+        $instance = Instantiator::instantiate($this->className);
 
         if (!\is_array($value)) {
             return $instance;
         }
 
-        return $this->modelManager->modelReverseTransform($this->className, $value);
+        // NEXT_MAJOR: Remove this code.
+        if (!method_exists($this->modelManager, 'reverseTransform')) {
+            return $this->modelManager->modelReverseTransform($this->className, $value);
+        }
+
+        $this->modelManager->reverseTransform($instance, $value);
+
+        return $instance;
     }
 
     /**

@@ -25,6 +25,7 @@ use Sonata\Exporter\Source\SourceIteratorInterface;
  * A model manager is a bridge between the model classes and the admin functionality.
  *
  * @method bool supportsQuery(object $query)
+ * @method void reverseTransform(object $object, array $array = [])
  */
 interface ModelManagerInterface extends DatagridManagerInterface
 {
@@ -278,6 +279,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
     public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, use reverseTransform() instead.
+     *
      * @param string $class
      *
      * @return object
@@ -287,6 +292,9 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @phpstan-return T
      */
     public function modelReverseTransform($class, array $array = []);
+
+    // NEXT_MAJOR: Uncomment this.
+//    public function reverseTransform(object $object, array $array = []): void;
 
     /**
      * NEXT_MAJOR: Remove this method.

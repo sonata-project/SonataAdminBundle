@@ -187,9 +187,16 @@ final class ModelManager implements ModelManagerInterface
         return [];
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function modelReverseTransform($class, array $array = []): object
     {
         throw new \BadMethodCallException('Not implemented.');
+    }
+
+    public function reverseTransform(object $object, array $array = []): void
+    {
     }
 
     /**
