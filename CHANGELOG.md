@@ -22,7 +22,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - [[#6928](https://github.com/sonata-project/SonataAdminBundle/pull/6928)] Fix wrong phpstan param on `FilterInterface::filter() method` ([@core23](https://github.com/core23))
-- [[#6920](https://github.com/sonata-project/SonataAdminBundle/pull/6920)] Issue "Right side of && is always true" detected by PHPStan. ([@phansys](https://github.com/phansys))
+- [[#6920](https://github.com/sonata-project/SonataAdminBundle/pull/6920)] Issue "Right side of && is always true" detected by PHPStan ([@phansys](https://github.com/phansys))
 
 ## [3.91.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.91.0...3.91.1) - 2021-03-06
 ### Added
