@@ -131,17 +131,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     protected $translationDomain = 'messages';
 
     /**
-     * NEXT_MAJOR: Remove this property.
-     *
-     * Options to set to the form (ie, validation_groups).
-     *
-     * @deprecated since sonata-project/admin-bundle 3.89, use configureFormOptions() instead.
-     *
-     * @var array<string, mixed>
-     */
-    protected $formOptions = [];
-
-    /**
      * Array of routes related to this admin.
      *
      * @var RouteCollectionInterface|null
@@ -510,10 +499,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $parameters = $this->configureFilterParameters($parameters);
 
         foreach ($this->getExtensions() as $extension) {
-            // NEXT_MAJOR: remove method_exists check
-            if (method_exists($extension, 'configureFilterParameters')) {
-                $parameters = $extension->configureFilterParameters($this, $parameters);
-            }
+            $parameters = $extension->configureFilterParameters($this, $parameters);
         }
 
         return $parameters;
@@ -1606,18 +1592,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getCode();
     }
 
-    /**
-     * NEXT_MAJOR: Change visibility to protected.
-     *
-     * Return the list of permissions the user should have in order to display the admin.
-     *
-     * @return string[]
-     */
-    public function getPermissionsShow(string $context): array
-    {
-        return ['LIST'];
-    }
-
     public function showIn(string $context): bool
     {
         return $this->isGranted($this->getPermissionsShow($context));
@@ -1930,11 +1904,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return null;
     }
 
-    public function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
-    {
-        return $buttonList;
-    }
-
     final public function getTemplateRegistry(): MutableTemplateRegistryInterface
     {
         if (false === $this->hasTemplateRegistry()) {
@@ -2145,6 +2114,16 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
+     * @param array<string, array<string, mixed>> $buttonList
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
+    {
+        return $buttonList;
+    }
+
+    /**
      * Allows you to customize batch actions.
      *
      * @param array<string, array<string, mixed>> $actions
@@ -2205,6 +2184,16 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         return $access;
+    }
+
+    /**
+     * Return the list of permissions the user should have in order to display the admin.
+     *
+     * @return string[]
+     */
+    protected function getPermissionsShow(string $context): array
+    {
+        return ['LIST'];
     }
 
     /**

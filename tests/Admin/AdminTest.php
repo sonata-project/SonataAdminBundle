@@ -1207,15 +1207,6 @@ class AdminTest extends TestCase
         $this->assertFalse($admin->supportsPreviewMode());
     }
 
-    public function testGetPermissionsShow(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $this->assertSame(['LIST'], $admin->getPermissionsShow(AbstractAdmin::CONTEXT_DASHBOARD));
-        $this->assertSame(['LIST'], $admin->getPermissionsShow(AbstractAdmin::CONTEXT_MENU));
-        $this->assertSame(['LIST'], $admin->getPermissionsShow('foo'));
-    }
-
     public function testShowIn(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'Acme\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
