@@ -3626,12 +3626,12 @@ class CRUDControllerTest extends TestCase
 
         $this->expectDeprecation(
             'Route parameter "base_revision" for action "Sonata\AdminBundle\Controller\CRUDController::historyCompareRevisionsAction()"'.
-            ' is deprecated since sonata-project/admin-bundle 3.x. Use "baseRevision" parameter instead.'
+            ' is deprecated since sonata-project/admin-bundle 3.92. Use "baseRevision" parameter instead.'
         );
 
         $this->expectDeprecation(
             'Route parameter "compare_revision" for action "Sonata\AdminBundle\Controller\CRUDController::historyCompareRevisionsAction()"'.
-            ' is deprecated since sonata-project/admin-bundle 3.x. Use "compareRevision" parameter instead.'
+            ' is deprecated since sonata-project/admin-bundle 3.92. Use "compareRevision" parameter instead.'
         );
 
         $this->assertInstanceOf(Response::class, $this->controller->historyCompareRevisionsAction());

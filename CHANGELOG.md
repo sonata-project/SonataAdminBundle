@@ -2,6 +2,28 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.92.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.91.1...3.92.0) - 2021-03-13
+### Added
+- [[#6922](https://github.com/sonata-project/SonataAdminBundle/pull/6922)] Added extension point `AbstractAdmin::configureFilterParameters` to configure/modify filter parameters ([@dmaicher](https://github.com/dmaicher))
+- [[#6854](https://github.com/sonata-project/SonataAdminBundle/pull/6854)] Added `FieldDescriptionFactoryInterface` to create FieldDescription instances. ([@franmomu](https://github.com/franmomu))
+- [[#6854](https://github.com/sonata-project/SonataAdminBundle/pull/6854)] Added `TypeGuesserInterface` to guess the proper FieldDescription type based on its properties. ([@franmomu](https://github.com/franmomu))
+- [[#6913](https://github.com/sonata-project/SonataAdminBundle/pull/6913)] Route parameters "baseRevision" and "compareRevision" for `CRUDController::historyCompareRevisionsAction()`. ([@phansys](https://github.com/phansys))
+
+### Deprecated
+- [[#6885](https://github.com/sonata-project/SonataAdminBundle/pull/6885)] `AbstractAdmin::buildForm()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6885](https://github.com/sonata-project/SonataAdminBundle/pull/6885)] `AbstractAdmin::buildDatagrid()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6885](https://github.com/sonata-project/SonataAdminBundle/pull/6885)] `AbstractAdmin::buildShow()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6885](https://github.com/sonata-project/SonataAdminBundle/pull/6885)] `AbstractAdmin::buildList()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6885](https://github.com/sonata-project/SonataAdminBundle/pull/6885)] `AbstractAdmin::canAccessObject()` in favor of `AbstractAdmin::hasAccess()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6885](https://github.com/sonata-project/SonataAdminBundle/pull/6885)] `AdminInterface::canAccessObject()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6885](https://github.com/sonata-project/SonataAdminBundle/pull/6885)] `AdminInterface::configureActionButtons()` and `AbstractAdmin::configureActionButtons()` will become protected ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6854](https://github.com/sonata-project/SonataAdminBundle/pull/6854)] Deprecated `ModelManagerInterface::getNewFieldDescriptionInstance`. ([@franmomu](https://github.com/franmomu))
+- [[#6913](https://github.com/sonata-project/SonataAdminBundle/pull/6913)] Route parameters "base_revision" and "compare_revision" for `CRUDController::historyCompareRevisionsAction()`. ([@phansys](https://github.com/phansys))
+
+### Fixed
+- [[#6928](https://github.com/sonata-project/SonataAdminBundle/pull/6928)] Fix wrong phpstan param on `FilterInterface::filter() method` ([@core23](https://github.com/core23))
+- [[#6920](https://github.com/sonata-project/SonataAdminBundle/pull/6920)] Issue "Right side of && is always true" detected by PHPStan. ([@phansys](https://github.com/phansys))
+
 ## [3.91.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.91.0...3.91.1) - 2021-03-06
 ### Added
 - [[#6911](https://github.com/sonata-project/SonataAdminBundle/pull/6911)] Added `AbstractAdminExtension::configurePersistentParameters()` method stub ([@core23](https://github.com/core23))

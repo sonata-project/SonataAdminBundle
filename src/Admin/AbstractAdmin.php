@@ -747,7 +747,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'The %s() method is deprecated since sonata-project/admin-bundle 3.x'
+                'The %s() method is deprecated since sonata-project/admin-bundle 3.92'
                 .' and will become private in version 4.0.',
                 __METHOD__
             ), \E_USER_DEPRECATED);
@@ -2910,7 +2910,7 @@ EOT;
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[2] ?? null)) {
             @trigger_error(sprintf(
-                'The method %s() is deprecated since sonata-project/admin-bundle 3.x'
+                'The method %s() is deprecated since sonata-project/admin-bundle 3.92'
                 .' and will be removed an in 4.0. Use `hasAccess()` instead',
                 __METHOD__,
             ), \E_USER_DEPRECATED);
@@ -3155,7 +3155,7 @@ EOT;
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'The %s() method is deprecated since sonata-project/admin-bundle 3.x'
+                'The %s() method is deprecated since sonata-project/admin-bundle 3.92'
                 .' and will become private in version 4.0.',
                 __METHOD__
             ), \E_USER_DEPRECATED);
@@ -3180,13 +3180,13 @@ EOT;
     /**
      * NEXT_MAJOR: Change visibility to private.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x will be private in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.92 will be private in 4.0
      */
     protected function buildList()
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'The %s() method is deprecated since sonata-project/admin-bundle 3.x'
+                'The %s() method is deprecated since sonata-project/admin-bundle 3.92'
                 .' and will become private in version 4.0.',
                 __METHOD__
             ), \E_USER_DEPRECATED);
@@ -3247,13 +3247,13 @@ EOT;
     /**
      * NEXT_MAJOR: Change visibility to private.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x will be private in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.92 will be private in 4.0
      */
     protected function buildForm()
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'The %s() method is deprecated since sonata-project/admin-bundle 3.x'
+                'The %s() method is deprecated since sonata-project/admin-bundle 3.92'
                 .' and will become private in version 4.0.',
                 __METHOD__
             ), \E_USER_DEPRECATED);
