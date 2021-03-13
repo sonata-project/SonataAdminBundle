@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Fixtures\Admin;
+namespace Sonata\AdminBundle\Tests\Fixtures\FieldDescription;
 
-use Sonata\AdminBundle\Admin\BaseFieldDescription;
+use Sonata\AdminBundle\FieldDescription\BaseFieldDescription;
 
 class FieldDescription extends BaseFieldDescription
 {

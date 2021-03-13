@@ -170,3 +170,6 @@ to be consistent with others labels like `show.label_foo_bar_baz`.
 
 ## MutableTemplateRegistry::setTemplates and AbstractAdmin::setTemplates
 They don't reset the existing templates anymore.
+
+## BaseFieldDescription, FieldDescriptionCollection, FieldDescriptionInterface and FieldDescriptionRegistryInterface
+Moved from the `Sonata\AdminBundle\Admin` to the `Sonata\AdminBundle\FieldDescription` namespace.

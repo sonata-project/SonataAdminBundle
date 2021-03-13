@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Admin;
+namespace Sonata\AdminBundle\FieldDescription;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
