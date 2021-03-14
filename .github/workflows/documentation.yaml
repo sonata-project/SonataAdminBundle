@@ -25,15 +25,12 @@ jobs:
               uses: actions/checkout@v2
 
             - name: Set up Python 3.7
-              uses: actions/setup-python@v1
+              uses: actions/setup-python@v2
               with:
                   python-version: '3.7'
 
             - name: Display Python version
               run: python -c "import sys; print(sys.version)"
-
-            - name: Install Sphinx dependencies
-              run: sudo apt-get install python-dev build-essential
 
             - name: Cache pip
               uses: actions/cache@v2
