@@ -56,7 +56,7 @@ $rules = [
     'static_lambda' => true,
     'strict_comparison' => true,
     'strict_param' => true,
-    'void_return' => null,
+    'void_return' => false,
 ];
 
 
