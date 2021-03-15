@@ -2172,7 +2172,7 @@ class AdminTest extends TestCase
         $admin->method('isAclEnabled')->willReturn(true);
         $admin->method('getExtensions')->willReturn([]);
 
-        $admin->expects($this->exactly(9))->method('hasRoute')->willReturn(false);
+        $admin->expects($this->exactly(4))->method('hasRoute')->willReturn(false);
         $admin->expects($this->never())->method('hasAccess');
         $admin->expects($this->never())->method('getShow');
 
