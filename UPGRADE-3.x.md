@@ -1,6 +1,13 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.xx to 3.xx
+=========================
+
+### Deprecated overriding `Sonata\AdminBundle\Admin\AbstractAdmin::getActionButtons()` method.
+
+Override `Sonata\AdminBundle\Admin\AbstractAdmin::configureActionButtons()` instead.
+
 UPGRADE FROM 3.91 to 3.92
 =========================
 

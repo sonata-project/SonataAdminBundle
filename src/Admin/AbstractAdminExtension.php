@@ -165,6 +165,18 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     }
 
     /**
+     * @param array<string, array<string, mixed>> $actions
+     *
+     * @return array<string, array<string, mixed>>
+     *
+     * @phpstan-param AdminInterface<T> $admin
+     */
+    public function configureDashboardButtons(AdminInterface $admin, array $actions): array
+    {
+        return $actions;
+    }
+
+    /**
      * @phpstan-param AdminInterface<T> $admin
      */
     public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues)
