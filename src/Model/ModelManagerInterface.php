@@ -281,7 +281,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, use reverseTransform() instead.
+     * @deprecated since sonata-project/admin-bundle 3.93, use reverseTransform() instead.
      *
      * @param string $class
      *
