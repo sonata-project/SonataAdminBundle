@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Form\TestEntity;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -435,7 +435,7 @@ class DatagridTest extends TestCase
     public function testBuildPagerWithException(): void
     {
         $this->expectException(\Symfony\Component\Form\Exception\UnexpectedTypeException::class);
-        $this->expectExceptionMessage('Expected argument of type "Sonata\\AdminBundle\\Admin\\FieldDescriptionInterface", "array" given');
+        $this->expectExceptionMessage('Expected argument of type "Sonata\\AdminBundle\\FieldDescription\\FieldDescriptionInterface", "array" given');
 
         $filter = $this->createMock(FilterInterface::class);
         $filter->expects($this->once())

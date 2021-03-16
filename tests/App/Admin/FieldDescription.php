@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\App\Admin;
 
-use Sonata\AdminBundle\Admin\BaseFieldDescription;
+use Sonata\AdminBundle\FieldDescription\BaseFieldDescription;
 
 final class FieldDescription extends BaseFieldDescription
 {

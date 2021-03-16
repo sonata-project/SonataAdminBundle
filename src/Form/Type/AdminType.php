@@ -15,7 +15,7 @@ namespace Sonata\AdminBundle\Form\Type;
 
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 use Sonata\AdminBundle\Manipulator\ObjectManipulator;
 use Symfony\Component\Form\AbstractType;
@@ -211,3 +211,6 @@ class AdminType extends AbstractType
         return $this->getFieldDescription($options)->getAssociationAdmin();
     }
 }
+
+// NEXT_MAJOR: Remove next line.
+interface_exists(FieldDescriptionInterface::class);

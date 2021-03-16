@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\FieldDescription;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-
 /**
  * @psalm-import-type FieldDescriptionOptions from FieldDescriptionInterface
  */

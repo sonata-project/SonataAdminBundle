@@ -17,6 +17,9 @@ use Knp\Menu\ItemInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionRegistryInterface;
 use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryAwareInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
@@ -789,3 +792,5 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
 }
 
 class_exists(\Sonata\Form\Validator\ErrorElement::class);
+// NEXT_MAJOR: Remove next line.
+class_exists(\Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::class);

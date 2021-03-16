@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Twig\Extension;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 

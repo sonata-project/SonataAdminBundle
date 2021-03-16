@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Model;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 
 /**
@@ -370,3 +370,5 @@ interface ModelManagerInterface extends DatagridManagerInterface
      */
     public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx);
 }
+
+interface_exists(FieldDescriptionInterface::class);

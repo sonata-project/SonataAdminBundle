@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Datagrid;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -377,3 +377,6 @@ class Datagrid implements DatagridInterface
             || $values['_sort_by']->getName() === $fieldDescription->getOption('sortable');
     }
 }
+
+// NEXT_MAJOR: Remove next line.
+interface_exists(FieldDescriptionInterface::class);

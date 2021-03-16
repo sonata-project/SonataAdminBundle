@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\FieldDescription;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Symfony\Component\Form\Guess\TypeGuess;
 
 interface TypeGuesserInterface

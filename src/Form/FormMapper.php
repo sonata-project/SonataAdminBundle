@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Form;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType as SymfonyCollectionType;
@@ -326,3 +327,6 @@ class FormMapper extends BaseGroupedMapper
         return 'form';
     }
 }
+
+// NEXT_MAJOR: Remove next line.
+interface_exists(FieldDescriptionInterface::class);

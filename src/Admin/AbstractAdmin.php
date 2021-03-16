@@ -22,6 +22,8 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\DependencyInjection\Admin\AbstractTaggedAdmin;
 use Sonata\AdminBundle\Exception\AdminClassNotFoundException;
 use Sonata\AdminBundle\Exporter\DataSourceInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
 use Sonata\AdminBundle\Manipulator\ObjectManipulator;
@@ -3516,3 +3518,5 @@ EOT;
 }
 
 class_exists(\Sonata\Form\Validator\ErrorElement::class);
+// NEXT_MAJOR: Remove next line.
+class_exists(\Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::class);

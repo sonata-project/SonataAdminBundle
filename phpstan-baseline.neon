@@ -20,13 +20,13 @@ parameters:
 
         -
             # will be fixed in v4. Code is marked as deprecated
-            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AbstractAdmin\\:\\:getParentFieldDescription\\(\\) should return Sonata\\\\AdminBundle\\\\Admin\\\\FieldDescriptionInterface but returns null\\.$#"
+            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AbstractAdmin\\:\\:getParentFieldDescription\\(\\) should return Sonata\\\\AdminBundle\\\\FieldDescription\\\\FieldDescriptionInterface but returns null\\.$#"
             count: 1
             path: src/Admin/AbstractAdmin.php
 
         -
             # will be fixed in v4. Code is marked as deprecated
-            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AbstractAdmin\\:\\:getShowFieldDescription\\(\\) should return Sonata\\\\AdminBundle\\\\Admin\\\\FieldDescriptionInterface but returns null\\.$#"
+            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AbstractAdmin\\:\\:getShowFieldDescription\\(\\) should return Sonata\\\\AdminBundle\\\\FieldDescription\\\\FieldDescriptionInterface but returns null\\.$#"
             count: 1
             path: src/Admin/AbstractAdmin.php
 
@@ -40,7 +40,7 @@ parameters:
             # will be fixed in v4. Code is marked as deprecated
             message: "#^Result of && is always false\\.$#"
             count: 2
-            path: src/Admin/BaseFieldDescription.php
+            path: src/FieldDescription/BaseFieldDescription.php
 
         -
             # will be fixed in v4. Code is marked as deprecated
@@ -62,13 +62,13 @@ parameters:
 
         -
             # will be fixed in v4. Code is marked as deprecated
-            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\FieldDescriptionInterface\\:\\:getLabel\\(\\) invoked with 1 parameter, 0 required\\.$#"
+            message: "#^Method Sonata\\\\AdminBundle\\\\FieldDescription\\\\FieldDescriptionInterface\\:\\:getLabel\\(\\) invoked with 1 parameter, 0 required\\.$#"
             count: 1
             path: src/Datagrid/DatagridMapper.php
 
         -
             # will be fixed in v4. Currently BC break
-            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\FieldDescriptionInterface\\:\\:getLabel\\(\\) invoked with 1 parameter, 0 required\\.$#"
+            message: "#^Method Sonata\\\\AdminBundle\\\\FieldDescription\\\\FieldDescriptionInterface\\:\\:getLabel\\(\\) invoked with 1 parameter, 0 required\\.$#"
             count: 1
             path: src/Datagrid/ListMapper.php
 
@@ -92,7 +92,7 @@ parameters:
 
         -
             # will be fixed in v4. Currently BC break
-            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\FieldDescriptionInterface\\:\\:getLabel\\(\\) invoked with 1 parameter, 0 required\\.$#"
+            message: "#^Method Sonata\\\\AdminBundle\\\\FieldDescription\\\\FieldDescriptionInterface\\:\\:getLabel\\(\\) invoked with 1 parameter, 0 required\\.$#"
             count: 1
             path: src/Show/ShowMapper.php
 
@@ -122,7 +122,7 @@ parameters:
 
         -
             # NEXT_MAJOR: Remove this error
-            message: "#^Call to an undefined method Sonata\\\\AdminBundle\\\\Admin\\\\FieldDescriptionInterface\\:\\:setHelp\\(\\)\\.$#"
+            message: "#^Call to an undefined method Sonata\\\\AdminBundle\\\\FieldDescription\\\\FieldDescriptionInterface\\:\\:setHelp\\(\\)\\.$#"
             count: 1
             path: src/Form/FormMapper.php
 

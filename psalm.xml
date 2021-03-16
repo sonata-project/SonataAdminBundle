@@ -7,4 +7,13 @@
             <directory name="vendor"/>
         </ignoreFiles>
     </projectFiles>
+    <issueHandlers>
+        <UnrecognizedStatement>
+            <!-- NEXT_MAJOR: Remove this issue -->
+            <errorLevel type="suppress">
+                <file name="src/Admin/FieldDescriptionInterface.php"/>
+                <file name="src/Admin/FieldDescriptionRegistryInterface.php"/>
+            </errorLevel>
+        </UnrecognizedStatement>
+    </issueHandlers>
 </psalm>

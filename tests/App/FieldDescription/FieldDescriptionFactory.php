@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\App\FieldDescription;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Tests\App\Admin\FieldDescription;
 
 final class FieldDescriptionFactory implements FieldDescriptionFactoryInterface

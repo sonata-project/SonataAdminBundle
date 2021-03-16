@@ -16,9 +16,9 @@ namespace Sonata\AdminBundle\Twig\Extension;
 use Doctrine\Common\Util\ClassUtils;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -763,3 +763,6 @@ EOT;
         return $this->renderElementExtension->getTemplate($fieldDescription, $defaultTemplate, $$environment);
     }
 }
+
+// NEXT_MAJOR: Remove next line.
+interface_exists(FieldDescriptionInterface::class);
