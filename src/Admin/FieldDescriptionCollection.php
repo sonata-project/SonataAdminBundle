@@ -13,119 +13,32 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
-use Sonata\AdminBundle\Datagrid\ListMapper;
+// NEXT_MAJOR: Remove this file.
+if (!class_exists(\Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection::class, false)) {
+    @trigger_error(sprintf(
+        'The %s\FieldDescriptionCollection class is deprecated since sonata-project/admin-bundle 3.92 and will be removed in 4.0.'
+        .' Use \Sonata\AdminBundle\FieldDescription\TypeGuesserChain instead.',
+        __NAMESPACE__
+    ), \E_USER_DEPRECATED);
+}
 
-/**
- * @final since sonata-project/admin-bundle 3.52
- *
- * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
- *
- * @phpstan-template TValue of FieldDescriptionInterface
- * @phpstan-implements \ArrayAccess<string,TValue>
+class_alias(
+    \Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection::class,
+    __NAMESPACE__.'\FieldDescriptionCollection'
+);
+
+/*
+ * @phpstan-ignore-next-line
  */
-class FieldDescriptionCollection implements \ArrayAccess, \Countable
-{
+if (false) {
     /**
-     * @var array<string, FieldDescriptionInterface>
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     * Use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection instead.
      *
-     * @phpstan-var array<string, TValue>
+     * @phpstan-template TValue of FieldDescriptionInterface
+     * @phpstan-extends \Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection<TValue>
      */
-    protected $elements = [];
-
-    /**
-     * @phpstan-param TValue $fieldDescription
-     */
-    public function add(FieldDescriptionInterface $fieldDescription)
+    class FieldDescriptionCollection extends \Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection
     {
-        $this->elements[$fieldDescription->getName()] = $fieldDescription;
-    }
-
-    /**
-     * @return array<string, FieldDescriptionInterface>
-     *
-     * @phpstan-return array<string, TValue>
-     */
-    public function getElements()
-    {
-        return $this->elements;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function has($name)
-    {
-        return \array_key_exists($name, $this->elements);
-    }
-
-    /**
-     * @param string $name
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return FieldDescriptionInterface
-     *
-     * @phpstan-return TValue
-     */
-    public function get($name)
-    {
-        if ($this->has($name)) {
-            return $this->elements[$name];
-        }
-
-        throw new \InvalidArgumentException(sprintf('Element "%s" does not exist.', $name));
-    }
-
-    /**
-     * @param string $name
-     */
-    public function remove($name)
-    {
-        if ($this->has($name)) {
-            unset($this->elements[$name]);
-        }
-    }
-
-    public function offsetExists($offset)
-    {
-        return $this->has($offset);
-    }
-
-    /**
-     * @param string $offset
-     *
-     * @return FieldDescriptionInterface
-     *
-     * @phpstan-return TValue
-     */
-    public function offsetGet($offset)
-    {
-        return $this->get($offset);
-    }
-
-    public function offsetSet($offset, $value)
-    {
-        throw new \RuntimeException('Cannot set value, use add');
-    }
-
-    public function offsetUnset($offset)
-    {
-        $this->remove($offset);
-    }
-
-    public function count()
-    {
-        return \count($this->elements);
-    }
-
-    public function reorder(array $keys)
-    {
-        if ($this->has(ListMapper::NAME_BATCH)) {
-            array_unshift($keys, ListMapper::NAME_BATCH);
-        }
-
-        $this->elements = array_merge(array_flip($keys), $this->elements);
     }
 }

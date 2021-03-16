@@ -80,7 +80,7 @@
             <code>TextExtension</code>
         </UndefinedClass>
     </file>
-    <file src="src/Admin/FieldDescriptionCollection.php">
+    <file src="src/FieldDescription/FieldDescriptionCollection.php">
         <InvalidPropertyAssignmentValue occurrences="2">
             <code>$this-&gt;elements</code>
             <code>array_merge(array_flip($keys), $this-&gt;elements)</code>

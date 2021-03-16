@@ -75,7 +75,7 @@ class FormTypeFieldExtensionTest extends TestCase
     //        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
     //        $admin->expects($this->once())->method('getCode')->will($this->returnValue('admin_code'));
     //
-    //        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+    //        $fieldDescription = $this->createMock('Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface');
     //        $fieldDescription->expects($this->once())->method('getAdmin')->will($this->returnValue($admin));
     //        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('name'));
     //

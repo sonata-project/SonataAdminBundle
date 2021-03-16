@@ -24,7 +24,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_ARRAY instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_ARRAY instead.
      */
     public const TYPE_ARRAY = 'array';
 
@@ -32,7 +32,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_BOOLEAN instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_BOOLEAN instead.
      */
     public const TYPE_BOOLEAN = 'boolean';
 
@@ -40,7 +40,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_DATE instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_DATE instead.
      */
     public const TYPE_DATE = 'date';
 
@@ -48,7 +48,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_TIME instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_TIME instead.
      */
     public const TYPE_TIME = 'time';
 
@@ -56,7 +56,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_DATETIME instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_DATETIME instead.
      */
     public const TYPE_DATETIME = 'datetime';
 
@@ -64,7 +64,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.68, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_STRING instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_STRING instead.
      */
     public const TYPE_TEXT = 'text';
 
@@ -72,7 +72,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_TEXTAREA instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_TEXTAREA instead.
      */
     public const TYPE_TEXTAREA = 'textarea';
 
@@ -80,7 +80,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_EMAIL instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_EMAIL instead.
      */
     public const TYPE_EMAIL = 'email';
 
@@ -88,7 +88,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_TRANS instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_TRANS instead.
      */
     public const TYPE_TRANS = 'trans';
 
@@ -96,7 +96,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_STRING instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_STRING instead.
      */
     public const TYPE_STRING = 'string';
 
@@ -104,7 +104,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.68, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_INTEGER instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_INTEGER instead.
      */
     public const TYPE_SMALLINT = 'smallint';
 
@@ -112,7 +112,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.68, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_INTEGER instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_INTEGER instead.
      */
     public const TYPE_BIGINT = 'bigint';
 
@@ -120,7 +120,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_INTEGER instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_INTEGER instead.
      */
     public const TYPE_INTEGER = 'integer';
 
@@ -128,7 +128,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.68, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_FLOAT instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_FLOAT instead.
      */
     public const TYPE_DECIMAL = 'decimal';
 
@@ -136,7 +136,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_FLOAT instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_FLOAT instead.
      */
     public const TYPE_FLOAT = 'float';
 
@@ -144,7 +144,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_IDENTIFIER instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_IDENTIFIER instead.
      */
     public const TYPE_IDENTIFIER = 'identifier';
 
@@ -152,7 +152,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_CURRENCY instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_CURRENCY instead.
      */
     public const TYPE_CURRENCY = 'currency';
 
@@ -160,7 +160,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_PERCENT instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_PERCENT instead.
      */
     public const TYPE_PERCENT = 'percent';
 
@@ -168,7 +168,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_CHOICE instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_CHOICE instead.
      */
     public const TYPE_CHOICE = 'choice';
 
@@ -176,7 +176,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_URL instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_URL instead.
      */
     public const TYPE_URL = 'url';
 
@@ -184,7 +184,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_HTML instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_HTML instead.
      */
     public const TYPE_HTML = 'html';
 
@@ -192,7 +192,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_MANY_TO_MANY instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_MANY_TO_MANY instead.
      */
     public const TYPE_MANY_TO_MANY = 'many_to_many';
 
@@ -200,7 +200,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_MANY_TO_ONE instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_MANY_TO_ONE instead.
      */
     public const TYPE_MANY_TO_ONE = 'many_to_one';
 
@@ -208,7 +208,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_ONE_TO_MANY instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_ONE_TO_MANY instead.
      */
     public const TYPE_ONE_TO_MANY = 'one_to_many';
 
@@ -216,7 +216,7 @@ interface TemplateRegistryInterface
      * NEXT_MAJOR: Remove this constant.
      *
      * @deprecated since sonata-project/admin-bundle 3.86, to be removed in 4.0.
-     * Use Sonata\AdminBundle\Admin\FieldDescriptionInterface::TYPE_ONE_TO_ONE instead.
+     * use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface::TYPE_ONE_TO_ONE instead.
      */
     public const TYPE_ONE_TO_ONE = 'one_to_one';
 
