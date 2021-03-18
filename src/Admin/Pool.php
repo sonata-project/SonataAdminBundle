@@ -159,25 +159,6 @@ final class Pool
     }
 
     /**
-     * @phpstan-param class-string $class
-     *
-     * @deprecated since sonata-project/admin-bundle 3.89
-     */
-    public function hasSingleAdminByClass(string $class): bool
-    {
-        @trigger_error(sprintf(
-            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.89 and will be removed in version 4.0.',
-            __METHOD__
-        ), \E_USER_DEPRECATED);
-
-        if (!$this->hasAdminByClass($class)) {
-            return false;
-        }
-
-        return 1 === \count($this->adminClasses[$class]);
-    }
-
-    /**
      * Returns an admin class by its Admin code
      * ie : sonata.news.admin.post|sonata.news.admin.comment => return the child class of post.
      *

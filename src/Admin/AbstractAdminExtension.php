@@ -118,6 +118,11 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
         return $list;
     }
 
+    public function configureDashboardButtons(AdminInterface $admin, array $actions): array
+    {
+        return $actions;
+    }
+
     public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues): void
     {
     }

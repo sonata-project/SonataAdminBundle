@@ -30,6 +30,8 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
+ * @psalm-import-type FieldDescriptionOptions from FieldDescriptionInterface
+ *
  * @phpstan-template T of object
  * @phpstan-extends AccessRegistryInterface<T>
  * @phpstan-extends UrlGeneratorInterface<T>
@@ -502,7 +504,8 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     public function defineFormBuilder(FormBuilderInterface $formBuilder): void;
 
     /**
-     * @param array<string, mixed> $options
+     * @psalm-param FieldDescriptionOptions $options
+     * @phpstan-param array<string, mixed> $options
      */
     public function createFieldDescription(string $propertyName, array $options = []): FieldDescriptionInterface;
 }

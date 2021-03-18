@@ -2,6 +2,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.93.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.92.0...3.93.0) - 2021-03-15
+### Added
+- [[#6937](https://github.com/sonata-project/SonataAdminBundle/pull/6937)] `ModelManager::reverseTransform()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6939](https://github.com/sonata-project/SonataAdminBundle/pull/6939)] `AbstractAdmin::configureActionButtons()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6939](https://github.com/sonata-project/SonataAdminBundle/pull/6939)] `AdminExtensionInterface::configureActionButtons()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6939](https://github.com/sonata-project/SonataAdminBundle/pull/6939)] `AbstractAdminExtension::configureActionButtons()` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Deprecated
+- [[#6937](https://github.com/sonata-project/SonataAdminBundle/pull/6937)] `ModelManager::modelReverseTransform()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6939](https://github.com/sonata-project/SonataAdminBundle/pull/6939)] Overriding `AbstractAdmin::getActionButtons()` ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [3.92.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.91.1...3.92.0) - 2021-03-13
 ### Added
 - [[#6922](https://github.com/sonata-project/SonataAdminBundle/pull/6922)] Added extension point `AbstractAdmin::configureFilterParameters()` to configure/modify filter parameters ([@dmaicher](https://github.com/dmaicher))

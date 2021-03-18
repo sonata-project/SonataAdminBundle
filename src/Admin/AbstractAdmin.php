@@ -1854,6 +1854,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.93.
+     *
      * Get the list of actions that can be accessed directly from the dashboard.
      *
      * @return array<string, array<string, mixed>>
@@ -1879,6 +1881,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 'url' => $this->generateUrl('list'),
                 'icon' => 'list',
             ];
+        }
+
+        $actions = $this->configureDashboardButtons($actions);
+
+        foreach ($this->getExtensions() as $extension) {
+            $actions = $extension->configureDashboardButtons($this, $actions);
         }
 
         return $actions;
@@ -2115,6 +2123,16 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
     {
         return $buttonList;
+    }
+
+    /**
+     * @param array<string, array<string, mixed>> $actions
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    protected function configureDashboardButtons(array $actions): array
+    {
+        return $actions;
     }
 
     /**

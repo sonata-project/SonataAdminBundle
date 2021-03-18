@@ -113,4 +113,33 @@ class SearchHandlerTest extends TestCase
         yield 'admin_search_disabled' => [null, 0, false, 'admin.bar'];
         yield 'admin_search_omitted' => [PagerInterface::class, 1, null, 'admin.baz'];
     }
+
+    public function testBuildPagerWithDefaultFilters(): void
+    {
+        $defaultFilter = $this->createMock(FilterInterface::class);
+        $defaultFilter->expects($this->once())->method('getOption')->with('global_search')->willReturn(false);
+        $defaultFilter->expects($this->once())->method('getFormName')->willReturn('filter1');
+
+        $filter = $this->createMock(FilterInterface::class);
+        $filter->expects($this->once())->method('getOption')->with('global_search')->willReturn(true);
+        $filter->expects($this->once())->method('getFormName')->willReturn('filter2');
+
+        $pager = $this->createMock(PagerInterface::class);
+        $pager->expects($this->once())->method('setPage');
+        $pager->expects($this->once())->method('setMaxPerPage');
+
+        $datagrid = $this->createMock(DatagridInterface::class);
+        $datagrid->expects($this->once())->method('getFilters')->willReturn([$defaultFilter, $filter]);
+        $datagrid->expects($this->once())->method('setValue')->with('filter2', null, 'myservice');
+        $datagrid->expects($this->once())->method('removeFilter')->with('filter1');
+        $datagrid->expects($this->once())->method('getValues')->willReturn(['filter1' => ['type' => null, 'value' => null]]);
+        $datagrid->expects($this->once())->method('getPager')->willReturn($pager);
+
+        $admin = $this->createMock(AdminInterface::class);
+        $admin->expects($this->once())->method('getDatagrid')->willReturn($datagrid);
+
+        $handler = new SearchHandler(true);
+        $pager = $handler->search($admin, 'myservice');
+        $this->assertInstanceOf(PagerInterface::class, $pager);
+    }
 }

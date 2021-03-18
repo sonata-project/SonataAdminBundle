@@ -173,6 +173,15 @@ interface AdminExtensionInterface
     ): array;
 
     /**
+     * @param array<string, array<string, mixed>> $actions
+     *
+     * @return array<string, array<string, mixed>>
+     *
+     * @phpstan-param AdminInterface<T> $admin
+     */
+    public function configureDashboardButtons(AdminInterface $admin, array $actions): array;
+
+    /**
      * Returns a list of default filters.
      *
      * @param array<string, array<string, mixed>> $filterValues

@@ -87,9 +87,8 @@ class ModelManager implements ModelManagerInterface, LockInterface
         return $this->getNormalizedIdentifier($model);
     }
 
-    public function modelReverseTransform(string $class, array $array = []): object
+    public function reverseTransform(object $object, array $array = []): void
     {
-        throw new \BadMethodCallException('Not implemented.');
     }
 
     public function supportsQuery(object $query): bool
