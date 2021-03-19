@@ -22,14 +22,10 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
  */
 interface DatagridBuilderInterface extends BuilderInterface
 {
-    /**
-     * @param AdminInterface<object> $admin
-     */
     public function addFilter(
         DatagridInterface $datagrid,
         ?string $type,
-        FieldDescriptionInterface $fieldDescription,
-        AdminInterface $admin
+        FieldDescriptionInterface $fieldDescription
     ): void;
 
     /**

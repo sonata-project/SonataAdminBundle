@@ -1552,8 +1552,8 @@ class AdminTest extends TestCase
 
         $datagridBuilder->expects($this->exactly(3))
             ->method('addFilter')
-            ->willReturnCallback(static function ($datagrid, $type, $fieldDescription, AdminInterface $admin): void {
-                $admin->addFilterFieldDescription($fieldDescription->getName(), $fieldDescription);
+            ->willReturnCallback(static function ($datagrid, $type, $fieldDescription): void {
+                $fieldDescription->getAdmin()->addFilterFieldDescription($fieldDescription->getName(), $fieldDescription);
                 $fieldDescription->mergeOption('field_options', ['required' => false]);
             });
 

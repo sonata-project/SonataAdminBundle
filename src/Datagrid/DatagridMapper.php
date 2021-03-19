@@ -86,7 +86,7 @@ final class DatagridMapper extends BaseMapper
 
         if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
             // add the field with the DatagridBuilder
-            $this->builder->addFilter($this->datagrid, $type, $fieldDescription, $this->admin);
+            $this->builder->addFilter($this->datagrid, $type, $fieldDescription);
         }
 
         return $this;

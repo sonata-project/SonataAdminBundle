@@ -173,3 +173,14 @@ They don't reset the existing templates anymore.
 
 ## BaseFieldDescription, FieldDescriptionCollection, FieldDescriptionInterface and FieldDescriptionRegistryInterface
 Moved from the `Sonata\AdminBundle\Admin` to the `Sonata\AdminBundle\FieldDescription` namespace.
+
+## BuilderInterface
+
+Remove `AdminInterface $admin` argument from
+- `BuilderInterface::fixFieldDescription()`
+- `DatagridBuilderInterface::addFilter()`
+- `ListBuilderInterface::buildField()`
+- `ListBuilderInterface::addField()`
+- `ShowBuilderInterface::addField()`
+
+Use `$fieldDescription->getAdmin()` to access to the admin value.

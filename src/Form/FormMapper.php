@@ -111,7 +111,7 @@ final class FormMapper extends BaseGroupedMapper
         );
 
         // Note that the builder var is actually the formContractor:
-        $this->builder->fixFieldDescription($this->admin, $fieldDescription);
+        $this->builder->fixFieldDescription($fieldDescription);
 
         if ($fieldName !== $name) {
             $fieldDescription->setName($fieldName);
