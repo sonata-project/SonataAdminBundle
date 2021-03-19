@@ -24,7 +24,7 @@ interface BuilderInterface
     /**
      * Adds missing information to the given field description and the given admin.
      *
-     * @param AdminInterface            $admin            will be used to gather information
+     * @param AdminInterface<object>    $admin            will be used to gather information
      * @param FieldDescriptionInterface $fieldDescription will be modified
      */
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription);

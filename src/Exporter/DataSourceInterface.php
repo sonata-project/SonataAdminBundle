@@ -18,5 +18,8 @@ use Sonata\Exporter\Source\SourceIteratorInterface;
 
 interface DataSourceInterface
 {
+    /**
+     * @param string[] $fields
+     */
     public function createIterator(ProxyQueryInterface $query, array $fields): SourceIteratorInterface;
 }
