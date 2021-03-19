@@ -66,8 +66,7 @@ class DatagridMapperTest extends TestCase
             ->willReturnCallback(function (
                 Datagrid $datagrid,
                 ?string $type,
-                FieldDescriptionInterface $fieldDescription,
-                AdminInterface $admin
+                FieldDescriptionInterface $fieldDescription
             ): void {
                 $fieldDescription->setType($type);
 

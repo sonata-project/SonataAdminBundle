@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Builder;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
@@ -31,12 +30,10 @@ interface ShowBuilderInterface extends BuilderInterface
 
     /**
      * @param FieldDescriptionCollection<FieldDescriptionInterface> $list
-     * @param AdminInterface<object>                                $admin
      */
     public function addField(
         FieldDescriptionCollection $list,
         ?string $type,
-        FieldDescriptionInterface $fieldDescription,
-        AdminInterface $admin
+        FieldDescriptionInterface $fieldDescription
     ): void;
 }

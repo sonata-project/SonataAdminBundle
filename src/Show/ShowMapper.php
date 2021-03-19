@@ -93,7 +93,7 @@ final class ShowMapper extends BaseGroupedMapper
 
         if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
             // add the field with the FormBuilder
-            $this->builder->addField($this->list, $type, $fieldDescription, $this->admin);
+            $this->builder->addField($this->list, $type, $fieldDescription);
         }
 
         return $this;

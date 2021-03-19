@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\App\Builder;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
 final class ShowBuilder implements ShowBuilderInterface
 {
-    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription): void
+    public function fixFieldDescription(FieldDescriptionInterface $fieldDescription): void
     {
     }
 
@@ -29,10 +28,9 @@ final class ShowBuilder implements ShowBuilderInterface
         return new FieldDescriptionCollection();
     }
 
-    public function addField(FieldDescriptionCollection $list, $type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin): void
+    public function addField(FieldDescriptionCollection $list, $type, FieldDescriptionInterface $fieldDescription): void
     {
         $fieldDescription->setType($type);
-        $fieldDescription->setAdmin($admin);
 
         $list->add($fieldDescription);
     }

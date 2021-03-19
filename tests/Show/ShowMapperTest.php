@@ -131,8 +131,7 @@ class ShowMapperTest extends TestCase
             ->willReturnCallback(static function (
                 FieldDescriptionCollection $list,
                 ?string $type,
-                FieldDescriptionInterface $fieldDescription,
-                AdminInterface $admin
+                FieldDescriptionInterface $fieldDescription
             ): void {
                 $list->add($fieldDescription);
             });
@@ -562,7 +561,7 @@ class ShowMapperTest extends TestCase
         $this->showBuilder = $this->getMockForAbstractClass(ShowBuilderInterface::class);
         $this->showBuilder
             ->method('addField')
-            ->willReturnCallback(static function (FieldDescriptionCollection $list, ?string $type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin): void {
+            ->willReturnCallback(static function (FieldDescriptionCollection $list, ?string $type, FieldDescriptionInterface $fieldDescription): void {
                 $list->add($fieldDescription);
             });
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();

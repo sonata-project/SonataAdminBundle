@@ -2295,7 +2295,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                     $filterParameters['_sort_by']
                 );
 
-                $this->getListBuilder()->buildField(null, $filterParameters['_sort_by'], $this);
+                $this->getListBuilder()->buildField(null, $filterParameters['_sort_by']);
             }
         }
 

@@ -138,7 +138,7 @@ final class ListMapper extends BaseMapper
 
         if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
             // add the field with the FormBuilder
-            $this->builder->addField($this->list, $type, $fieldDescription, $this->admin);
+            $this->builder->addField($this->list, $type, $fieldDescription);
 
             // Ensure batch and action pseudo-fields are tagged as virtual
             if (\in_array($fieldDescription->getType(), [self::TYPE_ACTIONS, self::TYPE_BATCH, self::TYPE_SELECT], true)) {
