@@ -32,10 +32,14 @@ final class ShowMapper extends BaseGroupedMapper
     protected $builder;
 
     /**
-     * @var FieldDescriptionCollection
+     * @var FieldDescriptionCollection<FieldDescriptionInterface>
      */
     private $list;
 
+    /**
+     * @param FieldDescriptionCollection<FieldDescriptionInterface> $list
+     * @param AdminInterface<object>                                $admin
+     */
     public function __construct(
         ShowBuilderInterface $showBuilder,
         FieldDescriptionCollection $list,

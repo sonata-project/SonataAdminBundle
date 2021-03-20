@@ -39,11 +39,13 @@ final class RoutesCache
     }
 
     /**
+     * @param AdminInterface<object> $admin
+     *
      * @throws \RuntimeException
      *
-     * @return mixed
+     * @return array<string, string>
      */
-    public function load(AdminInterface $admin)
+    public function load(AdminInterface $admin): array
     {
         $filename = sprintf('%s/route_%s', $this->cacheFolder, md5($admin->getCode()));
 

@@ -21,6 +21,12 @@ use Symfony\Component\Routing\Route;
 interface RouteCollectionInterface
 {
     /**
+     * @param array<string, mixed>  $defaults
+     * @param array<string, string> $requirements
+     * @param array<string, mixed>  $options
+     * @param array<string, string> $schemes
+     * @param array<string, string> $methods
+     *
      * @return static
      */
     public function add(
@@ -43,7 +49,7 @@ interface RouteCollectionInterface
     public function addCollection(self $collection): self;
 
     /**
-     * @return Route[]
+     * @return array<string, Route>
      */
     public function getElements(): array;
 

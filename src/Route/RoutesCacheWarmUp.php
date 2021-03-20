@@ -42,6 +42,13 @@ final class RoutesCacheWarmUp implements CacheWarmerInterface
         return true;
     }
 
+    /**
+     * NEXT_MAJOR: Add the string param typehint when Symfony 4 support is dropped.
+     *
+     * @param string $cacheDir
+     *
+     * @return string[]
+     */
     public function warmUp($cacheDir): array
     {
         foreach ($this->pool->getAdminServiceIds() as $id) {

@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Search;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 
 /**
@@ -38,7 +39,11 @@ final class SearchHandler
     }
 
     /**
+     * @param AdminInterface<object> $admin
+     *
      * @throws \RuntimeException
+     *
+     * @return PagerInterface<ProxyQueryInterface>
      */
     public function search(AdminInterface $admin, string $term, int $page = 0, int $offset = 20): ?PagerInterface
     {
