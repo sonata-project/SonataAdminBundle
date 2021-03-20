@@ -26,10 +26,13 @@ interface FormContractorInterface extends BuilderInterface
 {
     public function __construct(FormFactoryInterface $formFactory);
 
+    /**
+     * @param array<string, mixed> $formOptions
+     */
     public function getFormBuilder(string $name, array $formOptions = []): FormBuilderInterface;
 
     /**
-     * Should provide Symfony form options.
+     * @param array<string, mixed> $formOptions
      *
      * @return array<string, mixed>
      */
