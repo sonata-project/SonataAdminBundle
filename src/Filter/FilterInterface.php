@@ -24,6 +24,8 @@ interface FilterInterface
 
     public const CONDITION_AND = 'AND';
 
+    public const CONDITION_SEARCH_LEAD = 'SEARCH_LEAD';
+
     /**
      * NEXT_MAJOR: Remove this method.
      *

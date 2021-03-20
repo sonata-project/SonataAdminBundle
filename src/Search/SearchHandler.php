@@ -84,13 +84,20 @@ class SearchHandler
         $datagridValues = $datagrid->getValues();
 
         $found = false;
+        $isLeadingSearchFilter = true;
         foreach ($datagrid->getFilters() as $filter) {
             /** @var FilterInterface $filter */
             $formName = $filter->getFormName();
 
             if ($filter->getOption('global_search', false)) {
+                if (false !== $isLeadingSearchFilter) {
+                    $filter->setCondition(FilterInterface::CONDITION_SEARCH_LEAD);
+                    $isLeadingSearchFilter = false;
+                } else {
+                    $filter->setCondition(FilterInterface::CONDITION_OR);
+                }
+
                 $filter->setOption('case_sensitive', $this->caseSensitive);
-                $filter->setCondition(FilterInterface::CONDITION_OR);
                 $datagrid->setValue($formName, null, $term);
                 $found = true;
             } elseif (isset($datagridValues[$formName])) {
