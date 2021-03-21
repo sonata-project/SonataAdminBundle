@@ -10,7 +10,7 @@ file that was distributed with this source code.
 #}
 
 {% for field_description in admin.list.elements %}
-    {% if field_description.name == '_action' and app.request.isXmlHttpRequest %}
+    {% if field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_ACTIONS') and app.request.isXmlHttpRequest %}
         {# Action buttons disabled in ajax view! #}
     {% elseif field_description.getOption('ajax_hidden') == true and app.request.isXmlHttpRequest %}
         {# Disable fields with 'ajax_hidden' option set to true #}

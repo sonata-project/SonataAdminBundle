@@ -171,7 +171,7 @@ Next we have to add the action in ``configureListFields`` specifying the templat
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
 
                     // ...
@@ -208,7 +208,7 @@ The full ``CarAdmin.php`` example looks like this::
                 ->add('engine')
                 ->add('rescueEngine')
                 ->add('createdAt')
-                ->add('_action', null, [
+                ->add(ListMapper::NAME_ACTIONS, null, [
                     'actions' => [
                         'show' => [],
                         'edit' => [],
