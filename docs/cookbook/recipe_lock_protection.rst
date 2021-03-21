@@ -41,7 +41,7 @@ Using Annotations::
 
     use Doctrine\ORM\Mapping as ORM;
 
-    class Car
+    final class Car
     {
         // ...
 

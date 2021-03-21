@@ -30,7 +30,7 @@ All we need to do now is add a reference for this field in our ``PageAdmin`` cla
 
     final class PageAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $imageFieldOptions = []; // see available options below
 
@@ -129,7 +129,7 @@ All we need to do now is add a reference for this field in our ``PageAdmin`` cla
 
     final class PageAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper
                 ->add('image1', ModelListType::class)
@@ -170,7 +170,7 @@ The value of hidden field is identifier of related entity::
 
     final class PageAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             // generates hidden form field with id of related Category entity
             $formMapper
@@ -215,7 +215,7 @@ datagrid filter for the property ``title``::
 
     final class ArticleAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             // the dropdown autocomplete list will show only Category
             // entities that contain specified text in "title" attribute
@@ -400,7 +400,7 @@ The available options are:
 
     final class ArticleAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper
                 ->add('category', ModelAutocompleteType::class, [
@@ -445,7 +445,7 @@ The available options are:
 
       final class ArticleAdmin extends AbstractAdmin
       {
-          protected function configureFormFields(FormMapper $formMapper)
+          protected function configureFormFields(FormMapper $formMapper): void
           {
               // the dropdown autocomplete list will show only Category
               // entities that contain specified text in "title" attribute
@@ -471,7 +471,7 @@ The available options are:
               'autocomplete' => 'AUTOCOMPLETE',
           ];
 
-          protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+          protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
           {
               // this text filter will be used to retrieve autocomplete fields
               // only the users with role AUTOCOMPLETE will be able to get the items
@@ -495,7 +495,7 @@ According the choice made only associated fields are displayed. The others field
 
     final class AppMenuAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper
                 ->add('linkType', ChoiceFieldMaskType::class, [
@@ -569,7 +569,7 @@ for the ``image1`` field to ``AdminType`` in our ``PageAdmin`` class::
 
     final class PageAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper
                 ->add('image1', AdminType::class)
@@ -610,7 +610,7 @@ to the underlying forms::
 
     final class ProductAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper
                 ->add('sales', CollectionType::class, [
@@ -701,7 +701,7 @@ example above::
 
     final class PageAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper
                 ->add('image1', AdminType::class, [], [
@@ -731,7 +731,7 @@ Given you have a ``PostType`` like this::
 
     class PostType extends AbstractType
     {
-        public function buildForm(FormBuilderInterface $builder, array $options)
+        public function buildForm(FormBuilderInterface $builder, array $options): void
         {
             $builder
                 ->add('author', EntityType::class, [
@@ -753,7 +753,7 @@ you can reuse it like this::
 
     final class Post extend AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $builder = $formMapper->getFormBuilder()->getFormFactory()->createBuilder(PostType::class);
 
@@ -784,7 +784,7 @@ General
 
     final class PageAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper
                 ->add('status', null, [
@@ -807,7 +807,7 @@ Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType
 
     final class PageAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper
                 ->add('multiChoices', ChoiceType::class, [

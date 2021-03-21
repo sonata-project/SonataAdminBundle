@@ -41,7 +41,7 @@ Here is an example::
 
     // ...
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             // addIdentifier allows to specify that this column
@@ -266,7 +266,7 @@ expected by your object::
 
     // ...
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('moderation_status', 'choice', [
@@ -280,10 +280,6 @@ expected by your object::
 
 Customizing the query used to generate the list
 -----------------------------------------------
-
-.. versionadded:: 3.63
-
-    The ``configureQuery`` method was introduced in 3.63.
 
 You can customize the list query thanks to the ``configureQuery`` method::
 
@@ -388,7 +384,7 @@ You can add filters to let user control which data will be displayed::
 
     final class ClientAdmin extends AbstractAdmin
     {
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
         {
             $datagridMapper
                 ->add('phone')
@@ -405,7 +401,7 @@ filter he wants to use.
 To make the filter always visible (even when it is inactive), set the parameter
 ``show_filter`` to ``true``::
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('phone')
@@ -420,7 +416,7 @@ To make the filter always visible (even when it is inactive), set the parameter
 By default the template generates an ``operator`` for a filter which defaults to ``sonata_type_equal``.
 Though this ``operator_type`` is automatically detected it can be changed or even be hidden::
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('foo', null, [
@@ -438,7 +434,7 @@ If you don't need the advanced filters, or all your ``operator_type``
 are hidden, you can disable them by setting ``advanced_filter`` to ``false``.
 You need to disable all advanced filters to make the button disappear::
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('bar', null, [
@@ -457,7 +453,7 @@ Default filters can be added to the datagrid values by using the ``configureDefa
 A filter has a ``value`` and an optional ``type``. If no ``type`` is
 given the default type ``is equal`` is used::
 
-    protected function configureDefaultFilterValues(array &$filterValues)
+    protected function configureDefaultFilterValues(array &$filterValues): void
     {
         $filterValues['foo'] = [
             'type'  => ChoiceType::TYPE_CONTAINS,
@@ -472,7 +468,7 @@ Types like ``equal`` and ``boolean`` use constants to assign a choice of
 
     namespace Sonata\Form\Type;
 
-    class EqualType extends AbstractType
+    final class EqualType extends AbstractType
     {
         const TYPE_IS_EQUAL = 1;
         const TYPE_IS_NOT_EQUAL = 2;
@@ -486,9 +482,9 @@ This is an example using these constants for an ``boolean`` type::
     use Sonata\Form\Type\EqualType;
     use Sonata\Form\Type\BooleanType;
 
-    class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
+    final class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        protected function configureDefaultFilterValues(array &$filterValues)
+        protected function configureDefaultFilterValues(array &$filterValues): void
         {
             $filterValues['enabled'] = [
                 'type'  => EqualType::TYPE_IS_EQUAL, // => 1
@@ -503,7 +499,7 @@ as defined in the class constants::
 
     namespace Sonata\Form\Type;
 
-    class BooleanType extends AbstractType
+    final class BooleanType extends AbstractType
     {
         const TYPE_YES = 1;
         const TYPE_NO = 2;
@@ -513,7 +509,7 @@ This approach allow to create dynamic filters::
 
     class PostAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        protected function configureDefaultFilterValues(array &$filterValues)
+        protected function configureDefaultFilterValues(array &$filterValues): void
         {
             // Assuming security context injected
             if (!$this->securityContext->isGranted('ROLE_ADMIN')) {
@@ -542,7 +538,7 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the
 
     final class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
         {
             $datagridMapper
                 ->add('full_text', CallbackFilter::class, [
@@ -551,17 +547,17 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the
                 ]);
         }
 
-        public function getFullTextFilter($query, $alias, $field, $value)
+        public function getFullTextFilter(ProxyQueryInterface $query, string $alias, string $field, array $data): void
         {
-            if (!$value['value']) {
+            if (!$data['value']) {
                 return false;
             }
 
             // Use `andWhere` instead of `where` to prevent overriding existing `where` conditions
             $query->andWhere($query->expr()->orX(
-                $query->expr()->like($alias.'.username', $query->expr()->literal('%' . $value['value'] . '%')),
-                $query->expr()->like($alias.'.firstName', $query->expr()->literal('%' . $value['value'] . '%')),
-                $query->expr()->like($alias.'.lastName', $query->expr()->literal('%' . $value['value'] . '%'))
+                $query->expr()->like($alias.'.username', $query->expr()->literal('%' . $data['value'] . '%')),
+                $query->expr()->like($alias.'.firstName', $query->expr()->literal('%' . $data['value'] . '%')),
+                $query->expr()->like($alias.'.lastName', $query->expr()->literal('%' . $data['value'] . '%'))
             ));
 
             return true;
@@ -577,17 +573,17 @@ type of your condition(s)::
 
     final class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        public function getFullTextFilter($query, $alias, $field, $value)
+        public function getFullTextFilter(ProxyQueryInterface $query, string $alias, string $field, array $data): void
         {
-            if (!$value['value']) {
+            if (!$data['value']) {
                 return;
             }
 
-            $operator = $value['type'] == EqualType::TYPE_IS_EQUAL ? '=' : '!=';
+            $operator = $data['type'] == EqualType::TYPE_IS_EQUAL ? '=' : '!=';
 
             $query
                 ->andWhere($alias.'.username '.$operator.' :username')
-                ->setParameter('username', $value['value'])
+                ->setParameter('username', $data['value'])
             ;
 
             return true;
@@ -617,7 +613,7 @@ The following options are available:
 
 Example::
 
-    protected function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list): void
     {
         $list
             ->add('id', null, [
@@ -708,10 +704,6 @@ Checkbox range selection
 Displaying a non-model field
 ----------------------------
 
-.. versionadded:: 3.73
-
-  Support for displaying fields not part of the model class was introduced in version 3.73.
-
 The list view can also display fields that are not part of the model class.
 
 In some situations you can add a new getter to your model class to calculate
@@ -754,7 +746,7 @@ query and displayed::
         return $query;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper->addIdentifier('numberofcomments');
     }

@@ -22,12 +22,12 @@ The basic class definition will look the same as the ``CategoryAdmin``::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             // ... configure $formMapper
         }
 
-        protected function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $listMapper): void
         {
             // ... configure $listMapper
         }
@@ -70,7 +70,7 @@ you can add them straight away::
     use Symfony\Component\Form\Extension\Core\Type\TextType;
     use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('title', TextType::class)
@@ -93,7 +93,7 @@ entities as choice::
     use App\Entity\Category;
     use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             // ...
@@ -127,7 +127,7 @@ dialog with the admin of the referenced model in it::
     use App\Entity\Category;
     use Sonata\AdminBundle\Form\Type\ModelType;
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('category', ModelType::class, [
@@ -159,7 +159,7 @@ category field to a Meta data group. To do this, use the ``with()`` method::
     use Symfony\Component\Form\Extension\Core\Type\TextType;
     use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Content')
@@ -181,7 +181,7 @@ order to tweak the styling::
 
     // src/Admin/BlogPostAdmin.php
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Content', ['class' => 'col-md-9'])
@@ -241,7 +241,7 @@ Admin class. This receives the object to transform to a string as the first para
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        public function toString($object)
+        public function toString(object $object): string
         {
             return $object instanceof BlogPost
                 ? $object->getTitle()

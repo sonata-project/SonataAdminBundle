@@ -52,7 +52,7 @@ class::
 
     final class PlaylistAdmin extends AbstractAdmin
     {
-        protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+        protected function configureTabMenu(MenuItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
         {
             if (!$childAdmin && !in_array($action, ['edit', 'show'])) {
                 return;
@@ -83,11 +83,11 @@ or not. To get rid of them, you may override the ``configureRoutes`` method::
     namespace App\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
-    use Sonata\AdminBundle\Route\RouteCollection;
+    use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
     final class VideoAdmin extends AbstractAdmin
     {
-        protected function configureRoutes(RouteCollection $collection)
+        protected function configureRoutes(RouteCollectionInterface $collection): void
         {
             if ($this->isChild()) {
                 return;

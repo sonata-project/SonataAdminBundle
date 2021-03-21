@@ -97,7 +97,7 @@ Part 2 : Update the data model entities
 Update the ``UserBundle\Entity\User.php`` entity with the following::
 
     /**
-     * @var UserHasExpectations[]
+     * @var Collection|UserHasExpectations[]
      */
     protected $userHasExpectations;
 
@@ -106,10 +106,7 @@ Update the ``UserBundle\Entity\User.php`` entity with the following::
         $this->userHasExpectations = new ArrayCollection;
     }
 
-    /**
-     * @param ArrayCollection $userHasExpectations
-     */
-    public function setUserHasExpectations(ArrayCollection $userHasExpectations)
+    public function setUserHasExpectations(Collection $userHasExpectations): void
     {
         $this->userHasExpectations = new ArrayCollection;
 
@@ -118,55 +115,42 @@ Update the ``UserBundle\Entity\User.php`` entity with the following::
         }
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getUserHasExpectations()
+    public function getUserHasExpectations(): Collection
     {
         return $this->userHasExpectations;
     }
 
-    /**
-     * @param UserHasExpectations $userHasExpectations
-     */
-    public function addUserHasExpectations(UserHasExpectations $userHasExpectations)
+    public function addUserHasExpectations(UserHasExpectations $userHasExpectations): void
     {
         $userHasExpectations->setUser($this);
 
         $this->userHasExpectations[] = $userHasExpectations;
     }
 
-    /**
-     * @param UserHasExpectations $userHasExpectations
-     *
-     * @return $this
-     */
-    public function removeUserHasExpectations(UserHasExpectations $userHasExpectations)
+    public function removeUserHasExpectations(UserHasExpectations $userHasExpectations): void
     {
         $this->userHasExpectations->removeElement($userHasExpectations);
-
-        return $this;
     }
 
 Update the ``UserBundle\Entity\Expectation.php`` entity with the following::
 
     /**
-     * @var UserHasExpectations[]
+     * @var Collection|UserHasExpectations[]
      */
     protected $userHasExpectations;
 
     /**
-     * @param UserHasExpectations[] $userHasExpectations
+     * @param Collection|UserHasExpectations[] $userHasExpectations
      */
-    public function setUserHasExpectations($userHasExpectations)
+    public function setUserHasExpectations(Collection $userHasExpectations)
     {
         $this->userHasExpectations = $userHasExpectations;
     }
 
     /**
-     * @return UserHasExpectations[]
+     * @return Collection|UserHasExpectations[]
      */
-    public function getUserHasExpectations()
+    public function getUserHasExpectations(): Collection
     {
         return $this->userHasExpectations;
     }
@@ -186,7 +170,7 @@ Create the ``UserBundle\Entity\UserHasExpectations.php`` entity with the followi
     class UserHasExpectations
     {
         /**
-         * @var integer $id
+         * @var int $id
          */
         protected $id;
 
@@ -201,78 +185,43 @@ Create the ``UserBundle\Entity\UserHasExpectations.php`` entity with the followi
         protected $expectation;
 
         /**
-         * @var integer $position
+         * @var int $position
          */
         protected $position;
 
-        /**
-         * Get id
-         *
-         * @return integer $id
-         */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
 
-        /**
-         * @return User
-         */
-        public function getUser()
+        public function getUser(): ?User
         {
             return $this->user;
         }
 
-        /**
-         * @param User $user
-         *
-         * @return $this
-         */
-        public function setUser(User $user)
+        public function setUser(User $user): void
         {
             $this->user = $user;
-
-            return $this;
         }
 
-        /**
-         * @return Expectation
-         */
-        public function getExpectation()
+        public function getExpectation(): ?Expectation
         {
             return $this->expectation;
         }
 
-        /**
-         * @param Expectation $expectation
-         *
-         * @return $this
-         */
-        public function setExpectation(Expectation $expectation)
+        public function setExpectation(Expectation $expectation): void
         {
             $this->expectation = $expectation;
-
-            return $this;
         }
 
-        /**
-         * @return int
-         */
-        public function getPosition()
+        public function getPosition(): ?int
         {
             return $this->position;
         }
 
-        /**
-         * @param int $position
-         *
-         * @return $this
-         */
-        public function setPosition($position)
+        public function setPosition(int $position): void
         {
             $this->position = $position;
-
-            return $this;
         }
 
         /**
@@ -298,7 +247,7 @@ So we are going to start by creating this ``UserBundle\Admin\UserHasExpectations
 
     final class UserHasExpectationsAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper
                 ->add('expectation', 'sonata_type_model', ['required' => false])
@@ -306,7 +255,7 @@ So we are going to start by creating this ``UserBundle\Admin\UserHasExpectations
             ;
         }
 
-        protected function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $listMapper): void
         {
             $listMapper
                 ->add('expectation')
@@ -329,7 +278,7 @@ So we are going to start by creating this ``UserBundle\Admin\UserHasExpectations
 
 Now update the ``UserBundle\Admin\UserAdmin.php`` by adding the ``sonata_type_model`` field::
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('userHasExpectations', 'sonata_type_model', [
@@ -359,7 +308,7 @@ to handle the conversion of ``Expectation`` to ``UserHasExpectations``::
 
     namespace UserBundle\Form\DataTransformer;
 
-    class ExpectationDataTransformer implements Symfony\Component\Form\DataTransformerInterface
+    final class ExpectationDataTransformer implements Symfony\Component\Form\DataTransformerInterface
     {
         /**
          * @var User $user

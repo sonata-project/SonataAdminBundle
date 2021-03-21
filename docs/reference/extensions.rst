@@ -14,7 +14,7 @@ created objects and other admin features::
 
     final class PublishStatusAdminExtension extends AbstractAdminExtension
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper
                 ->add('status', ChoiceType::class, [
@@ -129,6 +129,6 @@ priority:
                     extends:
                         - App\Document\Blog
                     instanceof:
-                        -  App\Document\Page
+                        - App\Document\Page
                     uses:
-                        -  App\Trait\Timestampable
+                        - App\Trait\Timestampable

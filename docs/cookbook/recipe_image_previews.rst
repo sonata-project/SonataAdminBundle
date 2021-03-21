@@ -43,7 +43,7 @@ we are manipulating form fields we do this from within ``ImageAdmin::configureFo
 
     final class ImageAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             // get the current Image instance
             $image = $this->getSubject();
@@ -89,7 +89,7 @@ Admin class is embedded and use a different method::
 
     final class ImageAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             if($this->hasParentFieldDescription()) { // this Admin is embedded
                 // $getter will be something like 'getlogoImage'

@@ -34,7 +34,7 @@ This represents your security user, you can read more about it
     /**
      * @ORM\Entity
      */
-    class User implements UserInterface
+    final class User implements UserInterface
     {
         /**
          * @ORM\Id

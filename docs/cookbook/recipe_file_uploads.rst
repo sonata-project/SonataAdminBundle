@@ -70,7 +70,7 @@ We then have the following methods in our ``Image`` class to manage file uploads
 
     // src/Entity/Image.php
 
-    class Image
+    final class Image
     {
         const SERVER_PATH_TO_IMAGE_FOLDER = '/server/path/to/images';
 
@@ -79,18 +79,12 @@ We then have the following methods in our ``Image`` class to manage file uploads
          */
         private $file;
 
-        /**
-         * @param UploadedFile $file
-         */
-        public function setFile(UploadedFile $file = null)
+        public function setFile(?UploadedFile $file = null): void
         {
             $this->file = $file;
         }
 
-        /**
-         * @return UploadedFile
-         */
-        public function getFile()
+        public function getFile(): ?UploadedFile
         {
             return $this->file;
         }
@@ -98,7 +92,7 @@ We then have the following methods in our ``Image`` class to manage file uploads
         /**
          * Manages the copying of the file to the relevant place on the server
          */
-        public function upload()
+        public function upload(): void
         {
             // the file property can be empty if the field is not required
             if (null === $this->getFile()) {
@@ -124,7 +118,7 @@ We then have the following methods in our ``Image`` class to manage file uploads
        /**
         * Lifecycle callback to upload the file to the server.
         */
-       public function lifecycleFileUpload()
+       public function lifecycleFileUpload(): void
        {
            $this->upload();
        }
@@ -132,7 +126,7 @@ We then have the following methods in our ``Image`` class to manage file uploads
        /**
         * Updates the hash value to force the preUpdate and postUpdate events to fire.
         */
-       public function refreshUpdated()
+       public function refreshUpdated(): void
        {
           $this->setUpdated(new \DateTime());
        }
@@ -166,7 +160,7 @@ Both of these are straightforward when you know what to do::
 
     final class ImageAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper
                 ->add('file', FileType::class, [
@@ -175,17 +169,17 @@ Both of these are straightforward when you know what to do::
             ;
         }
 
-        public function prePersist($image)
+        public function prePersist(object $image): void
         {
             $this->manageFileUpload($image);
         }
 
-        public function preUpdate($image)
+        public function preUpdate(object $image): void
         {
             $this->manageFileUpload($image);
         }
 
-        private function manageFileUpload($image)
+        private function manageFileUpload(object $image): void
         {
             if ($image->getFile()) {
                 $image->refreshUpdated();
@@ -225,7 +219,7 @@ looks like this::
 
     final class PostAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper
                 ->add('linkedImage1', AdminType::class, [
@@ -250,17 +244,17 @@ In our ``PostAdmin`` we then have the following code to manage the relationships
 
     final class PostAdmin extends AbstractAdmin
     {
-        public function prePersist($page)
+        public function prePersist(object $page): void
         {
             $this->manageEmbeddedImageAdmins($page);
         }
 
-        public function preUpdate($page)
+        public function preUpdate(object $page): void
         {
             $this->manageEmbeddedImageAdmins($page);
         }
 
-        private function manageEmbeddedImageAdmins($page)
+        private function manageEmbeddedImageAdmins(object $page): void
         {
             // Cycle through each field
             foreach ($this->getFormFieldDescriptions() as $fieldName => $fieldDescription) {

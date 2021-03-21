@@ -12,12 +12,14 @@ To add a custom controller entry in the admin menu:
 
 Create your controller::
 
-    class BlogController
+    use Symfony\Component\HttpFoundation\Response;
+
+    final class BlogController
     {
         /**
          * @Route("/blog", name="blog_home")
          */
-        public function blogAction()
+        public function blogAction(): Response
         {
             // ...
         }
@@ -25,7 +27,7 @@ Create your controller::
         /**
          * @Route("/blog/article/{articleId}", name="blog_article")
          */
-        public function ArticleAction($articleId)
+        public function ArticleAction(string $articleId): Response
         {
             // ...
         }
@@ -151,9 +153,9 @@ name ``sonata.admin.event.configure.menu.sidebar``::
 
     use Sonata\AdminBundle\Event\ConfigureMenuEvent;
 
-    class MenuBuilderListener
+    final class MenuBuilderListener
     {
-        public function addMenuItems(ConfigureMenuEvent $event)
+        public function addMenuItems(ConfigureMenuEvent $event): void
         {
             $menu = $event->getMenu();
 
