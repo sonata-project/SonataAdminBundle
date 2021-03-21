@@ -66,6 +66,9 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
      */
     private $maskBuilderClass;
 
+    /**
+     * @param string[] $superAdminRoles
+     */
     public function __construct(
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
@@ -234,7 +237,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         $this->aclProvider->deleteAcl($objectIdentity);
     }
 
-    public function findClassAceIndexByRole(MutableAclInterface $acl, $role)
+    public function findClassAceIndexByRole(MutableAclInterface $acl, string $role)
     {
         foreach ($acl->getClassAces() as $index => $entry) {
             if ($entry->getSecurityIdentity() instanceof RoleSecurityIdentity && $entry->getSecurityIdentity()->getRole() === $role) {
@@ -256,6 +259,9 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         return false;
     }
 
+    /**
+     * @param string[] $attributes
+     */
     private function isAnyGranted(array $attributes, ?object $subject = null): bool
     {
         foreach ($attributes as $attribute) {

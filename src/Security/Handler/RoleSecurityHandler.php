@@ -28,10 +28,13 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
     private $authorizationChecker;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $superAdminRoles = [];
 
+    /**
+     * @param string[] $superAdminRoles
+     */
     public function __construct(AuthorizationCheckerInterface $authorizationChecker, array $superAdminRoles)
     {
         $this->authorizationChecker = $authorizationChecker;
@@ -77,6 +80,9 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
     {
     }
 
+    /**
+     * @param string[] $attributes
+     */
     private function isAnyGranted(array $attributes, ?object $subject = null): bool
     {
         foreach ($attributes as $attribute) {

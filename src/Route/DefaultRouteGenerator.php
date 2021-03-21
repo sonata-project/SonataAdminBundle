@@ -33,7 +33,7 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
     private $cache;
 
     /**
-     * @var array
+     * @var array<string, string>
      */
     private $caches = [];
 
@@ -129,6 +129,9 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
         return \array_key_exists($this->getCode($admin, $name), $this->caches);
     }
 
+    /**
+     * @param AdminInterface<object> $admin
+     */
     private function getCode(AdminInterface $admin, string $name): string
     {
         $this->loadCache($admin);
@@ -148,6 +151,9 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
         return sprintf('%s.%s', $codePrefix, $name);
     }
 
+    /**
+     * @param AdminInterface<object> $admin
+     */
     private function loadCache(AdminInterface $admin): void
     {
         if ($admin->isChild()) {

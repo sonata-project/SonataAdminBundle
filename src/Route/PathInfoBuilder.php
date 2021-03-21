@@ -32,6 +32,9 @@ final class PathInfoBuilder implements RouteBuilderInterface
         $this->manager = $manager;
     }
 
+    /**
+     * @param AdminInterface<object> $admin
+     */
     public function build(AdminInterface $admin, RouteCollectionInterface $collection): void
     {
         $collection->add('list');

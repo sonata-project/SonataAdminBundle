@@ -21,27 +21,36 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 interface SecurityHandlerInterface
 {
     /**
-     * @param string|array $attributes
+     * @param AdminInterface<object> $admin
+     * @param string|string[]        $attributes
      */
     public function isGranted(AdminInterface $admin, $attributes, ?object $object = null): bool;
 
     /**
      * Get a sprintf template to get the role.
+     *
+     * @param AdminInterface<object> $admin
      */
     public function getBaseRole(AdminInterface $admin): string;
 
     /**
+     * @param AdminInterface<object> $admin
+     *
      * @return array<string, string[]>
      */
     public function buildSecurityInformation(AdminInterface $admin): array;
 
     /**
      * Create object security, fe. make the current user owner of the object.
+     *
+     * @param AdminInterface<object> $admin
      */
     public function createObjectSecurity(AdminInterface $admin, object $object): void;
 
     /**
      * Remove object security.
+     *
+     * @param AdminInterface<object> $admin
      */
     public function deleteObjectSecurity(AdminInterface $admin, object $object): void;
 }

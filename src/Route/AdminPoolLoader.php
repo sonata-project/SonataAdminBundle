@@ -32,7 +32,7 @@ final class AdminPoolLoader extends Loader
     private $pool;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $adminServiceIds = [];
 
@@ -41,6 +41,9 @@ final class AdminPoolLoader extends Loader
      */
     private $container;
 
+    /**
+     * @param string[] $adminServiceIds
+     */
     public function __construct(Pool $pool, array $adminServiceIds, ContainerInterface $container)
     {
         $this->pool = $pool;
@@ -71,7 +74,7 @@ final class AdminPoolLoader extends Loader
         foreach ($this->adminServiceIds as $id) {
             $admin = $this->pool->getInstance($id);
 
-            foreach ($admin->getRoutes()->getElements() as $code => $route) {
+            foreach ($admin->getRoutes()->getElements() as $route) {
                 $collection->add($route->getDefault('_sonata_name'), $route);
             }
 

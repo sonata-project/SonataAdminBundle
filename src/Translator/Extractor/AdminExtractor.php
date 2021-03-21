@@ -81,7 +81,7 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
      *
      * @param string|string[] $resource Files, a file or a directory
      */
-    public function extract($resource, MessageCatalogue $catalogue)
+    public function extract($resource, MessageCatalogue $catalogue): void
     {
         $this->catalogue = $catalogue;
 
