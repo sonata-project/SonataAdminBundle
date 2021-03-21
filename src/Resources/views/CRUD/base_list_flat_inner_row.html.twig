@@ -9,18 +9,20 @@ file that was distributed with this source code.
 
 #}
 
-{% if admin.list.has('batch') and not app.request.isXmlHttpRequest %}
+{% if admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_BATCH')) and not app.request.isXmlHttpRequest %}
     <td class="sonata-ba-list-field sonata-ba-list-field-batch">
-        {{ object|render_list_element(admin.list['batch']) }}
+        {{ object|render_list_element(admin.list[constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_BATCH')]) }}
     </td>
 {% endif %}
 
-<td class="sonata-ba-list-field sonata-ba-list-field-inline-fields" colspan="{{ admin.list.elements|length - (admin.list.has('_action') + admin.list.has('batch')) }}" objectId="{{ admin.id(object) }}">
+<td class="sonata-ba-list-field sonata-ba-list-field-inline-fields"
+    colspan="{{ admin.list.elements|length - (admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_ACTIONS')) + admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_BATCH'))) }}"
+    objectId="{{ admin.id(object) }}">
     {% block row %}{% endblock %}
 </td>
 
-{% if admin.list.has('_action') and not app.request.isXmlHttpRequest %}
+{% if admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_ACTIONS')) and not app.request.isXmlHttpRequest %}
     <td class="sonata-ba-list-field sonata-ba-list-field-_action" objectId="{{ admin.id(object) }}">
-        {{ object|render_list_element(admin.list['_action']) }}
+        {{ object|render_list_element(admin.list[constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_ACTIONS')]) }}
     </td>
 {% endif %}

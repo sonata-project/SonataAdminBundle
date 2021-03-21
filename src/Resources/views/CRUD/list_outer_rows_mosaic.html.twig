@@ -17,7 +17,7 @@ This template can be customized to match your needs. You should only extends the
 -->
 
 <tr>
-    <td colspan="{{ admin.list.elements|length - (app.request.isXmlHttpRequest ? (admin.list.has('_action') + admin.list.has('batch')) : 0) }}">
+    <td colspan="{{ admin.list.elements|length - (app.request.isXmlHttpRequest ? (admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_ACTIONS')) + admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_BATCH'))) : 0) }}">
         <div class="row">
             {% for object in admin.datagrid.results %}
                 {% set meta = admin.getObjectMetadata(object) %}
