@@ -21,6 +21,8 @@ use Symfony\Component\HttpFoundation\Response;
  * PreCRUDController.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
+ *
+ * @phpstan-extends CRUDController<object>
  */
 class PreCRUDController extends CRUDController
 {

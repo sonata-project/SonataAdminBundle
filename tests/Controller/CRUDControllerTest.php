@@ -87,7 +87,7 @@ class CRUDControllerTest extends TestCase
     private $request;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface&MockObject
      */
     private $admin;
 
@@ -112,7 +112,7 @@ class CRUDControllerTest extends TestCase
     private $session;
 
     /**
-     * @var AuditManagerInterface
+     * @var AuditManagerInterface&MockObject
      */
     private $auditManager;
 
@@ -142,7 +142,7 @@ class CRUDControllerTest extends TestCase
     private $csrfProvider;
 
     /**
-     * @var TranslatorInterface
+     * @var TranslatorInterface&MockObject
      */
     private $translator;
 
@@ -160,6 +160,11 @@ class CRUDControllerTest extends TestCase
      * @var Stub&FormFactoryInterface
      */
     private $formFactory;
+
+    /**
+     * @var ParameterBag
+     */
+    private $parameterBag;
 
     /**
      * {@inheritdoc}
@@ -2569,7 +2574,7 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryActionNoReader(): void
     {
-        $this->request->query->set('id', 123);
+        $this->request->query->set('id', '123');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -2598,7 +2603,7 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryAction(): void
     {
-        $this->request->query->set('id', 123);
+        $this->request->query->set('id', '123');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -2628,7 +2633,7 @@ class CRUDControllerTest extends TestCase
 
         $reader->expects($this->once())
             ->method('findRevisions')
-            ->with($this->equalTo('Foo'), $this->equalTo(123))
+            ->with($this->equalTo('Foo'), $this->equalTo('123'))
             ->willReturn([]);
 
         $this->assertInstanceOf(Response::class, $this->controller->historyAction($this->request));
@@ -2654,7 +2659,7 @@ class CRUDControllerTest extends TestCase
 
     public function testAclActionNotFoundException(): void
     {
-        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+        $this->request->attributes->set($this->admin->getIdParameter(), '21');
 
         $this->admin->expects($this->once())
             ->method('isAclEnabled')
@@ -2693,7 +2698,7 @@ class CRUDControllerTest extends TestCase
 
     public function testAclAction(): void
     {
-        $this->request->query->set('id', 123);
+        $this->request->query->set('id', '123');
 
         $this->admin->expects($this->exactly(2))
             ->method('isAclEnabled')
@@ -2773,7 +2778,7 @@ class CRUDControllerTest extends TestCase
 
     public function testAclActionInvalidUpdate(): void
     {
-        $this->request->query->set('id', 123);
+        $this->request->query->set('id', '123');
         $this->request->request->set(AdminObjectAclManipulator::ACL_USERS_FORM_NAME, []);
 
         $this->admin->expects($this->exactly(2))
@@ -2860,7 +2865,7 @@ class CRUDControllerTest extends TestCase
 
     public function testAclActionSuccessfulUpdate(): void
     {
-        $this->request->query->set('id', 123);
+        $this->request->query->set('id', '123');
         $this->request->request->set(AdminObjectAclManipulator::ACL_ROLES_FORM_NAME, []);
 
         $this->admin->expects($this->exactly(2))
@@ -2960,7 +2965,7 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryViewRevisionActionNotFoundException(): void
     {
-        $this->request->query->set('id', 123);
+        $this->request->query->set('id', '123');
 
         $this->admin->expects($this->exactly(2))
             ->method('getObject')
@@ -2978,7 +2983,7 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryViewRevisionActionNoReader(): void
     {
-        $this->request->query->set('id', 123);
+        $this->request->query->set('id', '123');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -3007,7 +3012,7 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryViewRevisionActionNotFoundRevision(): void
     {
-        $this->request->query->set('id', 123);
+        $this->request->query->set('id', '123');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -3037,7 +3042,7 @@ class CRUDControllerTest extends TestCase
 
         $reader->expects($this->once())
             ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo('fooRevision'))
+            ->with($this->equalTo('Foo'), $this->equalTo('123'), $this->equalTo('fooRevision'))
             ->willReturn(null);
 
         $this->expectException(NotFoundHttpException::class);
@@ -3050,7 +3055,7 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryViewRevisionAction(): void
     {
-        $this->request->query->set('id', 123);
+        $this->request->query->set('id', '123');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -3083,7 +3088,7 @@ class CRUDControllerTest extends TestCase
 
         $reader->expects($this->once())
             ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo('fooRevision'))
+            ->with($this->equalTo('Foo'), $this->equalTo('123'), $this->equalTo('fooRevision'))
             ->willReturn($objectRevision);
 
         $this->admin->expects($this->once())
@@ -3122,7 +3127,7 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryCompareRevisionsActionNotFoundException(): void
     {
-        $this->request->query->set('id', 123);
+        $this->request->query->set('id', '123');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -3144,7 +3149,7 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryCompareRevisionsActionNoReader(): void
     {
-        $this->request->query->set('id', 123);
+        $this->request->query->set('id', '123');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -3173,7 +3178,7 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryCompareRevisionsActionNotFoundBaseRevision(): void
     {
-        $this->request->query->set('id', 123);
+        $this->request->query->set('id', '123');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -3204,7 +3209,7 @@ class CRUDControllerTest extends TestCase
         // once because it will not be found and therefore the second call won't be executed
         $reader->expects($this->once())
             ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo('fooBaseRevision'))
+            ->with($this->equalTo('Foo'), $this->equalTo('123'), $this->equalTo('fooBaseRevision'))
             ->willReturn(null);
 
         $this->expectException(NotFoundHttpException::class);
@@ -3217,7 +3222,7 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryCompareRevisionsActionNotFoundCompareRevision(): void
     {
-        $this->request->query->set('id', 123);
+        $this->request->query->set('id', '123');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -3250,8 +3255,8 @@ class CRUDControllerTest extends TestCase
 
         // first call should return, so the second call will throw an exception
         $reader->expects($this->exactly(2))->method('find')->willReturnMap([
-            ['Foo', 123, 'fooBaseRevision', $objectRevision],
-            ['Foo', 123, 'fooCompareRevision', null],
+            ['Foo', '123', 'fooBaseRevision', $objectRevision],
+            ['Foo', '123', 'fooCompareRevision', null],
         ]);
 
         $this->expectException(NotFoundHttpException::class);
@@ -3264,7 +3269,7 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryCompareRevisionsActionAction(): void
     {
-        $this->request->query->set('id', 123);
+        $this->request->query->set('id', '123');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -3299,8 +3304,8 @@ class CRUDControllerTest extends TestCase
         $compareObjectRevision->revision = 'fooCompareRevision';
 
         $reader->expects($this->exactly(2))->method('find')->willReturnMap([
-            ['Foo', 123, 'fooBaseRevision', $objectRevision],
-            ['Foo', 123, 'fooCompareRevision', $compareObjectRevision],
+            ['Foo', '123', 'fooBaseRevision', $objectRevision],
+            ['Foo', '123', 'fooCompareRevision', $compareObjectRevision],
         ]);
 
         $this->admin->expects($this->once())

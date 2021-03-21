@@ -48,6 +48,7 @@ use Sonata\AdminBundle\Tests\App\Builder\DatagridBuilder;
 use Sonata\AdminBundle\Tests\App\Builder\FormContractor;
 use Sonata\AdminBundle\Tests\App\Builder\ListBuilder;
 use Sonata\AdminBundle\Tests\App\Builder\ShowBuilder;
+use Sonata\AdminBundle\Tests\App\Model\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\AvoidInfiniteLoopAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentVoteAdmin;
@@ -78,7 +79,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormRegistry;
 use Symfony\Component\Form\ResolvedFormTypeFactory;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -123,16 +124,16 @@ class AdminTest extends TestCase
         $admin->setSubject(new BlogPost());
         $this->assertSame(BlogPost::class, $admin->getClass());
 
-        $admin->setSubClasses(['foo']);
+        $admin->setSubClasses(['foo' => Foo::class]);
         $this->assertSame(BlogPost::class, $admin->getClass());
 
         $admin->setSubject(null);
         $admin->setSubClasses([]);
         $this->assertSame($class, $admin->getClass());
 
-        $admin->setSubClasses(['foo' => 'bar']);
+        $admin->setSubClasses(['foo' => Foo::class]);
         $admin->setRequest(new Request(['subclass' => 'foo']));
-        $this->assertSame('bar', $admin->getClass());
+        $this->assertSame(Foo::class, $admin->getClass());
     }
 
     public function testGetClassException(): void
@@ -145,7 +146,7 @@ class AdminTest extends TestCase
 
         $admin = new PostAdmin('sonata.post.admin.post', $class, $baseControllerName);
         $admin->setParentFieldDescription(new FieldDescription('name'));
-        $admin->setSubClasses(['foo' => 'bar']);
+        $admin->setSubClasses(['foo' => Foo::class]);
         $admin->setRequest(new Request(['subclass' => 'foo']));
         $admin->getClass();
     }
@@ -663,9 +664,14 @@ class AdminTest extends TestCase
         $admin->setSubject(new BlogPost());
         $this->assertSame(BlogPost::class, $admin->getClass());
 
+        /** @var class-string $postExtended1 */
+        $postExtended1 = 'NewsBundle\Entity\PostExtended1';
+        /** @var class-string $postExtended2 */
+        $postExtended2 = 'NewsBundle\Entity\PostExtended2';
+
         $admin->setSubClasses([
-            'extended1' => 'NewsBundle\Entity\PostExtended1',
-            'extended2' => 'NewsBundle\Entity\PostExtended2',
+            'extended1' => $postExtended1,
+            'extended2' => $postExtended2,
         ]);
         $this->assertFalse($admin->hasSubClass('test'));
         $this->assertTrue($admin->hasSubClass('extended1'));
@@ -684,7 +690,7 @@ class AdminTest extends TestCase
         $this->assertTrue($admin->hasActiveSubClass());
         $this->assertCount(2, $admin->getSubClasses());
         $this->assertSame(
-            'NewsBundle\Entity\PostExtended1',
+            $postExtended1,
             $admin->getActiveSubClass(),
             'It should return the curently active sub class.'
         );
@@ -710,7 +716,15 @@ class AdminTest extends TestCase
 
         $admin->setRequest(new Request(['subclass' => 'inject']));
 
-        $admin->setSubClasses(['extended1' => 'NewsBundle\Entity\PostExtended1', 'extended2' => 'NewsBundle\Entity\PostExtended2']);
+        /** @var class-string $postExtended1 */
+        $postExtended1 = 'NewsBundle\Entity\PostExtended1';
+        /** @var class-string $postExtended2 */
+        $postExtended2 = 'NewsBundle\Entity\PostExtended2';
+
+        $admin->setSubClasses([
+            'extended1' => $postExtended1,
+            'extended2' => $postExtended2,
+        ]);
 
         $this->assertTrue($admin->hasActiveSubClass());
 
@@ -725,7 +739,11 @@ class AdminTest extends TestCase
     public function testOnlyOneSubclassNeededToBeActive(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-        $admin->setSubClasses(['extended1' => 'NewsBundle\Entity\PostExtended1']);
+
+        /** @var class-string $postExtended1 */
+        $postExtended1 = 'NewsBundle\Entity\PostExtended1';
+        $admin->setSubClasses(['extended1' => $postExtended1]);
+
         $request = new Request(['subclass' => 'extended1']);
         $admin->setRequest($request);
         $this->assertTrue($admin->hasActiveSubClass());
@@ -1021,7 +1039,7 @@ class AdminTest extends TestCase
 
         $this->assertSame([], $admin->getShowGroups());
 
-        $groups = ['foo', 'bar', 'baz'];
+        $groups = ['group' => []];
 
         $admin->setShowGroups($groups);
         $this->assertSame($groups, $admin->getShowGroups());
@@ -1033,7 +1051,7 @@ class AdminTest extends TestCase
 
         $this->assertSame([], $admin->getFormGroups());
 
-        $groups = ['foo', 'bar', 'baz'];
+        $groups = ['group' => []];
 
         $admin->setFormGroups($groups);
         $this->assertSame($groups, $admin->getFormGroups());
@@ -1456,10 +1474,9 @@ class AdminTest extends TestCase
         $postAdmin->addChild($commentAdmin, 'post__author');
 
         $request = $this->createMock(Request::class);
-        $query = $this->createMock(ParameterBag::class);
+        $query = new InputBag();
         $query
-            ->method('get')
-            ->willReturn([
+            ->set('filter', [
                 'filter' => [
                     '_page' => '1',
                     '_per_page' => '32',
@@ -1905,11 +1922,9 @@ class AdminTest extends TestCase
         $subjectId = uniqid();
 
         $request = $this->createMock(Request::class);
-        $query = $this->createMock(ParameterBag::class);
+        $query = new InputBag();
         $query
-            ->method('get')
-            ->with($this->equalTo('filter'))
-            ->willReturn([
+            ->set('filter', [
                 'a' => [
                     'value' => 'b',
                 ],
@@ -2028,8 +2043,11 @@ class AdminTest extends TestCase
             'Sonata\NewsBundle\Controller\CommentVoteAdminController'
         );
 
+        // Workaround for static analysis
+        $commentAdminRootAncestor = $commentAdmin->getRootAncestor();
+
         $this->assertSame($postAdmin, $postAdmin->getRootAncestor());
-        $this->assertSame($commentAdmin, $commentAdmin->getRootAncestor());
+        $this->assertSame($commentAdmin, $commentAdminRootAncestor);
         $this->assertSame($commentVoteAdmin, $commentVoteAdmin->getRootAncestor());
 
         $postAdmin->addChild($commentAdmin, 'post');
@@ -2101,7 +2119,10 @@ class AdminTest extends TestCase
         $postAdmin->addChild($commentAdmin, 'post');
         $commentAdmin->addChild($commentVoteAdmin, 'comment');
 
-        $this->assertNull($postAdmin->getCurrentLeafChildAdmin());
+        // Workaround for static analysis
+        $postAdminChildAdmin = $postAdmin->getCurrentLeafChildAdmin();
+
+        $this->assertNull($postAdminChildAdmin);
         $this->assertNull($commentAdmin->getCurrentLeafChildAdmin());
         $this->assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
 

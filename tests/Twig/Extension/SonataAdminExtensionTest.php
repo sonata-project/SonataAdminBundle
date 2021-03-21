@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Tests\App\Model\Foo;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
@@ -43,12 +45,12 @@ class SonataAdminExtensionTest extends TestCase
     private $environment;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface&MockObject
      */
     private $admin;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface&MockObject
      */
     private $adminBar;
 
@@ -73,7 +75,7 @@ class SonataAdminExtensionTest extends TestCase
 
         $this->container = new Container();
 
-        $this->pool = new Pool($this->container, ['sonata_admin_foo_service'], [], ['fooClass' => ['sonata_admin_foo_service']]);
+        $this->pool = new Pool($this->container, ['sonata_admin_foo_service'], [], [Foo::class => ['sonata_admin_foo_service']]);
 
         $this->twigExtension = new SonataAdminExtension($this->pool);
 

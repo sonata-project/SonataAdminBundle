@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Admin\Extension;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Extension\LockExtension;
@@ -29,7 +30,6 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class LockExtensionTest extends TestCase
 {
@@ -39,17 +39,17 @@ class LockExtensionTest extends TestCase
     private $lockExtension;
 
     /**
-     * @var EventDispatcherInterface
+     * @var EventDispatcher
      */
     private $eventDispatcher;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface&Stub
      */
     private $admin;
 
     /**
-     * @var LockInterface
+     * @var LockInterface&MockObject
      */
     private $modelManager;
 
@@ -185,11 +185,9 @@ class LockExtensionTest extends TestCase
     {
         $uniqid = 'admin123';
         $this->configureAdmin(
-            $this->createStub(
-                ModelManagerInterface::class,
-                $uniqid,
-                $this->request
-            )
+            $this->createStub(ModelManagerInterface::class),
+            $uniqid,
+            $this->request
         );
         $this->modelManager->expects($this->never())->method('lock');
 
@@ -208,6 +206,9 @@ class LockExtensionTest extends TestCase
         $this->lockExtension->preUpdate($this->admin, $this->object);
     }
 
+    /**
+     * @return MockObject&FormInterface
+     */
     private function configureForm(): MockObject
     {
         $form = $this->createMock(FormInterface::class);

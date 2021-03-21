@@ -23,6 +23,9 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Tests\App\Model\Foo;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
+/**
+ * @phpstan-extends AbstractAdmin<object>
+ */
 class FooAdmin extends AbstractAdmin
 {
     protected function createNewInstance(): object

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
@@ -46,6 +47,11 @@ class DatagridMapperTest extends TestCase
      */
     private $datagrid;
 
+    /**
+     * @var AdminInterface&MockObject
+     */
+    private $admin;
+
     protected function setUp(): void
     {
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
@@ -59,7 +65,7 @@ class DatagridMapperTest extends TestCase
 
         $this->datagrid = new Datagrid($proxyQuery, $fieldDescriptionCollection, $pager, $formBuilder, []);
 
-        $admin = $this->createStub(AdminInterface::class);
+        $this->admin = $this->createMock(AdminInterface::class);
 
         $datagridBuilder
             ->method('addFilter')
@@ -80,7 +86,7 @@ class DatagridMapperTest extends TestCase
                 $datagrid->addFilter($filter);
             });
 
-        $admin
+        $this->admin
             ->method('createFieldDescription')
             ->willReturnCallback(function (string $name, array $options = []): FieldDescriptionInterface {
                 $fieldDescription = $this->getFieldDescriptionMock($name);
@@ -89,7 +95,7 @@ class DatagridMapperTest extends TestCase
                 return $fieldDescription;
             });
 
-        $admin
+        $this->admin
             ->method('isGranted')
             ->willReturnCallback(static function (string $name, ?object $object = null): bool {
                 return self::DEFAULT_GRANTED_ROLE === $name;
@@ -102,11 +108,11 @@ class DatagridMapperTest extends TestCase
             }
         );
 
-        $admin
+        $this->admin
             ->method('getLabelTranslatorStrategy')
             ->willReturn($labelTranslatorStrategy);
 
-        $this->datagridMapper = new DatagridMapper($datagridBuilder, $this->datagrid, $admin);
+        $this->datagridMapper = new DatagridMapper($datagridBuilder, $this->datagrid, $this->admin);
     }
 
     public function testFluidInterface(): void
@@ -226,13 +232,14 @@ class DatagridMapperTest extends TestCase
             'Unknown field name in datagrid mapper. Field name should be either of FieldDescriptionInterface interface or string'
         );
 
+        // @phpstan-ignore-next-line
         $this->datagridMapper->add(12345);
     }
 
     public function testAddDuplicateNameException(): void
     {
         $tmpNames = [];
-        $this->datagridMapper->getAdmin()
+        $this->admin
             ->expects($this->exactly(2))
             ->method('hasFilterFieldDescription')
             ->willReturnCallback(static function (string $name) use (&$tmpNames): bool {

@@ -17,7 +17,7 @@ class Tag
 {
     private $post;
 
-    public function setPost(Post $post): void
+    public function setPost(?Post $post): void
     {
         $this->post = $post;
     }

@@ -24,8 +24,8 @@ interface RouteCollectionInterface
      * @param array<string, mixed>  $defaults
      * @param array<string, string> $requirements
      * @param array<string, mixed>  $options
-     * @param array<string, string> $schemes
-     * @param array<string, string> $methods
+     * @param string[]              $schemes
+     * @param string[]              $methods
      *
      * @return static
      */

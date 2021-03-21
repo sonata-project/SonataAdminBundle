@@ -59,8 +59,8 @@ class ModelListTypeTest extends TypeTestCase
             ]
         );
 
-        $this->modelManager->expects($this->once())->method('find')->with('My\Entity', 42);
-        $form->submit(42);
+        $this->modelManager->expects($this->once())->method('find')->with('My\Entity', '42');
+        $form->submit('42');
         $this->assertTrue($form->isSynchronized());
     }
 }

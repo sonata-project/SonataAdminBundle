@@ -154,10 +154,6 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false);
 
         $this->assertSame([], $transformer->transform(null));
-        $this->assertSame([], $transformer->transform(false));
-        $this->assertSame([], $transformer->transform(''));
-        $this->assertSame([], $transformer->transform(0));
-        $this->assertSame([], $transformer->transform('0'));
 
         $this->assertSame([123, '_labels' => ['example']], $transformer->transform($model));
     }
@@ -230,10 +226,6 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 
         $this->assertSame([], $transformer->transform(null));
-        $this->assertSame([], $transformer->transform(false));
-        $this->assertSame([], $transformer->transform(''));
-        $this->assertSame([], $transformer->transform(0));
-        $this->assertSame([], $transformer->transform('0'));
 
         $this->assertSame([
             123,

@@ -28,6 +28,8 @@ use Twig\Loader\FilesystemLoader;
  */
 abstract class BaseMenuTest extends TestCase
 {
+    private $environment;
+
     /**
      * {@inheritdoc}
      */
@@ -54,13 +56,13 @@ abstract class BaseMenuTest extends TestCase
     protected function renderMenu(ItemInterface $item, array $options = [])
     {
         $this->environment->addExtension(new TranslationExtension($this->getTranslator()));
-        $this->renderer = new TwigRenderer(
+        $renderer = new TwigRenderer(
             $this->environment,
             $this->getTemplate(),
             $this->getMockForAbstractClass(MatcherInterface::class)
         );
 
-        return $this->renderer->render($item, $options);
+        return $renderer->render($item, $options);
     }
 
     /**

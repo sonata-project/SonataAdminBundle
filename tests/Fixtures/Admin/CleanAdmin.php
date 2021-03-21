@@ -15,6 +15,9 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 
-class CleanAdmin extends AbstractAdmin
+/**
+ * @phpstan-extends AbstractAdmin<object>
+ */
+final class CleanAdmin extends AbstractAdmin
 {
 }

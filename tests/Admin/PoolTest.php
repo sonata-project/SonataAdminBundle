@@ -80,37 +80,46 @@ class PoolTest extends TestCase
 
     public function testGetAdminForClassWithTooManyRegisteredAdmin(): void
     {
+        /** @var class-string $class */
+        $class = 'someclass';
+
         $pool = new Pool($this->container, ['sonata.user.admin.group1'], [], [
-            'someclass' => ['sonata.user.admin.group1', 'sonata.user.admin.group2'],
+            $class => ['sonata.user.admin.group1', 'sonata.user.admin.group2'],
         ]);
 
-        $this->assertTrue($pool->hasAdminByClass('someclass'));
+        $this->assertTrue($pool->hasAdminByClass($class));
 
         $this->expectException(TooManyAdminClassException::class);
 
-        $pool->getAdminByClass('someclass');
+        $pool->getAdminByClass($class);
     }
 
     public function testGetAdminForClassWithTooManyRegisteredAdminButOneDefaultAdmin(): void
     {
+        /** @var class-string $class */
+        $class = 'someclass';
+
         $this->container->set('sonata.user.admin.group1', $this->createMock(AdminInterface::class));
 
         $pool = new Pool($this->container, ['sonata.user.admin.group1'], [], [
-            'someclass' => [Pool::DEFAULT_ADMIN_KEY => 'sonata.user.admin.group1', 'sonata.user.admin.group2'],
+            $class => [Pool::DEFAULT_ADMIN_KEY => 'sonata.user.admin.group1', 'sonata.user.admin.group2'],
         ]);
 
-        $this->assertTrue($pool->hasAdminByClass('someclass'));
-        $this->assertInstanceOf(AdminInterface::class, $pool->getAdminByClass('someclass'));
+        $this->assertTrue($pool->hasAdminByClass($class));
+        $this->assertInstanceOf(AdminInterface::class, $pool->getAdminByClass($class));
     }
 
     public function testGetAdminForClassWhenAdminClassIsSet(): void
     {
+        /** @var class-string $class */
+        $class = 'someclass';
+
         $this->container->set('sonata.user.admin.group1', $this->createMock(AdminInterface::class));
 
-        $pool = new Pool($this->container, ['sonata.user.admin.group1'], [], ['someclass' => ['sonata.user.admin.group1']]);
+        $pool = new Pool($this->container, ['sonata.user.admin.group1'], [], [$class => ['sonata.user.admin.group1']]);
 
-        $this->assertTrue($pool->hasAdminByClass('someclass'));
-        $this->assertInstanceOf(AdminInterface::class, $pool->getAdminByClass('someclass'));
+        $this->assertTrue($pool->hasAdminByClass($class));
+        $this->assertInstanceOf(AdminInterface::class, $pool->getAdminByClass($class));
     }
 
     public function testGetInstanceWithUndefinedServiceId(): void
@@ -382,14 +391,20 @@ class PoolTest extends TestCase
 
     public function testGetAdminClasses(): void
     {
-        $pool = new Pool($this->container, [], [], ['someclass' => 'sonata.user.admin.group1']);
-        $this->assertSame(['someclass' => 'sonata.user.admin.group1'], $pool->getAdminClasses());
+        /** @var class-string $class */
+        $class = 'someclass';
+
+        $pool = new Pool($this->container, [], [], [$class => ['sonata.user.admin.group1']]);
+        $this->assertSame([$class => ['sonata.user.admin.group1']], $pool->getAdminClasses());
     }
 
     public function testGetAdminGroups(): void
     {
-        $pool = new Pool($this->container, [], ['adminGroup1' => 'sonata.user.admin.group1']);
-        $this->assertSame(['adminGroup1' => 'sonata.user.admin.group1'], $pool->getAdminGroups());
+        /** @var class-string $class */
+        $class = 'someclass';
+
+        $pool = new Pool($this->container, [], [$class => ['sonata.user.admin.group1' => []]]);
+        $this->assertSame([$class => ['sonata.user.admin.group1' => []]], $pool->getAdminGroups());
     }
 
     public function testGetAdminServiceIds(): void

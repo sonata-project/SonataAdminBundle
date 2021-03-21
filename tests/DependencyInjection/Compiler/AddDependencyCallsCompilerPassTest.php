@@ -13,19 +13,17 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
+use Knp\Menu\FactoryInterface;
 use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
-use Knp\Menu\Silex\RouterAwareFactory;
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\Route\RoutesCache;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\FooAdminController;
 use Sonata\BlockBundle\DependencyInjection\SonataBlockExtension;
-use Sonata\DoctrinePHPCRAdminBundle\Route\PathInfoBuilderSlashes;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
-use Symfony\Bundle\FrameworkBundle\Validator\Validator;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -37,9 +35,11 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Validator\ContainerConstraintValidatorFactory;
+use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 /**
  * @author Tiago Garcia
@@ -173,7 +173,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
 
         $this->assertContains('sonata_post_admin', $poolDefinition->getArgument(1));
         $this->assertArrayHasKey('sonata_group_one', $poolDefinition->getArgument(2));
-        $this->assertArrayHasKey(News::class, $poolDefinition->getArgument(3));
+        $this->assertArrayHasKey(NewsEntity::class, $poolDefinition->getArgument(3));
 
         $this->assertArrayHasKey('sonata_group_one', $adminGroups);
         $this->assertArrayHasKey('label', $adminGroups['sonata_group_one']);
@@ -202,12 +202,12 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertArrayHasKey('sonata_group_five', $adminGroups);
         $this->assertTrue($adminGroups['sonata_group_five']['keep_open']);
 
-        $this->assertArrayHasKey(Post::class, $adminClasses);
-        $this->assertContains('sonata_post_admin', $adminClasses[Post::class]);
-        $this->assertArrayHasKey(Article::class, $adminClasses);
-        $this->assertContains('sonata_article_admin', $adminClasses[Article::class]);
-        $this->assertArrayHasKey(News::class, $adminClasses);
-        $this->assertContains('sonata_news_admin', $adminClasses[News::class]);
+        $this->assertArrayHasKey(PostEntity::class, $adminClasses);
+        $this->assertContains('sonata_post_admin', $adminClasses[PostEntity::class]);
+        $this->assertArrayHasKey(ArticleEntity::class, $adminClasses);
+        $this->assertContains('sonata_article_admin', $adminClasses[ArticleEntity::class]);
+        $this->assertArrayHasKey(NewsEntity::class, $adminClasses);
+        $this->assertContains('sonata_news_admin', $adminClasses[NewsEntity::class]);
         $newsRouteBuilderMethodCall = current(array_filter(
             $container->getDefinition('sonata_news_admin')->getMethodCalls(),
             static function (array $element): bool {
@@ -228,7 +228,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $definitionOrReference = $articleRouteBuilderMethodCall[1][0];
         if ($definitionOrReference instanceof Definition) {
             $this->assertSame(
-                PathInfoBuilderSlashes::class,
+                'Sonata\DoctrinePHPCRAdminBundle\Route\PathInfoBuilderSlashes',
                 $articleRouteBuilderMethodCall[1][0]->getClass(),
                 'The article admin uses the odm, and should therefore use the path_info_slashes router.'
             );
@@ -448,7 +448,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $compilerPass = new AddDependencyCallsCompilerPass();
         $container
             ->register('sonata_report_one_admin')
-            ->setClass(MockAdmin::class)
+            ->setClass(CustomAdmin::class)
             ->setArguments(['', ReportOne::class, 'sonata.admin.controller.crud'])
             ->addTag('sonata.admin', ['group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => true]);
 
@@ -470,7 +470,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $compilerPass = new AddDependencyCallsCompilerPass();
         $container
             ->register('sonata_report_two_admin')
-            ->setClass(MockAdmin::class)
+            ->setClass(CustomAdmin::class)
             ->setArguments(['', ReportOne::class, 'sonata.admin.controller.crud'])
             ->addTag('sonata.admin', ['group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => false]);
 
@@ -495,12 +495,12 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $compilerPass = new AddDependencyCallsCompilerPass();
         $container
             ->register('sonata_document_one_admin')
-            ->setClass(MockAdmin::class)
+            ->setClass(CustomAdmin::class)
             ->setArguments(['', ReportOne::class, 'sonata.admin.controller.crud'])
             ->addTag('sonata.admin', ['group' => 'sonata_document_group', 'manager_type' => 'orm', 'on_top' => false]);
         $container
             ->register('sonata_document_two_admin')
-            ->setClass(MockAdmin::class)
+            ->setClass(CustomAdmin::class)
             ->setArguments(['', ReportOne::class, 'sonata.admin.controller.crud'])
             ->addTag('sonata.admin', ['group' => 'sonata_document_group', 'manager_type' => 'orm', 'on_top' => false]);
 
@@ -523,7 +523,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $compilerPass = new AddDependencyCallsCompilerPass();
         $container
             ->register('sonata_abstract_post_admin')
-            ->setArguments(['', Post::class, ''])
+            ->setArguments(['', PostEntity::class, ''])
             ->setAbstract(true);
 
         $adminDefinition = new ChildDefinition('sonata_abstract_post_admin');
@@ -559,13 +559,13 @@ class AddDependencyCallsCompilerPassTest extends TestCase
 
         $definition = $container->getDefinition('sonata_post_one_admin');
         $this->assertSame('sonata_post_one_admin', $definition->getArgument(0));
-        $this->assertSame(Post::class, $definition->getArgument(1));
+        $this->assertSame(PostEntity::class, $definition->getArgument(1));
         $this->assertSame('sonata.admin.controller.crud', $definition->getArgument(2));
         $this->assertSame('extra_argument_1', $definition->getArgument(3));
 
         $definition = $container->getDefinition('sonata_post_two_admin');
         $this->assertSame('sonata_post_two_admin', $definition->getArgument(0));
-        $this->assertSame(Post::class, $definition->getArgument(1));
+        $this->assertSame(PostEntity::class, $definition->getArgument(1));
         $this->assertSame('sonata.admin.controller.crud', $definition->getArgument(2));
         $this->assertSame('extra_argument_2', $definition->getArgument(3));
     }
@@ -593,9 +593,9 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $container = $this->getContainer();
         $container
             ->register('sonata_post_admin_2')
-            ->setClass(MockAdmin::class)
+            ->setClass(CustomAdmin::class)
             ->setPublic(true)
-            ->setArguments(['', Post::class, CRUDController::class])
+            ->setArguments(['', PostEntity::class, 'sonata.admin.controller.crud'])
             ->addTag('sonata.admin', ['default' => true, 'group' => 'sonata_group_one', 'manager_type' => 'orm']);
 
         $config = $this->config;
@@ -605,7 +605,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $compilerPass = new AddDependencyCallsCompilerPass();
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('The class Sonata\AdminBundle\Tests\DependencyInjection\Compiler\Post has two default admins sonata_post_admin and sonata_post_admin_2.');
+        $this->expectExceptionMessage('The class Sonata\AdminBundle\Tests\DependencyInjection\Compiler\PostEntity has two default admins sonata_post_admin and sonata_post_admin_2.');
         $compilerPass->process($container);
         $container->compile();
     }
@@ -686,13 +686,13 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         // Add dependencies for SonataAdminBundle (these services will never get called so dummy classes will do)
         $container
             ->register('twig')
-            ->setClass(EngineInterface::class);
+            ->setClass(Environment::class);
         $container
             ->register('validator')
-            ->setClass(Validator::class);
+            ->setClass(ValidatorInterface::class);
         $container
             ->register('validator.validator_factory')
-            ->setClass(ContainerConstraintValidatorFactory::class);
+            ->setClass(ConstraintValidatorFactoryInterface::class);
         $container
             ->register('router')
             ->setClass(RouterInterface::class);
@@ -759,13 +759,13 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         }
         $container
             ->register('sonata.admin.route.path_info_slashes')
-            ->setClass(PathInfoBuilderSlashes::class);
+            ->setClass('Sonata\DoctrinePHPCRAdminBundle\Route\PathInfoBuilderSlashes');
         $container
             ->register('sonata.admin.route.cache')
             ->setClass(RoutesCache::class);
         $container
             ->register('knp_menu.factory')
-            ->setClass(RouterAwareFactory::class);
+            ->setClass(FactoryInterface::class);
         $container
             ->register('knp_menu.menu_provider')
             ->setClass(MenuProviderInterface::class);
@@ -780,40 +780,40 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $container
             ->register('sonata_news_admin')
             ->setPublic(true)
-            ->setClass(MockAdmin::class)
-            ->setArguments(['', News::class, 'sonata.admin.controller.crud'])
+            ->setClass(CustomAdmin::class)
+            ->setArguments(['', NewsEntity::class, 'sonata.admin.controller.crud'])
             ->addTag('sonata.admin', ['group' => 'sonata_group_two', 'label' => '5 Entry', 'manager_type' => 'orm']);
         $container
             ->register('sonata_post_admin')
-            ->setClass(MockAdmin::class)
+            ->setClass(CustomAdmin::class)
             ->setPublic(true)
-            ->setArguments(['', Post::class, 'sonata.admin.controller.crud'])
+            ->setArguments(['', PostEntity::class, 'sonata.admin.controller.crud'])
             ->addTag('sonata.admin', ['default' => true, 'group' => 'sonata_group_one', 'manager_type' => 'orm']);
         $container
             ->register('sonata_article_admin')
             ->setPublic(true)
-            ->setClass(MockAdmin::class)
-            ->setArguments(['', Article::class, 'sonata.admin.controller.crud'])
+            ->setClass(CustomAdmin::class)
+            ->setArguments(['', ArticleEntity::class, 'sonata.admin.controller.crud'])
             ->addTag('sonata.admin', ['group' => 'sonata_group_one', 'label' => '1 Entry', 'manager_type' => 'doctrine_phpcr']);
         $container
             ->register('sonata_report_admin')
             ->setPublic(true)
-            ->setClass(MockAdmin::class)
+            ->setClass(CustomAdmin::class)
             ->setArguments(['', Report::class, 'sonata.admin.controller.crud'])
             ->addTag('sonata.admin', ['group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => true]);
         $container
             ->register('sonata_report_one_admin')
-            ->setClass(MockAdmin::class)
+            ->setClass(CustomAdmin::class)
             ->setArguments(['', ReportOne::class, 'sonata.admin.controller.crud'])
             ->addTag('sonata.admin', ['group' => 'sonata_report_one_group', 'manager_type' => 'orm', 'show_mosaic_button' => false]);
         $container
             ->register('sonata_report_two_admin')
-            ->setClass(MockAdmin::class)
+            ->setClass(CustomAdmin::class)
             ->setArguments(['', ReportTwo::class, 'sonata.admin.controller.crud'])
             ->addTag('sonata.admin', ['group' => 'sonata_report_two_group', 'manager_type' => 'orm', 'show_mosaic_button' => true]);
         $container
             ->register('sonata_without_controller')
-            ->setClass(MockAdmin::class)
+            ->setClass(CustomAdmin::class)
             ->setArguments(['', ReportTwo::class, ''])
             ->addTag('sonata.admin', ['group' => 'sonata_report_two_group', 'manager_type' => 'orm']);
 
@@ -836,4 +836,28 @@ class AddDependencyCallsCompilerPassTest extends TestCase
 
         return $container;
     }
+}
+
+/** @phpstan-extends AbstractAdmin<object> */
+class CustomAdmin extends AbstractAdmin
+{
+}
+
+class Report
+{
+}
+class ReportOne
+{
+}
+class ReportTwo
+{
+}
+class NewsEntity
+{
+}
+class PostEntity
+{
+}
+class ArticleEntity
+{
 }

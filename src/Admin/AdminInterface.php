@@ -357,8 +357,6 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
 
     /**
      * Returns true if the admin has the sub classes.
-     *
-     * @phpstan-param class-string<T> $name
      */
     public function hasSubClass(string $name): bool;
 

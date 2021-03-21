@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\AppendFormFieldElementAction;
-use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
@@ -37,34 +37,34 @@ final class AppendFormFieldElementActionTest extends TestCase
     private $pool;
 
     /**
-     * @var Environment
+     * @var Environment&MockObject
      */
     private $twig;
 
     /**
-     * @var GetShortObjectDescriptionAction
+     * @var AppendFormFieldElementAction
      */
     private $action;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface&MockObject
      */
     private $admin;
 
     /**
-     * @var AdminHelper
+     * @var AdminHelper&MockObject
      */
     private $helper;
 
     protected function setUp(): void
     {
-        $this->twig = $this->createStub(Environment::class);
+        $this->twig = $this->createMock(Environment::class);
         $this->admin = $this->createMock(AdminInterface::class);
         $this->admin->expects($this->once())->method('setRequest');
         $container = new Container();
         $container->set('sonata.post.admin', $this->admin);
         $this->pool = new Pool($container, ['sonata.post.admin']);
-        $this->helper = $this->createStub(AdminHelper::class);
+        $this->helper = $this->createMock(AdminHelper::class);
         $this->action = new AppendFormFieldElementAction(
             $this->twig,
             $this->pool,

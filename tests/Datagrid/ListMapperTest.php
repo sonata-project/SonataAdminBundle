@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
@@ -40,7 +41,7 @@ class ListMapperTest extends TestCase
     private $fieldDescriptionCollection;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface&MockObject
      */
     private $admin;
 
@@ -214,6 +215,7 @@ class ListMapperTest extends TestCase
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage('Unknown field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string.');
 
+        // @phpstan-ignore-next-line
         $this->listMapper->add(12345);
     }
 
@@ -225,7 +227,7 @@ class ListMapperTest extends TestCase
 
         foreach ($this->fieldDescriptionCollection->getElements() as $field) {
             $this->assertTrue(
-                $field->isVirtual(),
+                $field->getOption('virtual_field', false),
                 sprintf('Failed asserting that FieldDescription with type "%s" is tagged with virtual flag.', $field->getType())
             );
         }
@@ -367,7 +369,7 @@ class ListMapperTest extends TestCase
         $field = $this->fieldDescriptionCollection->get('_action');
 
         $this->assertTrue(
-            $field->isVirtual(),
+            $field->getOption('virtual_field', false),
             'Failed asserting that FieldDescription with name "'.$field->getName().'" is tagged with virtual flag.'
         );
     }

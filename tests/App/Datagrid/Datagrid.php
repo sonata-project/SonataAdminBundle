@@ -128,11 +128,11 @@ final class Datagrid implements DatagridInterface
 
     public function getSortParameters(FieldDescriptionInterface $fieldDescription): array
     {
-        return [];
+        return ['filter' => []];
     }
 
     public function getPaginationParameters(int $page): array
     {
-        return [];
+        return ['filter' => []];
     }
 }

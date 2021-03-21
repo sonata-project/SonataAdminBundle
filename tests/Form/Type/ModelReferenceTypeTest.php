@@ -31,7 +31,7 @@ class ModelReferenceTypeTest extends TypeTestCase
 
     public function testSubmitValidData(): void
     {
-        $formData = 42;
+        $formData = '42';
 
         $form = $this->factory->create(
             ModelReferenceType::class,
@@ -41,7 +41,7 @@ class ModelReferenceTypeTest extends TypeTestCase
                 'class' => 'My\Entity',
             ]
         );
-        $this->modelManager->expects($this->once())->method('find')->with('My\Entity', 42);
+        $this->modelManager->expects($this->once())->method('find')->with('My\Entity', '42');
         $form->submit($formData);
         $this->assertTrue($form->isSynchronized());
     }

@@ -47,7 +47,6 @@ class SessionFilterPersisterTest extends TestCase
     public function testGetValueFromSessionIfDefined(): void
     {
         $filters = [
-            'active' => true,
             '_page' => 1,
             '_sort_by' => 'firstName',
             '_sort_order' => 'ASC',
@@ -63,7 +62,6 @@ class SessionFilterPersisterTest extends TestCase
     public function testSetValueToSession(): void
     {
         $filters = [
-            'active' => true,
             '_page' => 1,
             '_sort_by' => 'firstName',
             '_sort_order' => 'ASC',

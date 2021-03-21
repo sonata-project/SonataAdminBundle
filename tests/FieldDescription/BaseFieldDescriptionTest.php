@@ -33,7 +33,7 @@ class BaseFieldDescriptionTest extends TestCase
     {
         $fieldMapping = ['field_name' => 'fieldName'];
         $associationMapping = ['association_model' => 'association_bar'];
-        $parentAssociationMapping = ['parent_mapping' => 'parent_bar'];
+        $parentAssociationMapping = [['parent_mapping' => 'parent_bar']];
 
         $description = new FieldDescription(
             'foo',

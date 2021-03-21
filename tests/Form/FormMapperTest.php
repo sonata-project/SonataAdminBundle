@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
@@ -35,7 +36,7 @@ class FormMapperTest extends TestCase
     private const DEFAULT_GRANTED_ROLE = 'ROLE_ADMIN_BAZ';
 
     /**
-     * @var FormContractorInterface
+     * @var FormContractorInterface&MockObject
      */
     protected $contractor;
 

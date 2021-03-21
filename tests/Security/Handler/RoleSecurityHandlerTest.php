@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Security\Handler;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\RoleSecurityHandler;
@@ -27,12 +28,12 @@ use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundE
 class RoleSecurityHandlerTest extends TestCase
 {
     /**
-     * @var AdminInterface
+     * @var AdminInterface&MockObject
      */
     private $admin;
 
     /**
-     * @var AuthorizationCheckerInterface
+     * @var AuthorizationCheckerInterface&MockObject
      */
     private $authorizationChecker;
 

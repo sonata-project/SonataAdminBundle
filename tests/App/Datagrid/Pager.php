@@ -17,6 +17,9 @@ use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Tests\App\Model\FooRepository;
 
+/**
+ * @phpstan-implements PagerInterface<ProxyQueryInterface>
+ */
 final class Pager implements PagerInterface
 {
     /**

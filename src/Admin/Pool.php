@@ -67,6 +67,14 @@ final class Pool
      */
     private $adminClasses = [];
 
+    /**
+     * @param string[]                            $adminServices
+     * @param array<string, array<string, mixed>> $adminGroups
+     * @param array<class-string, string[]>       $adminClasses
+     *
+     * @phpstan-param array<string, array<string, mixed>> $adminGroups
+     * @psalm-param array<string, Group> $adminGroups
+     */
     public function __construct(
         ContainerInterface $container,
         array $adminServices = [],

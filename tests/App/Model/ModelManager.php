@@ -53,6 +53,9 @@ class ModelManager implements ModelManagerInterface, LockInterface
         return null;
     }
 
+    /**
+     * @return Foo|null
+     */
     public function find(string $class, $id): ?object
     {
         return $this->repository->byId($id);

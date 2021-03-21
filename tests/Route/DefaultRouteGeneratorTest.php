@@ -92,6 +92,8 @@ class DefaultRouteGeneratorTest extends TestCase
                         return sprintf('%s/foo%s', $domain, $params);
                     case 'admin_acme_child_bar':
                         return sprintf('%s/foo/bar%s', $domain, $params);
+                    default:
+                        throw new \LogicException('Not implemented');
                 }
             });
 
@@ -178,10 +180,12 @@ class DefaultRouteGeneratorTest extends TestCase
         $request->attributes->method('has')->willReturn(true);
         $request->attributes
             ->method('get')
-            ->willReturnCallback(static function (string $key): string {
+            ->willReturnCallback(static function (string $key): ?string {
                 if ('childId' === $key) {
                     return '987654';
                 }
+
+                return null;
             });
 
         $admin->method('getRequest')->willReturn($request);
@@ -202,6 +206,8 @@ class DefaultRouteGeneratorTest extends TestCase
                         return sprintf('/foo%s', $params);
                     case 'admin_acme_child_bar':
                         return sprintf('/foo/bar%s', $params);
+                    default:
+                        throw new \LogicException('Not implemented');
                 }
             });
 
@@ -259,6 +265,8 @@ class DefaultRouteGeneratorTest extends TestCase
                         return sprintf('/foo%s', $params);
                     case 'admin_acme_child_bar':
                         return sprintf('/foo/bar%s', $params);
+                    default:
+                        throw new \LogicException('Not implemented');
                 }
             });
 
@@ -330,10 +338,12 @@ class DefaultRouteGeneratorTest extends TestCase
         $request->attributes->method('has')->willReturn(true);
         $request->attributes
             ->method('get')
-            ->willReturnCallback(static function (string $key): string {
+            ->willReturnCallback(static function (string $key): ?string {
                 if ('childId' === $key) {
                     return '987654';
                 }
+
+                return null;
             });
 
         $admin->method('getRequest')->willReturn($request);
@@ -364,6 +374,8 @@ class DefaultRouteGeneratorTest extends TestCase
                         return sprintf('/foo/bar%s', $params);
                     case 'admin_acme_child_standalone_bar':
                         return sprintf('/bar%s', $params);
+                    default:
+                        throw new \LogicException('Not implemented');
                 }
             });
 

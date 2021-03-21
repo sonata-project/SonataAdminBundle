@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\SetObjectFieldValueAction;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -52,17 +53,17 @@ final class SetObjectFieldValueActionTest extends TestCase
     private $action;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface&MockObject
      */
     private $admin;
 
     /**
-     * @var ValidatorInterface
+     * @var ValidatorInterface&MockObject
      */
     private $validator;
 
     /**
-     * @var ModelManagerInterface
+     * @var ModelManagerInterface&MockObject
      */
     private $modelManager;
 
@@ -93,8 +94,8 @@ final class SetObjectFieldValueActionTest extends TestCase
         $container->set($this->adminCode, $this->admin);
         $this->pool = new Pool($container, [$this->adminCode]);
         $this->admin->expects($this->once())->method('setRequest');
-        $this->validator = $this->createStub(ValidatorInterface::class);
-        $this->modelManager = $this->createStub(ModelManagerInterface::class);
+        $this->validator = $this->createMock(ValidatorInterface::class);
+        $this->modelManager = $this->createMock(ModelManagerInterface::class);
         $this->resolver = new DataTransformerResolver();
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
         $this->action = new SetObjectFieldValueAction(

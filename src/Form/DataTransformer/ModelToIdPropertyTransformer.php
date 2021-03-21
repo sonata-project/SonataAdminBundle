@@ -122,13 +122,13 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param object|object[]|null $value
+     * @param object|object[]|\ArrayAccess<string|int, object>|null $value
      *
      * @throws \InvalidArgumentException
      *
      * @return array<string|int, int|string|array<string>>
      *
-     * @phpstan-param T|T[]|null $value
+     * @phpstan-param T|T[]|\ArrayAccess<string|int, T>|null $value
      */
     public function transform($value)
     {

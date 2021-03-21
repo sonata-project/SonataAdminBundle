@@ -26,9 +26,9 @@ final class CRUDControllerTest extends WebTestCase
         $crawler = $client->request(Request::METHOD_GET, '/admin/tests/app/foo/list');
 
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        $this->assertSame(
+        $this->assertCount(
             1,
-            $crawler->filter('.sonata-ba-list-field:contains("foo_name")')->count()
+            $crawler->filter('.sonata-ba-list-field:contains("foo_name")')
         );
     }
 
@@ -38,9 +38,9 @@ final class CRUDControllerTest extends WebTestCase
         $crawler = $client->request(Request::METHOD_GET, '/admin/tests/app/foo/create');
 
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        $this->assertSame(
+        $this->assertCount(
             1,
-            $crawler->filter('.sonata-ba-collapsed-fields label:contains("Name")')->count()
+            $crawler->filter('.sonata-ba-collapsed-fields label:contains("Name")')
         );
         $this->assertCount(
             1,
@@ -54,9 +54,9 @@ final class CRUDControllerTest extends WebTestCase
         $crawler = $client->request(Request::METHOD_GET, '/admin/tests/app/foo/test_id/show');
 
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        $this->assertSame(
+        $this->assertCount(
             1,
-            $crawler->filter('td:contains("foo_name")')->count()
+            $crawler->filter('td:contains("foo_name")')
         );
     }
 
@@ -66,9 +66,9 @@ final class CRUDControllerTest extends WebTestCase
         $crawler = $client->request(Request::METHOD_GET, '/admin/tests/app/foo/test_id/edit');
 
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        $this->assertSame(
+        $this->assertCount(
             1,
-            $crawler->filter('.sonata-ba-collapsed-fields label:contains("Name")')->count()
+            $crawler->filter('.sonata-ba-collapsed-fields label:contains("Name")')
         );
     }
 

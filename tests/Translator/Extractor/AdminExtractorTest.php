@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Translator\Extractor;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
@@ -35,17 +36,17 @@ final class AdminExtractorTest extends TestCase
     private $pool;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface&MockObject
      */
     private $fooAdmin;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface&MockObject
      */
     private $barAdmin;
 
     /**
-     * @var BreadcrumbsBuilderInterface
+     * @var BreadcrumbsBuilderInterface&MockObject
      */
     private $breadcrumbsBuilder;
 
