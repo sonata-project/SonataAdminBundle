@@ -79,7 +79,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormRegistry;
 use Symfony\Component\Form\ResolvedFormTypeFactory;
-use Symfony\Component\HttpFoundation\InputBag;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -1474,7 +1474,7 @@ class AdminTest extends TestCase
         $postAdmin->addChild($commentAdmin, 'post__author');
 
         $request = $this->createMock(Request::class);
-        $query = new InputBag();
+        $query = new ParameterBag();
         $query
             ->set('filter', [
                 'filter' => [
@@ -1483,7 +1483,9 @@ class AdminTest extends TestCase
                 ],
             ]);
 
+        // @phpstan-ignore-next-line
         $request->query = $query;
+
         $request
             ->method('get')
             ->willReturn($authorId);
@@ -1922,7 +1924,7 @@ class AdminTest extends TestCase
         $subjectId = uniqid();
 
         $request = $this->createMock(Request::class);
-        $query = new InputBag();
+        $query = new ParameterBag();
         $query
             ->set('filter', [
                 'a' => [
@@ -1937,6 +1939,8 @@ class AdminTest extends TestCase
                     'value' => 'test',
                 ],
             ]);
+
+        // @phpstan-ignore-next-line
         $request->query = $query;
 
         $request
