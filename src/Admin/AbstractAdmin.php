@@ -2364,9 +2364,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         if (\count($this->getBatchActions()) > 0 && $this->hasRequest() && !$this->getRequest()->isXmlHttpRequest()) {
             $fieldDescription = $this->createFieldDescription(
-                'batch',
+                ListMapper::NAME_BATCH,
                 [
                     'label' => 'batch',
+                    // NEXT_MAJOR: Remove this code.
                     'code' => '_batch',
                     'sortable' => false,
                     'virtual_field' => true,
@@ -2387,9 +2388,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         if ($this->hasRequest() && $this->getRequest()->isXmlHttpRequest()) {
             $fieldDescription = $this->createFieldDescription(
-                'select',
+                ListMapper::NAME_SELECT,
                 [
                     'label' => false,
+                    // NEXT_MAJOR: Remove this code.
                     'code' => '_select',
                     'sortable' => false,
                     'virtual_field' => false,

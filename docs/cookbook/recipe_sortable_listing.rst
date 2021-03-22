@@ -73,7 +73,7 @@ In our ``ClientAdmin`` we are going to add a custom action in the ``configureLis
 and use the default twig template provided in the ``pixSortableBehaviorBundle``::
 
     $listMapper
-        ->add('_action', null, [
+        ->add(ListMapper::NAME_ACTIONS, null, [
             'actions' => [
                 'move' => [
                     'template' => '@PixSortableBehavior/Default/_sort.html.twig'
@@ -139,7 +139,7 @@ Now we need to define the sort by field to be ``$position``::
             $listMapper
                 ->addIdentifier('name')
                 ->add('enabled')
-                ->add('_action', null, [
+                ->add(ListMapper::NAME_ACTIONS, null, [
                     'actions' => [
                         'move' => [
                             'template' => '@App/Admin/_sort.html.twig'

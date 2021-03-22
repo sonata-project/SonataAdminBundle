@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\FieldDescription;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
@@ -102,12 +103,12 @@ class FieldDescriptionCollectionTest extends TestCase
         $collection->add($fieldDescription);
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getName')->willReturn('batch');
+        $fieldDescription->expects($this->once())->method('getName')->willReturn(ListMapper::NAME_BATCH);
         $collection->add($fieldDescription);
 
         $newOrder = ['position', 'title'];
         $collection->reorder($newOrder);
-        array_unshift($newOrder, 'batch');
+        array_unshift($newOrder, ListMapper::NAME_BATCH);
 
         $actualElements = array_keys($collection->getElements());
         $this->assertSame($newOrder, $actualElements, 'the order is wrong');

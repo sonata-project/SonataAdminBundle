@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\FieldDescription;
 
+use Sonata\AdminBundle\Datagrid\ListMapper;
+
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -113,8 +115,8 @@ final class FieldDescriptionCollection implements \ArrayAccess, \Countable
      */
     public function reorder(array $keys): void
     {
-        if ($this->has('batch')) {
-            array_unshift($keys, 'batch');
+        if ($this->has(ListMapper::NAME_BATCH)) {
+            array_unshift($keys, ListMapper::NAME_BATCH);
         }
 
         $this->elements = array_merge(array_flip($keys), $this->elements);

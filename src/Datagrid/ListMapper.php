@@ -26,6 +26,13 @@ use Sonata\AdminBundle\Mapper\BaseMapper;
  */
 final class ListMapper extends BaseMapper
 {
+    // NEXT_MAJOR: Change for '_actions' and add an UPGRADE NOTE.
+    public const NAME_ACTIONS = '_action';
+    // NEXT_MAJOR: Change for '_batch' and add an UPGRADE NOTE.
+    public const NAME_BATCH = 'batch';
+    // NEXT_MAJOR: Change for '_select' and add an UPGRADE NOTE.
+    public const NAME_SELECT = 'select';
+
     public const TYPE_ACTIONS = 'actions';
     public const TYPE_BATCH = 'batch';
     public const TYPE_SELECT = 'select';
@@ -99,7 +106,7 @@ final class ListMapper extends BaseMapper
         }
 
         // Type-guess the action field here because it is not a model property.
-        if ('_action' === $name && null === $type) {
+        if (self::NAME_ACTIONS === $name && null === $type) {
             $type = self::TYPE_ACTIONS;
         }
 

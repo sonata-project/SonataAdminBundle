@@ -52,13 +52,13 @@ file that was distributed with this source code.
                             <thead>
                                 <tr class="sonata-ba-list-field-header">
                                     {% for field_description in admin.list.elements %}
-                                        {% if admin.hasRoute('batch') and field_description.getOption('code') == '_batch' and batchactions|length > 0 %}
+                                        {% if admin.hasRoute('batch') and field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_BATCH') and batchactions|length > 0 %}
                                             <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
                                               <input type="checkbox" id="list_batch_checkbox">
                                             </th>
-                                        {% elseif field_description.getOption('code') == '_select' %}
+                                        {% elseif field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_SELECT') %}
                                             <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
-                                        {% elseif field_description.name == '_action' and app.request.isXmlHttpRequest %}
+                                        {% elseif field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_ACTIONS') and app.request.isXmlHttpRequest %}
                                             {# Action buttons disabled in ajax view! #}
                                         {% elseif field_description.getOption('ajax_hidden') == true and app.request.isXmlHttpRequest %}
                                             {# Disable fields with 'ajax_hidden' option set to true #}

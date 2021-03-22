@@ -36,7 +36,7 @@ final class ModelAdmin extends AbstractAdmin
             ->add('foo')
             ->add('bar')
             ->add('baz')
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'show' => [],
                     'edit' => [],

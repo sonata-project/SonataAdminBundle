@@ -162,15 +162,15 @@ class ListMapperTest extends TestCase
 
     public function testAddViewInlineAction(): void
     {
-        $this->assertFalse($this->listMapper->has('_action'));
-        $this->listMapper->add('_action', 'actions', ['actions' => ['show' => []]]);
+        $this->assertFalse($this->listMapper->has(ListMapper::NAME_ACTIONS));
+        $this->listMapper->add(ListMapper::NAME_ACTIONS, ListMapper::TYPE_ACTIONS, ['actions' => ['show' => []]]);
 
-        $this->assertTrue($this->listMapper->has('_action'));
+        $this->assertTrue($this->listMapper->has(ListMapper::NAME_ACTIONS));
 
-        $fieldDescription = $this->listMapper->get('_action');
+        $fieldDescription = $this->listMapper->get(ListMapper::NAME_ACTIONS);
 
         $this->assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
-        $this->assertSame('_action', $fieldDescription->getName());
+        $this->assertSame(ListMapper::NAME_ACTIONS, $fieldDescription->getName());
         $this->assertCount(1, $fieldDescription->getOption('actions'));
         $this->assertSame(['show' => []], $fieldDescription->getOption('actions'));
     }
@@ -362,9 +362,9 @@ class ListMapperTest extends TestCase
 
     public function testTypeGuessActionField(): void
     {
-        $this->listMapper->add('_action', null);
+        $this->listMapper->add(ListMapper::NAME_ACTIONS);
 
-        $field = $this->fieldDescriptionCollection->get('_action');
+        $field = $this->fieldDescriptionCollection->get(ListMapper::NAME_ACTIONS);
 
         $this->assertTrue(
             $field->isVirtual(),

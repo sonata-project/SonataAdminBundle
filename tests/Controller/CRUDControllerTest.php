@@ -3128,7 +3128,7 @@ class CRUDControllerTest extends TestCase
             ->method('checkAccess')
             ->with($this->equalTo('historyCompareRevisions'));
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects($this->once())
             ->method('getObject')
             ->willReturn(null);
 
@@ -3152,7 +3152,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects($this->once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -3181,7 +3181,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects($this->once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -3225,7 +3225,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects($this->once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -3272,7 +3272,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects($this->once())
             ->method('getObject')
             ->willReturn($object);
 

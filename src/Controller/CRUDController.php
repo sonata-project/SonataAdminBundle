@@ -136,7 +136,7 @@ class CRUDController extends AbstractController
             'export_formats' => $this->has('sonata.admin.admin_exporter') ?
                 $this->get('sonata.admin.admin_exporter')->getAvailableFormats($this->admin) :
                 $this->admin->getExportFormats(),
-        ], null);
+        ]);
     }
 
     /**
@@ -236,7 +236,7 @@ class CRUDController extends AbstractController
             'object' => $object,
             'action' => 'delete',
             'csrf_token' => $this->getCsrfToken('sonata.delete'),
-        ], null);
+        ]);
     }
 
     /**
@@ -344,7 +344,7 @@ class CRUDController extends AbstractController
             'form' => $formView,
             'object' => $existingObject,
             'objectId' => $objectId,
-        ], null);
+        ]);
     }
 
     /**
@@ -451,7 +451,7 @@ class CRUDController extends AbstractController
                 'form' => $formView,
                 'data' => $data,
                 'csrf_token' => $this->getCsrfToken('sonata.batch'),
-            ], null);
+            ]);
         }
 
         // execute the action, batchActionXxxxx
@@ -590,7 +590,7 @@ class CRUDController extends AbstractController
             'form' => $formView,
             'object' => $newObject,
             'objectId' => null,
-        ], null);
+        ]);
     }
 
     /**
@@ -664,7 +664,7 @@ class CRUDController extends AbstractController
             'object' => $object,
             'revisions' => $revisions,
             'currentRevision' => $revisions ? current($revisions) : false,
-        ], null);
+        ]);
     }
 
     /**
@@ -713,7 +713,7 @@ class CRUDController extends AbstractController
             'action' => 'show',
             'object' => $object,
             'elements' => $this->admin->getShow(),
-        ], null);
+        ]);
     }
 
     /**
@@ -727,7 +727,6 @@ class CRUDController extends AbstractController
         $this->admin->checkAccess('historyCompareRevisions');
 
         $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
 
         $this->assertObjectExists($request);
 
@@ -773,7 +772,7 @@ class CRUDController extends AbstractController
             'object' => $baseObject,
             'object_compare' => $compareObject,
             'elements' => $this->admin->getShow(),
-        ], null);
+        ]);
     }
 
     /**
@@ -878,7 +877,7 @@ class CRUDController extends AbstractController
             'roles' => $aclRoles,
             'aclUsersForm' => $aclUsersForm->createView(),
             'aclRolesForm' => $aclRolesForm->createView(),
-        ], null);
+        ]);
     }
 
     public function getRequest(): Request

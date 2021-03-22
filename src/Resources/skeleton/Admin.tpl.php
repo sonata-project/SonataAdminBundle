@@ -22,7 +22,7 @@ final class <?= $class_name ?> extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
-<?= $fields ?>->add('_action', null, [
+<?= $fields ?>->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'show' => [],
                     'edit' => [],
