@@ -17,7 +17,7 @@ use Knp\Menu\Integration\Symfony\RoutingExtension;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuFactory;
 use Knp\Menu\MenuItem;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
@@ -44,7 +44,7 @@ class GroupMenuProviderTest extends TestCase
     private $factory;
 
     /**
-     * @var MockObject
+     * @var AuthorizationCheckerInterface&Stub
      */
     private $checker;
 

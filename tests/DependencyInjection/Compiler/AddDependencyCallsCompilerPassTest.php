@@ -529,14 +529,14 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $adminDefinition = new ChildDefinition('sonata_abstract_post_admin');
         $adminDefinition
             ->setPublic(true)
-            ->setClass(MockAbstractServiceAdmin::class)
+            ->setClass(CustomAdmin::class)
             ->setArguments([0 => 'extra_argument_1'])
             ->addTag('sonata.admin', ['group' => 'sonata_post_one_group', 'manager_type' => 'orm']);
 
         $adminTwoDefinition = new ChildDefinition('sonata_abstract_post_admin');
         $adminTwoDefinition
             ->setPublic(true)
-            ->setClass(MockAbstractServiceAdmin::class)
+            ->setClass(CustomAdmin::class)
             ->setArguments([0 => 'extra_argument_2', 'index_0' => 'should_not_override'])
             ->addTag('sonata.admin', ['group' => 'sonata_post_two_group', 'manager_type' => 'orm']);
 

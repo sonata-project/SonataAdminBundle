@@ -200,11 +200,6 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $entity3 = new Foo();
         $entity3->setBar('baz');
 
-        $collection = new ArrayCollection();
-        $collection[] = $entity1;
-        $collection[] = $entity2;
-        $collection[] = $entity3;
-
         $this->modelManager->expects($this->exactly(3))
             ->method('getIdentifierValues')
             ->willReturnCallback(static function (Foo $value) use ($entity1, $entity2, $entity3): array {
@@ -232,7 +227,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
             '_labels' => ['foo', 'bar', 'baz'],
             456,
             789,
-        ], $transformer->transform($collection));
+        ], $transformer->transform([$entity1, $entity2, $entity3]));
     }
 
     public function testTransformCollectionException(): void
@@ -270,14 +265,9 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $entity3 = new Foo();
         $entity3->setBar('baz');
 
-        $collection = new ArrayCollection();
-        $collection[] = $entity1;
-        $collection[] = $entity2;
-        $collection[] = $entity3;
-
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false);
 
-        $transformer->transform($collection);
+        $transformer->transform([$entity1, $entity2, $entity3]);
     }
 
     public function testTransformWithMultipleProperties(): void

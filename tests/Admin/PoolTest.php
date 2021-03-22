@@ -57,18 +57,10 @@ class PoolTest extends TestCase
             $this->container,
             ['sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3'],
             [
-                'adminGroup1' => [
-                    'items' => ['itemKey' => $this->getItemArray('sonata.user.admin.group1')],
-                ],
-                'adminGroup2' => [
-                    'items' => ['itemKey' => $this->getItemArray('sonata.user.admin.group2')],
-                ],
-                'adminGroup3' => [
-                    'items' => ['itemKey' => $this->getItemArray('sonata.user.admin.group3')],
-                ],
-                'adminGroup4' => [
-                    'items' => ['itemKey' => $this->getItemArray()],
-                ],
+                'adminGroup1' => $this->getGroupArray('sonata.user.admin.group1'),
+                'adminGroup2' => $this->getGroupArray('sonata.user.admin.group2'),
+                'adminGroup3' => $this->getGroupArray('sonata.user.admin.group3'),
+                'adminGroup4' => $this->getGroupArray(),
             ]
         );
 
@@ -400,11 +392,21 @@ class PoolTest extends TestCase
 
     public function testGetAdminGroups(): void
     {
-        /** @var class-string $class */
-        $class = 'someclass';
+        $groups = [
+            'sonata.user.admin.group1' => [
+                'label' => 'label',
+                'icon' => 'icon',
+                'label_catalogue' => 'admin_domain',
+                'items' => [],
+                'item_adds' => [],
+                'keep_open' => false,
+                'on_top' => false,
+                'roles' => [],
+            ],
+        ];
 
-        $pool = new Pool($this->container, [], [$class => ['sonata.user.admin.group1' => []]]);
-        $this->assertSame([$class => ['sonata.user.admin.group1' => []]], $pool->getAdminGroups());
+        $pool = new Pool($this->container, [], $groups);
+        $this->assertSame($groups, $pool->getAdminGroups());
     }
 
     public function testGetAdminServiceIds(): void
@@ -413,7 +415,7 @@ class PoolTest extends TestCase
         $this->assertSame(['sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3'], $pool->getAdminServiceIds());
     }
 
-    private function getItemArray(?string $serviceId = null): array
+    private function getGroupArray(?string $serviceId = null): array
     {
         $item = [
             'label' => '',
@@ -425,6 +427,8 @@ class PoolTest extends TestCase
             $item['admin'] = $serviceId;
         }
 
-        return $item;
+        return [
+            'items' => ['itemKey' => $item],
+        ];
     }
 }

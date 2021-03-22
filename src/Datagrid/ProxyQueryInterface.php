@@ -21,13 +21,6 @@ namespace Sonata\AdminBundle\Datagrid;
 interface ProxyQueryInterface
 {
     /**
-     * @param mixed[] $args
-     *
-     * @return mixed
-     */
-    public function __call(string $name, array $args);
-
-    /**
      * @return mixed
      */
     public function execute();

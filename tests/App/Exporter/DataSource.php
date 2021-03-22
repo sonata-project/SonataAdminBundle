@@ -20,7 +20,7 @@ use Sonata\Exporter\Source\SourceIteratorInterface;
 
 class DataSource implements DataSourceInterface
 {
-    public function createIterator(ProxyQueryInterface $query, array $field): SourceIteratorInterface
+    public function createIterator(ProxyQueryInterface $query, array $fields): SourceIteratorInterface
     {
         return new ArraySourceIterator([]);
     }

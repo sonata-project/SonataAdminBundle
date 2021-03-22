@@ -32,6 +32,9 @@ final class TemplateRegistryExtension extends AbstractExtension
      */
     private $container;
 
+    /**
+     * @psalm-suppress ContainerDependency
+     */
     public function __construct(TemplateRegistryInterface $globalTemplateRegistry, ContainerInterface $container)
     {
         $this->globalTemplateRegistry = $globalTemplateRegistry;

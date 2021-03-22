@@ -44,6 +44,8 @@ final class RenderElementExtension extends AbstractExtension
 
     /**
      * @internal This class should only be used through Twig
+     *
+     * @psalm-suppress ContainerDependency
      */
     public function __construct(
         PropertyAccessorInterface $propertyAccessor,

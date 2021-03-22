@@ -92,8 +92,8 @@ class BaseFieldDescriptionTest extends TestCase
         $this->assertCount(2, $description->getOptions());
 
         $this->assertSame('short_object_description_placeholder', $description->getOption('placeholder'));
-        $description->setOptions(['placeholder' => false]);
-        $this->assertFalse($description->getOption('placeholder'));
+        $description->setOptions(['placeholder' => 'foo']);
+        $this->assertSame('foo', $description->getOption('placeholder'));
 
         $description->setOption('sortable', false);
         $this->assertFalse($description->isSortable());

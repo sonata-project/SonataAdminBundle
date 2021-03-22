@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Filter;
 
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Filter;
 
 class FooFilter extends Filter
 {
-    public function apply($query, $value): void
+    public function apply(ProxyQueryInterface $query, array $filterData): void
     {
     }
 

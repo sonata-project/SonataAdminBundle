@@ -26,6 +26,7 @@ final class TypeGuesserChainTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
+        /** @psalm-suppress InvalidArgument */
         // @phpstan-ignore-next-line
         new TypeGuesserChain([new \stdClass()]);
     }

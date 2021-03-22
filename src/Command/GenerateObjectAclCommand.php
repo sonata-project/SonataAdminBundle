@@ -108,7 +108,7 @@ final class GenerateObjectAclCommand extends QuestionableCommand
 
             $securityIdentity = null;
             if ($input->getOption('step') && $this->askConfirmation($input, $output, "<question>Set an object owner?</question>\n", 'no')) {
-                $username = $this->askAndValidate($input, $output, 'Please enter the username: ', '', 'Sonata\AdminBundle\Command\Validators::validateUsername');
+                $username = $this->askAndValidate($input, $output, 'Please enter the username: ', '', [Validators::class, 'validateUsername']);
 
                 $securityIdentity = new UserSecurityIdentity($username, $this->getUserModelClass($input, $output));
             }

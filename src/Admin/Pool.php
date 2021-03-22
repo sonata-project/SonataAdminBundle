@@ -27,9 +27,9 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
  *  item_adds: array,
  *  items: array<array-key, array{
  *      admin?: string,
- *      label?: string,
+ *      label: string,
  *      roles: list<string>,
- *      route?: string,
+ *      route: string,
  *      router_absolute: bool,
  *      route_params: array<string, string>
  *  }>,

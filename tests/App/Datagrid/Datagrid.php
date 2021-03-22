@@ -60,7 +60,7 @@ final class Datagrid implements DatagridInterface
         return $this->proxyQuery;
     }
 
-    public function getResults(): array
+    public function getResults(): iterable
     {
         return $this->pager->getCurrentPageResults();
     }

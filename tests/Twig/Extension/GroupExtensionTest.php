@@ -49,14 +49,42 @@ final class GroupExtensionTest extends TestCase
         $container = new Container();
         $pool = new Pool($container, ['sonata_admin_non_creatable', 'sonata_admin_creatable'], [
             'group_without_creatable' => [
+                'label' => 'non_creatable',
+                'label_catalogue' => 'default',
+                'icon' => 'icon1',
                 'items' => [
-                    'itemKey' => ['admin' => 'sonata_admin_non_creatable'],
+                    'itemKey' => [
+                        'admin' => 'sonata_admin_non_creatable',
+                        'label' => 'admin1',
+                        'roles' => [],
+                        'route' => 'foo',
+                        'route_params' => [],
+                        'router_absolute' => false,
+                    ],
                 ],
+                'item_adds' => [],
+                'keep_open' => false,
+                'on_top' => false,
+                'roles' => [],
             ],
             'group_with_creatable' => [
+                'label' => 'creatable',
+                'label_catalogue' => 'default',
+                'icon' => 'icon2',
                 'items' => [
-                    'itemKey' => ['admin' => 'sonata_admin_creatable'],
+                    'itemKey' => [
+                        'admin' => 'sonata_admin_creatable',
+                        'label' => 'admin1',
+                        'roles' => [],
+                        'route' => 'foo',
+                        'route_params' => [],
+                        'router_absolute' => false,
+                    ],
                 ],
+                'item_adds' => [],
+                'keep_open' => false,
+                'on_top' => false,
+                'roles' => [],
             ],
         ]);
         $twigExtension = new GroupExtension($pool);
@@ -92,6 +120,13 @@ final class GroupExtensionTest extends TestCase
                 'items' => [
                     'itemKey' => $adminCreatable,
                 ],
+                'label' => 'creatable',
+                'label_catalogue' => 'default',
+                'icon' => 'icon2',
+                'item_adds' => [],
+                'keep_open' => false,
+                'on_top' => false,
+                'roles' => [],
             ],
         ], $twigExtension->getDashboardGroupsWithCreatableAdmins());
     }

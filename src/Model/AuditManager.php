@@ -31,6 +31,9 @@ final class AuditManager implements AuditManagerInterface
      */
     private $container;
 
+    /**
+     * @psalm-suppress ContainerDependency
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
