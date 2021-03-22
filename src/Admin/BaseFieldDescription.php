@@ -38,4 +38,10 @@ if (false) {
     abstract class BaseFieldDescription extends \Sonata\AdminBundle\FieldDescription\BaseFieldDescription
     {
     }
+
+    // NEXT_MAJOR: Uncomment this code:
+//    final public function describesAssociation(): bool
+//    {
+//        return $this->describesSingleValuedAssociation() || $this->describesCollectionValuedAssociation();
+//    }
 }
