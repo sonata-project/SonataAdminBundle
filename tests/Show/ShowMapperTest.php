@@ -391,7 +391,7 @@ class ShowMapperTest extends TestCase
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage('Unknown field name in show mapper. Field name should be either of FieldDescriptionInterface interface or string.');
 
-        /** @phpstan-ignore-next-line */
+        /* @phpstan-ignore-next-line */
         $this->showMapper->add(12345);
     }
 

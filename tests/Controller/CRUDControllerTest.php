@@ -335,7 +335,7 @@ class CRUDControllerTest extends TestCase
 
         if (!$this->httpMethodParameterOverride && Request::getHttpMethodParameterOverride()) {
             $disableHttpMethodParameterOverride = \Closure::bind(static function (): void {
-                /** @phpstan-ignore-next-line */
+                /* @phpstan-ignore-next-line */
                 self::$httpMethodParameterOverride = false;
             }, null, Request::class);
             $disableHttpMethodParameterOverride();

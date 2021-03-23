@@ -215,7 +215,7 @@ class ListMapperTest extends TestCase
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage('Unknown field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string.');
 
-        /** @phpstan-ignore-next-line */
+        /* @phpstan-ignore-next-line */
         $this->listMapper->add(12345);
     }
 
