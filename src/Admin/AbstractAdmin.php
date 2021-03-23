@@ -2853,12 +2853,38 @@ EOT;
             ];
         }
 
-        $actions = $this->configureDashboardButtons($actions);
+        $actions = $this->configureDashboardActions($actions);
+
+        // NEXT_MAJOR: Remove this code.
+        $newActions = $this->configureDashboardButtons($actions);
+        if ($newActions !== $actions) {
+            @trigger_error(sprintf(
+                'The "%s::configureDashboardButtons()" method is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will not be used in version 4.0. Use "configureDashboardActions()" instead.',
+                __CLASS__
+            ), \E_USER_DEPRECATED);
+
+            $actions = $newActions;
+        }
 
         foreach ($this->getExtensions() as $extension) {
             // NEXT_MAJOR: remove method check
+            if (method_exists($extension, 'configureDashboardActions')) {
+                $actions = $extension->configureDashboardActions($this, $actions);
+            }
+            // NEXT_MAJOR: remove this code.
             if (method_exists($extension, 'configureDashboardButtons')) {
-                $actions = $extension->configureDashboardButtons($this, $actions);
+                $newActions = $extension->configureDashboardButtons($this, $actions);
+
+                if ($newActions !== $actions) {
+                    @trigger_error(
+                        'configureDashboardButtons() is deprecated since sonata-project/admin-bundle 3.x'
+                        .' and will not be used in version 4.0. Use configureDashboardActions() instead.',
+                        \E_USER_DEPRECATED
+                    );
+
+                    $actions = $newActions;
+                }
             }
         }
 
@@ -3143,6 +3169,18 @@ EOT;
     }
 
     /**
+     * @param array<string, array<string, mixed>> $actions
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    protected function configureDashboardActions(array $actions): array
+    {
+        return $actions;
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * @param array<string, array<string, mixed>> $actions
      *
      * @return array<string, array<string, mixed>>

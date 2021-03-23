@@ -29,7 +29,7 @@ use Sonata\Form\Validator\ErrorElement;
  * @method array configureBatchActions(AdminInterface $admin, array $actions)
  * @method array configureExportFields(AdminInterface $admin, array $fields)
  * @method array configureActionButtons(AdminInterface $admin, array $list, string $action, object $object)
- * @method array configureDashboardButtons(AdminInterface $admin, array $actions)
+ * @method array configureDashboardActions(AdminInterface $admin, array $actions)
  * @method void  configureDefaultFilterValues(AdminInterface $admin, array &$filterValues)
  * @method void  configureDefaultSortValues(AdminInterface $admin, array &$sortValues)
  * @method void  configureFormOptions(AdminInterface $admin, array &$formOptions)
@@ -277,7 +277,7 @@ interface AdminExtensionInterface
      * @phpstan-param AdminInterface<T> $admin
      */
     // NEXT_MAJOR: Uncomment this method
-    // public function configureDashboardButtons(AdminInterface $admin, array $actions): array;
+    // public function configureDashboardActions(AdminInterface $admin, array $actions): array;
 
     /*
      * NEXT_MAJOR: Uncomment this method
