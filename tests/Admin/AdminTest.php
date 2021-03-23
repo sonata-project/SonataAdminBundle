@@ -1483,7 +1483,7 @@ class AdminTest extends TestCase
                 ],
             ]);
 
-        // @phpstan-ignore-next-line
+        /** @phpstan-ignore-next-line */
         $request->query = $query;
 
         $request
@@ -1940,7 +1940,7 @@ class AdminTest extends TestCase
                 ],
             ]);
 
-        // @phpstan-ignore-next-line
+        /** @phpstan-ignore-next-line */
         $request->query = $query;
 
         $request
