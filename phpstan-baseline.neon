@@ -1,0 +1,4 @@
+parameters:
+    ignoreErrors:
+        # https://github.com/phpstan/phpstan-phpunit/issues/87
+        - '#^Trying to mock an undefined method [a-zA-Z]*\(\) on class stdClass\.$#'

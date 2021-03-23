@@ -1,3 +1,6 @@
+includes:
+    - phpstan-baseline.neon
+
 parameters:
     level: 5
     bootstrapFiles:
@@ -11,8 +14,6 @@ parameters:
             - src/Resources/**.tpl.php
             # BC-layer is not supported by phpstan https://github.com/phpstan/phpstan/issues/3542
             - tests/Fixtures/StubTranslator.php
-    ignoreErrors:
-        - '#Trying to mock an undefined method [a-zA-Z]*\(\) on class stdClass\.#'
     treatPhpDocTypesAsCertain: false
     checkGenericClassInNonGenericObjectType: true
     checkMissingIterableValueType: true
