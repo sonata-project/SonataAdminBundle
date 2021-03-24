@@ -18,7 +18,6 @@ class FooToStringNull
     // In case __toString returns an attribute not yet set
     public function __toString()
     {
-        /** @phpstan-ignore-next-line */
         return null;
     }
 }

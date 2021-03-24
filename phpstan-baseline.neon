@@ -1,4 +1,14 @@
 parameters:
     ignoreErrors:
-        # https://github.com/phpstan/phpstan-phpunit/issues/87
-        - '#^Trying to mock an undefined method [a-zA-Z]*\(\) on class stdClass\.$#'
+        - # https://github.com/phpstan/phpstan-phpunit/issues/87
+            message: '#^Trying to mock an undefined method [a-zA-Z]*\(\) on class stdClass\.$#'
+            path: tests/
+        - # BC for Symfony 4 since InputBag was introduce in Symfony 5
+            message: '#^Property Symfony\\Component\\HttpFoundation\\Request\:\:\$query \(Symfony\\Component\\HttpFoundation\\InputBag\) does not accept Symfony\\Component\\HttpFoundation\\ParameterBag\.$#'
+            path: tests/Admin/AdminTest.php
+        - # https://github.com/phpstan/phpstan/issues/4734
+            message: '#^Static access to instance property Sonata\\AdminBundle\\Tests\\Controller\\CRUDControllerTest\:\:\$httpMethodParameterOverride\.$#'
+            path: tests/Controller/CRUDControllerTest.php
+        - # This error is made on purpose for php version < 8
+            message: '#^Method Sonata\\AdminBundle\\Tests\\Fixtures\\Entity\\FooToStringNull\:\:__toString\(\) should return string but returns null\.$#'
+            path: tests/Fixtures/Entity/FooToStringNull.php

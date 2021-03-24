@@ -43,8 +43,6 @@ final class AdminPoolLoader extends Loader
 
     /**
      * @param string[] $adminServiceIds
-     *
-     * @psalm-suppress ContainerDependency
      */
     public function __construct(Pool $pool, array $adminServiceIds, ContainerInterface $container)
     {

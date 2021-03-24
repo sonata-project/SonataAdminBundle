@@ -232,7 +232,7 @@ class DatagridMapperTest extends TestCase
             'Unknown field name in datagrid mapper. Field name should be either of FieldDescriptionInterface interface or string'
         );
 
-        /** @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         $this->datagridMapper->add(12345);
     }
 

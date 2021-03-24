@@ -32,8 +32,6 @@ final class FilterFactory implements FilterFactoryInterface
 
     /**
      * @param array<string, string> $types
-     *
-     * @psalm-suppress ContainerDependency
      */
     public function __construct(ContainerInterface $container, array $types = [])
     {

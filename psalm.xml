@@ -12,4 +12,7 @@
         <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin"/>
         <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
     </plugins>
+    <issueHandlers>
+        <PluginIssue name="ContainerDependency" errorLevel="suppress"/>
+    </issueHandlers>
 </psalm>
