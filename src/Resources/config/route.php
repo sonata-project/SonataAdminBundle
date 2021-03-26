@@ -28,6 +28,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->public()
             ->args([
                 new ReferenceConfigurator('sonata.admin.audit.manager'),
+                new ReferenceConfigurator('sonata.admin.controller_registry'),
             ])
 
         ->set('sonata.admin.route.query_string', QueryStringBuilder::class)

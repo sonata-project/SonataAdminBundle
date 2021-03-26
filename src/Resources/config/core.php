@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Extension\LockExtension;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Controller\ControllerRegistry;
 use Sonata\AdminBundle\Controller\HelperController;
 use Sonata\AdminBundle\Event\AdminEventExtension;
 use Sonata\AdminBundle\Export\Exporter;
@@ -254,5 +255,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
         // NEXT_MAJOR: remove this alias, global template registry SHOULD NOT be mutable
         ->alias(MutableTemplateRegistryInterface::class, 'sonata.admin.global_template_registry')
+
+        ->set('sonata.admin.controller_registry', ControllerRegistry::class)
+            ->args([
+                [], // controllers
+                '%sonata.admin.configuration.default_controller%',
+            ])
     ;
 };

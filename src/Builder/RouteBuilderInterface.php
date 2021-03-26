@@ -18,6 +18,8 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @method RouteCollection create(AdminInterface $admin)
  */
 interface RouteBuilderInterface
 {
