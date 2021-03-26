@@ -60,7 +60,7 @@ final class Datagrid implements DatagridInterface
         return $this->proxyQuery;
     }
 
-    public function getResults(): array
+    public function getResults(): iterable
     {
         return $this->pager->getCurrentPageResults();
     }
@@ -128,11 +128,11 @@ final class Datagrid implements DatagridInterface
 
     public function getSortParameters(FieldDescriptionInterface $fieldDescription): array
     {
-        return [];
+        return ['filter' => []];
     }
 
     public function getPaginationParameters(int $page): array
     {
-        return [];
+        return ['filter' => []];
     }
 }

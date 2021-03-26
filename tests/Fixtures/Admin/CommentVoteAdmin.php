@@ -18,7 +18,9 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 /**
  * This class is intended to be used when testing with 3-level admin nesting.
  * PostAdmin -> CommentAdmin -> CommentVoteAdmin.
+ *
+ * @phpstan-extends AbstractAdmin<object>
  */
-class CommentVoteAdmin extends AbstractAdmin
+final class CommentVoteAdmin extends AbstractAdmin
 {
 }

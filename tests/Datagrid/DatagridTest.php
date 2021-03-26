@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
@@ -37,12 +38,12 @@ class DatagridTest extends TestCase
     private $datagrid;
 
     /**
-     * @var PagerInterface
+     * @var PagerInterface&MockObject
      */
     private $pager;
 
     /**
-     * @var ProxyQueryInterface
+     * @var ProxyQueryInterface&MockObject
      */
     private $query;
 
@@ -52,7 +53,7 @@ class DatagridTest extends TestCase
     private $columns;
 
     /**
-     * @var FormBuilder
+     * @var FormBuilder&MockObject
      */
     private $formBuilder;
 
@@ -82,9 +83,7 @@ class DatagridTest extends TestCase
         $this->formBuilder
             ->method('get')
             ->willReturnCallback(function (string $name): FormBuilder {
-                if (isset($this->formTypes[$name])) {
-                    return $this->formTypes[$name];
-                }
+                return $this->formTypes[$name];
             });
 
         $this->formBuilder
@@ -322,11 +321,14 @@ class DatagridTest extends TestCase
 
     public function testGetResults(): void
     {
+        $foo = new \stdClass();
+        $bar = new \stdClass();
+
         $this->pager->expects($this->once())
             ->method('getCurrentPageResults')
-            ->willReturn(['foo', 'bar']);
+            ->willReturn([$foo, $bar]);
 
-        $this->assertSame(['foo', 'bar'], $this->datagrid->getResults());
+        $this->assertSame([$foo, $bar], $this->datagrid->getResults());
     }
 
     public function testEmptyResults(): void

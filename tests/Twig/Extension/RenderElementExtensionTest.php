@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
+use Sonata\AdminBundle\Tests\App\Model\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
 use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
@@ -46,6 +48,7 @@ use Twig\Extra\String\StringExtension;
 final class RenderElementExtensionTest extends TestCase
 {
     use ExpectDeprecationTrait;
+
     private const X_EDITABLE_TYPE_MAPPING = [
         'choice' => 'select',
         'boolean' => 'select',
@@ -74,17 +77,17 @@ final class RenderElementExtensionTest extends TestCase
     private $environment;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface&MockObject
      */
     private $admin;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface&MockObject
      */
     private $adminBar;
 
     /**
-     * @var FieldDescriptionInterface
+     * @var FieldDescriptionInterface&MockObject
      */
     private $fieldDescription;
 
@@ -99,7 +102,7 @@ final class RenderElementExtensionTest extends TestCase
     private $pool;
 
     /**
-     * @var LoggerInterface
+     * @var LoggerInterface&MockObject
      */
     private $logger;
 
@@ -114,7 +117,7 @@ final class RenderElementExtensionTest extends TestCase
     private $container;
 
     /**
-     * @var TemplateRegistryInterface
+     * @var TemplateRegistryInterface&MockObject
      */
     private $templateRegistry;
 
@@ -133,7 +136,7 @@ final class RenderElementExtensionTest extends TestCase
             $container,
             ['sonata_admin_foo_service'],
             [],
-            ['fooClass' => ['sonata_admin_foo_service']]
+            [Foo::class => ['sonata_admin_foo_service']]
         );
 
         $this->logger = $this->getMockForAbstractClass(LoggerInterface::class);

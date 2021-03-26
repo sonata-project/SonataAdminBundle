@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
 
+/**
+ * @phpstan-implements \ArrayAccess<string, mixed>
+ */
 class FooArrayAccess implements \ArrayAccess
 {
     private $bar;

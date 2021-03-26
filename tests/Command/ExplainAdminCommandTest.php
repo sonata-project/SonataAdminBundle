@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Command;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
@@ -33,6 +34,8 @@ use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 use Symfony\Component\Validator\Mapping\GenericMetadata;
+use Symfony\Component\Validator\Mapping\GetterMetadata;
+use Symfony\Component\Validator\Mapping\PropertyMetadata;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -45,12 +48,12 @@ class ExplainAdminCommandTest extends TestCase
     private $application;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface&MockObject
      */
     private $admin;
 
     /**
-     * @var MetadataFactoryInterface
+     * @var MetadataFactoryInterface&MockObject
      */
     private $validatorFactory;
 
@@ -163,19 +166,19 @@ class ExplainAdminCommandTest extends TestCase
             ->with($this->equalTo('Acme\Entity\Foo'))
             ->willReturn($metadata);
 
-        $propertyMetadata = $this->getMockForAbstractClass(GenericMetadata::class);
-        $propertyMetadata->constraints = [
+        $propertyMetadata = $this->createMock(PropertyMetadata::class);
+        $propertyMetadata->method('getConstraints')->willReturn([
             new NotNull(),
             new Length(['min' => 2, 'max' => 50, 'groups' => ['create', 'edit']]),
-        ];
+        ]);
 
         $metadata->properties = ['firstName' => $propertyMetadata];
 
-        $getterMetadata = $this->getMockForAbstractClass(GenericMetadata::class);
-        $getterMetadata->constraints = [
+        $getterMetadata = $this->createMock(GetterMetadata::class);
+        $getterMetadata->method('getConstraints')->willReturn([
             new NotNull(),
             new Email(['groups' => ['registration', 'edit']]),
-        ];
+        ]);
 
         $metadata->getters = ['email' => $getterMetadata];
 
@@ -290,9 +293,6 @@ class ExplainAdminCommandTest extends TestCase
             ->method('getMetadataFor')
             ->with($this->equalTo('Acme\Entity\Foo'))
             ->willReturn($metadata);
-
-        $metadata->properties = [];
-        $metadata->getters = [];
 
         $modelManager = $this->createStub(ModelManagerInterface::class);
 

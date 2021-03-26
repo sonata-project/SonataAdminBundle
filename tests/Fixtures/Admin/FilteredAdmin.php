@@ -15,7 +15,10 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 
-class FilteredAdmin extends AbstractAdmin
+/**
+ * @phpstan-extends AbstractAdmin<object>
+ */
+final class FilteredAdmin extends AbstractAdmin
 {
     protected function configureDefaultFilterValues(array &$filterValues): void
     {

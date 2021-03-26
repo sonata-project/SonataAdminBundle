@@ -231,7 +231,7 @@ interface FieldDescriptionInterface
     /**
      * Merge option values related to the provided option name.
      *
-     * @param array<string, mixed> $options
+     * @param mixed[] $options
      *
      * @throws \RuntimeException
      */

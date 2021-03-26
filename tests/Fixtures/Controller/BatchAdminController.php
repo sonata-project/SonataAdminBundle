@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * BatchAdminController is used to test relevant batch action.
+ *
+ * @phpstan-extends CRUDController<object>
  */
 class BatchAdminController extends CRUDController
 {

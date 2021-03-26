@@ -58,6 +58,11 @@ interface FilterInterface
     public function getDefaultOptions(): array;
 
     /**
+     * @return array<string, mixed>
+     */
+    public function getOptions(): array;
+
+    /**
      * @param mixed $default
      *
      * @return mixed
@@ -80,7 +85,7 @@ interface FilterInterface
     public function getFieldName(): string;
 
     /**
-     * @return array<string, string> array of mappings
+     * @return array<array<string, mixed>> array of mappings
      */
     public function getParentAssociationMappings(): array;
 

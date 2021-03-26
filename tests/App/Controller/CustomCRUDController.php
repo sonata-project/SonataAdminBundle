@@ -15,6 +15,9 @@ namespace Sonata\AdminBundle\Tests\App\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController;
 
+/**
+ * @phpstan-extends CRUDController<object>
+ */
 class CustomCRUDController extends CRUDController
 {
 }

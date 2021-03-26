@@ -74,8 +74,10 @@
         "matthiasnoback/symfony-config-test": "^4.2",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",
         "phpstan/extension-installer": "^1.0",
-        "phpstan/phpstan": "^0.12.29",
-        "phpstan/phpstan-symfony": "^0.12.10",
+        "phpstan/phpstan": "^0.12.82",
+        "phpstan/phpstan-phpunit": "^0.12.18",
+        "phpstan/phpstan-symfony": "^0.12.21",
+        "psalm/plugin-phpunit": "^0.15.1",
         "psalm/plugin-symfony": "^2.0",
         "psr/event-dispatcher": "^1.0",
         "sonata-project/intl-bundle": "^2.4",
@@ -107,5 +109,13 @@
         "psr-4": {
             "Sonata\\AdminBundle\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "[ $COMPOSER_DEV_MODE -eq 0 ] || vendor/bin/simple-phpunit install"
+        ],
+        "post-update-cmd": [
+            "[ $COMPOSER_DEV_MODE -eq 0 ] || vendor/bin/simple-phpunit install"
+        ]
     }
 }

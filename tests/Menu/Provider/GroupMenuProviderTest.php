@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Menu\Provider;
 
-use Knp\Menu\FactoryInterface;
 use Knp\Menu\Integration\Symfony\RoutingExtension;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuFactory;
 use Knp\Menu\MenuItem;
-use Knp\Menu\Provider\MenuProviderInterface;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
@@ -34,17 +32,19 @@ class GroupMenuProviderTest extends TestCase
      * @var Pool
      */
     private $pool;
+
     /**
-     * @var MockObject|MenuProviderInterface
+     * @var GroupMenuProvider
      */
     private $provider;
+
     /**
-     * @var MockObject|FactoryInterface
+     * @var MenuFactory
      */
     private $factory;
 
     /**
-     * @var MockObject
+     * @var AuthorizationCheckerInterface&Stub
      */
     private $checker;
 

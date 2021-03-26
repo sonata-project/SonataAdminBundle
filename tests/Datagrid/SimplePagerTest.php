@@ -37,12 +37,19 @@ class SimplePagerTest extends TestCase
      */
     private $proxyQuery;
 
+    /**
+     * @var array<object>
+     */
+    private $results;
+
     protected function setUp(): void
     {
         $this->pager = new SimplePager(10, 2);
         $this->proxyQuery = $this->getMockBuilder(ProxyQueryInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
+
+        $this->results = array_fill(0, 12, new \stdClass());
     }
 
     public function testInitNumPages(): void
@@ -50,7 +57,7 @@ class SimplePagerTest extends TestCase
         $pager = new SimplePager(10, 2);
         $this->proxyQuery->expects($this->once())
                 ->method('execute')
-                ->willReturn(new ArrayCollection(range(0, 12)));
+                ->willReturn(new ArrayCollection($this->results));
 
         $this->proxyQuery->expects($this->once())
             ->method('setMaxResults')
@@ -70,7 +77,7 @@ class SimplePagerTest extends TestCase
     {
         $this->proxyQuery->expects($this->once())
             ->method('execute')
-            ->willReturn(new ArrayCollection(range(0, 12)));
+            ->willReturn(new ArrayCollection($this->results));
 
         $this->proxyQuery->expects($this->once())
             ->method('setMaxResults')
@@ -137,11 +144,11 @@ class SimplePagerTest extends TestCase
         // phpcr odm returns ArrayCollection
         $this->proxyQuery->expects($this->once())
             ->method('execute')
-            ->willReturn(new ArrayCollection(range(0, 12)));
+            ->willReturn(new ArrayCollection($this->results));
 
         $this->pager->setQuery($this->proxyQuery);
         $this->pager->setMaxPerPage(2);
 
-        $this->assertSame(range(0, 1), $this->pager->getCurrentPageResults());
+        $this->assertSame(\array_slice($this->results, 0, 2), $this->pager->getCurrentPageResults());
     }
 }

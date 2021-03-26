@@ -122,13 +122,13 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param object|object[]|null $value
+     * @param object|object[]|\ArrayAccess<string|int, object>|null $value
      *
      * @throws \InvalidArgumentException
      *
      * @return array<string|int, int|string|array<string>>
      *
-     * @phpstan-param T|T[]|null $value
+     * @phpstan-param T|T[]|\ArrayAccess<string|int, T>|null $value
      */
     public function transform($value)
     {
@@ -138,8 +138,8 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
             return $result;
         }
 
+        $isArray = \is_array($value);
         if ($this->multiple) {
-            $isArray = \is_array($value);
             if (!$isArray && substr(\get_class($value), -1 * \strlen($this->className)) === $this->className) {
                 throw new \InvalidArgumentException(
                     'A multiple selection must be passed a collection not a single value.'
@@ -157,9 +157,9 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
                 );
             }
         } else {
-            if (substr(\get_class($value), -1 * \strlen($this->className)) === $this->className) {
+            if (!$isArray && substr(\get_class($value), -1 * \strlen($this->className)) === $this->className) {
                 $collection = [$value];
-            } elseif ($value instanceof \ArrayAccess) {
+            } elseif ($isArray || ($value instanceof \ArrayAccess)) {
                 throw new \InvalidArgumentException(
                     'A single selection must be passed a single value not a collection.'
                     .' Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true"'

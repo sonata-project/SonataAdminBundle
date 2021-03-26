@@ -51,13 +51,6 @@ class FormBuilderIteratorTest extends TestCase
         $this->factory->method('createNamedBuilder')->willReturn($this->builder);
     }
 
-    protected function tearDown(): void
-    {
-        $this->dispatcher = null;
-        $this->factory = null;
-        $this->builder = null;
-    }
-
     public function testGetChildren(): void
     {
         $this->builder->add('name', TextType::class);

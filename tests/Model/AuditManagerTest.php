@@ -37,12 +37,17 @@ class AuditManagerTest extends TestCase
 
         $auditManager = new AuditManager($container);
 
-        $this->assertFalse($auditManager->hasReader('Foo\Foo1'));
+        /** @var class-string $foo1 */
+        $foo1 = 'Foo\Foo1';
+        /** @var class-string $foo2 */
+        $foo2 = 'Foo\Foo2';
 
-        $auditManager->setReader('foo_reader', ['Foo\Foo1', 'Foo\Foo2']);
+        $this->assertFalse($auditManager->hasReader($foo1));
 
-        $this->assertTrue($auditManager->hasReader('Foo\Foo1'));
-        $this->assertSame($fooReader, $auditManager->getReader('Foo\Foo1'));
+        $auditManager->setReader('foo_reader', [$foo1, $foo2]);
+
+        $this->assertTrue($auditManager->hasReader($foo1));
+        $this->assertSame($fooReader, $auditManager->getReader($foo1));
     }
 
     public function testGetReaderWithException(): void
@@ -52,6 +57,8 @@ class AuditManagerTest extends TestCase
 
         $auditManager = new AuditManager(new Container());
 
-        $auditManager->getReader('Foo\Foo');
+        /** @var class-string $foo */
+        $foo = 'Foo\Foo';
+        $auditManager->getReader($foo);
     }
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\DashboardAction;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
@@ -26,7 +27,7 @@ use Twig\Environment;
 class DashboardActionTest extends TestCase
 {
     /**
-     * @var MutableTemplateRegistryInterface
+     * @var MutableTemplateRegistryInterface&Stub
      */
     private $templateRegistry;
 

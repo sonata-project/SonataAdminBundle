@@ -52,7 +52,9 @@ final class FormViewIterator implements \RecursiveIterator
 
     public function key(): string
     {
-        return $this->current()->vars['id'];
+        $current = $this->current();
+
+        return $current->vars['id'];
     }
 
     public function valid(): bool

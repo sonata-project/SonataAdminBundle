@@ -40,14 +40,20 @@ class NoopSecurityHandlerTest extends TestCase
         $this->assertSame([], $this->handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testCreateObjectSecurity(): void
     {
-        $this->assertNull($this->handler->createObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
+        $this->handler->createObjectSecurity($this->getSonataAdminObject(), new \stdClass());
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testDeleteObjectSecurity(): void
     {
-        $this->assertNull($this->handler->deleteObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
+        $this->handler->deleteObjectSecurity($this->getSonataAdminObject(), new \stdClass());
     }
 
     public function testGetBaseRole(): void

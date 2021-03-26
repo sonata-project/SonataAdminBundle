@@ -14,23 +14,6 @@
             <code>DoctrinePersistentCollection</code>
         </UndefinedClass>
     </file>
-    <!-- ignore template files-->
-    <file src="src/Resources/skeleton/Admin.tpl.php">
-        <UndefinedGlobalVariable occurrences="6">
-            <code>$namespace</code>
-            <code>$class_name</code>
-            <code>$fields</code>
-            <code>$fields</code>
-            <code>$fields</code>
-            <code>$fields</code>
-        </UndefinedGlobalVariable>
-    </file>
-    <file src="src/Resources/skeleton/AdminController.tpl.php">
-        <UndefinedGlobalVariable occurrences="2">
-            <code>$namespace</code>
-            <code>$class_name</code>
-        </UndefinedGlobalVariable>
-    </file>
     <file src="src/Datagrid/Datagrid.php">
         <InvalidPropertyAssignmentValue occurrences="1">
             <code>array_merge(array_flip($keys), $this-&gt;filters)</code>

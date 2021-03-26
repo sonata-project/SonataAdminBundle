@@ -336,7 +336,7 @@ class AdminHelperTest extends TestCase
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(sprintf('Collection must be an instance of %s, "%s" given.', Collection::class, \gettype(null)));
-        $this->helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
+        $this->helper->appendFormFieldElement($admin, $foo, 'test_bar');
     }
 
     public function testAppendFormFieldElementWithCollection(): void

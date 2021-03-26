@@ -18,6 +18,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
+/**
+ * @phpstan-extends AbstractAdmin<object>
+ */
 final class EmptyAdmin extends AbstractAdmin
 {
     protected $baseRoutePattern = 'empty';

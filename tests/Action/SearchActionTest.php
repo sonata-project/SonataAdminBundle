@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\SearchAction;
@@ -50,7 +51,7 @@ final class SearchActionTest extends TestCase
     private $action;
 
     /**
-     * @var Stub&Environment
+     * @var MockObject&Environment
      */
     private $twig;
 
@@ -70,7 +71,7 @@ final class SearchActionTest extends TestCase
 
         $this->breadcrumbsBuilder = $this->createStub(BreadcrumbsBuilderInterface::class);
         $this->searchHandler = new SearchHandler(true);
-        $this->twig = $this->createStub(Environment::class);
+        $this->twig = $this->createMock(Environment::class);
 
         $this->action = new SearchAction(
             $this->pool,

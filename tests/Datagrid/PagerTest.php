@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -26,7 +27,7 @@ class PagerTest extends TestCase
     use ExpectDeprecationTrait;
 
     /**
-     * @var Pager
+     * @var Pager&MockObject
      */
     private $pager;
 

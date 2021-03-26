@@ -1,10 +1,19 @@
+includes:
+    - phpstan-baseline.neon
+
 parameters:
     level: 5
+    bootstrapFiles:
+        - vendor/bin/.phpunit/phpunit/vendor/autoload.php
     paths:
         - src
-    excludes_analyse:
-        # temporarily ignore template files
-        - src/Resources/**.tpl.php
+        - tests
+    excludePaths:
+        analyseAndScan:
+            # temporarily ignore template files
+            - src/Resources/**.tpl.php
+            # BC-layer is not supported by phpstan https://github.com/phpstan/phpstan/issues/3542
+            - tests/Fixtures/StubTranslator.php
     treatPhpDocTypesAsCertain: false
     checkGenericClassInNonGenericObjectType: true
     checkMissingIterableValueType: true

@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
-use PHPUnit\Framework\MockObject\Stub;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Action\RetrieveAutocompleteItemsAction;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
@@ -39,12 +38,12 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     private $pool;
 
     /**
-     * @var GetShortObjectDescriptionAction
+     * @var RetrieveAutocompleteItemsAction
      */
     private $action;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface&MockObject
      */
     private $admin;
 
@@ -230,12 +229,12 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":"123","label":"FOO"}]}', $response->getContent());
     }
 
-    private function configureAutocompleteItemsDatagrid(): Stub
+    private function configureAutocompleteItemsDatagrid(): MockObject
     {
         $model = new \stdClass();
 
         $targetAdmin = $this->createMock(AdminInterface::class);
-        $datagrid = $this->createStub(DatagridInterface::class);
+        $datagrid = $this->createMock(DatagridInterface::class);
         $metadata = $this->createStub(MetadataInterface::class);
         $pager = $this->createStub(PagerInterface::class);
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);

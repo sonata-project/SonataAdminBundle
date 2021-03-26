@@ -22,10 +22,14 @@ use Symfony\Component\Form\Guess\TypeGuess;
 
 final class TypeGuesserChainTest extends TestCase
 {
+    /**
+     * @psalm-suppress InvalidArgument
+     */
     public function testConstructorWithException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
+        // @phpstan-ignore-next-line
         new TypeGuesserChain([new \stdClass()]);
     }
 
