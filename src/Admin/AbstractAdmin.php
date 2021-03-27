@@ -1883,10 +1883,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             ];
         }
 
-        $actions = $this->configureDashboardButtons($actions);
+        $actions = $this->configureDashboardActions($actions);
 
         foreach ($this->getExtensions() as $extension) {
-            $actions = $extension->configureDashboardButtons($this, $actions);
+            $actions = $extension->configureDashboardActions($this, $actions);
         }
 
         return $actions;
@@ -2130,7 +2130,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      *
      * @return array<string, array<string, mixed>>
      */
-    protected function configureDashboardButtons(array $actions): array
+    protected function configureDashboardActions(array $actions): array
     {
         return $actions;
     }
@@ -2367,8 +2367,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 ListMapper::NAME_BATCH,
                 [
                     'label' => 'batch',
-                    // NEXT_MAJOR: Remove this code.
-                    'code' => '_batch',
                     'sortable' => false,
                     'virtual_field' => true,
                 ]
@@ -2391,8 +2389,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 ListMapper::NAME_SELECT,
                 [
                     'label' => false,
-                    // NEXT_MAJOR: Remove this code.
-                    'code' => '_select',
                     'sortable' => false,
                     'virtual_field' => false,
                 ]

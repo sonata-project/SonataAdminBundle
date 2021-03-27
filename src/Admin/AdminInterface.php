@@ -229,6 +229,9 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function getExportFields(): array;
 
+    /**
+     * @return SourceIteratorInterface<array<mixed>>
+     */
     public function getDataSourceIterator(): SourceIteratorInterface;
 
     /**

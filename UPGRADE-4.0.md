@@ -184,3 +184,39 @@ Remove `AdminInterface $admin` argument from
 - `ShowBuilderInterface::addField()`
 
 Use `$fieldDescription->getAdmin()` to access to the admin value.
+
+## ListMapper constants
+
+`ListMapper::NAME_ACTIONS` change to `_actions`.
+`ListMapper::NAME_BATCH` change to `_batch`.
+`ListMapper::NAME_SELECT` change to `_select`.
+
+Be aware it implies that the following code
+```php
+protected function configureListFields(ListMapper $listMapper)
+{
+    $listMapper
+        ->add('_action', null, [
+            'actions' => [
+                'show' => [],
+                'edit' => [],
+                'delete' => [],
+            ]
+        ]);
+}
+```
+should be updated to
+```php
+protected function configureListFields(ListMapper $listMapper)
+{
+    $listMapper
+        ->add('_actions', null, [
+            'actions' => [
+                'show' => [],
+                'edit' => [],
+                'delete' => [],
+            ]
+        ]);
+}
+```
+but the best is to use the constant `ListMapper::NAME_ACTIONS`.

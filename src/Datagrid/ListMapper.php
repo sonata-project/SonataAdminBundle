@@ -26,12 +26,9 @@ use Sonata\AdminBundle\Mapper\BaseMapper;
  */
 final class ListMapper extends BaseMapper
 {
-    // NEXT_MAJOR: Change for '_actions' and add an UPGRADE NOTE.
-    public const NAME_ACTIONS = '_action';
-    // NEXT_MAJOR: Change for '_batch' and add an UPGRADE NOTE.
-    public const NAME_BATCH = 'batch';
-    // NEXT_MAJOR: Change for '_select' and add an UPGRADE NOTE.
-    public const NAME_SELECT = 'select';
+    public const NAME_ACTIONS = '_actions';
+    public const NAME_BATCH = '_batch';
+    public const NAME_SELECT = '_select';
 
     public const TYPE_ACTIONS = 'actions';
     public const TYPE_BATCH = 'batch';
