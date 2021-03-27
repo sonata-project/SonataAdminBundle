@@ -2,6 +2,28 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.94.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.93.0...3.94.0) - 2021-03-27
+### Added
+- [[#6960](https://github.com/sonata-project/SonataAdminBundle/pull/6960)] `AbstractAdmin::configureDashboardActions()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6960](https://github.com/sonata-project/SonataAdminBundle/pull/6960)] `AdminExtension::configureDashboardActions()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6960](https://github.com/sonata-project/SonataAdminBundle/pull/6960)] `AdminExtensionInterface::configureDashboardActions()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6957](https://github.com/sonata-project/SonataAdminBundle/pull/6957)] Added constant `ListMapper::NAME_ACTIONS` to use instead of `_action` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6957](https://github.com/sonata-project/SonataAdminBundle/pull/6957)] Added constant `ListMapper::NAME_SELECT` to use instead of `select` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6957](https://github.com/sonata-project/SonataAdminBundle/pull/6957)] Added constant `ListMapper::NAME_BATCH` to use instead of `batch` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Deprecated
+- [[#6960](https://github.com/sonata-project/SonataAdminBundle/pull/6960)] `AbstractAdmin::configureDashboardButtons()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6960](https://github.com/sonata-project/SonataAdminBundle/pull/6960)] `AdminExtension::configureDashboardButtons()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6960](https://github.com/sonata-project/SonataAdminBundle/pull/6960)] `AdminExtensionInterface::configureDashboardButtons()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6957](https://github.com/sonata-project/SonataAdminBundle/pull/6957)] Relying on the code `_select` or `_batch` to determine if a field description is a `select` or a `batch` one. You should rely on the name `ListMapper::NAME_SELECT` or `ListMapper::NAME_BATCH` instead. ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#6967](https://github.com/sonata-project/SonataAdminBundle/pull/6967)] Return typehint of DataSourceInterface::createIterator ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6901](https://github.com/sonata-project/SonataAdminBundle/pull/6901)] Global search on admins with default filter parameters. ([@jorrit](https://github.com/jorrit))
+
+### Removed
+- [[#6968](https://github.com/sonata-project/SonataAdminBundle/pull/6968)] Remove the navigation role from nav. ([@axzx](https://github.com/axzx))
+
 ## [3.93.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.92.0...3.93.0) - 2021-03-15
 ### Added
 - [[#6937](https://github.com/sonata-project/SonataAdminBundle/pull/6937)] `ModelManager::reverseTransform()` ([@VincentLanglet](https://github.com/VincentLanglet))

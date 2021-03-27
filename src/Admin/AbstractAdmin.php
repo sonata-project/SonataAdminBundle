@@ -2859,7 +2859,7 @@ EOT;
         $newActions = $this->configureDashboardButtons($actions);
         if ($newActions !== $actions) {
             @trigger_error(sprintf(
-                'The "%s::configureDashboardButtons()" method is deprecated since sonata-project/admin-bundle 3.x'
+                'The "%s::configureDashboardButtons()" method is deprecated since sonata-project/admin-bundle 3.94'
                 .' and will not be used in version 4.0. Use "configureDashboardActions()" instead.',
                 __CLASS__
             ), \E_USER_DEPRECATED);
@@ -2878,7 +2878,7 @@ EOT;
 
                 if ($newActions !== $actions) {
                     @trigger_error(
-                        'configureDashboardButtons() is deprecated since sonata-project/admin-bundle 3.x'
+                        'configureDashboardButtons() is deprecated since sonata-project/admin-bundle 3.94'
                         .' and will not be used in version 4.0. Use configureDashboardActions() instead.',
                         \E_USER_DEPRECATED
                     );
