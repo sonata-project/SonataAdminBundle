@@ -78,7 +78,7 @@ class AdminHelperTest extends TestCase
         $formView = new FormView();
         $formView->vars['id'] = 'test';
         $child = new FormView($formView);
-        $formView->children[] = $child;
+        $formView->children['child'] = $child;
         $child->vars['id'] = 'test_elementId';
 
         $this->assertNull($this->helper->getChildFormView($formView, 'foo'));
