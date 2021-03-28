@@ -13,81 +13,92 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
-use PHPUnit\Framework\TestCase;
+use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
+use Sonata\AdminBundle\Filter\FilterFactoryInterface;
+use Sonata\AdminBundle\Tests\Fixtures\Filter\BarFilter;
+use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
-class AddFilterTypeCompilerPassTest extends TestCase
+final class AddFilterTypeCompilerPassTest extends AbstractCompilerPassTestCase
 {
-    private $filterFactory;
-
-    private $fooFilter;
-
-    private $barFilter;
-
-    private $bazFilter;
-
     protected function setUp(): void
     {
-        $this->filterFactory = $this->createMock(Definition::class);
-        $this->fooFilter = $this->createMock(Definition::class);
-        $this->barFilter = $this->createMock(Definition::class);
-        $this->bazFilter = $this->createMock(Definition::class);
+        parent::setUp();
+
+        $filterFactoryDefinition = new Definition(FilterFactoryInterface::class, [
+            null,
+            [],
+        ]);
+
+        $this->container
+            ->setDefinition('sonata.admin.builder.filter.factory', $filterFactoryDefinition);
     }
 
     public function testProcess(): void
     {
-        $containerBuilderMock = $this->createMock(ContainerBuilder::class);
-
-        $containerBuilderMock
-            ->method('getDefinition')
-            ->with($this->anything())
-            ->willReturnMap([
-                ['sonata.admin.builder.filter.factory', $this->filterFactory],
-                ['acme.demo.foo_filter', $this->fooFilter],
-                ['acme.demo.bar_filter', $this->barFilter],
-                ['acme.demo.baz_filter', $this->bazFilter],
+        $fooFilter = new Definition(FooFilter::class);
+        $fooFilter
+            ->addTag('sonata.admin.filter.type', [
+                'alias' => 'foo_filter_alias',
             ]);
 
-        $containerBuilderMock->expects($this->once())
-            ->method('findTaggedServiceIds')
-            ->with($this->equalTo('sonata.admin.filter.type'))
-            ->willReturn([
-                'acme.demo.foo_filter' => [
-                    'tag1' => [
-                        'alias' => 'foo_filter_alias',
-                    ],
-                ],
-                'acme.demo.bar_filter' => [
-                    'tag1' => [
-                        'alias' => 'bar_filter_alias',
-                    ],
-                ],
-                'acme.demo.baz_filter' => [
-                    'tag1' => [
-                    ],
-                ],
-            ]);
+        $this->container
+            ->setDefinition('acme.demo.foo_filter', $fooFilter);
 
-        $this->fooFilter->method('getClass')
-            ->willReturn('Acme\Filter\FooFilter');
+        $barFilter = new Definition(BarFilter::class);
+        $barFilter
+            ->addTag('sonata.admin.filter.type');
 
-        $this->barFilter->method('getClass')
-            ->willReturn('Acme\Filter\BarFilter');
+        $this->container
+            ->setDefinition('acme.demo.bar_filter', $barFilter);
 
-        $this->bazFilter->method('getClass')
-            ->willReturn('Acme\Filter\BazFilter');
+        $this->compile();
 
-        $this->filterFactory->expects($this->once())
-            ->method('replaceArgument')
-            ->with(1, $this->equalTo([
-                'Acme\Filter\FooFilter' => 'acme.demo.foo_filter',
-                'Acme\Filter\BarFilter' => 'acme.demo.bar_filter',
-                'Acme\Filter\BazFilter' => 'acme.demo.baz_filter',
-            ]));
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
+            'sonata.admin.builder.filter.factory',
+            1,
+            [
+                FooFilter::class => 'acme.demo.foo_filter',
+                BarFilter::class => 'acme.demo.bar_filter',
+            ]
+        );
+    }
 
-        $extensionsPass = new AddFilterTypeCompilerPass();
-        $extensionsPass->process($containerBuilderMock);
+    public function testServicesMustHaveAClassName(): void
+    {
+        $filter = new Definition('not_existing_class');
+        $filter
+            ->addTag('sonata.admin.filter.type');
+
+        $this->container
+            ->setDefinition('acme.demo.foo_filter', $filter);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Class "not_existing_class" used for service "acme.demo.foo_filter" cannot be found.');
+
+        $this->compile();
+    }
+
+    public function testServicesMustImplementFilterInterface(): void
+    {
+        $filter = new Definition(\stdClass::class);
+        $filter
+            ->addTag('sonata.admin.filter.type');
+
+        $this->container
+            ->setDefinition('acme.demo.foo_filter', $filter);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Service "acme.demo.foo_filter" MUST implement interface "Sonata\AdminBundle\Filter\FilterInterface".');
+
+        $this->compile();
+    }
+
+    protected function registerCompilerPass(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(new AddFilterTypeCompilerPass());
     }
 }

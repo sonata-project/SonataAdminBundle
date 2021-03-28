@@ -45,8 +45,6 @@ final class FilterFactory implements FilterFactoryInterface
 
         if ($id) {
             $filter = $this->container->get($id);
-        } elseif (class_exists($type)) {
-            $filter = new $type();
         } else {
             throw new \RuntimeException(sprintf('No attached service to type named `%s`', $type));
         }

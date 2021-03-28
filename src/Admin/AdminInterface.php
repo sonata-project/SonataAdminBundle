@@ -37,7 +37,7 @@ use Symfony\Component\HttpFoundation\Request;
  * @phpstan-extends UrlGeneratorInterface<T>
  * @phpstan-extends LifecycleHookProviderInterface<T>
  */
-interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface, MutableTemplateRegistryAwareInterface
+interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, ParentAdminInterface, UrlGeneratorInterface, MutableTemplateRegistryAwareInterface
 {
     /**
      * Returns subjectClass/class/subclass name managed

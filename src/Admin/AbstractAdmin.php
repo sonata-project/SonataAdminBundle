@@ -968,34 +968,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->datagrid;
     }
 
-    final public function buildTabMenu(string $action, ?AdminInterface $childAdmin = null): ItemInterface
-    {
-        if ($this->loaded['tab_menu']) {
-            return $this->menu;
-        }
-
-        $this->loaded['tab_menu'] = true;
-
-        $menu = $this->getMenuFactory()->createItem('root');
-        $menu->setChildrenAttribute('class', 'nav navbar-nav');
-        $menu->setExtra('translation_domain', $this->getTranslationDomain());
-
-        // Prevents BC break with KnpMenuBundle v1.x
-        if (method_exists($menu, 'setCurrentUri')) {
-            $menu->setCurrentUri($this->getRequest()->getBaseUrl().$this->getRequest()->getPathInfo());
-        }
-
-        $this->configureTabMenu($menu, $action, $childAdmin);
-
-        foreach ($this->getExtensions() as $extension) {
-            $extension->configureTabMenu($this, $menu, $action, $childAdmin);
-        }
-
-        $this->menu = $menu;
-
-        return $this->menu;
-    }
-
     /**
      * @phpstan-param AdminInterface<object>|null $childAdmin
      */
@@ -2434,5 +2406,31 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         foreach ($this->getExtensions() as $extension) {
             $extension->configureRoutes($this, $this->routes);
         }
+    }
+
+    private function buildTabMenu(string $action, ?AdminInterface $childAdmin = null): void
+    {
+        if ($this->loaded['tab_menu']) {
+            return;
+        }
+
+        $this->loaded['tab_menu'] = true;
+
+        $menu = $this->getMenuFactory()->createItem('root');
+        $menu->setChildrenAttribute('class', 'nav navbar-nav');
+        $menu->setExtra('translation_domain', $this->getTranslationDomain());
+
+        // Prevents BC break with KnpMenuBundle v1.x
+        if (method_exists($menu, 'setCurrentUri')) {
+            $menu->setCurrentUri($this->getRequest()->getBaseUrl().$this->getRequest()->getPathInfo());
+        }
+
+        $this->configureTabMenu($menu, $action, $childAdmin);
+
+        foreach ($this->getExtensions() as $extension) {
+            $extension->configureTabMenu($this, $menu, $action, $childAdmin);
+        }
+
+        $this->menu = $menu;
     }
 }

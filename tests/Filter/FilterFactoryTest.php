@@ -26,7 +26,7 @@ class FilterFactoryTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No attached service to type named `mytype`');
 
-        $filter = new FilterFactory(new Container(), []);
+        $filter = new FilterFactory(new Container());
         $filter->create('test', 'mytype');
     }
 
@@ -35,13 +35,18 @@ class FilterFactoryTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No attached service to type named `Sonata\AdminBundle\Form\Type\Filter\FooType`');
 
-        $filter = new FilterFactory(new Container(), []);
+        $filter = new FilterFactory(new Container());
         $filter->create('test', 'Sonata\AdminBundle\Form\Type\Filter\FooType');
     }
 
     public function testClassType(): void
     {
-        $filter = new FilterFactory(new Container(), []);
+        $container = new Container();
+        $container
+            ->set(DefaultType::class, new DefaultType());
+        $filter = new FilterFactory($container, [
+            DefaultType::class => DefaultType::class,
+        ]);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(

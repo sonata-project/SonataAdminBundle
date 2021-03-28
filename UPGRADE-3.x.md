@@ -4,6 +4,15 @@ UPGRADE 3.x
 UPGRADE FROM 3.xx to 3.xx
 =========================
 
+### `Sonata\AdminBundle\Filter\FilterFactory`
+
+Deprecated passing a value which is not registered as a service as argument 2 for `create()` method.
+
+### Deprecated MenuBuilderInterface
+
+Deprecated `AbstractAdmin::getSideMenu()`
+Deprecated `AbstractAdmin::getTabMenu()`
+
 ### Deprecated `Sonata\AdminBundle\Admin\BaseFieldDescription` class.
 
 Use `Sonata\AdminBundle\FieldDescription\BaseFieldDescription` instead.
