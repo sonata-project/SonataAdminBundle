@@ -44,7 +44,7 @@ behavior for a specific admin, you can override the ``configureExportFields()`` 
 You can also tweak the list by creating an admin extension that implements the
 ``configureExportFields()`` method::
 
-    public function configureExportFields(AdminInterface $admin, array $fields)
+    public function configureExportFields(AdminInterface $admin, array $fields): array
     {
         unset($fields['updatedAt']);
 
@@ -57,7 +57,7 @@ Overriding the export formats for a specific admin
 Changing the export formats can be done by defining a ``getExportFormats()``
 method in your admin class::
 
-    public function getExportFormats()
+    public function getExportFormats(): array
     {
         return ['pdf', 'html'];
     }
@@ -65,19 +65,17 @@ method in your admin class::
 Customizing the query used to fetch the results
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 If you want to customize the query used to fetch the results for a specific admin,
-you can override the ``getDataSourceIterator()`` method::
+you can override the ``DataSourceInterface`` class::
 
-    // src/Admin/PersonAdmin.php
-
-    final class PersonAdmin extends AbstractAdmin
+    final class DataSource implement DataSourceInterface
     {
-        public function getDataSourceIterator()
+        public function createIterator(): SourceIteratorInterface
         {
-            $iterator = parent::getDataSourceIterator();
-            $iterator->setDateTimeFormat('d/m/Y'); //change this to suit your needs
-            return $iterator;
+            // Custom implementation
         }
     }
+
+And then you can override the datasource set to the admin class.
 
 .. note::
 

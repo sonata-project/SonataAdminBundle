@@ -152,11 +152,11 @@ explicitly this defaults to the action name::
 
     // src/Admin/MediaAdmin.php
 
-    use Sonata\AdminBundle\Route\RouteCollection;
+    use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
     final class MediaAdmin extends AbstractAdmin
     {
-        protected function configureRoutes(RouteCollection $collection)
+        protected function configureRoutes(RouteCollectionInterface $collection): void
         {
             $collection->add('myCustom'); // Action gets added automatically
             $collection->add('view', $this->getRouterIdParameter().'/view');
@@ -171,11 +171,11 @@ in the ``add`` method to set additional settings like this::
 
     // src/Admin/MediaAdmin.php
 
-    use Sonata\AdminBundle\Route\RouteCollection;
+    use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
     final class MediaAdmin extends AbstractAdmin
     {
-        protected function configureRoutes(RouteCollection $collection)
+        protected function configureRoutes(RouteCollectionInterface $collection): void
         {
             $collection->add(
                 'custom_action',
@@ -222,10 +222,11 @@ basic Sonata CRUD controller::
     namespace App\Controller;
 
     use Sonata\AdminBundle\Controller\CRUDController;
+    use Symfony\Component\HttpFoundation\Response;
 
     class MediaCRUDController extends CRUDController
     {
-        public function myCustomAction()
+        public function myCustomAction(): Response
         {
             // your code here ...
         }
@@ -268,11 +269,11 @@ Any single registered route can be removed by name::
 
     // src/Admin/MediaAdmin.php
 
-    use Sonata\AdminBundle\Route\RouteCollection;
+    use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
     final class MediaAdmin extends AbstractAdmin
     {
-        protected function configureRoutes(RouteCollection $collection)
+        protected function configureRoutes(RouteCollectionInterface $collection): void
         {
             $collection->remove('delete');
         }
@@ -286,11 +287,11 @@ the ``clearExcept()`` method. This method accepts an array of routes you want to
 
     // src/Admin/MediaAdmin.php
 
-    use Sonata\AdminBundle\Route\RouteCollection;
+    use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
     final class MediaAdmin extends AbstractAdmin
     {
-        protected function configureRoutes(RouteCollection $collection)
+        protected function configureRoutes(RouteCollectionInterface $collection): void
         {
             // Only `list` and `edit` route will be active
             $collection->clearExcept(['list', 'edit']);
@@ -307,11 +308,11 @@ If you want to remove all default routes, you can use ``clear()`` method::
 
     // src/Admin/MediaAdmin.php
 
-    use Sonata\AdminBundle\Route\RouteCollection;
+    use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
     final class MediaAdmin extends AbstractAdmin
     {
-        protected function configureRoutes(RouteCollection $collection)
+        protected function configureRoutes(RouteCollectionInterface $collection): void
         {
             // All routes are removed
             $collection->clear();
@@ -327,11 +328,11 @@ can use ``hasParentFieldDescription()`` to detect this case and remove the route
 
     // src/Admin/TagAdmin.php
 
-    use Sonata\AdminBundle\Route\RouteCollection;
+    use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
     final class TagAdmin extends AbstractAdmin
     {
-        protected function configureRoutes(RouteCollection $collection)
+        protected function configureRoutes(RouteCollectionInterface $collection): void
         {
             // prevent display of "Add new" when embedding this form
             if ($this->hasParentFieldDescription()) {
@@ -347,11 +348,11 @@ Any previously removed route can be restored by name::
 
     // src/Admin/DeletableMediaAdmin.php
 
-    use Sonata\AdminBundle\Route\RouteCollection;
+    use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
     final class DeletableMediaAdmin extends MediaAdmin
     {
-        protected function configureRoutes(RouteCollection $collection)
+        protected function configureRoutes(RouteCollectionInterface $collection): void
         {
             $collection->restore('delete');
         }
@@ -370,7 +371,7 @@ method. This method will be used when a link is being generated::
 
     final class MediaAdmin extends AbstractAdmin
     {
-        public function configurePersistentParameters(): array
+        protected function configurePersistentParameters(): array
         {
             if (!$this->getRequest()) {
                 return [];
@@ -397,7 +398,7 @@ list action's links to point to a different action, set the ``route`` option in 
 
     final class PostAdmin extends AbstractAdmin
     {
-        protected function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $listMapper): void
         {
             $listMapper
                 ->addIdentifier('name', null, [

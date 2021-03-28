@@ -27,19 +27,19 @@ Example Entity
 
     namespace App\Entity;
 
-    class Example
+    final class Example
     {
         private $name;
 
         private $description;
 
-        public function __construct($name, $description)
+        public function __construct(string $name, string $description)
         {
             $this->name = $name;
             $this->description = $description;
         }
 
-        public function update($description)
+        public function update(string $description)
         {
             $this->description = $description
         }
@@ -59,7 +59,7 @@ To be able to set entity data without the possibility to use setters a ``DataMap
     use Symfony\Component\Form\DataMapperInterface;
     use App\Entity\Example;
 
-    class ExampleDataMapper implements DataMapperInterface
+    final class ExampleDataMapper implements DataMapperInterface
     {
         /**
          * @param Example $data
@@ -114,7 +114,7 @@ Now we need to configure the form to use our ``ExampleDataMapper``::
 
     final class ExampleAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper
                 ->add('name', null)

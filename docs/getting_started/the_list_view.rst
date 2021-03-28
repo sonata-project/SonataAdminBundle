@@ -24,7 +24,7 @@ on the list page to the list view::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $listMapper): void
         {
             $listMapper
                 ->add('title')
@@ -63,7 +63,7 @@ instead of ``ListMapper#add()``::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $listMapper): void
         {
             $listMapper
                 ->addIdentifier('title')
@@ -95,7 +95,7 @@ category::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $listMapper): void
         {
             $listMapper
                 ->addIdentifier('title')
@@ -126,7 +126,7 @@ would do something like::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
         {
             $datagridMapper->add('title');
         }
@@ -168,7 +168,7 @@ the search field to use the ``name`` property of the Category::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
         {
             $datagridMapper
                 ->add('title')

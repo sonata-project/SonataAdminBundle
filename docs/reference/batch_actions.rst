@@ -29,7 +29,7 @@ merges them onto a single target item. It should only be available when two cond
 - the EDIT and DELETE routes exist for this Admin (have not been disabled)
 - the logged in administrator has EDIT and DELETE permissions::
 
-    protected function configureBatchActions($actions)
+    protected function configureBatchActions(array $actions): array
     {
         if (
           $this->hasRoute('edit') && $this->hasAccess('edit') &&
@@ -70,7 +70,7 @@ granularity), the passed query is ``null``::
          *
          * @return RedirectResponse
          */
-        public function batchActionMerge(ProxyQueryInterface $selectedModelQuery, Request $request = null)
+        public function batchActionMerge(ProxyQueryInterface $selectedModelQuery, Request $request)
         {
             $this->admin->checkAccess('edit');
             $this->admin->checkAccess('delete');
@@ -176,7 +176,7 @@ This method may return three different values:
 
     class CRUDController extends BaseController
     {
-        public function batchActionMergeIsRelevant(array $selectedIds, $allEntitiesSelected, Request $request = null)
+        public function batchActionMergeIsRelevant(array $selectedIds, $allEntitiesSelected, Request $request)
         {
             // here you have access to all POST parameters, if you use some custom ones
             // POST parameters are kept even after the confirmation page.
@@ -213,7 +213,7 @@ In your admin class you can create a ``preBatchAction`` method to execute
 something before doing the batch action. The main purpose of this method
 is to alter the query or the list of selected IDs::
 
-    public function preBatchAction($actionName, ProxyQueryInterface $query, array & $idx, $allElements)
+    public function preBatchAction($actionName, ProxyQueryInterface $query, array &$idx, bool $allElements): void
     {
         // altering the query or the idx array
         $foo = $query->getParameter('foo')->getValue();

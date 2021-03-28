@@ -13,7 +13,7 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
 
     // src/Entity/BlogPost.php
 
-    class BlogPost
+    final class BlogPost
     {
         // ...
 
@@ -49,8 +49,9 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
     // src/Entity/Category.php
 
     use Doctrine\Common\Collections\ArrayCollection;
+    use Doctrine\Common\Collections\Collection;
 
-    class Category
+    final class Category
     {
         // ...
 
@@ -62,6 +63,8 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
         private $name;
 
         /**
+         * @var Collection
+         *
          * @ORM\OneToMany(targetEntity="BlogPost", mappedBy="category")
          */
         private $blogPosts;
@@ -71,7 +74,7 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
             $this->blogPosts = new ArrayCollection();
         }
 
-        public function getBlogPosts()
+        public function getBlogPosts(): Collection
         {
             return $this->blogPosts;
         }
@@ -118,17 +121,17 @@ easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin`
 
     final class CategoryAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper->add('name', TextType::class);
         }
 
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
         {
             $datagridMapper->add('name');
         }
 
-        protected function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $listMapper): void
         {
             $listMapper->addIdentifier('name');
         }

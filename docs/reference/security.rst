@@ -754,7 +754,7 @@ To customize displayed user override
 ``Sonata\AdminBundle\Controller\CRUDController::getAclUsers()``. This method must
 return an iterable collection of users::
 
-    protected function getAclUsers()
+    protected function getAclUsers(): \Traversable
     {
         $userManager = $container->get('fos_user.user_manager');
 
@@ -774,7 +774,7 @@ To customize displayed role override
 ``Sonata\AdminBundle\Controller\CRUDController::getAclRoles()``. This method must
 return an iterable collection of roles::
 
-    protected function getAclRoles()
+    protected function getAclRoles(): \Traversable
     {
         // Display only ROLE_BAPTISTE and ROLE_HELENE
         $roles = [

@@ -49,21 +49,13 @@ globally through the template configuration for the key 'preview':
             templates:
                 preview: '@App/CRUD/preview.html.twig'
 
-Or per admin entity by overriding the ``getTemplate($name)`` and returning
-the appropriate template when the key matches 'preview'::
+Or per admin entity by calling the ``setTemplate()`` method::
 
     // src/Admin/PostAdmin.php
 
-    public function getTemplate($name)
+    protected function configure()
     {
-        switch ($name) {
-            case 'preview':
-                return '@App/CRUD/preview.html.twig';
-                break;
-            default:
-                return parent::getTemplate($name);
-                break;
-        }
+        $this->setTemplate('preview', '@App/CRUD/preview.html.twig');
     }
 
 In either way the template should be extending your own layout, injecting the form in it

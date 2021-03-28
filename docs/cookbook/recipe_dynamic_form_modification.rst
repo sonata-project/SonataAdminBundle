@@ -27,7 +27,7 @@ Then, you should be able to dynamically add needed fields to the form::
     {
         // ...
 
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             // Description field will always be added to the form:
             $formMapper

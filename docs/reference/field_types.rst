@@ -50,7 +50,7 @@ This is currently limited to scalar types (text, integer, url...) and choice typ
     You can use in lists what `view-timezone <https://symfony.com/doc/4.4/reference/forms/types/datetime.html#view-timezone>`_ allows on forms,
     a way to render the date in the user timezone::
 
-        protected function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $listMapper): void
         {
             $listMapper
 
@@ -123,7 +123,7 @@ Option                                  Description
 
 .. code-block:: php
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('invalid', FieldDescriptionInterface::TYPE_BOOLEAN, [
@@ -175,7 +175,7 @@ Option                                  Description
 
 The ``FieldDescriptionInterface::TYPE_CHOICE`` field type also supports multiple values that can be separated by a ``delimiter``::
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         // For the value `['r', 'b']`, the displayed text ist `red | blue`.
         $listMapper
@@ -216,7 +216,7 @@ Option                                  Description
 
 .. code-block:: php
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             // Output for value `http://example.com`:
@@ -286,7 +286,7 @@ Option                      Description
 
 .. code-block:: php
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
 

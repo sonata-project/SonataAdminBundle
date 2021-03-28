@@ -2222,7 +2222,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      *
      * @param array<string, mixed> $formOptions
      */
-    protected function configureFormOptions(array &$formOptions)
+    protected function configureFormOptions(array &$formOptions): void
     {
     }
 
