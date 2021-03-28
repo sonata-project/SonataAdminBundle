@@ -122,6 +122,3 @@ final class DatagridMapper extends BaseMapper
         return $this;
     }
 }
-
-// NEXT_MAJOR: Remove next line.
-interface_exists(FieldDescriptionInterface::class);

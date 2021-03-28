@@ -361,6 +361,3 @@ final class Datagrid implements DatagridInterface
             || $values['_sort_by']->getName() === $fieldDescription->getOption('sortable');
     }
 }
-
-// NEXT_MAJOR: Remove next line.
-interface_exists(FieldDescriptionInterface::class);

@@ -168,6 +168,3 @@ final class AdminType extends AbstractType
         return $this->getFieldDescription($options)->getAssociationAdmin();
     }
 }
-
-// NEXT_MAJOR: Remove next line.
-interface_exists(FieldDescriptionInterface::class);

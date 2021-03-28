@@ -86,6 +86,3 @@ interface DatagridInterface
      */
     public function getPaginationParameters(int $page): array;
 }
-
-// NEXT_MAJOR: Remove next line.
-interface_exists(FieldDescriptionInterface::class);

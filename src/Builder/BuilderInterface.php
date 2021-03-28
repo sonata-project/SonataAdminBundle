@@ -27,5 +27,3 @@ interface BuilderInterface
      */
     public function fixFieldDescription(FieldDescriptionInterface $fieldDescription): void;
 }
-
-interface_exists(FieldDescriptionInterface::class);

@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Model;
 
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\ModelManagerException;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
 /**
  * A model manager is a bridge between the model classes and the admin functionality.
@@ -142,5 +141,3 @@ interface ModelManagerInterface
      */
     public function addIdentifiersToQuery(string $class, ProxyQueryInterface $query, array $idx): void;
 }
-
-interface_exists(FieldDescriptionInterface::class);

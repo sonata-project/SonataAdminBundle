@@ -158,6 +158,3 @@ final class ShowMapper extends BaseGroupedMapper
         return 'show';
     }
 }
-
-// NEXT_MAJOR: Remove next line.
-interface_exists(FieldDescriptionInterface::class);
