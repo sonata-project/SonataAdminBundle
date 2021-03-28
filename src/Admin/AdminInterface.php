@@ -197,7 +197,7 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     public function getClassnameLabel(): string;
 
     /**
-     * @param mixed $id
+     * @param string|int|null $id
      *
      * @phpstan-return T|null
      */
@@ -483,6 +483,9 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function getBaseRouteName(): string;
 
+    /**
+     * @param AdminInterface<object>|null $childAdmin
+     */
     public function getSideMenu(string $action, ?self $childAdmin = null): ItemInterface;
 
     public function addParentAssociationMapping(string $code, string $value): void;

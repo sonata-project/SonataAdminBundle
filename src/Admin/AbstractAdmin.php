@@ -786,6 +786,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function getRoutes(): RouteCollectionInterface
     {
         $this->buildRoutes();
+        \assert($this->routes !== null);
 
         return $this->routes;
     }
@@ -935,8 +936,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * @param string|int|null $id
-     *
      * @phpstan-return T|null
      */
     final public function getObject($id): ?object
@@ -997,9 +996,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->datagrid;
     }
 
-    /**
-     * @phpstan-param AdminInterface<object>|null $childAdmin
-     */
     final public function getSideMenu(string $action, ?AdminInterface $childAdmin = null): ItemInterface
     {
         if ($this->isChild()) {
@@ -1007,6 +1003,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         $this->buildTabMenu($action, $childAdmin);
+        \assert($this->menu !== null);
 
         return $this->menu;
     }
@@ -1130,6 +1127,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 static::class
             ));
         }
+        \assert($this->parentFieldDescription !== null);
 
         return $this->parentFieldDescription;
     }
@@ -1161,6 +1159,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 static::class
             ));
         }
+        \assert($this->subject !== null);
 
         return $this->subject;
     }
@@ -1627,6 +1626,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function getShow(): FieldDescriptionCollection
     {
         $this->buildShow();
+        \assert($this->show !== null);
 
         return $this->show;
     }
@@ -1917,6 +1917,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         if (false === $this->hasTemplateRegistry()) {
             throw new \LogicException(sprintf('Unable to find the template registry for admin `%s`.', static::class));
         }
+        \assert($this->templateRegistry !== null);
 
         return $this->templateRegistry;
     }
@@ -2442,6 +2443,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
     }
 
+    /**
+     * @phpstan-param AdminInterface<object>|null $childAdmin
+     */
     private function buildTabMenu(string $action, ?AdminInterface $childAdmin = null): void
     {
         if ($this->loaded['tab_menu']) {

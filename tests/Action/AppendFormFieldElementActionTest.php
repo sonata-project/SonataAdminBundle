@@ -84,7 +84,7 @@ final class AppendFormFieldElementActionTest extends TestCase
             'context' => 'list',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST]);
 
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
         $formView = new FormView();
         $form = $this->createStub(Form::class);
         $renderer = $this->configureFormRenderer();

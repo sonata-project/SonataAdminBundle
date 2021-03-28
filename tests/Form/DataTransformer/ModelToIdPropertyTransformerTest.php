@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
@@ -24,6 +25,9 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess;
 
 class ModelToIdPropertyTransformerTest extends TestCase
 {
+    /**
+     * @var ModelManagerInterface&MockObject
+     */
     private $modelManager;
 
     protected function setUp(): void

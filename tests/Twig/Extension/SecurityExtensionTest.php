@@ -24,7 +24,7 @@ final class SecurityExtensionTest extends TestCase
 {
     public function testIsGrantedAffirmative(): void
     {
-        $securityChecker = $this->createStub(AuthorizationCheckerInterface::class);
+        $securityChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $twigExtension = new SecurityExtension($securityChecker);
 
         $securityChecker

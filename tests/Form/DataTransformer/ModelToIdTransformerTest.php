@@ -13,12 +13,16 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 class ModelToIdTransformerTest extends TestCase
 {
+    /**
+     * @var ModelManagerInterface&MockObject
+     */
     private $modelManager;
 
     protected function setUp(): void
@@ -28,8 +32,7 @@ class ModelToIdTransformerTest extends TestCase
 
     public function testReverseTransformWhenPassing0AsId(): void
     {
-        /** @var class-string $className */
-        $className = 'TEST';
+        $className = \stdClass::class;
         $transformer = new ModelToIdTransformer($this->modelManager, $className);
 
         $this->modelManager
@@ -55,11 +58,10 @@ class ModelToIdTransformerTest extends TestCase
      */
     public function testReverseTransform($value, $expected): void
     {
-        /** @var class-string $className */
-        $className = 'TEST';
+        $className = \stdClass::class;
         $transformer = new ModelToIdTransformer($this->modelManager, $className);
 
-        $this->modelManager->method('find');
+        $this->modelManager->expects($this->never())->method('find');
 
         $this->assertSame($expected, $transformer->reverseTransform($value));
     }
@@ -80,8 +82,7 @@ class ModelToIdTransformerTest extends TestCase
             ->method('getNormalizedIdentifier')
             ->willReturn('123');
 
-        /** @var class-string $className */
-        $className = 'TEST';
+        $className = \stdClass::class;
         $transformer = new ModelToIdTransformer($this->modelManager, $className);
 
         $this->assertNull($transformer->transform(null));

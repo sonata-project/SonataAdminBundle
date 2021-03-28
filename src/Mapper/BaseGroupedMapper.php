@@ -372,6 +372,7 @@ abstract class BaseGroupedMapper extends BaseMapper
                 ]);
             }
         }
+        \assert($this->currentGroup !== null);
 
         return $this->currentGroup;
     }

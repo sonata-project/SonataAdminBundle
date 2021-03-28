@@ -135,7 +135,7 @@ class AdminHelperTest extends TestCase
 
     public function testAppendFormFieldElement(): void
     {
-        $admin = $this->createStub(AdminInterface::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin
             ->method('getClass')
             ->willReturn(Foo::class);
@@ -248,7 +248,7 @@ class AdminHelperTest extends TestCase
 
     public function testAppendFormFieldElementWithoutFormFieldDescriptionInAdminAndNoCollectionClass(): void
     {
-        $admin = $this->createStub(AdminInterface::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin
             ->method('getClass')
             ->willReturn(Foo::class);
@@ -339,7 +339,7 @@ class AdminHelperTest extends TestCase
 
     public function testAppendFormFieldElementWithCollection(): void
     {
-        $admin = $this->createStub(AdminInterface::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin
             ->method('getClass')
             ->willReturn(Foo::class);

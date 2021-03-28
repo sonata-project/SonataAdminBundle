@@ -56,7 +56,10 @@ final class AuditManager implements AuditManagerInterface
     {
         foreach ($this->readers as $readerId => $classes) {
             if (\in_array($class, $classes, true)) {
-                return $this->container->get($readerId);
+                $reader = $this->container->get($readerId);
+                \assert($reader instanceof AuditReaderInterface);
+
+                return $reader;
             }
         }
 

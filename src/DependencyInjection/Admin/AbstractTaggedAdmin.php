@@ -270,6 +270,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         if (!$this->hasFilterPersister()) {
             throw new \LogicException(sprintf('Admin "%s" has no filter persister.', static::class));
         }
+        \assert($this->filterPersister !== null);
 
         return $this->filterPersister;
     }

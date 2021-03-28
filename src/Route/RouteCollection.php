@@ -174,6 +174,8 @@ final class RouteCollection implements RouteCollectionInterface
 
     /**
      * @param string|string[] $routeList
+     *
+     * @return static
      */
     public function clearExcept($routeList): RouteCollectionInterface
     {
