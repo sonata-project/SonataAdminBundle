@@ -53,9 +53,6 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
         ],
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getEnvironment(): Environment
     {
         $environment = parent::getEnvironment();
@@ -69,10 +66,7 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
         return $environment;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRenderingEngine(?Environment $environment = null): TwigRendererEngine
+    protected function getRenderingEngine(Environment $environment): TwigRendererEngine
     {
         if (!\in_array($this->type, ['form', 'filter'], true)) {
             throw new \Exception(
@@ -86,17 +80,11 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getSonataAdmin()
     {
         return $this->sonataAdmin;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getTemplatePaths(): array
     {
         $twigPaths = array_filter([

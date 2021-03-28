@@ -95,8 +95,7 @@ final class SetObjectFieldValueAction
             ), Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
-        $rootObject = $object = $admin->getObject($objectId);
-
+        $object = $admin->getObject($objectId);
         if (!$object) {
             return new JsonResponse('Object does not exist', Response::HTTP_NOT_FOUND);
         }
@@ -121,10 +120,13 @@ final class SetObjectFieldValueAction
         }
 
         $propertyPath = new PropertyPath($field);
+        $rootObject = $object;
 
         // If property path has more than 1 element, take the last object in order to validate it
         if ($propertyPath->getLength() > 1) {
-            $object = $this->propertyAccessor->getValue($object, $propertyPath->getParent());
+            $parent = $propertyPath->getParent();
+            \assert(null !== $parent);
+            $object = $this->propertyAccessor->getValue($object, $parent);
 
             $elements = $propertyPath->getElements();
             $field = end($elements);

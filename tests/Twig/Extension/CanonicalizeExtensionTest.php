@@ -242,6 +242,9 @@ final class CanonicalizeExtensionTest extends TestCase
 
     private function changeLocale(string $locale): void
     {
-        $this->requestStack->getCurrentRequest()->setLocale($locale);
+        $request = $this->requestStack->getCurrentRequest();
+        \assert(null !== $request);
+
+        $request->setLocale($locale);
     }
 }

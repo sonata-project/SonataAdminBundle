@@ -571,7 +571,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         if ($this->isChild()) { // the admin class is a child, prefix it with the parent route pattern
             $baseRoutePattern = $this->baseRoutePattern;
-            if (!$this->baseRoutePattern) {
+            if (!$baseRoutePattern) {
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
@@ -625,7 +625,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
             $baseRouteName = $this->baseRouteName;
-            if (!$this->baseRouteName) {
+            if (!$baseRouteName) {
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
@@ -675,6 +675,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             }
 
             $subClass = $this->getRequest()->query->get('subclass');
+            \assert(\is_string($subClass));
 
             if (!$this->hasSubClass($subClass)) {
                 throw new \LogicException(sprintf('Subclass "%s" is not defined.', $subClass));
@@ -713,7 +714,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function hasActiveSubClass(): bool
     {
         if (\count($this->subClasses) > 0 && $this->hasRequest()) {
-            return null !== $this->getRequest()->query->get('subclass');
+            return \is_string($this->getRequest()->query->get('subclass'));
         }
 
         return false;
@@ -741,6 +742,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         $subClass = $this->getRequest()->query->get('subclass');
+        \assert(\is_string($subClass));
 
         if (!$this->hasSubClass($subClass)) {
             throw new \LogicException(sprintf(
@@ -786,7 +788,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function getRoutes(): RouteCollectionInterface
     {
         $this->buildRoutes();
-        \assert($this->routes !== null);
+        \assert(null !== $this->routes);
 
         return $this->routes;
     }
@@ -1003,7 +1005,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         $this->buildTabMenu($action, $childAdmin);
-        \assert($this->menu !== null);
+        \assert(null !== $this->menu);
 
         return $this->menu;
     }
@@ -1127,7 +1129,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 static::class
             ));
         }
-        \assert($this->parentFieldDescription !== null);
+        \assert(null !== $this->parentFieldDescription);
 
         return $this->parentFieldDescription;
     }
@@ -1159,7 +1161,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 static::class
             ));
         }
-        \assert($this->subject !== null);
+        \assert(null !== $this->subject);
 
         return $this->subject;
     }
@@ -1598,7 +1600,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function isGranted($name, ?object $object = null): bool
     {
-        $objectRef = $object ? sprintf('/%s#%s', spl_object_hash($object), $this->id($object)) : '';
+        $objectRef = $object ? sprintf('/%s#%s', spl_object_hash($object), $this->id($object) ?? '') : '';
         $key = md5(json_encode($name).$objectRef);
 
         if (!\array_key_exists($key, $this->cacheIsGranted)) {
@@ -1626,7 +1628,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function getShow(): FieldDescriptionCollection
     {
         $this->buildShow();
-        \assert($this->show !== null);
+        \assert(null !== $this->show);
 
         return $this->show;
     }
@@ -1693,10 +1695,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     /**
      * Returns true if the per page value is allowed, false otherwise.
+     *
+     * @param mixed $perPage
      */
-    final public function determinedPerPageValue(int $perPage): bool
+    final public function determinedPerPageValue($perPage): bool
     {
-        return \in_array($perPage, $this->getPerPageOptions(), true);
+        return \is_int($perPage) && \in_array($perPage, $this->getPerPageOptions(), true);
     }
 
     final public function isAclEnabled(): bool
@@ -1917,7 +1921,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         if (false === $this->hasTemplateRegistry()) {
             throw new \LogicException(sprintf('Unable to find the template registry for admin `%s`.', static::class));
         }
-        \assert($this->templateRegistry !== null);
+        \assert(null !== $this->templateRegistry);
 
         return $this->templateRegistry;
     }

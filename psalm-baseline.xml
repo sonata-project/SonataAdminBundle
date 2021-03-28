@@ -8,7 +8,7 @@
             <code>array&lt;string, array&lt;string, array&lt;string, array&lt;string, array&lt;string, string&gt;&gt;&gt;&gt;&gt;</code>
         </InvalidReturnType>
     </file>
-    <!--The next error is due to not installed Doctrine ORM\ODM-->
+    <!-- The next error is due to not installed Doctrine ORM\ODM -->
     <file src="src/Admin/AdminHelper.php">
         <UndefinedClass occurrences="1">
             <code>DoctrinePersistentCollection</code>
@@ -24,5 +24,20 @@
             <code>$this-&gt;elements</code>
             <code>array_merge(array_flip($keys), $this-&gt;elements)</code>
         </InvalidPropertyAssignmentValue>
+    </file>
+    <!-- This error is made on purpose for php version < 8 -->
+    <file src="tests/Fixtures/Entity/FooToStringNull.php">
+        <InvalidToString occurrences="1">
+            <code>__toString</code>
+        </InvalidToString>
+        <NullableReturnStatement occurrences="1">
+            <code>null</code>
+        </NullableReturnStatement>
+    </file>
+    <!-- Will be fixed in Symfony 5.3 https://github.com/symfony/symfony/pull/40604 -->
+    <file src="src/Translator/Extractor/AdminExtractor.php">
+        <MoreSpecificImplementedParamType occurrences="1">
+            <code>$resource</code>
+        </MoreSpecificImplementedParamType>
     </file>
 </files>

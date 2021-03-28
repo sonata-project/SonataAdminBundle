@@ -23,7 +23,6 @@ use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
@@ -390,7 +389,7 @@ class CRUDController extends AbstractController
             $allElements = $forwardedRequest->request->getBoolean('all_elements');
 
             $forwardedRequest->request->set('idx', $idx);
-            $forwardedRequest->request->set('all_elements', $allElements);
+            $forwardedRequest->request->set('all_elements', (string) $allElements);
 
             $data = $forwardedRequest->request->all();
             $data['all_elements'] = $allElements;
@@ -618,7 +617,6 @@ class CRUDController extends AbstractController
         $this->admin->setSubject($object);
 
         $fields = $this->admin->getShow();
-        \assert($fields instanceof FieldDescriptionCollection);
 
         $template = $this->templateRegistry->getTemplate('show');
 
@@ -1201,7 +1199,7 @@ class CRUDController extends AbstractController
      */
     protected function escapeHtml(string $s): string
     {
-        return htmlspecialchars((string) $s, \ENT_QUOTES | \ENT_SUBSTITUTE, 'UTF-8');
+        return htmlspecialchars($s, \ENT_QUOTES | \ENT_SUBSTITUTE, 'UTF-8');
     }
 
     /**

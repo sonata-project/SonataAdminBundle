@@ -28,11 +28,11 @@ use Twig\Loader\FilesystemLoader;
  */
 abstract class BaseMenuTest extends TestCase
 {
+    /**
+     * @var Environment
+     */
     private $environment;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         // Adapt to both bundle and project-wide test strategy

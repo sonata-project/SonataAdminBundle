@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Action;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Search\SearchHandler;
@@ -87,11 +86,7 @@ final class SearchAction
         try {
             $admin = $this->pool->getAdminByAdminCode($request->get('admin'));
         } catch (ServiceNotFoundException $e) {
-            throw new \RuntimeException('Unable to find the Admin instance', $e->getCode(), $e);
-        }
-
-        if (!$admin instanceof AdminInterface) {
-            throw new \RuntimeException('The requested service is not an Admin instance');
+            throw new \RuntimeException('Unable to find the Admin instance', (int) $e->getCode(), $e);
         }
 
         $results = [];
@@ -113,7 +108,7 @@ final class SearchAction
                     'id' => $admin->id($result),
                 ];
             }
-            $page = (int) $pager->getPage();
+            $page = $pager->getPage();
             $total = $pager->countResults();
         }
 

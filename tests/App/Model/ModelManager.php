@@ -55,6 +55,8 @@ class ModelManager implements ModelManagerInterface, LockInterface
 
     /**
      * @return Foo|null
+     *
+     * @psalm-suppress ImplementedReturnTypeMismatch
      */
     public function find(string $class, $id): ?object
     {

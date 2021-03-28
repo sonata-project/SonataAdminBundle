@@ -21,24 +21,22 @@ use Sonata\AdminBundle\Manipulator\ServicesManipulator;
  */
 class ServicesManipulatorTest extends TestCase
 {
-    /** @var ServicesManipulator */
+    /**
+     * @var ServicesManipulator
+     */
     private $servicesManipulator;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $file;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         $this->file = sprintf('%s/%s.yml', sys_get_temp_dir(), lcg_value());
         $this->servicesManipulator = new ServicesManipulator($this->file);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function tearDown(): void
     {
         @unlink($this->file);

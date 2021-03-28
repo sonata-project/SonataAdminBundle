@@ -19,6 +19,7 @@ use Knp\Menu\Provider\MenuProviderInterface;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminExtensionInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait;
@@ -260,6 +261,8 @@ class ExtensionCompilerPassTest extends TestCase
         $filterExtension = $container->get('sonata_extension_filter');
 
         $def = $container->get('sonata_post_admin');
+        $this->assertInstanceOf(AdminInterface::class, $def);
+
         $extensions = $def->getExtensions();
         $this->assertCount(5, $extensions);
 
@@ -269,6 +272,8 @@ class ExtensionCompilerPassTest extends TestCase
         $this->assertSame($globalExtension, $extensions[4]);
 
         $def = $container->get('sonata_article_admin');
+        $this->assertInstanceOf(AdminInterface::class, $def);
+
         $extensions = $def->getExtensions();
         $this->assertCount(6, $extensions);
 
@@ -279,8 +284,11 @@ class ExtensionCompilerPassTest extends TestCase
         $this->assertSame($globalExtension, $extensions[5]);
 
         $def = $container->get('sonata_news_admin');
+        $this->assertInstanceOf(AdminInterface::class, $def);
+
         $extensions = $def->getExtensions();
         $this->assertCount(6, $extensions);
+
         $this->assertSame($historyExtension, $extensions[0]);
         $this->assertSame($securityExtension, $extensions[2]);
         $this->assertSame($filterExtension, $extensions[3]);

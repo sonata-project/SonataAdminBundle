@@ -98,14 +98,14 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
     /**
      * Helper method to find the index of a class ACE for a role.
      *
-     * @return string|int|false index if found, FALSE if not found
+     * @return int|false index if found, FALSE if not found
      */
     public function findClassAceIndexByRole(MutableAclInterface $acl, string $role);
 
     /**
      * Helper method to find the index of a class ACE for a username.
      *
-     * @return string|int|false index if found, FALSE if not found
+     * @return int|false index if found, FALSE if not found
      */
     public function findClassAceIndexByUsername(MutableAclInterface $acl, string $username);
 }

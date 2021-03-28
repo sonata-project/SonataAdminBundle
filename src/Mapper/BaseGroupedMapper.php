@@ -131,6 +131,7 @@ abstract class BaseGroupedMapper extends BaseMapper
                     'translation_domain' => $options['translation_domain'] ?? null,
                 ]); // add new tab automatically
             }
+            \assert(null !== $this->currentTab);
 
             // if no tab is selected, we go the the main one named '_' ..
             if ('default' !== $this->currentTab) {
@@ -372,7 +373,7 @@ abstract class BaseGroupedMapper extends BaseMapper
                 ]);
             }
         }
-        \assert($this->currentGroup !== null);
+        \assert(null !== $this->currentGroup);
 
         return $this->currentGroup;
     }
