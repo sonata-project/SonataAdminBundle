@@ -15,15 +15,18 @@ namespace Sonata\AdminBundle\Tests\Form\Extension\Field\Type;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormConfigBuilder;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FormTypeFieldExtensionTest extends TestCase
+final class FormTypeFieldExtensionTest extends TestCase
 {
     public function testExtendedType(): void
     {
@@ -70,20 +73,48 @@ class FormTypeFieldExtensionTest extends TestCase
         $this->assertNull($formView->vars['sonata_admin']);
     }
 
-    //    public function testBuildForm()
-    //    {
-    //        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
-    //        $admin->expects($this->once())->method('getCode')->will($this->returnValue('admin_code'));
-    //
-    //        $fieldDescription = $this->createMock('Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface');
-    //        $fieldDescription->expects($this->once())->method('getAdmin')->will($this->returnValue($admin));
-    //        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('name'));
-    //
-    //        $formBuilder = $this->createMock('Symfony\Component\Form\FormBuilderInterface');
-    //
-    //        $extension = new FormTypeFieldExtension();
-    //        $extension->buildForm($formBuilder, []);
-    //    }
+    public function testBuildFormWithFieldDescription(): void
+    {
+        $admin = $this->createStub(AdminInterface::class);
+
+        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $fieldDescription
+            ->method('getAdmin')
+            ->willReturn($admin);
+        $fieldDescription
+            ->method('getName')
+            ->willReturn('name');
+        $fieldDescription
+            ->method('getOption')
+            ->willReturnCallback(static function (string $option, $value) {
+                return $value;
+            });
+
+        $formBuilder = new FormBuilder(
+            'test',
+            \stdClass::class,
+            $this->createStub(EventDispatcherInterface::class),
+            $this->createStub(FormFactoryInterface::class)
+        );
+
+        $extension = new FormTypeFieldExtension([], []);
+        $extension->buildForm($formBuilder, [
+            'sonata_field_description' => $fieldDescription,
+        ]);
+
+        $this->assertTrue($formBuilder->getAttribute('sonata_admin_enabled'));
+        $this->assertSame([
+            'name' => 'name',
+            'admin' => $admin,
+            'value' => null,
+            'edit' => 'standard',
+            'inline' => 'natural',
+            'field_description' => $fieldDescription,
+            'block_name' => false,
+            'options' => [],
+            'class' => '',
+        ], $formBuilder->getAttribute('sonata_admin'));
+    }
 
     public function testbuildViewWithWithSonataAdmin(): void
     {
