@@ -4,6 +4,11 @@ UPGRADE 3.x
 UPGRADE FROM 3.xx to 3.xx
 =========================
 
+### `Sonata\AdminBundle\Route\AdminPoolLoader`
+
+- Deprecated constructing it passing more than one argument.
+- Deprecated `Sonata\AdminBundle\Route\AdminPoolLoader` service alias.
+
 ## Deprecated not setting "sonata.admin.audit_reader" tag in audit reader services
 
 If you are using [autoconfiguration](https://symfony.com/doc/4.4/service_container.html#the-autoconfigure-option),

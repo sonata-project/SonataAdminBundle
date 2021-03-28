@@ -78,11 +78,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('routing.loader')
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
-                [],
-                new ReferenceConfigurator('service_container'),
             ])
 
         ->alias(AdminPoolLoader::class, 'sonata.admin.route_loader')
+            ->deprecate(...BCDeprecationParameters::forConfig(
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+                '3.x'
+            ))
 
         ->set('sonata.admin.helper', AdminHelper::class)
             ->public()
