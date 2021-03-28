@@ -55,12 +55,19 @@ class FilterFactory implements FilterFactoryInterface
             if ($filter && !class_exists($type)) {
                 @trigger_error(sprintf(
                     'Referencing a filter by name (%s) is deprecated since version 3.57 and will be removed in 4.0.'
-                    .' Use the fully-qualified type class name instead (%s)',
+                    .' Use the fully-qualified type class name instead (%s).',
                     $type,
                     \get_class($filter)
                 ), \E_USER_DEPRECATED);
             }
         } elseif (class_exists($type)) {
+            // NEXT_MAJOR: Remove this "elseif" block
+            @trigger_error(sprintf(
+                'Not declaring a filter as service is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will not work in 4.0.'
+                .' You MUST register a service with class name (%s) instead.',
+                $type,
+            ), \E_USER_DEPRECATED);
             $filter = new $type();
         } else {
             throw new \RuntimeException(sprintf('No attached service to type named `%s`', $type));
