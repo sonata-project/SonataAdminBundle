@@ -18,6 +18,7 @@ use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\Route\RoutesCache;
@@ -100,7 +101,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertTrue($container->hasParameter('sonata.admin.configuration.dashboard_groups'));
 
         $dashboardGroupsSettings = $container->getParameter('sonata.admin.configuration.dashboard_groups');
-
+        $this->assertIsArray($dashboardGroupsSettings);
         $this->assertArrayHasKey('sonata_group_one', $dashboardGroupsSettings);
 
         $this->assertArrayHasKey('label', $dashboardGroupsSettings['sonata_group_one']);
@@ -161,6 +162,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertTrue($container->hasDefinition('sonata_news_admin'));
 
         $pool = $container->get('sonata.admin.pool');
+        $this->assertInstanceOf(Pool::class, $pool);
         $adminServiceIds = $pool->getAdminServiceIds();
         $adminGroups = $pool->getAdminGroups();
         $adminClasses = $pool->getAdminClasses();
@@ -255,8 +257,10 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $compilerPass->process($container);
         $container->compile();
 
+        $pool = $container->get('sonata.admin.pool');
+        $this->assertInstanceOf(Pool::class, $pool);
         // use array_values to check groups position
-        $adminGroups = array_values($container->get('sonata.admin.pool')->getAdminGroups());
+        $adminGroups = array_values($pool->getAdminGroups());
 
         $this->assertSame('sonata_group_one', $adminGroups['0']['label'], 'second group in configuration, first in list');
         $this->assertSame('1 Entry', $adminGroups[0]['items'][0]['label'], 'second entry for group in configuration, first in list');
@@ -281,7 +285,9 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $compilerPass->process($container);
         $container->compile();
 
-        $adminGroups = $container->get('sonata.admin.pool')->getAdminGroups();
+        $pool = $container->get('sonata.admin.pool');
+        $this->assertInstanceOf(Pool::class, $pool);
+        $adminGroups = $pool->getAdminGroups();
 
         $this->assertArrayHasKey('resolved_group_name', $adminGroups);
         $this->assertArrayNotHasKey('%sonata.admin.parameter.groupname%', $adminGroups);
@@ -549,6 +555,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $container->compile();
 
         $pool = $container->get('sonata.admin.pool');
+        $this->assertInstanceOf(Pool::class, $pool);
         $adminServiceIds = $pool->getAdminServiceIds();
 
         $this->assertContains('sonata_post_one_admin', $adminServiceIds);

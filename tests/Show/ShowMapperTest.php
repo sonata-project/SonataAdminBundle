@@ -380,6 +380,9 @@ class ShowMapperTest extends TestCase
         $this->assertFalse($this->showMapper->has('fooName'));
     }
 
+    /**
+     * @psalm-suppress InvalidScalarArgument
+     */
     public function testAddException(): void
     {
         $this->expectException(\TypeError::class);

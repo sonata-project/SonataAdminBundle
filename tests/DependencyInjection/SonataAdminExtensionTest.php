@@ -276,10 +276,14 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
     public function testLoadIntlTemplate(): void
     {
-        $bundlesWithSonataIntlBundle = array_merge($this->container->getParameter('kernel.bundles'), ['SonataIntlBundle' => true]);
-        $this->container->setParameter('kernel.bundles', $bundlesWithSonataIntlBundle);
+        $bundles = $this->container->getParameter('kernel.bundles');
+        $this->assertIsArray($bundles);
+
+        $this->container->setParameter('kernel.bundles', array_merge($bundles, ['SonataIntlBundle' => true]));
         $this->load();
+
         $templates = $this->container->getParameter('sonata.admin.configuration.templates');
+        $this->assertIsArray($templates);
         $this->assertSame('@SonataIntl/CRUD/history_revision_timestamp.html.twig', $templates['history_revision_timestamp']);
     }
 

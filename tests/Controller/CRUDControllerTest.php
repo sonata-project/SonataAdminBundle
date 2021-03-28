@@ -147,7 +147,7 @@ class CRUDControllerTest extends TestCase
     private $translator;
 
     /**
-     * @var LoggerInterface|MockObject
+     * @var LoggerInterface&MockObject
      */
     private $logger;
 
@@ -166,9 +166,6 @@ class CRUDControllerTest extends TestCase
      */
     private $parameterBag;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         $this->httpMethodParameterOverride = Request::getHttpMethodParameterOverride();

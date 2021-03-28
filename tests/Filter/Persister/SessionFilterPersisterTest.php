@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class SessionFilterPersisterTest extends TestCase
 {
     /**
-     * @var SessionInterface|MockObject
+     * @var SessionInterface&MockObject
      */
     private $session;
 

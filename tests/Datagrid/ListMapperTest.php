@@ -210,6 +210,9 @@ class ListMapperTest extends TestCase
         $this->listMapper->add('fooName');
     }
 
+    /**
+     * @psalm-suppress InvalidScalarArgument
+     */
     public function testAddWrongTypeException(): void
     {
         $this->expectException(\TypeError::class);
@@ -228,7 +231,7 @@ class ListMapperTest extends TestCase
         foreach ($this->fieldDescriptionCollection->getElements() as $field) {
             $this->assertTrue(
                 $field->getOption('virtual_field', false),
-                sprintf('Failed asserting that FieldDescription with type "%s" is tagged with virtual flag.', $field->getType())
+                sprintf('Failed asserting that FieldDescription with name "%s" is tagged with virtual flag.', $field->getName())
             );
         }
     }

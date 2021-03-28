@@ -22,9 +22,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class AdminVoterTest extends AbstractVoterTest
 {
-    /**
-     * {@inheritdoc}
-     */
     public function provideData(): array
     {
         return [
@@ -42,9 +39,6 @@ class AdminVoterTest extends AbstractVoterTest
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createVoter($dataVoter, $route): VoterInterface
     {
         $request = new Request();
@@ -57,9 +51,6 @@ class AdminVoterTest extends AbstractVoterTest
         return new AdminVoter($requestStack);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createItem($data): ItemInterface
     {
         $item = $this->getMockForAbstractClass(ItemInterface::class);
@@ -74,9 +65,6 @@ class AdminVoterTest extends AbstractVoterTest
         return $item;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     private function getAdmin(string $code, bool $list = false, bool $granted = false): AdminInterface
     {
         $admin = $this->createMock(AdminInterface::class);
@@ -98,9 +86,6 @@ class AdminVoterTest extends AbstractVoterTest
         return $admin;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     private function getChildAdmin(
         string $parentCode,
         string $childCode,

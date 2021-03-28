@@ -225,6 +225,9 @@ class DatagridMapperTest extends TestCase
         $this->assertSame('fooFilterName', $fieldDescription->getOption('field_name'));
     }
 
+    /**
+     * @psalm-suppress InvalidScalarArgument
+     */
     public function testAddException(): void
     {
         $this->expectException(\TypeError::class);

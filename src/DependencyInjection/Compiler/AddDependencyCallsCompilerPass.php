@@ -192,8 +192,11 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $groups[$resolvedGroupName]['roles'] = $groupDefaults[$resolvedGroupName]['roles'];
                 }
 
-                if (isset($groups[$resolvedGroupName]['on_top']) && !empty($group['on_top']) && $group['on_top']
-                    && (\count($groups[$resolvedGroupName]['items']) > 1)) {
+                if (
+                    isset($groups[$resolvedGroupName]['on_top'])
+                    && !empty($group['on_top'])
+                    && (\count($groups[$resolvedGroupName]['items']) > 1)
+                ) {
                     throw new \RuntimeException('You can\'t use "on_top" option with multiple same name groups.');
                 }
                 if (empty($group['on_top'])) {

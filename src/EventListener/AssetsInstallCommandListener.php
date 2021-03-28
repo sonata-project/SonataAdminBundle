@@ -19,11 +19,9 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * This listener extends `assets:install` command when SonataCoreBundle will be not register. Files from `Resources/private/SonataCoreBundleAssets`
@@ -74,15 +72,12 @@ final class AssetsInstallCommandListener
 
     private function execute(InputInterface $input, OutputInterface $output, FrameworkApplication $application): int
     {
-        /**
-         * @var KernelInterface
-         */
         $kernel = $application->getKernel();
 
         $targetArg = rtrim($input->getArgument('target') ?? '', '/');
 
         if (!$targetArg) {
-            $targetArg = $this->getPublicDirectory($kernel->getContainer());
+            $targetArg = $this->getPublicDirectory();
         }
 
         if (!is_dir($targetArg)) {
@@ -168,7 +163,6 @@ final class AssetsInstallCommandListener
                 case 'warning':
                     $io->$ioMethod('All deprecated SonataCoreBundle assets from SonataAdminBundle were successfully installed.');
                     break;
-                case 'error':
                 default:
                     $io->$ioMethod('No deprecated SonataCoreBundle assets from SonataAdminBundle were provided by any bundle.');
                     break;
@@ -245,15 +239,10 @@ final class AssetsInstallCommandListener
         return self::METHOD_COPY;
     }
 
-    private function getPublicDirectory(ContainerInterface $container): string
+    private function getPublicDirectory(): string
     {
         $defaultPublicDir = 'public';
-
-        if (null === $this->projectDir && !$container->hasParameter('kernel.project_dir')) {
-            return $defaultPublicDir;
-        }
-
-        $composerFilePath = ($this->projectDir ?? $container->getParameter('kernel.project_dir')).'/composer.json';
+        $composerFilePath = $this->projectDir.'/composer.json';
 
         if (!file_exists($composerFilePath)) {
             return $defaultPublicDir;

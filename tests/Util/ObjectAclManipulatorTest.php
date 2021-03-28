@@ -29,12 +29,12 @@ use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 class ObjectAclManipulatorTest extends TestCase
 {
     /**
-     * @var MockObject|OutputInterface
+     * @var MockObject&OutputInterface
      */
     private $output;
 
     /**
-     * @var MockObject|AdminInterface
+     * @var MockObject&AdminInterface
      */
     private $admin;
 
@@ -82,7 +82,7 @@ class ObjectAclManipulatorTest extends TestCase
     public function testConfigureAcls(): void
     {
         $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
-        $acls = $this->createMock('SplObjectStorage');
+        $acls = $this->createMock(\SplObjectStorage::class);
         $acls->expects($this->atLeastOnce())->method('contains')->with($this->isInstanceOf(ObjectIdentityInterface::class))
             ->willReturn(false, true);
         $acl = $this->createStub(MutableAclInterface::class);
