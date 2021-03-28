@@ -33,7 +33,7 @@ final class TypeGuesserChainTest extends TestCase
         new TypeGuesserChain([new \stdClass()]);
     }
 
-    public function testGuessType(): void
+    public function testGuess(): void
     {
         $typeGuess1 = new TypeGuess('foo1', [], Guess::MEDIUM_CONFIDENCE);
         $guesser1 = $this->createStub(TypeGuesserInterface::class);

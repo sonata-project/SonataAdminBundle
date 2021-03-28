@@ -232,3 +232,6 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
         return $types;
     }
 }
+
+// NEXT_MAJOR: Remove next line.
+interface_exists(FieldDescriptionInterface::class);

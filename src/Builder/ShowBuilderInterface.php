@@ -37,3 +37,6 @@ interface ShowBuilderInterface extends BuilderInterface
         FieldDescriptionInterface $fieldDescription
     ): void;
 }
+
+// NEXT_MAJOR: Remove next line.
+interface_exists(FieldDescriptionInterface::class);

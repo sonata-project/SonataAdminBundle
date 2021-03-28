@@ -42,3 +42,6 @@ interface FormContractorInterface extends BuilderInterface
         array $formOptions = []
     ): array;
 }
+
+// NEXT_MAJOR: Remove next line.
+interface_exists(FieldDescriptionInterface::class);

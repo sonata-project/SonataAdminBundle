@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Twig\Extension;
 use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -76,3 +77,6 @@ final class SonataAdminExtension extends AbstractExtension
         return $admin->getUrlSafeIdentifier($model);
     }
 }
+
+// NEXT_MAJOR: Remove next line.
+interface_exists(FieldDescriptionInterface::class);

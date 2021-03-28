@@ -1,6 +1,25 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.xx to 3.xx
+=========================
+
+### Deprecated `Sonata\AdminBundle\Admin\BaseFieldDescription` class.
+
+Use `Sonata\AdminBundle\FieldDescription\BaseFieldDescription` instead.
+
+### Deprecated `Sonata\AdminBundle\Admin\FieldDescriptionCollection` class.
+
+Use `Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection` instead.
+
+### Deprecated `Sonata\AdminBundle\Admin\FieldDescriptionInterface` class.
+
+Use `Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface` instead.
+
+### Deprecated `Sonata\AdminBundle\Admin\FieldDescriptionRegistryInterface` class.
+
+Use `Sonata\AdminBundle\FieldDescription\FieldDescriptionRegistryInterface` instead.
+
 UPGRADE FROM 3.92 to 3.93
 =========================
 

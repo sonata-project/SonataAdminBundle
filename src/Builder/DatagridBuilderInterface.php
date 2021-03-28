@@ -34,3 +34,5 @@ interface DatagridBuilderInterface extends BuilderInterface
      */
     public function getBaseDatagrid(AdminInterface $admin, array $values = []): DatagridInterface;
 }
+
+interface_exists(FieldDescriptionInterface::class);
