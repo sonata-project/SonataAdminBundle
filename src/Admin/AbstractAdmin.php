@@ -1423,8 +1423,20 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->datagrid;
     }
 
+    /**
+     * NEXT_MAJOR: Change the visibility to private and return type to void.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x
+     */
     public function buildTabMenu($action, ?AdminInterface $childAdmin = null)
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[2] ?? null)) {
+            @trigger_error(sprintf(
+                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+        }
+
         if ($this->loaded['tab_menu']) {
             return $this->menu;
         }
@@ -1451,9 +1463,21 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->menu;
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x
+     */
     public function buildSideMenu($action, ?AdminInterface $childAdmin = null)
     {
-        return $this->buildTabMenu($action, $childAdmin);
+        if ('sonata_deprecation_mute' !== (\func_get_args()[2] ?? null)) {
+            @trigger_error(sprintf(
+                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+        }
+
+        return $this->buildTabMenu($action, $childAdmin, 'sonata_deprecation_mute');
     }
 
     /**
@@ -1469,7 +1493,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             return $this->getParent()->getSideMenu($action, $this);
         }
 
-        $this->buildSideMenu($action, $childAdmin);
+        $this->buildSideMenu($action, $childAdmin, 'sonata_deprecation_mute');
 
         return $this->menu;
     }
