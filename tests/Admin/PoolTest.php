@@ -72,8 +72,7 @@ class PoolTest extends TestCase
 
     public function testGetAdminForClassWithTooManyRegisteredAdmin(): void
     {
-        /** @var class-string $class */
-        $class = 'someclass';
+        $class = \stdClass::class;
 
         $pool = new Pool($this->container, ['sonata.user.admin.group1'], [], [
             $class => ['sonata.user.admin.group1', 'sonata.user.admin.group2'],
@@ -88,8 +87,7 @@ class PoolTest extends TestCase
 
     public function testGetAdminForClassWithTooManyRegisteredAdminButOneDefaultAdmin(): void
     {
-        /** @var class-string $class */
-        $class = 'someclass';
+        $class = \stdClass::class;
 
         $this->container->set('sonata.user.admin.group1', $this->createMock(AdminInterface::class));
 
@@ -103,8 +101,7 @@ class PoolTest extends TestCase
 
     public function testGetAdminForClassWhenAdminClassIsSet(): void
     {
-        /** @var class-string $class */
-        $class = 'someclass';
+        $class = \stdClass::class;
 
         $this->container->set('sonata.user.admin.group1', $this->createMock(AdminInterface::class));
 
@@ -383,8 +380,7 @@ class PoolTest extends TestCase
 
     public function testGetAdminClasses(): void
     {
-        /** @var class-string $class */
-        $class = 'someclass';
+        $class = \stdClass::class;
 
         $pool = new Pool($this->container, [], [], [$class => ['sonata.user.admin.group1']]);
         $this->assertSame([$class => ['sonata.user.admin.group1']], $pool->getAdminClasses());

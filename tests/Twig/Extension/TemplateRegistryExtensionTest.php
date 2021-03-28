@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension;
@@ -32,7 +33,7 @@ class TemplateRegistryExtensionTest extends TestCase
     private $extension;
 
     /**
-     * @var TemplateRegistryInterface
+     * @var TemplateRegistryInterface&MockObject
      */
     private $templateRegistry;
 
@@ -43,7 +44,7 @@ class TemplateRegistryExtensionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->templateRegistry = $this->createStub(TemplateRegistryInterface::class);
+        $this->templateRegistry = $this->createMock(TemplateRegistryInterface::class);
         $this->container = new Container();
 
         $this->templateRegistry->method('getTemplate')->with('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');

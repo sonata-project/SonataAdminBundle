@@ -35,13 +35,13 @@ class BreadcrumbsBuilderTest extends TestCase
     {
         $action = 'my_action';
         $breadcrumbsBuilder = new BreadcrumbsBuilder(['child_admin_route' => 'show']);
-        $admin = $this->createStub(AdminInterface::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin->method('isChild')->willReturn(false);
 
         $admin->method('getMenuFactory')->willReturn(new MenuFactory());
         $labelTranslatorStrategy = $this->createStub(LabelTranslatorStrategyInterface::class);
 
-        $routeGenerator = $this->createStub(RouteGeneratorInterface::class);
+        $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
         $routeGenerator->method('generate')->with('sonata_admin_dashboard')->willReturn('/dashboard');
 
         $admin->method('getRouteGenerator')->willReturn($routeGenerator);
@@ -84,7 +84,7 @@ class BreadcrumbsBuilderTest extends TestCase
         ]);
 
         $admin->method('getCurrentChildAdmin')->willReturn($childAdmin);
-        $request = $this->createStub(Request::class);
+        $request = $this->createMock(Request::class);
         $request->method('get')->with('slug')->willReturn('my-object');
 
         $admin->method('getIdParameter')->willReturn('slug');
@@ -153,13 +153,13 @@ class BreadcrumbsBuilderTest extends TestCase
         $breadcrumbsBuilder = new BreadcrumbsBuilder();
 
         $menu = $this->createMock(ItemInterface::class);
-        $menuFactory = $this->createStub(MenuFactory::class);
+        $menuFactory = $this->createMock(MenuFactory::class);
         $menuFactory->method('createItem')->with('root')->willReturn($menu);
-        $admin = $this->createStub(AdminInterface::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin->method('getMenuFactory')->willReturn($menuFactory);
         $labelTranslatorStrategy = $this->createStub(LabelTranslatorStrategyInterface::class);
 
-        $routeGenerator = $this->createStub(RouteGeneratorInterface::class);
+        $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
         $routeGenerator->method('generate')->with('sonata_admin_dashboard')->willReturn('/dashboard');
         $admin->method('getRouteGenerator')->willReturn($routeGenerator);
 
@@ -200,7 +200,7 @@ class BreadcrumbsBuilderTest extends TestCase
             ['my_class_name_create', 'breadcrumb', 'link', 'create my object'],
         ]);
 
-        $childAdmin = $this->createStub(AdminInterface::class);
+        $childAdmin = $this->createMock(AdminInterface::class);
         $childAdmin->method('getTranslationDomain')->willReturn('ChildBundle');
         $childAdmin->method('getLabelTranslatorStrategy')->willReturn($labelTranslatorStrategy);
         $childAdmin->method('getClassnameLabel')->willReturn('my_child_class_name');
@@ -223,7 +223,7 @@ class BreadcrumbsBuilderTest extends TestCase
             $menu->expects($this->never())->method('setUri');
         }
 
-        $request = $this->createStub(Request::class);
+        $request = $this->createMock(Request::class);
         $request->method('get')->with('slug')->willReturn('my-object');
 
         $admin->method('getIdParameter')->willReturn('slug');

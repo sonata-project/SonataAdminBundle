@@ -84,7 +84,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
-        $filter = $this->createStub(FilterInterface::class);
+        $filter = $this->createMock(FilterInterface::class);
         $filter
             ->method('getOption')
             ->with('global_search')

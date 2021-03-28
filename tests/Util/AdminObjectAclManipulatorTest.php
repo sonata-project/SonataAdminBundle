@@ -116,7 +116,7 @@ final class AdminObjectAclManipulatorTest extends TestCase
     {
         $form = $this->createStub(Form::class);
         $formBuilder = $this->createStub(FormBuilder::class);
-        $securityHandler = $this->createStub(AclSecurityHandlerInterface::class);
+        $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
         $acl = $this->createStub(Acl::class);
 
         $securityHandler

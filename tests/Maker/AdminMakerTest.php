@@ -74,7 +74,7 @@ class AdminMakerTest extends TestCase
 
     protected function setup(): void
     {
-        $managerOrmProxy = $this->createStub(ModelManagerInterface::class);
+        $managerOrmProxy = $this->createMock(ModelManagerInterface::class);
         $managerOrmProxy->method('getExportFields')->with(Foo::class)
             ->willReturn(['bar', 'baz']);
 

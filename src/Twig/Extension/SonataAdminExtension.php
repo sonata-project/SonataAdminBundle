@@ -55,13 +55,13 @@ final class SonataAdminExtension extends AbstractExtension
     /**
      * Get the identifiers as a string that is safe to use in a url.
      *
-     * @return string string representation of the id that is safe to use in a url
+     * @return string|null representation of the id that is safe to use in a url
      *
      * @phpstan-template T of object
      * @phpstan-param T $model
      * @phpstan-param AdminInterface<T>|null $admin
      */
-    public function getUrlSafeIdentifier(object $model, ?AdminInterface $admin = null): string
+    public function getUrlSafeIdentifier(object $model, ?AdminInterface $admin = null): ?string
     {
         if (null === $admin) {
             /** @phpstan-var class-string $class */

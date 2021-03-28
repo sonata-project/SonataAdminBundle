@@ -39,7 +39,7 @@ class ModelsToArrayTransformerTest extends TestCase
      */
     public function testReverseTransform(?array $value): void
     {
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
 
         if (null !== $value) {
             $proxyQuery = $this->createStub(ProxyQueryInterface::class);
@@ -77,7 +77,7 @@ class ModelsToArrayTransformerTest extends TestCase
 
     public function testReverseTransformWithEmptyArray(): void
     {
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
             ->expects($this->never())
             ->method('createQuery');
@@ -119,7 +119,7 @@ class ModelsToArrayTransformerTest extends TestCase
     {
         $value = ['a', 'b'];
         $reverseTransformCollection = ['a'];
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
         $proxyQuery = $this->createStub(ProxyQueryInterface::class);
         $modelManager
             ->method('createQuery')

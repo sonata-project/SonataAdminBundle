@@ -32,7 +32,7 @@ class TabMenuTest extends BaseMenuTest
 
     public function testLabelTranslationNominalCase(): void
     {
-        $this->translator = $this->createStub(TranslatorInterface::class);
+        $this->translator = $this->createMock(TranslatorInterface::class);
         $this->translator->method('trans')
             ->with(
                 'some-label',
@@ -51,7 +51,7 @@ class TabMenuTest extends BaseMenuTest
     public function testLabelTranslationWithParameters(): void
     {
         $params = ['my' => 'param'];
-        $this->translator = $this->createStub(TranslatorInterface::class);
+        $this->translator = $this->createMock(TranslatorInterface::class);
         $this->translator->method('trans')
             ->with(
                 'some-label',

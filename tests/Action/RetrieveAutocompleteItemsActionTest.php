@@ -263,7 +263,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
     private function configureFormConfig(string $field, bool $disabled = false): void
     {
-        $form = $this->createStub(Form::class);
+        $form = $this->createMock(Form::class);
         $formType = $this->createStub(Form::class);
         $formConfig = $this->createStub(FormConfigInterface::class);
 
@@ -285,7 +285,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
     private function configureFormConfigComplexProperty(string $field): void
     {
-        $form = $this->createStub(Form::class);
+        $form = $this->createMock(Form::class);
         $formType = $this->createStub(Form::class);
         $formConfig = $this->createStub(FormConfigInterface::class);
 
@@ -306,7 +306,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
     private function configureFormConfigComplexPropertyArray(string $field): void
     {
-        $form = $this->createStub(Form::class);
+        $form = $this->createMock(Form::class);
         $formType = $this->createStub(Form::class);
         $formConfig = $this->createStub(FormConfigInterface::class);
 

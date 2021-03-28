@@ -21,5 +21,8 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
  */
 interface RouteBuilderInterface
 {
+    /**
+     * @param AdminInterface<object> $admin
+     */
     public function build(AdminInterface $admin, RouteCollectionInterface $collection): void;
 }
