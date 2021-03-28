@@ -238,9 +238,6 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $pool->replaceArgument(1, $admins);
         $pool->replaceArgument(2, $groups);
         $pool->replaceArgument(3, $classes);
-
-        $routeLoader = $container->getDefinition('sonata.admin.route_loader');
-        $routeLoader->replaceArgument(1, $admins);
     }
 
     /**
