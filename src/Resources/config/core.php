@@ -189,7 +189,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.audit.manager', AuditManager::class)
             ->public()
             ->args([
+                // NEXT_MAJOR: Remove next line.
                 new ReferenceConfigurator('service_container'),
+                null, // Service locator
             ])
 
         ->alias(AuditManager::class, 'sonata.admin.audit.manager')
