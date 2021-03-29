@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
+use Sonata\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
+use Sonata\AdminBundle\Model\AuditReaderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
 use Symfony\Component\Config\FileLocator;
@@ -190,6 +192,10 @@ final class SonataAdminExtension extends Extension
         $container
             ->registerForAutoconfiguration(ModelManagerInterface::class)
             ->addTag(ModelManagerCompilerPass::MANAGER_TAG);
+
+        $container
+            ->registerForAutoconfiguration(AuditReaderInterface::class)
+            ->addTag(AddAuditReadersCompilerPass::AUDIT_READER_TAG);
     }
 
     public function getNamespace(): string

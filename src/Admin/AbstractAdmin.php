@@ -69,6 +69,32 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             Doctrine\\\Orm|Doctrine\\\Phpcr|Doctrine\\\MongoDB|Doctrine\\\CouchDB
         )\\\(.*)@x';
 
+    private const ACTION_TREE = 1;
+    private const ACTION_SHOW = 2;
+    private const ACTION_EDIT = 4;
+    private const ACTION_DELETE = 8;
+    private const ACTION_ACL = 16;
+    private const ACTION_HISTORY = 32;
+    private const ACTION_LIST = 64;
+    private const ACTION_BATCH = 128;
+    private const INTERNAL_ACTIONS = [
+        'tree' => self::ACTION_TREE,
+        'show' => self::ACTION_SHOW,
+        'edit' => self::ACTION_EDIT,
+        'delete' => self::ACTION_DELETE,
+        'acl' => self::ACTION_ACL,
+        'history' => self::ACTION_HISTORY,
+        'list' => self::ACTION_LIST,
+        'batch' => self::ACTION_BATCH,
+    ];
+    private const MASK_OF_ACTION_CREATE = self::ACTION_TREE | self::ACTION_SHOW | self::ACTION_EDIT | self::ACTION_DELETE | self::ACTION_LIST | self::ACTION_BATCH;
+    private const MASK_OF_ACTION_SHOW = self::ACTION_EDIT | self::ACTION_HISTORY | self::ACTION_ACL;
+    private const MASK_OF_ACTION_EDIT = self::ACTION_SHOW | self::ACTION_DELETE | self::ACTION_ACL | self::ACTION_HISTORY;
+    private const MASK_OF_ACTION_HISTORY = self::ACTION_SHOW | self::ACTION_EDIT | self::ACTION_ACL;
+    private const MASK_OF_ACTION_ACL = self::ACTION_EDIT | self::ACTION_HISTORY;
+    private const MASK_OF_ACTION_LIST = self::ACTION_SHOW | self::ACTION_EDIT | self::ACTION_DELETE | self::ACTION_ACL | self::ACTION_BATCH;
+    private const MASK_OF_ACTIONS_USING_OBJECT = self::MASK_OF_ACTION_SHOW | self::MASK_OF_ACTION_EDIT | self::MASK_OF_ACTION_HISTORY | self::MASK_OF_ACTION_ACL;
+
     /**
      * The list FieldDescription constructed from the configureListField method.
      *
@@ -1750,9 +1776,16 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     final public function getActionButtons(string $action, ?object $object = null): array
     {
+        // nothing to do for non-internal actions
+        if (!isset(self::INTERNAL_ACTIONS[$action])) {
+            return [];
+        }
+
+        $actionBit = self::INTERNAL_ACTIONS[$action];
+
         $buttonList = [];
 
-        if (\in_array($action, ['tree', 'show', 'edit', 'delete', 'list', 'batch'], true)
+        if (self::MASK_OF_ACTION_CREATE & $actionBit
             && $this->hasRoute('create')
             && $this->hasAccess('create')
         ) {
@@ -1761,10 +1794,11 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             ];
         }
 
-        if (\in_array($action, ['show', 'delete', 'acl', 'history'], true)
+        $canAccessObject = self::MASK_OF_ACTIONS_USING_OBJECT & $actionBit && null !== $object && null !== $this->id($object);
+
+        if ($canAccessObject
+            && self::MASK_OF_ACTION_EDIT & $actionBit
             && $this->hasRoute('edit')
-            && null !== $object
-            && null !== $this->id($object)
             && $this->hasAccess('edit', $object)
         ) {
             $buttonList['edit'] = [
@@ -1772,10 +1806,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             ];
         }
 
-        if (\in_array($action, ['show', 'edit', 'acl'], true)
+        if ($canAccessObject
+            && self::MASK_OF_ACTION_HISTORY & $actionBit
             && $this->hasRoute('history')
-            && null !== $object
-            && null !== $this->id($object)
             && $this->hasAccess('history', $object)
         ) {
             $buttonList['history'] = [
@@ -1783,11 +1816,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             ];
         }
 
-        if (\in_array($action, ['edit', 'history'], true)
+        if ($canAccessObject
+            && self::MASK_OF_ACTION_ACL & $actionBit
             && $this->isAclEnabled()
             && $this->hasRoute('acl')
-            && null !== $object
-            && null !== $this->id($object)
             && $this->hasAccess('acl', $object)
         ) {
             $buttonList['acl'] = [
@@ -1795,10 +1827,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             ];
         }
 
-        if (\in_array($action, ['edit', 'history', 'acl'], true)
+        if ($canAccessObject
+            && self::MASK_OF_ACTION_SHOW & $actionBit
             && $this->hasRoute('show')
-            && null !== $object
-            && null !== $this->id($object)
             && $this->hasAccess('show', $object)
             && \count($this->getShow()) > 0
         ) {
@@ -1807,7 +1838,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             ];
         }
 
-        if (\in_array($action, ['show', 'edit', 'delete', 'acl', 'batch'], true)
+        if (self::MASK_OF_ACTION_LIST & $actionBit
             && $this->hasRoute('list')
             && $this->hasAccess('list')
         ) {

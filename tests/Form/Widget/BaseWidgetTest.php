@@ -15,8 +15,11 @@ namespace Sonata\AdminBundle\Tests\Form\Widget;
 
 use Sonata\AdminBundle\Tests\Fixtures\StubTranslator;
 use Sonata\Form\Test\AbstractWidgetTestCase;
+use Symfony\Bridge\Twig\Extension\HttpKernelExtension;
+use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
 /**
@@ -57,6 +60,8 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
     {
         $environment = parent::getEnvironment();
         $environment->addGlobal('sonata_admin', $this->getSonataAdmin());
+        $environment->addExtension(new RoutingExtension($this->createStub(UrlGeneratorInterface::class)));
+        $environment->addExtension(new HttpKernelExtension());
         if (!$environment->hasExtension(TranslationExtension::class)) {
             $environment->addExtension(new TranslationExtension(new StubTranslator()));
         }

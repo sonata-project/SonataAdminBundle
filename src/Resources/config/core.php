@@ -36,6 +36,7 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
+use Sonata\AdminBundle\Util\BCDeprecationParameters;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 
@@ -69,11 +70,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('routing.loader')
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
-                [],
-                new ReferenceConfigurator('service_container'),
             ])
 
         ->alias(AdminPoolLoader::class, 'sonata.admin.route_loader')
+            ->deprecate(...BCDeprecationParameters::forConfig(
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.95 and will be removed in 4.0.',
+                '3.95'
+            ))
 
         ->set('sonata.admin.helper', AdminHelper::class)
             ->public()
@@ -145,7 +148,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.audit.manager', AuditManager::class)
             ->public()
             ->args([
+                // NEXT_MAJOR: Remove next line.
                 new ReferenceConfigurator('service_container'),
+                null, // Service locator
             ])
 
         ->alias(AuditManager::class, 'sonata.admin.audit.manager')

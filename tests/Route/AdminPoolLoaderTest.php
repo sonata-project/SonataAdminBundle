@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Route\AdminPoolLoader;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
@@ -27,12 +28,15 @@ use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
  */
 class AdminPoolLoaderTest extends TestCase
 {
+    // NEXT_MAJOR: Remove next line.
+    use ExpectDeprecationTrait;
+
     public function testSupports(): void
     {
         $container = new Container();
-        $pool = new Pool($container);
+        $pool = new Pool($container, ['foo_admin', 'bar_admin']);
 
-        $adminPoolLoader = new AdminPoolLoader($pool, ['foo_admin', 'bar_admin'], $container);
+        $adminPoolLoader = new AdminPoolLoader($pool);
 
         $this->assertTrue($adminPoolLoader->supports('foo', 'sonata_admin'));
         $this->assertFalse($adminPoolLoader->supports('foo', 'bar'));
@@ -43,7 +47,7 @@ class AdminPoolLoaderTest extends TestCase
         $container = new Container();
         $pool = new Pool($container, ['foo_admin', 'bar_admin']);
 
-        $adminPoolLoader = new AdminPoolLoader($pool, ['foo_admin', 'bar_admin'], $container);
+        $adminPoolLoader = new AdminPoolLoader($pool);
 
         $routeCollection1 = new RouteCollection('base.Code.Route.foo', 'baseRouteNameFoo', 'baseRoutePatternFoo', 'baseControllerNameFoo');
         $routeCollection2 = new RouteCollection('base.Code.Route.bar', 'baseRouteNameBar', 'baseRoutePatternBar', 'baseControllerNameBar');
@@ -72,5 +76,33 @@ class AdminPoolLoaderTest extends TestCase
         $this->assertInstanceOf(SymfonyRoute::class, $collection->get('baseRouteNameFoo_foo'));
         $this->assertInstanceOf(SymfonyRoute::class, $collection->get('baseRouteNameBar_bar'));
         $this->assertInstanceOf(SymfonyRoute::class, $collection->get('baseRouteNameBar_bar'));
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @group legacy
+     */
+    public function testThrowsADeprecationConstructingWithContainer(): void
+    {
+        $container = new Container();
+        $pool = new Pool($container);
+
+        $this->expectDeprecation('Passing more than one argument to "Sonata\AdminBundle\Route\AdminPoolLoader::__construct()" is deprecated since sonata-project/admin-bundle 3.95.');
+        new AdminPoolLoader($pool, ['foo_admin', 'bar_admin'], $container);
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @group legacy
+     */
+    public function testThrowsADeprecationConstructingWithAdminServicesIds(): void
+    {
+        $container = new Container();
+        $pool = new Pool($container);
+
+        $this->expectDeprecation('Passing more than one argument to "Sonata\AdminBundle\Route\AdminPoolLoader::__construct()" is deprecated since sonata-project/admin-bundle 3.95.');
+        new AdminPoolLoader($pool, ['foo_admin', 'bar_admin']);
     }
 }

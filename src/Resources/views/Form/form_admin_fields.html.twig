@@ -535,3 +535,100 @@ file that was distributed with this source code.
         });
     </script>
 {% endblock %}
+
+{% block sonata_type_model_list_widget %}
+    <div id="field_container_{{ id }}" class="field-container">
+        <span id="field_widget_{{ id }}" class="field-short-description">
+            {% if sonata_admin.value and sonata_admin.field_description.associationadmin.id(sonata_admin.value) is not null %}
+                {{ render(path('sonata_admin_short_object_information', {
+                    'code': sonata_admin.field_description.associationadmin.code,
+                    'objectId': sonata_admin.field_description.associationadmin.id(sonata_admin.value),
+                    'uniqid': sonata_admin.field_description.associationadmin.uniqid,
+                    'linkParameters': sonata_admin.field_description.options.link_parameters
+                })) }}
+            {% elseif sonata_admin.field_description.options.placeholder is defined and sonata_admin.field_description.options.placeholder %}
+                <span class="inner-field-short-description">
+                    {{ sonata_admin.field_description.options.placeholder|trans({}, 'SonataAdminBundle') }}
+                </span>
+            {% endif %}
+        </span>
+        <span id="field_actions_{{ id }}" class="field-actions">
+            <span class="btn-group">
+                {% if sonata_admin.field_description.associationadmin.hasroute('list') and sonata_admin.field_description.associationadmin.hasAccess('list') and btn_list %}
+                    <a href="{{ sonata_admin.field_description.associationadmin.generateUrl('list') }}"
+                       onclick="return start_field_dialog_form_list_{{ id }}(this);"
+                       class="btn btn-info btn-sm sonata-ba-action"
+                       title="{{ btn_list|trans({}, btn_catalogue) }}"
+                    >
+                        <i class="fa fa-list"></i>
+                        {{ btn_list|trans({}, btn_catalogue) }}
+                    </a>
+                {% endif %}
+
+                {% if sonata_admin.field_description.associationadmin.hasroute('create')
+                    and sonata_admin.field_description.associationadmin.hasAccess('create')
+                    and btn_add
+                %}
+                    <a href="{{ sonata_admin.field_description.associationadmin.generateUrl('create') }}"
+                       onclick="return start_field_dialog_form_add_{{ id }}(this);"
+                       class="btn btn-success btn-sm sonata-ba-action"
+                       title="{{ btn_add|trans({}, btn_catalogue) }}"
+                    >
+                        <i class="fa fa-plus-circle"></i>
+                        {{ btn_add|trans({}, btn_catalogue) }}
+                    </a>
+                {% endif %}
+                {% if sonata_admin.field_description.associationadmin.hasroute('edit')
+                    and sonata_admin.field_description.associationadmin.hasAccess('edit')
+                    and btn_edit
+                %}
+                    <a href="{{ sonata_admin.value == null ? '' : sonata_admin.field_description.associationadmin.generateUrl('edit', {
+                        'id' : sonata_admin.field_description.associationadmin.normalizedIdentifier(sonata_admin.value)})
+                    }}"
+                       onclick="return start_field_dialog_form_edit_{{ id }}(this);"
+                       class="btn btn-warning btn-sm sonata-ba-action {% if sonata_admin.value == null %}hidden{% endif %}"
+                       title="{{ btn_edit|trans({}, btn_catalogue) }}"
+                    >
+                        <i class="fa fa-pencil"></i>
+                        {{ btn_edit|trans({}, btn_catalogue) }}
+                    </a>
+                {% endif %}
+            </span>
+
+            <span class="btn-group">
+                {% if btn_delete %}
+                    <button
+                        onclick="return remove_selected_element_{{ id }}(this);"
+                        class="btn btn-danger btn-sm sonata-ba-action"
+                        title="{{ btn_delete|trans({}, btn_catalogue) }}"
+                    >
+                        <i class="fa fa-minus-circle"></i>
+                        {{ btn_delete|trans({}, btn_catalogue) }}
+                    </button>
+                {% endif %}
+            </span>
+        </span>
+
+        <span style="display: none" >
+            {# Hidden text input cannot be required, because browser will throw error "An invalid form control with name='' is not focusable"  #}
+            {{ form_widget(form, {'required':false}) }}
+        </span>
+
+        {{ block('sonata_help') }}
+
+        <div class="modal fade" id="field_dialog_{{ id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include '@SonataAdmin/CRUD/Association/edit_many_script.html.twig' %}
+{% endblock %}

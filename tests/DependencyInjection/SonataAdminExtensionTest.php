@@ -19,6 +19,8 @@ use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
+use Sonata\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Configuration;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\Event\AdminEventExtension;
@@ -28,6 +30,8 @@ use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Filter\Persister\SessionFilterPersister;
 use Sonata\AdminBundle\Model\AuditManager;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
+use Sonata\AdminBundle\Model\AuditReaderInterface;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\AdminPoolLoader;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
@@ -376,6 +380,19 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
                 'skin' => 'skin-invalid',
             ],
         ]);
+    }
+
+    public function testAutoregisterAddingTagsToServices(): void
+    {
+        $this->load();
+
+        $autoconfiguredInstancesOf = $this->container->getAutoconfiguredInstanceof();
+
+        $this->assertArrayHasKey(ModelManagerInterface::class, $autoconfiguredInstancesOf);
+        $this->assertTrue($autoconfiguredInstancesOf[ModelManagerInterface::class]->hasTag(ModelManagerCompilerPass::MANAGER_TAG));
+
+        $this->assertArrayHasKey(AuditReaderInterface::class, $autoconfiguredInstancesOf);
+        $this->assertTrue($autoconfiguredInstancesOf[AuditReaderInterface::class]->hasTag(AddAuditReadersCompilerPass::AUDIT_READER_TAG));
     }
 
     protected function getContainerExtensions(): array

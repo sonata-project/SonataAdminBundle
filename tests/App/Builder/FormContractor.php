@@ -13,38 +13,18 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\App\Builder;
 
-use Sonata\AdminBundle\Builder\FormContractorInterface;
+use Sonata\AdminBundle\Builder\AbstractFormContractor;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 
-final class FormContractor implements FormContractorInterface
+final class FormContractor extends AbstractFormContractor
 {
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
-
-    public function __construct(FormFactoryInterface $formFactory)
+    protected function hasAssociation(FieldDescriptionInterface $fieldDescription): bool
     {
-        $this->formFactory = $formFactory;
+        return false;
     }
 
-    public function fixFieldDescription(FieldDescriptionInterface $fieldDescription): void
+    protected function hasSingleValueAssociation(FieldDescriptionInterface $fieldDescription): bool
     {
-    }
-
-    public function getFormBuilder(string $name, array $formOptions = []): FormBuilderInterface
-    {
-        return $this->formFactory->createNamedBuilder($name, FormType::class, null, $formOptions);
-    }
-
-    public function getDefaultOptions(
-        ?string $type,
-        FieldDescriptionInterface $fieldDescription,
-        array $formOptions = []
-    ): array {
-        return [];
+        return false;
     }
 }

@@ -1,8 +1,34 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.xx to 3.xx
+UPGRADE FROM 3.94 to 3.95
 =========================
+
+### `Sonata\AdminBundle\Route\AdminPoolLoader`
+
+- Deprecated constructing it passing more than one argument.
+- Deprecated `Sonata\AdminBundle\Route\AdminPoolLoader` service alias.
+
+## Deprecated not setting "sonata.admin.audit_reader" tag in audit reader services
+
+If you are using [autoconfiguration](https://symfony.com/doc/4.4/service_container.html#the-autoconfigure-option),
+all the services implementing `Sonata\AdminBundle\Model\AuditReaderInterface` will
+be automatically tagged. Otherwise, you MUST tag them explicitly.
+
+Before:
+```xml
+<service id="sonata.admin.audit_reader.custom" class="App\Model\AuditReader">
+    <!-- ... -->
+</service>
+```
+
+After:
+```xml
+<service id="sonata.admin.audit_reader.custom" class="App\Model\AuditReader">
+    <!-- ... -->
+    <tag name="sonata.admin.audit_reader"/>
+</service>
+```
 
 ### `Sonata\AdminBundle\Filter\FilterFactory`
 

@@ -1785,7 +1785,7 @@ class AdminTest extends TestCase
         $admin->setSecurityHandler($securityHandler);
 
         $routerGenerator = $this->createMock(RouteGeneratorInterface::class);
-        $routerGenerator->expects($this->exactly(9))->method('hasAdminRoute')->willReturn(false);
+        $routerGenerator->expects($this->exactly(4))->method('hasAdminRoute')->willReturn(false);
         $admin->setRouteGenerator($routerGenerator);
 
         $this->assertSame([], $admin->getActionButtons('show'));

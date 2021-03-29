@@ -208,6 +208,10 @@ class CRUDControllerTest extends TestCase
             ->method('render')
             ->will($templatingRenderReturnCallback);
 
+//        $twig
+//            ->method('supports')
+//            ->willReturn(true);
+
         $exporter = new Exporter([new JsonWriter(sys_get_temp_dir().'/sonataadmin/export.json')]);
 
         $adminExporter = new AdminExporter($exporter);
