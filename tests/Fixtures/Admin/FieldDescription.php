@@ -54,4 +54,19 @@ class FieldDescription extends BaseFieldDescription
     {
         throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
+
+    public function describesAssociation(): bool
+    {
+        return $this->describesSingleValuedAssociation() || $this->describesCollectionValuedAssociation();
+    }
+
+    public function describesSingleValuedAssociation(): bool
+    {
+        return false;
+    }
+
+    public function describesCollectionValuedAssociation(): bool
+    {
+        return false;
+    }
 }

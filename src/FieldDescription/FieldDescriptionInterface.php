@@ -59,6 +59,9 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
  * @method bool        hasAdmin()
  * @method bool        hasParent()
  * @method bool        hasAssociationAdmin()
+ * @method bool        describesAssociation()
+ * @method bool        describesSingleValuedAssociation()
+ * @method bool        describesCollectionValuedAssociation()
  */
 interface FieldDescriptionInterface
 {
@@ -282,6 +285,24 @@ interface FieldDescriptionInterface
 
     // NEXT_MAJOR: Uncomment the following line
     // public function hasAssociationAdmin(): bool;
+
+    // NEXT_MAJOR: Uncomment the following line
+    // /**
+    //  * Returns whether this object describes an association between two related models.
+    //  */
+    // public function describesAssociation(): bool;
+
+    // NEXT_MAJOR: Uncomment the following line
+    // /**
+    //  * Returns whether this object describes a single-valued (N..1) association.
+    //  */
+    // public function describesSingleValuedAssociation(): bool;
+
+    // NEXT_MAJOR: Uncomment the following line
+    // /**
+    //  * Returns whether this object describes a collection-valued (N..*) association.
+    //  */
+    // public function describesCollectionValuedAssociation(): bool;
 
     /**
      * Returns true if the FieldDescription is linked to an identifier field.

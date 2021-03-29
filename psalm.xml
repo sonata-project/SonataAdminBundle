@@ -15,5 +15,11 @@
                 <file name="src/Admin/FieldDescriptionRegistryInterface.php"/>
             </errorLevel>
         </UnrecognizedStatement>
+        <UndefinedClass>
+            <errorLevel type="suppress">
+                <!-- NEXT_MAJOR: Remove next line -->
+                <referencedClass name="Sonata\CoreBundle\Form\Type\CollectionType"/>
+            </errorLevel>
+        </UndefinedClass>
     </issueHandlers>
 </psalm>
