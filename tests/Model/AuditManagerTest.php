@@ -16,7 +16,6 @@ namespace Sonata\AdminBundle\Tests\Model;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Model\AuditManager;
 use Sonata\AdminBundle\Model\AuditReaderInterface;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\DependencyInjection\Container;
 
 /**

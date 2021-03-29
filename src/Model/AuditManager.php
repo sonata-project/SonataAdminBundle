@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Model;
 
 use Psr\Container\ContainerInterface;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
-use Symfony\Component\DependencyInjection\ContainerInterface as SymfonyContainerInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>

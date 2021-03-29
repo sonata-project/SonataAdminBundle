@@ -15,34 +15,33 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Model;
 
 use Sonata\AdminBundle\Model\AuditReaderInterface;
 
-// NEXT_MAJOR: Add type declarations
 final class AuditReader implements AuditReaderInterface
 {
-    public function find($className, $id, $revision): object
+    public function find(string $className, $id, $revisionId): ?object
     {
-        return new \stdClass();
+        return new $className();
     }
 
-    public function findRevisionHistory($className, $limit = 20, $offset = 0): array
-    {
-        return [
-            new \stdClass(),
-        ];
-    }
-
-    public function findRevision($classname, $revision): object
-    {
-        return new \stdClass();
-    }
-
-    public function findRevisions($className, $id): array
+    public function findRevisionHistory(string $className, int $limit = 20, int $offset = 0): array
     {
         return [
             new \stdClass(),
         ];
     }
 
-    public function diff($className, $id, $oldRevision, $newRevision): array
+    public function findRevision(string $className, $revisionId): ?object
+    {
+        return new \stdClass();
+    }
+
+    public function findRevisions(string $className, $id): array
+    {
+        return [
+            new \stdClass(),
+        ];
+    }
+
+    public function diff(string $className, $id, $oldRevisionId, $newRevisionId): array
     {
         return [];
     }
