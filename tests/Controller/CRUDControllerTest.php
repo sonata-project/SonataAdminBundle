@@ -212,6 +212,10 @@ class CRUDControllerTest extends TestCase
             ->method('render')
             ->will($templatingRenderReturnCallback);
 
+        $templating
+            ->method('supports')
+            ->willReturn(true);
+
         $this->session = new Session(new MockArraySessionStorage());
 
         $twig = $this->getMockBuilder(Environment::class)
