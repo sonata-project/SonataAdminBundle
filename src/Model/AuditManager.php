@@ -57,7 +57,7 @@ class AuditManager implements AuditManagerInterface
         if (null !== $this->psrContainer && !$this->psrContainer->has($serviceId)) {
             @trigger_error(sprintf(
                 'Not registering the audit reader "%1$s" with tag "%2$s" is deprecated since'
-                .' sonata-project/admin-bundle 3.x and will not work in 4.0.'
+                .' sonata-project/admin-bundle 3.95 and will not work in 4.0.'
                 .' You MUST add "%2$s" tag to the service "%1$s".',
                 $serviceId,
                 AddAuditReadersCompilerPass::AUDIT_READER_TAG

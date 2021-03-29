@@ -78,7 +78,7 @@ class FilterFactoryTest extends TestCase
     {
         $filter = new FilterFactory(new Container());
 
-        $this->expectDeprecation('Not declaring a filter as service is deprecated since sonata-project/admin-bundle 3.x and will not work in 4.0. You MUST register a service with class name (Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter) instead.');
+        $this->expectDeprecation('Not declaring a filter as service is deprecated since sonata-project/admin-bundle 3.95 and will not work in 4.0. You MUST register a service with class name (Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter) instead.');
 
         $filter->create('test', FooFilter::class);
     }

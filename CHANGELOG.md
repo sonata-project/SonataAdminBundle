@@ -2,6 +2,32 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.95.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.94.0...3.95.0) - 2021-03-29
+### Added
+- [[#6983](https://github.com/sonata-project/SonataAdminBundle/pull/6983)] Added `sonata.admin.audit_reader` tag for Audit readers. ([@franmomu](https://github.com/franmomu))
+- [[#6965](https://github.com/sonata-project/SonataAdminBundle/pull/6965)] Added `FieldDescriptionInterface::describesAssociation`, `FieldDescriptionInterface::describesSingleValuedAssociation`, `FieldDescriptionInterface::describesCollectionValuedAssociation` to abstract the association mapping types. ([@franmomu](https://github.com/franmomu))
+- [[#6965](https://github.com/sonata-project/SonataAdminBundle/pull/6965)] Added `AbstractFormContractor` base class to centralize association form option validation & defaults. ([@franmomu](https://github.com/franmomu))
+- [[#6946](https://github.com/sonata-project/SonataAdminBundle/pull/6946)] Added `Sonata\AdminBundle\FieldDescription\BaseFieldDescription` class. ([@franmomu](https://github.com/franmomu))
+- [[#6946](https://github.com/sonata-project/SonataAdminBundle/pull/6946)] Added `Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection` class. ([@franmomu](https://github.com/franmomu))
+- [[#6946](https://github.com/sonata-project/SonataAdminBundle/pull/6946)] Added `Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface` interface. ([@franmomu](https://github.com/franmomu))
+- [[#6946](https://github.com/sonata-project/SonataAdminBundle/pull/6946)] Added `Sonata\AdminBundle\FieldDescription\FieldDescriptionRegistryInterface` interface. ([@franmomu](https://github.com/franmomu))
+
+### Deprecated
+- [[#6978](https://github.com/sonata-project/SonataAdminBundle/pull/6978)] Deprecated constructing `AdminPoolLoader` passing more than one argument. ([@franmomu](https://github.com/franmomu))
+- [[#6978](https://github.com/sonata-project/SonataAdminBundle/pull/6978)] Deprecated `AdminPoolLoader` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#6983](https://github.com/sonata-project/SonataAdminBundle/pull/6983)] Deprecated not tagging an audit reader with the tag `sonata.admin.audit_reader`. ([@franmomu](https://github.com/franmomu))
+- [[#6976](https://github.com/sonata-project/SonataAdminBundle/pull/6976)] Deprecated not registering filters as a service. ([@franmomu](https://github.com/franmomu))
+- [[#6979](https://github.com/sonata-project/SonataAdminBundle/pull/6979)] `MenuBuilderInterface` interface. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6979](https://github.com/sonata-project/SonataAdminBundle/pull/6979)] `AbstractAdmin::buildSideMenu()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6979](https://github.com/sonata-project/SonataAdminBundle/pull/6979)] `AbstractAdmin::buildTabMenu()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6946](https://github.com/sonata-project/SonataAdminBundle/pull/6946)] Deprecated `Sonata\AdminBundle\Admin\BaseFieldDescription` class. ([@franmomu](https://github.com/franmomu))
+- [[#6946](https://github.com/sonata-project/SonataAdminBundle/pull/6946)] Deprecated `Sonata\AdminBundle\Admin\FieldDescriptionCollection` class. ([@franmomu](https://github.com/franmomu))
+- [[#6946](https://github.com/sonata-project/SonataAdminBundle/pull/6946)] Deprecated `Sonata\AdminBundle\Admin\FieldDescriptionInterface` interface. ([@franmomu](https://github.com/franmomu))
+- [[#6946](https://github.com/sonata-project/SonataAdminBundle/pull/6946)] Deprecated `Sonata\AdminBundle\Admin\FieldDescriptionRegistryInterface` interface. ([@franmomu](https://github.com/franmomu))
+
+### Fixed
+- [[#6944](https://github.com/sonata-project/SonataAdminBundle/pull/6944)] Optimize performance of checking is can access object in `AbstractAdmin::configureActionButtons()` ([@peter-gribanov](https://github.com/peter-gribanov))
+
 ## [3.94.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.93.0...3.94.0) - 2021-03-27
 ### Added
 - [[#6960](https://github.com/sonata-project/SonataAdminBundle/pull/6960)] `AbstractAdmin::configureDashboardActions()` ([@VincentLanglet](https://github.com/VincentLanglet))

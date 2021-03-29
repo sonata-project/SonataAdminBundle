@@ -82,8 +82,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
         ->alias(AdminPoolLoader::class, 'sonata.admin.route_loader')
             ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                '3.x'
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.95 and will be removed in 4.0.',
+                '3.95'
             ))
 
         ->set('sonata.admin.helper', AdminHelper::class)

@@ -1452,13 +1452,13 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * NEXT_MAJOR: Change the visibility to private and return type to void.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.95
      */
     public function buildTabMenu($action, ?AdminInterface $childAdmin = null)
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[2] ?? null)) {
             @trigger_error(sprintf(
-                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.95 and will be removed in version 4.0.',
                 __METHOD__
             ), \E_USER_DEPRECATED);
         }
@@ -1492,13 +1492,13 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.95
      */
     public function buildSideMenu($action, ?AdminInterface $childAdmin = null)
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[2] ?? null)) {
             @trigger_error(sprintf(
-                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.95 and will be removed in version 4.0.',
                 __METHOD__
             ), \E_USER_DEPRECATED);
         }

@@ -88,7 +88,7 @@ final class AddFilterTypeCompilerPassTest extends AbstractCompilerPassTestCase
             ->setDefinition('acme.demo.foo_filter', $filter);
 
         // NEXT_MAJOR: Remove deprecation and uncomment exception.
-        $this->expectDeprecation('Not declaring a filter with an existing class name is deprecated since sonata-project/admin-bundle 3.x and will not work in 4.0. You MUST register a service with an existing class name for service "acme.demo.foo_filter".');
+        $this->expectDeprecation('Not declaring a filter with an existing class name is deprecated since sonata-project/admin-bundle 3.95 and will not work in 4.0. You MUST register a service with an existing class name for service "acme.demo.foo_filter".');
 //        $this->expectException(InvalidArgumentException::class);
 //        $this->expectExceptionMessage('Class "not_existing_class" used for service "acme.demo.foo_filter" cannot be found.');
 
@@ -110,7 +110,7 @@ final class AddFilterTypeCompilerPassTest extends AbstractCompilerPassTestCase
             ->setDefinition('acme.demo.foo_filter', $filter);
 
         // NEXT_MAJOR: Remove deprecation and uncomment exception.
-        $this->expectDeprecation('Registering service "acme.demo.foo_filter" without implementing interface "Sonata\AdminBundle\Filter\FilterInterface" is deprecated since sonata-project/admin-bundle 3.x and will be mandatory in 4.0.');
+        $this->expectDeprecation('Registering service "acme.demo.foo_filter" without implementing interface "Sonata\AdminBundle\Filter\FilterInterface" is deprecated since sonata-project/admin-bundle 3.95 and will be mandatory in 4.0.');
 //        $this->expectException(InvalidArgumentException::class);
 //        $this->expectExceptionMessage('Service "acme.demo.foo_filter" MUST implement interface "Sonata\AdminBundle\Filter\FilterInterface".');
 
