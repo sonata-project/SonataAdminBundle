@@ -49,11 +49,6 @@ final class FieldDescription extends BaseFieldDescription
         return $this->getFieldValue($object, $this->fieldName);
     }
 
-    public function describesAssociation(): bool
-    {
-        return $this->describesSingleValuedAssociation() || $this->describesCollectionValuedAssociation();
-    }
-
     public function describesSingleValuedAssociation(): bool
     {
         return false;

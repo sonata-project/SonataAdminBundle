@@ -21,14 +21,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 final class FormBuilderIterator extends \RecursiveArrayIterator
 {
     /**
-     * NEXT_MAJOR: Remove this property.
-     *
-     * @deprecated since sonata-project/sonata-admin-bundle 3.95
-     *
-     * @var mixed[]
-     */
-    protected $keys = [];
-    /**
      * @var FormBuilderInterface
      */
     private $formBuilder;

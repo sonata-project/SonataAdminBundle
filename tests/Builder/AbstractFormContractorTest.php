@@ -50,10 +50,7 @@ final class AbstractFormContractorTest extends TestCase
     {
         parent::setUp();
 
-        // NEXT_MAJOR: Mock `FieldDescriptionInterface` instead and replace `getTargetEntity()` with `getTargetModel().
-        $this->fieldDescription = $this->getMockBuilder(FieldDescriptionInterface::class)
-            ->addMethods(['describesAssociation', 'describesSingleValuedAssociation'])
-            ->getMockForAbstractClass();
+        $this->fieldDescription = $this->createMock(FieldDescriptionInterface::class);
 
         $this->formFactory = $this->createMock(FormFactoryInterface::class);
 
@@ -204,7 +201,7 @@ final class AbstractFormContractorTest extends TestCase
         $this->fieldDescription->method('hasAssociationAdmin')->willReturn(false);
         $this->fieldDescription->method('describesSingleValuedAssociation')->willReturn(false);
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->formContractor->getDefaultOptions($formType, $this->fieldDescription);
     }
 

@@ -24,9 +24,6 @@ use Symfony\Component\DependencyInjection\Container;
  */
 final class AuditManagerTest extends TestCase
 {
-    // NEXT_MAJOR: Remove next line.
-    use ExpectDeprecationTrait;
-
     public function testGetReader(): void
     {
         $container = new Container();
@@ -62,25 +59,5 @@ final class AuditManagerTest extends TestCase
         /** @var class-string $foo */
         $foo = 'Foo\Foo';
         $auditManager->getReader($foo);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testReaderShouldBeTagged(): void
-    {
-        $container = new Container();
-
-        $fooReader = $this->createStub(AuditReaderInterface::class);
-
-        $container->set('foo_reader', $fooReader);
-
-        $auditManager = new AuditManager($container, new Container());
-
-        $this->expectDeprecation('Not registering the audit reader "foo_reader" with tag "sonata.admin.audit_reader" is deprecated since sonata-project/admin-bundle 3.95 and will not work in 4.0. You MUST add "sonata.admin.audit_reader" tag to the service "foo_reader".');
-
-        $auditManager->setReader('foo_reader', ['Foo\Foo1', 'Foo\Foo2']);
     }
 }

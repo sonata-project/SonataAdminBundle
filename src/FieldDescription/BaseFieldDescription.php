@@ -363,6 +363,11 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return false !== $this->getOption('virtual_field', false);
     }
 
+    final public function describesAssociation(): bool
+    {
+        return $this->describesSingleValuedAssociation() || $this->describesCollectionValuedAssociation();
+    }
+
     /**
      * @param array<string, mixed> $fieldMapping
      */

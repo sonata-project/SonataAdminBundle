@@ -47,7 +47,6 @@ final class AddAuditReadersCompilerPass implements CompilerPassInterface
             $readers[$id] = new Reference($id);
         }
 
-        // NEXT_MAJOR: Change index from 1 to 0.
-        $definition->replaceArgument(1, ServiceLocatorTagPass::register($container, $readers));
+        $definition->replaceArgument(0, ServiceLocatorTagPass::register($container, $readers));
     }
 }
