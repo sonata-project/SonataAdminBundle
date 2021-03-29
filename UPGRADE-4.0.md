@@ -138,10 +138,10 @@ The fourth argument of the `AdminListBlockService::__construct` method is now ma
 The `AdminHelper::__construct` method changes its `Pool` param to a `PropertyAccessorInterface` one.
 
 ## BreadcrumbsBuilder
-The `buildBreacrumbs` method may no longer be called from outside the class.
+The `buildBreadcrumbs` method may no longer be called from outside the class.
 
 ## BreadcrumbsBuilderInterface
-The `buildBreacrumbs` method has been removed from the interface.
+The `buildBreadcrumbs` method has been removed from the interface.
 
 ## SonataAdminExtension
 The Twig filters that come with the bundle will no longer load a default template when used with a missing template.
