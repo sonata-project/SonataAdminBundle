@@ -32,7 +32,6 @@ use Sonata\AdminBundle\Model\AuditManager;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\AuditReaderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Route\AdminPoolLoader;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy;
@@ -65,7 +64,6 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->load();
 
         $this->assertContainerBuilderHasService(Pool::class);
-        $this->assertContainerBuilderHasService(AdminPoolLoader::class);
         $this->assertContainerBuilderHasService(AdminHelper::class);
         $this->assertContainerBuilderHasService(FilterFactory::class);
         $this->assertContainerBuilderHasService(
