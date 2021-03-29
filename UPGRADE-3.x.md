@@ -1,7 +1,7 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.xx to 3.xx
+UPGRADE FROM 3.94 to 3.95
 =========================
 
 ### `Sonata\AdminBundle\Route\AdminPoolLoader`

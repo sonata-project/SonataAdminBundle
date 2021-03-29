@@ -88,7 +88,7 @@ class AdminPoolLoaderTest extends TestCase
         $container = new Container();
         $pool = new Pool($container);
 
-        $this->expectDeprecation('Passing more than one argument to "Sonata\AdminBundle\Route\AdminPoolLoader::__construct()" is deprecated since sonata-project/admin-bundle 3.x.');
+        $this->expectDeprecation('Passing more than one argument to "Sonata\AdminBundle\Route\AdminPoolLoader::__construct()" is deprecated since sonata-project/admin-bundle 3.95.');
         new AdminPoolLoader($pool, ['foo_admin', 'bar_admin'], $container);
     }
 
@@ -102,7 +102,7 @@ class AdminPoolLoaderTest extends TestCase
         $container = new Container();
         $pool = new Pool($container);
 
-        $this->expectDeprecation('Passing more than one argument to "Sonata\AdminBundle\Route\AdminPoolLoader::__construct()" is deprecated since sonata-project/admin-bundle 3.x.');
+        $this->expectDeprecation('Passing more than one argument to "Sonata\AdminBundle\Route\AdminPoolLoader::__construct()" is deprecated since sonata-project/admin-bundle 3.95.');
         new AdminPoolLoader($pool, ['foo_admin', 'bar_admin']);
     }
 }

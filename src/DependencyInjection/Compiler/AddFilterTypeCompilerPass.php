@@ -49,7 +49,7 @@ class AddFilterTypeCompilerPass implements CompilerPassInterface
                 // NEXT_MAJOR: Remove "trigger_error" and uncomment the exception below.
                 @trigger_error(sprintf(
                     'Not declaring a filter with an existing class name is deprecated since'
-                    .' sonata-project/admin-bundle 3.x and will not work in 4.0.'
+                    .' sonata-project/admin-bundle 3.95 and will not work in 4.0.'
                     .' You MUST register a service with an existing class name for service "%s".',
                     $id,
                 ), \E_USER_DEPRECATED);
@@ -61,7 +61,7 @@ class AddFilterTypeCompilerPass implements CompilerPassInterface
                 // NEXT_MAJOR: Remove "trigger_error" and uncomment the exception below.
                 @trigger_error(sprintf(
                     'Registering service "%s" without implementing interface "%s" is deprecated since'
-                    .' sonata-project/admin-bundle 3.x and will be mandatory in 4.0.',
+                    .' sonata-project/admin-bundle 3.95 and will be mandatory in 4.0.',
                     $id,
                     FilterInterface::class,
                 ), \E_USER_DEPRECATED);

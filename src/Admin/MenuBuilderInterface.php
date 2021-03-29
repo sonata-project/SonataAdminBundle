@@ -22,7 +22,7 @@ use Knp\Menu\ItemInterface;
  *
  * NEXT_MAJOR: Remove this interface.
  *
- * @deprecated since sonata-project/admin-bundle 3.x
+ * @deprecated since sonata-project/admin-bundle 3.95
  */
 interface MenuBuilderInterface
 {
@@ -46,7 +46,7 @@ interface MenuBuilderInterface
      *
      * @return ItemInterface|bool
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.95
      *
      * @phpstan-param AdminInterface<object>|null $childAdmin
      */

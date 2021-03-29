@@ -32,7 +32,7 @@ class_alias(
  */
 if (false) {
     /**
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.95, to be removed in 4.0.
      * Use Sonata\AdminBundle\FieldDescription\BaseFieldDescription instead.
      */
     abstract class BaseFieldDescription extends \Sonata\AdminBundle\FieldDescription\BaseFieldDescription

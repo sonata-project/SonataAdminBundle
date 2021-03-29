@@ -55,7 +55,7 @@ class AdminPoolLoader extends Loader
         if (\func_num_args() > 1) {
             @trigger_error(sprintf(
                 'Passing more than one argument to "%s()" is deprecated since'
-                .' sonata-project/admin-bundle 3.x.',
+                .' sonata-project/admin-bundle 3.95.',
                 __METHOD__
             ), \E_USER_DEPRECATED);
         }

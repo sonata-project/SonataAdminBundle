@@ -72,7 +72,7 @@ final class AuditManagerTest extends TestCase
 
         $auditManager = new AuditManager($container, new Container());
 
-        $this->expectDeprecation('Not registering the audit reader "foo_reader" with tag "sonata.admin.audit_reader" is deprecated since sonata-project/admin-bundle 3.x and will not work in 4.0. You MUST add "sonata.admin.audit_reader" tag to the service "foo_reader".');
+        $this->expectDeprecation('Not registering the audit reader "foo_reader" with tag "sonata.admin.audit_reader" is deprecated since sonata-project/admin-bundle 3.95 and will not work in 4.0. You MUST add "sonata.admin.audit_reader" tag to the service "foo_reader".');
 
         $auditManager->setReader('foo_reader', ['Foo\Foo1', 'Foo\Foo2']);
     }

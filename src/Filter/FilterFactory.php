@@ -63,7 +63,7 @@ class FilterFactory implements FilterFactoryInterface
         } elseif (class_exists($type)) {
             // NEXT_MAJOR: Remove this "elseif" block
             @trigger_error(sprintf(
-                'Not declaring a filter as service is deprecated since sonata-project/admin-bundle 3.x'
+                'Not declaring a filter as service is deprecated since sonata-project/admin-bundle 3.95'
                 .' and will not work in 4.0.'
                 .' You MUST register a service with class name (%s) instead.',
                 $type,
