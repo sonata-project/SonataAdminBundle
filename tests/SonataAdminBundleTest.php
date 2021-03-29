@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AdminMakerCompilerPass;
@@ -35,7 +36,7 @@ class SonataAdminBundleTest extends TestCase
     {
         $containerBuilder = $this->createMock(ContainerBuilder::class);
 
-        $containerBuilder->expects($this->exactly(9))
+        $containerBuilder->expects($this->exactly(10))
             ->method('addCompilerPass')
             ->withConsecutive(
                 [new AddDependencyCallsCompilerPass()],
@@ -47,6 +48,7 @@ class SonataAdminBundleTest extends TestCase
                 [new ObjectAclManipulatorCompilerPass()],
                 [new TwigStringExtensionCompilerPass()],
                 [new AdminMakerCompilerPass()],
+                [new AddAuditReadersCompilerPass()],
             )
         ;
 
