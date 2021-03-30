@@ -30,7 +30,6 @@ final class AddFilterTypeCompilerPassTest extends AbstractCompilerPassTestCase
 
         $filterFactoryDefinition = new Definition(FilterFactoryInterface::class, [
             null,
-            [],
         ]);
 
         $this->container
@@ -57,9 +56,8 @@ final class AddFilterTypeCompilerPassTest extends AbstractCompilerPassTestCase
 
         $this->compile();
 
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
-            'sonata.admin.builder.filter.factory',
-            1,
+        $this->assertContainerBuilderHasServiceLocator(
+            (string) $this->container->getDefinition('sonata.admin.builder.filter.factory')->getArgument(0),
             [
                 FooFilter::class => 'acme.demo.foo_filter',
                 BarFilter::class => 'acme.demo.bar_filter',

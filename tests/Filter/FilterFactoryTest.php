@@ -21,22 +21,13 @@ use Symfony\Component\DependencyInjection\Container;
 
 class FilterFactoryTest extends TestCase
 {
-    public function testUnknownType(): void
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('No attached service to type named `mytype`');
-
-        $filter = new FilterFactory(new Container());
-        $filter->create('test', 'mytype');
-    }
-
     public function testUnknownClassType(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('No attached service to type named `Sonata\AdminBundle\Form\Type\Filter\FooType`');
+        $this->expectExceptionMessage('No attached service to type named `stdClass`');
 
         $filter = new FilterFactory(new Container());
-        $filter->create('test', 'Sonata\AdminBundle\Form\Type\Filter\FooType');
+        $filter->create('test', \stdClass::class);
     }
 
     public function testClassType(): void
@@ -44,9 +35,7 @@ class FilterFactoryTest extends TestCase
         $container = new Container();
         $container
             ->set(DefaultType::class, new DefaultType());
-        $filter = new FilterFactory($container, [
-            DefaultType::class => DefaultType::class,
-        ]);
+        $filter = new FilterFactory($container);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
@@ -63,11 +52,10 @@ class FilterFactoryTest extends TestCase
             ->method('initialize');
 
         $container = new Container();
-        $container->set('my.filter.id', $filter);
-
         $fqcn = \get_class($filter);
+        $container->set($fqcn, $filter);
 
-        $filter = new FilterFactory($container, [$fqcn => 'my.filter.id']);
+        $filter = new FilterFactory($container);
         $filter->create('test', $fqcn);
     }
 }

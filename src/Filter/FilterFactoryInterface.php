@@ -20,6 +20,7 @@ interface FilterFactoryInterface
 {
     /**
      * @param array<string, mixed> $options
+     * @phpstan-param class-string $type
      */
     public function create(string $name, string $type, array $options = []): FilterInterface;
 }
