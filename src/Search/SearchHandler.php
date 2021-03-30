@@ -90,6 +90,7 @@ class SearchHandler
 
             if ($filter->getOption('global_search', false)) {
                 $filter->setOption('case_sensitive', $this->caseSensitive);
+                $filter->setOption('or_group', $admin->getCode());
                 $filter->setCondition(FilterInterface::CONDITION_OR);
                 $datagrid->setValue($formName, null, $term);
                 $found = true;
