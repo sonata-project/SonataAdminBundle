@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Filter;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -25,29 +25,18 @@ final class FilterFactory implements FilterFactoryInterface
      */
     private $container;
 
-    /**
-     * @var array<string, string>
-     */
-    private $types;
-
-    /**
-     * @param array<string, string> $types
-     */
-    public function __construct(ContainerInterface $container, array $types = [])
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->types = $types;
     }
 
     public function create(string $name, string $type, array $options = []): FilterInterface
     {
-        $id = $this->types[$type] ?? false;
-
-        if ($id) {
-            $filter = $this->container->get($id);
-        } else {
+        if (!$this->container->has($type)) {
             throw new \RuntimeException(sprintf('No attached service to type named `%s`', $type));
         }
+
+        $filter = $this->container->get($type);
 
         if (!$filter instanceof FilterInterface) {
             throw new \RuntimeException(sprintf('The service `%s` must implement `FilterInterface`', $type));

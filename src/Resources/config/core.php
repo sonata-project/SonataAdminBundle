@@ -78,8 +78,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.builder.filter.factory', FilterFactory::class)
             ->public()
             ->args([
-                new ReferenceConfigurator('service_container'),
-                [],
+                null, // Service locator
             ])
 
         ->alias(FilterFactoryInterface::class, 'sonata.admin.builder.filter.factory')

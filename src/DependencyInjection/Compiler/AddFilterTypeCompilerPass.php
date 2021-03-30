@@ -15,8 +15,10 @@ namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @internal
@@ -32,13 +34,12 @@ final class AddFilterTypeCompilerPass implements CompilerPassInterface
         }
 
         $definition = $container->getDefinition('sonata.admin.builder.filter.factory');
-        $types = [];
+        $services = [];
 
         foreach ($container->findTaggedServiceIds('sonata.admin.filter.type') as $id => $attributes) {
             $serviceDefinition = $container->getDefinition($id);
 
             $serviceDefinition->setShared(false);
-            $serviceDefinition->setPublic(true); // Temporary fix until we can support service locators
 
             $class = $serviceDefinition->getClass();
             $reflectionClass = $container->getReflectionClass($class);
@@ -51,9 +52,9 @@ final class AddFilterTypeCompilerPass implements CompilerPassInterface
                 throw new InvalidArgumentException(sprintf('Service "%s" MUST implement interface "%s".', $id, FilterInterface::class));
             }
 
-            $types[$serviceDefinition->getClass()] = $id;
+            $services[$class] = new Reference($id);
         }
 
-        $definition->replaceArgument(1, $types);
+        $definition->replaceArgument(0, ServiceLocatorTagPass::register($container, $services));
     }
 }
