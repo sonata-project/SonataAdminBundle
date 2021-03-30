@@ -14,6 +14,8 @@ file that was distributed with this source code.
             {% for field_name, nested_field in form.children|first.children %}
                 {% if field_name == '_delete' %}
                     <th>{{ 'action_delete'|trans({}, 'SonataAdminBundle') }}</th>
+                {% elseif field_name == '_edit' %}
+                    <th>{{ 'action_edit'|trans({}, 'SonataAdminBundle') }}</th>
                 {% else %}
                     <th
                         {% if nested_field.vars['required']|default(false) %}
@@ -69,6 +71,8 @@ file that was distributed with this source code.
                             {% set dummy = nested_group_field.setrendered %}
                         {% else %}
                             {% if field_name == '_delete' %}
+                                {{ form_widget(nested_field, { label: false }) }}
+                            {% elseif field_name == '_edit' %}
                                 {{ form_widget(nested_field, { label: false }) }}
                             {% else %}
                                 {{ form_widget(nested_field) }}

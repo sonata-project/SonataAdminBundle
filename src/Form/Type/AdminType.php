@@ -76,6 +76,13 @@ class AdminType extends AbstractType
 
             $builder->add('_delete', $options['delete_options']['type'], $options['delete_options']['type_options']);
         }
+        if ($options['edit'] && $admin->hasAccess('edit')) {
+            if (!array_key_exists('translation_domain', $options['edit_options']['type_options'])) {
+                $options['edit_options']['type_options']['translation_domain'] = $admin->getTranslationDomain();
+            }
+
+            $builder->add('_edit', $options['edit_options']['type'], $options['edit_options']['type_options']);
+        }
 
         // hack to make sure the subject is correctly set
         // https://github.com/sonata-project/SonataAdminBundle/pull/2076
@@ -140,6 +147,7 @@ class AdminType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['btn_add'] = $options['btn_add'];
+        $view->vars['btn_edit'] = $options['btn_edit'];
         $view->vars['btn_list'] = $options['btn_list'];
         $view->vars['btn_delete'] = $options['btn_delete'];
         $view->vars['btn_catalogue'] = $options['btn_catalogue'];
@@ -161,8 +169,20 @@ class AdminType extends AbstractType
                     'mapped' => false,
                 ],
             ],
+            'edit' => false,
+            'edit_options' => function (Options $options) {
+                return [
+                    'type' => ModelLinkType::class,
+                    'type_options' => [
+                        'required' => false,
+                        'mapped' => false,
+                        'sonata_field_description' => $options['sonata_field_description'],
+                    ]
+                ];
+            },
             'auto_initialize' => false,
             'btn_add' => 'link_add',
+            'btn_edit' => 'link_edit',
             'btn_list' => 'link_list',
             'btn_delete' => 'link_delete',
             'btn_catalogue' => 'SonataAdminBundle',

@@ -36,6 +36,7 @@ use Sonata\AdminBundle\Form\Type\Filter\DefaultType;
 use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
+use Sonata\AdminBundle\Form\Type\ModelLinkType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Form\Type\ModelReferenceType;
 use Sonata\AdminBundle\Form\Type\ModelType;
@@ -85,6 +86,7 @@ class SonataAdminBundle extends Bundle
             'sonata_type_admin' => AdminType::class,
             'sonata_type_model' => ModelType::class,
             'sonata_type_model_list' => ModelListType::class,
+            'sonata_type_model_link' => ModelLinkType::class,
             'sonata_type_model_reference' => ModelReferenceType::class,
             'sonata_type_model_hidden' => ModelHiddenType::class,
             'sonata_type_model_autocomplete' => ModelAutocompleteType::class,
