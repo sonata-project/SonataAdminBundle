@@ -15,8 +15,12 @@ file that was distributed with this source code.
     {# NEXT_MAJOR: Remove the following line #}
     {% set show_empty_boxes = show_empty_boxes|default(sonata_admin.adminPool.container.getParameter('sonata.admin.configuration.global_search.empty_boxes')) %}
     {% set visibility_class = 'sonata-search-result-' ~ show_empty_boxes %}
-    {# NEXT_MAJOR: remove the attribute check and just use .currentPageResults #}
-    {% if pager and (attribute(pager, 'getCurrentPageResults') is defined ? pager.currentPageResults : pager.results)|length %}
+    {% set current_page_results = [] %}
+    {# NEXT_MAJOR: remove the attribute check and just use .countResults() #}
+    {% set results_count = pager ? (attribute(pager, 'countResults') is defined ? pager.countResults() : pager.getNbResults()) : 0 %}
+    {% if results_count > 0 %}
+        {# NEXT_MAJOR: remove the attribute check and just use .currentPageResults #}
+        {% set current_page_results = attribute(pager, 'getCurrentPageResults') is defined ? pager.currentPageResults : pager.results %}
         {% set visibility_class = 'sonata-search-result-show' %}
     {% endif %}
 
@@ -32,10 +36,8 @@ file that was distributed with this source code.
                 </h3>
 
                 <div class="box-tools pull-right">
-                    {# NEXT_MAJOR: remove the attribute check and just use .countResults() #}
-                    {% if pager and (attribute(pager, 'countResults') is defined ? pager.countResults() : pager.getNbResults()) > 0 %}
-                        {# NEXT_MAJOR: remove the attribute check and just use .countResults() #}
-                        <span class="badge">{{ (attribute(pager, 'countResults') is defined ? pager.countResults() : pager.getNbResults()) }}</span>
+                    {% if results_count > 0 %}
+                        <span class="badge">{{ results_count }}</span>
                     {% elseif admin.hasRoute('create') and admin.hasAccess('create') %}
                         <a href="{{ admin.generateUrl('create') }}" class="btn btn-box-tool">
                             <i class="fa fa-plus" aria-hidden="true"></i>
@@ -48,12 +50,10 @@ file that was distributed with this source code.
                     {% endif %}
                 </div>
             </div>
-            {# NEXT_MAJOR: remove the attribute check and just use .currentPageResults #}
-            {% if pager and (attribute(pager, 'getCurrentPageResults') is defined ? pager.currentPageResults : pager.results)|length %}
+            {% if results_count > 0 %}
                 <div class="box-body no-padding">
                     <ul class="nav nav-stacked sonata-search-result-list">
-                        {# NEXT_MAJOR: remove the attribute check and just use .currentPageResults #}
-                        {% for result in (attribute(pager, 'getCurrentPageResults') is defined ? pager.currentPageResults : pager.results) %}
+                        {% for result in current_page_results %}
                             {% set link = admin.getSearchResultLink(result) %}
                             {% if link %}
                                 <li><a href="{{ link }}">{{ admin.toString(result) }}</a></li>
