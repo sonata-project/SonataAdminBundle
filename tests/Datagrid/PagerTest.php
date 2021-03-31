@@ -308,8 +308,7 @@ class PagerTest extends TestCase
 
         $this->pager->expects($this->once())
             ->method('countResults')
-            ->willReturn(100)
-        ;
+            ->willReturn(100);
 
         $this->assertTrue($this->pager->haveToPaginate());
     }
