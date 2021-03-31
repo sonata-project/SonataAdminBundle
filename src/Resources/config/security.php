@@ -33,8 +33,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
         ->set('sonata.admin.manipulator.acl.admin.class', AdminAclManipulator::class)
 
-        ->set('sonata.admin.object.manipulator.acl.admin.class', AdminObjectAclManipulator::class)
-    ;
+        ->set('sonata.admin.object.manipulator.acl.admin.class', AdminObjectAclManipulator::class);
 
     // Use "service" function for creating references to services when dropping support for Symfony 4.4
     // Use "param" function for creating references to parameters when dropping support for Symfony 5.1
@@ -74,6 +73,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 new ReferenceConfigurator('form.factory'),
                 '%sonata.admin.security.mask.builder.class%',
-            ])
-    ;
+            ]);
 };

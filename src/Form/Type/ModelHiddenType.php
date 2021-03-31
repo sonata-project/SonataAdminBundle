@@ -35,8 +35,7 @@ class ModelHiddenType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']), true)
-        ;
+            ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']), true);
     }
 
     /**

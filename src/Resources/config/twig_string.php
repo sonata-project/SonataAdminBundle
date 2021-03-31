@@ -31,6 +31,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->deprecate(...BCDeprecationParameters::forConfig(
                 'The "%service_id%" service is deprecated since sonata-project/admin-bundle 3.70. You should stop using it, as it will be removed in 4.0.',
                 '3.70'
-            ))
-    ;
+            ));
 };

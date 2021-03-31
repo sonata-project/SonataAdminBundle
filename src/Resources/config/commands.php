@@ -71,6 +71,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
                 new ReferenceConfigurator('sonata.admin.manipulator.acl.admin'),
-            ])
-    ;
+            ]);
 };

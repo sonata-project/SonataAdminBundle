@@ -257,6 +257,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->alias(TemplateRegistry::class, 'sonata.admin.global_template_registry')
 
         // NEXT_MAJOR: remove this alias, global template registry SHOULD NOT be mutable
-        ->alias(MutableTemplateRegistryInterface::class, 'sonata.admin.global_template_registry')
-    ;
+        ->alias(MutableTemplateRegistryInterface::class, 'sonata.admin.global_template_registry');
 };

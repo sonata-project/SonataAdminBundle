@@ -331,8 +331,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $model = new Foo();
         $this->modelManager->expects($this->once())
             ->method('getIdentifierValues')
-            ->willReturn([123])
-        ;
+            ->willReturn([123]);
 
         $value = $transformer->transform($model);
         $this->assertSame([

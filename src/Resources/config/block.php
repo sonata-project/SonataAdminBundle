@@ -47,6 +47,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 new ReferenceConfigurator('twig'),
                 new ReferenceConfigurator('sonata.admin.pool'),
-            ])
-    ;
+            ]);
 };
