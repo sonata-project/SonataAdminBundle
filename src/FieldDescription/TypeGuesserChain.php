@@ -56,7 +56,7 @@ class TypeGuesserChain implements TypeGuesserInterface, DeprecatedTypeGuesserInt
         $this->guessers = array_merge(...$allGuessers);
     }
 
-    public function guess(FieldDescriptionInterface $fieldDescription): TypeGuess
+    public function guess(FieldDescriptionInterface $fieldDescription): ?TypeGuess
     {
         $guesses = [];
 
@@ -69,7 +69,10 @@ class TypeGuesserChain implements TypeGuesserInterface, DeprecatedTypeGuesserInt
                 ));
             }
 
-            $guesses[] = $guesser->guess($fieldDescription);
+            $guess = $guesser->guess($fieldDescription);
+            if (null !== $guess) {
+                $guesses[] = $guess;
+            }
         }
 
         return TypeGuess::getBestGuess($guesses);

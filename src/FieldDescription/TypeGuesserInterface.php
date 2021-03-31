@@ -17,5 +17,5 @@ use Symfony\Component\Form\Guess\TypeGuess;
 
 interface TypeGuesserInterface
 {
-    public function guess(FieldDescriptionInterface $fieldDescription): TypeGuess;
+    public function guess(FieldDescriptionInterface $fieldDescription): ?TypeGuess;
 }
