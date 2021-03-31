@@ -15,24 +15,18 @@ namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Tests\App\Model\Foo;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
 use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
 use Sonata\AdminBundle\Twig\Extension\XEditableExtension;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
 use Symfony\Component\Routing\RequestContext;
@@ -47,8 +41,6 @@ use Twig\Extra\String\StringExtension;
  */
 final class RenderElementExtensionTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
     private const X_EDITABLE_TYPE_MAPPING = [
         'choice' => 'select',
         'boolean' => 'select',
@@ -82,11 +74,6 @@ final class RenderElementExtensionTest extends TestCase
     private $admin;
 
     /**
-     * @var AdminInterface&MockObject
-     */
-    private $adminBar;
-
-    /**
      * @var FieldDescriptionInterface&MockObject
      */
     private $fieldDescription;
@@ -97,49 +84,18 @@ final class RenderElementExtensionTest extends TestCase
     private $object;
 
     /**
-     * @var Pool
-     */
-    private $pool;
-
-    /**
-     * @var LoggerInterface&MockObject
-     */
-    private $logger;
-
-    /**
      * @var TranslatorInterface
      */
     private $translator;
-
-    /**
-     * @var Container
-     */
-    private $container;
 
     /**
      * @var MutableTemplateRegistryInterface&MockObject
      */
     private $templateRegistry;
 
-    /**
-     * @var PropertyAccessor
-     */
-    private $propertyAccessor;
-
     protected function setUp(): void
     {
         date_default_timezone_set('Europe/London');
-
-        $container = new Container();
-
-        $this->pool = new Pool(
-            $container,
-            ['sonata_admin_foo_service'],
-            [],
-            [Foo::class => ['sonata_admin_foo_service']]
-        );
-
-        $this->logger = $this->getMockForAbstractClass(LoggerInterface::class);
 
         // translation extension
         $translator = new Translator('en');
@@ -153,7 +109,6 @@ final class RenderElementExtensionTest extends TestCase
 
         $this->translator = $translator;
 
-        $this->container = new Container();
         $this->templateRegistry = $this->createMock(MutableTemplateRegistryInterface::class);
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
@@ -201,18 +156,6 @@ final class RenderElementExtensionTest extends TestCase
             ->method('getNormalizedIdentifier')
             ->with($this->equalTo($this->object))
             ->willReturn('12345');
-
-        $this->adminBar = $this->createMock(AdminInterface::class);
-        $this->adminBar
-            ->method('hasAccess')
-            ->willReturn(true);
-        $this->adminBar
-            ->method('getNormalizedIdentifier')
-            ->with($this->equalTo($this->object))
-            ->willReturn('12345');
-
-        $container->set('sonata_admin_foo_service', $this->admin);
-        $container->set('sonata_admin_bar_service', $this->adminBar);
 
         // initialize field description
         $this->fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
