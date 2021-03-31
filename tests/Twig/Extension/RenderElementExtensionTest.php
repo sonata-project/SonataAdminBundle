@@ -19,8 +19,8 @@ use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\App\Model\Foo;
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
 use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
@@ -117,7 +117,7 @@ final class RenderElementExtensionTest extends TestCase
     private $container;
 
     /**
-     * @var TemplateRegistryInterface&MockObject
+     * @var MutableTemplateRegistryInterface&MockObject
      */
     private $templateRegistry;
 
@@ -153,9 +153,8 @@ final class RenderElementExtensionTest extends TestCase
 
         $this->translator = $translator;
 
-        $this->templateRegistry = $this->createStub(TemplateRegistryInterface::class);
         $this->container = new Container();
-        $this->container->set('sonata_admin_foo_service.template_registry', $this->templateRegistry);
+        $this->templateRegistry = $this->createMock(MutableTemplateRegistryInterface::class);
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
         $request = $this->createMock(Request::class);
@@ -175,11 +174,7 @@ final class RenderElementExtensionTest extends TestCase
             'optimizations' => 0,
         ]);
 
-        $this->twigExtension = new RenderElementExtension(
-            $propertyAccessor,
-            $this->container,
-            $this->logger,
-        );
+        $this->twigExtension = new RenderElementExtension($propertyAccessor);
 
         $this->registerRequiredTwigExtensions();
 
@@ -188,6 +183,10 @@ final class RenderElementExtensionTest extends TestCase
 
         // initialize admin
         $this->admin = $this->createMock(AdminInterface::class);
+
+        $this->admin
+            ->method('getTemplateRegistry')
+            ->willReturn($this->templateRegistry);
 
         $this->admin
             ->method('getCode')
