@@ -106,8 +106,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
             // NEXT_MAJOR: Remove "user_entity" option.
             ->addOption('user_entity', null, InputOption::VALUE_OPTIONAL, '<error>DEPRECATED</error> Use <comment>user_model</comment> option instead.')
             ->addOption('user_model', null, InputOption::VALUE_OPTIONAL, 'Fully qualified class name <comment>App\Model\User</comment>. If not set, it will be asked the first time an object owner is set.')
-            ->addOption('step', null, InputOption::VALUE_NONE, 'If set, the task will ask for each admin if the ACLs need to be generated and what object owner to set, if any.')
-        ;
+            ->addOption('step', null, InputOption::VALUE_NONE, 'If set, the task will ask for each admin if the ACLs need to be generated and what object owner to set, if any.');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)

@@ -56,6 +56,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 new ReferenceConfigurator('sonata.admin.route.cache'),
                 new ReferenceConfigurator('sonata.admin.pool'),
-            ])
-    ;
+            ]);
 };

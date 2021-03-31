@@ -71,6 +71,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
         ->set('sonata.admin.menu.matcher.voter.active', ActiveVoter::class)
             ->public()
-            ->tag('knp_menu.voter')
-    ;
+            ->tag('knp_menu.voter');
 };

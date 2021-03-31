@@ -49,8 +49,7 @@ class SonataAdminBundleTest extends TestCase
                 [new TwigStringExtensionCompilerPass()],
                 [new AdminMakerCompilerPass()],
                 [new AddAuditReadersCompilerPass()],
-            )
-        ;
+            );
 
         $bundle = new SonataAdminBundle();
         $bundle->build($containerBuilder);

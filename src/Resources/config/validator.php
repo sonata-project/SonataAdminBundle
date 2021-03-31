@@ -26,6 +26,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 new ReferenceConfigurator('service_container'),
                 new ReferenceConfigurator('validator.validator_factory'),
-            ])
-    ;
+            ]);
 };

@@ -58,12 +58,10 @@ class ModelType extends AbstractType
             );
 
             $builder
-                ->addEventSubscriber(new MergeCollectionListener())
-            ;
+                ->addEventSubscriber(new MergeCollectionListener());
         } else {
             $builder
-                ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']), true)
-            ;
+                ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']), true);
         }
     }
 

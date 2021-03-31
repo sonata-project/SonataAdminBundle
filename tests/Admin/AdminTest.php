@@ -1732,8 +1732,7 @@ class AdminTest extends TestCase
         $form = $this->createMock(FormInterface::class);
         $formBuild->expects($this->once())
             ->method('getForm')
-            ->willReturn($form)
-        ;
+            ->willReturn($form);
 
         $formContractor = $this->createMock(FormContractorInterface::class);
         $formContractor
@@ -1881,8 +1880,7 @@ class AdminTest extends TestCase
             ->willReturn([
                 '_sort_by' => 'id',
                 '_sort_order' => 'ASC',
-            ])
-        ;
+            ]);
 
         $commentAdmin->setModelManager($modelManager);
 

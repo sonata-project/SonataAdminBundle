@@ -84,8 +84,7 @@ class AdminVoterTest extends AbstractVoterTest
                 $this->equalTo('admin'),
                 $this->equalTo('route')
             ))
-            ->willReturn($data)
-        ;
+            ->willReturn($data);
 
         return $item;
     }
@@ -99,21 +98,17 @@ class AdminVoterTest extends AbstractVoterTest
         $admin
             ->method('hasRoute')
             ->with('list')
-            ->willReturn($list)
-        ;
+            ->willReturn($list);
         $admin
             ->method('hasAccess')
             ->with('list')
-            ->willReturn($granted)
-        ;
+            ->willReturn($granted);
         $admin
             ->method('getCode')
-            ->willReturn($code)
-        ;
+            ->willReturn($code);
         $admin
             ->method('getChildren')
-            ->willReturn([])
-        ;
+            ->willReturn([]);
 
         return $admin;
     }
@@ -131,28 +126,23 @@ class AdminVoterTest extends AbstractVoterTest
         $parentAdmin
             ->method('hasRoute')
             ->with('list')
-            ->willReturn($list)
-        ;
+            ->willReturn($list);
         $parentAdmin
             ->method('hasAccess')
             ->with('list')
-            ->willReturn($granted)
-        ;
+            ->willReturn($granted);
         $parentAdmin
             ->method('getCode')
-            ->willReturn($parentCode)
-        ;
+            ->willReturn($parentCode);
 
         $childAdmin = $this->createMock(AbstractAdmin::class);
         $childAdmin
             ->method('getBaseCodeRoute')
-            ->willReturn(sprintf('%s|%s', $parentCode, $childCode))
-        ;
+            ->willReturn(sprintf('%s|%s', $parentCode, $childCode));
 
         $parentAdmin
             ->method('getChildren')
-            ->willReturn([$childAdmin])
-        ;
+            ->willReturn([$childAdmin]);
 
         return $parentAdmin;
     }

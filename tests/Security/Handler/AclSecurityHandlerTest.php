@@ -151,8 +151,7 @@ class AclSecurityHandlerTest extends TestCase
         $aclProvider
             ->expects($this->once())
             ->method('updateAcl')
-            ->with($acl)
-        ;
+            ->with($acl);
 
         $handler = new AclSecurityHandler(
             $this->getTokenStorageMock(),

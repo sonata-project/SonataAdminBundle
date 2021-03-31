@@ -78,8 +78,7 @@ class ChoiceType extends AbstractType
     {
         $builder
             ->add('type', $options['operator_type'], array_merge(['required' => false], $options['operator_options']))
-            ->add('value', $options['field_type'], array_merge(['required' => false], $options['field_options']))
-        ;
+            ->add('value', $options['field_type'], array_merge(['required' => false], $options['field_options']));
     }
 
     /**

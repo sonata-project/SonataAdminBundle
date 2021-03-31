@@ -29,6 +29,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 new ReferenceConfigurator('filesystem'),
                 '%kernel.project_dir%',
-            ])
-    ;
+            ]);
 };
