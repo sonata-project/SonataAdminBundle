@@ -73,6 +73,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $loader->load('menu.php');
         $loader->load('route.php');
         $loader->load('twig.php');
+        // NEXT_MAJOR: Remove next line.
         $loader->load('validator.php');
 
         if (isset($bundles['MakerBundle'])) {
