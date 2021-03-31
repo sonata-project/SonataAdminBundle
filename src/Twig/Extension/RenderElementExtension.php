@@ -13,12 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Twig\Extension;
 
-use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
@@ -28,16 +23,6 @@ use Twig\TwigFilter;
 final class RenderElementExtension extends AbstractExtension
 {
     /**
-     * @var LoggerInterface|null
-     */
-    private $logger;
-
-    /**
-     * @var ContainerInterface|null
-     */
-    private $templateRegistries;
-
-    /**
      * @var PropertyAccessorInterface
      */
     private $propertyAccessor;
@@ -45,14 +30,9 @@ final class RenderElementExtension extends AbstractExtension
     /**
      * @internal This class should only be used through Twig
      */
-    public function __construct(
-        PropertyAccessorInterface $propertyAccessor,
-        ContainerInterface $templateRegistries,
-        ?LoggerInterface $logger = null
-    ) {
+    public function __construct(PropertyAccessorInterface $propertyAccessor)
+    {
         $this->propertyAccessor = $propertyAccessor;
-        $this->templateRegistries = $templateRegistries;
-        $this->logger = $logger;
     }
 
     /**
@@ -106,7 +86,7 @@ final class RenderElementExtension extends AbstractExtension
     ): string {
         $template = $this->getTemplate(
             $fieldDescription,
-            $this->getTemplateRegistry($fieldDescription->getAdmin()->getCode())->getTemplate('base_list_field'),
+            $fieldDescription->getAdmin()->getTemplateRegistry()->getTemplate('base_list_field'),
             $environment
         );
 
@@ -304,21 +284,5 @@ EOT;
         $templateName = $fieldDescription->getTemplate() ?: $defaultTemplate;
 
         return $environment->load($templateName);
-    }
-
-    /**
-     * @throws ServiceCircularReferenceException
-     * @throws ServiceNotFoundException
-     */
-    private function getTemplateRegistry(string $adminCode): TemplateRegistryInterface
-    {
-        $serviceId = $adminCode.'.template_registry';
-        $templateRegistry = $this->templateRegistries->get($serviceId);
-
-        if ($templateRegistry instanceof TemplateRegistryInterface) {
-            return $templateRegistry;
-        }
-
-        throw new ServiceNotFoundException($serviceId);
     }
 }
