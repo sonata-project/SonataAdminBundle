@@ -83,6 +83,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->public()
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
-            ])
-    ;
+            ]);
 };

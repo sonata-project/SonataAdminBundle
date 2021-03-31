@@ -13,7 +13,10 @@ file that was distributed with this source code.
 
 {% block block %}
     {% set visibility_class = 'sonata-search-result-' ~ show_empty_boxes %}
-    {% if pager and pager.currentPageResults|length %}
+    {% set current_page_results = [] %}
+    {% set results_count = pager ? pager.countResults() : 0 %}
+    {% if results_count > 0 %}
+        {% set current_page_results = pager.currentPageResults %}
         {% set visibility_class = 'sonata-search-result-show' %}
     {% endif %}
 
@@ -29,8 +32,8 @@ file that was distributed with this source code.
                 </h3>
 
                 <div class="box-tools pull-right">
-                    {% if pager and pager.countResults() > 0 %}
-                        <span class="badge">{{ pager.countResults() }}</span>
+                    {% if results_count > 0 %}
+                        <span class="badge">{{ results_count }}</span>
                     {% elseif admin.hasRoute('create') and admin.hasAccess('create') %}
                         <a href="{{ admin.generateUrl('create') }}" class="btn btn-box-tool">
                             <i class="fa fa-plus" aria-hidden="true"></i>
@@ -43,10 +46,10 @@ file that was distributed with this source code.
                     {% endif %}
                 </div>
             </div>
-            {% if pager and pager.currentPageResults|length %}
+            {% if results_count > 0 %}
                 <div class="box-body no-padding">
                     <ul class="nav nav-stacked sonata-search-result-list">
-                        {% for result in pager.currentPageResults %}
+                        {% for result in current_page_results %}
                             {% set link = admin.getSearchResultLink(result) %}
                             {% if link %}
                                 <li><a href="{{ link }}">{{ admin.toString(result) }}</a></li>

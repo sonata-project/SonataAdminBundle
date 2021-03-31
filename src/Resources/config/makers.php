@@ -25,6 +25,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 '%kernel.project_dir%',
                 [],
                 '%sonata.admin.configuration.default_controller%',
-            ])
-    ;
+            ]);
 };

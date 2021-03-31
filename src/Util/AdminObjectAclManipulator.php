@@ -235,7 +235,6 @@ final class AdminObjectAclManipulator
     {
         return ($aclValue instanceof UserInterface)
             ? UserSecurityIdentity::fromAccount($aclValue)
-            : new RoleSecurityIdentity($aclValue)
-        ;
+            : new RoleSecurityIdentity($aclValue);
     }
 }

@@ -241,8 +241,7 @@ class FormMapperTest extends TestCase
         $this->formMapper
             ->ifTrue(true)
             ->add('foo', 'bar')
-            ->ifEnd()
-        ;
+            ->ifEnd();
 
         $this->assertTrue($this->formMapper->has('foo'));
     }
@@ -252,8 +251,7 @@ class FormMapperTest extends TestCase
         $this->formMapper
             ->ifTrue(false)
             ->add('foo', 'bar')
-            ->ifEnd()
-        ;
+            ->ifEnd();
 
         $this->assertFalse($this->formMapper->has('foo'));
     }
@@ -268,8 +266,7 @@ class FormMapperTest extends TestCase
             ->ifTrue(false)
             ->add('foo', 'bar')
             ->ifEnd()
-            ->add('baz', 'foobaz')
-        ;
+            ->add('baz', 'foobaz');
 
         $this->assertFalse($this->formMapper->has('foo'));
         $this->assertTrue($this->formMapper->has('baz'));
@@ -284,8 +281,7 @@ class FormMapperTest extends TestCase
         $this->formMapper
             ->ifFalse(false)
             ->add('foo', 'bar')
-            ->ifEnd()
-        ;
+            ->ifEnd();
 
         $this->assertTrue($this->formMapper->has('foo'));
     }
@@ -295,8 +291,7 @@ class FormMapperTest extends TestCase
         $this->formMapper
             ->ifFalse(true)
             ->add('foo', 'bar')
-            ->ifEnd()
-        ;
+            ->ifEnd();
 
         $this->assertFalse($this->formMapper->has('foo'));
     }
@@ -311,8 +306,7 @@ class FormMapperTest extends TestCase
             ->ifFalse(true)
             ->add('foo', 'bar')
             ->ifEnd()
-            ->add('baz', 'foobaz')
-        ;
+            ->add('baz', 'foobaz');
 
         $this->assertFalse($this->formMapper->has('foo'));
         $this->assertTrue($this->formMapper->has('baz'));
@@ -325,8 +319,7 @@ class FormMapperTest extends TestCase
                 ->ifTrue(true)
                     ->add('fooName')
                 ->ifEnd()
-            ->ifEnd()
-        ;
+            ->ifEnd();
 
         $this->assertTrue($this->formMapper->has('fooName'));
     }
@@ -338,8 +331,7 @@ class FormMapperTest extends TestCase
                 ->ifFalse(false)
                     ->add('fooName')
                 ->ifEnd()
-            ->ifEnd()
-        ;
+            ->ifEnd();
 
         $this->assertTrue($this->formMapper->has('fooName'));
     }
@@ -351,8 +343,7 @@ class FormMapperTest extends TestCase
                 ->ifFalse(false)
                     ->add('fooName')
                 ->ifEnd()
-            ->ifEnd()
-        ;
+            ->ifEnd();
 
         $this->assertTrue($this->formMapper->has('fooName'));
     }
@@ -364,8 +355,7 @@ class FormMapperTest extends TestCase
                 ->ifTrue(true)
                     ->add('fooName')
                 ->ifEnd()
-            ->ifEnd()
-        ;
+            ->ifEnd();
 
         $this->assertTrue($this->formMapper->has('fooName'));
     }
@@ -377,8 +367,7 @@ class FormMapperTest extends TestCase
                 ->ifTrue(false)
                     ->add('fooName')
                 ->ifEnd()
-            ->ifEnd()
-        ;
+            ->ifEnd();
 
         $this->assertFalse($this->formMapper->has('fooName'));
     }
@@ -390,8 +379,7 @@ class FormMapperTest extends TestCase
                 ->ifFalse(true)
                     ->add('fooName')
                 ->ifEnd()
-            ->ifEnd()
-        ;
+            ->ifEnd();
 
         $this->assertFalse($this->formMapper->has('fooName'));
     }
@@ -501,8 +489,7 @@ class FormMapperTest extends TestCase
 
         $this->formMapper
             ->add('foo', 'bar')
-            ->add('baz', 'foobaz')
-        ;
+            ->add('baz', 'foobaz');
 
         $this->assertSame(['foo', 'baz'], $this->formMapper->keys());
     }
@@ -515,8 +502,7 @@ class FormMapperTest extends TestCase
 
         $this->formMapper
             ->add('fo.o', 'bar')
-            ->add('ba__z', 'foobaz')
-        ;
+            ->add('ba__z', 'foobaz');
 
         $this->assertSame(['fo__o', 'ba____z'], $this->formMapper->keys());
     }

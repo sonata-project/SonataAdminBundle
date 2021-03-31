@@ -33,6 +33,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         ->set('sonata.admin.event_listener.configure_crud_controller', ConfigureCRUDControllerListener::class)
-            ->tag('kernel.event_subscriber')
-    ;
+            ->tag('kernel.event_subscriber');
 };

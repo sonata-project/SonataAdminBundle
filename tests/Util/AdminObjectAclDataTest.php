@@ -234,31 +234,26 @@ class AdminObjectAclDataTest extends TestCase
 
         $securityHandler
             ->method('getObjectPermissions')
-            ->willReturn(['VIEW', 'EDIT', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER'])
-        ;
+            ->willReturn(['VIEW', 'EDIT', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER']);
 
         $securityHandler
             ->method('buildSecurityInformation')
             ->with($this->isInstanceOf(AdminInterface::class))
-            ->willReturn([])
-        ;
+            ->willReturn([]);
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
 
         $admin
             ->method('isGranted')
-            ->willReturn($isOwner)
-        ;
+            ->willReturn($isOwner);
 
         $admin
             ->method('getSecurityHandler')
-            ->willReturn($securityHandler)
-        ;
+            ->willReturn($securityHandler);
 
         $admin
             ->method('isAclEnabled')
-            ->willReturn($isAclEnabled)
-        ;
+            ->willReturn($isAclEnabled);
 
         return $admin;
     }

@@ -155,8 +155,7 @@ final class AbstractFormContractorTest extends TestCase
         $admin
             ->expects($this->once())
             ->method('attachAdminClass')
-            ->with($this->fieldDescription)
-        ;
+            ->with($this->fieldDescription);
 
         // When
         $this->formContractor->fixFieldDescription($this->fieldDescription);
@@ -182,8 +181,7 @@ final class AbstractFormContractorTest extends TestCase
         $admin
             ->expects($this->once())
             ->method('attachAdminClass')
-            ->with($this->fieldDescription)
-        ;
+            ->with($this->fieldDescription);
 
         // When
         $this->formContractor->fixFieldDescription($this->fieldDescription);

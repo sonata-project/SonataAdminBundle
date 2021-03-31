@@ -51,12 +51,15 @@ final class TypeGuesserChain implements TypeGuesserInterface
         $this->guessers = array_merge(...$allGuessers);
     }
 
-    public function guess(FieldDescriptionInterface $fieldDescription): TypeGuess
+    public function guess(FieldDescriptionInterface $fieldDescription): ?TypeGuess
     {
         $guesses = [];
 
         foreach ($this->guessers as $guesser) {
-            $guesses[] = $guesser->guess($fieldDescription);
+            $guess = $guesser->guess($fieldDescription);
+            if (null !== $guess) {
+                $guesses[] = $guess;
+            }
         }
 
         return TypeGuess::getBestGuess($guesses);

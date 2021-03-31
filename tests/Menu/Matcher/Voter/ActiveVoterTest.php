@@ -57,8 +57,7 @@ class ActiveVoterTest extends AbstractVoterTest
                 }
 
                 return true;
-            })
-        ;
+            });
 
         return $item;
     }

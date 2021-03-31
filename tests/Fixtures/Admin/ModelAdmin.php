@@ -29,8 +29,7 @@ final class ModelAdmin extends AbstractAdmin
         $datagridMapper
             ->add('foo')
             ->add('bar')
-            ->add('baz')
-        ;
+            ->add('baz');
     }
 
     protected function configureListFields(ListMapper $listMapper): void
@@ -45,8 +44,7 @@ final class ModelAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                 ],
-            ])
-        ;
+            ]);
     }
 
     protected function configureFormFields(FormMapper $formMapper): void
@@ -54,8 +52,7 @@ final class ModelAdmin extends AbstractAdmin
         $formMapper
             ->add('foo')
             ->add('bar')
-            ->add('baz')
-        ;
+            ->add('baz');
     }
 
     protected function configureShowFields(ShowMapper $showMapper): void
@@ -63,7 +60,6 @@ final class ModelAdmin extends AbstractAdmin
         $showMapper
             ->add('foo')
             ->add('bar')
-            ->add('baz')
-        ;
+            ->add('baz');
     }
 }

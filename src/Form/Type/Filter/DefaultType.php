@@ -36,8 +36,7 @@ final class DefaultType extends AbstractType
     {
         $builder
             ->add('type', $options['operator_type'], $options['operator_options'] + ['required' => false])
-            ->add('value', $options['field_type'], $options['field_options'] + ['required' => false])
-        ;
+            ->add('value', $options['field_type'], $options['field_options'] + ['required' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

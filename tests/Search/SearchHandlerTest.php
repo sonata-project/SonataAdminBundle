@@ -46,7 +46,6 @@ class SearchHandlerTest extends TestCase
         $filter = $this->getMockForAbstractClass(FilterInterface::class);
         $filter->expects($this->once())->method('getFormName')->willReturn('formName');
         $filter->expects($this->once())->method('getOption')->with('global_search')->willReturn(true);
-        $filter->expects($this->once())->method('setOption')->with('case_sensitive', $caseSensitive);
 
         $pager = $this->createMock(PagerInterface::class);
         $pager->expects($this->once())->method('setPage');
@@ -57,8 +56,19 @@ class SearchHandlerTest extends TestCase
         $datagrid->expects($this->once())->method('setValue');
         $datagrid->expects($this->once())->method('getPager')->willReturn($pager);
 
+        $adminCode = 'my.admin';
+
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())->method('getDatagrid')->willReturn($datagrid);
+        $admin->expects($this->exactly(2))->method('getCode')->willReturn($adminCode);
+
+        $filter
+            ->expects($this->exactly(2))
+            ->method('setOption')
+            ->withConsecutive(
+                [$this->equalTo('case_sensitive'), $caseSensitive],
+                [$this->equalTo('or_group'), $adminCode]
+            );
 
         $handler = new SearchHandler($caseSensitive);
         $this->assertInstanceOf(PagerInterface::class, $handler->search($admin, 'myservice'));
@@ -73,13 +83,14 @@ class SearchHandlerTest extends TestCase
     }
 
     /**
+     * @phpstan-param class-string|null $expected
+     *
      * @dataProvider provideAdminSearchConfigurations
      */
-    public function testAdminSearch($expected, $filterCallsCount, ?bool $enabled, string $adminCode): void
+    public function testAdminSearch(?string $expected, int $filterCallsCount, ?bool $enabled, string $adminCode): void
     {
         $filter = $this->createMock(FilterInterface::class);
         $filter->expects($this->exactly($filterCallsCount))->method('getOption')->with('global_search')->willReturn(true);
-        $filter->expects($this->exactly($filterCallsCount))->method('setOption')->with('case_sensitive', true);
 
         $pager = $this->createMock(PagerInterface::class);
         $pager->expects($this->exactly($filterCallsCount))->method('setPage');
@@ -92,7 +103,16 @@ class SearchHandlerTest extends TestCase
 
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->exactly($filterCallsCount))->method('getDatagrid')->willReturn($datagrid);
-        $admin->expects($this->once())->method('getCode')->willReturn($adminCode);
+
+        $admin->expects($this->exactly(null === $expected ? 1 : 2))->method('getCode')->willReturn($adminCode);
+
+        $filter
+            ->expects($this->exactly(null === $expected ? 0 : 2))
+            ->method('setOption')
+            ->withConsecutive(
+                [$this->equalTo('case_sensitive'), true],
+                [$this->equalTo('or_group'), $adminCode]
+            );
 
         $handler = new SearchHandler(true);
 

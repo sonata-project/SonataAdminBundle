@@ -37,8 +37,7 @@ final class DateTimeType extends AbstractType
     {
         $builder
             ->add('type', DateOperatorType::class, ['required' => false])
-            ->add('value', $options['field_type'], $options['field_options'] + ['required' => false])
-        ;
+            ->add('value', $options['field_type'], $options['field_options'] + ['required' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

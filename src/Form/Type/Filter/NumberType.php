@@ -36,8 +36,7 @@ final class NumberType extends AbstractType
     {
         $builder
             ->add('type', NumberOperatorType::class, ['required' => false])
-            ->add('value', $options['field_type'], $options['field_options'] + ['required' => false])
-        ;
+            ->add('value', $options['field_type'], $options['field_options'] + ['required' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

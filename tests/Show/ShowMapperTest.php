@@ -302,8 +302,7 @@ class ShowMapperTest extends TestCase
                 ->ifTrue(true)
                     ->add('fooName')
                 ->ifEnd()
-            ->ifEnd()
-        ;
+            ->ifEnd();
 
         $this->assertTrue($this->showMapper->has('fooName'));
     }
@@ -315,8 +314,7 @@ class ShowMapperTest extends TestCase
                 ->ifFalse(false)
                     ->add('fooName')
                 ->ifEnd()
-            ->ifEnd()
-        ;
+            ->ifEnd();
 
         $this->assertTrue($this->showMapper->has('fooName'));
     }
@@ -328,8 +326,7 @@ class ShowMapperTest extends TestCase
                 ->ifFalse(false)
                     ->add('fooName')
                 ->ifEnd()
-            ->ifEnd()
-        ;
+            ->ifEnd();
 
         $this->assertTrue($this->showMapper->has('fooName'));
     }
@@ -341,8 +338,7 @@ class ShowMapperTest extends TestCase
                 ->ifTrue(true)
                     ->add('fooName')
                 ->ifEnd()
-            ->ifEnd()
-        ;
+            ->ifEnd();
 
         $this->assertTrue($this->showMapper->has('fooName'));
     }
@@ -354,8 +350,7 @@ class ShowMapperTest extends TestCase
                 ->ifTrue(false)
                     ->add('fooName')
                 ->ifEnd()
-            ->ifEnd()
-        ;
+            ->ifEnd();
 
         $this->assertFalse($this->showMapper->has('fooName'));
     }
@@ -367,8 +362,7 @@ class ShowMapperTest extends TestCase
                 ->ifFalse(true)
                     ->add('fooName')
                 ->ifEnd()
-            ->ifEnd()
-        ;
+            ->ifEnd();
 
         $this->assertFalse($this->showMapper->has('fooName'));
     }
