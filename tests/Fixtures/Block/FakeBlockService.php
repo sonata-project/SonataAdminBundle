@@ -29,7 +29,6 @@ class FakeBlockService extends AdminListBlockService
             ->setDefaults([
                 'foo' => 'bar',
                 'groups' => true,
-            ])
-        ;
+            ]);
     }
 }

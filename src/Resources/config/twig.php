@@ -41,8 +41,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'percent' => 'number',
             'url' => 'url',
             'date' => 'date',
-        ])
-    ;
+        ]);
 
     // Use "service" function for creating references to services when dropping support for Symfony 4.4
     // Use "param" function for creating references to parameters when dropping support for Symfony 5.1
@@ -110,6 +109,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('property_accessor'),
                 new ReferenceConfigurator('service_container'),
                 (new ReferenceConfigurator('logger'))->nullOnInvalid(),
-            ])
-    ;
+            ]);
 };

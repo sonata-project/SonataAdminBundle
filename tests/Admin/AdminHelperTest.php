@@ -274,8 +274,7 @@ class AdminHelperTest extends TestCase
         $admin
             ->method('hasFormFieldDescription')
             ->with($associationMapping['fieldName'])
-            ->willReturn(true)
-        ;
+            ->willReturn(true);
 
         $request = $this->createStub(Request::class);
         $request
@@ -390,8 +389,7 @@ class AdminHelperTest extends TestCase
         $admin
             ->method('hasFormFieldDescription')
             ->with($associationMapping['fieldName'])
-            ->willReturn(false)
-        ;
+            ->willReturn(false);
 
         $request = $this->createStub(Request::class);
         $request
@@ -485,8 +483,7 @@ class AdminHelperTest extends TestCase
         $admin
             ->method('hasFormFieldDescription')
             ->with($associationMapping['fieldName'])
-            ->willReturn(false)
-        ;
+            ->willReturn(false);
 
         $request = $this->createStub(Request::class);
         $request

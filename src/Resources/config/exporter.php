@@ -24,6 +24,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->public()
             ->args([
                 new ReferenceConfigurator('sonata.exporter.exporter'),
-            ])
-    ;
+            ]);
 };

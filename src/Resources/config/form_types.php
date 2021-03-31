@@ -156,6 +156,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->call('addCustomGlobalTransformer', [
                 'boolean',
                 new ReferenceConfigurator('sonata.admin.form.data_transformer.boolean_to_string'),
-            ])
-    ;
+            ]);
 };
