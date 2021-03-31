@@ -97,15 +97,13 @@ final class RenderElementExtension extends AbstractExtension
      *
      * @param object|mixed[]       $listElement
      * @param array<string, mixed> $params
-     *
-     * @return string
      */
     public function renderListElement(
         Environment $environment,
         $listElement,
         FieldDescriptionInterface $fieldDescription,
-        $params = []
-    ) {
+        array $params = []
+    ): string {
         $template = $this->getTemplate(
             $fieldDescription,
             $this->getTemplateRegistry($fieldDescription->getAdmin()->getCode())->getTemplate('base_list_field'),
@@ -122,18 +120,11 @@ final class RenderElementExtension extends AbstractExtension
         ]), $environment);
     }
 
-    /**
-     * render a view element.
-     *
-     * @param object $object
-     *
-     * @return string
-     */
     public function renderViewElement(
         Environment $environment,
         FieldDescriptionInterface $fieldDescription,
-        $object
-    ) {
+        object $object
+    ): string {
         $template = $this->getTemplate(
             $fieldDescription,
             '@SonataAdmin/CRUD/base_show_field.html.twig',
@@ -153,15 +144,13 @@ final class RenderElementExtension extends AbstractExtension
      *
      * @param mixed $baseObject
      * @param mixed $compareObject
-     *
-     * @return string
      */
     public function renderViewElementCompare(
         Environment $environment,
         FieldDescriptionInterface $fieldDescription,
         $baseObject,
         $compareObject
-    ) {
+    ): string {
         $template = $this->getTemplate(
             $fieldDescription,
             '@SonataAdmin/CRUD/base_show_field.html.twig',
