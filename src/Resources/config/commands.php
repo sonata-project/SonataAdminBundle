@@ -40,7 +40,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 '%kernel.debug%',
             ])
 
-        ->set(ExplainAdminCommand::class, ExplainAdminCommand::class)
+        ->set('sonata.admin.command.explain', ExplainAdminCommand::class)
             ->public()
             ->tag('console.command')
             ->args([
@@ -48,8 +48,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('validator'),
             ])
 
+        // NEXT_MAJOR: Remove this alias.
+        ->alias(ExplainAdminCommand::class, 'sonata.admin.command.explain')
+            ->deprecate(...BCDeprecationParameters::forConfig(
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+                '3.x'
+            ))
+
         // NEXT_MAJOR: Remove the "setRegistry" call.
-        ->set(GenerateObjectAclCommand::class, GenerateObjectAclCommand::class)
+        ->set('sonata.admin.command.generate_object_acl', GenerateObjectAclCommand::class)
             ->public()
             ->tag('console.command')
             ->args([
@@ -58,18 +65,38 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
             ->call('setRegistry', [(new ReferenceConfigurator('doctrine'))->nullOnInvalid()])
 
-        ->set(ListAdminCommand::class, ListAdminCommand::class)
+        ->alias(GenerateObjectAclCommand::class, 'sonata.admin.command.generate_object_acl')
+            ->deprecate(...BCDeprecationParameters::forConfig(
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+                '3.x'
+            ))
+
+        ->set('sonata.admin.command.list', ListAdminCommand::class)
             ->public()
             ->tag('console.command')
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
             ])
 
-        ->set(SetupAclCommand::class, SetupAclCommand::class)
+        // NEXT_MAJOR: Remove this alias.
+        ->alias(ListAdminCommand::class, 'sonata.admin.command.list')
+            ->deprecate(...BCDeprecationParameters::forConfig(
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+                '3.x'
+            ))
+
+        ->set('sonata.admin.command.setup_acl', SetupAclCommand::class)
             ->public()
             ->tag('console.command')
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
                 new ReferenceConfigurator('sonata.admin.manipulator.acl.admin'),
-            ]);
+            ])
+
+        // NEXT_MAJOR: Remove this alias.
+        ->alias(SetupAclCommand::class, 'sonata.admin.command.setup_acl')
+            ->deprecate(...BCDeprecationParameters::forConfig(
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+                '3.x'
+            ));
 };

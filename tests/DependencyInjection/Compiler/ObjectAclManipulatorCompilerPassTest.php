@@ -35,7 +35,7 @@ class ObjectAclManipulatorCompilerPassTest extends TestCase
 
         $objectAclManipulatorCompilerPass->process($containerBuilder);
 
-        $availableManagers = $containerBuilder->getDefinition(GenerateObjectAclCommand::class)->getArgument(1);
+        $availableManagers = $containerBuilder->getDefinition('sonata.admin.command.generate_object_acl')->getArgument(1);
 
         $this->assertArrayHasKey($serviceId, $availableManagers);
     }
@@ -66,7 +66,7 @@ class ObjectAclManipulatorCompilerPassTest extends TestCase
         $pool = new Pool(new Container());
         $container = new ContainerBuilder();
         $container
-            ->register(GenerateObjectAclCommand::class)
+            ->register('sonata.admin.command.generate_object_acl')
             ->setClass(GenerateObjectAclCommand::class)
             ->setArguments([$pool, []]);
 
