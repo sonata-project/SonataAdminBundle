@@ -20,6 +20,11 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Reference;
 
+/**
+ * NEXT_MAJOR: Remove the "since" part of the internal annotation.
+ *
+ * @internal since sonata-project/admin-bundle version 4.0
+ */
 final class AddAuditReadersCompilerPass implements CompilerPassInterface
 {
     public const AUDIT_READER_TAG = 'sonata.admin.audit_reader';

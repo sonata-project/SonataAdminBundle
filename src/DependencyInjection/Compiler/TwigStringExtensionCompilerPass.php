@@ -18,6 +18,11 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Twig\Extra\String\StringExtension;
 
+/**
+ * NEXT_MAJOR: Remove the "since" part of the internal annotation.
+ *
+ * @internal since sonata-project/admin-bundle version 4.0
+ */
 final class TwigStringExtensionCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
