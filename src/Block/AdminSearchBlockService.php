@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Block;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
@@ -153,9 +154,11 @@ class AdminSearchBlockService extends AbstractBlockService
 
         $admin->checkAccess('list');
 
+        $term = $blockContext->getSetting('query');
+
         $pager = $this->searchHandler->search(
             $admin,
-            $blockContext->getSetting('query'),
+            $term,
             $blockContext->getSetting('page'),
             $blockContext->getSetting('per_page')
         );
@@ -166,12 +169,18 @@ class AdminSearchBlockService extends AbstractBlockService
             return $response->setContent('')->setStatusCode(204);
         }
 
+        $filters = array_filter($admin->getDatagrid()->getFilters(), static function (FilterInterface $filter): bool {
+            return $filter->isActive();
+        });
+
         return $this->renderPrivateResponse($admin->getTemplate('search_result_block'), [
             'block' => $blockContext->getBlock(),
             'settings' => $blockContext->getSettings(),
             // NEXT_MAJOR: Remove next line.
             'admin_pool' => $this->pool,
             'pager' => $pager,
+            'term' => $term,
+            'filters' => $filters,
             'admin' => $admin,
             'show_empty_boxes' => $this->emptyBoxesOption,
         ], $response);
