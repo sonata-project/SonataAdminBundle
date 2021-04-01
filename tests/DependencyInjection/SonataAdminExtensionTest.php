@@ -47,7 +47,7 @@ use Sonata\AdminBundle\Twig\GlobalVariables;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
-class SonataAdminExtensionTest extends AbstractExtensionTestCase
+final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 {
     /**
      * @var array
@@ -67,44 +67,44 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->load();
 
         $this->assertContainerBuilderHasService(Pool::class);
+        // NEXT_MAJOR: Remove next line.
         $this->assertContainerBuilderHasService(AdminPoolLoader::class);
+        // NEXT_MAJOR: Remove next line.
         $this->assertContainerBuilderHasService(AdminHelper::class);
+        // NEXT_MAJOR: Remove next line.
         $this->assertContainerBuilderHasService(FilterFactory::class);
-        $this->assertContainerBuilderHasService(
-            FilterFactoryInterface::class,
-            FilterFactory::class
-        );
+        $this->assertContainerBuilderHasService(FilterFactoryInterface::class);
+        // NEXT_MAJOR: Remove next line.
         $this->assertContainerBuilderHasService(BreadcrumbsBuilder::class);
-        $this->assertContainerBuilderHasService(
-            BreadcrumbsBuilderInterface::class,
-            BreadcrumbsBuilder::class
-        );
+        $this->assertContainerBuilderHasService(BreadcrumbsBuilderInterface::class);
+        // NEXT_MAJOR: Remove next line.
         $this->assertContainerBuilderHasService(BCLabelTranslatorStrategy::class);
+        // NEXT_MAJOR: Remove next line.
         $this->assertContainerBuilderHasService(NativeLabelTranslatorStrategy::class);
-        $this->assertContainerBuilderHasService(
-            LabelTranslatorStrategyInterface::class,
-            NativeLabelTranslatorStrategy::class
-        );
+        $this->assertContainerBuilderHasService(LabelTranslatorStrategyInterface::class);
+        // NEXT_MAJOR: Remove next line.
         $this->assertContainerBuilderHasService(NoopLabelTranslatorStrategy::class);
+        // NEXT_MAJOR: Remove next line.
         $this->assertContainerBuilderHasService(UnderscoreLabelTranslatorStrategy::class);
+        // NEXT_MAJOR: Remove next line.
         $this->assertContainerBuilderHasService(FormLabelTranslatorStrategy::class);
+        // NEXT_MAJOR: Remove next line.
         $this->assertContainerBuilderHasService(AuditManager::class);
-        $this->assertContainerBuilderHasService(AuditManagerInterface::class, AuditManager::class);
+        $this->assertContainerBuilderHasService(AuditManagerInterface::class);
+        // NEXT_MAJOR: Remove next line.
         $this->assertContainerBuilderHasService(SearchHandler::class);
+        // NEXT_MAJOR: Remove next line.
         $this->assertContainerBuilderHasService(AdminEventExtension::class);
         // NEXT_MAJOR: Remove next line.
         $this->assertContainerBuilderHasService(GlobalVariables::class);
         $this->assertContainerBuilderHasService('sonata.admin.group.extension');
+        // NEXT_MAJOR: Remove next line.
         $this->assertContainerBuilderHasService(SessionFilterPersister::class);
-        $this->assertContainerBuilderHasService(
-            FilterPersisterInterface::class,
-            SessionFilterPersister::class
-        );
+        $this->assertContainerBuilderHasService(FilterPersisterInterface::class);
+        // NEXT_MAJOR: Remove next line.
         $this->assertContainerBuilderHasService(TemplateRegistry::class);
-        $this->assertContainerBuilderHasService(
-            MutableTemplateRegistryInterface::class,
-            TemplateRegistry::class
-        );
+        $this->assertContainerBuilderHasService(MutableTemplateRegistryInterface::class);
+        // NEXT_MAJOR: Remove next line.
         $this->assertContainerBuilderHasService(AdminExtractor::class);
     }
 
