@@ -4,6 +4,10 @@ UPGRADE 3.x
 UPGRADE FROM 3.xx to 3.xx
 =========================
 
+### Compiler Passes have been marked as internal
+
+All Compiler Passes will be internal in version 4.0 and they will not be covered by our BC promise.
+
 ### Deprecated services aliases
 
 These service aliases have been deprecated:

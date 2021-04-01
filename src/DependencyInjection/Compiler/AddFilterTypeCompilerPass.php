@@ -23,6 +23,10 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * @final since sonata-project/admin-bundle 3.52
  *
+ * NEXT_MAJOR: Remove the "since" part of the internal annotation.
+ *
+ * @internal since sonata-project/admin-bundle version 4.0
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AddFilterTypeCompilerPass implements CompilerPassInterface

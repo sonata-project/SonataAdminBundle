@@ -16,6 +16,11 @@ namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * NEXT_MAJOR: Remove the "since" part of the internal annotation.
+ *
+ * @internal since sonata-project/admin-bundle version 4.0
+ */
 final class AdminMakerCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void

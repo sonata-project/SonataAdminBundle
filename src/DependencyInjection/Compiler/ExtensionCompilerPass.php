@@ -22,6 +22,10 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * @final since sonata-project/admin-bundle 3.52
  *
+ * NEXT_MAJOR: Remove the "since" part of the internal annotation.
+ *
+ * @internal since sonata-project/admin-bundle version 4.0
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ExtensionCompilerPass implements CompilerPassInterface
