@@ -52,11 +52,31 @@ file that was distributed with this source code.
             </div>
             {% if results_count > 0 %}
                 <div class="box-body no-padding">
-                    <ul class="nav nav-stacked sonata-search-result-list">
+                    <ul class="nav nav-stacked sonata-search-result-list products-list">
                         {% for result in current_page_results %}
                             {% set link = admin.getSearchResultLink(result) %}
                             {% if link %}
-                                <li><a href="{{ link }}">{{ admin.toString(result) }}</a></li>
+                                <li class="item no-padding">
+                                    <a class="main pull-left" href="{{ link }}">{{ admin.toString(result) }}</a>
+                                    <span class="matches pull-right">
+                                        {% for name, filter in filters %}
+                                            {% set match = name|split('.')|reduce((carry, v) => carry ? attribute(carry, v) : null, result) %}
+
+                                            {#
+                                                Some model managers are not respecting the "sonata_admin.global_search.case_sensitive" configuration option.
+                                                If you see no matching filters for a search result, it is probably the reason. In that case,
+                                                you SHOULD consider using `false` as value for this option.
+                                            #}
+                                            {% if match and ((filter.option('case_sensitive') is not same as(false) and term in match)
+                                                or filter.option('case_sensitive') is same as(false) and term|lower in match|lower)
+                                            %}
+                                                <a class="label label-primary" href="{{ admin.generateUrl('list', {'filter': {(filter.formName): term}}) }}">
+                                                    {{ filter.option('label')|trans({}, filter.option('translation_domain', admin.translationDomain)) }}
+                                                </a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </span>
+                                </li>
                             {% else %}
                                 <li><a>{{ admin.toString(result) }}</a></li>
                             {% endif %}
