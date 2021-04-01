@@ -697,7 +697,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function getDefaultFilterParameters(): array
     {
         return array_merge(
-            $this->getModelManager()->getDefaultSortValues($this->getClass()), // NEXT_MAJOR: Remove this line.
+            /* @phpstan-ignore-next-line */
+            $this->getModelManager()->getDefaultSortValues($this->getClass(), 'sonata_deprecation_mute'), // NEXT_MAJOR: Remove this line.
             $this->datagridValues, // NEXT_MAJOR: Remove this line.
             $this->getDefaultSortValues(),
             $this->getDefaultFilterValues()
