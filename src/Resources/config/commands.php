@@ -23,7 +23,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Use "param" function for creating references to parameters when dropping support for Symfony 5.1
     $containerConfigurator->services()
 
-        ->set(ExplainAdminCommand::class, ExplainAdminCommand::class)
+        ->set('sonata.admin.command.explain', ExplainAdminCommand::class)
             ->public()
             ->tag('console.command')
             ->args([
@@ -31,7 +31,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('validator'),
             ])
 
-        ->set(GenerateObjectAclCommand::class, GenerateObjectAclCommand::class)
+        ->set('sonata.admin.command.generate_object_acl', GenerateObjectAclCommand::class)
             ->public()
             ->tag('console.command')
             ->args([
@@ -39,14 +39,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 [],
             ])
 
-        ->set(ListAdminCommand::class, ListAdminCommand::class)
+        ->set('sonata.admin.command.list', ListAdminCommand::class)
             ->public()
             ->tag('console.command')
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
             ])
 
-        ->set(SetupAclCommand::class, SetupAclCommand::class)
+        ->set('sonata.admin.command.setup_acl', SetupAclCommand::class)
             ->public()
             ->tag('console.command')
             ->args([

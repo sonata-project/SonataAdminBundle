@@ -686,7 +686,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         // Do not use `$this->hasSubject()` and `$this->getSubject()` here to avoid infinite loop.
         // `getSubject` use `hasSubject()` which use `getObject()` which use `getClass()`.
         if (null !== $this->subject) {
-            return ClassUtils::getClass($this->subject);
+            /** @phpstan-var class-string<T> $class */
+            $class = ClassUtils::getClass($this->subject);
+
+            return $class;
         }
 
         return $this->class;

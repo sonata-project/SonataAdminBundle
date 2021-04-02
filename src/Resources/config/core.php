@@ -86,8 +86,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 [],
             ])
 
-        ->alias(FilterFactory::class, 'sonata.admin.builder.filter.factory')
-
         ->alias(FilterFactoryInterface::class, 'sonata.admin.builder.filter.factory')
 
         ->set('sonata.admin.breadcrumbs_builder', BreadcrumbsBuilder::class)
@@ -96,8 +94,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 '%sonata.admin.configuration.breadcrumbs%',
             ])
 
-        ->alias(BreadcrumbsBuilder::class, 'sonata.admin.breadcrumbs_builder')
-
         ->alias(BreadcrumbsBuilderInterface::class, 'sonata.admin.breadcrumbs_builder')
 
         // Services used to format the label, default is sonata.admin.label.strategy.noop
@@ -105,31 +101,21 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.label.strategy.bc', BCLabelTranslatorStrategy::class)
             ->public()
 
-        ->alias(BCLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.bc')
-
         ->set('sonata.admin.label.strategy.native', NativeLabelTranslatorStrategy::class)
             ->public()
-
-        ->alias(NativeLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.native')
 
         ->alias(LabelTranslatorStrategyInterface::class, 'sonata.admin.label.strategy.native')
 
         ->set('sonata.admin.label.strategy.noop', NoopLabelTranslatorStrategy::class)
             ->public()
 
-        ->alias(NoopLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.noop')
-
         ->set('sonata.admin.label.strategy.underscore', UnderscoreLabelTranslatorStrategy::class)
             ->public()
-
-        ->alias(UnderscoreLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.underscore')
 
         ->set('sonata.admin.label.strategy.form_component', FormLabelTranslatorStrategy::class)
             ->public()
 
-        ->alias(FormLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.form_component')
-
-        ->set(AdminExtractor::class)
+        ->set('sonata.admin.translation_extractor', AdminExtractor::class)
             ->tag('translation.extractor', [
                 'alias' => 'sonata_admin',
             ])
@@ -144,8 +130,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 null, // Service locator
             ])
 
-        ->alias(AuditManager::class, 'sonata.admin.audit.manager')
-
         ->alias(AuditManagerInterface::class, 'sonata.admin.audit.manager')
 
         ->set('sonata.admin.search.handler', SearchHandler::class)
@@ -153,8 +137,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 '%sonata.admin.configuration.global_search.case_sensitive%',
             ])
-
-        ->alias(SearchHandler::class, 'sonata.admin.search.handler')
 
         ->set('sonata.admin.controller.crud', CRUDController::class)
             ->public()
@@ -168,8 +150,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('event_dispatcher'),
             ])
 
-        ->alias(AdminEventExtension::class, 'sonata.admin.event.extension')
-
         ->set('sonata.admin.lock.extension', LockExtension::class)
             ->public()
             ->tag('sonata.admin.extension', ['global' => true])
@@ -178,8 +158,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 new ReferenceConfigurator('session'),
             ])
-
-        ->alias(SessionFilterPersister::class, 'sonata.admin.filter_persister.session')
 
         ->alias(FilterPersisterInterface::class, 'sonata.admin.filter_persister.session')
 

@@ -61,7 +61,6 @@ The demo website can be found at https://demo.sonata-project.org.
 
    reference/routing
    reference/translation
-   reference/conditional_validation
    reference/templates
    reference/security
    reference/extensions

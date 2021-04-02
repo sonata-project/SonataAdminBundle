@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Sonata\AdminBundle\Admin\AdminHelper;
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
@@ -23,28 +22,18 @@ use Sonata\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Configuration;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
-use Sonata\AdminBundle\Event\AdminEventExtension;
-use Sonata\AdminBundle\Filter\FilterFactory;
 use Sonata\AdminBundle\Filter\FilterFactoryInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
-use Sonata\AdminBundle\Filter\Persister\SessionFilterPersister;
-use Sonata\AdminBundle\Model\AuditManager;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\AuditReaderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Search\SearchHandler;
+use Sonata\AdminBundle\SonataConfiguration;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
-use Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy;
-use Sonata\AdminBundle\Translator\Extractor\AdminExtractor;
-use Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
-use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
-use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
-class SonataAdminExtensionTest extends AbstractExtensionTestCase
+final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 {
     /**
      * @var array
@@ -64,38 +53,14 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->load();
 
         $this->assertContainerBuilderHasService(Pool::class);
+        $this->assertContainerBuilderHasService(SonataConfiguration::class);
         $this->assertContainerBuilderHasService(AdminHelper::class);
-        $this->assertContainerBuilderHasService(FilterFactory::class);
-        $this->assertContainerBuilderHasService(
-            FilterFactoryInterface::class,
-            FilterFactory::class
-        );
-        $this->assertContainerBuilderHasService(BreadcrumbsBuilder::class);
-        $this->assertContainerBuilderHasService(
-            BreadcrumbsBuilderInterface::class,
-            BreadcrumbsBuilder::class
-        );
-        $this->assertContainerBuilderHasService(BCLabelTranslatorStrategy::class);
-        $this->assertContainerBuilderHasService(NativeLabelTranslatorStrategy::class);
-        $this->assertContainerBuilderHasService(
-            LabelTranslatorStrategyInterface::class,
-            NativeLabelTranslatorStrategy::class
-        );
-        $this->assertContainerBuilderHasService(NoopLabelTranslatorStrategy::class);
-        $this->assertContainerBuilderHasService(UnderscoreLabelTranslatorStrategy::class);
-        $this->assertContainerBuilderHasService(FormLabelTranslatorStrategy::class);
-        $this->assertContainerBuilderHasService(AuditManager::class);
-        $this->assertContainerBuilderHasService(AuditManagerInterface::class, AuditManager::class);
-        $this->assertContainerBuilderHasService(SearchHandler::class);
-        $this->assertContainerBuilderHasService(AdminEventExtension::class);
-        $this->assertContainerBuilderHasService('sonata.admin.group.extension');
-        $this->assertContainerBuilderHasService(SessionFilterPersister::class);
-        $this->assertContainerBuilderHasService(
-            FilterPersisterInterface::class,
-            SessionFilterPersister::class
-        );
+        $this->assertContainerBuilderHasService(FilterFactoryInterface::class);
+        $this->assertContainerBuilderHasService(BreadcrumbsBuilderInterface::class);
+        $this->assertContainerBuilderHasService(LabelTranslatorStrategyInterface::class);
+        $this->assertContainerBuilderHasService(AuditManagerInterface::class);
+        $this->assertContainerBuilderHasService(FilterPersisterInterface::class);
         $this->assertContainerBuilderHasService(TemplateRegistry::class);
-        $this->assertContainerBuilderHasService(AdminExtractor::class);
     }
 
     public function testHasServiceDefinitionForLockExtension(): void

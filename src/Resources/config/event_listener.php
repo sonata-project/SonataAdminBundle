@@ -22,7 +22,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Use "param" function for creating references to parameters when dropping support for Symfony 5.1
     $containerConfigurator->services()
 
-        ->set(AssetsInstallCommandListener::class)
+        ->set('sonata.admin.listener.assets_install', AssetsInstallCommandListener::class)
             ->tag('kernel.event_listener', [
                 'event' => ConsoleEvents::TERMINATE,
                 'method' => 'copySonataCoreBundleAssets',
