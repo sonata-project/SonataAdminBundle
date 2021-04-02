@@ -72,6 +72,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         ->alias(SonataConfiguration::class, 'sonata.admin.configuration')
+            // NEXT_MAJOR: Remove this alias.
+            ->deprecate(...BCDeprecationParameters::forConfig(
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+                '3.x'
+            ))
 
         ->set('sonata.admin.route_loader', AdminPoolLoader::class)
             ->public()
@@ -96,6 +101,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         ->alias(AdminHelper::class, 'sonata.admin.helper')
+            // NEXT_MAJOR: Remove this alias.
+            ->deprecate(...BCDeprecationParameters::forConfig(
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+                '3.x'
+            ))
 
         ->set('sonata.admin.builder.filter.factory', FilterFactory::class)
             ->public()
