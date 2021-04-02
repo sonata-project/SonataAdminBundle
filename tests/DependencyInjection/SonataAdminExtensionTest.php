@@ -28,7 +28,6 @@ use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\AuditReaderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\SonataConfiguration;
-use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
@@ -60,7 +59,6 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasService(LabelTranslatorStrategyInterface::class);
         $this->assertContainerBuilderHasService(AuditManagerInterface::class);
         $this->assertContainerBuilderHasService(FilterPersisterInterface::class);
-        $this->assertContainerBuilderHasService(TemplateRegistry::class);
     }
 
     public function testHasServiceDefinitionForLockExtension(): void
