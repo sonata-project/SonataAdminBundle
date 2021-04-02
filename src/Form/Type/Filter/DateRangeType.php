@@ -84,7 +84,11 @@ class DateRangeType extends AbstractType
     {
         $resolver->setDefaults([
             'field_type' => FormDateRangeType::class,
-            'field_options' => ['format' => DateType::HTML5_FORMAT],
+            'field_options' => [
+                'field_options' => [
+                    'format' => DateType::HTML5_FORMAT,
+                ],
+            ],
         ]);
     }
 }
