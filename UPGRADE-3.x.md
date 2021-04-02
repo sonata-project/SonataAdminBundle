@@ -1,8 +1,8 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.xx to 3.xx
-=========================
+UPGRADE FROM 3.x to 3.x
+=======================
 
 ### Deprecated services aliases
 
@@ -11,11 +11,13 @@ These service aliases have been deprecated:
 - `Sonata\AdminBundle\Command\GenerateObjectAclCommand`
 - `Sonata\AdminBundle\Command\ListAdminCommand`
 - `Sonata\AdminBundle\Command\SetupAclCommand`
+- `Sonata\AdminBundle\Admin\AdminHelper`
 - `Sonata\AdminBundle\Admin\BreadcrumbsBuilder`
 - `Sonata\AdminBundle\Event\AdminEventExtension`
 - `Sonata\AdminBundle\Filter\FilterFactory`
 - `Sonata\AdminBundle\Filter\Persister\SessionFilterPersister`
 - `Sonata\AdminBundle\Model\AuditManager`
+- `Sonata\AdminBundle\SonataConfiguration`
 - `Sonata\AdminBundle\Search\SearchHandler`
 - `Sonata\AdminBundle\Templating\TemplateRegistry`
 - `Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy`
