@@ -165,7 +165,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->public()
             ->args([
                 '%sonata.admin.configuration.templates%',
-            ])
-
-        ->alias(TemplateRegistry::class, 'sonata.admin.global_template_registry');
+            ]);
 };
