@@ -27,6 +27,7 @@ use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -186,6 +187,11 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
      * @var FieldDescriptionFactoryInterface|null
      */
     private $fieldDescriptionFactory;
+
+    /**
+     * @var MutableTemplateRegistryInterface|null
+     */
+    private $templateRegistry;
 
     public function __construct(string $code, string $class, string $baseControllerName)
     {
@@ -477,5 +483,35 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         }
 
         return $this->labelTranslatorStrategy;
+    }
+
+    final public function getTemplateRegistry(): MutableTemplateRegistryInterface
+    {
+        if (false === $this->hasTemplateRegistry()) {
+            throw new \LogicException(sprintf('Unable to find the template registry for admin `%s`.', static::class));
+        }
+        \assert(null !== $this->templateRegistry);
+
+        return $this->templateRegistry;
+    }
+
+    final public function hasTemplateRegistry(): bool
+    {
+        return null !== $this->templateRegistry;
+    }
+
+    final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void
+    {
+        $this->templateRegistry = $templateRegistry;
+    }
+
+    final public function setTemplates(array $templates): void
+    {
+        $this->getTemplateRegistry()->setTemplates($templates);
+    }
+
+    final public function setTemplate(string $name, string $template): void
+    {
+        $this->getTemplateRegistry()->setTemplate($name, $template);
     }
 }

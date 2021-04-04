@@ -32,7 +32,6 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Util\Instantiator;
 use Sonata\AdminBundle\Util\ParametersManipulator;
 use Sonata\Exporter\Source\SourceIteratorInterface;
@@ -277,11 +276,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * @var array<string, string>
      */
     private $parentAssociationMapping = [];
-
-    /**
-     * @var MutableTemplateRegistryInterface|null
-     */
-    private $templateRegistry;
 
     /**
      * The subclasses supported by the admin class.
@@ -859,21 +853,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function generateMenuUrl(string $name, array $parameters = [], int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH): array
     {
         return $this->getRouteGenerator()->generateMenuUrl($this, $name, $parameters, $referenceType);
-    }
-
-    final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void
-    {
-        $this->templateRegistry = $templateRegistry;
-    }
-
-    final public function setTemplates(array $templates): void
-    {
-        $this->getTemplateRegistry()->setTemplates($templates);
-    }
-
-    final public function setTemplate(string $name, string $template): void
-    {
-        $this->getTemplateRegistry()->setTemplate($name, $template);
     }
 
     final public function getNewInstance(): object
@@ -1925,21 +1904,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         return null;
-    }
-
-    final public function getTemplateRegistry(): MutableTemplateRegistryInterface
-    {
-        if (false === $this->hasTemplateRegistry()) {
-            throw new \LogicException(sprintf('Unable to find the template registry for admin `%s`.', static::class));
-        }
-        \assert(null !== $this->templateRegistry);
-
-        return $this->templateRegistry;
-    }
-
-    final public function hasTemplateRegistry(): bool
-    {
-        return null !== $this->templateRegistry;
     }
 
     final public function createFieldDescription(string $propertyName, array $options = []): FieldDescriptionInterface
