@@ -21,7 +21,6 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionRegistryInterface;
 use Sonata\AdminBundle\Object\MetadataInterface;
-use Sonata\AdminBundle\Templating\MutableTemplateRegistryAwareInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -37,7 +36,7 @@ use Symfony\Component\HttpFoundation\Request;
  * @phpstan-extends UrlGeneratorInterface<T>
  * @phpstan-extends LifecycleHookProviderInterface<T>
  */
-interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, ParentAdminInterface, UrlGeneratorInterface, MutableTemplateRegistryAwareInterface
+interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, ParentAdminInterface, UrlGeneratorInterface
 {
     /**
      * Returns subjectClass/class/subclass name managed

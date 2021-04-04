@@ -26,6 +26,7 @@ use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryAwareInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -41,7 +42,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *     - The first and third argument are automatically injected by the AddDependencyCallsCompilerPass.
  *     - The second one is used as a reference of the Admin in the Pool, with the `setAdminClasses` call.
  */
-interface TaggedAdminInterface
+interface TaggedAdminInterface extends MutableTemplateRegistryAwareInterface
 {
     public const ADMIN_TAG = 'sonata.admin';
 
