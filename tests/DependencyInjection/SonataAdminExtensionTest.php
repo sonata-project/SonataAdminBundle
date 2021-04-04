@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
-use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
@@ -27,7 +26,6 @@ use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\AuditReaderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\SonataConfiguration;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
@@ -52,8 +50,6 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->load();
 
         $this->assertContainerBuilderHasService(Pool::class);
-        $this->assertContainerBuilderHasService(SonataConfiguration::class);
-        $this->assertContainerBuilderHasService(AdminHelper::class);
         $this->assertContainerBuilderHasService(FilterFactoryInterface::class);
         $this->assertContainerBuilderHasService(BreadcrumbsBuilderInterface::class);
         $this->assertContainerBuilderHasService(LabelTranslatorStrategyInterface::class);

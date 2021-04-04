@@ -19,6 +19,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 /**
+ * @internal
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 final class AddFilterTypeCompilerPass implements CompilerPassInterface

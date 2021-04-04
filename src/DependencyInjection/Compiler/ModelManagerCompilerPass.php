@@ -21,6 +21,8 @@ use Symfony\Component\DependencyInjection\Exception\LogicException;
 /**
  * This class injects available model managers to services which depend on them.
  *
+ * @internal
+ *
  * @author Gaurav Singh Faudjdar <faujdar@gmail.com>
  */
 final class ModelManagerCompilerPass implements CompilerPassInterface

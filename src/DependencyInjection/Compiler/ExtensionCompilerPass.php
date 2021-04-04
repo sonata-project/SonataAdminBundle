@@ -20,6 +20,8 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
+ * @internal
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 final class ExtensionCompilerPass implements CompilerPassInterface

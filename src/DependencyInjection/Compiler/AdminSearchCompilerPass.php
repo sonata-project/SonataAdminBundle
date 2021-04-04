@@ -22,6 +22,8 @@ use Symfony\Component\DependencyInjection\Exception\LogicException;
 /**
  * This class configures which admins must be considered for global search at `SearchHandler`.
  *
+ * @internal
+ *
  * @author Javier Spagnoletti <phansys@gmail.com>
  */
 final class AdminSearchCompilerPass implements CompilerPassInterface

@@ -62,8 +62,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 [],
             ])
 
-        ->alias(SonataConfiguration::class, 'sonata.admin.configuration')
-
         ->set('sonata.admin.route_loader', AdminPoolLoader::class)
             ->public()
             ->tag('routing.loader')
@@ -76,8 +74,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 new ReferenceConfigurator('property_accessor'),
             ])
-
-        ->alias(AdminHelper::class, 'sonata.admin.helper')
 
         ->set('sonata.admin.builder.filter.factory', FilterFactory::class)
             ->public()

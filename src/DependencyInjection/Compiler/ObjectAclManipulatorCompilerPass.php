@@ -20,6 +20,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * This class injects available object ACL manipulators to services which depend on them.
  *
+ * @internal
+ *
  * @author Javier Spagnoletti <phansys@gmail.com>
  */
 final class ObjectAclManipulatorCompilerPass implements CompilerPassInterface

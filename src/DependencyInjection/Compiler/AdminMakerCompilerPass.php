@@ -16,6 +16,9 @@ namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * @internal
+ */
 final class AdminMakerCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
