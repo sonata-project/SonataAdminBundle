@@ -14,7 +14,11 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Templating;
 
 /**
+ * NEXT_MAJOR: Remove this interface and move the method to the TaggedAdminInterface.
+ *
  * @author Wojciech Błoszyk <wbloszyk@gmail.com>
+ *
+ * @deprecated since sonata-project/sonata-admin 3.x
  *
  * @method MutableTemplateRegistryInterface getTemplateRegistry()
  * @method bool                             hasTemplateRegistry()
