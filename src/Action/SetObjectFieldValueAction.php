@@ -123,9 +123,8 @@ final class SetObjectFieldValueAction
         $rootObject = $object;
 
         // If property path has more than 1 element, take the last object in order to validate it
-        if ($propertyPath->getLength() > 1) {
-            $parent = $propertyPath->getParent();
-            \assert(null !== $parent);
+        $parent = $propertyPath->getParent();
+        if (null !== $parent) {
             $object = $this->propertyAccessor->getValue($object, $parent);
 
             $elements = $propertyPath->getElements();

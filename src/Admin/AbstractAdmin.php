@@ -231,18 +231,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     protected $menu;
 
     /**
-     * @var array<string, bool>
-     */
-    protected $loaded = [
-        'routes' => false,
-        'tab_menu' => false,
-        'show' => false,
-        'list' => false,
-        'form' => false,
-        'datagrid' => false,
-    ];
-
-    /**
      * @var string[]
      */
     protected $formTheme = [];
@@ -361,6 +349,18 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * @var array<string, mixed>
      */
     private $showTabs = [];
+
+    /**
+     * @var array<string, bool>
+     */
+    private $loaded = [
+        'routes' => false,
+        'tab_menu' => false,
+        'show' => false,
+        'list' => false,
+        'form' => false,
+        'datagrid' => false,
+    ];
 
     public function getExportFormats(): array
     {
@@ -520,7 +520,11 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             }
         }
 
-        if (!isset($parameters['_per_page']) || !$this->determinedPerPageValue($parameters['_per_page'])) {
+        if (
+            !isset($parameters['_per_page'])
+            || !\is_int($parameters['_per_page'])
+            || !$this->determinedPerPageValue($parameters['_per_page'])
+        ) {
             $parameters['_per_page'] = $this->getMaxPerPage();
         }
 
@@ -787,10 +791,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function getRoutes(): RouteCollectionInterface
     {
-        $this->buildRoutes();
-        \assert(null !== $this->routes);
+        $routes = $this->buildRoutes();
+        if (null === $routes) {
+            throw new \LogicException('Cannot access routes during the building process.');
+        }
 
-        return $this->routes;
+        return $routes;
     }
 
     public function getRouterIdParameter(): string
@@ -961,20 +967,22 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function getForm(): FormInterface
     {
-        $this->buildForm();
+        $form = $this->buildForm();
+        if (null === $form) {
+            throw new \LogicException('Cannot access form during the building process.');
+        }
 
-        \assert(null !== $this->form);
-
-        return $this->form;
+        return $form;
     }
 
     final public function getList(): FieldDescriptionCollection
     {
-        $this->buildList();
+        $list = $this->buildList();
+        if (null === $list) {
+            throw new \LogicException('Cannot access list during the building process.');
+        }
 
-        \assert(null !== $this->list);
-
-        return $this->list;
+        return $list;
     }
 
     final public function createQuery(): ProxyQueryInterface
@@ -991,11 +999,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function getDatagrid(): DatagridInterface
     {
-        $this->buildDatagrid();
+        $datagrid = $this->buildDatagrid();
+        if (null === $datagrid) {
+            throw new \LogicException('Cannot access datagrid during the building process.');
+        }
 
-        \assert(null !== $this->datagrid);
-
-        return $this->datagrid;
+        return $datagrid;
     }
 
     final public function getSideMenu(string $action, ?AdminInterface $childAdmin = null): ItemInterface
@@ -1004,10 +1013,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             return $this->getParent()->getSideMenu($action, $this);
         }
 
-        $this->buildTabMenu($action, $childAdmin);
-        \assert(null !== $this->menu);
+        $menu = $this->buildTabMenu($action, $childAdmin);
+        if (null === $menu) {
+            throw new \LogicException('Cannot access menu during the building process.');
+        }
 
-        return $this->menu;
+        return $menu;
     }
 
     final public function getRootCode(): string
@@ -1627,10 +1638,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function getShow(): FieldDescriptionCollection
     {
-        $this->buildShow();
-        \assert(null !== $this->show);
+        $show = $this->buildShow();
+        if (null === $show) {
+            throw new \LogicException('Cannot access show during the building process.');
+        }
 
-        return $this->show;
+        return $show;
     }
 
     final public function setFormTheme(array $formTheme): void
@@ -1695,12 +1708,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     /**
      * Returns true if the per page value is allowed, false otherwise.
-     *
-     * @param mixed $perPage
      */
-    final public function determinedPerPageValue($perPage): bool
+    final public function determinedPerPageValue(int $perPage): bool
     {
-        return \is_int($perPage) && \in_array($perPage, $this->getPerPageOptions(), true);
+        return \in_array($perPage, $this->getPerPageOptions(), true);
     }
 
     final public function isAclEnabled(): bool
@@ -2287,10 +2298,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
     }
 
-    private function buildDatagrid(): void
+    private function buildDatagrid(): ?DatagridInterface
     {
         if ($this->loaded['datagrid']) {
-            return;
+            return $this->datagrid;
         }
 
         $this->loaded['datagrid'] = true;
@@ -2342,12 +2353,14 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         foreach ($this->getExtensions() as $extension) {
             $extension->configureDatagridFilters($mapper);
         }
+
+        return $this->datagrid;
     }
 
-    private function buildShow(): void
+    private function buildShow(): ?FieldDescriptionCollection
     {
         if ($this->loaded['show']) {
-            return;
+            return $this->show;
         }
 
         $this->loaded['show'] = true;
@@ -2360,12 +2373,14 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         foreach ($this->getExtensions() as $extension) {
             $extension->configureShowFields($mapper);
         }
+
+        return $this->show;
     }
 
-    private function buildList(): void
+    private function buildList(): ?FieldDescriptionCollection
     {
         if ($this->loaded['list']) {
-            return;
+            return $this->list;
         }
 
         $this->loaded['list'] = true;
@@ -2410,23 +2425,27 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
             $mapper->add($fieldDescription, ListMapper::TYPE_SELECT);
         }
+
+        return $this->list;
     }
 
-    private function buildForm(): void
+    private function buildForm(): ?FormInterface
     {
         if ($this->loaded['form']) {
-            return;
+            return $this->form;
         }
 
         $this->loaded['form'] = true;
 
         $this->form = $this->getFormBuilder()->getForm();
+
+        return $this->form;
     }
 
-    private function buildRoutes(): void
+    private function buildRoutes(): ?RouteCollectionInterface
     {
         if ($this->loaded['routes']) {
-            return;
+            return $this->routes;
         }
 
         $this->loaded['routes'] = true;
@@ -2445,34 +2464,36 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         foreach ($this->getExtensions() as $extension) {
             $extension->configureRoutes($this, $this->routes);
         }
+
+        return $this->routes;
     }
 
     /**
      * @phpstan-param AdminInterface<object>|null $childAdmin
      */
-    private function buildTabMenu(string $action, ?AdminInterface $childAdmin = null): void
+    private function buildTabMenu(string $action, ?AdminInterface $childAdmin = null): ?ItemInterface
     {
         if ($this->loaded['tab_menu']) {
-            return;
+            return $this->menu;
         }
 
         $this->loaded['tab_menu'] = true;
 
-        $menu = $this->getMenuFactory()->createItem('root');
-        $menu->setChildrenAttribute('class', 'nav navbar-nav');
-        $menu->setExtra('translation_domain', $this->getTranslationDomain());
+        $this->menu = $this->getMenuFactory()->createItem('root');
+        $this->menu->setChildrenAttribute('class', 'nav navbar-nav');
+        $this->menu->setExtra('translation_domain', $this->getTranslationDomain());
 
         // Prevents BC break with KnpMenuBundle v1.x
-        if (method_exists($menu, 'setCurrentUri')) {
-            $menu->setCurrentUri($this->getRequest()->getBaseUrl().$this->getRequest()->getPathInfo());
+        if (method_exists($this->menu, 'setCurrentUri')) {
+            $this->menu->setCurrentUri($this->getRequest()->getBaseUrl().$this->getRequest()->getPathInfo());
         }
 
-        $this->configureTabMenu($menu, $action, $childAdmin);
+        $this->configureTabMenu($this->menu, $action, $childAdmin);
 
         foreach ($this->getExtensions() as $extension) {
-            $extension->configureTabMenu($this, $menu, $action, $childAdmin);
+            $extension->configureTabMenu($this, $this->menu, $action, $childAdmin);
         }
 
-        $this->menu = $menu;
+        return $this->menu;
     }
 }

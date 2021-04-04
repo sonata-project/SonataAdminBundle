@@ -63,14 +63,14 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     /**
      * @var string|null
      */
-    protected $label;
+    private $label;
 
     /**
      * @var array<string, array<string, string>>
      *
      * @phpstan-var array{list: array{class: string}, mosaic: array{class: string}}
      */
-    protected $listModes = [
+    private $listModes = [
         'list' => ['class' => 'fa fa-list fa-fw'],
         'mosaic' => ['class' => self::MOSAIC_ICON_CLASS],
     ];
@@ -78,109 +78,109 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     /**
      * @var string
      */
-    protected $pagerType = Pager::TYPE_DEFAULT;
+    private $pagerType = Pager::TYPE_DEFAULT;
 
     /**
      * The manager type to use for the admin.
      *
      * @var string|null
      */
-    protected $managerType;
+    private $managerType;
 
     /**
      * Roles and permissions per role.
      *
      * @var array<string, string[]> 'role' => ['permission1', 'permission2']
      */
-    protected $securityInformation = [];
+    private $securityInformation = [];
 
     /**
      * Component responsible for persisting filters.
      *
      * @var FilterPersisterInterface|null
      */
-    protected $filterPersister;
+    private $filterPersister;
 
     /**
      * The Entity or Document manager.
      *
      * @var ModelManagerInterface|null
      */
-    protected $modelManager;
+    private $modelManager;
 
     /**
      * @var DataSourceInterface|null
      */
-    protected $dataSource;
+    private $dataSource;
 
     /**
      * The related form contractor.
      *
      * @var FormContractorInterface|null
      */
-    protected $formContractor;
+    private $formContractor;
 
     /**
      * The related view builder.
      *
      * @var ShowBuilderInterface|null
      */
-    protected $showBuilder;
+    private $showBuilder;
 
     /**
      * The related list builder.
      *
      * @var ListBuilderInterface|null
      */
-    protected $listBuilder;
+    private $listBuilder;
 
     /**
      * The related datagrid builder.
      *
      * @var DatagridBuilderInterface|null
      */
-    protected $datagridBuilder;
+    private $datagridBuilder;
 
     /**
      * The translator component.
      *
      * @var TranslatorInterface|null
      */
-    protected $translator;
+    private $translator;
 
     /**
      * The configuration pool.
      *
      * @var Pool|null
      */
-    protected $configurationPool;
+    private $configurationPool;
 
     /**
      * The router instance.
      *
      * @var RouteGeneratorInterface|null
      */
-    protected $routeGenerator;
+    private $routeGenerator;
 
     /**
      * @var SecurityHandlerInterface|null
      */
-    protected $securityHandler;
+    private $securityHandler;
 
     /**
      * @var FactoryInterface|null
      */
-    protected $menuFactory;
+    private $menuFactory;
 
     /**
      * @var RouteBuilderInterface|null
      */
-    protected $routeBuilder;
+    private $routeBuilder;
 
     /**
      * @var LabelTranslatorStrategyInterface|null
      */
-    protected $labelTranslatorStrategy;
+    private $labelTranslatorStrategy;
 
     /**
      * @var FieldDescriptionFactoryInterface|null
