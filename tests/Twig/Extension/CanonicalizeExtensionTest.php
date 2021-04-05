@@ -24,9 +24,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class CanonicalizeExtensionTest extends TestCase
 {
     /**
-     * @var RequestStack
+     * @var Request
      */
-    private $requestStack;
+    private $request;
 
     /**
      * @var CanonicalizeExtension
@@ -35,9 +35,10 @@ final class CanonicalizeExtensionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->requestStack = new RequestStack();
-        $this->requestStack->push(new Request());
-        $this->twigExtension = new CanonicalizeExtension($this->requestStack);
+        $this->request = new Request();
+        $requestStack = new RequestStack();
+        $requestStack->push($this->request);
+        $this->twigExtension = new CanonicalizeExtension($requestStack);
     }
 
     /**
@@ -242,9 +243,6 @@ final class CanonicalizeExtensionTest extends TestCase
 
     private function changeLocale(string $locale): void
     {
-        $request = $this->requestStack->getCurrentRequest();
-        \assert(null !== $request);
-
-        $request->setLocale($locale);
+        $this->request->setLocale($locale);
     }
 }
