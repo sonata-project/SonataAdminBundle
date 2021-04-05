@@ -11,6 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Sonata\AdminBundle\DependencyInjection\Compiler\AliasDeprecatedPublicServicesCompilerPass;
 use Sonata\AdminBundle\Util\BCDeprecationParameters;
 use Sonata\Form\Validator\InlineValidator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -23,7 +24,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
         // NEXT_MAJOR: Remove this file.
         ->set('sonata.admin.validator.inline', InlineValidator::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
             ->tag('validator.constraint_validator', ['alias' => 'sonata.admin.validator.inline'])
             ->args([
                 new ReferenceConfigurator('service_container'),
