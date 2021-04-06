@@ -74,8 +74,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->alias(SonataConfiguration::class, 'sonata.admin.configuration')
             // NEXT_MAJOR: Remove this alias.
             ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                '3.x'
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.96 and will be removed in 4.0.',
+                '3.96'
             ))
 
         ->set('sonata.admin.route_loader', AdminPoolLoader::class)
@@ -103,8 +103,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->alias(AdminHelper::class, 'sonata.admin.helper')
             // NEXT_MAJOR: Remove this alias.
             ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                '3.x'
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.96 and will be removed in 4.0.',
+                '3.96'
             ))
 
         ->set('sonata.admin.builder.filter.factory', FilterFactory::class)
@@ -117,8 +117,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove this alias.
         ->alias(FilterFactory::class, 'sonata.admin.builder.filter.factory')
             ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                '3.x'
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.96 and will be removed in 4.0.',
+                '3.96'
             ))
 
         ->alias(FilterFactoryInterface::class, 'sonata.admin.builder.filter.factory')
@@ -132,8 +132,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove this alias.
         ->alias(BreadcrumbsBuilder::class, 'sonata.admin.breadcrumbs_builder')
             ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                '3.x'
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.96 and will be removed in 4.0.',
+                '3.96'
             ))
 
         ->alias(BreadcrumbsBuilderInterface::class, 'sonata.admin.breadcrumbs_builder')
@@ -146,8 +146,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove this alias.
         ->alias(BCLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.bc')
             ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                '3.x'
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.96 and will be removed in 4.0.',
+                '3.96'
             ))
 
         ->set('sonata.admin.label.strategy.native', NativeLabelTranslatorStrategy::class)
@@ -156,8 +156,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove this alias.
         ->alias(NativeLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.native')
             ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                '3.x'
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.96 and will be removed in 4.0.',
+                '3.96'
             ))
 
         ->alias(LabelTranslatorStrategyInterface::class, 'sonata.admin.label.strategy.native')
@@ -168,8 +168,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove this alias.
         ->alias(NoopLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.noop')
             ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                '3.x'
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.96 and will be removed in 4.0.',
+                '3.96'
             ))
 
         ->set('sonata.admin.label.strategy.underscore', UnderscoreLabelTranslatorStrategy::class)
@@ -178,8 +178,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove this alias.
         ->alias(UnderscoreLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.underscore')
             ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                '3.x'
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.96 and will be removed in 4.0.',
+                '3.96'
             ))
 
         ->set('sonata.admin.label.strategy.form_component', FormLabelTranslatorStrategy::class)
@@ -188,8 +188,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove this alias.
         ->alias(FormLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.form_component')
             ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                '3.x'
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.96 and will be removed in 4.0.',
+                '3.96'
             ))
 
         // NEXT_MAJOR: Remove this service.
@@ -222,8 +222,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove this alias.
         ->alias(AdminExtractor::class, 'sonata.admin.translation_extractor')
             ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                '3.x'
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.96 and will be removed in 4.0.',
+                '3.96'
             ))
 
         // NEXT_MAJOR: Remove this service.
@@ -252,8 +252,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove this alias.
         ->alias(AuditManager::class, 'sonata.admin.audit.manager')
             ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                '3.x'
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.96 and will be removed in 4.0.',
+                '3.96'
             ))
 
         ->alias(AuditManagerInterface::class, 'sonata.admin.audit.manager')
@@ -275,8 +275,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove this alias.
         ->alias(SearchHandler::class, 'sonata.admin.search.handler')
             ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                '3.x'
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.96 and will be removed in 4.0.',
+                '3.96'
             ))
 
         ->set('sonata.admin.event.extension', AdminEventExtension::class)
@@ -289,8 +289,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove this alias.
         ->alias(AdminEventExtension::class, 'sonata.admin.event.extension')
             ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                '3.x'
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.96 and will be removed in 4.0.',
+                '3.96'
             ))
 
         ->set('sonata.admin.lock.extension', LockExtension::class)
@@ -315,8 +315,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove this alias.
         ->alias(SessionFilterPersister::class, 'sonata.admin.filter_persister.session')
             ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                '3.x'
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.96 and will be removed in 4.0.',
+                '3.96'
             ))
 
         ->alias(FilterPersisterInterface::class, 'sonata.admin.filter_persister.session')
@@ -330,8 +330,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove this alias.
         ->alias(TemplateRegistry::class, 'sonata.admin.global_template_registry')
             ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                '3.x'
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.96 and will be removed in 4.0.',
+                '3.96'
             ))
 
         // NEXT_MAJOR: remove this alias, global template registry SHOULD NOT be mutable

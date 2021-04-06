@@ -30,7 +30,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('validator.validator_factory'),
             ])
             ->deprecate(...BCDeprecationParameters::forConfig(
-                'The service "%service_id%" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                '3.x'
+                'The service "%service_id%" is deprecated since sonata-project/admin-bundle 3.96 and will be removed in 4.0.',
+                '3.96'
             ));
 };
