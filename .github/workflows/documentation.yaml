@@ -11,9 +11,6 @@ on:
             - master
     pull_request:
 
-env:
-    ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-
 jobs:
     build:
         name: Sphinx build
