@@ -1,8 +1,8 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.x to 3.x
-=======================
+UPGRADE FROM 3.95 to 3.96
+=========================
 
 ### Compiler Passes have been marked as internal
 

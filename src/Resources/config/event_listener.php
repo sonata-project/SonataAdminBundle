@@ -35,7 +35,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove this alias.
         ->alias(AssetsInstallCommandListener::class, 'sonata.admin.listener.assets_install')
             ->deprecate(...BCDeprecationParameters::forConfig(
-                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
-                '3.x'
+                'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.96 and will be removed in 4.0.',
+                '3.96'
             ));
 };
