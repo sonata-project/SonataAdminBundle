@@ -175,6 +175,19 @@ When there is no searchable filters, `SearchHandler::search()` returns `null`. P
 ## Sonata\AdminBundle\Controller\CRUDController
 When the service `security.csrf.token_manager` is not available, `getCsrfToken()` returns `null`. Previously, it was returning `false`.
 
+## FilterInterface
+
+The type for argument 4 in `apply()` method has been changed from `array` to `Sonata\AdminBundle\Filter\Model\FilterData`.
+
+Before:
+```php
+public function apply(ProxyQueryInterface $query, array $filterData): void;
+```
+After:
+```php
+public function apply(ProxyQueryInterface $query, FilterData $filterData): void;
+```
+
 ## FormMapper labels
 The form label are now correctly using the label translator strategy for field with `.`
 (which won't be replaced by `__`). For instance, with the underscore label strategy, the

@@ -374,13 +374,13 @@ final class DatagridTest extends TestCase
      */
     public function applyFilterDataProvider(): iterable
     {
-        yield ['fakeType', 'fakeValue', 1];
-        yield ['', 'fakeValue', 1];
+        yield ['3', 'fakeValue', 1];
         yield [null, 'fakeValue', 1];
-        yield ['fakeType', '', 1];
-        yield ['fakeType', null, 1];
-        yield ['', '', 0];
-        yield ['', null, 0];
+        yield [null, 'fakeValue', 1];
+        yield ['3', '', 1];
+        yield ['3', null, 1];
+        yield [null, '', 0];
+        yield [null, null, 0];
         yield [null, '', 0];
         yield [null, null, 0];
     }

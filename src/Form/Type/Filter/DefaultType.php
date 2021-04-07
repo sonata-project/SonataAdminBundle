@@ -16,7 +16,6 @@ namespace Sonata\AdminBundle\Form\Type\Filter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -29,23 +28,16 @@ final class DefaultType extends AbstractType
         return 'sonata_type_filter_default';
     }
 
-    /**
-     * @param array<string, mixed> $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function getParent(): string
     {
-        $builder
-            ->add('type', $options['operator_type'], $options['operator_options'] + ['required' => false])
-            ->add('value', $options['field_type'], $options['field_options'] + ['required' => false]);
+        return FilterDataType::class;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'operator_type' => HiddenType::class,
-            'operator_options' => [],
             'field_type' => TextType::class,
-            'field_options' => [],
         ]);
     }
 }
