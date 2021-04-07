@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Form;
 
 use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
-use Sonata\Form\Fixtures\StubTranslator;
+use Sonata\AdminBundle\Tests\Fixtures\StubTranslator;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Extension\HttpKernelExtension;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
@@ -117,6 +117,24 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
     protected function renderRow(FormView $view, array $vars = []): string
     {
         return (string) $this->renderer->searchAndRenderBlock($view, 'row', $vars);
+    }
+
+    protected function renderHelp(FormView $view): string
+    {
+        return (string) $this->renderer->searchAndRenderBlock($view, 'help');
+    }
+
+    /**
+     * @param string|false|null $label
+     * @phpstan-param array<string, mixed> $vars
+     */
+    protected function renderLabel(FormView $view, $label = null, array $vars = []): string
+    {
+        if (null !== $label) {
+            $vars += ['label' => $label];
+        }
+
+        return (string) $this->renderer->searchAndRenderBlock($view, 'label', $vars);
     }
 
     protected function renderErrors(FormView $view): string
