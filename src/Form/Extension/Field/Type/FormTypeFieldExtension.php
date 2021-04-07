@@ -153,6 +153,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $view->vars['sonata_admin_enabled'] = true;
             $view->vars['sonata_admin'] = $sonataAdmin;
             $view->vars['sonata_admin_code'] = $sonataAdmin['admin']->getCode();
+            $view->vars['sonata_admin_translation_domain'] = $sonataAdmin['admin']->getTranslationDomain();
 
             $attr = $view->vars['attr'];
 

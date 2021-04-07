@@ -34,6 +34,9 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block form_help -%}
+    {% if sonata_admin_translation_domain is defined and translation_domain is null %}
+        {% set translation_domain = sonata_admin_translation_domain %}
+    {% endif %}
     {% if help is not empty %}
         {# NEXT_MAJOR: Remove class sonata-ba-field-widget-help #}
         {% set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' help-block sonata-ba-field-widget-help sonata-ba-field-help')}) %}
