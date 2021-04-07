@@ -537,6 +537,7 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the
 ``CallbackFilter`` filter type e.g. for creating a full text filter::
 
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
+    use Sonata\AdminBundle\Filter\Model\FilterData;
 
     final class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
@@ -549,17 +550,17 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the
                 ]);
         }
 
-        public function getFullTextFilter(ProxyQueryInterface $query, string $alias, string $field, array $data): void
+        public function getFullTextFilter(ProxyQueryInterface $query, string $alias, string $field, FilterData $data): void
         {
-            if (!$data['value']) {
+            if (!$data->hasValue()) {
                 return false;
             }
 
             // Use `andWhere` instead of `where` to prevent overriding existing `where` conditions
             $query->andWhere($query->expr()->orX(
-                $query->expr()->like($alias.'.username', $query->expr()->literal('%' . $data['value'] . '%')),
-                $query->expr()->like($alias.'.firstName', $query->expr()->literal('%' . $data['value'] . '%')),
-                $query->expr()->like($alias.'.lastName', $query->expr()->literal('%' . $data['value'] . '%'))
+                $query->expr()->like($alias.'.username', $query->expr()->literal('%' . $data->getValue() . '%')),
+                $query->expr()->like($alias.'.firstName', $query->expr()->literal('%' . $data->getValue() . '%')),
+                $query->expr()->like($alias.'.lastName', $query->expr()->literal('%' . $data->getValue() . '%'))
             ));
 
             return true;
@@ -571,21 +572,22 @@ The callback function should return a boolean indicating whether it is active.
 You can also get the filter type which can be helpful to change the operator
 type of your condition(s)::
 
+    use Sonata\AdminBundle\Filter\Model\FilterData;
     use Sonata\Form\Type\EqualType;
 
     final class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        public function getFullTextFilter(ProxyQueryInterface $query, string $alias, string $field, array $data): void
+        public function getFullTextFilter(ProxyQueryInterface $query, string $alias, string $field, FilterData $data): void
         {
-            if (!$data['value']) {
+            if (!$data->hasValue()) {
                 return;
             }
 
-            $operator = $data['type'] == EqualType::TYPE_IS_EQUAL ? '=' : '!=';
+            $operator = $data->isType(EqualType::TYPE_IS_EQUAL) ? '=' : '!=';
 
             $query
                 ->andWhere($alias.'.username '.$operator.' :username')
-                ->setParameter('username', $data['value'])
+                ->setParameter('username', $data->getValue())
             ;
 
             return true;

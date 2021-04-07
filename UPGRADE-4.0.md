@@ -9,7 +9,7 @@ If you still need it, please set it up on your own!
 
 Frontend dependencies are handled with NPM. Bower is not used anymore.
 
-A lot of assets that were previously public are handled with NPM and placed in a private `node_modules/` directory. 
+A lot of assets that were previously public are handled with NPM and placed in a private `node_modules/` directory.
 From these dependencies, only the necessary files are exposed publicly through Webpack Encore.
 
 Please check the `src/Resources/public/dist` and the documentation to see the used CSS, JavaScript, images and fonts.
@@ -172,6 +172,19 @@ When there is no searchable filters, `SearchHandler::search()` returns `null`. P
 
 ## Sonata\AdminBundle\Controller\CRUDController
 When the service `security.csrf.token_manager` is not available, `getCsrfToken()` returns `null`. Previously, it was returning `false`.
+
+## FilterInterface
+
+The type for argument 4 in `apply()` method has been changed from `array` to `Sonata\AdminBundle\Filter\Model\FilterData`.
+
+Before:
+```php
+public function apply(ProxyQueryInterface $query, array $filterData): void;
+```
+After:
+```php
+public function apply(ProxyQueryInterface $query, FilterData $filterData): void;
+```
 
 ## FormMapper labels
 The form label are now correctly using the label translator strategy for field with `.`
