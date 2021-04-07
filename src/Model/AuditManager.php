@@ -38,15 +38,6 @@ final class AuditManager implements AuditManagerInterface
 
     public function setReader(string $serviceId, array $classes): void
     {
-        $reader = $this->container->get($serviceId);
-        if (!$reader instanceof AuditReaderInterface) {
-            throw new \InvalidArgumentException(sprintf(
-                'Service "%s" MUST implement interface "%s".',
-                $serviceId,
-                AuditReaderInterface::class,
-            ));
-        }
-
         $this->readers[$serviceId] = $classes;
     }
 
@@ -66,7 +57,13 @@ final class AuditManager implements AuditManagerInterface
         foreach ($this->readers as $readerId => $classes) {
             if (\in_array($class, $classes, true)) {
                 $reader = $this->container->get($readerId);
-                \assert($reader instanceof AuditReaderInterface);
+                if (!$reader instanceof AuditReaderInterface) {
+                    throw new \LogicException(sprintf(
+                        'Service "%s" MUST implement interface "%s".',
+                        $readerId,
+                        AuditReaderInterface::class,
+                    ));
+                }
 
                 return $reader;
             }
