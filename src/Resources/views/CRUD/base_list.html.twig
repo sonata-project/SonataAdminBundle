@@ -71,7 +71,7 @@ file that was distributed with this source code.
                                                     and (admin.datagrid.values._sort_by == field_description
                                                         or admin.datagrid.values._sort_by.name == sort_parameters.filter._sort_by) %}
                                                 {% set sort_active_class    = current ? 'sonata-ba-list-field-order-active' : '' %}
-                                                {% set sort_by              = current ? admin.datagrid.values._sort_order : field_description.options._sort_order %}
+                                                {% set sort_by              = current ? admin.datagrid.values._sort_order : '' %}
                                             {% endif %}
 
                                             {% apply spaceless %}

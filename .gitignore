@@ -11,6 +11,7 @@ phpunit.xml
 phpstan.neon
 /.phpunit.result.cache
 /docs/_build/
+tests/App/var
 
 # clean up some non bower ready package
 src/Resources/public/vendor/admin-lte/bootstrap

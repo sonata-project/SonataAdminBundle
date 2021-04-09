@@ -6,10 +6,13 @@
         <ignoreFiles>
             <directory name="src/Resources/skeleton"/>
             <directory name="vendor"/>
+            <directory name="tests/App/var"/>
         </ignoreFiles>
     </projectFiles>
     <plugins>
-        <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin"/>
+        <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin">
+            <containerXml>tests/App/var/cache/test/Sonata_AdminBundle_Tests_App_AppKernelTestDebugContainer.xml</containerXml>
+        </pluginClass>
         <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
     </plugins>
     <issueHandlers>

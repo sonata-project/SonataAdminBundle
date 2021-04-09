@@ -5,7 +5,7 @@ services:
 
     Sonata\AdminBundle\Tests\App\:
         resource: ../*
-        exclude: ../{Entity,config,AppKernel.php}
+        exclude: ../{Entity,config,var,AppKernel.php}
 
     Sonata\AdminBundle\Tests\App\Controller\:
         resource: ../Controller

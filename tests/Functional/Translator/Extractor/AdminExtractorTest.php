@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Functional\Translator\Extractor;
 
-use Sonata\AdminBundle\Tests\App\AppKernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -31,11 +30,6 @@ final class AdminExtractorTest extends KernelTestCase
         $this->assertMatchesRegularExpression('/Name List/', $tester->getDisplay());
         $this->assertMatchesRegularExpression('/Name Form/', $tester->getDisplay());
         $this->assertMatchesRegularExpression('/Date Published/', $tester->getDisplay());
-    }
-
-    protected static function getKernelClass(): string
-    {
-        return AppKernel::class;
     }
 
     private function createCommandTester(): CommandTester

@@ -58,5 +58,8 @@ jobs:
                   dependency-versions: "highest"
                   composer-options: "--prefer-dist --prefer-stable"
 
+            - name: Run Tests first (probably not optimal)
+              run: make test
+
             - name: Psalm
               run: vendor/bin/psalm --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd --php-version=8.0

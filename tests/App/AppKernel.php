@@ -34,7 +34,7 @@ final class AppKernel extends Kernel
 
     public function __construct()
     {
-        parent::__construct('test', false);
+        parent::__construct('test', true);
     }
 
     public function registerBundles()
@@ -52,16 +52,6 @@ final class AppKernel extends Kernel
         ];
 
         return $bundles;
-    }
-
-    public function getCacheDir(): string
-    {
-        return sprintf('%scache', $this->getBaseDir());
-    }
-
-    public function getLogDir(): string
-    {
-        return sprintf('%slog', $this->getBaseDir());
     }
 
     public function getProjectDir()
@@ -101,10 +91,5 @@ final class AppKernel extends Kernel
         ]);
 
         $loader->load(sprintf('%s/config/services.yml', $this->getProjectDir()));
-    }
-
-    private function getBaseDir(): string
-    {
-        return sprintf('%s/sonata-admin-bundle/var/', sys_get_temp_dir());
     }
 }
