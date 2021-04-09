@@ -668,18 +668,22 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     public function preUpdate($object)
     {
+        $this->preUpsert($object);
     }
 
     public function postUpdate($object)
     {
+        $this->postUpsert($object);
     }
 
     public function prePersist($object)
     {
+        $this->preUpsert($object);
     }
 
     public function postPersist($object)
     {
+        $this->postUpsert($object);
     }
 
     public function preRemove($object)
@@ -3098,6 +3102,20 @@ EOT;
      * @phpstan-param T $object
      */
     protected function alterObject(object $object): void
+    {
+    }
+
+    /**
+     * @phpstan-param T $object
+     */
+    protected function preUpsert(object $object): void
+    {
+    }
+
+    /**
+     * @phpstan-param T $object
+     */
+    protected function postUpsert(object $object): void
     {
     }
 
