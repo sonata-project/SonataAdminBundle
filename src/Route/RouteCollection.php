@@ -82,10 +82,7 @@ final class RouteCollection implements RouteCollectionInterface
         $code = $this->getCode($name);
 
         if (!isset($defaults['_controller'])) {
-            $actionJoiner = false === strpos($this->baseControllerName, '\\') ? ':' : '::';
-            if (':' !== $actionJoiner && false !== strpos($this->baseControllerName, ':')) {
-                $actionJoiner = ':';
-            }
+            $actionJoiner = false !== strpos($this->baseControllerName, ':') ? ':' : '::';
 
             $defaults['_controller'] = $this->baseControllerName.$actionJoiner.$this->actionify($code);
         }
