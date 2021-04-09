@@ -192,7 +192,7 @@ class RouteCollectionTest extends TestCase
 
         $route = $routeCollection->get('view');
 
-        $this->assertSame('baseControllerServiceName:viewAction', $route->getDefault('_controller'));
+        $this->assertSame('baseControllerServiceName::viewAction', $route->getDefault('_controller'));
         $this->assertSame('baseCodeRoute', $route->getDefault('_sonata_admin'));
         $this->assertSame('baseRouteName_view', $route->getDefault('_sonata_name'));
     }
