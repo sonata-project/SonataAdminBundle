@@ -2,6 +2,44 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.96.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.95.0...3.96.0) - 2021-04-06
+### Added
+- [[#6992](https://github.com/sonata-project/SonataAdminBundle/pull/6992)] "or_group" filter option at `SearchHandler::search()`. ([@phansys](https://github.com/phansys))
+
+### Changed
+- [[#7008](https://github.com/sonata-project/SonataAdminBundle/pull/7008)] Names of variables in the skeleton ([@axzx](https://github.com/axzx))
+- [[#7003](https://github.com/sonata-project/SonataAdminBundle/pull/7003)] Compiler Pass classes have been marked as `@internal`. ([@franmomu](https://github.com/franmomu))
+
+### Deprecated
+- [[#7010](https://github.com/sonata-project/SonataAdminBundle/pull/7010)] Deprecated `Sonata\AdminBundle\Admin\AdminHelper` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#7010](https://github.com/sonata-project/SonataAdminBundle/pull/7010)] Deprecated `Sonata\AdminBundle\SonataConfiguration` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#7001](https://github.com/sonata-project/SonataAdminBundle/pull/7001)] Deprecated `Sonata\AdminBundle\Command\ExplainAdminCommand` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#7001](https://github.com/sonata-project/SonataAdminBundle/pull/7001)] Deprecated `Sonata\AdminBundle\Command\GenerateObjectAclCommand` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#7001](https://github.com/sonata-project/SonataAdminBundle/pull/7001)] Deprecated `Sonata\AdminBundle\Command\ListAdminCommand` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#7001](https://github.com/sonata-project/SonataAdminBundle/pull/7001)] Deprecated `Sonata\AdminBundle\Command\SetupAclCommand` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#7001](https://github.com/sonata-project/SonataAdminBundle/pull/7001)] Deprecated `Sonata\AdminBundle\Admin\BreadcrumbsBuilder` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#7001](https://github.com/sonata-project/SonataAdminBundle/pull/7001)] Deprecated `Sonata\AdminBundle\Event\AdminEventExtension` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#7001](https://github.com/sonata-project/SonataAdminBundle/pull/7001)] Deprecated `Sonata\AdminBundle\Filter\FilterFactory` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#7001](https://github.com/sonata-project/SonataAdminBundle/pull/7001)] Deprecated `Sonata\AdminBundle\Filter\Persister\SessionFilterPersister` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#7001](https://github.com/sonata-project/SonataAdminBundle/pull/7001)] Deprecated `Sonata\AdminBundle\Model\AuditManager` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#7001](https://github.com/sonata-project/SonataAdminBundle/pull/7001)] Deprecated `Sonata\AdminBundle\Search\SearchHandler` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#7001](https://github.com/sonata-project/SonataAdminBundle/pull/7001)] Deprecated `Sonata\AdminBundle\Templating\TemplateRegistry` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#7001](https://github.com/sonata-project/SonataAdminBundle/pull/7001)] Deprecated `Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#7001](https://github.com/sonata-project/SonataAdminBundle/pull/7001)] Deprecated `Sonata\AdminBundle\Translator\Extractor\AdminExtractor` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#7001](https://github.com/sonata-project/SonataAdminBundle/pull/7001)] Deprecated `Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#7001](https://github.com/sonata-project/SonataAdminBundle/pull/7001)] Deprecated `Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#7001](https://github.com/sonata-project/SonataAdminBundle/pull/7001)] Deprecated `Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#7001](https://github.com/sonata-project/SonataAdminBundle/pull/7001)] Deprecated `Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy` service alias. ([@franmomu](https://github.com/franmomu))
+- [[#6998](https://github.com/sonata-project/SonataAdminBundle/pull/6998)] Deprecated `sonata.admin.validator.inline` service. ([@franmomu](https://github.com/franmomu))
+
+### Fixed
+- [[#7002](https://github.com/sonata-project/SonataAdminBundle/pull/7002)] Fixed allowing avoid deprecation using `DatagridManagerInterface::getDefaultSortValues()`. ([@franmomu](https://github.com/franmomu))
+- [[#6987](https://github.com/sonata-project/SonataAdminBundle/pull/6987)] Allow `TypeGuesserInterface::guess()` to return `null` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6988](https://github.com/sonata-project/SonataAdminBundle/pull/6988)] Fixed removing deprecations having audit readers tagged. ([@franmomu](https://github.com/franmomu))
+
+### Removed
+- [[#6997](https://github.com/sonata-project/SonataAdminBundle/pull/6997)] Extra calls to `Pager::getCurrentPageResults()`, `Pager::countResults()`, `Pager::getNbResults()` and `Pager::getResults()` made at `block_search_result.html.twig`. ([@phansys](https://github.com/phansys))
+
 ## [3.95.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.94.0...3.95.0) - 2021-03-29
 ### Added
 - [[#6983](https://github.com/sonata-project/SonataAdminBundle/pull/6983)] Added `sonata.admin.audit_reader` tag for Audit readers. ([@franmomu](https://github.com/franmomu))
