@@ -27,7 +27,7 @@ final class DateTimeRangeTypeTest extends BaseTypeTest
         $view = $form->createView();
 
         $this->assertFalse($view->children['type']->vars['required']);
-        $this->assertTrue($view->children['value']->vars['required']);
+        $this->assertFalse($view->children['value']->vars['required']);
     }
 
     public function testGetDefaultOptions(): void
@@ -50,17 +50,5 @@ final class DateTimeRangeTypeTest extends BaseTypeTest
     protected function getTestedType(): string
     {
         return DateTimeRangeType::class;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @return DateTimeRangeType[]
-     */
-    protected function getTypes(): array
-    {
-        return [
-            new DateTimeRangeType($this->createStub(TranslatorInterface::class)),
-        ];
     }
 }

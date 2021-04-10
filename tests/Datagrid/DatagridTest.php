@@ -25,6 +25,7 @@ use Sonata\AdminBundle\Form\Type\Filter\DefaultType;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Forms;
 
 /**
@@ -53,7 +54,7 @@ final class DatagridTest extends TestCase
     private $columns;
 
     /**
-     * @var FormBuilder&MockObject
+     * @var FormBuilderInterface
      */
     private $formBuilder;
 
