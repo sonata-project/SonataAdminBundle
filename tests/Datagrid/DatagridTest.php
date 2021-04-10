@@ -21,16 +21,16 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
-use Sonata\AdminBundle\Tests\Fixtures\Entity\Form\TestEntity;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Sonata\AdminBundle\Form\Type\Filter\DefaultType;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\Forms;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class DatagridTest extends TestCase
+final class DatagridTest extends TestCase
 {
     /**
      * @var Datagrid
@@ -57,57 +57,16 @@ class DatagridTest extends TestCase
      */
     private $formBuilder;
 
-    /**
-     * @var mixed[]
-     */
-    private $formData;
-
-    /**
-     * @var array
-     */
-    private $formTypes;
-
     protected function setUp(): void
     {
         $this->query = $this->createMock(ProxyQueryInterface::class);
         $this->columns = new FieldDescriptionCollection();
         $this->pager = $this->createMock(PagerInterface::class);
 
-        $this->formData = [];
-        $this->formTypes = [];
+        $factory = Forms::createFormFactoryBuilder()
+            ->getFormFactory();
 
-        $this->formBuilder = $this->getMockBuilder(FormBuilder::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->formBuilder
-            ->method('get')
-            ->willReturnCallback(function (string $name): FormBuilder {
-                return $this->formTypes[$name];
-            });
-
-        $this->formBuilder
-            ->method('add')
-            ->willReturnCallback(function (?string $name, string $type, array $options): void {
-                $this->formTypes[$name] = new FormBuilder(
-                    $name,
-                    TestEntity::class,
-                    $this->createMock(EventDispatcherInterface::class),
-                    $this->createMock(FormFactoryInterface::class),
-                    $options
-                );
-            });
-
-        $form = $this->createStub(Form::class);
-
-        $form->method('submit')->willReturnCallback(function (array $values): void {
-            $this->formData = $values;
-        });
-        $form->method('getData')->willReturnCallback(function (): array {
-            return $this->formData;
-        });
-
-        $this->formBuilder->method('getForm')->willReturn($form);
+        $this->formBuilder = $factory->createBuilder();
 
         $values = [];
 
@@ -355,7 +314,7 @@ class DatagridTest extends TestCase
             ->willReturn(false);
         $filter1
             ->method('getRenderSettings')
-            ->willReturn(['foo1', ['bar1' => 'baz1']]);
+            ->willReturn([DefaultType::class, ['operator_options' => ['help' => 'baz1']]]);
 
         $this->datagrid->addFilter($filter1);
 
@@ -371,7 +330,7 @@ class DatagridTest extends TestCase
             ->willReturn(true);
         $filter2
             ->method('getRenderSettings')
-            ->willReturn(['foo2', ['bar2' => 'baz2']]);
+            ->willReturn([DefaultType::class, ['operator_options' => ['help' => 'baz2']]]);
 
         $this->datagrid->addFilter($filter2);
 
@@ -379,9 +338,9 @@ class DatagridTest extends TestCase
 
         $this->assertSame(['foo' => null, 'bar' => null], $this->datagrid->getValues());
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('fooFormName'));
-        $this->assertSame(['bar1' => 'baz1'], $this->formBuilder->get('fooFormName')->getOptions());
+        $this->assertSame(['help' => 'baz1'], $this->formBuilder->get('fooFormName')->getOptions()['operator_options']);
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('barFormName'));
-        $this->assertSame(['bar2' => 'baz2'], $this->formBuilder->get('barFormName')->getOptions());
+        $this->assertSame(['help' => 'baz2'], $this->formBuilder->get('barFormName')->getOptions()['operator_options']);
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_sort_by'));
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_sort_order'));
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_page'));
@@ -399,7 +358,8 @@ class DatagridTest extends TestCase
         $filter->expects($this->once())->method('getName')->willReturn('foo');
         $filter->method('getFormName')->willReturn('fooFormName');
         $filter->method('isActive')->willReturn(false);
-        $filter->method('getRenderSettings')->willReturn(['foo1', ['bar1' => 'baz1']]);
+        $filter->method('getRenderSettings')
+            ->willReturn([DefaultType::class, ['operator_options' => ['help' => 'baz2']]]);
         $filter->expects($this->exactly($applyCallNumber))->method('apply');
 
         $this->datagrid->addFilter($filter);
@@ -425,23 +385,28 @@ class DatagridTest extends TestCase
 
     public function testBuildPagerWithException(): void
     {
-        $this->expectException(\Symfony\Component\Form\Exception\UnexpectedTypeException::class);
-        $this->expectExceptionMessage('Expected argument of type "Sonata\\AdminBundle\\FieldDescription\\FieldDescriptionInterface", "array" given');
-
         $filter = $this->createMock(FilterInterface::class);
         $filter->expects($this->once())
             ->method('getName')
             ->willReturn('foo');
+
+        $filter
+            ->method('getFormName')
+            ->willReturn('fooFormName');
+
         $filter
             ->method('isActive')
             ->willReturn(false);
         $filter
             ->method('getRenderSettings')
-            ->willReturn(['foo', ['bar' => 'baz']]);
+            ->willReturn([DefaultType::class, ['operator_options' => ['help' => 'baz']]]);
 
         $this->datagrid->addFilter($filter);
 
         $this->datagrid->setValue('_sort_by', 'foo', 'baz');
+
+        $this->expectException(UnexpectedTypeException::class);
+        $this->expectExceptionMessage('Expected argument of type "Sonata\\AdminBundle\\FieldDescription\\FieldDescriptionInterface", "array" given');
 
         $this->datagrid->buildPager();
     }
@@ -475,7 +440,7 @@ class DatagridTest extends TestCase
             ->willReturn(false);
         $filter
             ->method('getRenderSettings')
-            ->willReturn(['foo', ['bar' => 'baz']]);
+            ->willReturn([DefaultType::class, ['operator_options' => ['help' => 'baz']]]);
 
         $this->datagrid->addFilter($filter);
 
@@ -483,7 +448,7 @@ class DatagridTest extends TestCase
 
         $this->assertSame(['_sort_by' => $sortBy, 'foo' => null, '_sort_order' => 'ASC'], $this->datagrid->getValues());
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('fooFormName'));
-        $this->assertSame(['bar' => 'baz'], $this->formBuilder->get('fooFormName')->getOptions());
+        $this->assertSame(['help' => 'baz'], $this->formBuilder->get('fooFormName')->getOptions()['operator_options']);
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_sort_by'));
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_sort_order'));
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_page'));
@@ -522,7 +487,7 @@ class DatagridTest extends TestCase
             ->willReturn(false);
         $filter
             ->method('getRenderSettings')
-            ->willReturn(['foo', ['bar' => 'baz']]);
+            ->willReturn([DefaultType::class, ['operator_options' => ['help' => 'baz']]]);
 
         $this->datagrid->addFilter($filter);
 
@@ -536,7 +501,7 @@ class DatagridTest extends TestCase
             '_sort_order' => 'ASC',
         ], $this->datagrid->getValues());
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('fooFormName'));
-        $this->assertSame(['bar' => 'baz'], $this->formBuilder->get('fooFormName')->getOptions());
+        $this->assertSame(['help' => 'baz'], $this->formBuilder->get('fooFormName')->getOptions()['operator_options']);
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_sort_by'));
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_sort_order'));
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_page'));
