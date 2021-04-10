@@ -43,7 +43,7 @@ final class DateType extends AbstractType
     {
         $resolver->setDefaults([
             'field_type' => FormDateType::class,
-            'field_options' => ['date_format' => FormDateType::HTML5_FORMAT],
+            'field_options' => ['format' => FormDateType::HTML5_FORMAT],
         ]);
     }
 }
