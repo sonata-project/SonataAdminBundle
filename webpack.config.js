@@ -9,6 +9,12 @@ Encore
   .enableVersioning(false)
   .disableSingleRuntimeChunk()
 
+  .configureTerserPlugin((options) => {
+    options.terserOptions = {
+      output: { comments: false }
+    };
+    options.extractComments = false;
+  })
 
   .copyFiles([
     // copy jQuery UI files
