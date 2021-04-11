@@ -68,18 +68,14 @@ file that was distributed with this source code.
             {# localize moment #}
             {% set localeForMoment = canonicalize_locale_for_moment() %}
             {% if localeForMoment %}
-                <script src="{{ asset(
-                    'bundles/sonatacore/vendor/moment/locale/' ~
-                    localeForMoment ~
-                    '.js'
-                ) }}"></script>
+                <script src="{{ asset('bundles/sonataadmin/dist/moment/locale/' ~ localeForMoment ~ '.js') }}"></script>
             {% endif %}
 
             {# localize select2 #}
             {% if sonata_config.getOption('use_select2') %}
                 {% set localeForSelect2 = canonicalize_locale_for_select2() %}
                 {% if localeForSelect2 %}
-                    <script src="{{ asset('bundles/sonatacore/vendor/select2/select2_locale_' ~ localeForSelect2 ~ '.js') }}"></script>
+                    <script src="{{ asset('bundles/sonataadmin/dist/select2/locale/select2_locale_' ~ localeForSelect2 ~ '.js') }}"></script>
                 {% endif %}
             {% endif %}
         {% endblock %}
