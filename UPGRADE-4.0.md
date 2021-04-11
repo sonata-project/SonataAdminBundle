@@ -7,13 +7,14 @@ If you still need it, please set it up on your own!
 
 ## Migration to NPM
 
-Bower is no longer used for SonataAdminBundle frontend dependencies, we are using npm instead.
+Frontend dependencies are handled with NPM. Bower is not used anymore.
 
-A lot of assets that were previously public are now part of our `node_modules` and we only expose the necessary files.
+A lot of assets that were previously public are handled with NPM and placed in a private `node_modules/` directory. 
+From these dependencies, only the necessary files are exposed publicly through Webpack Encore.
 
-Please check the `src/Resources/public/dist` and the documentation to see the css, javascript, images and fonts used by SonataAdminBundle.
+Please check the `src/Resources/public/dist` and the documentation to see the used CSS, JavaScript, images and fonts.
 
-If you are customising (especially removing standard js and css) this will affect you.
+If you are customising (specially removing standard JavaScript or CSS) assets, this will affect you.
 
 ## Deprecations
 
