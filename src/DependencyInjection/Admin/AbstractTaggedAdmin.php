@@ -221,6 +221,11 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         }
     }
 
+    final public function setListModes(array $listModes): void
+    {
+        $this->listModes = $listModes;
+    }
+    
     final public function getListModes(): array
     {
         return $this->listModes;
