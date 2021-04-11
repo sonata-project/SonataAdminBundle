@@ -5,6 +5,16 @@ UPGRADE FROM 3.x to 4.0
 
 If you still need it, please set it up on your own!
 
+## Migration to NPM
+
+Bower is no longer used for SonataAdminBundle frontend dependencies, we are using npm instead.
+
+A lot of assets that were previously public are now part of our `node_modules` and we only expose the necessary files.
+
+Please check the `src/Resources/public/dist` and the documentation to see the css, javascript, images and fonts used by SonataAdminBundle.
+
+If you are customising (especially removing standard js and css) this will affect you.
+
 ## Deprecations
 
 All the deprecated code introduced on 3.x is removed on 4.0.
