@@ -35,7 +35,7 @@ Encore
     { from: './node_modules/icheck/skins/square/', pattern: /blue/, to: 'icheck/skins/square/[name].[ext]' },
     { from: './node_modules/icheck/', pattern: /icheck\.min\.js/, to: 'icheck/[name].[ext]' },
     { from: './node_modules/select2/', pattern: /select2\.(css|js)/, to: 'select2/[name].[ext]' },
-    { from: './node_modules/select2/', pattern: /select2_locale_.*\.(css|js)/, to: 'select2/locale/[name].[ext]' },
+    { from: './node_modules/select2/', pattern: /select2_locale_.*\.(css|js)$/, to: 'select2/locale/[name].[ext]' },
     { from: './node_modules/select2-bootstrap-css/', pattern: /select2-bootstrap\.min\.css/, to: 'select2-bootstrap-css/[name].[ext]' },
     { from: './node_modules/x-editable/dist/bootstrap3-editable/css/', to: 'x-editable/[name].[ext]' },
     { from: './node_modules/x-editable/dist/bootstrap3-editable/img/', to: 'x-editable/img/[name].[ext]' },
