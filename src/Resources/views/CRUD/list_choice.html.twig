@@ -12,8 +12,7 @@ file that was distributed with this source code.
 {% extends get_admin_template('base_list_field', admin.code) %}
 
 {% set is_editable =
-    field_description.options.editable is defined and
-    field_description.options.editable and
+    field_description.option('editable', false) and
     admin.hasAccess('edit', object)
 %}
 {% set x_editable_type = field_description.type|sonata_xeditable_type %}
@@ -29,24 +28,24 @@ file that was distributed with this source code.
 
 {% block field %}
 {% apply spaceless %}
-    {% if field_description.options.choices is defined %}
-        {% if field_description.options.multiple is defined and field_description.options.multiple==true and value is iterable %}
+    {% if field_description.option('choices') is not null %}
+        {% if field_description.option('multiple', false) and value is iterable %}
 
             {% set result = '' %}
-            {% set delimiter = field_description.options.delimiter|default(', ') %}
+            {% set delimiter = field_description.option('delimiter', ', ') %}
 
             {% for val in value %}
                 {% if result is not empty %}
                     {% set result = result ~ delimiter %}
                 {% endif %}
 
-                {% if val in field_description.options.choices|keys %}
-                    {% set choice = field_description.options.choices[val] %}
+                {% if val in field_description.option('choices')|keys %}
+                    {% set choice = field_description.option('choices')[val] %}
                 {% else %}
                     {% set choice = val %}
                 {% endif %}
-                {% if field_description.options.catalogue is defined %}
-                    {% set result = result ~ choice|trans({}, field_description.options.catalogue) %}
+                {% if field_description.option('catalogue') %}
+                    {% set result = result ~ choice|trans({}, field_description.option('catalogue')) %}
                 {% else %}
                     {% set result = result ~ choice %}
                 {% endif %}
@@ -54,11 +53,11 @@ file that was distributed with this source code.
 
             {% set value = result %}
 
-        {% elseif value in field_description.options.choices|keys %}
-            {% if field_description.options.catalogue is not defined %}
-                {% set value = field_description.options.choices[value] %}
+        {% elseif value in field_description.option('choices')|keys %}
+            {% if field_description.option('catalogue') is null %}
+                {% set value = field_description.option('choices')[value] %}
             {% else %}
-                {% set value = field_description.options.choices[value]|trans({}, field_description.options.catalogue) %}
+                {% set value = field_description.option('choices')[value]|trans({}, field_description.option('catalogue')) %}
             {% endif %}
         {% endif %}
     {% endif %}

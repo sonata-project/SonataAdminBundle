@@ -13,8 +13,8 @@ file that was distributed with this source code.
 
 <div>
     {% block label %}
-        {% if filter.fielddescription.options.name is defined %}
-            {{ form_label(filter_form, filter.fielddescription.options.name) }}
+        {% if filter.fielddescription.option('name') %}
+            {{ form_label(filter_form, filter.fielddescription.option('name')) }}
         {% else %}
             {{ form_label(filter_form) }}
         {% endif %}

@@ -1,12 +1,12 @@
 
 {%- if value is empty -%}
     &nbsp;
-{%- elseif field_description.options.as_string is defined and field_description.options.as_string -%}
+{%- elseif field_description.option('as_string', false) -%}
     {{ value }}
 {%- else -%}
     {% set parameters = {} %}
-    {% set subject = field_description.options.subject|default('') %}
-    {% set body = field_description.options.body|default('') %}
+    {% set subject = field_description.option('subject', '') %}
+    {% set body = field_description.option('body', '') %}
 
     {% if subject is not empty %}
         {% set parameters = parameters|merge({'subject': subject}) %}

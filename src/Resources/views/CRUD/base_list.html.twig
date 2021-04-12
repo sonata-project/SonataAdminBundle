@@ -64,7 +64,7 @@ file that was distributed with this source code.
                                             {# Disable fields with 'ajax_hidden' option set to true #}
                                         {% else %}
                                             {% set sortable = false %}
-                                            {% if field_description.options.sortable is defined and field_description.options.sortable %}
+                                            {% if field_description.option('sortable', false) %}
                                                 {% set sortable             = true %}
                                                 {# NEXT_MAJOR: Remove next line and uncomment the other one #}
                                                 {% set sort_parameters      = sonata_sort_parameters(field_description, admin) %}
@@ -73,11 +73,11 @@ file that was distributed with this source code.
                                                     and (admin.datagrid.values._sort_by == field_description
                                                         or admin.datagrid.values._sort_by.name == sort_parameters.filter._sort_by) %}
                                                 {% set sort_active_class    = current ? 'sonata-ba-list-field-order-active' : '' %}
-                                                {% set sort_by              = current ? admin.datagrid.values._sort_order : field_description.options._sort_order %}
+                                                {% set sort_by              = current ? admin.datagrid.values._sort_order : field_description.option('_sort_order') %}
                                             {% endif %}
 
                                             {% apply spaceless %}
-                                                <th class="sonata-ba-list-field-header-{{ field_description.type }}{% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}{% if field_description.options.header_class is defined %} {{ field_description.options.header_class }}{% endif %}"{% if field_description.options.header_style is defined %} style="{{ field_description.options.header_style }}"{% endif %}>
+                                                <th class="sonata-ba-list-field-header-{{ field_description.type }}{% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}{% if field_description.option('header_class') %} {{ field_description.option('header_class') }}{% endif %}"{% if field_description.option('header_style') %} style="{{ field_description.option('header_style') }}"{% endif %}>
                                                     {% if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters|merge({_list_mode: admin.getListMode()})) }}">{% endif %}
                                                     {% if field_description.getOption('label_icon') %}
                                                         <i class="sonata-ba-list-field-header-label-icon {{ field_description.getOption('label_icon') }}" aria-hidden="true"></i>
