@@ -75,7 +75,7 @@ file that was distributed with this source code.
             {% if sonata_config.getOption('use_select2') %}
                 {% set localeForSelect2 = canonicalize_locale_for_select2() %}
                 {% if localeForSelect2 %}
-                    <script src="{{ asset('bundles/sonataadmin/dist/select2/locale/select2_locale_' ~ localeForSelect2 ~ '.js') }}"></script>
+                    <script src="{{ asset('bundles/sonataadmin/dist/select2/locale/' ~ localeForSelect2 ~ '.js') }}"></script>
                 {% endif %}
             {% endif %}
         {% endblock %}

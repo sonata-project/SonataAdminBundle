@@ -14,8 +14,8 @@
     "masonry-layout": "4.2.2",
     "moment": "2.17.1",
     "readmore-js": "2.2.1",
-    "select2": "3.5.1",
-    "select2-bootstrap-css": "1.4.6",
+    "select2": "^4.0",
+    "select2-bootstrap-theme": "^0.1.0-beta.10",
     "waypoints": "4.0.1",
     "x-editable": "1.5.1"
   },
