@@ -39,11 +39,6 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     /** @deprecated since sonata-project/sonata-admin 3.9, will be removed in 4.0 */
     public const MOSAIC_ICON_CLASS = 'fa fa-th-large fa-fw';
 
-    public const DEFAULT_LIST_MODES = [
-        'list' => ['class' => 'fa fa-list fa-fw'],
-        'mosaic' => ['class' => 'fa fa-th-large fa-fw'],
-    ];
-
     /**
      * The code related to the admin.
      *

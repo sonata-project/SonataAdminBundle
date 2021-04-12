@@ -68,6 +68,11 @@ interface TaggedAdminInterface
 {
     public const ADMIN_TAG = 'sonata.admin';
 
+    public const DEFAULT_LIST_MODES = [
+        'list' => ['class' => 'fa fa-list fa-fw'],
+        'mosaic' => ['class' => 'fa fa-th-large fa-fw'],
+    ];
+
     /**
      * NEXT_MAJOR: Uncomment this method.
      *
