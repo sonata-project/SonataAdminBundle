@@ -362,8 +362,8 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         foreach ($callsReportOneAdmin as $call) {
             [$name, $parameters] = $call;
 
-            if ('showMosaicButton' === $name) {
-                $this->assertFalse($parameters[0]);
+            if ('setListModes' === $name) {
+                $this->assertArrayNotHasKey('mosaic', $parameters[0]);
             }
         }
 
@@ -372,8 +372,8 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         foreach ($callsReportTwoAdmin as $call) {
             [$name, $parameters] = $call;
 
-            if ('showMosaicButton' === $name) {
-                $this->assertTrue($parameters[0]);
+            if ('setListModes' === $name) {
+                $this->assertArrayHasKey('mosaic', $parameters[0]);
             }
         }
     }

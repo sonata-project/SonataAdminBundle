@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\Pager;
+use Sonata\AdminBundle\DependencyInjection\Admin\AbstractTaggedAdmin;
 use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Symfony\Component\DependencyInjection\ChildDefinition;
@@ -364,7 +365,11 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $showMosaicButton = $overwriteAdminConfiguration['show_mosaic_button']
             ?? $attributes['show_mosaic_button']
             ?? $container->getParameter('sonata.admin.configuration.show.mosaic.button');
-        $definition->addMethodCall('showMosaicButton', [$showMosaicButton]);
+        $listModes = AbstractTaggedAdmin::DEFAULT_LIST_MODES;
+        if (!$showMosaicButton) {
+            unset($listModes['mosaic']);
+       }
+       $definition->addMethodCall('setListModes', $listModes);
 
         $this->fixTemplates(
             $serviceId,

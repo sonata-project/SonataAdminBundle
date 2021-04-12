@@ -2282,30 +2282,16 @@ class AdminTest extends TestCase
     }
 
     /**
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::showMosaicButton
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::setListModes
      */
-    public function testShowMosaicButton(): void
+    public function testSetListModes(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
         $listModes = $admin->getListModes();
 
-        $admin->showMosaicButton(true);
+        $admin->setListModes($listModes);
 
         $this->assertSame($listModes, $admin->getListModes());
-    }
-
-    /**
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::showMosaicButton
-     */
-    public function testShowMosaicButtonHideMosaic(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-        $listModes = $admin->getListModes();
-        $expected['list'] = $listModes['list'];
-
-        $admin->showMosaicButton(false);
-
-        $this->assertSame($expected, $admin->getListModes());
     }
 
     /**

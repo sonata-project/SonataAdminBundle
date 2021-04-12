@@ -44,7 +44,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @method void                             initialize()
  * @method void                             setLabel(?string $label)
- * @method void                             showMosaicButton(bool $isShown)
  * @method void                             setPagerType(string $pagerType)
  * @method string                           getPagerType()
  * @method void                             setManagerType(string $managerType)
@@ -63,6 +62,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @method Pool                             getConfigurationPool()
  * @method void                             setRouteGenerator(RouteGeneratorInterface $routeGenerator)
  * @method RouteGeneratorInterface          getRouteGenerator()
+ * @method void                             setListModes()
  */
 interface TaggedAdminInterface
 {
@@ -86,16 +86,17 @@ interface TaggedAdminInterface
     public function getLabel();
 
     /**
-     * NEXT_MAJOR: Uncomment this method.
-     *
-     * Enable/Disable mosaic button for the admin screen.
-     */
-//    public function showMosaicButton(bool $isShown): void;
-
-    /**
      * @return array<string, array<string, mixed>>
      */
     public function getListModes();
+
+
+    /**
+     * @param array $listModes
+     *
+     * @return void
+     */
+    public function setListModes(array $listModes): void;
 
     /**
      * NEXT_MAJOR: Uncomment this method.

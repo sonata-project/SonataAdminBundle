@@ -36,7 +36,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 {
+    /** @deprecated since sonata-project/sonata-admin 3.9, will be removed in 4.0 */
     public const MOSAIC_ICON_CLASS = 'fa fa-th-large fa-fw';
+
+    public const DEFAULT_LIST_MODES = [
+        'list' => ['class' => 'fa fa-list fa-fw'],
+        'mosaic' => ['class' => 'fa fa-th-large fa-fw'],
+    ];
 
     /**
      * The code related to the admin.
@@ -71,10 +77,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
      *
      * @phpstan-var array{list: array{class: string}, mosaic: array{class: string}}
      */
-    protected $listModes = [
-        'list' => ['class' => 'fa fa-list fa-fw'],
-        'mosaic' => ['class' => self::MOSAIC_ICON_CLASS],
-    ];
+    protected $listModes = self::DEFAULT_LIST_MODES;
 
     /**
      * @var string
@@ -263,6 +266,9 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         return $this->label;
     }
 
+    /**
+     * @deprecated since sonata-project/sonata-admin 3.9, use setListModes in 4.x
+     */
     final public function showMosaicButton($isShown)
     {
         if ($isShown) {
@@ -278,6 +284,16 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     public function getListModes()
     {
         return $this->listModes;
+    }
+
+    /**
+     * @param array $listModes
+     *
+     * @return void
+     */
+    public function setListModes(array $listModes): void
+    {
+        $this->listModes = $listModes;
     }
 
     /**
