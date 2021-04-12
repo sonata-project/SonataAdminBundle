@@ -110,7 +110,7 @@ Here is an example::
             ])
 
             // You may also specify the actions you want to be displayed in the list
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'show' => [],
                     'edit' => [
