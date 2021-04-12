@@ -436,7 +436,7 @@ CASESENSITIVE;
                                 'bundles/sonataadmin/vendor/jquery.confirmExit/jquery.confirmExit.js',
 
                                 'bundles/sonataadmin/dist/x-editable/bootstrap-editable.min.js',
-                                'bundles/sonataadmin/dist/select2/select2.min.js',
+                                'bundles/sonataadmin/dist/select2/select2.js',
                                 'bundles/sonataadmin/dist/admin-lte/js/adminlte.min.js',
                                 'bundles/sonataadmin/dist/icheck/icheck.min.js',
                                 'bundles/sonataadmin/dist/jquery-slimcroll/jquery.slimscroll.min.js',
