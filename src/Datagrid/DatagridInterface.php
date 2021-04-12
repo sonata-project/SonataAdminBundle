@@ -23,16 +23,22 @@ use Symfony\Component\Form\FormInterface;
  *
  * @method array getSortParameters(FieldDescriptionInterface $fieldDescription)
  * @method array getPaginationParameters(int $page)
+ *
+ * @phpstan-template T of ProxyQueryInterface
  */
 interface DatagridInterface
 {
     /**
      * @return PagerInterface
+     *
+     * @phpstan-return PagerInterface<T>
      */
     public function getPager();
 
     /**
      * @return ProxyQueryInterface
+     *
+     * @phpstan-return T
      */
     public function getQuery();
 

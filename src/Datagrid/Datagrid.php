@@ -27,6 +27,9 @@ use Symfony\Component\Form\FormInterface;
  * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of ProxyQueryInterface
+ * @phpstan-implements DatagridInterface<T>
  */
 class Datagrid implements DatagridInterface
 {
@@ -49,6 +52,7 @@ class Datagrid implements DatagridInterface
 
     /**
      * @var PagerInterface
+     * @phpstan-var PagerInterface<T>
      */
     protected $pager;
 
@@ -59,6 +63,7 @@ class Datagrid implements DatagridInterface
 
     /**
      * @var ProxyQueryInterface
+     * @phpstan-var T
      */
     protected $query;
 
@@ -77,6 +82,10 @@ class Datagrid implements DatagridInterface
      */
     protected $results;
 
+    /**
+     * @phpstan-param T                 $query
+     * @phpstan-param PagerInterface<T> $pager
+     */
     public function __construct(
         ProxyQueryInterface $query,
         FieldDescriptionCollection $columns,
