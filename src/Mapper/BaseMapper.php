@@ -21,7 +21,7 @@ use Sonata\AdminBundle\Builder\BuilderInterface;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-abstract class BaseMapper
+abstract class BaseMapper implements MapperInterface
 {
     /**
      * @var AdminInterface
@@ -39,47 +39,8 @@ abstract class BaseMapper
         $this->admin = $admin;
     }
 
-    /**
-     * @return AdminInterface
-     */
     public function getAdmin()
     {
         return $this->admin;
     }
-
-    /**
-     * @param string $key
-     *
-     * @return mixed
-     */
-    abstract public function get($key);
-
-    /**
-     * @param string $key
-     *
-     * @return bool
-     */
-    abstract public function has($key);
-
-    /**
-     * @param string $key
-     *
-     * @return static
-     */
-    abstract public function remove($key);
-
-    // To be uncommented on 4.0.
-    /**
-     * Returns configured keys.
-     *
-     * @return string[]
-     */
-    //abstract public function keys();
-
-    /**
-     * @param array $keys field names
-     *
-     * @return static
-     */
-    abstract public function reorder(array $keys);
 }
