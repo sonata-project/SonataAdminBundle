@@ -512,7 +512,7 @@ class AdminHelperTest extends TestCase
 
     private function getMethodAsPublic($privateMethod): \ReflectionMethod
     {
-        $reflectionMethod = new \ReflectionMethod('Sonata\AdminBundle\Admin\AdminHelper', $privateMethod);
+        $reflectionMethod = new \ReflectionMethod(AdminHelper::class, $privateMethod);
         $reflectionMethod->setAccessible(true);
 
         return $reflectionMethod;

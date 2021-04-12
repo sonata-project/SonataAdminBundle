@@ -92,8 +92,10 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
 
         // if the admin is linked to a parent FieldDescription (ie, embedded widget)
         if ($admin->hasParentFieldDescription()) {
+            /** @var array<string, mixed> $linkParameters */
+            $linkParameters = $admin->getParentFieldDescription()->getOption('link_parameters', []);
             // merge link parameter if any provided by the parent field
-            $parameters = array_merge($parameters, $admin->getParentFieldDescription()->getOption('link_parameters', []));
+            $parameters = array_merge($parameters, $linkParameters);
 
             $parameters['uniqid'] = $admin->getUniqid();
             $parameters['code'] = $admin->getCode();

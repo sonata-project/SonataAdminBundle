@@ -206,9 +206,10 @@ final class SetObjectFieldValueActionTest extends TestCase
         $expectedDate = new \DateTime($request->query->get('value'), $expectedTimezone);
         $expectedDate->setTimezone($defaultTimezone);
 
-        $this->assertInstanceOf(\DateTime::class, $object->getDateProp());
-        $this->assertSame($expectedDate->format('Y-m-d'), $object->getDateProp()->format('Y-m-d'));
-        $this->assertSame($defaultTimezone->getName(), $object->getDateProp()->getTimezone()->getName());
+        $dateProp = $object->getDateProp();
+        $this->assertInstanceOf(\DateTime::class, $dateProp);
+        $this->assertSame($expectedDate->format('Y-m-d'), $dateProp->format('Y-m-d'));
+        $this->assertSame($defaultTimezone->getName(), $dateProp->getTimezone()->getName());
     }
 
     public function testSetObjectFieldValueActionOnARelationField(): void

@@ -64,7 +64,7 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
      *
      * @throws \Exception
      *
-     * @return \SplObjectStorage<ObjectIdentityInterface, SecurityIdentityInterface> mapping the passed object identities to ACLs
+     * @return \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface> mapping the passed object identities to ACLs
      */
     public function findObjectAcls(\Traversable $oids, array $sids = []): \SplObjectStorage;
 

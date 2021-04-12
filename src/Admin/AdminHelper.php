@@ -179,7 +179,7 @@ class AdminHelper
         $finalForm->setData($form->getData());
 
         // back up delete field
-        if (\count($toDelete) > 0) {
+        if ($childFormBuilder && \count($toDelete) > 0) {
             $i = 0;
             foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
                 if ($childField->has(self::FORM_FIELD_DELETE)) {

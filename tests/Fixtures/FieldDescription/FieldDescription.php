@@ -37,7 +37,7 @@ class FieldDescription extends BaseFieldDescription
         throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
 
-    public function getFieldValue(?object $object, ?string $fieldName)
+    public function getFieldValue(?object $object, string $fieldName)
     {
         return parent::getFieldValue($object, $fieldName);
     }

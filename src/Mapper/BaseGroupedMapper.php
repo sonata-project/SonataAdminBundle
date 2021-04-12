@@ -17,6 +17,9 @@ namespace Sonata\AdminBundle\Mapper;
  * This class is used to simulate the Form API.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of \Sonata\AdminBundle\Builder\BuilderInterface
+ * @phpstan-extends BaseMapper<T>
  */
 abstract class BaseGroupedMapper implements MapperInterface
 {

@@ -39,6 +39,9 @@ final class AdminStatsBlockService extends AbstractBlockService
 
     public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
     {
+        $template = $blockContext->getTemplate();
+        \assert(null !== $template);
+
         $admin = $this->pool->getAdminByAdminCode($blockContext->getSetting('code'));
 
         $datagrid = $admin->getDatagrid();
@@ -55,7 +58,7 @@ final class AdminStatsBlockService extends AbstractBlockService
 
         $datagrid->buildPager();
 
-        return $this->renderPrivateResponse($blockContext->getTemplate(), [
+        return $this->renderPrivateResponse($template, [
             'block' => $blockContext->getBlock(),
             'settings' => $blockContext->getSettings(),
             'admin' => $admin,

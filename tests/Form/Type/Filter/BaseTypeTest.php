@@ -34,7 +34,7 @@ abstract class BaseTypeTest extends TypeTestCase
     }
 
     /**
-     * @phpstan-return class-string
+     * @phpstan-return class-string<\Symfony\Component\Form\FormTypeInterface>
      */
     abstract protected function getTestedType(): string;
 }

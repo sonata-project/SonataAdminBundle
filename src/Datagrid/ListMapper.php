@@ -23,6 +23,8 @@ use Sonata\AdminBundle\Mapper\MapperInterface;
  * This class is used to simulate the Form API.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-extends BaseMapper<ListBuilderInterface>
  */
 final class ListMapper implements MapperInterface
 {

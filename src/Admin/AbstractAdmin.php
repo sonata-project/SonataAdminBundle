@@ -398,7 +398,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function initialize(): void
     {
         if (!$this->classnameLabel) {
-            $this->classnameLabel = substr($this->getClass(), strrpos($this->getClass(), '\\') + 1);
+            $namespaceSeparatorPos = strrpos($this->getClass(), '\\');
+            $this->classnameLabel = false !== $namespaceSeparatorPos
+                ? substr($this->getClass(), $namespaceSeparatorPos + 1)
+                : $this->getClass();
         }
 
         $this->configure();
@@ -508,8 +511,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             $parameters = ParametersManipulator::merge($parameters, $filters);
 
             // always force the parent value
-            if ($this->isChild() && null !== $this->getParentAssociationMapping()) {
-                $name = str_replace('.', '__', $this->getParentAssociationMapping());
+            $parentAssociationMapping = $this->getParentAssociationMapping();
+            if ($this->isChild() && null !== $parentAssociationMapping) {
+                $name = str_replace('.', '__', $parentAssociationMapping);
                 $parameters[$name] = ['value' => $this->getRequest()->get($this->getParent()->getIdParameter())];
             }
         }
@@ -2296,12 +2300,13 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->configureDatagridFilters($mapper);
 
         // ok, try to limit to add parent filter
+        $parentAssociationMapping = $this->getParentAssociationMapping();
         if (
             $this->isChild()
-            && null !== $this->getParentAssociationMapping()
-            && !$mapper->has($this->getParentAssociationMapping())
+            && null !== $parentAssociationMapping
+            && !$mapper->has($parentAssociationMapping)
         ) {
-            $mapper->add($this->getParentAssociationMapping(), null, [
+            $mapper->add($parentAssociationMapping, null, [
                 'show_filter' => false,
                 'label' => false,
                 'field_type' => ModelHiddenType::class,

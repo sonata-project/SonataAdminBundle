@@ -79,7 +79,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $mappingType;
 
     /**
-     * @var string|null the field name (of the form)
+     * @var string the field name (of the form)
      */
     protected $fieldName;
 
@@ -105,6 +105,8 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     /**
      * @var array<string, mixed> the option collection
+     * @psalm-var FieldDescriptionOptions
+     * @phpstan-var array<string, mixed>
      */
     protected $options = [];
 
@@ -158,7 +160,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
     }
 
-    public function getFieldName(): ?string
+    public function getFieldName(): string
     {
         return $this->fieldName;
     }
@@ -388,7 +390,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      *
      * @return mixed
      */
-    protected function getFieldValue(?object $object, ?string $fieldName)
+    protected function getFieldValue(?object $object, string $fieldName)
     {
         if ($this->isVirtual() || null === $object) {
             return null;

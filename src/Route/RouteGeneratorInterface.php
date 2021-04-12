@@ -33,7 +33,7 @@ interface RouteGeneratorInterface
      *
      * @return array<string, mixed>
      *
-     * @phpstan-return array{route: string, routeParameters: array<string, string>, routeAbsolute: bool}
+     * @phpstan-return array{route: string, routeParameters: array<string, mixed>, routeAbsolute: bool}
      */
     public function generateMenuUrl(AdminInterface $admin, string $name, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): array;
 

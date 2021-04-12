@@ -32,6 +32,8 @@ final class Validators
 
     /**
      * @throws \InvalidArgumentException
+     *
+     * @phpstan-return class-string
      */
     public static function validateClass(string $class): string
     {
