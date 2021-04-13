@@ -11,26 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Sonata\AdminBundle\EventListener\AssetsInstallCommandListener;
 use Sonata\AdminBundle\EventListener\ConfigureCRUDControllerListener;
-use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     // Use "service" function for creating references to services when dropping support for Symfony 4.4
     // Use "param" function for creating references to parameters when dropping support for Symfony 5.1
     $containerConfigurator->services()
-
-        ->set('sonata.admin.listener.assets_install', AssetsInstallCommandListener::class)
-            ->tag('kernel.event_listener', [
-                'event' => ConsoleEvents::TERMINATE,
-                'method' => 'copySonataCoreBundleAssets',
-            ])
-            ->args([
-                new ReferenceConfigurator('filesystem'),
-                '%kernel.project_dir%',
-            ])
 
         ->set('sonata.admin.event_listener.configure_crud_controller', ConfigureCRUDControllerListener::class)
             ->tag('kernel.event_subscriber');
