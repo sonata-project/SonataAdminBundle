@@ -389,7 +389,7 @@ CASESENSITIVE;
                         ->arrayNode('stylesheets')
                             ->defaultValue([
                                 'bundles/sonataadmin/dist/bootstrap/bootstrap.min.css',
-                                'bundles/sonataadmin/dist/components-font-awesome/font-awesome.min.css',
+                                'bundles/sonataadmin/dist/components-font-awesome/css/font-awesome.min.css',
                                 'bundles/sonataadmin/dist/ionicons/css/ionicons.min.css',
                                 'bundles/sonataadmin/dist/admin-lte/css/AdminLTE.min.css',
                                 'bundles/sonataadmin/dist/icheck/skins/square/blue.css',
@@ -439,7 +439,7 @@ CASESENSITIVE;
                                 'bundles/sonataadmin/dist/select2/select2.js',
                                 'bundles/sonataadmin/dist/admin-lte/js/adminlte.min.js',
                                 'bundles/sonataadmin/dist/icheck/icheck.min.js',
-                                'bundles/sonataadmin/dist/jquery-slimcroll/jquery.slimscroll.min.js',
+                                'bundles/sonataadmin/dist/jquery-slimscroll/jquery.slimscroll.min.js',
                                 'bundles/sonataadmin/dist/waypoints/jquery.waypoints.min.js',
                                 'bundles/sonataadmin/dist/waypoints/shortcuts/sticky.min.js',
                                 'bundles/sonataadmin/dist/readmore-js/readmore.min.js',
