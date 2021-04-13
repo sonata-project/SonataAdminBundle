@@ -16,39 +16,39 @@ file that was distributed with this source code.
     {% if value is empty %}
         &nbsp;
     {% else %}
-        {% if field_description.options.url is defined %}
+        {% if field_description.option('url') %}
             {# target url is string #}
-            {% set url_address = field_description.options.url %}
-        {% elseif field_description.options.route is defined and field_description.options.route.name not in ['edit', 'show'] %}
+            {% set url_address = field_description.option('url') %}
+        {% elseif field_description.option('route') is not null and field_description.option('route').name not in ['edit', 'show'] %}
             {# target url is Symfony route #}
-            {% set parameters = field_description.options.route.parameters|default([]) %}
+            {% set parameters = field_description.option('route').parameters|default([]) %}
 
             {# route with paramter related to object ID #}
-            {% if field_description.options.route.identifier_parameter_name is defined %}
-                {% set parameters = parameters|merge({(field_description.options.route.identifier_parameter_name):(admin.normalizedidentifier(object))}) %}
+            {% if field_description.option('route').identifier_parameter_name is defined %}
+                {% set parameters = parameters|merge({(field_description.option('route').identifier_parameter_name):(admin.normalizedidentifier(object))}) %}
             {% endif %}
 
-            {% if field_description.options.route.absolute|default(false) %}
-                {% set url_address = url(field_description.options.route.name, parameters) %}
+            {% if field_description.option('route').absolute|default(false) %}
+                {% set url_address = url(field_description.option('route').name, parameters) %}
             {% else %}
-                {% set url_address = path(field_description.options.route.name, parameters) %}
+                {% set url_address = path(field_description.option('route').name, parameters) %}
             {% endif %}
         {% else %}
             {# value is url #}
             {% set url_address = value %}
         {% endif %}
 
-        {% if field_description.options.hide_protocol|default(false) %}
+        {% if field_description.option('hide_protocol', false) %}
             {% set value = value|replace({'http://': '', 'https://': ''}) %}
         {% endif %}
 
         <a
             href="{{ url_address }}"
-            {%- for attribute, value in field_description.options.attributes|default([]) %}
+            {%- for attribute, value in field_description.option('attributes', []) %}
                 {{ attribute }}="{{ value|escape('html_attr') }}"
             {%- endfor -%}
         >
-            {%- if field_description.options.safe -%}
+            {%- if field_description.option('safe', false) -%}
                 {{- value|raw -}}
             {%- else -%}
                 {{- value -}}

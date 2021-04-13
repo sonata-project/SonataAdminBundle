@@ -21,14 +21,14 @@ file that was distributed with this source code.
 <td>
     {%- block field -%}
         {% apply spaceless %}
-            {% set collapse = field_description.options.collapse|default(false) %}
+            {% set collapse = field_description.option('collapse') %}
             {% if collapse %}
                 <div class="sonata-readmore"
                       data-readmore-height="{{ collapse.height|default(40) }}"
                       data-readmore-more="{{ collapse.more|default('read_more')|trans({}, 'SonataAdminBundle') }}"
                       data-readmore-less="{{ collapse.less|default('read_less')|trans({}, 'SonataAdminBundle') }}">
                     {% block field_value %}
-                        {% if field_description.options.safe %}{{ value|raw }}{% else %}{{ value|nl2br }}{% endif %}
+                        {% if field_description.option('safe', false) %}{{ value|raw }}{% else %}{{ value|nl2br }}{% endif %}
                     {% endblock %}
                 </div>
             {% else %}
@@ -40,7 +40,7 @@ file that was distributed with this source code.
 
 {%- block field_compare -%}
     {% apply spaceless %}
-        {% if(value_compare is defined) %}
+        {% if value_compare is defined %}
             {% set value = value_compare %}
             {% set object = object_compare %}
             <td>{{ block('field') }}</td>

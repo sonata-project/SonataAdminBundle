@@ -376,14 +376,14 @@ class SonataAdminExtensionTest extends TestCase
             ->willReturn($type);
 
         $this->fieldDescription
-            ->method('getOptions')
-            ->willReturn($options);
-
-        $this->fieldDescription
             ->method('getOption')
-            ->willReturnCallback(static function ($name, $default = null) use ($options) {
+            ->willReturnCallback(static function (string $name, $default = null) use ($options) {
                 return $options[$name] ?? $default;
             });
+
+        $this->fieldDescription
+            ->method('getOptions')
+            ->willReturn($options);
 
         $this->fieldDescription
             ->method('getTemplate')
@@ -1651,6 +1651,12 @@ EOT
             ->willReturn($type);
 
         $this->fieldDescription
+            ->method('getOption')
+            ->willReturnCallback(static function (string $name, $default = null) use ($options) {
+                return $options[$name] ?? $default;
+            });
+
+        $this->fieldDescription
             ->method('getOptions')
             ->willReturn($options);
 
@@ -2232,6 +2238,12 @@ EOT
             ->willReturn($options);
 
         $this->fieldDescription
+            ->method('getOption')
+            ->willReturnCallback(static function (string $name, $default = null) use ($options) {
+                return $options[$name] ?? $default;
+            });
+
+        $this->fieldDescription
             ->method('getTemplate')
             ->willReturnCallback(static function () use ($type): ?string {
                 switch ($type) {
@@ -2381,6 +2393,12 @@ EOT
         $this->fieldDescription
             ->method('getOptions')
             ->willReturn($options);
+
+        $this->fieldDescription
+            ->method('getOption')
+            ->willReturnCallback(static function (string $name, $default = null) use ($options) {
+                return $options[$name] ?? $default;
+            });
 
         $this->fieldDescription
             ->method('getTemplate')
@@ -3219,6 +3237,12 @@ EOT
         $this->fieldDescription
             ->method('getOptions')
             ->willReturn($options);
+
+        $this->fieldDescription
+            ->method('getOption')
+            ->willReturnCallback(static function (string $name, $default = null) use ($options) {
+                return $options[$name] ?? $default;
+            });
 
         $this->fieldDescription
             ->method('getTemplate')

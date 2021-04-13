@@ -4,8 +4,8 @@
     {%- if value is empty -%}
         &nbsp;
     {% else %}
-        {%- if field_description.options.truncate is defined -%}
-            {% set truncate = field_description.options.truncate %}
+        {%- if field_description.option('truncate') -%}
+            {% set truncate = field_description.option('truncate') %}
             {% set length = truncate.length|default(30) %}
             {% if truncate.preserve is defined %}
                 {% deprecated 'The "truncate.preserve" option is deprecated since sonata-project/admin-bundle 3.65, to be removed in 4.0. Use "truncate.cut" instead.' %}
@@ -17,7 +17,7 @@
             {% set ellipsis = truncate.ellipsis is defined ? truncate.ellipsis : (truncate.separator is defined ? truncate.separator : '...') %}
             {{ value|striptags|u.truncate(length, ellipsis, cut)|raw }}
         {%- else -%}
-            {%- if field_description.options.strip is defined -%}
+            {%- if field_description.option('strip', false) -%}
                 {% set value = value|striptags %}
             {%- endif -%}
             {{ value|raw }}

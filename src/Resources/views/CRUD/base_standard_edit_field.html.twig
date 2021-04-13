@@ -13,8 +13,8 @@ file that was distributed with this source code.
 
 <div class="form-group{% if field_element.var.errors|length > 0 %} has-error{% endif %}" id="sonata-ba-field-container-{{ field_element.vars.id }}">
     {% block label %}
-        {% if field_description.options.name is defined %}
-            {{ form_label(field_element, field_description.options.name) }}
+        {% if field_description.option('name') %}
+            {{ form_label(field_element, field_description.option('name')) }}
         {% else %}
             {{ form_label(field_element) }}
         {% endif %}

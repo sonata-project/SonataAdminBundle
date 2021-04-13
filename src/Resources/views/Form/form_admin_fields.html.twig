@@ -361,9 +361,9 @@ file that was distributed with this source code.
     {% set row_class = (row_attr.class|default('') ~ ' form-group' ~ (errors|length > 0 ? ' has-error'))|trim %}
     <div{% with {attr: row_attr|merge({id: row_id, class: row_class})} %}{{ block('attributes') }}{% endwith %}>
         {# NEXT_MAJOR: Remove this block #}
-        {% if sonata_admin.field_description.options.name is defined %}
+        {% if sonata_admin.field_description|default(null) is not null and sonata_admin.field_description.option('name') %}
             {% deprecated 'The "name" option is deprecated in field description since sonata-project/admin-bundle 3.91, to be removed in 4.0.' %}
-            {% set label = sonata_admin.field_description.options.name|default(label) %}
+            {% set label = sonata_admin.field_description.option('name', label) %}
         {% endif %}
 
         {% set div_class = 'sonata-ba-field' %}
@@ -596,11 +596,11 @@ file that was distributed with this source code.
                     'code': sonata_admin.field_description.associationadmin.code,
                     'objectId': sonata_admin.field_description.associationadmin.id(sonata_admin.value),
                     'uniqid': sonata_admin.field_description.associationadmin.uniqid,
-                    'linkParameters': sonata_admin.field_description.options.link_parameters
+                    'linkParameters': sonata_admin.field_description.option('link_parameters')
                 })) }}
-            {% elseif sonata_admin.field_description.options.placeholder is defined and sonata_admin.field_description.options.placeholder %}
+            {% elseif sonata_admin.field_description.option('placeholder') %}
                 <span class="inner-field-short-description">
-                    {{ sonata_admin.field_description.options.placeholder|trans({}, 'SonataAdminBundle') }}
+                    {{ sonata_admin.field_description.option('placeholder')|trans({}, 'SonataAdminBundle') }}
                 </span>
             {% endif %}
         </span>

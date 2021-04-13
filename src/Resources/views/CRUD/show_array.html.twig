@@ -15,7 +15,7 @@ file that was distributed with this source code.
 {% block field %}
     {{ show.render_array(
         value,
-        field_description.options.inline|default(false),
+        field_description.option('inline', false),
         { default_translation_domain : admin.translationDomain }|merge(field_description.options)
     ) }}
 {% endblock %}

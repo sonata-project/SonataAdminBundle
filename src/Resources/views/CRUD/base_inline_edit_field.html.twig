@@ -15,8 +15,8 @@ file that was distributed with this source code.
 
     {% block label %}
         {% if inline == 'natural' %}
-            {% if field_description.options.name is defined %}
-                {{ form_label(field_element, field_description.options.name) }}
+            {% if field_description.option('name') %}
+                {{ form_label(field_element, field_description.option('name')) }}
             {% else %}
                 {{ form_label(field_element) }}
             {% endif %}
