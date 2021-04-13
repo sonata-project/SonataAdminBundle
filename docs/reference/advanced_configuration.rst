@@ -259,13 +259,13 @@ The link will still appear unless you manually check it using the ``hasAccess()`
     {
         // Link will always appear even if it is protected by ACL
         $menu->addChild($this->trans('Show'), [
-            'uri' => $admin->generateUrl('show', ['id' => $id])
+            'uri' => $admin->generateUrl('show', [$admin->getIdParameter() => $id])
         ]);
 
         // Link will only appear if access to ACL protected URL is granted
         if ($this->hasAccess('edit')) {
             $menu->addChild($this->trans('Edit'), [
-                'uri' => $admin->generateUrl('edit', ['id' => $id])
+                'uri' => $admin->generateUrl('edit', [$admin->getIdParameter() => $id])
             ]);
         }
     }
@@ -285,10 +285,10 @@ the `'dropdown' => true` attribute::
         $menu->addChild('comments', ['attributes' => ['dropdown' => true]]);
 
         $menu['comments']->addChild('list', [
-            'uri' => $admin->generateUrl('listComment', ['id' => $id])
+            'uri' => $admin->generateUrl('listComment', [$admin->getIdParameter() => $id])
         ]);
         $menu['comments']->addChild('create', [
-            'uri' => $admin->generateUrl('addComment', ['id' => $id])
+            'uri' => $admin->generateUrl('addComment', [$admin->getIdParameter() => $id])
         ]);
     }
 

@@ -107,7 +107,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
                 $admin->toString($admin->getSubject()),
                 [
                     'uri' => $admin->hasRoute($this->config['child_admin_route']) && $admin->hasAccess($this->config['child_admin_route'], $admin->getSubject()) ?
-                    $admin->generateUrl($this->config['child_admin_route'], ['id' => $id]) :
+                    $admin->generateUrl($this->config['child_admin_route'], [$admin->getIdParameter() => $id]) :
                     null,
                     'extras' => [
                         'translation_domain' => false,
