@@ -23,7 +23,7 @@ Encore
     { from: './node_modules/jquery-slimscroll/', pattern: /jquery\.slimscroll\.min\.js/, to: 'jquery-slimscroll/[name].[ext]' },
     { from: './node_modules/jquery.scrollto/', pattern: /jquery\.scrollTo\.min\.js/, to: 'jquery-scrollto/[name].[ext]' },
     { from: './node_modules/jquery-form/', pattern: /jquery\.form\.js/, to: 'jquery-form/[name].[ext]' },
-    { from: './node_modules/admin-lte/dist/css/', pattern: /AdminLTE\.min\.css/, to: 'admin-lte/css/[name].[ext]' },
+    { from: './node_modules/admin-lte/dist/css/', pattern: /skin-.*\.min.css|AdminLTE\.min\.css/, to: 'admin-lte/css/[path][name].[ext]' },
     { from: './node_modules/admin-lte/dist/img/', to: 'admin-lte/img/[path][name].[ext]' },
     { from: './node_modules/admin-lte/dist/js/', pattern: /adminlte\.min\.js/, to: 'admin-lte/js/[name].[ext]' },
     { from: './node_modules/bootstrap/dist/css/', pattern: /bootstrap\.min\.css/, to: 'bootstrap/[name].[ext]' },
