@@ -18,7 +18,7 @@ file that was distributed with this source code.
 
     function apply_position_value_{{ id }}() {
         // update the input value position
-        jQuery('div#field_container_{{ id }} .sonata-ba-tabs .sonata-ba-field-{{ id }}-{{ sonata_admin.field_description.options.sortable }}').each(function(index, element) {
+        jQuery('div#field_container_{{ id }} .sonata-ba-tabs .sonata-ba-field-{{ id }}-{{ sonata_admin.field_description.option('sortable') }}').each(function(index, element) {
             // remove the sortable handler and put it back
             var parent = jQuery(element).closest('.nav-tabs-custom');
             var tabs = parent.find('> .nav-tabs');
@@ -29,7 +29,7 @@ file that was distributed with this source code.
             jQuery('input', element).hide();
         });
 
-        jQuery('div#field_container_{{ id }} .sonata-ba-tabs .sonata-ba-field-{{ id }}-{{ sonata_admin.field_description.options.sortable }} input').each(function(index, value) {
+        jQuery('div#field_container_{{ id }} .sonata-ba-tabs .sonata-ba-field-{{ id }}-{{ sonata_admin.field_description.option('sortable') }} input').each(function(index, value) {
             jQuery(value).val(index + 1);
         });
     }

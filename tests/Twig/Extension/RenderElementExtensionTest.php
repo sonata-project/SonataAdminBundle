@@ -203,7 +203,7 @@ final class RenderElementExtensionTest extends TestCase
 
         $this->fieldDescription
             ->method('getOption')
-            ->willReturnCallback(static function ($name, $default = null) use ($options) {
+            ->willReturnCallback(static function (string $name, $default = null) use ($options) {
                 return $options[$name] ?? $default;
             });
 
@@ -333,6 +333,12 @@ EOT
             ->willReturn($options);
 
         $this->fieldDescription
+            ->method('getOption')
+            ->willReturnCallback(static function (string $name, $default = null) use ($options) {
+                return $options[$name] ?? $default;
+            });
+
+        $this->fieldDescription
             ->method('getTemplate')
             ->willReturnCallback(static function () use ($type): ?string {
                 switch ($type) {
@@ -393,6 +399,12 @@ EOT
         $this->fieldDescription
             ->method('getOptions')
             ->willReturn($options);
+
+        $this->fieldDescription
+            ->method('getOption')
+            ->willReturnCallback(static function (string $name, $default = null) use ($options) {
+                return $options[$name] ?? $default;
+            });
 
         $this->fieldDescription
             ->method('getTemplate')

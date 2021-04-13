@@ -16,7 +16,7 @@ file that was distributed with this source code.
         {% set text = 'label_type_no'|trans({}, 'SonataAdminBundle') %}
     {% endif %}
 
-    {% if field_description.options.inverse|default(false) ? not value : value %}
+    {% if field_description.option('inverse', false) ? not value : value %}
         {% set class = 'label-success' %}
     {% else %}
         {% set class = 'label-danger' %}

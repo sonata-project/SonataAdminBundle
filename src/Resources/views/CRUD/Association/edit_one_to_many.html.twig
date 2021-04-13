@@ -36,8 +36,8 @@ file that was distributed with this source code.
             and sonata_admin.field_description.associationadmin.hasAccess('create')
             and btn_add
             and (
-                sonata_admin.field_description.options.limit is not defined or
-                form.children|length < sonata_admin.field_description.options.limit
+                sonata_admin.field_description.option('limit') is null or
+                form.children|length < sonata_admin.field_description.option('limit')
             ) %}
 
         {% if sonata_admin.edit == 'inline' %}
@@ -60,7 +60,7 @@ file that was distributed with this source code.
             {% endif %}
 
             {# add code for the sortable options #}
-            {% if sonata_admin.field_description.options.sortable is defined %}
+            {% if sonata_admin.field_description.option('sortable', false) %}
                 {% if sonata_admin.inline == 'table' %}
                     {% include '@SonataAdmin/CRUD/Association/edit_one_to_many_sortable_script_table.html.twig' %}
                 {% else %}

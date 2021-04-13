@@ -544,11 +544,11 @@ file that was distributed with this source code.
                     'code': sonata_admin.field_description.associationadmin.code,
                     'objectId': sonata_admin.field_description.associationadmin.id(sonata_admin.value),
                     'uniqid': sonata_admin.field_description.associationadmin.uniqid,
-                    'linkParameters': sonata_admin.field_description.options.link_parameters
+                    'linkParameters': sonata_admin.field_description.option('link_parameters')
                 })) }}
-            {% elseif sonata_admin.field_description.options.placeholder is defined and sonata_admin.field_description.options.placeholder %}
+            {% elseif sonata_admin.field_description.option('placeholder') %}
                 <span class="inner-field-short-description">
-                    {{ sonata_admin.field_description.options.placeholder|trans({}, 'SonataAdminBundle') }}
+                    {{ sonata_admin.field_description.option('placeholder')|trans({}, 'SonataAdminBundle') }}
                 </span>
             {% endif %}
         </span>

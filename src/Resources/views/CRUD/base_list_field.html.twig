@@ -9,20 +9,20 @@ file that was distributed with this source code.
 
 #}
 
-<td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}"{% if field_description.options.row_align is defined %} style="text-align:{{ field_description.options.row_align }}"{% endif %}>
-    {% set route = field_description.options.route.name|default(null) %}
+<td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}"{% if field_description.option('row_align') %} style="text-align:{{ field_description.option('row_align') }}"{% endif %}>
+    {% set route = field_description.option('route').name|default(null) %}
 
     {% if
-        field_description.options.identifier|default(false)
+        field_description.option('identifier', false)
         and route
         and admin.hasRoute(route)
         and admin.hasAccess(route, route in ['show', 'edit'] ? object : null)
     %}
-        <a class="sonata-link-identifier" href="{{ admin.generateObjectUrl(route, object, field_description.options.route.parameters) }}">
+        <a class="sonata-link-identifier" href="{{ admin.generateObjectUrl(route, object, field_description.option('route').parameters) }}">
             {%- block field %}
                 {% apply spaceless %}
-                {% if field_description.options.collapse is defined %}
-                    {% set collapse = field_description.options.collapse %}
+                {% if field_description.option('collapse') is not null %}
+                    {% set collapse = field_description.option('collapse') %}
                     <div class="sonata-readmore"
                           data-readmore-height="{{ collapse.height|default(40) }}"
                           data-readmore-more="{{ collapse.more|default('read_more')|trans({}, 'SonataAdminBundle') }}"
@@ -34,8 +34,8 @@ file that was distributed with this source code.
             {% endblock -%}
         </a>
     {% else %}
-        {% set is_editable = field_description.options.editable is defined and field_description.options.editable and admin.hasAccess('edit', object) %}
-        {% if is_editable and field_description.options.multiple is defined and field_description.options.multiple and value is iterable %}
+        {% set is_editable = field_description.option('editable', false) and admin.hasAccess('edit', object) %}
+        {% if is_editable and field_description.option('multiple', false) and value is iterable %}
             {# multiple editable field should be real multiple #}
             {# https://vitalets.github.io/x-editable/docs.html#checklist #}
             {% set x_editable_type = 'checklist' %}

@@ -13,9 +13,8 @@ file that was distributed with this source code.
     {%- if value is empty -%}
         &nbsp;
     {%- else -%}
-        {% set options = field_description.options %}
         <time datetime="{{ value|date('Y-m-d', 'UTC') }}" title="{{ value|date('Y-m-d', 'UTC') }}">
-            {{ value|date(options.format|default('F j, Y'), options.timezone|default(null)) }}
+            {{ value|date(field_description.option('format', 'F j, Y'), field_description.option('timezone')) }}
         </time>
     {%- endif -%}
 {% endapply -%}

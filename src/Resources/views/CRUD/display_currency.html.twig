@@ -13,6 +13,6 @@ file that was distributed with this source code.
     {%- if value is null -%}
         &nbsp;
     {%- else -%}
-        {{ field_description.options.currency }} {{ value }}
+        {{ field_description.option('currency') }} {{ value }}
     {%- endif -%}
 {% endapply -%}
