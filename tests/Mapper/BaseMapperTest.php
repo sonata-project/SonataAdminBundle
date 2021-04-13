@@ -19,6 +19,10 @@ use Sonata\AdminBundle\Builder\BuilderInterface;
 use Sonata\AdminBundle\Mapper\BaseMapper;
 
 /**
+ * NEXT_MAJOR: Remove this tests.
+ *
+ * @group legacy
+ *
  * Test for BaseMapperTest.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>

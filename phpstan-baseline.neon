@@ -92,24 +92,6 @@ parameters:
 
         -
             # will be fixed in v4. Currently BC break
-            message: "#^Method Sonata\\\\AdminBundle\\\\FieldDescription\\\\FieldDescriptionInterface\\:\\:getLabel\\(\\) invoked with 1 parameter, 0 required\\.$#"
-            count: 1
-            path: src/Show/ShowMapper.php
-
-        -
-            # will be fixed in v4. Currently BC break
-            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\<object\\>\\:\\:getShowGroups\\(\\) invoked with 1 parameter, 0 required\\.$#"
-            count: 1
-            path: src/Show/ShowMapper.php
-
-        -
-            # will be fixed in v4. Currently BC break
-            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\<object\\>\\:\\:getShowTabs\\(\\) invoked with 1 parameter, 0 required\\.$#"
-            count: 1
-            path: src/Show/ShowMapper.php
-
-        -
-            # will be fixed in v4. Currently BC break
             message: "#^Method Sonata\\\\AdminBundle\\\\Translator\\\\Extractor\\\\JMSTranslatorBundle\\\\AdminExtractor\\:\\:buildSecurityInformation\\(\\) should return array\\<string, array<string>\\> but return statement is missing\\.$#"
             count: 1
             path: src/Translator/Extractor/JMSTranslatorBundle/AdminExtractor.php

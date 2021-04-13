@@ -38,12 +38,20 @@ class ShowMapper extends BaseGroupedMapper
      */
     protected $builder;
 
+    /**
+     * NEXT_MAJOR: Make the property private.
+     *
+     * @var AdminInterface
+     */
+    protected $admin;
+
     public function __construct(
         ShowBuilderInterface $showBuilder,
         FieldDescriptionCollection $list,
         AdminInterface $admin
     ) {
-        parent::__construct($showBuilder, $admin);
+        $this->admin = $admin;
+        $this->builder = $showBuilder;
         $this->list = $list;
     }
 
@@ -70,17 +78,17 @@ class ShowMapper extends BaseGroupedMapper
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
         } elseif (\is_string($name)) {
-            if (!$this->admin->hasShowFieldDescription($name)) {
+            if (!$this->getAdmin()->hasShowFieldDescription($name)) {
 
                 // NEXT_MAJOR: Remove the check and use `createFieldDescription`.
-                if (method_exists($this->admin, 'createFieldDescription')) {
-                    $fieldDescription = $this->admin->createFieldDescription(
+                if (method_exists($this->getAdmin(), 'createFieldDescription')) {
+                    $fieldDescription = $this->getAdmin()->createFieldDescription(
                         $name,
                         $fieldDescriptionOptions
                     );
                 } else {
-                    $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
-                        $this->admin->getClass(),
+                    $fieldDescription = $this->getAdmin()->getModelManager()->getNewFieldDescriptionInstance(
+                        $this->getAdmin()->getClass(),
                         $name,
                         $fieldDescriptionOptions
                     );
@@ -100,14 +108,14 @@ class ShowMapper extends BaseGroupedMapper
 
         // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
         if (null === $fieldDescription->getLabel('sonata_deprecation_mute')) {
-            $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'show', 'label'));
+            $fieldDescription->setOption('label', $this->getAdmin()->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'show', 'label'));
         }
 
         $fieldDescription->setOption('safe', $fieldDescription->getOption('safe', false));
 
-        if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
+        if (!isset($fieldDescriptionOptions['role']) || $this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
             // add the field with the FormBuilder
-            $this->builder->addField($this->list, $type, $fieldDescription, $this->admin);
+            $this->builder->addField($this->list, $type, $fieldDescription, $this->getAdmin());
         }
 
         return $this;
@@ -125,7 +133,7 @@ class ShowMapper extends BaseGroupedMapper
 
     public function remove($key)
     {
-        $this->admin->removeShowFieldDescription($key);
+        $this->getAdmin()->removeShowFieldDescription($key);
         $this->list->remove($key);
 
         return $this;
@@ -138,7 +146,7 @@ class ShowMapper extends BaseGroupedMapper
 
     public function reorder(array $keys)
     {
-        $this->admin->reorderShowGroup($this->getCurrentGroupName(), $keys);
+        $this->getAdmin()->reorderShowGroup($this->getCurrentGroupName(), $keys);
 
         return $this;
     }
@@ -147,24 +155,24 @@ class ShowMapper extends BaseGroupedMapper
     {
         // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
 
-        return $this->admin->getShowGroups('sonata_deprecation_mute');
+        return $this->getAdmin()->getShowGroups('sonata_deprecation_mute');
     }
 
     protected function setGroups(array $groups)
     {
-        $this->admin->setShowGroups($groups);
+        $this->getAdmin()->setShowGroups($groups);
     }
 
     protected function getTabs()
     {
         // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
 
-        return $this->admin->getShowTabs('sonata_deprecation_mute');
+        return $this->getAdmin()->getShowTabs('sonata_deprecation_mute');
     }
 
     protected function setTabs(array $tabs)
     {
-        $this->admin->setShowTabs($tabs);
+        $this->getAdmin()->setShowTabs($tabs);
     }
 
     protected function getName()

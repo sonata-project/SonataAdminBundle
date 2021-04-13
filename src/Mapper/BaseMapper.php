@@ -17,11 +17,13 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\BuilderInterface;
 
 /**
+ * NEXT_MAJOR: Remove this class.
+ *
  * This class is used to simulate the Form API.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-abstract class BaseMapper implements MapperInterface
+abstract class BaseMapper
 {
     /**
      * @var AdminInterface
@@ -35,6 +37,11 @@ abstract class BaseMapper implements MapperInterface
 
     public function __construct(BuilderInterface $builder, AdminInterface $admin)
     {
+        @trigger_error(sprintf(
+            'The %s class is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+            __CLASS__
+        ), \E_USER_DEPRECATED);
+
         $this->builder = $builder;
         $this->admin = $admin;
     }
