@@ -346,6 +346,11 @@ class SonataAdminExtensionTest extends TestCase
      */
     public function testRenderListElement(string $expected, string $type, $value, array $options): void
     {
+        $this->admin
+            ->method('getUrlSafeIdentifier')
+            ->with($this->equalTo($this->object))
+            ->willReturn(12345);
+
         $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderListElement method is deprecated in favor of RenderElementExtension::renderListElement since version 3.87 and will be removed in 4.0.');
 
         $this->expectDeprecation('The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).');
