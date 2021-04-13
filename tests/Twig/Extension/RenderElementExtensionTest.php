@@ -202,6 +202,11 @@ final class RenderElementExtensionTest extends TestCase
             ->willReturn(12345);
 
         $this->admin
+            ->method('getUrlSafeIdentifier')
+            ->with($this->equalTo($this->object))
+            ->willReturn(12345);
+
+        $this->admin
             ->method('getNormalizedIdentifier')
             ->with($this->equalTo($this->object))
             ->willReturn(12345);
