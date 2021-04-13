@@ -22,7 +22,7 @@
   "bundles/sonataadmin/dist/ionicons/css/ionicons.min.css": "/bundles/sonataadmin/dist/ionicons/css/ionicons.min.css",
   "bundles/sonataadmin/dist/moment/moment.min.js": "/bundles/sonataadmin/dist/moment/moment.min.js",
   "bundles/sonataadmin/dist/bootstrap/bootstrap.min.js": "/bundles/sonataadmin/dist/bootstrap/bootstrap.min.js",
-  "bundles/sonataadmin/dist/components-font-awesome/font-awesome.min.css": "/bundles/sonataadmin/dist/components-font-awesome/font-awesome.min.css",
+  "bundles/sonataadmin/dist/components-font-awesome/css/font-awesome.min.css": "/bundles/sonataadmin/dist/components-font-awesome/css/font-awesome.min.css",
   "bundles/sonataadmin/dist/masonry-layout/masonry.pkgd.min.js": "/bundles/sonataadmin/dist/masonry-layout/masonry.pkgd.min.js",
   "bundles/sonataadmin/dist/x-editable/bootstrap-editable.css": "/bundles/sonataadmin/dist/x-editable/bootstrap-editable.css",
   "bundles/sonataadmin/dist/select2/select2.css": "/bundles/sonataadmin/dist/select2/select2.css",

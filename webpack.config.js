@@ -28,7 +28,7 @@ Encore
     { from: './node_modules/admin-lte/dist/js/', pattern: /adminlte\.min\.js/, to: 'admin-lte/js/[name].[ext]' },
     { from: './node_modules/bootstrap/dist/css/', pattern: /bootstrap\.min\.css/, to: 'bootstrap/[name].[ext]' },
     { from: './node_modules/bootstrap/dist/js/', pattern: /bootstrap\.min\.js/, to: 'bootstrap/[name].[ext]' },
-    { from: './node_modules/components-font-awesome/css/', pattern: /font-awesome\.min\.css/, to: 'components-font-awesome/[name].[ext]' },
+    { from: './node_modules/components-font-awesome/css/', pattern: /font-awesome\.min\.css/, to: 'components-font-awesome/css/[name].[ext]' },
     { from: './node_modules/components-font-awesome/fonts/', to: 'components-font-awesome/fonts/[name].[ext]' },
     { from: './node_modules/ionicons/css/', pattern: /ionicons\.min\.css/, to: 'ionicons/css/[name].[ext]' },
     { from: './node_modules/ionicons/fonts/', to: 'ionicons/fonts/[name].[ext]' },
