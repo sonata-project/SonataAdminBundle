@@ -124,7 +124,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
     {
         $this->container->setParameter('kernel.bundles', []);
         $removeStylesheets = [
-            'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css',
+            'bundles/sonataadmin/dist/admin-lte/css/skins/skin-black.min.css',
             'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
         ];
         $this->load([
@@ -190,7 +190,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $extraStylesheets = ['foo/bar.css', 'bar/quux.css'];
         $extraJavascripts = ['foo/bar.js', 'bar/quux.js'];
         $removeStylesheets = [
-            'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css',
+            'bundles/sonataadmin/dist/admin-lte/css/skins/skin-black.min.css',
             'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
         ];
         $removeJavascripts = [
@@ -373,7 +373,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $defaultStylesheets = $this->defaultConfiguration['assets']['stylesheets'];
         $defaultStylesheets[] = sprintf(
-            'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/%s.min.css',
+            'bundles/sonataadmin/dist/admin-lte/css/skins/%s.min.css',
             $skin
         );
 
