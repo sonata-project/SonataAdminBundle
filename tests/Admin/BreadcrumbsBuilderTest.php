@@ -317,8 +317,8 @@ class BreadcrumbsBuilderTest extends TestCase
             ['edit', null, true],
         ]);
         $admin->method('generateUrl')->willReturnMap([
-            ['show', ['id' => 'my-object'], UrlGeneratorInterface::ABSOLUTE_PATH, '/myadmin/my-object'],
-            ['edit', ['id' => 'my-object'], UrlGeneratorInterface::ABSOLUTE_PATH, '/myadmin/my-object'],
+            ['show', ['slug' => 'my-object'], UrlGeneratorInterface::ABSOLUTE_PATH, '/myadmin/my-object'],
+            ['edit', ['slug' => 'my-object'], UrlGeneratorInterface::ABSOLUTE_PATH, '/myadmin/my-object'],
             ['list', [], UrlGeneratorInterface::ABSOLUTE_PATH, '/myadmin/list'],
         ]);
 

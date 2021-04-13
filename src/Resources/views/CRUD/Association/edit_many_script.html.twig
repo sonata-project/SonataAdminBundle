@@ -534,7 +534,7 @@ This code manages the many-to-[one|many] association field popup
 
             {% if btn_edit %}
                 var edit_button_url = '{{
-                    associationadmin.generateUrl('edit', {'id' : 'OBJECT_ID'})
+                    associationadmin.generateUrl('edit', {(associationadmin.idParameter) : 'OBJECT_ID'})
                 }}'.replace('OBJECT_ID', objectId);
 
                 jQuery('#field_actions_{{ id }} a.btn-warning').removeClass('hidden').attr('href', edit_button_url);
