@@ -16,11 +16,13 @@ namespace Sonata\AdminBundle\Mapper;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 
 /**
+ * NEXT_MAJOR: Stop extending BaseMapper.
+ *
  * This class is used to simulate the Form API.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-abstract class BaseGroupedMapper extends BaseMapper
+abstract class BaseGroupedMapper extends BaseMapper implements MapperInterface
 {
     /**
      * @var string|null
@@ -78,7 +80,7 @@ abstract class BaseGroupedMapper extends BaseMapper
             'class' => false,
             'description' => false,
             'label' => $name, // NEXT_MAJOR: Remove this line and uncomment the next one
-//            'label' => $this->admin->getLabelTranslatorStrategy()->getLabel($name, $this->getName(), 'group'),
+//            'label' => $this->getAdmin()->getLabelTranslatorStrategy()->getLabel($name, $this->getName(), 'group'),
             'translation_domain' => null,
             'name' => $name,
             'box_class' => 'box box-primary',
@@ -398,14 +400,14 @@ abstract class BaseGroupedMapper extends BaseMapper
     protected function getCurrentGroupName()
     {
         if (!$this->currentGroup) {
-            $label = $this->admin->getLabel();
+            $label = $this->getAdmin()->getLabel();
 
             if (null === $label) {
                 $this->with('default', ['auto_created' => true]);
             } else {
                 $this->with($label, [
                     'auto_created' => true,
-                    'translation_domain' => $this->admin->getTranslationDomain(),
+                    'translation_domain' => $this->getAdmin()->getTranslationDomain(),
                 ]);
             }
         }

@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Tests\Event;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Event\ConfigureEvent;
-use Sonata\AdminBundle\Mapper\BaseMapper;
+use Sonata\AdminBundle\Mapper\MapperInterface;
 
 class ConfigureEventTest extends TestCase
 {
@@ -31,16 +31,14 @@ class ConfigureEventTest extends TestCase
     private $admin;
 
     /**
-     * @var BaseMapper
+     * @var MapperInterface
      */
     private $mapper;
 
     protected function setUp(): void
     {
         $this->admin = $this->createMock(AdminInterface::class);
-        $this->mapper = $this->getMockBuilder(BaseMapper::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->mapper = $this->createMock(MapperInterface::class);
 
         $this->event = new ConfigureEvent($this->admin, $this->mapper, 'Foo');
     }
@@ -62,7 +60,7 @@ class ConfigureEventTest extends TestCase
     {
         $result = $this->event->getMapper();
 
-        $this->assertInstanceOf(BaseMapper::class, $result);
+        $this->assertInstanceOf(MapperInterface::class, $result);
         $this->assertSame($this->mapper, $result);
     }
 }

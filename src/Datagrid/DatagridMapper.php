@@ -17,15 +17,18 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Mapper\BaseMapper;
+use Sonata\AdminBundle\Mapper\MapperInterface;
 
 /**
+ * NEXT_MAJOR: Stop extending BaseMapper.
+ *
  * This class is use to simulate the Form API.
  *
  * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class DatagridMapper extends BaseMapper
+class DatagridMapper extends BaseMapper implements MapperInterface
 {
     /**
      * @var DatagridInterface
@@ -37,13 +40,26 @@ class DatagridMapper extends BaseMapper
      */
     protected $builder;
 
+    /**
+     * NEXT_MAJOR: Make the property private.
+     *
+     * @var AdminInterface
+     */
+    protected $admin;
+
     public function __construct(
         DatagridBuilderInterface $datagridBuilder,
         DatagridInterface $datagrid,
         AdminInterface $admin
     ) {
-        parent::__construct($datagridBuilder, $admin);
+        $this->admin = $admin;
+        $this->builder = $datagridBuilder;
         $this->datagrid = $datagrid;
+    }
+
+    public function getAdmin()
+    {
+        return $this->admin;
     }
 
     /**
@@ -103,7 +119,7 @@ class DatagridMapper extends BaseMapper
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($filterOptions);
         } elseif (\is_string($name)) {
-            if ($this->admin->hasFilterFieldDescription($name)) {
+            if ($this->getAdmin()->hasFilterFieldDescription($name)) {
                 throw new \LogicException(sprintf(
                     'Duplicate field name "%s" in datagrid mapper. Names should be unique.',
                     $name
@@ -115,14 +131,14 @@ class DatagridMapper extends BaseMapper
             }
 
             // NEXT_MAJOR: Remove the check and use `createFieldDescription`.
-            if (method_exists($this->admin, 'createFieldDescription')) {
-                $fieldDescription = $this->admin->createFieldDescription(
+            if (method_exists($this->getAdmin(), 'createFieldDescription')) {
+                $fieldDescription = $this->getAdmin()->createFieldDescription(
                     $name,
                     array_merge($filterOptions, $fieldDescriptionOptions)
                 );
             } else {
-                $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
-                    $this->admin->getClass(),
+                $fieldDescription = $this->getAdmin()->getModelManager()->getNewFieldDescriptionInstance(
+                    $this->getAdmin()->getClass(),
                     $name,
                     array_merge($filterOptions, $fieldDescriptionOptions)
                 );
@@ -136,12 +152,12 @@ class DatagridMapper extends BaseMapper
 
         // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
         if (null === $fieldDescription->getLabel('sonata_deprecation_mute')) {
-            $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'filter', 'label'));
+            $fieldDescription->setOption('label', $this->getAdmin()->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'filter', 'label'));
         }
 
-        if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
+        if (!isset($fieldDescriptionOptions['role']) || $this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
             // add the field with the DatagridBuilder
-            $this->builder->addFilter($this->datagrid, $type, $fieldDescription, $this->admin);
+            $this->builder->addFilter($this->datagrid, $type, $fieldDescription, $this->getAdmin());
         }
 
         return $this;
@@ -164,7 +180,7 @@ class DatagridMapper extends BaseMapper
 
     public function remove($key)
     {
-        $this->admin->removeFilterFieldDescription($key);
+        $this->getAdmin()->removeFilterFieldDescription($key);
         $this->datagrid->removeFilter($key);
 
         return $this;
