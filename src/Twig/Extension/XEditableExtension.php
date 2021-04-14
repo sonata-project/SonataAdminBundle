@@ -14,12 +14,31 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Twig\Extension;
 
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 final class XEditableExtension extends AbstractExtension
 {
+    public const FIELD_DESCRIPTION_MAPPING = [
+        FieldDescriptionInterface::TYPE_CHOICE => 'select',
+        FieldDescriptionInterface::TYPE_BOOLEAN => 'select',
+        TemplateRegistryInterface::TYPE_TEXT => 'text', // NEXT_MAJOR: Remove this line.
+        FieldDescriptionInterface::TYPE_TEXTAREA => 'textarea',
+        FieldDescriptionInterface::TYPE_HTML => 'textarea',
+        FieldDescriptionInterface::TYPE_EMAIL => 'email',
+        FieldDescriptionInterface::TYPE_STRING => 'text',
+        TemplateRegistryInterface::TYPE_SMALLINT => 'text', // NEXT_MAJOR: Remove this line.
+        TemplateRegistryInterface::TYPE_BIGINT => 'text', // NEXT_MAJOR: Remove this line.
+        FieldDescriptionInterface::TYPE_INTEGER => 'number',
+        FieldDescriptionInterface::TYPE_FLOAT => 'number',
+        TemplateRegistryInterface::TYPE_DECIMAL => 'number', // NEXT_MAJOR: Remove this line.
+        FieldDescriptionInterface::TYPE_CURRENCY => 'number',
+        FieldDescriptionInterface::TYPE_PERCENT => 'number',
+        FieldDescriptionInterface::TYPE_URL => 'url',
+    ];
+
     /**
      * @var string[]
      */
@@ -37,7 +56,7 @@ final class XEditableExtension extends AbstractExtension
      */
     public function __construct(
         TranslatorInterface $translator,
-        array $xEditableTypeMapping
+        array $xEditableTypeMapping = self::FIELD_DESCRIPTION_MAPPING
     ) {
         $this->translator = $translator;
         $this->xEditableTypeMapping = $xEditableTypeMapping;
