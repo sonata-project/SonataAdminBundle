@@ -9,11 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{% if admin.hasAccess('list') and admin.hasRoute('list') %}
-    <li>
-        <a class="sonata-action-element" href="{{ admin.generateUrl('list') }}">
-            <i class="fa fa-list" aria-hidden="true"></i>
-            {{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}
-        </a>
-    </li>
-{% endif %}
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/Button/list_button.html.twig'  %}

@@ -1,0 +1,64 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+
+{%- block actions -%}
+    {% include '@SonataAdmin/CRUD/action_buttons.html.twig' %}
+{%- endblock -%}
+
+{%- block tab_menu -%}
+    {{ knp_menu_render(admin.sidemenu(action), {
+        'currentClass': 'active',
+        'template': get_global_template('tab_menu_template')
+    }, 'twig') }}
+{%- endblock -%}
+
+{% block content %}
+    <div class="sonata-ba-delete">
+        <div class="box box-danger">
+            <div class="box-header">
+                {% if batch_translation_domain is not same as(false) %}
+                    {% set action_label = action_label|trans({}, batch_translation_domain) %}
+                {% endif %}
+                <h4 class="box-title">{% trans with {'%action%': action_label} from 'SonataAdminBundle' %}title_batch_confirmation{% endtrans %}</h4>
+            </div>
+            <div class="box-body">
+                {% if data.all_elements %}
+                    {{ 'message_batch_all_confirmation'|trans({}, 'SonataAdminBundle') }}
+                {% else %}
+                    {% trans with {'%count%': data.idx|length} from 'SonataAdminBundle' %}message_batch_confirmation{% endtrans %}
+                {% endif %}
+            </div>
+            <div class="box-footer clearfix">
+                <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST">
+                    <input type="hidden" name="confirmation" value="ok">
+                    <input type="hidden" name="data" value="{{ data|json_encode }}">
+                    <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
+
+                    <div style="display: none">
+                        {{ form_rest(form) }}
+                    </div>
+
+                    <button type="submit" class="btn btn-danger">{{ 'btn_execute_batch_action'|trans({}, 'SonataAdminBundle') }}</button>
+
+                    {% if admin.hasRoute('list') and admin.hasAccess('list') %}
+                        {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
+
+                        <a class="btn btn-success" href="{{ admin.generateUrl('list') }}">
+                            <i class="fa fa-th-list" aria-hidden="true"></i> {{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}
+                        </a>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

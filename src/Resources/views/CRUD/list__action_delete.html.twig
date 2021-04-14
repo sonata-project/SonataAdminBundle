@@ -9,13 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{% if admin.hasAccess('delete', object) and admin.hasRoute('delete') %}
-    <a
-        href="{{ admin.generateObjectUrl('delete', object, actions.link_parameters|default([])) }}"
-        class="btn btn-sm btn-default delete_link"
-        title="{{ 'action_delete'|trans({}, 'SonataAdminBundle') }}"
-    >
-        <i class="fa fa-times" aria-hidden="true"></i>
-        {{ 'action_delete'|trans({}, 'SonataAdminBundle') }}
-    </a>
-{% endif %}
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/list__action_delete.html.twig'  %}

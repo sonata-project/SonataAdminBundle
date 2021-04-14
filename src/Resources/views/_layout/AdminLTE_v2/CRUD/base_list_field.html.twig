@@ -1,0 +1,85 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+<td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}"{% if field_description.option('row_align') %} style="text-align:{{ field_description.option('row_align') }}"{% endif %}>
+    {% set route = field_description.option('route').name|default(null) %}
+
+    {% if
+        field_description.option('identifier', false)
+        and route
+        and admin.hasRoute(route)
+        and admin.hasAccess(route, route in ['show', 'edit'] ? object : null)
+    %}
+        <a class="sonata-link-identifier" href="{{ admin.generateObjectUrl(route, object, field_description.option('route').parameters) }}">
+            {%- block field %}
+                {% apply spaceless %}
+                {% if field_description.option('collapse') is not null %}
+                    {% set collapse = field_description.option('collapse') %}
+                    <div class="sonata-readmore"
+                          data-readmore-height="{{ collapse.height|default(40) }}"
+                          data-readmore-more="{{ collapse.more|default('read_more')|trans({}, 'SonataAdminBundle') }}"
+                          data-readmore-less="{{ collapse.less|default('read_less')|trans({}, 'SonataAdminBundle') }}">{{ value }}</div>
+                {% else %}
+                    {{ value }}
+                {% endif %}
+                {% endapply %}
+            {% endblock -%}
+        </a>
+    {% else %}
+        {% set is_editable = field_description.option('editable', false) and admin.hasAccess('edit', object) %}
+        {% if is_editable and field_description.option('multiple', false) and value is iterable %}
+            {# multiple editable field should be real multiple #}
+            {# https://vitalets.github.io/x-editable/docs.html#checklist #}
+            {% set x_editable_type = 'checklist' %}
+        {% else %}
+            {% set x_editable_type = field_description.type|sonata_xeditable_type %}
+        {% endif %}
+
+        {% if is_editable and x_editable_type %}
+            {% set url = path(
+                'sonata_admin_set_object_field_value',
+                admin.getPersistentParameters|default([])|merge({
+                    'context': 'list',
+                    'field': field_description.name,
+                    'objectId': admin.id(object),
+                    'code': admin.code(object)
+                })
+            ) %}
+
+            {% if field_description.type == constant('Sonata\\AdminBundle\\FieldDescription\\FieldDescriptionInterface::TYPE_DATE') and value is not empty %}
+                {# it is a x-editable format https://vitalets.github.io/x-editable/docs.html#date #}
+                {% set data_value = value|date('Y-m-d', options.timezone|default(null)) %}
+            {% elseif field_description.type == constant('Sonata\\AdminBundle\\FieldDescription\\FieldDescriptionInterface::TYPE_BOOLEAN') and value is empty %}
+                {% set data_value = 0 %}
+            {% elseif value is iterable %}
+                {% set data_value = value|json_encode %}
+            {% else %}
+                {% set data_value = value %}
+            {% endif %}
+
+            <span {% block field_span_attributes %}class="x-editable"
+                  data-type="{{ x_editable_type }}"
+                  data-value="{{ data_value }}"
+                  {% if field_description.label is not same as(false) %}
+                    data-title="{{ field_description.label|trans({}, field_description.translationDomain) }}"
+                  {% endif %}
+                  {% if field_description.type == constant('Sonata\\AdminBundle\\FieldDescription\\FieldDescriptionInterface::TYPE_DATE') %}
+                    data-format="yyyy-mm-dd"
+                  {% endif %}
+                  data-pk="{{ admin.id(object) }}"
+                  data-url="{{ url }}" {% endblock %}>
+                {{ block('field') }}
+            </span>
+        {% else %}
+            {{ block('field') }}
+        {% endif %}
+    {% endif %}
+</td>

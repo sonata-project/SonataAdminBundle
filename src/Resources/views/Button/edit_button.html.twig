@@ -9,15 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{% if object is not null
-    and admin.id(object) is not null
-    and admin.hasAccess('edit', object)
-    and admin.hasRoute('edit')
-%}
-    <li>
-        <a class="sonata-action-element" href="{{ admin.generateObjectUrl('edit', object) }}">
-            <i class="fa fa-edit" aria-hidden="true"></i>
-            {{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}
-        </a>
-    </li>
-{% endif %}
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/Button/edit_button.html.twig'  %}

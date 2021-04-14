@@ -9,12 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{%- apply spaceless %}
-    {%- if value is empty -%}
-        &nbsp;
-    {%- else -%}
-        <time datetime="{{ value|date('H:i:sP', 'UTC') }}" title="{{ value|date('H:i:sP', 'UTC') }}">
-            {{ value|date(field_description.option('format', 'H:i:s'), field_description.option('timezone')) }}
-        </time>
-    {%- endif -%}
-{% endapply -%}
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/display_time.html.twig'  %}

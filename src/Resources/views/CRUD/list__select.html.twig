@@ -9,11 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{% extends get_admin_template('base_list_field', admin.code) %}
-
-{% block field %}
-    <a class="btn btn-primary" href="{{ admin.generateUrl('list') }}">
-        <i class="fa fa-check" aria-hidden="true"></i>
-        {{ 'list_select'|trans({}, 'SonataAdminBundle') }}
-    </a>
-{% endblock %}
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/list__select.html.twig'  %}

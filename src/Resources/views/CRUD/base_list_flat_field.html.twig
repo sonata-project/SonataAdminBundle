@@ -9,17 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-<span class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}">
-    {% if
-        field_description.option('identifier', false)
-        and field_description.option('route')
-        and admin.hasAccess(field_description.option('route').name, object)
-        and admin.hasRoute(field_description.option('route').name)
-    %}
-        <a href="{{ admin.generateObjectUrl(field_description.option('route').name, object, field_description.option('route').parameters) }}">
-            {%- block field %}{{ value }}{% endblock -%}
-        </a>
-    {% else %}
-        {{ block('field') }}
-    {% endif %}
-</span>
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/base_list_flat_field.html.twig'  %}

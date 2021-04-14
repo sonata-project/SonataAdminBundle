@@ -1,0 +1,88 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% macro render_array(value, options = []) %}
+    {% set options = {
+        'inline': false,
+        'key_translation_domain': false,
+        'value_translation_domain': false,
+        'display': 'both'
+    }|merge(options) %}
+    {%- apply spaceless -%}
+        {%- from _self import render_array -%}
+
+        {%- if not options.inline -%}
+            <ul>
+        {%- else -%}
+            [
+        {%- endif -%}
+
+        {%- for key, val in value -%}
+            {%- if not options.inline -%}
+                <li>
+            {%- endif -%}
+
+            {%- if options.display in ['both', 'keys'] -%}
+                {%- if options.key_translation_domain is same as(false) -%}
+                    {{- key -}}
+                {%- else -%}
+                    {%- if options.key_translation_domain is same as(true) -%}
+                        {%- set key_translation_domain = options.default_translation_domain -%}
+                    {%- elseif options.key_translation_domain is same as(null) -%}
+                        {%- set key_translation_domain = null -%}
+                    {%- else -%}
+                        {%- set key_translation_domain = options.key_translation_domain -%}
+                    {%- endif -%}
+
+                    {{- key|trans({}, key_translation_domain) -}}
+                {%- endif -%}
+            {%- endif -%}
+
+            {%- if options.display == 'both' -%}
+                &nbsp;=>&nbsp;
+            {%- endif -%}
+
+            {%- if val is iterable -%}
+                {{ render_array(val, options) }}
+            {%- else -%}
+                {%- if options.display in ['both', 'values'] -%}
+                    {%- if options.value_translation_domain is same as(false) -%}
+                        {{ val }}
+                    {%- else -%}
+                        {%- if options.value_translation_domain is same as(true) -%}
+                            {%- set value_translation_domain = options.default_translation_domain -%}
+                        {%- elseif options.value_translation_domain is same as(null) -%}
+                            {%- set value_translation_domain = null -%}
+                        {%- else -%}
+                            {%- set value_translation_domain = options.value_translation_domain -%}
+                        {%- endif -%}
+
+                        {{- val|trans({}, value_translation_domain) -}}
+                    {%- endif -%}
+                {%- endif -%}
+            {%- endif -%}
+
+            {%- if not options.inline -%}
+                </li>
+            {%- endif -%}
+
+            {%- if options.inline == true and not loop.last -%}
+                ,
+            {% endif -%}
+        {%- endfor -%}
+
+        {%- if not options.inline -%}
+            </ul>
+        {%- else -%}
+            ]
+        {%- endif -%}
+    {%- endapply -%}
+{% endmacro %}

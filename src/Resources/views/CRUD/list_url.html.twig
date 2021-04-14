@@ -9,47 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{% extends get_admin_template('base_list_field', admin.code) %}
-
-{% block field %}
-{% apply spaceless %}
-    {% if value is empty %}
-        &nbsp;
-    {% else %}
-        {% if field_description.option('url') %}
-            {# target url is string #}
-            {% set url_address = field_description.option('url') %}
-        {% elseif field_description.option('route') and field_description.option('route').name not in ['edit', 'show'] %}
-            {# target url is Symfony route #}
-            {% set parameters = field_description.option('route').parameters|default([]) %}
-
-            {# route with paramter related to object ID #}
-            {% if field_description.option('route').identifier_parameter_name is defined %}
-                {% set parameters = parameters|merge({(field_description.option('route').identifier_parameter_name):(admin.normalizedidentifier(object))}) %}
-            {% endif %}
-
-            {% if field_description.option('route').absolute|default(false) %}
-                {% set url_address = url(field_description.option('route').name, parameters) %}
-            {% else %}
-                {% set url_address = path(field_description.option('route').name, parameters) %}
-            {% endif %}
-        {% else %}
-            {# value is url #}
-            {% set url_address = value %}
-        {% endif %}
-
-        {% if field_description.option('hide_protocol', false) %}
-            {% set value = value|replace({'http://': '', 'https://': ''}) %}
-        {% endif %}
-
-        <a
-            href="{{ url_address }}"
-            {%- for attribute, value in field_description.option('attributes', []) %}
-                {{ attribute }}="{{ value|escape('html_attr') }}"
-            {%- endfor -%}
-        >
-            {{- value -}}
-        </a>
-    {% endif %}
-{% endapply %}
-{% endblock %}
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/list_url.html.twig'  %}

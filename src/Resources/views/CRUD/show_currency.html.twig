@@ -9,8 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
-
-{% block field %}
-    {%- include '@SonataAdmin/CRUD/display_currency.html.twig' -%}
-{% endblock %}
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/show_currency.html.twig'  %}

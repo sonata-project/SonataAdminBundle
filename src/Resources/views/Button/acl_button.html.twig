@@ -9,16 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{% if admin.isAclEnabled()
-    and object is not null
-    and admin.id(object) is not null
-    and admin.hasAccess('acl', object)
-    and admin.hasRoute('acl')
-%}
-    <li>
-        <a class="sonata-action-element" href="{{ admin.generateObjectUrl('acl', object) }}">
-            <i class="fa fa-users" aria-hidden="true"></i>
-            {{ 'link_action_acl'|trans({}, 'SonataAdminBundle') }}
-        </a>
-    </li>
-{% endif %}
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/Button/acl_button.html.twig'  %}

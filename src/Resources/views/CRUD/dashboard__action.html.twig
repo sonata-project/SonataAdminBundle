@@ -1,4 +1,12 @@
-<a class="btn btn-link btn-flat" href="{{ action.url }}">
-    <i class="fa fa-{{ action.icon }}" aria-hidden="true"></i>
-    {{ action.label|trans({}, action.translation_domain|default('SonataAdminBundle')) }}
-</a>
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/dashboard__action.html.twig'  %}

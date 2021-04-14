@@ -9,10 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{%- apply spaceless %}
-    {%- if value is null -%}
-        &nbsp;
-    {%- else -%}
-        {{ field_description.option('currency') }} {{ value }}
-    {%- endif -%}
-{% endapply -%}
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/display_currency.html.twig'  %}

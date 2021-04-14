@@ -9,4 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{% extends '@SonataAdmin/CRUD/base_list_inner_row.html.twig' %}
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/list_inner_row.html.twig'  %}

@@ -9,8 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{% for object in admin.datagrid.results %}
-    <tr>
-        {% include get_admin_template('inner_list_row', admin.code) %}
-    </tr>
-{% endfor %}
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/list_outer_rows_list.html.twig'  %}

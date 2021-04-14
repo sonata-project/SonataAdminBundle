@@ -9,13 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{% if admin.hasAccess('history', object) and admin.hasRoute('history') %}
-    <a
-        href="{{ admin.generateObjectUrl('history', object, actions.link_parameters|default([])) }}"
-        class="btn btn-sm btn-default view_link"
-        title="{{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}"
-    >
-        <i class="fa fa-history" aria-hidden="true"></i>
-        {{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}
-    </a>
-{% endif %}
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/list__action_history.html.twig'  %}

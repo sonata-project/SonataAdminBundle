@@ -1,21 +1,12 @@
+{#
 
-{%- if value is empty -%}
-    &nbsp;
-{%- elseif field_description.option('as_string', false) -%}
-    {{ value }}
-{%- else -%}
-    {% set parameters = {} %}
-    {% set subject = field_description.option('subject', '') %}
-    {% set body = field_description.option('body', '') %}
+This file is part of the Sonata package.
 
-    {% if subject is not empty %}
-        {% set parameters = parameters|merge({'subject': subject}) %}
-    {% endif %}
-    {% if body is not empty %}
-        {% set parameters = parameters|merge({'body': body}) %}
-    {% endif %}
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
 
-    <a href="mailto:{{ value }}{% if parameters|length > 0 %}?{{- parameters|url_encode -}}{% endif %}">
-        {{- value -}}
-    </a>
-{%- endif -%}
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/_email_link.html.twig'  %}

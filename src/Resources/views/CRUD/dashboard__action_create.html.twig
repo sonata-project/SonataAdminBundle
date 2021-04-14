@@ -1,19 +1,12 @@
-{% if admin.subClasses is empty %}
-    <a class="btn btn-link btn-flat" href="{{ action.url }}">
-        <i class="fa fa-{{ action.icon }}" aria-hidden="true"></i>
-        {{ action.label|trans({}, action.translation_domain|default('SonataAdminBundle')) }}
-    </a>
-{% else %}
-    <a class="btn btn-link btn-flat dropdown-toggle" data-toggle="dropdown" href="#">
-        <i class="fa fa-{{ action.icon }}" aria-hidden="true"></i>
-        {{ action.label|trans({}, action.translation_domain|default('SonataAdminBundle')) }}
-        <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu">
-        {% for subclass in admin.subclasses|keys %}
-            <li>
-                <a href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">{{ subclass|trans({}, action.translation_domain|default('SonataAdminBundle')) }}</a>
-            </li>
-        {% endfor %}
-    </ul>
-{% endif %}
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/dashboard__action_create.html.twig'  %}

@@ -9,11 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{%- apply spaceless %}
-    {%- if value is null -%}
-        &nbsp;
-    {%- else -%}
-        {% set value = value * 100 %}
-        {{ value }} %
-    {%- endif -%}
-{% endapply -%}
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/display_percent.html.twig'  %}

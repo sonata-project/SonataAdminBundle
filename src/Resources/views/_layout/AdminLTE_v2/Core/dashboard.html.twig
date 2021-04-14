@@ -1,0 +1,130 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+
+{% block title %}{{ 'title_dashboard'|trans({}, 'SonataAdminBundle') }}{% endblock %}
+{% block breadcrumb %}{% endblock %}
+{% block content %}
+
+    {% set has_left = false %}
+    {% for block in blocks.left %}
+        {% if not has_left and (block.roles|length == 0 or is_granted_affirmative(block.roles)) %}
+            {% set has_left = true %}
+        {% endif %}
+    {% endfor %}
+
+    {% set has_center = false %}
+    {% for block in blocks.center %}
+        {% if not has_center and (block.roles|length == 0 or is_granted_affirmative(block.roles)) %}
+            {% set has_center = true %}
+        {% endif %}
+    {% endfor %}
+
+    {% set has_right = false %}
+    {% for block in blocks.right %}
+        {% if not has_right and (block.roles|length == 0 or is_granted_affirmative(block.roles)) %}
+            {% set has_right = true %}
+        {% endif %}
+    {% endfor %}
+
+    {% set has_top = false %}
+    {% for block in blocks.top %}
+        {% if not has_top and (block.roles|length == 0 or is_granted_affirmative(block.roles)) %}
+            {% set has_top = true %}
+        {% endif %}
+    {% endfor %}
+
+    {% set has_bottom = false %}
+    {% for block in blocks.bottom %}
+        {% if not has_bottom and (block.roles|length == 0 or is_granted_affirmative(block.roles)) %}
+            {% set has_bottom = true %}
+        {% endif %}
+    {% endfor %}
+
+    {{ sonata_block_render_event('sonata.admin.dashboard.top') }}
+
+    {% if has_top %}
+        <div class="row">
+            {% for block in blocks.top %}
+                {% if block.roles|length == 0 or is_granted_affirmative(block.roles) %}
+                    <div class="{{ block.class }}">
+                        {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="row">
+        {% set width_left = 4 %}
+        {% set width_right = 4 %}
+        {% set width_center = 4 %}
+
+        {# if center block is not present we make left and right ones wider #}
+        {% if not has_center %}
+            {% set width_left = 6 %}
+            {% set width_right = 6 %}
+        {% endif %}
+
+        {# if there is no right and left block present we make center one full width #}
+        {% if not has_left and not has_right %}
+            {% set width_center = 12 %}
+        {% endif %}
+
+        {# don't show left column if only center one is present #}
+        {% if has_left or has_right %}
+        <div class="col-md-{{ width_left }}">
+            {% for block in blocks.left %}
+                {% if block.roles|length == 0 or is_granted_affirmative(block.roles) %}
+                    {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if has_center %}
+            <div class="col-md-{{ width_center }}">
+                {% for block in blocks.center %}
+                    {% if block.roles|length == 0 or is_granted_affirmative(block.roles) %}
+                        {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {# don't show right column if only center one is present #}
+        {% if has_left or has_right %}
+         <div class="col-md-{{ width_right }}">
+            {% for block in blocks.right %}
+                {% if block.roles|length == 0 or is_granted_affirmative(block.roles) %}
+                    {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    {% if has_bottom %}
+        <div class="row">
+            {% for block in blocks.bottom %}
+                {% if block.roles|length == 0 or is_granted_affirmative(block.roles) %}
+                    <div class="{{ block.class }}">
+                        {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {{ sonata_block_render_event('sonata.admin.dashboard.bottom') }}
+
+{% endblock %}

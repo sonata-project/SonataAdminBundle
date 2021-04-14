@@ -9,12 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{% for field_description in admin.list.elements %}
-    {% if field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_ACTIONS') and app.request.isXmlHttpRequest %}
-        {# Action buttons disabled in ajax view! #}
-    {% elseif field_description.getOption('ajax_hidden') == true and app.request.isXmlHttpRequest %}
-        {# Disable fields with 'ajax_hidden' option set to true #}
-    {% else %}
-        {{ object|render_list_element(field_description) }}
-    {% endif %}
-{% endfor %}
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/base_list_inner_row.html.twig'  %}

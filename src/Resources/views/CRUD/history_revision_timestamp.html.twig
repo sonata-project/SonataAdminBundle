@@ -9,4 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{%- include '@SonataAdmin/CRUD/display_datetime.html.twig' with { value: revision.timestamp } -%}
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/history_revision_timestamp.html.twig'  %}

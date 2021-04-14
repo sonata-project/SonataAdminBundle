@@ -9,14 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{% extends '@SonataAdmin/CRUD/base_show.html.twig' %}
-
-{%- block show_field -%}
-    {% apply spaceless %}
-        <tr class="sonata-ba-view-container history-audit-compare">
-            {% if elements[field_name] is defined %}
-                {{ elements[field_name]|render_view_element_compare(object, object_compare) }}
-            {% endif %}
-        </tr>
-    {% endapply %}
-{%- endblock -%}
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/base_show_compare.html.twig'  %}

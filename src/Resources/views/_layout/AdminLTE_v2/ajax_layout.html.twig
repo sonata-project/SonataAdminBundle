@@ -1,0 +1,55 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% block content %}
+    {% set _list_table = block('list_table') is defined ? block('list_table')|trim : null %}
+    {% set _list_filters = block('list_filters') is defined ? block('list_filters')|trim : null %}
+    {% set _list_filters_actions = block('list_filters_actions') is defined ? block('list_filters_actions')|trim : null %}
+
+    {% block preview %}{% endblock %}
+    {% block form %}{% endblock %}
+    {% block list %}{% endblock %}
+    {% block show %}{% endblock %}
+
+    {% if _list_table is not empty or _list_filters is not empty %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="navbar navbar-default sonata-list-table">
+                <div class="container-fluid">
+                    <div class="navbar-collapse">
+                        {% if admin is defined and action is defined and action == 'list' and admin.listModes|length > 1 %}
+                            <div class="nav navbar-right btn-group">
+                                {% for mode, settings in admin.listModes %}
+                                    <a href="{{ admin.generateUrl('list', app.request.query.all|merge({_list_mode: mode})) }}" class="btn btn-default navbar-btn btn-sm{% if admin.getListMode() == mode %} active{% endif %}"><i class="{{ settings.class }}"></i></a>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        {% if _list_filters_actions is not empty %}
+                            {{ _list_filters_actions|raw }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if _list_filters|trim %}
+            <div class="row">
+                {{ _list_filters|raw }}
+            </div>
+        {% endif %}
+
+        <div class="row">
+            {{ _list_table|raw }}
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

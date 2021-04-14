@@ -9,23 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
-
-{% block field %}
-    <ul class="sonata-ba-show-one-to-many">
-    {% set route_name = field_description.option('route').name %}
-    {% for element in value %}
-        {% if field_description.hasassociationadmin
-        and field_description.associationadmin.hasRoute(route_name)
-        and field_description.associationadmin.hasAccess(route_name, element) %}
-            <li>
-                <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, element, field_description.option('route').parameters) }}">
-                    {{ element|render_relation_element(field_description) }}
-                </a>
-            </li>
-        {% else %}
-            <li>{{ element|render_relation_element(field_description) }}</li>
-        {% endif %}
-    {% endfor %}
-    </ul>
-{% endblock %}
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/Association/show_one_to_many.html.twig'  %}

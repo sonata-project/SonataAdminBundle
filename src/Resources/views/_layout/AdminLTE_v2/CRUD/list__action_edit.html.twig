@@ -1,0 +1,21 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% if admin.hasAccess('edit', object) and admin.hasRoute('edit') %}
+    <a
+        href="{{ admin.generateObjectUrl('edit', object, actions.link_parameters|default([])) }}"
+        class="btn btn-sm btn-default edit_link"
+        title="{{ 'action_edit'|trans({}, 'SonataAdminBundle') }}"
+    >
+        <i class="fa fa-pencil" aria-hidden="true"></i>
+        {{ 'action_edit'|trans({}, 'SonataAdminBundle') }}
+    </a>
+{% endif %}

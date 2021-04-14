@@ -9,19 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{% extends base_template %}
-
-{%- block actions -%}
-    {% include '@SonataAdmin/CRUD/action_buttons.html.twig' %}
-{%- endblock -%}
-
-{% import '@SonataAdmin/CRUD/base_acl_macro.html.twig' as acl %}
-
-{% block form %}
-    {% block form_acl_roles %}
-        {{ acl.render_form(aclRolesForm, permissions, 'td_role', admin, sonata_config, object) }}
-    {% endblock %}
-    {% block form_acl_users %}
-        {{ acl.render_form(aclUsersForm, permissions, 'td_username', admin, sonata_config, object) }}
-    {% endblock %}
-{% endblock %}
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/base_acl.html.twig'  %}

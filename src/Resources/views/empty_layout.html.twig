@@ -9,26 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{% extends get_global_template('layout') %}
-
-{% block sonata_header %}{% endblock %}
-{% block sonata_left_side %}{% endblock %}
-{% block sonata_nav %}{% endblock %}
-{% block sonata_breadcrumb %}{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-
-    <style>
-        .content {
-            margin: 0px;
-            padding: 0px;
-        }
-    </style>
-{% endblock %}
-
-{% block sonata_wrapper %}
-    {% block sonata_page_content %}
-        {{ parent() }}
-    {% endblock %}
-{% endblock %}
+{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/empty_layout.html.twig'  %}
