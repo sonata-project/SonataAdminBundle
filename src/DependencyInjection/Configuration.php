@@ -184,10 +184,10 @@ CASESENSITIVE;
                             ->info('Background used in mosaic view')
                         ->end()
                         ->enumNode('layout')
-                            ->defaultValue('adminLTE_v2')
+                            ->defaultValue('AdminLTE_v2')
                             ->info('Layout used in sonata admin templates')
                             ->values([
-                                'adminLTE_v2',
+                                'AdminLTE_v2',
                             ])
                         ->end()
                     ->end()
