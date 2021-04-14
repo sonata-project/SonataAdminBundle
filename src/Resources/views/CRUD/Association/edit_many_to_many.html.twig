@@ -106,10 +106,6 @@ file that was distributed with this source code.
 
         {% else %}
             <div id="field_container_{{ id }}" class="field-container">
-                <span id="field_widget_{{ id }}" >
-                    {{ form_widget(form) }}
-                </span>
-
                 <span id="field_actions_{{ id }}" class="field-actions">
                     {% if sonata_admin.field_description.associationadmin.hasRoute('create')
                         and sonata_admin.field_description.associationadmin.hasAccess('create')
