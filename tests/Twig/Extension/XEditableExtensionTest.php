@@ -28,24 +28,7 @@ final class XEditableExtensionTest extends TestCase
      */
     public function testGetXEditableChoicesIsIdempotent(array $options, array $expectedChoices): void
     {
-        $xEditableTypeMapping = [
-            'choice' => 'select',
-            'boolean' => 'select',
-            'text' => 'text',
-            'textarea' => 'textarea',
-            'html' => 'textarea',
-            'email' => 'email',
-            'string' => 'text',
-            'smallint' => 'text',
-            'bigint' => 'text',
-            'integer' => 'number',
-            'decimal' => 'number',
-            'currency' => 'number',
-            'percent' => 'number',
-            'url' => 'url',
-        ];
-
-        $twigExtension = new XEditableExtension(new Translator('en'), $xEditableTypeMapping);
+        $twigExtension = new XEditableExtension(new Translator('en'));
 
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
         $fieldDescription
@@ -71,7 +54,7 @@ final class XEditableExtensionTest extends TestCase
      *	array<array{value: string, text: string}>
      * }>
      */
-    public function xEditableChoicesProvider()
+    public function xEditableChoicesProvider(): iterable
     {
         return [
             'needs processing' => [

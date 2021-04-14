@@ -52,22 +52,6 @@ use Twig\Extra\String\StringExtension;
 final class RenderElementExtensionTest extends TestCase
 {
     use ExpectDeprecationTrait;
-    private const X_EDITABLE_TYPE_MAPPING = [
-        'choice' => 'select',
-        'boolean' => 'select',
-        'text' => 'text',
-        'textarea' => 'textarea',
-        'html' => 'textarea',
-        'email' => 'email',
-        'string' => 'text',
-        'smallint' => 'text',
-        'bigint' => 'text',
-        'integer' => 'number',
-        'decimal' => 'number',
-        'currency' => 'number',
-        'percent' => 'number',
-        'url' => 'url',
-    ];
 
     /**
      * @var RenderElementExtension
@@ -2565,7 +2549,7 @@ EOT
         $this->registerSonataAdminExtension($propertyAccessor);
 
         $this->environment->addExtension($this->twigExtension);
-        $this->environment->addExtension(new XEditableExtension($this->translator, self::X_EDITABLE_TYPE_MAPPING));
+        $this->environment->addExtension(new XEditableExtension($this->translator));
         $this->environment->addExtension(new TranslationExtension($this->translator));
         $this->environment->addExtension(new FakeTemplateRegistryExtension());
         $this->environment->addExtension(new StringExtension());
@@ -2588,7 +2572,7 @@ EOT
             $propertyAccessor,
             $securityChecker
         );
-        $sonataAdminExtension->setXEditableTypeMapping(self::X_EDITABLE_TYPE_MAPPING, 'sonata_deprecation_mute');
+        $sonataAdminExtension->setXEditableTypeMapping(XEditableExtension::FIELD_DESCRIPTION_MAPPING, 'sonata_deprecation_mute');
         $this->environment->addExtension($sonataAdminExtension);
     }
 
