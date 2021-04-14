@@ -1801,13 +1801,13 @@ EOT
                 ['inverse' => true],
             ],
             [
-                '<th>Data</th> <td> Delete </td>',
+                '<th>Data</th> <td>Delete</td>',
                 'trans',
                 'action_delete',
                 ['safe' => false, 'catalogue' => 'SonataAdminBundle'],
             ],
             [
-                '<th>Data</th> <td> Delete </td>',
+                '<th>Data</th> <td>Delete</td>',
                 'trans',
                 'delete',
                 ['safe' => false, 'catalogue' => 'SonataAdminBundle', 'format' => 'action_%s'],
@@ -2126,43 +2126,43 @@ EOT
                 ['as_string' => true],
             ],
             [
-                '<th>Data</th> <td><p><strong>Creating a Template for the Field</strong> and form</p> </td>',
+                '<th>Data</th> <td><p><strong>Creating a Template for the Field</strong> and form</p></td>',
                 'html',
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 [],
             ],
             [
-                '<th>Data</th> <td>Creating a Template for the Field and form </td>',
+                '<th>Data</th> <td>Creating a Template for the Field and form</td>',
                 'html',
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['strip' => true],
             ],
             [
-                '<th>Data</th> <td> Creating a Template for the... </td>',
+                '<th>Data</th> <td>Creating a Template for the...</td>',
                 'html',
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['truncate' => true],
             ],
             [
-                '<th>Data</th> <td> Creatin... </td>',
+                '<th>Data</th> <td>Creatin...</td>',
                 'html',
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['truncate' => ['length' => 10]],
             ],
             [
-                '<th>Data</th> <td> Creating a Template for the Field... </td>',
+                '<th>Data</th> <td>Creating a Template for the Field...</td>',
                 'html',
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['truncate' => ['cut' => false]],
             ],
             [
-                '<th>Data</th> <td> Creating a Template for t etc. </td>',
+                '<th>Data</th> <td>Creating a Template for t etc.</td>',
                 'html',
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['truncate' => ['ellipsis' => ' etc.']],
             ],
             [
-                '<th>Data</th> <td> Creating a Template[...] </td>',
+                '<th>Data</th> <td>Creating a Template[...]</td>',
                 'html',
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 [
@@ -2326,7 +2326,7 @@ EOT
                 [],
             ],
             [
-                '<th>Data</th> <td> </td>',
+                '<th>Data</th> <td></td>',
                 'trans',
                 ['safe' => false, 'catalogue' => 'SonataAdminBundle'],
             ],
@@ -2365,9 +2365,9 @@ EOT
     {
         $this->expectDeprecation('The Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::renderViewElement method is deprecated in favor of RenderElementExtension::renderViewElement since version 3.87 and will be removed in 4.0.');
 
-        $this->expectDeprecation('The "truncate.preserve" option is deprecated since sonata-project/admin-bundle 3.65, to be removed in 4.0. Use "truncate.cut" instead. ("@SonataAdmin/CRUD/show_html.html.twig" at line %d).');
+        $this->expectDeprecation('The "truncate.preserve" option is deprecated since sonata-project/admin-bundle 3.65, to be removed in 4.0. Use "truncate.cut" instead. ("@SonataAdmin/CRUD/display_html.html.twig" at line %d).');
 
-        $this->expectDeprecation('The "truncate.separator" option is deprecated since sonata-project/admin-bundle 3.65, to be removed in 4.0. Use "truncate.ellipsis" instead. ("@SonataAdmin/CRUD/show_html.html.twig" at line %d).');
+        $this->expectDeprecation('The "truncate.separator" option is deprecated since sonata-project/admin-bundle 3.65, to be removed in 4.0. Use "truncate.ellipsis" instead. ("@SonataAdmin/CRUD/display_html.html.twig" at line %d).');
 
         $loader = new StubFilesystemLoader([
             sprintf('%s/../../../src/Resources/views/CRUD', __DIR__),
@@ -2427,14 +2427,14 @@ EOT
     public function getDeprecatedTextExtensionItems(): iterable
     {
         yield 'default_separator' => [
-            '<th>Data</th> <td> Creating a Template for the Field... </td>',
+            '<th>Data</th> <td>Creating a Template for the Field...</td>',
             'html',
             '<p><strong>Creating a Template for the Field</strong> and form</p>',
             ['truncate' => ['preserve' => true, 'separator' => '...']],
         ];
 
         yield 'custom_length' => [
-            '<th>Data</th> <td> Creating a Template[...] </td>',
+            '<th>Data</th> <td>Creating a Template[...]</td>',
             'html',
             '<p><strong>Creating a Template for the Field</strong> and form</p>',
             [
