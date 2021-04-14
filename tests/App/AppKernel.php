@@ -105,6 +105,6 @@ final class AppKernel extends Kernel
 
     private function getBaseDir(): string
     {
-        return sprintf('%s/sonata-admin-bundle/var/', sys_get_temp_dir());
+        return sprintf('%s/sonata-admin-bundle/var/a/', sys_get_temp_dir());
     }
 }

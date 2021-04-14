@@ -9,4 +9,4 @@ file that was distributed with this source code.
 
 #}
 
-{% include '@SonataAdmin/_layout/'~sonata_config.getOption('layout')~'/CRUD/show_boolean.html.twig'  %}
+{% extends '@SonataAdmin/_layout/'~sonata_config.getOption('layout') ?? 'AdminLTE_v2'~'/CRUD/show_boolean.html.twig'  %}
