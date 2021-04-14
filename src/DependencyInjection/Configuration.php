@@ -391,7 +391,7 @@ CASESENSITIVE;
                                 'bundles/sonataadmin/dist/bootstrap/bootstrap.min.css',
                                 'bundles/sonataadmin/dist/components-font-awesome/css/font-awesome.min.css',
                                 'bundles/sonataadmin/dist/ionicons/css/ionicons.min.css',
-                                'bundles/sonataadmin/dist/admin-lte/css/AdminLTE.min.css',
+                                'bundles/sonataadmin/dist/admin-lte/css/AdminLTE-without-plugins.min.css',
                                 'bundles/sonataadmin/dist/icheck/skins/square/blue.css',
 
                                 'bundles/sonataadmin/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
