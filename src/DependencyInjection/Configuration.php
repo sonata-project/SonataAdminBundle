@@ -183,6 +183,13 @@ CASESENSITIVE;
                             ->defaultValue('bundles/sonataadmin/default_mosaic_image.png')
                             ->info('Background used in mosaic view')
                         ->end()
+                        ->enumNode('layout')
+                            ->defaultValue('adminLTE_v2')
+                            ->info('Layout used in sonata admin templates')
+                            ->values([
+                                'adminLTE_v2',
+                            ])
+                        ->end()
                     ->end()
                 ->end()
                 ->arrayNode('dashboard')
