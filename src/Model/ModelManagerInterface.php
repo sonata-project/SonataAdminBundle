@@ -28,6 +28,8 @@ use Sonata\Exporter\Source\SourceIteratorInterface;
  *
  * @method bool supportsQuery(object $query)
  * @method void reverseTransform(object $object, array $array = [])
+ *
+ * @phpstan-template T of object
  */
 interface ModelManagerInterface extends DatagridManagerInterface
 {
@@ -72,7 +74,6 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object[] all objects matching the criteria
      *
-     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T[]
      */
@@ -84,7 +85,6 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object|null an object matching the criteria or null if none match
      *
-     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T|null
      */
@@ -96,7 +96,6 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object|null the object with id or null if not found
      *
-     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T|null
      */
@@ -204,7 +203,6 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object
      *
-     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T
      */
@@ -291,7 +289,6 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object
      *
-     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T
      */
@@ -310,7 +307,6 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return object
      *
-     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T
      */
@@ -346,7 +342,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      *
      * @return string[]
      *
-     * @phpstan-param class-string $class
+     * @phpstan-param class-string<T> $class
      */
     public function getExportFields($class);
 
@@ -366,7 +362,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param string                 $class
      * @param array<int, int|string> $idx
      *
-     * @phpstan-param class-string $class
+     * @phpstan-param class-string<T> $class
      */
     public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx);
 }

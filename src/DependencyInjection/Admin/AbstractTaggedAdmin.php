@@ -33,6 +33,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @phpstan-template T of object
+ * @phpstan-implements TaggedAdminInterface<T>
  */
 abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 {
@@ -117,6 +118,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
      * The Entity or Document manager.
      *
      * @var ModelManagerInterface|null
+     * @phpstan-var ModelManagerInterface<T>|null
      */
     protected $modelManager;
 
@@ -372,7 +374,10 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     }
 
     /**
+     * NEXT_MAJOR: Move the phpdoc to the interface.
+     *
      * @final since sonata-admin/admin-bundle 3.84
+     * @phpstan-param ModelManagerInterface<T> $modelManager
      */
     public function setModelManager(ModelManagerInterface $modelManager)
     {

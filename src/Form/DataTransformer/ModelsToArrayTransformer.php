@@ -37,6 +37,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
 {
     /**
      * @var ModelManagerInterface
+     * @phpstan-var ModelManagerInterface<T>
      */
     protected $modelManager;
 
@@ -60,7 +61,8 @@ class ModelsToArrayTransformer implements DataTransformerInterface
      * @param ModelManagerInterface            $modelManager
      * @param string                           $class
      *
-     * @phpstan-param class-string<T> $class
+     * @phpstan-param ModelManagerInterface<T> $modelManager
+     * @phpstan-param class-string<T>          $class
      *
      * @throws RuntimeException
      */
