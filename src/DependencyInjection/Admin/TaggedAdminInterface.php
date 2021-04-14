@@ -63,6 +63,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @method Pool                             getConfigurationPool()
  * @method void                             setRouteGenerator(RouteGeneratorInterface $routeGenerator)
  * @method RouteGeneratorInterface          getRouteGenerator()
+ *
+ * @phpstan-template T of object
  */
 interface TaggedAdminInterface
 {
@@ -153,11 +155,14 @@ interface TaggedAdminInterface
 
     /**
      * NEXT_MAJOR: Uncomment this method.
+     *
+     * @phpstan-param ModelManagerInterface<T>
      */
 //    public function setModelManager(ModelManagerInterface $modelManager): void;
 
     /**
      * @return ModelManagerInterface
+     * @phpstan-return ModelManagerInterface<T>
      */
     public function getModelManager();
 
