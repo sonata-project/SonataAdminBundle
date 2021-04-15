@@ -17,7 +17,6 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Mapper\BaseMapper;
 use Sonata\AdminBundle\Mapper\MapperInterface;
 
 /**
@@ -38,7 +37,7 @@ final class ListMapper implements MapperInterface
     /**
      * @var ListBuilderInterface
      */
-    protected $builder;
+    private $builder;
 
     /**
      * @var FieldDescriptionCollection

@@ -99,7 +99,7 @@ interface TaggedAdminInterface extends MutableTemplateRegistryAwareInterface
     public function hasFilterPersister(): bool;
 
     /**
-     * @phpstan-param ModelManagerInterface<T>
+     * @phpstan-param ModelManagerInterface<T> $modelManager
      */
     public function setModelManager(ModelManagerInterface $modelManager): void;
 

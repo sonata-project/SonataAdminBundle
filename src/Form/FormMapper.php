@@ -30,7 +30,7 @@ final class FormMapper extends BaseGroupedMapper
     /**
      * @var FormContractorInterface
      */
-    protected $builder;
+    private $builder;
 
     /**
      * @var FormBuilderInterface

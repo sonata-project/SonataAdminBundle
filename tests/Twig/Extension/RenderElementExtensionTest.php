@@ -138,7 +138,7 @@ final class RenderElementExtensionTest extends TestCase
         $this->admin
             ->method('getUrlSafeIdentifier')
             ->with($this->equalTo($this->object))
-            ->willReturn(12345);
+            ->willReturn('12345');
 
         $this->admin
             ->method('getNormalizedIdentifier')
@@ -563,13 +563,13 @@ EOT
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-text" objectId="12345"> Example </td>',
+                '<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345"> Example </td>',
                 FieldDescriptionInterface::TYPE_STRING,
                 'Example',
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-text" objectId="12345"> </td>',
+                '<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345"> </td>',
                 FieldDescriptionInterface::TYPE_STRING,
                 null,
                 [],
@@ -703,13 +703,13 @@ EOT
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-number" objectId="12345"> 10.746135 </td>',
+                '<td class="sonata-ba-list-field sonata-ba-list-field-float" objectId="12345"> 10.746135 </td>',
                 FieldDescriptionInterface::TYPE_FLOAT,
                 10.746135,
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-number" objectId="12345"> </td>',
+                '<td class="sonata-ba-list-field sonata-ba-list-field-float" objectId="12345"> </td>',
                 FieldDescriptionInterface::TYPE_FLOAT,
                 null,
                 [],
@@ -1452,7 +1452,7 @@ EOT
 
             [
                 <<<'EOT'
-<td class="sonata-ba-list-field sonata-ba-list-field-text" objectId="12345">
+<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345">
 <div
     class="sonata-readmore"
     data-readmore-height="40"
@@ -1469,7 +1469,7 @@ EOT
             ],
             [
                 <<<'EOT'
-<td class="sonata-ba-list-field sonata-ba-list-field-text" objectId="12345">
+<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345">
 <div
     class="sonata-readmore"
     data-readmore-height="10"

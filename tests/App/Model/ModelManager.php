@@ -19,6 +19,12 @@ use Sonata\AdminBundle\Model\LockInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 
+/**
+ * Class ModelManager.
+ *
+ * @phpstan-implements LockInterface<Foo>
+ * @phpstan-implements ModelManagerInterface<Foo>
+ */
 class ModelManager implements ModelManagerInterface, LockInterface
 {
     /**
@@ -53,11 +59,6 @@ class ModelManager implements ModelManagerInterface, LockInterface
         return null;
     }
 
-    /**
-     * @return Foo|null
-     *
-     * @psalm-suppress ImplementedReturnTypeMismatch
-     */
     public function find(string $class, $id): ?object
     {
         return $this->repository->byId($id);

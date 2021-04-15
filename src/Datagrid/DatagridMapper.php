@@ -29,7 +29,7 @@ final class DatagridMapper implements MapperInterface
     /**
      * @var DatagridBuilderInterface
      */
-    protected $builder;
+    private $builder;
 
     /**
      * @var DatagridInterface

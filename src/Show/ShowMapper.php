@@ -29,7 +29,7 @@ final class ShowMapper extends BaseGroupedMapper
     /**
      * @var ShowBuilderInterface
      */
-    protected $builder;
+    private $builder;
 
     /**
      * @var FieldDescriptionCollection<FieldDescriptionInterface>

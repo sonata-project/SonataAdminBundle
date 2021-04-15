@@ -17,6 +17,9 @@ use Sonata\AdminBundle\Exception\LockException;
 
 /**
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
+ *
+ * @phpstan-template T of object
+ * @phpstan-extends ModelManagerInterface<T>
  */
 interface LockInterface extends ModelManagerInterface
 {
