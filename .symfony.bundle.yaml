@@ -10,7 +10,7 @@ maintained_branches:
     - 3.x
     - master
 
-doc_dir: 'doc/'
+doc_dir: 'docs/'
 
 current_branch: 3.x
 
