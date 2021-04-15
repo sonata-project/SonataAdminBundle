@@ -840,7 +840,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function generateObjectUrl(string $name, object $object, array $parameters = [], int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH): string
     {
-        $parameters['id'] = $this->getUrlSafeIdentifier($object);
+        $parameters[$this->getIdParameter()] = $this->getUrlSafeIdentifier($object);
 
         return $this->generateUrl($name, $parameters, $referenceType);
     }

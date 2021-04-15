@@ -18,13 +18,14 @@ use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Mapper\BaseMapper;
+use Sonata\AdminBundle\Mapper\MapperInterface;
 
 /**
  * This class is used to simulate the Form API.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-final class ListMapper extends BaseMapper
+final class ListMapper implements MapperInterface
 {
     public const NAME_ACTIONS = '_actions';
     public const NAME_BATCH = '_batch';
@@ -44,13 +45,24 @@ final class ListMapper extends BaseMapper
      */
     private $list;
 
+    /**
+     * @var AdminInterface
+     */
+    private $admin;
+
     public function __construct(
         ListBuilderInterface $listBuilder,
         FieldDescriptionCollection $list,
         AdminInterface $admin
     ) {
-        parent::__construct($listBuilder, $admin);
+        $this->admin = $admin;
+        $this->builder = $listBuilder;
         $this->list = $list;
+    }
+
+    public function getAdmin(): AdminInterface
+    {
+        return $this->admin;
     }
 
     /**
@@ -64,7 +76,7 @@ final class ListMapper extends BaseMapper
         $fieldDescriptionOptions['identifier'] = true;
 
         if (!isset($fieldDescriptionOptions['route']['name'])) {
-            $routeName = ($this->admin->hasAccess('edit') && $this->admin->hasRoute('edit')) ? 'edit' : 'show';
+            $routeName = ($this->getAdmin()->hasAccess('edit') && $this->getAdmin()->hasRoute('edit')) ? 'edit' : 'show';
             $fieldDescriptionOptions['route']['name'] = $routeName;
         }
 
@@ -115,14 +127,14 @@ final class ListMapper extends BaseMapper
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
         } elseif (\is_string($name)) {
-            if ($this->admin->hasListFieldDescription($name)) {
+            if ($this->getAdmin()->hasListFieldDescription($name)) {
                 throw new \LogicException(sprintf(
                     'Duplicate field name "%s" in list mapper. Names should be unique.',
                     $name
                 ));
             }
 
-            $fieldDescription = $this->admin->createFieldDescription(
+            $fieldDescription = $this->getAdmin()->createFieldDescription(
                 $name,
                 $fieldDescriptionOptions
             );
@@ -136,11 +148,11 @@ final class ListMapper extends BaseMapper
         if (null === $fieldDescription->getLabel()) {
             $fieldDescription->setOption(
                 'label',
-                $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'list', 'label')
+                $this->getAdmin()->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'list', 'label')
             );
         }
 
-        if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
+        if (!isset($fieldDescriptionOptions['role']) || $this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
             // add the field with the FormBuilder
             $this->builder->addField($this->list, $type, $fieldDescription);
 
@@ -165,7 +177,7 @@ final class ListMapper extends BaseMapper
 
     public function remove(string $key): self
     {
-        $this->admin->removeListFieldDescription($key);
+        $this->getAdmin()->removeListFieldDescription($key);
         $this->list->remove($key);
 
         return $this;

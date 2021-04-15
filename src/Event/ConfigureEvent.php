@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Event;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Mapper\BaseMapper;
+use Sonata\AdminBundle\Mapper\MapperInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
@@ -43,7 +43,7 @@ final class ConfigureEvent extends Event
     private $admin;
 
     /**
-     * @var BaseMapper
+     * @var MapperInterface
      */
     private $mapper;
 
@@ -52,7 +52,7 @@ final class ConfigureEvent extends Event
      */
     private $type;
 
-    public function __construct(AdminInterface $admin, BaseMapper $mapper, string $type)
+    public function __construct(AdminInterface $admin, MapperInterface $mapper, string $type)
     {
         $this->admin = $admin;
         $this->mapper = $mapper;
@@ -69,7 +69,7 @@ final class ConfigureEvent extends Event
         return $this->admin;
     }
 
-    public function getMapper(): BaseMapper
+    public function getMapper(): MapperInterface
     {
         return $this->mapper;
     }

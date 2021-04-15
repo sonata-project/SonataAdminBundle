@@ -16,7 +16,6 @@ namespace Sonata\AdminBundle\Tests\Mapper;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Builder\BuilderInterface;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 use Sonata\AdminBundle\Tests\Fixtures\Mapper\AbstractDummyGroupedMapper;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
@@ -58,11 +57,9 @@ class BaseGroupedMapperTest extends TestCase
 
         $admin->setConfigurationPool($configurationPool);
 
-        $builder = $this->getMockForAbstractClass(BuilderInterface::class);
-
         $this->baseGroupedMapper = $this->getMockForAbstractClass(
             AbstractDummyGroupedMapper::class,
-            [$builder, $admin]
+            [$admin]
         );
 
         $this->tabs = [];

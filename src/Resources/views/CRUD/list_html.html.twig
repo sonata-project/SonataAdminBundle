@@ -1,20 +1,5 @@
 {% extends get_admin_template('base_list_field', admin.code) %}
 
 {% block field %}
-    {%- if value is empty -%}
-        &nbsp;
-    {% else %}
-        {%- if field_description.option('truncate') -%}
-            {% set truncate = field_description.option('truncate') %}
-            {% set length = truncate.length|default(30) %}
-            {% set cut = truncate.cut is defined ? truncate.cut : true %}
-            {% set ellipsis = truncate.ellipsis is defined ? truncate.ellipsis : '...' %}
-            {{ value|striptags|u.truncate(length, ellipsis, cut)|raw }}
-        {%- else -%}
-            {%- if field_description.option('strip', false) -%}
-                {% set value = value|striptags %}
-            {%- endif -%}
-            {{ value|raw }}
-        {% endif %}
-    {% endif %}
+    {%- include '@SonataAdmin/CRUD/display_html.html.twig' -%}
 {% endblock %}

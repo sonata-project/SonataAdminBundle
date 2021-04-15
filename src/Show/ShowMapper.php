@@ -37,6 +37,11 @@ final class ShowMapper extends BaseGroupedMapper
     private $list;
 
     /**
+     * @var AdminInterface
+     */
+    private $admin;
+
+    /**
      * @param FieldDescriptionCollection<FieldDescriptionInterface> $list
      * @param AdminInterface<object>                                $admin
      */
@@ -45,8 +50,14 @@ final class ShowMapper extends BaseGroupedMapper
         FieldDescriptionCollection $list,
         AdminInterface $admin
     ) {
-        parent::__construct($showBuilder, $admin);
+        $this->admin = $admin;
+        $this->builder = $showBuilder;
         $this->list = $list;
+    }
+
+    public function getAdmin(): AdminInterface
+    {
+        return $this->admin;
     }
 
     /**
@@ -67,8 +78,8 @@ final class ShowMapper extends BaseGroupedMapper
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
         } elseif (\is_string($name)) {
-            if (!$this->admin->hasShowFieldDescription($name)) {
-                $fieldDescription = $this->admin->createFieldDescription(
+            if (!$this->getAdmin()->hasShowFieldDescription($name)) {
+                $fieldDescription = $this->getAdmin()->createFieldDescription(
                     $name,
                     $fieldDescriptionOptions
                 );
@@ -90,12 +101,12 @@ final class ShowMapper extends BaseGroupedMapper
         $this->addFieldToCurrentGroup($fieldKey);
 
         if (null === $fieldDescription->getLabel()) {
-            $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'show', 'label'));
+            $fieldDescription->setOption('label', $this->getAdmin()->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'show', 'label'));
         }
 
         $fieldDescription->setOption('safe', $fieldDescription->getOption('safe', false));
 
-        if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
+        if (!isset($fieldDescriptionOptions['role']) || $this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
             // add the field with the FormBuilder
             $this->builder->addField($this->list, $type, $fieldDescription);
         }
@@ -115,7 +126,7 @@ final class ShowMapper extends BaseGroupedMapper
 
     public function remove(string $key): self
     {
-        $this->admin->removeShowFieldDescription($key);
+        $this->getAdmin()->removeShowFieldDescription($key);
         $this->list->remove($key);
 
         return $this;
@@ -128,29 +139,29 @@ final class ShowMapper extends BaseGroupedMapper
 
     public function reorder(array $keys): self
     {
-        $this->admin->reorderShowGroup($this->getCurrentGroupName(), $keys);
+        $this->getAdmin()->reorderShowGroup($this->getCurrentGroupName(), $keys);
 
         return $this;
     }
 
     protected function getGroups(): array
     {
-        return $this->admin->getShowGroups();
+        return $this->getAdmin()->getShowGroups();
     }
 
     protected function setGroups(array $groups): void
     {
-        $this->admin->setShowGroups($groups);
+        $this->getAdmin()->setShowGroups($groups);
     }
 
     protected function getTabs(): array
     {
-        return $this->admin->getShowTabs();
+        return $this->getAdmin()->getShowTabs();
     }
 
     protected function setTabs(array $tabs): void
     {
-        $this->admin->setShowTabs($tabs);
+        $this->getAdmin()->setShowTabs($tabs);
     }
 
     protected function getName(): string

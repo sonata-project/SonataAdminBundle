@@ -20,11 +20,20 @@ use Symfony\Component\Form\FormInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of ProxyQueryInterface
+<<<<<<< HEAD
  */
 interface DatagridInterface
 {
+    /**
+     * @phpstan-return PagerInterface<T>
+     */
     public function getPager(): PagerInterface;
 
+    /**
+     * @phpstan-return T
+     */
     public function getQuery(): ProxyQueryInterface;
 
     /**

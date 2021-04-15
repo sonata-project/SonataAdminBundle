@@ -70,12 +70,12 @@ This template can be customized to match your needs. You should only extends the
                      objectId="{{ admin.id(object) }}">
                     {% if admin.hasAccess('edit', object) and admin.hasRoute('edit') %}
                         <a class="mosaic-inner-link"
-                           href="{{ admin.generateUrl('edit', {'id' : object|sonata_urlsafeid(admin) }) }}">
+                           href="{{ admin.generateObjectUrl('edit', object) }}">
                             {{ mosaic_content }}
                         </a>
                     {% elseif admin.hasAccess('show', object) and admin.hasRoute('show') %}
                         <a class="mosaic-inner-link"
-                           href="{{ admin.generateUrl('show', {'id' : object|sonata_urlsafeid(admin) }) }}">
+                           href="{{ admin.generateObjectUrl('show', object) }}">
                             {{ mosaic_content }}
                         </a>
                     {% else %}

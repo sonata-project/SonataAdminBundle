@@ -37,18 +37,29 @@ final class FormMapper extends BaseGroupedMapper
      */
     private $formBuilder;
 
+    /**
+     * @var AdminInterface
+     */
+    private $admin;
+
     public function __construct(
         FormContractorInterface $formContractor,
         FormBuilderInterface $formBuilder,
         AdminInterface $admin
     ) {
-        parent::__construct($formContractor, $admin);
+        $this->builder = $formContractor;
+        $this->admin = $admin;
         $this->formBuilder = $formBuilder;
+    }
+
+    public function getAdmin(): AdminInterface
+    {
+        return $this->admin;
     }
 
     public function reorder(array $keys): self
     {
-        $this->admin->reorderFormGroup($this->getCurrentGroupName(), $keys);
+        $this->getAdmin()->reorderFormGroup($this->getCurrentGroupName(), $keys);
 
         return $this;
     }
@@ -66,7 +77,7 @@ final class FormMapper extends BaseGroupedMapper
             return $this;
         }
 
-        if (isset($fieldDescriptionOptions['role']) && !$this->admin->isGranted($fieldDescriptionOptions['role'])) {
+        if (isset($fieldDescriptionOptions['role']) && !$this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
             return $this;
         }
 
@@ -105,7 +116,7 @@ final class FormMapper extends BaseGroupedMapper
             $fieldDescriptionOptions['translation_domain'] = $group['translation_domain'];
         }
 
-        $fieldDescription = $this->admin->createFieldDescription(
+        $fieldDescription = $this->getAdmin()->createFieldDescription(
             $name instanceof FormBuilderInterface ? $name->getName() : $name,
             $fieldDescriptionOptions
         );
@@ -137,11 +148,11 @@ final class FormMapper extends BaseGroupedMapper
             }
 
             if (!isset($options['label'])) {
-                $options['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($name, 'form', 'label');
+                $options['label'] = $this->getAdmin()->getLabelTranslatorStrategy()->getLabel($name, 'form', 'label');
             }
         }
 
-        $this->admin->addFormFieldDescription($fieldName, $fieldDescription);
+        $this->getAdmin()->addFormFieldDescription($fieldName, $fieldDescription);
         $this->formBuilder->add($child, $type, $options);
 
         return $this;
@@ -172,8 +183,8 @@ final class FormMapper extends BaseGroupedMapper
     public function remove(string $key): self
     {
         $key = $this->sanitizeFieldName($key);
-        $this->admin->removeFormFieldDescription($key);
-        $this->admin->removeFieldFromFormGroup($key);
+        $this->getAdmin()->removeFormFieldDescription($key);
+        $this->getAdmin()->removeFieldFromFormGroup($key);
         $this->formBuilder->remove($key);
 
         return $this;
@@ -194,22 +205,22 @@ final class FormMapper extends BaseGroupedMapper
 
     protected function getGroups(): array
     {
-        return $this->admin->getFormGroups();
+        return $this->getAdmin()->getFormGroups();
     }
 
     protected function setGroups(array $groups): void
     {
-        $this->admin->setFormGroups($groups);
+        $this->getAdmin()->setFormGroups($groups);
     }
 
     protected function getTabs(): array
     {
-        return $this->admin->getFormTabs();
+        return $this->getAdmin()->getFormTabs();
     }
 
     protected function setTabs(array $tabs): void
     {
-        $this->admin->setFormTabs($tabs);
+        $this->getAdmin()->setFormTabs($tabs);
     }
 
     protected function getName(): string

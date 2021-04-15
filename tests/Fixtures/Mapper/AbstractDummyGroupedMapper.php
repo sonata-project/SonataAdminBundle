@@ -13,10 +13,26 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Mapper;
 
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 
 abstract class AbstractDummyGroupedMapper extends BaseGroupedMapper
 {
+    /**
+     * @var AdminInterface
+     */
+    private $admin;
+
+    public function __construct(AdminInterface $admin)
+    {
+        $this->admin = $admin;
+    }
+
+    public function getAdmin(): AdminInterface
+    {
+        return $this->admin;
+    }
+
     protected function getName(): string
     {
         return 'dummy';

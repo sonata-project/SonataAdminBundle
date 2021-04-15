@@ -1,0 +1,12 @@
+{%- apply spaceless %}
+    {% set value_format = field_description.option('format', '%s') %}
+    {% set translation_domain = field_description.option('catalogue', admin.translationDomain) %}
+
+    {% set value = value_format|format(value)|trans({}, translation_domain) %}
+
+    {% if field_description.option('safe', false) %}
+        {{ value|raw }}
+    {% else %}
+        {{ value }}
+    {% endif %}
+{% endapply -%}

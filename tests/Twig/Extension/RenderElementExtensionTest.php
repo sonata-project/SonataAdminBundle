@@ -41,23 +41,6 @@ use Twig\Extra\String\StringExtension;
  */
 final class RenderElementExtensionTest extends TestCase
 {
-    private const X_EDITABLE_TYPE_MAPPING = [
-        'choice' => 'select',
-        'boolean' => 'select',
-        'text' => 'text',
-        'textarea' => 'textarea',
-        'html' => 'textarea',
-        'email' => 'email',
-        'string' => 'text',
-        'smallint' => 'text',
-        'bigint' => 'text',
-        'integer' => 'number',
-        'decimal' => 'number',
-        'currency' => 'number',
-        'percent' => 'number',
-        'url' => 'url',
-    ];
-
     /**
      * @var RenderElementExtension
      */
@@ -153,6 +136,11 @@ final class RenderElementExtensionTest extends TestCase
             ->willReturn('12345');
 
         $this->admin
+            ->method('getUrlSafeIdentifier')
+            ->with($this->equalTo($this->object))
+            ->willReturn(12345);
+
+        $this->admin
             ->method('getNormalizedIdentifier')
             ->with($this->equalTo($this->object))
             ->willReturn('12345');
@@ -211,31 +199,31 @@ final class RenderElementExtensionTest extends TestCase
             ->method('getTemplate')
             ->willReturnCallback(static function () use ($type): ?string {
                 switch ($type) {
-                    case 'string':
+                    case FieldDescriptionInterface::TYPE_STRING:
                         return '@SonataAdmin/CRUD/list_string.html.twig';
-                    case 'boolean':
+                    case FieldDescriptionInterface::TYPE_BOOLEAN:
                         return '@SonataAdmin/CRUD/list_boolean.html.twig';
-                    case 'datetime':
+                    case FieldDescriptionInterface::TYPE_DATETIME:
                         return '@SonataAdmin/CRUD/list_datetime.html.twig';
-                    case 'date':
+                    case FieldDescriptionInterface::TYPE_DATE:
                         return '@SonataAdmin/CRUD/list_date.html.twig';
-                    case 'time':
+                    case FieldDescriptionInterface::TYPE_TIME:
                         return '@SonataAdmin/CRUD/list_time.html.twig';
-                    case 'currency':
+                    case FieldDescriptionInterface::TYPE_CURRENCY:
                         return '@SonataAdmin/CRUD/list_currency.html.twig';
-                    case 'percent':
+                    case FieldDescriptionInterface::TYPE_PERCENT:
                         return '@SonataAdmin/CRUD/list_percent.html.twig';
-                    case 'email':
+                    case FieldDescriptionInterface::TYPE_EMAIL:
                         return '@SonataAdmin/CRUD/list_email.html.twig';
-                    case 'choice':
+                    case FieldDescriptionInterface::TYPE_CHOICE:
                         return '@SonataAdmin/CRUD/list_choice.html.twig';
-                    case 'array':
+                    case FieldDescriptionInterface::TYPE_ARRAY:
                         return '@SonataAdmin/CRUD/list_array.html.twig';
-                    case 'trans':
+                    case FieldDescriptionInterface::TYPE_TRANS:
                         return '@SonataAdmin/CRUD/list_trans.html.twig';
-                    case 'url':
+                    case FieldDescriptionInterface::TYPE_URL:
                         return '@SonataAdmin/CRUD/list_url.html.twig';
-                    case 'html':
+                    case FieldDescriptionInterface::TYPE_HTML:
                         return '@SonataAdmin/CRUD/list_html.html.twig';
                     case 'nonexistent':
                         // template doesn`t exist
@@ -342,29 +330,29 @@ EOT
             ->method('getTemplate')
             ->willReturnCallback(static function () use ($type): ?string {
                 switch ($type) {
-                    case 'boolean':
+                    case FieldDescriptionInterface::TYPE_BOOLEAN:
                         return '@SonataAdmin/CRUD/show_boolean.html.twig';
-                    case 'datetime':
+                    case FieldDescriptionInterface::TYPE_DATETIME:
                         return '@SonataAdmin/CRUD/show_datetime.html.twig';
-                    case 'date':
+                    case FieldDescriptionInterface::TYPE_DATE:
                         return '@SonataAdmin/CRUD/show_date.html.twig';
-                    case 'time':
+                    case FieldDescriptionInterface::TYPE_TIME:
                         return '@SonataAdmin/CRUD/show_time.html.twig';
-                    case 'currency':
+                    case FieldDescriptionInterface::TYPE_CURRENCY:
                         return '@SonataAdmin/CRUD/show_currency.html.twig';
-                    case 'percent':
+                    case FieldDescriptionInterface::TYPE_PERCENT:
                         return '@SonataAdmin/CRUD/show_percent.html.twig';
-                    case 'email':
+                    case FieldDescriptionInterface::TYPE_EMAIL:
                         return '@SonataAdmin/CRUD/show_email.html.twig';
-                    case 'choice':
+                    case FieldDescriptionInterface::TYPE_CHOICE:
                         return '@SonataAdmin/CRUD/show_choice.html.twig';
-                    case 'array':
+                    case FieldDescriptionInterface::TYPE_ARRAY:
                         return '@SonataAdmin/CRUD/show_array.html.twig';
-                    case 'trans':
+                    case FieldDescriptionInterface::TYPE_TRANS:
                         return '@SonataAdmin/CRUD/show_trans.html.twig';
-                    case 'url':
+                    case FieldDescriptionInterface::TYPE_URL:
                         return '@SonataAdmin/CRUD/show_url.html.twig';
-                    case 'html':
+                    case FieldDescriptionInterface::TYPE_HTML:
                         return '@SonataAdmin/CRUD/show_html.html.twig';
                     default:
                         return null;
@@ -414,29 +402,29 @@ EOT
                 }
 
                 switch ($type) {
-                    case 'boolean':
+                    case FieldDescriptionInterface::TYPE_BOOLEAN:
                         return '@SonataAdmin/CRUD/show_boolean.html.twig';
-                    case 'datetime':
+                    case FieldDescriptionInterface::TYPE_DATETIME:
                         return '@SonataAdmin/CRUD/show_datetime.html.twig';
-                    case 'date':
+                    case FieldDescriptionInterface::TYPE_DATE:
                         return '@SonataAdmin/CRUD/show_date.html.twig';
-                    case 'time':
+                    case FieldDescriptionInterface::TYPE_TIME:
                         return '@SonataAdmin/CRUD/show_time.html.twig';
-                    case 'currency':
+                    case FieldDescriptionInterface::TYPE_CURRENCY:
                         return '@SonataAdmin/CRUD/show_currency.html.twig';
-                    case 'percent':
+                    case FieldDescriptionInterface::TYPE_PERCENT:
                         return '@SonataAdmin/CRUD/show_percent.html.twig';
-                    case 'email':
+                    case FieldDescriptionInterface::TYPE_EMAIL:
                         return '@SonataAdmin/CRUD/show_email.html.twig';
-                    case 'choice':
+                    case FieldDescriptionInterface::TYPE_CHOICE:
                         return '@SonataAdmin/CRUD/show_choice.html.twig';
-                    case 'array':
+                    case FieldDescriptionInterface::TYPE_ARRAY:
                         return '@SonataAdmin/CRUD/show_array.html.twig';
-                    case 'trans':
+                    case FieldDescriptionInterface::TYPE_TRANS:
                         return '@SonataAdmin/CRUD/show_trans.html.twig';
-                    case 'url':
+                    case FieldDescriptionInterface::TYPE_URL:
                         return '@SonataAdmin/CRUD/show_url.html.twig';
-                    case 'html':
+                    case FieldDescriptionInterface::TYPE_HTML:
                         return '@SonataAdmin/CRUD/show_html.html.twig';
                     default:
                         return null;
@@ -564,37 +552,37 @@ EOT
         return [
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345"> Example </td>',
-                'string',
+                FieldDescriptionInterface::TYPE_STRING,
                 'Example',
                 [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345"> </td>',
-                'string',
+                FieldDescriptionInterface::TYPE_STRING,
                 null,
                 [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-text" objectId="12345"> Example </td>',
-                'text',
+                FieldDescriptionInterface::TYPE_STRING,
                 'Example',
                 [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-text" objectId="12345"> </td>',
-                'text',
+                FieldDescriptionInterface::TYPE_STRING,
                 null,
                 [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-textarea" objectId="12345"> Example </td>',
-                'textarea',
+                FieldDescriptionInterface::TYPE_TEXTAREA,
                 'Example',
                 [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-textarea" objectId="12345"> </td>',
-                'textarea',
+                FieldDescriptionInterface::TYPE_TEXTAREA,
                 null,
                 [],
             ],
@@ -604,7 +592,7 @@ EOT
                         December 24, 2013 10:11
                     </time>
                 </td>',
-                'datetime',
+                FieldDescriptionInterface::TYPE_DATETIME,
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
                 [],
             ],
@@ -614,13 +602,13 @@ EOT
                         December 24, 2013 18:11
                     </time>
                 </td>',
-                'datetime',
+                FieldDescriptionInterface::TYPE_DATETIME,
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
                 ['timezone' => 'Asia/Hong_Kong'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-datetime" objectId="12345"> &nbsp; </td>',
-                'datetime',
+                FieldDescriptionInterface::TYPE_DATETIME,
                 null,
                 [],
             ],
@@ -630,13 +618,13 @@ EOT
                         24.12.2013 10:11:12
                     </time>
                 </td>',
-                'datetime',
+                FieldDescriptionInterface::TYPE_DATETIME,
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
                 ['format' => 'd.m.Y H:i:s'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-datetime" objectId="12345"> &nbsp; </td>',
-                'datetime',
+                FieldDescriptionInterface::TYPE_DATETIME,
                 null,
                 ['format' => 'd.m.Y H:i:s'],
             ],
@@ -646,13 +634,13 @@ EOT
                         24.12.2013 18:11:12
                     </time>
                 </td>',
-                'datetime',
+                FieldDescriptionInterface::TYPE_DATETIME,
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
                 ['format' => 'd.m.Y H:i:s', 'timezone' => 'Asia/Hong_Kong'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-datetime" objectId="12345"> &nbsp; </td>',
-                'datetime',
+                FieldDescriptionInterface::TYPE_DATETIME,
                 null,
                 ['format' => 'd.m.Y H:i:s', 'timezone' => 'Asia/Hong_Kong'],
             ],
@@ -662,13 +650,13 @@ EOT
                         December 24, 2013
                     </time>
                 </td>',
-                'date',
+                FieldDescriptionInterface::TYPE_DATE,
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
                 [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-date" objectId="12345"> &nbsp; </td>',
-                'date',
+                FieldDescriptionInterface::TYPE_DATE,
                 null,
                 [],
             ],
@@ -678,13 +666,13 @@ EOT
                         24.12.2013
                     </time>
                 </td>',
-                'date',
+                FieldDescriptionInterface::TYPE_DATE,
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
                 ['format' => 'd.m.Y'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-date" objectId="12345"> &nbsp; </td>',
-                'date',
+                FieldDescriptionInterface::TYPE_DATE,
                 null,
                 ['format' => 'd.m.Y'],
             ],
@@ -694,7 +682,7 @@ EOT
                         10:11:12
                     </time>
                 </td>',
-                'time',
+                FieldDescriptionInterface::TYPE_TIME,
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
                 [],
             ],
@@ -704,142 +692,143 @@ EOT
                         18:11:12
                     </time>
                 </td>',
-                'time',
+                FieldDescriptionInterface::TYPE_TIME,
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
                 ['timezone' => 'Asia/Hong_Kong'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-time" objectId="12345"> &nbsp; </td>',
-                'time',
+                FieldDescriptionInterface::TYPE_TIME,
                 null,
                 [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-number" objectId="12345"> 10.746135 </td>',
-                'number', 10.746135,
+                FieldDescriptionInterface::TYPE_FLOAT,
+                10.746135,
                 [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-number" objectId="12345"> </td>',
-                'number',
+                FieldDescriptionInterface::TYPE_FLOAT,
                 null,
                 [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-integer" objectId="12345"> 5678 </td>',
-                'integer',
+                FieldDescriptionInterface::TYPE_INTEGER,
                 5678,
                 [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-integer" objectId="12345"> </td>',
-                'integer',
+                FieldDescriptionInterface::TYPE_INTEGER,
                 null,
                 [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-percent" objectId="12345"> 1074.6135 % </td>',
-                'percent',
+                FieldDescriptionInterface::TYPE_PERCENT,
                 10.746135,
                 [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-percent" objectId="12345"> 0 % </td>',
-                'percent',
+                FieldDescriptionInterface::TYPE_PERCENT,
                 0,
                 [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-percent" objectId="12345"> &nbsp; </td>',
-                'percent',
+                FieldDescriptionInterface::TYPE_PERCENT,
                 null,
                 [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-currency" objectId="12345"> EUR 10.746135 </td>',
-                'currency',
+                FieldDescriptionInterface::TYPE_CURRENCY,
                 10.746135,
                 ['currency' => 'EUR'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-currency" objectId="12345"> EUR 0 </td>',
-                'currency',
+                FieldDescriptionInterface::TYPE_CURRENCY,
                 0,
                 ['currency' => 'EUR'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-currency" objectId="12345"> GBP 51.23456 </td>',
-                'currency',
+                FieldDescriptionInterface::TYPE_CURRENCY,
                 51.23456,
                 ['currency' => 'GBP'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-currency" objectId="12345"> &nbsp; </td>',
-                'currency',
+                FieldDescriptionInterface::TYPE_CURRENCY,
                 null,
                 ['currency' => 'GBP'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> &nbsp; </td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 null,
                 [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> <a href="mailto:admin@admin.com">admin@admin.com</a> </td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
                     <a href="mailto:admin@admin.com">admin@admin.com</a> </td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['as_string' => false],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> admin@admin.com </td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['as_string' => true],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
                     <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['subject' => 'Main Theme', 'body' => 'Message Body']).'">admin@admin.com</a>  </td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['subject' => 'Main Theme', 'body' => 'Message Body'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
                     <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['subject' => 'Main Theme']).'">admin@admin.com</a>  </td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['subject' => 'Main Theme'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
                     <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['body' => 'Message Body']).'">admin@admin.com</a>  </td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['body' => 'Message Body'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> admin@admin.com </td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['as_string' => true, 'subject' => 'Main Theme', 'body' => 'Message Body'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> admin@admin.com </td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['as_string' => true, 'body' => 'Message Body'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> admin@admin.com </td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['as_string' => true, 'subject' => 'Main Theme'],
             ],
@@ -847,13 +836,13 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-array" objectId="12345">
                     [1&nbsp;=>&nbsp;First, 2&nbsp;=>&nbsp;Second]
                 </td>',
-                'array',
+                FieldDescriptionInterface::TYPE_ARRAY,
                 [1 => 'First', 2 => 'Second'],
                 [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-array" objectId="12345"> [] </td>',
-                'array',
+                FieldDescriptionInterface::TYPE_ARRAY,
                 null,
                 [],
             ],
@@ -861,7 +850,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
                     <span class="label label-success">yes</span>
                 </td>',
-                'boolean',
+                FieldDescriptionInterface::TYPE_BOOLEAN,
                 true,
                 ['editable' => false],
             ],
@@ -869,7 +858,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
                     <span class="label label-danger">no</span>
                 </td>',
-                'boolean',
+                FieldDescriptionInterface::TYPE_BOOLEAN,
                 false,
                 ['editable' => false],
             ],
@@ -877,7 +866,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
                     <span class="label label-danger">no</span>
                 </td>',
-                'boolean',
+                FieldDescriptionInterface::TYPE_BOOLEAN,
                 null,
                 ['editable' => false],
             ],
@@ -898,7 +887,7 @@ EOT
 </td>
 EOT
             ,
-                'boolean',
+                FieldDescriptionInterface::TYPE_BOOLEAN,
                 true,
                 ['editable' => true],
             ],
@@ -918,7 +907,7 @@ EOT
 </td>
 EOT
                 ,
-                'boolean',
+                FieldDescriptionInterface::TYPE_BOOLEAN,
                 false,
                 ['editable' => true],
             ],
@@ -937,25 +926,25 @@ EOT
 </td>
 EOT
                 ,
-                'boolean',
+                FieldDescriptionInterface::TYPE_BOOLEAN,
                 null,
                 ['editable' => true],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> Delete </td>',
-                'trans',
+                FieldDescriptionInterface::TYPE_TRANS,
                 'action_delete',
                 ['catalogue' => 'SonataAdminBundle'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> </td>',
-                'trans',
+                FieldDescriptionInterface::TYPE_TRANS,
                 null,
                 ['catalogue' => 'SonataAdminBundle'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> Delete </td>',
-                'trans',
+                FieldDescriptionInterface::TYPE_TRANS,
                 'action_delete',
                 ['format' => '%s', 'catalogue' => 'SonataAdminBundle'],
             ],
@@ -963,7 +952,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345">
                 action.action_delete
                 </td>',
-                'trans',
+                FieldDescriptionInterface::TYPE_TRANS,
                 'action_delete',
                 ['format' => 'action.%s'],
             ],
@@ -971,31 +960,31 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345">
                 action.action_delete
                 </td>',
-                'trans',
+                FieldDescriptionInterface::TYPE_TRANS,
                 'action_delete',
                 ['format' => 'action.%s', 'catalogue' => 'SonataAdminBundle'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Status1 </td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 'Status1',
                 [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Status1 </td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 ['Status1'],
                 ['choices' => [], 'multiple' => true],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Alias1 </td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 'Status1',
                 ['choices' => ['Status1' => 'Alias1', 'Status2' => 'Alias2', 'Status3' => 'Alias3']],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> </td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 null,
                 ['choices' => ['Status1' => 'Alias1', 'Status2' => 'Alias2', 'Status3' => 'Alias3']],
             ],
@@ -1003,13 +992,13 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
                 NoValidKeyInChoices
                 </td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 'NoValidKeyInChoices',
                 ['choices' => ['Status1' => 'Alias1', 'Status2' => 'Alias2', 'Status3' => 'Alias3']],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Delete </td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 'Foo',
                 ['catalogue' => 'SonataAdminBundle', 'choices' => [
                     'Foo' => 'action_delete',
@@ -1019,7 +1008,7 @@ EOT
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Alias1, Alias3 </td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 ['Status1', 'Status3'],
                 ['choices' => [
                     'Status1' => 'Alias1',
@@ -1028,7 +1017,7 @@ EOT
                 ], 'multiple' => true], ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Alias1 | Alias3 </td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 ['Status1', 'Status3'],
                 ['choices' => [
                     'Status1' => 'Alias1',
@@ -1037,7 +1026,7 @@ EOT
                 ], 'multiple' => true, 'delimiter' => ' | '], ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> </td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 null,
                 ['choices' => [
                     'Status1' => 'Alias1',
@@ -1049,7 +1038,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
                 NoValidKeyInChoices
                 </td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 ['NoValidKeyInChoices'],
                 ['choices' => [
                     'Status1' => 'Alias1',
@@ -1061,7 +1050,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
                 NoValidKeyInChoices, Alias2
                 </td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 ['NoValidKeyInChoices', 'Status2'],
                 ['choices' => [
                     'Status1' => 'Alias1',
@@ -1071,7 +1060,7 @@ EOT
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Delete, Alias3 </td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 ['Foo', 'Status3'],
                 ['catalogue' => 'SonataAdminBundle', 'choices' => [
                     'Foo' => 'action_delete',
@@ -1083,7 +1072,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
                 &lt;b&gt;Alias1&lt;/b&gt;, &lt;b&gt;Alias3&lt;/b&gt;
             </td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 ['Status1', 'Status3'],
                 ['choices' => [
                     'Status1' => '<b>Alias1</b>',
@@ -1107,7 +1096,7 @@ EOT
 </td>
 EOT
                 ,
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 'Status1',
                 ['editable' => true],
             ],
@@ -1126,7 +1115,7 @@ EOT
 </td>
 EOT
                 ,
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 'Status1',
                 [
                     'editable' => true,
@@ -1153,7 +1142,7 @@ EOT
 </td>
 EOT
                 ,
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 null,
                 [
                     'editable' => true,
@@ -1179,7 +1168,7 @@ EOT
 </td>
 EOT
                 ,
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 'NoValidKeyInChoices',
                 [
                     'editable' => true,
@@ -1206,7 +1195,7 @@ EOT
 </td>
 EOT
                 ,
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 'Foo',
                 [
                     'editable' => true,
@@ -1220,19 +1209,19 @@ EOT
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> &nbsp; </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 null,
                 [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> &nbsp; </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 null,
                 ['url' => 'http://example.com'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> &nbsp; </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 null,
                 ['route' => ['name' => 'sonata_admin_foo']],
             ],
@@ -1240,7 +1229,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="http://example.com">http://example.com</a>
                 </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'http://example.com',
                 [],
             ],
@@ -1248,7 +1237,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="https://example.com">https://example.com</a>
                 </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'https://example.com',
                 [],
             ],
@@ -1256,7 +1245,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="https://example.com" target="_blank">https://example.com</a>
                 </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'https://example.com',
                 ['attributes' => ['target' => '_blank']],
             ],
@@ -1264,7 +1253,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="https://example.com" target="_blank" class="fooLink">https://example.com</a>
                 </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'https://example.com',
                 ['attributes' => ['target' => '_blank', 'class' => 'fooLink']],
             ],
@@ -1272,7 +1261,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="http://example.com">example.com</a>
                 </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'http://example.com',
                 ['hide_protocol' => true],
             ],
@@ -1280,7 +1269,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="https://example.com">example.com</a>
                 </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'https://example.com',
                 ['hide_protocol' => true],
             ],
@@ -1288,7 +1277,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="http://example.com">http://example.com</a>
                 </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'http://example.com',
                 ['hide_protocol' => false],
             ],
@@ -1296,7 +1285,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="https://example.com">https://example.com</a>
                 </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'https://example.com',
                 ['hide_protocol' => false],
             ],
@@ -1304,7 +1293,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="http://example.com">Foo</a>
                 </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 ['url' => 'http://example.com'],
             ],
@@ -1312,7 +1301,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="http://example.com">&lt;b&gt;Foo&lt;/b&gt;</a>
                 </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 '<b>Foo</b>',
                 ['url' => 'http://example.com'],
             ],
@@ -1320,7 +1309,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="/foo">Foo</a>
                 </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 ['route' => ['name' => 'sonata_admin_foo']],
             ],
@@ -1328,7 +1317,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="http://localhost/foo">Foo</a>
                 </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 ['route' => ['name' => 'sonata_admin_foo', 'absolute' => true]],
             ],
@@ -1336,7 +1325,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="/foo">foo/bar?a=b&amp;c=123456789</a>
                 </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'http://foo/bar?a=b&c=123456789',
                 ['route' => ['name' => 'sonata_admin_foo'],
                 'hide_protocol' => true, ],
@@ -1345,7 +1334,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="http://localhost/foo">foo/bar?a=b&amp;c=123456789</a>
                 </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'http://foo/bar?a=b&c=123456789',
                 [
                     'route' => ['name' => 'sonata_admin_foo', 'absolute' => true],
@@ -1356,7 +1345,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="/foo/abcd/efgh?param3=ijkl">Foo</a>
                 </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 [
                     'route' => ['name' => 'sonata_admin_foo_param',
@@ -1367,7 +1356,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="http://localhost/foo/abcd/efgh?param3=ijkl">Foo</a>
                 </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 [
                     'route' => ['name' => 'sonata_admin_foo_param',
@@ -1379,7 +1368,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a>
                 </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 [
                     'route' => ['name' => 'sonata_admin_foo_object',
@@ -1391,7 +1380,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="http://localhost/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a>
                 </td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 [
                     'route' => ['name' => 'sonata_admin_foo_object',
@@ -1404,7 +1393,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345">
                 <p><strong>Creating a Template for the Field</strong> and form</p>
                 </td>',
-                'html',
+                FieldDescriptionInterface::TYPE_HTML,
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 [],
             ],
@@ -1412,7 +1401,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345">
                 Creating a Template for the Field and form
                 </td>',
-                'html',
+                FieldDescriptionInterface::TYPE_HTML,
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['strip' => true],
             ],
@@ -1420,13 +1409,13 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345">
                 Creating a Template for the...
                 </td>',
-                'html',
+                FieldDescriptionInterface::TYPE_HTML,
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['truncate' => true],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345"> Creatin... </td>',
-                'html',
+                FieldDescriptionInterface::TYPE_HTML,
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['truncate' => ['length' => 10]],
             ],
@@ -1434,7 +1423,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345">
                 Creating a Template for the Field...
                 </td>',
-                'html',
+                FieldDescriptionInterface::TYPE_HTML,
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['truncate' => ['cut' => false]],
             ],
@@ -1442,7 +1431,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345">
                 Creating a Template for t etc.
                 </td>',
-                'html',
+                FieldDescriptionInterface::TYPE_HTML,
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['truncate' => ['ellipsis' => ' etc.']],
             ],
@@ -1450,7 +1439,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345">
                 Creating a Template[...]
                 </td>',
-                'html',
+                FieldDescriptionInterface::TYPE_HTML,
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 [
                     'truncate' => [
@@ -1472,7 +1461,7 @@ EOT
 </td>
 EOT
                 ,
-                'text',
+                FieldDescriptionInterface::TYPE_STRING,
                 'A very long string',
                 [
                     'collapse' => true,
@@ -1489,7 +1478,7 @@ EOT
 </td>
 EOT
                 ,
-                'text',
+                FieldDescriptionInterface::TYPE_STRING,
                 'A very long string',
                 [
                     'collapse' => [
@@ -1515,7 +1504,7 @@ EOT
 </td>
 EOT
                 ,
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 [
                     'Status1',
                     'Status2',
@@ -1537,104 +1526,105 @@ EOT
     public function getRenderViewElementTests(): array
     {
         return [
-            ['<th>Data</th> <td>Example</td>', 'string', 'Example', ['safe' => false]],
+            ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]],
+            // NEXT_MAJOR: Replace "text" by FieldDescriptionInterface::TYPE_STRING
             ['<th>Data</th> <td>Example</td>', 'text', 'Example', ['safe' => false]],
-            ['<th>Data</th> <td>Example</td>', 'textarea', 'Example', ['safe' => false]],
+            ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_TEXTAREA, 'Example', ['safe' => false]],
             [
                 '<th>Data</th> <td><time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00"> December 24, 2013 10:11 </time></td>',
-                'datetime',
+                FieldDescriptionInterface::TYPE_DATETIME,
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')), [],
             ],
             [
                 '<th>Data</th> <td><time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00"> 24.12.2013 10:11:12 </time></td>',
-                'datetime',
+                FieldDescriptionInterface::TYPE_DATETIME,
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
                 ['format' => 'd.m.Y H:i:s'],
             ],
             [
                 '<th>Data</th> <td><time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00"> December 24, 2013 18:11 </time></td>',
-                'datetime',
+                FieldDescriptionInterface::TYPE_DATETIME,
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
                 ['timezone' => 'Asia/Hong_Kong'],
             ],
             [
                 '<th>Data</th> <td><time datetime="2013-12-24" title="2013-12-24"> December 24, 2013 </time></td>',
-                'date',
+                FieldDescriptionInterface::TYPE_DATE,
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
                 [],
             ],
             [
                 '<th>Data</th> <td><time datetime="2013-12-24" title="2013-12-24"> 24.12.2013 </time></td>',
-                'date',
+                FieldDescriptionInterface::TYPE_DATE,
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
                 ['format' => 'd.m.Y'],
             ],
             [
                 '<th>Data</th> <td><time datetime="10:11:12+00:00" title="10:11:12+00:00"> 10:11:12 </time></td>',
-                'time',
+                FieldDescriptionInterface::TYPE_TIME,
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
                 [],
             ],
             [
                 '<th>Data</th> <td><time datetime="10:11:12+00:00" title="10:11:12+00:00"> 18:11:12 </time></td>',
-                'time',
+                FieldDescriptionInterface::TYPE_TIME,
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
                 ['timezone' => 'Asia/Hong_Kong'],
             ],
-            ['<th>Data</th> <td>10.746135</td>', 'number', 10.746135, ['safe' => false]],
-            ['<th>Data</th> <td>5678</td>', 'integer', 5678, ['safe' => false]],
-            ['<th>Data</th> <td>1074.6135 %</td>', 'percent', 10.746135, []],
-            ['<th>Data</th> <td>0 %</td>', 'percent', 0, []],
-            ['<th>Data</th> <td>EUR 10.746135</td>', 'currency', 10.746135, ['currency' => 'EUR']],
-            ['<th>Data</th> <td>GBP 51.23456</td>', 'currency', 51.23456, ['currency' => 'GBP']],
-            ['<th>Data</th> <td>EUR 0</td>', 'currency', 0, ['currency' => 'EUR']],
+            ['<th>Data</th> <td>10.746135</td>', FieldDescriptionInterface::TYPE_FLOAT, 10.746135, ['safe' => false]],
+            ['<th>Data</th> <td>5678</td>', FieldDescriptionInterface::TYPE_INTEGER, 5678, ['safe' => false]],
+            ['<th>Data</th> <td>1074.6135 %</td>', FieldDescriptionInterface::TYPE_PERCENT, 10.746135, []],
+            ['<th>Data</th> <td>0 %</td>', FieldDescriptionInterface::TYPE_PERCENT, 0, []],
+            ['<th>Data</th> <td>EUR 10.746135</td>', FieldDescriptionInterface::TYPE_CURRENCY, 10.746135, ['currency' => 'EUR']],
+            ['<th>Data</th> <td>GBP 51.23456</td>', FieldDescriptionInterface::TYPE_CURRENCY, 51.23456, ['currency' => 'GBP']],
+            ['<th>Data</th> <td>EUR 0</td>', FieldDescriptionInterface::TYPE_CURRENCY, 0, ['currency' => 'EUR']],
             [
                 '<th>Data</th> <td> <ul><li>1&nbsp;=>&nbsp;First</li><li>2&nbsp;=>&nbsp;Second</li></ul> </td>',
-                'array',
+                FieldDescriptionInterface::TYPE_ARRAY,
                 [1 => 'First', 2 => 'Second'],
                 ['safe' => false],
             ],
             [
                 '<th>Data</th> <td> [1&nbsp;=>&nbsp;First, 2&nbsp;=>&nbsp;Second] </td>',
-                'array',
+                FieldDescriptionInterface::TYPE_ARRAY,
                 [1 => 'First', 2 => 'Second'],
                 ['safe' => false, 'inline' => true],
             ],
             [
                 '<th>Data</th> <td><span class="label label-success">yes</span></td>',
-                'boolean',
+                FieldDescriptionInterface::TYPE_BOOLEAN,
                 true,
                 [],
             ],
             [
                 '<th>Data</th> <td><span class="label label-danger">yes</span></td>',
-                'boolean',
+                FieldDescriptionInterface::TYPE_BOOLEAN,
                 true,
                 ['inverse' => true],
             ],
-            ['<th>Data</th> <td><span class="label label-danger">no</span></td>', 'boolean', false, []],
+            ['<th>Data</th> <td><span class="label label-danger">no</span></td>', FieldDescriptionInterface::TYPE_BOOLEAN, false, []],
             [
                 '<th>Data</th> <td><span class="label label-success">no</span></td>',
-                'boolean',
+                FieldDescriptionInterface::TYPE_BOOLEAN,
                 false,
                 ['inverse' => true],
             ],
             [
-                '<th>Data</th> <td> Delete </td>',
-                'trans',
+                '<th>Data</th> <td>Delete</td>',
+                FieldDescriptionInterface::TYPE_TRANS,
                 'action_delete',
                 ['safe' => false, 'catalogue' => 'SonataAdminBundle'],
             ],
             [
-                '<th>Data</th> <td> Delete </td>',
-                'trans',
+                '<th>Data</th> <td>Delete</td>',
+                FieldDescriptionInterface::TYPE_TRANS,
                 'delete',
                 ['safe' => false, 'catalogue' => 'SonataAdminBundle', 'format' => 'action_%s'],
             ],
-            ['<th>Data</th> <td>Status1</td>', 'choice', 'Status1', ['safe' => false]],
+            ['<th>Data</th> <td>Status1</td>', FieldDescriptionInterface::TYPE_CHOICE, 'Status1', ['safe' => false]],
             [
                 '<th>Data</th> <td>Alias1</td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 'Status1',
                 ['safe' => false, 'choices' => [
                     'Status1' => 'Alias1',
@@ -1644,7 +1634,7 @@ EOT
             ],
             [
                 '<th>Data</th> <td>NoValidKeyInChoices</td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 'NoValidKeyInChoices',
                 ['safe' => false, 'choices' => [
                     'Status1' => 'Alias1',
@@ -1654,7 +1644,7 @@ EOT
             ],
             [
                 '<th>Data</th> <td>Delete</td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 'Foo',
                 ['safe' => false, 'catalogue' => 'SonataAdminBundle', 'choices' => [
                     'Foo' => 'action_delete',
@@ -1664,7 +1654,7 @@ EOT
             ],
             [
                 '<th>Data</th> <td>NoValidKeyInChoices</td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 ['NoValidKeyInChoices'],
                 ['safe' => false, 'choices' => [
                     'Status1' => 'Alias1',
@@ -1674,7 +1664,7 @@ EOT
             ],
             [
                 '<th>Data</th> <td>NoValidKeyInChoices, Alias2</td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 ['NoValidKeyInChoices', 'Status2'],
                 ['safe' => false, 'choices' => [
                     'Status1' => 'Alias1',
@@ -1684,7 +1674,7 @@ EOT
             ],
             [
                 '<th>Data</th> <td>Alias1, Alias3</td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 ['Status1', 'Status3'],
                 ['safe' => false, 'choices' => [
                     'Status1' => 'Alias1',
@@ -1694,7 +1684,7 @@ EOT
             ],
             [
                 '<th>Data</th> <td>Alias1 | Alias3</td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 ['Status1', 'Status3'], ['safe' => false, 'choices' => [
                     'Status1' => 'Alias1',
                     'Status2' => 'Alias2',
@@ -1703,7 +1693,7 @@ EOT
             ],
             [
                 '<th>Data</th> <td>Delete, Alias3</td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 ['Foo', 'Status3'],
                 ['safe' => false, 'catalogue' => 'SonataAdminBundle', 'choices' => [
                     'Foo' => 'action_delete',
@@ -1713,7 +1703,7 @@ EOT
             ],
             [
                 '<th>Data</th> <td><b>Alias1</b>, <b>Alias3</b></td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 ['Status1', 'Status3'],
                 ['safe' => true, 'choices' => [
                     'Status1' => '<b>Alias1</b>',
@@ -1723,7 +1713,7 @@ EOT
             ],
             [
                 '<th>Data</th> <td>&lt;b&gt;Alias1&lt;/b&gt;, &lt;b&gt;Alias3&lt;/b&gt;</td>',
-                'choice',
+                FieldDescriptionInterface::TYPE_CHOICE,
                 ['Status1', 'Status3'],
                 ['safe' => false, 'choices' => [
                     'Status1' => '<b>Alias1</b>',
@@ -1733,80 +1723,80 @@ EOT
             ],
             [
                 '<th>Data</th> <td><a href="http://example.com">http://example.com</a></td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'http://example.com',
                 ['safe' => false],
             ],
             [
                 '<th>Data</th> <td><a href="http://example.com" target="_blank">http://example.com</a></td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'http://example.com',
                 ['safe' => false, 'attributes' => ['target' => '_blank']],
             ],
             [
                 '<th>Data</th> <td><a href="http://example.com" target="_blank" class="fooLink">http://example.com</a></td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'http://example.com',
                 ['safe' => false, 'attributes' => ['target' => '_blank', 'class' => 'fooLink']],
             ],
             [
                 '<th>Data</th> <td><a href="https://example.com">https://example.com</a></td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'https://example.com',
                 ['safe' => false],
             ],
             [
                 '<th>Data</th> <td><a href="http://example.com">example.com</a></td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'http://example.com',
                 ['safe' => false, 'hide_protocol' => true],
             ],
             [
                 '<th>Data</th> <td><a href="https://example.com">example.com</a></td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'https://example.com',
                 ['safe' => false, 'hide_protocol' => true],
             ],
             [
                 '<th>Data</th> <td><a href="http://example.com">http://example.com</a></td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'http://example.com',
                 ['safe' => false, 'hide_protocol' => false],
             ],
             [
                 '<th>Data</th> <td><a href="https://example.com">https://example.com</a></td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'https://example.com',
                 ['safe' => false,
                 'hide_protocol' => false, ],
             ],
             [
                 '<th>Data</th> <td><a href="http://example.com">Foo</a></td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 ['safe' => false, 'url' => 'http://example.com'],
             ],
             [
                 '<th>Data</th> <td><a href="http://example.com">&lt;b&gt;Foo&lt;/b&gt;</a></td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 '<b>Foo</b>',
                 ['safe' => false, 'url' => 'http://example.com'],
             ],
             [
                 '<th>Data</th> <td><a href="http://example.com"><b>Foo</b></a></td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 '<b>Foo</b>',
                 ['safe' => true, 'url' => 'http://example.com'],
             ],
             [
                 '<th>Data</th> <td><a href="/foo">Foo</a></td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 ['safe' => false, 'route' => ['name' => 'sonata_admin_foo']],
             ],
             [
                 '<th>Data</th> <td><a href="http://localhost/foo">Foo</a></td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 ['safe' => false, 'route' => [
                     'name' => 'sonata_admin_foo',
@@ -1815,7 +1805,7 @@ EOT
             ],
             [
                 '<th>Data</th> <td><a href="/foo">foo/bar?a=b&amp;c=123456789</a></td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'http://foo/bar?a=b&c=123456789',
                 [
                     'safe' => false,
@@ -1825,7 +1815,7 @@ EOT
             ],
             [
                 '<th>Data</th> <td><a href="http://localhost/foo">foo/bar?a=b&amp;c=123456789</a></td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'http://foo/bar?a=b&c=123456789',
                 ['safe' => false, 'route' => [
                     'name' => 'sonata_admin_foo',
@@ -1834,7 +1824,7 @@ EOT
             ],
             [
                 '<th>Data</th> <td><a href="/foo/abcd/efgh?param3=ijkl">Foo</a></td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 ['safe' => false, 'route' => [
                     'name' => 'sonata_admin_foo_param',
@@ -1843,7 +1833,7 @@ EOT
             ],
             [
                 '<th>Data</th> <td><a href="http://localhost/foo/abcd/efgh?param3=ijkl">Foo</a></td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 ['safe' => false, 'route' => [
                     'name' => 'sonata_admin_foo_param',
@@ -1857,7 +1847,7 @@ EOT
             ],
             [
                 '<th>Data</th> <td><a href="/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a></td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 ['safe' => false, 'route' => [
                     'name' => 'sonata_admin_foo_object',
@@ -1871,7 +1861,7 @@ EOT
             ],
             [
                 '<th>Data</th> <td><a href="http://localhost/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a></td>',
-                'url',
+                FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 ['safe' => false, 'route' => [
                     'name' => 'sonata_admin_foo_object',
@@ -1886,103 +1876,103 @@ EOT
             ],
             [
                 '<th>Data</th> <td> &nbsp;</td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 null,
                 [],
             ],
             [
                 '<th>Data</th> <td> <a href="mailto:admin@admin.com">admin@admin.com</a></td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 [],
             ],
             [
                 '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['subject' => 'Main Theme', 'body' => 'Message Body']).'">admin@admin.com</a></td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['subject' => 'Main Theme', 'body' => 'Message Body'],
             ],
             [
                 '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['subject' => 'Main Theme']).'">admin@admin.com</a></td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['subject' => 'Main Theme'],
             ],
             [
                 '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['body' => 'Message Body']).'">admin@admin.com</a></td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['body' => 'Message Body'],
             ],
             [
                 '<th>Data</th> <td> admin@admin.com</td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['as_string' => true, 'subject' => 'Main Theme', 'body' => 'Message Body'],
             ],
             [
                 '<th>Data</th> <td> admin@admin.com</td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['as_string' => true, 'subject' => 'Main Theme'],
             ],
             [
                 '<th>Data</th> <td> admin@admin.com</td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['as_string' => true, 'body' => 'Message Body'],
             ],
             [
                 '<th>Data</th> <td> <a href="mailto:admin@admin.com">admin@admin.com</a></td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['as_string' => false],
             ],
             [
                 '<th>Data</th> <td> admin@admin.com</td>',
-                'email',
+                FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['as_string' => true],
             ],
             [
-                '<th>Data</th> <td><p><strong>Creating a Template for the Field</strong> and form</p> </td>',
-                'html',
+                '<th>Data</th> <td><p><strong>Creating a Template for the Field</strong> and form</p></td>',
+                FieldDescriptionInterface::TYPE_HTML,
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 [],
             ],
             [
-                '<th>Data</th> <td>Creating a Template for the Field and form </td>',
-                'html',
+                '<th>Data</th> <td>Creating a Template for the Field and form</td>',
+                FieldDescriptionInterface::TYPE_HTML,
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['strip' => true],
             ],
             [
-                '<th>Data</th> <td> Creating a Template for the... </td>',
-                'html',
+                '<th>Data</th> <td>Creating a Template for the...</td>',
+                FieldDescriptionInterface::TYPE_HTML,
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['truncate' => true],
             ],
             [
-                '<th>Data</th> <td> Creatin... </td>',
-                'html',
+                '<th>Data</th> <td>Creatin...</td>',
+                FieldDescriptionInterface::TYPE_HTML,
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['truncate' => ['length' => 10]],
             ],
             [
-                '<th>Data</th> <td> Creating a Template for the Field... </td>',
-                'html',
+                '<th>Data</th> <td>Creating a Template for the Field...</td>',
+                FieldDescriptionInterface::TYPE_HTML,
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['truncate' => ['cut' => false]],
             ],
             [
-                '<th>Data</th> <td> Creating a Template for t etc. </td>',
-                'html',
+                '<th>Data</th> <td>Creating a Template for t etc.</td>',
+                FieldDescriptionInterface::TYPE_HTML,
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['truncate' => ['ellipsis' => ' etc.']],
             ],
             [
-                '<th>Data</th> <td> Creating a Template[...] </td>',
-                'html',
+                '<th>Data</th> <td>Creating a Template[...]</td>',
+                FieldDescriptionInterface::TYPE_HTML,
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 [
                     'truncate' => [
@@ -2003,7 +1993,7 @@ EOT
 </div></td>
 EOT
                 ,
-                'text',
+                FieldDescriptionInterface::TYPE_STRING,
                 ' A very long string ',
                 [
                     'collapse' => true,
@@ -2021,7 +2011,7 @@ EOT
 </div></td>
 EOT
                 ,
-                'text',
+                FieldDescriptionInterface::TYPE_STRING,
                 ' A very long string ',
                 [
                     'collapse' => [
@@ -2038,35 +2028,35 @@ EOT
     public function getRenderViewElementCompareTests(): iterable
     {
         return [
-            ['<th>Data</th> <td>Example</td><td>Example</td>', 'string', 'Example', ['safe' => false]],
-            ['<th>Data</th> <td>Example</td><td>Example</td>', 'text', 'Example', ['safe' => false]],
-            ['<th>Data</th> <td>Example</td><td>Example</td>', 'textarea', 'Example', ['safe' => false]],
+            ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]],
+            ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]],
+            ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_TEXTAREA, 'Example', ['safe' => false]],
             ['<th>Data</th> <td>SonataAdmin<br/>Example</td><td>SonataAdmin<br/>Example</td>', 'virtual_field', 'Example', ['template' => 'custom_show_field.html.twig', 'safe' => false, 'SonataAdmin']],
             ['<th class="diff">Data</th> <td>SonataAdmin<br/>Example</td><td>sonata-project/admin-bundle<br/>Example</td>', 'virtual_field', 'Example', ['template' => 'custom_show_field.html.twig', 'safe' => false], 'sonata-project/admin-bundle'],
             [
                 '<th>Data</th> <td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> May 27, 2020 10:11 </time></td>'
                 .'<td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> May 27, 2020 10:11 </time></td>',
-                'datetime',
+                FieldDescriptionInterface::TYPE_DATETIME,
                 new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')), [],
             ],
             [
                 '<th>Data</th> <td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> 27.05.2020 10:11:12 </time></td>'
                 .'<td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> 27.05.2020 10:11:12 </time></td>',
-                'datetime',
+                FieldDescriptionInterface::TYPE_DATETIME,
                 new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')),
                 ['format' => 'd.m.Y H:i:s'],
             ],
             [
                 '<th>Data</th> <td><time datetime="2020-05-27T10:11:12+00:00" title="2020-05-27T10:11:12+00:00"> May 27, 2020 18:11 </time></td>'
                 .'<td><time datetime="2020-05-27T10:11:12+00:00" title="2020-05-27T10:11:12+00:00"> May 27, 2020 18:11 </time></td>',
-                'datetime',
+                FieldDescriptionInterface::TYPE_DATETIME,
                 new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('UTC')),
                 ['timezone' => 'Asia/Hong_Kong'],
             ],
             [
                 '<th>Data</th> <td><time datetime="2020-05-27" title="2020-05-27"> May 27, 2020 </time></td>'
                 .'<td><time datetime="2020-05-27" title="2020-05-27"> May 27, 2020 </time></td>',
-                'date',
+                FieldDescriptionInterface::TYPE_DATE,
                 new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')),
                 [],
             ],
@@ -2093,7 +2083,7 @@ EOT
     private function registerRequiredTwigExtensions(): void
     {
         $this->environment->addExtension($this->twigExtension);
-        $this->environment->addExtension(new XEditableExtension($this->translator, self::X_EDITABLE_TYPE_MAPPING));
+        $this->environment->addExtension(new XEditableExtension($this->translator));
         $this->environment->addExtension(new TranslationExtension($this->translator));
         $this->environment->addExtension(new FakeTemplateRegistryExtension());
         $this->environment->addExtension(new StringExtension());

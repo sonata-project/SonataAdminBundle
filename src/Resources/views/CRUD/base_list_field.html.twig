@@ -49,7 +49,7 @@ file that was distributed with this source code.
                 admin.getPersistentParameters|default([])|merge({
                     'context': 'list',
                     'field': field_description.name,
-                    'objectId': admin.id(object),
+                    'objectId': admin.urlSafeIdentifier(object),
                     'code': admin.code(object)
                 })
             ) %}

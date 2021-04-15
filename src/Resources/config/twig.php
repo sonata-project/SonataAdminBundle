@@ -24,23 +24,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigura
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->parameters()
 
-        ->set('sonata.admin.twig.extension.x_editable_type_mapping', [
-            'choice' => 'select',
-            'boolean' => 'select',
-            'text' => 'text',
-            'textarea' => 'textarea',
-            'html' => 'textarea',
-            'email' => 'email',
-            'string' => 'text',
-            'smallint' => 'text',
-            'bigint' => 'text',
-            'integer' => 'number',
-            'decimal' => 'number',
-            'currency' => 'number',
-            'percent' => 'number',
-            'url' => 'url',
-            'date' => 'date',
-        ]);
+        ->set('sonata.admin.twig.extension.x_editable_type_mapping', XEditableExtension::FIELD_DESCRIPTION_MAPPING);
 
     // Use "service" function for creating references to services when dropping support for Symfony 4.4
     // Use "param" function for creating references to parameters when dropping support for Symfony 5.1

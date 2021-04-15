@@ -18,7 +18,7 @@ namespace Sonata\AdminBundle\Mapper;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-abstract class BaseGroupedMapper extends BaseMapper
+abstract class BaseGroupedMapper implements MapperInterface
 {
     /**
      * @var string|null
@@ -74,7 +74,7 @@ abstract class BaseGroupedMapper extends BaseMapper
             'collapsed' => false,
             'class' => false,
             'description' => false,
-            'label' => $this->admin->getLabelTranslatorStrategy()->getLabel($name, $this->getName(), 'group'),
+            'label' => $this->getAdmin()->getLabelTranslatorStrategy()->getLabel($name, $this->getName(), 'group'),
             'translation_domain' => null,
             'name' => $name,
             'box_class' => 'box box-primary',
@@ -362,14 +362,14 @@ abstract class BaseGroupedMapper extends BaseMapper
     protected function getCurrentGroupName(): string
     {
         if (!$this->currentGroup) {
-            $label = $this->admin->getLabel();
+            $label = $this->getAdmin()->getLabel();
 
             if (null === $label) {
                 $this->with('default', ['auto_created' => true]);
             } else {
                 $this->with($label, [
                     'auto_created' => true,
-                    'translation_domain' => $this->admin->getTranslationDomain(),
+                    'translation_domain' => $this->getAdmin()->getTranslationDomain(),
                 ]);
             }
         }

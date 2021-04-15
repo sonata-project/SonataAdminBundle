@@ -18,21 +18,29 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 
 /**
  * A model manager is a bridge between the model classes and the admin functionality.
+ *
+ * @phpstan-template T of object
  */
 interface ModelManagerInterface
 {
     /**
      * @throws ModelManagerException
+     *
+     * @phpstan-param T $object
      */
     public function create(object $object): void;
 
     /**
      * @throws ModelManagerException
+     *
+     * @phpstan-param T $object
      */
     public function update(object $object): void;
 
     /**
      * @throws ModelManagerException
+     *
+     * @phpstan-param T $object
      */
     public function delete(object $object): void;
 
@@ -41,7 +49,6 @@ interface ModelManagerInterface
      *
      * @return object[] all objects matching the criteria
      *
-     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T[]
      */
@@ -52,7 +59,6 @@ interface ModelManagerInterface
      *
      * @return object|null an object matching the criteria or null if none match
      *
-     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T|null
      */
@@ -63,7 +69,6 @@ interface ModelManagerInterface
      *
      * @return object|null the object with id or null if not found
      *
-     * @phpstan-template T of object
      * @phpstan-param class-string<T> $class
      * @phpstan-return T|null
      */
@@ -72,12 +77,12 @@ interface ModelManagerInterface
     /**
      * @throws ModelManagerException
      *
-     * @phpstan-param class-string $class
+     * @phpstan-param class-string<T> $class
      */
     public function batchDelete(string $class, ProxyQueryInterface $query): void;
 
     /**
-     * @phpstan-param class-string $class
+     * @phpstan-param class-string<T> $class
      */
     public function createQuery(string $class): ProxyQueryInterface;
 
@@ -98,7 +103,7 @@ interface ModelManagerInterface
      *
      * @return string[]
      *
-     * @phpstan-param class-string $class
+     * @phpstan-param class-string<T> $class
      */
     public function getIdentifierFieldNames(string $class): array;
 
@@ -117,6 +122,8 @@ interface ModelManagerInterface
 
     /**
      * @param array<string, mixed> $array
+     *
+     * @phpstan-param T $object
      */
     public function reverseTransform(object $object, array $array = []): void;
 
@@ -130,14 +137,14 @@ interface ModelManagerInterface
     /**
      * @return string[]
      *
-     * @phpstan-param class-string $class
+     * @phpstan-param class-string<T> $class
      */
     public function getExportFields(string $class): array;
 
     /**
      * @param array<int, int|string> $idx
      *
-     * @phpstan-param class-string $class
+     * @phpstan-param class-string<T> $class
      */
     public function addIdentifiersToQuery(string $class, ProxyQueryInterface $query, array $idx): void;
 }

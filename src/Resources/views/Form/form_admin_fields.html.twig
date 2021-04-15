@@ -539,10 +539,10 @@ file that was distributed with this source code.
 {% block sonata_type_model_list_widget %}
     <div id="field_container_{{ id }}" class="field-container">
         <span id="field_widget_{{ id }}" class="field-short-description">
-            {% if sonata_admin.value and sonata_admin.field_description.associationadmin.id(sonata_admin.value) is not null %}
+            {% if sonata_admin.value and sonata_admin.field_description.associationadmin.urlSafeIdentifier(sonata_admin.value) is not null %}
                 {{ render(path('sonata_admin_short_object_information', {
                     'code': sonata_admin.field_description.associationadmin.code,
-                    'objectId': sonata_admin.field_description.associationadmin.id(sonata_admin.value),
+                    'objectId': sonata_admin.field_description.associationadmin.urlSafeIdentifier(sonata_admin.value),
                     'uniqid': sonata_admin.field_description.associationadmin.uniqid,
                     'linkParameters': sonata_admin.field_description.option('link_parameters')
                 })) }}
@@ -583,7 +583,7 @@ file that was distributed with this source code.
                     and btn_edit
                 %}
                     <a href="{{ sonata_admin.value == null ? '' : sonata_admin.field_description.associationadmin.generateUrl('edit', {
-                        'id' : sonata_admin.field_description.associationadmin.normalizedIdentifier(sonata_admin.value)})
+                        (sonata_admin.field_description.associationadmin.idParameter) : sonata_admin.field_description.associationadmin.urlSafeIdentifier(sonata_admin.value)})
                     }}"
                        onclick="return start_field_dialog_form_edit_{{ id }}(this);"
                        class="btn btn-warning btn-sm sonata-ba-action {% if sonata_admin.value == null %}hidden{% endif %}"

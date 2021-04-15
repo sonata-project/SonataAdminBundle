@@ -11,7 +11,7 @@
         <form
               {% if sonata_config.getOption('form_type') == 'horizontal' %}class="form-horizontal"{% endif %}
               role="form"
-              action="{% block sonata_form_action_url %}{{ admin.generateUrl(url, {'id': objectId, 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}{% endblock %}"
+              action="{% block sonata_form_action_url %}{{ admin.generateUrl(url, {(admin.idParameter): objectId, 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}{% endblock %}"
               {% if form.vars.multipart %} enctype="multipart/form-data"{% endif %}
               method="POST"
               {% if not sonata_config.getOption('html5_validate') %}novalidate="novalidate"{% endif %}

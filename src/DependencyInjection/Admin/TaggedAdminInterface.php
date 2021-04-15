@@ -41,6 +41,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * so that the admin class works correctly with the AddDependencyCallsCompilerPass. Indeed:
  *     - The first and third argument are automatically injected by the AddDependencyCallsCompilerPass.
  *     - The second one is used as a reference of the Admin in the Pool, with the `setAdminClasses` call.
+ *
+ * @phpstan-template T of object
  */
 interface TaggedAdminInterface extends MutableTemplateRegistryAwareInterface
 {
@@ -96,8 +98,14 @@ interface TaggedAdminInterface extends MutableTemplateRegistryAwareInterface
 
     public function hasFilterPersister(): bool;
 
+    /**
+     * @phpstan-param ModelManagerInterface<T>
+     */
     public function setModelManager(ModelManagerInterface $modelManager): void;
 
+    /**
+     * @phpstan-return ModelManagerInterface<T>
+     */
     public function getModelManager(): ModelManagerInterface;
 
     public function setDataSource(DataSourceInterface $dataSource): void;

@@ -26,6 +26,7 @@ final class ArrayToModelTransformer implements DataTransformerInterface
 {
     /**
      * @var ModelManagerInterface
+     * @phpstan-var ModelManagerInterface<T>
      */
     private $modelManager;
 
@@ -37,7 +38,8 @@ final class ArrayToModelTransformer implements DataTransformerInterface
     private $className;
 
     /**
-     * @phpstan-param class-string<T> $className
+     * @phpstan-param ModelManagerInterface<T> $modelManager
+     * @phpstan-param class-string<T>          $className
      */
     public function __construct(ModelManagerInterface $modelManager, string $className)
     {

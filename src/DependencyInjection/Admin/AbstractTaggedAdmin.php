@@ -33,6 +33,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @phpstan-template T of object
+ * @phpstan-implements TaggedAdminInterface<T>
  */
 abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 {
@@ -106,6 +107,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
      * The Entity or Document manager.
      *
      * @var ModelManagerInterface|null
+     * @phpstan-var ModelManagerInterface<T>|null
      */
     private $modelManager;
 

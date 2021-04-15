@@ -80,14 +80,12 @@ Option                                  Description
                                         Available options are: ``'both'``, ``'keys'``, ``'values'``.
 **key_translation_domain**              This option determines if the keys should be translated and
                                         in which translation domain.
-
                                         The values of this option can be ``true`` (use admin
                                         translation domain), ``false`` (disable translation), ``null``
                                         (uses the parent translation domain or the default domain)
                                         or a string which represents the exact translation domain to use.
 **value_translation_domain**            This option determines if the values should be translated and
                                         in which translation domain.
-
                                         The values of this option can be ``true`` (use admin
                                         translation domain), ``false`` (disable translation), ``null``
                                         (uses the parent translation domain or the default domain)
