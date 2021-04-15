@@ -44,6 +44,8 @@ interface MapperInterface
     public function keys(): array;
 
     /**
+     * @param string[] $keys
+     *
      * @return static
      */
     public function reorder(array $keys);

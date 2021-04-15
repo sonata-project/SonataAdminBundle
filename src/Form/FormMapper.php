@@ -172,9 +172,6 @@ final class FormMapper extends BaseGroupedMapper
         return $this->formBuilder->has($key);
     }
 
-    /**
-     * @return string[]
-     */
     public function keys(): array
     {
         return array_keys($this->formBuilder->all());

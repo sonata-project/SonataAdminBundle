@@ -182,17 +182,11 @@ final class ListMapper implements MapperInterface
         return $this;
     }
 
-    /**
-     * @return string[]
-     */
     public function keys(): array
     {
         return array_keys($this->list->getElements());
     }
 
-    /**
-     * @param string[] $keys
-     */
     public function reorder(array $keys): self
     {
         $this->list->reorder($keys);
