@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
@@ -66,7 +67,7 @@ final class RetrieveAutocompleteItemsAction
             $callback = $filterAutocomplete->getFieldOption('callback');
             $minimumInputLength = $filterAutocomplete->getFieldOption('minimum_input_length', 3);
             $itemsPerPage = $filterAutocomplete->getFieldOption('items_per_page', 10);
-            $reqParamPageNumber = $filterAutocomplete->getFieldOption('req_param_name_page_number', '_page');
+            $reqParamPageNumber = $filterAutocomplete->getFieldOption('req_param_name_page_number', DatagridInterface::PAGE);
             $toStringCallback = $filterAutocomplete->getFieldOption('to_string_callback');
             $targetAdminAccessAction = $filterAutocomplete->getFieldOption('target_admin_access_action', 'list');
             $responseItemCallback = $filterAutocomplete->getFieldOption('response_item_callback');
@@ -144,8 +145,8 @@ final class RetrieveAutocompleteItemsAction
             }
         }
 
-        $datagrid->setValue('_per_page', null, $itemsPerPage);
-        $datagrid->setValue('_page', null, $request->query->get($reqParamPageNumber, '1'));
+        $datagrid->setValue(DatagridInterface::PER_PAGE, null, $itemsPerPage);
+        $datagrid->setValue(DatagridInterface::PAGE, null, $request->query->get($reqParamPageNumber, '1'));
         $datagrid->buildPager();
 
         $pager = $datagrid->getPager();

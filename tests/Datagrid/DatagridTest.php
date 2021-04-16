@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Datagrid;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\Datagrid;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
@@ -348,10 +349,10 @@ final class DatagridTest extends TestCase
         $this->assertSame(['help' => 'baz1'], $this->formBuilder->get('fooFormName')->getOptions()['operator_options']);
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('barFormName'));
         $this->assertSame(['help' => 'baz2'], $this->formBuilder->get('barFormName')->getOptions()['operator_options']);
-        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_sort_by'));
-        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_sort_order'));
-        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_page'));
-        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_per_page'));
+        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get(DatagridInterface::SORT_BY));
+        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get(DatagridInterface::SORT_ORDER));
+        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get(DatagridInterface::PAGE));
+        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get(DatagridInterface::PER_PAGE));
     }
 
     /**
@@ -410,7 +411,7 @@ final class DatagridTest extends TestCase
 
         $this->datagrid->addFilter($filter);
 
-        $this->datagrid->setValue('_sort_by', 'foo', 'baz');
+        $this->datagrid->setValue(DatagridInterface::SORT_BY, 'foo', 'baz');
 
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Expected argument of type "Sonata\\AdminBundle\\FieldDescription\\FieldDescriptionInterface", "array" given');
@@ -435,7 +436,7 @@ final class DatagridTest extends TestCase
             ->with($this->equalTo('1'))
             ->willReturn(null);
 
-        $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, ['_sort_by' => $sortBy]);
+        $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, [DatagridInterface::SORT_BY => $sortBy]);
 
         $filter = $this->createMock(FilterInterface::class);
         $filter->expects($this->once())
@@ -455,13 +456,13 @@ final class DatagridTest extends TestCase
 
         $this->datagrid->buildPager();
 
-        $this->assertSame(['_sort_by' => $sortBy, 'foo' => null, '_sort_order' => 'ASC'], $this->datagrid->getValues());
+        $this->assertSame([DatagridInterface::SORT_BY => $sortBy, 'foo' => null, DatagridInterface::SORT_ORDER => 'ASC'], $this->datagrid->getValues());
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('fooFormName'));
         $this->assertSame(['help' => 'baz'], $this->formBuilder->get('fooFormName')->getOptions()['operator_options']);
-        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_sort_by'));
-        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_sort_order'));
-        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_page'));
-        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_per_page'));
+        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get(DatagridInterface::SORT_BY));
+        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get(DatagridInterface::SORT_ORDER));
+        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get(DatagridInterface::PAGE));
+        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get(DatagridInterface::PER_PAGE));
     }
 
     /**
@@ -484,7 +485,7 @@ final class DatagridTest extends TestCase
             ->with($this->equalTo('3'))
             ->willReturn(null);
 
-        $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, ['_sort_by' => $sortBy, '_page' => $page, '_per_page' => $perPage]);
+        $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, [DatagridInterface::SORT_BY => $sortBy, DatagridInterface::PAGE => $page, DatagridInterface::PER_PAGE => $perPage]);
 
         $filter = $this->createMock(FilterInterface::class);
         $filter->expects($this->once())
@@ -505,18 +506,18 @@ final class DatagridTest extends TestCase
         $this->datagrid->buildPager();
 
         $this->assertSame([
-            '_sort_by' => $sortBy,
-            '_page' => $page,
-            '_per_page' => $perPage,
+            DatagridInterface::SORT_BY => $sortBy,
+            DatagridInterface::PAGE => $page,
+            DatagridInterface::PER_PAGE => $perPage,
             'foo' => null,
-            '_sort_order' => 'ASC',
+            DatagridInterface::SORT_ORDER => 'ASC',
         ], $this->datagrid->getValues());
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('fooFormName'));
         $this->assertSame(['help' => 'baz'], $this->formBuilder->get('fooFormName')->getOptions()['operator_options']);
-        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_sort_by'));
-        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_sort_order'));
-        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_page'));
-        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_per_page'));
+        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get(DatagridInterface::SORT_BY));
+        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get(DatagridInterface::SORT_ORDER));
+        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get(DatagridInterface::PAGE));
+        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get(DatagridInterface::PER_PAGE));
     }
 
     public function getBuildPagerWithPageTests(): array
@@ -548,19 +549,19 @@ final class DatagridTest extends TestCase
             ->willReturn(null);
 
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, []);
-        $this->datagrid->setValue('_per_page', null, $perPage);
-        $this->datagrid->setValue('_page', null, $page);
+        $this->datagrid->setValue(DatagridInterface::PER_PAGE, null, $perPage);
+        $this->datagrid->setValue(DatagridInterface::PAGE, null, $page);
 
         $this->datagrid->buildPager();
 
         $this->assertSame([
-            '_per_page' => ['type' => null, 'value' => $perPage],
-            '_page' => ['type' => null, 'value' => $page],
+            DatagridInterface::PER_PAGE => ['type' => null, 'value' => $perPage],
+            DatagridInterface::PAGE => ['type' => null, 'value' => $page],
         ], $this->datagrid->getValues());
-        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_sort_by'));
-        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_sort_order'));
-        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_page'));
-        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_per_page'));
+        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get(DatagridInterface::SORT_BY));
+        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get(DatagridInterface::SORT_ORDER));
+        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get(DatagridInterface::PAGE));
+        $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get(DatagridInterface::PER_PAGE));
     }
 
     public function getBuildPagerWithPage2Tests(): array
@@ -591,36 +592,36 @@ final class DatagridTest extends TestCase
             $this->columns,
             $this->pager,
             $this->formBuilder,
-            ['_sort_by' => $field1, '_sort_order' => 'ASC']
+            [DatagridInterface::SORT_BY => $field1, DatagridInterface::SORT_ORDER => 'ASC']
         );
 
         $parameters = $this->datagrid->getSortParameters($field1);
 
-        $this->assertSame('DESC', $parameters['filter']['_sort_order']);
-        $this->assertSame('field1', $parameters['filter']['_sort_by']);
+        $this->assertSame('DESC', $parameters['filter'][DatagridInterface::SORT_ORDER]);
+        $this->assertSame('field1', $parameters['filter'][DatagridInterface::SORT_BY]);
 
         $parameters = $this->datagrid->getSortParameters($field2);
 
-        $this->assertSame('ASC', $parameters['filter']['_sort_order']);
-        $this->assertSame('field2', $parameters['filter']['_sort_by']);
+        $this->assertSame('ASC', $parameters['filter'][DatagridInterface::SORT_ORDER]);
+        $this->assertSame('field2', $parameters['filter'][DatagridInterface::SORT_BY]);
 
         $parameters = $this->datagrid->getSortParameters($field3);
 
-        $this->assertSame('ASC', $parameters['filter']['_sort_order']);
-        $this->assertSame('field3sortBy', $parameters['filter']['_sort_by']);
+        $this->assertSame('ASC', $parameters['filter'][DatagridInterface::SORT_ORDER]);
+        $this->assertSame('field3sortBy', $parameters['filter'][DatagridInterface::SORT_BY]);
 
         $this->datagrid = new Datagrid(
             $this->query,
             $this->columns,
             $this->pager,
             $this->formBuilder,
-            ['_sort_by' => $field3, '_sort_order' => 'ASC']
+            [DatagridInterface::SORT_BY => $field3, DatagridInterface::SORT_ORDER => 'ASC']
         );
 
         $parameters = $this->datagrid->getSortParameters($field3);
 
-        $this->assertSame('DESC', $parameters['filter']['_sort_order']);
-        $this->assertSame('field3sortBy', $parameters['filter']['_sort_by']);
+        $this->assertSame('DESC', $parameters['filter'][DatagridInterface::SORT_ORDER]);
+        $this->assertSame('field3sortBy', $parameters['filter'][DatagridInterface::SORT_BY]);
     }
 
     public function testGetPaginationParameters(): void
@@ -632,14 +633,14 @@ final class DatagridTest extends TestCase
             $this->columns,
             $this->pager,
             $this->formBuilder,
-            ['_sort_by' => $field, '_sort_order' => 'ASC']
+            [DatagridInterface::SORT_BY => $field, DatagridInterface::SORT_ORDER => 'ASC']
         );
 
         $field->expects($this->once())->method('getName')->willReturn($name = 'test');
 
         $result = $this->datagrid->getPaginationParameters($page = 5);
 
-        $this->assertSame($page, $result['filter']['_page']);
-        $this->assertSame($name, $result['filter']['_sort_by']);
+        $this->assertSame($page, $result['filter'][DatagridInterface::PAGE]);
+        $this->assertSame($name, $result['filter'][DatagridInterface::SORT_BY]);
     }
 }

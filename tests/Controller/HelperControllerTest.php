@@ -521,8 +521,8 @@ class HelperControllerTest extends TestCase
         $datagrid->method('getFilter')->with('foo')->willReturn($filter);
         $datagrid->expects($this->exactly(3))->method('setValue')->withConsecutive(
             ['foo', null, 'sonata'],
-            ['_per_page', null, 10],
-            ['_page', null, 1]
+            [DatagridInterface::PER_PAGE, null, 10],
+            [DatagridInterface::PAGE, null, 1]
         );
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
@@ -562,8 +562,8 @@ class HelperControllerTest extends TestCase
         $datagrid->expects($this->exactly(4))->method('setValue')->withConsecutive(
             ['entity__property', null, 'sonata'],
             ['entity2__property2', null, 'sonata'],
-            ['_per_page', null, 10],
-            ['_page', null, 1]
+            [DatagridInterface::PER_PAGE, null, 10],
+            [DatagridInterface::PAGE, null, 1]
         );
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
@@ -593,8 +593,8 @@ class HelperControllerTest extends TestCase
         $datagrid->method('getFilter')->with('entity.property')->willReturn($filter);
         $datagrid->expects($this->exactly(3))->method('setValue')->withConsecutive(
             ['entity__property', null, 'sonata'],
-            ['_per_page', null, 10],
-            ['_page', null, 1]
+            [DatagridInterface::PER_PAGE, null, 10],
+            [DatagridInterface::PAGE, null, 1]
         );
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
@@ -657,7 +657,7 @@ class HelperControllerTest extends TestCase
             ['callback', null, null],
             ['minimum_input_length', null, 3],
             ['items_per_page', null, 10],
-            ['req_param_name_page_number', null, '_page'],
+            ['req_param_name_page_number', null, DatagridInterface::PAGE],
             ['to_string_callback', null, null],
             ['target_admin_access_action', null, 'list'],
         ]);
@@ -679,7 +679,7 @@ class HelperControllerTest extends TestCase
             ['callback', null, null],
             ['minimum_input_length', null, 3],
             ['items_per_page', null, 10],
-            ['req_param_name_page_number', null, '_page'],
+            ['req_param_name_page_number', null, DatagridInterface::PAGE],
             ['to_string_callback', null, null],
             ['target_admin_access_action', null, 'list'],
         ]);
@@ -701,7 +701,7 @@ class HelperControllerTest extends TestCase
             ['callback', null, null],
             ['minimum_input_length', null, 3],
             ['items_per_page', null, 10],
-            ['req_param_name_page_number', null, '_page'],
+            ['req_param_name_page_number', null, DatagridInterface::PAGE],
             ['to_string_callback', null, null],
             ['target_admin_access_action', null, 'list'],
         ]);

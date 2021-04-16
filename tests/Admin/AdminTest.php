@@ -1841,8 +1841,8 @@ class AdminTest extends TestCase
             ->method('get')
             ->willReturn([
                 'filter' => [
-                    '_page' => '1',
-                    '_per_page' => '32',
+                    DatagridInterface::PAGE => '1',
+                    DatagridInterface::PER_PAGE => '32',
                 ],
             ]);
 
@@ -1878,18 +1878,18 @@ class AdminTest extends TestCase
         $modelManager
             ->method('getDefaultSortValues')
             ->willReturn([
-                '_sort_by' => 'id',
-                '_sort_order' => 'ASC',
+                DatagridInterface::SORT_BY => 'id',
+                DatagridInterface::SORT_ORDER => 'ASC',
             ]);
 
         $commentAdmin->setModelManager($modelManager);
 
         $parameters = $commentAdmin->getFilterParameters();
 
-        $this->assertArrayHasKey('_sort_by', $parameters);
-        $this->assertSame('id', $parameters['_sort_by']);
-        $this->assertArrayHasKey('_sort_order', $parameters);
-        $this->assertSame('ASC', $parameters['_sort_order']);
+        $this->assertArrayHasKey(DatagridInterface::SORT_BY, $parameters);
+        $this->assertSame('id', $parameters[DatagridInterface::SORT_BY]);
+        $this->assertArrayHasKey(DatagridInterface::SORT_ORDER, $parameters);
+        $this->assertSame('ASC', $parameters[DatagridInterface::SORT_ORDER]);
     }
 
     public function testGetFilterFieldDescription(): void
@@ -2391,8 +2391,8 @@ class AdminTest extends TestCase
         $admin->setModelManager($modelManager);
 
         $this->assertSame([
-            '_page' => 1,
-            '_per_page' => 32,
+            DatagridInterface::PAGE => 1,
+            DatagridInterface::PER_PAGE => 32,
             'foo' => [
                 'type' => '1',
                 'value' => 'bar',

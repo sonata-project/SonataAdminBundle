@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Util;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Util\ParametersManipulator;
 
 /**
@@ -26,8 +27,8 @@ class ParametersManipulatorTest extends TestCase
         return [
             [
                 [
-                    '_sort_order' => 'DESC',
-                    '_sort_by' => 'id',
+                    DatagridInterface::SORT_ORDER => 'DESC',
+                    DatagridInterface::SORT_BY => 'id',
                     'status' => [
                         'type' => '1',
                         'value' => 'foo',
@@ -40,8 +41,8 @@ class ParametersManipulatorTest extends TestCase
                     ],
                 ],
                 [
-                    '_sort_order' => 'DESC',
-                    '_sort_by' => 'id',
+                    DatagridInterface::SORT_ORDER => 'DESC',
+                    DatagridInterface::SORT_BY => 'id',
                     'status' => [
                         'type' => '2',
                         'value' => 'foo',
@@ -77,16 +78,16 @@ class ParametersManipulatorTest extends TestCase
                     'status' => [
                         'type' => '2',
                     ],
-                    '_page' => 2,
-                    '_per_page' => 25,
+                    DatagridInterface::PAGE => 2,
+                    DatagridInterface::PER_PAGE => 25,
                 ],
                 [
                     'status' => [
                         'type' => '2',
                         'value' => 'foo',
                     ],
-                    '_page' => 2,
-                    '_per_page' => 25,
+                    DatagridInterface::PAGE => 2,
+                    DatagridInterface::PER_PAGE => 25,
                 ],
             ],
             [

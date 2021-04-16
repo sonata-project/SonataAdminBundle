@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\Type;
 
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\EventListener\ResizeFormListener;
@@ -136,8 +137,8 @@ class ModelAutocompleteType extends AbstractType
             'route' => ['name' => 'sonata_admin_retrieve_autocomplete_items', 'parameters' => []],
             'req_params' => [],
             'req_param_name_search' => 'q',
-            'req_param_name_page_number' => '_page',
-            'req_param_name_items_per_page' => '_per_page',
+            'req_param_name_page_number' => DatagridInterface::PAGE,
+            'req_param_name_items_per_page' => DatagridInterface::PER_PAGE,
 
             // security
             'target_admin_access_action' => 'list',
