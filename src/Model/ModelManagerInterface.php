@@ -362,7 +362,8 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @param string                 $class
      * @param array<int, int|string> $idx
      *
-     * @phpstan-param class-string<T> $class
+     * @phpstan-param class-string<T>             $class
+     * @phpstan-param non-empty-array<string|int> $idx
      */
     public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx);
 }
