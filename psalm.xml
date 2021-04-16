@@ -13,7 +13,6 @@
         <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
     </plugins>
     <issueHandlers>
-        <PluginIssue name="ContainerDependency" errorLevel="suppress"/>
         <InternalClass errorLevel="suppress"/>
         <InternalMethod errorLevel="suppress"/>
         <InternalProperty errorLevel="suppress"/>
