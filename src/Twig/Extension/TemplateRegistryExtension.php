@@ -16,7 +16,6 @@ namespace Sonata\AdminBundle\Twig\Extension;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\AdminCodeNotFoundException;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Twig\Extension\AbstractExtension;
@@ -30,28 +29,16 @@ final class TemplateRegistryExtension extends AbstractExtension
     private $globalTemplateRegistry;
 
     /**
-     * NEXT_MAJOR: Remove this property.
-     *
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
-     * NEXT_MAJOR: Remove "null" from var type.
-     *
-     * @var Pool|null
+     * @var Pool
      */
     private $pool;
 
     /**
-     * @internal since sonata-project/admin-bundle 4. This class should only be used through Twig
-     *
-     * NEXT_MAJOR: Remove $container parameter and make Pool mandatory.
+     * @internal This class should only be used through Twig
      */
-    public function __construct(TemplateRegistryInterface $globalTemplateRegistry, ContainerInterface $container, ?Pool $pool = null)
+    public function __construct(TemplateRegistryInterface $globalTemplateRegistry, Pool $pool)
     {
         $this->globalTemplateRegistry = $globalTemplateRegistry;
-        $this->container = $container;
         $this->pool = $pool;
     }
 

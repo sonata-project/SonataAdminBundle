@@ -1527,8 +1527,7 @@ EOT
     {
         return [
             ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]],
-            // NEXT_MAJOR: Replace "text" by FieldDescriptionInterface::TYPE_STRING
-            ['<th>Data</th> <td>Example</td>', 'text', 'Example', ['safe' => false]],
+            ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]],
             ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_TEXTAREA, 'Example', ['safe' => false]],
             [
                 '<th>Data</th> <td><time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00"> December 24, 2013 10:11 </time></td>',
