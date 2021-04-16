@@ -399,11 +399,7 @@ CASESENSITIVE;
                                 'bundles/sonataadmin/dist/select2/select2.min.css',
                                 'bundles/sonataadmin/dist/select2-bootstrap-theme/select2-bootstrap.min.css',
                                 'bundles/sonataadmin/dist/x-editable/bootstrap-editable.css',
-
-                                'bundles/sonataadmin/css/styles.css',
-                                'bundles/sonataadmin/css/layout.css',
-                                'bundles/sonataadmin/css/tree.css',
-                                'bundles/sonataadmin/css/flashmessage.css',
+                                'bundles/sonataadmin/dist/app.css',
                             ])
                             ->prototype('scalar')->end()
                         ->end()
