@@ -89,7 +89,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('twig.extension')
             ->args([
                 new ReferenceConfigurator('property_accessor'),
-                new ReferenceConfigurator('service_container'),
-                (new ReferenceConfigurator('logger'))->nullOnInvalid(),
             ]);
 };
