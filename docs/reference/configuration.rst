@@ -119,7 +119,7 @@ Full Configuration Options
                         id: ~
                     position: right
                     class: col-md-4
-            admin_services:
+            default_admin_services:
                 model_manager: null
                 data_source: null
                 form_contractor: null
