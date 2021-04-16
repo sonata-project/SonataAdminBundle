@@ -12,8 +12,6 @@ parameters:
         analyseAndScan:
             # temporarily ignore template files
             - src/Resources/**.tpl.php
-            # BC-layer is not supported by phpstan https://github.com/phpstan/phpstan/issues/3542
-            - tests/Fixtures/StubTranslator.php
     treatPhpDocTypesAsCertain: false
     checkGenericClassInNonGenericObjectType: true
     checkMissingIterableValueType: true
