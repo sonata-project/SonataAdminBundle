@@ -195,8 +195,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * @var array
      */
     protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
+        DatagridInterface::PAGE => 1,
+        DatagridInterface::PER_PAGE => 32,
     ];
 
     /**
@@ -476,7 +476,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->predefinePerPageOptions();
 
         // NEXT_MAJOR: Remove this line.
-        $this->datagridValues['_per_page'] = $this->maxPerPage;
+        $this->datagridValues[DatagridInterface::PER_PAGE] = $this->maxPerPage;
     }
 
     /**
@@ -722,11 +722,11 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             } else {
                 $filters = $bag->get('filter', []);
             }
-            if (isset($filters['_page'])) {
-                $filters['_page'] = (int) $filters['_page'];
+            if (isset($filters[DatagridInterface::PAGE])) {
+                $filters[DatagridInterface::PAGE] = (int) $filters[DatagridInterface::PAGE];
             }
-            if (isset($filters['_per_page'])) {
-                $filters['_per_page'] = (int) $filters['_per_page'];
+            if (isset($filters[DatagridInterface::PER_PAGE])) {
+                $filters[DatagridInterface::PER_PAGE] = (int) $filters[DatagridInterface::PER_PAGE];
             }
 
             // if filter persistence is configured
@@ -755,8 +755,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             }
         }
 
-        if (!isset($parameters['_per_page']) || !$this->determinedPerPageValue($parameters['_per_page'])) {
-            $parameters['_per_page'] = $this->getMaxPerPage();
+        if (!isset($parameters[DatagridInterface::PER_PAGE]) || !$this->determinedPerPageValue($parameters[DatagridInterface::PER_PAGE])) {
+            $parameters[DatagridInterface::PER_PAGE] = $this->getMaxPerPage();
         }
 
         $parameters = $this->configureFilterParameters($parameters);
@@ -792,16 +792,16 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         $filterParameters = $this->getFilterParameters();
 
-        // transform _sort_by from a string to a FieldDescriptionInterface for the datagrid.
-        if (isset($filterParameters['_sort_by']) && \is_string($filterParameters['_sort_by'])) {
-            if ($this->hasListFieldDescription($filterParameters['_sort_by'])) {
-                $filterParameters['_sort_by'] = $this->getListFieldDescription($filterParameters['_sort_by']);
+        // transform DatagridInterface::SORT_BY from a string to a FieldDescriptionInterface for the datagrid.
+        if (isset($filterParameters[DatagridInterface::SORT_BY]) && \is_string($filterParameters[DatagridInterface::SORT_BY])) {
+            if ($this->hasListFieldDescription($filterParameters[DatagridInterface::SORT_BY])) {
+                $filterParameters[DatagridInterface::SORT_BY] = $this->getListFieldDescription($filterParameters[DatagridInterface::SORT_BY]);
             } else {
-                $filterParameters['_sort_by'] = $this->createFieldDescription(
-                    $filterParameters['_sort_by']
+                $filterParameters[DatagridInterface::SORT_BY] = $this->createFieldDescription(
+                    $filterParameters[DatagridInterface::SORT_BY]
                 );
 
-                $this->getListBuilder()->buildField(null, $filterParameters['_sort_by'], $this);
+                $this->getListBuilder()->buildField(null, $filterParameters[DatagridInterface::SORT_BY], $this);
             }
         }
 
@@ -1605,7 +1605,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->maxPerPage;
         // $sortValues = $this->getDefaultSortValues();
 
-        // return $sortValues['_per_page'] ?? 25;
+        // return $sortValues[DatagridInterface::PER_PAGE] ?? 25;
     }
 
     /**
@@ -3135,13 +3135,18 @@ EOT;
     /**
      * Returns a list of default sort values.
      *
-     * @return array{_page?: int, _per_page?: int, _sort_by?: string, _sort_order?: string}
+     * @phpstan-return array{
+     *     _page?: int,
+     *     _per_page?: int,
+     *     _sort_by?: string,
+     *     _sort_order?: string
+     * }
      */
     final protected function getDefaultSortValues(): array
     {
         // NEXT_MAJOR: Use the next line instead.
         $defaultSortValues = [];
-        // $defaultSortValues = ['_page' => 1, '_per_page' => 25];
+        // $defaultSortValues = [DatagridInterface::PAGE => 1, DatagridInterface::PER_PAGE => 25];
 
         $this->configureDefaultSortValues($defaultSortValues);
 
@@ -3543,10 +3548,15 @@ EOT;
      * Configures a list of default sort values.
      *
      * Example:
-     *   $sortValues['_sort_by'] = 'foo'
-     *   $sortValues['_sort_order'] = 'DESC'
+     *   $sortValues[DatagridInterface::SORT_BY] = 'foo'
+     *   $sortValues[DatagridInterface::SORT_ORDER] = 'DESC'
      *
-     * @phpstan-param array{_page?: int, _per_page?: int, _sort_by?: string, _sort_order?: string} $sortValues
+     * @phpstan-param array{
+     *     _page?: int,
+     *     _per_page?: int,
+     *     _sort_by?: string,
+     *     _sort_order?: string
+     * } $sortValues
      */
     protected function configureDefaultSortValues(array &$sortValues)
     {

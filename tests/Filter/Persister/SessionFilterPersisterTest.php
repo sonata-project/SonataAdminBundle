@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Filter\Persister;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Filter\Persister\SessionFilterPersister;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -48,10 +49,10 @@ class SessionFilterPersisterTest extends TestCase
     {
         $filters = [
             'active' => true,
-            '_page' => 1,
-            '_sort_by' => 'firstName',
-            '_sort_order' => 'ASC',
-            '_per_page' => 25,
+            DatagridInterface::PAGE => 1,
+            DatagridInterface::SORT_BY => 'firstName',
+            DatagridInterface::SORT_ORDER => 'ASC',
+            DatagridInterface::PER_PAGE => 25,
         ];
         $this->session->expects($this->once())->method('get')
             ->with('admin.customer.filter.parameters', [])
@@ -64,10 +65,10 @@ class SessionFilterPersisterTest extends TestCase
     {
         $filters = [
             'active' => true,
-            '_page' => 1,
-            '_sort_by' => 'firstName',
-            '_sort_order' => 'ASC',
-            '_per_page' => 25,
+            DatagridInterface::PAGE => 1,
+            DatagridInterface::SORT_BY => 'firstName',
+            DatagridInterface::SORT_ORDER => 'ASC',
+            DatagridInterface::PER_PAGE => 25,
         ];
         $this->session->expects($this->once())->method('set')
             ->with('admin.customer.filter.parameters', $filters)

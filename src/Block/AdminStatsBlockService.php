@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Block;
 
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -95,8 +96,8 @@ class AdminStatsBlockService extends AbstractBlockService
 
         $filters = $blockContext->getSetting('filters');
 
-        if (!isset($filters['_per_page'])) {
-            $filters['_per_page'] = ['value' => $blockContext->getSetting('limit')];
+        if (!isset($filters[DatagridInterface::PER_PAGE])) {
+            $filters[DatagridInterface::PER_PAGE] = ['value' => $blockContext->getSetting('limit')];
         }
 
         foreach ($filters as $name => $data) {

@@ -29,7 +29,7 @@ final class PaginationExtensionTest extends TestCase
     {
         $paginationParameters = [
             'filter' => [
-                '_page' => 1,
+                DatagridInterface::PAGE => 1,
             ],
         ];
 
@@ -55,7 +55,7 @@ final class PaginationExtensionTest extends TestCase
     {
         $paginationParameters = [
             'filter' => [
-                '_page' => 1,
+                DatagridInterface::PAGE => 1,
             ],
         ];
 
@@ -82,8 +82,8 @@ final class PaginationExtensionTest extends TestCase
     {
         $sortParameters = [
             'filter' => [
-                '_sort_order' => 'ASC',
-                '_sort_by' => 'name',
+                DatagridInterface::SORT_ORDER => 'ASC',
+                DatagridInterface::SORT_BY => 'name',
             ],
         ];
 
@@ -111,8 +111,8 @@ final class PaginationExtensionTest extends TestCase
     {
         $sortParameters = [
             'filter' => [
-                '_sort_order' => 'ASC',
-                '_sort_by' => 'name',
+                DatagridInterface::SORT_ORDER => 'ASC',
+                DatagridInterface::SORT_BY => 'name',
             ],
         ];
 
