@@ -23,8 +23,6 @@ use Sonata\AdminBundle\Mapper\MapperInterface;
  * This class is use to simulate the Form API.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
- *
- * @phpstan-extends BaseMapper<DatagridBuilderInterface>
  */
 final class DatagridMapper implements MapperInterface
 {

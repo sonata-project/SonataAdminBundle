@@ -16,10 +16,6 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Mapper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 
-/**
- * @phpstan-template T of \Sonata\AdminBundle\Builder\BuilderInterface
- * @phpstan-extends BaseGroupedMapper<T>
- */
 abstract class AbstractDummyGroupedMapper extends BaseGroupedMapper
 {
     /**

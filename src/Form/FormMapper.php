@@ -26,8 +26,6 @@ use Symfony\Component\Form\FormBuilderInterface;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @psalm-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
- *
- * @phpstan-extends BaseGroupedMapper<FormContractorInterface>
  */
 final class FormMapper extends BaseGroupedMapper
 {
