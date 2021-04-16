@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form;
 
+use PHPUnit\Framework\MockObject\Stub;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -81,20 +82,7 @@ EOD;
 
     public function testLabelWithAdminTranslationDomain(): void
     {
-        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
-
-        $admin = $this->createStub(AdminInterface::class);
-        $admin
-            ->method('getCode')
-            ->willReturn('sonata_code');
-
-        $admin
-            ->method('getTranslationDomain')
-            ->willReturn('sonata_translation_domain');
-
-        $fieldDescription
-            ->method('getAdmin')
-            ->willReturn($admin);
+        $fieldDescription = $this->createFieldDescriptionWithTranslationDomain('sonata_translation_domain');
 
         $form = $this->factory->createNamed('name', TextType::class, null, [
             'sonata_field_description' => $fieldDescription,
@@ -124,6 +112,27 @@ EOD;
     [@id="name_help"]
     [@class="help-block sonata-ba-field-help help-text"]
     [.="[trans]Help text test![/trans]"]
+EOD;
+
+        $this->assertMatchesXpath($html, $expression);
+    }
+
+    public function testHelpWithAdminTranslationDomain(): void
+    {
+        $fieldDescription = $this->createFieldDescriptionWithTranslationDomain('sonata_translation_domain');
+
+        $form = $this->factory->createNamed('name', TextType::class, null, [
+            'help' => 'Help text test!',
+            'sonata_field_description' => $fieldDescription,
+        ]);
+        $view = $form->createView();
+        $html = $this->renderHelp($view);
+
+        $expression = <<<'EOD'
+/p
+    [@id="name_help"]
+    [@class="help-block sonata-ba-field-widget-help sonata-ba-field-help help-text"]
+    [.="[trans domain=sonata_translation_domain]Help text test![/trans]"]
 EOD;
 
         $this->assertMatchesXpath($html, $expression);
@@ -201,5 +210,28 @@ EOD;
             $html,
             '//div[@class="foo form-group"][@data-value="bar"][@id="sonata-ba-field-container-name"]'
         );
+    }
+
+    /**
+     * @return Stub&FieldDescriptionInterface
+     */
+    private function createFieldDescriptionWithTranslationDomain(string $translationDomain): Stub
+    {
+        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+
+        $admin = $this->createStub(AdminInterface::class);
+        $admin
+            ->method('getCode')
+            ->willReturn('sonata_code');
+
+        $admin
+            ->method('getTranslationDomain')
+            ->willReturn($translationDomain);
+
+        $fieldDescription
+            ->method('getAdmin')
+            ->willReturn($admin);
+
+        return $fieldDescription;
     }
 }

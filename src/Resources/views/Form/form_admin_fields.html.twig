@@ -24,6 +24,9 @@ file that was distributed with this source code.
 {%- endblock form_errors %}
 
 {% block form_help -%}
+    {% if sonata_admin_translation_domain is defined and translation_domain is null %}
+        {% set translation_domain = sonata_admin_translation_domain %}
+    {% endif %}
     {% if help is not empty %}
         {% set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' help-block sonata-ba-field-help')}) %}
         {{ parent() }}
