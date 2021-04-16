@@ -41,7 +41,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('twig.extension')
             ->args([
                 new ReferenceConfigurator('sonata.admin.global_template_registry'),
+                // NEXT_MAJOR: Remove next line.
                 new ReferenceConfigurator('service_container'),
+                new ReferenceConfigurator('sonata.admin.pool'),
             ])
 
         ->set('sonata.admin.group.extension', GroupExtension::class)

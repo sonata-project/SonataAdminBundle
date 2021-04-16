@@ -130,7 +130,8 @@ file that was distributed with this source code.
             {%- elseif not sonata_admin.admin -%}
                 {{- label|trans(label_translation_parameters, translation_domain) -}}
             {%- else -%}
-                {{- label|trans(label_translation_parameters, sonata_admin.field_description.translationDomain ?: admin.translationDomain) -}}
+                {# NEXT_MAJOR: Remove "admin.translationDomain" #}
+                {{- label|trans(label_translation_parameters, sonata_admin.field_description.translationDomain|default(admin.translationDomain|default(sonata_admin.admin.translationDomain))) -}}
             {%- endif -%}
         </label>
     {% endif %}
