@@ -1,4 +1,5 @@
 {
+  "bundles/sonataadmin/dist/app.css": "/bundles/sonataadmin/dist/app.css",
   "bundles/sonataadmin/dist/admin-lte/img/photo4.jpg": "/bundles/sonataadmin/dist/admin-lte/img/photo4.jpg",
   "bundles/sonataadmin/dist/admin-lte/img/photo1.png": "/bundles/sonataadmin/dist/admin-lte/img/photo1.png",
   "bundles/sonataadmin/dist/bootstrap/bootstrap.min.css.map": "/bundles/sonataadmin/dist/bootstrap/bootstrap.min.css.map",

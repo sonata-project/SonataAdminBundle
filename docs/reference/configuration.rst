@@ -188,10 +188,7 @@ Full Configuration Options
                     - bundles/sonataadmin/dist/select2/select2.min.css
                     - bundles/sonataadmin/dist/select2-bootstrap-theme/select2-bootstrap.min.css
                     - bundles/sonataadmin/dist/x-editable/bootstrap-editable.css
-                    - bundles/sonataadmin/css/styles.css
-                    - bundles/sonataadmin/css/layout.css
-                    - bundles/sonataadmin/css/tree.css
-                    - bundles/sonataadmin/css/flashmessage.css
+                    - bundles/sonataadmin/dist/app.css
 
                 # stylesheet paths to add to the page in addition to the list above
                 extra_stylesheets: []

@@ -1,3 +1,9 @@
 {
-  "entrypoints": {}
+  "entrypoints": {
+    "app": {
+      "css": [
+        "/bundles/sonataadmin/dist/app.css"
+      ]
+    }
+  }
 }

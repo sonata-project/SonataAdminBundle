@@ -6,6 +6,7 @@ Encore
   .setManifestKeyPrefix('bundles/sonataadmin/dist')
 
   .cleanupOutputBeforeBuild()
+  .enableSassLoader()
   .enableVersioning(false)
   .disableSingleRuntimeChunk()
 
@@ -46,7 +47,9 @@ Encore
     { from: './node_modules/waypoints/lib/', pattern: /jquery\.waypoints\.min\.js/, to: 'waypoints/[name].[ext]' },
     { from: './node_modules/readmore-js/', pattern: /readmore\.min\.js/, to: 'readmore-js/[name].[ext]' },
     { from: './node_modules/masonry-layout/dist/', pattern: /masonry\.pkgd\.min\.js/, to: 'masonry-layout/[name].[ext]' }
-  ]);
+  ])
+
+  .addStyleEntry('app', './assets/scss/app.scss')
 ;
 
 module.exports = Encore.getWebpackConfig();
