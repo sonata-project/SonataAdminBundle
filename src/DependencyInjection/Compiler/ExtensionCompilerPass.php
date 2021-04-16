@@ -164,20 +164,20 @@ final class ExtensionCompilerPass implements CompilerPassInterface
      *     global: bool,
      *     excludes: array<string, string>,
      *     admins: array<string, string>,
-     *     implements: array<string, string>,
-     *     extends: array<string, string>,
-     *     instanceof: array<string, string>,
-     *     uses: array<string, string>,
+     *     implements: array<class-string, string>,
+     *     extends: array<class-string, string>,
+     *     instanceof: array<class-string, string>,
+     *     uses: array<class-string, string>,
      *     priority: int,
      * }> $config
      * @phpstan-return array{
      *     global: array<string, array<string, array{priority: int}>>,
      *     excludes: array<string, array<string, array{priority: int}>>,
      *     admins: array<string, array<string, array{priority: int}>>,
-     *     implements: array<string, array<string, array{priority: int}>>,
-     *     extends: array<string, array<string, array{priority: int}>>,
-     *     instanceof: array<string, array<string, array{priority: int}>>,
-     *     uses: array<string, array<string, array{priority: int}>>,
+     *     implements: array<string, array<class-string, array{priority: int}>>,
+     *     extends: array<string, array<class-string, array{priority: int}>>,
+     *     instanceof: array<string, array<class-string, array{priority: int}>>,
+     *     uses: array<string, array<class-string, array{priority: int}>>,
      * }
      */
     private function flattenExtensionConfiguration(array $config): array
@@ -204,10 +204,10 @@ final class ExtensionCompilerPass implements CompilerPassInterface
              *     global: array<string, string>,
              *     excludes: array<string, string>,
              *     admins: array<string, string>,
-             *     implements: array<string, string>,
-             *     extends: array<string, string>,
-             *     instanceof: array<string, string>,
-             *     uses: array<string, string>,
+             *     implements: array<class-string, string>,
+             *     extends: array<class-string, string>,
+             *     instanceof: array<class-string, string>,
+             *     uses: array<class-string, string>,
              * } $optionsMap
              */
             $optionsMap = array_intersect_key($options, $extensionMap);
