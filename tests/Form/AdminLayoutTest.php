@@ -122,7 +122,7 @@ EOD;
         $expression = <<<'EOD'
 /p
     [@id="name_help"]
-    [@class="help-block sonata-ba-field-widget-help sonata-ba-field-help help-text"]
+    [@class="help-block sonata-ba-field-help help-text"]
     [.="[trans]Help text test![/trans]"]
 EOD;
 
