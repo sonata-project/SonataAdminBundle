@@ -31,8 +31,6 @@ Encore
     { from: './node_modules/bootstrap/dist/js/', pattern: /bootstrap\.min\.js/, to: 'bootstrap/[name].[ext]' },
     { from: './node_modules/components-font-awesome/css/', pattern: /font-awesome\.min\.css/, to: 'components-font-awesome/css/[name].[ext]' },
     { from: './node_modules/components-font-awesome/fonts/', to: 'components-font-awesome/fonts/[name].[ext]' },
-    { from: './node_modules/ionicons/css/', pattern: /ionicons\.min\.css/, to: 'ionicons/css/[name].[ext]' },
-    { from: './node_modules/ionicons/fonts/', to: 'ionicons/fonts/[name].[ext]' },
     { from: './node_modules/icheck/skins/square/', pattern: /blue/, to: 'icheck/skins/square/[name].[ext]' },
     { from: './node_modules/icheck/', pattern: /icheck\.min\.js/, to: 'icheck/[name].[ext]' },
     { from: './node_modules/select2/dist/css/', pattern: /select2\.min\.css/, to: 'select2/[name].[ext]' },

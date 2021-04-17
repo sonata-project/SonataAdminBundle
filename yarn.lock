@@ -1200,35 +1200,34 @@ adjust-sourcemap-loader@3.0.0:
     loader-utils "^2.0.0"
     regex-parser "^2.2.11"
 
-admin-lte@2.4.15:
-  version "2.4.15"
-  resolved "https://registry.yarnpkg.com/admin-lte/-/admin-lte-2.4.15.tgz#0b0e2a094cac1512fa11146fe5eb13ff0e2aef40"
-  integrity sha512-nLWBb7vc1Vr9N112s0thQAOy8r4sRlHc4RiKMktYp8eIW6TeKMHnG4IrG8X0g1oq7RLXNl7FutB7H//S2k7k3w==
+admin-lte@^2.4:
+  version "2.4.18"
+  resolved "https://registry.yarnpkg.com/admin-lte/-/admin-lte-2.4.18.tgz#3e1ee4722e3c117d58a0a9aba2c594af21c22cf1"
+  integrity sha512-AfIdoUWdbQA0OmW7PnP8GJ3u6RMKNXefN3DRTBHCQXd7VeyJahUfZWtV62ppDxcdjpx0L08ypPV55ARmdGdOIw==
   dependencies:
-    bootstrap "^3.4.0"
+    bootstrap "^3.4"
     bootstrap-colorpicker "^2.5.3"
-    bootstrap-datepicker "^1.8.0"
+    bootstrap-datepicker "^1.8"
     bootstrap-daterangepicker "^2.1.25"
-    bootstrap-slider "^9.8.0"
-    bootstrap-timepicker "^0.5.2"
-    chart.js "1.0.*"
+    bootstrap-slider "^9.10.0"
+    chart.js "^1"
     ckeditor "^4.11.2"
     datatables.net "^1.10.19"
     datatables.net-bs "^1.10.19"
     fastclick "^1.0.6"
     flot "^0.8.3"
-    font-awesome "^4.7.0"
-    fullcalendar "^3.10.0"
+    font-awesome "^4.7"
+    fullcalendar "^3.10"
     inputmask "^3.3.7"
-    ion-rangeslider "^2.3.0"
-    ionicons "^3.0.0"
-    jquery "^3.2.1"
+    ion-rangeslider "^2.3"
+    ionicons "^3"
+    jquery "^3.4.1"
     jquery-knob "^1.2.11"
-    jquery-sparkline "^2.4.0"
+    jquery-sparkline "^2.4"
     jquery-ui "^1.12.1"
     jvectormap "^1.2.2"
-    moment "^2.24.0"
-    morris.js "github:morrisjs/morris.js"
+    moment "^2.24"
+    morris.js "^0.5"
     pace "0.0.4"
     raphael "^2.2.7"
     select2 "^4.0.3"
@@ -1520,7 +1519,7 @@ bootstrap-colorpicker@^2.5.3:
   dependencies:
     jquery ">=1.10"
 
-bootstrap-datepicker@^1.8.0:
+bootstrap-datepicker@^1.8:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/bootstrap-datepicker/-/bootstrap-datepicker-1.9.0.tgz#e4bfce3fcce1967876b21dc6833ec5994aaed090"
   integrity sha512-9rYYbaVOheGYxjOr/+bJCmRPihfy+LkLSg4fIFMT9Od8WwWB/MB50w0JO1eBgKUMbb7PFHQD5uAfI3ArAxZRXA==
@@ -1535,22 +1534,12 @@ bootstrap-daterangepicker@^2.1.25:
     jquery ">=1.10"
     moment "^2.9.0"
 
-bootstrap-slider@^9.8.0:
+bootstrap-slider@^9.10.0:
   version "9.10.0"
   resolved "https://registry.yarnpkg.com/bootstrap-slider/-/bootstrap-slider-9.10.0.tgz#1103d6bc00cfbfa8cfc9a2599ab518c55643da3f"
   integrity sha1-EQPWvADPv6jPyaJZmrUYxVZD2j8=
 
-bootstrap-timepicker@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/bootstrap-timepicker/-/bootstrap-timepicker-0.5.2.tgz#10ed9f2a2f0b8ccaefcde0fcf6a0738b919a3835"
-  integrity sha1-EO2fKi8LjMrvzeD89qBzi5GaODU=
-
-bootstrap@3.3.6:
-  version "3.3.6"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-3.3.6.tgz#8de8f749dc8a743f2ac5b510d988371e3daa6589"
-  integrity sha1-jej3SdyKdD8qxbUQ2Yg3Hj2qZYk=
-
-bootstrap@^3.4.0:
+bootstrap@^3.3, bootstrap@^3.4:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-3.4.1.tgz#c3a347d419e289ad11f4033e3c4132b87c081d72"
   integrity sha512-yN5oZVmRCwe5aKwzRj6736nSmKDX7pLYwsXiCj/EYmo16hODaBiT4En5btW/jhBF/seV+XMx3aYwukYC3A49DA==
@@ -1860,10 +1849,10 @@ charm@~0.1.0:
   resolved "https://registry.yarnpkg.com/charm/-/charm-0.1.2.tgz#06c21eed1a1b06aeb67553cdc53e23274bac2296"
   integrity sha1-BsIe7RobBq62dVPNxT4jJ0usIpY=
 
-chart.js@1.0.*:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-1.0.2.tgz#ad57d2229cfd8ccf5955147e8121b4911e69dfe7"
-  integrity sha1-rVfSIpz9jM9ZVRR+gSG0kR5p3+c=
+chart.js@^1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-1.1.1.tgz#a9b17054220bd45cbdb176fd6bcb8783ef871a7d"
+  integrity sha1-qbFwVCIL1Fy9sXb9a8uHg++HGn0=
 
 chokidar@^3.5.1:
   version "3.5.1"
@@ -2009,7 +1998,7 @@ commondir@^1.0.1:
   resolved "https://registry.yarnpkg.com/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
   integrity sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=
 
-components-font-awesome@4.7.0:
+components-font-awesome@^4.7:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/components-font-awesome/-/components-font-awesome-4.7.0.tgz#a7550094b6e2cb5cd7dce49c405771c533e9cfe1"
   integrity sha1-p1UAlLbiy1zX3OScQFdxxTPpz+E=
@@ -2973,7 +2962,7 @@ faye-websocket@^0.11.3:
   dependencies:
     websocket-driver ">=0.5.1"
 
-file-loader@^6.0.0:
+file-loader@^6.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-6.2.0.tgz#baef7cf8e1840df325e4390b4484879480eebe4d"
   integrity sha512-qo3glqyTa61Ytg4u73GultjHGjdRyig3tG6lPtyX/jOEJvHif9uB0/OCI2Kif6ctF3caQTW2G5gym21oAsI4pw==
@@ -3042,7 +3031,7 @@ follow-redirects@^1.0.0:
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.3.tgz#e5598ad50174c1bc4e872301e82ac2cd97f90267"
   integrity sha512-DUgl6+HDzB0iEptNQEXLx/KhTmDb8tZUHSeLqpnjpknR70H0nC2t9N73BK6fN4hOvJ84pKlIQVQ4k5FFlBedKA==
 
-font-awesome@^4.7.0:
+font-awesome@^4.7:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
   integrity sha1-j6jPBBGhoxr9B7BtKQK7n8gVoTM=
@@ -3094,7 +3083,7 @@ fsevents@~2.3.1:
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.2.tgz#8a526f78b8fdf4623b709e0b975c52c24c02fd1a"
   integrity sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==
 
-fullcalendar@^3.10.0:
+fullcalendar@^3.10:
   version "3.10.2"
   resolved "https://registry.yarnpkg.com/fullcalendar/-/fullcalendar-3.10.2.tgz#9b1ba84bb02803621b761d1bba91a4f18affafb7"
   integrity sha512-YWZaHdp8ZLBqhPz615PoXdA49ymsBTUF+MGDM6H3vyz71Pv/ZW9Pm9/Mj3x6n822k6bs2txFO7muRTSvBhsqKg==
@@ -3367,7 +3356,7 @@ human-signals@^2.1.0:
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-2.1.0.tgz#dc91fcba42e4d06e4abaed33b3e7a3c02f514ea0"
   integrity sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==
 
-icheck@1.0.2:
+icheck@^1.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/icheck/-/icheck-1.0.2.tgz#06d08da3d47ae448c153b2639b86e9ad7fdf7128"
   integrity sha1-BtCNo9R65EjBU7Jjm4bprX/fcSg=
@@ -3496,17 +3485,12 @@ interpret@^2.2.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-2.2.0.tgz#1a78a0b5965c40a5416d007ad6f50ad27c417df9"
   integrity sha512-Ju0Bz/cEia55xDwUWEa8+olFpCiQoypjnQySseKtmjNrnps3P+xfpUmGr90T7yjlVJmOtybRvPXhKMbHr+fWnw==
 
-ion-rangeslider@^2.3.0:
+ion-rangeslider@^2.3:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/ion-rangeslider/-/ion-rangeslider-2.3.1.tgz#92ade52cb56fc30b9162d0483ff02b6f9ed237c2"
   integrity sha512-6V+24FD13/feliI485gnRHZYD9Ev64M5NAFTxnVib516ATHa9PlXQrC+nOiPngouRYTCLPJyokAJEi3e1Umi5g==
 
-ionicons@2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-2.0.1.tgz#ca398113293ea870244f538f0aabbd4b5b209a3e"
-  integrity sha1-yjmBEyk+qHAkT1OPCqu9S1sgmj4=
-
-ionicons@^3.0.0:
+ionicons@^3:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-3.0.0.tgz#40b8daf4fd7a31150bd002160f66496e22a98c3c"
   integrity sha1-QLja9P16MRUL0AIWD2ZJbiKpjDw=
@@ -3778,26 +3762,26 @@ jest-worker@^26.3.0, jest-worker@^26.6.2:
     merge-stream "^2.0.0"
     supports-color "^7.0.0"
 
-jquery-form@3.50.0:
-  version "3.50.0"
-  resolved "https://registry.yarnpkg.com/jquery-form/-/jquery-form-3.50.0.tgz#d7c969b51e094e12da6991eb61ff5af25f59798f"
-  integrity sha1-18lptR4JThLaaZHrYf9a8l9ZeY8=
+jquery-form@^4.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/jquery-form/-/jquery-form-4.3.0.tgz#7d3961c314a1f2d15298f4af1d3943f54f4149c6"
+  integrity sha512-q3uaVCEWdLOYUCI6dpNdwf/7cJFOsUgdpq6r0taxtGQ5NJSkOzofyWm4jpOuJ5YxdmL1FI5QR+q+HB63HHLGnQ==
   dependencies:
-    jquery ">=1.5"
+    jquery ">=1.7.2"
 
 jquery-knob@^1.2.11:
   version "1.2.11"
   resolved "https://registry.yarnpkg.com/jquery-knob/-/jquery-knob-1.2.11.tgz#f37c39dbc1c7a6a6c12cdb2ed4f6bffb683f10d6"
   integrity sha1-83w528HHpqbBLNsu1Pa/+2g/ENY=
 
-jquery-slimscroll@1.3.6:
-  version "1.3.6"
-  resolved "https://registry.yarnpkg.com/jquery-slimscroll/-/jquery-slimscroll-1.3.6.tgz#345d9dae1707592d720282100284dfb36f710e7d"
-  integrity sha1-NF2drhcHWS1yAoIQAoTfs29xDn0=
+jquery-slimscroll@^1.3:
+  version "1.3.8"
+  resolved "https://registry.yarnpkg.com/jquery-slimscroll/-/jquery-slimscroll-1.3.8.tgz#8481c44e7a47687653908a28f7f70aed64c84e36"
+  integrity sha1-hIHETnpHaHZTkIoo9/cK7WTITjY=
   dependencies:
     jquery ">= 1.7"
 
-jquery-sparkline@^2.4.0:
+jquery-sparkline@^2.4:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/jquery-sparkline/-/jquery-sparkline-2.4.0.tgz#1be8b7b704dd3857152708aefb1d4a4b3a69fb33"
   integrity sha1-G+i3twTdOFcVJwiu+x1KSzpp+zM=
@@ -3807,22 +3791,22 @@ jquery-ui@^1.12.1:
   resolved "https://registry.yarnpkg.com/jquery-ui/-/jquery-ui-1.12.1.tgz#bcb4045c8dd0539c134bc1488cdd3e768a7a9e51"
   integrity sha1-vLQEXI3QU5wTS8FIjN0+dop6nlE=
 
-jquery.scrollto@1.4.14:
-  version "1.4.14"
-  resolved "https://registry.yarnpkg.com/jquery.scrollto/-/jquery.scrollto-1.4.14.tgz#f5b84eeaddaa8828d9a33c4d2253a8d13526bd2b"
-  integrity sha1-9bhO6t2qiCjZozxNIlOo0TUmvSs=
+jquery.scrollto@^2.1:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/jquery.scrollto/-/jquery.scrollto-2.1.3.tgz#0ec03d5a64398f2e4dd6f3d316e091812ce4f29d"
+  integrity sha512-4M+t5R4QRnq1CSRU9gswZ7Z4zRfcoWmgD31HRrLYCCI4J7tLWeE0ZoT+0JpI7GcT0YKTqcfw+p8t2yYEKFfrHA==
   dependencies:
-    jquery ">=1.4"
+    jquery ">=1.8"
 
-jquery@2.1.4:
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.1.4.tgz#228bde698a0c61431dc2630a6a154f15890d2317"
-  integrity sha1-IoveaYoMYUMdwmMKahVPFYkNIxc=
-
-jquery@>2.1.4, "jquery@>= 1.7", jquery@>=1.10, jquery@>=1.4, jquery@>=1.5, jquery@>=1.7, "jquery@>=1.7.1 <4.0.0", jquery@^3.2.1:
+jquery@>2.1.4, "jquery@>= 1.7", jquery@>=1.10, jquery@>=1.5, jquery@>=1.7, "jquery@>=1.7.1 <4.0.0", jquery@>=1.7.2, jquery@>=1.8, jquery@^3.4.1:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.6.0.tgz#c72a09f15c1bdce142f49dbf1170bdf8adac2470"
   integrity sha512-JVzAR/AjBvVt2BmYhxRCSYysDsPcssdmTFnzyLEts9qNwmjmu4JTAMYubEfwVOSwpQ1I1sKKFcxhZCI2buerfw==
+
+jquery@^2.2:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.2.4.tgz#2c89d6889b5eac522a7eea32c14521559c6cbf02"
+  integrity sha1-LInWiJterFIqfuoywUUhVZxsvwI=
 
 js-tokens@^4.0.0:
   version "4.0.0"
@@ -3994,7 +3978,7 @@ map-age-cleaner@^0.1.3:
   dependencies:
     p-defer "^1.0.0"
 
-masonry-layout@4.2.2:
+masonry-layout@^4.2:
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/masonry-layout/-/masonry-layout-4.2.2.tgz#d57b44af13e601bfcdc423f1dd8348b5524de348"
   integrity sha512-iGtAlrpHNyxaR19CvKC3npnEcAwszXoyJiI8ARV2ePi7fmYhIud25MHK8Zx4P0LCC4d3TNO9+rFa1KoK1OEOaA==
@@ -4209,19 +4193,15 @@ module-deps@^6.2.3:
     through2 "^2.0.0"
     xtend "^4.0.0"
 
-moment@2.17.1:
-  version "2.17.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.17.1.tgz#fed9506063f36b10f066c8b59a144d7faebe1d82"
-  integrity sha1-/tlQYGPzaxDwZsi1mhRNf66+HYI=
-
-moment@^2.24.0, moment@^2.9.0:
+moment@^2.24, moment@^2.29, moment@^2.9.0:
   version "2.29.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
   integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
 
-"morris.js@github:morrisjs/morris.js":
-  version "0.5.1"
-  resolved "https://codeload.github.com/morrisjs/morris.js/tar.gz/14530d0733801d5bef1264cf3d062ecace7e326b"
+morris.js@^0.5:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/morris.js/-/morris.js-0.5.0.tgz#725767135cfae059aae75999bb2ce6a1c5d1b44b"
+  integrity sha1-cldnE1z64Fmq51mZuyzmocXRtEs=
 
 ms@2.0.0:
   version "2.0.0"
@@ -5132,7 +5112,7 @@ readdirp@~3.5.0:
   dependencies:
     picomatch "^2.2.1"
 
-readmore-js@2.2.1:
+readmore-js@^2.2:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/readmore-js/-/readmore-js-2.2.1.tgz#ab75036c8a47b6ffa2d3d14cd527c7f479edc117"
   integrity sha512-hbPP0nQpYYkAywCEZ8ozHivvhWyHic37KJ2IXrHES4qzjp0+nmw8R33MeyMAtXBZfXX4Es8cpd5JBVf9qj47+Q==
@@ -6122,7 +6102,7 @@ watchpack@^2.0.0:
     glob-to-regexp "^0.4.1"
     graceful-fs "^4.1.2"
 
-waypoints@4.0.1:
+waypoints@^4.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/waypoints/-/waypoints-4.0.1.tgz#09979a0573810b29627cba4366a284a062ec69c8"
   integrity sha1-CZeaBXOBCylifLpDZqKEoGLsacg=
@@ -6312,7 +6292,7 @@ ws@^7.4.4:
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.4.tgz#383bc9742cb202292c9077ceab6f6047b17f2d59"
   integrity sha512-Qm8k8ojNQIMx7S+Zp8u/uHOx7Qazv3Yv4q68MiWWWOJhiwG5W3x7iqmRtJo8xxrciZUY4vRxUTJCKuRnF28ZZw==
 
-x-editable@1.5.1:
+x-editable@^1.5:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/x-editable/-/x-editable-1.5.1.tgz#2edbb8911ef2c5d61f63f06b0cf020be0fcc5849"
   integrity sha1-Ltu4kR7yxdYfY/BrDPAgvg/MWEk=
