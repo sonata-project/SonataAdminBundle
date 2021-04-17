@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Block;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
@@ -96,20 +97,20 @@ final class AdminPreviewBlockService extends AbstractBlockService
     {
         $filters = $blockContext->getSetting('filters');
 
-        if ($sortBy = $filters['_sort_by'] ?? null) {
-            $sortFilters = ['_sort_by' => $sortBy];
-            if ($sortOrder = $filters['_sort_order'] ?? null) {
-                $sortFilters['_sort_order'] = $sortOrder;
-                unset($filters['_sort_order']);
+        if ($sortBy = $filters[DatagridInterface::SORT_BY] ?? null) {
+            $sortFilters = [DatagridInterface::SORT_BY => $sortBy];
+            if ($sortOrder = $filters[DatagridInterface::SORT_ORDER] ?? null) {
+                $sortFilters[DatagridInterface::SORT_ORDER] = $sortOrder;
+                unset($filters[DatagridInterface::SORT_ORDER]);
             }
             // Setting a request to the admin is a workaround since the admin only
-            // can handle the "_sort_by" parameter from the query string.
+            // can handle the "DatagridInterface::SORT_BY" parameter from the query string.
             $admin->setRequest(new Request(['filter' => $sortFilters]));
-            unset($filters['_sort_by']);
+            unset($filters[DatagridInterface::SORT_BY]);
         }
 
-        if (!isset($filters['_per_page'])) {
-            $filters['_per_page'] = ['value' => $blockContext->getSetting('limit')];
+        if (!isset($filters[DatagridInterface::PER_PAGE])) {
+            $filters[DatagridInterface::PER_PAGE] = ['value' => $blockContext->getSetting('limit')];
         }
 
         $datagrid = $admin->getDatagrid();
