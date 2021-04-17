@@ -2694,7 +2694,7 @@ EOT;
 
     public function getListMode()
     {
-        if (!$this->hasRequest()) {
+        if (!$this->hasRequest() || !$this->getRequest()->hasSession()) {
             return 'list';
         }
 
