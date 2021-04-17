@@ -84,6 +84,7 @@ use Symfony\Component\Form\FormRegistry;
 use Symfony\Component\Form\ResolvedFormTypeFactory;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -2306,6 +2307,44 @@ class AdminTest extends TestCase
         $admin->showMosaicButton(false);
 
         $this->assertSame($expected, $admin->getListModes());
+    }
+
+    /**
+     * @dataProvider getListModeProvider
+     */
+    public function testGetListMode(string $expected, ?Request $request = null): void
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+        if (null !== $request) {
+            $admin->setRequest($request);
+        }
+
+        $this->assertSame($expected, $admin->getListMode());
+    }
+
+    public function getListModeProvider(): iterable
+    {
+        yield ['list', null];
+
+        yield ['list', new Request()];
+
+        $request = new Request();
+        $session = $this->createMock(SessionInterface::class);
+        $session
+            ->method('get')
+            ->with('sonata.post.admin.post.list_mode', 'list')
+            ->willReturn('list');
+        $request->setSession($session);
+        yield ['list', $request];
+
+        $session = $this->createMock(SessionInterface::class);
+        $session
+            ->method('get')
+            ->with('sonata.post.admin.post.list_mode', 'list')
+            ->willReturn('some_list_mode');
+        $request = new Request();
+        $request->setSession($session);
+        yield ['some_list_mode', $request];
     }
 
     /**
