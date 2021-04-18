@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Block;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminPreviewBlockService;
-use Sonata\AdminBundle\Datagrid\Datagrid;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\BlockBundle\Test\BlockServiceTestCase;
 use Symfony\Component\DependencyInjection\Container;
 use Twig\Environment;
@@ -69,7 +69,7 @@ final class AdminPreviewBlockServiceTest extends BlockServiceTestCase
         $container = new Container();
         $container->set($adminCode, $admin);
         $pool = new Pool($container, [$adminCode]);
-        $datagrid = $this->createStub(Datagrid::class);
+        $datagrid = $this->createStub(DatagridInterface::class);
         $twig = $this->createMock(Environment::class);
 
         $blockService = new AdminPreviewBlockService($twig, $pool);
