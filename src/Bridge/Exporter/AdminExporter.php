@@ -66,7 +66,7 @@ final class AdminExporter
 
         return sprintf(
             'export_%s_%s.%s',
-            strtolower(false !== $namespaceSeparatorPos ? substr($class, strripos($class, '\\') + 1) : $class),
+            strtolower(false !== $namespaceSeparatorPos ? substr($class, $namespaceSeparatorPos + 1) : $class),
             date('Y_m_d_H_i_s', strtotime('now')),
             $format
         );
