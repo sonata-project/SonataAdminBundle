@@ -1,6 +1,18 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.xx to 3.xx
+=========================
+
+### Admin-lte v2.4
+
+Admin-lte was upgraded from 2.3.x to 2.4.x. There are a few BC breaks related to some classes and data-attributes.
+
+Please, make sure you follow this guide if you were overriding Sonata default templates before upgrading: https://adminlte.io/docs/2.4/upgrade-guide
+
+One of the most important ones is the `data-toggle` for the sidebar menu. Before we used `offcanvas` and now it is using `push-menu`, If you are overriding the `standard-layout.html.twig` you might be affected by this change.
+
+
 UPGRADE FROM 3.95 to 3.96
 =========================
 
