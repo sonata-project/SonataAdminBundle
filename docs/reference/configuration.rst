@@ -179,15 +179,6 @@ Full Configuration Options
                 stylesheets:
 
                     # The default stylesheet list:
-                    - bundles/sonataadmin/dist/bootstrap/bootstrap.min.css
-                    - bundles/sonataadmin/dist/components-font-awesome/css/font-awesome.min.css
-                    - bundles/sonataadmin/dist/admin-lte/css/AdminLTE-without-plugins.min.css
-                    - bundles/sonataadmin/dist/icheck/skins/square/blue.css
-                    - bundles/sonataadmin/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css
-                    - bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css
-                    - bundles/sonataadmin/dist/select2/select2.min.css
-                    - bundles/sonataadmin/dist/select2-bootstrap-theme/select2-bootstrap.min.css
-                    - bundles/sonataadmin/dist/x-editable/bootstrap-editable.css
                     - bundles/sonataadmin/dist/app.css
 
                 # stylesheet paths to add to the page in addition to the list above
@@ -201,13 +192,13 @@ Full Configuration Options
                     # The default javascript list:
                     - bundles/sonataadmin/dist/jquery/jquery.min.js
                     - bundles/sonataadmin/dist/jquery-scrollto/jquery.scrollTo.min.js
-                    - bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js
-                    - bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js
+                    - bundles/sonataadmin/dist/jquery-ui/jquery-ui.min.js
+                    - bundles/sonataadmin/dist/jquery-ui/jquery-ui-i18n.min.js
                     - bundles/sonataadmin/dist/moment/moment.min.js
                     - bundles/sonataadmin/dist/bootstrap/bootstrap.min.js
-                    - bundles/sonataadmin/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js
+                    - bundles/sonataadmin/dist/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js
                     - bundles/sonataadmin/dist/jquery-form/jquery.form.js
-                    - bundles/sonataadmin/vendor/jquery.confirmExit/jquery.confirmExit.js
+                    - bundles/sonataadmin/dist/jquery.confirmExit/jquery.confirmExit.js
                     - bundles/sonataadmin/dist/x-editable/bootstrap-editable.min.js
                     - bundles/sonataadmin/dist/select2/select2.full.min.js
                     - bundles/sonataadmin/dist/admin-lte/js/adminlte.min.js
