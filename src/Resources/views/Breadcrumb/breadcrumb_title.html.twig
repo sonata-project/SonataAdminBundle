@@ -1,0 +1,16 @@
+{% for menu in items %}
+    {% if not loop.first %}
+        {% if loop.index != 2 %}
+            &gt;
+        {% endif %}
+
+        {%- set translation_domain = menu.extra('translation_domain', 'messages') -%}
+        {# We use method accessor instead of ".label" since `menu` implements `ArrayAccess` and could have a property called "label". #}
+        {%- set label = menu.getLabel() -%}
+        {%- if translation_domain is not same as(false) -%}
+            {%- set label = label|trans(menu.extra('translation_params', {}), translation_domain) -%}
+        {%- endif -%}
+
+        {{ label }}
+    {% endif %}
+{% endfor %}

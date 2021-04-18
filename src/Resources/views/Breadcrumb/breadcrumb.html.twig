@@ -1,0 +1,28 @@
+{% apply spaceless %}
+{% for menu in items %}
+    {%- set translation_domain = menu.extra('translation_domain', 'messages') -%}
+    {# We use method accessor instead of ".label" since `menu` implements `ArrayAccess` and could have a property called "label". #}
+    {%- set label = menu.getLabel() -%}
+    {%- if translation_domain is not same as(false) -%}
+        {%- set label = label|trans(menu.extra('translation_params', {}), translation_domain) -%}
+    {%- endif -%}
+
+    {% if not loop.last %}
+        <li>
+            {% if menu.uri is not empty %}
+                <a href="{{ menu.uri }}">
+                    {% if menu.extra('safe_label', true) %}
+                        {{- label|raw -}}
+                    {% else %}
+                        {{- label|u.truncate(100, '...') -}}
+                    {% endif %}
+                </a>
+            {% else %}
+                <span>{{ label|u.truncate(100, '...') }}</span>
+            {% endif %}
+        </li>
+    {% else %}
+        <li class="active"><span>{{ label|u.truncate(100, '...') }}</span></li>
+    {% endif %}
+{% endfor %}
+{% endapply %}
