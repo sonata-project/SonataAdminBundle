@@ -31,6 +31,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->public()
             ->args([
                 '%sonata.admin.configuration.dashboard_blocks%',
+                // NEXT_MAJOR: Remove next line.
                 new ReferenceConfigurator('sonata.admin.breadcrumbs_builder'),
                 new ReferenceConfigurator('sonata.admin.global_template_registry'),
                 new ReferenceConfigurator('sonata.admin.pool'),
@@ -49,6 +50,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('sonata.admin.pool'),
                 new ReferenceConfigurator('sonata.admin.search.handler'),
                 new ReferenceConfigurator('sonata.admin.global_template_registry'),
+                // NEXT_MAJOR: Remove next line.
                 new ReferenceConfigurator('sonata.admin.breadcrumbs_builder'),
                 new ReferenceConfigurator('twig'),
             ])

@@ -28,6 +28,8 @@ final class DashboardAction
     private $dashboardBlocks = [];
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
      * @var BreadcrumbsBuilderInterface
      */
     private $breadcrumbsBuilder;
@@ -49,12 +51,14 @@ final class DashboardAction
 
     public function __construct(
         array $dashboardBlocks,
+        // NEXT_MAJOR: Remove next line.
         BreadcrumbsBuilderInterface $breadcrumbsBuilder,
         TemplateRegistryInterface $templateRegistry,
         Pool $pool,
         Environment $twig
     ) {
         $this->dashboardBlocks = $dashboardBlocks;
+        // NEXT_MAJOR: Remove next line.
         $this->breadcrumbsBuilder = $breadcrumbsBuilder;
         $this->templateRegistry = $templateRegistry;
         $this->pool = $pool;
@@ -84,6 +88,7 @@ final class DashboardAction
             'blocks' => $blocks,
         ];
 
+        // NEXT_MAJOR: Remove the entire if block.
         if (!$request->isXmlHttpRequest()) {
             $parameters['breadcrumbs_builder'] = $this->breadcrumbsBuilder;
         }

@@ -1142,6 +1142,7 @@ class CRUDController implements ContainerAwareInterface
      */
     protected function addRenderExtraParams(array $parameters = []): array
     {
+        // NEXT_MAJOR: Remove the entire if block.
         if (!$this->isXmlHttpRequest()) {
             $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
         }
