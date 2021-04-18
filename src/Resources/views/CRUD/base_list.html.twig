@@ -67,11 +67,11 @@ file that was distributed with this source code.
                                             {% if field_description.option('sortable', false) %}
                                                 {% set sortable             = true %}
                                                 {% set sort_parameters      = admin.datagrid.sortparameters(field_description) %}
-                                                {% set current              = admin.datagrid.values._sort_by is defined
-                                                    and (admin.datagrid.values._sort_by == field_description
-                                                        or admin.datagrid.values._sort_by.name == sort_parameters.filter._sort_by) %}
+                                                {% set current              = admin.datagrid.values[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_BY')] is defined
+                                                    and (admin.datagrid.values[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_BY')] == field_description
+                                                        or admin.datagrid.values[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_BY')].name == sort_parameters.filter[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_BY')]) %}
                                                 {% set sort_active_class    = current ? 'sonata-ba-list-field-order-active' : '' %}
-                                                {% set sort_by              = current ? admin.datagrid.values._sort_order : field_description.option('_sort_order') %}
+                                                {% set sort_by              = current ? admin.datagrid.values[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_ORDER')] : field_description.option(constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_ORDER')) %}
                                             {% endif %}
 
                                             {% apply spaceless %}
@@ -321,9 +321,9 @@ file that was distributed with this source code.
                                 {% endfor %}
                             </div>
                             <div class="col-sm-3 text-center">
-                                <input type="hidden" name="filter[_page]" id="filter__page" value="1">
+                                <input type="hidden" name="filter[{{ constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::PAGE') }}]" id="filter__page" value="1">
 
-                                {% set foo = form['_page'].setRendered() %}
+                                {% set foo = form[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::PAGE')].setRendered() %}
                                 {{ form_rest(form) }}
 
                                 <div class="form-group">

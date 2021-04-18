@@ -304,12 +304,13 @@ Configure the default ordering in the list view
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Configuring the default ordering column can be achieved by overriding the
-``configureDefaultSortValues()`` method. All three keys ``_page``, ``_sort_order`` and
-``_sort_by`` can be omitted::
+``configureDefaultSortValues()`` method. All three keys ``DatagridInterface::PAGE``,
+``DatagridInterface::SORT_ORDER`` and ``DatagridInterface::SORT_BY`` can be omitted::
 
     // src/Admin/PostAdmin.php
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
+    use Sonata\AdminBundle\Datagrid\DatagridInterface;
 
     final class PostAdmin extends AbstractAdmin
     {
@@ -318,13 +319,13 @@ Configuring the default ordering column can be achieved by overriding the
         protected function configureDefaultSortValues(array &$sortValues): void
         {
             // display the first page (default = 1)
-            $sortValues['_page'] = 1;
+            $sortValues[DatagridInterface::PAGE] = 1;
 
             // reverse order (default = 'ASC')
-            $sortValues['_sort_order'] = 'DESC';
+            $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
 
             // name of the ordered field (default = the model's id field, if any)
-            $sortValues['_sort_by'] = 'updatedAt';
+            $sortValues[DatagridInterface::SORT_BY] = 'updatedAt';
         }
 
         // ...
@@ -332,7 +333,7 @@ Configuring the default ordering column can be achieved by overriding the
 
 .. note::
 
-    The ``_sort_by`` key can be of the form ``mySubModel.mySubSubModel.myField``.
+    The ``DatagridInterface::SORT_BY`` key can be of the form ``mySubModel.mySubSubModel.myField``.
 
 .. note::
 
@@ -343,6 +344,7 @@ Configuring the default ordering column can be achieved by overriding the
         // src/Admin/PostAdmin.php
 
         use Sonata\AdminBundle\Admin\AbstractAdmin;
+        use Sonata\AdminBundle\Datagrid\DatagridInterface;
 
         final class PostAdmin extends AbstractAdmin
         {
@@ -351,13 +353,13 @@ Configuring the default ordering column can be achieved by overriding the
             protected function configureDefaultSortValues(array &$sortValues): void
             {
                 // display the first page (default = 1)
-                $sortValues['_page'] = 1;
+                $sortValues[DatagridInterface::PAGE] = 1;
 
                 // reverse order (default = 'ASC')
-                $sortValues['_sort_order'] = 'DESC';
+                $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
 
                 // name of the ordered field (default = the model's id field, if any)
-                $sortValues['_sort_by'] = 'updatedAt';
+                $sortValues[DatagridInterface::SORT_BY] = 'updatedAt';
             }
 
             protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface

@@ -458,6 +458,10 @@
                 <source>stats_view_more</source>
                 <target>Peržiūrėti daugiau</target>
             </trans-unit>
+            <trans-unit id="preview_view_more">
+                <source>preview_view_more</source>
+                <target>stats_view_more</target>
+            </trans-unit>
             <trans-unit id="title_select_subclass">
                 <source>title_select_subclass</source>
                 <target>Pasirinkite objekto tipą</target>

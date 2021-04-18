@@ -116,9 +116,13 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
             $value[$key] = (string) $id;
         }
 
-        $query = $this->modelManager->createQuery($this->className);
-        $this->modelManager->addIdentifiersToQuery($this->className, $query, $value);
-        $result = $this->modelManager->executeQuery($query);
+        if ([] === $value) {
+            $result = $value;
+        } else {
+            $query = $this->modelManager->createQuery($this->className);
+            $this->modelManager->addIdentifiersToQuery($this->className, $query, $value);
+            $result = $this->modelManager->executeQuery($query);
+        }
 
         return TraversableToCollection::transform($result);
     }

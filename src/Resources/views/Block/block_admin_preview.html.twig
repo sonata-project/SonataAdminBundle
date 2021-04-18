@@ -1,0 +1,87 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends sonata_block.templates.block_base %}
+
+{% set translation_domain = settings.translation_domain ?? admin.translationDomain %}
+
+{% block block %}
+    {% set inlineAnchor = settings.text|replace({'.':'_'}) %}
+    {# NEXT_MAJOR: Remove the attribute check and use `admin.datagrid.pager.countResults` #}
+    {% set results_count = attribute(admin.datagrid.pager, 'countResults') is defined ? admin.datagrid.pager.countResults : admin.datagrid.pager.nbResults %}
+    <div class="box box-primary" id="{{ inlineAnchor }}">
+        <div class="box-header with-border">
+            {% set icon = settings.icon|default('') %}
+            {% if icon %}
+                <i class="fa {{ icon|raw }}"></i>
+            {% endif %}
+            <h3 class="box-title">
+                <a href="#{{ inlineAnchor }}">{{ settings.text|trans({}, translation_domain) }}</a>
+            </h3>
+        </div>
+        <div class="box-body {% if results_count > 0 %}table-responsive no-padding{% endif %}">
+            {{ sonata_block_render_event('sonata.admin.list.table.top', { 'admin': admin }) }}
+
+            {% block list_header %}{% endblock %}
+
+            {% if results_count > 0 %}
+                <table class="table table-bordered table-striped table-hover sonata-ba-list">
+                    {% block table_header %}
+                        <thead>
+                            <tr class="sonata-ba-list-field-header">
+                                {% for field_description in admin.list.elements %}
+                                    {% if field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_SELECT') %}
+                                        <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
+                                    {% else %}
+                                        {% filter spaceless %}
+                                            <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if field_description.option('header_class') is not null %} {{ field_description.option('header_class') }}{% endif %}"{% if field_description.option('header_style') is not null %} style="{{ field_description.option('header_style') }}"{% endif %}>
+                                                {% if field_description.option('label_icon') %}
+                                                    <i class="sonata-ba-list-field-header-label-icon {{ field_description.option('label_icon') }}" aria-hidden="true"></i>
+                                                {% endif %}
+                                                {{ field_description.label|trans({}, field_description.translationDomain) }}
+                                            </th>
+                                        {% endfilter %}
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                    {% endblock %}
+
+                    {% block table_body %}
+                        <tbody>
+                            {% include get_admin_template('outer_list_rows_' ~ admin.getListMode(), admin.code) %}
+                        </tbody>
+                    {% endblock %}
+
+                    {% block table_footer %}
+                    {% endblock %}
+                </table>
+                <div class="box-footer">
+                    {% if admin.hasAccess('list') %}
+                        <a href="{{ admin.generateUrl('list', {filter: settings.filters}) }}" class="btn btn-primary btn-block">
+                            <i class="fa fa-list" aria-hidden="true"></i> {{ 'preview_view_more'|trans({}, 'SonataAdminBundle') }}
+                        </a>
+                    {% endif %}
+                </div>
+            {% else %}
+                {% block no_result_content %}
+                    <div class="info-box">
+                        <div class="info-box">
+                            <span class="info-box-text">{{ 'no_result'|trans({}, 'SonataAdminBundle') }}</span>
+                        </div><!-- /.info-box-content -->
+                    </div>
+                {% endblock %}
+            {% endif %}
+
+            {{ sonata_block_render_event('sonata.admin.list.table.bottom', { 'admin': admin }) }}
+        </div>
+    </div>
+{% endblock %}

@@ -26,6 +26,11 @@ use Symfony\Component\Form\FormInterface;
  */
 interface DatagridInterface
 {
+    public const SORT_ORDER = '_sort_order';
+    public const SORT_BY = '_sort_by';
+    public const PAGE = '_page';
+    public const PER_PAGE = '_per_page';
+
     /**
      * @phpstan-return PagerInterface<T>
      */

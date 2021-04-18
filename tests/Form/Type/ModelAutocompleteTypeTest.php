@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -61,8 +62,8 @@ class ModelAutocompleteTypeTest extends TypeTestCase
         $this->assertSame(['name' => 'sonata_admin_retrieve_autocomplete_items', 'parameters' => []], $options['route']);
         $this->assertSame([], $options['req_params']);
         $this->assertSame('q', $options['req_param_name_search']);
-        $this->assertSame('_page', $options['req_param_name_page_number']);
-        $this->assertSame('_per_page', $options['req_param_name_items_per_page']);
+        $this->assertSame(DatagridInterface::PAGE, $options['req_param_name_page_number']);
+        $this->assertSame(DatagridInterface::PER_PAGE, $options['req_param_name_items_per_page']);
 
         $this->assertSame('list', $options['target_admin_access_action']);
         $this->assertNull($options['response_item_callback']);

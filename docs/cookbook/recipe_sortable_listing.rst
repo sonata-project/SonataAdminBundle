@@ -117,6 +117,7 @@ Now we need to define the sort by field to be ``$position``::
     namespace App\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
+    use Sonata\AdminBundle\Datagrid\DatagridInterface;
     use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Route\RouteCollection;
 
@@ -124,9 +125,9 @@ Now we need to define the sort by field to be ``$position``::
     {
         protected function configureDefaultSortValues(array &$sortValues): void
         {
-            $sortValues['_page'] = 1;
-            $sortValues['_sort_order'] = 'ASC';
-            $sortValues['_sort_by'] = 'position';
+            $sortValues[DatagridInterface::PAGE] = 1;
+            $sortValues[DatagridInterface::SORT_ORDER] = 'ASC';
+            $sortValues[DatagridInterface::SORT_BY] = 'position';
         }
 
         protected function configureRoutes(RouteCollectionInterface $collection): void
