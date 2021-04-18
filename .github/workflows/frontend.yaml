@@ -1,0 +1,37 @@
+name: Frontend
+
+on:
+    push:
+        branches:
+            - 3.x
+            - master
+        paths:
+            - assets/**
+            - package.json
+            - yarn.lock
+    pull_request:
+        paths:
+            - assets/**
+            - package.json
+            - yarn.lock
+
+jobs:
+    webpack-encore:
+        name: Webpack Encore
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Install Node 14
+              uses: actions/setup-node@v2
+              with:
+                  node-version: 14
+
+            - name: Install NPM dependencies
+              uses: bahmutov/npm-install@v1
+
+            - name: Run Webpack Encore
+              run: yarn encore production

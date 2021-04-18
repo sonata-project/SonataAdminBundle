@@ -1,28 +1,28 @@
 .read-more-state {
-    display: none;
+  display: none;
 }
 
 .read-more-target {
-    opacity: 0;
-    display: none;
-    max-height: 0;
-    font-size: 0;
-    transition: .40s ease;
+  opacity: 0;
+  display: none;
+  max-height: 0;
+  font-size: 0;
+  transition: 0.4s ease;
 }
 
 .read-more-state:checked ~ .read-more-wrap .read-more-target {
-    opacity: 1;
-    display: block;
-    font-size: inherit;
-    max-height: 999em;
+  opacity: 1;
+  display: block;
+  font-size: inherit;
+  max-height: 999em;
 }
 
 .read-more-trigger {
-    cursor: pointer;
-    margin: auto;
+  cursor: pointer;
+  margin: auto;
 }
 
 .alert .read-more-trigger {
-    position: relative;
-    left: calc(50% - 1rem);
+  position: relative;
+  left: calc(50% - 1rem);
 }

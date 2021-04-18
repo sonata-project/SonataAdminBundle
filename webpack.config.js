@@ -1,4 +1,5 @@
 var Encore = require('@symfony/webpack-encore');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 Encore
   .setOutputPath('./src/Resources/public/dist')
@@ -9,6 +10,12 @@ Encore
   .enableSassLoader()
   .enableVersioning(false)
   .disableSingleRuntimeChunk()
+
+  .addPlugin(
+    new StyleLintPlugin({
+      context: 'assets/scss',
+    })
+  )
 
   .configureTerserPlugin((options) => {
     options.terserOptions = {
