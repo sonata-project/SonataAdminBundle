@@ -24,7 +24,7 @@ use Sonata\Exporter\Source\SourceIteratorInterface;
  *
  * A model manager is a bridge between the model classes and the admin functionality.
  *
- * @psalm-import-type FieldDescriptionOptions from FieldDescriptionInterface
+ * @phpstan-import-type FieldDescriptionOptions from FieldDescriptionInterface
  *
  * @method bool supportsQuery(object $query)
  * @method void reverseTransform(object $object, array $array = [])
@@ -42,8 +42,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
      * @return FieldDescriptionInterface
      *
      * @phpstan-param class-string $class
-     * @psalm-param FieldDescriptionOptions $options
-     * @phpstan-param array<string, mixed> $options
+     * @phpstan-param FieldDescriptionOptions $options
      */
     public function getNewFieldDescriptionInstance($class, $name, array $options = []);
 
