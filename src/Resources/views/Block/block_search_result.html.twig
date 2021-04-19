@@ -70,7 +70,7 @@ file that was distributed with this source code.
                                             {% if match and ((filter.option('case_sensitive') is not same as(false) and term in match)
                                                 or filter.option('case_sensitive') is same as(false) and term|lower in match|lower)
                                             %}
-                                                <a class="label label-primary" href="{{ admin.generateUrl('list', {'filter': {(filter.formName): term}}) }}">
+                                                <a class="label label-primary" href="{{ admin.generateUrl('list', {'filter': {(filter.formName): {'value': term}}}) }}">
                                                     {{ filter.option('label')|trans({}, filter.option('translation_domain', admin.translationDomain)) }}
                                                 </a>
                                             {% endif %}
