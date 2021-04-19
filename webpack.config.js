@@ -8,6 +8,7 @@ Encore
 
   .cleanupOutputBeforeBuild()
   .enableSassLoader()
+  .enablePostCssLoader()
   .enableVersioning(false)
   .enableSourceMaps(false)
   .disableSingleRuntimeChunk()
