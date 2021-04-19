@@ -567,6 +567,7 @@ var Admin = {
         }
 
         var options = Object.assign({
+            theme: 'bootstrap',
             width: function(){
                 return Admin.get_select2_width(subject);
             },
