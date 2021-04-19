@@ -1,7 +1,7 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.xx to 3.xx
+UPGRADE FROM 3.96 to 3.97
 =========================
 
 ### Admin-lte v2.4
