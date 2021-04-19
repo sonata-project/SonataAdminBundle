@@ -127,22 +127,32 @@ file that was distributed with this source code.
                 },
                 escapeMarkup: function (m) { return m; }, // we do not want to escape markup since we are displaying html in results
                 templateResult: function (item) {
+                    // When selecting a new result, the label is undefined and the correct property is text
+                    if (typeof item.label === 'undefined') {
+                        item.label = item.text;
+                    }
+
                     return {% block sonata_type_model_autocomplete_dropdown_item_format -%}
                         {% if safe_label|default(false) %}
-                            '<div class="{{ dropdown_item_css_class }}">'+item.text+'<\/div>'
+                            '<div class="{{ dropdown_item_css_class }}">'+item.label+'<\/div>'
                         {% else %}
-                            jQuery('<div class="{{ dropdown_item_css_class }}">').text(item.text).prop('outerHTML')
+                            jQuery('<div class="{{ dropdown_item_css_class }}">').text(item.label).prop('outerHTML')
                         {% endif %}
                     {%- endblock %}; // format of one dropdown item
                 },
                 templateSelection: function (item) {
+                    // The searching... placeholder appears as text
+                    if (typeof item.label === 'undefined') {
+                        item.label = item.text;
+                    }
+
                     return {% block sonata_type_model_autocomplete_selection_format -%}
                         {% if safe_label|default(false) %}
-                            item.text
+                            item.label
                         {% else %}
-                            jQuery('<div>').text(item.text).prop('innerHTML')
+                            jQuery('<div>').text(item.label).prop('innerHTML')
                         {% endif %}
-                    {%- endblock %}; // format selected item '<b>'+item.text+'</b>';
+                    {%- endblock %}; // format selected item '<b>'+item.label+'</b>';
                 },
             };
 
