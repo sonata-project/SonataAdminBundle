@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="3.13.1@afd8874a9e4562eac42a02de90e42e430c3a1db1">
-    <!-- The next error is due to not installed Doctrine ORM\ODM -->
-    <file src="src/Admin/AdminHelper.php">
-        <UndefinedClass occurrences="1">
-            <code>DoctrinePersistentCollection</code>
-        </UndefinedClass>
-    </file>
     <file src="src/Datagrid/Datagrid.php">
         <InvalidPropertyAssignmentValue occurrences="1">
             <code>array_merge(array_flip($keys), $this-&gt;filters)</code>
@@ -17,23 +11,11 @@
             <code>array_merge(array_flip($keys), $this-&gt;elements)</code>
         </InvalidPropertyAssignmentValue>
     </file>
-    <!-- https://github.com/vimeo/psalm/issues/4963 -->
-    <file src="src/Show/ShowMapper.php">
-        <InvalidParamDefault occurrences="1">
-            <code>FieldDescriptionOptions</code>
-        </InvalidParamDefault>
-    </file>
     <!-- Will be fixed in Symfony 5.3 https://github.com/symfony/symfony/pull/40604 -->
     <file src="src/Translator/Extractor/AdminExtractor.php">
         <MoreSpecificImplementedParamType occurrences="1">
             <code>$resource</code>
         </MoreSpecificImplementedParamType>
-    </file>
-    <!-- BC for Symfony 4 since InputBag was introduce in Symfony 5 -->
-    <file src="tests/Admin/AdminHelperTest.php">
-        <PropertyTypeCoercion occurrences="4">
-            <code>new ParameterBag();</code>
-        </PropertyTypeCoercion>
     </file>
     <!-- This error is made on purpose for php version < 8 -->
     <file src="tests/Fixtures/Entity/FooToStringNull.php">
