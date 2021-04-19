@@ -2,6 +2,33 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.97.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.96.0...3.97.0) - 2021-04-19
+### Added
+- [[#7033](https://github.com/sonata-project/SonataAdminBundle/pull/7033)] Added "block.admin_preview" block in order to show a preview for admin lists in dashboard ([@phansys](https://github.com/phansys))
+- [[#7078](https://github.com/sonata-project/SonataAdminBundle/pull/7078)] Added `DatagridInterface::SORT_ORDER` constant to use it instead of `_sort_order` string. ([@franmomu](https://github.com/franmomu))
+- [[#7078](https://github.com/sonata-project/SonataAdminBundle/pull/7078)] Added `DatagridInterface::SORT_BY` constant to use it instead of `_sort_by` string. ([@franmomu](https://github.com/franmomu))
+- [[#7078](https://github.com/sonata-project/SonataAdminBundle/pull/7078)] Added `DatagridInterface::PAGE` constant to use it instead of `_page` string. ([@franmomu](https://github.com/franmomu))
+- [[#7078](https://github.com/sonata-project/SonataAdminBundle/pull/7078)] Added `DatagridInterface::PER_PAGE` constant to use it instead of `_per_page` string. ([@franmomu](https://github.com/franmomu))
+- [[#7066](https://github.com/sonata-project/SonataAdminBundle/pull/7066)] Added generic for ModelManager class ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7063](https://github.com/sonata-project/SonataAdminBundle/pull/7063)] Added `XEditableExtension::FIELD_DESCRIPTION_MAPPING` to expose mapping between FieldDescription types and xEditable types ([@franmomu](https://github.com/franmomu))
+- [[#7039](https://github.com/sonata-project/SonataAdminBundle/pull/7039)] Added `MapperInterface` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7037](https://github.com/sonata-project/SonataAdminBundle/pull/7037)] Generics for Datagrid and DatagridInterface ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7005](https://github.com/sonata-project/SonataAdminBundle/pull/7005)] Information about the matching filters in the search results. ([@phansys](https://github.com/phansys))
+
+### Changed
+- [[#7074](https://github.com/sonata-project/SonataAdminBundle/pull/7074)] Changed `TemplateRegistryExtension` constructor to `@internal`. ([@franmomu](https://github.com/franmomu))
+- [[#7038](https://github.com/sonata-project/SonataAdminBundle/pull/7038)] Calls to `FieldDescriptionInterface::getOptions()` by calls to `FieldDescriptionInterface::getOption()` in views. ([@phansys](https://github.com/phansys))
+- [[#7044](https://github.com/sonata-project/SonataAdminBundle/pull/7044)] Calls to `Filter::getOptions()` by `FilterInterface::getOption()` in views. ([@phansys](https://github.com/phansys))
+- [[#7032](https://github.com/sonata-project/SonataAdminBundle/pull/7032)] Update to AdminLTE 2.4.15 ([@core23](https://github.com/core23))
+
+### Fixed
+- [[#7085](https://github.com/sonata-project/SonataAdminBundle/pull/7085)] Fixed main sidebar toggling ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7079](https://github.com/sonata-project/SonataAdminBundle/pull/7079)] AddIdentifierToQuery phpdoc to reflect the fact that it shouldn't be called with an empty array of identifier ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7080](https://github.com/sonata-project/SonataAdminBundle/pull/7080)] Using a non existing `Session` instance from the `Request` object at `AbstractAdmin::getListMode()`. ([@phansys](https://github.com/phansys))
+- [[#7021](https://github.com/sonata-project/SonataAdminBundle/pull/7021)] Fixed using the admin translation domain as default for `form_help` twig block. ([@franmomu](https://github.com/franmomu))
+- [[#7055](https://github.com/sonata-project/SonataAdminBundle/pull/7055)] Fixed using the hardcode `id` parameter instead of calling `AdminInterface::getIdParameter()` method. ([@franmomu](https://github.com/franmomu))
+- [[#7007](https://github.com/sonata-project/SonataAdminBundle/pull/7007)] Fixed using invalid values in `field_options` of filters. ([@franmomu](https://github.com/franmomu))
+
 ## [3.96.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.95.0...3.96.0) - 2021-04-06
 ### Added
 - [[#6992](https://github.com/sonata-project/SonataAdminBundle/pull/6992)] "or_group" filter option at `SearchHandler::search()`. ([@phansys](https://github.com/phansys))

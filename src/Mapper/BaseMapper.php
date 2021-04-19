@@ -38,7 +38,7 @@ abstract class BaseMapper
     public function __construct(BuilderInterface $builder, AdminInterface $admin)
     {
         @trigger_error(sprintf(
-            'The %s class is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.',
+            'The %s class is deprecated since sonata-project/admin-bundle 3.97 and will be removed in version 4.0.',
             __CLASS__
         ), \E_USER_DEPRECATED);
 
