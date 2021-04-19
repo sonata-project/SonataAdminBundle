@@ -178,7 +178,7 @@ final class RetrieveAutocompleteItemsAction
 
         return new JsonResponse([
             'status' => 'OK',
-            'more' => !$pager->isLastPage(),
+            'more' => \count($items) > 0 && !$pager->isLastPage(),
             'items' => $items,
         ]);
     }
