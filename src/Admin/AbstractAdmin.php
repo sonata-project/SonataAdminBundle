@@ -55,7 +55,7 @@ use Symfony\Component\Validator\Mapping\GenericMetadata;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @psalm-import-type FieldDescriptionOptions from FieldDescriptionInterface
+ * @phpstan-import-type FieldDescriptionOptions from FieldDescriptionInterface
  *
  * @phpstan-template T of object
  * @phpstan-extends AbstractTaggedAdmin<T>
@@ -3048,8 +3048,7 @@ EOT;
     /**
      * NEXT_MAJOR: Move this phpdoc to the interface.
      *
-     * @psalm-param FieldDescriptionOptions $options
-     * @phpstan-param array<string, mixed> $options
+     * @phpstan-param FieldDescriptionOptions $options
      */
     final public function createFieldDescription(string $propertyName, array $options = []): FieldDescriptionInterface
     {

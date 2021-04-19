@@ -21,7 +21,7 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @psalm-type FieldDescriptionOptions = array{
+ * @phpstan-type FieldDescriptionOptions = array{
  *  accessor?: string|callable|PropertyPathInterface,
  *  actions?: array,
  *  admin_code?: string,
@@ -146,8 +146,7 @@ interface FieldDescriptionInterface
      *
      * Then the value are copied across to the related property value
      *
-     * @psalm-param FieldDescriptionOptions $options
-     * @phpstan-param array<string, mixed> $options
+     * @phpstan-param FieldDescriptionOptions $options
      */
     public function setOptions(array $options);
 
@@ -156,8 +155,7 @@ interface FieldDescriptionInterface
      *
      * @return array<string, mixed> options
      *
-     * @psalm-return FieldDescriptionOptions
-     * @phpstan-return array<string, mixed>
+     * @phpstan-return FieldDescriptionOptions
      */
     public function getOptions();
 

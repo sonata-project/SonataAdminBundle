@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle;
 
 /**
- * @psalm-type SonataConfigurationOptions = array{
+ * @phpstan-type SonataConfigurationOptions = array{
  *  confirm_exit: bool,
  *  default_group: string,
  *  default_icon: string,
@@ -55,14 +55,12 @@ final class SonataConfiguration
 
     /**
      * @var array
-     * @psalm-var SonataConfigurationOptions $options
-     * @phpstan-var array<string, mixed>
+     * @phpstan-var SonataConfigurationOptions $options
      */
     private $options;
 
     /**
-     * @psalm-param SonataConfigurationOptions $options
-     * @phpstan-param array<string, mixed> $options
+     * @phpstan-param SonataConfigurationOptions $options
      */
     public function __construct(string $title, string $logo, array $options)
     {

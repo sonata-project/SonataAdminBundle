@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\FieldDescription;
 
 /**
- * @psalm-import-type FieldDescriptionOptions from FieldDescriptionInterface
+ * @phpstan-import-type FieldDescriptionOptions from FieldDescriptionInterface
  */
 interface FieldDescriptionFactoryInterface
 {
     /**
      * @phpstan-param class-string $class
-     * @psalm-param FieldDescriptionOptions $options
-     * @phpstan-param array<string, mixed> $options
+     * @phpstan-param FieldDescriptionOptions $options
      */
     public function create(string $class, string $name, array $options = []): FieldDescriptionInterface;
 }
