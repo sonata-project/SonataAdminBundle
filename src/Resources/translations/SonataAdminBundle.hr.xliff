@@ -460,7 +460,7 @@
             </trans-unit>
             <trans-unit id="preview_view_more">
                 <source>preview_view_more</source>
-                <target>stats_view_more</target>
+                <target>Vidi više</target>
             </trans-unit>
             <trans-unit id="title_select_subclass">
                 <source>title_select_subclass</source>
