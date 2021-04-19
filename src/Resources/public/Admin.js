@@ -126,6 +126,7 @@ var Admin = {
                     theme: 'bootstrap',
                     dropdownAutoWidth: true,
                     minimumResultsForSearch: minimumResultsForSearch,
+                    placeholder: allowClearEnabled ? ' ' : '', // allowClear needs placeholder to work properly
                     allowClear: allowClearEnabled,
                     maximumSelectionSize: maximumSelectionSize
                 });
