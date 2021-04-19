@@ -62,6 +62,7 @@ file that was distributed with this source code.
                 readonly: {{ attr.read_only|default(false) ? 'true' : 'false' }},
                 minimumInputLength: {{ minimum_input_length }},
                 multiple: {{ multiple ? 'true' : 'false' }},
+                theme: 'bootstrap',
                 width: function() {
                     return Admin.get_select2_width(jQuery(this));
                 },
