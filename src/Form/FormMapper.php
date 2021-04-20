@@ -24,6 +24,8 @@ use Symfony\Component\Form\FormBuilderInterface;
  * This class is use to simulate the Form API.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @psalm-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
  */
 final class FormMapper extends BaseGroupedMapper
 {
@@ -67,9 +69,11 @@ final class FormMapper extends BaseGroupedMapper
     /**
      * @param FormBuilderInterface|string $name
      * @param array<string, mixed>        $options
-     * @param array<string, mixed>        $fieldDescriptionOptions
      *
      * @return static
+     *
+     * @psalm-param FieldDescriptionOptions $fieldDescriptionOptions
+     * @phpstan-param array<string, mixed>  $fieldDescriptionOptions
      */
     public function add($name, ?string $type = null, array $options = [], array $fieldDescriptionOptions = []): self
     {

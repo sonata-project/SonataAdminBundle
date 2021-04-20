@@ -38,7 +38,7 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
  *  identifier?: bool,
  *  inline?: string,
  *  label?: bool|string|null,
- *  link_parameters?: array,
+ *  link_parameters?: array<string, mixed>,
  *  multiple?: bool,
  *  placeholder?: string,
  *  required?: bool,
@@ -53,7 +53,7 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
  *  translation_domain?: string,
  *  type?: string,
  *  virtual_field?: bool
- * }
+ * }&array<string, mixed>|array<empty, empty>
  */
 interface FieldDescriptionInterface
 {
@@ -81,10 +81,8 @@ interface FieldDescriptionInterface
 
     /**
      * Returns the field name.
-     *
-     * @return string|null the field name
      */
-    public function getFieldName(): ?string;
+    public function getFieldName(): string;
 
     public function setName(string $name): void;
 
@@ -255,7 +253,8 @@ interface FieldDescriptionInterface
     /**
      * Merge options values.
      *
-     * @param array<string, mixed> $options
+     * @psalm-param FieldDescriptionOptions $options
+     * @phpstan-param array<string, mixed>  $options
      */
     public function mergeOptions(array $options = []): void;
 

@@ -266,7 +266,7 @@ EOT;
             return sprintf(
                 $commentTemplate,
                 $fieldDescription->getFieldName(),
-                $fieldDescription->getTemplate(),
+                $fieldDescription->getTemplate() ?? '',
                 $template->getSourceContext()->getName(),
                 $content,
                 $fieldDescription->getFieldName()

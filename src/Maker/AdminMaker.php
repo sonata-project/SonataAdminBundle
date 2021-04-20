@@ -51,6 +51,7 @@ final class AdminMaker extends AbstractMaker
 
     /**
      * @var string
+     * @phpstan-var class-string
      */
     private $modelClass;
 
@@ -65,7 +66,7 @@ final class AdminMaker extends AbstractMaker
     private $adminClassBasename;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $controllerClassBasename;
 

@@ -84,18 +84,22 @@ final class AdminObjectAclManipulator
 
     public function updateAclUsers(AdminObjectAclData $data): void
     {
-        $aclValues = $data->getAclUsers();
         $form = $data->getAclUsersForm();
+        if (null === $form) {
+            throw new \InvalidArgumentException('Cannot update Acl roles if the acl users form is not set.');
+        }
 
-        $this->buildAcl($data, $form, $aclValues);
+        $this->buildAcl($data, $form, $data->getAclUsers());
     }
 
     public function updateAclRoles(AdminObjectAclData $data): void
     {
-        $aclValues = $data->getAclRoles();
         $form = $data->getAclRolesForm();
+        if (null === $form) {
+            throw new \InvalidArgumentException('Cannot update Acl roles if the acl roles form is not set.');
+        }
 
-        $this->buildAcl($data, $form, $aclValues);
+        $this->buildAcl($data, $form, $data->getAclRoles());
     }
 
     /**
@@ -105,8 +109,12 @@ final class AdminObjectAclManipulator
      */
     private function buildAcl(AdminObjectAclData $data, FormInterface $form, \Traversable $aclValues): void
     {
-        $masks = $data->getMasks();
         $acl = $data->getAcl();
+        if (null === $acl) {
+            throw new \InvalidArgumentException('The acl cannot be null.');
+        }
+
+        $masks = $data->getMasks();
         $matrices = $form->getData();
 
         foreach ($aclValues as $aclValue) {
@@ -147,17 +155,15 @@ final class AdminObjectAclManipulator
             $mask = $maskBuilder->get();
 
             $index = null;
-            $ace = null;
             foreach ($acl->getObjectAces() as $currentIndex => $currentAce) {
                 if ($currentAce->getSecurityIdentity()->equals($securityIdentity)) {
                     $index = $currentIndex;
-                    $ace = $currentAce;
 
                     break;
                 }
             }
 
-            if ($ace) {
+            if (null !== $index) {
                 $acl->updateObjectAce($index, $mask);
             } else {
                 $acl->insertObjectAce($securityIdentity, $mask);

@@ -99,24 +99,29 @@ final class XEditableExtension extends AbstractExtension
     {
         $choices = $fieldDescription->getOption('choices', []);
         $catalogue = $fieldDescription->getOption('catalogue');
-        $xEditableChoices = [];
-        if (!empty($choices)) {
-            reset($choices);
-            $first = current($choices);
-            // the choices are already in the right format
-            if (\is_array($first) && \array_key_exists('value', $first) && \array_key_exists('text', $first)) {
-                $xEditableChoices = $choices;
-            } else {
-                foreach ($choices as $value => $text) {
-                    if ($catalogue) {
-                        $text = $this->translator->trans($text, [], $catalogue);
-                    }
 
-                    $xEditableChoices[] = [
-                        'value' => $value,
-                        'text' => $text,
-                    ];
+        reset($choices);
+        $first = current($choices);
+        if (\is_array($first)) {
+            // the choice are already in the right format
+            $xEditableChoices = $choices;
+        } else {
+            $xEditableChoices = [];
+            foreach ($choices as $value => $text) {
+                if (\is_array($text)) {
+                    // the choice is already in the right format
+                    $xEditableChoices[] = $text;
+                    break;
                 }
+
+                if ($catalogue) {
+                    $text = $this->translator->trans($text, [], $catalogue);
+                }
+
+                $xEditableChoices[] = [
+                    'value' => $value,
+                    'text' => $text,
+                ];
             }
         }
 

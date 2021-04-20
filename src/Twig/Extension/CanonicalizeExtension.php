@@ -57,7 +57,7 @@ final class CanonicalizeExtension extends AbstractExtension
      */
     public function getCanonicalizedLocaleForMoment(): ?string
     {
-        $locale = strtolower(str_replace('_', '-', $this->requestStack->getCurrentRequest()->getLocale()));
+        $locale = $this->getLocale();
 
         // "en" language doesn't require localization.
         if (('en' === $lang = substr($locale, 0, 2)) && !\in_array($locale, ['en-au', 'en-ca', 'en-gb', 'en-ie', 'en-nz'], true)) {
@@ -79,7 +79,7 @@ final class CanonicalizeExtension extends AbstractExtension
      */
     public function getCanonicalizedLocaleForSelect2(): ?string
     {
-        $locale = str_replace('_', '-', $this->requestStack->getCurrentRequest()->getLocale());
+        $locale = $this->getLocale();
 
         // "en" language doesn't require localization.
         if ('en' === $lang = substr($locale, 0, 2)) {
@@ -103,5 +103,15 @@ final class CanonicalizeExtension extends AbstractExtension
         }
 
         return $locale;
+    }
+
+    private function getLocale(): string
+    {
+        $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            throw new \LogicException('The request stack is empty.');
+        }
+
+        return str_replace('_', '-', $request->getLocale());
     }
 }

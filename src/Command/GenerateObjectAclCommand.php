@@ -111,8 +111,10 @@ final class GenerateObjectAclCommand extends QuestionableCommand
 
                 $securityIdentity = new UserSecurityIdentity($username, $this->getUserModelClass($input, $output));
             }
-            if (!$input->getOption('step') && $input->getOption('object_owner')) {
-                $securityIdentity = new UserSecurityIdentity($input->getOption('object_owner'), $this->getUserModelClass($input, $output));
+
+            $objectOwner = $input->getOption('object_owner');
+            if (!$input->getOption('step') && $objectOwner) {
+                $securityIdentity = new UserSecurityIdentity($objectOwner, $this->getUserModelClass($input, $output));
             }
 
             $manipulatorId = sprintf('sonata.admin.manipulator.acl.object.%s', $admin->getManagerType());

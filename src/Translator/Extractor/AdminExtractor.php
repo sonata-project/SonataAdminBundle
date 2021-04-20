@@ -127,6 +127,16 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
 
     public function getLabel(string $label, string $context = '', string $type = ''): string
     {
+        if (null === $this->catalogue) {
+            throw new \LogicException('The catalogue is not set.');
+        }
+        if (null === $this->labelStrategy) {
+            throw new \LogicException('The label strategy is not set.');
+        }
+        if (null === $this->domain) {
+            throw new \LogicException('The domain is not set.');
+        }
+
         $label = $this->labelStrategy->getLabel($label, $context, $type);
 
         $this->catalogue->set($label, $this->prefix.$label, $this->domain);

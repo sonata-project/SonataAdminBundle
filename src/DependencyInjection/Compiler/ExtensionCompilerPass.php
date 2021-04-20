@@ -91,7 +91,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param array<string, array<string, array<string, array<string, array<string, mixed>>>>> $extensionMap
+     * @param array<string, array<string, array<string, array<string, mixed>>>> $extensionMap
      */
     private function getExtensionsForAdmin(string $id, Definition $admin, ContainerBuilder $container, array $extensionMap): array
     {
@@ -156,19 +156,29 @@ final class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param array<string, array<string, array<string, string>|bool>> $config
+     * @param array<string, array<string, array<string, string>|int|bool>> $config
      *
-     * @return array<string, array<string, array<string, array<string, array<string, string>>>>> an array with the following structure.
+     * @return array<string, array<string, array<string, array<string, int>>>> an array with the following structure
      *
-     * [
-     *     'global'     => ['<admin_id>'  => ['<extension_id>' => ['priority' => <int>]]],
-     *     'excludes'   => ['<admin_id>'  => ['<extension_id>' => ['priority' => <int>]]],
-     *     'admins'     => ['<admin_id>'  => ['<extension_id>' => ['priority' => <int>]]],
-     *     'implements' => ['<interface>' => ['<extension_id>' => ['priority' => <int>]]],
-     *     'extends'    => ['<class>'     => ['<extension_id>' => ['priority' => <int>]]],
-     *     'instanceof' => ['<class>'     => ['<extension_id>' => ['priority' => <int>]]],
-     *     'uses'       => ['<trait>'     => ['<extension_id>' => ['priority' => <int>]]],
-     * ]
+     * @phpstan-param array<string, array{
+     *     global: bool,
+     *     excludes: array<string, string>,
+     *     admins: array<string, string>,
+     *     implements: array<class-string, string>,
+     *     extends: array<class-string, string>,
+     *     instanceof: array<class-string, string>,
+     *     uses: array<class-string, string>,
+     *     priority: int,
+     * }> $config
+     * @phpstan-return array{
+     *     global: array<string, array<string, array{priority: int}>>,
+     *     excludes: array<string, array<string, array{priority: int}>>,
+     *     admins: array<string, array<string, array{priority: int}>>,
+     *     implements: array<string, array<class-string, array{priority: int}>>,
+     *     extends: array<string, array<class-string, array{priority: int}>>,
+     *     instanceof: array<string, array<class-string, array{priority: int}>>,
+     *     uses: array<string, array<class-string, array{priority: int}>>,
+     * }
      */
     private function flattenExtensionConfiguration(array $config): array
     {
@@ -189,6 +199,17 @@ final class ExtensionCompilerPass implements CompilerPassInterface
                 $options['global'] = [];
             }
 
+            /**
+             * @phpstan-var array{
+             *     global: array<string, string>,
+             *     excludes: array<string, string>,
+             *     admins: array<string, string>,
+             *     implements: array<class-string, string>,
+             *     extends: array<class-string, string>,
+             *     instanceof: array<class-string, string>,
+             *     uses: array<class-string, string>,
+             * } $optionsMap
+             */
             $optionsMap = array_intersect_key($options, $extensionMap);
 
             foreach ($optionsMap as $key => $value) {

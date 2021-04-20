@@ -23,6 +23,8 @@ use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
  * This class is used to simulate the Form API.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @psalm-import-type FieldDescriptionOptions from FieldDescriptionInterface
  */
 final class ShowMapper extends BaseGroupedMapper
 {
@@ -62,11 +64,13 @@ final class ShowMapper extends BaseGroupedMapper
 
     /**
      * @param FieldDescriptionInterface|string $name
-     * @param array<string, mixed>             $fieldDescriptionOptions
      *
      * @throws \LogicException
      *
      * @return static
+     *
+     * @psalm-param FieldDescriptionOptions $fieldDescriptionOptions
+     * @phpstan-param array<string, mixed>  $fieldDescriptionOptions
      */
     public function add($name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
@@ -124,6 +128,9 @@ final class ShowMapper extends BaseGroupedMapper
         return $this->list->has($key);
     }
 
+    /**
+     * @return static
+     */
     public function remove(string $key): self
     {
         $this->getAdmin()->removeShowFieldDescription($key);

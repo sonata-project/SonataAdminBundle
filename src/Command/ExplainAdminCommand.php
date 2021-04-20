@@ -83,8 +83,8 @@ final class ExplainAdminCommand extends Command
             $output->writeln(sprintf(
                 '  - % -25s  % -15s % -15s',
                 $name,
-                $fieldDescription->getType(),
-                $fieldDescription->getTemplate()
+                $fieldDescription->getType() ?? '',
+                $fieldDescription->getTemplate() ?? ''
             ));
         }
 
@@ -94,8 +94,8 @@ final class ExplainAdminCommand extends Command
             $output->writeln(sprintf(
                 '  - % -25s  % -15s % -15s',
                 $name,
-                $fieldDescription->getType(),
-                $fieldDescription->getTemplate()
+                $fieldDescription->getType() ?? '',
+                $fieldDescription->getTemplate() ?? ''
             ));
         }
 
@@ -111,8 +111,8 @@ final class ExplainAdminCommand extends Command
             $output->writeln(sprintf(
                 '  - % -25s  % -15s % -15s',
                 $name,
-                $fieldDescription->getType(),
-                $fieldDescription->getTemplate()
+                $fieldDescription->getType() ?? '',
+                $fieldDescription->getTemplate() ?? ''
             ));
         }
 

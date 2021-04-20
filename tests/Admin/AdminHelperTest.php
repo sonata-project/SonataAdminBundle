@@ -28,7 +28,6 @@ use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -172,10 +171,8 @@ class AdminHelperTest extends TestCase
             ->with($associationMapping['fieldName'])
             ->willReturn(true);
 
-        $request = $this->createStub(Request::class);
-        $request
-            ->method('get')
-            ->willReturn([
+        $request = new Request([], [
+            'test' => [
                 'bar' => [
                     [
                         'baz' => [
@@ -184,9 +181,8 @@ class AdminHelperTest extends TestCase
                     ],
                     ['_delete' => true],
                 ],
-            ]);
-
-        $request->request = new ParameterBag();
+            ],
+        ]);
 
         $admin
             ->expects($this->atLeastOnce())
@@ -285,10 +281,8 @@ class AdminHelperTest extends TestCase
             ->with($associationMapping['fieldName'])
             ->willReturn(false);
 
-        $request = $this->createStub(Request::class);
-        $request
-            ->method('get')
-            ->willReturn([
+        $request = new Request([], [
+            'test' => [
                 'bar' => [
                     [
                         'baz' => [
@@ -297,9 +291,8 @@ class AdminHelperTest extends TestCase
                     ],
                     ['_delete' => true],
                 ],
-            ]);
-
-        $request->request = new ParameterBag();
+            ],
+        ]);
 
         $admin
             ->method('getRequest')
@@ -376,10 +369,8 @@ class AdminHelperTest extends TestCase
             ->with($associationMapping['fieldName'])
             ->willReturn(false);
 
-        $request = $this->createStub(Request::class);
-        $request
-            ->method('get')
-            ->willReturn([
+        $request = new Request([], [
+            'test' => [
                 'bar' => [
                     [
                         'baz' => [
@@ -388,9 +379,8 @@ class AdminHelperTest extends TestCase
                     ],
                     ['_delete' => true],
                 ],
-            ]);
-
-        $request->request = new ParameterBag();
+            ],
+        ]);
 
         $admin
             ->method('getRequest')
@@ -451,10 +441,8 @@ class AdminHelperTest extends TestCase
     public function testAppendFormFieldElementNested(): void
     {
         $admin = $this->createMock(AdminInterface::class);
-        $request = $this->createMock(Request::class);
-        $request
-            ->method('get')
-            ->willReturn([
+        $request = new Request([], [
+            'test' => [
                 'bar' => [
                     [
                         'baz' => [
@@ -463,9 +451,8 @@ class AdminHelperTest extends TestCase
                     ],
                     ['_delete' => true],
                 ],
-            ]);
-
-        $request->request = new ParameterBag();
+            ],
+        ]);
 
         $admin
             ->expects($this->atLeastOnce())
@@ -512,7 +499,7 @@ class AdminHelperTest extends TestCase
 
     private function getMethodAsPublic($privateMethod): \ReflectionMethod
     {
-        $reflectionMethod = new \ReflectionMethod('Sonata\AdminBundle\Admin\AdminHelper', $privateMethod);
+        $reflectionMethod = new \ReflectionMethod(AdminHelper::class, $privateMethod);
         $reflectionMethod->setAccessible(true);
 
         return $reflectionMethod;
