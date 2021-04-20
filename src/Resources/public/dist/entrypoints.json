@@ -3,6 +3,9 @@
     "app": {
       "css": [
         "/bundles/sonataadmin/dist/app.css"
+      ],
+      "js": [
+        "/bundles/sonataadmin/dist/app.js"
       ]
     }
   }

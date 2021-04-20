@@ -7,10 +7,12 @@
 // provide the scss or plain css, it only provides the less version
 // of its source files, that's why it is not included it via npm.
 @import "../vendor/bootstrap-datetimepicker.css";
-@import "../vendor/jquery-ui.css";
+@import "~jquery-ui/themes/base/sortable.css";
 @import "~select2/dist/css/select2.css";
 @import "~select2-bootstrap-theme/dist/select2-bootstrap.css";
 @import "~x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css";
+
+// SonataAdmin custom styles
 @import "./styles";
 @import "./layout";
 @import "./tree";
