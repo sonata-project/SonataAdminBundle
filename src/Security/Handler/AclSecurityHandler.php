@@ -164,14 +164,10 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     public function getObjectAcl(ObjectIdentityInterface $objectIdentity)
     {
         try {
-            $acl = $this->aclProvider->findAcl($objectIdentity);
-            // todo - remove `assert` statement after https://github.com/phpstan/phpstan-symfony/pull/92 is released
-            \assert($acl instanceof MutableAclInterface);
+            return $this->aclProvider->findAcl($objectIdentity);
         } catch (AclNotFoundException $e) {
             return null;
         }
-
-        return $acl;
     }
 
     public function findObjectAcls(\Traversable $oids, array $sids = [])
