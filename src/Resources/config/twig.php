@@ -11,6 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Sonata\AdminBundle\Twig\Extension\BreadcrumbsExtension;
 use Sonata\AdminBundle\Twig\Extension\CanonicalizeExtension;
 use Sonata\AdminBundle\Twig\Extension\GroupExtension;
 use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
@@ -73,5 +74,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('twig.extension')
             ->args([
                 new ReferenceConfigurator('property_accessor'),
+            ])
+
+        ->set('sonata.admin.twig.breadcrumbs_extension', BreadcrumbsExtension::class)
+            ->tag('twig.extension')
+            ->args([
+                new ReferenceConfigurator('sonata.admin.breadcrumbs_builder'),
             ]);
 };

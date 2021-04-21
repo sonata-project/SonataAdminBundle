@@ -87,6 +87,7 @@ final class SearchActionTest extends TestCase
         $request = new Request(['q' => 'some search']);
         $this->twig->method('render')->with('search.html.twig', [
             'base_template' => 'layout.html.twig',
+            // NEXT_MAJOR: Remove next line.
             'breadcrumbs_builder' => $this->breadcrumbsBuilder,
             'query' => 'some search',
             'groups' => [],
