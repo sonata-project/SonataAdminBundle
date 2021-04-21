@@ -648,9 +648,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.82, will be removed in 4.0.
+     * NEXT_MAJOR: Change visibility to protected.
      *
      * @param object $object
      *
@@ -658,12 +656,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     public function preValidate($object)
     {
-        if ('sonata_deprecation_mute' !== \func_get_args()[1] ?? null) {
-            @trigger_error(sprintf(
-                'The %s method is deprecated since version 3.82 and will be removed in 4.0.',
-                __METHOD__
-            ), \E_USER_DEPRECATED);
-        }
     }
 
     public function preUpdate($object)
@@ -3401,9 +3393,8 @@ EOT;
         $this->loaded['form'] = true;
 
         $formBuilder = $this->getFormBuilder();
-        // NEXT_MAJOR: Remove this call.
         $formBuilder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            $this->preValidate($event->getData(), 'sonata_deprecation_mute');
+            $this->preValidate($event->getData());
         }, 100);
 
         $this->form = $formBuilder->getForm();
