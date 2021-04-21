@@ -102,6 +102,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     private const MASK_OF_ACTION_LIST = self::ACTION_SHOW | self::ACTION_EDIT | self::ACTION_DELETE | self::ACTION_ACL | self::ACTION_BATCH;
     private const MASK_OF_ACTIONS_USING_OBJECT = self::MASK_OF_ACTION_SHOW | self::MASK_OF_ACTION_EDIT | self::MASK_OF_ACTION_HISTORY | self::MASK_OF_ACTION_ACL;
 
+    private const DEFAULT_LIST_PER_PAGE_RESULTS = 32;
+    private const DEFAULT_LIST_PER_PAGE_OPTIONS = [16, 32, 64, 128, 256];
+
     /**
      * The list FieldDescription constructed from the configureListField method.
      *
@@ -139,7 +142,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      *
      * @var int
      */
-    protected $maxPerPage = 32;
+    protected $maxPerPage = self::DEFAULT_LIST_PER_PAGE_RESULTS;
 
     /**
      * The maximum number of page numbers to display in the list.
@@ -196,7 +199,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     protected $datagridValues = [
         DatagridInterface::PAGE => 1,
-        DatagridInterface::PER_PAGE => 32,
+        DatagridInterface::PER_PAGE => self::DEFAULT_LIST_PER_PAGE_RESULTS,
     ];
 
     /**
@@ -208,7 +211,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      *
      * @var array
      */
-    protected $perPageOptions = [16, 32, 64, 128, 256];
+    protected $perPageOptions = self::DEFAULT_LIST_PER_PAGE_OPTIONS;
 
     /**
      * Array of routes related to this admin.
@@ -1605,7 +1608,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->maxPerPage;
         // $sortValues = $this->getDefaultSortValues();
 
-        // return $sortValues[DatagridInterface::PER_PAGE] ?? 25;
+        // return $sortValues[DatagridInterface::PER_PAGE] ?? self::DEFAULT_LIST_PER_PAGE_RESULTS;
     }
 
     /**
@@ -2656,7 +2659,7 @@ EOT;
     {
         // NEXT_MAJOR: Remove this line and uncomment the following
         return $this->perPageOptions;
-//        $perPageOptions = [10, 25, 50, 100, 250];
+//        $perPageOptions = self::DEFAULT_LIST_PER_PAGE_OPTIONS;
 //        $perPageOptions[] = $this->getMaxPerPage();
 //
 //        $perPageOptions = array_unique($perPageOptions);
@@ -3146,7 +3149,7 @@ EOT;
     {
         // NEXT_MAJOR: Use the next line instead.
         $defaultSortValues = [];
-        // $defaultSortValues = [DatagridInterface::PAGE => 1, DatagridInterface::PER_PAGE => 25];
+        // $defaultSortValues = [DatagridInterface::PAGE => 1, DatagridInterface::PER_PAGE => self::DEFAULT_LIST_PER_PAGE_RESULTS];
 
         $this->configureDefaultSortValues($defaultSortValues);
 
