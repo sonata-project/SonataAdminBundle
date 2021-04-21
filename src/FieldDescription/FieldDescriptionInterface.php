@@ -53,7 +53,7 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
  *  translation_domain?: string,
  *  type?: string,
  *  virtual_field?: bool
- * }&array<string, mixed>|array<empty, empty>
+ * }|array<empty, empty>
  */
 interface FieldDescriptionInterface
 {
