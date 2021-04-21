@@ -29,7 +29,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @psalm-import-type FieldDescriptionOptions from FieldDescriptionInterface
+ * @psalm-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
  *
  * @phpstan-template T of object
  * @phpstan-extends AccessRegistryInterface<T>

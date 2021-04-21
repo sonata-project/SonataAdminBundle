@@ -24,7 +24,7 @@ use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @psalm-import-type FieldDescriptionOptions from FieldDescriptionInterface
+ * @psalm-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
  */
 final class ShowMapper extends BaseGroupedMapper
 {
