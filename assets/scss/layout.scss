@@ -119,7 +119,7 @@ th {
     word-wrap: break-word;
   }
 
-  .nav-stacked > li.item > span.matches {
+  &.nav-stacked > li.item > span.matches {
     position: relative;
     display: block;
     padding: 10px 15px;
