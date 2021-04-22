@@ -24,11 +24,11 @@ file that was distributed with this source code.
                         'code':     sonata_admin.field_description.associationadmin.code,
                         'objectId': sonata_admin.field_description.associationadmin.urlSafeIdentifier(sonata_admin.value),
                         'uniqid':   sonata_admin.field_description.associationadmin.uniqid,
-                        'linkParameters': sonata_admin.field_description.option('link_parameters')
+                        'linkParameters': sonata_admin.field_description.option('link_parameters', {}))
                     })) }}
-                {% elseif sonata_admin.field_description.option('placeholder') %}
+                {% elseif sonata_admin.field_description.option('placeholder', 'short_object_description_placeholder') %}
                     <span class="inner-field-short-description">
-                        {{ sonata_admin.field_description.option('placeholder')|trans({}, 'SonataAdminBundle') }}
+                        {{ sonata_admin.field_description.option('placeholder', 'short_object_description_placeholder')|trans({}, 'SonataAdminBundle') }}
                     </span>
                 {% endif %}
             </span>

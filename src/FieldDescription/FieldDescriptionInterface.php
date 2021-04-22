@@ -15,45 +15,22 @@ namespace Sonata\AdminBundle\FieldDescription;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Exception\NoValueException;
-use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-type FieldDescriptionOptions = array{
- *  accessor?: string|callable|PropertyPathInterface,
- *  actions?: array,
- *  admin_code?: string,
- *  associated_property?: string,
- *  block_name?: string,
- *  catalogue?: string,
- *  data_transformer?: DataTransformerInterface,
- *  edit?: string,
- *  editable?: bool,
- *  field_name?: string,
- *  field_options?: array,
- *  field_type?: string,
- *  header_class?: string,
- *  identifier?: bool,
- *  inline?: string,
- *  label?: bool|string|null,
- *  link_parameters?: array,
- *  multiple?: bool,
- *  placeholder?: string,
- *  required?: bool,
+ *  accessor?: string|callable|\Symfony\Component\PropertyAccess\PropertyPathInterface,
+ *  label?: string|false|null,
  *  role?: string|string[],
- *  route?: array,
- *  safe?: bool,
- *  sort_field_mapping?: array,
- *  sort_parent_association_mappings?: array,
+ *  sort_field_mapping?: array<string, mixed>,
+ *  sort_parent_association_mappings?: array<array<string, mixed>>,
  *  sortable?: bool,
  *  template?: string,
- *  timezone?: string|\DateTimeZone,
  *  translation_domain?: string,
  *  type?: string,
  *  virtual_field?: bool
- * }
+ * }&array<string, mixed>
  *
  * @method string|null getTargetModel()
  * @method bool        hasAdmin()
