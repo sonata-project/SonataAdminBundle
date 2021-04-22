@@ -21,7 +21,7 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @psalm-type FieldDescriptionOptions = array{
+ * @psalm-type FieldDescriptionOptions = (array{
  *  accessor?: string|callable|PropertyPathInterface,
  *  actions?: array,
  *  admin_code?: string,
@@ -53,7 +53,7 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
  *  translation_domain?: string,
  *  type?: string,
  *  virtual_field?: bool
- * }&array<string, mixed>|array<empty, empty>
+ * }&array<string, mixed>)|array<empty, empty>
  */
 interface FieldDescriptionInterface
 {
