@@ -1508,8 +1508,8 @@ class AdminTest extends TestCase
 
         $parameters = $commentAdmin->getFilterParameters();
 
-        $this->assertArrayHasKey('_per_page', $parameters);
-        $this->assertSame(25, $parameters['_per_page']);
+        $this->assertArrayHasKey(DatagridInterface::PER_PAGE, $parameters);
+        $this->assertSame(25, $parameters[DatagridInterface::PER_PAGE]);
     }
 
     public function testGetFilterFieldDescription(): void

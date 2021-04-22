@@ -94,6 +94,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     private const MASK_OF_ACTION_LIST = self::ACTION_SHOW | self::ACTION_EDIT | self::ACTION_DELETE | self::ACTION_ACL | self::ACTION_BATCH;
     private const MASK_OF_ACTIONS_USING_OBJECT = self::MASK_OF_ACTION_SHOW | self::MASK_OF_ACTION_EDIT | self::MASK_OF_ACTION_HISTORY | self::MASK_OF_ACTION_ACL;
 
+    private const DEFAULT_LIST_PER_PAGE_RESULTS = 25;
+    private const DEFAULT_LIST_PER_PAGE_OPTIONS = [10, 25, 50, 100, 250];
+
     /**
      * The list FieldDescription constructed from the configureListField method.
      *
@@ -1032,7 +1035,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
         $sortValues = $this->getDefaultSortValues();
 
-        return $sortValues[DatagridInterface::PER_PAGE] ?? 25;
+        return $sortValues[DatagridInterface::PER_PAGE] ?? self::DEFAULT_LIST_PER_PAGE_RESULTS;
     }
 
     final public function setMaxPageLinks(int $maxPageLinks): void
@@ -1680,7 +1683,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     public function getPerPageOptions(): array
     {
-        $perPageOptions = [10, 25, 50, 100, 250];
+        $perPageOptions = self::DEFAULT_LIST_PER_PAGE_OPTIONS;
         $perPageOptions[] = $this->getMaxPerPage();
 
         $perPageOptions = array_unique($perPageOptions);
@@ -2045,7 +2048,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     final protected function getDefaultSortValues(): array
     {
-        $defaultSortValues = [DatagridInterface::PAGE => 1, DatagridInterface::PER_PAGE => 25];
+        $defaultSortValues = [DatagridInterface::PAGE => 1, DatagridInterface::PER_PAGE => self::DEFAULT_LIST_PER_PAGE_RESULTS];
 
         $this->configureDefaultSortValues($defaultSortValues);
 
