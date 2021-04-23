@@ -1,5 +1,8 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~font-awesome/scss/font-awesome";
+
+// Basic AdminLTE styles without any plugins,
+// because they conflict with select2 v4
 @import "~admin-lte/dist/css/alt/AdminLTE-without-plugins.css";
 @import "~icheck/skins/square/blue.css";
 
@@ -7,9 +10,13 @@
 // provide the scss or plain css, it only provides the less version
 // of its source files, that's why it is not included it via npm.
 @import "../vendor/bootstrap-datetimepicker.css";
+
+// Only use sortable widget from jquery-ui library
 @import "~jquery-ui/themes/base/sortable.css";
 @import "~select2/dist/css/select2.css";
 @import "~select2-bootstrap-theme/dist/select2-bootstrap.css";
+
+// Boostrap 3 styles for the x-editable library
 @import "~x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css";
 
 // SonataAdmin custom styles
