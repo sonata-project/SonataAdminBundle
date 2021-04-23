@@ -212,11 +212,17 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->fieldName = $fieldName;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getFieldName()
     {
         return $this->fieldName;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setName($name)
     {
         $this->name = $name;
@@ -227,21 +233,33 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getOption($name, $default = null)
     {
         return $this->options[$name] ?? $default;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setOption($name, $value)
     {
         $this->options[$name] = $value;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setOptions(array $options)
     {
         // set the type if provided
@@ -282,16 +300,25 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->options = $options;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getOptions()
     {
         return $this->options;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setTemplate($template)
     {
         $this->template = $template;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getTemplate()
     {
         if (null !== $this->template && !\is_string($this->template) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
@@ -305,21 +332,33 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->template;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setType($type)
     {
         $this->type = $type;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getType()
     {
         return $this->type;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setParent(AdminInterface $parent)
     {
         $this->parent = $parent;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getParent()
     {
         if (!$this->hasParent()) {
@@ -339,32 +378,50 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->parent;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function hasParent()
     {
         return null !== $this->parent;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getAssociationMapping()
     {
         return $this->associationMapping;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getFieldMapping()
     {
         return $this->fieldMapping;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getParentAssociationMappings()
     {
         return $this->parentAssociationMappings;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setAssociationAdmin(AdminInterface $associationAdmin)
     {
         $this->associationAdmin = $associationAdmin;
         $this->associationAdmin->setParentFieldDescription($this);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getAssociationAdmin()
     {
         if (!$this->hasAssociationAdmin()) {
@@ -385,6 +442,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->associationAdmin;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function hasAssociationAdmin()
     {
         return null !== $this->associationAdmin;
@@ -392,6 +452,8 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     /**
      * NEXT_MAJOR: Change the visibility to protected.
+     *
+     * @final since sonata-project/admin-bundle 3.x.
      *
      * @param object|null $object
      * @param string      $fieldName
@@ -527,11 +589,17 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         ));
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setAdmin(AdminInterface $admin)
     {
         $this->admin = $admin;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getAdmin()
     {
         if (!$this->hasAdmin()) {
@@ -551,11 +619,17 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->admin;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function hasAdmin()
     {
         return null !== $this->admin;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function mergeOption($name, array $options = [])
     {
         if (!isset($this->options[$name])) {
@@ -569,6 +643,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->options[$name] = array_merge($this->options[$name], $options);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function mergeOptions(array $options = [])
     {
         $this->setOptions(array_merge_recursive($this->options, $options));
@@ -589,6 +666,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->mappingType = $mappingType;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getMappingType()
     {
         return $this->mappingType;
@@ -660,6 +740,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->help;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getLabel()
     {
         $label = $this->getOption('label');
@@ -674,21 +757,33 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $label;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function isSortable()
     {
         return false !== $this->getOption('sortable', false);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getSortFieldMapping()
     {
         return $this->getOption('sort_field_mapping');
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getSortParentAssociationMapping()
     {
         return $this->getOption('sort_parent_association_mappings');
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getTranslationDomain()
     {
         return $this->getOption('translation_domain') ?: $this->getAdmin()->getTranslationDomain();
@@ -696,6 +791,8 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     /**
      * Return true if field is virtual.
+     *
+     * @final since sonata-project/admin-bundle 3.x.
      *
      * @return bool
      */

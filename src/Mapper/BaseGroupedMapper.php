@@ -40,6 +40,8 @@ abstract class BaseGroupedMapper extends BaseMapper implements MapperInterface
     protected $apply = [];
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * Add new group or tab (if parameter "tab=true" is available in options).
      *
      * @param string               $name
@@ -175,6 +177,8 @@ abstract class BaseGroupedMapper extends BaseMapper implements MapperInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * Only nested add if the condition match true.
      *
      * @param bool $bool
@@ -189,6 +193,8 @@ abstract class BaseGroupedMapper extends BaseMapper implements MapperInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * Only nested add if the condition match false.
      *
      * @param bool $bool
@@ -203,6 +209,8 @@ abstract class BaseGroupedMapper extends BaseMapper implements MapperInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * @throws \LogicException
      *
      * @return static
@@ -219,6 +227,8 @@ abstract class BaseGroupedMapper extends BaseMapper implements MapperInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * Add new tab.
      *
      * @param string               $name
@@ -232,6 +242,8 @@ abstract class BaseGroupedMapper extends BaseMapper implements MapperInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * Close the current group or tab.
      *
      * @throws \LogicException
@@ -256,6 +268,8 @@ abstract class BaseGroupedMapper extends BaseMapper implements MapperInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * Returns a boolean indicating if there is an open tab at the moment.
      *
      * @return bool
@@ -266,6 +280,8 @@ abstract class BaseGroupedMapper extends BaseMapper implements MapperInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * Removes a group.
      *
      * @param string $group          The group to delete
@@ -307,6 +323,8 @@ abstract class BaseGroupedMapper extends BaseMapper implements MapperInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * Removes a tab.
      *
      * @return static
@@ -370,6 +388,8 @@ abstract class BaseGroupedMapper extends BaseMapper implements MapperInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * Add the field name to the current group.
      *
      * @param string $fieldName
@@ -389,6 +409,8 @@ abstract class BaseGroupedMapper extends BaseMapper implements MapperInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * Return the name of the currently selected group. The method also makes
      * sure a valid group name is currently selected.
      *
