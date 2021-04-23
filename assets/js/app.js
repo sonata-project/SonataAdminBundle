@@ -37,3 +37,9 @@ import 'waypoints/lib/jquery.waypoints';
 import 'waypoints/lib/shortcuts/sticky';
 import 'readmore-js';
 import 'masonry-layout';
+
+import './Admin';
+import './jquery.confirmExit';
+import './treeview';
+import './sidebar';
+import './base';
