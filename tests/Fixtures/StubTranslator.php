@@ -27,4 +27,9 @@ final class StubTranslator implements TranslatorInterface
 
         return $transOpeningTag.strtr($id, $parameters).'[/trans]';
     }
+
+    public function getLocale(): string
+    {
+        return 'en';
+    }
 }
