@@ -225,7 +225,7 @@ var Admin = {
           .closest('td')
           .replaceWith(html);
       },
-      error: function(xhr, statusText, errorThrown) {
+      error: function(xhr) {
         // On some error responses, we return JSON.
         if ('application/json' === xhr.getResponseHeader('Content-Type')) {
           return JSON.parse(xhr.responseText);
@@ -340,7 +340,7 @@ var Admin = {
     /* Advanced filters */
     if (jQuery('.advanced-filter :input:visible', subject).filter(function () { return jQuery(this).val() }).length === 0) {
       jQuery('.advanced-filter').hide();
-    };
+    }
 
     jQuery('[data-toggle="advanced-filter"]', subject).click(function() {
       jQuery('.advanced-filter').toggle();
@@ -371,7 +371,7 @@ var Admin = {
           elm.effect("highlight", {'color' : '#57A957'}, 2000);
           Admin.set_object_field_value(elm);
         },
-        error: function(xhr, statusText, errorThrown) {
+        error: function() {
           jQuery(subject).parent().effect("highlight", {'color' : '#C43C35'}, 2000);
         }
       });
@@ -435,7 +435,7 @@ var Admin = {
   setup_per_page_switcher: function(subject) {
     Admin.log('[core|setup_per_page_switcher] setup page switcher', subject);
 
-    jQuery('select.per-page').change(function(event) {
+    jQuery('select.per-page').change(function() {
       jQuery('input[type=submit]').hide();
 
       window.top.location.href=this.options[this.selectedIndex].value;
@@ -590,7 +590,7 @@ var Admin = {
     });
 
     // On form submit, transform value to match what is expected by server
-    subject.parents('form:first').submit(function (event) {
+    subject.parents('form:first').submit(function () {
       var values = subject.val().trim();
       if (values !== '') {
         var baseName = subject.attr('name');
@@ -618,7 +618,7 @@ var Admin = {
       var footer  = jQuery(wrapper).find('.sonata-ba-form-actions');
 
       if (navbar.length) {
-        new Waypoint.Sticky({
+        new window.Waypoint.Sticky({
           element: navbar[0],
           offset: function() {
             Admin.refreshNavbarStuckClass(topNavbar);
@@ -638,7 +638,7 @@ var Admin = {
       }
 
       if (footer.length) {
-        new Waypoint({
+        new window.Waypoint({
           element: wrapper[0],
           offset: 'bottom-in-view',
           handler: function(direction) {
@@ -742,7 +742,7 @@ var Admin = {
   setup_readmore_elements: function(subject) {
     Admin.log('[core|setup_readmore_elements] setup readmore elements on', subject);
 
-    jQuery(subject).find('.sonata-readmore').each(function(i, ui){
+    jQuery(subject).find('.sonata-readmore').each(function() {
       jQuery(this).readmore({
         collapsedHeight: parseInt(jQuery(this).data('readmore-height')),
         moreLink: '<a href="#">'+jQuery(this).data('readmore-more')+'</a>',
@@ -780,7 +780,7 @@ var Admin = {
       var val = keyValue.split('=')[1];
 
       if (key.endsWith('[]')) {
-        if (!accumulator.hasOwnProperty(key)) {
+        if (!Object.prototype.hasOwnProperty.call(accumulator, key)) {
           accumulator[key] = [];
         }
         accumulator[key].push(val);

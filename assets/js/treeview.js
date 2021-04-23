@@ -9,10 +9,9 @@
  *
  */
 
-;(function ( $, window, document, undefined ) {
+(function ($) {
 
   var pluginName = 'treeView',
-    defaultRegistry = '.js-treeview',
     defaults = {
       togglersAttribute: '[data-treeview-toggler]',
       toggledState: 'is-toggled',
@@ -104,4 +103,4 @@
       }
     });
   };
-})( jQuery, window, document );
+})(jQuery);

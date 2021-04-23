@@ -19,7 +19,7 @@
 
   $(window).on('beforeunload', function(event) {
     var e = event || window.event,
-      message = Admin.get_translations('CONFIRM_EXIT'),
+      message = window.Admin.get_translations('CONFIRM_EXIT'),
       changes = false
     ;
 

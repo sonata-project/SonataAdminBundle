@@ -5,7 +5,7 @@ jQuery(document).ready(function() {
 
 var SonataCore = {
   remove_iCheck_in_flashmessage: () => {
-      jQuery('.read-more-state').iCheck('destroy');
+    jQuery('.read-more-state').iCheck('destroy');
   },
   addFlashmessageListener: () => {
     document.querySelectorAll('.read-more-state').forEach((element) => {
