@@ -38,13 +38,13 @@ final class SearchAction
     private $searchHandler;
 
     /**
-     * NEXT_MAJOR: Remove this property.
-     *
      * @var TemplateRegistryInterface
      */
     private $templateRegistry;
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
      * @var BreadcrumbsBuilderInterface
      */
     private $breadcrumbsBuilder;
