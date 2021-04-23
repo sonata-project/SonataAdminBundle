@@ -196,6 +196,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * Returns an array of page numbers to use in pagination links.
      *
      * @param int $nbLinks The maximum number of page numbers to return
@@ -225,6 +227,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * Returns true if the current query requires pagination.
      *
      * @return bool
@@ -479,6 +483,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * @return int
      */
     public function getFirstPage()
@@ -487,6 +493,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * @return int
      */
     public function getLastPage()
@@ -495,6 +503,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * @return int
      */
     public function getPage()
@@ -503,6 +513,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * @return int
      */
     public function getNextPage()
@@ -511,6 +523,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * @return int
      */
     public function getPreviousPage()
@@ -518,6 +532,9 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return max($this->getPage() - 1, $this->getFirstPage());
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setPage($page)
     {
         $this->page = (int) $page;
@@ -528,11 +545,17 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         }
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getMaxPerPage()
     {
         return $this->maxPerPage;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setMaxPerPage($max)
     {
         if ($max > 0) {
@@ -553,17 +576,25 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         }
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getMaxPageLinks()
     {
         return $this->maxPageLinks;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setMaxPageLinks($maxPageLinks)
     {
         $this->maxPageLinks = $maxPageLinks;
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * Returns true if on the first page.
      *
      * @return bool
@@ -574,6 +605,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * Returns true if on the last page.
      *
      * @return bool
@@ -854,12 +887,17 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return $this->countColumn = $countColumn;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setQuery($query)
     {
         $this->query = $query;
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * @return ProxyQueryInterface|null
      *
      * @phpstan-return T|null $query
@@ -889,6 +927,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * @param int $page
      *
      * @return void

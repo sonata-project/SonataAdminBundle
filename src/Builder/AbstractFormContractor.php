@@ -38,6 +38,9 @@ abstract class AbstractFormContractor implements FormContractorInterface
         $this->formFactory = $formFactory;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)
     {
         $fieldDescription->setOption('edit', $fieldDescription->getOption('edit', 'standard'));
@@ -49,6 +52,8 @@ abstract class AbstractFormContractor implements FormContractorInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * @return FormFactoryInterface
      */
     public function getFormFactory()
@@ -56,11 +61,17 @@ abstract class AbstractFormContractor implements FormContractorInterface
         return $this->formFactory;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getFormBuilder($name, array $formOptions = [])
     {
         return $this->getFormFactory()->createNamedBuilder($name, FormType::class, null, $formOptions);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getDefaultOptions($type, FieldDescriptionInterface $fieldDescription)
     {
         // NEXT_MAJOR: Remove this line and update the function signature.
