@@ -1,10 +1,25 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
 {%- apply spaceless %}
-    {% set value_format = field_description.option('format', '%s') %}
-    {% set translation_domain = field_description.option('catalogue', admin.translationDomain) %}
+    {# NEXT_MAJOR: Remove this BC-layer #}
+    {% if field_description is defined %}
+        {% set value_format = value_format|default(field_description.option('format', '%s')) %}
+        {% set translation_domain = translation_domain|default(field_description.option('catalogue', admin.translationDomain)) %}
+        {% set safe = safe|default(field_description.option('safe', false)) %}
+    {% endif %}
 
-    {% set value = value_format|format(value)|trans({}, translation_domain) %}
+    {% set value = value_format|default('%s')|format(value)|trans({}, translation_domain|default('messages')) %}
 
-    {% if field_description.option('safe', false) %}
+    {% if safe|default(false) %}
         {{ value|raw }}
     {% else %}
         {{ value }}

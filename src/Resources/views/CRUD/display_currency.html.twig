@@ -10,9 +10,14 @@ file that was distributed with this source code.
 #}
 
 {%- apply spaceless %}
+    {# NEXT_MAJOR: Remove this BC-layer #}
+    {% if field_description is defined %}
+        {% set currency = currency|default(field_description.option('currency')) %}
+    {% endif %}
+
     {%- if value is null -%}
         &nbsp;
     {%- else -%}
-        {{ field_description.option('currency') }} {{ value }}
+        {{ currency|default(null) }} {{ value }}
     {%- endif -%}
 {% endapply -%}

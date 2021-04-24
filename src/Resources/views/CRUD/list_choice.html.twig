@@ -27,5 +27,12 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block field %}
-    {%- include '@SonataAdmin/CRUD/display_choice.html.twig' -%}
+    {%- include '@SonataAdmin/CRUD/display_choice.html.twig' with {
+        value: value,
+        choices: field_description.option('choices'),
+        multiple: field_description.option('multiple'),
+        delimiter: field_description.option('delimiter'),
+        translation_domain: field_description.option('catalogue'),
+        safe: field_description.option('safe'),
+    } only -%}
 {% endblock %}
