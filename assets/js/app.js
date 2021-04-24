@@ -25,7 +25,7 @@ import 'jquery-form';
 // Boostrap 3 JavaScript for the x-editable library
 import 'x-editable/dist/bootstrap3-editable/js/bootstrap-editable';
 
-// Full version of the select2, needed because SonataAdmin needs
+// Full version of Select2, needed because SonataAdmin needs
 // compat dropdownCss and it only comes on the full version
 import 'select2/dist/js/select2.full';
 import 'admin-lte';
