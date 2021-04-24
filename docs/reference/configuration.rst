@@ -68,7 +68,7 @@ Full Configuration Options
                     - OWNER
                 acl_user_manager: null
             title: 'Sonata Admin'
-            title_logo: bundles/sonataadmin/logo_title.png
+            title_logo: bundles/sonataadmin/images/logo_title.png
             search: true
             default_controller: 'sonata.admin.controller.crud'
             options:
@@ -179,7 +179,7 @@ Full Configuration Options
                 stylesheets:
 
                     # The default stylesheet list:
-                    - bundles/sonataadmin/dist/app.css
+                    - bundles/sonataadmin/app.css
 
                 # stylesheet paths to add to the page in addition to the list above
                 extra_stylesheets: []
@@ -190,7 +190,7 @@ Full Configuration Options
                 javascripts:
 
                     # The default javascript list:
-                    - bundles/sonataadmin/dist/app.js
+                    - bundles/sonataadmin/app.js
                     - bundles/sonataadmin/Admin.js
                     - bundles/sonataadmin/jquery.confirmExit.js
                     - bundles/sonataadmin/treeview.js

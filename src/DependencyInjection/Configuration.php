@@ -89,7 +89,7 @@ CASESENSITIVE;
                 ->end()
 
                 ->scalarNode('title')->defaultValue('Sonata Admin')->cannotBeEmpty()->end()
-                ->scalarNode('title_logo')->defaultValue('bundles/sonataadmin/logo_title.png')->cannotBeEmpty()->end()
+                ->scalarNode('title_logo')->defaultValue('bundles/sonataadmin/images/logo_title.png')->cannotBeEmpty()->end()
                 ->booleanNode('search')->defaultTrue()->info('Enable/disable the search form in the sidebar')->end()
 
                 ->arrayNode('global_search')
@@ -180,7 +180,7 @@ CASESENSITIVE;
                             ->info('Enable locking when editing an object, if the corresponding object manager supports it.')
                         ->end()
                         ->scalarNode('mosaic_background')
-                            ->defaultValue('bundles/sonataadmin/default_mosaic_image.png')
+                            ->defaultValue('bundles/sonataadmin/images/default_mosaic_image.png')
                             ->info('Background used in mosaic view')
                         ->end()
                     ->end()
@@ -388,7 +388,7 @@ CASESENSITIVE;
                     ->children()
                         ->arrayNode('stylesheets')
                             ->defaultValue([
-                                'bundles/sonataadmin/dist/app.css',
+                                'bundles/sonataadmin/app.css',
                             ])
                             ->prototype('scalar')->end()
                         ->end()
@@ -404,7 +404,7 @@ CASESENSITIVE;
                         ->end()
                         ->arrayNode('javascripts')
                             ->defaultValue([
-                                'bundles/sonataadmin/dist/app.js',
+                                'bundles/sonataadmin/app.js',
                             ])
                             ->prototype('scalar')->end()
                         ->end()

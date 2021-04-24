@@ -2,9 +2,9 @@ var Encore = require('@symfony/webpack-encore');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 Encore
-  .setOutputPath('./src/Resources/public/dist')
-  .setPublicPath('/bundles/sonataadmin/dist')
-  .setManifestKeyPrefix('bundles/sonataadmin/dist')
+  .setOutputPath('./src/Resources/public')
+  .setPublicPath('/bundles/sonataadmin')
+  .setManifestKeyPrefix('bundles/sonataadmin')
 
   .cleanupOutputBeforeBuild()
   .enableSassLoader()
@@ -45,6 +45,7 @@ Encore
   })
 
   .copyFiles([
+    { from: './assets/images/', pattern: /\.(png|gif)$/, to: 'images/[name].[ext]' },
     { from: './node_modules/admin-lte/dist/css/skins/', pattern: /skin-.*\.min.css/, to: 'admin-lte-skins/[name].[ext]' },
     { from: './node_modules/select2/dist/js/i18n/', pattern: /\.js/, to: 'select2-locale/[name].[ext]' },
     { from: './node_modules/moment/locale/', to: 'moment-locale/[name].[ext]' },
