@@ -10,11 +10,17 @@ file that was distributed with this source code.
 #}
 
 {%- apply spaceless %}
+    {# NEXT_MAJOR: Remove this BC-layer #}
+    {% if field_description is defined %}
+        {% set format = format|default(field_description.option('format', 'H:i:s')) %}
+        {% set timezone = timezone|default(field_description.option('timezone')) %}
+    {% endif %}
+
     {%- if value is empty -%}
         &nbsp;
     {%- else -%}
         <time datetime="{{ value|date('H:i:sP', 'UTC') }}" title="{{ value|date('H:i:sP', 'UTC') }}">
-            {{ value|date(field_description.option('format', 'H:i:s'), field_description.option('timezone')) }}
+            {{ value|date(format|default('H:i:s'), timezone|default(null)) }}
         </time>
     {%- endif -%}
 {% endapply -%}

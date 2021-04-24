@@ -12,5 +12,8 @@ file that was distributed with this source code.
 {% extends get_admin_template('base_list_field', admin.code) %}
 
 {% block field %}
-    {%- include '@SonataAdmin/CRUD/display_currency.html.twig' -%}
+    {%- include '@SonataAdmin/CRUD/display_currency.html.twig' with {
+        value: value,
+        currency: field_description.option('currency'),
+    } only -%}
 {% endblock %}
