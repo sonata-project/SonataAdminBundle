@@ -6,38 +6,35 @@
 * Released under the MIT license
 * http://www.opensource.org/licenses/mit-license.php
 */
-(function ($) {
-  $.fn.confirmExit = function() {
-    $(this).attr('data-original', $(this).serialize());
 
-    $(this).on('submit', function() {
-      $(this).removeAttr('data-original');
-    });
+jQuery.fn.confirmExit = function confirmExit() {
+  jQuery(this).attr('data-original', jQuery(this).serialize());
 
-    return $(this);
-  };
+  jQuery(this).on('submit', function onSubmit() {
+    jQuery(this).removeAttr('data-original');
+  });
 
-  $(window).on('beforeunload', function(event) {
-    var e = event || window.event,
-      message = window.Admin.get_translations('CONFIRM_EXIT'),
-      changes = false
-    ;
+  return jQuery(this);
+};
 
-    $('form[data-original]').each(function() {
-      if ($(this).attr('data-original') !== $(this).serialize()) {
-        changes = true;
+// eslint-disable-next-line consistent-return
+jQuery(window).on('beforeunload', (event) => {
+  const e = event || window.event;
+  const message = window.Admin.get_translations('CONFIRM_EXIT');
+  let changes = false;
 
-        return;
-      }
-    });
-
-    if (changes) {
-      // For old IE and Firefox
-      if (e) {
-        e.returnValue = message;
-      }
-
-      return message;
+  jQuery('form[data-original]').each(function formDataOriginal() {
+    if (jQuery(this).attr('data-original') !== jQuery(this).serialize()) {
+      changes = true;
     }
   });
-})(jQuery);
+
+  if (changes) {
+    // For old IE and Firefox
+    if (e) {
+      e.returnValue = message;
+    }
+
+    return message;
+  }
+});

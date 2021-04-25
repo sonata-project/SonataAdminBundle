@@ -3,11 +3,6 @@ import '../scss/app.scss';
 
 // Require jQuery normally
 import $ from 'jquery';
-
-// Create global $ and jQuery variables to be used outside this script
-// eslint-disable-next-line
-global.$ = global.jQuery = $;
-
 import 'jquery.scrollto';
 
 // Only using sortable widget from jQuery UI library
@@ -44,3 +39,7 @@ import './jquery.confirmExit';
 import './treeview';
 import './sidebar';
 import './base';
+
+// Create global $ and jQuery variables to be used outside this script
+// eslint-disable-next-line
+global.$ = global.jQuery = $;
