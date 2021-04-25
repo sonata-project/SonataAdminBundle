@@ -22,13 +22,15 @@ use Doctrine\Common\Collections\Collection;
 final class TraversableToCollection
 {
     /**
-     * @param mixed $value
+     * @param \Traversable|array $value
      *
      * @throws \TypeError
      *
      * @return Collection<int|string, mixed>
      *
-     * @phpstan-return Collection<array-key, mixed>
+     * @phpstan-template T
+     * @phpstan-param \Traversable<T>|array<T> $value
+     * @phpstan-return Collection<array-key, T>
      */
     public static function transform($value): Collection
     {

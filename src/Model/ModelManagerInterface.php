@@ -317,6 +317,10 @@ interface ModelManagerInterface extends DatagridManagerInterface
 
     /**
      * @param object $query
+     *
+     * @return array<object>|(\Traversable<object>&\Countable)
+     *
+     * @phpstan-return array<T>|(\Traversable<T>&\Countable)
      */
     public function executeQuery($query);
 

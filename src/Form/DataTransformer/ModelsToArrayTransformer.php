@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
@@ -178,7 +177,6 @@ class ModelsToArrayTransformer implements DataTransformerInterface
             $result = $this->modelManager->executeQuery($query);
         }
 
-        /** @phpstan-var ArrayCollection<array-key, T> $collection */
         $collection = TraversableToCollection::transform($result);
 
         $diffCount = \count($value) - $collection->count();
