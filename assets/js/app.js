@@ -10,7 +10,7 @@ global.$ = global.jQuery = $;
 
 import 'jquery.scrollto';
 
-// Only using sortable widget from jquery-ui library
+// Only using sortable widget from jQuery UI library
 import 'jquery-ui/ui/widget';
 import 'jquery-ui/ui/widgets/sortable';
 import 'bootstrap';
@@ -22,7 +22,7 @@ import 'moment';
 import '../vendor/bootstrap-datetimepicker.min';
 import 'jquery-form';
 
-// Boostrap 3 JavaScript for the x-editable library
+// Boostrap 3 JavaScript for the X-editable library
 import 'x-editable/dist/bootstrap3-editable/js/bootstrap-editable';
 
 // Full version of Select2, needed because SonataAdmin needs
@@ -32,7 +32,7 @@ import 'admin-lte';
 import 'icheck';
 import 'jquery-slimscroll';
 
-// jQuery waypoints version and sticky shortcut
+// jQuery Waypoints version and sticky shortcut
 import 'waypoints/lib/jquery.waypoints';
 import 'waypoints/lib/shortcuts/sticky';
 import 'readmore-js';
