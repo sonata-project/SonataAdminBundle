@@ -9,10 +9,12 @@
 
  */
 
-jQuery(document).ready(function(){
-  $('.sidebar-toggle').click(function(){
-    if (~document.cookie.indexOf('sonata_sidebar_hide=1')) {
-      return document.cookie = 'sonata_sidebar_hide=0;path=/';
+jQuery(document).ready(() => {
+  $('.sidebar-toggle').click(() => {
+    if (document.cookie.includes('sonata_sidebar_hide=1')) {
+      document.cookie = 'sonata_sidebar_hide=0;path=/';
+
+      return;
     }
 
     document.cookie = 'sonata_sidebar_hide=1;path=/';
