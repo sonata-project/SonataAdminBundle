@@ -19,6 +19,9 @@ jobs:
 
         continue-on-error: ${{ matrix.allowed-to-fail }}
 
+        env:
+            SYMFONY_REQUIRE: ${{matrix.symfony-require}}
+
         strategy:
             matrix:
                 php-version:
@@ -27,6 +30,7 @@ jobs:
                     - '8.0'
                 dependencies: [highest]
                 allowed-to-fail: [false]
+                symfony-require: [""]
                 variant: [normal]
                 include:
                     - php-version: '7.3'
@@ -36,11 +40,12 @@ jobs:
                     - php-version: '8.0'
                       dependencies: highest
                       allowed-to-fail: false
-                      variant: 'symfony/symfony:"4.4.*"'
+                      variant: 'sonata-project/block-bundle:"3.*"'
                     - php-version: '8.0'
                       dependencies: highest
                       allowed-to-fail: false
-                      variant: 'sonata-project/block-bundle:"3.*"'
+                      symfony-require: 4.4.*
+                      variant: 'symfony/symfony:"4.4.*"'
 
         steps:
             - name: Checkout
@@ -56,8 +61,12 @@ jobs:
             - name: Add PHPUnit matcher
               run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
+            - name: "Globally install symfony/flex"
+              if: matrix.symfony-require != ''
+              run: "composer global require --no-progress --no-scripts --no-plugins symfony/flex"
+
             - name: Install variant
-              if: matrix.variant != 'normal'
+              if: matrix.variant != 'normal' && !startsWith(matrix.variant, 'symfony/symfony')
               run: composer require ${{ matrix.variant }} --no-update
 
             - name: "Install Composer dependencies (${{ matrix.dependencies }})"
