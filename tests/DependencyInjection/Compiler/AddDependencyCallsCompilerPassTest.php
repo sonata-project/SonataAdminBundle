@@ -156,12 +156,12 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $compilerPass->process($container);
         $container->compile();
 
-        $this->assertTrue($container->hasDefinition('sonata.admin.pool'));
+        $this->assertTrue($container->hasDefinition(Pool::class));
         $this->assertTrue($container->hasDefinition('sonata_post_admin'));
         $this->assertTrue($container->hasDefinition('sonata_article_admin'));
         $this->assertTrue($container->hasDefinition('sonata_news_admin'));
 
-        $pool = $container->get('sonata.admin.pool');
+        $pool = $container->get(Pool::class);
         $this->assertInstanceOf(Pool::class, $pool);
         $adminServiceIds = $pool->getAdminServiceIds();
         $adminGroups = $pool->getAdminGroups();
@@ -171,7 +171,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertContains('sonata_article_admin', $adminServiceIds);
         $this->assertContains('sonata_news_admin', $adminServiceIds);
 
-        $poolDefinition = $container->getDefinition('sonata.admin.pool');
+        $poolDefinition = $container->getDefinition(Pool::class);
 
         $this->assertContains('sonata_post_admin', $poolDefinition->getArgument(1));
         $this->assertArrayHasKey('sonata_group_one', $poolDefinition->getArgument(2));
@@ -257,7 +257,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $compilerPass->process($container);
         $container->compile();
 
-        $pool = $container->get('sonata.admin.pool');
+        $pool = $container->get(Pool::class);
         $this->assertInstanceOf(Pool::class, $pool);
         // use array_values to check groups position
         $adminGroups = array_values($pool->getAdminGroups());
@@ -285,7 +285,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $compilerPass->process($container);
         $container->compile();
 
-        $pool = $container->get('sonata.admin.pool');
+        $pool = $container->get(Pool::class);
         $this->assertInstanceOf(Pool::class, $pool);
         $adminGroups = $pool->getAdminGroups();
 
@@ -554,7 +554,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $compilerPass->process($container);
         $container->compile();
 
-        $pool = $container->get('sonata.admin.pool');
+        $pool = $container->get(Pool::class);
         $this->assertInstanceOf(Pool::class, $pool);
         $adminServiceIds = $pool->getAdminServiceIds();
 
