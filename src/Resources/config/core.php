@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Extension\LockExtension;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\HelperController;
+use Sonata\AdminBundle\DependencyInjection\Compiler\AliasDeprecatedPublicServicesCompilerPass;
 use Sonata\AdminBundle\Event\AdminEventExtension;
 use Sonata\AdminBundle\Export\Exporter;
 use Sonata\AdminBundle\Filter\FilterFactory;
@@ -49,7 +50,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
 
         ->set('sonata.admin.pool', Pool::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            // NEXT_MAJOR: Remove alias.
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
             ->args([
                 new ReferenceConfigurator('service_container'),
                 [], // admin service ids
@@ -63,6 +67,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         ->alias(Pool::class, 'sonata.admin.pool')
+        // NEXT_MAJOR: Remove alias.
+        ->alias('sonata.admin.pool.do-not-use', 'sonata.admin.pool')
+        ->public()
 
         ->set('sonata.admin.configuration', SonataConfiguration::class)
             ->args([
@@ -79,7 +86,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ))
 
         ->set('sonata.admin.route_loader', AdminPoolLoader::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
             ->tag('routing.loader')
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
@@ -93,7 +102,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ))
 
         ->set('sonata.admin.helper', AdminHelper::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
             ->args([
                 new ReferenceConfigurator('property_accessor'),
                 // NEXT_MAJOR: Remove next line.
@@ -108,7 +119,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ))
 
         ->set('sonata.admin.builder.filter.factory', FilterFactory::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
             ->args([
                 new ReferenceConfigurator('service_container'),
                 [],
@@ -124,7 +137,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->alias(FilterFactoryInterface::class, 'sonata.admin.builder.filter.factory')
 
         ->set('sonata.admin.breadcrumbs_builder', BreadcrumbsBuilder::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
             ->args([
                 '%sonata.admin.configuration.breadcrumbs%',
             ])
@@ -135,13 +150,18 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.96 and will be removed in 4.0.',
                 '3.96'
             ))
+        // NEXT_MAJOR: Remove this alias.
+        ->alias('sonata.admin.breadcrumbs_builder.do-not-use', 'sonata.admin.breadcrumbs_builder')
+        ->public()
 
         ->alias(BreadcrumbsBuilderInterface::class, 'sonata.admin.breadcrumbs_builder')
 
         // Services used to format the label, default is sonata.admin.label.strategy.noop
 
         ->set('sonata.admin.label.strategy.bc', BCLabelTranslatorStrategy::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
 
         // NEXT_MAJOR: Remove this alias.
         ->alias(BCLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.bc')
@@ -151,7 +171,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ))
 
         ->set('sonata.admin.label.strategy.native', NativeLabelTranslatorStrategy::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
 
         // NEXT_MAJOR: Remove this alias.
         ->alias(NativeLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.native')
@@ -163,7 +185,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->alias(LabelTranslatorStrategyInterface::class, 'sonata.admin.label.strategy.native')
 
         ->set('sonata.admin.label.strategy.noop', NoopLabelTranslatorStrategy::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
 
         // NEXT_MAJOR: Remove this alias.
         ->alias(NoopLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.noop')
@@ -173,7 +197,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ))
 
         ->set('sonata.admin.label.strategy.underscore', UnderscoreLabelTranslatorStrategy::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
 
         // NEXT_MAJOR: Remove this alias.
         ->alias(UnderscoreLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.underscore')
@@ -183,7 +209,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ))
 
         ->set('sonata.admin.label.strategy.form_component', FormLabelTranslatorStrategy::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
 
         // NEXT_MAJOR: Remove this alias.
         ->alias(FormLabelTranslatorStrategy::class, 'sonata.admin.label.strategy.form_component')
@@ -194,7 +222,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
         // NEXT_MAJOR: Remove this service.
         ->set('sonata.admin.translator.extractor.jms_translator_bundle', DeprecatedAdminExtractor::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
             ->tag('jms_translation.extractor', [
                 'alias' => 'sonata_admin',
             ])
@@ -228,7 +258,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
         // NEXT_MAJOR: Remove this service.
         ->set('sonata.admin.controller.admin', HelperController::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
             ->deprecate(...BCDeprecationParameters::forConfig(
                 'The controller service "%service_id%" is deprecated in favor of several action services since sonata-project/admin-bundle 3.38.0 and will be removed in 4.0.',
                 '3.38.0'
@@ -242,7 +274,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         ->set('sonata.admin.audit.manager', AuditManager::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
             ->args([
                 // NEXT_MAJOR: Remove next line.
                 new ReferenceConfigurator('service_container'),
@@ -255,19 +289,26 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 3.96 and will be removed in 4.0.',
                 '3.96'
             ))
+        // NEXT_MAJOR: Remove this alias.
+        ->alias('sonata.admin.audit.manager.do-not-use', 'sonata.admin.audit.manager')
+        ->public()
 
         ->alias(AuditManagerInterface::class, 'sonata.admin.audit.manager')
 
         // NEXT_MAJOR: Remove this service.
         ->set('sonata.admin.exporter', Exporter::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
             ->deprecate(...BCDeprecationParameters::forConfig(
                 'The service "%service_id%" is deprecated since sonata-project/admin-bundle 3.14.0 and will be removed in 4.0. Use "sonata.exporter.exporter" service instead.',
                 '3.14.0'
             ))
 
         ->set('sonata.admin.search.handler', SearchHandler::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
             ->args([
                 '%sonata.admin.configuration.global_search.case_sensitive%',
             ])
@@ -280,7 +321,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ))
 
         ->set('sonata.admin.event.extension', AdminEventExtension::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
             ->tag('sonata.admin.extension', ['global' => true])
             ->args([
                 new ReferenceConfigurator('event_dispatcher'),
@@ -294,12 +337,16 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ))
 
         ->set('sonata.admin.lock.extension', LockExtension::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
             ->tag('sonata.admin.extension', ['global' => true])
 
         // NEXT_MAJOR: Remove this service definition and alias.
         ->set('sonata.admin.twig.global', GlobalVariables::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
                 '%sonata.admin.configuration.mosaic_background%',
@@ -322,7 +369,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->alias(FilterPersisterInterface::class, 'sonata.admin.filter_persister.session')
 
         ->set('sonata.admin.global_template_registry', TemplateRegistry::class)
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
             ->args([
                 '%sonata.admin.configuration.templates%',
             ])

@@ -11,6 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Sonata\AdminBundle\DependencyInjection\Compiler\AliasDeprecatedPublicServicesCompilerPass;
 use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
 use Sonata\AdminBundle\Security\Handler\NoopSecurityHandler;
@@ -63,15 +64,22 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->call('setObjectPermissions', ['%sonata.admin.configuration.security.object_permissions%'])
 
         ->set('sonata.admin.manipulator.acl.admin', '%sonata.admin.manipulator.acl.admin.class%')
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
             ->args([
                 '%sonata.admin.security.mask.builder.class%',
             ])
 
         ->set('sonata.admin.object.manipulator.acl.admin', '%sonata.admin.object.manipulator.acl.admin.class%')
+            // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
             ->args([
                 new ReferenceConfigurator('form.factory'),
                 '%sonata.admin.security.mask.builder.class%',
-            ]);
+            ])
+        // NEXT_MAJOR: Remove alias.
+        ->alias('sonata.admin.object.manipulator.acl.admin.do-not-use', 'sonata.admin.object.manipulator.acl.admin')
+        ->public();
 };

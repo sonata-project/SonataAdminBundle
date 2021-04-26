@@ -267,21 +267,21 @@ class CRUDControllerTest extends TestCase
 
         $this->kernel = $this->createMock(KernelInterface::class);
 
-        $this->container->set('sonata.admin.pool', $this->pool);
+        $this->container->set('sonata.admin.pool.do-not-use', $this->pool);
         $this->container->set('request_stack', $requestStack);
         $this->container->set('foo.admin', $this->admin);
         $this->container->set('foo.admin.template_registry', $this->templateRegistry);
         $this->container->set('templating', $templating);
         $this->container->set('twig', $twig);
         $this->container->set('session', $this->session);
-        $this->container->set('sonata.admin.exporter', $exporter);
-        $this->container->set('sonata.admin.audit.manager', $this->auditManager);
-        $this->container->set('sonata.admin.object.manipulator.acl.admin', $this->adminObjectAclManipulator);
+        $this->container->set('sonata.admin.exporter.do-not-use', $exporter);
+        $this->container->set('sonata.admin.audit.manager.do-not-use', $this->auditManager);
+        $this->container->set('sonata.admin.object.manipulator.acl.admin.do-not-use', $this->adminObjectAclManipulator);
         $this->container->set('security.csrf.token_manager', $this->csrfProvider);
         $this->container->set('logger', $this->logger);
         $this->container->set('kernel', $this->kernel);
         $this->container->set('translator', $this->translator);
-        $this->container->set('sonata.admin.breadcrumbs_builder', new BreadcrumbsBuilder([]));
+        $this->container->set('sonata.admin.breadcrumbs_builder.do-not-use', new BreadcrumbsBuilder([]));
 
         $this->container->setParameter(
             'security.role_hierarchy.roles',
