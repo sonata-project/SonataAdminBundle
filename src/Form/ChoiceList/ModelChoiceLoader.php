@@ -139,17 +139,16 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
                 if ($this->propertyPath) {
                     // If the property option was given, use it
                     $valueObject = $this->propertyAccessor->getValue($model, $this->propertyPath);
-                } else {
+                } elseif (method_exists($model, '__toString')) {
                     // Otherwise expect a __toString() method in the entity
-                    try {
-                        $valueObject = (string) $model;
-                    } catch (\Exception $e) {
-                        throw new RuntimeException(sprintf(
-                            'Unable to convert the entity "%s" to string, provide "property" option'
-                            .' or implement "__toString()" method in your entity.',
-                            ClassUtils::getClass($model)
-                        ), 0, $e);
-                    }
+                    $valueObject = (string) $model;
+                } else {
+                    // NEXT_MAJOR: Change for a LogicException instead.
+                    throw new RuntimeException(sprintf(
+                        'Unable to convert the model "%s" to string, provide "property" option'
+                        .' or implement "__toString()" method in your model.',
+                        ClassUtils::getClass($model)
+                    ));
                 }
 
                 $id = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($model));
