@@ -63,13 +63,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->call('setObjectPermissions', ['%sonata.admin.configuration.security.object_permissions%'])
 
         ->set('sonata.admin.manipulator.acl.admin', '%sonata.admin.manipulator.acl.admin.class%')
-            ->public()
             ->args([
                 '%sonata.admin.security.mask.builder.class%',
             ])
 
         ->set('sonata.admin.object.manipulator.acl.admin', '%sonata.admin.object.manipulator.acl.admin.class%')
-            ->public()
             ->args([
                 new ReferenceConfigurator('form.factory'),
                 '%sonata.admin.security.mask.builder.class%',

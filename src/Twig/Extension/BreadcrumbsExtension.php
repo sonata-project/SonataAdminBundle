@@ -65,7 +65,8 @@ final class BreadcrumbsExtension extends AbstractExtension
         if (null !== $breadcrumbsBuilderForBC && \get_class($breadcrumbsBuilderForBC) !== \get_class($this->breadcrumbsBuilder)) {
             @trigger_error(
                 'Overriding "breadcrumbs_builder" parameter in twig templates is deprecated since'
-                .' sonata-project/admin-bundle version 3.x. Use "sonata.admin.breadcrumbs_builder" service instead.',
+                .' sonata-project/admin-bundle version 3.x and this parameter will be removed in 4.0.'
+                .' Use "sonata.admin.breadcrumbs_builder" service instead.',
                 \E_USER_DEPRECATED
             );
 
@@ -92,7 +93,8 @@ final class BreadcrumbsExtension extends AbstractExtension
         if (null !== $breadcrumbsBuilderForBC && \get_class($breadcrumbsBuilderForBC) !== \get_class($this->breadcrumbsBuilder)) {
             @trigger_error(
                 'Overriding "breadcrumbs_builder" parameter in twig templates is deprecated since'
-                .' sonata-project/admin-bundle version 3.x. Use "sonata.admin.breadcrumbs_builder" service instead.',
+                .' sonata-project/admin-bundle version 3.x and this parameter will be removed in 4.0.'
+                .' Use "sonata.admin.breadcrumbs_builder" service instead.',
                 \E_USER_DEPRECATED
             );
 

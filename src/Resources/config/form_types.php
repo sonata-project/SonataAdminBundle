@@ -42,45 +42,36 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
 
         ->set('sonata.admin.form.type.admin', AdminType::class)
-            ->public()
             ->tag('form.type', ['alias' => 'sonata_type_admin'])
             ->args([
                 new ReferenceConfigurator('sonata.admin.helper'),
             ])
 
         ->set('sonata.admin.form.type.model_choice', ModelType::class)
-            ->public()
             ->tag('form.type', ['alias' => 'sonata_type_model'])
             ->args([
                 new ReferenceConfigurator('property_accessor'),
             ])
 
         ->set('sonata.admin.form.type.model_list', ModelListType::class)
-            ->public()
             ->tag('form.type', ['alias' => 'sonata_type_model_list'])
 
         ->set('sonata.admin.form.type.model_reference', ModelReferenceType::class)
-            ->public()
             ->tag('form.type', ['alias' => 'sonata_type_model_reference'])
 
         ->set('sonata.admin.form.type.model_hidden', ModelHiddenType::class)
-            ->public()
             ->tag('form.type', ['alias' => 'sonata_type_model_hidden'])
 
         ->set('sonata.admin.form.type.model_autocomplete', ModelAutocompleteType::class)
-            ->public()
             ->tag('form.type', ['alias' => 'sonata_type_model_autocomplete'])
 
         ->set('sonata.admin.form.type.collection', CollectionType::class)
-            ->public()
             ->tag('form.type', ['alias' => 'sonata_type_native_collection'])
 
         ->set('sonata.admin.doctrine_orm.form.type.choice_field_mask', ChoiceFieldMaskType::class)
-            ->public()
             ->tag('form.type', ['alias' => 'sonata_type_choice_field_mask'])
 
         ->set('sonata.admin.form.extension.field', FormTypeFieldExtension::class)
-            ->public()
             ->tag('form.type_extension', [
                 'alias' => 'form',
                 'extended_type' => FormType::class,
@@ -88,45 +79,36 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args(['', ''])
 
         ->set('sonata.admin.form.extension.field.mopa', MopaCompatibilityTypeFieldExtension::class)
-            ->public()
             ->tag('form.type_extension', [
                 'alias' => 'form',
                 'extended_type' => FormType::class,
             ])
 
         ->set('sonata.admin.form.extension.choice', ChoiceTypeExtension::class)
-            ->public()
             ->tag('form.type_extension', [
                 'alias' => 'choice',
                 'extended_type' => SymfonyChoiceType::class,
             ])
 
         ->set('sonata.admin.form.filter.type.number', NumberType::class)
-            ->public()
             ->tag('form.type', ['alias' => 'sonata_type_filter_number'])
 
         ->set('sonata.admin.form.filter.type.choice', ChoiceType::class)
-            ->public()
             ->tag('form.type', ['alias' => 'sonata_type_filter_choice'])
 
         ->set('sonata.admin.form.filter.type.default', DefaultType::class)
-            ->public()
             ->tag('form.type', ['alias' => 'sonata_type_filter_default'])
 
         ->set('sonata.admin.form.filter.type.date', DateType::class)
-            ->public()
             ->tag('form.type', ['alias' => 'sonata_type_filter_date'])
 
         ->set('sonata.admin.form.filter.type.daterange', DateRangeType::class)
-            ->public()
             ->tag('form.type', ['alias' => 'sonata_type_filter_date_range'])
 
         ->set('sonata.admin.form.filter.type.datetime', DateTimeType::class)
-            ->public()
             ->tag('form.type', ['alias' => 'sonata_type_filter_datetime'])
 
         ->set('sonata.admin.form.filter.type.datetime_range', DateTimeRangeType::class)
-            ->public()
             ->tag('form.type', ['alias' => 'sonata_type_filter_datetime_range'])
 
         ->set('sonata.admin.form.data_transformer.boolean_to_string', BooleanToStringTransformer::class)

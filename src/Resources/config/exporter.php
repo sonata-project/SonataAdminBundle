@@ -21,7 +21,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
 
         ->set('sonata.admin.admin_exporter', AdminExporter::class)
-            ->public()
             ->args([
                 new ReferenceConfigurator('sonata.exporter.exporter'),
             ])

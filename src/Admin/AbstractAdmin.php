@@ -37,6 +37,8 @@ use Sonata\AdminBundle\Util\ParametersManipulator;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -1956,6 +1958,13 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * @phpstan-param T $object
      */
+    protected function preValidate(object $object): void
+    {
+    }
+
+    /**
+     * @phpstan-param T $object
+     */
     protected function preUpdate(object $object): void
     {
     }
@@ -2419,7 +2428,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         $this->loaded['form'] = true;
 
-        $this->form = $this->getFormBuilder()->getForm();
+        $formBuilder = $this->getFormBuilder();
+        $formBuilder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $this->preValidate($event->getData());
+        }, 100);
+
+        $this->form = $formBuilder->getForm();
 
         return $this->form;
     }

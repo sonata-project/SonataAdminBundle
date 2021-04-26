@@ -12,5 +12,10 @@ file that was distributed with this source code.
 {% extends get_admin_template('base_list_field', admin.code) %}
 
 {% block field %}
-    {%- include '@SonataAdmin/CRUD/display_trans.html.twig' -%}
+    {%- include '@SonataAdmin/CRUD/display_trans.html.twig' with {
+        value: value,
+        value_format: field_description.option('format'),
+        translation_domain: field_description.option('catalogue', admin.translationDomain),
+        safe: field_description.option('safe'),
+    } only -%}
 {% endblock %}

@@ -56,6 +56,8 @@ final class SearchActionTest extends TestCase
     private $twig;
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
      * @var Stub&BreadcrumbsBuilderInterface
      */
     private $breadcrumbsBuilder;
@@ -77,6 +79,7 @@ final class SearchActionTest extends TestCase
             $this->pool,
             $this->searchHandler,
             $templateRegistry,
+            // NEXT_MAJOR: Remove next line.
             $this->breadcrumbsBuilder,
             $this->twig
         );

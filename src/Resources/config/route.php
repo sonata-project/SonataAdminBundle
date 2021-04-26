@@ -24,27 +24,23 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
 
         ->set('sonata.admin.route.path_info', PathInfoBuilder::class)
-            ->public()
             ->args([
                 new ReferenceConfigurator('sonata.admin.audit.manager'),
             ])
 
         ->set('sonata.admin.route.default_generator', DefaultRouteGenerator::class)
-            ->public()
             ->args([
                 new ReferenceConfigurator('router'),
                 new ReferenceConfigurator('sonata.admin.route.cache'),
             ])
 
         ->set('sonata.admin.route.cache', RoutesCache::class)
-            ->public()
             ->args([
                 '%kernel.cache_dir%/sonata/admin',
                 '%kernel.debug%',
             ])
 
         ->set('sonata.admin.route.cache_warmup', RoutesCacheWarmUp::class)
-            ->public()
             ->tag('kernel.cache_warmer')
             ->args([
                 new ReferenceConfigurator('sonata.admin.route.cache'),

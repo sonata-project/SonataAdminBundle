@@ -25,7 +25,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
 
         ->set('sonata.admin.menu_builder', MenuBuilder::class)
-            ->public()
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
                 new ReferenceConfigurator('knp_menu.factory'),
@@ -34,7 +33,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         ->set('sonata.admin.sidebar_menu', MenuItem::class)
-            ->public()
             ->tag('knp_menu.menu', ['alias' => 'sonata_admin_sidebar'])
             ->factory([
                 new ReferenceConfigurator('sonata.admin.menu_builder'),
@@ -50,13 +48,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         ->set('sonata.admin.menu.matcher.voter.admin', AdminVoter::class)
-            ->public()
             ->tag('knp_menu.voter')
             ->args([
                 new ReferenceConfigurator('request_stack'),
             ])
 
         ->set('sonata.admin.menu.matcher.voter.active', ActiveVoter::class)
-            ->public()
             ->tag('knp_menu.voter');
 };

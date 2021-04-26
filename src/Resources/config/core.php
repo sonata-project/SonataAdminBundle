@@ -45,7 +45,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
 
         ->set('sonata.admin.pool', Pool::class)
-            ->public()
             ->args([
                 null, // admin service locator
                 [], // admin service ids
@@ -54,6 +53,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         ->alias(Pool::class, 'sonata.admin.pool')
+        ->public()
 
         ->set('sonata.admin.configuration', SonataConfiguration::class)
             ->args([
@@ -63,20 +63,17 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         ->set('sonata.admin.route_loader', AdminPoolLoader::class)
-            ->public()
             ->tag('routing.loader')
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
             ])
 
         ->set('sonata.admin.helper', AdminHelper::class)
-            ->public()
             ->args([
                 new ReferenceConfigurator('property_accessor'),
             ])
 
         ->set('sonata.admin.builder.filter.factory', FilterFactory::class)
-            ->public()
             ->args([
                 null, // Service locator
             ])
@@ -84,7 +81,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->alias(FilterFactoryInterface::class, 'sonata.admin.builder.filter.factory')
 
         ->set('sonata.admin.breadcrumbs_builder', BreadcrumbsBuilder::class)
-            ->public()
             ->args([
                 '%sonata.admin.configuration.breadcrumbs%',
             ])
@@ -94,21 +90,16 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // Services used to format the label, default is sonata.admin.label.strategy.noop
 
         ->set('sonata.admin.label.strategy.bc', BCLabelTranslatorStrategy::class)
-            ->public()
 
         ->set('sonata.admin.label.strategy.native', NativeLabelTranslatorStrategy::class)
-            ->public()
 
         ->alias(LabelTranslatorStrategyInterface::class, 'sonata.admin.label.strategy.native')
 
         ->set('sonata.admin.label.strategy.noop', NoopLabelTranslatorStrategy::class)
-            ->public()
 
         ->set('sonata.admin.label.strategy.underscore', UnderscoreLabelTranslatorStrategy::class)
-            ->public()
 
         ->set('sonata.admin.label.strategy.form_component', FormLabelTranslatorStrategy::class)
-            ->public()
 
         ->set('sonata.admin.translation_extractor', AdminExtractor::class)
             ->tag('translation.extractor', [
@@ -120,7 +111,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         ->set('sonata.admin.audit.manager', AuditManager::class)
-            ->public()
             ->args([
                 null, // Service locator
             ])
@@ -128,7 +118,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->alias(AuditManagerInterface::class, 'sonata.admin.audit.manager')
 
         ->set('sonata.admin.search.handler', SearchHandler::class)
-            ->public()
             ->args([
                 '%sonata.admin.configuration.global_search.case_sensitive%',
             ])
@@ -139,14 +128,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->call('setContainer', [new ReferenceConfigurator(ContainerInterface::class)])
 
         ->set('sonata.admin.event.extension', AdminEventExtension::class)
-            ->public()
             ->tag('sonata.admin.extension', ['global' => true])
             ->args([
                 new ReferenceConfigurator('event_dispatcher'),
             ])
 
         ->set('sonata.admin.lock.extension', LockExtension::class)
-            ->public()
             ->tag('sonata.admin.extension', ['global' => true])
 
         ->set('sonata.admin.filter_persister.session', SessionFilterPersister::class)
@@ -157,7 +144,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->alias(FilterPersisterInterface::class, 'sonata.admin.filter_persister.session')
 
         ->set('sonata.admin.global_template_registry', TemplateRegistry::class)
-            ->public()
             ->args([
                 '%sonata.admin.configuration.templates%',
             ]);

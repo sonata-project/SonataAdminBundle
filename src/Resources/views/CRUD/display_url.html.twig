@@ -1,40 +1,55 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
 {%- apply spaceless %}
+    {# NEXT_MAJOR: Remove this BC-layer #}
+    {% if field_description is defined %}
+        {% set url = url|default(field_description.option('url')) %}
+        {% set route = route|default(field_description.option('route')) %}
+        {% set hide_protocol = hide_protocol|default(field_description.option('hide_protocol', false)) %}
+        {% set attributes = attributes|default(field_description.option('attributes', [])) %}
+        {% set safe = safe|default(field_description.option('safe', false)) %}
+    {% endif %}
+
     {% if value is empty %}
         &nbsp;
     {% else %}
-        {% if field_description.option('url') %}
+        {% if url|default(null) %}
             {# target url is string #}
-            {% set url_address = field_description.option('url') %}
-        {% elseif field_description.option('route') is not null and field_description.option('route').name not in ['edit', 'show'] %}
+            {% set url_address = url %}
+        {% elseif route|default(null) is not null %}
             {# target url is Symfony route #}
-            {% set parameters = field_description.option('route').parameters|default([]) %}
+            {% set parameters = route.parameters|default([]) %}
 
-            {# route with paramter related to object ID #}
-            {% if field_description.option('route').identifier_parameter_name is defined %}
-                {% set parameters = parameters|merge({(field_description.option('route').identifier_parameter_name):(admin.normalizedidentifier(object))}) %}
-            {% endif %}
-
-            {% if field_description.option('route').absolute|default(false) %}
-                {% set url_address = url(field_description.option('route').name, parameters) %}
+            {% if route.absolute|default(false) %}
+                {% set url_address = url(route.name, parameters) %}
             {% else %}
-                {% set url_address = path(field_description.option('route').name, parameters) %}
+                {% set url_address = path(route.name, parameters) %}
             {% endif %}
         {% else %}
             {# value is url #}
             {% set url_address = value %}
         {% endif %}
 
-        {% if field_description.option('hide_protocol', false) %}
+        {% if hide_protocol|default(false) %}
             {% set value = value|replace({'http://': '', 'https://': ''}) %}
         {% endif %}
 
         <a
             href="{{ url_address }}"
-        {%- for attribute, value in field_description.option('attributes', []) %}
+        {%- for attribute, value in attributes|default([]) %}
             {{ attribute }}="{{ value|escape('html_attr') }}"
         {%- endfor -%}
         >
-        {%- if field_description.option('safe', false) -%}
+        {%- if safe|default(false) -%}
             {{- value|raw -}}
         {%- else -%}
             {{- value -}}
