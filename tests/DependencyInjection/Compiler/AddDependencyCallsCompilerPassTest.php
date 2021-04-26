@@ -13,37 +13,19 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
-use Knp\Menu\Matcher\MatcherInterface;
-use Knp\Menu\Provider\MenuProviderInterface;
-use Knp\Menu\Silex\RouterAwareFactory;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
-use Sonata\AdminBundle\Route\RoutesCache;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\FooAdminController;
 use Sonata\BlockBundle\DependencyInjection\SonataBlockExtension;
-use Sonata\DoctrinePHPCRAdminBundle\Route\PathInfoBuilderSlashes;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
-use Symfony\Bundle\FrameworkBundle\Translation\TranslatorInterface;
-use Symfony\Bundle\FrameworkBundle\Validator\Validator;
-use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;
 use Symfony\Component\DependencyInjection\Compiler\ResolveEnvPlaceholdersPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Validator\ContainerConstraintValidatorFactory;
 
 /**
  * @author Tiago Garcia
@@ -520,6 +502,12 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $config = $this->config;
         $config['default_controller'] = FooAdminController::class;
 
+        $this->container
+            ->register('sonata_without_controller')
+            ->setClass(MockAdmin::class)
+            ->setArguments(['', ReportTwo::class, ''])
+            ->addTag('sonata.admin', ['group' => 'sonata_report_two_group', 'manager_type' => 'orm']);
+
         $this->extension->load([$config], $this->container);
 
         $this->compile();
@@ -629,93 +617,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->container->setParameter('kernel.cache_dir', '/tmp');
         $this->container->setParameter('kernel.debug', true);
 
-        // Add dependencies for SonataAdminBundle (these services will never get called so dummy classes will do)
-        $this->container
-            ->register('twig')
-            ->setClass(EngineInterface::class);
-        $this->container
-            ->register('templating')
-            ->setClass(EngineInterface::class);
-        $this->container
-            ->register('translator')
-            ->setClass(TranslatorInterface::class);
-        $this->container
-            ->register('validator')
-            ->setClass(Validator::class);
-        $this->container
-            ->register('validator.validator_factory')
-            ->setClass(ContainerConstraintValidatorFactory::class);
-        $this->container
-            ->register('router')
-            ->setClass(RouterInterface::class);
-        $this->container
-            ->register('property_accessor')
-            ->setClass(PropertyAccessor::class);
-        $this->container
-            ->register('form.factory')
-            ->setClass(FormFactoryInterface::class);
-        $this->container
-            ->register('request_stack')
-            ->setClass(RequestStack::class);
-        $this->container
-            ->register('session')
-            ->setClass(Session::class);
-        $this->container
-            ->register('security.authorization_checker')
-            ->setClass(AuthorizationCheckerInterface::class);
-        foreach ([
-            'doctrine_phpcr' => 'PHPCR',
-            'orm' => 'ORM', ] as $key => $bundleSubstring) {
-            $this->container
-                ->register(sprintf('sonata.admin.manager.%s', $key))
-                ->setClass(sprintf(
-                    'Sonata\Doctrine%sAdminBundle\Model\ModelManager',
-                    $bundleSubstring
-                ));
-            $this->container
-                ->register(sprintf('sonata.admin.builder.%s_form', $key))
-                ->setClass(sprintf(
-                    'Sonata\Doctrine%sAdminBundle\Builder\FormContractor',
-                    $bundleSubstring
-                ));
-            $this->container
-                ->register(sprintf('sonata.admin.builder.%s_show', $key))
-                ->setClass(sprintf(
-                    'Sonata\Doctrine%sAdminBundle\Builder\ShowBuilder',
-                    $bundleSubstring
-                ));
-            $this->container
-                ->register(sprintf('sonata.admin.builder.%s_list', $key))
-                ->setClass(sprintf(
-                    'Sonata\Doctrine%sAdminBundle\Builder\ListBuilder',
-                    $bundleSubstring
-                ));
-            $this->container
-                ->register(sprintf('sonata.admin.builder.%s_datagrid', $key))
-                ->setClass(sprintf(
-                    'Sonata\Doctrine%sAdminBundle\Builder\DatagridBuilder',
-                    $bundleSubstring
-                ));
-        }
-        $this->container
-            ->register('sonata.admin.route.path_info_slashes')
-            ->setClass(PathInfoBuilderSlashes::class);
-        $this->container
-            ->register('sonata.admin.route.cache')
-            ->setClass(RoutesCache::class);
-        $this->container
-            ->register('knp_menu.factory')
-            ->setClass(RouterAwareFactory::class);
-        $this->container
-            ->register('knp_menu.menu_provider')
-            ->setClass(MenuProviderInterface::class);
-        $this->container
-            ->register('knp_menu.matcher')
-            ->setClass(MatcherInterface::class);
-        $this->container
-            ->register('event_dispatcher')
-            ->setClass(EventDispatcherInterface::class);
-
         // Add admin definition's
         $this->container
             ->register('sonata_news_admin')
@@ -751,25 +652,12 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             ->setClass(MockAdmin::class)
             ->setArguments(['', ReportTwo::class, CRUDController::class])
             ->addTag('sonata.admin', ['group' => 'sonata_report_two_group', 'manager_type' => 'orm', 'show_mosaic_button' => true]);
-        $this->container
-            ->register('sonata_without_controller')
-            ->setClass(MockAdmin::class)
-            ->setArguments(['', ReportTwo::class, ''])
-            ->addTag('sonata.admin', ['group' => 'sonata_report_two_group', 'manager_type' => 'orm']);
 
         // translator
         $this->container
             ->register('translator.default')
             ->setClass(Translator::class);
         $this->container->setAlias('translator', 'translator.default');
-
-        // Add definitions for sonata.templating service
-        $this->container
-            ->register('kernel')
-            ->setClass(KernelInterface::class);
-        $this->container
-            ->register('file_locator')
-            ->setClass(FileLocatorInterface::class);
 
         $blockExtension = new SonataBlockExtension();
         $blockExtension->load([], $this->container);
@@ -782,7 +670,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
     private function allowToResolveParameters(): void
     {
-        $this->container->setParameter('kernel.project_dir', '/');
+        $this->container->setParameter('kernel.project_dir', '/tmp');
         $this->container->addCompilerPass(new ResolveEnvPlaceholdersPass(), PassConfig::TYPE_AFTER_REMOVING, -1000);
     }
 }
