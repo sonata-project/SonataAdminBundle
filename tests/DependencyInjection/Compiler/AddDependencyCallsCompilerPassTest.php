@@ -610,7 +610,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     private function setUpContainer(): void
     {
         $this->container->setParameter('kernel.bundles', [
-            'SonataCoreBundle' => true,
             'KnpMenuBundle' => true,
         ]);
         $this->container->setParameter('kernel.cache_dir', '/tmp');
