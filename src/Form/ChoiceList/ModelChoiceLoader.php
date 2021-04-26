@@ -145,8 +145,8 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
                 } else {
                     // NEXT_MAJOR: Change for a LogicException instead.
                     throw new RuntimeException(sprintf(
-                        'Unable to convert the entity "%s" to string, provide "property" option'
-                        .' or implement "__toString()" method in your entity.',
+                        'Unable to convert the model "%s" to string, provide "property" option'
+                        .' or implement "__toString()" method in your model.',
                         ClassUtils::getClass($model)
                     ));
                 }
