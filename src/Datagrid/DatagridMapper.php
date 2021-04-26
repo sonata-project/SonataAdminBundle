@@ -74,6 +74,8 @@ class DatagridMapper extends BaseMapper implements MapperInterface
      * @throws \LogicException
      *
      * @return DatagridMapper
+     *
+     * @phpstan-param class-string|null $type
      */
     public function add(
         $name,
