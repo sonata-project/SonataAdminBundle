@@ -37,6 +37,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 {
+    /**
+     * NEXT_MAJOR: Remove this constant.
+     *
+     * @deprecated since sonata-project/sonata-admin 3.x, will be removed in 4.0
+     */
     public const MOSAIC_ICON_CLASS = 'fa fa-th-large fa-fw';
 
     /**
@@ -69,13 +74,8 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 
     /**
      * @var array<string, array<string, string>>
-     *
-     * @phpstan-var array{list: array{class: string}, mosaic: array{class: string}}
      */
-    protected $listModes = [
-        'list' => ['class' => 'fa fa-list fa-fw'],
-        'mosaic' => ['class' => self::MOSAIC_ICON_CLASS],
-    ];
+    protected $listModes = TaggedAdminInterface::DEFAULT_LIST_MODES;
 
     /**
      * @var string
@@ -265,13 +265,26 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         return $this->label;
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     final public function showMosaicButton($isShown)
     {
+        @trigger_error(sprintf(
+            'The method %s() is deprecated since sonata-project/admin-bundle 3.x. Use `setListModes` instead.',
+            __METHOD__
+        ), \E_USER_DEPRECATED);
+
         if ($isShown) {
             $this->listModes['mosaic'] = ['class' => static::MOSAIC_ICON_CLASS];
         } else {
             unset($this->listModes['mosaic']);
         }
+    }
+
+    final public function setListModes(array $listModes): void
+    {
+        $this->listModes = $listModes;
     }
 
     /**

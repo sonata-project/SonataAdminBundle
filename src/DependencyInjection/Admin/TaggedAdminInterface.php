@@ -44,7 +44,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @method void                             initialize()
  * @method void                             setLabel(?string $label)
- * @method void                             showMosaicButton(bool $isShown)
  * @method void                             setPagerType(string $pagerType)
  * @method string                           getPagerType()
  * @method void                             setManagerType(string $managerType)
@@ -70,6 +69,11 @@ interface TaggedAdminInterface
 {
     public const ADMIN_TAG = 'sonata.admin';
 
+    public const DEFAULT_LIST_MODES = [
+        'list' => ['class' => 'fa fa-list fa-fw'],
+        'mosaic' => ['class' => 'fa fa-th-large fa-fw'],
+    ];
+
     /**
      * NEXT_MAJOR: Uncomment this method.
      *
@@ -90,12 +94,12 @@ interface TaggedAdminInterface
     /**
      * NEXT_MAJOR: Uncomment this method.
      *
-     * Enable/Disable mosaic button for the admin screen.
+     * @param array<string, array<string, string>>
      */
-//    public function showMosaicButton(bool $isShown): void;
+//    public function setListModes(array $listModes): void;
 
     /**
-     * @return array<string, array<string, mixed>>
+     * @return array<string, array<string, string>>
      */
     public function getListModes();
 
