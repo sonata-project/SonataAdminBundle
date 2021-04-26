@@ -25,7 +25,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 interface FormContractorInterface extends BuilderInterface
 {
     /**
-     * NEXT_MAJOR: Remove the __construct from the interface.
+     * NEXT_MAJOR: Remove the `__construct()` method from the interface.
      */
     public function __construct(FormFactoryInterface $formFactory);
 
