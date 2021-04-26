@@ -205,7 +205,7 @@ final class SonataAdminExtension extends Extension
     private function buildStylesheets(array $config): array
     {
         $config['assets']['stylesheets'][] = sprintf(
-            'bundles/sonataadmin/dist/admin-lte/css/skins/%s.min.css',
+            'bundles/sonataadmin/dist/admin-lte-skins/%s.min.css',
             $config['options']['skin']
         );
 

@@ -9,8 +9,10 @@ If you still need it, please set it up on your own!
 
 Frontend dependencies are handled with NPM. Bower is not used anymore.
 
-A lot of assets that were previously public are handled with NPM and placed in a private `node_modules/` directory. 
+A lot of assets that were previously public are handled with NPM and placed in a private `node_modules/` directory.
 From these dependencies, only the necessary files are exposed publicly through Webpack Encore.
+
+The jQuery UI dependency was fully included before, but now we only include the sortable widget (JavaScript and CSS), the rest of this dependency is not exposed. If you are adding more JavaScript or CSS using another widget of jQuery UI please include it yourself.
 
 Please check the `src/Resources/public/dist` and the documentation to see the used CSS, JavaScript, images and fonts.
 
