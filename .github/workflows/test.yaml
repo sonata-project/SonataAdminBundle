@@ -40,10 +40,6 @@ jobs:
                     - php-version: '8.0'
                       dependencies: highest
                       allowed-to-fail: false
-                      variant: 'sonata-project/block-bundle:"3.*"'
-                    - php-version: '8.0'
-                      dependencies: highest
-                      allowed-to-fail: false
                       variant: 'sonata-project/block-bundle:"4.*"'
                     - php-version: '8.0'
                       dependencies: highest
