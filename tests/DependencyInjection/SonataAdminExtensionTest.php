@@ -124,8 +124,8 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
     {
         $this->container->setParameter('kernel.bundles', []);
         $removeStylesheets = [
-            'bundles/sonataadmin/dist/admin-lte/css/skins/skin-black.min.css',
-            'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
+            'bundles/sonataadmin/dist/app.css',
+            'bundles/sonataadmin/dist/admin-lte-skins/skin-black.min.css',
         ];
         $this->load([
             'assets' => [
@@ -165,8 +165,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
     {
         $this->container->setParameter('kernel.bundles', []);
         $removeJavascripts = [
-            'bundles/sonataadmin/vendor/readmore-js/readmore.min.js',
-            'bundles/sonataadmin/jquery/jquery.confirmExit.js',
+            'bundles/sonataadmin/dist/app.js',
         ];
         $this->load([
             'assets' => [
@@ -190,12 +189,11 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $extraStylesheets = ['foo/bar.css', 'bar/quux.css'];
         $extraJavascripts = ['foo/bar.js', 'bar/quux.js'];
         $removeStylesheets = [
-            'bundles/sonataadmin/dist/admin-lte/css/skins/skin-black.min.css',
-            'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
+            'bundles/sonataadmin/dist/app.css',
+            'bundles/sonataadmin/dist/admin-lte-skins/skin-black.min.css',
         ];
         $removeJavascripts = [
-            'bundles/sonataadmin/vendor/readmore-js/readmore.min.js',
-            'bundles/sonataadmin/jquery/jquery.confirmExit.js',
+            'bundles/sonataadmin/dist/app.js',
         ];
         $this->load([
             'assets' => [
@@ -373,7 +371,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $defaultStylesheets = $this->defaultConfiguration['assets']['stylesheets'];
         $defaultStylesheets[] = sprintf(
-            'bundles/sonataadmin/dist/admin-lte/css/skins/%s.min.css',
+            'bundles/sonataadmin/dist/admin-lte-skins/%s.min.css',
             $skin
         );
 

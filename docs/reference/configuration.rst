@@ -190,25 +190,9 @@ Full Configuration Options
                 javascripts:
 
                     # The default javascript list:
-                    - bundles/sonataadmin/dist/jquery/jquery.min.js
-                    - bundles/sonataadmin/dist/jquery-scrollto/jquery.scrollTo.min.js
-                    - bundles/sonataadmin/dist/jquery-ui/jquery-ui.min.js
-                    - bundles/sonataadmin/dist/jquery-ui/jquery-ui-i18n.min.js
-                    - bundles/sonataadmin/dist/moment/moment.min.js
-                    - bundles/sonataadmin/dist/bootstrap/bootstrap.min.js
-                    - bundles/sonataadmin/dist/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js
-                    - bundles/sonataadmin/dist/jquery-form/jquery.form.js
-                    - bundles/sonataadmin/dist/jquery.confirmExit/jquery.confirmExit.js
-                    - bundles/sonataadmin/dist/x-editable/bootstrap-editable.min.js
-                    - bundles/sonataadmin/dist/select2/select2.full.min.js
-                    - bundles/sonataadmin/dist/admin-lte/js/adminlte.min.js
-                    - bundles/sonataadmin/dist/icheck/icheck.min.js
-                    - bundles/sonataadmin/dist/jquery-slimscroll/jquery.slimscroll.min.js
-                    - bundles/sonataadmin/dist/waypoints/jquery.waypoints.min.js
-                    - bundles/sonataadmin/dist/waypoints/shortcuts/sticky.min.js
-                    - bundles/sonataadmin/dist/readmore-js/readmore.min.js
-                    - bundles/sonataadmin/dist/masonry-layout/masonry.pkgd.min.js
+                    - bundles/sonataadmin/dist/app.js
                     - bundles/sonataadmin/Admin.js
+                    - bundles/sonataadmin/jquery.confirmExit.js
                     - bundles/sonataadmin/treeview.js
                     - bundles/sonataadmin/sidebar.js
                     - bundles/sonataadmin/base.js
