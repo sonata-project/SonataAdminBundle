@@ -40,6 +40,10 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
+        if (!$container->has('sonata.admin.pool')) {
+            return;
+        }
+
         // check if translator service exist
         if (!$container->has('translator')) {
             throw new \RuntimeException('The "translator" service is not yet enabled.
