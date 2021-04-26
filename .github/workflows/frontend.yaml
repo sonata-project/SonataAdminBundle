@@ -33,5 +33,11 @@ jobs:
             - name: Install NPM dependencies
               uses: bahmutov/npm-install@v1
 
+            - name: Run Eslint
+              run: yarn run eslint assets/js
+
+            - name: Run Stylelint
+              run: yarn run stylelint assets/scss
+
             - name: Run Webpack Encore
               run: yarn encore production

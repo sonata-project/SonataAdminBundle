@@ -1,11 +1,11 @@
 /*!
-* jQuery confirmExit plugin
-* https://github.com/dunglas/jquery.confirmExit
-*
-* Copyright 2012 Kévin Dunglas <dunglas@gmail.com>
-* Released under the MIT license
-* http://www.opensource.org/licenses/mit-license.php
-*/
+ * This file is part of the Sonata Project package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 jQuery.fn.confirmExit = function confirmExit() {
   jQuery(this).attr('data-original', jQuery(this).serialize());

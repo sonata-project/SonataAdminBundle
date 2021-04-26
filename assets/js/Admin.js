@@ -1,12 +1,10 @@
-/*
-
- This file is part of the Sonata package.
-
- (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
-
- For the full copyright and license information, please view the LICENSE
- file that was distributed with this source code.
-
+/*!
+ * This file is part of the Sonata Project package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 const Admin = {
@@ -323,7 +321,7 @@ const Admin = {
       );
 
       // Keep only changed values
-      $form.find('[name*=filter]').each((i, field) => {
+      $form.find('[name*=filter]').each((_i, field) => {
         if (JSON.stringify(defaults[field.name] || '') === JSON.stringify($(field).val())) {
           field.removeAttribute('name');
         }
