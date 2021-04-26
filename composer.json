@@ -72,7 +72,7 @@
     },
     "require-dev": {
         "matthiasnoback/symfony-config-test": "^4.2",
-        "matthiasnoback/symfony-dependency-injection-test": "^4.1",
+        "matthiasnoback/symfony-dependency-injection-test": "^4.2",
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^0.12.82",
         "phpstan/phpstan-phpunit": "^0.12.18",

@@ -53,7 +53,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         ->alias(Pool::class, 'sonata.admin.pool')
-        ->public()
 
         ->set('sonata.admin.configuration', SonataConfiguration::class)
             ->args([
