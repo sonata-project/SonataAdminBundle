@@ -36,7 +36,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.twig.extension', SonataAdminExtension::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('twig.extension')
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),

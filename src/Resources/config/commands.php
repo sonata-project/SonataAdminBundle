@@ -30,7 +30,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set(CreateClassCacheCommand::class, CreateClassCacheCommand::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('console.command', [
                 'command' => 'cache:create-cache-class',
             ])
@@ -46,7 +46,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.command.explain', ExplainAdminCommand::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('console.command')
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
@@ -64,7 +64,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.command.generate_object_acl', GenerateObjectAclCommand::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('console.command')
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
@@ -81,7 +81,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.command.list', ListAdminCommand::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('console.command')
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
@@ -97,7 +97,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.command.setup_acl', SetupAclCommand::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('console.command')
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),

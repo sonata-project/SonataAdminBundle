@@ -28,7 +28,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.route.path_info', PathInfoBuilder::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->args([
                 new ReferenceConfigurator('sonata.admin.audit.manager'),
             ])
@@ -36,7 +36,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.route.query_string', QueryStringBuilder::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->args([
                 new ReferenceConfigurator('sonata.admin.audit.manager'),
             ])
@@ -44,7 +44,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.route.default_generator', DefaultRouteGenerator::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->args([
                 new ReferenceConfigurator('router'),
                 new ReferenceConfigurator('sonata.admin.route.cache'),
@@ -53,7 +53,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.route.cache', RoutesCache::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->args([
                 '%kernel.cache_dir%/sonata/admin',
                 '%kernel.debug%',
@@ -62,7 +62,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.route.cache_warmup', RoutesCacheWarmUp::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('kernel.cache_warmer')
             ->args([
                 new ReferenceConfigurator('sonata.admin.route.cache'),

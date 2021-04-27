@@ -45,7 +45,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.form.type.admin', AdminType::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('form.type', ['alias' => 'sonata_type_admin'])
             ->args([
                 new ReferenceConfigurator('sonata.admin.helper'),
@@ -54,7 +54,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.form.type.model_choice', ModelType::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('form.type', ['alias' => 'sonata_type_model'])
             ->args([
                 new ReferenceConfigurator('property_accessor'),
@@ -63,43 +63,43 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.form.type.model_list', ModelListType::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('form.type', ['alias' => 'sonata_type_model_list'])
 
         ->set('sonata.admin.form.type.model_reference', ModelReferenceType::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('form.type', ['alias' => 'sonata_type_model_reference'])
 
         ->set('sonata.admin.form.type.model_hidden', ModelHiddenType::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('form.type', ['alias' => 'sonata_type_model_hidden'])
 
         ->set('sonata.admin.form.type.model_autocomplete', ModelAutocompleteType::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('form.type', ['alias' => 'sonata_type_model_autocomplete'])
 
         ->set('sonata.admin.form.type.collection', CollectionType::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('form.type', ['alias' => 'sonata_type_native_collection'])
 
         ->set('sonata.admin.doctrine_orm.form.type.choice_field_mask', ChoiceFieldMaskType::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('form.type', ['alias' => 'sonata_type_choice_field_mask'])
 
         ->set('sonata.admin.form.extension.field', FormTypeFieldExtension::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('form.type_extension', [
                 'alias' => 'form',
                 'extended_type' => FormType::class,
@@ -109,7 +109,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.form.extension.field.mopa', MopaCompatibilityTypeFieldExtension::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('form.type_extension', [
                 'alias' => 'form',
                 'extended_type' => FormType::class,
@@ -118,7 +118,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.form.extension.choice', ChoiceTypeExtension::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('form.type_extension', [
                 'alias' => 'choice',
                 'extended_type' => SymfonyChoiceType::class,
@@ -127,7 +127,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.form.filter.type.number', NumberType::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('form.type', ['alias' => 'sonata_type_filter_number'])
             ->args([
                 new ReferenceConfigurator('translator'),
@@ -136,7 +136,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.form.filter.type.choice', ChoiceType::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('form.type', ['alias' => 'sonata_type_filter_choice'])
             ->args([
                 new ReferenceConfigurator('translator'),
@@ -145,13 +145,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.form.filter.type.default', DefaultType::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('form.type', ['alias' => 'sonata_type_filter_default'])
 
         ->set('sonata.admin.form.filter.type.date', DateType::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('form.type', ['alias' => 'sonata_type_filter_date'])
             ->args([
                 new ReferenceConfigurator('translator'),
@@ -160,7 +160,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.form.filter.type.daterange', DateRangeType::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('form.type', ['alias' => 'sonata_type_filter_date_range'])
             ->args([
                 new ReferenceConfigurator('translator'),
@@ -169,7 +169,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.form.filter.type.datetime', DateTimeType::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('form.type', ['alias' => 'sonata_type_filter_datetime'])
             ->args([
                 new ReferenceConfigurator('translator'),
@@ -178,7 +178,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.form.filter.type.datetime_range', DateTimeRangeType::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('form.type', ['alias' => 'sonata_type_filter_datetime_range'])
             ->args([
                 new ReferenceConfigurator('translator'),

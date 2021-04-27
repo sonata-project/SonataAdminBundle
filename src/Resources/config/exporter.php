@@ -24,7 +24,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.admin_exporter', AdminExporter::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->args([
                 new ReferenceConfigurator('sonata.exporter.exporter'),
             ])

@@ -26,7 +26,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.validator.inline', InlineValidator::class)
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->tag('validator.constraint_validator', ['alias' => 'sonata.admin.validator.inline'])
             ->args([
                 new ReferenceConfigurator('service_container'),
