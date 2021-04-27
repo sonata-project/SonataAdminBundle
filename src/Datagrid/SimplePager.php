@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Datagrid;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Sonata\AdminBundle\Util\TraversableToCollection;
 
 /**
@@ -27,7 +26,7 @@ use Sonata\AdminBundle\Util\TraversableToCollection;
 final class SimplePager extends Pager
 {
     /**
-     * @var Collection<array-key, object>|null
+     * @var iterable<array-key, object>|null
      */
     protected $results;
 
@@ -81,16 +80,18 @@ final class SimplePager extends Pager
             return $this->results;
         }
 
-        $this->results = TraversableToCollection::transform($this->getQuery()->execute());
-        $this->thresholdCount = $this->results->count();
+        $results = TraversableToCollection::transform($this->getQuery()->execute());
+        $this->thresholdCount = $results->count();
 
         if ($this->thresholdCount > $this->getMaxPerPage()) {
             $this->haveToPaginate = true;
 
-            $this->results = new ArrayCollection($this->results->slice(0, $this->getMaxPerPage()));
+            $results = new ArrayCollection($results->slice(0, $this->getMaxPerPage()));
         } else {
             $this->haveToPaginate = false;
         }
+
+        $this->results = $results;
 
         return $this->results;
     }
