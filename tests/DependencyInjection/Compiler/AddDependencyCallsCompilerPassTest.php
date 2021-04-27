@@ -200,6 +200,30 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             'setRouteBuilder',
             ['sonata.admin.route.path_info_slashes']
         );
+
+        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+            'sonata_article_admin',
+            'setFormTheme',
+            [[]]
+        );
+
+        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+            'sonata_article_admin',
+            'setFilterTheme',
+            [[]]
+        );
+
+        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+            'sonata_post_admin',
+            'setFormTheme',
+            [['some_form_template.twig']]
+        );
+
+        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+            'sonata_post_admin',
+            'setFilterTheme',
+            [['some_filter_template.twig']]
+        );
     }
 
     public function testProcessSortAdmins(): void
@@ -591,6 +615,8 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
                 'sonata_post_admin' => [
                     'templates' => [
                         'view' => ['user_block' => 'foobar.twig.html'],
+                        'form' => ['some_form_template.twig'],
+                        'filter' => ['some_filter_template.twig'],
                     ],
                 ],
                 'sonata_news_admin' => [

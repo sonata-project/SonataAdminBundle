@@ -17,6 +17,7 @@ use Mopa\Bundle\BootstrapBundle\Form\Type\TabType;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\AdminAddInitializeCallCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AdminMakerCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AdminSearchCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AliasDeprecatedPublicServicesCompilerPass;
@@ -63,6 +64,7 @@ class SonataAdminBundle extends Bundle
         $container->addCompilerPass(new AdminMakerCompilerPass());
         $container->addCompilerPass(new AddAuditReadersCompilerPass());
         $container->addCompilerPass(new AliasDeprecatedPublicServicesCompilerPass(), PassConfig::TYPE_AFTER_REMOVING);
+        $container->addCompilerPass(new AdminAddInitializeCallCompilerPass(), PassConfig::TYPE_BEFORE_REMOVING, -100);
 
         $this->registerFormMapping();
     }
