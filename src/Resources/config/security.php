@@ -66,7 +66,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.manipulator.acl.admin', '%sonata.admin.manipulator.acl.admin.class%')
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->args([
                 '%sonata.admin.security.mask.builder.class%',
             ])
@@ -74,7 +74,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.object.manipulator.acl.admin', '%sonata.admin.object.manipulator.acl.admin.class%')
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.x'])
+            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->args([
                 new ReferenceConfigurator('form.factory'),
                 '%sonata.admin.security.mask.builder.class%',

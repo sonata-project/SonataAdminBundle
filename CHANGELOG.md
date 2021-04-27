@@ -2,6 +2,36 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.98.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.97.0...3.98.0) - 2021-04-27
+### Added
+- [[#7118](https://github.com/sonata-project/SonataAdminBundle/pull/7118)] Added `FilterData` to use it for forward compatibility with `4.0` ([@franmomu](https://github.com/franmomu))
+- [[#7115](https://github.com/sonata-project/SonataAdminBundle/pull/7115)] `TaggedAdmin::setListModes()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7092](https://github.com/sonata-project/SonataAdminBundle/pull/7092)] Generic template for DatagridBuilderInterface ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7092](https://github.com/sonata-project/SonataAdminBundle/pull/7092)] Generic template for LockInterface ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7088](https://github.com/sonata-project/SonataAdminBundle/pull/7088)] Added `render_breadcrumbs` and `render_breadcrumbs_for_title` Twig functions to render breadcrumbs ([@franmomu](https://github.com/franmomu))
+
+### Changed
+- [[#7112](https://github.com/sonata-project/SonataAdminBundle/pull/7112)] Restrict return type of `ProxyQuery::execute()` method to `array<object>|(\Traversable<object>&\Countable)` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Deprecated
+- [[#7115](https://github.com/sonata-project/SonataAdminBundle/pull/7115)] `TaggedAdmin::showMosaicButton()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7110](https://github.com/sonata-project/SonataAdminBundle/pull/7110)] `_email_link.html.twig` template, use `display_email.html.twig` instead ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7110](https://github.com/sonata-project/SonataAdminBundle/pull/7110)] Using `display_*` templates passing a field_description, you SHOULD pass the option directly instead ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7088](https://github.com/sonata-project/SonataAdminBundle/pull/7088)] Deprecated overriding the `breadcrumbs_builder` variable passed to Twig templates ([@franmomu](https://github.com/franmomu))
+
+### Fixed
+- [[#7103](https://github.com/sonata-project/SonataAdminBundle/pull/7103)] FieldDescriptions options phpdoc to keep only common options ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7121](https://github.com/sonata-project/SonataAdminBundle/pull/7121)] Calling foreach on `ArrayAccess` in ModelToIdPropertyTransformer ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7065](https://github.com/sonata-project/SonataAdminBundle/pull/7065)] Fixed "Field "FIELD" has already been rendered" error message when using ModelType ([@epci](https://github.com/epci))
+- [[#7092](https://github.com/sonata-project/SonataAdminBundle/pull/7092)] `DatagridBuilderInterface::addFilter` phpdoc: The `$type` MUST be a class-string ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7092](https://github.com/sonata-project/SonataAdminBundle/pull/7092)] Missing generic template for ModelManagerInterface ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7110](https://github.com/sonata-project/SonataAdminBundle/pull/7110)] Stop throwing an error when using `display_*` templates without passing a field_description ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7093](https://github.com/sonata-project/SonataAdminBundle/pull/7093)] URLs generated at global search results for the list filtering, which were missing the `value` dimension ([@phansys](https://github.com/phansys))
+- [[#7093](https://github.com/sonata-project/SonataAdminBundle/pull/7093)] Layout for the filter links generated at global search results ([@phansys](https://github.com/phansys))
+
+### Removed
+- [[#7100](https://github.com/sonata-project/SonataAdminBundle/pull/7100)] Remove deprecation for `AbstractAdmin::preValidate()` method ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [3.97.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.96.0...3.97.0) - 2021-04-19
 ### Added
 - [[#7033](https://github.com/sonata-project/SonataAdminBundle/pull/7033)] Added "block.admin_preview" block in order to show a preview for admin lists in dashboard ([@phansys](https://github.com/phansys))

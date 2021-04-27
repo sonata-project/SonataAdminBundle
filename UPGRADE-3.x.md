@@ -1,8 +1,8 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.x to 3.x
-=======================
+UPGRADE FROM 3.97 to 3.98
+=========================
 
 ### Deprecated overriding `breadcrumbs_builder` variable in templates
 
