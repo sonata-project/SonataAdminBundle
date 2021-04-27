@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [3.98.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.97.0...3.98.0) - 2021-04-27
 ### Added
-- [[#7118](https://github.com/sonata-project/SonataAdminBundle/pull/7118)] Added `FilterData` to use it for forward compatibility with `4.0`. ([@franmomu](https://github.com/franmomu))
+- [[#7118](https://github.com/sonata-project/SonataAdminBundle/pull/7118)] Added `FilterData` to use it for forward compatibility with `4.0` ([@franmomu](https://github.com/franmomu))
 - [[#7115](https://github.com/sonata-project/SonataAdminBundle/pull/7115)] `TaggedAdmin::setListModes()` ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7092](https://github.com/sonata-project/SonataAdminBundle/pull/7092)] Generic template for DatagridBuilderInterface ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7092](https://github.com/sonata-project/SonataAdminBundle/pull/7092)] Generic template for LockInterface ([@VincentLanglet](https://github.com/VincentLanglet))
