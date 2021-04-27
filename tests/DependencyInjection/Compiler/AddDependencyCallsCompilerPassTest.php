@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Sonata\AdminBundle\Controller\CRUDController;
+use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\FooAdminController;
@@ -297,14 +298,14 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_report_one_admin',
-            'showMosaicButton',
-            [false]
+            'setListModes',
+            [['list' => ['class' => 'fa fa-list fa-fw']]]
         );
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_report_two_admin',
-            'showMosaicButton',
-            [true]
+            'setListModes',
+            [TaggedAdminInterface::DEFAULT_LIST_MODES]
         );
     }
 
