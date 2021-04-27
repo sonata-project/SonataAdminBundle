@@ -20,7 +20,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - [[#7088](https://github.com/sonata-project/SonataAdminBundle/pull/7088)] Deprecated overriding the `breadcrumbs_builder` variable passed to Twig templates. ([@franmomu](https://github.com/franmomu))
 
 ### Fixed
-- [[#7103](https://github.com/sonata-project/SonataAdminBundle/pull/7103)] FieldDescriptions options phpdoc to keep only common options. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7103](https://github.com/sonata-project/SonataAdminBundle/pull/7103)] FieldDescriptions options phpdoc to keep only common options ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7121](https://github.com/sonata-project/SonataAdminBundle/pull/7121)] Calling foreach on `ArrayAccess` in ModelToIdPropertyTransformer ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7065](https://github.com/sonata-project/SonataAdminBundle/pull/7065)] Fixed "Field "FIELD" has already been rendered" error message when using ModelType ([@epci](https://github.com/epci))
 - [[#7092](https://github.com/sonata-project/SonataAdminBundle/pull/7092)] `DatagridBuilderInterface::addFilter` phpdoc: The `$type` MUST be a class-string. ([@VincentLanglet](https://github.com/VincentLanglet))
