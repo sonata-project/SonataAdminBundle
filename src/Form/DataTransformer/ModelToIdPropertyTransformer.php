@@ -165,7 +165,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
         } else {
             if (!$isArray && substr(\get_class($value), -1 * \strlen($this->className)) === $this->className) {
                 $collection = [$value];
-            } elseif ($isArray || ($value instanceof \Traversable)) {
+            } elseif ($isArray || $value instanceof \Traversable) {
                 throw new \InvalidArgumentException(
                     'A single selection must be passed a single value not a collection.'
                     .' Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true"'

@@ -105,29 +105,23 @@ file that was distributed with this source code.
             {% include '@SonataAdmin/CRUD/Association/edit_one_script.html.twig' %}
 
         {% else %}
-            <div id="field_container_{{ id }}" class="field-container">
-                <span id="field_widget_{{ id }}" >
-                    {{ form_widget(form) }}
-                </span>
-
-                <span id="field_actions_{{ id }}" class="field-actions">
-                    {% if sonata_admin.field_description.associationadmin.hasRoute('create')
-                        and sonata_admin.field_description.associationadmin.hasAccess('create')
-                        and btn_add %}
-                        <a
-                            href="{{ sonata_admin.field_description.associationadmin.generateUrl('create', sonata_admin.field_description.getOption('link_parameters', {})) }}"
-                            onclick="return start_field_dialog_form_add_{{ id }}(this);"
-                            class="btn btn-success btn-sm sonata-ba-action"
-                            title="{{ btn_add|trans({}, btn_catalogue) }}"
-                            >
-                            <i class="fa fa-plus-circle"></i>
-                            {{ btn_add|trans({}, btn_catalogue) }}
-                        </a>
-                        {% include '@SonataAdmin/CRUD/Association/edit_modal.html.twig' %}
-                        {% include '@SonataAdmin/CRUD/Association/edit_many_script.html.twig' %}
-                    {% endif %}
-                </span>
-            </div>
+            <span id="field_actions_{{ id }}" class="field-actions">
+                {% if sonata_admin.field_description.associationadmin.hasRoute('create')
+                    and sonata_admin.field_description.associationadmin.hasAccess('create')
+                    and btn_add %}
+                    <a
+                        href="{{ sonata_admin.field_description.associationadmin.generateUrl('create', sonata_admin.field_description.getOption('link_parameters', {})) }}"
+                        onclick="return start_field_dialog_form_add_{{ id }}(this);"
+                        class="btn btn-success btn-sm sonata-ba-action"
+                        title="{{ btn_add|trans({}, btn_catalogue) }}"
+                        >
+                        <i class="fa fa-plus-circle"></i>
+                        {{ btn_add|trans({}, btn_catalogue) }}
+                    </a>
+                    {% include '@SonataAdmin/CRUD/Association/edit_modal.html.twig' %}
+                    {% include '@SonataAdmin/CRUD/Association/edit_many_script.html.twig' %}
+                {% endif %}
+            </span>
         {% endif %}
     </div>
 {% endif %}

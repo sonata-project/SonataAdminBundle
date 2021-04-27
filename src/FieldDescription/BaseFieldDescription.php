@@ -30,30 +30,29 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
  * Some options are global across the different contexts, other are
  * context specifics.
  *
- * Global options :
+ * Global options:
  *   - type (m): define the field type (use to tweak the form or the list)
- *   - template (o) : the template used to render the field
- *   - name (o) : the name used (label in the form, title in the list)
- *   - link_parameters (o) : add link parameter to the related Admin class when
+ *   - template (o): the template used to render the field
+ *   - label (o): the name used (label in the form, title in the list)
+ *   - accessor (o): the method or the property path to retrieve the related value
+ *   - associated_property (o): the method or the property path to retrieve the "string"
+ *                           representation of the collection element.
+ *   - link_parameters (o): add link parameter to the related Admin class when
  *                           the Admin.generateUrl is called
- *   - accessor (o) : the method or the property path to retrieve the related value
- *   - associated_property : property path to retrieve the "string" representation
- *                           of the collection element.
  *
- * Form Field options :
+ * Form Field options:
  *   - field_type (o): the widget class to use to render the field
  *   - field_options (o): the options to give to the widget
- *   - edit (o) : list|inline|standard (only used for associated admin)
- *      - list : open a popup where the user can search, filter and click on one field
+ *   - edit (o): list|inline|standard (only used for associated admin)
+ *      - list: open a popup where the user can search, filter and click on one field
  *               to select one item
- *      - inline : the associated form admin is embedded into the current form
- *      - standard : the associated admin is created through a popup
+ *      - inline: the associated form admin is embedded into the current form
+ *      - standard: the associated admin is created through a popup
  *
- * List Field options :
+ * List Field options:
  *   - identifier (o): if set to true a link appear on to edit the element
  *
- * Filter Field options :
- *   - options (o): options given to the Filter object
+ * Filter Field options:
  *   - field_type (o): the widget class to use to render the field
  *   - field_options (o): the options to give to the widget
  *
@@ -197,11 +196,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             unset($options['template']);
         }
 
-        // set default placeholder
+        // NEXT_MAJOR: Remove this.
         if (!isset($options['placeholder'])) {
             $options['placeholder'] = 'short_object_description_placeholder';
         }
 
+        // NEXT_MAJOR: Remove this.
         if (!isset($options['link_parameters'])) {
             $options['link_parameters'] = [];
         }

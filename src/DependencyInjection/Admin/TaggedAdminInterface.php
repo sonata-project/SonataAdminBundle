@@ -48,6 +48,11 @@ interface TaggedAdminInterface extends MutableTemplateRegistryAwareInterface
 {
     public const ADMIN_TAG = 'sonata.admin';
 
+    public const DEFAULT_LIST_MODES = [
+        'list' => ['class' => 'fa fa-list fa-fw'],
+        'mosaic' => ['class' => 'fa fa-th-large fa-fw'],
+    ];
+
     /**
      * Define custom variable.
      */
@@ -58,12 +63,12 @@ interface TaggedAdminInterface extends MutableTemplateRegistryAwareInterface
     public function getLabel(): ?string;
 
     /**
-     * Enable/Disable mosaic button for the admin screen.
+     * @param array<string, array<string, string>> $listModes
      */
-    public function showMosaicButton(bool $isShown): void;
+    public function setListModes(array $listModes): void;
 
     /**
-     * @return array<string, array<string, mixed>>
+     * @return array<string, array<string, string>>
      */
     public function getListModes(): array;
 

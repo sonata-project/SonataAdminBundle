@@ -341,7 +341,12 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $showMosaicButton = $overwriteAdminConfiguration['show_mosaic_button']
             ?? $attributes['show_mosaic_button']
             ?? $container->getParameter('sonata.admin.configuration.show.mosaic.button');
-        $definition->addMethodCall('showMosaicButton', [$showMosaicButton]);
+
+        $listModes = TaggedAdminInterface::DEFAULT_LIST_MODES;
+        if (!$showMosaicButton) {
+            unset($listModes['mosaic']);
+        }
+        $definition->addMethodCall('setListModes', [$listModes]);
 
         $this->fixTemplates(
             $serviceId,
