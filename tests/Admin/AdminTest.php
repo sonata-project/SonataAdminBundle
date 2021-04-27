@@ -2283,6 +2283,10 @@ class AdminTest extends TestCase
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @group legacy
+     *
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::showMosaicButton
      */
     public function testShowMosaicButton(): void
@@ -2296,6 +2300,10 @@ class AdminTest extends TestCase
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @group legacy
+     *
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::showMosaicButton
      */
     public function testShowMosaicButtonHideMosaic(): void
