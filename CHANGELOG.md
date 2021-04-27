@@ -23,7 +23,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - [[#7103](https://github.com/sonata-project/SonataAdminBundle/pull/7103)] FieldDescriptions options phpdoc to keep only common options ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7121](https://github.com/sonata-project/SonataAdminBundle/pull/7121)] Calling foreach on `ArrayAccess` in ModelToIdPropertyTransformer ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7065](https://github.com/sonata-project/SonataAdminBundle/pull/7065)] Fixed "Field "FIELD" has already been rendered" error message when using ModelType ([@epci](https://github.com/epci))
-- [[#7092](https://github.com/sonata-project/SonataAdminBundle/pull/7092)] `DatagridBuilderInterface::addFilter` phpdoc: The `$type` MUST be a class-string. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7092](https://github.com/sonata-project/SonataAdminBundle/pull/7092)] `DatagridBuilderInterface::addFilter` phpdoc: The `$type` MUST be a class-string ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7092](https://github.com/sonata-project/SonataAdminBundle/pull/7092)] Missing generic template for ModelManagerInterface ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7110](https://github.com/sonata-project/SonataAdminBundle/pull/7110)] Stop throwing an error when using `display_*` templates without passing a field_description ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7093](https://github.com/sonata-project/SonataAdminBundle/pull/7093)] URLs generated at global search results for the list filtering, which were missing the `value` dimension ([@phansys](https://github.com/phansys))
