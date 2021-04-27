@@ -8,7 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - [[#7115](https://github.com/sonata-project/SonataAdminBundle/pull/7115)] `TaggedAdmin::setListModes()` ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7092](https://github.com/sonata-project/SonataAdminBundle/pull/7092)] Generic template for DatagridBuilderInterface ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7092](https://github.com/sonata-project/SonataAdminBundle/pull/7092)] Generic template for LockInterface ([@VincentLanglet](https://github.com/VincentLanglet))
-- [[#7088](https://github.com/sonata-project/SonataAdminBundle/pull/7088)] Added `render_breadcrumbs` and `render_breadcrumbs_for_title` Twig functions to render breadcrumbs. ([@franmomu](https://github.com/franmomu))
+- [[#7088](https://github.com/sonata-project/SonataAdminBundle/pull/7088)] Added `render_breadcrumbs` and `render_breadcrumbs_for_title` Twig functions to render breadcrumbs ([@franmomu](https://github.com/franmomu))
 
 ### Changed
 - [[#7112](https://github.com/sonata-project/SonataAdminBundle/pull/7112)] Restrict return type of `ProxyQuery::execute()` method to `array<object>|(\Traversable<object>&\Countable)` ([@VincentLanglet](https://github.com/VincentLanglet))
