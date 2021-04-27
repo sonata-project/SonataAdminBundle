@@ -63,12 +63,12 @@ interface TaggedAdminInterface extends MutableTemplateRegistryAwareInterface
     public function getLabel(): ?string;
 
     /**
-     * @param array<string, array<string, string>> $listModes
+     * @param array<string, array<string, mixed>> $listModes
      */
     public function setListModes(array $listModes): void;
 
     /**
-     * @return array<string, array<string, string>>
+     * @return array<string, array<string, mixed>>
      */
     public function getListModes(): array;
 

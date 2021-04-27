@@ -419,11 +419,6 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function getObjectMetadata(object $object): MetadataInterface;
 
-    /**
-     * @return array<string, array<string, mixed>>
-     */
-    public function getListModes(): array;
-
     public function setListMode(string $mode): void;
 
     /**

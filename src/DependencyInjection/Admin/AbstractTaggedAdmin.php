@@ -73,7 +73,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     private $label;
 
     /**
-     * @var array<string, array<string, string>>
+     * @var array<string, array<string, mixed>>
      */
     private $listModes = TaggedAdminInterface::DEFAULT_LIST_MODES;
 
