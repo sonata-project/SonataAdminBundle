@@ -27,7 +27,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - [[#7092](https://github.com/sonata-project/SonataAdminBundle/pull/7092)] Missing generic template for ModelManagerInterface ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7110](https://github.com/sonata-project/SonataAdminBundle/pull/7110)] Stop throwing an error when using `display_*` templates without passing a field_description ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7093](https://github.com/sonata-project/SonataAdminBundle/pull/7093)] URLs generated at global search results for the list filtering, which were missing the `value` dimension; ([@phansys](https://github.com/phansys))
-- [[#7093](https://github.com/sonata-project/SonataAdminBundle/pull/7093)] Layout for the filter links generated at global search results. ([@phansys](https://github.com/phansys))
+- [[#7093](https://github.com/sonata-project/SonataAdminBundle/pull/7093)] Layout for the filter links generated at global search results ([@phansys](https://github.com/phansys))
 
 ### Removed
 - [[#7100](https://github.com/sonata-project/SonataAdminBundle/pull/7100)] Remove deprecation for `AbstractAdmin::preValidate()` method ([@VincentLanglet](https://github.com/VincentLanglet))
