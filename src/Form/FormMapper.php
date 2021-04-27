@@ -25,7 +25,7 @@ use Symfony\Component\Form\FormBuilderInterface;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @psalm-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
+ * @phpstan-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
  */
 final class FormMapper extends BaseGroupedMapper
 {
@@ -72,8 +72,7 @@ final class FormMapper extends BaseGroupedMapper
      *
      * @return static
      *
-     * @psalm-param FieldDescriptionOptions $fieldDescriptionOptions
-     * @phpstan-param array<string, mixed>  $fieldDescriptionOptions
+     * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */
     public function add($name, ?string $type = null, array $options = [], array $fieldDescriptionOptions = []): self
     {

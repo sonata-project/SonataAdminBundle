@@ -24,7 +24,7 @@ use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @psalm-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
+ * @phpstan-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
  */
 final class ShowMapper extends BaseGroupedMapper
 {
@@ -69,8 +69,7 @@ final class ShowMapper extends BaseGroupedMapper
      *
      * @return static
      *
-     * @psalm-param FieldDescriptionOptions $fieldDescriptionOptions
-     * @phpstan-param array<string, mixed>  $fieldDescriptionOptions
+     * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */
     public function add($name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {

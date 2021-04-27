@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Datagrid;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Sonata\AdminBundle\Util\TraversableToCollection;
 
 /**
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
@@ -25,7 +27,7 @@ use Doctrine\Common\Collections\Collection;
 final class SimplePager extends Pager
 {
     /**
-     * @var iterable<object>|null
+     * @var Collection<array-key, object>|null
      */
     protected $results;
 
@@ -79,22 +81,15 @@ final class SimplePager extends Pager
             return $this->results;
         }
 
-        /** @var array<object>|Collection<array-key, object> $results */
-        $results = $this->getQuery()->execute();
+        $this->results = TraversableToCollection::transform($this->getQuery()->execute());
+        $this->thresholdCount = $this->results->count();
 
-        // doctrine/phpcr-odm returns ArrayCollection
-        if ($results instanceof Collection) {
-            $results = $results->toArray();
-        }
-
-        $this->thresholdCount = \count($results);
-
-        if (\count($results) > $this->getMaxPerPage()) {
+        if ($this->thresholdCount > $this->getMaxPerPage()) {
             $this->haveToPaginate = true;
-            $this->results = \array_slice($results, 0, $this->getMaxPerPage());
+
+            $this->results = new ArrayCollection($this->results->slice(0, $this->getMaxPerPage()));
         } else {
             $this->haveToPaginate = false;
-            $this->results = $results;
         }
 
         return $this->results;

@@ -25,11 +25,15 @@ interface LockInterface extends ModelManagerInterface
 {
     /**
      * @return mixed
+     *
+     * @phpstan-param T $object
      */
     public function getLockVersion(object $object);
 
     /**
      * @throws LockException
+     *
+     * @phpstan-param T $object
      */
     public function lock(object $object, ?int $expectedVersion): void;
 }

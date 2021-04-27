@@ -21,7 +21,7 @@ namespace Sonata\AdminBundle\Datagrid;
 interface ProxyQueryInterface
 {
     /**
-     * @return mixed
+     * @return array<object>|(\Traversable<object>&\Countable)
      */
     public function execute();
 

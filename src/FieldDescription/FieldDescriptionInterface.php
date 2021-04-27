@@ -21,7 +21,7 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @psalm-type FieldDescriptionOptions = (array{
+ * @phpstan-type FieldDescriptionOptions = array{
  *  accessor?: string|callable|PropertyPathInterface,
  *  actions?: array,
  *  admin_code?: string,
@@ -53,7 +53,7 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
  *  translation_domain?: string,
  *  type?: string,
  *  virtual_field?: bool
- * }&array<string, mixed>)|array<empty, empty>
+ * }&array<string, mixed>
  */
 interface FieldDescriptionInterface
 {
@@ -114,8 +114,7 @@ interface FieldDescriptionInterface
      *
      * Then the value are copied across to the related property value
      *
-     * @psalm-param FieldDescriptionOptions $options
-     * @phpstan-param array<string, mixed> $options
+     * @phpstan-param FieldDescriptionOptions $options
      */
     public function setOptions(array $options): void;
 
@@ -124,8 +123,7 @@ interface FieldDescriptionInterface
      *
      * @return array<string, mixed>
      *
-     * @psalm-return FieldDescriptionOptions
-     * @phpstan-return array<string, mixed>
+     * @phpstan-return FieldDescriptionOptions
      */
     public function getOptions(): array;
 
@@ -253,8 +251,7 @@ interface FieldDescriptionInterface
     /**
      * Merge options values.
      *
-     * @psalm-param FieldDescriptionOptions $options
-     * @phpstan-param array<string, mixed>  $options
+     * @phpstan-param FieldDescriptionOptions $options
      */
     public function mergeOptions(array $options = []): void;
 

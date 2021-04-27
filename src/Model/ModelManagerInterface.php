@@ -94,6 +94,8 @@ interface ModelManagerInterface
      * use getNormalizedIdentifier resp. getUrlSafeIdentifier
      *
      * @return array<int|string> list of all identifiers of this model
+     *
+     * @phpstan-param T $model
      */
     public function getIdentifierValues(object $model): array;
 
@@ -109,6 +111,8 @@ interface ModelManagerInterface
 
     /**
      * Get the identifiers for this model class as a string.
+     *
+     * @phpstan-param T $model
      */
     public function getNormalizedIdentifier(object $model): ?string;
 
@@ -117,6 +121,8 @@ interface ModelManagerInterface
      *
      * This is similar to getNormalizedIdentifier but guarantees an id that can
      * be used in a URL.
+     *
+     * @phpstan-param T $model
      */
     public function getUrlSafeIdentifier(object $model): ?string;
 
@@ -130,7 +136,9 @@ interface ModelManagerInterface
     public function supportsQuery(object $query): bool;
 
     /**
-     * @return mixed
+     * @return array<object>|(\Traversable<object>&\Countable)
+     *
+     * @phpstan-return array<T>|(\Traversable<T>&\Countable)
      */
     public function executeQuery(object $query);
 

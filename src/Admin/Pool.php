@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Exception\TooManyAdminClassException;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
 /**
- * @psalm-type Group = array{
+ * @phpstan-type Group = array{
  *  label: string,
  *  label_catalogue: string,
  *  icon: string,
@@ -56,8 +56,7 @@ final class Pool
 
     /**
      * @var array
-     * @phpstan-var array<string, array<string, mixed>>
-     * @psalm-var array<string, Group>
+     * @phpstan-var array<string, Group>
      */
     private $adminGroups = [];
 

@@ -139,16 +139,27 @@ class SimplePagerTest extends TestCase
         $this->pager->init();
     }
 
-    public function testGetCurrentPageResultsAlwaysReturnsAnArray(): void
+    /**
+     * @dataProvider getCurrentPageResultsReturnType
+     */
+    public function testGetCurrentPageResultsReturnTypeArrayCollection(array $queryReturnValues, ?int $maxPerPage): void
     {
-        // phpcr odm returns ArrayCollection
         $this->proxyQuery->expects($this->once())
             ->method('execute')
-            ->willReturn(new ArrayCollection($this->results));
+            ->willReturn($queryReturnValues);
 
         $this->pager->setQuery($this->proxyQuery);
-        $this->pager->setMaxPerPage(2);
+        $this->pager->setMaxPerPage($maxPerPage);
 
-        $this->assertSame(\array_slice($this->results, 0, 2), $this->pager->getCurrentPageResults());
+        $this->assertInstanceOf(ArrayCollection::class, $this->pager->getCurrentPageResults());
+    }
+
+    public function getCurrentPageResultsReturnType(): array
+    {
+        return [
+            [['foo', 'bar'], 2],
+            [['foo', 'bar'], 1],
+            [[], 1],
+        ];
     }
 }

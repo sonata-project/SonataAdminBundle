@@ -19,9 +19,15 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
  */
 interface DatagridBuilderInterface extends BuilderInterface
 {
+    /**
+     * @phpstan-param DatagridInterface<T> $datagrid
+     * @phpstan-param class-string         $type
+     */
     public function addFilter(
         DatagridInterface $datagrid,
         ?string $type,
@@ -31,6 +37,8 @@ interface DatagridBuilderInterface extends BuilderInterface
     /**
      * @param AdminInterface<object> $admin
      * @param array<string, mixed>   $values
+     *
+     * @phpstan-return DatagridInterface<T>
      */
     public function getBaseDatagrid(AdminInterface $admin, array $values = []): DatagridInterface;
 }

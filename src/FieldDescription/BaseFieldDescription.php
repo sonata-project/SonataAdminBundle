@@ -59,7 +59,7 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @psalm-import-type FieldDescriptionOptions from FieldDescriptionInterface
+ * @phpstan-import-type FieldDescriptionOptions from FieldDescriptionInterface
  */
 abstract class BaseFieldDescription implements FieldDescriptionInterface
 {
@@ -105,8 +105,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     /**
      * @var array<string, mixed> the option collection
-     * @psalm-var FieldDescriptionOptions
-     * @phpstan-var array<string, mixed>
+     * @phpstan-var FieldDescriptionOptions
      */
     protected $options = [];
 
@@ -126,8 +125,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $associationAdmin;
 
     /**
-     * @psalm-param FieldDescriptionOptions $options
-     * @phpstan-param array<string, mixed> $options
+     * @phpstan-param FieldDescriptionOptions $options
      */
     public function __construct(
         string $name,
