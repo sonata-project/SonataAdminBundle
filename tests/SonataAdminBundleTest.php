@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\AdminAddInitializeCallCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AdminMakerCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AdminSearchCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AliasDeprecatedPublicServicesCompilerPass;
@@ -37,7 +38,7 @@ class SonataAdminBundleTest extends TestCase
     {
         $containerBuilder = $this->createMock(ContainerBuilder::class);
 
-        $containerBuilder->expects($this->exactly(11))
+        $containerBuilder->expects($this->exactly(12))
             ->method('addCompilerPass')
             ->withConsecutive(
                 [new AddDependencyCallsCompilerPass()],
@@ -51,6 +52,7 @@ class SonataAdminBundleTest extends TestCase
                 [new AdminMakerCompilerPass()],
                 [new AddAuditReadersCompilerPass()],
                 [new AliasDeprecatedPublicServicesCompilerPass()],
+                [new AdminAddInitializeCallCompilerPass()],
             );
 
         $bundle = new SonataAdminBundle();
