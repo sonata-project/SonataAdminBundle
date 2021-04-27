@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.98.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.98.0...3.98.1) - 2021-04-27
+### Fixed
+- [[#7125](https://github.com/sonata-project/SonataAdminBundle/pull/7125)] Unclosed "{" on src/Resources/views/CRUD/Association/edit_one_to_one.html.twig ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7128](https://github.com/sonata-project/SonataAdminBundle/pull/7128)] Fix displays of the link to go to page 1 when accessing on a non-existent List page ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [3.98.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.97.0...3.98.0) - 2021-04-27
 ### Added
 - [[#7118](https://github.com/sonata-project/SonataAdminBundle/pull/7118)] Added `FilterData` to use it for forward compatibility with `4.0` ([@franmomu](https://github.com/franmomu))
