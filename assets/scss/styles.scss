@@ -4,16 +4,16 @@
  */
 
 html {
-  position: relative;
   min-height: 100%;
+  position: relative;
 }
 
 footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 20px;
   background-color: #333;
+  bottom: 0;
+  height: 20px;
+  position: absolute;
+  width: 100%;
 
   p {
     margin: 0;
@@ -27,9 +27,9 @@ footer {
 .logo {
   img {
     display: inline;
-    padding-bottom: 4px;
     max-height: 100%;
     max-width: 60px;
+    padding-bottom: 4px;
   }
 
   span {
@@ -55,14 +55,14 @@ body > .header .logo {
 }
 
 .dropdown-menu-scrollable {
-  overflow-y: auto;
   max-height: 75vh;
+  overflow-y: auto;
 }
 
 /* Buttons */
 .btn.btn-outline {
-  color: inherit;
   background-color: transparent;
+  color: inherit;
   transition: all 0.5s;
 }
 
@@ -122,36 +122,36 @@ body > .header .logo {
 
 div {
   &.mosaic-box {
-    padding: 2px;
     border-radius: 3px;
+    padding: 2px;
   }
 
   &.mosaic-inner-box-hover {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 4px 4px 0 0;
     background-color: rgba(255, 255, 255, 0.8);
-    transition: 0.25s opacity;
+    border-radius: 4px 4px 0 0;
+    bottom: 0;
+    left: 0;
     padding: 5px 10px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: 0.25s opacity;
   }
 
   &.mosaic-inner-box {
-    position: relative;
-    height: 100px;
     border-bottom: none;
+    height: 100px;
     overflow: hidden;
+    position: relative;
 
     > div.mosaic-inner-box-hover {
       opacity: 0;
     }
 
     img {
-      width: 100%;
-      height: auto;
       border-radius: 4px 4px 0 0;
+      height: auto;
+      width: 100%;
     }
 
     &:hover > div.mosaic-inner-box-hover {
@@ -160,22 +160,22 @@ div {
   }
 
   &.mosaic-box-outter {
+    background-color: #fff;
     background-size: 100% auto;
     border: 1px solid #ddd;
     border-radius: 5px;
-    background-color: #fff;
   }
 
   &.mosaic-inner-text {
     background: white;
-    border-top: none;
-    padding: 3px;
     border-radius: 0 0 5px 5px;
-    z-index: 2;
-    position: relative;
-    white-space: nowrap;
+    border-top: none;
     overflow: hidden;
+    padding: 3px;
+    position: relative;
     text-overflow: ellipsis;
+    white-space: nowrap;
+    z-index: 2;
   }
 }
 
@@ -184,14 +184,14 @@ div {
 
   a,
   span {
-    padding: 15px;
     min-height: 50px;
+    padding: 15px;
   }
 }
 
 .dropdown-add .dropdown-menu > li > a {
-  white-space: normal;
   overflow: hidden;
+  white-space: normal;
 }
 
 .navbar-top-links {
@@ -209,8 +209,8 @@ div {
       }
 
       a {
-        padding: 3px 20px;
         min-height: 0;
+        padding: 3px 20px;
 
         div {
           white-space: normal;
@@ -222,8 +222,8 @@ div {
   .dropdown-messages,
   .dropdown-tasks,
   .dropdown-alerts {
-    width: 310px;
     min-width: 0;
+    width: 310px;
   }
 
   .dropdown-messages {
@@ -239,17 +239,17 @@ div {
   }
 
   .dropdown-user {
-    right: 0;
     left: auto;
+    right: 0;
   }
 }
 
 /* breadcrumb */
 .sonata-bc .breadcrumb {
-  padding: 0;
-  margin: 0;
   background: inherit;
   float: left;
+  margin: 0;
+  padding: 0;
 
   li a {
     display: inline-block;
@@ -263,11 +263,11 @@ div {
 /* MEGA MENU STYLE
 ********************************/
 .dropdown-menu .dropdown-menu {
-  display: block !important;
-  position: static !important;
-  margin: 0 !important;
   border: none !important;
   box-shadow: none !important;
+  display: block !important;
+  margin: 0 !important;
+  position: static !important;
 }
 
 .dropdown-menu.multi-column .dropdown-menu {
@@ -280,8 +280,8 @@ div {
 }
 
 .skin-black .navbar .breadcrumb > li > a:hover {
-  color: #444;
   background: #f5f5f5;
+  color: #444;
 }
 
 .skin-black .navbar .dropdown-menu > li > a:hover {
@@ -317,9 +317,9 @@ body.fixed .content-header .navbar {
 
 @media (min-width: 768px) {
   .navbar-static-side {
-    z-index: 1;
     position: absolute;
     width: 250px;
+    z-index: 1;
   }
 
   .navbar-top-links {
@@ -336,8 +336,8 @@ table.sonata-ba-list {
   font-size: 14px;
 
   img {
-    max-width: 100%;
     height: auto;
+    max-width: 100%;
   }
 
   td {
@@ -354,36 +354,36 @@ td.sonata-ba-list-label {
 
 /* side filter */
 .box .box-header h4.box-title.filter_legend {
-  position: relative;
-  padding-left: 20px;
   cursor: pointer;
+  padding-left: 20px;
+  position: relative;
 }
 
 h4.filter_legend {
   &::before {
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid black;
     content: "";
     display: block;
-    width: 0;
     height: 0;
-    border-top: 4px solid black;
-    border-right: 4px solid transparent;
-    border-left: 4px solid transparent;
+    left: 2px;
+    margin-left: 5px;
+    margin-top: -2px;
     position: absolute;
     top: 50%;
-    left: 2px;
-    margin-top: -2px;
-    margin-left: 5px;
+    width: 0;
   }
 
   &.active {
-    font-weight: bold;
     color: #000;
+    font-weight: bold;
   }
 }
 
 tr.filter.active * {
-  font-weight: bold;
   color: #000;
+  font-weight: bold;
 }
 
 form.sonata-filter-form.form-stacked {
@@ -391,10 +391,10 @@ form.sonata-filter-form.form-stacked {
 }
 
 body.fixed .sonata-list-table {
-  position: relative;
+  margin-bottom: 5px;
   margin-left: 15px;
   margin-right: 15px;
-  margin-bottom: 5px;
+  position: relative;
 }
 
 .navbar-nav.navbar-right:last-child {
@@ -454,8 +454,8 @@ td.sonata-ba-list-field {
  */
 body.sonata-icheck .checkbox label,
 body.sonata-icheck .radio label {
-  padding-left: 0;
   margin-left: 0;
+  padding-left: 0;
 }
 
 /**
@@ -466,31 +466,31 @@ body.sonata-icheck .radio label {
 .checkbox-inline div[class^="icheckbox"],
 .radio div[class^="iradio"],
 .radio-inline div[class^="iradio"] {
-  position: relative;
   margin-right: 5px;
   margin-top: -3px;
+  position: relative;
 }
 
 .form-inline .checkbox div[class^="icheckbox"],
 .form-inline .checkbox-inline div[class^="icheckbox"],
 .form-inline .radio div[class^="iradio"],
 .form-inline .radio-inline div[class^="iradio"] {
-  position: relative;
   margin-left: 0;
   margin-right: 5px;
   margin-top: -3px;
+  position: relative;
 }
 
 /* Hide Delete checkbox on sonata_type_collection tables */
 .sonata-ba-field-inline-table td > div.checkbox > label > .control-label__text {
-  position: absolute;
-  width: 1px;
+  border: 0;
+  clip: rect(0, 0, 0, 0);
   height: 1px;
-  padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
+  padding: 0;
+  position: absolute;
+  width: 1px;
 }
 
 /* select2 */
@@ -502,8 +502,8 @@ body.sonata-icheck .radio label {
 
 /* Used for the mosaic view */
 td > div.row {
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 .mosaic-inner-link {
@@ -512,8 +512,8 @@ td > div.row {
 
 .mosaic-box-label {
   position: absolute;
-  top: 10px;
   right: 10px;
+  top: 10px;
 }
 
 div.mosaic-box.sonata-ba-list-row-selected {
@@ -538,8 +538,8 @@ div.sonata-filters-box div.form-group {
   }
 
   span.input-group-addon {
-    padding: 3px 10px;
     font-size: 13px;
+    padding: 3px 10px;
   }
 }
 

@@ -35,6 +35,8 @@
     "sass-loader": "^11.0",
     "stylelint": "^13.12",
     "stylelint-config-standard": "^21.0",
+    "stylelint-order": "^4.1",
+    "stylelint-scss": "^3.19",
     "stylelint-webpack-plugin": "^2.1"
   },
   "license": "UNLICENSED",
