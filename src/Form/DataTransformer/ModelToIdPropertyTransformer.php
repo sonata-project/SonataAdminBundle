@@ -128,13 +128,13 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param object|object[]|\ArrayAccess<string|int, object>|null $value
+     * @param object|array<object>|\Traversable<object>|null $value
      *
      * @throws \InvalidArgumentException
      *
      * @return array<string|int, int|string|array<string>>
      *
-     * @phpstan-param T|T[]|\ArrayAccess<string|int, T>|null $value
+     * @phpstan-param T|array<T>|\Traversable<T>|null $value
      */
     public function transform($value)
     {
@@ -153,7 +153,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
                     .' is set for many-to-many or one-to-many relations.'
                 );
             }
-            if ($isArray || ($value instanceof \ArrayAccess)) {
+            if ($isArray || ($value instanceof \Traversable)) {
                 $collection = $value;
             } else {
                 throw new \InvalidArgumentException(
@@ -165,7 +165,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
         } else {
             if (!$isArray && substr(\get_class($value), -1 * \strlen($this->className)) === $this->className) {
                 $collection = [$value];
-            } elseif ($isArray || ($value instanceof \ArrayAccess)) {
+            } elseif ($isArray || ($value instanceof \Traversable)) {
                 throw new \InvalidArgumentException(
                     'A single selection must be passed a single value not a collection.'
                     .' Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true"'
@@ -186,7 +186,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
             if (null !== $this->toStringCallback) {
                 $label = ($this->toStringCallback)($model, $this->property);
             } elseif (method_exists($model, '__toString')) {
-                $label = (string) $model;
+                $label = $model->__toString();
             } else {
                 throw new \RuntimeException(sprintf(
                     'Unable to convert the entity %s to String, entity must have a \'__toString()\' method defined',

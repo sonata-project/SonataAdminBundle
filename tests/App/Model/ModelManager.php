@@ -102,8 +102,9 @@ class ModelManager implements ModelManagerInterface, LockInterface
         return true;
     }
 
-    public function executeQuery(object $query): void
+    public function executeQuery(object $query): array
     {
+        return [];
     }
 
     public function getDataSourceIterator(DatagridInterface $datagrid, array $fields, ?int $firstResult = null, ?int $maxResult = null): SourceIteratorInterface

@@ -22,6 +22,9 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Tests\App\Datagrid\Datagrid;
 use Symfony\Component\Form\FormFactoryInterface;
 
+/**
+ * @phpstan-implements DatagridBuilderInterface<\Sonata\AdminBundle\Datagrid\ProxyQueryInterface>
+ */
 final class DatagridBuilder implements DatagridBuilderInterface
 {
     /**

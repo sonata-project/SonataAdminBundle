@@ -157,7 +157,7 @@ class DatagridMapperTest extends TestCase
 
         $fieldDescription = $this->getFieldDescriptionMock('fooName', 'fooLabel');
 
-        $this->datagridMapper->add($fieldDescription, 'foo_type', [
+        $this->datagridMapper->add($fieldDescription, \stdClass::class, [
             'field_name' => 'fooFilterName',
             'field_type' => 'foo_field_type',
             'field_options' => ['foo_field_option' => 'baz'],
@@ -304,19 +304,19 @@ class DatagridMapperTest extends TestCase
 
     public function testAddOptionRole(): void
     {
-        $this->datagridMapper->add('bar', 'bar');
+        $this->datagridMapper->add('bar', \stdClass::class);
 
         $this->assertTrue($this->datagridMapper->has('bar'));
 
-        $this->datagridMapper->add('quux', 'bar', [], ['role' => 'ROLE_QUX']);
+        $this->datagridMapper->add('quux', \stdClass::class, [], ['role' => 'ROLE_QUX']);
 
         $this->assertTrue($this->datagridMapper->has('bar'));
         $this->assertFalse($this->datagridMapper->has('quux'));
 
         $this->datagridMapper
-            ->add('foobar', 'bar', [], ['role' => self::DEFAULT_GRANTED_ROLE])
-            ->add('foo', 'bar', [], ['role' => 'ROLE_QUX'])
-            ->add('baz', 'bar');
+            ->add('foobar', \stdClass::class, [], ['role' => self::DEFAULT_GRANTED_ROLE])
+            ->add('foo', \stdClass::class, [], ['role' => 'ROLE_QUX'])
+            ->add('baz', \stdClass::class);
 
         $this->assertTrue($this->datagridMapper->has('foobar'));
         $this->assertFalse($this->datagridMapper->has('foo'));

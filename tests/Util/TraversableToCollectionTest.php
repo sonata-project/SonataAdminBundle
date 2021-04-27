@@ -24,6 +24,8 @@ use Sonata\AdminBundle\Util\TraversableToCollection;
 class TraversableToCollectionTest extends TestCase
 {
     /**
+     * @param \Traversable<mixed>|array<mixed> $value
+     *
      * @dataProvider provideTraversableValues
      */
     public function testTransform(int $expectedCount, $value): void
@@ -46,6 +48,8 @@ class TraversableToCollectionTest extends TestCase
     }
 
     /**
+     * @param \Traversable<mixed>|array<mixed> $value
+     *
      * @dataProvider provideInvalidValues
      */
     public function testFailedTransform(string $invalidType, $value): void
