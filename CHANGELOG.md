@@ -15,7 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Deprecated
 - [[#7115](https://github.com/sonata-project/SonataAdminBundle/pull/7115)] `TaggedAdmin::showMosaicButton()` ([@VincentLanglet](https://github.com/VincentLanglet))
-- [[#7110](https://github.com/sonata-project/SonataAdminBundle/pull/7110)] `_email_link.html.twig` template, use `display_email.html.twig` instead. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7110](https://github.com/sonata-project/SonataAdminBundle/pull/7110)] `_email_link.html.twig` template, use `display_email.html.twig` instead ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7110](https://github.com/sonata-project/SonataAdminBundle/pull/7110)] Using `display_*` templates passing a field_description, you SHOULD pass the option directly instead ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7088](https://github.com/sonata-project/SonataAdminBundle/pull/7088)] Deprecated overriding the `breadcrumbs_builder` variable passed to Twig templates ([@franmomu](https://github.com/franmomu))
 
