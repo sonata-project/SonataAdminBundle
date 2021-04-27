@@ -137,8 +137,6 @@ interface ModelManagerInterface
 
     /**
      * @return array<object>|(\Traversable<object>&\Countable)
-     *
-     * @phpstan-return array<T>|(\Traversable<T>&\Countable)
      */
     public function executeQuery(object $query);
 
