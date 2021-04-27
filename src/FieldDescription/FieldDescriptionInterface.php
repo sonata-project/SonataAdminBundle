@@ -21,7 +21,9 @@ use Sonata\AdminBundle\Exception\NoValueException;
  *
  * @phpstan-type FieldDescriptionOptions = array{
  *  accessor?: string|callable|\Symfony\Component\PropertyAccess\PropertyPathInterface,
+ *  associated_property?: string|callable|\Symfony\Component\PropertyAccess\PropertyPathInterface,
  *  label?: string|false|null,
+ *  link_parameters?: array<string, mixed>,
  *  role?: string|string[],
  *  sort_field_mapping?: array<string, mixed>,
  *  sort_parent_association_mappings?: array<array<string, mixed>>,
@@ -33,7 +35,9 @@ use Sonata\AdminBundle\Exception\NoValueException;
  * }&array<string, mixed>
  * @psalm-type FieldDescriptionOptions = (array{
  *  accessor?: string|callable|\Symfony\Component\PropertyAccess\PropertyPathInterface,
+ *  associated_property?: string|callable|\Symfony\Component\PropertyAccess\PropertyPathInterface,
  *  label?: string|false|null,
+ *  link_parameters?: array<string, mixed>,
  *  role?: string|string[],
  *  sort_field_mapping?: array<string, mixed>,
  *  sort_parent_association_mappings?: array<array<string, mixed>>,

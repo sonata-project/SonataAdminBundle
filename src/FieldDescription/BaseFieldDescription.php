@@ -33,20 +33,18 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
  * context specifics.
  *
  * Global options:
- *   - type (m: define the field type (use to tweak the form or the list)
+ *   - type (m): define the field type (use to tweak the form or the list)
  *   - template (o): the template used to render the field
  *   - label (o): the name used (label in the form, title in the list)
  *   - accessor (o): the method or the property path to retrieve the related value
- *
- * Show Field options:
  *   - associated_property (o): the method or the property path to retrieve the "string"
  *                           representation of the collection element.
+ *   - link_parameters (o): add link parameter to the related Admin class when
+ *                           the Admin.generateUrl is called
  *
  * Form Field options:
  *   - field_type (o): the widget class to use to render the field
  *   - field_options (o): the options to give to the widget
- *   - link_parameters (o): add link parameter to the related Admin class when
- *                           the Admin.generateUrl is called
  *   - edit (o): list|inline|standard (only used for associated admin)
  *      - list: open a popup where the user can search, filter and click on one field
  *               to select one item
