@@ -25,7 +25,7 @@ file that was distributed with this source code.
         {% if url|default(null) %}
             {# target url is string #}
             {% set url_address = url %}
-        {% elseif route|default(null) is not null %}
+        {% elseif route|default(null) is not null and route.name not in ['edit', 'show'] %}
             {# target url is Symfony route #}
             {% set parameters = route.parameters|default([]) %}
 
