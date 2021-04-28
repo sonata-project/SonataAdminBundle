@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@fontsource/source-sans-pro": "^4.2",
     "admin-lte": "^2.4",
     "bootstrap": "^3.3",
     "components-font-awesome": "^4.7",

@@ -10,6 +10,16 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~font-awesome/scss/font-awesome";
 
+// Add Source Sans Pro Font with all options
+// This font is used by AdminLTE
+@import "~@fontsource/source-sans-pro/300.css";
+@import "~@fontsource/source-sans-pro/300-italic.css";
+@import "~@fontsource/source-sans-pro/400.css";
+@import "~@fontsource/source-sans-pro/400-italic.css";
+@import "~@fontsource/source-sans-pro/600.css";
+@import "~@fontsource/source-sans-pro/600-italic.css";
+@import "~@fontsource/source-sans-pro/700.css";
+
 // Basic AdminLTE styles without any plugins,
 // because they conflict with Select2 v4
 @import "~admin-lte/dist/css/alt/AdminLTE-without-plugins.css";
