@@ -36,7 +36,7 @@ final class SonataConfigurationTest extends TestCase
             'javascripts' => [],
             'js_debug' => false,
             'lock_protection' => false,
-            'mosaic_background' => 'bundles/sonataadmin/default_mosaic_image.png',
+            'mosaic_background' => 'bundles/sonataadmin/images/default_mosaic_image.png',
             'pager_links' => null,
             'role_admin' => 'ROLE_SONATA_ADMIN',
             'role_super_admin' => 'ROLE_SUPER_ADMIN',

@@ -41,9 +41,7 @@
     "build": "encore production"
   },
   "resolutions": {
-    "admin-lte/jquery": "^2.2",
-    "jquery-form/jquery": "^2.2",
-    "readmore-js/jquery": "^2.2"
+    "jquery": "^2.2"
   },
   "browserslist": [
     "defaults"

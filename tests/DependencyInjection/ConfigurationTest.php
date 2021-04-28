@@ -33,7 +33,7 @@ class ConfigurationTest extends TestCase
         $this->assertTrue($config['options']['confirm_exit']);
         $this->assertFalse($config['options']['js_debug']);
         $this->assertTrue($config['options']['use_icheck']);
-        $this->assertSame('bundles/sonataadmin/default_mosaic_image.png', $config['options']['mosaic_background']);
+        $this->assertSame('bundles/sonataadmin/images/default_mosaic_image.png', $config['options']['mosaic_background']);
         $this->assertSame('default', $config['options']['default_group']);
         $this->assertSame('SonataAdminBundle', $config['options']['default_label_catalogue']);
         $this->assertSame('<i class="fa fa-folder"></i>', $config['options']['default_icon']);
