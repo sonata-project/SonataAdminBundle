@@ -14,7 +14,7 @@ From these dependencies, only the necessary files are exposed publicly through W
 
 The jQuery UI dependency was fully included before, but now we only include the sortable widget (JavaScript and CSS), the rest of this dependency is not exposed. If you are adding more JavaScript or CSS using another widget of jQuery UI please include it yourself.
 
-Please check the `src/Resources/public/dist` and the documentation to see the used CSS, JavaScript, images and fonts.
+Please check the `src/Resources/public` and the documentation to see the used CSS, JavaScript, images and fonts.
 
 If you are customising (specially removing standard JavaScript or CSS) assets, this will affect you.
 
