@@ -1352,6 +1352,14 @@ EOT
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                <a href="https://example.com">https://example.com</a>
+                </td>',
+                'url',
+                'https://example.com',
+                ['route' => ['name' => 'show']],
+            ],
+            [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="http://localhost/foo">Foo</a>
                 </td>',
                 'url',
