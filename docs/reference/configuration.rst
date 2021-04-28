@@ -191,11 +191,6 @@ Full Configuration Options
 
                     # The default javascript list:
                     - bundles/sonataadmin/app.js
-                    - bundles/sonataadmin/Admin.js
-                    - bundles/sonataadmin/jquery.confirmExit.js
-                    - bundles/sonataadmin/treeview.js
-                    - bundles/sonataadmin/sidebar.js
-                    - bundles/sonataadmin/base.js
 
                 # javascript paths to add to the page in addition to the list above
                 extra_javascripts: []
