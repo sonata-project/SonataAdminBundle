@@ -32,8 +32,15 @@ import 'admin-lte';
 import 'icheck';
 import 'jquery-slimscroll';
 
-// jQuery Waypoints version and sticky shortcut
-import 'waypoints/lib/jquery.waypoints';
+// No Framework Waypoints version and sticky shortcut
+import 'waypoints/lib/noframework.waypoints';
 import 'waypoints/lib/shortcuts/sticky';
 import 'readmore-js';
 import 'masonry-layout';
+
+// SonataAdmin custom scripts
+import './Admin';
+import './jquery.confirmExit';
+import './treeview';
+import './sidebar';
+import './base';

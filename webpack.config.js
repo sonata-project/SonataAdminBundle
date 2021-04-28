@@ -11,7 +11,9 @@ Encore
   .enablePostCssLoader()
   .enableVersioning(false)
   .enableSourceMaps(false)
-  .enableEslintLoader()
+  .enableEslintLoader({
+    emitWarning: false
+  })
   .autoProvidejQuery()
   .disableSingleRuntimeChunk()
 

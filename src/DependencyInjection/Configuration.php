@@ -405,11 +405,6 @@ CASESENSITIVE;
                         ->arrayNode('javascripts')
                             ->defaultValue([
                                 'bundles/sonataadmin/dist/app.js',
-                                'bundles/sonataadmin/Admin.js',
-                                'bundles/sonataadmin/jquery.confirmExit.js',
-                                'bundles/sonataadmin/treeview.js',
-                                'bundles/sonataadmin/sidebar.js',
-                                'bundles/sonataadmin/base.js',
                             ])
                             ->prototype('scalar')->end()
                         ->end()
