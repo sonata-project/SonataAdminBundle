@@ -1,3 +1,12 @@
+/*!
+ * This file is part of the Sonata Project package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~font-awesome/scss/font-awesome";
 
@@ -9,7 +18,7 @@
 // Eonasdan Bootstrap DateTimePicker in its version 3 does not
 // provide the scss or plain css, it only provides the less version
 // of its source files, that's why it is not included it via npm.
-@import "../vendor/bootstrap-datetimepicker.css";
+@import "../vendor/bootstrap-datetimepicker.min.css";
 
 // Only use sortable widget from jQuery UI library
 @import "~jquery-ui/themes/base/sortable.css";
