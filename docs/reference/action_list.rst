@@ -632,7 +632,7 @@ Example::
                 'collapse' => true
             ])
             ->add('upvotes', null, [
-                'label_icon' => 'fa fa-thumbs-o-up'
+                'label_icon' => 'fas fa-thumbs-up'
             ])
             ->add('actions', null, [
                 'header_class' => 'customActions',
@@ -662,7 +662,7 @@ If you want to show only the ``label_icon``::
 
             ->add('upvotes', null, [
                 'label' => false,
-                'label_icon' => 'fa fa-thumbs-o-up',
+                'label_icon' => 'fas fa-thumbs-up',
             ])
 
 Mosaic view button

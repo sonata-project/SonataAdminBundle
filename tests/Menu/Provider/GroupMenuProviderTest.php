@@ -371,7 +371,7 @@ class GroupMenuProviderTest extends TestCase
             [
                 'bar' => [
                     'label' => 'foo',
-                    'icon' => '<i class="fa fa-edit"></i>',
+                    'icon' => '<i class="fas fa-edit"></i>',
                     'label_catalogue' => 'SonataAdminBundle',
                     'items' => [
                         [
@@ -411,7 +411,7 @@ class GroupMenuProviderTest extends TestCase
                 // group for all roles, children with different roles
                 [
                     'label' => 'foo',
-                    'icon' => '<i class="fa fa-edit"></i>',
+                    'icon' => '<i class="fas fa-edit"></i>',
                     'label_catalogue' => 'SonataAdminBundle',
                     'items' => [
                         [
@@ -454,7 +454,7 @@ class GroupMenuProviderTest extends TestCase
                 // group for one role, children with different roles
                 [
                     'label' => 'foo',
-                    'icon' => '<i class="fa fa-edit"></i>',
+                    'icon' => '<i class="fas fa-edit"></i>',
                     'label_catalogue' => 'SonataAdminBundle',
                     'items' => [
                         [
@@ -503,7 +503,7 @@ class GroupMenuProviderTest extends TestCase
             [
                 [
                     'label' => 'foo1',
-                    'icon' => '<i class="fa fa-edit"></i>',
+                    'icon' => '<i class="fas fa-edit"></i>',
                     'label_catalogue' => 'SonataAdminBundle',
                     'items' => [
                         [
@@ -521,7 +521,7 @@ class GroupMenuProviderTest extends TestCase
             ], [
                 [
                     'label' => 'foo2',
-                    'icon' => '<i class="fa fa-edit"></i>',
+                    'icon' => '<i class="fas fa-edit"></i>',
                     'label_catalogue' => 'SonataAdminBundle',
                     'items' => [
                         [
@@ -539,7 +539,7 @@ class GroupMenuProviderTest extends TestCase
             ], [
                 [
                     'label' => 'foo3',
-                    'icon' => '<i class="fa fa-edit"></i>',
+                    'icon' => '<i class="fas fa-edit"></i>',
                     'label_catalogue' => 'SonataAdminBundle',
                     'items' => [
                         [
@@ -564,7 +564,7 @@ class GroupMenuProviderTest extends TestCase
             [
                 'foo' => [
                     'label' => 'foo_on_top',
-                    'icon' => '<i class="fa fa-edit"></i>',
+                    'icon' => '<i class="fas fa-edit"></i>',
                     'label_catalogue' => 'SonataAdminBundle',
                     'on_top' => true,
                     'items' => [
@@ -588,7 +588,7 @@ class GroupMenuProviderTest extends TestCase
             'http://sonata-project/list',
             [
                 'label' => 'foo',
-                'icon' => '<i class="fa fa-edit"></i>',
+                'icon' => '<i class="fas fa-edit"></i>',
                 'label_catalogue' => 'SonataAdminBundle',
                 'items' => [
                     [
@@ -607,7 +607,7 @@ class GroupMenuProviderTest extends TestCase
             '/list',
             [
                 'label' => 'foo',
-                'icon' => '<i class="fa fa-edit"></i>',
+                'icon' => '<i class="fas fa-edit"></i>',
                 'label_catalogue' => 'SonataAdminBundle',
                 'items' => [
                     [

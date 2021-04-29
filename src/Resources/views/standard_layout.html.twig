@@ -163,7 +163,7 @@ file that was distributed with this source code.
                                         {% block sonata_top_nav_menu_add_block %}
                                             <li class="dropdown">
                                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                    <i class="fa fa-plus-square fa-fw" aria-hidden="true"></i> <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                                    <i class="fas fa-plus-square fa-fw" aria-hidden="true"></i> <i class="fas fa-caret-down" aria-hidden="true"></i>
                                                 </a>
                                                 {% include get_global_template('add_block') %}
                                             </li>
@@ -171,7 +171,7 @@ file that was distributed with this source code.
                                         {% block sonata_top_nav_menu_user_block %}
                                             <li class="dropdown user-menu">
                                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                    <i class="fa fa-user fa-fw" aria-hidden="true"></i> <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                                    <i class="fas fa-user fa-fw" aria-hidden="true"></i> <i class="fas fa-caret-down" aria-hidden="true"></i>
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-user">
                                                     {% include get_global_template('user_block') %}
@@ -199,7 +199,7 @@ file that was distributed with this source code.
                                             <input type="text" name="q" value="{{ app.request.get('q') }}" class="form-control" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
                                             <span class="input-group-btn">
                                                 <button class="btn btn-flat" type="submit">
-                                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                                    <i class="fas fa-search" aria-hidden="true"></i>
                                                 </button>
                                             </span>
                                         </div>

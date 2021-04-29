@@ -49,8 +49,8 @@ interface TaggedAdminInterface extends MutableTemplateRegistryAwareInterface
     public const ADMIN_TAG = 'sonata.admin';
 
     public const DEFAULT_LIST_MODES = [
-        'list' => ['class' => 'fa fa-list fa-fw'],
-        'mosaic' => ['class' => 'fa fa-th-large fa-fw'],
+        'list' => ['class' => 'fas fa-list fa-fw'],
+        'mosaic' => ['class' => 'fas fa-th-large fa-fw'],
     ];
 
     /**

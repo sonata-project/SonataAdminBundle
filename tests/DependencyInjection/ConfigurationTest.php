@@ -36,7 +36,7 @@ class ConfigurationTest extends TestCase
         $this->assertSame('bundles/sonataadmin/images/default_mosaic_image.png', $config['options']['mosaic_background']);
         $this->assertSame('default', $config['options']['default_group']);
         $this->assertSame('SonataAdminBundle', $config['options']['default_label_catalogue']);
-        $this->assertSame('<i class="fa fa-folder"></i>', $config['options']['default_icon']);
+        $this->assertSame('<i class="fas fa-folder"></i>', $config['options']['default_icon']);
     }
 
     public function testBreadcrumbsChildRouteDefaultsToEdit(): void
@@ -132,7 +132,7 @@ class ConfigurationTest extends TestCase
                 'groups' => [
                     'bar' => [
                         'label' => 'foo',
-                        'icon' => '<i class="fa fa-edit"></i>',
+                        'icon' => '<i class="fas fa-edit"></i>',
                         'items' => [
                             'item1',
                             'item2',
@@ -203,7 +203,7 @@ class ConfigurationTest extends TestCase
                 'groups' => [
                     'bar' => [
                         'label' => 'foo',
-                        'icon' => '<i class="fa fa-edit"></i>',
+                        'icon' => '<i class="fas fa-edit"></i>',
                         'items' => [
                             ['label' => 'noRoute'],
                         ],
@@ -223,7 +223,7 @@ class ConfigurationTest extends TestCase
                 'groups' => [
                     'bar' => [
                         'label' => 'foo',
-                        'icon' => '<i class="fa fa-edit"></i>',
+                        'icon' => '<i class="fas fa-edit"></i>',
                         'items' => [
                             ['route' => 'noLabel'],
                         ],

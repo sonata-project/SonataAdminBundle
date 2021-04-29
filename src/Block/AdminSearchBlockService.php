@@ -115,7 +115,7 @@ final class AdminSearchBlockService extends AbstractBlockService
                 'query' => '',
                 'page' => 0,
                 'per_page' => 10,
-                'icon' => '<i class="fa fa-list"></i>',
+                'icon' => '<i class="fas fa-list"></i>',
             ])
             ->setRequired('admin_code')
             ->setAllowedTypes('admin_code', ['string']);

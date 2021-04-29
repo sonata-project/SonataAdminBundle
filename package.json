@@ -1,9 +1,9 @@
 {
   "dependencies": {
     "@fontsource/source-sans-pro": "^4.2",
+    "@fortawesome/fontawesome-free": "^5.15",
     "admin-lte": "^2.4",
     "bootstrap": "^3.3",
-    "components-font-awesome": "^4.7",
     "icheck": "^1.0",
     "jquery": "^2.2",
     "jquery-form": "^4.0",

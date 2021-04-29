@@ -200,7 +200,7 @@
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>link_breadcrumb_dashboard</source>
-                <target>&lt;i class="fa fa-home"&gt;&lt;/i&gt;</target>
+                <target>&lt;i class="fas fa-home"&gt;&lt;/i&gt;</target>
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>

@@ -16,7 +16,7 @@ file that was distributed with this source code.
         {% if not form.parent %}<div class="alert alert-danger">{% endif %}
             <ul class="list-unstyled">
                 {% for error in errors %}
-                    <li><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ error.message }}</li>
+                    <li><i class="fas fa-exclamation-circle" aria-hidden="true"></i> {{ error.message }}</li>
                 {% endfor %}
             </ul>
         {% if not form.parent %}</div>{% endif %}
@@ -388,7 +388,7 @@ file that was distributed with this source code.
             <div class="row">
                 <div class="col-xs-1">
                     <a href="#" class="btn btn-link sonata-collection-delete">
-                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                        <i class="fas fa-minus-circle" aria-hidden="true"></i>
                     </a>
                 </div>
                 <div class="col-xs-11">
@@ -418,7 +418,7 @@ file that was distributed with this source code.
         {% endfor %}
         {{ form_rest(form) }}
         {% if allow_add %}
-            <div><a href="#" class="btn btn-link sonata-collection-add"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></div>
+            <div><a href="#" class="btn btn-link sonata-collection-add"><i class="fas fa-plus-circle" aria-hidden="true"></i></a></div>
         {% endif %}
     </div>
 {% endapply %}
@@ -563,7 +563,7 @@ file that was distributed with this source code.
                        class="btn btn-info btn-sm sonata-ba-action"
                        title="{{ btn_list|trans({}, btn_catalogue) }}"
                     >
-                        <i class="fa fa-list"></i>
+                        <i class="fas fa-list"></i>
                         {{ btn_list|trans({}, btn_catalogue) }}
                     </a>
                 {% endif %}
@@ -577,7 +577,7 @@ file that was distributed with this source code.
                        class="btn btn-success btn-sm sonata-ba-action"
                        title="{{ btn_add|trans({}, btn_catalogue) }}"
                     >
-                        <i class="fa fa-plus-circle"></i>
+                        <i class="fas fa-plus-circle"></i>
                         {{ btn_add|trans({}, btn_catalogue) }}
                     </a>
                 {% endif %}
@@ -592,7 +592,7 @@ file that was distributed with this source code.
                        class="btn btn-warning btn-sm sonata-ba-action {% if sonata_admin.value == null %}hidden{% endif %}"
                        title="{{ btn_edit|trans({}, btn_catalogue) }}"
                     >
-                        <i class="fa fa-pencil"></i>
+                        <i class="fas fa-pencil-alt"></i>
                         {{ btn_edit|trans({}, btn_catalogue) }}
                     </a>
                 {% endif %}
@@ -605,7 +605,7 @@ file that was distributed with this source code.
                         class="btn btn-danger btn-sm sonata-ba-action"
                         title="{{ btn_delete|trans({}, btn_catalogue) }}"
                     >
-                        <i class="fa fa-minus-circle"></i>
+                        <i class="fas fa-minus-circle"></i>
                         {{ btn_delete|trans({}, btn_catalogue) }}
                     </button>
                 {% endif %}

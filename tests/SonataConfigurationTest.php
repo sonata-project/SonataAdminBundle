@@ -28,7 +28,7 @@ final class SonataConfigurationTest extends TestCase
         $this->configuration = new SonataConfiguration('title', '/path/to/logo.png', [
             'confirm_exit' => true,
             'default_group' => 'default',
-            'default_icon' => '<i class="fa fa-folder"></i>',
+            'default_icon' => '<i class="fas fa-folder"></i>',
             'default_label_catalogue' => 'SonataAdminBundle',
             'dropdown_number_groups_per_colums' => 2,
             'form_type' => 'standard',

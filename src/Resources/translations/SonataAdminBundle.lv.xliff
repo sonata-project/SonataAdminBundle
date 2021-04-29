@@ -202,7 +202,7 @@
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>link_breadcrumb_dashboard</source>
-                <target><![CDATA[<i class="fa fa-home"></i>]]></target>
+                <target><![CDATA[<i class="fas fa-home"></i>]]></target>
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
