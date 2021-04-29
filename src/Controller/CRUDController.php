@@ -163,7 +163,7 @@ class CRUDController implements ContainerAwareInterface
             'form' => $formView,
             'datagrid' => $datagrid,
             'csrf_token' => $this->getCsrfToken('sonata.batch'),
-            'export_formats' => $this->has('sonata.admin.admin_exporter') ?
+            'export_formats' => $this->has('sonata.admin.admin_exporter.do-not-use') ?
                 $this->get('sonata.admin.admin_exporter.do-not-use')->getAvailableFormats($this->admin) :
                 $this->admin->getExportFormats(),
         ]);
@@ -940,7 +940,7 @@ class CRUDController implements ContainerAwareInterface
         $format = $request->get('format');
 
         // NEXT_MAJOR: remove the check
-        if (!$this->has('sonata.admin.admin_exporter')) {
+        if (!$this->has('sonata.admin.admin_exporter.do-not-use')) {
             @trigger_error(
                 'Not registering the exporter bundle is deprecated since version 3.14. You must register it to be able to use the export action in 4.0.',
                 \E_USER_DEPRECATED
@@ -959,7 +959,7 @@ class CRUDController implements ContainerAwareInterface
             $adminExporter = $this->get('sonata.admin.admin_exporter.do-not-use');
             $allowedExportFormats = $adminExporter->getAvailableFormats($this->admin);
             $filename = $adminExporter->getExportFilename($this->admin, $format);
-            $exporter = $this->get('sonata.exporter.exporter.do-not-use');
+            $exporter = $this->get('sonata.exporter.exporter');
         }
 
         if (!\in_array($format, $allowedExportFormats, true)) {
