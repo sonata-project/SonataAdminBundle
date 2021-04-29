@@ -386,8 +386,12 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $definition->addMethodCall('setSecurityInformation', ['%sonata.admin.configuration.security.information%']);
         }
 
-        $definition->addMethodCall('setFormTheme', [$overwriteAdminConfiguration['templates']['form'] ?? []]);
-        $definition->addMethodCall('setFilterTheme', [$overwriteAdminConfiguration['templates']['filter'] ?? []]);
+        if (!$definition->hasMethodCall('setFormTheme')) {
+            $definition->addMethodCall('setFormTheme', [$overwriteAdminConfiguration['templates']['form'] ?? []]);
+        }
+        if (!$definition->hasMethodCall('setFilterTheme')) {
+            $definition->addMethodCall('setFilterTheme', [$overwriteAdminConfiguration['templates']['filter'] ?? []]);
+        }
 
         return $definition;
     }
