@@ -27,6 +27,7 @@ use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;
 use Symfony\Component\DependencyInjection\Compiler\ResolveEnvPlaceholdersPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @author Tiago Garcia
@@ -211,6 +212,12 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             'sonata_news_admin',
             'setFilterTheme',
             [[]]
+        );
+
+        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+            'sonata_news_admin',
+            'setModelManager',
+            [new Reference('my.model.manager')]
         );
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
@@ -668,7 +675,8 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             ->setPublic(true)
             ->setClass(MockAdmin::class)
             ->setArguments(['', News::class, CRUDController::class])
-            ->addTag('sonata.admin', ['group' => 'sonata_group_two', 'label' => '5 Entry', 'manager_type' => 'orm']);
+            ->addTag('sonata.admin', ['group' => 'sonata_group_two', 'label' => '5 Entry', 'manager_type' => 'orm'])
+            ->addMethodCall('setModelManager', [new Reference('my.model.manager')]);
         $this->container
             ->register('sonata_post_admin')
             ->setClass(MockAdmin::class)

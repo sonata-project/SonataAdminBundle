@@ -338,7 +338,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
             $method = $this->generateSetterMethodName($attr);
 
-            if (isset($overwriteAdminConfiguration[$attr]) || !$definition->hasMethodCall($method)) {
+            if (!$definition->hasMethodCall($method)) {
                 $args = [new Reference($overwriteAdminConfiguration[$attr] ?? $addServiceId)];
                 if ('translator' === $attr) {
                     $args[] = false;
