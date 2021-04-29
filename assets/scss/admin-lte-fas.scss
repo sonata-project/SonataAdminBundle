@@ -1,0 +1,121 @@
+/*!
+ * This file is part of the Sonata Project package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+// This file adds compatibility with the Font Awesome fas class
+// and the AdminLTE styles
+
+.carousel-control > .fas {
+  display: inline-block;
+  font-size: 40px;
+  margin-top: -20px;
+  position: absolute;
+  top: 50%;
+  z-index: 5;
+}
+
+.btn-app > .fas {
+  display: block;
+  font-size: 20px;
+}
+
+.box-header > .fas {
+  display: inline-block;
+  font-size: 18px;
+  line-height: 1;
+  margin: 0;
+  margin-right: 5px;
+}
+
+.timeline > li > .fas {
+  background: #d2d6de;
+  border-radius: 50%;
+  color: #666;
+  font-size: 15px;
+  height: 30px;
+  left: 18px;
+  line-height: 30px;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 30px;
+}
+
+.treeview-menu > li > a > .fas {
+  width: 20px;
+}
+
+.nav-pills > li > a > .fas {
+  margin-right: 5px;
+}
+
+.dropdown-menu > li > a > .fas {
+  margin-right: 10px;
+}
+
+.sidebar-menu > li > a > .fas {
+  width: 20px;
+}
+
+.box .overlay > .fas,
+.overlay-wrapper .overlay > .fas {
+  color: #000;
+  font-size: 30px;
+  left: 50%;
+  margin-left: -15px;
+  margin-top: -15px;
+  position: absolute;
+  top: 50%;
+}
+
+.todo-list > li .tools > .fas {
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.user-panel > .info > a > .fas {
+  margin-right: 3px;
+}
+
+.content-header > .breadcrumb > li > a > .fas {
+  margin-right: 5px;
+}
+
+.nav-tabs-custom > .nav-tabs > li.header > .fas {
+  margin-right: 5px;
+}
+
+.main-header .navbar .nav > li.user > a > .fas {
+  margin-right: 5px;
+}
+
+.navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a > .fas {
+  width: 20px;
+}
+
+.form-control-feedback.fas {
+  line-height: 34px;
+}
+
+.input-lg + .form-control-feedback.fas,
+.input-group-lg + .form-control-feedback.fas {
+  line-height: 46px;
+}
+
+.input-sm + .form-control-feedback.fas,
+.input-group-sm + .form-control-feedback.fas {
+  line-height: 30px;
+}
+
+.form-group-lg .form-control + .form-control-feedback.fas {
+  line-height: 46px;
+}
+
+.form-group-sm .form-control + .form-control-feedback.fas {
+  line-height: 30px;
+}

@@ -21,7 +21,7 @@ file that was distributed with this source code.
         <div class="box-header with-border">
             {% set icon = settings.icon|default('') %}
             {% if icon %}
-                <i class="fa {{ icon|raw }}"></i>
+                <i class="fas {{ icon|raw }}"></i>
             {% endif %}
             <h3 class="box-title">
                 <a href="#{{ inlineAnchor }}">{{ settings.text|trans({}, translation_domain) }}</a>
