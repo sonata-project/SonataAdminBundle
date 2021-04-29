@@ -71,10 +71,10 @@ You can use the provided extension to take care of your entity admin.
            arguments:
                - '@workflow.registry'
                - transitions_icons:
-                     start_review: fa fa-question
-                     interrupt_review: fa fa-edit
-                     restart_review: fa fa-question
-                     publish: fa fa-check
+                     start_review: fas fa-question
+                     interrupt_review: fas fa-edit
+                     restart_review: fas fa-question
+                     publish: fas fa-check
 
 .. code-block:: yaml
 

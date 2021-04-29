@@ -177,12 +177,12 @@ EOD;
                 ./li
                     [.=" [trans]Error 1[/trans]"]
                     [
-                        ./i[@class="fa fa-exclamation-circle"]
+                        ./i[@class="fas fa-exclamation-circle"]
                     ]
                 /following-sibling::li
                     [.=" [trans]Error 2[/trans]"]
                     [
-                        ./i[@class="fa fa-exclamation-circle"]
+                        ./i[@class="fas fa-exclamation-circle"]
                     ]
             ]
             [count(./li)=2]

@@ -8,7 +8,12 @@
  */
 
 @import "~bootstrap/dist/css/bootstrap.css";
-@import "~font-awesome/scss/font-awesome";
+
+// Add Font Awesome Free and the v4 compatibility layer
+// this layer should only be removed when we are sure we have replaced
+// all icons to the new naming on all Sonata code
+@import "~@fortawesome/fontawesome-free/css/all.css";
+@import "~@fortawesome/fontawesome-free/css/v4-shims.css";
 
 // Add Source Sans Pro Font with all options
 // This font is used by AdminLTE

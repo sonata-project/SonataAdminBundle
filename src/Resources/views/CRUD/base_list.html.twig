@@ -105,7 +105,7 @@ file that was distributed with this source code.
                 {% else %}
                     {% block no_result_content %}
                         <div class="info-box">
-                            <span class="info-box-icon bg-aqua"><i class="fa fa-arrow-circle-right" aria-hidden="true"></i></span>
+                            <span class="info-box-icon bg-aqua"><i class="fas fa-arrow-circle-right" aria-hidden="true"></i></span>
                             <div class="info-box-content">
                                 <span class="info-box-text">{{ 'no_result'|trans({}, 'SonataAdminBundle') }}</span>
                                 <div class="progress">
@@ -193,7 +193,7 @@ file that was distributed with this source code.
                                     {% if admin.hasRoute('export') and admin.hasAccess('export') and export_formats|length %}
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fa fa-share-square-o" aria-hidden="true"></i>
+                                                <i class="fas fa-share-square" aria-hidden="true"></i>
                                                 {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
                                                 <span class="caret"></span>
                                             </button>
@@ -201,7 +201,7 @@ file that was distributed with this source code.
                                                 {% for format in export_formats %}
                                                 <li>
                                                     <a href="{{ admin.generateUrl('export', admin.datagrid.paginationparameters(0) + {'format' : format}) }}">
-                                                        <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
+                                                        <i class="fas fa-arrow-circle-o-down" aria-hidden="true"></i>
                                                         {{ ("export_format_" ~ format)|trans({}, 'SonataAdminBundle') }}
                                                     </a>
                                                 </li>
@@ -244,7 +244,7 @@ file that was distributed with this source code.
 
             <li class="dropdown sonata-actions">
                 <a href="#" class="dropdown-toggle sonata-ba-action" data-toggle="dropdown">
-                    <i class="fa fa-filter" aria-hidden="true"></i>
+                    <i class="fas fa-filter" aria-hidden="true"></i>
                     {{ 'link_filters'|trans({}, 'SonataAdminBundle') }}
                     <span class="badge sonata-filter-count"></span>
                     <b class="caret"></b>
@@ -308,7 +308,7 @@ file that was distributed with this source code.
                                             <div class="col-sm-1">
                                                 <label class="control-label">
                                                     <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
-                                                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                                        <i class="fas fa-minus-circle" aria-hidden="true"></i>
                                                     </a>
                                                 </label>
                                             </div>
@@ -328,7 +328,7 @@ file that was distributed with this source code.
 
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="fa fa-filter" aria-hidden="true"></i> {{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}
+                                        <i class="fas fa-filter" aria-hidden="true"></i> {{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}
                                     </button>
 
                                     <a class="btn btn-default" href="{{ admin.generateUrl('list', {filters: 'reset'}) }}">
@@ -339,7 +339,7 @@ file that was distributed with this source code.
                                 {% if withAdvancedFilter %}
                                     <div class="form-group">
                                         <a href="#" data-toggle="advanced-filter">
-                                            <i class="fa fa-cogs" aria-hidden="true"></i>
+                                            <i class="fas fa-cogs" aria-hidden="true"></i>
                                             {{ 'btn_advanced_filters'|trans({}, 'SonataAdminBundle') }}
                                         </a>
                                     </div>

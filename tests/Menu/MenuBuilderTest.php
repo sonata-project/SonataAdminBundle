@@ -53,7 +53,7 @@ final class MenuBuilderTest extends TestCase
     {
         $adminGroups = [
             'bar' => [
-                'icon' => '<i class="fa fa-edit"></i>',
+                'icon' => '<i class="fas fa-edit"></i>',
                 'label_catalogue' => '',
                 'roles' => [],
             ],
@@ -91,7 +91,7 @@ final class MenuBuilderTest extends TestCase
             'bar' => [
                 'provider' => 'my_menu',
                 'label_catalogue' => '',
-                'icon' => '<i class="fa fa-edit"></i>',
+                'icon' => '<i class="fas fa-edit"></i>',
                 'roles' => [],
             ],
         ];
@@ -127,7 +127,7 @@ final class MenuBuilderTest extends TestCase
         $adminGroups = [
             'bar' => [
                 'label' => 'foo',
-                'icon' => '<i class="fa fa-edit"></i>',
+                'icon' => '<i class="fas fa-edit"></i>',
                 'label_catalogue' => 'SonataAdminBundle',
                 'items' => [],
                 'item_adds' => [],

@@ -213,7 +213,7 @@ const Admin = {
     Admin.log('[core|setup_xeditable] configure xeditable on', subject);
     jQuery('.x-editable', subject).editable({
       emptyclass: 'editable-empty btn btn-sm btn-default',
-      emptytext: '<i class="fa fa-pencil"></i>',
+      emptytext: '<i class="fas fa-pencil-alt"></i>',
       container: 'body',
       placement: 'auto',
       success(response) {

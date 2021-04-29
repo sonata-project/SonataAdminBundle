@@ -71,7 +71,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
             'query' => '',
             'page' => 0,
             'per_page' => 10,
-            'icon' => '<i class="fa fa-list"></i>',
+            'icon' => '<i class="fas fa-list"></i>',
         ], $blockContext);
     }
 

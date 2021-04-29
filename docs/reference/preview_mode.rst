@@ -88,11 +88,11 @@ expects a different object you can set your own variables prior to calling ``par
 
     {% block formactions %}
         <button class="btn btn-success" type="submit" name="btn_preview_approve">
-            <i class="fa fa-check"></i>
+            <i class="fas fa-check"></i>
             {{ 'btn_preview_approve'|trans({}, 'SonataAdminBundle') }}
         </button>
         <button class="btn btn-danger" type="submit" name="btn_preview_decline">
-            <i class="fa fa-times"></i>
+            <i class="fas fa-times"></i>
             {{ 'btn_preview_decline'|trans({}, 'SonataAdminBundle') }}
         </button>
     {% endblock %}

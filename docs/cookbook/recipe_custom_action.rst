@@ -280,7 +280,7 @@ Create a template for that button:
 
     <li>
         <a class="sonata-action-element" href="{{ admin.generateUrl('import') }}">
-            <i class="fa fa-level-up"></i> {{ 'import_action'|trans({}, 'SonataAdminBundle') }}
+            <i class="fas fa-level-up-alt"></i> {{ 'import_action'|trans({}, 'SonataAdminBundle') }}
         </a>
     </li>
 
@@ -300,7 +300,7 @@ Create a template for that button:
 .. code-block:: html+jinja
 
     <a class="btn btn-link btn-flat" href="{{ admin.generateUrl('import') }}">
-        <i class="fa fa-level-up"></i> {{ 'import_action'|trans({}, 'SonataAdminBundle') }}
+        <i class="fas fa-level-up-alt"></i> {{ 'import_action'|trans({}, 'SonataAdminBundle') }}
     </a>
 
 Or you can pass values as array::
@@ -311,7 +311,7 @@ Or you can pass values as array::
             'label' => 'import_action',
             'translation_domain' => 'SonataAdminBundle',
             'url' => $this->generateUrl('import'),
-            'icon' => 'level-up',
+            'icon' => 'level-up-alt',
         ];
 
         return $actions;
