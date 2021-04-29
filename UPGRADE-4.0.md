@@ -1,6 +1,15 @@
 UPGRADE FROM 3.x to 4.0
 =======================
 
+## Upgrade to Font Awesome 5
+
+Some icons have been renamed by Font Awesome, and the correct class is now `fas` or `fab` instead of
+`fa`, for example before you would have used `fa fa-edit`, and after `fas fa-edit`.
+
+Sonata includes the compatibility layer of Font Awesome 5 that ensure the old icons names from version 4
+still works. So we encourage to upgrade the names of all your custom icons, but the old code should
+still work.
+
 ## Removed `famfamfam` icon set
 
 If you still need it, please set it up on your own!
