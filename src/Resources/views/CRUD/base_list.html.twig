@@ -255,7 +255,7 @@ file that was distributed with this source code.
                         {% set filterDisplayed = filter.isActive() or filter.option('show_filter') is same as (true) %}
                         <li>
                             <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
-                                <i class="fa {{ filterDisplayed ? 'fa-check-square-o' : 'fa-square-o' }}"></i>
+                                <i class="fas {{ filterDisplayed ? 'fa-check-square' : 'fa-square' }}"></i>
                                 {% if filter.label is not same as(false) %}
                                     {{ filter.label|trans(filter.option('label_translation_parameters', {}), filter.translationDomain ?: admin.translationDomain) }}
                                 {% endif %}

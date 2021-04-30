@@ -261,7 +261,7 @@ const Admin = {
     Admin.log('[core|add_filters] configure filters on', subject);
 
     function updateCounter() {
-      const count = jQuery('a.sonata-toggle-filter .fa-check-square-o', subject).length;
+      const count = jQuery('a.sonata-toggle-filter .fa-check-square', subject).length;
 
       jQuery('.sonata-filter-count', subject).text(count);
     }
@@ -288,14 +288,14 @@ const Admin = {
       if (jQuery(target).is(':visible')) {
         filterToggler
           .filter(':not(.fa-minus-circle)')
-          .removeClass('fa-check-square-o')
-          .addClass('fa-square-o');
+          .removeClass('fa-check-square')
+          .addClass('fa-square');
         target.hide();
       } else {
         filterToggler
           .filter(':not(.fa-minus-circle)')
-          .removeClass('fa-square-o')
-          .addClass('fa-check-square-o');
+          .removeClass('fa-square')
+          .addClass('fa-check-square');
         target.show();
       }
 
