@@ -7,6 +7,11 @@
  * file that was distributed with this source code.
  */
 
+import log from './admin-log';
+import setupICheck from './admin-setup-icheck';
+import addFlashMessageListener from './admin-flash-message';
+import { getConfig, getTranslation, read } from './admin-config';
+
 const Admin = {
 
   collectionCounters: [],
@@ -20,13 +25,13 @@ const Admin = {
    * @param subject
    */
   shared_setup(subject) {
-    Admin.read_config();
-    Admin.log('[core|shared_setup] Register services on', subject);
+    read();
+    log('[core|shared_setup] Register services on', subject);
     Admin.setup_ie10_polyfill();
     Admin.set_object_field_value(subject);
     Admin.add_filters(subject);
     Admin.setup_select2(subject);
-    Admin.setup_icheck(subject);
+    setupICheck(subject);
     Admin.setup_checkbox_range_selection(subject);
     Admin.setup_xeditable(subject);
     Admin.setup_form_tabs_for_errors(subject);
@@ -48,27 +53,16 @@ const Admin = {
     }
   },
   read_config() {
-    const data = jQuery('[data-sonata-admin]').data('sonata-admin');
-
-    this.config = data.config;
-    this.translations = data.translations;
+    read();
   },
   get_config(key) {
-    if (this.config == null) {
-      this.read_config();
-    }
-
-    return this.config[key];
+    return getConfig(key);
   },
   get_translations(key) {
-    if (this.translations == null) {
-      this.read_config();
-    }
-
-    return this.translations[key];
+    return getTranslation(key);
   },
   setup_list_modal(modal) {
-    Admin.log('[core|setup_list_modal] configure modal on', modal);
+    log('[core|setup_list_modal] configure modal on', modal);
     // this will force relation modal to open list of entity in a wider modal
     // to improve readability
     jQuery('div.modal-dialog', modal).css({
@@ -92,7 +86,7 @@ const Admin = {
   },
   setup_select2(subject) {
     if (Admin.get_config('USE_SELECT2')) {
-      Admin.log('[core|setup_select2] configure Select2 on', subject);
+      log('[core|setup_select2] configure Select2 on', subject);
 
       jQuery('select:not([data-sonata-select2="false"])', subject).each((index, element) => {
         const select = jQuery(element);
@@ -138,21 +132,7 @@ const Admin = {
     }
   },
   setup_icheck(subject) {
-    if (Admin.get_config('USE_ICHECK')) {
-      Admin.log('[core|setup_icheck] configure iCheck on', subject);
-
-      const inputs = jQuery('input[type="checkbox"]:not(label.btn > input, [data-sonata-icheck="false"]), input[type="radio"]:not(label.btn > input, [data-sonata-icheck="false"])', subject);
-      inputs.iCheck({
-        checkboxClass: 'icheckbox_square-blue',
-        radioClass: 'iradio_square-blue',
-      });
-
-      // In case some checkboxes were already checked (for instance after moving
-      // back in the browser's session history) update iCheck checkboxes.
-      if (subject === window.document) {
-        setTimeout(() => { inputs.iCheck('update'); }, 0);
-      }
-    }
+    setupICheck(subject);
   },
   /**
    * Setup checkbox range selection
@@ -163,7 +143,7 @@ const Admin = {
    * @param {string|Object} subject The html selector or object on which function should be applied
    */
   setup_checkbox_range_selection(subject) {
-    Admin.log('[core|setup_checkbox_range_selection] configure checkbox range selection on', subject);
+    log('[core|setup_checkbox_range_selection] configure checkbox range selection on', subject);
 
     let previousIndex;
     const useICheck = Admin.get_config('USE_ICHECK');
@@ -205,7 +185,7 @@ const Admin = {
   },
 
   setup_xeditable(subject) {
-    Admin.log('[core|setup_xeditable] configure xeditable on', subject);
+    log('[core|setup_xeditable] configure xeditable on', subject);
     jQuery('.x-editable', subject).editable({
       emptyclass: 'editable-empty btn btn-sm btn-default',
       emptytext: '<i class="fas fa-pencil-alt"></i>',
@@ -229,21 +209,8 @@ const Admin = {
     });
   },
 
-  /**
-   * render log message
-   * @param mixed
-   */
   log(...args) {
-    if (!Admin.get_config('DEBUG')) {
-      return;
-    }
-
-    const msg = `[Sonata.Admin] ${Array.prototype.join.call(args, ', ')}`;
-    if (window.console && window.console.log) {
-      window.console.log(msg);
-    } else if (window.opera && window.opera.postError) {
-      window.opera.postError(msg);
-    }
+    log(...args);
   },
 
   stopEvent(event) {
@@ -253,7 +220,7 @@ const Admin = {
   },
 
   add_filters(subject) {
-    Admin.log('[core|add_filters] configure filters on', subject);
+    log('[core|add_filters] configure filters on', subject);
 
     function updateCounter() {
       const count = jQuery('a.sonata-toggle-filter .fa-check-square', subject).length;
@@ -269,7 +236,7 @@ const Admin = {
         return;
       }
 
-      Admin.log('[core|add_filters] handle filter container: ', jQuery(event.target).attr('filter-container'));
+      log('[core|add_filters] handle filter container: ', jQuery(event.target).attr('filter-container'));
 
       const filtersContainer = jQuery(`#${jQuery(event.currentTarget).attr('filter-container')}`);
 
@@ -340,7 +307,7 @@ const Admin = {
    * @param subject
    */
   set_object_field_value(subject) {
-    Admin.log('[core|set_object_field_value] set value field on', subject);
+    log('[core|set_object_field_value] set value field on', subject);
 
     this.log(jQuery('a.sonata-ba-edit-inline', subject));
     jQuery('a.sonata-ba-edit-inline', subject).on('click', (event) => {
@@ -365,7 +332,7 @@ const Admin = {
   },
 
   setup_collection_counter(subject) {
-    Admin.log('[core|setup_collection_counter] setup collection counter', subject);
+    log('[core|setup_collection_counter] setup collection counter', subject);
 
     // Count and save element of each collection
     const highestCounterRegexp = new RegExp('_([0-9]+)[^0-9]*$');
@@ -419,7 +386,7 @@ const Admin = {
   },
 
   setup_per_page_switcher(subject) {
-    Admin.log('[core|setup_per_page_switcher] setup page switcher', subject);
+    log('[core|setup_per_page_switcher] setup page switcher', subject);
 
     jQuery('select.per-page').on('change', () => {
       jQuery('input[type=submit]').hide();
@@ -429,7 +396,7 @@ const Admin = {
   },
 
   setup_form_tabs_for_errors(subject) {
-    Admin.log('[core|setup_form_tabs_for_errors] setup form tab\'s errors', subject);
+    log('[core|setup_form_tabs_for_errors] setup form tab\'s errors', subject);
 
     // Switch to first tab with server side validation errors on page load
     jQuery('form', subject).each((index, element) => {
@@ -449,7 +416,7 @@ const Admin = {
   },
 
   show_form_first_tab_with_errors(form, errorSelector) {
-    Admin.log('[core|show_form_first_tab_with_errors] show first tab with errors', form);
+    log('[core|show_form_first_tab_with_errors] show first tab with errors', form);
 
     const tabs = form.find('.nav-tabs a'); let
       firstTabWithErrors;
@@ -474,7 +441,7 @@ const Admin = {
   },
 
   setup_inline_form_errors(subject) {
-    Admin.log('[core|setup_inline_form_errors] show first tab with errors', subject);
+    log('[core|setup_inline_form_errors] show first tab with errors', subject);
 
     const deleteCheckboxSelector = '.sonata-ba-field-inline-table [id$="_delete"][type="checkbox"]';
 
@@ -491,7 +458,7 @@ const Admin = {
    * Disable inline form errors when the row is marked for deletion
    */
   switch_inline_form_errors(subject) {
-    Admin.log('[core|switch_inline_form_errors] switch_inline_form_errors', subject);
+    log('[core|switch_inline_form_errors] switch_inline_form_errors', subject);
 
     const row = subject.closest('.sonata-ba-field-inline-table');
     const errors = row.find('.sonata-ba-field-error-messages');
@@ -510,7 +477,7 @@ const Admin = {
   },
 
   setup_tree_view(subject) {
-    Admin.log('[core|setup_tree_view] setup tree view', subject);
+    log('[core|setup_tree_view] setup tree view', subject);
 
     jQuery('ul.js-treeview', subject).treeView();
   },
@@ -590,7 +557,7 @@ const Admin = {
 
   setup_sticky_elements(subject) {
     if (Admin.get_config('USE_STICKYFORMS')) {
-      Admin.log('[core|setup_sticky_elements] setup sticky elements on', subject);
+      log('[core|setup_sticky_elements] setup sticky elements on', subject);
 
       const topNavbar = jQuery(subject).find('.navbar-static-top');
       const wrapper = jQuery(subject).find('.content-wrapper');
@@ -724,7 +691,7 @@ const Admin = {
   },
 
   setup_readmore_elements(subject) {
-    Admin.log('[core|setup_readmore_elements] setup readmore elements on', subject);
+    log('[core|setup_readmore_elements] setup readmore elements on', subject);
 
     jQuery(subject).find('.sonata-readmore').each((index, element) => {
       const $element = jQuery(element);
@@ -742,7 +709,7 @@ const Admin = {
   },
 
   setup_form_submit(subject) {
-    Admin.log('[core|setup_form_submit] setup form submit on', subject);
+    log('[core|setup_form_submit] setup form submit on', subject);
 
     jQuery(subject).find('form').on('submit', (event) => {
       const form = jQuery(event.target);
@@ -821,6 +788,7 @@ jQuery(() => {
   Admin.setup_collection_buttons(document);
   Admin.setup_view_tabs_changer();
   Admin.shared_setup(document);
+  addFlashMessageListener();
 });
 
 jQuery(window).on('resize', () => {
@@ -829,7 +797,7 @@ jQuery(window).on('resize', () => {
 
 jQuery(document).on('sonata-admin-append-form-element', (event) => {
   Admin.setup_select2(event.target);
-  Admin.setup_icheck(event.target);
+  setupICheck(event.target);
   Admin.setup_collection_counter(event.target);
 });
 

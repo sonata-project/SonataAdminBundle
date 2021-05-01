@@ -51,11 +51,10 @@ import 'readmore-js';
 import 'masonry-layout';
 
 // SonataAdmin custom scripts
-import './Admin';
+import './admin';
 import './jquery.confirmExit';
 import './treeview';
 import './sidebar';
-import './base';
 
 // Create global $ and jQuery variables to be used outside this script
 global.$ = $;
