@@ -167,6 +167,13 @@ interface AdminExtensionInterface
     public function getPersistentParameters(AdminInterface $admin);
 
     /**
+     * Get a chance to configure admin before used.
+     *
+     * @phpstan-param AdminInterface<T> $admin
+     */
+//    public function configure(AdminInterface $admin): void;
+
+    /**
      * Get a chance to add persistent parameters.
      *
      * @param array<string, mixed> $parameters
