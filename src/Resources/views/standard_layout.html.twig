@@ -89,8 +89,7 @@ file that was distributed with this source code.
             {% else %}
                 {% if action is defined %}
                     -
-                    {# NEXT_MAJOR: Remove breadcrumbs_builder argument. #}
-                    {{ render_breadcrumbs_for_title(admin, action, breadcrumbs_builder|default(null)) }}
+                    {{ render_breadcrumbs_for_title(admin, action) }}
                 {% endif %}
             {% endif %}
         {% endblock %}
@@ -144,8 +143,7 @@ file that was distributed with this source code.
                                         <ol class="nav navbar-top-links breadcrumb">
                                             {% if _breadcrumb is empty %}
                                                 {% if action is defined %}
-                                                    {# NEXT_MAJOR: Remove breadcrumbs_builder argument. #}
-                                                    {{ render_breadcrumbs(admin, action, breadcrumbs_builder|default(null)) }}
+                                                    {{ render_breadcrumbs(admin, action) }}
                                                 {% endif %}
                                             {% else %}
                                                 {{ _breadcrumb|raw }}

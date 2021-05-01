@@ -196,16 +196,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             unset($options['template']);
         }
 
-        // NEXT_MAJOR: Remove this.
-        if (!isset($options['placeholder'])) {
-            $options['placeholder'] = 'short_object_description_placeholder';
-        }
-
-        // NEXT_MAJOR: Remove this.
-        if (!isset($options['link_parameters'])) {
-            $options['link_parameters'] = [];
-        }
-
         $this->options = $options;
     }
 

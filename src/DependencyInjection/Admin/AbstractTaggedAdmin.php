@@ -38,13 +38,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 {
     /**
-     * NEXT_MAJOR: Remove this constant.
-     *
-     * @deprecated since sonata-project/sonata-admin 3.98, will be removed in 4.0
-     */
-    public const MOSAIC_ICON_CLASS = 'fas fa-th-large fa-fw';
-
-    /**
      * The code related to the admin.
      *
      * @var string
@@ -212,23 +205,6 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getLabel(): ?string
     {
         return $this->label;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    final public function showMosaicButton(bool $isShown): void
-    {
-        @trigger_error(sprintf(
-            'The method %s() is deprecated since sonata-project/admin-bundle 3.98. Use `setListModes` instead.',
-            __METHOD__
-        ), \E_USER_DEPRECATED);
-
-        if ($isShown) {
-            $this->listModes['mosaic'] = ['class' => static::MOSAIC_ICON_CLASS];
-        } else {
-            unset($this->listModes['mosaic']);
-        }
     }
 
     final public function setListModes(array $listModes): void

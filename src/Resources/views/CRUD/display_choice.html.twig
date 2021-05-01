@@ -10,15 +10,6 @@ file that was distributed with this source code.
 #}
 
 {%- apply spaceless %}
-    {# NEXT_MAJOR: Remove this BC-layer #}
-    {% if field_description is defined %}
-        {% set choices = choices|default(field_description.option('choices')) %}
-        {% set multiple = multiple|default(field_description.option('multiple', false)) %}
-        {% set delimiter = delimiter|default(field_description.option('delimiter', ', ')) %}
-        {% set translation_domain = translation_domain|default(field_description.option('catalogue')) %}
-        {% set safe = safe|default(field_description.option('safe', false)) %}
-    {% endif %}
-
     {% set choices = choices|default([]) %}
     {% if multiple|default(false) and value is iterable %}
 

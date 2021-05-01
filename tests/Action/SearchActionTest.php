@@ -14,10 +14,8 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Action;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\SearchAction;
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
@@ -55,13 +53,6 @@ final class SearchActionTest extends TestCase
      */
     private $twig;
 
-    /**
-     * NEXT_MAJOR: Remove this property.
-     *
-     * @var Stub&BreadcrumbsBuilderInterface
-     */
-    private $breadcrumbsBuilder;
-
     protected function setUp(): void
     {
         $this->container = new Container();
@@ -71,7 +62,6 @@ final class SearchActionTest extends TestCase
             'layout' => 'layout.html.twig',
         ]);
 
-        $this->breadcrumbsBuilder = $this->createStub(BreadcrumbsBuilderInterface::class);
         $this->searchHandler = new SearchHandler(true);
         $this->twig = $this->createMock(Environment::class);
 
@@ -79,8 +69,6 @@ final class SearchActionTest extends TestCase
             $this->pool,
             $this->searchHandler,
             $templateRegistry,
-            // NEXT_MAJOR: Remove next line.
-            $this->breadcrumbsBuilder,
             $this->twig
         );
     }
@@ -90,8 +78,6 @@ final class SearchActionTest extends TestCase
         $request = new Request(['q' => 'some search']);
         $this->twig->method('render')->with('search.html.twig', [
             'base_template' => 'layout.html.twig',
-            // NEXT_MAJOR: Remove next line.
-            'breadcrumbs_builder' => $this->breadcrumbsBuilder,
             'query' => 'some search',
             'groups' => [],
         ])->willReturn('rendered_search');

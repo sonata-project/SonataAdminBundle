@@ -144,8 +144,6 @@ class DatagridMapperTest extends TestCase
             'show_filter' => null,
             'advanced_filter' => true,
             'foo_default_option' => 'bar_default',
-            'placeholder' => 'short_object_description_placeholder',
-            'link_parameters' => [],
             'label' => 'fooLabel',
             'field_name' => 'fooFilterName',
         ], $filter->getOptions());
@@ -176,8 +174,6 @@ class DatagridMapperTest extends TestCase
             'show_filter' => null,
             'advanced_filter' => true,
             'foo_default_option' => 'bar_custom',
-            'placeholder' => 'short_object_description_placeholder',
-            'link_parameters' => [],
             'label' => 'fooLabel',
             'field_name' => 'fooFilterName',
             'field_type' => 'foo_field_type',

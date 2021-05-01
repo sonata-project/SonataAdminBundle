@@ -14,24 +14,19 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use Knp\Menu\ItemInterface;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
 use Sonata\AdminBundle\Tests\Fixtures\StubTranslator;
 use Sonata\AdminBundle\Twig\Extension\BreadcrumbsExtension;
-// NEXT_MAJOR: Remove next line.
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Twig\Environment;
 use Twig\Extra\String\StringExtension;
 
 final class BreadcrumbsExtensionTest extends TestCase
 {
-    // NEXT_MAJOR: Remove next line.
-    use ExpectDeprecationTrait;
-
     /**
      * @var BreadcrumbsExtension
      */
@@ -43,9 +38,7 @@ final class BreadcrumbsExtensionTest extends TestCase
     private $environment;
 
     /**
-     * NEXT_MAJOR: Replace to MockObject by Stub.
-     *
-     * @var MockObject&BreadcrumbsBuilderInterface
+     * @var Stub&BreadcrumbsBuilderInterface
      */
     private $breadcrumbBuilder;
 
@@ -63,8 +56,7 @@ final class BreadcrumbsExtensionTest extends TestCase
         $this->environment->addExtension(new TranslationExtension(new StubTranslator()));
         $this->environment->addExtension(new StringExtension());
 
-        // NEXT_MAJOR: Use $this->createStub instead.
-        $this->breadcrumbBuilder = $this->createMock(BreadcrumbsBuilderInterface::class);
+        $this->breadcrumbBuilder = $this->createStub(BreadcrumbsBuilderInterface::class);
 
         $this->breadcrumbsExtension = new BreadcrumbsExtension($this->breadcrumbBuilder);
     }
@@ -187,54 +179,6 @@ final class BreadcrumbsExtensionTest extends TestCase
                 'not_important',
             ))
         );
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testUsingExternalBreadcrumbsBuilderForBC(): void
-    {
-        $customBreadcrumbsBuilder = new class() implements BreadcrumbsBuilderInterface {
-            /**
-             * @var int
-             */
-            public $numberOfCalls = 0;
-
-            public function getBreadcrumbs(AdminInterface $admin, $action): array
-            {
-                ++$this->numberOfCalls;
-
-                return [];
-            }
-
-            public function buildBreadcrumbs(AdminInterface $admin, $action, ?ItemInterface $menu = null): void
-            {
-            }
-        };
-
-        $this->breadcrumbBuilder
-            ->expects($this->never())
-            ->method('getBreadcrumbs');
-
-        $this->expectDeprecation('Overriding "breadcrumbs_builder" parameter in twig templates is deprecated since sonata-project/admin-bundle version 3.98 and this parameter will be removed in 4.0. Use "sonata.admin.breadcrumbs_builder" service instead.');
-
-        $this->breadcrumbsExtension->renderBreadcrumbs(
-            $this->environment,
-            $this->createStub(AdminInterface::class),
-            'not_important',
-            $customBreadcrumbsBuilder
-        );
-
-        $this->breadcrumbsExtension->renderBreadcrumbsForTitle(
-            $this->environment,
-            $this->createStub(AdminInterface::class),
-            'not_important',
-            $customBreadcrumbsBuilder
-        );
-
-        $this->assertSame(2, $customBreadcrumbsBuilder->numberOfCalls);
     }
 
     private function removeExtraWhitespace(string $string): string

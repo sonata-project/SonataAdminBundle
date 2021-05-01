@@ -15,8 +15,7 @@ file that was distributed with this source code.
 
 {% block block %}
     {% set inlineAnchor = settings.text|replace({'.':'_'}) %}
-    {# NEXT_MAJOR: Remove the attribute check and use `admin.datagrid.pager.countResults` #}
-    {% set results_count = attribute(admin.datagrid.pager, 'countResults') is defined ? admin.datagrid.pager.countResults : admin.datagrid.pager.nbResults %}
+    {% set results_count = admin.datagrid.pager.countResults %}
     <div class="box box-primary" id="{{ inlineAnchor }}">
         <div class="box-header with-border">
             {% set icon = settings.icon|default('') %}

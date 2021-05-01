@@ -89,9 +89,9 @@ class BaseFieldDescriptionTest extends TestCase
         $this->assertSame('integer', $description->getType());
         $this->assertSame('foo.twig.html', $description->getTemplate());
 
-        $this->assertCount(2, $description->getOptions());
+        $this->assertCount(0, $description->getOptions());
 
-        $this->assertSame('short_object_description_placeholder', $description->getOption('placeholder'));
+        $this->assertNull($description->getOption('placeholder'));
         $description->setOptions(['placeholder' => 'foo']);
         $this->assertSame('foo', $description->getOption('placeholder'));
 

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Action;
 
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
@@ -41,13 +40,6 @@ final class SearchAction
     private $templateRegistry;
 
     /**
-     * NEXT_MAJOR: Remove this property.
-     *
-     * @var BreadcrumbsBuilderInterface
-     */
-    private $breadcrumbsBuilder;
-
-    /**
      * @var Environment
      */
     private $twig;
@@ -56,15 +48,11 @@ final class SearchAction
         Pool $pool,
         SearchHandler $searchHandler,
         TemplateRegistryInterface $templateRegistry,
-        // NEXT_MAJOR: Remove next line.
-        BreadcrumbsBuilderInterface $breadcrumbsBuilder,
         Environment $twig
     ) {
         $this->pool = $pool;
         $this->searchHandler = $searchHandler;
         $this->templateRegistry = $templateRegistry;
-        // NEXT_MAJOR: Remove next line.
-        $this->breadcrumbsBuilder = $breadcrumbsBuilder;
         $this->twig = $twig;
     }
 
@@ -81,8 +69,6 @@ final class SearchAction
                 'base_template' => $request->isXmlHttpRequest() ?
                     $this->templateRegistry->getTemplate('ajax') :
                     $this->templateRegistry->getTemplate('layout'),
-                // NEXT_MAJOR: Remove next line.
-                'breadcrumbs_builder' => $this->breadcrumbsBuilder,
                 'query' => $request->get('q'),
                 'groups' => $this->pool->getDashboardGroups(),
             ]));

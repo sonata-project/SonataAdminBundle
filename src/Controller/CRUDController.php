@@ -939,11 +939,6 @@ class CRUDController extends AbstractController
      */
     protected function addRenderExtraParams(array $parameters = []): array
     {
-        // NEXT_MAJOR: Remove the entire if block.
-        if (!$this->isXmlHttpRequest()) {
-            $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
-        }
-
         $parameters['admin'] = $parameters['admin'] ?? $this->admin;
         $parameters['base_template'] = $parameters['base_template'] ?? $this->getBaseTemplate();
 

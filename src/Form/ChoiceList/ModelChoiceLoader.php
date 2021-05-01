@@ -19,7 +19,6 @@ use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface;
-use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
@@ -112,8 +111,7 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
                     // Otherwise expect a __toString() method in the entity
                     $valueObject = (string) $model;
                 } else {
-                    // NEXT_MAJOR: Change for a LogicException instead.
-                    throw new RuntimeException(sprintf(
+                    throw new \LogicException(sprintf(
                         'Unable to convert the model "%s" to string, provide "property" option'
                         .' or implement "__toString()" method in your model.',
                         ClassUtils::getClass($model)

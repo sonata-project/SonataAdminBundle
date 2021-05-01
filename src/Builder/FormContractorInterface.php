@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Builder;
 
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * This interface should be implemented in persistence bundles.
@@ -24,11 +23,6 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 interface FormContractorInterface extends BuilderInterface
 {
-    /**
-     * NEXT_MAJOR: Remove the `__construct()` method from the interface.
-     */
-    public function __construct(FormFactoryInterface $formFactory);
-
     /**
      * @param array<string, mixed> $formOptions
      */
