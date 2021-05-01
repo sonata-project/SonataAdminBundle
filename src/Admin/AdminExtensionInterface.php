@@ -26,6 +26,7 @@ use Sonata\Form\Validator\ErrorElement;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @method array getAccessMapping(AdminInterface $admin)
+ * @method array configure(AdminInterface $admin)
  * @method array configureBatchActions(AdminInterface $admin, array $actions)
  * @method array configureExportFields(AdminInterface $admin, array $fields)
  * @method array configureActionButtons(AdminInterface $admin, array $list, string $action, object $object)
