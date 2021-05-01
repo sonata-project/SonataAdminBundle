@@ -113,6 +113,13 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     /**
      * @phpstan-param AdminInterface<T> $admin
      */
+    public function configure(AdminInterface $admin): void
+    {
+    }
+
+    /**
+     * @phpstan-param AdminInterface<T> $admin
+     */
     public function configureBatchActions(AdminInterface $admin, array $actions)
     {
         return $actions;
