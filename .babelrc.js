@@ -14,7 +14,5 @@
  */
 
 module.exports = {
-  plugins: {
-    autoprefixer: {},
-  },
+  presets: ['@babel/preset-env'],
 };
