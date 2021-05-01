@@ -31,11 +31,12 @@
     "eslint-plugin-header": "^3.1",
     "eslint-plugin-import": "^2.22",
     "file-loader": "^6.0",
+    "postcss": "^8.2",
     "postcss-loader": "^5.2",
     "sass": "^1.32",
     "sass-loader": "^11.0",
     "stylelint": "^13.12",
-    "stylelint-config-standard": "^21.0",
+    "stylelint-config-standard": "^22.0",
     "stylelint-order": "^4.1",
     "stylelint-scss": "^3.19",
     "stylelint-webpack-plugin": "^2.1"
