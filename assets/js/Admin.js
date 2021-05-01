@@ -48,7 +48,7 @@ const Admin = {
     }
   },
   read_config() {
-    const data = $('[data-sonata-admin]').data('sonata-admin');
+    const data = jQuery('[data-sonata-admin]').data('sonata-admin');
 
     this.config = data.config;
     this.translations = data.translations;
@@ -94,8 +94,8 @@ const Admin = {
     if (Admin.get_config('USE_SELECT2')) {
       Admin.log('[core|setup_select2] configure Select2 on', subject);
 
-      jQuery('select:not([data-sonata-select2="false"])', subject).each(function eachSetupSelect2() {
-        const select = jQuery(this);
+      jQuery('select:not([data-sonata-select2="false"])', subject).each((index, element) => {
+        const select = jQuery(element);
         let allowClearEnabled = false;
         const popover = select.data('popover');
         let maximumSelectionSize = null;
@@ -142,15 +142,10 @@ const Admin = {
       Admin.log('[core|setup_icheck] configure iCheck on', subject);
 
       const inputs = jQuery('input[type="checkbox"]:not(label.btn > input, [data-sonata-icheck="false"]), input[type="radio"]:not(label.btn > input, [data-sonata-icheck="false"])', subject);
-      inputs
-        .iCheck({
-          checkboxClass: 'icheckbox_square-blue',
-          radioClass: 'iradio_square-blue',
-        })
-        // See https://github.com/fronteed/iCheck/issues/244
-        .on('ifToggled', (e) => {
-          $(e.target).trigger('change');
-        });
+      inputs.iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue',
+      });
 
       // In case some checkboxes were already checked (for instance after moving
       // back in the browser's session history) update iCheck checkboxes.
@@ -174,13 +169,13 @@ const Admin = {
     const useICheck = Admin.get_config('USE_ICHECK');
 
     // When a checkbox or an iCheck helper is clicked
-    jQuery('tbody input[type="checkbox"], tbody .iCheck-helper', subject).click(function iCheckClick(event) {
+    jQuery('tbody input[type="checkbox"], tbody .iCheck-helper', subject).on('click', (event) => {
       let input;
 
       if (useICheck) {
-        input = jQuery(this).prev('input[type="checkbox"]');
+        input = jQuery(event.target).prev('input[type="checkbox"]');
       } else {
-        input = jQuery(this);
+        input = jQuery(event.target);
       }
 
       if (input.length) {
@@ -190,16 +185,16 @@ const Admin = {
           const isChecked = jQuery(`tbody input[type="checkbox"]:nth(${currentIndex})`, subject).prop('checked');
 
           // Check all checkbox between previous and current one clicked
-          jQuery('tbody input[type="checkbox"]', subject).each((i, e) => {
-            if ((i > previousIndex && i < currentIndex)
-              || (i > currentIndex && i < previousIndex)) {
+          jQuery('tbody input[type="checkbox"]', subject).each((index, element) => {
+            if ((index > previousIndex && index < currentIndex)
+              || (indexedDB > currentIndex && index < previousIndex)) {
               if (useICheck) {
-                jQuery(e).iCheck(isChecked ? 'check' : 'uncheck');
+                jQuery(element).iCheck(isChecked ? 'check' : 'uncheck');
 
                 return;
               }
 
-              jQuery(e).prop('checked', isChecked);
+              jQuery(element).prop('checked', isChecked);
             }
           });
         }
@@ -266,23 +261,23 @@ const Admin = {
       jQuery('.sonata-filter-count', subject).text(count);
     }
 
-    jQuery('a.sonata-toggle-filter', subject).on('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+    jQuery('a.sonata-toggle-filter', subject).on('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
 
-      if (jQuery(e.target).attr('sonata-filter') === 'false') {
+      if (jQuery(event.target).attr('sonata-filter') === 'false') {
         return;
       }
 
-      Admin.log('[core|add_filters] handle filter container: ', jQuery(e.target).attr('filter-container'));
+      Admin.log('[core|add_filters] handle filter container: ', jQuery(event.target).attr('filter-container'));
 
-      const filtersContainer = jQuery(`#${jQuery(e.currentTarget).attr('filter-container')}`);
+      const filtersContainer = jQuery(`#${jQuery(event.currentTarget).attr('filter-container')}`);
 
       if (jQuery('div[sonata-filter="true"]:visible', filtersContainer).length === 0) {
         jQuery(filtersContainer).slideDown();
       }
 
-      const targetSelector = jQuery(e.currentTarget).attr('filter-target');
+      const targetSelector = jQuery(event.currentTarget).attr('filter-target');
       const target = jQuery(`div[id="${targetSelector}"]`, filtersContainer);
       const filterToggler = jQuery('i', `.sonata-toggle-filter[filter-target="${targetSelector}"]`);
       if (jQuery(target).is(':visible')) {
@@ -308,22 +303,22 @@ const Admin = {
       updateCounter();
     });
 
-    jQuery('.sonata-filter-form', subject).on('submit', function filterFormSubmit() {
-      const $form = jQuery(this);
+    jQuery('.sonata-filter-form', subject).on('submit', (event) => {
+      const $form = jQuery(event.target);
       $form.find('[sonata-filter="true"]:hidden :input').val('');
 
-      if (!this.dataset.defaultValues) {
+      if (!event.target.dataset.defaultValues) {
         return;
       }
 
       const defaults = Admin.convert_query_string_to_object(
-        $.param({ filter: JSON.parse(this.dataset.defaultValues) }),
+        jQuery.param({ filter: JSON.parse(event.target.dataset.defaultValues) }),
       );
 
       // Keep only changed values
-      $form.find('[name*=filter]').each((_i, field) => {
-        if (JSON.stringify(defaults[field.name] || '') === JSON.stringify($(field).val())) {
-          field.removeAttribute('name');
+      $form.find('[name*=filter]').each((index, element) => {
+        if (JSON.stringify(defaults[element.name] || '') === JSON.stringify(jQuery(element).val())) {
+          element.removeAttribute('name');
         }
       });
     });
@@ -333,7 +328,7 @@ const Admin = {
       jQuery('.advanced-filter').hide();
     }
 
-    jQuery('[data-toggle="advanced-filter"]', subject).click(() => {
+    jQuery('[data-toggle="advanced-filter"]', subject).on('click', () => {
       jQuery('.advanced-filter').toggle();
     });
 
@@ -348,9 +343,9 @@ const Admin = {
     Admin.log('[core|set_object_field_value] set value field on', subject);
 
     this.log(jQuery('a.sonata-ba-edit-inline', subject));
-    jQuery('a.sonata-ba-edit-inline', subject).click(function editInlineClick(event) {
+    jQuery('a.sonata-ba-edit-inline', subject).on('click', (event) => {
       Admin.stopEvent(event);
-      const element = jQuery(this);
+      const element = jQuery(event.target);
       jQuery.ajax({
         url: element.attr('href'),
         type: 'POST',
@@ -374,11 +369,11 @@ const Admin = {
 
     // Count and save element of each collection
     const highestCounterRegexp = new RegExp('_([0-9]+)[^0-9]*$');
-    jQuery(subject).find('[data-prototype]').each(function countCollection() {
-      const collection = jQuery(this);
+    jQuery(subject).find('[data-prototype]').each((index, element) => {
+      const collection = jQuery(element);
       let counter = -1;
-      collection.children().each(function countCollectionChildren() {
-        const matches = highestCounterRegexp.exec(jQuery('[id^="sonata-ba-field-container"]', this).attr('id'));
+      collection.children().each((collectionIndex, collectionElement) => {
+        const matches = highestCounterRegexp.exec(jQuery('[id^="sonata-ba-field-container"]', collectionElement).attr('id'));
         if (matches && matches[1] && matches[1] > counter) {
           counter = parseInt(matches[1], 10);
         }
@@ -388,10 +383,10 @@ const Admin = {
   },
 
   setup_collection_buttons(subject) {
-    jQuery(subject).on('click', '.sonata-collection-add', function collectionAdd(event) {
+    jQuery(subject).on('click', '.sonata-collection-add', (event) => {
       Admin.stopEvent(event);
 
-      const container = jQuery(this).closest('[data-prototype]');
+      const container = jQuery(event.target).closest('[data-prototype]');
 
       Admin.collectionCounters[container.attr('id')] += 1;
 
@@ -407,17 +402,17 @@ const Admin = {
       const nameRegexp = new RegExp(`${parts[parts.length - 1]}\\]\\[${protoName}`, 'g');
       proto = proto.replace(nameRegexp, `${parts[parts.length - 1]}][${counter}`);
       jQuery(proto)
-        .insertBefore(jQuery(this).parent())
+        .insertBefore(jQuery(event.target).parent())
         .trigger('sonata-admin-append-form-element');
-      jQuery(this).trigger('sonata-collection-item-added');
+      jQuery(event.target).trigger('sonata-collection-item-added');
     });
 
-    jQuery(subject).on('click', '.sonata-collection-delete', function collectionDelete(event) {
+    jQuery(subject).on('click', '.sonata-collection-delete', (event) => {
       Admin.stopEvent(event);
 
-      jQuery(this).trigger('sonata-collection-item-deleted');
+      jQuery(event.target).trigger('sonata-collection-item-deleted');
 
-      jQuery(this).closest('.sonata-collection-row').remove();
+      jQuery(event.target).closest('.sonata-collection-row').remove();
 
       jQuery(document).trigger('sonata-collection-item-deleted-successful');
     });
@@ -426,7 +421,7 @@ const Admin = {
   setup_per_page_switcher(subject) {
     Admin.log('[core|setup_per_page_switcher] setup page switcher', subject);
 
-    jQuery('select.per-page').change(function changePerPage() {
+    jQuery('select.per-page').on('change', () => {
       jQuery('input[type=submit]').hide();
 
       window.top.location.href = this.options[this.selectedIndex].value;
@@ -437,18 +432,18 @@ const Admin = {
     Admin.log('[core|setup_form_tabs_for_errors] setup form tab\'s errors', subject);
 
     // Switch to first tab with server side validation errors on page load
-    jQuery('form', subject).each(function formTabWithErrors() {
-      Admin.show_form_first_tab_with_errors(jQuery(this), '.sonata-ba-field-error');
+    jQuery('form', subject).each((index, element) => {
+      Admin.show_form_first_tab_with_errors(jQuery(element), '.sonata-ba-field-error');
     });
 
     // Switch to first tab with HTML5 errors on form submit
     jQuery(subject)
-      .on('click', 'form [type="submit"]', function submitFormTabWithErrors() {
-        Admin.show_form_first_tab_with_errors(jQuery(this).closest('form'), ':invalid');
+      .on('click', 'form [type="submit"]', (event) => {
+        Admin.show_form_first_tab_with_errors(jQuery(event.target).closest('form'), ':invalid');
       })
-      .on('keypress', 'form [type="text"]', function keyPressFormTabWithErrors(e) {
-        if (e.which === 13) {
-          Admin.show_form_first_tab_with_errors(jQuery(this), ':invalid');
+      .on('keypress', 'form [type="text"]', (event) => {
+        if (event.which === 13) {
+          Admin.show_form_first_tab_with_errors(jQuery(event.target), ':invalid');
         }
       });
   },
@@ -459,9 +454,9 @@ const Admin = {
     const tabs = form.find('.nav-tabs a'); let
       firstTabWithErrors;
 
-    tabs.each(function eachTab() {
-      const id = jQuery(this).attr('href');
-      const tab = jQuery(this);
+    tabs.each((index, element) => {
+      const id = jQuery(element).attr('href');
+      const tab = jQuery(element);
       const icon = tab.find('.has-errors');
 
       if (jQuery(id).find(errorSelector).length > 0) {
@@ -483,12 +478,12 @@ const Admin = {
 
     const deleteCheckboxSelector = '.sonata-ba-field-inline-table [id$="_delete"][type="checkbox"]';
 
-    jQuery(deleteCheckboxSelector, subject).each(function eachDeleteCheckbox() {
-      Admin.switch_inline_form_errors(jQuery(this));
+    jQuery(deleteCheckboxSelector, subject).each((index, element) => {
+      Admin.switch_inline_form_errors(jQuery(element));
     });
 
-    jQuery(subject).on('change', deleteCheckboxSelector, function onChangeSubject() {
-      Admin.switch_inline_form_errors(jQuery(this));
+    jQuery(subject).on('change', deleteCheckboxSelector, (event) => {
+      Admin.switch_inline_form_errors(jQuery(event.target));
     });
   },
 
@@ -652,7 +647,7 @@ const Admin = {
       jQuery(footer).addClass('stuck');
     }
 
-    jQuery(window).scroll(
+    jQuery(window).on('scroll', () => {
       Admin.debounce(() => {
         if (footer.length && Math.round(jQuery(window).scrollTop() + jQuery(window).height())
           >= jQuery(document).height()) {
@@ -662,8 +657,8 @@ const Admin = {
         if (navbar.length && jQuery(window).scrollTop() === 0) {
           jQuery(navbar).removeClass('stuck');
         }
-      }, 250),
-    );
+      }, 250);
+    });
 
     jQuery('body').on('expanded.pushMenu collapsed.pushMenu', () => {
       // the animation takes 0.3s to execute, so we have to take the width,
@@ -673,11 +668,11 @@ const Admin = {
       }, 350);
     });
 
-    jQuery(window).resize(
+    jQuery(window).on('resize', () => {
       Admin.debounce(() => {
         Admin.handleResize(footer, navbar, wrapper);
-      }, 250),
-    );
+      }, 250);
+    });
   },
 
   handleResize(footer, navbar, wrapper) {
@@ -731,11 +726,13 @@ const Admin = {
   setup_readmore_elements(subject) {
     Admin.log('[core|setup_readmore_elements] setup readmore elements on', subject);
 
-    jQuery(subject).find('.sonata-readmore').each(function eachReadMore() {
-      jQuery(this).readmore({
-        collapsedHeight: parseInt(jQuery(this).data('readmore-height'), 10),
-        moreLink: `<a href="#">${jQuery(this).data('readmore-more')}</a>`,
-        lessLink: `<a href="#">${jQuery(this).data('readmore-less')}</a>`,
+    jQuery(subject).find('.sonata-readmore').each((index, element) => {
+      const $element = jQuery(element);
+
+      $element.readmore({
+        collapsedHeight: parseInt($element.data('readmore-height'), 10),
+        moreLink: `<a href="#">${$element.data('readmore-more')}</a>`,
+        lessLink: `<a href="#">${$element.data('readmore-less')}</a>`,
       });
     });
   },
@@ -747,8 +744,8 @@ const Admin = {
   setup_form_submit(subject) {
     Admin.log('[core|setup_form_submit] setup form submit on', subject);
 
-    jQuery(subject).find('form').on('submit', function onSubmitForm() {
-      const form = jQuery(this);
+    jQuery(subject).find('form').on('submit', (event) => {
+      const form = jQuery(event.target);
 
       // this allows to submit forms and know which button was clicked
       setTimeout(() => {
@@ -785,8 +782,8 @@ const Admin = {
    * Remember open tab after refreshing page.
    */
   setup_view_tabs_changer() {
-    jQuery('.changer-tab').on('click', function onClickChangeTab() {
-      const tab = jQuery(this).attr('aria-controls');
+    jQuery('.changer-tab').on('click', (event) => {
+      const tab = jQuery(event.target).attr('aria-controls');
       const search = window.location.search.substring(1);
 
       /* Get query string parameters from URL */
@@ -815,15 +812,9 @@ const Admin = {
 
 window.Admin = Admin;
 
-jQuery(document).ready(() => {
+jQuery(() => {
   Admin.handle_top_navbar_height();
-});
 
-jQuery(window).resize(() => {
-  Admin.handle_top_navbar_height();
-});
-
-jQuery(document).ready(() => {
   jQuery('html').removeClass('no-js');
 
   Admin.setup_per_page_switcher(document);
@@ -832,16 +823,20 @@ jQuery(document).ready(() => {
   Admin.shared_setup(document);
 });
 
-jQuery(document).on('sonata-admin-append-form-element', (e) => {
-  Admin.setup_select2(e.target);
-  Admin.setup_icheck(e.target);
-  Admin.setup_collection_counter(e.target);
+jQuery(window).on('resize', () => {
+  Admin.handle_top_navbar_height();
+});
+
+jQuery(document).on('sonata-admin-append-form-element', (event) => {
+  Admin.setup_select2(event.target);
+  Admin.setup_icheck(event.target);
+  Admin.setup_collection_counter(event.target);
 });
 
 jQuery(window).on('load', () => {
   if (Admin.get_config('CONFIRM_EXIT')) {
-    jQuery('.sonata-ba-form form').each(function eachFormConfirmExit() {
-      jQuery(this).confirmExit();
+    jQuery('.sonata-ba-form form').each((index, element) => {
+      jQuery(element).confirmExit();
     });
   }
 });

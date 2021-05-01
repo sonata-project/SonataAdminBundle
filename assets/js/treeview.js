@@ -57,14 +57,14 @@ TreeView.prototype = {
    * Set events and delegates
    */
   setEvents() {
-    this.$togglers.on('click', jQuery.proxy(this.toggle, this));
+    this.$togglers.on('click', this.toggle.bind(this));
   },
 
   /**
    * Toggle an item
    */
-  toggle(ev) {
-    const $target = jQuery(ev.currentTarget);
+  toggle(event) {
+    const $target = jQuery(event.currentTarget);
     const $parent = $target.parent();
     $parent.toggleClass(this.options.toggledState);
     $parent.next('ul').slideToggle();

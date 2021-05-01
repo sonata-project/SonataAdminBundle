@@ -30,7 +30,7 @@ const SonataCore = {
   },
 };
 
-jQuery(document).ready(() => {
+jQuery(() => {
   SonataCore.remove_iCheck_in_flashmessage();
   SonataCore.addFlashmessageListener();
 });

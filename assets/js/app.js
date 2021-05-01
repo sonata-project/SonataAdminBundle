@@ -58,5 +58,5 @@ import './sidebar';
 import './base';
 
 // Create global $ and jQuery variables to be used outside this script
-// eslint-disable-next-line
-global.$ = global.jQuery = $;
+global.$ = $;
+global.jQuery = $;
