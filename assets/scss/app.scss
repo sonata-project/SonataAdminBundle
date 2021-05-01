@@ -33,6 +33,9 @@
 // Eonasdan Bootstrap DateTimePicker in its version 3 does not
 // provide the scss or plain css, it only provides the less version
 // of its source files, that's why it is not included it via npm.
+//
+// Eonasdan Bootstrap DateTimePicker is not directly used in SonataAdmin
+// but it is used on form-extensions package
 @import "../vendor/bootstrap-datetimepicker.min.css";
 
 // Only use sortable widget from jQuery UI library
