@@ -12,6 +12,9 @@ import '../scss/app.scss';
 
 // Require jQuery normally
 import $ from 'jquery';
+
+// jQuery scrollTo is not directly used in SonataAdmin
+// but it is used on SonataPage, SonataArticle and SonataDashboard
 import 'jquery.scrollto';
 
 // Only using sortable widget from jQuery UI library
@@ -23,6 +26,9 @@ import 'moment';
 // Eonasdan Bootstrap DateTimePicker in its version 3 does not
 // provide the scss or plain css, it only provides the less version
 // of its source files, that's why it is not included it via npm.
+//
+// Eonasdan Bootstrap DateTimePicker is not directly used in SonataAdmin
+// but it is used on form-extensions package
 import '../vendor/bootstrap-datetimepicker.min';
 import 'jquery-form';
 
@@ -34,6 +40,8 @@ import 'x-editable/dist/bootstrap3-editable/js/bootstrap-editable';
 import 'select2/dist/js/select2.full';
 import 'admin-lte';
 import 'icheck';
+
+// jQuery SlimScroll is used in AdminLTE v2
 import 'jquery-slimscroll';
 
 // No Framework Waypoints version and sticky shortcut
