@@ -581,6 +581,13 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->baseCodeRoute = $this->getCode();
 
         $this->configure();
+
+        foreach ($this->getExtensions() as $extension) {
+            // NEXT_MAJOR: remove method_exists check
+            if (method_exists($extension, 'configure')) {
+                $extension->configure($this);
+            }
+        }
     }
 
     /**
@@ -588,12 +595,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     public function configure()
     {
-        foreach ($this->getExtensions() as $extension) {
-            // NEXT_MAJOR: remove method_exists check
-            if (method_exists($extension, 'configure')) {
-                $extension->configure($this);
-            }
-        }
     }
 
     public function update($object)
