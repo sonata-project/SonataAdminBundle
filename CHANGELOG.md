@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.98.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.98.1...3.98.2) - 2021-05-01
+### Fixed
+- [[#7132](https://github.com/sonata-project/SonataAdminBundle/pull/7132)] Fixed inclusion of Source Sans Pro as main font ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7127](https://github.com/sonata-project/SonataAdminBundle/pull/7127)] `AdminInterface::initialize()` is the last method called ([@dmaicher](https://github.com/dmaicher))
+- [[#7127](https://github.com/sonata-project/SonataAdminBundle/pull/7127)] `admin_services.templates.form` is correctly set ([@dmaicher](https://github.com/dmaicher))
+- [[#7127](https://github.com/sonata-project/SonataAdminBundle/pull/7127)] `admin_services.templates.filter` is correctly set ([@dmaicher](https://github.com/dmaicher))
+- [[#7127](https://github.com/sonata-project/SonataAdminBundle/pull/7127)] Default service setter calls on `AdminInterface` are only added if there are no calls defined yet ([@dmaicher](https://github.com/dmaicher))
+- [[#7135](https://github.com/sonata-project/SonataAdminBundle/pull/7135)] Remove `do-not-use` alias for exporter service. ([@eerison](https://github.com/eerison))
+- [[#7130](https://github.com/sonata-project/SonataAdminBundle/pull/7130)] Fix `display_url.html.twig` template ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [3.98.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.98.0...3.98.1) - 2021-04-27
 ### Fixed
 - [[#7125](https://github.com/sonata-project/SonataAdminBundle/pull/7125)] Unclosed "{" on src/Resources/views/CRUD/Association/edit_one_to_one.html.twig ([@VincentLanglet](https://github.com/VincentLanglet))
