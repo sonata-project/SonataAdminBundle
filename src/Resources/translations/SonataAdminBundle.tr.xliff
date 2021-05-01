@@ -494,8 +494,8 @@
                 <source>label_type_ends_with</source>
                 <target>ile biter</target>
             </trans-unit>
-            <trans-unit id="go_to_first_page">
-                <source>go_to_first_page</source>
+            <trans-unit id="go_to_the_first_page">
+                <source>go_to_the_first_page</source>
                 <target>İlk sayfaya git</target>
             </trans-unit>
         </body>

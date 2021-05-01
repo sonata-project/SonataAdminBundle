@@ -113,9 +113,10 @@ file that was distributed with this source code.
                                 </div>
                                 <div class="progress-description">
                                     <ul class="list-inline">
-                                        {%- if admin.datagrid.results|length > 0 -%}
+                                        {# NEXT_MAJOR: remove the attribute check and just use .countResults() #}
+                                        {%- if (attribute(admin.datagrid.pager, 'countResults') is defined ? admin.datagrid.pager.countResults() : admin.datagrid.pager.getNbResults()) > 0 -%}
                                             <li>
-                                                <a href="{{ admin.generateUrl('list') }}">
+                                                <a href="{{ admin.generateUrl('list', {'filter': admin.datagrid.values|merge({(constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::PAGE')): 1})}) }}">
                                                     {{- 'go_to_the_first_page'|trans({}, 'SonataAdminBundle') -}}
                                                 </a>
                                             </li>

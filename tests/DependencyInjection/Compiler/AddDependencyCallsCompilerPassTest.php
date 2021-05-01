@@ -26,6 +26,7 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;
 use Symfony\Component\DependencyInjection\Compiler\ResolveEnvPlaceholdersPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @author Tiago Garcia
@@ -198,6 +199,48 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             'sonata_article_admin',
             'setRouteBuilder',
             ['sonata.admin.route.path_info_slashes']
+        );
+
+        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+            'sonata_news_admin',
+            'setFormTheme',
+            [[]]
+        );
+
+        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+            'sonata_news_admin',
+            'setFilterTheme',
+            [[]]
+        );
+
+        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+            'sonata_news_admin',
+            'setModelManager',
+            [new Reference('my.model.manager')]
+        );
+
+        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+            'sonata_article_admin',
+            'setFormTheme',
+            [['custom_form_theme.twig']]
+        );
+
+        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+            'sonata_article_admin',
+            'setFilterTheme',
+            [['custom_filter_theme.twig']]
+        );
+
+        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+            'sonata_post_admin',
+            'setFormTheme',
+            [['some_form_template.twig']]
+        );
+
+        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+            'sonata_post_admin',
+            'setFilterTheme',
+            [['some_filter_template.twig']]
         );
     }
 
@@ -590,6 +633,8 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
                 'sonata_post_admin' => [
                     'templates' => [
                         'view' => ['user_block' => 'foobar.twig.html'],
+                        'form' => ['some_form_template.twig'],
+                        'filter' => ['some_filter_template.twig'],
                     ],
                 ],
                 'sonata_news_admin' => [
@@ -597,6 +642,12 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
                     'pager_type' => 'simple',
                     'templates' => [
                         'view' => ['user_block' => 'foo.twig.html'],
+                    ],
+                ],
+                'sonata_article_admin' => [
+                    'templates' => [
+                        'form' => ['some_form_template.twig'],
+                        'filter' => ['some_filter_template.twig'],
                     ],
                 ],
             ],
@@ -622,7 +673,8 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             ->setPublic(true)
             ->setClass(CustomAdmin::class)
             ->setArguments(['', NewsEntity::class, 'sonata.admin.controller.crud'])
-            ->addTag('sonata.admin', ['group' => 'sonata_group_two', 'label' => '5 Entry', 'manager_type' => 'orm']);
+            ->addTag('sonata.admin', ['group' => 'sonata_group_two', 'label' => '5 Entry', 'manager_type' => 'orm'])
+            ->addMethodCall('setModelManager', [new Reference('my.model.manager')]);
         $this->container
             ->register('sonata_post_admin')
             ->setClass(CustomAdmin::class)
@@ -634,7 +686,9 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             ->setPublic(true)
             ->setClass(CustomAdmin::class)
             ->setArguments(['', ArticleEntity::class, 'sonata.admin.controller.crud'])
-            ->addTag('sonata.admin', ['group' => 'sonata_group_one', 'label' => '1 Entry', 'manager_type' => 'doctrine_phpcr']);
+            ->addTag('sonata.admin', ['group' => 'sonata_group_one', 'label' => '1 Entry', 'manager_type' => 'doctrine_phpcr'])
+            ->addMethodCall('setFormTheme', [['custom_form_theme.twig']])
+            ->addMethodCall('setFilterTheme', [['custom_filter_theme.twig']]);
         $this->container
             ->register('sonata_report_admin')
             ->setPublic(true)

@@ -312,7 +312,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         foreach ($defaultAddServices as $attr => $addServiceId) {
             $method = $this->generateSetterMethodName($attr);
 
-            if (isset($overwriteAdminConfiguration[$attr]) || !$definition->hasMethodCall($method)) {
+            if (!$definition->hasMethodCall($method)) {
                 $args = [new Reference($overwriteAdminConfiguration[$attr] ?? $addServiceId)];
                 if ('translator' === $attr) {
                     $args[] = false;
@@ -359,7 +359,12 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $definition->addMethodCall('setSecurityInformation', ['%sonata.admin.configuration.security.information%']);
         }
 
-        $definition->addMethodCall('initialize');
+        if (!$definition->hasMethodCall('setFormTheme')) {
+            $definition->addMethodCall('setFormTheme', [$overwriteAdminConfiguration['templates']['form'] ?? []]);
+        }
+        if (!$definition->hasMethodCall('setFilterTheme')) {
+            $definition->addMethodCall('setFilterTheme', [$overwriteAdminConfiguration['templates']['filter'] ?? []]);
+        }
 
         return $definition;
     }

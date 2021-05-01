@@ -494,8 +494,8 @@
                 <source>label_type_ends_with</source>
                 <target>se termină cu</target>
             </trans-unit>
-            <trans-unit id="go_to_first_page">
-                <source>go_to_first_page</source>
+            <trans-unit id="go_to_the_first_page">
+                <source>go_to_the_first_page</source>
                 <target>Accesați prima pagină</target>
             </trans-unit>
         </body>

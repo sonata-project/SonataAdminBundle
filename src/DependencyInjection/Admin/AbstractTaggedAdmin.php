@@ -40,7 +40,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     /**
      * NEXT_MAJOR: Remove this constant.
      *
-     * @deprecated since sonata-project/sonata-admin 3.x, will be removed in 4.0
+     * @deprecated since sonata-project/sonata-admin 3.98, will be removed in 4.0
      */
     public const MOSAIC_ICON_CLASS = 'fas fa-th-large fa-fw';
 
@@ -220,7 +220,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function showMosaicButton(bool $isShown): void
     {
         @trigger_error(sprintf(
-            'The method %s() is deprecated since sonata-project/admin-bundle 3.x. Use `setListModes` instead.',
+            'The method %s() is deprecated since sonata-project/admin-bundle 3.98. Use `setListModes` instead.',
             __METHOD__
         ), \E_USER_DEPRECATED);
 
