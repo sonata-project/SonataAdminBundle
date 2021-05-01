@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-jQuery(document).ready(() => {
-  $('.sidebar-toggle').click(() => {
+jQuery(() => {
+  jQuery('.sidebar-toggle').on('click', () => {
     if (document.cookie.includes('sonata_sidebar_hide=1')) {
       document.cookie = 'sonata_sidebar_hide=0;path=/';
 

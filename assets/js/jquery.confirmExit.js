@@ -23,8 +23,8 @@ jQuery(window).on('beforeunload', (event) => {
   const message = window.Admin.get_translations('CONFIRM_EXIT');
   let changes = false;
 
-  jQuery('form[data-original]').each(function formDataOriginal() {
-    if (jQuery(this).attr('data-original') !== jQuery(this).serialize()) {
+  jQuery('form[data-original]').each((index, element) => {
+    if (jQuery(element).attr('data-original') !== jQuery(element).serialize()) {
       changes = true;
     }
   });
