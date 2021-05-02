@@ -9,7 +9,3 @@ parameters:
         - # This error is made on purpose for php version < 8
             message: '#^Method Sonata\\AdminBundle\\Tests\\Fixtures\\Entity\\FooToStringNull\:\:__toString\(\) should return string but returns null\.$#'
             path: tests/Fixtures/Entity/FooToStringNull.php
-        - # It is on purpose because it throws an exception
-            message: "#^Call to static method Sonata\\\\AdminBundle\\\\Filter\\\\Model\\\\FilterData\\:\\:fromArray\\(\\) on a separate line has no effect\\.$#"
-            count: 1
-            path: tests/Filter/Model/FilterDataTest.php

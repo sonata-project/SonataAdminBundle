@@ -48,7 +48,7 @@ class ExplainAdminCommandTest extends TestCase
     private $application;
 
     /**
-     * @var AdminInterface&MockObject
+     * @var AdminInterface<object>&MockObject
      */
     private $admin;
 

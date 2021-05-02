@@ -42,26 +42,32 @@ class AdminMakerTest extends TestCase
      * @var string
      */
     private $projectDirectory;
+
     /**
-     * @var array
+     * @var array<string, ModelManagerInterface<object>>
      */
     private $modelManagers = [];
+
     /**
      * @var InputInterface
      */
     private $input;
+
     /**
      * @var OutputInterface
      */
     private $output;
+
     /**
      * @var ConsoleStyle
      */
     private $io;
+
     /**
      * @var Generator
      */
     private $generator;
+
     /**
      * @var string
      */

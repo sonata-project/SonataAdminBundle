@@ -41,7 +41,7 @@ class ShowMapperTest extends TestCase
     private $showMapper;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface<object>
      */
     private $admin;
 
@@ -51,17 +51,17 @@ class ShowMapperTest extends TestCase
     private $showBuilder;
 
     /**
-     * @var FieldDescriptionCollection
+     * @var FieldDescriptionCollection<FieldDescriptionInterface>
      */
     private $fieldDescriptionCollection;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private $groups;
 
     /**
-     * @var array
+     * @var array<string, bool>
      */
     private $listShowFields;
 

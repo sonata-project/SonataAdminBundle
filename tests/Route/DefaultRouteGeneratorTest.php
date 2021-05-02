@@ -28,6 +28,9 @@ class DefaultRouteGeneratorTest extends TestCase
 {
     private const ROUTER_DOMAIN = 'http://sonata-project';
 
+    /**
+     * @var string
+     */
     protected $cacheTempFolder;
 
     protected function setUp(): void
@@ -51,6 +54,8 @@ class DefaultRouteGeneratorTest extends TestCase
     }
 
     /**
+     * @param array<string, mixed> $parameters
+     *
      * @dataProvider getGenerateUrlTests
      */
     public function testGenerateUrl(
@@ -104,6 +109,9 @@ class DefaultRouteGeneratorTest extends TestCase
         $this->assertSame($expected, $generator->generateUrl($admin, $name, $parameters, $referenceType));
     }
 
+    /**
+     * @phpstan-return array<array{string, string, array<string, mixed>}>
+     */
     public function getGenerateUrlTests(): array
     {
         return [
@@ -143,6 +151,8 @@ class DefaultRouteGeneratorTest extends TestCase
     }
 
     /**
+     * @param array<string, mixed> $parameters
+     *
      * @dataProvider getGenerateUrlChildTests
      */
     public function testGenerateUrlChild(string $type, string $expected, string $name, array $parameters): void
@@ -218,6 +228,9 @@ class DefaultRouteGeneratorTest extends TestCase
         $this->assertSame($expected, $generator->generateUrl('child' === $type ? $admin : $parentAdmin, $name, $parameters));
     }
 
+    /**
+     * @phpstan-return array<array{string, string, string, array<string, mixed>}>
+     */
     public function getGenerateUrlChildTests(): array
     {
         return [
@@ -228,6 +241,8 @@ class DefaultRouteGeneratorTest extends TestCase
     }
 
     /**
+     * @param array<string, mixed> $parameters
+     *
      * @dataProvider getGenerateUrlParentFieldDescriptionTests
      */
     public function testGenerateUrlParentFieldDescription(string $expected, string $name, array $parameters): void
@@ -288,6 +303,9 @@ class DefaultRouteGeneratorTest extends TestCase
         $this->assertSame($expected, $generator->generateUrl($admin, $name, $parameters));
     }
 
+    /**
+     * @phpstan-return array<array{string, string, array<string, mixed>}>
+     */
     public function getGenerateUrlParentFieldDescriptionTests(): array
     {
         return [
@@ -298,6 +316,8 @@ class DefaultRouteGeneratorTest extends TestCase
     }
 
     /**
+     * @param array<string, mixed> $parameters
+     *
      * @dataProvider getGenerateUrlLoadCacheTests
      */
     public function testGenerateUrlLoadCache(string $expected, string $name, array $parameters): void
@@ -388,6 +408,9 @@ class DefaultRouteGeneratorTest extends TestCase
         $this->assertSame($expected, $generator->generateUrl($standaloneAdmin, $name, $parameters));
     }
 
+    /**
+     * @phpstan-return array<array{string, string, array<string, mixed>}>
+     */
     public function getGenerateUrlLoadCacheTests(): array
     {
         return [

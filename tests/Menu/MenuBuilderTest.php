@@ -25,6 +25,9 @@ use Sonata\AdminBundle\Menu\MenuBuilder;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @phpstan-import-type Group from \Sonata\AdminBundle\Admin\Pool
+ */
 final class MenuBuilderTest extends TestCase
 {
     /**
@@ -53,9 +56,14 @@ final class MenuBuilderTest extends TestCase
     {
         $adminGroups = [
             'bar' => [
+                'label' => '',
                 'icon' => '<i class="fas fa-edit"></i>',
                 'label_catalogue' => '',
                 'roles' => [],
+                'item_adds' => [],
+                'items' => [],
+                'keep_open' => false,
+                'on_top' => false,
             ],
         ];
 
@@ -89,10 +97,15 @@ final class MenuBuilderTest extends TestCase
     {
         $adminGroups = [
             'bar' => [
+                'label' => '',
                 'provider' => 'my_menu',
                 'label_catalogue' => '',
                 'icon' => '<i class="fas fa-edit"></i>',
                 'roles' => [],
+                'item_adds' => [],
+                'items' => [],
+                'keep_open' => false,
+                'on_top' => false,
             ],
         ];
 
@@ -132,6 +145,8 @@ final class MenuBuilderTest extends TestCase
                 'items' => [],
                 'item_adds' => [],
                 'roles' => [],
+                'keep_open' => false,
+                'on_top' => false,
             ],
         ];
 
@@ -154,6 +169,9 @@ final class MenuBuilderTest extends TestCase
         $builder->createSidebarMenu();
     }
 
+    /**
+     * @phpstan-param array<Group> $adminGroups
+     */
     private function createMenuBuilder(array $adminGroups): MenuBuilder
     {
         return new MenuBuilder(new Pool(new Container(), [], $adminGroups), $this->factory, $this->provider, $this->eventDispatcher);

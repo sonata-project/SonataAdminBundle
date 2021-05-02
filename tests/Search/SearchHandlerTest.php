@@ -74,6 +74,9 @@ class SearchHandlerTest extends TestCase
         $this->assertInstanceOf(PagerInterface::class, $handler->search($admin, 'myservice'));
     }
 
+    /**
+     * @phpstan-return array<array{bool}>
+     */
     public function buildPagerWithGlobalSearchFieldProvider(): array
     {
         return [
@@ -127,6 +130,9 @@ class SearchHandlerTest extends TestCase
         }
     }
 
+    /**
+     * @return iterable<array{class-string|null, int, bool|null, string}>
+     */
     public function provideAdminSearchConfigurations(): iterable
     {
         yield 'admin_search_enabled' => [PagerInterface::class, 1, true, 'admin.foo'];

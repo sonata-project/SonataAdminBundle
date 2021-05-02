@@ -33,7 +33,14 @@ class BaseGroupedMapperTest extends TestCase
      */
     protected $baseGroupedMapper;
 
+    /**
+     * @var array<string, array<string, mixed>>
+     */
     private $tabs;
+
+    /**
+     * @var array<string, array<string, mixed>>
+     */
     private $groups;
 
     protected function setUp(): void
@@ -205,6 +212,9 @@ class BaseGroupedMapperTest extends TestCase
         $this->baseGroupedMapper->ifEnd();
     }
 
+    /**
+     * @phpstan-return array<array{string, string, string|null, string}>
+     */
     public function labelDataProvider(): array
     {
         return [
@@ -232,21 +242,33 @@ class BaseGroupedMapperTest extends TestCase
         $this->assertSame($expectedLabel, $this->groups[$name]['label']);
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function getTabs(): array
     {
         return $this->tabs;
     }
 
+    /**
+     * @param array<string, array<string, mixed>> $tabs
+     */
     public function setTabs(array $tabs): void
     {
         $this->tabs = $tabs;
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function getTestGroups(): array
     {
         return $this->groups;
     }
 
+    /**
+     * @param array<string, array<string, mixed>> $groups
+     */
     public function setTestGroups(array $groups): void
     {
         $this->groups = $groups;

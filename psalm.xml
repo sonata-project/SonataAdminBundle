@@ -16,11 +16,5 @@
         <InternalClass errorLevel="suppress"/>
         <InternalMethod errorLevel="suppress"/>
         <InternalProperty errorLevel="suppress"/>
-        <InvalidArgument>
-            <errorLevel type="suppress">
-                <!-- On purpose for test throwing exceptions -->
-                <file name="tests/Filter/Model/FilterDataTest.php"/>
-            </errorLevel>
-        </InvalidArgument>
     </issueHandlers>
 </psalm>

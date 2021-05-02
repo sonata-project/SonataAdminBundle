@@ -61,6 +61,9 @@ class NoopSecurityHandlerTest extends TestCase
         $this->assertSame('', $this->handler->getBaseRole($this->getSonataAdminObject()));
     }
 
+    /**
+     * @return AdminInterface<object>
+     */
     private function getSonataAdminObject(): AdminInterface
     {
         return $this->getMockForAbstractClass(AdminInterface::class);

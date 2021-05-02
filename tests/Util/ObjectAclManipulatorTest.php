@@ -34,12 +34,12 @@ class ObjectAclManipulatorTest extends TestCase
     private $output;
 
     /**
-     * @var MockObject&AdminInterface
+     * @var MockObject&AdminInterface<object>
      */
     private $admin;
 
     /**
-     * @var \ArrayIterator
+     * @var \ArrayIterator<int, MockObject&ObjectIdentityInterface>
      */
     private $oids;
 
@@ -53,8 +53,8 @@ class ObjectAclManipulatorTest extends TestCase
         $this->output = $this->createMock(OutputInterface::class);
         $this->admin = $this->createMock(AdminInterface::class);
         $this->oids = new \ArrayIterator([
-            $this->createStub(ObjectIdentityInterface::class),
-            $this->createStub(ObjectIdentityInterface::class),
+            $this->createMock(ObjectIdentityInterface::class),
+            $this->createMock(ObjectIdentityInterface::class),
         ]);
         $this->securityIdentity = new UserSecurityIdentity('Michael', \stdClass::class);
     }

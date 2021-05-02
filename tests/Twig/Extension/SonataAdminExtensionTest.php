@@ -45,12 +45,12 @@ class SonataAdminExtensionTest extends TestCase
     private $environment;
 
     /**
-     * @var AdminInterface&MockObject
+     * @var AdminInterface<object>&MockObject
      */
     private $admin;
 
     /**
-     * @var AdminInterface&MockObject
+     * @var AdminInterface<object>&MockObject
      */
     private $adminBar;
 
