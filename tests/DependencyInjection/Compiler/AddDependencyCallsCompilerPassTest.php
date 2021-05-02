@@ -196,12 +196,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         );
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
-            'sonata_article_admin',
-            'setRouteBuilder',
-            ['sonata.admin.route.path_info_slashes']
-        );
-
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_news_admin',
             'setFormTheme',
             [[]]
@@ -686,7 +680,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             ->setPublic(true)
             ->setClass(CustomAdmin::class)
             ->setArguments(['', ArticleEntity::class, 'sonata.admin.controller.crud'])
-            ->addTag('sonata.admin', ['group' => 'sonata_group_one', 'label' => '1 Entry', 'manager_type' => 'doctrine_phpcr'])
+            ->addTag('sonata.admin', ['group' => 'sonata_group_one', 'label' => '1 Entry', 'manager_type' => 'doctrine_mongodb'])
             ->addMethodCall('setFormTheme', [['custom_form_theme.twig']])
             ->addMethodCall('setFilterTheme', [['custom_filter_theme.twig']]);
         $this->container

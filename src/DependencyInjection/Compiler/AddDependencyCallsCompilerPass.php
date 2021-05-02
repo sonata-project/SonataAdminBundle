@@ -302,8 +302,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'route_generator' => 'sonata.admin.route.default_generator',
             'security_handler' => 'sonata.admin.security.handler',
             'menu_factory' => 'knp_menu.factory',
-            'route_builder' => 'sonata.admin.route.path_info'.
-                (('doctrine_phpcr' === $managerType) ? '_slashes' : ''),
+            'route_builder' => 'sonata.admin.route.path_info',
             'label_translator_strategy' => 'sonata.admin.label.strategy.native',
         ];
 
