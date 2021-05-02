@@ -139,11 +139,6 @@ class ConfigurationTest extends TestCase
             'route_builder' => null,
             'label_translator_strategy' => null,
             'pager_type' => null,
-            'templates' => [
-                'form' => [],
-                'filter' => [],
-                'view' => [],
-            ],
         ], $config['default_admin_services']);
     }
 
