@@ -410,6 +410,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         $this->configure();
+
+        foreach ($this->getExtensions() as $extension) {
+            $extension->configure($this);
+        }
     }
 
     final public function update(object $object): object

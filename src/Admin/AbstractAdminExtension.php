@@ -75,6 +75,10 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
         return [];
     }
 
+    public function configure(AdminInterface $admin): void
+    {
+    }
+
     public function configureBatchActions(AdminInterface $admin, array $actions): array
     {
         return $actions;
