@@ -26,6 +26,9 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
+/**
+ * @phpstan-import-type Group from \Sonata\AdminBundle\Admin\Pool
+ */
 class GroupMenuProviderTest extends TestCase
 {
     /**
@@ -87,6 +90,8 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
+     * @phpstan-param Group $adminGroups
+     *
      * @dataProvider getAdminGroups
      */
     public function testGetMenuProviderWithCheckerGrantedGroupRoles(array $adminGroups): void
@@ -132,6 +137,8 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
+     * @phpstan-param Group $adminGroups
+     *
      * @dataProvider getAdminGroupsMultipleRoles
      */
     public function testGetMenuProviderWithCheckerGrantedMultipleGroupRoles(
@@ -157,6 +164,8 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
+     * @phpstan-param Group $adminGroups
+     *
      * @dataProvider getAdminGroupsMultipleRoles
      */
     public function testGetMenuProviderWithCheckerGrantedGroupAndItemRoles(
@@ -183,6 +192,8 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
+     * @phpstan-param Group $adminGroups
+     *
      * @dataProvider getAdminGroupsMultipleRolesOnTop
      */
     public function testGetMenuProviderWithCheckerGrantedMultipleGroupRolesOnTop(
@@ -205,6 +216,8 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
+     * @phpstan-param Group $adminGroups
+     *
      * @dataProvider getAdminGroups
      */
     public function testGetMenuProviderWithAdmin(array $adminGroups): void
@@ -247,6 +260,8 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
+     * @phpstan-param Group $adminGroups
+     *
      * @dataProvider getAdminGroups
      */
     public function testGetKnpMenuWithListRoute(array $adminGroups): void
@@ -272,6 +287,8 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
+     * @phpstan-param Group $adminGroups
+     *
      * @dataProvider getAdminGroups
      */
     public function testGetKnpMenuWithGrantedList(array $adminGroups): void
@@ -297,6 +314,8 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
+     * @phpstan-param Group $adminGroupsOnTopOption
+     *
      * @dataProvider getAdminGroupsWithOnTopOption
      */
     public function testGetMenuProviderOnTopOptions(array $adminGroupsOnTopOption): void
@@ -316,6 +335,8 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
+     * @phpstan-param Group $adminGroups
+     *
      * @dataProvider getAdminGroups
      */
     public function testGetMenuProviderKeepOpenOption(array $adminGroups): void
@@ -342,6 +363,8 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
+     * @phpstan-param Group $item
+     *
      * @dataProvider getRootMenuItemWithDifferentUrlTypes
      */
     public function testRootMenuItemUrl(string $expectedUrl, array $item): void
@@ -365,11 +388,14 @@ class GroupMenuProviderTest extends TestCase
         $this->assertSame($expectedUrl, $menu['foo_admin_label']->getUri());
     }
 
+    /**
+     * @phpstan-return array<array{Group}>
+     */
     public function getAdminGroups(): array
     {
         return [
             [
-                'bar' => [
+                [
                     'label' => 'foo',
                     'icon' => '<i class="fas fa-edit"></i>',
                     'label_catalogue' => 'SonataAdminBundle',
@@ -378,7 +404,9 @@ class GroupMenuProviderTest extends TestCase
                             'admin' => 'sonata_admin_foo_service',
                             'label' => 'fooLabel',
                             'route' => 'FooServiceRoute',
+                            'route_params' => [],
                             'route_absolute' => true,
+                            'roles' => [],
                         ],
                         [
                             'admin' => '',
@@ -399,11 +427,16 @@ class GroupMenuProviderTest extends TestCase
                     ],
                     'item_adds' => [],
                     'roles' => ['foo'],
+                    'keep_open' => false,
+                    'on_top' => false,
                 ],
             ],
         ];
     }
 
+    /**
+     * @phpstan-return array<array{Group}>
+     */
     public function getAdminGroupsMultipleRoles(): array
     {
         return [
@@ -419,7 +452,7 @@ class GroupMenuProviderTest extends TestCase
                             'label' => 'route_label1',
                             'route' => 'FooRoute1',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
+                            'route_absolute' => true,
                             'roles' => ['foo', 'bar'],
                         ],
                         [
@@ -427,7 +460,7 @@ class GroupMenuProviderTest extends TestCase
                             'label' => 'route_label2',
                             'route' => 'FooRoute2',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
+                            'route_absolute' => true,
                             'roles' => ['foo'],
                         ],
                         [
@@ -435,7 +468,7 @@ class GroupMenuProviderTest extends TestCase
                             'label' => 'route_label3',
                             'route' => 'FooRoute3',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
+                            'route_absolute' => true,
                             'roles' => ['bar'],
                         ],
                         [
@@ -443,12 +476,14 @@ class GroupMenuProviderTest extends TestCase
                             'label' => 'route_label4',
                             'route' => 'FooRoute4',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
+                            'route_absolute' => true,
                             'roles' => ['baz'],
                         ],
                     ],
                     'roles' => ['foo', 'bar'],
                     'item_adds' => [],
+                    'keep_open' => false,
+                    'on_top' => false,
                 ],
             ], [
                 // group for one role, children with different roles
@@ -462,7 +497,7 @@ class GroupMenuProviderTest extends TestCase
                             'label' => 'route_label1',
                             'route' => 'FooRoute1',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
+                            'route_absolute' => true,
                             'roles' => ['foo', 'bar'],
                         ],
                         [
@@ -470,7 +505,7 @@ class GroupMenuProviderTest extends TestCase
                             'label' => 'route_label2',
                             'route' => 'FooRoute2',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
+                            'route_absolute' => true,
                             'roles' => ['foo'],
                         ],
                         [
@@ -478,7 +513,7 @@ class GroupMenuProviderTest extends TestCase
                             'label' => 'route_label3',
                             'route' => 'FooRoute3',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
+                            'route_absolute' => true,
                             'roles' => ['bar'],
                         ],
                         [
@@ -486,17 +521,22 @@ class GroupMenuProviderTest extends TestCase
                             'label' => 'route_label4',
                             'route' => 'FooRoute4',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
+                            'route_absolute' => true,
                             'roles' => ['baz'],
                         ],
                     ],
                     'roles' => ['baz'],
                     'item_adds' => [],
+                    'keep_open' => false,
+                    'on_top' => false,
                 ],
             ],
         ];
     }
 
+    /**
+     * @phpstan-return array<array{Group}>
+     */
     public function getAdminGroupsMultipleRolesOnTop(): array
     {
         return [
@@ -509,14 +549,16 @@ class GroupMenuProviderTest extends TestCase
                         [
                             'admin' => '',
                             'label' => 'route_label1',
+                            'roles' => ['bar'],
                             'route' => 'FooRoute1',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
+                            'route_absolute' => true,
                         ],
                     ],
                     'item_adds' => [],
                     'roles' => ['foo', 'bar'],
                     'on_top' => true,
+                    'keep_open' => false,
                 ],
             ], [
                 [
@@ -527,14 +569,16 @@ class GroupMenuProviderTest extends TestCase
                         [
                             'admin' => '',
                             'label' => 'route_label2',
+                            'roles' => ['bar'],
                             'route' => 'FooRoute2',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
+                            'route_absolute' => true,
                         ],
                     ],
                     'item_adds' => [],
                     'roles' => ['foo'],
                     'on_top' => true,
+                    'keep_open' => false,
                 ],
             ], [
                 [
@@ -545,34 +589,42 @@ class GroupMenuProviderTest extends TestCase
                         [
                             'admin' => '',
                             'label' => 'route_label3',
+                            'roles' => ['bar'],
                             'route' => 'FooRoute3',
                             'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
+                            'route_absolute' => true,
                         ],
                     ],
                     'item_adds' => [],
                     'roles' => ['bar'],
                     'on_top' => true,
+                    'keep_open' => false,
                 ],
             ],
         ];
     }
 
+    /**
+     * @phpstan-return array<array{Group}>
+     */
     public function getAdminGroupsWithOnTopOption(): array
     {
         return [
             [
-                'foo' => [
+                [
                     'label' => 'foo_on_top',
                     'icon' => '<i class="fas fa-edit"></i>',
                     'label_catalogue' => 'SonataAdminBundle',
+                    'keep_open' => false,
                     'on_top' => true,
                     'items' => [
                         [
                             'admin' => 'sonata_admin_foo_service',
                             'label' => 'fooLabel',
-                            'route_absolute' => UrlGeneratorInterface::ABSOLUTE_PATH,
+                            'route' => 'fakeRoute',
+                            'route_absolute' => true,
                             'route_params' => [],
+                            'roles' => [],
                         ],
                     ],
                     'item_adds' => [],
@@ -582,6 +634,9 @@ class GroupMenuProviderTest extends TestCase
         ];
     }
 
+    /**
+     * @phpstan-return iterable<array{string, Group}>
+     */
     public function getRootMenuItemWithDifferentUrlTypes(): iterable
     {
         yield 'absolute_url' => [
@@ -590,12 +645,16 @@ class GroupMenuProviderTest extends TestCase
                 'label' => 'foo',
                 'icon' => '<i class="fas fa-edit"></i>',
                 'label_catalogue' => 'SonataAdminBundle',
+                'keep_open' => false,
+                'on_top' => false,
                 'items' => [
                     [
                         'admin' => 'sonata_admin_absolute_url',
                         'label' => 'fooLabel',
+                        'roles' => ['foo'],
                         'route' => 'FooAbsoulteRoute',
                         'route_absolute' => true,
+                        'route_params' => [],
                     ],
                 ],
                 'item_adds' => [],
@@ -609,12 +668,16 @@ class GroupMenuProviderTest extends TestCase
                 'label' => 'foo',
                 'icon' => '<i class="fas fa-edit"></i>',
                 'label_catalogue' => 'SonataAdminBundle',
+                'keep_open' => false,
+                'on_top' => false,
                 'items' => [
                     [
                         'admin' => 'sonata_admin_absolute_url',
                         'label' => 'fooLabel',
+                        'roles' => ['foo'],
                         'route' => 'FooAbsolutePath',
                         'route_absolute' => false,
+                        'route_params' => [],
                     ],
                 ],
                 'item_adds' => [],
@@ -623,6 +686,9 @@ class GroupMenuProviderTest extends TestCase
         ];
     }
 
+    /**
+     * @return AdminInterface<object>
+     */
     private function getAdminMock(bool $hasRoute = true, bool $isGranted = true): AdminInterface
     {
         $admin = $this->createMock(AdminInterface::class);

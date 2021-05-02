@@ -41,7 +41,7 @@ class ListMapperTest extends TestCase
     private $fieldDescriptionCollection;
 
     /**
-     * @var AdminInterface&MockObject
+     * @var AdminInterface<object>&MockObject
      */
     private $admin;
 

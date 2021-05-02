@@ -65,6 +65,9 @@ class AdminVoterTest extends AbstractVoterTest
         return $item;
     }
 
+    /**
+     * @return AdminInterface<object>
+     */
     private function getAdmin(string $code, bool $list = false, bool $granted = false): AdminInterface
     {
         $admin = $this->createMock(AdminInterface::class);
@@ -86,6 +89,9 @@ class AdminVoterTest extends AbstractVoterTest
         return $admin;
     }
 
+    /**
+     * @return AdminInterface<object>
+     */
     private function getChildAdmin(
         string $parentCode,
         string $childCode,

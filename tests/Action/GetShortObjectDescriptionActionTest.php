@@ -43,7 +43,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
     private $action;
 
     /**
-     * @var AdminInterface&MockObject
+     * @var AdminInterface<object>&MockObject
      */
     private $admin;
 

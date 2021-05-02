@@ -52,7 +52,7 @@ final class RenderElementExtensionTest extends TestCase
     private $environment;
 
     /**
-     * @var AdminInterface&MockObject
+     * @var AdminInterface<object>&MockObject
      */
     private $admin;
 
@@ -162,6 +162,9 @@ final class RenderElementExtensionTest extends TestCase
     }
 
     /**
+     * @param mixed                $value
+     * @param array<string, mixed> $options
+     *
      * @dataProvider getRenderListElementTests
      */
     public function testRenderListElement(string $expected, string $type, $value, array $options): void
@@ -304,6 +307,9 @@ EOT
     }
 
     /**
+     * @param mixed                $value
+     * @param array<string, mixed> $options
+     *
      * @dataProvider getRenderViewElementTests
      */
     public function testRenderViewElement(string $expected, string $type, $value, array $options): void
@@ -372,9 +378,12 @@ EOT
     }
 
     /**
+     * @param mixed                $value
+     * @param array<string, mixed> $options
+     *
      * @dataProvider getRenderViewElementCompareTests
      */
-    public function testRenderViewElementCompare(string $expected, string $type, $value, array $options, ?string $objectName = null): void
+    public function testRenderViewElementCompare(string $expected, string $type, $value, array $options, ?string $objectName): void
     {
         $this->fieldDescription
             ->method('getValue')
@@ -547,6 +556,9 @@ EOT
         );
     }
 
+    /**
+     * @phpstan-return array<array{string, string, mixed, array<string, mixed>}>
+     */
     public function getRenderListElementTests(): array
     {
         return [
@@ -1531,6 +1543,9 @@ EOT
         ];
     }
 
+    /**
+     * @phpstan-return array<array{string, string, mixed, array<string, mixed>}>
+     */
     public function getRenderViewElementTests(): array
     {
         return [
@@ -2032,19 +2047,24 @@ EOT
         ];
     }
 
+    /**
+     * @phpstan-return array<array{string, string, mixed, array<string, mixed>, string|null}>
+     */
     public function getRenderViewElementCompareTests(): iterable
     {
         return [
-            ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]],
-            ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]],
-            ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_TEXTAREA, 'Example', ['safe' => false]],
-            ['<th>Data</th> <td>SonataAdmin<br/>Example</td><td>SonataAdmin<br/>Example</td>', 'virtual_field', 'Example', ['template' => 'custom_show_field.html.twig', 'safe' => false, 'SonataAdmin']],
+            ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null],
+            ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null],
+            ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_TEXTAREA, 'Example', ['safe' => false], null],
+            ['<th>Data</th> <td>SonataAdmin<br/>Example</td><td>SonataAdmin<br/>Example</td>', 'virtual_field', 'Example', ['template' => 'custom_show_field.html.twig', 'safe' => false], 'SonataAdmin'],
             ['<th class="diff">Data</th> <td>SonataAdmin<br/>Example</td><td>sonata-project/admin-bundle<br/>Example</td>', 'virtual_field', 'Example', ['template' => 'custom_show_field.html.twig', 'safe' => false], 'sonata-project/admin-bundle'],
             [
                 '<th>Data</th> <td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> May 27, 2020 10:11 </time></td>'
                 .'<td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> May 27, 2020 10:11 </time></td>',
                 FieldDescriptionInterface::TYPE_DATETIME,
-                new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')), [],
+                new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')),
+                [],
+                null,
             ],
             [
                 '<th>Data</th> <td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> 27.05.2020 10:11:12 </time></td>'
@@ -2052,6 +2072,7 @@ EOT
                 FieldDescriptionInterface::TYPE_DATETIME,
                 new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')),
                 ['format' => 'd.m.Y H:i:s'],
+                null,
             ],
             [
                 '<th>Data</th> <td><time datetime="2020-05-27T10:11:12+00:00" title="2020-05-27T10:11:12+00:00"> May 27, 2020 18:11 </time></td>'
@@ -2059,6 +2080,7 @@ EOT
                 FieldDescriptionInterface::TYPE_DATETIME,
                 new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('UTC')),
                 ['timezone' => 'Asia/Hong_Kong'],
+                null,
             ],
             [
                 '<th>Data</th> <td><time datetime="2020-05-27" title="2020-05-27"> May 27, 2020 </time></td>'
@@ -2066,12 +2088,15 @@ EOT
                 FieldDescriptionInterface::TYPE_DATE,
                 new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')),
                 [],
+                null,
             ],
         ];
     }
 
     /**
      * This method generates url part for Twig layout.
+     *
+     * @param array<string, string> $url
      */
     private function buildTwigLikeUrl(array $url): string
     {

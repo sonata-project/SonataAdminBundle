@@ -129,6 +129,7 @@ class ObjectManipulatorTest extends TestCase
 
         $object = new \stdClass();
         $instance = new class() {
+            /** @var object|null */
             public $parent;
         };
 
@@ -145,6 +146,7 @@ class ObjectManipulatorTest extends TestCase
 
         $object2 = new \stdClass();
         $instance = new class() {
+            /** @var object|null */
             public $fooBar;
         };
 

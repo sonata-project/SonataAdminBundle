@@ -48,7 +48,7 @@ class DatagridMapperTest extends TestCase
     private $datagrid;
 
     /**
-     * @var AdminInterface&MockObject
+     * @var AdminInterface<object>&MockObject
      */
     private $admin;
 

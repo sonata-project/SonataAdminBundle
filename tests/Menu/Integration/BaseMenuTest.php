@@ -46,14 +46,17 @@ abstract class BaseMenuTest extends TestCase
         $this->environment = new Environment($loader, ['strict_variables' => true]);
     }
 
-    abstract protected function getTemplate();
+    abstract protected function getTemplate(): string;
 
     protected function getTranslator(): TranslatorInterface
     {
         return new StubTranslator();
     }
 
-    protected function renderMenu(ItemInterface $item, array $options = [])
+    /**
+     * @param array<string, mixed> $options
+     */
+    protected function renderMenu(ItemInterface $item, array $options = []): string
     {
         $this->environment->addExtension(new TranslationExtension($this->getTranslator()));
         $renderer = new TwigRenderer(

@@ -55,7 +55,10 @@ class MetadataTest extends TestCase
         );
     }
 
-    public function isImageAvailableProvider(): \Generator
+    /**
+     * @phpstan-return iterable<array{bool, string|null}>
+     */
+    public function isImageAvailableProvider(): iterable
     {
         yield 'image is null' => [false, null];
         yield 'image is available' => [true, 'image.png'];

@@ -189,7 +189,7 @@ class AdminHelperTest extends TestCase
             ->method('getRequest')
             ->willReturn($request);
 
-        $foo = $this->createMock(Foo::class);
+        $foo = $this->getMockBuilder(\stdClass::class)->addMethods(['addBar'])->getMock();
         $admin
             ->method('hasSubject')
             ->willReturn(true);

@@ -28,6 +28,9 @@ class NativeLabelTranslatorStrategyTest extends TestCase
         $this->assertSame($expectedLabel, $strategy->getLabel($label, 'form', 'label'));
     }
 
+    /**
+     * @phpstan-return array<array{string, string}>
+     */
     public function getLabelTests(): array
     {
         return [

@@ -87,7 +87,7 @@ class CRUDControllerTest extends TestCase
     private $request;
 
     /**
-     * @var AdminInterface&MockObject
+     * @var AdminInterface<object>&MockObject
      */
     private $admin;
 

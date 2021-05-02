@@ -24,8 +24,7 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
  *  label: string,
  *  label_catalogue: string,
  *  icon: string,
- *  item_adds: array,
- *  items: array<array-key, array{
+ *  item_adds: array<array-key, array{
  *      admin?: string,
  *      label: string,
  *      roles: list<string>,
@@ -33,8 +32,17 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
  *      router_absolute: bool,
  *      route_params: array<string, string>
  *  }>,
+ *  items: array<array-key, array{
+ *      admin?: string,
+ *      label: string,
+ *      roles: list<string>,
+ *      route: string,
+ *      route_absolute: bool,
+ *      route_params: array<string, string>
+ *  }>,
  *  keep_open: bool,
  *  on_top: bool,
+ *  provider?: string,
  *  roles: list<string>
  * }
  *
@@ -55,7 +63,7 @@ final class Pool
     private $adminServiceIds = [];
 
     /**
-     * @var array
+     * @var array<string, array<string, mixed>>
      * @phpstan-var array<string, Group>
      */
     private $adminGroups = [];
@@ -71,8 +79,7 @@ final class Pool
      * @param array<string, array<string, mixed>> $adminGroups
      * @param array<class-string, string[]>       $adminClasses
      *
-     * @phpstan-param array<string, array<string, mixed>> $adminGroups
-     * @psalm-param array<string, Group> $adminGroups
+     * @phpstan-param array<string, Group> $adminGroups
      */
     public function __construct(
         ContainerInterface $container,
@@ -95,6 +102,7 @@ final class Pool
      *  items: array<array-key, AdminInterface>,
      *  keep_open: bool,
      *  on_top: bool,
+     *  provider?: string,
      *  roles: list<string>
      * }>
      */
@@ -288,6 +296,8 @@ final class Pool
 
     /**
      * @return array<string, array<string, mixed>>
+     *
+     * @phpstan-return array<string, Group>
      */
     public function getAdminGroups(): array
     {

@@ -74,7 +74,6 @@ class AdminObjectAclDataTest extends TestCase
     public function testGetMasks(): void
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $this->assertIsArray($adminObjectAclData->getMasks());
 
         foreach ($adminObjectAclData->getMasks() as $key => $mask) {
             $this->assertIsString($key);
@@ -207,27 +206,20 @@ class AdminObjectAclDataTest extends TestCase
         $this->createAdminObjectAclData(true, false);
     }
 
-    protected static function createAclUsers()
-    {
-        return new \ArrayIterator();
-    }
-
-    protected static function createAclRoles()
-    {
-        return new \ArrayIterator();
-    }
-
-    protected function createAdminObjectAclData(bool $isOwner = true, bool $isAclEnabled = true)
+    protected function createAdminObjectAclData(bool $isOwner = true, bool $isAclEnabled = true): AdminObjectAclData
     {
         return new AdminObjectAclData(
             $this->createAdmin($isOwner, $isAclEnabled),
             new \stdClass(),
-            self::createAclUsers(),
+            new \ArrayIterator(),
             MaskBuilder::class,
-            self::createAclRoles()
+            new \ArrayIterator()
         );
     }
 
+    /**
+     * @return AdminInterface<object>
+     */
     protected function createAdmin(bool $isOwner = true, bool $isAclEnabled = true): AdminInterface
     {
         $securityHandler = $this->getMockForAbstractClass(AclSecurityHandlerInterface::class);
