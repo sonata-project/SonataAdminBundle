@@ -11,13 +11,10 @@ import log from './admin-log';
 import setupICheck from './admin-setup-icheck';
 import addFlashMessageListener from './admin-flash-message';
 import { getConfig, getTranslation, read } from './admin-config';
+import { select2Width, setupSelect2, setupSortableSelect2 } from './admin-setup-select2';
+import { setupCollectionButtons, setupCollectionCounter } from './admin-setup-collection';
 
 const Admin = {
-
-  collectionCounters: [],
-  config: null,
-  translations: null,
-
   /**
    * This function must be called when an ajax call is done, to ensure
    * the retrieved html is properly setup
@@ -30,14 +27,14 @@ const Admin = {
     Admin.setup_ie10_polyfill();
     Admin.set_object_field_value(subject);
     Admin.add_filters(subject);
-    Admin.setup_select2(subject);
+    setupSelect2(subject);
     setupICheck(subject);
     Admin.setup_checkbox_range_selection(subject);
     Admin.setup_xeditable(subject);
     Admin.setup_form_tabs_for_errors(subject);
     Admin.setup_inline_form_errors(subject);
     Admin.setup_tree_view(subject);
-    Admin.setup_collection_counter(subject);
+    setupCollectionCounter(subject);
     Admin.setup_sticky_elements(subject);
     Admin.setup_readmore_elements(subject);
     Admin.setup_form_submit(subject);
@@ -85,51 +82,7 @@ const Admin = {
     jQuery(modal).trigger('sonata-admin-setup-list-modal');
   },
   setup_select2(subject) {
-    if (Admin.get_config('USE_SELECT2')) {
-      log('[core|setup_select2] configure Select2 on', subject);
-
-      jQuery('select:not([data-sonata-select2="false"])', subject).each((index, element) => {
-        const select = jQuery(element);
-        let allowClearEnabled = false;
-        const popover = select.data('popover');
-        let maximumSelectionSize = null;
-        let minimumResultsForSearch = 10;
-
-        select.removeClass('form-control');
-
-        if (select.find('option[value=""]').length || select.attr('data-sonata-select2-allow-clear') === 'true') {
-          allowClearEnabled = true;
-        } else if (select.attr('data-sonata-select2-allow-clear') === 'false') {
-          allowClearEnabled = false;
-        }
-
-        if (select.attr('data-sonata-select2-maximumSelectionSize')) {
-          maximumSelectionSize = select.attr('data-sonata-select2-maximumSelectionSize');
-        }
-
-        if (select.attr('data-sonata-select2-minimumResultsForSearch')) {
-          minimumResultsForSearch = select.attr('data-sonata-select2-minimumResultsForSearch');
-        }
-
-        select.select2({
-          width() {
-            return Admin.get_select2_width(select);
-          },
-          theme: 'bootstrap',
-          dropdownAutoWidth: true,
-          minimumResultsForSearch,
-          placeholder: allowClearEnabled ? ' ' : '', // allowClear needs placeholder to work properly
-          allowClear: allowClearEnabled,
-          maximumSelectionSize,
-        });
-
-        if (undefined !== popover) {
-          select
-            .select2('container')
-            .popover(popover.options);
-        }
-      });
-    }
+    setupSelect2(subject);
   },
   setup_icheck(subject) {
     setupICheck(subject);
@@ -146,7 +99,7 @@ const Admin = {
     log('[core|setup_checkbox_range_selection] configure checkbox range selection on', subject);
 
     let previousIndex;
-    const useICheck = Admin.get_config('USE_ICHECK');
+    const useICheck = getConfig('USE_ICHECK');
 
     // When a checkbox or an iCheck helper is clicked
     jQuery('tbody input[type="checkbox"], tbody .iCheck-helper', subject).on('click', (event) => {
@@ -308,10 +261,10 @@ const Admin = {
    */
   set_object_field_value(subject) {
     log('[core|set_object_field_value] set value field on', subject);
+    log(jQuery('a.sonata-ba-edit-inline', subject));
 
-    this.log(jQuery('a.sonata-ba-edit-inline', subject));
     jQuery('a.sonata-ba-edit-inline', subject).on('click', (event) => {
-      Admin.stopEvent(event);
+      event.preventDefault();
       const element = jQuery(event.target);
       jQuery.ajax({
         url: element.attr('href'),
@@ -332,57 +285,11 @@ const Admin = {
   },
 
   setup_collection_counter(subject) {
-    log('[core|setup_collection_counter] setup collection counter', subject);
-
-    // Count and save element of each collection
-    const highestCounterRegexp = new RegExp('_([0-9]+)[^0-9]*$');
-    jQuery(subject).find('[data-prototype]').each((index, element) => {
-      const collection = jQuery(element);
-      let counter = -1;
-      collection.children().each((collectionIndex, collectionElement) => {
-        const matches = highestCounterRegexp.exec(jQuery('[id^="sonata-ba-field-container"]', collectionElement).attr('id'));
-        if (matches && matches[1] && matches[1] > counter) {
-          counter = parseInt(matches[1], 10);
-        }
-      });
-      Admin.collectionCounters[collection.attr('id')] = counter;
-    });
+    setupCollectionCounter(subject);
   },
 
   setup_collection_buttons(subject) {
-    jQuery(subject).on('click', '.sonata-collection-add', (event) => {
-      Admin.stopEvent(event);
-
-      const container = jQuery(event.target).closest('[data-prototype]');
-
-      Admin.collectionCounters[container.attr('id')] += 1;
-
-      const counter = Admin.collectionCounters[container.attr('id')];
-      let proto = container.attr('data-prototype');
-      const protoName = container.attr('data-prototype-name') || '__name__';
-      // Set field id
-      const idRegexp = new RegExp(`${container.attr('id')}_${protoName}`, 'g');
-      proto = proto.replace(idRegexp, `${container.attr('id')}_${counter}`);
-
-      // Set field name
-      const parts = container.attr('id').split('_');
-      const nameRegexp = new RegExp(`${parts[parts.length - 1]}\\]\\[${protoName}`, 'g');
-      proto = proto.replace(nameRegexp, `${parts[parts.length - 1]}][${counter}`);
-      jQuery(proto)
-        .insertBefore(jQuery(event.target).parent())
-        .trigger('sonata-admin-append-form-element');
-      jQuery(event.target).trigger('sonata-collection-item-added');
-    });
-
-    jQuery(subject).on('click', '.sonata-collection-delete', (event) => {
-      Admin.stopEvent(event);
-
-      jQuery(event.target).trigger('sonata-collection-item-deleted');
-
-      jQuery(event.target).closest('.sonata-collection-row').remove();
-
-      jQuery(document).trigger('sonata-collection-item-deleted-successful');
-    });
+    setupCollectionButtons(subject);
   },
 
   setup_per_page_switcher(subject) {
@@ -482,81 +389,16 @@ const Admin = {
     jQuery('ul.js-treeview', subject).treeView();
   },
 
-  /** Return the width for simple and sortable select2 element * */
   get_select2_width(element) {
-    const ereg = /width:(auto|(([-+]?([0-9]*\.)?[0-9]+)(px|em|ex|%|in|cm|mm|pt|pc)))/i;
-
-    // this code is an adaptation of select2 code (initContainerWidth function)
-    let style = element.attr('style');
-    // console.log("main style", style);
-
-    if (style !== undefined) {
-      const attrs = style.split(';');
-
-      for (let i = 0, l = attrs.length; i < l; i += 1) {
-        const matches = attrs[i].replace(/\s/g, '').match(ereg);
-        if (matches !== null && matches.length >= 1) return matches[1];
-      }
-    }
-
-    style = element.css('width');
-    if (style.indexOf('%') > 0) {
-      return style;
-    }
-
-    return '100%';
+    select2Width(element);
   },
 
   setup_sortable_select2(subject, data, customOptions) {
-    const transformedData = [];
-    for (let i = 0; i < data.length; i += 1) {
-      transformedData[i] = { id: data[i].data, text: data[i].label };
-    }
-
-    const options = {
-      theme: 'bootstrap',
-      width() {
-        return Admin.get_select2_width(subject);
-      },
-      dropdownAutoWidth: true,
-      data: transformedData,
-      multiple: true,
-      ...customOptions,
-    };
-
-    subject.select2(options);
-
-    subject.select2('container').find('ul.select2-choices').sortable({
-      containment: 'parent',
-      start() {
-        subject.select2('onSortStart');
-      },
-      update() {
-        subject.select2('onSortEnd');
-      },
-    });
-
-    // On form submit, transform value to match what is expected by server
-    subject.parents('form:first').submit(() => {
-      let values = subject.val().trim();
-      if (values !== '') {
-        let baseName = subject.attr('name');
-        values = values.split(',');
-        baseName = baseName.substring(0, baseName.length - 1);
-        for (let i = 0; i < values.length; i += 1) {
-          jQuery('<input>')
-            .attr('type', 'hidden')
-            .attr('name', `${baseName + i}]`)
-            .val(values[i])
-            .appendTo(subject.parents('form:first'));
-        }
-      }
-      subject.remove();
-    });
+    setupSortableSelect2(subject[0], data, customOptions);
   },
 
   setup_sticky_elements(subject) {
-    if (Admin.get_config('USE_STICKYFORMS')) {
+    if (getConfig('USE_STICKYFORMS')) {
       log('[core|setup_sticky_elements] setup sticky elements on', subject);
 
       const topNavbar = jQuery(subject).find('.navbar-static-top');
@@ -785,7 +627,7 @@ jQuery(() => {
   jQuery('html').removeClass('no-js');
 
   Admin.setup_per_page_switcher(document);
-  Admin.setup_collection_buttons(document);
+  setupCollectionButtons(document);
   Admin.setup_view_tabs_changer();
   Admin.shared_setup(document);
   addFlashMessageListener();
@@ -796,13 +638,13 @@ jQuery(window).on('resize', () => {
 });
 
 jQuery(document).on('sonata-admin-append-form-element', (event) => {
-  Admin.setup_select2(event.target);
+  setupSelect2(event.target);
   setupICheck(event.target);
-  Admin.setup_collection_counter(event.target);
+  setupCollectionCounter(event.target);
 });
 
 jQuery(window).on('load', () => {
-  if (Admin.get_config('CONFIRM_EXIT')) {
+  if (getConfig('CONFIRM_EXIT')) {
     jQuery('.sonata-ba-form form').each((index, element) => {
       jQuery(element).confirmExit();
     });
