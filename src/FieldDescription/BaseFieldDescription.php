@@ -157,32 +157,32 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
     }
 
-    public function getFieldName(): string
+    final public function getFieldName(): string
     {
         return $this->fieldName;
     }
 
-    public function setName(string $name): void
+    final public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    public function getName(): string
+    final public function getName(): string
     {
         return $this->name;
     }
 
-    public function getOption(string $name, $default = null)
+    final public function getOption(string $name, $default = null)
     {
         return $this->options[$name] ?? $default;
     }
 
-    public function setOption(string $name, $value): void
+    final public function setOption(string $name, $value): void
     {
         $this->options[$name] = $value;
     }
 
-    public function setOptions(array $options): void
+    final public function setOptions(array $options): void
     {
         // set the type if provided
         if (isset($options['type'])) {
@@ -199,37 +199,37 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->options = $options;
     }
 
-    public function getOptions(): array
+    final public function getOptions(): array
     {
         return $this->options;
     }
 
-    public function setTemplate(?string $template): void
+    final public function setTemplate(?string $template): void
     {
         $this->template = $template;
     }
 
-    public function getTemplate(): ?string
+    final public function getTemplate(): ?string
     {
         return $this->template;
     }
 
-    public function setType(?string $type): void
+    final public function setType(?string $type): void
     {
         $this->type = $type;
     }
 
-    public function getType(): ?string
+    final public function getType(): ?string
     {
         return $this->type;
     }
 
-    public function setParent(AdminInterface $parent): void
+    final public function setParent(AdminInterface $parent): void
     {
         $this->parent = $parent;
     }
 
-    public function getParent(): AdminInterface
+    final public function getParent(): AdminInterface
     {
         if (null === $this->parent) {
             throw new \LogicException(sprintf('%s has no parent.', static::class));
@@ -238,33 +238,33 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->parent;
     }
 
-    public function hasParent(): bool
+    final public function hasParent(): bool
     {
         return null !== $this->parent;
     }
 
-    public function getAssociationMapping(): array
+    final public function getAssociationMapping(): array
     {
         return $this->associationMapping;
     }
 
-    public function getFieldMapping(): array
+    final public function getFieldMapping(): array
     {
         return $this->fieldMapping;
     }
 
-    public function getParentAssociationMappings(): array
+    final public function getParentAssociationMappings(): array
     {
         return $this->parentAssociationMappings;
     }
 
-    public function setAssociationAdmin(AdminInterface $associationAdmin): void
+    final public function setAssociationAdmin(AdminInterface $associationAdmin): void
     {
         $this->associationAdmin = $associationAdmin;
         $this->associationAdmin->setParentFieldDescription($this);
     }
 
-    public function getAssociationAdmin(): AdminInterface
+    final public function getAssociationAdmin(): AdminInterface
     {
         if (null === $this->associationAdmin) {
             throw new \LogicException(sprintf('%s has no association admin.', static::class));
@@ -273,17 +273,17 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->associationAdmin;
     }
 
-    public function hasAssociationAdmin(): bool
+    final public function hasAssociationAdmin(): bool
     {
         return null !== $this->associationAdmin;
     }
 
-    public function setAdmin(AdminInterface $admin): void
+    final public function setAdmin(AdminInterface $admin): void
     {
         $this->admin = $admin;
     }
 
-    public function getAdmin(): AdminInterface
+    final public function getAdmin(): AdminInterface
     {
         if (null === $this->admin) {
             throw new \LogicException(sprintf('%s has no admin.', static::class));
@@ -292,12 +292,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->admin;
     }
 
-    public function hasAdmin(): bool
+    final public function hasAdmin(): bool
     {
         return null !== $this->admin;
     }
 
-    public function mergeOption(string $name, array $options = []): void
+    final public function mergeOption(string $name, array $options = []): void
     {
         if (!isset($this->options[$name])) {
             $this->options[$name] = [];
@@ -310,12 +310,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->options[$name] = array_merge($this->options[$name], $options);
     }
 
-    public function mergeOptions(array $options = []): void
+    final public function mergeOptions(array $options = []): void
     {
         $this->setOptions(array_merge_recursive($this->options, $options));
     }
 
-    public function getMappingType()
+    final public function getMappingType()
     {
         return $this->mappingType;
     }
@@ -323,32 +323,32 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * @return string|false|null
      */
-    public function getLabel()
+    final public function getLabel()
     {
         return $this->getOption('label');
     }
 
-    public function isSortable(): bool
+    final public function isSortable(): bool
     {
         return false !== $this->getOption('sortable', false);
     }
 
-    public function getSortFieldMapping(): array
+    final public function getSortFieldMapping(): array
     {
         return $this->getOption('sort_field_mapping');
     }
 
-    public function getSortParentAssociationMapping(): array
+    final public function getSortParentAssociationMapping(): array
     {
         return $this->getOption('sort_parent_association_mappings');
     }
 
-    public function getTranslationDomain(): string
+    final public function getTranslationDomain(): string
     {
         return $this->getOption('translation_domain') ?: $this->getAdmin()->getTranslationDomain();
     }
 
-    public function isVirtual(): bool
+    final public function isVirtual(): bool
     {
         return false !== $this->getOption('virtual_field', false);
     }
@@ -378,7 +378,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      *
      * @return mixed
      */
-    protected function getFieldValue(?object $object, string $fieldName)
+    final protected function getFieldValue(?object $object, string $fieldName)
     {
         if ($this->isVirtual() || null === $object) {
             return null;

@@ -25,6 +25,8 @@ use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Filter\Persister\SessionFilterPersister;
 use Sonata\AdminBundle\Model\AuditManager;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
+use Sonata\AdminBundle\Request\AdminFetcher;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Route\AdminPoolLoader;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\SonataConfiguration;
@@ -145,5 +147,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.global_template_registry', TemplateRegistry::class)
             ->args([
                 '%sonata.admin.configuration.templates%',
-            ]);
+            ])
+
+        ->set('sonata.admin.request.fetcher', AdminFetcher::class)
+            ->args([
+                new ReferenceConfigurator('sonata.admin.pool'),
+            ])
+
+        ->alias(AdminFetcherInterface::class, 'sonata.admin.request.fetcher');
 };

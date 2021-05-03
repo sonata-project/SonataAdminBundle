@@ -78,6 +78,10 @@ final class SonataAdminExtension extends Extension
             $loader->load('exporter.php');
         }
 
+        if (isset($bundles['SensioFrameworkExtraBundle'])) {
+            $loader->load('param_converter.php');
+        }
+
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 

@@ -1867,8 +1867,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.93.
-     *
      * Get the list of actions that can be accessed directly from the dashboard.
      *
      * @return array<string, array<string, mixed>>

@@ -28,17 +28,17 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
         $this->templates = $templates;
     }
 
-    public function getTemplates(): array
+    final public function getTemplates(): array
     {
         return $this->templates;
     }
 
-    public function hasTemplate(string $name): bool
+    final public function hasTemplate(string $name): bool
     {
         return isset($this->templates[$name]);
     }
 
-    public function getTemplate(string $name): string
+    final function getTemplate(string $name): string
     {
         if ($this->hasTemplate($name)) {
             return $this->templates[$name];

@@ -44,7 +44,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @return static
      */
-    public function with(string $name, array $options = []): self
+    final public function with(string $name, array $options = []): self
     {
         if (!$this->shouldApply()) {
             return $this;
@@ -167,7 +167,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @return static
      */
-    public function ifTrue(bool $bool): self
+    final public function ifTrue(bool $bool): self
     {
         $this->apply[] = true === $bool;
 
@@ -179,7 +179,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @return static
      */
-    public function ifFalse(bool $bool): self
+    final public function ifFalse(bool $bool): self
     {
         $this->apply[] = false === $bool;
 
@@ -191,7 +191,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @return static
      */
-    public function ifEnd(): self
+    final public function ifEnd(): self
     {
         if (empty($this->apply)) {
             throw new \LogicException('No open ifTrue() or ifFalse(), you cannot use ifEnd()');
@@ -209,7 +209,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @return static
      */
-    public function tab(string $name, array $options = []): self
+    final public function tab(string $name, array $options = []): self
     {
         return $this->with($name, array_merge($options, ['tab' => true]));
     }
@@ -221,7 +221,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @return static
      */
-    public function end(): self
+    final public function end(): self
     {
         if (!$this->shouldApply()) {
             return $this;
@@ -241,7 +241,7 @@ abstract class BaseGroupedMapper implements MapperInterface
     /**
      * Returns a boolean indicating if there is an open tab at the moment.
      */
-    public function hasOpenTab(): bool
+    final public function hasOpenTab(): bool
     {
         return null !== $this->currentTab;
     }
@@ -255,7 +255,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @return static
      */
-    public function removeGroup(string $group, string $tab = 'default', bool $deleteEmptyTab = false)
+    final public function removeGroup(string $group, string $tab = 'default', bool $deleteEmptyTab = false)
     {
         $groups = $this->getGroups();
 
@@ -292,7 +292,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @return static
      */
-    public function removeTab(string $tab): self
+    final public function removeTab(string $tab): self
     {
         $groups = $this->getGroups();
         $tabs = $this->getTabs();
@@ -340,7 +340,7 @@ abstract class BaseGroupedMapper implements MapperInterface
     /**
      * @return array<string, mixed>
      */
-    protected function addFieldToCurrentGroup(string $fieldName): array
+    final protected function addFieldToCurrentGroup(string $fieldName): array
     {
         // Note this line must happen before the next line.
         // See https://github.com/sonata-project/SonataAdminBundle/pull/1351
@@ -359,7 +359,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      * Note that this can have the side effect to change the 'group' value
      * returned by the getGroup function
      */
-    protected function getCurrentGroupName(): string
+    final protected function getCurrentGroupName(): string
     {
         if (!$this->currentGroup) {
             $label = $this->getAdmin()->getLabel();

@@ -136,9 +136,9 @@ interface ModelManagerInterface
     public function supportsQuery(object $query): bool;
 
     /**
-     * @return array<object>|(\Traversable<object>&\Countable)
+     * @return array<object>|\Traversable<object>
      *
-     * @phpstan-return array<T>|(\Traversable<T>&\Countable)
+     * @phpstan-return array<T>|\Traversable<T>
      */
     public function executeQuery(object $query);
 

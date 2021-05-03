@@ -67,7 +67,7 @@ abstract class Pager implements PagerInterface
      *
      * @return int[]
      */
-    public function getLinks(?int $nbLinks = null): array
+    final public function getLinks(?int $nbLinks = null): array
     {
         if (null === $nbLinks) {
             $nbLinks = $this->getMaxPageLinks();
@@ -89,39 +89,39 @@ abstract class Pager implements PagerInterface
     /**
      * Returns true if the current query requires pagination.
      */
-    public function haveToPaginate(): bool
+    final public function haveToPaginate(): bool
     {
         $countResults = $this->countResults();
 
         return $this->getMaxPerPage() && $countResults > $this->getMaxPerPage();
     }
 
-    public function getFirstPage(): int
+    final public function getFirstPage(): int
     {
         return 1;
     }
 
-    public function getLastPage(): int
+    final public function getLastPage(): int
     {
         return $this->lastPage;
     }
 
-    public function getPage(): int
+    final public function getPage(): int
     {
         return $this->page;
     }
 
-    public function getNextPage(): int
+    final public function getNextPage(): int
     {
         return min($this->getPage() + 1, $this->getLastPage());
     }
 
-    public function getPreviousPage(): int
+    final public function getPreviousPage(): int
     {
         return max($this->getPage() - 1, $this->getFirstPage());
     }
 
-    public function setPage(int $page): void
+    final public function setPage(int $page): void
     {
         $this->page = $page;
 
@@ -131,12 +131,12 @@ abstract class Pager implements PagerInterface
         }
     }
 
-    public function getMaxPerPage(): int
+    final public function getMaxPerPage(): int
     {
         return $this->maxPerPage;
     }
 
-    public function setMaxPerPage(int $max): void
+    final public function setMaxPerPage(int $max): void
     {
         if ($max > 0) {
             $this->maxPerPage = $max;
@@ -156,33 +156,27 @@ abstract class Pager implements PagerInterface
         }
     }
 
-    public function getMaxPageLinks(): int
+    final public function getMaxPageLinks(): int
     {
         return $this->maxPageLinks;
     }
 
-    public function setMaxPageLinks(int $maxPageLinks): void
+    final public function setMaxPageLinks(int $maxPageLinks): void
     {
         $this->maxPageLinks = $maxPageLinks;
     }
 
-    /**
-     * Returns true if on the first page.
-     */
-    public function isFirstPage(): bool
+    final public function isFirstPage(): bool
     {
         return 1 === $this->page;
     }
 
-    /**
-     * Returns true if on the last page.
-     */
-    public function isLastPage(): bool
+    final public function isLastPage(): bool
     {
         return $this->page === $this->lastPage;
     }
 
-    public function setQuery(ProxyQueryInterface $query): void
+    final public function setQuery(ProxyQueryInterface $query): void
     {
         $this->query = $query;
     }
@@ -190,12 +184,12 @@ abstract class Pager implements PagerInterface
     /**
      * @phpstan-return T|null $query
      */
-    public function getQuery(): ?ProxyQueryInterface
+    final public function getQuery(): ?ProxyQueryInterface
     {
         return $this->query;
     }
 
-    protected function setLastPage(int $page): void
+    final protected function setLastPage(int $page): void
     {
         $this->lastPage = $page;
     }

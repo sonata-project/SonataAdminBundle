@@ -31,6 +31,10 @@ final class SimplePager extends Pager
     protected $results;
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x
+     *
      * @var bool
      */
     private $haveToPaginate = false;
@@ -94,11 +98,6 @@ final class SimplePager extends Pager
         $this->results = $results;
 
         return $this->results;
-    }
-
-    public function haveToPaginate(): bool
-    {
-        return $this->haveToPaginate || $this->getPage() > 1;
     }
 
     /**

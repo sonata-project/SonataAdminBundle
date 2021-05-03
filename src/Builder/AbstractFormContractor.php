@@ -37,7 +37,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
         $this->formFactory = $formFactory;
     }
 
-    public function fixFieldDescription(FieldDescriptionInterface $fieldDescription): void
+    final public function fixFieldDescription(FieldDescriptionInterface $fieldDescription): void
     {
         $fieldDescription->setOption('edit', $fieldDescription->getOption('edit', 'standard'));
 
@@ -46,17 +46,17 @@ abstract class AbstractFormContractor implements FormContractorInterface
         }
     }
 
-    public function getFormFactory(): FormFactoryInterface
+    final public function getFormFactory(): FormFactoryInterface
     {
         return $this->formFactory;
     }
 
-    public function getFormBuilder($name, array $formOptions = []): FormBuilderInterface
+    final public function getFormBuilder($name, array $formOptions = []): FormBuilderInterface
     {
         return $this->getFormFactory()->createNamedBuilder($name, FormType::class, null, $formOptions);
     }
 
-    public function getDefaultOptions(
+    final public function getDefaultOptions(
         ?string $type,
         FieldDescriptionInterface $fieldDescription,
         array $formOptions = []

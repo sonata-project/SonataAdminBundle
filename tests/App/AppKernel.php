@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\App;
 
 use Knp\Bundle\MenuBundle\KnpMenuBundle;
+use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Sonata\AdminBundle\SonataAdminBundle;
 use Sonata\BlockBundle\SonataBlockBundle;
 use Sonata\Doctrine\Bridge\Symfony\SonataDoctrineBundle;
@@ -41,6 +42,7 @@ final class AppKernel extends Kernel
     {
         $bundles = [
             new FrameworkBundle(),
+            new SensioFrameworkExtraBundle(),
             new TwigBundle(),
             new SecurityBundle(),
             new KnpMenuBundle(),

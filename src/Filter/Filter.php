@@ -40,13 +40,13 @@ abstract class Filter implements FilterInterface
      */
     private $active = false;
 
-    public function initialize(string $name, array $options = []): void
+    final public function initialize(string $name, array $options = []): void
     {
         $this->name = $name;
         $this->setOptions($options);
     }
 
-    public function getName(): string
+    final public function getName(): string
     {
         if (null === $this->name) {
             throw new \LogicException(sprintf(
@@ -59,7 +59,7 @@ abstract class Filter implements FilterInterface
         return $this->name;
     }
 
-    public function getFormName(): string
+    final public function getFormName(): string
     {
         /*
            Symfony default form class sadly can't handle
@@ -71,7 +71,7 @@ abstract class Filter implements FilterInterface
         return str_replace('.', '__', $this->getName());
     }
 
-    public function getOption(string $name, $default = null)
+    final public function getOption(string $name, $default = null)
     {
         if (\array_key_exists($name, $this->options)) {
             return $this->options[$name];
@@ -80,22 +80,22 @@ abstract class Filter implements FilterInterface
         return $default;
     }
 
-    public function setOption(string $name, $value): void
+    final public function setOption(string $name, $value): void
     {
         $this->options[$name] = $value;
     }
 
-    public function getFieldType(): string
+    final public function getFieldType(): string
     {
         return $this->getOption('field_type', TextType::class);
     }
 
-    public function getFieldOptions(): array
+    final public function getFieldOptions(): array
     {
         return $this->getOption('field_options', []);
     }
 
-    public function getFieldOption(string $name, $default = null)
+    final public function getFieldOption(string $name, $default = null)
     {
         if (isset($this->options['field_options'][$name]) && \is_array($this->options['field_options'])) {
             return $this->options['field_options'][$name];
@@ -104,22 +104,22 @@ abstract class Filter implements FilterInterface
         return $default;
     }
 
-    public function setFieldOption(string $name, $value): void
+    final public function setFieldOption(string $name, $value): void
     {
         $this->options['field_options'][$name] = $value;
     }
 
-    public function getLabel()
+    final public function getLabel()
     {
         return $this->getOption('label');
     }
 
-    public function setLabel($label): void
+    final public function setLabel($label): void
     {
         $this->setOption('label', $label);
     }
 
-    public function getFieldName(): string
+    final public function getFieldName(): string
     {
         $fieldName = $this->getOption('field_name');
 
@@ -133,12 +133,12 @@ abstract class Filter implements FilterInterface
         return $fieldName;
     }
 
-    public function getParentAssociationMappings(): array
+    final public function getParentAssociationMappings(): array
     {
         return $this->getOption('parent_association_mappings', []);
     }
 
-    public function getFieldMapping(): array
+    final public function getFieldMapping(): array
     {
         $fieldMapping = $this->getOption('field_mapping');
 
@@ -152,7 +152,7 @@ abstract class Filter implements FilterInterface
         return $fieldMapping;
     }
 
-    public function getAssociationMapping(): array
+    final public function getAssociationMapping(): array
     {
         $associationMapping = $this->getOption('association_mapping');
 
@@ -169,7 +169,7 @@ abstract class Filter implements FilterInterface
     /**
      * @param array<string, mixed> $options
      */
-    public function setOptions(array $options): void
+    final public function setOptions(array $options): void
     {
         $this->options = array_merge(
             ['show_filter' => null, 'advanced_filter' => true],
@@ -181,32 +181,32 @@ abstract class Filter implements FilterInterface
     /**
      * @return array<string, mixed>
      */
-    public function getOptions(): array
+    final public function getOptions(): array
     {
         return $this->options;
     }
 
-    public function isActive(): bool
+    final public function isActive(): bool
     {
         return $this->active;
     }
 
-    public function setCondition(string $condition): void
+    final public function setCondition(string $condition): void
     {
         $this->condition = $condition;
     }
 
-    public function getCondition(): ?string
+    final public function getCondition(): ?string
     {
         return $this->condition;
     }
 
-    public function getTranslationDomain(): ?string
+    final public function getTranslationDomain(): ?string
     {
         return $this->getOption('translation_domain');
     }
 
-    protected function setActive(bool $active): void
+    final protected function setActive(bool $active): void
     {
         $this->active = $active;
     }

@@ -83,6 +83,7 @@ The demo website can be found at https://demo.sonata-project.org.
    cookbook/recipe_sortable_listing
    cookbook/recipe_dynamic_form_modification
    cookbook/recipe_custom_action
+   cookbook/recipe_decouple_crud_controller
    cookbook/recipe_customizing_a_mosaic_list
    cookbook/recipe_overwrite_admin_configuration
    cookbook/recipe_improve_performance_large_datasets
