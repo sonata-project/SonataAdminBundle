@@ -38,7 +38,7 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
         return isset($this->templates[$name]);
     }
 
-    final function getTemplate(string $name): string
+    final public function getTemplate(string $name): string
     {
         if ($this->hasTemplate($name)) {
             return $this->templates[$name];

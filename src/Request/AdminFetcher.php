@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Request;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Exception\AdminCodeNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 
 final class AdminFetcher implements AdminFetcherInterface
@@ -43,16 +42,7 @@ final class AdminFetcher implements AdminFetcherInterface
 
         $admin = $this->pool->getAdminByAdminCode($adminCode);
 
-        // NEXT_MAJOR: Remove this block.
-        if (false === $admin) {
-            throw new AdminCodeNotFoundException(sprintf(
-                'Unable to find the admin class related to the admin code: "%s".',
-                $adminCode
-            ));
-        }
-
         $rootAdmin = $admin;
-
         while ($rootAdmin->isChild()) {
             $rootAdmin->setCurrentChild(true);
             $rootAdmin = $rootAdmin->getParent();

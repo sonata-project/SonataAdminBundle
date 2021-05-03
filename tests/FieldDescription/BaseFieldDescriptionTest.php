@@ -130,7 +130,7 @@ class BaseFieldDescriptionTest extends TestCase
         $description = new FieldDescription('name');
         $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getFoo'])->getMock();
 
-        $description->getFieldValue($mock, 'fake');
+        $this->callMethod($description, 'getFieldValue', [$mock, 'fake']);
     }
 
     public function testGetVirtualFieldValue(): void
@@ -139,14 +139,13 @@ class BaseFieldDescriptionTest extends TestCase
         $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getFoo'])->getMock();
 
         $description->setOption('virtual_field', true);
-        $this->assertNull($description->getFieldValue($mock, 'fake'));
+        $this->assertNull($this->callMethod($description, 'getFieldValue', [$mock, 'fake']));
     }
 
     public function testGetFieldValueWithNullObject(): void
     {
-        $foo = null;
         $description = new FieldDescription('name');
-        $this->assertNull($description->getFieldValue(null, 'fake'));
+        $this->assertNull($this->callMethod($description, 'getFieldValue', [null, 'fake']));
     }
 
     public function testGetFieldValueWithAccessor(): void
@@ -154,7 +153,7 @@ class BaseFieldDescriptionTest extends TestCase
         $description = new FieldDescription('name', ['accessor' => 'foo']);
         $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getFoo'])->getMock();
         $mock->expects($this->once())->method('getFoo')->willReturn(42);
-        $this->assertSame(42, $description->getFieldValue($mock, 'fake'));
+        $this->assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'fake']));
     }
 
     public function testGetFieldValueWithTopLevelFunctionName(): void
@@ -162,7 +161,7 @@ class BaseFieldDescriptionTest extends TestCase
         $description = new FieldDescription('microtime');
         $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getMicrotime'])->getMock();
         $mock->expects($this->once())->method('getMicrotime')->willReturn(42);
-        $this->assertSame(42, $description->getFieldValue($mock, 'microtime'));
+        $this->assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'microtime']));
     }
 
     public function testGetFieldValueWithCallableAccessor(): void
@@ -174,7 +173,7 @@ class BaseFieldDescriptionTest extends TestCase
         ]);
         $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getFoo'])->getMock();
         $mock->expects($this->once())->method('getFoo')->willReturn(42);
-        $this->assertSame(42, $description->getFieldValue($mock, 'fake'));
+        $this->assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'fake']));
     }
 
     public function testGetFieldValueWithMagicCall(): void
@@ -182,10 +181,10 @@ class BaseFieldDescriptionTest extends TestCase
         $foo = new FooCall();
 
         $description = new FieldDescription('name');
-        $this->assertSame(['getFake', []], $description->getFieldValue($foo, 'fake'));
+        $this->assertSame(['getFake', []], $this->callMethod($description, 'getFieldValue', [$foo, 'fake']));
 
         // repeating to cover retrieving cached getter
-        $this->assertSame(['getFake', []], $description->getFieldValue($foo, 'fake'));
+        $this->assertSame(['getFake', []], $this->callMethod($description, 'getFieldValue', [$foo, 'fake']));
     }
 
     /**
@@ -197,8 +196,8 @@ class BaseFieldDescriptionTest extends TestCase
         $mock = $this->getMockBuilder(\stdClass::class)->addMethods([$method])->getMock();
 
         $mock->method($method)->willReturn(42);
-        $this->assertSame(42, $description->getFieldValue($mock, 'fake_field_value'));
-        $this->assertSame(42, $description->getFieldValue($mock, 'fakeFieldValue'));
+        $this->assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'fake_field_value']));
+        $this->assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'fakeFieldValue']));
     }
 
     /**
@@ -221,8 +220,8 @@ class BaseFieldDescriptionTest extends TestCase
         $mockParent = $this->getMockBuilder(\stdClass::class)->addMethods(['getChild'])->getMock();
         $mockParent->expects($this->once())->method('getChild')->willReturn($mockChild);
 
-        $description4 = new FieldDescription('name');
-        $this->assertSame(42, $description4->getFieldValue($mockParent, 'child.foo'));
+        $description = new FieldDescription('name');
+        $this->assertSame(42, $this->callMethod($description, 'getFieldValue', [$mockParent, 'child.foo']));
     }
 
     public function testExceptionOnNonArrayOption(): void
@@ -251,5 +250,14 @@ class BaseFieldDescriptionTest extends TestCase
             ->method('getTranslationDomain');
         $description->setOption('translation_domain', 'ExtensionDomain');
         $this->assertSame('ExtensionDomain', $description->getTranslationDomain());
+    }
+
+    protected function callMethod($obj, string $name, array $args = [])
+    {
+        $class = new \ReflectionClass($obj);
+        $method = $class->getMethod($name);
+        $method->setAccessible(true);
+
+        return $method->invokeArgs($obj, $args);
     }
 }

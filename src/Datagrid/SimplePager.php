@@ -31,15 +31,6 @@ final class SimplePager extends Pager
     protected $results;
 
     /**
-     * NEXT_MAJOR: Remove this property.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.x
-     *
-     * @var bool
-     */
-    private $haveToPaginate = false;
-
-    /**
      * How many pages to look forward to create links to next pages.
      *
      * @var int
@@ -88,11 +79,7 @@ final class SimplePager extends Pager
         $this->thresholdCount = $results->count();
 
         if ($this->thresholdCount > $this->getMaxPerPage()) {
-            $this->haveToPaginate = true;
-
             $results = new ArrayCollection($results->slice(0, $this->getMaxPerPage()));
-        } else {
-            $this->haveToPaginate = false;
         }
 
         $this->results = $results;
@@ -108,8 +95,6 @@ final class SimplePager extends Pager
         if (!$this->getQuery()) {
             throw new \RuntimeException('Uninitialized query');
         }
-
-        $this->haveToPaginate = false;
 
         if (0 === $this->getPage() || 0 === $this->getMaxPerPage()) {
             $this->setLastPage(0);

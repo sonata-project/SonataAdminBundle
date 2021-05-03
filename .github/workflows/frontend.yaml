@@ -4,25 +4,7 @@ on:
     push:
         branches:
             - master
-        paths:
-            - assets/**
-            - webpack.config.js
-            - package.json
-            - yarn.lock
-            - .babelrc.js
-            - .eslintrc.js
-            - .stylelintrc.js
-            - postcss.config.js
     pull_request:
-        paths:
-            - assets/**
-            - webpack.config.js
-            - package.json
-            - yarn.lock
-            - .babelrc.js
-            - .eslintrc.js
-            - .stylelintrc.js
-            - postcss.config.js
 
 jobs:
     webpack-encore:
