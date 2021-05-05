@@ -703,6 +703,7 @@ Icons on action buttons
 ------------------
 
 You can choose if the action buttons on the list-page show an icon, text or both.
+
 .. code-block:: yaml
 
     # config/packages/sonata_admin.yaml
