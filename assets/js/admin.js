@@ -22,7 +22,6 @@ const Admin = {
   shared_setup(subject) {
     Admin.read_config();
     Admin.log('[core|shared_setup] Register services on', subject);
-    Admin.setup_ie10_polyfill();
     Admin.set_object_field_value(subject);
     Admin.add_filters(subject);
     Admin.setup_select2(subject);
@@ -36,16 +35,6 @@ const Admin = {
     Admin.setup_sticky_elements(subject);
     Admin.setup_readmore_elements(subject);
     Admin.setup_form_submit(subject);
-
-    // Admin.setup_list_modal(subject);
-  },
-  setup_ie10_polyfill() {
-    // http://getbootstrap.com/getting-started/#support-ie10-width
-    if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
-      const msViewportStyle = document.createElement('style');
-      msViewportStyle.appendChild(document.createTextNode('@-ms-viewport{width:auto!important}'));
-      document.querySelector('head').appendChild(msViewportStyle);
-    }
   },
   read_config() {
     const data = jQuery('[data-sonata-admin]').data('sonata-admin');
@@ -647,18 +636,16 @@ const Admin = {
       jQuery(footer).addClass('stuck');
     }
 
-    jQuery(window).on('scroll', () => {
-      Admin.debounce(() => {
-        if (footer.length && Math.round(jQuery(window).scrollTop() + jQuery(window).height())
-          >= jQuery(document).height()) {
-          jQuery(footer).removeClass('stuck');
-        }
+    jQuery(window).on('scroll', Admin.debounce(() => {
+      if (footer.length && Math.round(jQuery(window).scrollTop() + jQuery(window).height())
+        >= jQuery(document).height()) {
+        jQuery(footer).removeClass('stuck');
+      }
 
-        if (navbar.length && jQuery(window).scrollTop() === 0) {
-          jQuery(navbar).removeClass('stuck');
-        }
-      }, 250);
-    });
+      if (navbar.length && jQuery(window).scrollTop() === 0) {
+        jQuery(navbar).removeClass('stuck');
+      }
+    }, 250));
 
     jQuery('body').on('expanded.pushMenu collapsed.pushMenu', () => {
       // the animation takes 0.3s to execute, so we have to take the width,
@@ -668,11 +655,9 @@ const Admin = {
       }, 350);
     });
 
-    jQuery(window).on('resize', () => {
-      Admin.debounce(() => {
-        Admin.handleResize(footer, navbar, wrapper);
-      }, 250);
-    });
+    jQuery(window).on('resize', Admin.debounce(() => {
+      Admin.handleResize(footer, navbar, wrapper);
+    }, 250));
   },
 
   handleResize(footer, navbar, wrapper) {
