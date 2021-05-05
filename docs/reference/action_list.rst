@@ -700,7 +700,7 @@ You need to add option ``show_mosaic_button`` in your admin services:
             - { name: sonata.admin, manager_type: orm, group: admin, label: News, show_mosaic_button: false }
 
 Icons on action buttons
-------------------
+-----------------------
 
 You can choose if the action buttons on the list-page show an icon, text or both.
 

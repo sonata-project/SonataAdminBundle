@@ -16,13 +16,14 @@ file that was distributed with this source code.
         class="btn btn-sm btn-default view_link"
         title="{{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}"
     >
-        {% if _button_mode == 'both' or _button_mode == 'icon' %}
+        {% if _button_mode != 'text' %}
             <i class="fa fa-history" aria-hidden="true"></i>
+        {% endif %}
+        {% if _button_mode == 'icon' %}
             <span class="sr-only">
                 {{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}
             </span>
-        {% endif %}
-        {% if _button_mode == 'both' or _button_mode == 'text' %}
+        {% else %}
             {{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}
         {% endif %}
     </a>
