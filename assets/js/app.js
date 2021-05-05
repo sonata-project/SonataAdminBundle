@@ -51,7 +51,7 @@ import 'readmore-js';
 import 'masonry-layout';
 
 // SonataAdmin custom scripts
-import './Admin';
+import './admin';
 import './jquery.confirmExit';
 import './treeview';
 import './sidebar';
