@@ -90,6 +90,7 @@ Full Configuration Options
                 default_icon: '<i class="fa fa-folder"></i>'
                 dropdown_number_groups_per_colums:  2
                 title_mode: ~ # One of "single_text"; "single_image"; "both"
+                button_mode: 'both' # One of "text"; "icon"; "both"
 
                 # Enable locking when editing an object, if the corresponding object manager supports it.
                 lock_protection: false

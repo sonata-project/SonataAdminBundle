@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle;
 
 /**
  * @phpstan-type SonataConfigurationOptions = array{
+ *  button_mode: 'both'|'icon'|'text'
  *  confirm_exit: bool,
  *  default_group: string,
  *  default_icon: string,

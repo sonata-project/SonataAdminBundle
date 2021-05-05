@@ -10,16 +10,19 @@ file that was distributed with this source code.
 #}
 
 {% if admin.hasAccess('show', object) and admin.hasRoute('show') %}
-    {% set _button_style = sonata_config.getOption('button_style') %}
+    {% set _button_mode = sonata_config.getOption('button_mode') %}
     <a
         href="{{ admin.generateObjectUrl('show', object, actions.link_parameters|default([])) }}"
         class="btn btn-sm btn-default view_link"
         title="{{ 'action_show'|trans({}, 'SonataAdminBundle') }}"
     >
-        {% if _button_style == 'both' or _button_style == 'icon' %}
+        {% if _button_mode == 'both' or _button_mode == 'icon' %}
             <i class="fa fa-eye" aria-hidden="true"></i>
+            <span class="sr-only">
+                {{ 'action_show'|trans({}, 'SonataAdminBundle') }}
+            </span>
         {% endif %}
-        {% if _button_style == 'both' or _button_style == 'text' %}
+        {% if _button_mode == 'both' or _button_mode == 'text' %}
             {{ 'action_show'|trans({}, 'SonataAdminBundle') }}
         {% endif %}
     </a>

@@ -134,7 +134,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $container->setParameter('sonata.admin.configuration.default_group', $config['options']['default_group']);
         $container->setParameter('sonata.admin.configuration.default_label_catalogue', $config['options']['default_label_catalogue']);
         $container->setParameter('sonata.admin.configuration.default_icon', $config['options']['default_icon']);
-        $container->setParameter('sonata.admin.configuration.button_style', $config['options']['button_style']);
+        $container->setParameter('sonata.admin.configuration.button_mode', $config['options']['button_mode']);
         $container->setParameter('sonata.admin.configuration.breadcrumbs', $config['breadcrumbs']);
 
         // NEXT_MAJOR: Remove this block and uncomment the one below.

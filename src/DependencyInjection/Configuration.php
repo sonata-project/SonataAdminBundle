@@ -157,7 +157,7 @@ CASESENSITIVE;
                                 'skin-yellow-light',
                             ])
                         ->end()
-                        ->enumNode('button_style')
+                        ->enumNode('button_mode')
                             ->defaultValue('both')
                             ->values([
                                 'both',
