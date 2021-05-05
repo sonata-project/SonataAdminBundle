@@ -162,7 +162,7 @@ CASESENSITIVE;
                             ->values([
                                 'both',
                                 'icon',
-                                'text'
+                                'text',
                                 ])
                         ->end()
                         ->booleanNode('use_select2')->defaultTrue()->end()
