@@ -107,9 +107,7 @@ const Admin = {
         }
 
         select.select2({
-          width() {
-            return Admin.get_select2_width(select);
-          },
+          width: () => Admin.get_select2_width(select),
           theme: 'bootstrap',
           dropdownAutoWidth: true,
           minimumResultsForSearch,
@@ -207,7 +205,7 @@ const Admin = {
           .closest('td')
           .replaceWith(html);
       },
-      error(xhr) {
+      error: (xhr) => {
         // On some error responses, we return JSON.
         if (xhr.getResponseHeader('Content-Type') === 'application/json') {
           return JSON.parse(xhr.responseText);
@@ -338,7 +336,7 @@ const Admin = {
       jQuery.ajax({
         url: element.attr('href'),
         type: 'POST',
-        success(response) {
+        success: (response) => {
           const elm = element.parent();
           elm.children().remove();
           // fix issue with html comment ...
@@ -346,7 +344,7 @@ const Admin = {
           elm.effect('highlight', { color: '#57A957' }, 2000);
           Admin.set_object_field_value(elm);
         },
-        error() {
+        error: () => {
           element.parent().effect('highlight', { color: '#C43C35' }, 2000);
         },
       });
@@ -537,9 +535,7 @@ const Admin = {
 
     const options = {
       theme: 'bootstrap',
-      width() {
-        return Admin.get_select2_width(subject);
-      },
+      width: () => Admin.get_select2_width(subject),
       dropdownAutoWidth: true,
       data: transformedData,
       multiple: true,
@@ -550,10 +546,10 @@ const Admin = {
 
     subject.select2('container').find('ul.select2-choices').sortable({
       containment: 'parent',
-      start() {
+      start: () => {
         subject.select2('onSortStart');
       },
-      update() {
+      update: () => {
         subject.select2('onSortEnd');
       },
     });
@@ -590,12 +586,12 @@ const Admin = {
         // eslint-disable-next-line no-new
         new window.Waypoint.Sticky({
           element: navbar[0],
-          offset() {
+          offset: () => {
             Admin.refreshNavbarStuckClass(topNavbar);
 
             return jQuery(topNavbar).outerHeight();
           },
-          handler(direction) {
+          handler: (direction) => {
             if (direction === 'up') {
               jQuery(navbar).width('auto');
             } else {
@@ -612,7 +608,7 @@ const Admin = {
         new window.Waypoint({
           element: wrapper[0],
           offset: 'bottom-in-view',
-          handler(direction) {
+          handler: (direction) => {
             const position = jQuery('.sonata-ba-form form > .row').outerHeight() + jQuery(footer).outerHeight() - 2;
 
             if (position < jQuery(footer).offset().top) {
