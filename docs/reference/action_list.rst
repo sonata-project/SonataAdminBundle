@@ -761,5 +761,20 @@ query and displayed::
         $listMapper->addIdentifier('numberofcomments');
     }
 
+
+Lastly, you can also define your list fields as ``virtual``.
+This way, Sonata's FieldDescription will always return a value of null, as documented here:
+https://symfony.com/doc/current/bundles/SonataAdminBundle/cookbook/recipe_virtual_field.html ::
+
+    // src/Admin/PostAdmin.php
+
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper->addIdentifier('thisPropertyDoesNotExist', null, [
+            'virtual_field' => true
+        ]);
+    }
+    
 .. _`SonataDoctrineORMAdminBundle Documentation`: https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/list_field_definition.html
 .. _`here`: https://github.com/sonata-project/form-extensions/tree/1.x/src/Type
+    
