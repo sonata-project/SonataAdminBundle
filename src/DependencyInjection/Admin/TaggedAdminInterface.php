@@ -127,8 +127,6 @@ interface TaggedAdminInterface
      * NEXT_MAJOR: Uncomment this method.
      *
      * Set the roles and permissions per role.
-     *
-     * @param array<string, string[]> $information
      */
 //    public function setSecurityInformation(array $information): void;
 

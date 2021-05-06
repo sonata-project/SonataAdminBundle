@@ -176,8 +176,6 @@ interface AdminExtensionInterface
     /**
      * Get a chance to add persistent parameters.
      *
-     * @param array<string, mixed> $parameters
-     *
      * @return array<string, mixed>
      *
      * @phpstan-param AdminInterface<T> $admin
