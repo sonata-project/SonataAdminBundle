@@ -764,14 +764,17 @@ query and displayed::
 
 Lastly, you can also define your list fields as ``virtual``.
 This way, Sonata's FieldDescription will always return a value of null, as documented here:
-https://symfony.com/doc/current/bundles/SonataAdminBundle/cookbook/recipe_virtual_field.html ::
+https://symfony.com/doc/current/bundles/SonataAdminBundle/cookbook/recipe_virtual_field.html
+
+Combine this with configuring a custom template and you'll have a list column fully customizable in what it eventually renders. ::
 
     // src/Admin/PostAdmin.php
 
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper->addIdentifier('thisPropertyDoesNotExist', null, [
-            'virtual_field' => true
+        $listMapper->add('thisPropertyDoesNotExist', null, [
+            'virtual_field' => true,
+            'template' => 'path/to/your/template.html.twig'
         ]);
     }
     
