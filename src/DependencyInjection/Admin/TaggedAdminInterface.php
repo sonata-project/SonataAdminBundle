@@ -123,7 +123,7 @@ interface TaggedAdminInterface
      */
     public function getManagerType();
 
-    /**
+    /*
      * NEXT_MAJOR: Uncomment this method.
      *
      * Set the roles and permissions per role.
