@@ -173,7 +173,7 @@ interface AdminExtensionInterface
      */
 //    public function configure(AdminInterface $admin): void;
 
-    /**
+    /*
      * Get a chance to add persistent parameters.
      *
      * @param array<string, mixed> $parameters
