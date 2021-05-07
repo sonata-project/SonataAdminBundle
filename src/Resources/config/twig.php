@@ -15,6 +15,7 @@ use Sonata\AdminBundle\DependencyInjection\Compiler\AliasDeprecatedPublicService
 use Sonata\AdminBundle\Twig\Extension\BreadcrumbsExtension;
 use Sonata\AdminBundle\Twig\Extension\CanonicalizeExtension;
 use Sonata\AdminBundle\Twig\Extension\GroupExtension;
+use Sonata\AdminBundle\Twig\Extension\IconExtension;
 use Sonata\AdminBundle\Twig\Extension\PaginationExtension;
 use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
 use Sonata\AdminBundle\Twig\Extension\SecurityExtension;
@@ -65,10 +66,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         ->set('sonata.admin.group.extension', GroupExtension::class)
-        ->tag('twig.extension')
-        ->args([
-            new ReferenceConfigurator('sonata.admin.pool'),
-        ])
+            ->tag('twig.extension')
+            ->args([
+                new ReferenceConfigurator('sonata.admin.pool'),
+            ])
+
+        ->set('sonata.icon.twig.extension', IconExtension::class)
+            ->tag('twig.extension')
 
         // NEXT_MAJOR: Remove this service.
         ->set('sonata.pagination.twig.extension', PaginationExtension::class)

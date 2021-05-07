@@ -80,7 +80,7 @@ file that was distributed with this source code.
                                                 <th class="sonata-ba-list-field-header-{{ field_description.type }}{% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}{% if field_description.option('header_class') %} {{ field_description.option('header_class') }}{% endif %}"{% if field_description.option('header_style') %} style="{{ field_description.option('header_style') }}"{% endif %}>
                                                     {% if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters|merge({_list_mode: admin.getListMode()})) }}">{% endif %}
                                                     {% if field_description.getOption('label_icon') %}
-                                                        <i class="sonata-ba-list-field-header-label-icon {{ field_description.getOption('label_icon') }}" aria-hidden="true"></i>
+                                                        <i class="sonata-ba-list-field-header-label-icon {{ field_description.getOption('label_icon')|parse_icon(true)|raw }}" aria-hidden="true"></i>
                                                     {% endif %}
                                                     {% if field_description.label is not same as(false) %}
                                                         {{ field_description.label|trans({}, field_description.translationDomain) }}

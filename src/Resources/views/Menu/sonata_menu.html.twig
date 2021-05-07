@@ -38,7 +38,7 @@
         <a href="#">
             {%- set translation_domain = item.extra('label_catalogue', 'messages') -%}
             {%- set icon = item.extra('icon')|default('') -%}
-            {{ icon|raw }}
+            {{ icon|parse_icon|raw }}
             {{ parent() }}
             {%- if item.extra('keep_open') is not defined or not item.extra('keep_open') -%}
                 <span class="pull-right-container"><i class="fa pull-right fa-angle-left"></i></span>
