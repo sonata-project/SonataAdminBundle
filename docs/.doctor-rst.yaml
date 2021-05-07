@@ -9,6 +9,7 @@ rules:
     blank_line_after_filepath_in_code_block: ~
     composer_dev_option_at_the_end: ~
     ensure_exactly_one_space_between_link_definition_and_link: ~
+    ensure_link_definition_contains_valid_url: 
     ensure_order_of_code_blocks_in_configuration_block: ~
     extend_abstract_admin: ~
     final_admin_class: ~
