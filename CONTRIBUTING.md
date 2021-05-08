@@ -22,6 +22,7 @@ interpreted as described in [RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
         * [Coding style](#coding-style)
         * [Documentation](#documentation)
         * [Tests](#tests)
+        * [Frontend](#frontend)
     * [Writing a pull request](#writing-a-pull-request)
         * [Subject](#subject)
         * [Changelog](#changelog)
@@ -161,6 +162,60 @@ Some rules have to be respected about the test:
 * All test method names MUST be in camel case format.
 * Most of the time, the test class SHOULD have the same name as the targeted class, suffixed by `Test`.
 * The `@expectedException*` annotations are prohibited. Use `PHPUnit_Framework_TestCase::setExpectedException()`.
+
+#### Frontend
+
+Frontend assets are all located under `assets` directory, with the following structure:
+
+* `assets/js` for the JavaScript files
+* `assets/scss` for the [SCSS](https://sass-lang.com/) files
+* `assets/images` for the images
+* `assets/vendor` for the third party assets that can't be loaded via [NPM](https://www.npmjs.com/)
+
+This `assets` directory contains only the source code, and it is not directly accesible for the
+website, because is not placed under the `src/Resources/public`.
+
+If you take a look at the `src/Resources/public` you will see a lot of minified assets, this is done with
+[Webpack](https://webpack.js.org/), we are using [Webpack Encore](https://github.com/symfony/webpack-encore) to configure and run it.
+
+Similar to what Composer is for PHP there is a package manager for the frontend stack, called NPM and we declare our
+dependencies on `package.json` and the lockfile is `yarn.lock`, because we are using [Yarn](https://yarnpkg.com/).
+It is common to commit the lockfile in the case of frontend, because dependencies tend to upgrade really often and it
+affects directly the compiled files.
+
+If you PR is focused on fixing or improving the frontend you might need to modify
+JavaScript or CSS code. To do so, you will first need to install the dependencies:
+
+```bash
+yarn install --frozen-lockfile
+
+# if you want to upgrade some package you SHOULD omit the --frozen-lockfile
+yarn install
+# if you want to force the install of package you SHOULD add --force
+yarn install --force
+```
+
+To compile assets before the pull request you should run:
+
+```bash
+yarn encore production
+```
+
+This command will make the lint checks and compile for production usage the assets. You can also run
+lint checks ([ESLint](https://eslint.org/) and [Stylelint](https://stylelint.io/)) with:
+
+```bash
+yarn run eslint assets/js
+yarn run stylelint assets/scss
+```
+
+We have some strict rules following the most popular coding standards for JavaScript and SCSS.
+
+* [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
+* [Stylelint Recommended Configuration](https://github.com/stylelint/stylelint-config-recommended)
+
+In case you need more documentation before making your Pull Request, please consider reading
+the documentation of all mentioned tools.
 
 ### Writing a Pull Request
 
