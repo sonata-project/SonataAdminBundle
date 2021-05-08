@@ -36,7 +36,7 @@ class SimplePager extends Pager
     /**
      * NEXT_MAJOR: Remove this property.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.99
      *
      * @var bool
      */

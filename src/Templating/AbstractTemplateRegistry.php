@@ -29,7 +29,7 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getTemplates(): array
     {
@@ -37,7 +37,7 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function hasTemplate(string $name): bool
     {
@@ -45,7 +45,7 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      *
      * NEXT_MAJOR: add type hint.
      *

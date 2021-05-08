@@ -2,6 +2,25 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.99.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.98.2...3.99.0) - 2021-05-09
+### Added
+- [[#7077](https://github.com/sonata-project/SonataAdminBundle/pull/7077)] Added `default_admin_services` config key to overwrite the default services provided to all the admin. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7144](https://github.com/sonata-project/SonataAdminBundle/pull/7144)] Added `AdminExtensionInterface::configure` method ([@yann-eugone](https://github.com/yann-eugone))
+- [[#7144](https://github.com/sonata-project/SonataAdminBundle/pull/7144)] Added `AbstractAdminExtension::configure` method with no content ([@yann-eugone](https://github.com/yann-eugone))
+- [[#6950](https://github.com/sonata-project/SonataAdminBundle/pull/6950)] Added `AdminFetcher` to fetch the `Admin` service associated to a request ([@franmomu](https://github.com/franmomu))
+- [[#6950](https://github.com/sonata-project/SonataAdminBundle/pull/6950)] Added `AdminParamConverter` to be able to inject an Admin service in a controller ([@franmomu](https://github.com/franmomu))
+- [[#7108](https://github.com/sonata-project/SonataAdminBundle/pull/7108)] `final` for method of every abstract classes. ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Changed
+- [[#7144](https://github.com/sonata-project/SonataAdminBundle/pull/7144)] Changed `AbstractAdmin::initialize` and call `AdminExtensionInterface::configure` on each extension ([@yann-eugone](https://github.com/yann-eugone))
+
+### Deprecated
+- [[#7077](https://github.com/sonata-project/SonataAdminBundle/pull/7077)] Deprecated `admin_services` config key. ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#7162](https://github.com/sonata-project/SonataAdminBundle/pull/7162)] Fix font route to be relative and not absolute. ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7149](https://github.com/sonata-project/SonataAdminBundle/pull/7149)] `ProxyQuery::execute()` return type ; it doesn't require to be a Countable. ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [3.98.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.98.1...3.98.2) - 2021-05-01
 ### Fixed
 - [[#7132](https://github.com/sonata-project/SonataAdminBundle/pull/7132)] Fixed inclusion of Source Sans Pro as main font ([@jordisala1991](https://github.com/jordisala1991))
