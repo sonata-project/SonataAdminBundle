@@ -80,7 +80,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param mixed $value
+     * @param int|string|array<int|string>|null $value
      *
      * @throws \UnexpectedValueException
      *
@@ -90,7 +90,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        if (empty($value)) {
+        if (null === $value || [] === $value || '' === $value) {
             if ($this->multiple) {
                 return new ArrayCollection();
             }
@@ -99,6 +99,10 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
         }
 
         if (!$this->multiple) {
+            if (\is_array($value)) {
+                throw new \UnexpectedValueException('Value should not be an array.');
+            }
+
             return $this->modelManager->find($this->className, $value);
         }
 

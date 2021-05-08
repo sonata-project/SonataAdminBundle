@@ -22,6 +22,9 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class ModelTypeTest extends TypeTestCase
 {
+    /**
+     * @var ModelType
+     */
     protected $type;
 
     protected function setUp(): void
@@ -32,6 +35,8 @@ class ModelTypeTest extends TypeTestCase
     }
 
     /**
+     * @param array<string, mixed> $options
+     *
      * @dataProvider getGetOptionsTests
      */
     public function testGetOptions(array $options, int $expectedModelManagerFindCalls): void
@@ -66,6 +71,9 @@ class ModelTypeTest extends TypeTestCase
         $resolvedOptions['choice_loader']->loadChoiceList();
     }
 
+    /**
+     * @phpstan-return iterable<array{array<string, mixed>, int}>
+     */
     public function getGetOptionsTests(): iterable
     {
         return [
@@ -104,7 +112,10 @@ class ModelTypeTest extends TypeTestCase
         $this->assertInstanceOf(ModelChoiceLoader::class, $options['choice_loader']);
     }
 
-    public function getCompoundOptionTests()
+    /**
+     * @phpstan-return array<array{bool, bool, bool}>
+     */
+    public function getCompoundOptionTests(): array
     {
         return [
             [true, true, true], //checkboxes

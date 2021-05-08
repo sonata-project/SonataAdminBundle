@@ -150,7 +150,7 @@ interface ModelManagerInterface
     public function getExportFields(string $class): array;
 
     /**
-     * @param array<int, int|string> $idx
+     * @param array<int|string> $idx
      *
      * @phpstan-param class-string<T>             $class
      * @phpstan-param non-empty-array<string|int> $idx

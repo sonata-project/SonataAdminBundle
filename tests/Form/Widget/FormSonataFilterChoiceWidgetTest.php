@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 use Sonata\AdminBundle\Form\Type\Operator\ContainsOperatorType;
 use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as SymfonyChoiceType;
+use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 
 class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
@@ -50,12 +51,15 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
         );
     }
 
-    protected function getChoiceClass()
+    protected function getChoiceClass(): string
     {
         return ChoiceType::class;
     }
 
-    protected function getExtensions()
+    /**
+     * @return array<FormExtensionInterface>
+     */
+    protected function getExtensions(): array
     {
         $extensions = parent::getExtensions();
         $guesser = $this->getMockForAbstractClass(FormTypeGuesserInterface::class);
@@ -75,7 +79,10 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
         return $extensions;
     }
 
-    protected function getDefaultOption()
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getDefaultOption(): array
     {
         return ['field_type' => SymfonyChoiceType::class,
              'field_options' => [],

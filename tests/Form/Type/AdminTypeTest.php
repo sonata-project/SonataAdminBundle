@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
+use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -190,6 +191,7 @@ class AdminTypeTest extends TypeTestCase
     public function testArrayCollectionNotFound(): void
     {
         $parentSubject = new class() {
+            /** @var mixed[] */
             public $foo = [];
         };
 
@@ -205,7 +207,7 @@ class AdminTypeTest extends TypeTestCase
         $modelManager = $this->createStub(ModelManagerInterface::class);
 
         $newInstance = new class() {
-            public function setBar()
+            public function setBar(): void
             {
             }
         };
@@ -241,9 +243,10 @@ class AdminTypeTest extends TypeTestCase
     public function testArrayCollectionByReferenceNotFound(): void
     {
         $parentSubject = new class() {
+            /** @var mixed[] */
             public $foo = [];
 
-            public function addFoo()
+            public function addFoo(): void
             {
             }
         };
@@ -289,7 +292,10 @@ class AdminTypeTest extends TypeTestCase
         }
     }
 
-    protected function getExtensions()
+    /**
+     * @return array<FormExtensionInterface>
+     */
+    protected function getExtensions(): array
     {
         $extensions = parent::getExtensions();
 

@@ -13,13 +13,18 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Sonata\AdminBundle\Form\Type\ModelReferenceType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class ModelReferenceTypeTest extends TypeTestCase
 {
+    /**
+     * @var MockObject&ModelManagerInterface<object>
+     */
     private $modelManager;
 
     protected function setUp(): void
@@ -46,7 +51,10 @@ class ModelReferenceTypeTest extends TypeTestCase
         $this->assertTrue($form->isSynchronized());
     }
 
-    protected function getExtensions()
+    /**
+     * @phpstan-return array<FormExtensionInterface>
+     */
+    protected function getExtensions(): array
     {
         return [
             new PreloadedExtension([

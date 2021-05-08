@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\Form\Widget;
 use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
+use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 
 class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
@@ -27,7 +28,10 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
         parent::setUp();
     }
 
-    public function prototypeRenderingProvider()
+    /**
+     * @phpstan-return array<array{array<string, mixed>}>
+     */
+    public function prototypeRenderingProvider(): array
     {
         return [
             'shrinkable collection' => [['allow_delete' => true]],
@@ -36,6 +40,8 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
     }
 
     /**
+     * @param array<string, mixed> $options
+     *
      * @dataProvider prototypeRenderingProvider
      */
     public function testPrototypeIsDeletableNoMatterTheShrinkability(array $options): void
@@ -54,7 +60,10 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
         );
     }
 
-    protected function getExtensions()
+    /**
+     * @phpstan-return array<FormExtensionInterface>
+     */
+    protected function getExtensions(): array
     {
         $extensions = parent::getExtensions();
         $guesser = $this->getMockForAbstractClass(FormTypeGuesserInterface::class);
@@ -68,7 +77,7 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
         return $extensions;
     }
 
-    protected function getChoiceClass()
+    protected function getChoiceClass(): string
     {
         return CollectionType::class;
     }

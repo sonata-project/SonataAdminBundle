@@ -44,12 +44,12 @@ class LockExtensionTest extends TestCase
     private $eventDispatcher;
 
     /**
-     * @var AdminInterface&Stub
+     * @var AdminInterface<object>&Stub
      */
     private $admin;
 
     /**
-     * @var LockInterface&MockObject
+     * @var LockInterface<object>&MockObject
      */
     private $modelManager;
 

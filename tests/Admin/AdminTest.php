@@ -1864,6 +1864,9 @@ class AdminTest extends TestCase
         $this->assertSame($expected, $admin->getListMode());
     }
 
+    /**
+     * @phpstan-return iterable<array{string, Request|null}>
+     */
     public function getListModeProvider(): iterable
     {
         yield ['list', null];

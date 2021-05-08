@@ -41,12 +41,12 @@ class FormMapperTest extends TestCase
     protected $contractor;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface<object>
      */
     protected $admin;
 
     /**
-     * @var ModelManagerInterface
+     * @var ModelManagerInterface<object>
      */
     protected $modelManager;
 

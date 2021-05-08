@@ -33,11 +33,17 @@ final class BooleanToStringTransformer implements DataTransformerInterface
         $this->trueValue = $trueValue;
     }
 
+    /**
+     * @param bool $value
+     */
     public function transform($value): ?string
     {
         return $value ? $this->trueValue : null;
     }
 
+    /**
+     * @param mixed $value
+     */
     public function reverseTransform($value): bool
     {
         return filter_var($value, \FILTER_VALIDATE_BOOLEAN);

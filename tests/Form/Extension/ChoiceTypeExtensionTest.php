@@ -16,10 +16,14 @@ namespace Sonata\AdminBundle\Tests\Form\Extension;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\Extension\ChoiceTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;
 
 class ChoiceTypeExtensionTest extends TestCase
 {
+    /**
+     * @var FormFactoryInterface
+     */
     private $factory;
 
     protected function setup(): void

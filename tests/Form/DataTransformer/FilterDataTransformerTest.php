@@ -20,12 +20,16 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 final class FilterDataTransformerTest extends TestCase
 {
+    /**
+     * @psalm-suppress InvalidArgument
+     */
     public function testReverseTransformThrowsExceptionIfValueIsNotArray(): void
     {
         $transformer = new FilterDataTransformer();
 
         $this->expectException(UnexpectedTypeException::class);
 
+        // @phpstan-ignore-next-line
         $transformer->reverseTransform(1);
     }
 

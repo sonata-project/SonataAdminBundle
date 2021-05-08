@@ -35,6 +35,8 @@ class ModelsToArrayTransformerTest extends TestCase
     }
 
     /**
+     * @param array<int|string>|null $value
+     *
      * @dataProvider reverseTransformProvider
      */
     public function testReverseTransform(?array $value): void
@@ -68,6 +70,9 @@ class ModelsToArrayTransformerTest extends TestCase
         }
     }
 
+    /**
+     * @return iterable<array{array<int|string>|null}>
+     */
     public function reverseTransformProvider(): iterable
     {
         yield [['a']];
@@ -99,6 +104,9 @@ class ModelsToArrayTransformerTest extends TestCase
         $this->assertCount(0, $result);
     }
 
+    /**
+     * @psalm-suppress InvalidArgument
+     */
     public function testReverseTransformUnexpectedType(): void
     {
         $value = 'unexpected';
@@ -112,6 +120,7 @@ class ModelsToArrayTransformerTest extends TestCase
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Expected argument of type "array", "string" given');
 
+        // @phpstan-ignore-next-line
         $transformer->reverseTransform($value);
     }
 

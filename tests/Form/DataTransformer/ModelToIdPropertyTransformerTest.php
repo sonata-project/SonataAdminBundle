@@ -26,7 +26,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess;
 class ModelToIdPropertyTransformerTest extends TestCase
 {
     /**
-     * @var ModelManagerInterface&MockObject
+     * @var ModelManagerInterface<object>&MockObject
      */
     private $modelManager;
 
@@ -44,18 +44,17 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $this->modelManager
             ->method('find')
-            ->willReturnCallback(static function (string $class, $id) use ($model) {
+            ->willReturnCallback(static function (string $class, $id) use ($model): ?Foo {
                 if (Foo::class === $class && 123 === $id) {
                     return $model;
                 }
+
+                return null;
             });
 
         $this->assertNull($transformer->reverseTransform(null));
-        $this->assertNull($transformer->reverseTransform(false));
         $this->assertNull($transformer->reverseTransform(''));
         $this->assertNull($transformer->reverseTransform(12));
-        $this->assertNull($transformer->reverseTransform([123]));
-        $this->assertNull($transformer->reverseTransform([123, 456, 789]));
         $this->assertSame($model, $transformer->reverseTransform(123));
     }
 
@@ -76,7 +75,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
             ->expects($this->exactly($params ? 1 : 0))
             ->method('executeQuery')
             ->with($this->equalTo($proxyQuery))
-            ->willReturnCallback(static function (ProxyQueryInterface $query) use ($params, $entity1, $entity2, $entity3): array {
+            ->willReturnCallback(static function () use ($params, $entity1, $entity2, $entity3): array {
                 $collection = [];
 
                 if (\in_array(123, $params, true)) {
@@ -115,7 +114,6 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $entity3->setBar('example3');
 
         yield [[], null, $entity1, $entity2, $entity3];
-        yield [[], false, $entity1, $entity2, $entity3];
         yield [[$entity1], [123, '_labels' => ['example']], $entity1, $entity2, $entity3];
         yield [[$entity1, $entity2, $entity3], [123, 456, 789, '_labels' => ['example', 'example2', 'example3']], $entity1, $entity2, $entity3];
     }

@@ -30,7 +30,7 @@ final class AdminFetcherTest extends TestCase
     private $adminFetcher;
 
     /**
-     * @var MockObject&AdminInterface
+     * @var MockObject&AdminInterface<object>
      */
     private $admin;
 

@@ -39,7 +39,7 @@ final class DataTransformerResolverTest extends TestCase
     private $fieldDescription;
 
     /**
-     * @var ModelManagerInterface&MockObject
+     * @var ModelManagerInterface<object>&MockObject
      */
     private $modelManager;
 
@@ -55,6 +55,9 @@ final class DataTransformerResolverTest extends TestCase
         $this->assertNull($this->resolve());
     }
 
+    /**
+     * @phpstan-return array<array{string}>
+     */
     public function provideFieldTypes(): array
     {
         return [
@@ -85,6 +88,9 @@ final class DataTransformerResolverTest extends TestCase
         $this->assertSame($customDataTransformer, $dataTransformer);
     }
 
+    /**
+     * @phpstan-return iterable<array{mixed, \DateTimeZone}>
+     */
     public function getTimeZones(): iterable
     {
         $default = new \DateTimeZone(date_default_timezone_get());
@@ -101,6 +107,8 @@ final class DataTransformerResolverTest extends TestCase
     }
 
     /**
+     * @param mixed $timezone
+     *
      * @dataProvider getTimeZones
      */
     public function testResolveDateDataTransformer($timezone, \DateTimeZone $expectedTimezone): void
