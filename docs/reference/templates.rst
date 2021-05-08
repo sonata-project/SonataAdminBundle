@@ -147,6 +147,8 @@ You can specify your templates in the config file:
                 button_history:             '@SonataAdmin/Button/history_button.html.twig'
                 button_list:                '@SonataAdmin/Button/list_button.html.twig'
                 button_show:                '@SonataAdmin/Button/show_button.html.twig'
+                form_theme:                 []
+                filter_theme:               []
 
 .. warning::
 
