@@ -265,7 +265,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'datagrid_builder',
             'translator',
             'configuration_pool',
-            'router',
+            'route_generator',
             'validator', // NEXT_MAJOR: Remove this line
             'security_handler',
             'menu_factory',
@@ -296,13 +296,16 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     public function applyDefaults(ContainerBuilder $container, $serviceId, array $attributes = [])
     {
         $definition = $container->getDefinition($serviceId);
+        // NEXT_MAJOR: Remove this line.
         $settings = $container->getParameter('sonata.admin.configuration.admin_services');
 
         $definition->setShared(false);
 
         $managerType = $attributes['manager_type'];
 
-        $overwriteAdminConfiguration = $settings[$serviceId] ?? [];
+        // NEXT_MAJOR: Remove this line and uncomment the following
+        $overwriteAdminConfiguration = $settings[$serviceId] ?? $container->getParameter('sonata.admin.configuration.default_admin_services');
+//        $overwriteAdminConfiguration = $container->getParameter('sonata.admin.configuration.default_admin_services');
 
         $defaultAddServices = [
             'model_manager' => sprintf('sonata.admin.manager.%s', $managerType),
@@ -386,11 +389,20 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $definition->addMethodCall('setSecurityInformation', ['%sonata.admin.configuration.security.information%']);
         }
 
+        $defaultTemplates = $container->getParameter('sonata.admin.configuration.templates');
+        \assert(\is_array($defaultTemplates));
+
         if (!$definition->hasMethodCall('setFormTheme')) {
-            $definition->addMethodCall('setFormTheme', [$overwriteAdminConfiguration['templates']['form'] ?? []]);
+            // NEXT_MAJOR: Remove this line and uncomment the following one.
+            $formTheme = $overwriteAdminConfiguration['templates']['form'] ?? $defaultTemplates['form_theme'] ?? [];
+//            $formTheme = $defaultTemplates['form_theme'] ?? [];
+            $definition->addMethodCall('setFormTheme', [$formTheme]);
         }
         if (!$definition->hasMethodCall('setFilterTheme')) {
-            $definition->addMethodCall('setFilterTheme', [$overwriteAdminConfiguration['templates']['filter'] ?? []]);
+            // NEXT_MAJOR: Remove this line and uncomment the following one.
+            $filterTheme = $overwriteAdminConfiguration['templates']['filter'] ?? $defaultTemplates['filter_theme'] ?? [];
+//            $filterTheme = $defaultTemplates['filter_theme'] ?? [];
+            $definition->addMethodCall('setFilterTheme', [$filterTheme]);
         }
 
         return $definition;

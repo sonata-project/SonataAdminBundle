@@ -58,6 +58,11 @@ class ConfigurationTest extends TestCase
         ]]);
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testCustomTemplatesPerAdmin(): void
     {
         $config = $this->process([[
@@ -75,6 +80,11 @@ class ConfigurationTest extends TestCase
         $this->assertSame('@SonataAdmin/mycustomtemplate.html.twig', $config['admin_services']['my_admin_id']['templates']['view']['user_block']);
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testAdminServicesDefault(): void
     {
         $config = $this->process([[
@@ -84,6 +94,7 @@ class ConfigurationTest extends TestCase
         $this->assertSame([
             'model_manager' => null,
             'data_source' => null,
+            'field_description_factory' => null,
             'form_contractor' => null,
             'show_builder' => null,
             'list_builder' => null,
@@ -104,6 +115,31 @@ class ConfigurationTest extends TestCase
                 'view' => [],
             ],
         ], $config['admin_services']['my_admin_id']);
+    }
+
+    public function testDefaultAdminServicesDefault(): void
+    {
+        $config = $this->process([[
+            'default_admin_services' => [],
+        ]]);
+
+        $this->assertSame([
+            'model_manager' => null,
+            'data_source' => null,
+            'field_description_factory' => null,
+            'form_contractor' => null,
+            'show_builder' => null,
+            'list_builder' => null,
+            'datagrid_builder' => null,
+            'translator' => null,
+            'configuration_pool' => null,
+            'route_generator' => null,
+            'security_handler' => null,
+            'menu_factory' => null,
+            'route_builder' => null,
+            'label_translator_strategy' => null,
+            'pager_type' => null,
+        ], $config['default_admin_services']);
     }
 
     public function testDashboardWithoutRoles(): void

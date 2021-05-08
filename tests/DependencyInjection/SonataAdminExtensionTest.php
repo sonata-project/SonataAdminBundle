@@ -368,6 +368,8 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             'button_history' => '@SonataAdmin/Button/history_button.html.twig',
             'button_list' => '@SonataAdmin/Button/list_button.html.twig',
             'button_show' => '@SonataAdmin/Button/show_button.html.twig',
+            'form_theme' => [],
+            'filter_theme' => [],
         ], $this->container->getParameter('sonata.admin.configuration.templates'));
     }
 
