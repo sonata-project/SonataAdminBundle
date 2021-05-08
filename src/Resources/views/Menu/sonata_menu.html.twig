@@ -50,7 +50,7 @@
 {% block label %}
     {% apply spaceless %}
         {%- if is_link|default(false) -%}
-            {{ icon|default|raw }}
+            {{ icon|default|parse_icon|raw }}
         {%- endif -%}
         {# We use method accessor instead of ".label" since `item` implements `ArrayAccess` and could have a property called "label". #}
         {%- set item_label = item.getLabel() -%}

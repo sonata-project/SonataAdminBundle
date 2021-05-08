@@ -21,7 +21,7 @@ file that was distributed with this source code.
         <div class="box-header with-border">
             {% set icon = settings.icon|default('') %}
             {% if icon %}
-                <i class="fa {{ icon|raw }}"></i>
+                {{ icon|parse_icon|raw }}">
             {% endif %}
             <h3 class="box-title">
                 <a href="#{{ inlineAnchor }}">{{ settings.text|trans({}, translation_domain) }}</a>
@@ -41,14 +41,14 @@ file that was distributed with this source code.
                                     {% if field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_SELECT') %}
                                         <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
                                     {% else %}
-                                        {% filter spaceless %}
+                                        {% apply spaceless %}
                                             <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if field_description.option('header_class') is not null %} {{ field_description.option('header_class') }}{% endif %}"{% if field_description.option('header_style') is not null %} style="{{ field_description.option('header_style') }}"{% endif %}>
                                                 {% if field_description.option('label_icon') %}
-                                                    <i class="sonata-ba-list-field-header-label-icon {{ field_description.option('label_icon') }}" aria-hidden="true"></i>
+                                                    <i class="sonata-ba-list-field-header-label-icon {{ field_description.option('label_icon')|parse_icon(true)|raw }}" aria-hidden="true"></i>
                                                 {% endif %}
                                                 {{ field_description.label|trans({}, field_description.translationDomain) }}
                                             </th>
-                                        {% endfilter %}
+                                        {% endapply %}
                                     {% endif %}
                                 {% endfor %}
                             </tr>

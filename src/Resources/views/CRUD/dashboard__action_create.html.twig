@@ -1,11 +1,11 @@
 {% if admin.subClasses is empty %}
     <a class="btn btn-link btn-flat" href="{{ action.url }}">
-        <i class="fa fa-{{ action.icon }}" aria-hidden="true"></i>
+        <i class="{{ action.icon|parse_icon(true)|raw }}" aria-hidden="true"></i>
         {{ action.label|trans({}, action.translation_domain|default('SonataAdminBundle')) }}
     </a>
 {% else %}
     <a class="btn btn-link btn-flat dropdown-toggle" data-toggle="dropdown" href="#">
-        <i class="fa fa-{{ action.icon }}" aria-hidden="true"></i>
+        <i class="{{ action.icon|parse_icon(true)|raw }}" aria-hidden="true"></i>
         {{ action.label|trans({}, action.translation_domain|default('SonataAdminBundle')) }}
         <span class="caret"></span>
     </a>
