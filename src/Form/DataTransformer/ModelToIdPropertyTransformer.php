@@ -80,12 +80,14 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param int|string|array<int|string>|null $value
+     * @param int|string|array<int|string|array<string>>|null $value
      *
      * @throws \UnexpectedValueException
      *
      * @return Collection<int|string, object>|object|null
      *
+     * @psalm-param int|string|(array{_labels?: array<string>}&array<int|string>)|null $value
+     * @phpstan-param int|string|array<int|string|array<string>>|null $value
      * @phpstan-return Collection<array-key, T>|T|null
      */
     public function reverseTransform($value)
@@ -110,15 +112,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
             throw new \UnexpectedValueException(sprintf('Value should be array, %s given.', \gettype($value)));
         }
 
-        foreach ($value as $key => $id) {
-            if ('_labels' === $key) {
-                unset($value[$key]);
-
-                continue;
-            }
-
-            $value[$key] = (string) $id;
-        }
+        unset($value['_labels']);
 
         if ([] === $value) {
             $result = $value;
@@ -139,6 +133,8 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
      * @return array<string|int, int|string|array<string>>
      *
      * @phpstan-param T|array<T>|\Traversable<T>|null $value
+     * @psalm-return array{_labels?: array<string>}&array<int|string>
+     * @phpstan-return array<int|string|array<string>>
      */
     public function transform($value)
     {

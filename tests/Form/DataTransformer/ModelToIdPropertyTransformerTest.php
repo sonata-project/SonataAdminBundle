@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -59,6 +58,9 @@ class ModelToIdPropertyTransformerTest extends TestCase
     }
 
     /**
+     * @param Foo[]                                $expected
+     * @param array<int|string|array<string>>|null $params
+     *
      * @dataProvider getReverseTransformMultipleTests
      */
     public function testReverseTransformMultiple(array $expected, $params, Foo $entity1, Foo $entity2, Foo $entity3): void
@@ -99,6 +101,9 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->assertSame($expected, $result->getValues());
     }
 
+    /**
+     * @phpstan-return iterable<array{array<Foo>, array<int|string|array<string>>|null, Foo, Foo, Foo}>
+     */
     public function getReverseTransformMultipleTests(): iterable
     {
         $entity1 = new Foo();
@@ -119,28 +124,31 @@ class ModelToIdPropertyTransformerTest extends TestCase
     }
 
     /**
+     * @param mixed $params
+     *
      * @dataProvider getReverseTransformMultipleInvalidTypeTests
      */
-    public function testReverseTransformMultipleInvalidTypeTests(array $expected, $params, string $type): void
+    public function testReverseTransformMultipleInvalidTypeTests($params, string $type): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage(sprintf('Value should be array, %s given.', $type));
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 
-        $result = $transformer->reverseTransform($params);
-        $this->assertInstanceOf(ArrayCollection::class, $result);
-        $this->assertSame($expected, $result->getValues());
+        $transformer->reverseTransform($params);
     }
 
+    /**
+     * @phpstan-return array<array{mixed, string}>
+     */
     public function getReverseTransformMultipleInvalidTypeTests(): array
     {
         return [
-            [[], true, 'boolean'],
-            [[], 12, 'integer'],
-            [[], 12.9, 'double'],
-            [[], '_labels', 'string'],
-            [[], new \stdClass(), 'object'],
+            [true, 'boolean'],
+            [12, 'integer'],
+            [12.9, 'double'],
+            ['_labels', 'string'],
+            [new \stdClass(), 'object'],
         ];
     }
 
