@@ -118,7 +118,7 @@ Full Configuration Options
                         id: ~
                     position: right
                     class: col-md-4
-            admin_services:
+            default_admin_services:
                 model_manager: null
                 data_source: null
                 form_contractor: null
@@ -135,13 +135,7 @@ Full Configuration Options
                 route_builder: null
                 label_translator_strategy: null
                 pager_type: null
-                templates:
-                    form: []
-                    filter: []
-                    view:
 
-                        # Prototype
-                        id: ~
             templates:
                 user_block: '@SonataAdmin/Core/user_block.html.twig'
                 add_block: '@SonataAdmin/Core/add_block.html.twig'
@@ -175,6 +169,9 @@ Full Configuration Options
                 pager_results: '@SonataAdmin/Pager/results.html.twig'
                 tab_menu_template: '@SonataAdmin/Core/tab_menu_template.html.twig'
                 knp_menu_template: '@SonataAdmin/Menu/sonata_menu.html.twig'
+                form_theme: []
+                filter_theme: []
+
             assets:
                 stylesheets:
 

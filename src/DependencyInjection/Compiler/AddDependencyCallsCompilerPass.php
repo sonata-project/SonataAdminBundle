@@ -257,7 +257,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'datagrid_builder',
             'translator',
             'configuration_pool',
-            'router',
+            'route_generator',
             'security_handler',
             'menu_factory',
             'route_builder',
@@ -281,13 +281,12 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
     private function applyDefaults(ContainerBuilder $container, string $serviceId, array $attributes = []): Definition
     {
         $definition = $container->getDefinition($serviceId);
-        $settings = $container->getParameter('sonata.admin.configuration.admin_services');
 
         $definition->setShared(false);
 
         $managerType = $attributes['manager_type'];
 
-        $overwriteAdminConfiguration = $settings[$serviceId] ?? [];
+        $overwriteAdminConfiguration = $container->getParameter('sonata.admin.configuration.default_admin_services');
 
         $defaultAddServices = [
             'model_manager' => sprintf('sonata.admin.manager.%s', $managerType),
@@ -358,11 +357,16 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $definition->addMethodCall('setSecurityInformation', ['%sonata.admin.configuration.security.information%']);
         }
 
+        $defaultTemplates = $container->getParameter('sonata.admin.configuration.templates');
+        \assert(\is_array($defaultTemplates));
+
         if (!$definition->hasMethodCall('setFormTheme')) {
-            $definition->addMethodCall('setFormTheme', [$overwriteAdminConfiguration['templates']['form'] ?? []]);
+            $formTheme = $defaultTemplates['form_theme'] ?? [];
+            $definition->addMethodCall('setFormTheme', [$formTheme]);
         }
         if (!$definition->hasMethodCall('setFilterTheme')) {
-            $definition->addMethodCall('setFilterTheme', [$overwriteAdminConfiguration['templates']['filter'] ?? []]);
+            $filterTheme = $defaultTemplates['filter_theme'] ?? [];
+            $definition->addMethodCall('setFilterTheme', [$filterTheme]);
         }
 
         return $definition;

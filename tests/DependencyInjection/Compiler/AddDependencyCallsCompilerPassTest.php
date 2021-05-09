@@ -197,20 +197,32 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_news_admin',
+            'setPagerType',
+            ['simple']
+        );
+
+        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+            'sonata_news_admin',
             'setFormTheme',
-            [[]]
+            [['some_form_template.twig']]
         );
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_news_admin',
             'setFilterTheme',
-            [[]]
+            [['some_filter_template.twig']]
         );
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_news_admin',
             'setModelManager',
             [new Reference('my.model.manager')]
+        );
+
+        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+            'sonata_article_admin',
+            'setPagerType',
+            ['simple']
         );
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
@@ -223,6 +235,12 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             'sonata_article_admin',
             'setFilterTheme',
             [['custom_filter_theme.twig']]
+        );
+
+        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+            'sonata_post_admin',
+            'setPagerType',
+            ['simple']
         );
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
@@ -297,31 +315,13 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_post_admin',
             'setPagerType',
-            ['default']
+            ['simple']
         );
 
         $postAdminTemplates = $this->container->findDefinition('sonata_post_admin.template_registry')->getArgument(0);
 
-        $this->assertSame('foobar.twig.html', $postAdminTemplates['user_block']);
-        $this->assertSame('@SonataAdmin/Pager/results.html.twig', $postAdminTemplates['pager_results']);
-        $this->assertSame('@SonataAdmin/Button/create_button.html.twig', $postAdminTemplates['button_create']);
-
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
-            'sonata_news_admin',
-            'setLabel',
-            ['Foo']
-        );
-
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
-            'sonata_news_admin',
-            'setPagerType',
-            ['simple']
-        );
-
-        $postAdminTemplates = $this->container->findDefinition('sonata_news_admin.template_registry')->getArgument(0);
-
-        $this->assertSame('foo.twig.html', $postAdminTemplates['user_block']);
         $this->assertSame('@SonataAdmin/Pager/simple_pager_results.html.twig', $postAdminTemplates['pager_results']);
+        $this->assertSame('@SonataAdmin/Button/create_button.html.twig', $postAdminTemplates['button_create']);
     }
 
     public function testApplyShowMosaicButtonConfiguration(): void
@@ -623,27 +623,12 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
                     ],
                 ],
             ],
-            'admin_services' => [
-                'sonata_post_admin' => [
-                    'templates' => [
-                        'view' => ['user_block' => 'foobar.twig.html'],
-                        'form' => ['some_form_template.twig'],
-                        'filter' => ['some_filter_template.twig'],
-                    ],
-                ],
-                'sonata_news_admin' => [
-                    'label' => 'Foo',
-                    'pager_type' => 'simple',
-                    'templates' => [
-                        'view' => ['user_block' => 'foo.twig.html'],
-                    ],
-                ],
-                'sonata_article_admin' => [
-                    'templates' => [
-                        'form' => ['some_form_template.twig'],
-                        'filter' => ['some_filter_template.twig'],
-                    ],
-                ],
+            'templates' => [
+                'form_theme' => ['some_form_template.twig'],
+                'filter_theme' => ['some_filter_template.twig'],
+            ],
+            'default_admin_services' => [
+                'pager_type' => 'simple',
             ],
         ];
     }
