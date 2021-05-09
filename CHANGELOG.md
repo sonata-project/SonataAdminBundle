@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [3.99.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.98.2...3.99.0) - 2021-05-09
 ### Added
-- [[#7077](https://github.com/sonata-project/SonataAdminBundle/pull/7077)] Added `default_admin_services` config key to overwrite the default services provided to all the admin. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7077](https://github.com/sonata-project/SonataAdminBundle/pull/7077)] Added `default_admin_services` config key to overwrite the default services provided to all the admin ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7144](https://github.com/sonata-project/SonataAdminBundle/pull/7144)] Added `AdminExtensionInterface::configure` method ([@yann-eugone](https://github.com/yann-eugone))
 - [[#7144](https://github.com/sonata-project/SonataAdminBundle/pull/7144)] Added `AbstractAdminExtension::configure` method with no content ([@yann-eugone](https://github.com/yann-eugone))
 - [[#6950](https://github.com/sonata-project/SonataAdminBundle/pull/6950)] Added `AdminFetcher` to fetch the `Admin` service associated to a request ([@franmomu](https://github.com/franmomu))
