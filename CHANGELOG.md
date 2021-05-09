@@ -9,7 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - [[#7144](https://github.com/sonata-project/SonataAdminBundle/pull/7144)] Added `AbstractAdminExtension::configure()` method with no content ([@yann-eugone](https://github.com/yann-eugone))
 - [[#6950](https://github.com/sonata-project/SonataAdminBundle/pull/6950)] Added `AdminFetcher` to fetch the `Admin` service associated to a request ([@franmomu](https://github.com/franmomu))
 - [[#6950](https://github.com/sonata-project/SonataAdminBundle/pull/6950)] Added `AdminParamConverter` to be able to inject an Admin service in a controller ([@franmomu](https://github.com/franmomu))
-- [[#7108](https://github.com/sonata-project/SonataAdminBundle/pull/7108)] `final` for method of every abstract classes. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7108](https://github.com/sonata-project/SonataAdminBundle/pull/7108)] `final` for method of every abstract classes ([@VincentLanglet](https://github.com/VincentLanglet))
 
 ### Changed
 - [[#7144](https://github.com/sonata-project/SonataAdminBundle/pull/7144)] Changed `AbstractAdmin::initialize()` and call `AdminExtensionInterface::configure()` on each extension ([@yann-eugone](https://github.com/yann-eugone))
