@@ -18,7 +18,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - [[#7077](https://github.com/sonata-project/SonataAdminBundle/pull/7077)] Deprecated `admin_services` config key ([@VincentLanglet](https://github.com/VincentLanglet))
 
 ### Fixed
-- [[#7162](https://github.com/sonata-project/SonataAdminBundle/pull/7162)] Fix font route to be relative and not absolute. ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7162](https://github.com/sonata-project/SonataAdminBundle/pull/7162)] Fix font route to be relative and not absolute ([@jordisala1991](https://github.com/jordisala1991))
 - [[#7149](https://github.com/sonata-project/SonataAdminBundle/pull/7149)] `ProxyQuery::execute()` return type; it doesn't require to be an instance of `Countable` ([@VincentLanglet](https://github.com/VincentLanglet))
 
 ## [3.98.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.98.1...3.98.2) - 2021-05-01
