@@ -15,7 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - [[#7144](https://github.com/sonata-project/SonataAdminBundle/pull/7144)] Changed `AbstractAdmin::initialize` and call `AdminExtensionInterface::configure` on each extension ([@yann-eugone](https://github.com/yann-eugone))
 
 ### Deprecated
-- [[#7077](https://github.com/sonata-project/SonataAdminBundle/pull/7077)] Deprecated `admin_services` config key. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7077](https://github.com/sonata-project/SonataAdminBundle/pull/7077)] Deprecated `admin_services` config key ([@VincentLanglet](https://github.com/VincentLanglet))
 
 ### Fixed
 - [[#7162](https://github.com/sonata-project/SonataAdminBundle/pull/7162)] Fix font route to be relative and not absolute. ([@jordisala1991](https://github.com/jordisala1991))
