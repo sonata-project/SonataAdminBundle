@@ -50,7 +50,7 @@ abstract class Filter implements FilterInterface
     private $active = false;
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function initialize($name, array $options = [])
     {
@@ -59,7 +59,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getName()
     {
@@ -67,7 +67,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getFormName()
     {
@@ -82,7 +82,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getOption($name, $default = null)
     {
@@ -94,7 +94,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function setOption($name, $value)
     {
@@ -102,7 +102,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getFieldType()
     {
@@ -110,7 +110,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getFieldOptions()
     {
@@ -118,7 +118,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getFieldOption($name, $default = null)
     {
@@ -130,7 +130,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function setFieldOption($name, $value)
     {
@@ -138,7 +138,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getLabel()
     {
@@ -146,7 +146,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function setLabel($label)
     {
@@ -154,7 +154,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getFieldName()
     {
@@ -171,7 +171,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getParentAssociationMappings()
     {
@@ -179,7 +179,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getFieldMapping()
     {
@@ -196,7 +196,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getAssociationMapping()
     {
@@ -213,7 +213,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function setOptions(array $options)
     {
@@ -225,7 +225,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      *
      * @return array<string, mixed>
      */
@@ -269,7 +269,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function isActive()
     {
@@ -281,7 +281,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function setCondition($condition)
     {
@@ -289,7 +289,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getCondition()
     {
@@ -297,7 +297,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getTranslationDomain()
     {
@@ -305,7 +305,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     protected function setActive(bool $active): void
     {

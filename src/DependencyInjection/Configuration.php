@@ -366,7 +366,7 @@ CASESENSITIVE;
                 ->end()
                 // NEXT_MAJOR: Remove this node.
                 ->arrayNode('admin_services')
-                    ->setDeprecated('The "%node%" option is deprecated since sonata-project/admin-bundle 3.x.')
+                    ->setDeprecated('The "%node%" option is deprecated since sonata-project/admin-bundle 3.99.')
                     ->prototype('array')
                         ->children()
                             ->scalarNode('model_manager')->defaultNull()->end()

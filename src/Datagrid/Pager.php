@@ -196,7 +196,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      *
      * Returns an array of page numbers to use in pagination links.
      *
@@ -227,7 +227,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      *
      * Returns true if the current query requires pagination.
      *
@@ -483,7 +483,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      *
      * @return int
      */
@@ -493,7 +493,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      *
      * @return int
      */
@@ -503,7 +503,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      *
      * @return int
      */
@@ -513,7 +513,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      *
      * @return int
      */
@@ -523,7 +523,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      *
      * @return int
      */
@@ -533,7 +533,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function setPage($page)
     {
@@ -546,7 +546,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getMaxPerPage()
     {
@@ -554,7 +554,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function setMaxPerPage($max)
     {
@@ -577,7 +577,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getMaxPageLinks()
     {
@@ -585,7 +585,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function setMaxPageLinks($maxPageLinks)
     {
@@ -593,7 +593,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      *
      * Returns true if on the first page.
      *
@@ -605,7 +605,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      *
      * Returns true if on the last page.
      *
@@ -888,7 +888,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function setQuery($query)
     {
@@ -896,7 +896,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      *
      * @return ProxyQueryInterface|null
      *
@@ -927,7 +927,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      *
      * @param int $page
      *

@@ -208,7 +208,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getFieldName()
     {
@@ -216,7 +216,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function setName($name)
     {
@@ -229,7 +229,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getName()
     {
@@ -237,7 +237,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getOption($name, $default = null)
     {
@@ -245,7 +245,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function setOption($name, $value)
     {
@@ -253,7 +253,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function setOptions(array $options)
     {
@@ -297,7 +297,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getOptions()
     {
@@ -305,7 +305,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function setTemplate($template)
     {
@@ -313,7 +313,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getTemplate()
     {
@@ -329,7 +329,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function setType($type)
     {
@@ -337,7 +337,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getType()
     {
@@ -345,7 +345,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function setParent(AdminInterface $parent)
     {
@@ -353,7 +353,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getParent()
     {
@@ -375,7 +375,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function hasParent()
     {
@@ -383,7 +383,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getAssociationMapping()
     {
@@ -391,7 +391,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getFieldMapping()
     {
@@ -399,7 +399,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getParentAssociationMappings()
     {
@@ -407,7 +407,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function setAssociationAdmin(AdminInterface $associationAdmin)
     {
@@ -416,7 +416,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getAssociationAdmin()
     {
@@ -439,7 +439,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function hasAssociationAdmin()
     {
@@ -449,7 +449,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * NEXT_MAJOR: Change the visibility to protected.
      *
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      *
      * @param object|null $object
      * @param string      $fieldName
@@ -586,7 +586,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function setAdmin(AdminInterface $admin)
     {
@@ -594,7 +594,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getAdmin()
     {
@@ -616,7 +616,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function hasAdmin()
     {
@@ -624,7 +624,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function mergeOption($name, array $options = [])
     {
@@ -640,7 +640,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function mergeOptions(array $options = [])
     {
@@ -663,7 +663,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getMappingType()
     {
@@ -737,7 +737,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getLabel()
     {
@@ -754,7 +754,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function isSortable()
     {
@@ -762,7 +762,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getSortFieldMapping()
     {
@@ -770,7 +770,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getSortParentAssociationMapping()
     {
@@ -778,7 +778,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getTranslationDomain()
     {
@@ -788,7 +788,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * Return true if field is virtual.
      *
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      *
      * @return bool
      */

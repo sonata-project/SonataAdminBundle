@@ -24,7 +24,7 @@ use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
 {
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      *
      * Configure the object ACL for the passed object identities.
      *

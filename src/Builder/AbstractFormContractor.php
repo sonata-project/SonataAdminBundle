@@ -39,7 +39,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)
     {
@@ -52,7 +52,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      *
      * @return FormFactoryInterface
      */
@@ -62,7 +62,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getFormBuilder($name, array $formOptions = [])
     {
@@ -70,7 +70,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x.
+     * @final since sonata-project/admin-bundle 3.99.
      */
     public function getDefaultOptions($type, FieldDescriptionInterface $fieldDescription)
     {
