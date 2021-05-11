@@ -37,27 +37,17 @@ class SimplePagerTest extends TestCase
      */
     private $proxyQuery;
 
-    /**
-     * @var array<object>
-     */
-    private $results;
-
     protected function setUp(): void
     {
         $this->pager = new SimplePager(10, 2);
-        $this->proxyQuery = $this->getMockBuilder(ProxyQueryInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->results = array_fill(0, 12, new \stdClass());
+        $this->proxyQuery = $this->createMock(ProxyQueryInterface::class);
     }
 
     public function testInitNumPages(): void
     {
-        $pager = new SimplePager(10, 2);
         $this->proxyQuery->expects($this->once())
                 ->method('execute')
-                ->willReturn(new ArrayCollection($this->results));
+                ->willReturn(new ArrayCollection(array_fill(0, 13, new \stdClass())));
 
         $this->proxyQuery->expects($this->once())
             ->method('setMaxResults')
@@ -67,17 +57,20 @@ class SimplePagerTest extends TestCase
             ->method('setFirstResult')
             ->with($this->equalTo(0));
 
-        $pager->setQuery($this->proxyQuery);
-        $pager->init();
+        $this->pager->setQuery($this->proxyQuery);
+        $this->pager->init();
 
-        $this->assertSame(2, $pager->getLastPage());
+        $this->assertSame(2, $this->pager->getLastPage());
+
+        // We're not knowing exactly the result number, at least 13 (the result found)
+        $this->assertSame(13, $this->pager->countResults());
     }
 
     public function testInitOffset(): void
     {
         $this->proxyQuery->expects($this->once())
             ->method('execute')
-            ->willReturn(new ArrayCollection($this->results));
+            ->willReturn(new ArrayCollection(array_fill(0, 13, new \stdClass())));
 
         $this->proxyQuery->expects($this->once())
             ->method('setMaxResults')
@@ -93,6 +86,34 @@ class SimplePagerTest extends TestCase
         $this->pager->init();
 
         $this->assertSame(3, $this->pager->getLastPage());
+
+        // We're not knowing exactly the result number, at least 10 (first page) + 13 (the result found)
+        $this->assertSame(23, $this->pager->countResults());
+    }
+
+    public function testLasPage(): void
+    {
+        $this->proxyQuery->expects($this->once())
+            ->method('execute')
+            ->willReturn(new ArrayCollection(array_fill(0, 9, new \stdClass())));
+
+        $this->proxyQuery->expects($this->once())
+            ->method('setMaxResults')
+            ->with($this->equalTo(21));
+
+        // Asserting that the offset will be set correctly
+        $this->proxyQuery->expects($this->once())
+            ->method('setFirstResult')
+            ->with($this->equalTo(10));
+
+        $this->pager->setQuery($this->proxyQuery);
+        $this->pager->setPage(2);
+        $this->pager->init();
+
+        $this->assertSame(2, $this->pager->getLastPage());
+
+        // We're knowing exactly the result number: 10 (first page) + 9 (this page)
+        $this->assertSame(19, $this->pager->countResults());
     }
 
     public function testNoPagesPerConfig(): void
@@ -112,6 +133,7 @@ class SimplePagerTest extends TestCase
         $this->pager->init();
 
         $this->assertSame(0, $this->pager->getLastPage());
+        $this->assertSame(0, $this->pager->countResults());
     }
 
     public function testNoPagesForNoResults(): void
