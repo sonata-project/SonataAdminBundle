@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.99.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.99.0...3.99.1) - 2021-05-12
+### Fixed
+- [[#7181](https://github.com/sonata-project/SonataAdminBundle/pull/7181)] Fix SimplePager pagination ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [3.99.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.98.2...3.99.0) - 2021-05-09
 ### Added
 - [[#7077](https://github.com/sonata-project/SonataAdminBundle/pull/7077)] Added `default_admin_services` config key to overwrite the default services provided to all the admin ([@VincentLanglet](https://github.com/VincentLanglet))
