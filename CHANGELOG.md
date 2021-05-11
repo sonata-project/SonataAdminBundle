@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [3.99.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.99.0...3.99.1) - 2021-05-12
+## [3.99.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.99.0...3.99.1) - 2021-05-11
 ### Fixed
 - [[#7181](https://github.com/sonata-project/SonataAdminBundle/pull/7181)] Fix SimplePager pagination ([@VincentLanglet](https://github.com/VincentLanglet))
 
