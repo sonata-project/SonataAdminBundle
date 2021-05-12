@@ -262,7 +262,7 @@ file that was distributed with this source code.
             // Select2 v3 data populate.
             // NEXT_MAJOR: Remove while dropping v3 support.
             if (window.Select2 && (undefined==data.length || 0<data.length)) { // Leave placeholder if no data set
-                autocompleteInput.select2('data', data);
+                autocompleteInput.attr('data', data);
             }
 
             // remove unneeded autocomplete text input before form submit
