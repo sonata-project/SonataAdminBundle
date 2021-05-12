@@ -18,7 +18,6 @@ use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 use Sonata\AdminBundle\Controller\CRUDController;
@@ -72,7 +71,7 @@ use Twig\Environment;
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class CRUDControllerTest extends TestCase
+final class CRUDControllerTest extends TestCase
 {
     /**
      * @var CRUDController<object>
@@ -248,7 +247,6 @@ class CRUDControllerTest extends TestCase
         $this->container->set('security.csrf.token_manager', $this->csrfProvider);
         $this->container->set('logger', $this->logger);
         $this->container->set('translator', $this->translator);
-        $this->container->set('sonata.admin.breadcrumbs_builder', new BreadcrumbsBuilder([]));
         $this->container->set('parameter_bag', $this->parameterBag);
 
         $this->parameterBag->set(

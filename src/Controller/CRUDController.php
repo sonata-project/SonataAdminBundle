@@ -17,7 +17,6 @@ use Doctrine\Inflector\InflectorFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -86,7 +85,6 @@ class CRUDController extends AbstractController
     {
         return [
             'sonata.admin.pool' => Pool::class,
-            'sonata.admin.breadcrumbs_builder' => BreadcrumbsBuilderInterface::class,
             'sonata.admin.audit.manager' => AuditManagerInterface::class,
             'sonata.admin.object.manipulator.acl.admin' => AdminObjectAclManipulator::class,
             'sonata.exporter.exporter' => '?'.Exporter::class,
