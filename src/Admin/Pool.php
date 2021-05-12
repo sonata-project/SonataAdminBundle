@@ -445,9 +445,27 @@ class Pool
 
         $codes = explode('|', $adminCode);
         $code = trim(array_shift($codes));
+
+        if (preg_match('/^(.*)\((.*)\)$/', $code, $matches)) {
+            $code = $matches[1];
+            $id = $matches[2];
+        } else {
+            $id = null;
+        }
+
         $admin = $this->getInstance($code);
+        if (isset($id)) {
+            $admin->setSubject($admin->getObject($id));
+        }
 
         foreach ($codes as $code) {
+            if (preg_match('/^(.*)\((.*)\)$/', $code, $matches)) {
+                $code = $matches[1];
+                $id = $matches[2];
+            } else {
+                $id = null;
+            }
+
             if (!\in_array($code, $this->adminServiceIds, true)) {
                 @trigger_error(sprintf(
                     'Passing an invalid admin code as argument 1 for %s() is deprecated since'
@@ -478,6 +496,9 @@ class Pool
             }
 
             $admin = $admin->getChild($code);
+            if (isset($id)) {
+                $admin->setSubject($admin->getObject($id));
+            }
         }
 
         return $admin;

@@ -2489,7 +2489,7 @@ EOT;
         $this->baseCodeRoute = $baseCodeRoute;
     }
 
-    public function getBaseCodeRoute()
+    public function getBaseCodeRoute($withId = false)
     {
         // NEXT_MAJOR: Uncomment the following lines.
         // if ($this->isChild()) {
@@ -2503,7 +2503,12 @@ EOT;
             $parentCode = $this->getParent()->getCode();
 
             if ($this->getParent()->isChild()) {
-                $parentCode = $this->getParent()->getBaseCodeRoute();
+                $parentCode = $this->getParent()->getBaseCodeRoute($withId);
+            }
+
+            if ($withId && $this->getParent()->hasSubject()) {
+                $id = $this->getParent()->id($this->getParent()->getSubject());
+                $parentCode = sprintf('%s(%s)', $parentCode, $id);
             }
 
             return sprintf('%s|%s', $parentCode, $this->getCode());

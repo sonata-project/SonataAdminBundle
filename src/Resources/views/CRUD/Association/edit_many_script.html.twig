@@ -319,7 +319,7 @@ This code manages the many-to-[one|many] association field popup
                                 'subclass':  sonata_admin.admin.hasActiveSubClass() ? sonata_admin.admin.getActiveSubclassCode() : null,
                                 'objectId':  sonata_admin.admin.root.id(sonata_admin.admin.root.subject),
                                 'uniqid':    sonata_admin.admin.root.uniqid,
-                                'code':      sonata_admin.admin.root.code
+                                'code':      sonata_admin.admin.root.getBaseCodeRoute(true)
                             }) }}',
                             data: {_xml_http_request: true },
                             dataType: 'html',

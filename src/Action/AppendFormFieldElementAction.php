@@ -56,7 +56,7 @@ final class AppendFormFieldElementAction
         $objectId = $request->get('objectId');
         $uniqid = $request->get('uniqid');
 
-        $admin = $this->pool->getInstance($code);
+        $admin = $this->pool->getAdminByAdminCode($code);
         $admin->setRequest($request);
 
         if ($uniqid) {

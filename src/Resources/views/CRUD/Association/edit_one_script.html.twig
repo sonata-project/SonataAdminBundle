@@ -33,7 +33,7 @@ This code manages the one-to-many association field popup
         // the ajax post
         jQuery(form).ajaxSubmit({
             url: '{{ path('sonata_admin_append_form_element', {
-                'code':      sonata_admin.admin.root.code,
+                'code':      sonata_admin.admin.root.getBaseCodeRoute(true),
                 'elementId': id,
                 'objectId':  sonata_admin.admin.root.id(sonata_admin.admin.root.subject),
                 'uniqid':    sonata_admin.admin.root.uniqid,
