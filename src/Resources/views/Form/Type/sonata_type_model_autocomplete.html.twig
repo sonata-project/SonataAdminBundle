@@ -304,15 +304,17 @@ file that was distributed with this source code.
                         {% endif %}
 
                         // append to Select2
-                        autocompleteInput.select2('data', data).append(data).trigger('change');
+                        autocompleteInput.attr('data', data).append(data).trigger('change');
 
                         // manually trigger the `select2:select` event
-                        autocompleteInput.select2('data', data).trigger({
+                        autocompleteInput.attr('data', data).trigger({
                             type: 'select2:select',
                             params: {
                                 data: data
                             }
                         });
+
+                        $('#{{ id }}_hidden_inputs_wrap input:hidden').val(data.value);
                       }
                   }
                 });
