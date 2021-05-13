@@ -26,7 +26,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -147,8 +146,9 @@ final class SetObjectFieldValueAction
         if (null === $request->get('_sonata_admin')) {
             @trigger_error(
                 'Not passing "_sonata_admin" value in the request is deprecated since sonata-project/admin-bundle 3.x'
-                .' and will throw %s exception in 4.0.'
-                , \E_USER_DEPRECATED);
+                .' and will throw %s exception in 4.0.',
+                \E_USER_DEPRECATED
+            );
 
             $request->request->set('_sonata_admin', $request->get('code'));
         }

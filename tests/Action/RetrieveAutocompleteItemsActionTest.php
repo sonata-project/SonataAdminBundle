@@ -18,13 +18,12 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Action\RetrieveAutocompleteItemsAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Object\MetadataInterface;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,9 +33,9 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 final class RetrieveAutocompleteItemsActionTest extends TestCase
 {
     /**
-     * @var Pool
+     * @var AdminFetcherInterface
      */
-    private $pool;
+    private $adminFetcher;
 
     /**
      * @var GetShortObjectDescriptionAction
@@ -51,17 +50,15 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     protected function setUp(): void
     {
         $this->admin = $this->createMock(AbstractAdmin::class);
-        $this->admin->expects($this->once())->method('setRequest');
-        $container = new Container();
-        $container->set('foo.admin', $this->admin);
-        $this->pool = new Pool($container, ['foo.admin']);
-        $this->action = new RetrieveAutocompleteItemsAction($this->pool);
+        $this->adminFetcher = $this->createMock(AdminFetcherInterface::class);
+        $this->adminFetcher->method('get')->willReturn($this->admin);
+        $this->action = new RetrieveAutocompleteItemsAction($this->adminFetcher);
     }
 
     public function testRetrieveAutocompleteItemsActionNotGranted(): void
     {
         $request = new Request([
-            'admin_code' => 'foo.admin',
+            '_sonata_admin' => 'foo.admin',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $this->admin->method('hasAccess')->willReturnMap([
@@ -78,7 +75,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     {
         $object = new \stdClass();
         $request = new Request([
-            'admin_code' => 'foo.admin',
+            '_sonata_admin' => 'foo.admin',
             'field' => 'barField',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
@@ -108,7 +105,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     {
         $object = new \stdClass();
         $request = new Request([
-            'admin_code' => 'foo.admin',
+            '_sonata_admin' => 'foo.admin',
             'field' => 'barField',
             'q' => 'so',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
@@ -141,7 +138,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     public function testRetrieveAutocompleteItems(): void
     {
         $request = new Request([
-            'admin_code' => 'foo.admin',
+            '_sonata_admin' => 'foo.admin',
             'field' => 'barField',
             'q' => 'sonata',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
@@ -170,7 +167,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     public function testRetrieveAutocompleteItemsComplexPropertyArray(): void
     {
         $request = new Request([
-            'admin_code' => 'foo.admin',
+            '_sonata_admin' => 'foo.admin',
             'field' => 'barField',
             'q' => 'sonata',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
@@ -209,7 +206,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     public function testRetrieveAutocompleteItemsComplexProperty(): void
     {
         $request = new Request([
-            'admin_code' => 'foo.admin',
+            '_sonata_admin' => 'foo.admin',
             'field' => 'barField',
             'q' => 'sonata',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);

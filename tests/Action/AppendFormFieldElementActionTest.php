@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\AppendFormFieldElementAction;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminHelper;
-use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Symfony\Component\DependencyInjection\Container;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
@@ -32,9 +32,9 @@ use Twig\Environment;
 final class AppendFormFieldElementActionTest extends TestCase
 {
     /**
-     * @var Pool
+     * @var MockObject&AdminFetcherInterface
      */
-    private $pool;
+    private $adminFetcher;
 
     /**
      * @var Environment
@@ -60,14 +60,12 @@ final class AppendFormFieldElementActionTest extends TestCase
     {
         $this->twig = $this->createStub(Environment::class);
         $this->admin = $this->createMock(AbstractAdmin::class);
-        $this->admin->expects($this->once())->method('setRequest');
-        $container = new Container();
-        $container->set('sonata.post.admin', $this->admin);
-        $this->pool = new Pool($container, ['sonata.post.admin']);
+        $this->adminFetcher = $this->createMock(AdminFetcherInterface::class);
+        $this->adminFetcher->method('get')->willReturn($this->admin);
         $this->helper = $this->createStub(AdminHelper::class);
         $this->action = new AppendFormFieldElementAction(
             $this->twig,
-            $this->pool,
+            $this->adminFetcher,
             $this->helper
         );
     }
@@ -76,7 +74,7 @@ final class AppendFormFieldElementActionTest extends TestCase
     {
         $object = new \stdClass();
         $request = new Request([
-            'code' => 'sonata.post.admin',
+            '_sonata_admin' => 'sonata.post.admin',
             'objectId' => 42,
             'field' => 'enabled',
             'value' => 1,
