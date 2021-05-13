@@ -596,7 +596,9 @@ file that was distributed with this source code.
     <div id="field_container_{{ id }}" class="field-container">
         <span id="field_widget_{{ id }}" class="field-short-description">
             {% if sonata_admin.value and sonata_admin.field_description.associationadmin.urlSafeIdentifier(sonata_admin.value) is not null %}
+                {# NEXT_MAJOR: Remove the 'code' parameter #}
                 {{ render(path('sonata_admin_short_object_information', {
+                    '_sonata_admin': sonata_admin.field_description.associationadmin,
                     'code': sonata_admin.field_description.associationadmin.code,
                     'objectId': sonata_admin.field_description.associationadmin.urlSafeIdentifier(sonata_admin.value),
                     'uniqid': sonata_admin.field_description.associationadmin.uniqid,

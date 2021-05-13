@@ -22,7 +22,7 @@ file that was distributed with this source code.
                 {% if sonata_admin.value and sonata_admin.field_description.associationadmin.id(sonata_admin.value) is not null %}
                     {# NEXT_MAJOR: Remove the 'code' parameter #}
                     {{ render(path('sonata_admin_short_object_information', {
-                        'sonata_admin': sonata_admin.field_description.associationadmin.baseCodeRoute,
+                        '_sonata_admin': sonata_admin.field_description.associationadmin.baseCodeRoute,
                         'code': sonata_admin.field_description.associationadmin.code,
                         'objectId': sonata_admin.field_description.associationadmin.id(sonata_admin.value),
                         'uniqid': sonata_admin.field_description.associationadmin.uniqid,
