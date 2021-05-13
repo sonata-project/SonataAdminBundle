@@ -29,6 +29,7 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\AuditReaderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
@@ -163,14 +164,22 @@ final class CRUDControllerTest extends TestCase
      */
     private $parameterBag;
 
+    /**
+     * @var Stub&AdminFetcherInterface
+     */
+    private $adminFetcher;
+
     protected function setUp(): void
     {
         $this->httpMethodParameterOverride = Request::getHttpMethodParameterOverride();
         $this->container = new Container();
         $this->request = new Request();
         $this->pool = new Pool($this->container, ['foo.admin']);
-        $this->request->attributes->set('_sonata_admin', 'foo.admin');
+        $this->adminFetcher = $this->createStub(AdminFetcherInterface::class);
         $this->admin = $this->createMock(AdminInterface::class);
+        $this->adminFetcher
+            ->method('get')
+            ->willReturn($this->admin);
         $this->translator = $this->createMock(TranslatorInterface::class);
         $this->parameters = [];
         $this->template = '';
@@ -247,6 +256,7 @@ final class CRUDControllerTest extends TestCase
         $this->container->set('security.csrf.token_manager', $this->csrfProvider);
         $this->container->set('logger', $this->logger);
         $this->container->set('translator', $this->translator);
+        $this->container->set('sonata.admin.request.fetcher', $this->adminFetcher);
         $this->container->set('parameter_bag', $this->parameterBag);
 
         $this->parameterBag->set(
@@ -385,68 +395,34 @@ final class CRUDControllerTest extends TestCase
         $this->assertTrue($this->protectedTestedMethods['isXmlHttpRequest']->invoke($this->controller, $this->request));
     }
 
-    public function testConfigureAdmin(): void
+    public function testConfigureAdminWithoutTemplateRegistryThrowsException(): void
     {
-        $uniqueId = '';
+        $controller = new CRUDController();
+        $admin = $this->createStub(AdminInterface::class);
+        $admin
+            ->method('hasTemplateRegistry')
+            ->willReturn(false);
 
-        $this->admin->expects($this->once())
-            ->method('setUniqId')
-            ->willReturnCallback(static function (string $uniqId) use (&$uniqueId): void {
-                $uniqueId = $uniqId;
-            });
+        $admin
+            ->method('getCode')
+            ->willReturn('admin_code');
 
-        $this->request->query->set('uniqid', '123456');
-        $this->controller->configureAdmin($this->request);
+        $adminFetcher = $this->createStub(AdminFetcherInterface::class);
+        $adminFetcher
+            ->method('get')
+            ->willReturn($admin);
 
-        $this->assertSame('123456', $uniqueId);
-    }
+        $container = new Container();
+        $container->set('sonata.admin.request.fetcher', $adminFetcher);
 
-    public function testConfigureAdminChild(): void
-    {
-        $uniqueId = '';
-
-        $this->admin->expects($this->once())
-            ->method('setUniqId')
-            ->willReturnCallback(static function (string $uniqId) use (&$uniqueId): void {
-                $uniqueId = $uniqId;
-            });
-
-        $this->admin->expects($this->once())
-            ->method('isChild')
-            ->willReturn(true);
-
-        $adminParent = $this->getMockBuilder(AdminInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->admin->expects($this->once())
-            ->method('getParent')
-            ->willReturn($adminParent);
-
-        $this->request->query->set('uniqid', '123456');
-        $this->controller->configureAdmin($this->request);
-
-        $this->assertSame('123456', $uniqueId);
-    }
-
-    public function testConfigureAdminWithException(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'There is no `_sonata_admin` defined for the controller `Sonata\AdminBundle\Controller\CRUDController`'
-        );
-
-        $this->request->attributes->remove('_sonata_admin');
-        $this->controller->configureAdmin($this->request);
-    }
-
-    public function testConfigureAdminWithException2(): void
-    {
-        $this->request->attributes->set('_sonata_admin', 'nonexistent.admin');
+        $controller->setContainer($container);
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Unable to find the admin class related to the current controller (Sonata\AdminBundle\Controller\CRUDController)');
+        $this->expectExceptionMessage(
+            'Unable to find the template registry related to the current admin (admin_code).'
+        );
 
-        $this->controller->configureAdmin($this->request);
+        $controller->configureAdmin($this->request);
     }
 
     public function testGetBaseTemplate(): void
