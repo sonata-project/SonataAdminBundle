@@ -23,6 +23,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
@@ -87,6 +88,7 @@ class CRUDController extends AbstractController
             'sonata.admin.pool' => Pool::class,
             'sonata.admin.audit.manager' => AuditManagerInterface::class,
             'sonata.admin.object.manipulator.acl.admin' => AdminObjectAclManipulator::class,
+            'sonata.admin.request.fetcher' => AdminFetcherInterface::class,
             'sonata.exporter.exporter' => '?'.Exporter::class,
             'sonata.admin.admin_exporter' => '?'.AdminExporter::class,
             'sonata.admin.security.acl_user_manager' => '?'.AdminAclUserManagerInterface::class,
@@ -896,29 +898,9 @@ class CRUDController extends AbstractController
      */
     final public function configureAdmin(Request $request): void
     {
-        $adminCode = $request->get('_sonata_admin');
+        $adminFetcher = $this->container->get('sonata.admin.request.fetcher');
 
-        if (null === $adminCode) {
-            throw new \InvalidArgumentException(sprintf(
-                'There is no `_sonata_admin` defined for the controller `%s` and the current route `%s`.',
-                static::class,
-                $request->get('_route')
-            ));
-        }
-
-        $pool = $this->get('sonata.admin.pool');
-        \assert($pool instanceof Pool);
-
-        try {
-            /** @phpstan-var AdminInterface<T> $admin */
-            $admin = $pool->getAdminByAdminCode($adminCode);
-            $this->admin = $admin;
-        } catch (\InvalidArgumentException $e) {
-            throw new \RuntimeException(sprintf(
-                'Unable to find the admin class related to the current controller (%s).',
-                static::class
-            ));
-        }
+        $this->admin = $adminFetcher->get($request);
 
         if (!$this->admin->hasTemplateRegistry()) {
             throw new \RuntimeException(sprintf(
@@ -928,19 +910,6 @@ class CRUDController extends AbstractController
         }
 
         $this->templateRegistry = $this->admin->getTemplateRegistry();
-
-        $rootAdmin = $this->admin;
-
-        while ($rootAdmin->isChild()) {
-            $rootAdmin->setCurrentChild(true);
-            $rootAdmin = $rootAdmin->getParent();
-        }
-
-        $rootAdmin->setRequest($request);
-
-        if ($request->get('uniqid')) {
-            $this->admin->setUniqid($request->get('uniqid'));
-        }
     }
 
     /**

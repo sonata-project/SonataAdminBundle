@@ -15,9 +15,9 @@ namespace Sonata\AdminBundle\Tests\EventListener;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\EventListener\ConfigureCRUDControllerListener;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -39,15 +39,13 @@ final class ConfigureCRUDControllerListenerTest extends TestCase
     {
         $container = new Container();
 
-        $admin = $this->createMock(AdminInterface::class);
+        $admin = $this->createStub(AdminInterface::class);
         $admin
             ->method('hasTemplateRegistry')
             ->willReturn(true);
 
-        $container->set('admin.code', $admin);
-
-        $pool = new Pool($container, ['admin.code']);
-        $container->set('sonata.admin.pool', $pool);
+        $adminFetcher = $this->createMock(AdminFetcherInterface::class);
+        $container->set('sonata.admin.request.fetcher', $adminFetcher);
 
         $request = new Request([], [], [
             '_sonata_admin' => 'admin.code',
@@ -63,10 +61,11 @@ final class ConfigureCRUDControllerListenerTest extends TestCase
             HttpKernelInterface::MASTER_REQUEST
         );
 
-        $admin
+        $adminFetcher
             ->expects($this->once())
-            ->method('setRequest')
-            ->with($request);
+            ->method('get')
+            ->with($request)
+            ->willReturn($admin);
 
         $this->listener->onKernelController($controllerEvent);
     }
