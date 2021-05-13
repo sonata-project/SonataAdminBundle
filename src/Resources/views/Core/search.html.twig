@@ -26,11 +26,13 @@ file that was distributed with this source code.
                 {% for admin in group.items %}
                     {% set count = count + 1 %}
                     {% if admin.hasRoute('create') and admin.hasAccess('create') or admin.hasRoute('list') and admin.hasAccess('list') %}
+                        {# NEXT_MAJOR: Remove the admin_code param. #}
                         {{ sonata_block_render({
                             'type': 'sonata.admin.block.search_result'
                         }, {
                             'query': query,
                             'admin_code': admin.code,
+                            '_sonata_admin': admin.baseCodeRoute,
                             'page': 0,
                             'per_page': 10,
                             'icon': group.icon

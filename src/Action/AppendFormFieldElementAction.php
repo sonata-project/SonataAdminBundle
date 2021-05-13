@@ -15,6 +15,8 @@ namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Request\AdminFetcher;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,11 +27,6 @@ use Twig\Environment;
 final class AppendFormFieldElementAction
 {
     /**
-     * @var Pool
-     */
-    private $pool;
-
-    /**
      * @var AdminHelper
      */
     private $helper;
@@ -39,11 +36,42 @@ final class AppendFormFieldElementAction
      */
     private $twig;
 
-    public function __construct(Environment $twig, Pool $pool, AdminHelper $helper)
+    /**
+     * @var AdminFetcherInterface
+     */
+    private $adminFetcher;
+
+    /**
+     * NEXT_MAJOR: Restrict second param to AdminFetcherInterface.
+     *
+     * @param Pool|AdminFetcherInterface $poolOrAdminFetcher
+     */
+    public function __construct(Environment $twig, $poolOrAdminFetcher, AdminHelper $helper)
     {
-        $this->pool = $pool;
         $this->helper = $helper;
         $this->twig = $twig;
+
+        if ($poolOrAdminFetcher instanceof AdminFetcherInterface) {
+            $this->adminFetcher = $poolOrAdminFetcher;
+        } elseif ($poolOrAdminFetcher instanceof Pool) {
+            @trigger_error(sprintf(
+                'Passing other type than %s in argument 2 to %s() is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will throw %s exception in 4.0.',
+                AdminFetcherInterface::class,
+                __METHOD__,
+                \TypeError::class
+            ), \E_USER_DEPRECATED);
+
+            $this->adminFetcher = new AdminFetcher($poolOrAdminFetcher);
+        } else {
+            throw new \TypeError(sprintf(
+                'Argument 2 passed to "%s()" must be either an instance of %s or %s, %s given.',
+                __METHOD__,
+                Pool::class,
+                AdminFetcherInterface::class,
+                \is_object($poolOrAdminFetcher) ? 'instance of "'.\get_class($poolOrAdminFetcher).'"' : '"'.\gettype($poolOrAdminFetcher).'"'
+            ));
+        }
     }
 
     /**
@@ -51,18 +79,26 @@ final class AppendFormFieldElementAction
      */
     public function __invoke(Request $request): Response
     {
-        $code = $request->get('code');
-        $elementId = $request->get('elementId');
-        $objectId = $request->get('objectId');
-        $uniqid = $request->get('uniqid');
+        // NEXT_MAJOR: Remove this BC-layer.
+        if (null === $request->get('_sonata_admin')) {
+            @trigger_error(
+                'Not passing "_sonata_admin" value in the request is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will throw %s exception in 4.0.'
+            , \E_USER_DEPRECATED);
 
-        $admin = $this->pool->getInstance($code);
-        $admin->setRequest($request);
-
-        if ($uniqid) {
-            $admin->setUniqid($uniqid);
+            $request->request->set('_sonata_admin', $request->get('code'));
         }
 
+        try {
+            $admin = $this->adminFetcher->get($request);
+        } catch (\InvalidArgumentException $e) {
+            throw new NotFoundHttpException(sprintf(
+                'Could not find admin for code "%s"',
+                $request->get('_sonata_admin')
+            ));
+        }
+
+        $objectId = $request->get('objectId');
         if ($objectId) {
             $subject = $admin->getObject($objectId);
             if (!$subject) {
@@ -74,6 +110,7 @@ final class AppendFormFieldElementAction
 
         $admin->setSubject($subject);
 
+        $elementId = $request->get('elementId');
         [, $form] = $this->helper->appendFormFieldElement($admin, $subject, $elementId);
 
         \assert($form instanceof Form);

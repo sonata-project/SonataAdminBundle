@@ -19,22 +19,48 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
+use Sonata\AdminBundle\Request\AdminFetcher;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 final class RetrieveAutocompleteItemsAction
 {
     /**
-     * @var Pool
+     * @var AdminFetcherInterface
      */
-    private $pool;
+    private $adminFetcher;
 
-    public function __construct(Pool $pool)
+    /**
+     * @param Pool|AdminFetcherInterface $poolOrAdminFetcher
+     */
+    public function __construct($poolOrAdminFetcher)
     {
-        $this->pool = $pool;
+        if ($poolOrAdminFetcher instanceof AdminFetcherInterface) {
+            $this->adminFetcher = $poolOrAdminFetcher;
+        } elseif ($poolOrAdminFetcher instanceof Pool) {
+            @trigger_error(sprintf(
+                'Passing other type than %s in argument 2 to %s() is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will throw %s exception in 4.0.',
+                AdminFetcherInterface::class,
+                __METHOD__,
+                \TypeError::class
+            ), \E_USER_DEPRECATED);
+
+            $this->adminFetcher = new AdminFetcher($poolOrAdminFetcher);
+        } else {
+            throw new \TypeError(sprintf(
+                'Argument 2 passed to "%s()" must be either an instance of %s or %s, %s given.',
+                __METHOD__,
+                Pool::class,
+                AdminFetcherInterface::class,
+                \is_object($poolOrAdminFetcher) ? 'instance of "'.\get_class($poolOrAdminFetcher).'"' : '"'.\gettype($poolOrAdminFetcher).'"'
+            ));
+        }
     }
 
     /**
@@ -45,10 +71,26 @@ final class RetrieveAutocompleteItemsAction
      */
     public function __invoke(Request $request): JsonResponse
     {
-        $admin = $this->pool->getInstance($request->get('admin_code'));
-        $admin->setRequest($request);
-        $context = $request->get('_context', '');
+        // NEXT_MAJOR: Remove this BC-layer.
+        if (null === $request->get('_sonata_admin')) {
+            @trigger_error(
+                'Not passing "_sonata_admin" value in the request is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will throw %s exception in 4.0.'
+                , \E_USER_DEPRECATED);
 
+            $request->request->set('_sonata_admin', $request->get('admin_code'));
+        }
+
+        try {
+            $admin = $this->adminFetcher->get($request);
+        } catch (\InvalidArgumentException $e) {
+            throw new NotFoundHttpException(sprintf(
+                'Could not find admin for code "%s"',
+                $request->get('_sonata_admin')
+            ));
+        }
+
+        $context = $request->get('_context', '');
         if ('filter' === $context) {
             $admin->checkAccess('list');
         } elseif (!$admin->hasAccess('create') && !$admin->hasAccess('edit')) {
