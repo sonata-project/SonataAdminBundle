@@ -677,14 +677,20 @@ const Admin = {
 
   refreshNavbarStuckClass(topNavbar) {
     let stuck = jQuery('#navbar-stuck');
+    const topNavbarHeight = jQuery(topNavbar).outerHeight();
 
     if (!stuck.length) {
       stuck = jQuery('<style id="navbar-stuck">')
         .prop('type', 'text/css')
+        .data('lastOffset', topNavbarHeight)
         .appendTo('head');
+
+      stuck.html(`body.fixed .content-header .navbar.stuck { top: ${topNavbarHeight}px; }`);
     }
 
-    stuck.html(`body.fixed .content-header .navbar.stuck { top: ${jQuery(topNavbar).outerHeight()}px; }`);
+    if (stuck.data('lastOffset') !== topNavbarHeight) {
+      stuck.html(`body.fixed .content-header .navbar.stuck { top: ${topNavbarHeight}px; }`);
+    }
   },
 
   // http://davidwalsh.name/javascript-debounce-function
