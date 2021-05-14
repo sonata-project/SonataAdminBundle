@@ -529,7 +529,7 @@ This code manages the many-to-[one|many] association field popup
                         'uniqid': associationadmin.uniqid,
                         'code': associationadmin.code,
                         'linkParameters': sonata_admin.field_description.option('link_parameters', {})
-                    } + admin.request.attributes.get('_route_params', {})
+                    } + (admin.hasRequest() ? admin.request.attributes.get('_route_params', {}) : {})
                 )}}'.replace('OBJECT_ID', objectId),
                 dataType: 'html',
                 success: function(html) {

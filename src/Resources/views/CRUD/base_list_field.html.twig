@@ -53,7 +53,7 @@ file that was distributed with this source code.
                     'field': field_description.name,
                     'objectId': admin.urlSafeIdentifier(object),
                     'code': admin.code(object)
-                } + admin.request.attributes.get('_route_params', {})
+                } + (admin.hasRequest() ? admin.request.attributes.get('_route_params', {}) : {})
                 + admin.getPersistentParameters()
             ) %}
 

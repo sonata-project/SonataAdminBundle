@@ -41,8 +41,11 @@ This code manages the one-to-many association field popup
                 'uniqid': sonata_admin.admin.root.uniqid,
                 'subclass': app.request.query.get('subclass'),
             } + sonata_admin.field_description.getOption('link_parameters', {})
-            + sonata_admin.admin.root.request.attributes.get('_route_params', {})
-            ) }}',
+            + (
+                sonata_admin.admin.root.hasRequest()
+                ? sonata_admin.admin.root.request.attributes.get('_route_params', {})
+                : {}
+            )) }}',
             type: "POST",
             dataType: 'html',
             data: { _xml_http_request: true },
