@@ -23,6 +23,9 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Tests\App\Model\Foo;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
+/**
+ * @phpstan-extends AbstractAdmin<object>
+ */
 class FooAdmin extends AbstractAdmin
 {
     protected function createNewInstance(): object
@@ -47,7 +50,7 @@ class FooAdmin extends AbstractAdmin
         $show->add('name', FieldDescriptionInterface::TYPE_STRING);
     }
 
-    protected function configureTabMenu(MenuItemInterface $menu, $action, ?AdminInterface $childAdmin = null)
+    protected function configureTabMenu(MenuItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
     {
         // Check conflict between `MenuItemInterface::getLabel()` method and menu item with a child with the key `label`
         $menu->addChild('label')->addChild('label');

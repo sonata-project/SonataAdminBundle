@@ -41,8 +41,7 @@ final class SecurityExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            //NEXT_MAJOR: Uncomment line below
-            //new TwigFunction('is_granted_affirmative', [$this, 'isGrantedAffirmative']),
+            new TwigFunction('is_granted_affirmative', [$this, 'isGrantedAffirmative']),
         ];
     }
 

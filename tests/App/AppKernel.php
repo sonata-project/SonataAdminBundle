@@ -17,7 +17,6 @@ use Knp\Bundle\MenuBundle\KnpMenuBundle;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Sonata\AdminBundle\SonataAdminBundle;
 use Sonata\BlockBundle\SonataBlockBundle;
-use Sonata\CoreBundle\SonataCoreBundle;
 use Sonata\Doctrine\Bridge\Symfony\SonataDoctrineBundle;
 use Sonata\Form\Bridge\Symfony\SonataFormBundle;
 use Sonata\Twig\Bridge\Symfony\SonataTwigBundle;
@@ -54,10 +53,6 @@ final class AppKernel extends Kernel
             new SonataFormBundle(),
         ];
 
-        if (class_exists(SonataCoreBundle::class)) {
-            $bundles[] = new SonataCoreBundle();
-        }
-
         return $bundles;
     }
 
@@ -90,6 +85,7 @@ final class AppKernel extends Kernel
             'session' => ['handler_id' => 'session.handler.native_file', 'storage_id' => 'session.storage.mock_file', 'name' => 'MOCKSESSID'],
             'assets' => null,
             'test' => true,
+            'router' => ['utf8' => true],
             'translator' => [
                 'default_path' => '%kernel.project_dir%/translations',
             ],
@@ -104,10 +100,6 @@ final class AppKernel extends Kernel
             'strict_variables' => '%kernel.debug%',
             'exception_controller' => null,
             'form_themes' => ['@SonataAdmin/Form/form_admin_fields.html.twig'],
-        ]);
-
-        $containerBuilder->loadFromExtension('sonata_admin', [
-            'options' => ['legacy_twig_text_extension' => false],
         ]);
 
         $loader->load(sprintf('%s/config/services.yml', $this->getProjectDir()));

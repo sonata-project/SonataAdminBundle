@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Util;
 
 use Sonata\AdminBundle\Form\Type\AclMatrixType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -23,17 +22,16 @@ use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
+use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * A manipulator for updating ACL related to an object.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  * @author Baptiste Meyer <baptiste@les-tilleuls.coop>
  */
-class AdminObjectAclManipulator
+final class AdminObjectAclManipulator
 {
     public const ACL_USERS_FORM_NAME = 'acl_users_form';
     public const ACL_ROLES_FORM_NAME = 'acl_roles_form';
@@ -41,61 +39,30 @@ class AdminObjectAclManipulator
     /**
      * @var FormFactoryInterface
      */
-    protected $formFactory;
+    private $formFactory;
 
     /**
      * @var string
      *
      * @phpstan-var class-string
      */
-    protected $maskBuilderClass;
+    private $maskBuilderClass;
 
     /**
-     * @param string $maskBuilderClass
-     *
      * @phpstan-param class-string $maskBuilderClass
      */
-    public function __construct(FormFactoryInterface $formFactory, $maskBuilderClass)
+    public function __construct(FormFactoryInterface $formFactory, string $maskBuilderClass)
     {
         $this->formFactory = $formFactory;
         $this->maskBuilderClass = $maskBuilderClass;
     }
 
-    /**
-     * Gets mask builder class name.
-     *
-     * @return string
-     */
-    public function getMaskBuilderClass()
+    public function getMaskBuilderClass(): string
     {
         return $this->maskBuilderClass;
     }
 
-    /**
-     * Gets the form.
-     *
-     * NEXT_MAJOR: remove this method.
-     *
-     * @return FormInterface
-     *
-     * @deprecated since sonata-project/admin-bundle 3.0. Use createAclUsersForm() instead
-     */
-    public function createForm(AdminObjectAclData $data)
-    {
-        @trigger_error(
-            'createForm() is deprecated since version 3.0 and will be removed in 4.0. Use createAclUsersForm() instead.',
-            \E_USER_DEPRECATED
-        );
-
-        return $this->createAclUsersForm($data);
-    }
-
-    /**
-     * Gets the ACL users form.
-     *
-     * @return FormInterface
-     */
-    public function createAclUsersForm(AdminObjectAclData $data)
+    public function createAclUsersForm(AdminObjectAclData $data): FormInterface
     {
         $aclValues = $data->getAclUsers();
         $formBuilder = $this->formFactory->createNamedBuilder(self::ACL_USERS_FORM_NAME, FormType::class);
@@ -105,12 +72,7 @@ class AdminObjectAclManipulator
         return $form;
     }
 
-    /**
-     * Gets the ACL roles form.
-     *
-     * @return FormInterface
-     */
-    public function createAclRolesForm(AdminObjectAclData $data)
+    public function createAclRolesForm(AdminObjectAclData $data): FormInterface
     {
         $aclValues = $data->getAclRoles();
         $formBuilder = $this->formFactory->createNamedBuilder(self::ACL_ROLES_FORM_NAME, FormType::class);
@@ -120,56 +82,39 @@ class AdminObjectAclManipulator
         return $form;
     }
 
-    /**
-     * @return void
-     */
-    public function updateAclUsers(AdminObjectAclData $data)
+    public function updateAclUsers(AdminObjectAclData $data): void
     {
-        $aclValues = $data->getAclUsers();
         $form = $data->getAclUsersForm();
+        if (null === $form) {
+            throw new \InvalidArgumentException('Cannot update Acl roles if the acl users form is not set.');
+        }
 
-        $this->buildAcl($data, $form, $aclValues);
+        $this->buildAcl($data, $form, $data->getAclUsers());
     }
 
-    /**
-     * @return void
-     */
-    public function updateAclRoles(AdminObjectAclData $data)
+    public function updateAclRoles(AdminObjectAclData $data): void
     {
-        $aclValues = $data->getAclRoles();
         $form = $data->getAclRolesForm();
+        if (null === $form) {
+            throw new \InvalidArgumentException('Cannot update Acl roles if the acl roles form is not set.');
+        }
 
-        $this->buildAcl($data, $form, $aclValues);
-    }
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.0. Use updateAclUsers() instead
-     *
-     * @return void
-     */
-    public function updateAcl(AdminObjectAclData $data)
-    {
-        @trigger_error(
-            'updateAcl() is deprecated since version 3.0 and will be removed in 4.0. Use updateAclUsers() instead.',
-            \E_USER_DEPRECATED
-        );
-
-        $this->updateAclUsers($data);
+        $this->buildAcl($data, $form, $data->getAclRoles());
     }
 
     /**
      * @param \Traversable<int|string, UserInterface|string> $aclValues
      *
-     * @return void
-     *
      * @phpstan-param \Traversable<array-key, UserInterface|string> $aclValues
      */
-    protected function buildAcl(AdminObjectAclData $data, FormInterface $form, \Traversable $aclValues)
+    private function buildAcl(AdminObjectAclData $data, FormInterface $form, \Traversable $aclValues): void
     {
-        $masks = $data->getMasks();
         $acl = $data->getAcl();
+        if (null === $acl) {
+            throw new \InvalidArgumentException('The acl cannot be null.');
+        }
+
+        $masks = $data->getMasks();
         $matrices = $form->getData();
 
         foreach ($aclValues as $aclValue) {
@@ -210,17 +155,15 @@ class AdminObjectAclManipulator
             $mask = $maskBuilder->get();
 
             $index = null;
-            $ace = null;
             foreach ($acl->getObjectAces() as $currentIndex => $currentAce) {
                 if ($currentAce->getSecurityIdentity()->equals($securityIdentity)) {
                     $index = $currentIndex;
-                    $ace = $currentAce;
 
                     break;
                 }
             }
 
-            if ($ace) {
+            if (null !== $index) {
                 $acl->updateObjectAce($index, $mask);
             } else {
                 $acl->insertObjectAce($securityIdentity, $mask);
@@ -233,11 +176,9 @@ class AdminObjectAclManipulator
     /**
      * @param \Traversable<int|string, UserInterface|string> $aclValues
      *
-     * @return FormInterface
-     *
      * @phpstan-param \Traversable<array-key, UserInterface|string> $aclValues
      */
-    protected function buildForm(AdminObjectAclData $data, FormBuilderInterface $formBuilder, \Traversable $aclValues)
+    private function buildForm(AdminObjectAclData $data, FormBuilderInterface $formBuilder, \Traversable $aclValues): FormInterface
     {
         // Retrieve object identity
         $objectIdentity = ObjectIdentity::fromDomainObject($data->getObject());
@@ -296,7 +237,7 @@ class AdminObjectAclManipulator
      *
      * @return RoleSecurityIdentity|UserSecurityIdentity
      */
-    protected function getSecurityIdentity($aclValue)
+    private function getSecurityIdentity($aclValue): SecurityIdentityInterface
     {
         return ($aclValue instanceof UserInterface)
             ? UserSecurityIdentity::fromAccount($aclValue)

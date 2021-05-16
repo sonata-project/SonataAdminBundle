@@ -22,6 +22,9 @@ use Sonata\AdminBundle\Util\ParametersManipulator;
  */
 class ParametersManipulatorTest extends TestCase
 {
+    /**
+     * @return iterable<array{array<mixed>, array<mixed>, array<mixed>}>
+     */
     public function provideMergeParameters(): iterable
     {
         return [
@@ -144,6 +147,10 @@ class ParametersManipulatorTest extends TestCase
     }
 
     /**
+     * @param mixed[] $parameters
+     * @param mixed[] $newParameters
+     * @param mixed[] $result
+     *
      * @dataProvider provideMergeParameters
      */
     public function testMergeParameters(array $parameters, array $newParameters, array $result): void

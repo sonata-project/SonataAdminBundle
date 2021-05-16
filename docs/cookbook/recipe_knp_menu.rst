@@ -12,12 +12,14 @@ To add a custom controller entry in the admin menu:
 
 Create your controller::
 
-    class BlogController
+    use Symfony\Component\HttpFoundation\Response;
+
+    final class BlogController
     {
         /**
          * @Route("/blog", name="blog_home")
          */
-        public function blogAction()
+        public function blogAction(): Response
         {
             // ...
         }
@@ -25,7 +27,7 @@ Create your controller::
         /**
          * @Route("/blog/article/{articleId}", name="blog_article")
          */
-        public function ArticleAction($articleId)
+        public function ArticleAction(string $articleId): Response
         {
             // ...
         }
@@ -115,7 +117,7 @@ The following configuration uses a menu provider to populate the menu group ``my
                 groups:
                     my_group:
                         provider:        'MyBundle:MyMenuProvider:getMyMenu'
-                        icon:            '<i class="fa fa-edit"></i>'
+                        icon:            '<i class="fas fa-edit"></i>'
 
 With KnpMenuBundle you can create a custom menu by using a builder class
 or by declaring it as a service. Please see the `Knp documentation`_ for
@@ -151,9 +153,9 @@ name ``sonata.admin.event.configure.menu.sidebar``::
 
     use Sonata\AdminBundle\Event\ConfigureMenuEvent;
 
-    class MenuBuilderListener
+    final class MenuBuilderListener
     {
-        public function addMenuItems(ConfigureMenuEvent $event)
+        public function addMenuItems(ConfigureMenuEvent $event): void
         {
             $menu = $event->getMenu();
 
@@ -161,7 +163,7 @@ name ``sonata.admin.event.configure.menu.sidebar``::
                 'label' => 'Daily and monthly reports',
                 'route' => 'app_reports_index',
             ])->setExtras([
-                'icon' => '<i class="fa fa-bar-chart"></i>',
+                'icon' => '<i class="fas fa-chart-bar"></i>',
             ]);
         }
     }
@@ -230,7 +232,7 @@ open and ignore open/close effects:
                     keep_open:       true
                     label:           sonata_media
                     label_catalogue: SonataMediaBundle
-                    icon:            '<i class="fa fa-image"></i>'
+                    icon:            '<i class="fas fa-image"></i>'
                     items:
                         - sonata.media.admin.media
                         - sonata.media.admin.gallery

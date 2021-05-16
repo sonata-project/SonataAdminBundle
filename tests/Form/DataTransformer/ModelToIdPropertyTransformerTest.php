@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
@@ -24,6 +25,9 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess;
 
 class ModelToIdPropertyTransformerTest extends TestCase
 {
+    /**
+     * @var ModelManagerInterface&MockObject
+     */
     private $modelManager;
 
     protected function setUp(): void
@@ -126,12 +130,6 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 
-        $collection = new ArrayCollection();
-        $this->modelManager
-            ->method('getModelCollectionInstance')
-            ->with($this->equalTo(Foo::class))
-            ->willReturn($collection);
-
         $result = $transformer->reverseTransform($params);
         $this->assertInstanceOf(ArrayCollection::class, $result);
         $this->assertSame($expected, $result->getValues());
@@ -160,10 +158,6 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false);
 
         $this->assertSame([], $transformer->transform(null));
-        $this->assertSame([], $transformer->transform(false));
-        $this->assertSame([], $transformer->transform(''));
-        $this->assertSame([], $transformer->transform(0));
-        $this->assertSame([], $transformer->transform('0'));
 
         $this->assertSame([123, '_labels' => ['example']], $transformer->transform($model));
     }
@@ -199,24 +193,6 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->assertSame([123, '_labels' => ['bazz']], $transformer->transform($model));
     }
 
-    public function testTransformToStringCallbackException(): void
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Callback in "to_string_callback" option doesn`t contain callable function.');
-
-        $model = new Foo();
-        $model->setBar('example');
-        $model->setBaz('bazz');
-
-        $this->modelManager->expects($this->once())
-            ->method('getIdentifierValues')
-            ->willReturn([123]);
-
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, '987654');
-
-        $transformer->transform($model);
-    }
-
     public function testTransformMultiple(): void
     {
         $entity1 = new Foo();
@@ -227,11 +203,6 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $entity3 = new Foo();
         $entity3->setBar('baz');
-
-        $collection = new ArrayCollection();
-        $collection[] = $entity1;
-        $collection[] = $entity2;
-        $collection[] = $entity3;
 
         $this->modelManager->expects($this->exactly(3))
             ->method('getIdentifierValues')
@@ -254,17 +225,13 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 
         $this->assertSame([], $transformer->transform(null));
-        $this->assertSame([], $transformer->transform(false));
-        $this->assertSame([], $transformer->transform(''));
-        $this->assertSame([], $transformer->transform(0));
-        $this->assertSame([], $transformer->transform('0'));
 
         $this->assertSame([
             123,
             '_labels' => ['foo', 'bar', 'baz'],
             456,
             789,
-        ], $transformer->transform($collection));
+        ], $transformer->transform([$entity1, $entity2, $entity3]));
     }
 
     public function testTransformCollectionException(): void
@@ -302,14 +269,9 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $entity3 = new Foo();
         $entity3->setBar('baz');
 
-        $collection = new ArrayCollection();
-        $collection[] = $entity1;
-        $collection[] = $entity2;
-        $collection[] = $entity3;
-
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false);
 
-        $transformer->transform($collection);
+        $transformer->transform([$entity1, $entity2, $entity3]);
     }
 
     public function testTransformWithMultipleProperties(): void

@@ -16,10 +16,8 @@ namespace Sonata\AdminBundle\Action;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
-use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -152,17 +150,7 @@ final class RetrieveAutocompleteItemsAction
         $pager = $datagrid->getPager();
 
         $items = [];
-        // NEXT_MAJOR: remove the existence check and just use $pager->getCurrentPageResults()
-        if (method_exists($pager, 'getCurrentPageResults')) {
-            $results = $pager->getCurrentPageResults();
-        } else {
-            @trigger_error(sprintf(
-                'Not implementing "%s::getCurrentPageResults()" is deprecated since sonata-project/admin-bundle 3.87 and will fail in 4.0.',
-                PagerInterface::class
-            ), \E_USER_DEPRECATED);
-
-            $results = $pager->getResults();
-        }
+        $results = $pager->getCurrentPageResults();
 
         foreach ($results as $model) {
             if (null !== $toStringCallback) {
@@ -190,7 +178,7 @@ final class RetrieveAutocompleteItemsAction
 
         return new JsonResponse([
             'status' => 'OK',
-            'more' => !$pager->isLastPage(),
+            'more' => \count($items) > 0 && !$pager->isLastPage(),
             'items' => $items,
         ]);
     }
@@ -204,20 +192,13 @@ final class RetrieveAutocompleteItemsAction
         AdminInterface $admin,
         string $field
     ): FieldDescriptionInterface {
-        $fieldDescription = $admin->getFilterFieldDescription($field);
-
-        if (!$fieldDescription) {
+        if (!$admin->hasFilterFieldDescription($field)) {
             throw new \RuntimeException(sprintf('The field "%s" does not exist.', $field));
         }
 
-        // NEXT_MAJOR: Remove the check and use `getTargetModel`.
-        if (method_exists($fieldDescription, 'getTargetModel')) {
-            $targetModel = $fieldDescription->getTargetModel();
-        } else {
-            $targetModel = $fieldDescription->getTargetEntity();
-        }
+        $fieldDescription = $admin->getFilterFieldDescription($field);
 
-        if (null === $targetModel) {
+        if (null === $fieldDescription->getTargetModel()) {
             throw new \RuntimeException(sprintf('No associated entity with field "%s".', $field));
         }
 
@@ -233,20 +214,13 @@ final class RetrieveAutocompleteItemsAction
         AdminInterface $admin,
         string $field
     ): FieldDescriptionInterface {
-        $fieldDescription = $admin->getFormFieldDescription($field);
-
-        if (!$fieldDescription) {
+        if (!$admin->hasFormFieldDescription($field)) {
             throw new \RuntimeException(sprintf('The field "%s" does not exist.', $field));
         }
 
-        // NEXT_MAJOR: Remove the check and use `getTargetModel`.
-        if (method_exists($fieldDescription, 'getTargetModel')) {
-            $targetModel = $fieldDescription->getTargetModel();
-        } else {
-            $targetModel = $fieldDescription->getTargetEntity();
-        }
+        $fieldDescription = $admin->getFormFieldDescription($field);
 
-        if (null === $targetModel) {
+        if (null === $fieldDescription->getTargetModel()) {
             throw new \RuntimeException(sprintf('No associated entity with field "%s".', $field));
         }
 

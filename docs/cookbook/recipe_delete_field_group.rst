@@ -5,9 +5,9 @@ In some cases, when you extend existing Admins, you might want to delete
 fields from the admin, or make them not show. You could delete every
 field by hand, using the ``FormMapper``s ``remove`` method::
 
-    class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
+    final class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             parent::configureFormFields($formMapper);
 
@@ -27,9 +27,9 @@ of the 'Social' Group of the form, the fields will be deleted and the empty grou
 For this case, the FormMapper comes with a method, which allows you to get rid
 of a whole form group: ``removeGroup``::
 
-    class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
+    final class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             parent::configureFormFields($formMapper);
 

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
-use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -24,16 +23,11 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  * This information is solely responsible for how the different configuration
  * sections are normalized, and merged.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Michael Williams <mtotheikle@gmail.com>
  */
-class Configuration implements ConfigurationInterface
+final class Configuration implements ConfigurationInterface
 {
-    /**
-     * @return TreeBuilder
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('sonata_admin');
         $rootNode = $treeBuilder->getRootNode();
@@ -95,7 +89,7 @@ CASESENSITIVE;
                 ->end()
 
                 ->scalarNode('title')->defaultValue('Sonata Admin')->cannotBeEmpty()->end()
-                ->scalarNode('title_logo')->defaultValue('bundles/sonataadmin/logo_title.png')->cannotBeEmpty()->end()
+                ->scalarNode('title_logo')->defaultValue('bundles/sonataadmin/images/logo_title.png')->cannotBeEmpty()->end()
                 ->booleanNode('search')->defaultTrue()->info('Enable/disable the search form in the sidebar')->end()
 
                 ->arrayNode('global_search')
@@ -119,7 +113,7 @@ CASESENSITIVE;
                 ->end()
 
                 ->scalarNode('default_controller')
-                    ->defaultValue(CRUDController::class)
+                    ->defaultValue('sonata.admin.controller.crud')
                     ->cannotBeEmpty()
                     ->info('Name of the controller class to be used as a default in admin definitions')
                 ->end()
@@ -172,7 +166,7 @@ CASESENSITIVE;
                             ->info('Label Catalogue used for admin services if one isn\'t provided.')
                         ->end()
                         ->scalarNode('default_icon')
-                            ->defaultValue('<i class="fa fa-folder"></i>')
+                            ->defaultValue('<i class="fas fa-folder"></i>')
                             ->info('Icon used for admin services if one isn\'t provided.')
                         ->end()
                         ->integerNode('dropdown_number_groups_per_colums')->defaultValue(2)->end()
@@ -186,31 +180,8 @@ CASESENSITIVE;
                             ->info('Enable locking when editing an object, if the corresponding object manager supports it.')
                         ->end()
                         ->scalarNode('mosaic_background')
-                            ->defaultValue('bundles/sonataadmin/default_mosaic_image.png')
+                            ->defaultValue('bundles/sonataadmin/images/default_mosaic_image.png')
                             ->info('Background used in mosaic view')
-                        ->end()
-                        // NEXT_MAJOR : remove this option
-                        ->booleanNode('legacy_twig_text_extension')
-                            ->info('Use text filters from "twig/extensions" instead of those provided by "twig/string-extra".')
-                            ->defaultValue(static function (): bool {
-                                @trigger_error(
-                                    'Using `true` as value for "sonata_admin.options.legacy_twig_text_extension" option is deprecated since sonata-project/admin-bundle 3.64. '
-                                    .'You should set it to `false`, which will be the default value since version 4.0.'
-                                );
-
-                                return true;
-                            })
-                            ->validate()
-                                ->ifTrue()
-                                ->then(static function (bool $v): bool {
-                                    @trigger_error(
-                                        'Using `true` as value for "sonata_admin.options.legacy_twig_text_extension" option is deprecated since sonata-project/admin-bundle 3.64 and will be remove in 4.0'
-                                        .'You MUST set it to `false` before upgrade sonata-project/admin-bundle to version 4.0.'
-                                    );
-
-                                    return $v;
-                                })
-                            ->end()
                         ->end()
                     ->end()
                 ->end()
@@ -261,26 +232,12 @@ CASESENSITIVE;
                                                         continue;
                                                     }
 
-                                                    // NEXT_MAJOR: Use !isset() instead and remove the elseif part.
-                                                    if (!\array_key_exists('route', $item)) {
+                                                    if (!isset($item['route'])) {
                                                         throw new \InvalidArgumentException('Expected parameter "route" for array items');
-                                                    } elseif (null === $items[$key]['route']) {
-                                                        @trigger_error(
-                                                            'Passing a null route is deprecated since sonata-project/admin-bundle 3.77.',
-                                                            \E_USER_DEPRECATED
-                                                        );
                                                     }
 
-                                                    // NEXT_MAJOR: Use !isset() instead and remove the elseif part.
-                                                    if (!\array_key_exists('label', $item)) {
+                                                    if (!isset($item['label'])) {
                                                         throw new \InvalidArgumentException('Expected parameter "label" for array items');
-                                                    } elseif (null === $items[$key]['label']) {
-                                                        @trigger_error(
-                                                            'Passing a null label is deprecated since sonata-project/admin-bundle 3.77.',
-                                                            \E_USER_DEPRECATED
-                                                        );
-
-                                                        $items[$key]['label'] = '';
                                                     }
                                                 }
 
@@ -364,47 +321,6 @@ CASESENSITIVE;
                         ->scalarNode('pager_type')->defaultNull()->end()
                     ->end()
                 ->end()
-                // NEXT_MAJOR: Remove this node.
-                ->arrayNode('admin_services')
-                    ->setDeprecated('The "%node%" option is deprecated since sonata-project/admin-bundle 3.99.')
-                    ->prototype('array')
-                        ->children()
-                            ->scalarNode('model_manager')->defaultNull()->end()
-                            ->scalarNode('data_source')->defaultNull()->end()
-                            ->scalarNode('field_description_factory')->defaultNull()->end()
-                            ->scalarNode('form_contractor')->defaultNull()->end()
-                            ->scalarNode('show_builder')->defaultNull()->end()
-                            ->scalarNode('list_builder')->defaultNull()->end()
-                            ->scalarNode('datagrid_builder')->defaultNull()->end()
-                            ->scalarNode('translator')->defaultNull()->end()
-                            ->scalarNode('configuration_pool')->defaultNull()->end()
-                            ->scalarNode('route_generator')->defaultNull()->end()
-                            // NEXT_MAJOR: remove validator option
-                            ->scalarNode('validator')->defaultNull()->end()
-                            ->scalarNode('security_handler')->defaultNull()->end()
-                            ->scalarNode('label')->defaultNull()->end()
-                            ->scalarNode('menu_factory')->defaultNull()->end()
-                            ->scalarNode('route_builder')->defaultNull()->end()
-                            ->scalarNode('label_translator_strategy')->defaultNull()->end()
-                            ->scalarNode('pager_type')->defaultNull()->end()
-                            ->arrayNode('templates')
-                                ->addDefaultsIfNotSet()
-                                ->children()
-                                    ->arrayNode('form')
-                                        ->prototype('scalar')->end()
-                                    ->end()
-                                    ->arrayNode('filter')
-                                        ->prototype('scalar')->end()
-                                    ->end()
-                                    ->arrayNode('view')
-                                        ->useAttributeAsKey('id')
-                                        ->prototype('scalar')->end()
-                                    ->end()
-                                ->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
 
                 ->arrayNode('templates')
                     ->addDefaultsIfNotSet()
@@ -462,26 +378,7 @@ CASESENSITIVE;
                     ->children()
                         ->arrayNode('stylesheets')
                             ->defaultValue([
-                                'bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css',
-                                'bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css',
-                                'bundles/sonatacore/vendor/ionicons/css/ionicons.min.css',
-                                'bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css',
-                                'bundles/sonataadmin/vendor/iCheck/skins/square/blue.css',
-
-                                'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
-
-                                'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
-
-                                'bundles/sonatacore/vendor/select2/select2.css',
-                                'bundles/sonatacore/vendor/select2-bootstrap-css/select2-bootstrap.min.css',
-
-                                'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css',
-
-                                'bundles/sonataadmin/css/styles.css',
-                                'bundles/sonataadmin/css/layout.css',
-                                'bundles/sonataadmin/css/tree.css',
-
-                                'bundles/sonatacore/css/flashmessage.css',
+                                'bundles/sonataadmin/app.css',
                             ])
                             ->prototype('scalar')->end()
                         ->end()
@@ -497,39 +394,7 @@ CASESENSITIVE;
                         ->end()
                         ->arrayNode('javascripts')
                             ->defaultValue([
-                                'bundles/sonatacore/vendor/jquery/dist/jquery.min.js',
-                                'bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js',
-
-                                'bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js',
-                                'bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js',
-
-                                'bundles/sonatacore/vendor/moment/min/moment.min.js',
-
-                                'bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js',
-
-                                'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-
-                                'bundles/sonataadmin/vendor/jquery-form/jquery.form.js',
-                                'bundles/sonataadmin/jquery/jquery.confirmExit.js',
-
-                                'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js',
-
-                                'bundles/sonatacore/vendor/select2/select2.min.js',
-
-                                'bundles/sonataadmin/vendor/admin-lte/dist/js/app.min.js',
-                                'bundles/sonataadmin/vendor/iCheck/icheck.min.js',
-                                'bundles/sonataadmin/vendor/slimScroll/jquery.slimscroll.min.js',
-                                'bundles/sonataadmin/vendor/waypoints/lib/jquery.waypoints.min.js',
-                                'bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js',
-                                'bundles/sonataadmin/vendor/readmore-js/readmore.min.js',
-
-                                'bundles/sonataadmin/vendor/masonry/dist/masonry.pkgd.min.js',
-
-                                'bundles/sonataadmin/Admin.js',
-                                'bundles/sonataadmin/treeview.js',
-                                'bundles/sonataadmin/sidebar.js',
-
-                                'bundles/sonatacore/js/base.js',
+                                'bundles/sonataadmin/app.js',
                             ])
                             ->prototype('scalar')->end()
                         ->end()
@@ -590,13 +455,6 @@ CASESENSITIVE;
                     ->defaultTrue()
                     ->info('Show mosaic button on all admin screens')
                 ->end()
-
-                // NEXT_MAJOR : remove this option
-                ->booleanNode('translate_group_label')
-                    ->defaultFalse()
-                    ->info('Translate group label')
-                ->end()
-
             ->end()
         ->end();
 

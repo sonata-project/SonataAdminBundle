@@ -31,7 +31,7 @@ set data attribute ``data-sonata-icheck = "false"`` to this form element::
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Form\Type\ModelType;
 
-    public function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('category', ModelType::class, [

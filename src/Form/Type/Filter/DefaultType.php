@@ -16,51 +16,28 @@ namespace Sonata\AdminBundle\Form\Type\Filter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class DefaultType extends AbstractType
+final class DefaultType extends AbstractType
 {
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_filter_default';
     }
 
-    /**
-     * @param array<string, mixed> $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function getParent(): string
     {
-        $builder
-            ->add('type', $options['operator_type'], array_merge(['required' => false], $options['operator_options']))
-            ->add('value', $options['field_type'], array_merge(['required' => false], $options['field_options']));
+        return FilterDataType::class;
     }
 
-    /**
-     * @return void
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'operator_type' => HiddenType::class,
-            'operator_options' => [],
             'field_type' => TextType::class,
-            'field_options' => [],
         ]);
     }
 }

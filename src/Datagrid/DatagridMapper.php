@@ -16,36 +16,30 @@ namespace Sonata\AdminBundle\Datagrid;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Mapper\BaseMapper;
+use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Mapper\MapperInterface;
 
 /**
- * NEXT_MAJOR: Stop extending BaseMapper.
- *
  * This class is use to simulate the Form API.
- *
- * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class DatagridMapper extends BaseMapper implements MapperInterface
+final class DatagridMapper implements MapperInterface
 {
-    /**
-     * @var DatagridInterface
-     */
-    protected $datagrid;
-
     /**
      * @var DatagridBuilderInterface
      */
-    protected $builder;
+    private $builder;
 
     /**
-     * NEXT_MAJOR: Make the property private.
-     *
+     * @var DatagridInterface
+     */
+    private $datagrid;
+
+    /**
      * @var AdminInterface
      */
-    protected $admin;
+    private $admin;
 
     public function __construct(
         DatagridBuilderInterface $datagridBuilder,
@@ -57,66 +51,26 @@ class DatagridMapper extends BaseMapper implements MapperInterface
         $this->datagrid = $datagrid;
     }
 
-    public function getAdmin()
+    public function getAdmin(): AdminInterface
     {
         return $this->admin;
     }
 
     /**
-     * NEXT_MAJOR: Change signature for ($name, ?string $type = null, array $filterOptions = [], array $fieldDescriptionOptions = []).
-     *
      * @param FieldDescriptionInterface|string $name
-     * @param string|null                      $type
-     * @param array|string|null                $fieldDescriptionOptionsOrDeprecatedFieldType
-     * @param array|null                       $deprecatedFieldOptions
-     * @param array|null                       $deprecatedFieldDescriptionOptions
+     * @param array<string, mixed>             $filterOptions
+     * @param array<string, mixed>             $fieldDescriptionOptions
      *
      * @throws \LogicException
-     *
-     * @return DatagridMapper
      *
      * @phpstan-param class-string|null $type
      */
     public function add(
         $name,
-        $type = null,
+        ?string $type = null,
         array $filterOptions = [],
-        $fieldDescriptionOptionsOrDeprecatedFieldType = [],
-        $deprecatedFieldOptions = null,
-        $deprecatedFieldDescriptionOptions = []
-    ) {
-        // NEXT_MAJOR remove the check and the else part.
-        if (\is_array($fieldDescriptionOptionsOrDeprecatedFieldType)) {
-            $fieldDescriptionOptions = $fieldDescriptionOptionsOrDeprecatedFieldType;
-        } else {
-            @trigger_error(
-                'Not passing an array as argument 4 is deprecated since sonata-project/admin-bundle 3.89.',
-                \E_USER_DEPRECATED
-            );
-
-            if (\is_array($deprecatedFieldOptions)) {
-                @trigger_error(
-                    'Passing the field_options as argument 5 is deprecated since sonata-project/admin-bundle 3.89.'.
-                    'Use the `field_options` option of the third argument instead.',
-                    \E_USER_DEPRECATED
-                );
-
-                $filterOptions['field_options'] = $deprecatedFieldOptions;
-            }
-
-            if ($fieldDescriptionOptionsOrDeprecatedFieldType) {
-                @trigger_error(
-                    'Passing the field_type as argument 4 is deprecated since sonata-project/admin-bundle 3.89.'.
-                    'Use the `field_type` option of the third argument instead.',
-                    \E_USER_DEPRECATED
-                );
-
-                $filterOptions['field_type'] = $fieldDescriptionOptionsOrDeprecatedFieldType;
-            }
-
-            $fieldDescriptionOptions = $deprecatedFieldDescriptionOptions;
-        }
-
+        array $fieldDescriptionOptions = []
+    ): self {
         if ($name instanceof FieldDescriptionInterface) {
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($filterOptions);
@@ -128,23 +82,10 @@ class DatagridMapper extends BaseMapper implements MapperInterface
                 ));
             }
 
-            if (!isset($filterOptions['field_name'])) {
-                $filterOptions['field_name'] = substr(strrchr('.'.$name, '.'), 1);
-            }
-
-            // NEXT_MAJOR: Remove the check and use `createFieldDescription`.
-            if (method_exists($this->getAdmin(), 'createFieldDescription')) {
-                $fieldDescription = $this->getAdmin()->createFieldDescription(
-                    $name,
-                    array_merge($filterOptions, $fieldDescriptionOptions)
-                );
-            } else {
-                $fieldDescription = $this->getAdmin()->getModelManager()->getNewFieldDescriptionInstance(
-                    $this->getAdmin()->getClass(),
-                    $name,
-                    array_merge($filterOptions, $fieldDescriptionOptions)
-                );
-            }
+            $fieldDescription = $this->getAdmin()->createFieldDescription(
+                $name,
+                array_merge($filterOptions, $fieldDescriptionOptions)
+            );
         } else {
             throw new \TypeError(
                 'Unknown field name in datagrid mapper.'
@@ -152,35 +93,34 @@ class DatagridMapper extends BaseMapper implements MapperInterface
             );
         }
 
-        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
-        if (null === $fieldDescription->getLabel('sonata_deprecation_mute')) {
+        if (null === $fieldDescription->getLabel()) {
             $fieldDescription->setOption('label', $this->getAdmin()->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'filter', 'label'));
         }
 
         if (!isset($fieldDescriptionOptions['role']) || $this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
             // add the field with the DatagridBuilder
-            $this->builder->addFilter($this->datagrid, $type, $fieldDescription, $this->getAdmin());
+            $this->builder->addFilter($this->datagrid, $type, $fieldDescription);
         }
 
         return $this;
     }
 
-    public function get($name)
+    public function get(string $name): FilterInterface
     {
         return $this->datagrid->getFilter($name);
     }
 
-    public function has($key)
+    public function has(string $key): bool
     {
         return $this->datagrid->hasFilter($key);
     }
 
-    final public function keys()
+    public function keys(): array
     {
         return array_keys($this->datagrid->getFilters());
     }
 
-    public function remove($key)
+    public function remove(string $key): self
     {
         $this->getAdmin()->removeFilterFieldDescription($key);
         $this->datagrid->removeFilter($key);
@@ -188,13 +128,10 @@ class DatagridMapper extends BaseMapper implements MapperInterface
         return $this;
     }
 
-    public function reorder(array $keys)
+    public function reorder(array $keys): self
     {
         $this->datagrid->reorderFilters($keys);
 
         return $this;
     }
 }
-
-// NEXT_MAJOR: Remove next line.
-interface_exists(FieldDescriptionInterface::class);

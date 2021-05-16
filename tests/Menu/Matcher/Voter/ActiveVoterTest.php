@@ -19,17 +19,11 @@ use Sonata\AdminBundle\Menu\Matcher\Voter\ActiveVoter;
 
 class ActiveVoterTest extends AbstractVoterTest
 {
-    /**
-     * {@inheritdoc}
-     */
     public function createVoter($dataVoter, $route): VoterInterface
     {
         return new ActiveVoter();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function provideData(): array
     {
         return [

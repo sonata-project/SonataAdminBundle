@@ -31,8 +31,8 @@ use Sonata\AdminBundle\Event\PersistenceEvent;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdminEventExtensionTest extends TestCase
 {

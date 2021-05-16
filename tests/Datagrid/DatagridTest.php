@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
@@ -25,6 +26,7 @@ use Sonata\AdminBundle\Form\Type\Filter\DefaultType;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Forms;
 
 /**
@@ -38,12 +40,12 @@ final class DatagridTest extends TestCase
     private $datagrid;
 
     /**
-     * @var PagerInterface
+     * @var PagerInterface&MockObject
      */
     private $pager;
 
     /**
-     * @var ProxyQueryInterface
+     * @var ProxyQueryInterface&MockObject
      */
     private $query;
 
@@ -53,7 +55,7 @@ final class DatagridTest extends TestCase
     private $columns;
 
     /**
-     * @var FormBuilder
+     * @var FormBuilderInterface
      */
     private $formBuilder;
 
@@ -61,10 +63,7 @@ final class DatagridTest extends TestCase
     {
         $this->query = $this->createMock(ProxyQueryInterface::class);
         $this->columns = new FieldDescriptionCollection();
-        // NEXT_MAJOR: Use createMock instead.
-        $this->pager = $this->getMockBuilder(PagerInterface::class)
-            ->addMethods(['getCurrentPageResults'])
-            ->getMockForAbstractClass();
+        $this->pager = $this->createMock(PagerInterface::class);
 
         $factory = Forms::createFormFactoryBuilder()
             ->getFormFactory();
@@ -81,11 +80,6 @@ final class DatagridTest extends TestCase
         $this->assertSame($this->pager, $this->datagrid->getPager());
     }
 
-    /**
-     * @group legacy
-     *
-     * @expectedDeprecation Passing a nonexistent filter name as argument 1 to Sonata\AdminBundle\Datagrid\Datagrid::getFilter() is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0.
-     */
     public function testFilter(): void
     {
         $this->assertFalse($this->datagrid->hasFilter('foo'));
@@ -104,12 +98,11 @@ final class DatagridTest extends TestCase
         $this->datagrid->removeFilter('foo');
 
         $this->assertFalse($this->datagrid->hasFilter('foo'));
-        $this->assertNull($this->datagrid->getFilter('foo'));
-        // NEXT_MAJOR: Remove previous assertion, the "@group" and "@expectedDeprecation" annotations and uncomment the following lines
-        // $this->expectException(\InvalidArgumentException::class);
-        // $this->expectExceptionMessage('Filter named "foo" doesn\'t exist.');
-        //
-        // $this->datagrid->getFilter('foo');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Filter named "foo" doesn\'t exist.');
+
+        $this->datagrid->getFilter('foo');
     }
 
     public function testGetFilters(): void
@@ -289,13 +282,14 @@ final class DatagridTest extends TestCase
 
     public function testGetResults(): void
     {
-        $this->assertNull($this->datagrid->getResults());
+        $foo = new \stdClass();
+        $bar = new \stdClass();
 
         $this->pager->expects($this->once())
             ->method('getCurrentPageResults')
-            ->willReturn(['foo', 'bar']);
+            ->willReturn([$foo, $bar]);
 
-        $this->assertSame(['foo', 'bar'], $this->datagrid->getResults());
+        $this->assertSame([$foo, $bar], $this->datagrid->getResults());
     }
 
     public function testEmptyResults(): void
@@ -380,13 +374,13 @@ final class DatagridTest extends TestCase
      */
     public function applyFilterDataProvider(): iterable
     {
-        yield ['fakeType', 'fakeValue', 1];
-        yield ['', 'fakeValue', 1];
+        yield ['3', 'fakeValue', 1];
         yield [null, 'fakeValue', 1];
-        yield ['fakeType', '', 1];
-        yield ['fakeType', null, 1];
-        yield ['', '', 0];
-        yield ['', null, 0];
+        yield [null, 'fakeValue', 1];
+        yield ['3', '', 1];
+        yield ['3', null, 1];
+        yield [null, '', 0];
+        yield [null, null, 0];
         yield [null, '', 0];
         yield [null, null, 0];
     }
@@ -428,13 +422,11 @@ final class DatagridTest extends TestCase
 
         $this->pager->expects($this->once())
             ->method('setMaxPerPage')
-            ->with($this->equalTo('25'))
-            ->willReturn(null);
+            ->with($this->equalTo('25'));
 
         $this->pager->expects($this->once())
             ->method('setPage')
-            ->with($this->equalTo('1'))
-            ->willReturn(null);
+            ->with($this->equalTo('1'));
 
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, [DatagridInterface::SORT_BY => $sortBy]);
 
@@ -477,13 +469,11 @@ final class DatagridTest extends TestCase
 
         $this->pager->expects($this->once())
             ->method('setMaxPerPage')
-            ->with($this->equalTo('50'))
-            ->willReturn(null);
+            ->with($this->equalTo(50));
 
         $this->pager->expects($this->once())
             ->method('setPage')
-            ->with($this->equalTo('3'))
-            ->willReturn(null);
+            ->with($this->equalTo(3));
 
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, [DatagridInterface::SORT_BY => $sortBy, DatagridInterface::PAGE => $page, DatagridInterface::PER_PAGE => $perPage]);
 
@@ -522,14 +512,9 @@ final class DatagridTest extends TestCase
 
     public function getBuildPagerWithPageTests(): array
     {
-        // tests for php 5.3, because isset functionality was changed since php 5.4
         return [
             [3, 50],
-            ['3', '50'],
-            [3, '50'],
-            ['3', 50],
             [3, ['type' => null, 'value' => 50]],
-            [3, ['type' => null, 'value' => '50']],
         ];
     }
 
@@ -540,13 +525,11 @@ final class DatagridTest extends TestCase
     {
         $this->pager->expects($this->once())
             ->method('setMaxPerPage')
-            ->with($this->equalTo('50'))
-            ->willReturn(null);
+            ->with($this->equalTo(50));
 
         $this->pager->expects($this->once())
             ->method('setPage')
-            ->with($this->equalTo('3'))
-            ->willReturn(null);
+            ->with($this->equalTo(3));
 
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, []);
         $this->datagrid->setValue(DatagridInterface::PER_PAGE, null, $perPage);
@@ -566,12 +549,8 @@ final class DatagridTest extends TestCase
 
     public function getBuildPagerWithPage2Tests(): array
     {
-        // tests for php 5.3, because isset functionality was changed since php 5.4
         return [
             [3, 50],
-            ['3', '50'],
-            [3, '50'],
-            ['3', 50],
         ];
     }
 

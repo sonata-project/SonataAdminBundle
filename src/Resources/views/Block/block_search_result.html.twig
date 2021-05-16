@@ -12,15 +12,11 @@ file that was distributed with this source code.
 {% extends sonata_block.templates.block_base %}
 
 {% block block %}
-    {# NEXT_MAJOR: Remove the following line #}
-    {% set show_empty_boxes = show_empty_boxes|default(sonata_admin.adminPool.container.getParameter('sonata.admin.configuration.global_search.empty_boxes')) %}
     {% set visibility_class = 'sonata-search-result-' ~ show_empty_boxes %}
     {% set current_page_results = [] %}
-    {# NEXT_MAJOR: remove the attribute check and just use .countResults() #}
-    {% set results_count = pager ? (attribute(pager, 'countResults') is defined ? pager.countResults() : pager.getNbResults()) : 0 %}
+    {% set results_count = pager ? pager.countResults() : 0 %}
     {% if results_count > 0 %}
-        {# NEXT_MAJOR: remove the attribute check and just use .currentPageResults #}
-        {% set current_page_results = attribute(pager, 'getCurrentPageResults') is defined ? pager.currentPageResults : pager.results %}
+        {% set current_page_results = pager.currentPageResults %}
         {% set visibility_class = 'sonata-search-result-show' %}
     {% endif %}
 
@@ -40,12 +36,12 @@ file that was distributed with this source code.
                         <span class="badge">{{ results_count }}</span>
                     {% elseif admin.hasRoute('create') and admin.hasAccess('create') %}
                         <a href="{{ admin.generateUrl('create') }}" class="btn btn-box-tool">
-                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            <i class="fas fa-plus" aria-hidden="true"></i>
                         </a>
                     {% endif %}
                     {% if admin.hasRoute('list') and admin.hasAccess('list') %}
                         <a href="{{ admin.generateUrl('list') }}" class="btn btn-box-tool">
-                            <i class="fa fa-list" aria-hidden="true"></i>
+                            <i class="fas fa-list" aria-hidden="true"></i>
                         </a>
                     {% endif %}
                 </div>

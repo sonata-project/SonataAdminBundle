@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Translator\Extractor;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\Translator\Extractor\AdminExtractor;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Translation\MessageCatalogue;
@@ -34,32 +36,46 @@ final class AdminExtractorTest extends TestCase
     private $pool;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface<object>&MockObject
      */
     private $fooAdmin;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface<object>&MockObject
      */
     private $barAdmin;
 
     /**
-     * @var BreadcrumbsBuilderInterface
+     * @var BreadcrumbsBuilderInterface&MockObject
      */
     private $breadcrumbsBuilder;
 
     protected function setUp(): void
     {
-        $this->fooAdmin = $this->createStub(AdminInterface::class);
-        $this->barAdmin = $this->createStub(AdminInterface::class);
+        $this->fooAdmin = $this->createMock(AdminInterface::class);
+        $this->barAdmin = $this->createMock(AdminInterface::class);
+
+        $this->fooAdmin->method('getShow')->willReturn(new FieldDescriptionCollection());
+        $this->fooAdmin->method('getList')->willReturn(new FieldDescriptionCollection());
+        $this->barAdmin->method('getShow')->willReturn(new FieldDescriptionCollection());
+        $this->barAdmin->method('getList')->willReturn(new FieldDescriptionCollection());
 
         $container = new Container();
         $container->set('foo_admin', $this->fooAdmin);
         $container->set('bar_admin', $this->barAdmin);
 
-        $this->pool = new Pool($container, ['foo_admin', 'bar_admin'], ['group' => [
-            'label_catalogue' => 'admin_domain',
-        ]]);
+        $this->pool = new Pool($container, ['foo_admin', 'bar_admin'], [
+            'group' => [
+                'label' => 'label',
+                'icon' => 'icon',
+                'label_catalogue' => 'admin_domain',
+                'items' => [],
+                'item_adds' => [],
+                'keep_open' => false,
+                'on_top' => false,
+                'roles' => [],
+            ],
+        ]);
 
         $this->breadcrumbsBuilder = $this->createMock(BreadcrumbsBuilderInterface::class);
         $this->adminExtractor = new AdminExtractor($this->pool, $this->breadcrumbsBuilder);

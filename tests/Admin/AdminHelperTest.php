@@ -18,63 +18,29 @@ use Doctrine\Common\Collections\Collection;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Bar;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class AdminHelperTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
     /**
      * @var AdminHelper
      */
     protected $helper;
 
-    /**
-     * @var PropertyAccessor
-     */
-    private $propertyAccessor;
-
     protected function setUp(): void
     {
-        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
-        $this->helper = new AdminHelper($this->propertyAccessor);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testDeprecatedConstructingWithoutPropertyAccessor(): void
-    {
-        $pool = new Pool(new Container());
-
-        $this->expectDeprecation(sprintf(
-            'Passing an instance of "%s" as argument 1 for "%s::__construct()" is deprecated since'
-            .' sonata-project/admin-bundle 3.82 and will throw a \TypeError error in version 4.0. You MUST pass an instance'
-            .' of %s instead.',
-            Pool::class,
-            AdminHelper::class,
-            PropertyAccessorInterface::class
-        ));
-
-        new AdminHelper($pool);
+        $this->helper = new AdminHelper(PropertyAccess::createPropertyAccessor());
     }
 
     public function testGetChildFormBuilder(): void
@@ -111,86 +77,11 @@ class AdminHelperTest extends TestCase
         $formView = new FormView();
         $formView->vars['id'] = 'test';
         $child = new FormView($formView);
-        $formView->children[] = $child;
+        $formView->children['child'] = $child;
         $child->vars['id'] = 'test_elementId';
 
         $this->assertNull($this->helper->getChildFormView($formView, 'foo'));
         $this->assertInstanceOf(FormView::class, $this->helper->getChildFormView($formView, 'test_elementId'));
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     *
-     * @expectedDeprecation Method Sonata\AdminBundle\Admin\AdminHelper::addNewInstance() is deprecated since sonata-project/admin-bundle 3.72. It will be removed in version 4.0. Use Sonata\AdminBundle\Manipulator\ObjectManipulator::addInstance() instead.
-     */
-    public function testAddNewInstance(): void
-    {
-        $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->once())->method('getNewInstance')->willReturn(new \stdClass());
-
-        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getAssociationAdmin')->willReturn($admin);
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBar']);
-        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([]);
-
-        $object = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['addFooBar'])
-            ->getMock();
-        $object->expects($this->once())->method('addFooBar');
-
-        $this->helper->addNewInstance($object, $fieldDescription);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     *
-     * @expectedDeprecation Method Sonata\AdminBundle\Admin\AdminHelper::addNewInstance() is deprecated since sonata-project/admin-bundle 3.72. It will be removed in version 4.0. Use Sonata\AdminBundle\Manipulator\ObjectManipulator::addInstance() instead.
-     */
-    public function testAddNewInstancePlural(): void
-    {
-        $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->once())->method('getNewInstance')->willReturn(new \stdClass());
-
-        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getAssociationAdmin')->willReturn($admin);
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBars']);
-        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([]);
-
-        $object = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['addFooBar'])
-            ->getMock();
-        $object->expects($this->once())->method('addFooBar');
-
-        $this->helper->addNewInstance($object, $fieldDescription);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     *
-     * @expectedDeprecation Method Sonata\AdminBundle\Admin\AdminHelper::addNewInstance() is deprecated since sonata-project/admin-bundle 3.72. It will be removed in version 4.0. Use Sonata\AdminBundle\Manipulator\ObjectManipulator::addInstance() instead.
-     */
-    public function testAddNewInstanceInflector(): void
-    {
-        $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->once())->method('getNewInstance')->willReturn(new \stdClass());
-
-        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getAssociationAdmin')->willReturn($admin);
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['fieldName' => 'entries']);
-        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([]);
-
-        $object = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['addEntry'])
-            ->getMock();
-        $object->expects($this->once())->method('addEntry');
-
-        $this->helper->addNewInstance($object, $fieldDescription);
     }
 
     public function testGetElementAccessPath(): void
@@ -209,7 +100,11 @@ class AdminHelperTest extends TestCase
         $subObject->expects($this->atLeastOnce())->method('getAnother')->willReturn($sub2Object);
         $sub2Object->expects($this->atLeastOnce())->method('getMoreThings')->willReturn('Value');
 
-        $path = $this->helper->getElementAccessPath('uniquePartOfId_path_to_object_0_another_more_things', $object);
+        $path = $this->getMethodAsPublic('getElementAccessPath')->invoke(
+            $this->helper,
+            'uniquePartOfId_path_to_object_0_another_more_things',
+            $object
+        );
 
         $this->assertSame('path_to_object[0].another.more_things', $path);
     }
@@ -230,16 +125,16 @@ class AdminHelperTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage(sprintf('Could not get element id from %s Failing part: calls', $path));
 
-        $this->helper->getElementAccessPath($path, $object);
+        $this->getMethodAsPublic('getElementAccessPath')->invoke(
+            $this->helper,
+            $path,
+            $object
+        );
     }
 
     public function testAppendFormFieldElement(): void
     {
-        $helper = new AdminHelper($this->propertyAccessor);
-
-        $admin = $this->getMockBuilder(AdminInterface::class)
-            ->addMethods(['hasFormFieldDescription'])
-            ->getMockForAbstractClass();
+        $admin = $this->createMock(AdminInterface::class);
         $admin
             ->method('getClass')
             ->willReturn(Foo::class);
@@ -276,10 +171,8 @@ class AdminHelperTest extends TestCase
             ->with($associationMapping['fieldName'])
             ->willReturn(true);
 
-        $request = $this->createStub(Request::class);
-        $request
-            ->method('get')
-            ->willReturn([
+        $request = new Request([], [
+            'test' => [
                 'bar' => [
                     [
                         'baz' => [
@@ -288,15 +181,15 @@ class AdminHelperTest extends TestCase
                     ],
                     ['_delete' => true],
                 ],
-            ]);
-
-        $request->request = new ParameterBag();
+            ],
+        ]);
 
         $admin
+            ->expects($this->atLeastOnce())
             ->method('getRequest')
-            ->willReturnOnConsecutiveCalls($request, $request, $request, null, $request, $request, $request, $request, null, $request);
+            ->willReturn($request);
 
-        $foo = $this->createMock(Foo::class);
+        $foo = $this->getMockBuilder(\stdClass::class)->addMethods(['addBar'])->getMock();
         $admin
             ->method('hasSubject')
             ->willReturn(true);
@@ -324,6 +217,7 @@ class AdminHelperTest extends TestCase
         $subChildFormBuilder->setDataMapper($dataMapper);
         $childFormBuilder->add($subChildFormBuilder);
 
+        $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
         $formBuilder->setCompound(true);
         $formBuilder->setDataMapper($dataMapper);
         $formBuilder->add($childFormBuilder);
@@ -331,7 +225,7 @@ class AdminHelperTest extends TestCase
         $associationAdmin->expects($this->atLeastOnce())->method('setSubject')->with($bar);
         $admin->method('getFormBuilder')->willReturn($formBuilder);
 
-        $finalForm = $helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
+        $finalForm = $this->helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
 
         foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
             $this->assertFalse($childField->has('_delete'));
@@ -340,7 +234,7 @@ class AdminHelperTest extends TestCase
         $deleteFormBuilder = new FormBuilder('_delete', null, $eventDispatcher, $formFactory);
         $subChildFormBuilder->add($deleteFormBuilder, CheckboxType::class, ['delete' => false]);
 
-        $finalForm = $helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
+        $finalForm = $this->helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
 
         foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
             $this->assertTrue($childField->has('_delete'));
@@ -350,11 +244,7 @@ class AdminHelperTest extends TestCase
 
     public function testAppendFormFieldElementWithoutFormFieldDescriptionInAdminAndNoCollectionClass(): void
     {
-        $helper = new AdminHelper($this->propertyAccessor);
-
-        $admin = $this->getMockBuilder(AdminInterface::class)
-            ->addMethods(['hasFormFieldDescription'])
-            ->getMockForAbstractClass();
+        $admin = $this->createMock(AdminInterface::class);
         $admin
             ->method('getClass')
             ->willReturn(Foo::class);
@@ -391,10 +281,8 @@ class AdminHelperTest extends TestCase
             ->with($associationMapping['fieldName'])
             ->willReturn(false);
 
-        $request = $this->createStub(Request::class);
-        $request
-            ->method('get')
-            ->willReturn([
+        $request = new Request([], [
+            'test' => [
                 'bar' => [
                     [
                         'baz' => [
@@ -403,13 +291,12 @@ class AdminHelperTest extends TestCase
                     ],
                     ['_delete' => true],
                 ],
-            ]);
-
-        $request->request = new ParameterBag();
+            ],
+        ]);
 
         $admin
             ->method('getRequest')
-            ->willReturnOnConsecutiveCalls($request, $request, $request, null, $request, $request, $request, $request, null, $request);
+            ->willReturn($request);
 
         $foo = new Foo();
         $admin
@@ -423,6 +310,7 @@ class AdminHelperTest extends TestCase
         $formFactory = $this->createStub(FormFactoryInterface::class);
         $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
         $formBuilder = new FormBuilder('test', \get_class($foo), $eventDispatcher, $formFactory);
+        $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
         $childFormBuilder = new FormBuilder('bar', \stdClass::class, $eventDispatcher, $formFactory);
         $childFormBuilder->setCompound(true);
         $childFormBuilder->setDataMapper($dataMapper);
@@ -439,16 +327,12 @@ class AdminHelperTest extends TestCase
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(sprintf('Collection must be an instance of %s, "%s" given.', Collection::class, \gettype(null)));
-        $helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
+        $this->helper->appendFormFieldElement($admin, $foo, 'test_bar');
     }
 
     public function testAppendFormFieldElementWithCollection(): void
     {
-        $helper = new AdminHelper($this->propertyAccessor);
-
-        $admin = $this->getMockBuilder(AdminInterface::class)
-            ->addMethods(['hasFormFieldDescription'])
-            ->getMockForAbstractClass();
+        $admin = $this->createMock(AdminInterface::class);
         $admin
             ->method('getClass')
             ->willReturn(Foo::class);
@@ -485,10 +369,8 @@ class AdminHelperTest extends TestCase
             ->with($associationMapping['fieldName'])
             ->willReturn(false);
 
-        $request = $this->createStub(Request::class);
-        $request
-            ->method('get')
-            ->willReturn([
+        $request = new Request([], [
+            'test' => [
                 'bar' => [
                     [
                         'baz' => [
@@ -497,13 +379,12 @@ class AdminHelperTest extends TestCase
                     ],
                     ['_delete' => true],
                 ],
-            ]);
-
-        $request->request = new ParameterBag();
+            ],
+        ]);
 
         $admin
             ->method('getRequest')
-            ->willReturnOnConsecutiveCalls($request, $request, $request, null, $request, $request, $request, $request, null, $request);
+            ->willReturn($request);
 
         $foo = new class() {
             private $bar;
@@ -535,6 +416,7 @@ class AdminHelperTest extends TestCase
         $formFactory = $this->createStub(FormFactoryInterface::class);
         $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
         $formBuilder = new FormBuilder('test', \get_class($foo), $eventDispatcher, $formFactory);
+        $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
         $childFormBuilder = new FormBuilder('bar', \stdClass::class, $eventDispatcher, $formFactory);
         $childFormBuilder->setCompound(true);
         $childFormBuilder->setDataMapper($dataMapper);
@@ -549,7 +431,7 @@ class AdminHelperTest extends TestCase
 
         $admin->method('getFormBuilder')->willReturn($formBuilder);
 
-        $finalForm = $helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
+        $finalForm = $this->helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
 
         foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
             $this->assertFalse($childField->has('_delete'));
@@ -559,6 +441,23 @@ class AdminHelperTest extends TestCase
     public function testAppendFormFieldElementNested(): void
     {
         $admin = $this->createMock(AdminInterface::class);
+        $request = new Request([], [
+            'test' => [
+                'bar' => [
+                    [
+                        'baz' => [
+                            'baz' => true,
+                        ],
+                    ],
+                    ['_delete' => true],
+                ],
+            ],
+        ]);
+
+        $admin
+            ->expects($this->atLeastOnce())
+            ->method('getRequest')
+            ->willReturn($request);
         $object = $this->getMockBuilder(\stdClass::class)
             ->addMethods(['getSubObject'])
             ->getMock();
@@ -583,6 +482,7 @@ class AdminHelperTest extends TestCase
         $sub2Object->expects($this->atLeastOnce())->method('getMore')->willReturn([$sub3Object]);
         $sub3Object->expects($this->atLeastOnce())->method('getFinalData')->willReturn('value');
 
+        $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
         $formBuilder->setCompound(true);
         $formBuilder->setDataMapper($dataMapper);
         $formBuilder->add($childFormBuilder);
@@ -595,5 +495,13 @@ class AdminHelperTest extends TestCase
         $this->expectExceptionMessage(sprintf('Collection must be an instance of %s, "string" given.', Collection::class));
 
         $this->helper->appendFormFieldElement($admin, $object, 'uniquePartOfId_sub_object_0_and_more_0_final_data');
+    }
+
+    private function getMethodAsPublic($privateMethod): \ReflectionMethod
+    {
+        $reflectionMethod = new \ReflectionMethod(AdminHelper::class, $privateMethod);
+        $reflectionMethod->setAccessible(true);
+
+        return $reflectionMethod;
     }
 }

@@ -19,14 +19,12 @@ use Knp\Menu\Provider\MenuProviderInterface;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminExtensionInterface;
-use Sonata\AdminBundle\Controller\CRUDController;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait;
 use Sonata\BlockBundle\DependencyInjection\SonataBlockExtension;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Bundle\FrameworkBundle\Translation\TranslatorInterface;
-use Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory;
+use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -37,7 +35,10 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 class ExtensionCompilerPassTest extends TestCase
 {
@@ -47,9 +48,9 @@ class ExtensionCompilerPassTest extends TestCase
     private $extension;
 
     /**
-     * @var array
+     *  @var array
      */
-    private $config;
+    private $config = [];
 
     /**
      * Root name of the configuration.
@@ -260,6 +261,8 @@ class ExtensionCompilerPassTest extends TestCase
         $filterExtension = $container->get('sonata_extension_filter');
 
         $def = $container->get('sonata_post_admin');
+        $this->assertInstanceOf(AdminInterface::class, $def);
+
         $extensions = $def->getExtensions();
         $this->assertCount(5, $extensions);
 
@@ -269,6 +272,8 @@ class ExtensionCompilerPassTest extends TestCase
         $this->assertSame($globalExtension, $extensions[4]);
 
         $def = $container->get('sonata_article_admin');
+        $this->assertInstanceOf(AdminInterface::class, $def);
+
         $extensions = $def->getExtensions();
         $this->assertCount(6, $extensions);
 
@@ -279,8 +284,11 @@ class ExtensionCompilerPassTest extends TestCase
         $this->assertSame($globalExtension, $extensions[5]);
 
         $def = $container->get('sonata_news_admin');
+        $this->assertInstanceOf(AdminInterface::class, $def);
+
         $extensions = $def->getExtensions();
         $this->assertCount(6, $extensions);
+
         $this->assertSame($historyExtension, $extensions[0]);
         $this->assertSame($securityExtension, $extensions[2]);
         $this->assertSame($filterExtension, $extensions[3]);
@@ -344,7 +352,6 @@ class ExtensionCompilerPassTest extends TestCase
     {
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', [
-            'SonataCoreBundle' => true,
             'KnpMenuBundle' => true,
         ]);
         $container->setParameter('kernel.cache_dir', '/tmp');
@@ -353,16 +360,14 @@ class ExtensionCompilerPassTest extends TestCase
         // Add dependencies for SonataAdminBundle (these services will never get called so dummy classes will do)
         $container
             ->register('twig')
-            ->setClass(EngineInterface::class);
-        $container
-            ->register('templating')
-            ->setClass(EngineInterface::class);
+            ->setClass(Environment::class);
         $container
             ->register('translator')
-            ->setClass(TranslatorInterface::class);
+            ->setClass(Translator::class);
+        $container->setAlias(TranslatorInterface::class, 'translator');
         $container
             ->register('validator.validator_factory')
-            ->setClass(ConstraintValidatorFactory::class);
+            ->setClass(ConstraintValidatorFactoryInterface::class);
         $container
             ->register('router')
             ->setClass(RouterInterface::class);
@@ -399,19 +404,19 @@ class ExtensionCompilerPassTest extends TestCase
             ->register('sonata_post_admin')
             ->setPublic(true)
             ->setClass(MockAdmin::class)
-            ->setArguments(['', Post::class, CRUDController::class])
+            ->setArguments(['', Post::class, 'sonata.admin.controller.crud'])
             ->addTag('sonata.admin');
         $container
             ->register('sonata_news_admin')
             ->setPublic(true)
             ->setClass(MockAdmin::class)
-            ->setArguments(['', News::class, CRUDController::class])
+            ->setArguments(['', News::class, 'sonata.admin.controller.crud'])
             ->addTag('sonata.admin');
         $container
             ->register('sonata_article_admin')
             ->setPublic(true)
             ->setClass(MockAdmin::class)
-            ->setArguments(['', Article::class, CRUDController::class])
+            ->setArguments(['', Article::class, 'sonata.admin.controller.crud'])
             ->addTag('sonata.admin');
         $container
             ->register('event_dispatcher')
@@ -467,10 +472,12 @@ class ExtensionCompilerPassTest extends TestCase
     }
 }
 
+/** @phpstan-extends AbstractAdmin<object> */
 class MockAdmin extends AbstractAdmin
 {
 }
 
+/** @phpstan-extends AbstractAdmin<object> */
 class MockAbstractServiceAdmin extends AbstractAdmin
 {
     private $extraArgument;

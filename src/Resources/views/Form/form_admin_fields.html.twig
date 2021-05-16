@@ -16,38 +16,22 @@ file that was distributed with this source code.
         {% if not form.parent %}<div class="alert alert-danger">{% endif %}
             <ul class="list-unstyled">
                 {% for error in errors %}
-                    <li><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ error.message }}</li>
+                    <li><i class="fas fa-exclamation-circle" aria-hidden="true"></i> {{ error.message }}</li>
                 {% endfor %}
             </ul>
         {% if not form.parent %}</div>{% endif %}
     {% endif %}
 {%- endblock form_errors %}
 
-{# NEXT_MAJOR: Remove this block and all the calls made to this block #}
-{% block sonata_help %}
-{% apply spaceless %}
-{% if sonata_help is defined and sonata_help %}
-    {% deprecated 'The "sonata_help" option is deprecated since sonata-project/admin-bundle 3.60, to be removed in 4.0. Use "help" instead.' %}
-    <span class="help-block sonata-ba-field-widget-help">{{ sonata_help|raw }}</span>
-{% endif %}
-{% endapply %}
-{% endblock %}
-
 {% block form_help -%}
     {% if sonata_admin_translation_domain is defined and translation_domain is null %}
         {% set translation_domain = sonata_admin_translation_domain %}
     {% endif %}
     {% if help is not empty %}
-        {# NEXT_MAJOR: Remove class sonata-ba-field-widget-help #}
-        {% set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' help-block sonata-ba-field-widget-help sonata-ba-field-help')}) %}
+        {% set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' help-block sonata-ba-field-help')}) %}
         {{ parent() }}
     {% endif %}
 {%- endblock form_help %}
-
-{% block form_widget -%}
-    {{ parent() }}
-    {{ block('sonata_help') }}
-{%- endblock form_widget %}
 
 {% block form_widget_simple %}
     {% set type = type|default('text') %}
@@ -60,19 +44,7 @@ file that was distributed with this source code.
 {% block textarea_widget %}
     {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
     {{ parent() }}
-    {{ block('sonata_help') }}
 {% endblock textarea_widget %}
-
-{% block number_widget -%}
-    {{ parent() }}
-    {{ block('sonata_help') }}
-{%- endblock number_widget %}
-
-{% block choice_widget -%}
-    {{ parent() }}
-    {{ block('sonata_help') }}
-{%- endblock choice_widget %}
-
 
 {% block money_widget -%}
     {% if money_pattern == '{{ widget }}' %}
@@ -91,7 +63,6 @@ file that was distributed with this source code.
             </div>
         {% endif %}
     {% endif %}
-    {{ block('sonata_help') }}
 {%- endblock money_widget %}
 
 {% block percent_widget %}
@@ -101,7 +72,6 @@ file that was distributed with this source code.
             {{ block('form_widget_simple') }}
             <span class="input-group-addon">%</span>
         </div>
-        {{ block('sonata_help') }}
     {% endapply %}
 {% endblock percent_widget %}
 
@@ -163,8 +133,7 @@ file that was distributed with this source code.
             {%- elseif not sonata_admin.admin -%}
                 {{- label|trans(label_translation_parameters, translation_domain) -}}
             {%- else -%}
-                {# NEXT_MAJOR: Remove "admin.translationDomain" #}
-                {{- label|trans(label_translation_parameters, sonata_admin.field_description.translationDomain|default(admin.translationDomain|default(sonata_admin.admin.translationDomain))) -}}
+                {{- label|trans(label_translation_parameters, sonata_admin.field_description.translationDomain|default(sonata_admin.admin.translationDomain)) -}}
             {%- endif -%}
         </label>
     {% endif %}
@@ -291,9 +260,6 @@ file that was distributed with this source code.
             })|raw }}
         </div>
     {% endif %}
-    {% if datepicker_use_button is not defined %}
-        {{ block('sonata_help') }}
-    {% endif %}
 {% endapply %}
 {% endblock date_widget %}
 
@@ -322,7 +288,6 @@ file that was distributed with this source code.
             {% endif %}
         </div>
     {% endif %}
-    {{ block('sonata_help') }}
 {% endapply %}
 {% endblock time_widget %}
 
@@ -353,9 +318,6 @@ file that was distributed with this source code.
             {% endif %}
         </div>
     {% endif %}
-    {% if datepicker_use_button is not defined %}
-        {{ block('sonata_help') }}
-    {% endif %}
 {% endapply %}
 {% endblock datetime_widget %}
 
@@ -364,12 +326,6 @@ file that was distributed with this source code.
     {% set row_id = 'sonata-ba-field-container-'~id %}
     {% set row_class = (row_attr.class|default('') ~ ' form-group' ~ (errors|length > 0 ? ' has-error'))|trim %}
     <div{% with {attr: row_attr|merge({id: row_id, class: row_class})} %}{{ block('attributes') }}{% endwith %}>
-        {# NEXT_MAJOR: Remove this block #}
-        {% if sonata_admin.field_description|default(null) is not null and sonata_admin.field_description.option('name') %}
-            {% deprecated 'The "name" option is deprecated in field description since sonata-project/admin-bundle 3.91, to be removed in 4.0.' %}
-            {% set label = sonata_admin.field_description.option('name', label) %}
-        {% endif %}
-
         {% set div_class = 'sonata-ba-field' %}
 
         {% if label is same as(false) %}
@@ -410,11 +366,6 @@ file that was distributed with this source code.
                 </div>
             {% endif %}
 
-            {# NEXT_MAJOR: Remove this block #}
-            {% if sonata_admin is defined and sonata_admin_enabled and sonata_admin.field_description.getHelp('sonata_deprecation_mute')|default(false) %}
-                <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|trans(help_translation_parameters, sonata_admin.field_description.translationDomain ?: admin.translationDomain)|raw }}</span>
-            {% endif %}
-
             {{ form_help(form) }}
         </div>
     </div>
@@ -437,7 +388,7 @@ file that was distributed with this source code.
             <div class="row">
                 <div class="col-xs-1">
                     <a href="#" class="btn btn-link sonata-collection-delete">
-                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                        <i class="fas fa-minus-circle" aria-hidden="true"></i>
                     </a>
                 </div>
                 <div class="col-xs-11">
@@ -467,7 +418,7 @@ file that was distributed with this source code.
         {% endfor %}
         {{ form_rest(form) }}
         {% if allow_add %}
-            <div><a href="#" class="btn btn-link sonata-collection-add"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></div>
+            <div><a href="#" class="btn btn-link sonata-collection-add"><i class="fas fa-plus-circle" aria-hidden="true"></i></a></div>
         {% endif %}
     </div>
 {% endapply %}
@@ -476,8 +427,6 @@ file that was distributed with this source code.
 {% block sonata_type_immutable_array_widget %}
     {% apply spaceless %}
         <div {{ block('widget_container_attributes') }}>
-            {{ block('sonata_help') }}
-
             {{ form_errors(form) }}
 
             {% for key, child in form %}
@@ -502,8 +451,6 @@ file that was distributed with this source code.
 
             <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }}{% if child.vars.errors|length > 0 %} sonata-ba-field-error{% endif %}">
                 {{ form_widget(child, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
-                {% set sonata_help = child.vars.sonata_help %}
-                {{ block('sonata_help') }}
             </div>
 
             {% if child.vars.errors|length > 0 %}
@@ -616,7 +563,7 @@ file that was distributed with this source code.
                        class="btn btn-info btn-sm sonata-ba-action"
                        title="{{ btn_list|trans({}, btn_catalogue) }}"
                     >
-                        <i class="fa fa-list"></i>
+                        <i class="fas fa-list"></i>
                         {{ btn_list|trans({}, btn_catalogue) }}
                     </a>
                 {% endif %}
@@ -630,7 +577,7 @@ file that was distributed with this source code.
                        class="btn btn-success btn-sm sonata-ba-action"
                        title="{{ btn_add|trans({}, btn_catalogue) }}"
                     >
-                        <i class="fa fa-plus-circle"></i>
+                        <i class="fas fa-plus-circle"></i>
                         {{ btn_add|trans({}, btn_catalogue) }}
                     </a>
                 {% endif %}
@@ -645,7 +592,7 @@ file that was distributed with this source code.
                        class="btn btn-warning btn-sm sonata-ba-action {% if sonata_admin.value == null %}hidden{% endif %}"
                        title="{{ btn_edit|trans({}, btn_catalogue) }}"
                     >
-                        <i class="fa fa-pencil"></i>
+                        <i class="fas fa-pencil-alt"></i>
                         {{ btn_edit|trans({}, btn_catalogue) }}
                     </a>
                 {% endif %}
@@ -658,7 +605,7 @@ file that was distributed with this source code.
                         class="btn btn-danger btn-sm sonata-ba-action"
                         title="{{ btn_delete|trans({}, btn_catalogue) }}"
                     >
-                        <i class="fa fa-minus-circle"></i>
+                        <i class="fas fa-minus-circle"></i>
                         {{ btn_delete|trans({}, btn_catalogue) }}
                     </button>
                 {% endif %}
@@ -670,7 +617,7 @@ file that was distributed with this source code.
             {{ form_widget(form, {'required':false}) }}
         </span>
 
-        {{ block('sonata_help') }}
+        {{ form_help(form) }}
 
         <div class="modal fade" id="field_dialog_{{ id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">

@@ -1,0 +1,12 @@
+{
+  "entrypoints": {
+    "app": {
+      "css": [
+        "/bundles/sonataadmin/app.css"
+      ],
+      "js": [
+        "/bundles/sonataadmin/app.js"
+      ]
+    }
+  }
+}

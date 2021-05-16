@@ -15,9 +15,8 @@ namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Form\DataTransformerResolver;
 use Sonata\AdminBundle\Form\DataTransformerResolverInterface;
-use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
+use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +45,7 @@ final class SetObjectFieldValueAction
     private $validator;
 
     /**
-     * @var DataTransformerResolver
+     * @var DataTransformerResolverInterface
      */
     private $resolver;
 
@@ -55,53 +54,15 @@ final class SetObjectFieldValueAction
      */
     private $propertyAccessor;
 
-    /**
-     * NEXT_MAJOR: Make all arguments mandatory.
-     *
-     * @param ValidatorInterface           $validator
-     * @param DataTransformerResolver|null $resolver
-     */
     public function __construct(
         Environment $twig,
         Pool $pool,
-        $validator,
-        $resolver = null,
-        ?PropertyAccessorInterface $propertyAccessor = null
+        ValidatorInterface $validator,
+        DataTransformerResolverInterface $resolver,
+        PropertyAccessorInterface $propertyAccessor
     ) {
-        // NEXT_MAJOR: Move ValidatorInterface check to method signature
-        if (!($validator instanceof ValidatorInterface)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Argument 3 is an instance of %s, expecting an instance of %s',
-                \get_class($validator),
-                ValidatorInterface::class
-            ));
-        }
-
-        // NEXT_MAJOR: Move DataTransformerResolver check to method signature
-        if (!$resolver instanceof DataTransformerResolverInterface) {
-            @trigger_error(sprintf(
-                'Passing other type than %s in argument 4 to %s() is deprecated since sonata-project/admin-bundle 3.76 and will throw %s exception in 4.0.',
-                DataTransformerResolverInterface::class,
-                __METHOD__,
-                \TypeError::class
-            ), \E_USER_DEPRECATED);
-            $resolver = new DataTransformerResolver();
-        }
-
-        // NEXT_MAJOR: Remove this check.
-        if (null === $propertyAccessor) {
-            @trigger_error(sprintf(
-                'Omitting the argument 5 for "%s()" or passing "null" is deprecated since sonata-project/admin-bundle'
-                .' 3.82 and will throw a \TypeError error in version 4.0. You must pass an instance of %s instead.',
-                __METHOD__,
-                PropertyAccessorInterface::class
-            ), \E_USER_DEPRECATED);
-
-            $propertyAccessor = $pool->getPropertyAccessor();
-        }
-
-        $this->pool = $pool;
         $this->twig = $twig;
+        $this->pool = $pool;
         $this->validator = $validator;
         $this->resolver = $resolver;
         $this->propertyAccessor = $propertyAccessor;
@@ -134,8 +95,7 @@ final class SetObjectFieldValueAction
             ), Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
-        $rootObject = $object = $admin->getObject($objectId);
-
+        $object = $admin->getObject($objectId);
         if (!$object) {
             return new JsonResponse('Object does not exist', Response::HTTP_NOT_FOUND);
         }
@@ -145,25 +105,27 @@ final class SetObjectFieldValueAction
             return new JsonResponse('Invalid permissions', Response::HTTP_FORBIDDEN);
         }
 
-        if ('list' === $context) {
-            $fieldDescription = $admin->getListFieldDescription($field);
-        } else {
+        if ('list' !== $context) {
             return new JsonResponse('Invalid context', Response::HTTP_BAD_REQUEST);
         }
 
-        if (!$fieldDescription) {
+        if (!$admin->hasListFieldDescription($field)) {
             return new JsonResponse('The field does not exist', Response::HTTP_BAD_REQUEST);
         }
+
+        $fieldDescription = $admin->getListFieldDescription($field);
 
         if (!$fieldDescription->getOption('editable')) {
             return new JsonResponse('The field cannot be edited, editable option must be set to true', Response::HTTP_BAD_REQUEST);
         }
 
         $propertyPath = new PropertyPath($field);
+        $rootObject = $object;
 
         // If property path has more than 1 element, take the last object in order to validate it
-        if ($propertyPath->getLength() > 1) {
-            $object = $this->propertyAccessor->getValue($object, $propertyPath->getParent());
+        $parent = $propertyPath->getParent();
+        if (null !== $parent) {
+            $object = $this->propertyAccessor->getValue($object, $parent);
 
             $elements = $propertyPath->getElements();
             $field = end($elements);
@@ -206,12 +168,10 @@ final class SetObjectFieldValueAction
 
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
-        // NEXT_MAJOR: Modify lines below to use RenderElementExtension instead of SonataAdminExtension
-        $extension = $this->twig->getExtension(SonataAdminExtension::class);
-        \assert($extension instanceof SonataAdminExtension);
+        $extension = $this->twig->getExtension(RenderElementExtension::class);
+        \assert($extension instanceof RenderElementExtension);
 
-        // NEXT_MAJOR: Remove the last two arguments
-        $content = $extension->renderListElement($this->twig, $rootObject, $fieldDescription, [], 'sonata_deprecation_mute');
+        $content = $extension->renderListElement($this->twig, $rootObject, $fieldDescription);
 
         return new JsonResponse($content, Response::HTTP_OK);
     }

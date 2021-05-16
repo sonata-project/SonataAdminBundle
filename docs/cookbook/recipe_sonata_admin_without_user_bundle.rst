@@ -34,7 +34,7 @@ This represents your security user, you can read more about it
     /**
      * @ORM\Entity
      */
-    class User implements UserInterface
+    final class User implements UserInterface
     {
         /**
          * @ORM\Id
@@ -203,11 +203,7 @@ more about it `here <https://symfony.com/doc/4.4/security/guard_authentication.h
 
         public function supports(Request $request): bool
         {
-            if ($request->getPathInfo() != '/admin/login' || $request->getMethod() != 'POST') {
-                return false;
-            }
-
-            return true;
+            return $request->attributes->get('_route') === 'admin_login' && $request->isMethod('POST');
         }
 
         public function getCredentials(Request $request): array
@@ -260,13 +256,13 @@ this will be handled by Symfony, but we still need to register that route::
 
     namespace App\Controller;
 
-    use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+    use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use App\Form\AdminLoginForm;
     use Symfony\Component\Routing\Annotation\Route;
     use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
     use Symfony\Component\HttpFoundation\Response;
 
-    final class AdminLoginController extends Controller
+    final class AdminLoginController extends AbstractController
     {
         /**
          * @var AuthenticationUtils

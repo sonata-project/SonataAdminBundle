@@ -10,13 +10,6 @@ file that was distributed with this source code.
 #}
 
 {%- apply spaceless %}
-    {# NEXT_MAJOR: Remove this BC-layer #}
-    {% if field_description is defined %}
-        {% set as_string = format|default(field_description.option('as_string')) %}
-        {% set subject = subject|default(field_description.option('subject')) %}
-        {% set body = body|default(field_description.option('body')) %}
-    {% endif %}
-
     {%- if value is empty -%}
         &nbsp;
     {%- elseif as_string|default(false) -%}

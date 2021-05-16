@@ -26,9 +26,9 @@ use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryAwareInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * This interface should be implemented to work with the AddDependencyCallsCompilerPass.
@@ -42,95 +42,50 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *     - The first and third argument are automatically injected by the AddDependencyCallsCompilerPass.
  *     - The second one is used as a reference of the Admin in the Pool, with the `setAdminClasses` call.
  *
- * @method void                             initialize()
- * @method void                             setLabel(?string $label)
- * @method void                             setPagerType(string $pagerType)
- * @method string                           getPagerType()
- * @method void                             setManagerType(string $managerType)
- * @method void                             setSecurityInformation(array $information)
- * @method void                             setFilterPersister(?FilterPersisterInterface $filterPersister = null)
- * @method FilterPersisterInterface|null    getFilterPersister()
- * @method bool                             hasFilterPersister()
- * @method void                             setModelManager(ModelManagerInterface $modelManager)
- * @method void                             setDataSource(DataSourceInterface $dataSource)
- * @method DataSourceInterface              getDataSource()
- * @method void                             setFieldDescriptionFactory(FieldDescriptionFactoryInterface $fieldDescriptionFactory)
- * @method FieldDescriptionFactoryInterface getFieldDescriptionFactory()
- * @method FormContractorInterface          getFormContractor()
- * @method void                             setShowBuilder(ShowBuilderInterface $showBuilder)
- * @method ShowBuilderInterface             getShowBuilder()
- * @method Pool                             getConfigurationPool()
- * @method void                             setRouteGenerator(RouteGeneratorInterface $routeGenerator)
- * @method RouteGeneratorInterface          getRouteGenerator()
- *
  * @phpstan-template T of object
  */
-interface TaggedAdminInterface
+interface TaggedAdminInterface extends MutableTemplateRegistryAwareInterface
 {
     public const ADMIN_TAG = 'sonata.admin';
 
     public const DEFAULT_LIST_MODES = [
-        'list' => ['class' => 'fa fa-list fa-fw'],
-        'mosaic' => ['class' => 'fa fa-th-large fa-fw'],
+        'list' => ['class' => 'fas fa-list fa-fw'],
+        'mosaic' => ['class' => 'fas fa-th-large fa-fw'],
     ];
 
     /**
-     * NEXT_MAJOR: Uncomment this method.
-     *
      * Define custom variable.
      */
-//    public function initialize(): void;
+    public function initialize(): void;
+
+    public function setLabel(?string $label): void;
+
+    public function getLabel(): ?string;
 
     /**
-     * NEXT_MAJOR: Uncomment this method.
+     * @param array<string, array<string, mixed>> $listModes
      */
-//    public function setLabel(?string $label): void;
+    public function setListModes(array $listModes): void;
 
     /**
-     * @return string|null
+     * @return array<string, array<string, mixed>>
      */
-    public function getLabel();
+    public function getListModes(): array;
+
+    public function setPagerType(string $pagerType): void;
+
+    public function getPagerType(): string;
+
+    public function setManagerType(string $managerType): void;
+
+    public function getManagerType(): string;
 
     /**
-     * NEXT_MAJOR: Uncomment this method.
-     *
-     * @param array<string, array<string, string>>
-     */
-//    public function setListModes(array $listModes): void;
-
-    /**
-     * @return array<string, array<string, string>>
-     */
-    public function getListModes();
-
-    /**
-     * NEXT_MAJOR: Uncomment this method.
-     */
-//    public function setPagerType(string $pagerType): void;
-
-    /**
-     * NEXT_MAJOR: Uncomment this method.
-     */
-//    public function getPagerType(): string;
-
-    /**
-     * NEXT_MAJOR: Uncomment this method.
-     */
-//    public function setManagerType(string $managerType): void;
-
-    /**
-     * @return string
-     */
-    public function getManagerType();
-
-    /*
-     * NEXT_MAJOR: Uncomment this method.
-     *
      * Set the roles and permissions per role.
      *
      * @param array<string, string[]> $information
      */
-//    public function setSecurityInformation(array $information): void;
+    public function setSecurityInformation(array $information): void;
 
     /**
      * Return the roles and permissions per role
@@ -140,183 +95,73 @@ interface TaggedAdminInterface
      *
      * @return array<string, string[]> 'role' => ['permission', 'permission']
      */
-    public function getSecurityInformation();
+    public function getSecurityInformation(): array;
+
+    public function setFilterPersister(?FilterPersisterInterface $filterPersister = null): void;
+
+    public function getFilterPersister(): FilterPersisterInterface;
+
+    public function hasFilterPersister(): bool;
 
     /**
-     * NEXT_MAJOR: Uncomment this method.
+     * @phpstan-param ModelManagerInterface<T> $modelManager
      */
-//    public function setFilterPersister(?FilterPersisterInterface $filterPersister = null): void;
+    public function setModelManager(ModelManagerInterface $modelManager): void;
 
     /**
-     * NEXT_MAJOR: Uncomment this method.
-     */
-//    public function getFilterPersister(): ?FilterPersisterInterface;
-
-    /**
-     * NEXT_MAJOR: Uncomment this method.
-     */
-//    public function hasFilterPersister(): bool;
-
-    /**
-     * NEXT_MAJOR: Uncomment this method.
-     *
-     * @phpstan-param ModelManagerInterface<T>
-     */
-//    public function setModelManager(ModelManagerInterface $modelManager): void;
-
-    /**
-     * @return ModelManagerInterface
      * @phpstan-return ModelManagerInterface<T>
      */
-    public function getModelManager();
+    public function getModelManager(): ModelManagerInterface;
 
-    /**
-     * NEXT_MAJOR: Uncomment this method.
-     */
-//    public function setDataSource(DataSourceInterface $dataSource): void;
+    public function setDataSource(DataSourceInterface $dataSource): void;
 
-    /**
-     * NEXT_MAJOR: Uncomment this method.
-     */
-//    public function getDataSource(): DataSourceInterface;
+    public function getDataSource(): DataSourceInterface;
 
-    /**
-     * NEXT_MAJOR: Uncomment this method.
-     */
-//    public function setFieldDescriptionFactory(FieldDescriptionFactoryInterface $fieldDescriptionFactory): void;
+    public function setFieldDescriptionFactory(FieldDescriptionFactoryInterface $fieldDescriptionFactory): void;
 
-    /**
-     * NEXT_MAJOR: Uncomment this method.
-     */
-//    public function getFieldDescriptionFactory(): FieldDescriptionFactoryInterface;
+    public function getFieldDescriptionFactory(): FieldDescriptionFactoryInterface;
 
-    /**
-     * @return void
-     */
-    public function setFormContractor(FormContractorInterface $formContractor);
+    public function setFormContractor(FormContractorInterface $formContractor): void;
 
-    /**
-     * NEXT_MAJOR: Uncomment this method.
-     */
-//    public function getFormContractor(): FormContractorInterface;
+    public function getFormContractor(): FormContractorInterface;
 
-    /**
-     * NEXT_MAJOR: Uncomment this method.
-     */
-//    public function setShowBuilder(ShowBuilderInterface $showBuilder): void;
+    public function setShowBuilder(ShowBuilderInterface $showBuilder): void;
 
-    /**
-     * NEXT_MAJOR: Uncomment this method.
-     */
-//    public function getShowBuilder(): ShowBuilderInterface;
+    public function getShowBuilder(): ShowBuilderInterface;
 
-    /**
-     * @return void
-     */
-    public function setListBuilder(ListBuilderInterface $listBuilder);
+    public function setListBuilder(ListBuilderInterface $listBuilder): void;
 
-    /**
-     * @return ListBuilderInterface
-     */
-    public function getListBuilder();
+    public function getListBuilder(): ListBuilderInterface;
 
-    /**
-     * @return void
-     */
-    public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder);
+    public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder): void;
 
-    /**
-     * @return DatagridBuilderInterface
-     */
-    public function getDatagridBuilder();
+    public function getDatagridBuilder(): DatagridBuilderInterface;
 
-    /**
-     * @return void
-     */
-    public function setTranslator(TranslatorInterface $translator);
+    public function setTranslator(TranslatorInterface $translator): void;
 
-    /**
-     * @return TranslatorInterface
-     */
-    public function getTranslator();
+    public function getTranslator(): TranslatorInterface;
 
-    /**
-     * @return void
-     */
-    public function setConfigurationPool(Pool $pool);
+    public function setConfigurationPool(Pool $pool): void;
 
-    /**
-     * NEXT_MAJOR: Uncomment this method.
-     */
-//    public function getConfigurationPool(): Pool;
+    public function getConfigurationPool(): Pool;
 
-    /**
-     * NEXT_MAJOR: Uncomment this method.
-     */
-//    public function setRouteGenerator(RouteGeneratorInterface $routeGenerator): void;
+    public function setRouteGenerator(RouteGeneratorInterface $routeGenerator): void;
 
-    /**
-     * NEXT_MAJOR: Uncomment this method.
-     */
-//    public function getRouteGenerator(): RouteGeneratorInterface;
+    public function getRouteGenerator(): RouteGeneratorInterface;
 
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @param ValidatorInterface $validator
-     *
-     * @return void
-     *
-     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0
-     */
-    public function setValidator($validator);
+    public function setSecurityHandler(SecurityHandlerInterface $securityHandler): void;
 
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @return ValidatorInterface
-     *
-     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0
-     */
-    public function getValidator();
+    public function getSecurityHandler(): SecurityHandlerInterface;
 
-    /**
-     * @return void
-     */
-    public function setSecurityHandler(SecurityHandlerInterface $securityHandler);
+    public function setMenuFactory(FactoryInterface $menuFactory): void;
 
-    /**
-     * @return SecurityHandlerInterface
-     */
-    public function getSecurityHandler();
+    public function getMenuFactory(): FactoryInterface;
 
-    /**
-     * @return void
-     */
-    public function setMenuFactory(FactoryInterface $menuFactory);
+    public function setRouteBuilder(RouteBuilderInterface $routeBuilder): void;
 
-    /**
-     * @return FactoryInterface
-     */
-    public function getMenuFactory();
+    public function getRouteBuilder(): RouteBuilderInterface;
 
-    /**
-     * @return void
-     */
-    public function setRouteBuilder(RouteBuilderInterface $routeBuilder);
+    public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy): void;
 
-    /**
-     * @return RouteBuilderInterface
-     */
-    public function getRouteBuilder();
-
-    /**
-     * @return void
-     */
-    public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy);
-
-    /**
-     * @return LabelTranslatorStrategyInterface
-     */
-    public function getLabelTranslatorStrategy();
+    public function getLabelTranslatorStrategy(): LabelTranslatorStrategyInterface;
 }

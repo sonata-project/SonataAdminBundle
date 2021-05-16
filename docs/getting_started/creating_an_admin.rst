@@ -13,8 +13,7 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
 
     // src/Entity/BlogPost.php
 
-    // ...
-    class BlogPost
+    final class BlogPost
     {
         // ...
 
@@ -50,8 +49,9 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
     // src/Entity/Category.php
 
     use Doctrine\Common\Collections\ArrayCollection;
+    use Doctrine\Common\Collections\Collection;
 
-    class Category
+    final class Category
     {
         // ...
 
@@ -63,6 +63,8 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
         private $name;
 
         /**
+         * @var Collection
+         *
          * @ORM\OneToMany(targetEntity="BlogPost", mappedBy="category")
          */
         private $blogPosts;
@@ -72,7 +74,7 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
             $this->blogPosts = new ArrayCollection();
         }
 
-        public function getBlogPosts()
+        public function getBlogPosts(): Collection
         {
             return $this->blogPosts;
         }
@@ -87,18 +89,21 @@ After this, create the schema for these entities:
 .. note::
 
     This article assumes you have basic knowledge of the Doctrine2 ORM and
-    you've set up a database correctly.
+    you've set up a database correctly. You can learn more on Doctrine entities
+    in the `Databases and the Doctrine ORM`_ chapter.
+
+.. _`Databases and the Doctrine ORM`: https://symfony.com/doc/current/doctrine.html
 
 Step 1: Create an Admin Class
 -----------------------------
 
 SonataAdminBundle helps you manage your data using a graphical interface that
 will let you create, update or search your model instances. The bundle relies
-on Admin classes to know which models will be managed and how these actions
+on Admin classes to know which models will be managed and what these actions
 will look like.
 
 An Admin class decides which fields to show on a listing, which fields are used
-to find entries and how the create form will look like. Each model will have
+to find entries and what the create form will look like. Each model will have
 its own Admin class.
 
 Knowing this, let's create an Admin class for the ``Category`` entity. The
@@ -116,17 +121,17 @@ easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin`
 
     final class CategoryAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper->add('name', TextType::class);
         }
 
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
         {
             $datagridMapper->add('name');
         }
 
-        protected function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $listMapper): void
         {
             $listMapper->addIdentifier('name');
         }
@@ -213,3 +218,5 @@ entity and learn more about this class.
     "link_add", you should make sure that you've `enabled the translator`_.
 
 .. _`enabled the translator`: https://symfony.com/doc/4.4/translation.html#configuration
+
+In the :doc:`next chapter <the_form_view>`, you're going to look at the form view.

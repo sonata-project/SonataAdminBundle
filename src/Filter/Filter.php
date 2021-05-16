@@ -26,21 +26,12 @@ abstract class Filter implements FilterInterface
     protected $name;
 
     /**
-     * NEXT_MAJOR: Remove this property.
-     *
-     * @var mixed|null
-     *
-     * @deprecated since sonata-project/admin-bundle 3.84, to be removed in 4.0.
-     */
-    protected $value;
-
-    /**
      * @var array<string, mixed>
      */
     protected $options = [];
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $condition;
 
@@ -49,27 +40,26 @@ abstract class Filter implements FilterInterface
      */
     private $active = false;
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function initialize($name, array $options = [])
+    final public function initialize(string $name, array $options = []): void
     {
         $this->name = $name;
         $this->setOptions($options);
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function getName()
+    final public function getName(): string
     {
+        if (null === $this->name) {
+            throw new \LogicException(sprintf(
+                'Seems like you didn\'t call `initialize()` on the filter `%s`. Did you create it through `%s::create()`?',
+                static::class,
+                FilterFactory::class
+            ));
+        }
+
         return $this->name;
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function getFormName()
+    final public function getFormName(): string
     {
         /*
            Symfony default form class sadly can't handle
@@ -78,13 +68,10 @@ abstract class Filter implements FilterInterface
            So use this trick to avoid any issue.
         */
 
-        return str_replace('.', '__', $this->name);
+        return str_replace('.', '__', $this->getName());
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function getOption($name, $default = null)
+    final public function getOption(string $name, $default = null)
     {
         if (\array_key_exists($name, $this->options)) {
             return $this->options[$name];
@@ -93,34 +80,22 @@ abstract class Filter implements FilterInterface
         return $default;
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function setOption($name, $value)
+    final public function setOption(string $name, $value): void
     {
         $this->options[$name] = $value;
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function getFieldType()
+    final public function getFieldType(): string
     {
         return $this->getOption('field_type', TextType::class);
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function getFieldOptions()
+    final public function getFieldOptions(): array
     {
-        return $this->getOption('field_options', ['required' => false]);
+        return $this->getOption('field_options', []);
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function getFieldOption($name, $default = null)
+    final public function getFieldOption(string $name, $default = null)
     {
         if (isset($this->options['field_options'][$name]) && \is_array($this->options['field_options'])) {
             return $this->options['field_options'][$name];
@@ -129,38 +104,26 @@ abstract class Filter implements FilterInterface
         return $default;
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function setFieldOption($name, $value)
+    final public function setFieldOption(string $name, $value): void
     {
         $this->options['field_options'][$name] = $value;
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function getLabel()
+    final public function getLabel()
     {
         return $this->getOption('label');
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function setLabel($label)
+    final public function setLabel($label): void
     {
         $this->setOption('label', $label);
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function getFieldName()
+    final public function getFieldName(): string
     {
         $fieldName = $this->getOption('field_name');
 
-        if (!$fieldName) {
+        if (null === $fieldName) {
             throw new \RuntimeException(sprintf(
                 'The option `field_name` must be set for field: `%s`',
                 $this->getName()
@@ -170,22 +133,16 @@ abstract class Filter implements FilterInterface
         return $fieldName;
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function getParentAssociationMappings()
+    final public function getParentAssociationMappings(): array
     {
         return $this->getOption('parent_association_mappings', []);
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function getFieldMapping()
+    final public function getFieldMapping(): array
     {
         $fieldMapping = $this->getOption('field_mapping');
 
-        if (!$fieldMapping) {
+        if (null === $fieldMapping) {
             throw new \RuntimeException(sprintf(
                 'The option `field_mapping` must be set for field: `%s`',
                 $this->getName()
@@ -195,14 +152,11 @@ abstract class Filter implements FilterInterface
         return $fieldMapping;
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function getAssociationMapping()
+    final public function getAssociationMapping(): array
     {
         $associationMapping = $this->getOption('association_mapping');
 
-        if (!$associationMapping) {
+        if (null === $associationMapping) {
             throw new \RuntimeException(sprintf(
                 'The option `association_mapping` must be set for field: `%s`',
                 $this->getName()
@@ -213,9 +167,9 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.99.
+     * @param array<string, mixed> $options
      */
-    public function setOptions(array $options)
+    final public function setOptions(array $options): void
     {
         $this->options = array_merge(
             ['show_filter' => null, 'advanced_filter' => true],
@@ -225,89 +179,34 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.99.
-     *
      * @return array<string, mixed>
      */
-    public function getOptions()
+    final public function getOptions(): array
     {
         return $this->options;
     }
 
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @param mixed $value
-     *
-     * @deprecated since sonata-project/admin-bundle 3.84, to be removed in 4.0.
-     */
-    public function setValue($value)
+    final public function isActive(): bool
     {
-        @trigger_error(sprintf(
-            'Method %s() is deprecated since sonata-project/admin-bundle 3.84 and will be removed in version 4.0.',
-            __METHOD__,
-        ), \E_USER_DEPRECATED);
-
-        $this->value = $value;
+        return $this->active;
     }
 
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @return mixed
-     *
-     * @deprecated since sonata-project/admin-bundle 3.84, to be removed in 4.0.
-     */
-    public function getValue()
-    {
-        @trigger_error(sprintf(
-            'Method %s() is deprecated since sonata-project/admin-bundle 3.84 and will be removed in version 4.0.',
-            __METHOD__,
-        ), \E_USER_DEPRECATED);
-
-        return $this->value;
-    }
-
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function isActive()
-    {
-        $values = $this->value;
-
-        // NEXT_MAJOR: Change for `return $this->active;`
-        return $this->active
-            || isset($values['value']) && false !== $values['value'] && '' !== $values['value'];
-    }
-
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function setCondition($condition)
+    final public function setCondition(string $condition): void
     {
         $this->condition = $condition;
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function getCondition()
+    final public function getCondition(): ?string
     {
         return $this->condition;
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function getTranslationDomain()
+    final public function getTranslationDomain(): ?string
     {
         return $this->getOption('translation_domain');
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    protected function setActive(bool $active): void
+    final protected function setActive(bool $active): void
     {
         $this->active = $active;
     }

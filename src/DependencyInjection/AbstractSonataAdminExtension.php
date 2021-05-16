@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\DependencyInjection;
 
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
@@ -23,14 +22,11 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 abstract class AbstractSonataAdminExtension extends Extension
 {
-    /**
-     * @return array
-     */
     protected function fixTemplatesConfiguration(
         array $configs,
         ContainerBuilder $container,
         array $defaultSonataDoctrineConfig = []
-    ) {
+    ): array {
         $defaultConfig = [
             'templates' => [
                 'types' => [
@@ -40,19 +36,11 @@ abstract class AbstractSonataAdminExtension extends Extension
                         FieldDescriptionInterface::TYPE_DATE => '@SonataAdmin/CRUD/list_date.html.twig',
                         FieldDescriptionInterface::TYPE_TIME => '@SonataAdmin/CRUD/list_time.html.twig',
                         FieldDescriptionInterface::TYPE_DATETIME => '@SonataAdmin/CRUD/list_datetime.html.twig',
-                        /* NEXT_MAJOR: Remove this line. */
-                        TemplateRegistry::TYPE_TEXT => '@SonataAdmin/CRUD/list_string.html.twig',
                         FieldDescriptionInterface::TYPE_TEXTAREA => '@SonataAdmin/CRUD/list_string.html.twig',
                         FieldDescriptionInterface::TYPE_EMAIL => '@SonataAdmin/CRUD/list_email.html.twig',
                         FieldDescriptionInterface::TYPE_TRANS => '@SonataAdmin/CRUD/list_trans.html.twig',
                         FieldDescriptionInterface::TYPE_STRING => '@SonataAdmin/CRUD/list_string.html.twig',
-                        /* NEXT_MAJOR: Remove this line. */
-                        TemplateRegistry::TYPE_SMALLINT => '@SonataAdmin/CRUD/list_string.html.twig',
-                        /* NEXT_MAJOR: Remove this line. */
-                        TemplateRegistry::TYPE_BIGINT => '@SonataAdmin/CRUD/list_string.html.twig',
                         FieldDescriptionInterface::TYPE_INTEGER => '@SonataAdmin/CRUD/list_string.html.twig',
-                        /* NEXT_MAJOR: Remove this line. */
-                        TemplateRegistry::TYPE_DECIMAL => '@SonataAdmin/CRUD/list_string.html.twig',
                         FieldDescriptionInterface::TYPE_FLOAT => '@SonataAdmin/CRUD/list_string.html.twig',
                         FieldDescriptionInterface::TYPE_IDENTIFIER => '@SonataAdmin/CRUD/list_string.html.twig',
                         FieldDescriptionInterface::TYPE_CURRENCY => '@SonataAdmin/CRUD/list_currency.html.twig',
@@ -71,18 +59,10 @@ abstract class AbstractSonataAdminExtension extends Extension
                         FieldDescriptionInterface::TYPE_DATE => '@SonataAdmin/CRUD/show_date.html.twig',
                         FieldDescriptionInterface::TYPE_TIME => '@SonataAdmin/CRUD/show_time.html.twig',
                         FieldDescriptionInterface::TYPE_DATETIME => '@SonataAdmin/CRUD/show_datetime.html.twig',
-                        /* NEXT_MAJOR: Remove this line. */
-                        TemplateRegistry::TYPE_TEXT => '@SonataAdmin/CRUD/base_show_field.html.twig',
                         FieldDescriptionInterface::TYPE_EMAIL => '@SonataAdmin/CRUD/show_email.html.twig',
                         FieldDescriptionInterface::TYPE_TRANS => '@SonataAdmin/CRUD/show_trans.html.twig',
                         FieldDescriptionInterface::TYPE_STRING => '@SonataAdmin/CRUD/base_show_field.html.twig',
-                        /* NEXT_MAJOR: Remove this line. */
-                        TemplateRegistry::TYPE_SMALLINT => '@SonataAdmin/CRUD/base_show_field.html.twig',
-                        /* NEXT_MAJOR: Remove this line. */
-                        TemplateRegistry::TYPE_BIGINT => '@SonataAdmin/CRUD/base_show_field.html.twig',
                         FieldDescriptionInterface::TYPE_INTEGER => '@SonataAdmin/CRUD/base_show_field.html.twig',
-                        /* NEXT_MAJOR: Remove this line. */
-                        TemplateRegistry::TYPE_DECIMAL => '@SonataAdmin/CRUD/base_show_field.html.twig',
                         FieldDescriptionInterface::TYPE_FLOAT => '@SonataAdmin/CRUD/base_show_field.html.twig',
                         FieldDescriptionInterface::TYPE_CURRENCY => '@SonataAdmin/CRUD/show_currency.html.twig',
                         FieldDescriptionInterface::TYPE_PERCENT => '@SonataAdmin/CRUD/show_percent.html.twig',
@@ -104,13 +84,7 @@ abstract class AbstractSonataAdminExtension extends Extension
             $defaultConfig['templates']['types']['list'] = array_merge($defaultConfig['templates']['types']['list'], [
                 FieldDescriptionInterface::TYPE_DATE => '@SonataIntl/CRUD/list_date.html.twig',
                 FieldDescriptionInterface::TYPE_DATETIME => '@SonataIntl/CRUD/list_datetime.html.twig',
-                /* NEXT_MAJOR: Remove this line. */
-                TemplateRegistry::TYPE_SMALLINT => '@SonataIntl/CRUD/list_decimal.html.twig',
-                /* NEXT_MAJOR: Remove this line. */
-                TemplateRegistry::TYPE_BIGINT => '@SonataIntl/CRUD/list_decimal.html.twig',
                 FieldDescriptionInterface::TYPE_INTEGER => '@SonataIntl/CRUD/list_decimal.html.twig',
-                /* NEXT_MAJOR: Remove this line. */
-                TemplateRegistry::TYPE_DECIMAL => '@SonataIntl/CRUD/list_decimal.html.twig',
                 FieldDescriptionInterface::TYPE_FLOAT => '@SonataIntl/CRUD/list_decimal.html.twig',
                 FieldDescriptionInterface::TYPE_CURRENCY => '@SonataIntl/CRUD/list_currency.html.twig',
                 FieldDescriptionInterface::TYPE_PERCENT => '@SonataIntl/CRUD/list_percent.html.twig',
@@ -119,13 +93,7 @@ abstract class AbstractSonataAdminExtension extends Extension
             $defaultConfig['templates']['types']['show'] = array_merge($defaultConfig['templates']['types']['show'], [
                 FieldDescriptionInterface::TYPE_DATE => '@SonataIntl/CRUD/show_date.html.twig',
                 FieldDescriptionInterface::TYPE_DATETIME => '@SonataIntl/CRUD/show_datetime.html.twig',
-                /* NEXT_MAJOR: Remove this line. */
-                TemplateRegistry::TYPE_SMALLINT => '@SonataIntl/CRUD/show_decimal.html.twig',
-                /* NEXT_MAJOR: Remove this line. */
-                TemplateRegistry::TYPE_BIGINT => '@SonataIntl/CRUD/show_decimal.html.twig',
                 FieldDescriptionInterface::TYPE_INTEGER => '@SonataIntl/CRUD/show_decimal.html.twig',
-                /* NEXT_MAJOR: Remove this line. */
-                TemplateRegistry::TYPE_DECIMAL => '@SonataIntl/CRUD/show_decimal.html.twig',
                 FieldDescriptionInterface::TYPE_FLOAT => '@SonataIntl/CRUD/show_decimal.html.twig',
                 FieldDescriptionInterface::TYPE_CURRENCY => '@SonataIntl/CRUD/show_currency.html.twig',
                 FieldDescriptionInterface::TYPE_PERCENT => '@SonataIntl/CRUD/show_percent.html.twig',

@@ -13,16 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Twig\Extension;
 
-use Psr\Log\LoggerInterface;
-use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Twig\Environment;
-use Twig\Error\LoaderError;
 use Twig\Extension\AbstractExtension;
 use Twig\TemplateWrapper;
 use Twig\TwigFilter;
@@ -30,33 +23,16 @@ use Twig\TwigFilter;
 final class RenderElementExtension extends AbstractExtension
 {
     /**
-     * @var LoggerInterface|null
-     */
-    private $logger;
-
-    /**
-     * @var ContainerInterface|null
-     */
-    private $templateRegistries;
-
-    /**
      * @var PropertyAccessorInterface
      */
     private $propertyAccessor;
 
     /**
-     * NEXT_MAJOR: Make $templateRegistries mandatory.
-     *
      * @internal This class should only be used through Twig
      */
-    public function __construct(
-        PropertyAccessorInterface $propertyAccessor,
-        ?ContainerInterface $templateRegistries = null,
-        ?LoggerInterface $logger = null
-    ) {
+    public function __construct(PropertyAccessorInterface $propertyAccessor)
+    {
         $this->propertyAccessor = $propertyAccessor;
-        $this->templateRegistries = $templateRegistries;
-        $this->logger = $logger;
     }
 
     /**
@@ -65,8 +41,6 @@ final class RenderElementExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            //NEXT_MAJOR: Uncomment lines below
-            /*
             new TwigFilter(
                 'render_list_element',
                 [$this, 'renderListElement'],
@@ -95,7 +69,6 @@ final class RenderElementExtension extends AbstractExtension
                 'render_relation_element',
                 [$this, 'renderRelationElement']
             ),
-            */
         ];
     }
 
@@ -104,20 +77,16 @@ final class RenderElementExtension extends AbstractExtension
      *
      * @param object|mixed[]       $listElement
      * @param array<string, mixed> $params
-     *
-     * @return string
      */
     public function renderListElement(
         Environment $environment,
         $listElement,
         FieldDescriptionInterface $fieldDescription,
-        $params = []
-    ) {
+        array $params = []
+    ): string {
         $template = $this->getTemplate(
             $fieldDescription,
-            // NEXT_MAJOR: Remove this line and use commented line below instead
-            $fieldDescription->getAdmin()->getTemplate('base_list_field'),
-            //$this->getTemplateRegistry($fieldDescription->getAdmin()->getCode())->getTemplate('base_list_field'),
+            $fieldDescription->getAdmin()->getTemplateRegistry()->getTemplate('base_list_field'),
             $environment
         );
 
@@ -131,44 +100,21 @@ final class RenderElementExtension extends AbstractExtension
         ]), $environment);
     }
 
-    /**
-     * render a view element.
-     *
-     * @param object $object
-     *
-     * @return string
-     */
     public function renderViewElement(
         Environment $environment,
         FieldDescriptionInterface $fieldDescription,
-        $object
-    ) {
+        object $object
+    ): string {
         $template = $this->getTemplate(
             $fieldDescription,
             '@SonataAdmin/CRUD/base_show_field.html.twig',
             $environment
         );
 
-        try {
-            $value = $fieldDescription->getValue($object);
-        } catch (NoValueException $e) {
-            // NEXT_MAJOR: Remove the try catch in order to throw the NoValueException.
-            @trigger_error(
-                sprintf(
-                    'Accessing a non existing value for the field "%s" is deprecated'
-                    .' since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.',
-                    $fieldDescription->getName(),
-                ),
-                \E_USER_DEPRECATED
-            );
-
-            $value = null;
-        }
-
         return $this->render($fieldDescription, $template, [
             'field_description' => $fieldDescription,
             'object' => $object,
-            'value' => $value,
+            'value' => $fieldDescription->getValue($object),
             'admin' => $fieldDescription->getAdmin(),
         ], $environment);
     }
@@ -178,52 +124,21 @@ final class RenderElementExtension extends AbstractExtension
      *
      * @param mixed $baseObject
      * @param mixed $compareObject
-     *
-     * @return string
      */
     public function renderViewElementCompare(
         Environment $environment,
         FieldDescriptionInterface $fieldDescription,
         $baseObject,
         $compareObject
-    ) {
+    ): string {
         $template = $this->getTemplate(
             $fieldDescription,
             '@SonataAdmin/CRUD/base_show_field.html.twig',
             $environment
         );
 
-        try {
-            $baseValue = $fieldDescription->getValue($baseObject);
-        } catch (NoValueException $e) {
-            // NEXT_MAJOR: Remove the try catch in order to throw the NoValueException.
-            @trigger_error(
-                sprintf(
-                    'Accessing a non existing value for the field "%s" is deprecated'
-                    .' since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.',
-                    $fieldDescription->getName(),
-                ),
-                \E_USER_DEPRECATED
-            );
-
-            $baseValue = null;
-        }
-
-        try {
-            $compareValue = $fieldDescription->getValue($compareObject);
-        } catch (NoValueException $e) {
-            // NEXT_MAJOR: Remove the try catch in order to throw the NoValueException.
-            @trigger_error(
-                sprintf(
-                    'Accessing a non existing value for the field "%s" is deprecated'
-                    .' since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.',
-                    $fieldDescription->getName(),
-                ),
-                \E_USER_DEPRECATED
-            );
-
-            $compareValue = null;
-        }
+        $baseValue = $fieldDescription->getValue($baseObject);
+        $compareValue = $fieldDescription->getValue($compareObject);
 
         $baseValueOutput = $template->render([
             'admin' => $fieldDescription->getAdmin(),
@@ -269,20 +184,7 @@ final class RenderElementExtension extends AbstractExtension
         $propertyPath = $fieldDescription->getOption('associated_property');
 
         if (null === $propertyPath) {
-            // For BC kept associated_tostring option behavior
-            // NEXT_MAJOR Remove next line.
-            $method = $fieldDescription->getOption('associated_tostring');
-            // NEXT_MAJOR: Remove the "if" part and leave the "else" part
-            if ($method) {
-                @trigger_error(
-                    'Option "associated_tostring" is deprecated since version 2.3 and will be removed in 4.0. Use "associated_property" instead.',
-                    \E_USER_DEPRECATED
-                );
-            } else {
-                $method = '__toString';
-            }
-
-            if (!method_exists($element, $method)) {
+            if (!method_exists($element, '__toString')) {
                 throw new \RuntimeException(sprintf(
                     'You must define an `associated_property` option or create a `%s::__toString` method'
                     .' to the field option %s from service %s is ',
@@ -292,7 +194,7 @@ final class RenderElementExtension extends AbstractExtension
                 ));
             }
 
-            return $element->{$method}();
+            return $element->__toString();
         }
 
         if (\is_callable($propertyPath)) {
@@ -300,46 +202,6 @@ final class RenderElementExtension extends AbstractExtension
         }
 
         return $this->propertyAccessor->getValue($element, $propertyPath);
-    }
-
-    /**
-     * NEXT_MAJOR: Make this method private.
-     *
-     * @internal This method will be private in the next major version
-     *
-     * @param string $defaultTemplate
-     *
-     * @return TemplateWrapper
-     */
-    public function getTemplate(
-        FieldDescriptionInterface $fieldDescription,
-        $defaultTemplate,
-        Environment $environment
-    ) {
-        $templateName = $fieldDescription->getTemplate() ?: $defaultTemplate;
-
-        try {
-            $template = $environment->load($templateName);
-        } catch (LoaderError $e) {
-            @trigger_error(sprintf(
-                'Relying on default template loading on field template loading exception is deprecated since 3.1'
-                .' and will be removed in 4.0. A %s exception will be thrown instead',
-                LoaderError::class
-            ), \E_USER_DEPRECATED);
-            $template = $environment->load($defaultTemplate);
-
-            if (null !== $this->logger) {
-                $this->logger->warning(sprintf(
-                    'An error occured trying to load the template "%s" for the field "%s",'
-                    .' the default template "%s" was used instead.',
-                    $templateName,
-                    $fieldDescription->getFieldName(),
-                    $defaultTemplate
-                ), ['exception' => $e]);
-            }
-        }
-
-        return $template;
     }
 
     /**
@@ -372,21 +234,7 @@ final class RenderElementExtension extends AbstractExtension
         if (\is_array($listElement) && \array_key_exists($fieldDescription->getName(), $listElement)) {
             $value = $listElement[$fieldDescription->getName()];
         } else {
-            try {
-                $value = $fieldDescription->getValue($object);
-            } catch (NoValueException $e) {
-                // NEXT_MAJOR: throw the NoValueException.
-                @trigger_error(
-                    sprintf(
-                        'Accessing a non existing value for the field "%s" is deprecated'
-                        .' since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.',
-                        $fieldDescription->getName(),
-                    ),
-                    \E_USER_DEPRECATED
-                );
-
-                $value = null;
-            }
+            $value = $fieldDescription->getValue($object);
         }
 
         return [$object, $value];
@@ -418,7 +266,7 @@ EOT;
             return sprintf(
                 $commentTemplate,
                 $fieldDescription->getFieldName(),
-                $fieldDescription->getTemplate(),
+                $fieldDescription->getTemplate() ?? '',
                 $template->getSourceContext()->getName(),
                 $content,
                 $fieldDescription->getFieldName()
@@ -428,19 +276,13 @@ EOT;
         return $content;
     }
 
-    /**
-     * @throws ServiceCircularReferenceException
-     * @throws ServiceNotFoundException
-     */
-    private function getTemplateRegistry(string $adminCode): TemplateRegistryInterface
-    {
-        $serviceId = $adminCode.'.template_registry';
-        $templateRegistry = $this->templateRegistries->get($serviceId);
+    private function getTemplate(
+        FieldDescriptionInterface $fieldDescription,
+        string $defaultTemplate,
+        Environment $environment
+    ): TemplateWrapper {
+        $templateName = $fieldDescription->getTemplate() ?: $defaultTemplate;
 
-        if ($templateRegistry instanceof TemplateRegistryInterface) {
-            return $templateRegistry;
-        }
-
-        throw new ServiceNotFoundException($serviceId);
+        return $environment->load($templateName);
     }
 }

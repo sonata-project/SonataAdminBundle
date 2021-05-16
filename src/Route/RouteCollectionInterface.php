@@ -17,119 +17,91 @@ use Symfony\Component\Routing\Route;
 
 /**
  * @author Jordi Sala <jordism91@gmail.com>
- *
- * @method string getRouteName(string $name)
  */
 interface RouteCollectionInterface
 {
     /**
-     * @param string $name
-     * @param string $pattern   Pattern (will be automatically combined with @see $this->baseRoutePattern and $name
-     * @param string $host
-     * @param string $condition
+     * @param array<string, mixed>  $defaults
+     * @param array<string, string> $requirements
+     * @param array<string, mixed>  $options
+     * @param string[]              $schemes
+     * @param string[]              $methods
      *
-     * @return RouteCollection
+     * @return static
      */
     public function add(
-        $name,
-        $pattern = null,
+        string $name,
+        ?string $pattern = null,
         array $defaults = [],
         array $requirements = [],
         array $options = [],
-        $host = '',
+        string $host = '',
         array $schemes = [],
         array $methods = [],
-        $condition = ''
-    );
+        string $condition = ''
+    ): self;
+
+    public function getCode(string $name): string;
 
     /**
-     * @return string
+     * @return static
      */
-    public function getCode(string $name);
+    public function addCollection(self $collection): self;
 
     /**
-     * @return $this
+     * @return array<string, Route>
      */
-    public function addCollection(RouteCollection $collection);
+    public function getElements(): array;
 
-    /**
-     * @return Route[]
-     */
-    public function getElements();
-
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function has($name);
+    public function has(string $name): bool;
 
     public function hasCached(string $name): bool;
 
     /**
-     * @param string $name
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return Route
      */
-    public function get($name);
+    public function get(string $name): Route;
 
     /**
-     * @return $this
+     * @return static
      */
-    public function remove(string $name);
+    public function remove(string $name): self;
 
     /**
      * @throws \InvalidArgumentException
      *
-     * @return $this
+     * @return static
      */
-    public function restore(string $name);
+    public function restore(string $name): self;
 
     /**
      * Remove all routes except routes in $routeList.
      *
      * @param string[]|string $routeList
      *
-     * @return $this
+     * @return static
      */
-    public function clearExcept($routeList);
+    public function clearExcept($routeList): self;
 
     /**
-     * @return $this
+     * @return static
      */
-    public function clear();
+    public function clear(): self;
 
     /**
      * Converts a word into the format required for a controller action. By instance,
      * the argument "list_something" returns "listSomething" if the associated controller is not an action itself,
      * otherwise, it will return "listSomethingAction".
-     *
-     * @return string
      */
-    public function actionify(string $action);
+    public function actionify(string $action): string;
 
-    /**
-     * @return string
-     */
-    public function getBaseCodeRoute();
+    public function getBaseCodeRoute(): string;
 
-    /**
-     * @return string
-     */
-    public function getBaseControllerName();
+    public function getBaseControllerName(): string;
 
-    /**
-     * @return string
-     */
-    public function getBaseRouteName();
+    public function getBaseRouteName(): string;
 
-    // NEXT_MAJOR: Uncomment the following line and remove corresponding @method annotation.
-//    public function getRouteName(string $name): string;
+    public function getRouteName(string $name): string;
 
-    /**
-     * @return string
-     */
-    public function getBaseRoutePattern();
+    public function getBaseRoutePattern(): string;
 }

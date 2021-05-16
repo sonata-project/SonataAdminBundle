@@ -21,6 +21,9 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Tests\App\Model\Translated;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
+/**
+ * @phpstan-extends AbstractAdmin<object>
+ */
 final class TranslatedAdmin extends AbstractAdmin
 {
     protected function createNewInstance(): object

@@ -16,26 +16,24 @@ namespace Sonata\AdminBundle\FieldDescription;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-template TValue of FieldDescriptionInterface
  * @phpstan-implements \ArrayAccess<string,TValue>
  */
-class FieldDescriptionCollection implements \ArrayAccess, \Countable
+final class FieldDescriptionCollection implements \ArrayAccess, \Countable
 {
     /**
      * @var array<string, FieldDescriptionInterface>
      *
      * @phpstan-var array<string, TValue>
      */
-    protected $elements = [];
+    private $elements = [];
 
     /**
      * @phpstan-param TValue $fieldDescription
      */
-    public function add(FieldDescriptionInterface $fieldDescription)
+    public function add(FieldDescriptionInterface $fieldDescription): void
     {
         $this->elements[$fieldDescription->getName()] = $fieldDescription;
     }
@@ -45,31 +43,22 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
      *
      * @phpstan-return array<string, TValue>
      */
-    public function getElements()
+    public function getElements(): array
     {
         return $this->elements;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function has($name)
+    public function has(string $name): bool
     {
         return \array_key_exists($name, $this->elements);
     }
 
     /**
-     * @param string $name
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return FieldDescriptionInterface
      *
      * @phpstan-return TValue
      */
-    public function get($name)
+    public function get(string $name): FieldDescriptionInterface
     {
         if ($this->has($name)) {
             return $this->elements[$name];
@@ -78,17 +67,17 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
         throw new \InvalidArgumentException(sprintf('Element "%s" does not exist.', $name));
     }
 
-    /**
-     * @param string $name
-     */
-    public function remove($name)
+    public function remove(string $name): void
     {
         if ($this->has($name)) {
             unset($this->elements[$name]);
         }
     }
 
-    public function offsetExists($offset)
+    /**
+     * @param string $offset
+     */
+    public function offsetExists($offset): bool
     {
         return $this->has($offset);
     }
@@ -96,31 +85,35 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
     /**
      * @param string $offset
      *
-     * @return FieldDescriptionInterface
-     *
      * @phpstan-return TValue
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): FieldDescriptionInterface
     {
         return $this->get($offset);
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new \RuntimeException('Cannot set value, use add');
     }
 
-    public function offsetUnset($offset)
+    /**
+     * @param string $offset
+     */
+    public function offsetUnset($offset): void
     {
         $this->remove($offset);
     }
 
-    public function count()
+    public function count(): int
     {
         return \count($this->elements);
     }
 
-    public function reorder(array $keys)
+    /**
+     * @param string[] $keys
+     */
+    public function reorder(array $keys): void
     {
         if ($this->has(ListMapper::NAME_BATCH)) {
             array_unshift($keys, ListMapper::NAME_BATCH);
@@ -129,6 +122,3 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
         $this->elements = array_merge(array_flip($keys), $this->elements);
     }
 }
-
-// NEXT_MAJOR: Remove next line.
-class_exists(\Sonata\AdminBundle\Admin\FieldDescriptionCollection::class);

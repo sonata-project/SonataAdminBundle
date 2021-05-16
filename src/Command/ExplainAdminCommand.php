@@ -22,11 +22,9 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ExplainAdminCommand extends Command
+final class ExplainAdminCommand extends Command
 {
     protected static $defaultName = 'sonata:admin:explain';
 
@@ -48,14 +46,14 @@ class ExplainAdminCommand extends Command
         parent::__construct();
     }
 
-    public function configure()
+    public function configure(): void
     {
         $this->setDescription('Explain an admin service');
 
         $this->addArgument('admin', InputArgument::REQUIRED, 'The admin service id');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $admin = $this->pool->getInstance($input->getArgument('admin'));
 
@@ -85,8 +83,8 @@ class ExplainAdminCommand extends Command
             $output->writeln(sprintf(
                 '  - % -25s  % -15s % -15s',
                 $name,
-                $fieldDescription->getType(),
-                $fieldDescription->getTemplate()
+                $fieldDescription->getType() ?? '',
+                $fieldDescription->getTemplate() ?? ''
             ));
         }
 
@@ -96,8 +94,8 @@ class ExplainAdminCommand extends Command
             $output->writeln(sprintf(
                 '  - % -25s  % -15s % -15s',
                 $name,
-                $fieldDescription->getType(),
-                $fieldDescription->getTemplate()
+                $fieldDescription->getType() ?? '',
+                $fieldDescription->getTemplate() ?? ''
             ));
         }
 
@@ -113,8 +111,8 @@ class ExplainAdminCommand extends Command
             $output->writeln(sprintf(
                 '  - % -25s  % -15s % -15s',
                 $name,
-                $fieldDescription->getType(),
-                $fieldDescription->getTemplate()
+                $fieldDescription->getType() ?? '',
+                $fieldDescription->getTemplate() ?? ''
             ));
         }
 

@@ -26,8 +26,29 @@ final class SonataConfigurationTest extends TestCase
     protected function setUp(): void
     {
         $this->configuration = new SonataConfiguration('title', '/path/to/logo.png', [
+            'confirm_exit' => true,
+            'default_group' => 'default',
+            'default_icon' => '<i class="fas fa-folder"></i>',
+            'default_label_catalogue' => 'SonataAdminBundle',
+            'dropdown_number_groups_per_colums' => 2,
+            'form_type' => 'standard',
             'html5_validate' => true,
+            'javascripts' => [],
+            'js_debug' => false,
             'lock_protection' => false,
+            'mosaic_background' => 'bundles/sonataadmin/images/default_mosaic_image.png',
+            'pager_links' => null,
+            'role_admin' => 'ROLE_SONATA_ADMIN',
+            'role_super_admin' => 'ROLE_SUPER_ADMIN',
+            'search' => true,
+            'skin' => 'black',
+            'sort_admins' => true,
+            'stylesheets' => [],
+            'title_mode' => 'single_text',
+            'use_bootlint' => false,
+            'use_icheck' => true,
+            'use_select2' => true,
+            'use_stickyforms' => false,
         ]);
     }
 
@@ -49,6 +70,7 @@ final class SonataConfigurationTest extends TestCase
 
     public function testGetOptionDefault(): void
     {
-        $this->assertSame('group', $this->configuration->getOption('default_group', 'group'));
+        $this->assertNull($this->configuration->getOption('pager_links'));
+        $this->assertSame(1, $this->configuration->getOption('pager_links', 1));
     }
 }

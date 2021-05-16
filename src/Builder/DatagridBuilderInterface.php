@@ -25,28 +25,20 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 interface DatagridBuilderInterface extends BuilderInterface
 {
     /**
-     * @param string|null            $type
-     * @param AdminInterface<object> $admin
-     *
      * @phpstan-param DatagridInterface<T> $datagrid
      * @phpstan-param class-string         $type
      */
     public function addFilter(
         DatagridInterface $datagrid,
-        $type,
-        FieldDescriptionInterface $fieldDescription,
-        AdminInterface $admin
-    );
+        ?string $type,
+        FieldDescriptionInterface $fieldDescription
+    ): void;
 
     /**
      * @param AdminInterface<object> $admin
      * @param array<string, mixed>   $values
      *
-     * @return DatagridInterface
-     *
      * @phpstan-return DatagridInterface<T>
      */
-    public function getBaseDatagrid(AdminInterface $admin, array $values = []);
+    public function getBaseDatagrid(AdminInterface $admin, array $values = []): DatagridInterface;
 }
-
-interface_exists(FieldDescriptionInterface::class);

@@ -17,6 +17,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\AbstractFormContractor;
+use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
@@ -36,7 +37,7 @@ final class AbstractFormContractorTest extends TestCase
     private $formFactory;
 
     /**
-     * @var \Sonata\DoctrineMongoDBAdminBundle\Builder\FormContractor
+     * @var FormContractorInterface
      */
     private $formContractor;
 
@@ -49,10 +50,7 @@ final class AbstractFormContractorTest extends TestCase
     {
         parent::setUp();
 
-        // NEXT_MAJOR: Mock `FieldDescriptionInterface` instead and replace `getTargetEntity()` with `getTargetModel().
-        $this->fieldDescription = $this->getMockBuilder(FieldDescriptionInterface::class)
-            ->addMethods(['getTargetModel', 'describesAssociation', 'describesSingleValuedAssociation'])
-            ->getMockForAbstractClass();
+        $this->fieldDescription = $this->createMock(FieldDescriptionInterface::class);
 
         $this->formFactory = $this->createMock(FormFactoryInterface::class);
 
@@ -92,6 +90,7 @@ final class AbstractFormContractorTest extends TestCase
         $this->fieldDescription->method('getAdmin')->willReturn($admin);
         $this->fieldDescription->method('getTargetModel')->willReturn($modelClass);
         $this->fieldDescription->method('getAssociationAdmin')->willReturn($admin);
+        $this->fieldDescription->method('hasAssociationAdmin')->willReturn(true);
 
         $modelTypes = [
             ModelType::class,
@@ -148,6 +147,10 @@ final class AbstractFormContractorTest extends TestCase
             ->method('describesAssociation')
             ->willReturn(true);
 
+        $this->fieldDescription
+            ->method('getAdmin')
+            ->willReturn($admin);
+
         // Then
         $admin
             ->expects($this->once())
@@ -155,7 +158,7 @@ final class AbstractFormContractorTest extends TestCase
             ->with($this->fieldDescription);
 
         // When
-        $this->formContractor->fixFieldDescription($admin, $this->fieldDescription);
+        $this->formContractor->fixFieldDescription($this->fieldDescription);
     }
 
     public function testAdminClassAttachForNotMappedField(): void
@@ -170,6 +173,10 @@ final class AbstractFormContractorTest extends TestCase
             $this->equalTo('admin_code')
         ))->willReturn('sonata.admin.code');
 
+        $this->fieldDescription
+            ->method('getAdmin')
+            ->willReturn($admin);
+
         // Then
         $admin
             ->expects($this->once())
@@ -177,7 +184,7 @@ final class AbstractFormContractorTest extends TestCase
             ->with($this->fieldDescription);
 
         // When
-        $this->formContractor->fixFieldDescription($admin, $this->fieldDescription);
+        $this->formContractor->fixFieldDescription($this->fieldDescription);
     }
 
     /**
@@ -189,10 +196,10 @@ final class AbstractFormContractorTest extends TestCase
         $admin->method('getClass')->willReturn('Foo');
 
         $this->fieldDescription->method('getAdmin')->willReturn($admin);
-        $this->fieldDescription->method('getAssociationAdmin')->willReturn(null);
+        $this->fieldDescription->method('hasAssociationAdmin')->willReturn(false);
         $this->fieldDescription->method('describesSingleValuedAssociation')->willReturn(false);
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->formContractor->getDefaultOptions($formType, $this->fieldDescription);
     }
 

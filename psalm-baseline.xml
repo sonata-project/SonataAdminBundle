@@ -1,84 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="3.13.1@afd8874a9e4562eac42a02de90e42e430c3a1db1">
-    <file src="src/Admin/AbstractAdmin.php">
-        <!--will be removed in v4. Currently BC break-->
-        <InvalidReturnStatement occurrences="1">
-            <code>$this-&gt;parentAssociationMapping</code>
-        </InvalidReturnStatement>
-        <!--will be fixed in v4. Currently BC break. Remove string from union type of $this->parentAssociationMapping-->
-        <InvalidArrayOffset occurrences="1">
-            <code>$this-&gt;parentAssociationMapping[$code]</code>
-        </InvalidArrayOffset>
-        <!--will be removed in v4. Currently BC break-->
+    <file src="src/Datagrid/Datagrid.php">
         <InvalidPropertyAssignmentValue occurrences="1">
-            <code>$this-&gt;subClasses</code>
+            <code>array_merge(array_flip($keys), $this-&gt;filters)</code>
         </InvalidPropertyAssignmentValue>
-    </file>
-    <file src="src/Datagrid/Pager.php">
-        <InvalidReturnStatement occurrences="2">
-            <code>next($this-&gt;results)</code>
-            <code>reset($this-&gt;results)</code>
-        </InvalidReturnStatement>
-        <InvalidReturnType occurrences="2">
-            <code>next</code>
-            <code>rewind</code>
-        </InvalidReturnType>
-    </file>
-    <file src="src/Datagrid/SimplePager.php">
-        <InvalidReturnStatement occurrences="2">
-            <code>$this-&gt;results</code>
-            <code>$this-&gt;results</code>
-        </InvalidReturnStatement>
-        <InvalidPropertyAssignmentValue occurrences="2">
-            <code>new ArrayCollection($this-&gt;results-&gt;slice(0, $this-&gt;getMaxPerPage()))</code>
-            <code>new ArrayCollection(\array_slice($this-&gt;results, 0, $this-&gt;getMaxPerPage()))</code>
-        </InvalidPropertyAssignmentValue>
-    </file>
-    <file src="src/DependencyInjection/Compiler/ExtensionCompilerPass.php">
-        <InvalidReturnStatement occurrences="1">
-            <code>$extensionMap</code>
-        </InvalidReturnStatement>
-        <InvalidReturnType occurrences="1">
-            <code>array&lt;string, array&lt;string, array&lt;string, array&lt;string, array&lt;string, string&gt;&gt;&gt;&gt;&gt;</code>
-        </InvalidReturnType>
-    </file>
-    <file src="src/Translator/Extractor/JMSTranslatorBundle/AdminExtractor.php">
-        <InvalidReturnType occurrences="2">
-            <code>buildSecurityInformation</code>
-            <code>getBaseRole</code>
-        </InvalidReturnType>
-    </file>
-    <!--The next error is due to not installed Doctrine ORM\ODM-->
-    <file src="src/Admin/AdminHelper.php">
-        <UndefinedClass occurrences="1">
-            <code>DoctrinePersistentCollection</code>
-        </UndefinedClass>
-    </file>
-    <!--will be removed in v4. Currently BC break-->
-    <file src="src/Command/CreateClassCacheCommand.php">
-        <UndefinedClass occurrences="1">
-            <code>ClassCollectionLoader</code>
-        </UndefinedClass>
-    </file>
-    <!--will be removed in v4. Currently BC break-->
-    <file src="src/Form/Type/ModelTypeList.php">
-        <InvalidExtendClass occurrences="1">
-            <code>ModelListType</code>
-        </InvalidExtendClass>
-    </file>
-    <!--will be removed in v4. Currently BC break-->
-    <file src="src/Object/MetadataInterface.php">
-        <UndefinedClass occurrences="1">
-            <code>CoreMetadataInterface</code>
-        </UndefinedClass>
-        <UnrecognizedStatement occurrences="1"/>
-    </file>
-    <!--will be removed in v4. Currently BC break-->
-    <file src="src/Twig/Extension/StringExtension.php">
-        <UndefinedClass occurrences="2">
-            <code>TextExtension</code>
-            <code>TextExtension</code>
-        </UndefinedClass>
     </file>
     <file src="src/FieldDescription/FieldDescriptionCollection.php">
         <InvalidPropertyAssignmentValue occurrences="2">
@@ -86,40 +11,19 @@
             <code>array_merge(array_flip($keys), $this-&gt;elements)</code>
         </InvalidPropertyAssignmentValue>
     </file>
-    <!--will be removed in v4. Currently BC break-->
-    <file src="src/Twig/Extension/TemplateRegistryExtension.php">
-        <ContainerDependency occurrences="1">
-            <code>ContainerInterface $container</code>
-        </ContainerDependency>
+    <!-- Will be fixed in Symfony 5.3 https://github.com/symfony/symfony/pull/40604 -->
+    <file src="src/Translator/Extractor/AdminExtractor.php">
+        <MoreSpecificImplementedParamType occurrences="1">
+            <code>$resource</code>
+        </MoreSpecificImplementedParamType>
     </file>
-    <!--will be removed in v4. Currently BC break-->
-    <file src="src/Route/AdminPoolLoader.php">
-        <ContainerDependency occurrences="1">
-            <code>ContainerInterface $container</code>
-        </ContainerDependency>
-    </file>
-    <!--will be removed in v4. Currently BC break-->
-    <file src="src/Model/AuditManager.php">
-        <ContainerDependency occurrences="1">
-            <code>ContainerInterface $container</code>
-        </ContainerDependency>
-    </file>
-    <!--will be removed in v4. Currently BC break-->
-    <file src="src/Filter/FilterFactory.php">
-        <ContainerDependency occurrences="1">
-            <code>ContainerInterface $container</code>
-        </ContainerDependency>
-    </file>
-    <!--will be removed in v4. Currently BC break-->
-    <file src="src/Controller/PolyfillControllerTrait.php">
-        <ContainerDependency occurrences="1">
-            <code>ContainerInterface $container</code>
-        </ContainerDependency>
-    </file>
-    <!--will be removed in v4. Currently BC break-->
-    <file src="src/Admin/Pool.php">
-        <ContainerDependency occurrences="1">
-            <code>ContainerInterface $container</code>
-        </ContainerDependency>
+    <!-- This error is made on purpose for php version < 8 -->
+    <file src="tests/Fixtures/Entity/FooToStringNull.php">
+        <InvalidToString occurrences="1">
+            <code>__toString</code>
+        </InvalidToString>
+        <NullableReturnStatement occurrences="1">
+            <code>null</code>
+        </NullableReturnStatement>
     </file>
 </files>

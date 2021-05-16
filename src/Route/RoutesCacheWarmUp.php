@@ -17,21 +17,19 @@ use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class RoutesCacheWarmUp implements CacheWarmerInterface
+final class RoutesCacheWarmUp implements CacheWarmerInterface
 {
     /**
      * @var RoutesCache
      */
-    protected $cache;
+    private $cache;
 
     /**
      * @var Pool
      */
-    protected $pool;
+    private $pool;
 
     public function __construct(RoutesCache $cache, Pool $pool)
     {
@@ -39,15 +37,24 @@ class RoutesCacheWarmUp implements CacheWarmerInterface
         $this->pool = $pool;
     }
 
-    public function isOptional()
+    public function isOptional(): bool
     {
         return true;
     }
 
-    public function warmUp($cacheDir)
+    /**
+     * NEXT_MAJOR: Add the string param typehint when Symfony 4 support is dropped.
+     *
+     * @param string $cacheDir
+     *
+     * @return string[]
+     */
+    public function warmUp($cacheDir): array
     {
         foreach ($this->pool->getAdminServiceIds() as $id) {
             $this->cache->load($this->pool->getInstance($id));
         }
+
+        return [];
     }
 }

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Form\Type\Filter;
 
 use Sonata\AdminBundle\Form\Type\Filter\NumberType;
-use Symfony\Component\Translation\TranslatorInterface;
 
 final class NumberTypeTest extends BaseTypeTest
 {
@@ -31,17 +30,5 @@ final class NumberTypeTest extends BaseTypeTest
     protected function getTestedType(): string
     {
         return NumberType::class;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @return NumberType[]
-     */
-    protected function getTypes(): array
-    {
-        return [
-            new NumberType($this->createStub(TranslatorInterface::class)),
-        ];
     }
 }

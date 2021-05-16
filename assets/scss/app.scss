@@ -1,0 +1,54 @@
+/*!
+ * This file is part of the Sonata Project package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+@import "~bootstrap/dist/css/bootstrap.css";
+
+// Add Font Awesome Free and the v4 compatibility layer
+// this layer should only be removed when we are sure we have replaced
+// all icons to the new naming on all Sonata code
+@import "~@fortawesome/fontawesome-free/css/all.css";
+@import "~@fortawesome/fontawesome-free/css/v4-shims.css";
+
+// Add Source Sans Pro Font with all options
+// This font is used by AdminLTE
+@import "~@fontsource/source-sans-pro/300.css";
+@import "~@fontsource/source-sans-pro/300-italic.css";
+@import "~@fontsource/source-sans-pro/400.css";
+@import "~@fontsource/source-sans-pro/400-italic.css";
+@import "~@fontsource/source-sans-pro/600.css";
+@import "~@fontsource/source-sans-pro/600-italic.css";
+@import "~@fontsource/source-sans-pro/700.css";
+
+// Basic AdminLTE styles without any plugins,
+// because they conflict with Select2 v4
+@import "~admin-lte/dist/css/alt/AdminLTE-without-plugins.css";
+@import "~icheck/skins/square/blue.css";
+
+// Eonasdan Bootstrap DateTimePicker in its version 3 does not
+// provide the scss or plain css, it only provides the less version
+// of its source files, that's why it is not included it via npm.
+//
+// Eonasdan Bootstrap DateTimePicker is not directly used in SonataAdmin
+// but it is used on form-extensions package
+@import "../vendor/bootstrap-datetimepicker.min.css";
+
+// Only use sortable widget from jQuery UI library
+@import "~jquery-ui/themes/base/sortable.css";
+@import "~select2/dist/css/select2.css";
+@import "~select2-bootstrap-theme/dist/select2-bootstrap.css";
+
+// Boostrap 3 styles for the X-editable library
+@import "~x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css";
+
+// SonataAdmin custom styles
+@import "./styles";
+@import "./layout";
+@import "./tree";
+@import "./flashmessage";
+@import "./admin-lte-fas";

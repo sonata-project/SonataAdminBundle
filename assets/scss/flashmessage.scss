@@ -1,0 +1,37 @@
+/*!
+ * This file is part of the Sonata Project package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+.read-more-state {
+  display: none;
+}
+
+.read-more-target {
+  display: none;
+  font-size: 0;
+  max-height: 0;
+  opacity: 0;
+  transition: 0.4s ease;
+}
+
+.read-more-state:checked ~ .read-more-wrap .read-more-target {
+  display: block;
+  font-size: inherit;
+  max-height: 999em;
+  opacity: 1;
+}
+
+.read-more-trigger {
+  cursor: pointer;
+  margin: auto;
+}
+
+.alert .read-more-trigger {
+  left: calc(50% - 1rem);
+  position: relative;
+}

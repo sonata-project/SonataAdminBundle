@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\DashboardAction;
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -26,7 +26,7 @@ use Twig\Environment;
 class DashboardActionTest extends TestCase
 {
     /**
-     * @var MutableTemplateRegistryInterface
+     * @var MutableTemplateRegistryInterface&Stub
      */
     private $templateRegistry;
 
@@ -45,13 +45,8 @@ class DashboardActionTest extends TestCase
 
         $twig = $this->createMock(Environment::class);
 
-        // NEXT_MAJOR: Remove next line.
-        $breadcrumbsBuilder = $this->createStub(BreadcrumbsBuilderInterface::class);
-
         $this->action = new DashboardAction(
             [],
-            // NEXT_MAJOR: Remove next line.
-            $breadcrumbsBuilder,
             $this->templateRegistry,
             $pool,
             $twig

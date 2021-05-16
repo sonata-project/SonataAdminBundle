@@ -17,47 +17,37 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Mapper\BaseMapper;
 use Sonata\AdminBundle\Mapper\MapperInterface;
 
 /**
- * NEXT_MAJOR: Stop extending BaseMapper.
- *
  * This class is used to simulate the Form API.
- *
- * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ListMapper extends BaseMapper implements MapperInterface
+final class ListMapper implements MapperInterface
 {
-    // NEXT_MAJOR: Change for '_actions' and add an UPGRADE NOTE.
-    public const NAME_ACTIONS = '_action';
-    // NEXT_MAJOR: Change for '_batch' and add an UPGRADE NOTE.
-    public const NAME_BATCH = 'batch';
-    // NEXT_MAJOR: Change for '_select' and add an UPGRADE NOTE.
-    public const NAME_SELECT = 'select';
+    public const NAME_ACTIONS = '_actions';
+    public const NAME_BATCH = '_batch';
+    public const NAME_SELECT = '_select';
 
     public const TYPE_ACTIONS = 'actions';
     public const TYPE_BATCH = 'batch';
     public const TYPE_SELECT = 'select';
 
     /**
-     * @var FieldDescriptionCollection
-     */
-    protected $list;
-
-    /**
      * @var ListBuilderInterface
      */
-    protected $builder;
+    private $builder;
 
     /**
-     * NEXT_MAJOR: Make the property private.
-     *
+     * @var FieldDescriptionCollection
+     */
+    private $list;
+
+    /**
      * @var AdminInterface
      */
-    protected $admin;
+    private $admin;
 
     public function __construct(
         ListBuilderInterface $listBuilder,
@@ -69,18 +59,18 @@ class ListMapper extends BaseMapper implements MapperInterface
         $this->list = $list;
     }
 
-    public function getAdmin()
+    public function getAdmin(): AdminInterface
     {
         return $this->admin;
     }
 
     /**
-     * @param string      $name
-     * @param string|null $type
+     * @param FieldDescriptionInterface|string $name
+     * @param array<string, mixed>             $fieldDescriptionOptions
      *
      * @return static
      */
-    public function addIdentifier($name, $type = null, array $fieldDescriptionOptions = [])
+    public function addIdentifier($name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
         $fieldDescriptionOptions['identifier'] = true;
 
@@ -98,13 +88,13 @@ class ListMapper extends BaseMapper implements MapperInterface
 
     /**
      * @param FieldDescriptionInterface|string $name
-     * @param string|null                      $type
+     * @param array<string, mixed>             $fieldDescriptionOptions
      *
      * @throws \LogicException
      *
      * @return static
      */
-    public function add($name, $type = null, array $fieldDescriptionOptions = [])
+    public function add($name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
         // Default sort on "associated_property"
         if (isset($fieldDescriptionOptions['associated_property'])) {
@@ -128,32 +118,8 @@ class ListMapper extends BaseMapper implements MapperInterface
             $type = self::TYPE_ACTIONS;
         }
 
-        // Change deprecated inline action "view" to "show"
-        if (self::NAME_ACTIONS === $name && self::TYPE_ACTIONS === $type) {
-            if (isset($fieldDescriptionOptions['actions']['view'])) {
-                @trigger_error(
-                    'Inline action "view" is deprecated since version 2.2.4 and will be removed in 4.0. Use inline action "show" instead.',
-                    \E_USER_DEPRECATED
-                );
-
-                $fieldDescriptionOptions['actions']['show'] = $fieldDescriptionOptions['actions']['view'];
-
-                unset($fieldDescriptionOptions['actions']['view']);
-            }
-        }
-
         if (\array_key_exists('identifier', $fieldDescriptionOptions) && !\is_bool($fieldDescriptionOptions['identifier'])) {
-            @trigger_error(
-                'Passing a non boolean value for the "identifier" option is deprecated since sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.',
-                \E_USER_DEPRECATED
-            );
-
-            $fieldDescriptionOptions['identifier'] = (bool) $fieldDescriptionOptions['identifier'];
-            // NEXT_MAJOR: Remove the previous 6 lines and use commented line below it instead
-            // throw new \InvalidArgumentException(sprintf(
-            //     'Value for "identifier" option must be boolean, %s given.',
-            //     gettype($fieldDescriptionOptions['identifier'])
-            // ));
+            throw new \InvalidArgumentException(sprintf('Value for "identifier" option must be boolean, %s given.', \gettype($fieldDescriptionOptions['identifier'])));
         }
 
         if ($name instanceof FieldDescriptionInterface) {
@@ -167,19 +133,10 @@ class ListMapper extends BaseMapper implements MapperInterface
                 ));
             }
 
-            // NEXT_MAJOR: Remove the check and use `createFieldDescription`.
-            if (method_exists($this->getAdmin(), 'createFieldDescription')) {
-                $fieldDescription = $this->getAdmin()->createFieldDescription(
-                    $name,
-                    $fieldDescriptionOptions
-                );
-            } else {
-                $fieldDescription = $this->getAdmin()->getModelManager()->getNewFieldDescriptionInstance(
-                    $this->getAdmin()->getClass(),
-                    $name,
-                    $fieldDescriptionOptions
-                );
-            }
+            $fieldDescription = $this->getAdmin()->createFieldDescription(
+                $name,
+                $fieldDescriptionOptions
+            );
         } else {
             throw new \TypeError(
                 'Unknown field name in list mapper.'
@@ -187,24 +144,16 @@ class ListMapper extends BaseMapper implements MapperInterface
             );
         }
 
-        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
-        if (null === $fieldDescription->getLabel('sonata_deprecation_mute')) {
+        if (null === $fieldDescription->getLabel()) {
             $fieldDescription->setOption(
                 'label',
                 $this->getAdmin()->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'list', 'label')
             );
         }
 
-        if (isset($fieldDescriptionOptions['header_style'])) {
-            @trigger_error(
-                'The "header_style" option is deprecated, please, use "header_class" option instead.',
-                \E_USER_DEPRECATED
-            );
-        }
-
         if (!isset($fieldDescriptionOptions['role']) || $this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
             // add the field with the FormBuilder
-            $this->builder->addField($this->list, $type, $fieldDescription, $this->getAdmin());
+            $this->builder->addField($this->list, $type, $fieldDescription);
 
             // Ensure batch and action pseudo-fields are tagged as virtual
             if (\in_array($fieldDescription->getType(), [self::TYPE_ACTIONS, self::TYPE_BATCH, self::TYPE_SELECT], true)) {
@@ -215,17 +164,17 @@ class ListMapper extends BaseMapper implements MapperInterface
         return $this;
     }
 
-    public function get($name)
+    public function get(string $name): FieldDescriptionInterface
     {
         return $this->list->get($name);
     }
 
-    public function has($key)
+    public function has(string $key): bool
     {
         return $this->list->has($key);
     }
 
-    public function remove($key)
+    public function remove(string $key): self
     {
         $this->getAdmin()->removeListFieldDescription($key);
         $this->list->remove($key);
@@ -233,18 +182,15 @@ class ListMapper extends BaseMapper implements MapperInterface
         return $this;
     }
 
-    final public function keys()
+    public function keys(): array
     {
         return array_keys($this->list->getElements());
     }
 
-    public function reorder(array $keys)
+    public function reorder(array $keys): self
     {
         $this->list->reorder($keys);
 
         return $this;
     }
 }
-
-// NEXT_MAJOR: Remove next line.
-interface_exists(FieldDescriptionInterface::class);

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Security\Handler;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\RoleSecurityHandler;
@@ -27,12 +28,12 @@ use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundE
 class RoleSecurityHandlerTest extends TestCase
 {
     /**
-     * @var AdminInterface
+     * @var AdminInterface<object>&MockObject
      */
     private $admin;
 
     /**
-     * @var AuthorizationCheckerInterface
+     * @var AuthorizationCheckerInterface&MockObject
      */
     private $authorizationChecker;
 
@@ -56,6 +57,9 @@ class RoleSecurityHandlerTest extends TestCase
         $this->assertSame($expected, $handler->getBaseRole($this->admin));
     }
 
+    /**
+     * @phpstan-return array<array{string, string}>
+     */
     public function getBaseRoleTests(): array
     {
         return [
@@ -67,9 +71,12 @@ class RoleSecurityHandlerTest extends TestCase
     }
 
     /**
+     * @param string[]        $superAdminRoles
+     * @param string|string[] $operation
+     *
      * @dataProvider getIsGrantedTests
      */
-    public function testIsGranted(bool $expected, array $superAdminRoles, string $adminCode, $operation, $object = null): void
+    public function testIsGranted(bool $expected, array $superAdminRoles, string $adminCode, $operation, ?object $object = null): void
     {
         $handler = $this->getRoleSecurityHandler($superAdminRoles);
 
@@ -98,6 +105,9 @@ class RoleSecurityHandlerTest extends TestCase
         $this->assertSame($expected, $handler->isGranted($this->admin, $operation, $object));
     }
 
+    /**
+     * @phpstan-return array<array{bool, string[], string, string|string[]}>
+     */
     public function getIsGrantedTests(): array
     {
         return [
@@ -211,11 +221,17 @@ class RoleSecurityHandlerTest extends TestCase
         $this->assertSame([], $handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
+    /**
+     * @param string[] $superAdminRoles
+     */
     private function getRoleSecurityHandler(array $superAdminRoles): RoleSecurityHandler
     {
         return new RoleSecurityHandler($this->authorizationChecker, $superAdminRoles);
     }
 
+    /**
+     * @return AdminInterface<object>
+     */
     private function getSonataAdminObject(): AdminInterface
     {
         return $this->getMockForAbstractClass(AdminInterface::class);

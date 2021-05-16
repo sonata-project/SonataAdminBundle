@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
-use PHPUnit\Framework\MockObject\Stub;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\SearchAction;
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
@@ -50,37 +49,26 @@ final class SearchActionTest extends TestCase
     private $action;
 
     /**
-     * @var Stub&Environment
+     * @var MockObject&Environment
      */
     private $twig;
-
-    /**
-     * NEXT_MAJOR: Remove this property.
-     *
-     * @var Stub&BreadcrumbsBuilderInterface
-     */
-    private $breadcrumbsBuilder;
 
     protected function setUp(): void
     {
         $this->container = new Container();
         $this->pool = new Pool($this->container, ['foo']);
-
         $templateRegistry = new TemplateRegistry([
             'search' => 'search.html.twig',
             'layout' => 'layout.html.twig',
         ]);
 
-        $this->breadcrumbsBuilder = $this->createStub(BreadcrumbsBuilderInterface::class);
         $this->searchHandler = new SearchHandler(true);
-        $this->twig = $this->createStub(Environment::class);
+        $this->twig = $this->createMock(Environment::class);
 
         $this->action = new SearchAction(
             $this->pool,
             $this->searchHandler,
             $templateRegistry,
-            // NEXT_MAJOR: Remove next line.
-            $this->breadcrumbsBuilder,
             $this->twig
         );
     }
@@ -90,10 +78,6 @@ final class SearchActionTest extends TestCase
         $request = new Request(['q' => 'some search']);
         $this->twig->method('render')->with('search.html.twig', [
             'base_template' => 'layout.html.twig',
-            // NEXT_MAJOR: Remove next line.
-            'breadcrumbs_builder' => $this->breadcrumbsBuilder,
-            // NEXT_MAJOR: Remove next line.
-            'admin_pool' => $this->pool,
             'query' => 'some search',
             'groups' => [],
         ])->willReturn('rendered_search');
@@ -108,7 +92,7 @@ final class SearchActionTest extends TestCase
         $this->searchHandler->configureAdminSearch([$adminCode => false]);
         $admin = new CleanAdmin($adminCode, 'class', 'controller');
         $this->container->set('foo', $admin);
-        $request = new Request(['admin' => 'foo']);
+        $request = new Request(['admin' => 'foo', 'q' => 'fooTerm', 'page' => 5, 'offset' => 10]);
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $this->assertInstanceOf(JsonResponse::class, ($this->action)($request));

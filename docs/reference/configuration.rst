@@ -68,9 +68,9 @@ Full Configuration Options
                     - OWNER
                 acl_user_manager: null
             title: 'Sonata Admin'
-            title_logo: bundles/sonataadmin/logo_title.png
+            title_logo: bundles/sonataadmin/images/logo_title.png
             search: true
-            default_controller: Sonata\AdminBundle\Controller\CRUDController
+            default_controller: 'sonata.admin.controller.crud'
             options:
                 html5_validate: true
 
@@ -87,13 +87,12 @@ Full Configuration Options
                 form_type: standard
                 default_group: default
                 default_label_catalogue: SonataAdminBundle
-                default_icon: '<i class="fa fa-folder"></i>'
+                default_icon: '<i class="fas fa-folder"></i>'
                 dropdown_number_groups_per_colums:  2
                 title_mode: ~ # One of "single_text"; "single_image"; "both"
 
                 # Enable locking when editing an object, if the corresponding object manager supports it.
                 lock_protection: false
-
             dashboard:
                 groups:
 
@@ -177,20 +176,7 @@ Full Configuration Options
                 stylesheets:
 
                     # The default stylesheet list:
-                    - bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css
-                    - bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css
-                    - bundles/sonatacore/vendor/ionicons/css/ionicons.min.css
-                    - bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css
-                    - bundles/sonataadmin/vendor/iCheck/skins/square/blue.css
-                    - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css
-                    - bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css
-                    - bundles/sonatacore/vendor/select2/select2.css
-                    - bundles/sonatacore/vendor/select2-bootstrap-css/select2-bootstrap.min.css
-                    - bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css
-                    - bundles/sonataadmin/css/styles.css
-                    - bundles/sonataadmin/css/layout.css
-                    - bundles/sonataadmin/css/tree.css
-                    - bundles/sonataadmin/css/colors.css
+                    - bundles/sonataadmin/app.css
 
                 # stylesheet paths to add to the page in addition to the list above
                 extra_stylesheets: []
@@ -201,27 +187,7 @@ Full Configuration Options
                 javascripts:
 
                     # The default javascript list:
-                    - 'bundles/sonatacore/vendor/jquery/dist/jquery.min.js'
-                    - 'bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js'
-                    - 'bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js'
-                    - 'bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js'
-                    - 'bundles/sonatacore/vendor/moment/min/moment.min.js'
-                    - 'bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js'
-                    - 'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'
-                    - 'bundles/sonataadmin/vendor/jquery-form/jquery.form.js'
-                    - 'bundles/sonataadmin/jquery/jquery.confirmExit.js'
-                    - 'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js'
-                    - 'bundles/sonatacore/vendor/select2/select2.min.js'
-                    - 'bundles/sonataadmin/vendor/admin-lte/dist/js/app.min.js'
-                    - 'bundles/sonataadmin/vendor/iCheck/icheck.min.js'
-                    - 'bundles/sonataadmin/vendor/slimScroll/jquery.slimscroll.min.js'
-                    - 'bundles/sonataadmin/vendor/waypoints/lib/jquery.waypoints.min.js'
-                    - 'bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js'
-                    - 'bundles/sonataadmin/vendor/readmore-js/readmore.min.js'
-                    - 'bundles/sonataadmin/vendor/masonry/dist/masonry.pkgd.min.js'
-                    - 'bundles/sonataadmin/Admin.js'
-                    - 'bundles/sonataadmin/treeview.js'
-                    - 'bundles/sonataadmin/sidebar.js'
+                    - bundles/sonataadmin/app.js
 
                 # javascript paths to add to the page in addition to the list above
                 extra_javascripts: []
@@ -244,5 +210,5 @@ Full Configuration Options
             filter_persister: sonata.admin.filter_persister.session
             show_mosaic_button: true
             global_search:
-                show_empty_boxes: show
+                empty_boxes: show
                 case_sensitive: true

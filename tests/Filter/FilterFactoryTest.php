@@ -17,39 +17,17 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Filter\FilterFactory;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Form\Type\Filter\DefaultType;
-use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\DependencyInjection\Container;
 
 class FilterFactoryTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
-    public function testEmptyType(): void
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('The type must be defined');
-
-        $filter = new FilterFactory(new Container());
-        $filter->create('test', null);
-    }
-
-    public function testUnknownType(): void
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('No attached service to type named `mytype`');
-
-        $filter = new FilterFactory(new Container());
-        $filter->create('test', 'mytype');
-    }
-
     public function testUnknownClassType(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('No attached service to type named `Sonata\AdminBundle\Form\Type\Filter\FooType`');
+        $this->expectExceptionMessage('No attached service to type named `stdClass`');
 
         $filter = new FilterFactory(new Container());
-        $filter->create('test', 'Sonata\AdminBundle\Form\Type\Filter\FooType');
+        $filter->create('test', \stdClass::class);
     }
 
     public function testClassType(): void
@@ -57,9 +35,7 @@ class FilterFactoryTest extends TestCase
         $container = new Container();
         $container
             ->set(DefaultType::class, new DefaultType());
-        $filter = new FilterFactory($container, [
-            DefaultType::class => DefaultType::class,
-        ]);
+        $filter = new FilterFactory($container);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
@@ -69,38 +45,6 @@ class FilterFactoryTest extends TestCase
         $filter->create('test', DefaultType::class);
     }
 
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testItTriggersDeprecationWithoutTheService(): void
-    {
-        $filter = new FilterFactory(new Container());
-
-        $this->expectDeprecation('Not declaring a filter as service is deprecated since sonata-project/admin-bundle 3.95 and will not work in 4.0. You MUST register a service with class name (Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter) instead.');
-
-        $filter->create('test', FooFilter::class);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testInvalidTypeInstance(): void
-    {
-        $container = new Container();
-        $container->set('mytype', new \stdClass());
-
-        $filter = new FilterFactory($container, ['mytype' => 'mytype']);
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('The service `mytype` must implement `FilterInterface`');
-
-        $filter->create('test', 'mytype');
-    }
-
     public function testCreateFilter(): void
     {
         $filter = $this->createMock(FilterInterface::class);
@@ -108,27 +52,10 @@ class FilterFactoryTest extends TestCase
             ->method('initialize');
 
         $container = new Container();
-        $container->set('my.filter.id', $filter);
-
         $fqcn = \get_class($filter);
+        $container->set($fqcn, $filter);
 
-        $filter = new FilterFactory($container, [$fqcn => 'my.filter.id']);
+        $filter = new FilterFactory($container);
         $filter->create('test', $fqcn);
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testCreateFilterWithTypeName(): void
-    {
-        $filter = $this->createMock(FilterInterface::class);
-        $filter->expects($this->once())
-            ->method('initialize');
-
-        $container = new Container();
-        $container->set('mytype', $filter);
-
-        $filter = new FilterFactory($container, ['mytype' => 'mytype']);
-        $filter->create('test', 'mytype');
     }
 }

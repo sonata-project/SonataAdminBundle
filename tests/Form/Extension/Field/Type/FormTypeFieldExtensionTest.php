@@ -30,9 +30,6 @@ final class FormTypeFieldExtensionTest extends TestCase
 {
     public function testExtendedType(): void
     {
-        $extension = new FormTypeFieldExtension([], []);
-
-        $this->assertSame(FormType::class, $extension->getExtendedType());
         $this->assertSame([FormType::class], FormTypeFieldExtension::getExtendedTypes());
     }
 
@@ -202,17 +199,15 @@ final class FormTypeFieldExtensionTest extends TestCase
             ],
             'sonata_admin_enabled' => true,
             'sonata_admin' => [
-                 'admin' => false,
-                 'field_description' => false,
-                 'name' => false,
-                 'edit' => 'standard',
-                 'inline' => 'natural',
-                 'block_name' => false,
-                 'class' => false,
-                 'options' => [],
+                'admin' => false,
+                'field_description' => false,
+                'name' => false,
+                'edit' => 'standard',
+                'inline' => 'natural',
+                'block_name' => false,
+                'class' => false,
+                'options' => [],
             ],
-            // NEXT_MAJOR: Remove this line
-            'sonata_help' => null,
             'sonata_admin_code' => 'parent_code',
         ];
 
@@ -312,24 +307,5 @@ final class FormTypeFieldExtensionTest extends TestCase
         ];
 
         $this->assertSame($expected, $formView->vars['block_prefixes']);
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testSonataHelp(): void
-    {
-        $extension = new FormTypeFieldExtension([], []);
-        $optionResolver = new OptionsResolver();
-        $extension->configureOptions($optionResolver);
-
-        $defaultOptions = $optionResolver->resolve();
-
-        $this->assertArrayHasKey('sonata_help', $defaultOptions);
-        $this->assertNull($defaultOptions['sonata_help']);
-
-        $optionsWithSonataHelp = $optionResolver->resolve(['sonata_help' => 'Sonata help message']);
-
-        $this->assertSame('Sonata help message', $optionsWithSonataHelp['sonata_help']);
     }
 }

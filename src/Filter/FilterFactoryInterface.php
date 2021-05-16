@@ -19,10 +19,8 @@ namespace Sonata\AdminBundle\Filter;
 interface FilterFactoryInterface
 {
     /**
-     * @param string $name
-     * @param string $type
-     *
-     * @return FilterInterface
+     * @param array<string, mixed> $options
+     * @phpstan-param class-string $type
      */
-    public function create($name, $type, array $options = []);
+    public function create(string $name, string $type, array $options = []): FilterInterface;
 }

@@ -13,25 +13,24 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\SetObjectFieldValueAction;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformerResolver;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
-use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
+use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 
@@ -53,17 +52,17 @@ final class SetObjectFieldValueActionTest extends TestCase
     private $action;
 
     /**
-     * @var AbstractAdmin
+     * @var AdminInterface<object>&MockObject
      */
     private $admin;
 
     /**
-     * @var ValidatorInterface
+     * @var ValidatorInterface&MockObject
      */
     private $validator;
 
     /**
-     * @var ModelManagerInterface
+     * @var ModelManagerInterface&MockObject
      */
     private $modelManager;
 
@@ -73,14 +72,14 @@ final class SetObjectFieldValueActionTest extends TestCase
     private $resolver;
 
     /**
-     * @var PropertyAccessor
-     */
-    private $propertyAccessor;
-
-    /**
      * @var string
      */
     private $adminCode;
+
+    /**
+     * @var MockObject&MutableTemplateRegistryInterface
+     */
+    private $templateRegistry;
 
     protected function setUp(): void
     {
@@ -89,23 +88,29 @@ final class SetObjectFieldValueActionTest extends TestCase
             'field_template' => 'renderedTemplate',
         ]));
         $this->adminCode = 'sonata.post.admin';
-        $this->admin = $this->createMock(AbstractAdmin::class);
+        $this->admin = $this->createMock(AdminInterface::class);
         $container = new Container();
         $container->set($this->adminCode, $this->admin);
         $this->pool = new Pool($container, [$this->adminCode]);
         $this->admin->expects($this->once())->method('setRequest');
-        $this->validator = $this->createStub(ValidatorInterface::class);
-        $this->modelManager = $this->createStub(ModelManagerInterface::class);
+        $this->validator = $this->createMock(ValidatorInterface::class);
+        $this->modelManager = $this->createMock(ModelManagerInterface::class);
         $this->resolver = new DataTransformerResolver();
-        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $this->action = new SetObjectFieldValueAction(
             $this->twig,
             $this->pool,
             $this->validator,
             $this->resolver,
-            $this->propertyAccessor
+            $propertyAccessor
         );
         $this->admin->method('getModelManager')->willReturn($this->modelManager);
+        $this->twig->addExtension(new RenderElementExtension($propertyAccessor));
+        $this->templateRegistry = $this->createMock(MutableTemplateRegistryInterface::class);
+
+        $this->admin
+            ->method('getTemplateRegistry')
+            ->willReturn($this->templateRegistry);
     }
 
     public function testSetObjectFieldValueAction(): void
@@ -120,27 +125,14 @@ final class SetObjectFieldValueActionTest extends TestCase
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
-        $translator = $this->createStub(TranslatorInterface::class);
-        $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
-        $container = new Container();
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn($this->adminCode);
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
+        $this->admin->method('hasListFieldDescription')->with('enabled')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);
         $this->admin->expects($this->once())->method('update')->with($object);
-        // NEXT_MAJOR: Remove this line
-        $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
-        $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
-        $container->set('sonata.post.admin.template_registry', $templateRegistry);
-        $this->twig->addExtension(new SonataAdminExtension(
-            new Pool(new Container()),
-            null,
-            $translator,
-            $container,
-            $this->propertyAccessor,
-            null
-        ));
+        $this->templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $fieldDescription->method('getOption')->willReturnMap([
             ['editable', null, true],
         ]);
@@ -186,27 +178,15 @@ final class SetObjectFieldValueActionTest extends TestCase
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
-        $translator = $this->createStub(TranslatorInterface::class);
-        $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
-        $container = new Container();
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn($this->adminCode);
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
+        $this->admin->method('hasListFieldDescription')->with('dateProp')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('dateProp')->willReturn($fieldDescription);
         $this->admin->expects($this->once())->method('update')->with($object);
 
-        $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
-        $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
-        $container->set('sonata.post.admin.template_registry', $templateRegistry);
-        $this->twig->addExtension(new SonataAdminExtension(
-            new Pool(new Container()),
-            null,
-            $translator,
-            $container,
-            $this->propertyAccessor,
-            null
-        ));
+        $this->templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $fieldDescription->method('getOption')->willReturnMap([
             ['timezone', null, $timezone],
             ['data_transformer', null, null],
@@ -226,9 +206,10 @@ final class SetObjectFieldValueActionTest extends TestCase
         $expectedDate = new \DateTime($request->query->get('value'), $expectedTimezone);
         $expectedDate->setTimezone($defaultTimezone);
 
-        $this->assertInstanceOf(\DateTime::class, $object->getDateProp());
-        $this->assertSame($expectedDate->format('Y-m-d'), $object->getDateProp()->format('Y-m-d'));
-        $this->assertSame($defaultTimezone->getName(), $object->getDateProp()->getTimezone()->getName());
+        $dateProp = $object->getDateProp();
+        $this->assertInstanceOf(\DateTime::class, $dateProp);
+        $this->assertSame($expectedDate->format('Y-m-d'), $dateProp->format('Y-m-d'));
+        $this->assertSame($defaultTimezone->getName(), $dateProp->getTimezone()->getName());
     }
 
     public function testSetObjectFieldValueActionOnARelationField(): void
@@ -243,32 +224,16 @@ final class SetObjectFieldValueActionTest extends TestCase
             'context' => 'list',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
-        // NEXT_MAJOR: Use `createStub` instead of using mock builder
-        $fieldDescription = $this->getMockBuilder(FieldDescriptionInterface::class)
-            ->addMethods(['getTargetModel'])
-            ->getMockForAbstractClass();
-        $translator = $this->createStub(TranslatorInterface::class);
-        $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
-        $container = new Container();
+        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn($this->adminCode);
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
+        $this->admin->method('hasListFieldDescription')->with('bar')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('bar')->willReturn($fieldDescription);
         $this->admin->method('getClass')->willReturn(\get_class($object));
         $this->admin->expects($this->once())->method('update')->with($object);
-        $container->set('sonata.post.admin.template_registry', $templateRegistry);
-        // NEXT_MAJOR: Remove this line
-        $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
-        $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
-        $this->twig->addExtension(new SonataAdminExtension(
-            $this->pool,
-            null,
-            $translator,
-            $container,
-            $this->propertyAccessor,
-            null
-        ));
+        $this->templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $fieldDescription->method('getType')->willReturn('choice');
         $fieldDescription->method('getOption')->willReturnMap([
             ['class', null, Bar::class],
@@ -306,6 +271,7 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
+        $this->admin->method('hasListFieldDescription')->with('bar.enabled')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('bar.enabled')->willReturn($fieldDescription);
         $this->validator->method('validate')->with($bar)->willReturn(new ConstraintViolationList([
             new ConstraintViolation('error1', null, [], null, 'enabled', null),
@@ -335,27 +301,14 @@ final class SetObjectFieldValueActionTest extends TestCase
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
-        $translator = $this->createStub(TranslatorInterface::class);
-        $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
-        $container = new Container();
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn($this->adminCode);
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
+        $this->admin->method('hasListFieldDescription')->with('status')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('status')->willReturn($fieldDescription);
         $this->admin->expects($this->once())->method('update')->with($object);
-        // NEXT_MAJOR: Remove this line
-        $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
-        $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
-        $container->set('sonata.post.admin.template_registry', $templateRegistry);
-        $this->twig->addExtension(new SonataAdminExtension(
-            new Pool(new Container()),
-            null,
-            $translator,
-            $container,
-            $this->propertyAccessor,
-            null
-        ));
+        $this->templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $fieldDescription->method('getOption')->willReturnMap([
             ['data_transformer', null, null],
             ['editable', null, true],
@@ -392,27 +345,14 @@ final class SetObjectFieldValueActionTest extends TestCase
         });
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
-        $translator = $this->createStub(TranslatorInterface::class);
-        $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
-        $container = new Container();
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn($this->adminCode);
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
+        $this->admin->method('hasListFieldDescription')->with('enabled')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);
         $this->admin->expects($this->once())->method('update')->with($object);
-        // NEXT_MAJOR: Remove this line
-        $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
-        $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
-        $container->set('sonata.post.admin.template_registry', $templateRegistry);
-        $this->twig->addExtension(new SonataAdminExtension(
-            new Pool(new Container()),
-            null,
-            $translator,
-            $container,
-            $this->propertyAccessor,
-            null
-        ));
+        $this->templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $fieldDescription->method('getOption')->willReturnMap([
             ['data_transformer', null, $dataTransformer],
             ['editable', null, true],
@@ -451,27 +391,14 @@ final class SetObjectFieldValueActionTest extends TestCase
         });
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
-        $translator = $this->createStub(TranslatorInterface::class);
-        $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
-        $container = new Container();
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn($this->adminCode);
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
+        $this->admin->method('hasListFieldDescription')->with('enabled')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);
         $this->admin->expects($this->once())->method('update')->with($object);
-        // NEXT_MAJOR: Remove this line
-        $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
-        $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
-        $container->set('sonata.post.admin.template_registry', $templateRegistry);
-        $this->twig->addExtension(new SonataAdminExtension(
-            new Pool(new Container()),
-            null,
-            $translator,
-            $container,
-            $this->propertyAccessor,
-            null
-        ));
+        $this->templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $fieldDescription->method('getOption')->willReturnMap([
             ['data_transformer', null, $dataTransformer],
             ['editable', null, true],

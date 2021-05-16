@@ -17,9 +17,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * NEXT_MAJOR: Remove the "since" part of the internal annotation.
- *
- * @internal since sonata-project/admin-bundle version 4.0
+ * @internal
  */
 final class AdminMakerCompilerPass implements CompilerPassInterface
 {

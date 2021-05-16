@@ -15,13 +15,12 @@ file that was distributed with this source code.
 
 {% block block %}
     {% set inlineAnchor = settings.text|replace({'.':'_'}) %}
-    {# NEXT_MAJOR: Remove the attribute check and use `admin.datagrid.pager.countResults` #}
-    {% set results_count = attribute(admin.datagrid.pager, 'countResults') is defined ? admin.datagrid.pager.countResults : admin.datagrid.pager.nbResults %}
+    {% set results_count = admin.datagrid.pager.countResults %}
     <div class="box box-primary" id="{{ inlineAnchor }}">
         <div class="box-header with-border">
             {% set icon = settings.icon|default('') %}
             {% if icon %}
-                <i class="fa {{ icon|raw }}"></i>
+                <i class="fas {{ icon|raw }}"></i>
             {% endif %}
             <h3 class="box-title">
                 <a href="#{{ inlineAnchor }}">{{ settings.text|trans({}, translation_domain) }}</a>
@@ -67,7 +66,7 @@ file that was distributed with this source code.
                 <div class="box-footer">
                     {% if admin.hasAccess('list') %}
                         <a href="{{ admin.generateUrl('list', {filter: settings.filters}) }}" class="btn btn-primary btn-block">
-                            <i class="fa fa-list" aria-hidden="true"></i> {{ 'preview_view_more'|trans({}, 'SonataAdminBundle') }}
+                            <i class="fas fa-list" aria-hidden="true"></i> {{ 'preview_view_more'|trans({}, 'SonataAdminBundle') }}
                         </a>
                     {% endif %}
                 </div>

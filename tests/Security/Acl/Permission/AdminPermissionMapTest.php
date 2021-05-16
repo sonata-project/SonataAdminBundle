@@ -19,6 +19,11 @@ use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
 
 class AdminPermissionMapTest extends TestCase
 {
+    /**
+     * @var AdminPermissionMap
+     */
+    private $permissionMap;
+
     protected function setUp(): void
     {
         $this->permissionMap = new AdminPermissionMap();
@@ -49,6 +54,9 @@ class AdminPermissionMapTest extends TestCase
         ));
     }
 
+    /**
+     * @phpstan-return array<array{bool, string}>
+     */
     public function permissionProvider(): array
     {
         $dataSet = [];

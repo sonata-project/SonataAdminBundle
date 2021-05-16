@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Util;
 
-use PHPUnit\Framework\MockObject\Stub;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
@@ -35,7 +35,7 @@ use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 final class AdminObjectAclManipulatorTest extends TestCase
 {
     /**
-     * @var Stub&FormFactoryInterface
+     * @var MockObject&FormFactoryInterface
      */
     private $formFactory;
 
@@ -46,7 +46,7 @@ final class AdminObjectAclManipulatorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->formFactory = $this->createStub(FormFactoryInterface::class);
+        $this->formFactory = $this->createMock(FormFactoryInterface::class);
 
         $this->adminObjectAclManipulator = new AdminObjectAclManipulator(
             $this->formFactory,
@@ -116,7 +116,7 @@ final class AdminObjectAclManipulatorTest extends TestCase
     {
         $form = $this->createStub(Form::class);
         $formBuilder = $this->createStub(FormBuilder::class);
-        $securityHandler = $this->createStub(AclSecurityHandlerInterface::class);
+        $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
         $acl = $this->createStub(Acl::class);
 
         $securityHandler

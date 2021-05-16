@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Builder;
 
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * This interface should be implemented in persistence bundles.
@@ -25,29 +24,18 @@ use Symfony\Component\Form\FormFactoryInterface;
 interface FormContractorInterface extends BuilderInterface
 {
     /**
-     * NEXT_MAJOR: Remove the `__construct()` method from the interface.
-     */
-    public function __construct(FormFactoryInterface $formFactory);
-
-    /**
-     * @param string               $name
      * @param array<string, mixed> $formOptions
-     *
-     * @return FormBuilderInterface
      */
-    public function getFormBuilder($name, array $formOptions = []);
+    public function getFormBuilder(string $name, array $formOptions = []): FormBuilderInterface;
 
     /**
-     * NEXT_MAJOR: Change signature to add the third parameter array<string, mixed> $formOptions.
-     *
-     * Should provide Symfony form options.
-     *
-     * @param string|null $type
+     * @param array<string, mixed> $formOptions
      *
      * @return array<string, mixed>
      */
-    public function getDefaultOptions($type, FieldDescriptionInterface $fieldDescription/*, array $formOptions = []*/);
+    public function getDefaultOptions(
+        ?string $type,
+        FieldDescriptionInterface $fieldDescription,
+        array $formOptions = []
+    ): array;
 }
-
-// NEXT_MAJOR: Remove next line.
-interface_exists(FieldDescriptionInterface::class);

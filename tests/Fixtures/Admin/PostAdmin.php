@@ -15,19 +15,12 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 
+/**
+ * @phpstan-extends AbstractAdmin<object>
+ */
 class PostAdmin extends AbstractAdmin
 {
-    public function setParentAssociationMapping($associationMapping): void
-    {
-        $this->parentAssociationMapping = $associationMapping;
-    }
-
-    /**
-     * @param array $actions
-     *
-     * @return array
-     */
-    protected function configureBatchActions($actions)
+    protected function configureBatchActions(array $actions): array
     {
         $actions['foo'] = [
             'label' => 'action_foo',

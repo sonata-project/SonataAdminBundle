@@ -20,17 +20,13 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
- * NEXT_MAJOR: Remove the "since" part of the internal annotation.
- *
- * @internal since sonata-project/admin-bundle version 4.0
+ * @internal
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ExtensionCompilerPass implements CompilerPassInterface
+final class ExtensionCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $universalExtensions = [];
         $targets = [];
@@ -95,12 +91,9 @@ class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param string                                                                           $id
-     * @param array<string, array<string, array<string, array<string, array<string, mixed>>>>> $extensionMap
-     *
-     * @return array
+     * @param array<string, array<string, array<string, array<string, mixed>>>> $extensionMap
      */
-    protected function getExtensionsForAdmin($id, Definition $admin, ContainerBuilder $container, array $extensionMap)
+    private function getExtensionsForAdmin(string $id, Definition $admin, ContainerBuilder $container, array $extensionMap): array
     {
         $extensions = [];
 
@@ -119,7 +112,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
 
                 $class = $this->getManagedClass($admin, $container);
 
-                if (null === $class || !class_exists($class)) {
+                if (!class_exists($class)) {
                     continue;
                 }
 
@@ -139,64 +132,55 @@ class ExtensionCompilerPass implements CompilerPassInterface
     /**
      * Resolves the class argument of the admin to an actual class (in case of %parameter%).
      *
-     * @return string|null
-     *
-     * @phpstan-return class-string|null
+     * @phpstan-return class-string
      */
-    protected function getManagedClass(Definition $admin, ContainerBuilder $container)
+    private function getManagedClass(Definition $admin, ContainerBuilder $container): string
     {
         $argument = $admin->getArgument(1);
         $class = $container->getParameterBag()->resolveValue($argument);
 
         if (null === $class) {
-            // NEXT_MAJOR: Throw exception
-//            throw new \DomainException(sprintf('The admin "%s" does not have a valid manager.', $admin->getClass()));
-
-            @trigger_error(
-                sprintf('The admin "%s" does not have a valid manager.', $admin->getClass()),
-                \E_USER_DEPRECATED
-            );
+            throw new \DomainException(sprintf('The admin "%s" does not have a valid manager.', $admin->getClass()));
         }
 
         if (!\is_string($class)) {
-            // NEXT_MAJOR: Throw exception
-//            throw new \TypeError(sprintf(
-//                'Argument "%s" for admin class "%s" must be of type string, %s given.',
-//                $argument,
-//                $admin->getClass(),
-//                \is_object($class) ? \get_class($class) : \gettype($class)
-//            ));
-
-            @trigger_error(
-                sprintf(
-                    'Argument "%s" for admin class "%s" must be of type string, %s given.',
-                    $argument,
-                    $admin->getClass(),
-                    \is_object($class) ? \get_class($class) : \gettype($class)
-                ),
-                \E_USER_DEPRECATED
-            );
+            throw new \TypeError(sprintf(
+                'Argument "%s" for admin class "%s" must be of type string, %s given.',
+                $argument,
+                $admin->getClass(),
+                \is_object($class) ? \get_class($class) : \gettype($class)
+            ));
         }
 
         return $class;
     }
 
     /**
-     * @param array<string, array<string, array<string, string>|bool>> $config
+     * @param array<string, array<string, array<string, string>|int|bool>> $config
      *
-     * @return array<string, array<string, array<string, array<string, array<string, string>>>>> an array with the following structure.
+     * @return array<string, array<string, array<string, array<string, int>>>> an array with the following structure
      *
-     * [
-     *     'global'     => ['<admin_id>'  => ['<extension_id>' => ['priority' => <int>]]],
-     *     'excludes'   => ['<admin_id>'  => ['<extension_id>' => ['priority' => <int>]]],
-     *     'admins'     => ['<admin_id>'  => ['<extension_id>' => ['priority' => <int>]]],
-     *     'implements' => ['<interface>' => ['<extension_id>' => ['priority' => <int>]]],
-     *     'extends'    => ['<class>'     => ['<extension_id>' => ['priority' => <int>]]],
-     *     'instanceof' => ['<class>'     => ['<extension_id>' => ['priority' => <int>]]],
-     *     'uses'       => ['<trait>'     => ['<extension_id>' => ['priority' => <int>]]],
-     * ]
+     * @phpstan-param array<string, array{
+     *     global: bool,
+     *     excludes: array<string, string>,
+     *     admins: array<string, string>,
+     *     implements: array<class-string, string>,
+     *     extends: array<class-string, string>,
+     *     instanceof: array<class-string, string>,
+     *     uses: array<class-string, string>,
+     *     priority: int,
+     * }> $config
+     * @phpstan-return array{
+     *     global: array<string, array<string, array{priority: int}>>,
+     *     excludes: array<string, array<string, array{priority: int}>>,
+     *     admins: array<string, array<string, array{priority: int}>>,
+     *     implements: array<string, array<class-string, array{priority: int}>>,
+     *     extends: array<string, array<class-string, array{priority: int}>>,
+     *     instanceof: array<string, array<class-string, array{priority: int}>>,
+     *     uses: array<string, array<class-string, array{priority: int}>>,
+     * }
      */
-    protected function flattenExtensionConfiguration(array $config)
+    private function flattenExtensionConfiguration(array $config): array
     {
         $extensionMap = [
             'global' => [],
@@ -215,6 +199,17 @@ class ExtensionCompilerPass implements CompilerPassInterface
                 $options['global'] = [];
             }
 
+            /**
+             * @phpstan-var array{
+             *     global: array<string, string>,
+             *     excludes: array<string, string>,
+             *     admins: array<string, string>,
+             *     implements: array<class-string, string>,
+             *     extends: array<class-string, string>,
+             *     instanceof: array<class-string, string>,
+             *     uses: array<class-string, string>,
+             * } $optionsMap
+             */
             $optionsMap = array_intersect_key($options, $extensionMap);
 
             foreach ($optionsMap as $key => $value) {
@@ -231,11 +226,9 @@ class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @return bool
-     *
      * @phpstan-param class-string $traitName
      */
-    protected function hasTrait(\ReflectionClass $class, $traitName)
+    private function hasTrait(\ReflectionClass $class, string $traitName): bool
     {
         if (\in_array($traitName, $class->getTraitNames(), true)) {
             return true;

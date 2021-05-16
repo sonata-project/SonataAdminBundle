@@ -28,6 +28,9 @@ class DefaultRouteGeneratorTest extends TestCase
 {
     private const ROUTER_DOMAIN = 'http://sonata-project';
 
+    /**
+     * @var string
+     */
     protected $cacheTempFolder;
 
     protected function setUp(): void
@@ -51,6 +54,8 @@ class DefaultRouteGeneratorTest extends TestCase
     }
 
     /**
+     * @param array<string, mixed> $parameters
+     *
      * @dataProvider getGenerateUrlTests
      */
     public function testGenerateUrl(
@@ -68,14 +73,14 @@ class DefaultRouteGeneratorTest extends TestCase
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->method('isChild')->willReturn(false);
-        $admin->method('getCode')->willReturn('base.Code.Foo');
+        $admin->method('getBaseCodeRoute')->willReturn('base.Code.Foo');
         $admin->expects($this->once())->method('hasParentFieldDescription')->willReturn(false);
         $admin->expects($this->once())->method('hasRequest')->willReturn(true);
         $admin->method('getUniqid')->willReturn('foo_uniqueid');
-        $admin->method('getCode')->willReturn('foo_code');
         $admin->expects($this->once())->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
         $admin->method('getRoutes')->willReturn($collection);
         $admin->method('getExtensions')->willReturn([]);
+        $admin->method('getCode')->willReturn($name);
 
         $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->once())
@@ -92,6 +97,8 @@ class DefaultRouteGeneratorTest extends TestCase
                         return sprintf('%s/foo%s', $domain, $params);
                     case 'admin_acme_child_bar':
                         return sprintf('%s/foo/bar%s', $domain, $params);
+                    default:
+                        throw new \LogicException('Not implemented');
                 }
             });
 
@@ -102,6 +109,9 @@ class DefaultRouteGeneratorTest extends TestCase
         $this->assertSame($expected, $generator->generateUrl($admin, $name, $parameters, $referenceType));
     }
 
+    /**
+     * @phpstan-return array<array{string, string, array<string, mixed>}>
+     */
     public function getGenerateUrlTests(): array
     {
         return [
@@ -124,12 +134,13 @@ class DefaultRouteGeneratorTest extends TestCase
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->method('isChild')->willReturn(false);
-        $admin->method('getCode')->willReturn('base.Code.Route');
+        $admin->method('getBaseCodeRoute')->willReturn('base.Code.Route');
         $admin->expects($this->once())->method('hasParentFieldDescription')->willReturn(false);
         $admin->expects($this->once())->method('hasRequest')->willReturn(true);
         $admin->expects($this->once())->method('getPersistentParameters')->willReturn([]);
-        $admin->expects($this->exactly(2))->method('getRoutes')->willReturn(new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'BundleName:ControllerName'));
+        $admin->expects($this->once())->method('getRoutes')->willReturn(new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'BundleName:ControllerName'));
         $admin->method('getExtensions')->willReturn([]);
+        $admin->method('getCode')->willReturn('Code');
 
         $router = $this->getMockForAbstractClass(RouterInterface::class);
 
@@ -140,6 +151,8 @@ class DefaultRouteGeneratorTest extends TestCase
     }
 
     /**
+     * @param array<string, mixed> $parameters
+     *
      * @dataProvider getGenerateUrlChildTests
      */
     public function testGenerateUrlChild(string $type, string $expected, string $name, array $parameters): void
@@ -153,13 +166,11 @@ class DefaultRouteGeneratorTest extends TestCase
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->method('isChild')->willReturn(true);
-        $admin->method('getCode')->willReturn('base.Code.Child');
         $admin->method('getBaseCodeRoute')->willReturn('base.Code.Parent|base.Code.Child');
         $admin->method('getIdParameter')->willReturn('id');
         $admin->method('hasParentFieldDescription')->willReturn(false);
         $admin->method('hasRequest')->willReturn(true);
         $admin->method('getUniqid')->willReturn('foo_uniqueid');
-        $admin->method('getCode')->willReturn('foo_code');
         $admin->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
         $admin->method('getRoutes')->willReturn($childCollection);
         $admin->method('getExtensions')->willReturn([]);
@@ -167,8 +178,9 @@ class DefaultRouteGeneratorTest extends TestCase
         $parentAdmin = $this->getMockForAbstractClass(AdminInterface::class);
         $parentAdmin->method('getIdParameter')->willReturn('childId');
         $parentAdmin->method('getRoutes')->willReturn($collection);
-        $parentAdmin->method('getCode')->willReturn('base.Code.Parent');
+        $parentAdmin->method('getBaseCodeRoute')->willReturn('base.Code.Parent');
         $parentAdmin->method('getExtensions')->willReturn([]);
+        $parentAdmin->method('getCode')->willReturn($name);
 
         // no request attached in this test, so this will not be used
         $parentAdmin->expects($this->never())->method('getPersistentParameters')->willReturn(['from' => 'parent']);
@@ -178,14 +190,17 @@ class DefaultRouteGeneratorTest extends TestCase
         $request->attributes->method('has')->willReturn(true);
         $request->attributes
             ->method('get')
-            ->willReturnCallback(static function (string $key): string {
+            ->willReturnCallback(static function (string $key): ?string {
                 if ('childId' === $key) {
                     return '987654';
                 }
+
+                return null;
             });
 
         $admin->method('getRequest')->willReturn($request);
         $admin->method('getParent')->willReturn($parentAdmin);
+        $admin->method('getCode')->willReturn($name);
 
         $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->once())
@@ -201,6 +216,8 @@ class DefaultRouteGeneratorTest extends TestCase
                         return sprintf('/foo%s', $params);
                     case 'admin_acme_child_bar':
                         return sprintf('/foo/bar%s', $params);
+                    default:
+                        throw new \LogicException('Not implemented');
                 }
             });
 
@@ -211,6 +228,9 @@ class DefaultRouteGeneratorTest extends TestCase
         $this->assertSame($expected, $generator->generateUrl('child' === $type ? $admin : $parentAdmin, $name, $parameters));
     }
 
+    /**
+     * @phpstan-return array<array{string, string, string, array<string, mixed>}>
+     */
     public function getGenerateUrlChildTests(): array
     {
         return [
@@ -221,6 +241,8 @@ class DefaultRouteGeneratorTest extends TestCase
     }
 
     /**
+     * @param array<string, mixed> $parameters
+     *
      * @dataProvider getGenerateUrlParentFieldDescriptionTests
      */
     public function testGenerateUrlParentFieldDescription(string $expected, string $name, array $parameters): void
@@ -235,11 +257,11 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->method('isChild')->willReturn(false);
         $admin->method('getCode')->willReturn('base.Code.Parent');
+        $admin->method('getBaseCodeRoute')->willReturn('base.Code.Parent');
         // embeded admin (not nested ...)
         $admin->expects($this->once())->method('hasParentFieldDescription')->willReturn(true);
         $admin->expects($this->once())->method('hasRequest')->willReturn(true);
-        $admin->method('getUniqid')->willReturn('foo_uniqueid');
-        $admin->method('getCode')->willReturn('foo_code');
+        $admin->expects($this->any())->method('getUniqid')->willReturn('foo_uniqueid');
         $admin->expects($this->once())->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
         $admin->method('getExtensions')->willReturn([]);
         $admin->method('getRoutes')->willReturn($collection);
@@ -258,6 +280,8 @@ class DefaultRouteGeneratorTest extends TestCase
                         return sprintf('/foo%s', $params);
                     case 'admin_acme_child_bar':
                         return sprintf('/foo/bar%s', $params);
+                    default:
+                        throw new \LogicException('Not implemented');
                 }
             });
 
@@ -279,6 +303,9 @@ class DefaultRouteGeneratorTest extends TestCase
         $this->assertSame($expected, $generator->generateUrl($admin, $name, $parameters));
     }
 
+    /**
+     * @phpstan-return array<array{string, string, array<string, mixed>}>
+     */
     public function getGenerateUrlParentFieldDescriptionTests(): array
     {
         return [
@@ -289,6 +316,8 @@ class DefaultRouteGeneratorTest extends TestCase
     }
 
     /**
+     * @param array<string, mixed> $parameters
+     *
      * @dataProvider getGenerateUrlLoadCacheTests
      */
     public function testGenerateUrlLoadCache(string $expected, string $name, array $parameters): void
@@ -329,10 +358,12 @@ class DefaultRouteGeneratorTest extends TestCase
         $request->attributes->method('has')->willReturn(true);
         $request->attributes
             ->method('get')
-            ->willReturnCallback(static function (string $key): string {
+            ->willReturnCallback(static function (string $key): ?string {
                 if ('childId' === $key) {
                     return '987654';
                 }
+
+                return null;
             });
 
         $admin->method('getRequest')->willReturn($request);
@@ -340,13 +371,14 @@ class DefaultRouteGeneratorTest extends TestCase
 
         $standaloneAdmin = $this->getMockForAbstractClass(AdminInterface::class);
         $standaloneAdmin->method('isChild')->willReturn(false);
-        $standaloneAdmin->method('getCode')->willReturn('base.Code.Child');
+        $standaloneAdmin->method('getBaseCodeRoute')->willReturn('base.Code.Child');
         $standaloneAdmin->expects($this->once())->method('hasParentFieldDescription')->willReturn(false);
         $standaloneAdmin->expects($this->once())->method('hasRequest')->willReturn(true);
         $standaloneAdmin->method('getUniqid')->willReturn('foo_uniqueid');
         $standaloneAdmin->expects($this->once())->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
         $standaloneAdmin->method('getRoutes')->willReturn($standaloneCollection);
         $standaloneAdmin->method('getExtensions')->willReturn([]);
+        $standaloneAdmin->method('getCode')->willReturn('Code');
 
         $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->exactly(2))
@@ -362,6 +394,8 @@ class DefaultRouteGeneratorTest extends TestCase
                         return sprintf('/foo/bar%s', $params);
                     case 'admin_acme_child_standalone_bar':
                         return sprintf('/bar%s', $params);
+                    default:
+                        throw new \LogicException('Not implemented');
                 }
             });
 
@@ -374,6 +408,9 @@ class DefaultRouteGeneratorTest extends TestCase
         $this->assertSame($expected, $generator->generateUrl($standaloneAdmin, $name, $parameters));
     }
 
+    /**
+     * @phpstan-return array<array{string, string, array<string, mixed>}>
+     */
     public function getGenerateUrlLoadCacheTests(): array
     {
         return [

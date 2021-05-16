@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Maker;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Maker\AdminMaker;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
@@ -41,26 +42,32 @@ class AdminMakerTest extends TestCase
      * @var string
      */
     private $projectDirectory;
+
     /**
-     * @var array
+     * @var array<string, ModelManagerInterface<object>>
      */
     private $modelManagers = [];
+
     /**
      * @var InputInterface
      */
     private $input;
+
     /**
      * @var OutputInterface
      */
     private $output;
+
     /**
      * @var ConsoleStyle
      */
     private $io;
+
     /**
      * @var Generator
      */
     private $generator;
+
     /**
      * @var string
      */
@@ -73,7 +80,7 @@ class AdminMakerTest extends TestCase
 
     protected function setup(): void
     {
-        $managerOrmProxy = $this->createStub(ModelManagerInterface::class);
+        $managerOrmProxy = $this->createMock(ModelManagerInterface::class);
         $managerOrmProxy->method('getExportFields')->with(Foo::class)
             ->willReturn(['bar', 'baz']);
 
@@ -93,7 +100,7 @@ class AdminMakerTest extends TestCase
      */
     public function testExecute(): void
     {
-        $maker = new AdminMaker($this->projectDirectory, $this->modelManagers);
+        $maker = new AdminMaker($this->projectDirectory, $this->modelManagers, CRUDController::class);
 
         $in = [
             'model' => Foo::class,

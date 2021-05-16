@@ -28,14 +28,14 @@ use Sonata\AdminBundle\Datagrid\SimplePager;
 class SimplePagerTest extends TestCase
 {
     /**
-     * @var MockObject&ProxyQueryInterface
-     */
-    private $proxyQuery;
-
-    /**
      * @var SimplePager
      */
     private $pager;
+
+    /**
+     * @var MockObject&ProxyQueryInterface
+     */
+    private $proxyQuery;
 
     protected function setUp(): void
     {
@@ -47,7 +47,7 @@ class SimplePagerTest extends TestCase
     {
         $this->proxyQuery->expects($this->once())
                 ->method('execute')
-                ->willReturn(new ArrayCollection(range(0, 12)));
+                ->willReturn(new ArrayCollection(array_fill(0, 13, new \stdClass())));
 
         $this->proxyQuery->expects($this->once())
             ->method('setMaxResults')
@@ -70,7 +70,7 @@ class SimplePagerTest extends TestCase
     {
         $this->proxyQuery->expects($this->once())
             ->method('execute')
-            ->willReturn(new ArrayCollection(range(0, 12)));
+            ->willReturn(new ArrayCollection(array_fill(0, 13, new \stdClass())));
 
         $this->proxyQuery->expects($this->once())
             ->method('setMaxResults')
@@ -95,7 +95,7 @@ class SimplePagerTest extends TestCase
     {
         $this->proxyQuery->expects($this->once())
             ->method('execute')
-            ->willReturn(new ArrayCollection(range(0, 8)));
+            ->willReturn(new ArrayCollection(array_fill(0, 9, new \stdClass())));
 
         $this->proxyQuery->expects($this->once())
             ->method('setMaxResults')
@@ -181,7 +181,7 @@ class SimplePagerTest extends TestCase
         return [
             [['foo', 'bar'], 2],
             [['foo', 'bar'], 1],
-            [[], null],
+            [[], 1],
         ];
     }
 }

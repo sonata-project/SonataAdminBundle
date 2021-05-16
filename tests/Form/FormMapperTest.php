@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
@@ -23,21 +24,19 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
-use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\ResolvedFormTypeInterface;
-use Symfony\Component\Validator\Mapping\MemberMetadata;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class FormMapperTest extends TestCase
 {
     private const DEFAULT_GRANTED_ROLE = 'ROLE_ADMIN_BAZ';
 
     /**
-     * @var FormContractorInterface
+     * @var FormContractorInterface&MockObject
      */
     protected $contractor;
 
@@ -73,16 +72,6 @@ class FormMapperTest extends TestCase
         $this->admin = new CleanAdmin('code', \stdClass::class, 'controller');
         $this->admin->setSubject(new \stdClass());
 
-        $validator = $this->createMock(ValidatorInterface::class);
-        $validator
-            ->method('getMetadataFor')
-            ->willReturn($this->createMock(MemberMetadata::class));
-        $this->admin->setValidator($validator);
-
-        // NEXT_MAJOR: Remove the calls to `setFormGroups()` and `setFormTabs()`
-        $this->admin->setFormGroups([]);
-        $this->admin->setFormTabs([]);
-
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
@@ -105,8 +94,7 @@ class FormMapperTest extends TestCase
 
         $this->admin->setFieldDescriptionFactory($fieldDescriptionFactory);
 
-        $labelTranslatorStrategy = $this->getMockForAbstractClass(LabelTranslatorStrategyInterface::class);
-        $this->admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
+        $this->admin->setLabelTranslatorStrategy(new NoopLabelTranslatorStrategy());
 
         $this->formMapper = new FormMapper(
             $this->contractor,

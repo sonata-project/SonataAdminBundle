@@ -15,9 +15,8 @@ namespace Sonata\AdminBundle\Tests\Action;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Action\RetrieveAutocompleteItemsAction;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
@@ -39,18 +38,18 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     private $pool;
 
     /**
-     * @var GetShortObjectDescriptionAction
+     * @var RetrieveAutocompleteItemsAction
      */
     private $action;
 
     /**
-     * @var AbstractAdmin
+     * @var AdminInterface<object>&MockObject
      */
     private $admin;
 
     protected function setUp(): void
     {
-        $this->admin = $this->createMock(AbstractAdmin::class);
+        $this->admin = $this->createMock(AdminInterface::class);
         $this->admin->expects($this->once())->method('setRequest');
         $container = new Container();
         $container->set('foo.admin', $this->admin);
@@ -65,8 +64,8 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $this->admin->method('hasAccess')->willReturnMap([
-            ['create', false],
-            ['edit', true],
+            ['create', null, false],
+            ['edit', null, false],
         ]);
 
         $this->expectException(AccessDeniedException::class);
@@ -82,17 +81,15 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
             'field' => 'barField',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
-        // NEXT_MAJOR: Use `createStub` instead of using mock builder
-        $fieldDescription = $this->getMockBuilder(FieldDescriptionInterface::class)
-            ->addMethods(['getTargetModel'])
-            ->getMockForAbstractClass();
+        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
 
         $this->configureFormConfig('barField', true);
 
         $this->admin->method('getNewInstance')->willReturn($object);
         $this->admin->expects($this->once())->method('setSubject')->with($object);
         $this->admin->method('hasAccess')->with('create')->willReturn(true);
-        $this->admin->method('getFormFieldDescriptions')->willReturn(null);
+        $this->admin->method('getFormFieldDescriptions')->willReturn([]);
+        $this->admin->method('hasFormFieldDescription')->with('barField')->willReturn(true);
         $this->admin->method('getFormFieldDescription')->with('barField')->willReturn($fieldDescription);
 
         $fieldDescription->method('getTargetModel')->willReturn(Foo::class);
@@ -113,20 +110,17 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
             'q' => 'so',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
-        $targetAdmin = $this->createStub(AbstractAdmin::class);
-        // NEXT_MAJOR: Use `createStub` instead of using mock builder
-        $fieldDescription = $this->getMockBuilder(FieldDescriptionInterface::class)
-            ->addMethods(['getTargetModel'])
-            ->getMockForAbstractClass();
+        $targetAdmin = $this->createStub(AdminInterface::class);
+        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
 
         $this->configureFormConfig('barField');
 
         $this->admin->method('getNewInstance')->willReturn($object);
         $this->admin->expects($this->once())->method('setSubject')->with($object);
         $this->admin->method('hasAccess')->with('create')->willReturn(true);
+        $this->admin->method('hasFormFieldDescription')->with('barField')->willReturn(true);
         $this->admin->method('getFormFieldDescription')->with('barField')->willReturn($fieldDescription);
-        $this->admin->method('getFormFieldDescriptions')->willReturn(null);
-        $targetAdmin->method('checkAccess')->with('list')->willReturn(null);
+        $this->admin->method('getFormFieldDescriptions')->willReturn([]);
         $fieldDescription->method('getTargetModel')->willReturn(Foo::class);
         $fieldDescription->method('getName')->willReturn('barField');
         $fieldDescription->method('getAssociationAdmin')->willReturn($targetAdmin);
@@ -164,7 +158,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
+        $this->assertSame('{"status":"OK","more":false,"items":[{"id":"123","label":"FOO"}]}', $response->getContent());
     }
 
     public function testRetrieveAutocompleteItemsComplexPropertyArray(): void
@@ -203,7 +197,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
+        $this->assertSame('{"status":"OK","more":false,"items":[{"id":"123","label":"FOO"}]}', $response->getContent());
     }
 
     public function testRetrieveAutocompleteItemsComplexProperty(): void
@@ -232,38 +226,31 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
+        $this->assertSame('{"status":"OK","more":false,"items":[{"id":"123","label":"FOO"}]}', $response->getContent());
     }
 
     private function configureAutocompleteItemsDatagrid(): MockObject
     {
         $model = new \stdClass();
 
-        $targetAdmin = $this->createMock(AbstractAdmin::class);
-        $datagrid = $this->createStub(DatagridInterface::class);
+        $targetAdmin = $this->createMock(AdminInterface::class);
+        $datagrid = $this->createMock(DatagridInterface::class);
         $metadata = $this->createStub(MetadataInterface::class);
-        // NEXT_MAJOR: Use createMock instead.
-        $pager = $this->getMockBuilder(PagerInterface::class)
-            ->addMethods(['getCurrentPageResults', 'isLastPage'])
-            ->getMockForAbstractClass();
-        // NEXT_MAJOR: Use `createStub` instead of using mock builder
-        $fieldDescription = $this->getMockBuilder(FieldDescriptionInterface::class)
-            ->addMethods(['getTargetModel'])
-            ->getMockForAbstractClass();
+        $pager = $this->createStub(PagerInterface::class);
+        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getNewInstance')->willReturn($model);
         $this->admin->expects($this->once())->method('setSubject')->with($model);
         $this->admin->method('hasAccess')->with('create')->willReturn(true);
+        $this->admin->method('hasFormFieldDescription')->with('barField')->willReturn(true);
         $this->admin->method('getFormFieldDescription')->with('barField')->willReturn($fieldDescription);
-        $this->admin->method('getFormFieldDescriptions')->willReturn(null);
-        $this->admin->method('id')->with($model)->willReturn(123);
+        $this->admin->method('getFormFieldDescriptions')->willReturn([]);
+        $this->admin->method('id')->with($model)->willReturn('123');
         $targetAdmin->expects($this->once())->method('checkAccess')->with('list');
-        $targetAdmin->expects($this->once())->method('setFilterPersister')->with(null);
         $targetAdmin->method('getDatagrid')->willReturn($datagrid);
         $targetAdmin->method('getObjectMetadata')->with($model)->willReturn($metadata);
         $metadata->method('getTitle')->willReturn('FOO');
 
-        $datagrid->method('buildPager')->willReturn(null);
         $datagrid->method('getPager')->willReturn($pager);
         $pager->method('getCurrentPageResults')->willReturn([$model]);
         $pager->method('isLastPage')->willReturn(true);
@@ -276,7 +263,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
     private function configureFormConfig(string $field, bool $disabled = false): void
     {
-        $form = $this->createStub(Form::class);
+        $form = $this->createMock(Form::class);
         $formType = $this->createStub(Form::class);
         $formConfig = $this->createStub(FormConfigInterface::class);
 
@@ -298,7 +285,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
     private function configureFormConfigComplexProperty(string $field): void
     {
-        $form = $this->createStub(Form::class);
+        $form = $this->createMock(Form::class);
         $formType = $this->createStub(Form::class);
         $formConfig = $this->createStub(FormConfigInterface::class);
 
@@ -319,7 +306,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
     private function configureFormConfigComplexPropertyArray(string $field): void
     {
-        $form = $this->createStub(Form::class);
+        $form = $this->createMock(Form::class);
         $formType = $this->createStub(Form::class);
         $formConfig = $this->createStub(FormConfigInterface::class);
 

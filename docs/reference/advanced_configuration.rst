@@ -139,17 +139,23 @@ To create your own RouteBuilder create the PHP class and register it as a servic
     use Sonata\AdminBundle\Builder\RouteBuilderInterface;
     use Sonata\AdminBundle\Admin\AdminInterface;
     use Sonata\AdminBundle\Route\PathInfoBuilder;
-    use Sonata\AdminBundle\Route\RouteCollection;
+    use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
-    class EntityRouterBuilder extends PathInfoBuilder implements RouteBuilderInterface
+    final class EntityRouterBuilder implements RouteBuilderInterface
     {
         /**
-         * @param AdminInterface  $admin
-         * @param RouteCollection $collection
+         * @var PathInfoBuilder
          */
-        public function build(AdminInterface $admin, RouteCollection $collection)
+        private $pathInfoBuilder;
+
+        public function __construct(PathInfoBuilder $pathInfoBuilder)
         {
-            parent::build($admin, $collection);
+            $this->pathInfoBuilder = $pathInfoBuilder;
+        }
+
+        public function build(AdminInterface $admin, RouteCollectionInterface $collection)
+        {
+            $this->pathInfoBuilder->build($admin, $collection);
 
             $collection->add('yourSubAction');
 
@@ -230,7 +236,7 @@ take into account these new subclasses::
 
     // src/Admin/PersonAdmin.php
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $subject = $this->getSubject();
 
@@ -255,7 +261,7 @@ ACL
 Though the route linked by a menu may be protected the Tab Menu will not automatically check the ACl for you.
 The link will still appear unless you manually check it using the ``hasAccess()`` method::
 
-    protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    protected function configureTabMenu(MenuItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
     {
         // Link will always appear even if it is protected by ACL
         $menu->addChild($this->trans('Show'), [
@@ -278,7 +284,7 @@ the `'dropdown' => true` attribute::
 
     // src/Admin/PersonAdmin.php
 
-    protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    protected function configureTabMenu(MenuItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
     {
         // other tab menu stuff ...
 
@@ -333,7 +339,7 @@ You can add or override filter parameters to the Tab Menu::
 
     final class DeliveryAdmin extends AbstractAdmin
     {
-        protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+        protected function configureTabMenu(MenuItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
         {
             if (!$childAdmin && !in_array($action, ['edit', 'show', 'list'])) {
                 return;
@@ -359,7 +365,6 @@ You can add or override filter parameters to the Tab Menu::
         }
     }
 
-The ``Delivery`` class is based on the ``sonata_type_translatable_choice`` example inside the `Core's documentation`_.
 
 Actions Menu
 ------------
@@ -367,18 +372,18 @@ Actions Menu
 You can add custom items to the actions menu for a specific action by
 overriding the following method::
 
-    public function configureActionButtons(AdminInterface $admin, $list, $action, $object)
+    public function configureActionButtons(AdminInterface $admin, array $list, string $action, ?object $object = null): array
     {
         if (in_array($action, ['show', 'edit', 'acl']) && $object) {
-            $list['custom'] = [
+            $buttonList['custom'] = [
                 'template' => '@App/Button/custom_button.html.twig',
             ];
         }
 
         // Remove history action
-        unset($list['history']);
+        unset($buttonList['history']);
 
-        return $list;
+        return $buttonList;
     }
 
 .. figure:: ../images/custom_action_buttons.png
@@ -419,9 +424,9 @@ some entries inside the  `$accessMapping` array in the linked Admin::
 
     // src/Controller/CustomCRUDController.php
 
-    class CustomCRUDController extends CRUDController
+    final class CustomCRUDController extends CRUDController
     {
-        public function myCustomFooAction()
+        public function myCustomFooAction(): Response
         {
             $this->admin->checkAccess('myCustomFoo');
             // If you can't access to EDIT role for the linked admin, an AccessDeniedException will be thrown
@@ -429,7 +434,7 @@ some entries inside the  `$accessMapping` array in the linked Admin::
             // ...
         }
 
-        public function myCustomBarAction($object)
+        public function myCustomBarAction($object): Response
         {
             $this->admin->checkAccess('myCustomBar', $object);
             // If you can't access to EDIT AND LIST roles for the linked admin, an AccessDeniedException will be thrown
@@ -445,7 +450,7 @@ by overriding ``checkAccess`` function::
 
     final class CustomAdmin extends AbstractAdmin
     {
-        public function checkAccess($action, $object = null)
+        public function checkAccess(string $action, ?object $object = null): void
         {
             $this->customAccessLogic();
         }

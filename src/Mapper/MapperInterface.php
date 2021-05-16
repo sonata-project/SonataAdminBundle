@@ -19,48 +19,32 @@ use Sonata\AdminBundle\Admin\AdminInterface;
  * This interface is used to simulate the Form API.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
- *
- * @method array keys()
  */
 interface MapperInterface
 {
-    /**
-     * @return AdminInterface
-     */
-    public function getAdmin();
+    public function getAdmin(): AdminInterface;
 
     /**
-     * @param string $key
-     *
      * @return mixed
      */
-    public function get($key);
+    public function get(string $key);
+
+    public function has(string $key): bool;
 
     /**
-     * @param string $key
-     *
-     * @return bool
-     */
-    public function has($key);
-
-    /**
-     * @param string $key
-     *
      * @return static
      */
-    public function remove($key);
+    public function remove(string $key);
 
     /**
-     * NEXT_MAJOR: Uncomment this.
-     *
      * Returns configured keys.
      *
      * @return string[]
      */
-    //public function keys(): array;
+    public function keys(): array;
 
     /**
-     * @param array $keys field names
+     * @param string[] $keys
      *
      * @return static
      */

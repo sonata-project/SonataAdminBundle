@@ -45,60 +45,6 @@ class ValidatorsTest extends TestCase
     }
 
     /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     *
-     * @dataProvider getValidateEntityNameTests
-     */
-    public function testValidateEntityName(array $expected, string $value): void
-    {
-        $this->assertSame($expected, Validators::validateEntityName($value));
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function getValidateEntityNameTests(): array
-    {
-        return [
-            [['AcmeBlogBundle', 'Post'], 'AcmeBlogBundle:Post'],
-            [['Foo\Bar\BlogBundle', 'Post'], 'Foo/Bar/BlogBundle:Post'],
-            [['Foo\Bar\BlogBundle', 'Post'], 'Foo\Bar\BlogBundle:Post'],
-        ];
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     *
-     * @dataProvider getValidateEntityNamesWithExceptionTests
-     */
-    public function testValidateEntityNameWithException(string $value): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        Validators::validateEntityName($value);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function getValidateEntityNamesWithExceptionTests(): array
-    {
-        return [
-            ['Sonata\AdminBundle\Admin\AbstractAdmin'],
-            ['Sonata/AdminBundle/Admin/Admin'],
-            ['Foo/Bar/Controller'],
-            ['Foo/BarController'],
-            ['Foo_Bar'],
-            ['FooBarController'],
-            ['FooBarAdmin'],
-        ];
-    }
-
-    /**
      * @dataProvider getValidateClassTests
      */
     public function testValidateClass(string $expected, string $value): void

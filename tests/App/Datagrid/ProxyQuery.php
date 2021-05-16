@@ -17,44 +17,32 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 final class ProxyQuery implements ProxyQueryInterface
 {
-    public function __call($name, $args)
-    {
-    }
-
     public function execute()
     {
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function setSortBy($parentAssociationMappings, $fieldMapping): ProxyQueryInterface
+    public function setSortBy(array $parentAssociationMappings, array $fieldMapping): ProxyQueryInterface
     {
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function getSortBy(): string
+    public function getSortBy(): ?string
     {
         return 'e.id';
     }
 
-    public function setSortOrder($sortOrder): ProxyQueryInterface
+    public function setSortOrder(string $sortOrder): ProxyQueryInterface
     {
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function getSortOrder(): string
+    public function getSortOrder(): ?string
     {
         return 'ASC';
     }
 
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function getSingleScalarResult()
-    {
-        return 0;
-    }
-
-    public function setFirstResult($firstResult): ProxyQueryInterface
+    public function setFirstResult(?int $firstResult): ProxyQueryInterface
     {
         throw new \BadMethodCallException('Not implemented.');
     }
@@ -64,7 +52,7 @@ final class ProxyQuery implements ProxyQueryInterface
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function setMaxResults($maxResults): ProxyQueryInterface
+    public function setMaxResults(?int $maxResults): ProxyQueryInterface
     {
         throw new \BadMethodCallException('Not implemented.');
     }
@@ -72,21 +60,5 @@ final class ProxyQuery implements ProxyQueryInterface
     public function getMaxResults(): ?int
     {
         return 1;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function getUniqueParameterId(): int
-    {
-        return 1;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function entityJoin(array $associationMappings): array
-    {
-        throw new \BadMethodCallException('Not implemented.');
     }
 }

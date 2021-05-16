@@ -14,17 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\App\Builder;
 
 use Sonata\AdminBundle\Builder\AbstractFormContractor;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
 final class FormContractor extends AbstractFormContractor
 {
-    protected function hasAssociation(FieldDescriptionInterface $fieldDescription): bool
-    {
-        return false;
-    }
-
-    protected function hasSingleValueAssociation(FieldDescriptionInterface $fieldDescription): bool
-    {
-        return false;
-    }
 }

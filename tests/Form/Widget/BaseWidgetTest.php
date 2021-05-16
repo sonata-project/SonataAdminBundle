@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\Widget;
 
+use Sonata\AdminBundle\Tests\Fixtures\StubTranslator;
 use Sonata\Form\Test\AbstractWidgetTestCase;
 use Symfony\Bridge\Twig\Extension\HttpKernelExtension;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
-use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
@@ -53,9 +53,6 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
         ],
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getEnvironment(): Environment
     {
         $environment = parent::getEnvironment();
@@ -69,10 +66,7 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
         return $environment;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRenderingEngine(?Environment $environment = null): TwigRendererEngine
+    protected function getRenderingEngine(Environment $environment): TwigRendererEngine
     {
         if (!\in_array($this->type, ['form', 'filter'], true)) {
             throw new \Exception(
@@ -86,21 +80,18 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getSonataAdmin()
     {
         return $this->sonataAdmin;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getTemplatePaths(): array
     {
-        return array_merge(parent::getTemplatePaths(), [
+        $twigPaths = array_filter([
+            sprintf('%s/../../../vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form', __DIR__),
             sprintf('%s/../../../src/Resources/views/Form', __DIR__),
-        ]);
+        ], 'is_dir');
+
+        return array_merge(parent::getTemplatePaths(), $twigPaths);
     }
 }

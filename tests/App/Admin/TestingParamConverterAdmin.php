@@ -14,15 +14,18 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\App\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Tests\App\Controller\InvokableController;
 
+/**
+ * @phpstan-extends AbstractAdmin<object>
+ */
 final class TestingParamConverterAdmin extends AbstractAdmin
 {
     protected $baseRoutePattern = 'tests/app/testing-param-converter';
     protected $baseRouteName = 'admin_testing_param_converter';
 
-    protected function configureRoutes(RouteCollection $collection): void
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->add('withAnnotation', null, [
             '_controller' => 'Sonata\AdminBundle\Tests\App\Controller\ParamConverterController::withAnnotation',

@@ -21,17 +21,17 @@ final class FieldDescription extends BaseFieldDescription
     {
     }
 
-    public function getTargetEntity()
+    public function getTargetEntity(): ?string
     {
         return null;
     }
 
-    public function getTargetModel()
+    public function getTargetModel(): ?string
     {
         return null;
     }
 
-    public function setFieldMapping($fieldMapping): void
+    public function setFieldMapping(array $fieldMapping): void
     {
     }
 
@@ -39,19 +39,14 @@ final class FieldDescription extends BaseFieldDescription
     {
     }
 
-    public function isIdentifier()
+    public function isIdentifier(): bool
     {
         return false;
     }
 
-    public function getValue($object)
+    public function getValue(object $object)
     {
         return $this->getFieldValue($object, $this->fieldName);
-    }
-
-    public function describesAssociation(): bool
-    {
-        return $this->describesSingleValuedAssociation() || $this->describesCollectionValuedAssociation();
     }
 
     public function describesSingleValuedAssociation(): bool

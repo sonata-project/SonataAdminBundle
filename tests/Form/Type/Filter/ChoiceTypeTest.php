@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Form\Type\Filter;
 
 use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
-use Symfony\Component\Translation\TranslatorInterface;
 
 final class ChoiceTypeTest extends BaseTypeTest
 {
@@ -31,17 +30,5 @@ final class ChoiceTypeTest extends BaseTypeTest
     protected function getTestedType(): string
     {
         return ChoiceType::class;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @return ChoiceType[]
-     */
-    protected function getTypes(): array
-    {
-        return [
-            new ChoiceType($this->createStub(TranslatorInterface::class)),
-        ];
     }
 }

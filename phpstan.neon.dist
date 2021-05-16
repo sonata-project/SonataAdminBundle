@@ -3,16 +3,15 @@ includes:
 
 parameters:
     level: 5
+    bootstrapFiles:
+        - vendor/bin/.phpunit/phpunit/vendor/autoload.php
     paths:
         - src
-    excludes_analyse:
-        # temporarily ignore template files
-        - src/Resources/**.tpl.php
-    scanFiles:
-        # NEXT_MAJOR: Remove those files
-        - .phpstan/stubs/MetadataInterface.file
-        - .phpstan/stubs/Exporter.file
-        - .phpstan/stubs/TextExtension.file
+        - tests
+    excludePaths:
+        analyseAndScan:
+            # temporarily ignore template files
+            - src/Resources/**.tpl.php
     treatPhpDocTypesAsCertain: false
     checkGenericClassInNonGenericObjectType: true
     checkMissingIterableValueType: true

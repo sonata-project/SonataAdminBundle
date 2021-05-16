@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Form\Type\Filter;
 
 use Sonata\AdminBundle\Form\Type\Filter\DateTimeRangeType;
+use Sonata\AdminBundle\Form\Type\Operator\DateRangeOperatorType;
 use Sonata\Form\Type\DateTimeRangeType as FormDateTimeRangeType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
 
 final class DateTimeRangeTypeTest extends BaseTypeTest
 {
@@ -28,14 +28,12 @@ final class DateTimeRangeTypeTest extends BaseTypeTest
         $view = $form->createView();
 
         $this->assertFalse($view->children['type']->vars['required']);
-        $this->assertTrue($view->children['value']->vars['required']);
+        $this->assertFalse($view->children['value']->vars['required']);
     }
 
     public function testGetDefaultOptions(): void
     {
-        $translator = $this->createStub(TranslatorInterface::class);
-
-        $type = new DateTimeRangeType($translator);
+        $type = new DateTimeRangeType();
 
         $optionsResolver = new OptionsResolver();
 
@@ -44,6 +42,7 @@ final class DateTimeRangeTypeTest extends BaseTypeTest
         $options = $optionsResolver->resolve();
 
         $expected = [
+            'operator_type' => DateRangeOperatorType::class,
             'field_type' => FormDateTimeRangeType::class,
             'field_options' => ['field_options' => ['date_format' => DateTimeType::HTML5_FORMAT]],
         ];
@@ -53,17 +52,5 @@ final class DateTimeRangeTypeTest extends BaseTypeTest
     protected function getTestedType(): string
     {
         return DateTimeRangeType::class;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @return DateTimeRangeType[]
-     */
-    protected function getTypes(): array
-    {
-        return [
-            new DateTimeRangeType($this->createStub(TranslatorInterface::class)),
-        ];
     }
 }

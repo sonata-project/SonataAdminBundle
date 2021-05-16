@@ -1,10 +1,6 @@
 Customizing a mosaic list
 =========================
 
-.. versionadded:: 3.0
-
-   Since 3.0, the AdminBundle includes a mosaic list mode in order to have a more visual representation.
-
 .. figure:: ../images/list_mosaic_default.png
    :align: center
    :alt: Default view
@@ -109,9 +105,11 @@ The ``ObjectMetadata`` object is returned by the related admin class, and can be
 used to define which image field from the entity will be displayed if available.
 For instance, the SonataMediaBundle defines the method as::
 
+    use Sonata\AdminBundle\Object\MetadataInterface;
+
     final class MediaAdmin extends AbstractAdmin
     {
-        public function getObjectMetadata($object)
+        public function getObjectMetadata(object $object): MetadataInterface
         {
             $provider = $this->pool->getProvider($object->getProviderName());
 
@@ -126,7 +124,9 @@ For instance, the SonataMediaBundle defines the method as::
     In your own admin, ``media`` is a field and not the ``$object``. Therefore,
     the code above must be updated this way::
 
-        public function getObjectMetadata($object): Metadata
+        use Sonata\AdminBundle\Object\MetadataInterface;
+
+        public function getObjectMetadata(object $object): MetadataInterface
         {
             $media = $object->getMediaField();
 

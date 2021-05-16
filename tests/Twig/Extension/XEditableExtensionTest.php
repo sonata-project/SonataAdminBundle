@@ -24,6 +24,9 @@ use Symfony\Component\Translation\Translator;
 final class XEditableExtensionTest extends TestCase
 {
     /**
+     * @param array<string, mixed>         $options
+     * @param array<array<string, string>> $expectedChoices
+     *
      * @dataProvider xEditablechoicesProvider
      */
     public function testGetXEditableChoicesIsIdempotent(array $options, array $expectedChoices): void

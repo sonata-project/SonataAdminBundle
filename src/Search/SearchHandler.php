@@ -14,22 +14,15 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Search;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class SearchHandler
+final class SearchHandler
 {
-    /**
-     * @var Pool|null
-     */
-    protected $pool;
-
     /**
      * @var bool
      */
@@ -40,43 +33,23 @@ class SearchHandler
      */
     private $adminsSearchConfig = [];
 
-    /**
-     * NEXT_MAJOR: Change signature to __construct(bool $caseSensitive) and remove pool property.
-     *
-     * @param Pool|bool $deprecatedPoolOrCaseSensitive
-     * @param bool      $caseSensitive
-     */
-    public function __construct($deprecatedPoolOrCaseSensitive, $caseSensitive = true)
+    public function __construct(bool $caseSensitive = true)
     {
-        if ($deprecatedPoolOrCaseSensitive instanceof Pool) {
-            @trigger_error(sprintf(
-                'Passing %s as argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.74.'
-                .' It will accept only bool in version 4.0.',
-                Pool::class,
-                __METHOD__
-            ), \E_USER_DEPRECATED);
-
-            $this->pool = $deprecatedPoolOrCaseSensitive;
-            $this->caseSensitive = $caseSensitive;
-        } else {
-            $this->caseSensitive = $deprecatedPoolOrCaseSensitive;
-        }
+        $this->caseSensitive = $caseSensitive;
     }
 
     /**
-     * @param string $term
-     * @param int    $page
-     * @param int    $offset
+     * @param AdminInterface<object> $admin
      *
      * @throws \RuntimeException
      *
-     * @return PagerInterface|false
+     * @return PagerInterface<ProxyQueryInterface>
      */
-    public function search(AdminInterface $admin, $term, $page = 0, $offset = 20)
+    public function search(AdminInterface $admin, string $term, int $page = 0, int $offset = 20): ?PagerInterface
     {
         // If the search is disabled for the whole admin, skip any further processing.
         if (false === ($this->adminsSearchConfig[$admin->getCode()] ?? true)) {
-            return false;
+            return null;
         }
 
         $datagrid = $admin->getDatagrid();
@@ -84,6 +57,7 @@ class SearchHandler
         $datagridValues = $datagrid->getValues();
 
         $found = false;
+
         foreach ($datagrid->getFilters() as $filter) {
             /** @var FilterInterface $filter */
             $formName = $filter->getFormName();
@@ -101,7 +75,7 @@ class SearchHandler
         }
 
         if (!$found) {
-            return false;
+            return null;
         }
 
         $datagrid->buildPager();
@@ -120,7 +94,7 @@ class SearchHandler
      *
      * @param array<string, bool> $adminsSearchConfig
      */
-    final public function configureAdminSearch(array $adminsSearchConfig): void
+    public function configureAdminSearch(array $adminsSearchConfig): void
     {
         $this->adminsSearchConfig = $adminsSearchConfig;
     }

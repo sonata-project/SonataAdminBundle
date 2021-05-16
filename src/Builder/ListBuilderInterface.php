@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Builder;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
@@ -27,30 +26,21 @@ interface ListBuilderInterface extends BuilderInterface
      *
      * @return FieldDescriptionCollection<FieldDescriptionInterface>
      */
-    public function getBaseList(array $options = []);
+    public function getBaseList(array $options = []): FieldDescriptionCollection;
 
     /**
      * Modify a field description to display it in the list view.
-     *
-     * @param string|null            $type
-     * @param AdminInterface<object> $admin
      */
-    public function buildField($type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
+    public function buildField(?string $type, FieldDescriptionInterface $fieldDescription): void;
 
     /**
      * Modify a field description and add it to the displayed columns.
      *
      * @param FieldDescriptionCollection<FieldDescriptionInterface> $list
-     * @param string|null                                           $type
-     * @param AdminInterface<object>                                $admin
      */
     public function addField(
         FieldDescriptionCollection $list,
-        $type,
-        FieldDescriptionInterface $fieldDescription,
-        AdminInterface $admin
-    );
+        ?string $type,
+        FieldDescriptionInterface $fieldDescription
+    ): void;
 }
-
-// NEXT_MAJOR: Remove next line.
-interface_exists(FieldDescriptionInterface::class);

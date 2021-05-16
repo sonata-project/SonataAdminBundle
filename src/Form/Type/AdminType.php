@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\Type;
 
-use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
@@ -29,39 +28,14 @@ use Symfony\Component\PropertyAccess\Exception\NoSuchIndexException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AdminType extends AbstractType
+final class AdminType extends AbstractType
 {
-    /**
-     * NEXT_MAJOR: Remove this property.
-     *
-     * @var AdminHelper|null
-     */
-    private $adminHelper;
-
-    /**
-     * NEXT_MAJOR: Remove the __construct method.
-     */
-    public function __construct(?AdminHelper $adminHelper = null)
-    {
-        if (null !== $adminHelper) {
-            @trigger_error(sprintf(
-                'Passing argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.72'
-                .' and will be ignored in version 4.0.',
-                __METHOD__
-            ), \E_USER_DEPRECATED);
-        }
-
-        $this->adminHelper = $adminHelper;
-    }
-
     /**
      * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $admin = clone $this->getAdmin($options);
 
@@ -137,7 +111,7 @@ class AdminType extends AbstractType
     /**
      * @param array<string, mixed> $options
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['btn_add'] = $options['btn_add'];
         $view->vars['btn_list'] = $options['btn_list'];
@@ -145,10 +119,7 @@ class AdminType extends AbstractType
         $view->vars['btn_catalogue'] = $options['btn_catalogue'];
     }
 
-    /**
-     * @return void
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'delete' => static function (Options $options) {
@@ -170,17 +141,7 @@ class AdminType extends AbstractType
         ]);
     }
 
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_admin';
     }
@@ -189,10 +150,8 @@ class AdminType extends AbstractType
      * @param array<string, mixed> $options
      *
      * @throws \RuntimeException
-     *
-     * @return FieldDescriptionInterface
      */
-    protected function getFieldDescription(array $options)
+    private function getFieldDescription(array $options): FieldDescriptionInterface
     {
         if (!isset($options['sonata_field_description'])) {
             throw new \RuntimeException('Please provide a valid `sonata_field_description` option');
@@ -203,14 +162,9 @@ class AdminType extends AbstractType
 
     /**
      * @param array<string, mixed> $options
-     *
-     * @return AdminInterface
      */
-    protected function getAdmin(array $options)
+    private function getAdmin(array $options): AdminInterface
     {
         return $this->getFieldDescription($options)->getAssociationAdmin();
     }
 }
-
-// NEXT_MAJOR: Remove next line.
-interface_exists(FieldDescriptionInterface::class);

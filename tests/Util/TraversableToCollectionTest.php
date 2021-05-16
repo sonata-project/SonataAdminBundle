@@ -24,6 +24,8 @@ use Sonata\AdminBundle\Util\TraversableToCollection;
 class TraversableToCollectionTest extends TestCase
 {
     /**
+     * @param \Traversable<mixed>|array<mixed> $value
+     *
      * @dataProvider provideTraversableValues
      */
     public function testTransform(int $expectedCount, $value): void
@@ -34,6 +36,9 @@ class TraversableToCollectionTest extends TestCase
         $this->assertCount($expectedCount, $collection);
     }
 
+    /**
+     * @phpstan-return iterable<array{int, \Traversable<mixed>|array<mixed>}>
+     */
     public function provideTraversableValues(): iterable
     {
         yield [0, []];
@@ -46,6 +51,8 @@ class TraversableToCollectionTest extends TestCase
     }
 
     /**
+     * @param mixed $value
+     *
      * @dataProvider provideInvalidValues
      */
     public function testFailedTransform(string $invalidType, $value): void
@@ -56,9 +63,13 @@ class TraversableToCollectionTest extends TestCase
             $invalidType
         ));
 
+        // @phpstan-ignore-next-line
         TraversableToCollection::transform($value);
     }
 
+    /**
+     * @phpstan-return iterable<array{string, mixed}>
+     */
     public function provideInvalidValues(): iterable
     {
         yield ['"NULL"', null];

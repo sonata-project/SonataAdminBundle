@@ -41,7 +41,7 @@ class ShowMapperTest extends TestCase
     private $showMapper;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface<object>
      */
     private $admin;
 
@@ -51,17 +51,17 @@ class ShowMapperTest extends TestCase
     private $showBuilder;
 
     /**
-     * @var FieldDescriptionCollection
+     * @var FieldDescriptionCollection<FieldDescriptionInterface>
      */
     private $fieldDescriptionCollection;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private $groups;
 
     /**
-     * @var array
+     * @var array<string, bool>
      */
     private $listShowFields;
 
@@ -69,9 +69,7 @@ class ShowMapperTest extends TestCase
     {
         $this->showBuilder = $this->getMockForAbstractClass(ShowBuilderInterface::class);
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
-        $this->admin = $this->getMockBuilder(AdminInterface::class)
-            ->addMethods(['createFieldDescription'])
-            ->getMockForAbstractClass();
+        $this->admin = $this->createStub(AdminInterface::class);
 
         $this->admin
             ->method('getLabel')
@@ -133,8 +131,7 @@ class ShowMapperTest extends TestCase
             ->willReturnCallback(static function (
                 FieldDescriptionCollection $list,
                 ?string $type,
-                FieldDescriptionInterface $fieldDescription,
-                AdminInterface $admin
+                FieldDescriptionInterface $fieldDescription
             ): void {
                 $list->add($fieldDescription);
             });
@@ -383,11 +380,15 @@ class ShowMapperTest extends TestCase
         $this->assertFalse($this->showMapper->has('fooName'));
     }
 
+    /**
+     * @psalm-suppress InvalidScalarArgument
+     */
     public function testAddException(): void
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage('Unknown field name in show mapper. Field name should be either of FieldDescriptionInterface interface or string.');
 
+        // @phpstan-ignore-next-line
         $this->showMapper->add(12345);
     }
 
@@ -519,6 +520,10 @@ class ShowMapperTest extends TestCase
         $this->showMapper->add('foo', null, ['label' => false]);
 
         $this->assertFalse($this->showMapper->get('foo')->getOption('label'));
+
+        $this->showMapper->add('bar', null, ['label' => null]);
+
+        $this->assertSame('bar', $this->showMapper->get('bar')->getOption('label'));
     }
 
     public function testAddOptionRole(): void
@@ -554,7 +559,7 @@ class ShowMapperTest extends TestCase
         $this->showBuilder = $this->getMockForAbstractClass(ShowBuilderInterface::class);
         $this->showBuilder
             ->method('addField')
-            ->willReturnCallback(static function (FieldDescriptionCollection $list, ?string $type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin): void {
+            ->willReturnCallback(static function (FieldDescriptionCollection $list, ?string $type, FieldDescriptionInterface $fieldDescription): void {
                 $list->add($fieldDescription);
             });
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();

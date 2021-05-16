@@ -46,7 +46,7 @@ solve the issue by using the ``preUpdate`` saving hook::
 
     final class UserAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper
                 ->with('General')
@@ -67,21 +67,18 @@ solve the issue by using the ``preUpdate`` saving hook::
             ;
         }
 
-        public function preUpdate($user)
+        public function preUpdate(object $user): void
         {
             $this->getUserManager()->updateCanonicalFields($user);
             $this->getUserManager()->updatePassword($user);
         }
 
-        public function setUserManager(UserManagerInterface $userManager)
+        public function setUserManager(UserManagerInterface $userManager): void
         {
             $this->userManager = $userManager;
         }
 
-        /**
-         * @return UserManagerInterface
-         */
-        public function getUserManager()
+        public function getUserManager(): UserManagerInterface
         {
             return $this->userManager;
         }

@@ -17,9 +17,10 @@ use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
-use Sonata\AdminBundle\Templating\TemplateRegistry;
+use Sonata\AdminBundle\Templating\MutableTemplateRegistry;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -28,17 +29,13 @@ use Symfony\Component\DependencyInjection\Reference;
  * Add all dependencies to the Admin class, this avoid to write too many lines
  * in the configuration files.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
- * NEXT_MAJOR: Remove the "since" part of the internal annotation.
- *
- * @internal since sonata-project/admin-bundle version 4.0
+ * @internal
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AddDependencyCallsCompilerPass implements CompilerPassInterface
+final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->has('sonata.admin.pool')) {
             return;
@@ -48,14 +45,13 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         if (!$container->has('translator')) {
             throw new \RuntimeException('The "translator" service is not yet enabled.
                 It\'s required by SonataAdmin to display all labels properly.
-
                 To learn how to enable the translator service please visit:
                 http://symfony.com/doc/current/translation.html#configuration
              ');
         }
 
         $parameterBag = $container->getParameterBag();
-        $groupDefaults = $admins = $classes = [];
+        $groupDefaults = $admins = $adminServices = $classes = [];
 
         $pool = $container->getDefinition('sonata.admin.pool');
         $defaultController = $container->getParameter('sonata.admin.configuration.default_controller');
@@ -67,12 +63,11 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         ];
 
         foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $tags) {
+            $adminServices[$id] = new Reference($id);
+
             foreach ($tags as $attributes) {
                 $definition = $container->getDefinition($id);
                 $parentDefinition = null;
-
-                // Temporary fix until we can support service locators
-                $definition->setPublic(true);
 
                 if ($definition instanceof ChildDefinition) {
                     $parentDefinition = $container->getDefinition($definition->getParent());
@@ -201,8 +196,11 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $groups[$resolvedGroupName]['roles'] = $groupDefaults[$resolvedGroupName]['roles'];
                 }
 
-                if (isset($groups[$resolvedGroupName]['on_top']) && !empty($group['on_top']) && $group['on_top']
-                    && (\count($groups[$resolvedGroupName]['items']) > 1)) {
+                if (
+                    isset($groups[$resolvedGroupName]['on_top'])
+                    && !empty($group['on_top'])
+                    && (\count($groups[$resolvedGroupName]['items']) > 1)
+                ) {
                     throw new \RuntimeException('You can\'t use "on_top" option with multiple same name groups.');
                 }
                 if (empty($group['on_top'])) {
@@ -238,22 +236,16 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $groups = $groupDefaults;
         }
 
-        // NEXT_MAJOR: Remove the following 3 lines
-        $pool->addMethodCall('setAdminServiceIds', [$admins, 'sonata_deprecation_mute']);
-        $pool->addMethodCall('setAdminGroups', [$groups, 'sonata_deprecation_mute']);
-        $pool->addMethodCall('setAdminClasses', [$classes, 'sonata_deprecation_mute']);
-
+        $pool->replaceArgument(0, ServiceLocatorTagPass::register($container, $adminServices));
         $pool->replaceArgument(1, $admins);
         $pool->replaceArgument(2, $groups);
         $pool->replaceArgument(3, $classes);
     }
 
     /**
-     * NEXT_MAJOR: Change visibility to private.
-     *
      * This method read the attribute keys and configure admin class to use the related dependency.
      */
-    public function applyConfigurationFromAttribute(Definition $definition, array $attributes)
+    private function applyConfigurationFromAttribute(Definition $definition, array $attributes): void
     {
         $keys = [
             'model_manager',
@@ -266,7 +258,6 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'translator',
             'configuration_pool',
             'route_generator',
-            'validator', // NEXT_MAJOR: Remove this line
             'security_handler',
             'menu_factory',
             'route_builder',
@@ -285,27 +276,17 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * NEXT_MAJOR: Change visibility to private.
-     *
      * Apply the default values required by the AdminInterface to the Admin service definition.
-     *
-     * @param string $serviceId
-     *
-     * @return Definition
      */
-    public function applyDefaults(ContainerBuilder $container, $serviceId, array $attributes = [])
+    private function applyDefaults(ContainerBuilder $container, string $serviceId, array $attributes = []): Definition
     {
         $definition = $container->getDefinition($serviceId);
-        // NEXT_MAJOR: Remove this line.
-        $settings = $container->getParameter('sonata.admin.configuration.admin_services');
 
         $definition->setShared(false);
 
         $managerType = $attributes['manager_type'];
 
-        // NEXT_MAJOR: Remove this line and uncomment the following
-        $overwriteAdminConfiguration = $settings[$serviceId] ?? $container->getParameter('sonata.admin.configuration.default_admin_services');
-//        $overwriteAdminConfiguration = $container->getParameter('sonata.admin.configuration.default_admin_services');
+        $overwriteAdminConfiguration = $container->getParameter('sonata.admin.configuration.default_admin_services');
 
         $defaultAddServices = [
             'model_manager' => sprintf('sonata.admin.manager.%s', $managerType),
@@ -318,27 +299,15 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'translator' => 'translator',
             'configuration_pool' => 'sonata.admin.pool',
             'route_generator' => 'sonata.admin.route.default_generator',
-            'validator' => 'validator', //NEXT_MAJOR: Remove this line
             'security_handler' => 'sonata.admin.security.handler',
             'menu_factory' => 'knp_menu.factory',
-            'route_builder' => 'sonata.admin.route.path_info'.
-                (('doctrine_phpcr' === $managerType) ? '_slashes' : ''),
+            'route_builder' => 'sonata.admin.route.path_info',
             'label_translator_strategy' => 'sonata.admin.label.strategy.native',
         ];
 
         $definition->addMethodCall('setManagerType', [$managerType]);
 
         foreach ($defaultAddServices as $attr => $addServiceId) {
-            // NEXT_MAJOR: Remove this check
-            if ('data_source' === $attr && !$container->has($addServiceId)) {
-                continue;
-            }
-
-            // NEXT_MAJOR: Remove this check
-            if ('field_description_factory' === $attr && !$container->has($addServiceId)) {
-                continue;
-            }
-
             $method = $this->generateSetterMethodName($attr);
 
             if (!$definition->hasMethodCall($method)) {
@@ -354,8 +323,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $pagerType = $overwriteAdminConfiguration['pager_type'] ?? $attributes['pager_type'] ?? Pager::TYPE_DEFAULT;
         $definition->addMethodCall('setPagerType', [$pagerType]);
 
-        // NEXT_MAJOR: Default to null
-        $label = $overwriteAdminConfiguration['label'] ?? $attributes['label'] ?? '-';
+        $label = $overwriteAdminConfiguration['label'] ?? $attributes['label'] ?? null;
         $definition->addMethodCall('setLabel', [$label]);
 
         $persistFilters = $attributes['persist_filters']
@@ -393,32 +361,23 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         \assert(\is_array($defaultTemplates));
 
         if (!$definition->hasMethodCall('setFormTheme')) {
-            // NEXT_MAJOR: Remove this line and uncomment the following one.
-            $formTheme = $overwriteAdminConfiguration['templates']['form'] ?? $defaultTemplates['form_theme'] ?? [];
-//            $formTheme = $defaultTemplates['form_theme'] ?? [];
+            $formTheme = $defaultTemplates['form_theme'] ?? [];
             $definition->addMethodCall('setFormTheme', [$formTheme]);
         }
         if (!$definition->hasMethodCall('setFilterTheme')) {
-            // NEXT_MAJOR: Remove this line and uncomment the following one.
-            $filterTheme = $overwriteAdminConfiguration['templates']['filter'] ?? $defaultTemplates['filter_theme'] ?? [];
-//            $filterTheme = $defaultTemplates['filter_theme'] ?? [];
+            $filterTheme = $defaultTemplates['filter_theme'] ?? [];
             $definition->addMethodCall('setFilterTheme', [$filterTheme]);
         }
 
         return $definition;
     }
 
-    /**
-     * NEXT_MAJOR: Change visibility to private.
-     *
-     * @param string $serviceId
-     */
-    public function fixTemplates(
-        $serviceId,
+    private function fixTemplates(
+        string $serviceId,
         ContainerBuilder $container,
         Definition $definition,
         array $overwrittenTemplates = []
-    ) {
+    ): void {
         $definedTemplates = $container->getParameter('sonata.admin.configuration.templates');
 
         $methods = [];
@@ -457,7 +416,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $templateRegistryId = sprintf('%s.template_registry', $serviceId);
         $templateRegistryDefinition = $container
-            ->register($templateRegistryId, TemplateRegistry::class)
+            ->register($templateRegistryId, MutableTemplateRegistry::class)
             ->addTag('sonata.admin.template_registry')
             ->setPublic(true); // Temporary fix until we can support service locators
 

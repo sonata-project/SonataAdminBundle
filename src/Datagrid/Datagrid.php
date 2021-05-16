@@ -24,65 +24,67 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-template T of ProxyQueryInterface
  * @phpstan-implements DatagridInterface<T>
  */
-class Datagrid implements DatagridInterface
+final class Datagrid implements DatagridInterface
 {
     /**
      * The filter instances.
      *
-     * @var array<string, mixed>
+     * @var array<string, FilterInterface>
      */
-    protected $filters = [];
+    private $filters = [];
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
-    protected $values = [];
+    private $values = [];
 
     /**
      * @var FieldDescriptionCollection
      */
-    protected $columns;
+    private $columns;
 
     /**
      * @var PagerInterface
      * @phpstan-var PagerInterface<T>
      */
-    protected $pager;
+    private $pager;
 
     /**
      * @var bool
      */
-    protected $bound = false;
+    private $bound = false;
 
     /**
      * @var ProxyQueryInterface
      * @phpstan-var T
      */
-    protected $query;
+    private $query;
 
     /**
      * @var FormBuilderInterface
      */
-    protected $formBuilder;
+    private $formBuilder;
 
     /**
      * @var FormInterface
      */
-    protected $form;
+    private $form;
 
     /**
+     * Results are null prior to its initialization in `getResults()`.
+     *
      * @var iterable<object>|null
      */
-    protected $results;
+    private $results;
 
     /**
+     * @param array<string, mixed> $values
+     *
      * @phpstan-param T                 $query
      * @phpstan-param PagerInterface<T> $pager
      */
@@ -100,33 +102,23 @@ class Datagrid implements DatagridInterface
         $this->formBuilder = $formBuilder;
     }
 
-    public function getPager()
+    public function getPager(): PagerInterface
     {
         return $this->pager;
     }
 
-    public function getResults()
+    public function getResults(): iterable
     {
         $this->buildPager();
 
         if (null === $this->results) {
-            // NEXT_MAJOR: remove the existence check and just use $pager->getCurrentPageResults()
-            if (method_exists($this->pager, 'getCurrentPageResults')) {
-                $this->results = $this->pager->getCurrentPageResults();
-            } else {
-                @trigger_error(sprintf(
-                    'Not implementing "%s::getCurrentPageResults()" is deprecated since sonata-project/admin-bundle 3.87 and will fail in 4.0.',
-                    PagerInterface::class
-                ), \E_USER_DEPRECATED);
-
-                $this->results = $this->pager->getResults();
-            }
+            $this->results = $this->pager->getCurrentPageResults();
         }
 
         return $this->results;
     }
 
-    public function buildPager()
+    public function buildPager(): void
     {
         if ($this->bound) {
             return;
@@ -176,60 +168,51 @@ class Datagrid implements DatagridInterface
         $this->bound = true;
     }
 
-    public function addFilter(FilterInterface $filter)
+    public function addFilter(FilterInterface $filter): FilterInterface
     {
         $this->filters[$filter->getName()] = $filter;
 
         return $filter;
     }
 
-    public function hasFilter($name)
+    public function hasFilter(string $name): bool
     {
         return isset($this->filters[$name]);
     }
 
-    public function removeFilter($name)
+    public function removeFilter(string $name): void
     {
         unset($this->filters[$name]);
     }
 
-    public function getFilter($name)
+    public function getFilter(string $name): FilterInterface
     {
         if (!$this->hasFilter($name)) {
-            @trigger_error(sprintf(
-                'Passing a nonexistent filter name as argument 1 to %s() is deprecated since'
-                .' sonata-project/admin-bundle 3.52 and will throw an exception in 4.0.',
-                __METHOD__
-            ), \E_USER_DEPRECATED);
-
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare FilterInterface as return type
-            // throw new \InvalidArgumentException(sprintf(
-            //    'Filter named "%s" doesn\'t exist.',
-            //    $name
-            // ));
-
-            return null;
+            throw new \InvalidArgumentException(sprintf(
+                'Filter named "%s" doesn\'t exist.',
+                $name
+            ));
         }
 
         return $this->filters[$name];
     }
 
-    public function getFilters()
+    public function getFilters(): array
     {
         return $this->filters;
     }
 
-    public function reorderFilters(array $keys)
+    public function reorderFilters(array $keys): void
     {
         $this->filters = array_merge(array_flip($keys), $this->filters);
     }
 
-    public function getValues()
+    public function getValues(): array
     {
         return $this->values;
     }
 
-    public function setValue($name, $operator, $value)
+    public function setValue(string $name, ?string $operator, $value): void
     {
         $this->values[$name] = [
             'type' => $operator,
@@ -237,7 +220,7 @@ class Datagrid implements DatagridInterface
         ];
     }
 
-    public function hasActiveFilters()
+    public function hasActiveFilters(): bool
     {
         foreach ($this->filters as $filter) {
             if ($filter->isActive()) {
@@ -248,7 +231,7 @@ class Datagrid implements DatagridInterface
         return false;
     }
 
-    public function hasDisplayableFilters()
+    public function hasDisplayableFilters(): bool
     {
         foreach ($this->filters as $filter) {
             $showFilter = $filter->getOption('show_filter', null);
@@ -260,17 +243,17 @@ class Datagrid implements DatagridInterface
         return false;
     }
 
-    public function getColumns()
+    public function getColumns(): FieldDescriptionCollection
     {
         return $this->columns;
     }
 
-    public function getQuery()
+    public function getQuery(): ProxyQueryInterface
     {
         return $this->query;
     }
 
-    public function getForm()
+    public function getForm(): FormInterface
     {
         $this->buildPager();
 
@@ -386,6 +369,3 @@ class Datagrid implements DatagridInterface
             || $values[DatagridInterface::SORT_BY]->getName() === $fieldDescription->getOption('sortable');
     }
 }
-
-// NEXT_MAJOR: Remove next line.
-interface_exists(FieldDescriptionInterface::class);

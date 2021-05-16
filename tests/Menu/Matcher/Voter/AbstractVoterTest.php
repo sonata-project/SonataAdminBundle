@@ -19,6 +19,9 @@ use PHPUnit\Framework\TestCase;
 
 abstract class AbstractVoterTest extends TestCase
 {
+    /**
+     * @phpstan-return array<array{mixed, mixed, mixed, bool|null}>
+     */
     abstract public function provideData(): array;
 
     /**

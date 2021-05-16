@@ -49,21 +49,13 @@ globally through the template configuration for the key 'preview':
             templates:
                 preview: '@App/CRUD/preview.html.twig'
 
-Or per admin entity by overriding the ``getTemplate($name)`` and returning
-the appropriate template when the key matches 'preview'::
+Or per admin entity by calling the ``setTemplate()`` method::
 
     // src/Admin/PostAdmin.php
 
-    public function getTemplate($name)
+    protected function configure()
     {
-        switch ($name) {
-            case 'preview':
-                return '@App/CRUD/preview.html.twig';
-                break;
-            default:
-                return parent::getTemplate($name);
-                break;
-        }
+        $this->setTemplate('preview', '@App/CRUD/preview.html.twig');
     }
 
 In either way the template should be extending your own layout, injecting the form in it
@@ -96,11 +88,11 @@ expects a different object you can set your own variables prior to calling ``par
 
     {% block formactions %}
         <button class="btn btn-success" type="submit" name="btn_preview_approve">
-            <i class="fa fa-check"></i>
+            <i class="fas fa-check"></i>
             {{ 'btn_preview_approve'|trans({}, 'SonataAdminBundle') }}
         </button>
         <button class="btn btn-danger" type="submit" name="btn_preview_decline">
-            <i class="fa fa-times"></i>
+            <i class="fas fa-times"></i>
             {{ 'btn_preview_decline'|trans({}, 'SonataAdminBundle') }}
         </button>
     {% endblock %}

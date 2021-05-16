@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\AbstractDummyGroupedMapper;
+use Sonata\AdminBundle\Tests\Fixtures\Mapper\AbstractDummyGroupedMapper;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -33,7 +33,14 @@ class BaseGroupedMapperTest extends TestCase
      */
     protected $baseGroupedMapper;
 
+    /**
+     * @var array<string, array<string, mixed>>
+     */
     private $tabs;
+
+    /**
+     * @var array<string, array<string, mixed>>
+     */
     private $groups;
 
     protected function setUp(): void
@@ -49,17 +56,13 @@ class BaseGroupedMapperTest extends TestCase
                 return sprintf('label_%s', strtolower($label));
             });
 
-        $admin
-            ->method('getLabelTranslatorStrategy')
-            ->willReturn($labelStrategy);
+        $admin->setLabelTranslatorStrategy($labelStrategy);
 
         $container = new Container();
         $container->setParameter('sonata.admin.configuration.translate_group_label', '');
         $configurationPool = new Pool($container);
 
-        $admin
-            ->method('getConfigurationPool')
-            ->willReturn($configurationPool);
+        $admin->setConfigurationPool($configurationPool);
 
         $this->baseGroupedMapper = $this->getMockForAbstractClass(
             AbstractDummyGroupedMapper::class,
@@ -209,29 +212,24 @@ class BaseGroupedMapperTest extends TestCase
         $this->baseGroupedMapper->ifEnd();
     }
 
+    /**
+     * @phpstan-return array<array{string, string, string|null, string}>
+     */
     public function labelDataProvider(): array
     {
         return [
-            'nominal use case not translated' => [false, 'fooGroup1', null, 'fooGroup1'],
-            'nominal use case translated' => [true, 'fooGroup1', null, 'label_foogroup1'],
-            'custom label not translated' => [false, 'fooGroup1', 'custom_label', 'custom_label'],
-            'custom label translated' => [true, 'fooGroup1', 'custom_label', 'custom_label'],
+            'nominal use case not translated' => ['label_default', 'fooGroup1', null, 'label_foogroup1'],
+            'nominal use case translated' => ['label_default', 'fooGroup1', null, 'label_foogroup1'],
+            'custom label not translated' => ['label_default', 'fooGroup1', 'custom_label', 'custom_label'],
+            'custom label translated' => ['label_default', 'fooGroup1', 'custom_label', 'custom_label'],
         ];
     }
 
     /**
      * @dataProvider labelDataProvider
      */
-    public function testLabel(bool $translated, string $name, ?string $label, string $expectedLabel): void
+    public function testLabel(string $translated, string $name, ?string $label, string $expectedLabel): void
     {
-        // NEXT_MAJOR: Remove $container variable and the call to setParameter.
-        $container = $this->baseGroupedMapper
-            ->getAdmin()
-            ->getConfigurationPool()
-            ->getContainer('sonata_deprecation_mute');
-
-        $container->setParameter('sonata.admin.configuration.translate_group_label', $translated);
-
         $options = [];
 
         if (null !== $label) {
@@ -240,25 +238,37 @@ class BaseGroupedMapperTest extends TestCase
 
         $this->baseGroupedMapper->with($name, $options);
 
-        $this->assertSame($translated ? 'label_default' : 'default', $this->tabs['default']['label']);
+        $this->assertSame($translated, $this->tabs['default']['label']);
         $this->assertSame($expectedLabel, $this->groups[$name]['label']);
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function getTabs(): array
     {
         return $this->tabs;
     }
 
+    /**
+     * @param array<string, array<string, mixed>> $tabs
+     */
     public function setTabs(array $tabs): void
     {
         $this->tabs = $tabs;
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function getTestGroups(): array
     {
         return $this->groups;
     }
 
+    /**
+     * @param array<string, array<string, mixed>> $groups
+     */
     public function setTestGroups(array $groups): void
     {
         $this->groups = $groups;

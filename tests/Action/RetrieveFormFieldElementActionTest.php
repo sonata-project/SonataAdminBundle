@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Action\RetrieveFormFieldElementAction;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminHelper;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -37,34 +37,34 @@ final class RetrieveFormFieldElementActionTest extends TestCase
     private $pool;
 
     /**
-     * @var GetShortObjectDescriptionAction
+     * @var RetrieveFormFieldElementAction
      */
     private $action;
 
     /**
-     * @var AbstractAdmin
+     * @var AdminInterface<object>&MockObject
      */
     private $admin;
 
     /**
-     * @var Environment
+     * @var Environment&MockObject
      */
     private $twig;
 
     /**
-     * @var AdminHelper
+     * @var AdminHelper&MockObject
      */
     private $helper;
 
     protected function setUp(): void
     {
-        $this->twig = $this->createStub(Environment::class);
-        $this->admin = $this->createMock(AbstractAdmin::class);
+        $this->twig = $this->createMock(Environment::class);
+        $this->admin = $this->createMock(AdminInterface::class);
         $this->admin->expects($this->once())->method('setRequest');
         $container = new Container();
         $container->set('sonata.post.admin', $this->admin);
         $this->pool = new Pool($container, ['sonata.post.admin']);
-        $this->helper = $this->createStub(AdminHelper::class);
+        $this->helper = $this->createMock(AdminHelper::class);
         $this->action = new RetrieveFormFieldElementAction(
             $this->twig,
             $this->pool,
@@ -78,12 +78,13 @@ final class RetrieveFormFieldElementActionTest extends TestCase
         $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => 42,
+            'elementId' => 'element_42',
             'field' => 'enabled',
             'value' => 1,
             'context' => 'list',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST]);
 
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
         $formView = new FormView();
         $form = $this->createMock(Form::class);
         $formBuilder = $this->createStub(FormBuilder::class);
@@ -93,16 +94,15 @@ final class RetrieveFormFieldElementActionTest extends TestCase
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getClass')->willReturn(\get_class($object));
         $this->admin->expects($this->once())->method('setSubject')->with($object);
-        $this->admin->method('getFormTheme')->willReturn($formView);
+        $this->admin->method('getFormTheme')->willReturn([]);
         $this->admin->method('getFormBuilder')->willReturn($formBuilder);
-        $this->helper->method('getChildFormView')->with($formView, null)
-            ->willReturn($formView);
+        $this->helper->method('getChildFormView')->with($formView, 'element_42')->willReturn($formView);
         $modelManager->method('find')->with(\get_class($object), 42)->willReturn($object);
         $form->expects($this->once())->method('setData')->with($object);
         $form->expects($this->once())->method('handleRequest')->with($request);
         $form->method('createView')->willReturn($formView);
         $formBuilder->method('getForm')->willReturn($form);
-        $renderer->expects($this->once())->method('setTheme')->with($formView, $formView);
+        $renderer->expects($this->once())->method('setTheme')->with($formView, []);
         $renderer->method('searchAndRenderBlock')->with($formView, 'widget')->willReturn('block');
 
         $response = ($this->action)($request);

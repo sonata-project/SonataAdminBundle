@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Admin;
 
-class CommentWithCustomRouteAdmin extends CommentAdmin
+final class CommentWithCustomRouteAdmin extends CommentAdmin
 {
     protected $baseRoutePattern = 'comment-custom';
     protected $baseRouteName = 'comment_custom';

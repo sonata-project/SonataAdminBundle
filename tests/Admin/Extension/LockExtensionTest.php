@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Admin\Extension;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Extension\LockExtension;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -38,22 +39,22 @@ class LockExtensionTest extends TestCase
     private $lockExtension;
 
     /**
-     * @var EventDispatcherInterface
+     * @var EventDispatcher
      */
     private $eventDispatcher;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface&Stub
      */
     private $admin;
 
     /**
-     * @var LockInterface
+     * @var LockInterface&MockObject
      */
     private $modelManager;
 
     /**
-     * @var stdClass
+     * @var \stdClass
      */
     private $object;
 
@@ -65,7 +66,7 @@ class LockExtensionTest extends TestCase
     protected function setUp(): void
     {
         $this->modelManager = $this->createMock(LockInterface::class);
-        $this->admin = $this->createStub(AbstractAdmin::class);
+        $this->admin = $this->createStub(AdminInterface::class);
 
         $this->eventDispatcher = new EventDispatcher();
         $this->request = new Request();
@@ -73,14 +74,20 @@ class LockExtensionTest extends TestCase
         $this->lockExtension = new LockExtension();
     }
 
+    public function testModelManagerImplementsLockInterface(): void
+    {
+        $this->assertInstanceOf(LockInterface::class, $this->modelManager);
+    }
+
     public function testConfigureFormFields(): void
     {
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
-        $this->configureAdmin(null, null, $this->modelManager);
-        $event = new FormEvent($form, []);
 
-        $this->modelManager->method('getLockVersion')->with([])->willReturn(1);
+        $this->configureAdmin($this->modelManager);
+        $event = new FormEvent($form, $this->object);
+
+        $this->modelManager->method('getLockVersion')->with($this->object)->willReturn(1);
 
         $form->expects($this->once())->method('add')->with(
             '_lock_version',
@@ -97,8 +104,8 @@ class LockExtensionTest extends TestCase
         $modelManager = $this->createStub(ModelManagerInterface::class);
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
-        $this->configureAdmin(null, null, $modelManager);
-        $event = new FormEvent($form, []);
+        $this->configureAdmin($modelManager);
+        $event = new FormEvent($form, $this->object);
 
         $form->expects($this->never())->method('add');
 
@@ -122,7 +129,8 @@ class LockExtensionTest extends TestCase
     {
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
-        $event = new FormEvent($form, []);
+        $this->configureAdmin($this->modelManager);
+        $event = new FormEvent($form, $this->object);
 
         $form->method('getParent')->willReturn('parent');
         $form->expects($this->never())->method('add');
@@ -133,12 +141,13 @@ class LockExtensionTest extends TestCase
 
     public function testConfigureFormFieldsWhenModelManagerHasNoLockedVersion(): void
     {
+        $data = new \stdClass();
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
-        $this->configureAdmin(null, null, $this->modelManager);
-        $event = new FormEvent($form, []);
+        $this->configureAdmin($this->modelManager);
+        $event = new FormEvent($form, $this->object);
 
-        $this->modelManager->method('getLockVersion')->with([])->willReturn(null);
+        $this->modelManager->method('getLockVersion')->with($this->object)->willReturn(null);
         $form->expects($this->never())->method('add');
 
         $this->lockExtension->configureFormFields($formMapper);
@@ -147,6 +156,7 @@ class LockExtensionTest extends TestCase
 
     public function testPreUpdateIfAdminHasNoRequest(): void
     {
+        $this->configureAdmin($this->modelManager);
         $this->modelManager->expects($this->never())->method('lock');
 
         $this->lockExtension->preUpdate($this->admin, $this->object);
@@ -154,7 +164,7 @@ class LockExtensionTest extends TestCase
 
     public function testPreUpdateIfObjectIsNotVersioned(): void
     {
-        $this->configureAdmin();
+        $this->configureAdmin($this->modelManager);
         $this->modelManager->expects($this->never())->method('lock');
 
         $this->lockExtension->preUpdate($this->admin, $this->object);
@@ -163,7 +173,7 @@ class LockExtensionTest extends TestCase
     public function testPreUpdateIfRequestDoesNotHaveLockVersion(): void
     {
         $uniqid = 'admin123';
-        $this->configureAdmin($uniqid, $this->request);
+        $this->configureAdmin($this->modelManager, $uniqid, $this->request);
 
         $this->modelManager->expects($this->never())->method('lock');
 
@@ -175,9 +185,9 @@ class LockExtensionTest extends TestCase
     {
         $uniqid = 'admin123';
         $this->configureAdmin(
+            $this->createStub(ModelManagerInterface::class),
             $uniqid,
-            $this->request,
-            $this->createStub(ModelManagerInterface::class)
+            $this->request
         );
         $this->modelManager->expects($this->never())->method('lock');
 
@@ -188,7 +198,7 @@ class LockExtensionTest extends TestCase
     public function testPreUpdateIfObjectIsVersioned(): void
     {
         $uniqid = 'admin123';
-        $this->configureAdmin($uniqid, $this->request, $this->modelManager);
+        $this->configureAdmin($this->modelManager, $uniqid, $this->request);
 
         $this->modelManager->expects($this->once())->method('lock')->with($this->object, 1);
 
@@ -196,6 +206,9 @@ class LockExtensionTest extends TestCase
         $this->lockExtension->preUpdate($this->admin, $this->object);
     }
 
+    /**
+     * @return MockObject&FormInterface
+     */
     private function configureForm(): MockObject
     {
         $form = $this->createMock(FormInterface::class);
@@ -223,13 +236,16 @@ class LockExtensionTest extends TestCase
     }
 
     private function configureAdmin(
-        ?string $uniqid = null,
-        ?Request $request = null,
-        $modelManager = null
+        ModelManagerInterface $modelManager,
+        string $uniqid = '',
+        ?Request $request = null
     ): void {
         $this->admin->method('getUniqid')->willReturn($uniqid);
-        $this->admin->method('getRequest')->willReturn($request);
-        $this->admin->method('hasRequest')->willReturn(null !== $request);
         $this->admin->method('getModelManager')->willReturn($modelManager);
+
+        $this->admin->method('hasRequest')->willReturn(null !== $request);
+        if (null !== $request) {
+            $this->admin->method('getRequest')->willReturn($request);
+        }
     }
 }

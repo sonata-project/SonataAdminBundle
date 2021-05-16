@@ -421,16 +421,14 @@ Configuring what actions are available for each item on the dashboard
 By default. A "list" and a "create" option are available for each item on the
 dashboard. If you created a custom action and want to display it along the
 other two on the dashboard, you can do so by overriding the
-``getDashboardActions()`` method of your admin class::
+``configureDashboardActions()`` method of your admin class::
 
     // src/Admin/PostAdmin.php
 
     final class PostAdmin extends AbstractAdmin
     {
-        public function getDashboardActions()
+        protected function configureDashboardActions(array $actions): array
         {
-            $actions = parent::getDashboardActions();
-
             $actions['import'] = [
                 'label'              => 'Import',
                 'url'                => $this->generateUrl('import'),
@@ -441,7 +439,6 @@ other two on the dashboard, you can do so by overriding the
 
             return $actions;
         }
-
     }
 
 You can also hide an action from the dashboard by unsetting it::
@@ -450,15 +447,14 @@ You can also hide an action from the dashboard by unsetting it::
 
     final class PostAdmin extends AbstractAdmin
     {
-        public function getDashboardActions()
+        protected function configureDashboardActions(array $actions): array
         {
-            $actions = parent::getDashboardActions();
+            $actions = parent::configureDashboardActions();
 
             unset($actions['list']);
 
             return $actions;
         }
-
     }
 
 If you do this, you need to be aware that the action is only hidden. it will

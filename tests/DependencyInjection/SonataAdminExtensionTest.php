@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
-use Sonata\AdminBundle\Admin\AdminHelper;
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
@@ -23,28 +21,13 @@ use Sonata\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Configuration;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
-use Sonata\AdminBundle\Event\AdminEventExtension;
-use Sonata\AdminBundle\Filter\FilterFactory;
 use Sonata\AdminBundle\Filter\FilterFactoryInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
-use Sonata\AdminBundle\Filter\Persister\SessionFilterPersister;
-use Sonata\AdminBundle\Model\AuditManager;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\AuditReaderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Request\ParamConverter\AdminParamConverter;
-use Sonata\AdminBundle\Route\AdminPoolLoader;
-use Sonata\AdminBundle\Search\SearchHandler;
-use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
-use Sonata\AdminBundle\Templating\TemplateRegistry;
-use Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy;
-use Sonata\AdminBundle\Translator\Extractor\AdminExtractor;
-use Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
-use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
-use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
-use Sonata\AdminBundle\Twig\GlobalVariables;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
@@ -68,45 +51,11 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->load();
 
         $this->assertContainerBuilderHasService(Pool::class);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertContainerBuilderHasService(AdminPoolLoader::class);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertContainerBuilderHasService(AdminHelper::class);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertContainerBuilderHasService(FilterFactory::class);
         $this->assertContainerBuilderHasService(FilterFactoryInterface::class);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertContainerBuilderHasService(BreadcrumbsBuilder::class);
         $this->assertContainerBuilderHasService(BreadcrumbsBuilderInterface::class);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertContainerBuilderHasService(BCLabelTranslatorStrategy::class);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertContainerBuilderHasService(NativeLabelTranslatorStrategy::class);
         $this->assertContainerBuilderHasService(LabelTranslatorStrategyInterface::class);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertContainerBuilderHasService(NoopLabelTranslatorStrategy::class);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertContainerBuilderHasService(UnderscoreLabelTranslatorStrategy::class);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertContainerBuilderHasService(FormLabelTranslatorStrategy::class);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertContainerBuilderHasService(AuditManager::class);
         $this->assertContainerBuilderHasService(AuditManagerInterface::class);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertContainerBuilderHasService(SearchHandler::class);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertContainerBuilderHasService(AdminEventExtension::class);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertContainerBuilderHasService(GlobalVariables::class);
-        $this->assertContainerBuilderHasService('sonata.admin.group.extension');
-        // NEXT_MAJOR: Remove next line.
-        $this->assertContainerBuilderHasService(SessionFilterPersister::class);
         $this->assertContainerBuilderHasService(FilterPersisterInterface::class);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertContainerBuilderHasService(TemplateRegistry::class);
-        $this->assertContainerBuilderHasService(MutableTemplateRegistryInterface::class);
-        // NEXT_MAJOR: Remove next line.
-        $this->assertContainerBuilderHasService(AdminExtractor::class);
     }
 
     public function testHasServiceDefinitionForLockExtension(): void
@@ -179,12 +128,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        // NEXT_MAJOR: Remove next line.
-        $poolStylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($stylesheets, $poolStylesheets);
 
         $this->assertSame(
             array_merge($this->getDefaultStylesheets(), $extraStylesheets),
@@ -196,8 +140,8 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
     {
         $this->container->setParameter('kernel.bundles', []);
         $removeStylesheets = [
-            'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css',
-            'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
+            'bundles/sonataadmin/app.css',
+            'bundles/sonataadmin/admin-lte-skins/skin-black.min.css',
         ];
         $this->load([
             'assets' => [
@@ -205,12 +149,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        // NEXT_MAJOR: Remove next line.
-        $poolStylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($stylesheets, $poolStylesheets);
 
         $this->assertSame(
             array_values(
@@ -230,12 +169,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        // NEXT_MAJOR: Remove next line.
-        $poolJavascripts = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['javascripts'];
         $javascripts = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['javascripts'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($javascripts, $poolJavascripts);
 
         $this->assertSame(
             array_merge($this->defaultConfiguration['assets']['javascripts'], $extraJavascripts),
@@ -247,8 +181,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
     {
         $this->container->setParameter('kernel.bundles', []);
         $removeJavascripts = [
-            'bundles/sonataadmin/vendor/readmore-js/readmore.min.js',
-            'bundles/sonataadmin/jquery/jquery.confirmExit.js',
+            'bundles/sonataadmin/app.js',
         ];
         $this->load([
             'assets' => [
@@ -256,12 +189,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        // NEXT_MAJOR: Remove next line.
-        $poolJavascripts = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['javascripts'];
         $javascripts = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['javascripts'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($javascripts, $poolJavascripts);
 
         $this->assertSame(
             array_values(
@@ -277,12 +205,11 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $extraStylesheets = ['foo/bar.css', 'bar/quux.css'];
         $extraJavascripts = ['foo/bar.js', 'bar/quux.js'];
         $removeStylesheets = [
-            'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css',
-            'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
+            'bundles/sonataadmin/app.css',
+            'bundles/sonataadmin/admin-lte-skins/skin-black.min.css',
         ];
         $removeJavascripts = [
-            'bundles/sonataadmin/vendor/readmore-js/readmore.min.js',
-            'bundles/sonataadmin/jquery/jquery.confirmExit.js',
+            'bundles/sonataadmin/app.js',
         ];
         $this->load([
             'assets' => [
@@ -293,12 +220,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        // NEXT_MAJOR: Remove next line.
-        $poolStylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($stylesheets, $poolStylesheets);
 
         $this->assertSame(
             array_merge(
@@ -308,12 +230,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             $stylesheets
         );
 
-        // NEXT_MAJOR: Remove next line.
-        $poolJavascripts = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['javascripts'];
         $javascripts = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['javascripts'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($javascripts, $poolJavascripts);
 
         $this->assertSame(
             array_merge(
@@ -375,33 +292,15 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
     public function testLoadIntlTemplate(): void
     {
-        $bundlesWithSonataIntlBundle = array_merge($this->container->getParameter('kernel.bundles'), ['SonataIntlBundle' => true]);
-        $this->container->setParameter('kernel.bundles', $bundlesWithSonataIntlBundle);
+        $bundles = $this->container->getParameter('kernel.bundles');
+        $this->assertIsArray($bundles);
+
+        $this->container->setParameter('kernel.bundles', array_merge($bundles, ['SonataIntlBundle' => true]));
         $this->load();
+
         $templates = $this->container->getParameter('sonata.admin.configuration.templates');
+        $this->assertIsArray($templates);
         $this->assertSame('@SonataIntl/CRUD/history_revision_timestamp.html.twig', $templates['history_revision_timestamp']);
-    }
-
-    public function testLegacyTextExtensionConfiguration(): void
-    {
-        $this->load();
-
-        $this->assertTrue($this->container->getParameter('sonata.admin.configuration.legacy_twig_text_extension'));
-        $this->assertContainerBuilderHasService('sonata.string.twig.extension');
-
-        $this->assertSame(
-            'sonata.deprecated_text.twig.extension',
-            (string) $this->container->getDefinition('sonata.string.twig.extension')->getArgument(0)
-        );
-
-        $this->load([
-            'options' => [
-                'legacy_twig_text_extension' => false,
-            ],
-        ]);
-
-        $this->assertContainerBuilderHasService('sonata.string.twig.extension');
-        $this->assertNull($this->container->getDefinition('sonata.string.twig.extension')->getArgument(0));
     }
 
     public function testDefaultSkin(): void
@@ -409,19 +308,8 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->container->setParameter('kernel.bundles', []);
         $this->load();
 
-        // NEXT_MAJOR: Remove next line.
-        $poolStylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($stylesheets, $poolStylesheets);
-
-        // NEXT_MAJOR: Remove next line.
-        $poolSkin = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['skin'];
         $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($skin, $poolSkin);
 
         $this->assertSame($this->getDefaultStylesheets(), $stylesheets);
         $this->assertSame('skin-black', $skin);
@@ -436,19 +324,8 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        // NEXT_MAJOR: Remove next line.
-        $poolStylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($stylesheets, $poolStylesheets);
-
-        // NEXT_MAJOR: Remove next line.
-        $poolSkin = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['skin'];
         $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($skin, $poolSkin);
 
         $this->assertSame($this->getDefaultStylesheets('skin-blue'), $stylesheets);
         $this->assertSame('skin-blue', $skin);
@@ -463,15 +340,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        // NEXT_MAJOR: Remove next line.
-        $poolStylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($stylesheets, $poolStylesheets);
-
-        // NEXT_MAJOR: Remove next line.
-        $poolSkin = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['skin'];
         $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
 
         $this->assertSame($this->getDefaultStylesheets(), $stylesheets);
@@ -516,16 +385,11 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        // NEXT_MAJOR: Remove next line.
-        $poolSkin = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['skin'];
         $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
-
-        // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($skin, $poolSkin);
 
         $defaultStylesheets = $this->defaultConfiguration['assets']['stylesheets'];
         $defaultStylesheets[] = sprintf(
-            'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/%s.min.css',
+            'bundles/sonataadmin/admin-lte-skins/%s.min.css',
             $skin
         );
 

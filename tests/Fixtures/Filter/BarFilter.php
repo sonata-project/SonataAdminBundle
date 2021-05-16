@@ -15,19 +15,12 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Filter;
 
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Filter;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\Type\Filter\DefaultType;
 
 final class BarFilter extends Filter
 {
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function filter(ProxyQueryInterface $query, $alias, $field, $value): void
-    {
-    }
-
-    // NEXT_MAJOR: Add type declarations
-    public function apply($query, $value): void
+    public function apply(ProxyQueryInterface $query, FilterData $filterData): void
     {
     }
 

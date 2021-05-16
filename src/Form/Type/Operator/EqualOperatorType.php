@@ -20,22 +20,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class EqualOperatorType extends AbstractType
 {
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.60, to be removed with 4.0: Use EqualOperatorType::TYPE_EQUAL instead
-     */
-    public const TYPE_YES = 1;
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.60, to be removed with 4.0: Use EqualOperatorType::TYPE_NOT_EQUAL instead
-     */
-    public const TYPE_NO = 2;
-
     public const TYPE_EQUAL = 1;
     public const TYPE_NOT_EQUAL = 2;
 
-    /**
-     * @return void
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'choice_translation_domain' => 'SonataAdminBundle',
@@ -47,16 +35,14 @@ final class EqualOperatorType extends AbstractType
     }
 
     /**
-     * @return string
-     *
      * @phpstan-return class-string<FormTypeInterface>
      */
-    public function getParent()
+    public function getParent(): string
     {
         return FormChoiceType::class;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_operator_equal';
     }

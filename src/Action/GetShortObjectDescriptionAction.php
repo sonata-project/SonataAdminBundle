@@ -51,7 +51,10 @@ final class GetShortObjectDescriptionAction
         try {
             $admin = $this->pool->getInstance($code);
         } catch (\InvalidArgumentException $e) {
-            throw new NotFoundHttpException(sprintf('Could not find admin for code "%s"', $code));
+            throw new NotFoundHttpException(sprintf(
+                'Could not find admin for code "%s"',
+                $code
+            ));
         }
 
         $admin->setRequest($request);
@@ -61,20 +64,8 @@ final class GetShortObjectDescriptionAction
         }
 
         $object = $admin->getObject($objectId);
-
         if (!$object) {
-            // NEXT_MAJOR: Remove the deprecation and uncomment the exception.
-            @trigger_error(
-                'Trying to get a short object description for a non found object is deprecated'
-                .' since sonata-project/admin-bundle 3.76 and will be throw a 404 in version 4.0.',
-                \E_USER_DEPRECATED
-            );
-            //throw new NotFoundHttpException(sprintf('Could not find subject for id "%s"', $objectId));
-
-            // NEXT_MAJOR: Remove this.
-            if ('html' === $request->get('_format')) {
-                return new Response();
-            }
+            throw new NotFoundHttpException(sprintf('Could not find subject for id "%s"', $objectId));
         }
 
         if ('json' === $request->get('_format')) {
@@ -85,7 +76,9 @@ final class GetShortObjectDescriptionAction
         }
 
         if ('html' === $request->get('_format')) {
-            return new Response($this->twig->render($admin->getTemplate('short_object_description'), [
+            $templateRegistry = $admin->getTemplateRegistry();
+
+            return new Response($this->twig->render($templateRegistry->getTemplate('short_object_description'), [
                 'admin' => $admin,
                 'description' => $admin->toString($object),
                 'object' => $object,

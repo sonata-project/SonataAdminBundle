@@ -17,10 +17,14 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Tests\App\Datagrid\Datagrid;
 use Symfony\Component\Form\FormFactoryInterface;
 
+/**
+ * @phpstan-implements DatagridBuilderInterface<\Sonata\AdminBundle\Datagrid\ProxyQueryInterface>
+ */
 final class DatagridBuilder implements DatagridBuilderInterface
 {
     /**
@@ -33,22 +37,31 @@ final class DatagridBuilder implements DatagridBuilderInterface
      */
     private $pager;
 
-    public function __construct(FormFactoryInterface $formFactory, PagerInterface $pager)
-    {
+    /**
+     * @var ProxyQueryInterface
+     */
+    private $proxyQuery;
+
+    public function __construct(
+        FormFactoryInterface $formFactory,
+        PagerInterface $pager,
+        ProxyQueryInterface $proxyQuery
+    ) {
         $this->formFactory = $formFactory;
         $this->pager = $pager;
+        $this->proxyQuery = $proxyQuery;
     }
 
-    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription): void
+    public function fixFieldDescription(FieldDescriptionInterface $fieldDescription): void
     {
     }
 
-    public function addFilter(DatagridInterface $datagrid, $type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin): void
+    public function addFilter(DatagridInterface $datagrid, $type, FieldDescriptionInterface $fieldDescription): void
     {
     }
 
     public function getBaseDatagrid(AdminInterface $admin, array $values = []): DatagridInterface
     {
-        return new Datagrid($this->formFactory, $this->pager);
+        return new Datagrid($this->formFactory, $this->pager, $this->proxyQuery);
     }
 }

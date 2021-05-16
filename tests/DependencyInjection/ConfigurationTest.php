@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\DependencyInjection\Configuration;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\FooAdminController;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
@@ -34,10 +33,10 @@ class ConfigurationTest extends TestCase
         $this->assertTrue($config['options']['confirm_exit']);
         $this->assertFalse($config['options']['js_debug']);
         $this->assertTrue($config['options']['use_icheck']);
-        $this->assertSame('bundles/sonataadmin/default_mosaic_image.png', $config['options']['mosaic_background']);
+        $this->assertSame('bundles/sonataadmin/images/default_mosaic_image.png', $config['options']['mosaic_background']);
         $this->assertSame('default', $config['options']['default_group']);
         $this->assertSame('SonataAdminBundle', $config['options']['default_label_catalogue']);
-        $this->assertSame('<i class="fa fa-folder"></i>', $config['options']['default_icon']);
+        $this->assertSame('<i class="fas fa-folder"></i>', $config['options']['default_icon']);
     }
 
     public function testBreadcrumbsChildRouteDefaultsToEdit(): void
@@ -56,65 +55,6 @@ class ConfigurationTest extends TestCase
                 'html5_validate' => '1',
             ],
         ]]);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testCustomTemplatesPerAdmin(): void
-    {
-        $config = $this->process([[
-            'admin_services' => [
-                'my_admin_id' => [
-                    'templates' => [
-                        'form' => ['form.twig.html', 'form_extra.twig.html'],
-                        'view' => ['user_block' => '@SonataAdmin/mycustomtemplate.html.twig'],
-                        'filter' => [],
-                    ],
-                ],
-            ],
-        ]]);
-
-        $this->assertSame('@SonataAdmin/mycustomtemplate.html.twig', $config['admin_services']['my_admin_id']['templates']['view']['user_block']);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testAdminServicesDefault(): void
-    {
-        $config = $this->process([[
-            'admin_services' => ['my_admin_id' => []],
-        ]]);
-
-        $this->assertSame([
-            'model_manager' => null,
-            'data_source' => null,
-            'field_description_factory' => null,
-            'form_contractor' => null,
-            'show_builder' => null,
-            'list_builder' => null,
-            'datagrid_builder' => null,
-            'translator' => null,
-            'configuration_pool' => null,
-            'route_generator' => null,
-            'validator' => null,
-            'security_handler' => null,
-            'label' => null,
-            'menu_factory' => null,
-            'route_builder' => null,
-            'label_translator_strategy' => null,
-            'pager_type' => null,
-            'templates' => [
-                'form' => [],
-                'filter' => [],
-                'view' => [],
-            ],
-        ], $config['admin_services']['my_admin_id']);
     }
 
     public function testDefaultAdminServicesDefault(): void
@@ -170,7 +110,7 @@ class ConfigurationTest extends TestCase
                 'groups' => [
                     'bar' => [
                         'label' => 'foo',
-                        'icon' => '<i class="fa fa-edit"></i>',
+                        'icon' => '<i class="fas fa-edit"></i>',
                         'items' => [
                             'item1',
                             'item2',
@@ -231,45 +171,6 @@ class ConfigurationTest extends TestCase
         );
     }
 
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testDashboardGroupsWithNullLabel(): void
-    {
-        $this->expectDeprecation('Passing a null label is deprecated since sonata-project/admin-bundle 3.77.');
-
-        $config = $this->process([[
-            'dashboard' => [
-                'groups' => [
-                    'bar' => [
-                        'label' => 'foo',
-                        'icon' => '<i class="fa fa-edit"></i>',
-                        'items' => [
-                            [
-                                'label' => null,
-                                'route' => 'barRoute',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ]]);
-
-        $this->assertCount(1, $config['dashboard']['groups']['bar']['items']);
-        $this->assertSame(
-            $config['dashboard']['groups']['bar']['items'][0],
-            [
-                'label' => '',
-                'route' => 'barRoute',
-                'roles' => [],
-                'route_params' => [],
-                'route_absolute' => false,
-            ]
-        );
-    }
-
     public function testDashboardGroupsWithNoRoute(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -280,7 +181,7 @@ class ConfigurationTest extends TestCase
                 'groups' => [
                     'bar' => [
                         'label' => 'foo',
-                        'icon' => '<i class="fa fa-edit"></i>',
+                        'icon' => '<i class="fas fa-edit"></i>',
                         'items' => [
                             ['label' => 'noRoute'],
                         ],
@@ -300,7 +201,7 @@ class ConfigurationTest extends TestCase
                 'groups' => [
                     'bar' => [
                         'label' => 'foo',
-                        'icon' => '<i class="fa fa-edit"></i>',
+                        'icon' => '<i class="fas fa-edit"></i>',
                         'items' => [
                             ['route' => 'noLabel'],
                         ],
@@ -338,7 +239,7 @@ class ConfigurationTest extends TestCase
     {
         $config = $this->process([]);
 
-        $this->assertSame(CRUDController::class, $config['default_controller']);
+        $this->assertSame('sonata.admin.controller.crud', $config['default_controller']);
     }
 
     public function testSettingDefaultController(): void

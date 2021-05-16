@@ -38,18 +38,18 @@ class ModelTypeTest extends TypeTestCase
     {
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
 
-        $optionsResolver = new OptionsResolver();
+        $optionResolver = new OptionsResolver();
 
-        $this->type->configureOptions($optionsResolver);
+        $this->type->configureOptions($optionResolver);
 
-        $resolvedOptions = $optionsResolver->resolve(['model_manager' => $modelManager] + $options);
+        $resolvedOptions = $optionResolver->resolve(['model_manager' => $modelManager, 'class' => \stdClass::class] + $options);
 
         $this->assertFalse($resolvedOptions['compound']);
         $this->assertSame('choice', $resolvedOptions['template']);
         $this->assertFalse($resolvedOptions['multiple']);
         $this->assertFalse($resolvedOptions['expanded']);
         $this->assertInstanceOf(ModelManagerInterface::class, $resolvedOptions['model_manager']);
-        $this->assertNull($resolvedOptions['class']);
+        $this->assertSame(\stdClass::class, $resolvedOptions['class']);
         $this->assertNull($resolvedOptions['property']);
         $this->assertNull($resolvedOptions['query']);
         $this->assertSame($options['choices'] ?? null, $resolvedOptions['choices']);
@@ -85,14 +85,14 @@ class ModelTypeTest extends TypeTestCase
 
         $this->type->configureOptions($optionResolver);
 
-        $options = $optionResolver->resolve(['model_manager' => $modelManager, 'choices' => [], 'multiple' => $multiple, 'expanded' => $expanded]);
+        $options = $optionResolver->resolve(['model_manager' => $modelManager, 'class' => \stdClass::class, 'choices' => [], 'multiple' => $multiple, 'expanded' => $expanded]);
 
         $this->assertSame($expectedCompound, $options['compound']);
         $this->assertSame('choice', $options['template']);
         $this->assertSame($multiple, $options['multiple']);
         $this->assertSame($expanded, $options['expanded']);
         $this->assertInstanceOf(ModelManagerInterface::class, $options['model_manager']);
-        $this->assertNull($options['class']);
+        $this->assertSame(\stdClass::class, $options['class']);
         $this->assertNull($options['property']);
         $this->assertNull($options['query']);
         $this->assertCount(0, $options['choices']);

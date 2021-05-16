@@ -21,11 +21,7 @@ use Symfony\Component\DependencyInjection\Exception\LogicException;
 /**
  * This class injects available model managers to services which depend on them.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
- * NEXT_MAJOR: Remove the "since" part of the internal annotation.
- *
- * @internal since sonata-project/admin-bundle version 4.0
+ * @internal
  *
  * @author Gaurav Singh Faudjdar <faujdar@gmail.com>
  */
@@ -37,13 +33,8 @@ final class ModelManagerCompilerPass implements CompilerPassInterface
     {
         $availableManagers = [];
 
-        // NEXT_MAJOR: Replace the `foreach()` clause with the following one.
-        // foreach ($container->findTaggedServiceIds(self::MANAGER_TAG) as $id => $tags) {
-        foreach ($container->getDefinitions() as $id => $definition) {
-            // NEXT_MAJOR: Remove this check.
-            if (!$definition->hasTag(self::MANAGER_TAG) && 0 !== strpos($id, 'sonata.admin.manager.')) {
-                continue;
-            }
+        foreach ($container->findTaggedServiceIds(self::MANAGER_TAG) as $id => $tags) {
+            $definition = $container->findDefinition($id);
 
             if (!is_subclass_of($definition->getClass(), ModelManagerInterface::class)) {
                 throw new LogicException(sprintf(
@@ -51,18 +42,6 @@ final class ModelManagerCompilerPass implements CompilerPassInterface
                     $id,
                     ModelManagerInterface::class
                 ));
-            }
-
-            // NEXT_MAJOR: Remove this check.
-            if (!$definition->hasTag(self::MANAGER_TAG)) {
-                @trigger_error(sprintf(
-                    'Not setting the "%s" tag on the "%s" service is deprecated since'
-                    .' sonata-project/admin-bundle 3.60.',
-                    self::MANAGER_TAG,
-                    $id
-                ), \E_USER_DEPRECATED);
-
-                $definition->addTag(self::MANAGER_TAG);
             }
 
             $availableManagers[$id] = $definition;

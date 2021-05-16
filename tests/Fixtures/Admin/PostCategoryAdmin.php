@@ -15,14 +15,9 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 
-class PostCategoryAdmin extends AbstractAdmin
+/**
+ * @phpstan-extends AbstractAdmin<object>
+ */
+final class PostCategoryAdmin extends AbstractAdmin
 {
-    public function getParentAssociationMapping()
-    {
-        if ($this->getParent() instanceof PostAdmin) {
-            return 'posts';
-        }
-
-        return null;
-    }
 }

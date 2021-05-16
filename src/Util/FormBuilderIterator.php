@@ -16,117 +16,75 @@ namespace Sonata\AdminBundle\Util;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class FormBuilderIterator extends \RecursiveArrayIterator
+final class FormBuilderIterator extends \RecursiveArrayIterator
 {
-    /**
-     * @var \ReflectionProperty
-     */
-    protected static $reflection;
-
     /**
      * @var FormBuilderInterface
      */
-    protected $formBuilder;
-
-    /**
-     * NEXT_MAJOR: Remove this property.
-     *
-     * @deprecated since sonata-project/sonata-admin-bundle 3.95
-     *
-     * @var mixed[]
-     */
-    protected $keys = [];
+    private $formBuilder;
 
     /**
      * @var string
      */
-    protected $prefix;
+    private $prefix;
 
     /**
-     * @var \ArrayIterator<string|int, string|int>
+     * @var \ArrayIterator<string|int, string>
      */
-    protected $iterator;
+    private $iterator;
 
-    /**
-     * NEXT_MAJOR: Change argument 2 to ?string $prefix = null.
-     *
-     * @param string|false $prefix
-     */
-    public function __construct(FormBuilderInterface $formBuilder, $prefix = null)
+    public function __construct(FormBuilderInterface $formBuilder, ?string $prefix = null)
     {
         parent::__construct();
+
         $this->formBuilder = $formBuilder;
-
-        // NEXT_MAJOR: Remove this block.
-        if (null !== $prefix && !\is_string($prefix)) {
-            @trigger_error(sprintf(
-                'Passing other type than string or null as argument 2 for method %s() is deprecated since'
-                .' sonata-project/admin-bundle 3.84. It will accept only string and null in version 4.0.',
-                __METHOD__
-            ), \E_USER_DEPRECATED);
-        }
-
-        // NEXT_MAJOR: Remove next line.
-        $this->prefix = \is_string($prefix) ? $prefix : $formBuilder->getName();
-        // NEXT_MAJOR: Uncomment next line.
-        // $this->prefix = $prefix ?? $formBuilder->getName();
+        $this->prefix = $prefix ?? $formBuilder->getName();
         $this->iterator = new \ArrayIterator(self::getKeys($formBuilder));
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->iterator->rewind();
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return $this->iterator->valid();
     }
 
-    /**
-     * @return string
-     */
-    public function key()
+    public function key(): string
     {
         $name = $this->iterator->current();
 
         return sprintf('%s_%s', $this->prefix, $name);
     }
 
-    public function next()
+    public function next(): void
     {
         $this->iterator->next();
     }
 
-    /**
-     * @return FormBuilderInterface
-     */
-    public function current()
+    public function current(): FormBuilderInterface
     {
         return $this->formBuilder->get($this->iterator->current());
     }
 
-    /**
-     * @return FormBuilderIterator
-     */
-    public function getChildren()
+    public function getChildren(): self
     {
-        return new self($this->formBuilder->get($this->iterator->current()), $this->key());
+        return new self($this->current(), $this->key());
     }
 
-    public function hasChildren()
+    public function hasChildren(): bool
     {
         return \count(self::getKeys($this->current())) > 0;
     }
 
     /**
-     * @return array<string|int, string|int>
+     * @return array<string|int, string>
      */
-    private static function getKeys(FormBuilderInterface $formBuilder)
+    private static function getKeys(FormBuilderInterface $formBuilder): array
     {
         return array_keys($formBuilder->all());
     }

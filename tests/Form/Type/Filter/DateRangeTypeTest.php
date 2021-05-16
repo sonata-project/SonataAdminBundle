@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Form\Type\Filter;
 
 use Sonata\AdminBundle\Form\Type\Filter\DateRangeType;
-use Symfony\Component\Translation\TranslatorInterface;
 
 final class DateRangeTypeTest extends BaseTypeTest
 {
@@ -25,23 +24,11 @@ final class DateRangeTypeTest extends BaseTypeTest
         $view = $form->createView();
 
         $this->assertFalse($view->children['type']->vars['required']);
-        $this->assertTrue($view->children['value']->vars['required']);
+        $this->assertFalse($view->children['value']->vars['required']);
     }
 
     protected function getTestedType(): string
     {
         return DateRangeType::class;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @return DateRangeType[]
-     */
-    protected function getTypes(): array
-    {
-        return [
-            new DateRangeType($this->createStub(TranslatorInterface::class)),
-        ];
     }
 }

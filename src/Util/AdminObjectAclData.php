@@ -15,77 +15,71 @@ namespace Sonata\AdminBundle\Util;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Security\Acl\Domain\Acl;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * AdminObjectAclData holds data manipulated by {@link AdminObjectAclManipulator}.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  */
-class AdminObjectAclData
+final class AdminObjectAclData
 {
     /**
      * @var string[] Permissions managed only by a OWNER
      */
-    protected static $ownerPermissions = ['MASTER', 'OWNER'];
+    private static $ownerPermissions = ['MASTER', 'OWNER'];
 
     /**
      * @var AdminInterface<object>
      */
-    protected $admin;
+    private $admin;
 
     /**
      * @var object
      */
-    protected $object;
+    private $object;
 
     /**
      * @var \Traversable<UserInterface|string> Users to set ACL for
      */
-    protected $aclUsers;
+    private $aclUsers;
 
     /**
      * @var \Traversable<string> Roles to set ACL for
      */
-    protected $aclRoles;
+    private $aclRoles;
 
     /**
      * @var array<string, mixed> Cache of masks
      */
-    protected $masks = [];
+    private $masks = [];
 
     /**
      * @var FormInterface|null
      */
-    protected $aclUsersForm;
+    private $aclUsersForm;
 
     /**
      * @var FormInterface|null
      */
-    protected $aclRolesForm;
+    private $aclRolesForm;
 
     /**
      * @var MutableAclInterface|null
      */
-    protected $acl;
+    private $acl;
 
     /**
      * @var string
      *
      * @phpstan-var class-string
      */
-    protected $maskBuilderClass;
+    private $maskBuilderClass;
 
     /**
      * @param AdminInterface<object>             $admin
-     * @param object                             $object
-     * @param string                             $maskBuilderClass
      * @param \Traversable<UserInterface|string> $aclUsers
      * @param \Traversable<string>|null          $aclRoles
      *
@@ -93,9 +87,9 @@ class AdminObjectAclData
      */
     public function __construct(
         AdminInterface $admin,
-        $object,
+        object $object,
         \Traversable $aclUsers,
-        $maskBuilderClass,
+        string $maskBuilderClass,
         ?\Traversable $aclRoles = null
     ) {
         $this->admin = $admin;
@@ -111,21 +105,14 @@ class AdminObjectAclData
     }
 
     /**
-     * Gets admin.
-     *
      * @return AdminInterface<object>
      */
-    public function getAdmin()
+    public function getAdmin(): AdminInterface
     {
         return $this->admin;
     }
 
-    /**
-     * Gets object.
-     *
-     * @return object
-     */
-    public function getObject()
+    public function getObject(): object
     {
         return $this->object;
     }
@@ -133,7 +120,7 @@ class AdminObjectAclData
     /**
      * @return \Traversable<UserInterface|string>
      */
-    public function getAclUsers()
+    public function getAclUsers(): \Traversable
     {
         return $this->aclUsers;
     }
@@ -141,25 +128,22 @@ class AdminObjectAclData
     /**
      * @return \Traversable<string>
      */
-    public function getAclRoles()
+    public function getAclRoles(): \Traversable
     {
         return $this->aclRoles;
     }
 
     /**
-     * @return AdminObjectAclData
+     * @return static
      */
-    public function setAcl(MutableAclInterface $acl)
+    public function setAcl(MutableAclInterface $acl): self
     {
         $this->acl = $acl;
 
         return $this;
     }
 
-    /**
-     * @return MutableAclInterface|null
-     */
-    public function getAcl()
+    public function getAcl(): ?MutableAclInterface
     {
         return $this->acl;
     }
@@ -167,77 +151,37 @@ class AdminObjectAclData
     /**
      * @return array<string, mixed>
      */
-    public function getMasks()
+    public function getMasks(): array
     {
         return $this->masks;
     }
 
     /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @return AdminObjectAclData
-     *
-     * @deprecated since sonata-project/admin-bundle 3.0. Use setAclUsersForm() instead
+     * @return static
      */
-    public function setForm(Form $form)
-    {
-        @trigger_error(
-            'setForm() is deprecated since version 3.0 and will be removed in 4.0. Use setAclUsersForm() instead.',
-            \E_USER_DEPRECATED
-        );
-
-        return $this->setAclUsersForm($form);
-    }
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @return FormInterface
-     *
-     * @deprecated since sonata-project/admin-bundle version 3.0. Use getAclUsersForm() instead
-     */
-    public function getForm()
-    {
-        @trigger_error(
-            'getForm() is deprecated since version 3.0 and will be removed in 4.0. Use getAclUsersForm() instead.',
-            \E_USER_DEPRECATED
-        );
-
-        return $this->getAclUsersForm();
-    }
-
-    /**
-     * @return AdminObjectAclData
-     */
-    public function setAclUsersForm(FormInterface $form)
+    public function setAclUsersForm(FormInterface $form): self
     {
         $this->aclUsersForm = $form;
 
         return $this;
     }
 
-    /**
-     * @return FormInterface|null
-     */
-    public function getAclUsersForm()
+    public function getAclUsersForm(): ?FormInterface
     {
         return $this->aclUsersForm;
     }
 
     /**
-     * @return AdminObjectAclData
+     * @return static
      */
-    public function setAclRolesForm(FormInterface $form)
+    public function setAclRolesForm(FormInterface $form): self
     {
         $this->aclRolesForm = $form;
 
         return $this;
     }
 
-    /**
-     * @return FormInterface|null
-     */
-    public function getAclRolesForm()
+    public function getAclRolesForm(): ?FormInterface
     {
         return $this->aclRolesForm;
     }
@@ -245,7 +189,7 @@ class AdminObjectAclData
     /**
      * @return string[]
      */
-    public function getPermissions()
+    public function getPermissions(): array
     {
         return $this->getSecurityHandler()->getObjectPermissions();
     }
@@ -253,7 +197,7 @@ class AdminObjectAclData
     /**
      * @return string[]
      */
-    public function getUserPermissions()
+    public function getUserPermissions(): array
     {
         $permissions = $this->getPermissions();
 
@@ -272,26 +216,21 @@ class AdminObjectAclData
     /**
      * @return string[]
      */
-    public function getOwnerPermissions()
+    public function getOwnerPermissions(): array
     {
         return self::$ownerPermissions;
     }
 
     /**
      * Tests if the current user has the OWNER right.
-     *
-     * @return bool
      */
-    public function isOwner()
+    public function isOwner(): bool
     {
         // Only a owner can set MASTER and OWNER ACL
         return $this->admin->isGranted('OWNER', $this->object);
     }
 
-    /**
-     * @return AclSecurityHandlerInterface
-     */
-    public function getSecurityHandler()
+    public function getSecurityHandler(): AclSecurityHandlerInterface
     {
         $securityHandler = $this->admin->getSecurityHandler();
         \assert($securityHandler instanceof AclSecurityHandlerInterface);
@@ -302,17 +241,15 @@ class AdminObjectAclData
     /**
      * @return array<string, string[]>
      */
-    public function getSecurityInformation()
+    public function getSecurityInformation(): array
     {
         return $this->getSecurityHandler()->buildSecurityInformation($this->admin);
     }
 
     /**
      * Cache masks.
-     *
-     * @return void
      */
-    protected function updateMasks()
+    private function updateMasks(): void
     {
         $permissions = $this->getPermissions();
 

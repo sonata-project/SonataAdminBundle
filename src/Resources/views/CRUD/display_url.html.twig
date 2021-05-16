@@ -10,15 +10,6 @@ file that was distributed with this source code.
 #}
 
 {%- apply spaceless %}
-    {# NEXT_MAJOR: Remove this BC-layer #}
-    {% if field_description is defined %}
-        {% set url = url|default(field_description.option('url')) %}
-        {% set route = route|default(field_description.option('route')) %}
-        {% set hide_protocol = hide_protocol|default(field_description.option('hide_protocol', false)) %}
-        {% set attributes = attributes|default(field_description.option('attributes', [])) %}
-        {% set safe = safe|default(field_description.option('safe', false)) %}
-    {% endif %}
-
     {% if value is empty %}
         &nbsp;
     {% else %}

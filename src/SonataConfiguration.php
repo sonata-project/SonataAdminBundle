@@ -24,7 +24,6 @@ namespace Sonata\AdminBundle;
  *  html5_validate: bool,
  *  javascripts: list<string>,
  *  js_debug: bool,
- *  legacy_twig_text_extension: bool,
  *  lock_protection: bool,
  *  mosaic_background: string,
  *  pager_links: ?int,

@@ -10,11 +10,6 @@ file that was distributed with this source code.
 #}
 
 {%- apply spaceless %}
-    {# NEXT_MAJOR: Remove this BC-layer #}
-    {% if field_description is defined %}
-        {% set inverse = inverse|default(field_description.option('inverse', false)) %}
-    {% endif %}
-
     {% if value %}
         {% set text = 'label_type_yes'|trans({}, 'SonataAdminBundle') %}
     {% else %}

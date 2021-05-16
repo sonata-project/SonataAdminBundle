@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
@@ -33,22 +34,19 @@ final class DataTransformerResolverTest extends TestCase
     private $resolver;
 
     /**
-     * @var FieldDescriptionInterface
+     * @var FieldDescriptionInterface&MockObject
      */
     private $fieldDescription;
 
     /**
-     * @var FieldDescriptionInterface
+     * @var ModelManagerInterface&MockObject
      */
     private $modelManager;
 
     protected function setUp(): void
     {
-        // NEXT_MAJOR: Use `createStub` instead of using mock builder
-        $this->fieldDescription = $this->getMockBuilder(FieldDescriptionInterface::class)
-            ->addMethods(['getTargetModel'])
-            ->getMockForAbstractClass();
-        $this->modelManager = $this->createStub(ModelManagerInterface::class);
+        $this->fieldDescription = $this->createMock(FieldDescriptionInterface::class);
+        $this->modelManager = $this->createMock(ModelManagerInterface::class);
         $this->resolver = new DataTransformerResolver();
     }
 

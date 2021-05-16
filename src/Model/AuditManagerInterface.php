@@ -21,27 +21,25 @@ interface AuditManagerInterface
     /**
      * Set AuditReaderInterface service id for array of $classes.
      *
-     * @param string $serviceId
+     * @param string[] $classes
+     *
+     * @phpstan-param class-string[] $classes
      */
-    public function setReader($serviceId, array $classes);
+    public function setReader(string $serviceId, array $classes): void;
 
     /**
      * Returns true if $class has AuditReaderInterface.
      *
-     * @param string $class
-     *
-     * @return bool
+     * @phpstan-param class-string $class
      */
-    public function hasReader($class);
+    public function hasReader(string $class): bool;
 
     /**
      * Get AuditReaderInterface service for $class.
      *
-     * @param string $class
+     * @throws \LogicException
      *
-     * @throws \RuntimeException // NEXT_MAJOR: Throw a \LogicException instead
-     *
-     * @return AuditReaderInterface
+     * @phpstan-param class-string $class
      */
-    public function getReader($class);
+    public function getReader(string $class): AuditReaderInterface;
 }

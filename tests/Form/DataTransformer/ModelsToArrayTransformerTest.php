@@ -16,7 +16,6 @@ namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 use Doctrine\Common\Collections\Collection;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
@@ -36,25 +35,11 @@ class ModelsToArrayTransformerTest extends TestCase
     }
 
     /**
-     * @group legacy
-     */
-    public function testLegacyConstructor(): void
-    {
-        $transformer = new ModelsToArrayTransformer(
-            $this->createStub(ModelChoiceLoader::class),
-            $this->createStub(ModelManagerInterface::class),
-            Foo::class
-        );
-
-        $this->assertInstanceOf(ModelsToArrayTransformer::class, $transformer);
-    }
-
-    /**
      * @dataProvider reverseTransformProvider
      */
     public function testReverseTransform(?array $value): void
     {
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
 
         if (null !== $value) {
             $proxyQuery = $this->createStub(ProxyQueryInterface::class);
@@ -92,7 +77,7 @@ class ModelsToArrayTransformerTest extends TestCase
 
     public function testReverseTransformWithEmptyArray(): void
     {
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
             ->expects($this->never())
             ->method('createQuery');
@@ -134,7 +119,7 @@ class ModelsToArrayTransformerTest extends TestCase
     {
         $value = ['a', 'b'];
         $reverseTransformCollection = ['a'];
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
         $proxyQuery = $this->createStub(ProxyQueryInterface::class);
         $modelManager
             ->method('createQuery')

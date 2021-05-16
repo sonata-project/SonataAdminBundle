@@ -17,72 +17,27 @@ use Sonata\AdminBundle\Form\Type\Operator\DateRangeOperatorType;
 use Sonata\Form\Type\DateTimeRangeType as FormDateTimeRangeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class DateTimeRangeType extends AbstractType
+final class DateTimeRangeType extends AbstractType
 {
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use DateRangeOperatorType::TYPE_BETWEEN instead
-     */
-    public const TYPE_BETWEEN = 1;
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use DateRangeOperatorType::TYPE_NOT_BETWEEN instead
-     */
-    public const TYPE_NOT_BETWEEN = 2;
-
-    /**
-     * NEXT_MAJOR: remove this property.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.5, to be removed with 4.0
-     *
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_filter_datetime_range';
     }
 
-    /**
-     * @param array<string, mixed> $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function getParent(): string
     {
-        $builder
-            ->add('type', DateRangeOperatorType::class, ['required' => false])
-            ->add('value', $options['field_type'], $options['field_options']);
+        return FilterDataType::class;
     }
 
-    /**
-     * @return void
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
+            'operator_type' => DateRangeOperatorType::class,
             'field_type' => FormDateTimeRangeType::class,
             'field_options' => [
                 'field_options' => ['date_format' => DateTimeType::HTML5_FORMAT],

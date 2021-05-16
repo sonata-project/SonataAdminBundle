@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
@@ -40,7 +41,7 @@ class ListMapperTest extends TestCase
     private $fieldDescriptionCollection;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface<object>&MockObject
      */
     private $admin;
 
@@ -48,18 +49,14 @@ class ListMapperTest extends TestCase
     {
         $listBuilder = $this->createMock(ListBuilderInterface::class);
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
-
-        // NEXT_MAJOR: Change to $this->createStub(AdminInterface::class).
-        $this->admin = $this->getMockBuilder(AdminInterface::class)
-            ->addMethods(['createFieldDescription', 'hasAccess'])
-            ->getMockForAbstractClass();
+        $this->admin = $this->createMock(AdminInterface::class);
 
         $listBuilder
             ->method('addField')
             ->willReturnCallback(static function (
                 FieldDescriptionCollection $list,
                 ?string $type,
-                BaseFieldDescription $fieldDescription
+                FieldDescriptionInterface $fieldDescription
             ): void {
                 $fieldDescription->setType($type);
                 $list->add($fieldDescription);
@@ -76,9 +73,7 @@ class ListMapperTest extends TestCase
 
         $labelTranslatorStrategy = new NoopLabelTranslatorStrategy();
 
-        $this->admin
-            ->method('getLabelTranslatorStrategy')
-            ->willReturn($labelTranslatorStrategy);
+        $this->admin->method('getLabelTranslatorStrategy')->willReturn($labelTranslatorStrategy);
 
         $this->admin
             ->method('isGranted')
@@ -137,87 +132,33 @@ class ListMapperTest extends TestCase
         $this->assertFalse($this->listMapper->get('bazName')->getOption('identifier'));
     }
 
-    /**
-     * @group legacy
-     *
-     * @expectedDeprecation Passing a non boolean value for the "identifier" option is deprecated since sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.
-     *
-     * @dataProvider getWrongIdentifierOptions
-     */
-    public function testAddOptionIdentifierWithDeprecatedValue(bool $expected, $value): void
+    public function testAddOptionIdentifierWithWrongValue(): void
     {
-        $this->assertFalse($this->listMapper->has('fooName'));
-        $this->listMapper->add('fooName', null, ['identifier' => $value]);
-        $this->assertTrue($this->listMapper->has('fooName'));
-        $this->assertSame($expected, $this->listMapper->get('fooName')->getOption('identifier'));
-    }
-
-    /**
-     * @dataProvider getWrongIdentifierOptions
-     */
-    public function testAddOptionIdentifierWithWrongValue(bool $expected, $value): void
-    {
-        // NEXT_MAJOR: Remove the following `markTestSkipped()` call and the `testAddOptionIdentifierWithDeprecatedValue()` test
-        $this->markTestSkipped('This test must be run in 4.0');
-
         $this->assertFalse($this->listMapper->has('fooName'));
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/^Value for "identifier" option must be boolean, .+ given.$/');
 
-        $this->listMapper->add('fooName', null, ['identifier' => $value]);
-    }
-
-    public function getWrongIdentifierOptions(): iterable
-    {
-        return [
-            [true, 1],
-            [true, 'string'],
-            [true, new \stdClass()],
-            [true, [null]],
-            [false, 0],
-            [false, null],
-            [false, ''],
-            [false, '0'],
-            [false, []],
-        ];
+        $this->listMapper->add('fooName', null, ['identifier' => 1]);
     }
 
     public function testAdd(): void
     {
         $this->listMapper->add('fooName');
         $this->listMapper->add('fooNameLabelBar', null, ['label' => 'Foo Bar']);
-        $this->listMapper->add('fooNameLabelFalse', null, ['label' => false]);
+        $this->listMapper->add('fooNameLabelEmpty', null, ['label' => '']);
 
         $this->assertTrue($this->listMapper->has('fooName'));
 
         $fieldDescription = $this->listMapper->get('fooName');
         $fieldLabelBar = $this->listMapper->get('fooNameLabelBar');
-        $fieldLabelFalse = $this->listMapper->get('fooNameLabelFalse');
+        $fieldLabelFalse = $this->listMapper->get('fooNameLabelEmpty');
 
         $this->assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
         $this->assertSame('fooName', $fieldDescription->getName());
         $this->assertSame('fooName', $fieldDescription->getOption('label'));
         $this->assertSame('Foo Bar', $fieldLabelBar->getOption('label'));
-        $this->assertFalse($fieldLabelFalse->getOption('label'));
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testLegacyAddViewInlineAction(): void
-    {
-        $this->assertFalse($this->listMapper->has(ListMapper::NAME_ACTIONS));
-        $this->listMapper->add(ListMapper::NAME_ACTIONS, ListMapper::TYPE_ACTIONS, ['actions' => ['view' => []]]);
-
-        $this->assertTrue($this->listMapper->has(ListMapper::NAME_ACTIONS));
-
-        $fieldDescription = $this->listMapper->get(ListMapper::NAME_ACTIONS);
-
-        $this->assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
-        $this->assertSame(ListMapper::NAME_ACTIONS, $fieldDescription->getName());
-        $this->assertCount(1, $fieldDescription->getOption('actions'));
-        $this->assertSame(['show' => []], $fieldDescription->getOption('actions'));
+        $this->assertEmpty($fieldLabelFalse->getOption('label'));
     }
 
     public function testAddViewInlineAction(): void
@@ -269,11 +210,15 @@ class ListMapperTest extends TestCase
         $this->listMapper->add('fooName');
     }
 
+    /**
+     * @psalm-suppress InvalidScalarArgument
+     */
     public function testAddWrongTypeException(): void
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage('Unknown field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string.');
 
+        // @phpstan-ignore-next-line
         $this->listMapper->add(12345);
     }
 
@@ -285,8 +230,8 @@ class ListMapperTest extends TestCase
 
         foreach ($this->fieldDescriptionCollection->getElements() as $field) {
             $this->assertTrue(
-                $field->isVirtual(),
-                sprintf('Failed asserting that FieldDescription with type "%s" is tagged with virtual flag.', $field->getType())
+                $field->getOption('virtual_field', false),
+                sprintf('Failed asserting that FieldDescription with name "%s" is tagged with virtual flag.', $field->getName())
             );
         }
     }
@@ -427,7 +372,7 @@ class ListMapperTest extends TestCase
         $field = $this->fieldDescriptionCollection->get(ListMapper::NAME_ACTIONS);
 
         $this->assertTrue(
-            $field->isVirtual(),
+            $field->getOption('virtual_field', false),
             'Failed asserting that FieldDescription with name "'.$field->getName().'" is tagged with virtual flag.'
         );
     }

@@ -87,9 +87,9 @@ In order to add new routes for these actions we are also adding the following me
 
     namespace App\Admin;
 
-    use Sonata\AdminBundle\Route\RouteCollection;
+    use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
     }
@@ -130,12 +130,12 @@ Now we need to define the sort by field to be ``$position``::
             $sortValues[DatagridInterface::SORT_BY] = 'position';
         }
 
-        protected function configureRoutes(RouteCollection $collection)
+        protected function configureRoutes(RouteCollectionInterface $collection): void
         {
             $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
         }
 
-        protected function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $listMapper): void
         {
             $listMapper
                 ->addIdentifier('name')

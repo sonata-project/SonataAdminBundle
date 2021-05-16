@@ -15,6 +15,9 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController;
 
+/**
+ * @phpstan-extends CRUDController<object>
+ */
 final class ModelAdminController extends CRUDController
 {
 }

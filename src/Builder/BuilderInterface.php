@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Builder;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
 /**
@@ -24,10 +23,7 @@ interface BuilderInterface
     /**
      * Adds missing information to the given field description and the given admin.
      *
-     * @param AdminInterface<object>    $admin            will be used to gather information
      * @param FieldDescriptionInterface $fieldDescription will be modified
      */
-    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription);
+    public function fixFieldDescription(FieldDescriptionInterface $fieldDescription): void;
 }
-
-interface_exists(FieldDescriptionInterface::class);

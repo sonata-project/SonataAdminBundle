@@ -51,13 +51,6 @@ class FormBuilderIteratorTest extends TestCase
         $this->factory->method('createNamedBuilder')->willReturn($this->builder);
     }
 
-    protected function tearDown(): void
-    {
-        $this->dispatcher = null;
-        $this->factory = null;
-        $this->builder = null;
-    }
-
     public function testGetChildren(): void
     {
         $this->builder->add('name', TextType::class);
@@ -71,20 +64,5 @@ class FormBuilderIteratorTest extends TestCase
         $this->builder->add('name', TextType::class);
         $iterator = new FormBuilderIterator($this->builder);
         $this->assertTrue($iterator->hasChildren());
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testTriggersADeprecationWithWrongPrefixType(): void
-    {
-        $this->expectDeprecation('Passing other type than string or null as argument 2 for method Sonata\AdminBundle\Util\FormBuilderIterator::__construct() is deprecated since sonata-project/admin-bundle 3.84. It will accept only string and null in version 4.0.');
-
-        $this->builder->add('name', TextType::class);
-        $iterator = new FormBuilderIterator($this->builder, new \stdClass());
-
-        $this->assertSame($iterator->key(), 'name_name');
     }
 }

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Maker;
 
 use Sonata\AdminBundle\Command\Validators;
-use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Manipulator\ServicesManipulator;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
@@ -39,34 +38,43 @@ final class AdminMaker extends AbstractMaker
      * @var string
      */
     private $projectDirectory;
+
     /**
      * @var array<string, ModelManagerInterface>
      */
     private $availableModelManagers;
+
     /**
      * @var string
      */
     private $skeletonDirectory;
+
     /**
      * @var string
+     * @phpstan-var class-string
      */
     private $modelClass;
+
     /**
      * @var string
      */
     private $modelClassBasename;
+
     /**
      * @var string
      */
     private $adminClassBasename;
+
     /**
-     * @var string
+     * @var string|null
      */
     private $controllerClassBasename;
+
     /**
      * @var string
      */
     private $managerType;
+
     /**
      * @var ModelManagerInterface
      */
@@ -78,18 +86,14 @@ final class AdminMaker extends AbstractMaker
     private $defaultController;
 
     /**
-     * NEXT_MAJOR: Make $modelManagers and $defaultController mandatory.
-     *
-     * @param string                               $projectDirectory
      * @param array<string, ModelManagerInterface> $modelManagers
      */
-    public function __construct($projectDirectory, array $modelManagers = [], ?string $defaultController = null)
+    public function __construct(string $projectDirectory, array $modelManagers, string $defaultController)
     {
         $this->projectDirectory = $projectDirectory;
         $this->availableModelManagers = $modelManagers;
         $this->skeletonDirectory = sprintf('%s/../Resources/skeleton', __DIR__);
-        // NEXT_MAJOR: Remove the CRUDController part.
-        $this->defaultController = $defaultController ?? CRUDController::class;
+        $this->defaultController = $defaultController;
     }
 
     public static function getCommandName(): string

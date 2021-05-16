@@ -84,7 +84,7 @@ class GenerateObjectAclCommandTest extends TestCase
         $container->set('acme.admin.foo', $admin);
         $pool = new Pool($container, ['acme.admin.foo']);
 
-        $admin->method('getManagerType')->willReturn('bar');
+        $admin->setManagerType('bar');
 
         $aclObjectManipulators = [
             'bar' => new \stdClass(),
@@ -109,7 +109,7 @@ class GenerateObjectAclCommandTest extends TestCase
         $container->set('acme.admin.foo', $admin);
         $pool = new Pool($container, ['acme.admin.foo']);
 
-        $admin->method('getManagerType')->willReturn('bar');
+        $admin->setManagerType('bar');
 
         $aclObjectManipulators = [
             'sonata.admin.manipulator.acl.object.bar' => new \stdClass(),
@@ -134,7 +134,7 @@ class GenerateObjectAclCommandTest extends TestCase
         $container->set('acme.admin.foo', $admin);
         $pool = new Pool($container, ['acme.admin.foo']);
 
-        $admin->method('getManagerType')->willReturn('bar');
+        $admin->setManagerType('bar');
 
         $manipulator = $this->createMock(ObjectAclManipulatorInterface::class);
         $manipulator->expects($this->once())->method('batchConfigureAcls')
@@ -161,9 +161,7 @@ class GenerateObjectAclCommandTest extends TestCase
         $container->set('acme.admin.foo', $admin);
         $pool = new Pool($container, ['acme.admin.foo']);
 
-        $admin
-            ->method('getManagerType')
-            ->willReturn('bar');
+        $admin->setManagerType('bar');
 
         $manipulator = $this->createMock(ObjectAclManipulatorInterface::class);
         $manipulator

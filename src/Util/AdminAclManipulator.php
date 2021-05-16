@@ -18,34 +18,29 @@ use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
-use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AdminAclManipulator implements AdminAclManipulatorInterface
+final class AdminAclManipulator implements AdminAclManipulatorInterface
 {
     /**
      * @var string
      *
      * @phpstan-var class-string
      */
-    protected $maskBuilderClass;
+    private $maskBuilderClass;
 
     /**
-     * @param string $maskBuilderClass
-     *
      * @phpstan-param class-string $maskBuilderClass
      */
-    public function __construct($maskBuilderClass)
+    public function __construct(string $maskBuilderClass)
     {
         $this->maskBuilderClass = $maskBuilderClass;
     }
 
-    public function configureAcls(OutputInterface $output, AdminInterface $admin)
+    public function configureAcls(OutputInterface $output, AdminInterface $admin): void
     {
         $securityHandler = $admin->getSecurityHandler();
         if (!$securityHandler instanceof AclSecurityHandlerInterface) {
@@ -75,17 +70,10 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
 
     public function addAdminClassAces(
         OutputInterface $output,
-        AclInterface $acl,
+        MutableAclInterface $acl,
         AclSecurityHandlerInterface $securityHandler,
         array $roleInformation = []
-    ) {
-        if (!$acl instanceof MutableAclInterface) {
-            throw new \TypeError(sprintf(
-                'Argument 2 passed to "%s()" must implement "%s".',
-                __METHOD__,
-                MutableAclInterface::class
-            ));
-        }
+    ): bool {
         if (\count($securityHandler->getAdminPermissions()) > 0) {
             $builder = new $this->maskBuilderClass();
 

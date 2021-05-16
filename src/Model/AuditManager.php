@@ -14,60 +14,34 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Model;
 
 use Psr\Container\ContainerInterface;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
-use Symfony\Component\DependencyInjection\ContainerInterface as SymfonyContainerInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AuditManager implements AuditManagerInterface
+final class AuditManager implements AuditManagerInterface
 {
     /**
-     * @var array
+     * @var array<string, string[]>
+     * @phpstan-var array<string, class-string[]>
      */
-    protected $classes = [];
+    private $readers = [];
 
     /**
-     * @var array
+     * @var ContainerInterface
      */
-    protected $readers = [];
+    private $container;
 
-    /**
-     * @var SymfonyContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @var ContainerInterface|null
-     */
-    private $psrContainer;
-
-    // NEXT_MAJOR: Remove SymfonyContainerInterface parameter and only use ContainerInterface parameter
-    public function __construct(SymfonyContainerInterface $container, ?ContainerInterface $psrContainer = null)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->psrContainer = $psrContainer;
     }
 
-    public function setReader($serviceId, array $classes)
+    public function setReader(string $serviceId, array $classes): void
     {
-        // NEXT_MAJOR: Remove this "if" block.
-        if (null !== $this->psrContainer && !$this->psrContainer->has($serviceId)) {
-            @trigger_error(sprintf(
-                'Not registering the audit reader "%1$s" with tag "%2$s" is deprecated since'
-                .' sonata-project/admin-bundle 3.95 and will not work in 4.0.'
-                .' You MUST add "%2$s" tag to the service "%1$s".',
-                $serviceId,
-                AddAuditReadersCompilerPass::AUDIT_READER_TAG
-            ), \E_USER_DEPRECATED);
-        }
-
         $this->readers[$serviceId] = $classes;
     }
 
-    public function hasReader($class)
+    public function hasReader(string $class): bool
     {
         foreach ($this->readers as $classes) {
             if (\in_array($class, $classes, true)) {
@@ -78,15 +52,23 @@ class AuditManager implements AuditManagerInterface
         return false;
     }
 
-    public function getReader($class)
+    public function getReader(string $class): AuditReaderInterface
     {
         foreach ($this->readers as $readerId => $classes) {
             if (\in_array($class, $classes, true)) {
-                return $this->container->get($readerId);
+                $reader = $this->container->get($readerId);
+                if (!$reader instanceof AuditReaderInterface) {
+                    throw new \LogicException(sprintf(
+                        'Service "%s" MUST implement interface "%s".',
+                        $readerId,
+                        AuditReaderInterface::class,
+                    ));
+                }
+
+                return $reader;
             }
         }
 
-        // NEXT_MAJOR: Throw a \LogicException instead.
-        throw new \RuntimeException(sprintf('The class "%s" does not have any reader manager', $class));
+        throw new \LogicException(sprintf('The class "%s" does not have any reader manager', $class));
     }
 }

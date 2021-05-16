@@ -13,23 +13,23 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Block;
 
-use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminSearchBlockService;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
+use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Search\SearchHandler;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\BlockBundle\Test\BlockServiceTestCase;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Response;
-use Twig\Environment;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
 final class AdminSearchBlockServiceTest extends BlockServiceTestCase
 {
-    use ExpectDeprecationTrait;
-
     /**
      * @var Pool
      */
@@ -40,20 +40,28 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
      */
     private $searchHandler;
 
+    /**
+     * @var TemplateRegistryInterface
+     */
+    private $templateRegistry;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->pool = new Pool(new Container());
         $this->searchHandler = new SearchHandler(true);
+        $this->templateRegistry = $this->createMock(TemplateRegistryInterface::class);
+        $this->templateRegistry->method('getTemplate')->willReturn('@SonataAdmin/Block/block_search_result.html.twig');
     }
 
     public function testDefaultSettings(): void
     {
         $blockService = new AdminSearchBlockService(
-            $this->createMock(Environment::class),
+            $this->twig,
             $this->pool,
             $this->searchHandler,
+            $this->templateRegistry,
             'show'
         );
         $blockContext = $this->getBlockContext($blockService);
@@ -63,40 +71,61 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
             'query' => '',
             'page' => 0,
             'per_page' => 10,
-            'icon' => '<i class="fa fa-list"></i>',
+            'icon' => '<i class="fas fa-list"></i>',
         ], $blockContext);
     }
 
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testDefaultSettingsWithoutEmptyBoxOption(): void
+    public function testGlobalSearchReturnsResponse(): void
     {
-        $this->expectDeprecation('Not passing a string as argument 4 to %s() is deprecated since sonata-project/admin-bundle 3.81 and will throw a \TypeError in version 4.0.');
+        $datagrid = $this->createStub(DatagridInterface::class);
+
+        $admin = $this->createMock(AdminInterface::class);
+        $admin
+            ->method('getDatagrid')
+            ->willReturn($datagrid);
+
+        $filter = $this->createMock(FilterInterface::class);
+        $filter
+            ->method('getOption')
+            ->with('global_search')
+            ->willReturn(true);
+
+        $datagrid
+            ->method('getFilters')
+            ->willReturn([$filter]);
+
+        $datagrid
+            ->method('getPager')
+            ->willReturn($this->createStub(PagerInterface::class));
+
+        $adminCode = 'code';
+        $container = new Container();
+        $container->set($adminCode, $admin);
+        $pool = new Pool($container, [$adminCode]);
 
         $blockService = new AdminSearchBlockService(
-            $this->createMock(Environment::class),
-            $this->pool,
+            $this->twig,
+            $pool,
             $this->searchHandler,
+            $this->templateRegistry,
+            'show'
         );
         $blockContext = $this->getBlockContext($blockService);
+        $blockContext->setSetting('admin_code', $adminCode);
 
-        $this->assertSettings([
-            'admin_code' => '',
-            'query' => '',
-            'page' => 0,
-            'per_page' => 10,
-            'icon' => '<i class="fa fa-list"></i>',
-        ], $blockContext);
+        $admin->expects(self::once())->method('checkAccess')->with('list');
+
+        $response = $blockService->execute($blockContext);
+
+        static::assertSame('', $response->getContent());
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function testGlobalSearchReturnsEmptyWhenFiltersAreDisabled(): void
     {
         $adminCode = 'code';
 
-        $admin = $this->createMock(AbstractAdmin::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin
             ->method('getCode')
             ->willReturn($adminCode);
@@ -106,16 +135,19 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
         $pool = new Pool($container, [$adminCode]);
 
         $blockService = new AdminSearchBlockService(
-            $this->createStub(Environment::class),
+            $this->twig,
             $pool,
             $this->searchHandler,
+            $this->templateRegistry,
             'show'
         );
         $blockContext = $this->getBlockContext($blockService);
         $blockContext->setSetting('admin_code', $adminCode);
 
         $this->searchHandler->configureAdminSearch([$adminCode => false]);
-        $admin->expects(self::once())->method('checkAccess')->with('list')->willReturn(true);
+        $admin->expects(self::once())->method('checkAccess')->with('list');
+
+        $this->twig->expects(self::never())->method('render');
 
         $response = $blockService->execute($blockContext);
 

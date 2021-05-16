@@ -18,34 +18,30 @@ use Sonata\AdminBundle\Util\Instantiator;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-template T of object
  */
-class ArrayToModelTransformer implements DataTransformerInterface
+final class ArrayToModelTransformer implements DataTransformerInterface
 {
     /**
      * @var ModelManagerInterface
      * @phpstan-var ModelManagerInterface<T>
      */
-    protected $modelManager;
+    private $modelManager;
 
     /**
      * @var string
      *
      * @phpstan-var class-string<T>
      */
-    protected $className;
+    private $className;
 
     /**
-     * @param string $className
-     *
      * @phpstan-param ModelManagerInterface<T> $modelManager
      * @phpstan-param class-string<T>          $className
      */
-    public function __construct(ModelManagerInterface $modelManager, $className)
+    public function __construct(ModelManagerInterface $modelManager, string $className)
     {
         $this->modelManager = $modelManager;
         $this->className = $className;
@@ -54,13 +50,11 @@ class ArrayToModelTransformer implements DataTransformerInterface
     /**
      * @param object|array<string, mixed>|null $value
      *
-     * @return object
-     *
      * @phpstan-param T|array<string, mixed>|null $value
      *
      * @phpstan-return T
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): object
     {
         // when the object is created the form return an array
         // one the object is persisted, the edit $array is the user instance
@@ -72,11 +66,6 @@ class ArrayToModelTransformer implements DataTransformerInterface
 
         if (!\is_array($value)) {
             return $instance;
-        }
-
-        // NEXT_MAJOR: Remove this code.
-        if (!method_exists($this->modelManager, 'reverseTransform')) {
-            return $this->modelManager->modelReverseTransform($this->className, $value);
         }
 
         $this->modelManager->reverseTransform($instance, $value);

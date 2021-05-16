@@ -1,0 +1,565 @@
+/*!
+ * This file is part of the Sonata Project package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+/**
+ * SonataAdminBundle Theme based on SB Admin v2.0
+ * http://startbootstrap.com/templates/sb-admin-v2/
+ */
+
+html {
+  min-height: 100%;
+  position: relative;
+}
+
+footer {
+  background-color: #333;
+  bottom: 0;
+  height: 20px;
+  position: absolute;
+  width: 100%;
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: #f6f6f6;
+  }
+}
+
+.logo {
+  img {
+    display: inline;
+    max-height: 100%;
+    max-width: 60px;
+    padding-bottom: 4px;
+  }
+
+  span {
+    display: inline-block;
+    line-height: 1;
+    vertical-align: middle;
+    width: 200px;
+  }
+
+  img + span { width: 140px; }
+}
+
+body > .header .logo {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.main-header {
+  height: 50px;
+}
+
+.open > .dropdown-menu {
+  animation-duration: 0.3s;
+}
+
+.dropdown-menu-scrollable {
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+/* Buttons */
+.btn.btn-outline {
+  background-color: transparent;
+  color: inherit;
+  transition: all 0.5s;
+}
+
+.btn.btn-primary.btn-outline:hover,
+.btn.btn-success.btn-outline:hover,
+.btn.btn-info.btn-outline:hover,
+.btn.btn-warning.btn-outline:hover,
+.btn.btn-danger.btn-outline:hover {
+  color: #fff;
+}
+
+/* navigation */
+.navbar-static-side li {
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.navbar-brand {
+  padding-right: 20px;
+
+  img {
+    height: 28px;
+    margin: 0;
+    padding: 0 5px 0 0;
+    vertical-align: middle;
+  }
+}
+
+.navbar-text .navbar-link {
+  padding: 0 10px;
+}
+
+.content-header {
+  .navbar {
+    margin-bottom: 0;
+  }
+}
+
+.right-side > .content-header {
+  padding-bottom: 0;
+}
+
+.nav-second-level li {
+  border-bottom: none !important;
+
+  a {
+    padding-left: 37px;
+  }
+}
+
+.nav-third-level li {
+  border-bottom: none !important;
+
+  a {
+    padding-left: 52px;
+  }
+}
+
+div {
+  &.mosaic-box {
+    border-radius: 3px;
+    padding: 2px;
+  }
+
+  &.mosaic-inner-box-hover {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 4px 4px 0 0;
+    bottom: 0;
+    left: 0;
+    padding: 5px 10px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: 0.25s opacity;
+  }
+
+  &.mosaic-inner-box {
+    border-bottom: none;
+    height: 100px;
+    overflow: hidden;
+    position: relative;
+
+    > div.mosaic-inner-box-hover {
+      opacity: 0;
+    }
+
+    img {
+      border-radius: 4px 4px 0 0;
+      height: auto;
+      width: 100%;
+    }
+
+    &:hover > div.mosaic-inner-box-hover {
+      opacity: 1;
+    }
+  }
+
+  &.mosaic-box-outter {
+    background-color: #fff;
+    background-size: 100% auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+
+  &.mosaic-inner-text {
+    background: white;
+    border-radius: 0 0 5px 5px;
+    border-top: none;
+    overflow: hidden;
+    padding: 3px;
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    z-index: 2;
+  }
+}
+
+.navbar-top-links li {
+  display: inline-block;
+
+  a,
+  span {
+    min-height: 50px;
+    padding: 15px;
+  }
+}
+
+.dropdown-add .dropdown-menu > li > a {
+  overflow: hidden;
+  white-space: normal;
+}
+
+.navbar-top-links {
+  > p,
+  > ul {
+    float: right;
+  }
+
+  .dropdown-menu {
+    li {
+      display: block;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      a {
+        min-height: 0;
+        padding: 3px 20px;
+
+        div {
+          white-space: normal;
+        }
+      }
+    }
+  }
+
+  .dropdown-messages,
+  .dropdown-tasks,
+  .dropdown-alerts {
+    min-width: 0;
+    width: 310px;
+  }
+
+  .dropdown-messages {
+    margin-left: 5px;
+  }
+
+  .dropdown-tasks {
+    margin-left: -59px;
+  }
+
+  .dropdown-alerts {
+    margin-left: -123px;
+  }
+
+  .dropdown-user {
+    left: auto;
+    right: 0;
+  }
+}
+
+/* breadcrumb */
+.sonata-bc .breadcrumb {
+  background: inherit;
+  float: left;
+  margin: 0;
+  padding: 0;
+
+  li a {
+    display: inline-block;
+  }
+}
+
+.navbar-top-links .dropdown-menu li a:hover {
+  text-decoration: none;
+}
+
+/* MEGA MENU STYLE
+********************************/
+.dropdown-menu .dropdown-menu {
+  border: none !important;
+  box-shadow: none !important;
+  display: block !important;
+  margin: 0 !important;
+  position: static !important;
+}
+
+.dropdown-menu.multi-column .dropdown-menu {
+  min-width: 100px;
+}
+
+/* top right */
+.navbar-static-top {
+  margin-bottom: 0;
+}
+
+.skin-black .navbar .breadcrumb > li > a:hover {
+  background: #f5f5f5;
+  color: #444;
+}
+
+.skin-black .navbar .dropdown-menu > li > a:hover {
+  background-color: #f5f5f5;
+}
+
+/* Content navbar */
+body.fixed .content-header .navbar {
+  position: relative;
+}
+
+/* sidebar menu styles */
+.sidebar-search {
+  padding: 15px;
+
+  li.keep-open > .treeview-menu {
+    display: block !important;
+    height: auto !important;
+  }
+}
+
+.arrow {
+  float: right;
+}
+
+.fa.arrow::before {
+  content: "\f104";
+}
+
+.active > a > .fa.arrow::before {
+  content: "\f107";
+}
+
+@media (min-width: 768px) {
+  .navbar-static-side {
+    position: absolute;
+    width: 250px;
+    z-index: 1;
+  }
+
+  .navbar-top-links {
+    .dropdown-messages,
+    .dropdown-tasks,
+    .dropdown-alerts {
+      margin-left: auto;
+    }
+  }
+}
+
+/* Admin table */
+table.sonata-ba-list {
+  font-size: 14px;
+
+  img {
+    height: auto;
+    max-width: 100%;
+  }
+
+  td {
+    overflow: auto;
+  }
+}
+
+td.sonata-ba-list-label {
+  color: #565656;
+  font-weight: bold;
+  text-align: right;
+  vertical-align: middle !important;
+}
+
+/* side filter */
+.box .box-header h4.box-title.filter_legend {
+  cursor: pointer;
+  padding-left: 20px;
+  position: relative;
+}
+
+h4.filter_legend {
+  &::before {
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid black;
+    content: "";
+    display: block;
+    height: 0;
+    left: 2px;
+    margin-left: 5px;
+    margin-top: -2px;
+    position: absolute;
+    top: 50%;
+    width: 0;
+  }
+
+  &.active {
+    color: #000;
+    font-weight: bold;
+  }
+}
+
+tr.filter.active * {
+  color: #000;
+  font-weight: bold;
+}
+
+form.sonata-filter-form.form-stacked {
+  padding-left: 0;
+}
+
+body.fixed .sonata-list-table {
+  margin-bottom: 5px;
+  margin-left: 15px;
+  margin-right: 15px;
+  position: relative;
+}
+
+.navbar-nav.navbar-right:last-child {
+  margin-right: 0;
+}
+
+/* Overrides */
+
+/* x-editable */
+td.sonata-ba-list-field {
+  .editable {
+    cursor: pointer;
+  }
+
+  .btn.editable {
+    border-bottom: solid 1px #bbb;
+  }
+
+  .editable-empty:not(.editable-open) {
+    display: none;
+  }
+}
+
+.sonata-ba-list tr:hover .editable-empty {
+  display: inline-block;
+}
+
+.editable-pre-wrapped {
+  white-space: normal;
+}
+
+.editable-container {
+  .prev::before {
+    content: "\2190 ";
+  }
+
+  .next::before {
+    content: "\2192 ";
+  }
+}
+
+/* bootstrap */
+.input-group-addon {
+  width: auto; /* See https://github.com/sonata-project/SonataAdminBundle/issues/2950 */
+}
+
+/**
+ * Make checkbox / radio label consistant with other labels
+ */
+.checkbox label,
+.radio label {
+  font-weight: 700;
+}
+
+/**
+ * Undo Bootstrap styling for checkboxes and radio buttons when iCheck is in use.
+ */
+body.sonata-icheck .checkbox label,
+body.sonata-icheck .radio label {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+/**
+ * The iCheck checkboxes & radios have 0 margin by default,
+ * add some space for the label text.
+ */
+.checkbox div[class^="icheckbox"],
+.checkbox-inline div[class^="icheckbox"],
+.radio div[class^="iradio"],
+.radio-inline div[class^="iradio"] {
+  margin-right: 5px;
+  margin-top: -3px;
+  position: relative;
+}
+
+.form-inline .checkbox div[class^="icheckbox"],
+.form-inline .checkbox-inline div[class^="icheckbox"],
+.form-inline .radio div[class^="iradio"],
+.form-inline .radio-inline div[class^="iradio"] {
+  margin-left: 0;
+  margin-right: 5px;
+  margin-top: -3px;
+  position: relative;
+}
+
+/* Hide Delete checkbox on sonata_type_collection tables */
+.sonata-ba-field-inline-table td > div.checkbox > label > .control-label__text {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+/* select2 */
+.select2-choice,
+.select2-choices,
+.select2-drop {
+  border-radius: 0 !important;
+}
+
+/* Used for the mosaic view */
+td > div.row {
+  margin: 0;
+  padding: 0;
+}
+
+.mosaic-inner-link {
+  vertical-align: middle;
+}
+
+.mosaic-box-label {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+div.mosaic-box.sonata-ba-list-row-selected {
+  > div.mosaic-inner-box {
+    border: 1px solid #333;
+    border-bottom: none;
+  }
+
+  > div.mosaic-inner-text {
+    border: 1px solid #333;
+    border-top: none;
+  }
+}
+
+.modal .mosaic-inner-text .icheckbox_square-blue {
+  display: none;
+}
+
+div.sonata-filters-box div.form-group {
+  div.form-group {
+    margin: 0;
+  }
+
+  span.input-group-addon {
+    font-size: 13px;
+    padding: 3px 10px;
+  }
+}
+
+.sonata-search-result-hide {
+  display: none;
+}
+
+.sonata-search-result-fade {
+  opacity: 0.6;
+}
+
+.sonata-search-result-show {
+  display: block;
+}

@@ -20,9 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * This class injects available object ACL manipulators to services which depend on them.
  *
- * NEXT_MAJOR: Remove the "since" part of the internal annotation.
- *
- * @internal since sonata-project/admin-bundle version 4.0
+ * @internal
  *
  * @author Javier Spagnoletti <phansys@gmail.com>
  */

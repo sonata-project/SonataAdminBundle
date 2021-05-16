@@ -21,13 +21,14 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ChoiceFieldMaskType extends AbstractType
+final class ChoiceFieldMaskType extends AbstractType
 {
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    /**
+     * @param array<string, mixed> $options
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $sanitizedMap = [];
         $allFieldNames = [];
@@ -49,10 +50,7 @@ class ChoiceFieldMaskType extends AbstractType
         parent::buildView($view, $form, $options);
     }
 
-    /**
-     * @return void
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -64,26 +62,14 @@ class ChoiceFieldMaskType extends AbstractType
     }
 
     /**
-     * @return string
-     *
      * @phpstan-return class-string<FormTypeInterface>
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'sonata_type_choice_field_mask';
     }

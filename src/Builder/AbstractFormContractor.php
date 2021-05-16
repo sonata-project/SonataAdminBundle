@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Builder;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
@@ -21,9 +20,9 @@ use Sonata\AdminBundle\Form\Type\ModelHiddenType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Form\Type\ModelReferenceType;
 use Sonata\AdminBundle\Form\Type\ModelType;
-use Sonata\AdminBundle\Form\Type\ModelTypeList;
 use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 abstract class AbstractFormContractor implements FormContractorInterface
@@ -38,72 +37,46 @@ abstract class AbstractFormContractor implements FormContractorInterface
         $this->formFactory = $formFactory;
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)
+    final public function fixFieldDescription(FieldDescriptionInterface $fieldDescription): void
     {
         $fieldDescription->setOption('edit', $fieldDescription->getOption('edit', 'standard'));
 
-        // NEXT_MAJOR: Change "$this->hasAssociation($fieldDescription)" with: "$fieldDescription->describesAssociation()".
-        if ($this->hasAssociation($fieldDescription) || $fieldDescription->getOption('admin_code')) {
-            $admin->attachAdminClass($fieldDescription);
+        if ($fieldDescription->describesAssociation() || $fieldDescription->getOption('admin_code')) {
+            $fieldDescription->getAdmin()->attachAdminClass($fieldDescription);
         }
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     *
-     * @return FormFactoryInterface
-     */
-    public function getFormFactory()
+    final public function getFormFactory(): FormFactoryInterface
     {
         return $this->formFactory;
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function getFormBuilder($name, array $formOptions = [])
+    final public function getFormBuilder($name, array $formOptions = []): FormBuilderInterface
     {
         return $this->getFormFactory()->createNamedBuilder($name, FormType::class, null, $formOptions);
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.99.
-     */
-    public function getDefaultOptions($type, FieldDescriptionInterface $fieldDescription)
-    {
-        // NEXT_MAJOR: Remove this line and update the function signature.
-        $formOptions = \func_get_args()[2] ?? [];
-
+    final public function getDefaultOptions(
+        ?string $type,
+        FieldDescriptionInterface $fieldDescription,
+        array $formOptions = []
+    ): array {
         $options = [];
         $options['sonata_field_description'] = $fieldDescription;
 
         if ($this->isAnyInstanceOf($type, [
             ModelType::class,
-            ModelTypeList::class,
             ModelListType::class,
             ModelHiddenType::class,
             ModelAutocompleteType::class,
             ModelReferenceType::class,
         ])) {
-            // NEXT_MAJOR: Remove this check.
-            if ('list' === $fieldDescription->getOption('edit')) {
-                throw new \LogicException(sprintf(
-                    'The `%s` type does not accept an `edit` option anymore,'
-                    .' please review the `UPGRADE-2.1.md` file at "sonata-project/admin-bundle".',
-                    ModelType::class
-                ));
-            }
-
             $options['class'] = $fieldDescription->getTargetModel();
             $options['model_manager'] = $fieldDescription->getAdmin()->getModelManager();
 
             if ($this->isAnyInstanceOf($type, [ModelAutocompleteType::class])) {
-                if (!$fieldDescription->getAssociationAdmin()) {
-                    // NEXT_MAJOR: Use \InvalidArgumentException instead.
-                    throw new \RuntimeException(sprintf(
+                if (!$fieldDescription->hasAssociationAdmin()) {
+                    throw new \InvalidArgumentException(sprintf(
                         'The current field `%s` is not linked to an admin.'
                         .' Please create one for the target model: `%s`.',
                         $fieldDescription->getName(),
@@ -112,9 +85,8 @@ abstract class AbstractFormContractor implements FormContractorInterface
                 }
             }
         } elseif ($this->isAnyInstanceOf($type, [AdminType::class])) {
-            if (!$fieldDescription->getAssociationAdmin()) {
-                // NEXT_MAJOR: Use \InvalidArgumentException instead.
-                throw new \RuntimeException(sprintf(
+            if (!$fieldDescription->hasAssociationAdmin()) {
+                throw new \InvalidArgumentException(sprintf(
                     'The current field `%s` is not linked to an admin.'
                     .' Please create one for the target model: `%s`.',
                     $fieldDescription->getName(),
@@ -122,10 +94,8 @@ abstract class AbstractFormContractor implements FormContractorInterface
                 ));
             }
 
-            // NEXT_MAJOR: Change this check with: "if (!$fieldDescription->hasSingleValueAssociation())".
-            if (!$this->hasSingleValueAssociation($fieldDescription)) {
-                // NEXT_MAJOR: Use \InvalidArgumentException instead.
-                throw new \RuntimeException(sprintf(
+            if (!$fieldDescription->describesSingleValuedAssociation()) {
+                throw new \InvalidArgumentException(sprintf(
                     'You are trying to add `%s` field `%s` which is not a One-To-One or Many-To-One association.'
                     .' You SHOULD use `%s` instead.',
                     AdminType::class,
@@ -139,20 +109,15 @@ abstract class AbstractFormContractor implements FormContractorInterface
             $options['delete'] = false;
 
             $options['data_class'] = $fieldDescription->getAssociationAdmin()->getClass();
-            // Add "object" return type
-            $options['empty_data'] = static function () use ($fieldDescription) {
+            $options['empty_data'] = static function () use ($fieldDescription): object {
                 return $fieldDescription->getAssociationAdmin()->getNewInstance();
             };
             $fieldDescription->setOption('edit', $fieldDescription->getOption('edit', 'admin'));
-        // @phpstan-ignore-next-line
         } elseif ($this->isAnyInstanceOf($type, [
             CollectionType::class,
-            // NEXT_MAJOR: remove 'Sonata\CoreBundle\Form\Type\CollectionType'
-            'Sonata\CoreBundle\Form\Type\CollectionType',
         ])) {
-            if (!$fieldDescription->getAssociationAdmin()) {
-                // NEXT_MAJOR: Use \InvalidArgumentException instead.
-                throw new \RuntimeException(sprintf(
+            if (!$fieldDescription->hasAssociationAdmin()) {
+                throw new \InvalidArgumentException(sprintf(
                     'The current field `%s` is not linked to an admin.'
                     .' Please create one for the target model: `%s`.',
                     $fieldDescription->getName(),
@@ -167,12 +132,6 @@ abstract class AbstractFormContractor implements FormContractorInterface
 
         return $options;
     }
-
-    // NEXT_MAJOR: Remove this method.
-    abstract protected function hasAssociation(FieldDescriptionInterface $fieldDescription): bool;
-
-    // NEXT_MAJOR: Remove this method.
-    abstract protected function hasSingleValueAssociation(FieldDescriptionInterface $fieldDescription): bool;
 
     /**
      * @param string[] $classes
@@ -199,8 +158,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
         $typeOptions = [
             'sonata_field_description' => $fieldDescription,
             'data_class' => $fieldDescription->getAssociationAdmin()->getClass(),
-            // Add "object" return type
-            'empty_data' => static function () use ($fieldDescription) {
+            'empty_data' => static function () use ($fieldDescription): object {
                 return $fieldDescription->getAssociationAdmin()->getNewInstance();
             },
         ];

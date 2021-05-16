@@ -68,18 +68,14 @@ file that was distributed with this source code.
             {# localize moment #}
             {% set localeForMoment = canonicalize_locale_for_moment() %}
             {% if localeForMoment %}
-                <script src="{{ asset(
-                    'bundles/sonatacore/vendor/moment/locale/' ~
-                    localeForMoment ~
-                    '.js'
-                ) }}"></script>
+                <script src="{{ asset('bundles/sonataadmin/moment-locale/' ~ localeForMoment ~ '.js') }}"></script>
             {% endif %}
 
             {# localize select2 #}
             {% if sonata_config.getOption('use_select2') %}
                 {% set localeForSelect2 = canonicalize_locale_for_select2() %}
                 {% if localeForSelect2 %}
-                    <script src="{{ asset('bundles/sonatacore/vendor/select2/select2_locale_' ~ localeForSelect2 ~ '.js') }}"></script>
+                    <script src="{{ asset('bundles/sonataadmin/select2-locale/' ~ localeForSelect2 ~ '.js') }}"></script>
                 {% endif %}
             {% endif %}
         {% endblock %}
@@ -93,8 +89,7 @@ file that was distributed with this source code.
             {% else %}
                 {% if action is defined %}
                     -
-                    {# NEXT_MAJOR: Remove breadcrumbs_builder argument. #}
-                    {{ render_breadcrumbs_for_title(admin, action, breadcrumbs_builder|default(null)) }}
+                    {{ render_breadcrumbs_for_title(admin, action) }}
                 {% endif %}
             {% endif %}
         {% endblock %}
@@ -136,7 +131,7 @@ file that was distributed with this source code.
                 {% endblock %}
                 {% block sonata_nav %}
                     <nav class="navbar navbar-static-top">
-                        <a href="#" class="sidebar-toggle" data-toggle="push-menu"
+                        <a href="#" class="sidebar-toggle fa5" data-toggle="push-menu"
                            role="button" title="{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}">
                             <span class="sr-only">{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}</span>
                         </a>
@@ -148,8 +143,7 @@ file that was distributed with this source code.
                                         <ol class="nav navbar-top-links breadcrumb">
                                             {% if _breadcrumb is empty %}
                                                 {% if action is defined %}
-                                                    {# NEXT_MAJOR: Remove breadcrumbs_builder argument. #}
-                                                    {{ render_breadcrumbs(admin, action, breadcrumbs_builder|default(null)) }}
+                                                    {{ render_breadcrumbs(admin, action) }}
                                                 {% endif %}
                                             {% else %}
                                                 {{ _breadcrumb|raw }}
@@ -167,7 +161,7 @@ file that was distributed with this source code.
                                         {% block sonata_top_nav_menu_add_block %}
                                             <li class="dropdown">
                                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                    <i class="fa fa-plus-square fa-fw" aria-hidden="true"></i> <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                                    <i class="fas fa-plus-square fa-fw" aria-hidden="true"></i> <i class="fas fa-caret-down" aria-hidden="true"></i>
                                                 </a>
                                                 {% include get_global_template('add_block') %}
                                             </li>
@@ -175,7 +169,7 @@ file that was distributed with this source code.
                                         {% block sonata_top_nav_menu_user_block %}
                                             <li class="dropdown user-menu">
                                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                    <i class="fa fa-user fa-fw" aria-hidden="true"></i> <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                                    <i class="fas fa-user fa-fw" aria-hidden="true"></i> <i class="fas fa-caret-down" aria-hidden="true"></i>
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-user">
                                                     {% include get_global_template('user_block') %}
@@ -203,7 +197,7 @@ file that was distributed with this source code.
                                             <input type="text" name="q" value="{{ app.request.get('q') }}" class="form-control" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
                                             <span class="input-group-btn">
                                                 <button class="btn btn-flat" type="submit">
-                                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                                    <i class="fas fa-search" aria-hidden="true"></i>
                                                 </button>
                                             </span>
                                         </div>
@@ -294,7 +288,7 @@ file that was distributed with this source code.
                         {% block sonata_admin_content %}
 
                             {% block notice %}
-                                {% include ['@SonataCore/FlashMessage/render.html.twig', '@SonataTwig/FlashMessage/render.html.twig'] %}
+                                {% include '@SonataTwig/FlashMessage/render.html.twig' %}
                             {% endblock notice %}
 
                             {% if _preview is not empty %}

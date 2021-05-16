@@ -22,6 +22,8 @@ final class FilterDataTest extends TestCase
      * @dataProvider getInvalidTypes
      *
      * @param mixed $type
+     *
+     * @psalm-suppress InvalidArgument
      */
     public function testTypeMustBeNumericOrNull($type): void
     {
@@ -31,6 +33,7 @@ final class FilterDataTest extends TestCase
             \is_object($type) ? 'instance of "'.\get_class($type).'"' : '"'.\gettype($type).'"'
         ));
 
+        // @phpstan-ignore-next-line
         FilterData::fromArray(['type' => $type]);
     }
 
@@ -63,6 +66,8 @@ final class FilterDataTest extends TestCase
      * @dataProvider getTypes
      *
      * @param int|string|null $type
+     *
+     * @phpstan-param int|numeric-string|null $type
      */
     public function testGetType(?int $expected, $type): void
     {
@@ -70,7 +75,7 @@ final class FilterDataTest extends TestCase
     }
 
     /**
-     * @return iterable<array<string|int|null>>
+     * @phpstan-return iterable<array{int|null, int|numeric-string|null}>
      */
     public function getTypes(): iterable
     {

@@ -19,6 +19,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TabMenuTest extends BaseMenuTest
 {
+    /**
+     * @var TranslatorInterface|null
+     */
     protected $translator;
 
     public function getTranslator(): TranslatorInterface
@@ -32,7 +35,7 @@ class TabMenuTest extends BaseMenuTest
 
     public function testLabelTranslationNominalCase(): void
     {
-        $this->translator = $this->createStub(TranslatorInterface::class);
+        $this->translator = $this->createMock(TranslatorInterface::class);
         $this->translator->method('trans')
             ->with(
                 'some-label',
@@ -51,7 +54,7 @@ class TabMenuTest extends BaseMenuTest
     public function testLabelTranslationWithParameters(): void
     {
         $params = ['my' => 'param'];
-        $this->translator = $this->createStub(TranslatorInterface::class);
+        $this->translator = $this->createMock(TranslatorInterface::class);
         $this->translator->method('trans')
             ->with(
                 'some-label',
@@ -71,7 +74,7 @@ class TabMenuTest extends BaseMenuTest
 
     public function testLabelTranslationDomainOverride(): void
     {
-        $this->translator = $this->createStub(TranslatorInterface::class);
+        $this->translator = $this->createMock(TranslatorInterface::class);
         $this->translator->method('trans')->willReturnMap([
             ['some-label', [], 'my_local_domain', null, 'my-translation'],
             ['some-other-label', [], 'my_global_domain', null, 'my-other-translation'],
@@ -89,7 +92,7 @@ class TabMenuTest extends BaseMenuTest
         $this->assertStringContainsString('my-other-translation', $html);
     }
 
-    protected function getTemplate()
+    protected function getTemplate(): string
     {
         return 'Core/tab_menu_template.html.twig';
     }

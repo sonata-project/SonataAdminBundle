@@ -12,7 +12,6 @@ declare(strict_types=1);
  */
 
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AliasDeprecatedPublicServicesCompilerPass;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 
@@ -22,13 +21,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
 
         ->set('sonata.admin.admin_exporter', AdminExporter::class)
-            // NEXT_MAJOR: Remove public and sonata.container.private tag.
-            ->public()
-            ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
             ->args([
                 new ReferenceConfigurator('sonata.exporter.exporter'),
             ])
-        // NEXT_MAJOR: Remove this alias.
-        ->alias('sonata.admin.admin_exporter.do-not-use', 'sonata.admin.admin_exporter')
-        ->public();
+
+        ->alias(AdminExporter::class, 'sonata.admin.admin_exporter');
 };

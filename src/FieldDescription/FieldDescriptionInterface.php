@@ -33,14 +33,6 @@ use Sonata\AdminBundle\Exception\NoValueException;
  *  type?: string,
  *  virtual_field?: bool
  * }&array<string, mixed>
- *
- * @method string|null getTargetModel()
- * @method bool        hasAdmin()
- * @method bool        hasParent()
- * @method bool        hasAssociationAdmin()
- * @method bool        describesAssociation()
- * @method bool        describesSingleValuedAssociation()
- * @method bool        describesCollectionValuedAssociation()
  */
 interface FieldDescriptionInterface
 {
@@ -67,56 +59,32 @@ interface FieldDescriptionInterface
     public const TYPE_ONE_TO_ONE = 'one_to_one';
 
     /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.
-     *
-     * set the field name.
-     *
-     * @param string $fieldName
-     */
-    public function setFieldName($fieldName);
-
-    /**
      * Returns the field name.
-     *
-     * @return string|null the field name
      */
-    public function getFieldName();
+    public function getFieldName(): string;
+
+    public function setName(string $name): void;
 
     /**
-     * Set the name.
-     *
-     * @param string $name
-     */
-    public function setName($name);
-
-    /**
-     * NEXT_MAJOR: Restrict return type to string.
-     *
      * Returns the name, the name can be used as a form label or table header.
-     *
-     * @return string|null the name
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Returns the value represented by the provided name.
      *
-     * @param string     $name
-     * @param mixed|null $default
+     * @param mixed $default
      *
-     * @return mixed the value represented by the provided name
+     * @return mixed
      */
-    public function getOption($name, $default = null);
+    public function getOption(string $name, $default = null);
 
     /**
      * Define an option, an option is has a name and a value.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      */
-    public function setOption($name, $value);
+    public function setOption(string $name, $value): void;
 
     /**
      * Define the options value, if the options array contains the reserved keywords
@@ -127,215 +95,144 @@ interface FieldDescriptionInterface
      *
      * @phpstan-param FieldDescriptionOptions $options
      */
-    public function setOptions(array $options);
+    public function setOptions(array $options): void;
 
     /**
      * Returns options.
      *
-     * @return array<string, mixed> options
+     * @return array<string, mixed>
      *
      * @phpstan-return FieldDescriptionOptions
      */
-    public function getOptions();
+    public function getOptions(): array;
 
     /**
-     * Returns the template used to render the field.
-     *
-     * @param string $template
+     * Sets the template used to render the field.
      */
-    public function setTemplate($template);
+    public function setTemplate(?string $template): void;
+
+    public function getTemplate(): ?string;
 
     /**
-     * Returns the template name.
-     *
-     * @return string|null the template name
-     */
-    public function getTemplate();
-
-    /**
-     * Returns the field type, the type is a mandatory field as it used to select the correct template
+     * Sets the field type. The type is a mandatory field as it's used to select the correct template
      * or the logic associated to the current FieldDescription object.
-     *
-     * @param string $type
      */
-    public function setType($type);
+    public function setType(?string $type): void;
 
     /**
      * Returns the type.
-     *
-     * @return int|string
      */
-    public function getType();
+    public function getType(): ?string;
 
     /**
      * set the parent Admin (only used in nested admin).
      */
-    public function setParent(AdminInterface $parent);
+    public function setParent(AdminInterface $parent): void;
 
     /**
      * Returns the parent Admin (only used in nested admin).
      *
-     * @return AdminInterface|null // NEXT_MAJOR: Return AdminInterface
+     * @throws \LogicException
      */
-    public function getParent();
+    public function getParent(): AdminInterface;
 
-    // NEXT_MAJOR: Uncomment the following line
-    // public function hasParent(): bool;
-
-    /**
-     * Define the association mapping definition.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0.
-     *
-     * @param array $associationMapping
-     */
-    public function setAssociationMapping($associationMapping);
+    public function hasParent(): bool;
 
     /**
      * Returns the association mapping definition.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function getAssociationMapping();
+    public function getAssociationMapping(): array;
 
     /**
-     * NEXT_MAJOR: Remove this method in favor of `getTargetModel()`.
-     *
      * Returns the related Target object model.
      *
-     * @deprecated since sonata-project/admin-bundle 3.69. Use `getTargetModel()` instead.
-     *
-     * @return string|null
-     *
      * @phpstan-return class-string|null
      */
-    public function getTargetEntity();
-
-    /**
-     * @phpstan-return class-string|null
-     */
-    // public function getTargetModel(): ?string;
-
-    /**
-     * set the field mapping information.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0.
-     *
-     * @param array $fieldMapping
-     */
-    public function setFieldMapping($fieldMapping);
+    public function getTargetModel(): ?string;
 
     /**
      * Returns the field mapping definition.
      *
-     * @return array the field mapping definition
+     * @return array<string, mixed>
      */
-    public function getFieldMapping();
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0.
-     *
-     * set the parent association mappings information.
-     */
-    public function setParentAssociationMappings(array $parentAssociationMappings);
+    public function getFieldMapping(): array;
 
     /**
      * Returns the parent association mapping definitions.
      *
-     * @return array the parent association mapping definitions
+     * @return array<array<string, mixed>>
      */
-    public function getParentAssociationMappings();
+    public function getParentAssociationMappings(): array;
 
     /**
-     * set the association admin instance (only used if the field is linked to an Admin).
-     *
-     * @param AdminInterface $associationAdmin the associated admin
+     * Set the association admin instance (only used if the field is linked to an Admin).
      */
-    public function setAssociationAdmin(AdminInterface $associationAdmin);
+    public function setAssociationAdmin(AdminInterface $associationAdmin): void;
 
     /**
      * Returns the associated Admin instance (only used if the field is linked to an Admin).
      *
-     * @return AdminInterface|null // NEXT_MAJOR: Return AdminInterface
+     * @throws \LogicException
      */
-    public function getAssociationAdmin();
+    public function getAssociationAdmin(): AdminInterface;
 
-    // NEXT_MAJOR: Uncomment the following line
-    // public function hasAssociationAdmin(): bool;
+    public function hasAssociationAdmin(): bool;
 
-    // NEXT_MAJOR: Uncomment the following line
-    // /**
-    //  * Returns whether this object describes an association between two related models.
-    //  */
-    // public function describesAssociation(): bool;
+    /**
+     * Returns whether this object describes an association between two related models.
+     */
+    public function describesAssociation(): bool;
 
-    // NEXT_MAJOR: Uncomment the following line
-    // /**
-    //  * Returns whether this object describes a single-valued (N..1) association.
-    //  */
-    // public function describesSingleValuedAssociation(): bool;
+    /**
+     * Returns whether this object describes a single-valued (N..1) association.
+     */
+    public function describesSingleValuedAssociation(): bool;
 
-    // NEXT_MAJOR: Uncomment the following line
-    // /**
-    //  * Returns whether this object describes a collection-valued (N..*) association.
-    //  */
-    // public function describesCollectionValuedAssociation(): bool;
+    /**
+     * Returns whether this object describes a collection-valued (N..*) association.
+     */
+    public function describesCollectionValuedAssociation(): bool;
 
     /**
      * Returns true if the FieldDescription is linked to an identifier field.
-     *
-     * @return bool
      */
-    public function isIdentifier();
+    public function isIdentifier(): bool;
 
     /**
      * Returns the value linked to the description.
-     *
-     * @param object $object
      *
      * @throws NoValueException if the value cannot be determined
      *
      * @return mixed
      */
-    public function getValue($object);
+    public function getValue(object $object);
+
+    public function setAdmin(AdminInterface $admin): void;
 
     /**
-     * set the admin class linked to this FieldDescription.
+     * @throws \LogicException
      */
-    public function setAdmin(AdminInterface $admin);
+    public function getAdmin(): AdminInterface;
+
+    public function hasAdmin(): bool;
 
     /**
-     * @return AdminInterface the admin class linked to this FieldDescription
-     */
-    public function getAdmin();
-
-    // NEXT_MAJOR: Uncomment the following line
-    // public function hasAdmin(): bool;
-
-    /**
-     * merge option values related to the provided option name.
+     * Merge option values related to the provided option name.
      *
-     * @param string $name
+     * @param mixed[] $options
      *
      * @throws \RuntimeException
      */
-    public function mergeOption($name, array $options = []);
+    public function mergeOption(string $name, array $options = []): void;
 
     /**
-     * merge options values.
+     * Merge options values.
+     *
+     * @phpstan-param FieldDescriptionOptions $options
      */
-    public function mergeOptions(array $options = []);
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * set the original mapping type (only used if the field is linked to an entity).
-     *
-     * @deprecated since sonata-project/admin-bundle 3.83 and will be removed in 4.0.
-     *
-     * @param string|int $mappingType
-     */
-    public function setMappingType($mappingType);
+    public function mergeOptions(array $options = []): void;
 
     /**
      * Returns the mapping type.
@@ -354,44 +251,25 @@ interface FieldDescriptionInterface
 
     /**
      * Returns the translation domain to use for the current field.
-     *
-     * @return string
      */
-    public function getTranslationDomain();
+    public function getTranslationDomain(): string;
 
     /**
      * Returns true if field is sortable.
-     *
-     * @return bool
      */
-    public function isSortable();
+    public function isSortable(): bool;
 
     /**
      * Returns the field mapping definition used when sorting.
      *
-     * @return array the field mapping definition
+     * @return array<string, mixed>
      */
-    public function getSortFieldMapping();
+    public function getSortFieldMapping(): array;
 
     /**
      * Returns the parent association mapping definitions used when sorting.
      *
-     * @return array the parent association mapping definitions
+     * @return array<string, mixed>
      */
-    public function getSortParentAssociationMapping();
-
-    /**
-     * NEXT_MAJOR: Remove this method from the interface.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.84, to be removed in 4.0.
-     *
-     * @param object|null $object
-     * @param string      $fieldName
-     *
-     * @return mixed
-     */
-    public function getFieldValue($object, $fieldName);
+    public function getSortParentAssociationMapping(): array;
 }
-
-// NEXT_MAJOR: Remove next line.
-class_exists(\Sonata\AdminBundle\Admin\FieldDescriptionInterface::class);

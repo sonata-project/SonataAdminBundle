@@ -15,73 +15,46 @@ namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-
-// NEXT_MAJOR: Uncomment next line.
-// use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
- * NEXT_MAJOR: Remove the "since" part of the internal annotation.
- *
- * @internal since sonata-project/admin-bundle version 4.0
+ * @internal
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AddFilterTypeCompilerPass implements CompilerPassInterface
+final class AddFilterTypeCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->has('sonata.admin.builder.filter.factory')) {
             return;
         }
 
         $definition = $container->getDefinition('sonata.admin.builder.filter.factory');
-        $types = [];
+        $services = [];
 
         foreach ($container->findTaggedServiceIds('sonata.admin.filter.type') as $id => $attributes) {
             $serviceDefinition = $container->getDefinition($id);
 
             $serviceDefinition->setShared(false);
-            $serviceDefinition->setPublic(true); // Temporary fix until we can support service locators
 
             $class = $serviceDefinition->getClass();
             $reflectionClass = $container->getReflectionClass($class);
 
             if (null === $reflectionClass) {
-                // NEXT_MAJOR: Remove "trigger_error" and uncomment the exception below.
-                @trigger_error(sprintf(
-                    'Not declaring a filter with an existing class name is deprecated since'
-                    .' sonata-project/admin-bundle 3.95 and will not work in 4.0.'
-                    .' You MUST register a service with an existing class name for service "%s".',
-                    $id,
-                ), \E_USER_DEPRECATED);
-
-                //throw new InvalidArgumentException(sprintf('Class "%s" used for service "%s" cannot be found.', $class, $id));
+                throw new InvalidArgumentException(sprintf('Class "%s" used for service "%s" cannot be found.', $class, $id));
             }
 
-            if (null !== $reflectionClass && !$reflectionClass->isSubclassOf(FilterInterface::class)) {
-                // NEXT_MAJOR: Remove "trigger_error" and uncomment the exception below.
-                @trigger_error(sprintf(
-                    'Registering service "%s" without implementing interface "%s" is deprecated since'
-                    .' sonata-project/admin-bundle 3.95 and will be mandatory in 4.0.',
-                    $id,
-                    FilterInterface::class,
-                ), \E_USER_DEPRECATED);
-                // throw new InvalidArgumentException(sprintf('Service "%s" must implement interface "%s".', $id, FilterInterface::class));
+            if (!$reflectionClass->isSubclassOf(FilterInterface::class)) {
+                throw new InvalidArgumentException(sprintf('Service "%s" MUST implement interface "%s".', $id, FilterInterface::class));
             }
 
-            $types[$serviceDefinition->getClass()] = $id;
-
-            // NEXT_MAJOR: Remove this loop, only FQCN will be supported
-            foreach ($attributes as $eachTag) {
-                if (isset($eachTag['alias'])) {
-                    $types[$eachTag['alias']] = $id;
-                }
-            }
+            $services[$class] = new Reference($id);
         }
 
-        $definition->replaceArgument(1, $types);
+        $definition->replaceArgument(0, ServiceLocatorTagPass::register($container, $services));
     }
 }

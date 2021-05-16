@@ -27,108 +27,26 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 interface LifecycleHookProviderInterface
 {
     /**
-     * This method should call preUpdate, do the update, and call postUpdate.
-     *
-     * @param object $object
-     *
      * @throws ModelManagerException
      * @throws LockException
      *
-     * @return object
+     * @phpstan-param T $object
+     * @phpstan-return T $object
+     */
+    public function update(object $object): object;
+
+    /**
+     * @throws ModelManagerException
      *
      * @phpstan-param T $object
      * @phpstan-return T $object
      */
-    public function update($object);
+    public function create(object $object): object;
 
     /**
-     * This method should call prePersist, do the creation, and call postPersist.
-     *
-     * @param object $object
-     *
-     * @throws ModelManagerException
-     *
-     * @return object
-     *
-     * @phpstan-param T $object
-     * @phpstan-return T $object
-     */
-    public function create($object);
-
-    /**
-     * This method should call preRemove, do the removal, and call postRemove.
-     *
-     * @param object $object
-     *
      * @throws ModelManagerException
      *
      * @phpstan-param T $object
      */
-    public function delete($object);
-
-    /**
-     * NEXT_MAJOR: Remove this.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.90
-     *
-     * @param object $object
-     *
-     * @phpstan-param T $object
-     */
-    public function preUpdate($object);
-
-    /**
-     * NEXT_MAJOR: Remove this.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.90
-     *
-     * @param object $object
-     *
-     * @phpstan-param T $object
-     */
-    public function postUpdate($object);
-
-    /**
-     * NEXT_MAJOR: Remove this.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.90
-     *
-     * @param object $object
-     *
-     * @phpstan-param T $object
-     */
-    public function prePersist($object);
-
-    /**
-     * NEXT_MAJOR: Remove this.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.90
-     *
-     * @param object $object
-     *
-     * @phpstan-param T $object
-     */
-    public function postPersist($object);
-
-    /**
-     * NEXT_MAJOR: Remove this.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.90
-     *
-     * @param object $object
-     *
-     * @phpstan-param T $object
-     */
-    public function preRemove($object);
-
-    /**
-     * NEXT_MAJOR: Remove this.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.90
-     *
-     * @param object $object
-     *
-     * @phpstan-param T $object
-     */
-    public function postRemove($object);
+    public function delete(object $object): void;
 }

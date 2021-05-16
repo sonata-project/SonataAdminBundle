@@ -15,16 +15,13 @@ namespace Sonata\AdminBundle\Tests\Menu\Matcher\Voter;
 
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Menu\Matcher\Voter\AdminVoter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class AdminVoterTest extends AbstractVoterTest
 {
-    /**
-     * {@inheritdoc}
-     */
     public function provideData(): array
     {
         return [
@@ -42,24 +39,6 @@ class AdminVoterTest extends AbstractVoterTest
         ];
     }
 
-    /**
-     * @doesNotPerformAssertions
-     * @group legacy
-     */
-    public function testDeprecatedRequestSetter(): void
-    {
-        $request = new Request();
-
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
-
-        $voter = new AdminVoter();
-        $voter->setRequest($request);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function createVoter($dataVoter, $route): VoterInterface
     {
         $request = new Request();
@@ -72,9 +51,6 @@ class AdminVoterTest extends AbstractVoterTest
         return new AdminVoter($requestStack);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createItem($data): ItemInterface
     {
         $item = $this->getMockForAbstractClass(ItemInterface::class);
@@ -90,11 +66,11 @@ class AdminVoterTest extends AbstractVoterTest
     }
 
     /**
-     * {@inheritdoc}
+     * @return AdminInterface<object>
      */
-    private function getAdmin(string $code, bool $list = false, bool $granted = false): AbstractAdmin
+    private function getAdmin(string $code, bool $list = false, bool $granted = false): AdminInterface
     {
-        $admin = $this->createMock(AbstractAdmin::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin
             ->method('hasRoute')
             ->with('list')
@@ -114,15 +90,15 @@ class AdminVoterTest extends AbstractVoterTest
     }
 
     /**
-     * {@inheritdoc}
+     * @return AdminInterface<object>
      */
     private function getChildAdmin(
         string $parentCode,
         string $childCode,
         bool $list = false,
         bool $granted = false
-    ): AbstractAdmin {
-        $parentAdmin = $this->createMock(AbstractAdmin::class);
+    ): AdminInterface {
+        $parentAdmin = $this->createMock(AdminInterface::class);
         $parentAdmin
             ->method('hasRoute')
             ->with('list')
@@ -135,7 +111,7 @@ class AdminVoterTest extends AbstractVoterTest
             ->method('getCode')
             ->willReturn($parentCode);
 
-        $childAdmin = $this->createMock(AbstractAdmin::class);
+        $childAdmin = $this->createMock(AdminInterface::class);
         $childAdmin
             ->method('getBaseCodeRoute')
             ->willReturn(sprintf('%s|%s', $parentCode, $childCode));

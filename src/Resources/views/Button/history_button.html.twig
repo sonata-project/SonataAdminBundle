@@ -9,15 +9,14 @@ file that was distributed with this source code.
 
 #}
 
-{# NEXT_MAJOR: Replace canAccessObject by hasAccess #}
 {% if object is not null
     and admin.id(object) is not null
-    and admin.canAccessObject('history', object, 'sonata_deprecation_mute')
+    and admin.hasAccess('history', object)
     and admin.hasRoute('history')
 %}
     <li>
         <a class="sonata-action-element" href="{{ admin.generateObjectUrl('history', object) }}">
-            <i class="fa fa-archive" aria-hidden="true"></i>
+            <i class="fas fa-archive" aria-hidden="true"></i>
             {{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}
         </a>
     </li>

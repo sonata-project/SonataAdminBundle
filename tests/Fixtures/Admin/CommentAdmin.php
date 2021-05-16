@@ -14,8 +14,11 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Fixtures\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
+/**
+ * @phpstan-extends AbstractAdmin<object>
+ */
 class CommentAdmin extends AbstractAdmin
 {
     public function setClassnameLabel($label): void
@@ -23,13 +26,8 @@ class CommentAdmin extends AbstractAdmin
         $this->classnameLabel = $label;
     }
 
-    public function configureRoutes(RouteCollection $collection): void
+    public function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('edit');
-    }
-
-    public function setParentAssociationMapping($associationMapping): void
-    {
-        $this->parentAssociationMapping = $associationMapping;
     }
 }

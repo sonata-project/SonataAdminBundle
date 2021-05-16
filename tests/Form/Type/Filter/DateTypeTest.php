@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Form\Type\Filter;
 
 use Sonata\AdminBundle\Form\Type\Filter\DateType;
-use Symfony\Component\Translation\TranslatorInterface;
 
 final class DateTypeTest extends BaseTypeTest
 {
@@ -31,17 +30,5 @@ final class DateTypeTest extends BaseTypeTest
     protected function getTestedType(): string
     {
         return DateType::class;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @return DateType[]
-     */
-    protected function getTypes(): array
-    {
-        return [
-            new DateType($this->createStub(TranslatorInterface::class)),
-        ];
     }
 }

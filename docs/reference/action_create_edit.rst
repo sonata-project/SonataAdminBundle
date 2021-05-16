@@ -49,7 +49,7 @@ For more detailed information about routes, see :doc:`routing`::
 
     final class PersonAdmin extends AbstractAdmin
     {
-        protected function configureRoutes(RouteCollection $collection): void
+        protected function configureRoutes(RouteCollectionInterface $collection): void
         {
             /* Removing the edit route will disable editing entities. It will also
             use the 'show' view as default link on the identifier columns in the list view. */

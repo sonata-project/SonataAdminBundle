@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class SessionFilterPersisterTest extends TestCase
 {
     /**
-     * @var SessionInterface|MockObject
+     * @var SessionInterface&MockObject
      */
     private $session;
 
@@ -48,7 +48,6 @@ class SessionFilterPersisterTest extends TestCase
     public function testGetValueFromSessionIfDefined(): void
     {
         $filters = [
-            'active' => true,
             DatagridInterface::PAGE => 1,
             DatagridInterface::SORT_BY => 'firstName',
             DatagridInterface::SORT_ORDER => 'ASC',
@@ -64,7 +63,6 @@ class SessionFilterPersisterTest extends TestCase
     public function testSetValueToSession(): void
     {
         $filters = [
-            'active' => true,
             DatagridInterface::PAGE => 1,
             DatagridInterface::SORT_BY => 'firstName',
             DatagridInterface::SORT_ORDER => 'ASC',

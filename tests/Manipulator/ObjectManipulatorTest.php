@@ -128,8 +128,10 @@ class ObjectManipulatorTest extends TestCase
         $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([]);
 
         $object = new \stdClass();
-        $instance = new \stdClass();
-        $instance->parent = null;
+        $instance = new class() {
+            /** @var object|null */
+            public $parent;
+        };
 
         ObjectManipulator::setObject($instance, $object, $fieldDescription);
 
@@ -143,9 +145,10 @@ class ObjectManipulatorTest extends TestCase
         $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([['fieldName' => 'parent']]);
 
         $object2 = new \stdClass();
-
-        $instance = new \stdClass();
-        $instance->fooBar = null;
+        $instance = new class() {
+            /** @var object|null */
+            public $fooBar;
+        };
 
         $object1 = new \stdClass();
         $object1->parent = $object2;

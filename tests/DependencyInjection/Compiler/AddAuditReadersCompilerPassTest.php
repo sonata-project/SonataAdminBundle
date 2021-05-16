@@ -17,7 +17,6 @@ use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
 use Sonata\AdminBundle\Model\AuditManager;
 use Sonata\AdminBundle\Tests\Fixtures\Model\AuditReader;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
@@ -28,8 +27,6 @@ final class AddAuditReadersCompilerPassTest extends AbstractCompilerPassTestCase
     public function testProcess(): void
     {
         $auditManagerDefinition = new Definition(AuditManager::class, [
-            // NEXT_MAJOR: Remove next line.
-            new Container(),
             null,
         ]);
 
@@ -46,8 +43,7 @@ final class AddAuditReadersCompilerPassTest extends AbstractCompilerPassTestCase
         $this->compile();
 
         $this->assertContainerBuilderHasServiceLocator(
-            // NEXT_MAJOR: Change index from 1 to 0.
-            (string) $this->container->getDefinition('sonata.admin.audit.manager')->getArgument(1),
+            (string) $this->container->getDefinition('sonata.admin.audit.manager')->getArgument(0),
             [
                 'std_audit_reader' => new Reference('std_audit_reader'),
             ]

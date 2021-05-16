@@ -18,40 +18,30 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class RoleSecurityHandler implements SecurityHandlerInterface
+final class RoleSecurityHandler implements SecurityHandlerInterface
 {
     /**
      * @var AuthorizationCheckerInterface
      */
-    protected $authorizationChecker;
+    private $authorizationChecker;
 
     /**
-     * @var array
+     * @var string[]
      */
-    protected $superAdminRoles = [];
+    private $superAdminRoles = [];
 
     /**
-     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param string[] $superAdminRoles
      */
-    public function __construct($authorizationChecker, array $superAdminRoles)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker, array $superAdminRoles)
     {
-        // NEXT_MAJOR: Move AuthorizationCheckerInterface check to method signature
-        if (!$authorizationChecker instanceof AuthorizationCheckerInterface) {
-            throw new \InvalidArgumentException(sprintf(
-                'Argument 1 should be an instance of %s',
-                AuthorizationCheckerInterface::class
-            ));
-        }
-
         $this->authorizationChecker = $authorizationChecker;
         $this->superAdminRoles = $superAdminRoles;
     }
 
-    public function isGranted(AdminInterface $admin, $attributes, $object = null)
+    public function isGranted(AdminInterface $admin, $attributes, ?object $object = null): bool
     {
         if (!\is_array($attributes)) {
             $attributes = [$attributes];
@@ -72,25 +62,28 @@ class RoleSecurityHandler implements SecurityHandlerInterface
         }
     }
 
-    public function getBaseRole(AdminInterface $admin)
+    public function getBaseRole(AdminInterface $admin): string
     {
         return sprintf('ROLE_%s_%%s', str_replace('.', '_', strtoupper($admin->getCode())));
     }
 
-    public function buildSecurityInformation(AdminInterface $admin)
+    public function buildSecurityInformation(AdminInterface $admin): array
     {
         return [];
     }
 
-    public function createObjectSecurity(AdminInterface $admin, $object)
+    public function createObjectSecurity(AdminInterface $admin, object $object): void
     {
     }
 
-    public function deleteObjectSecurity(AdminInterface $admin, $object)
+    public function deleteObjectSecurity(AdminInterface $admin, object $object): void
     {
     }
 
-    private function isAnyGranted(array $attributes, $subject = null): bool
+    /**
+     * @param string[] $attributes
+     */
+    private function isAnyGranted(array $attributes, ?object $subject = null): bool
     {
         foreach ($attributes as $attribute) {
             if ($this->authorizationChecker->isGranted($attribute, $subject)) {

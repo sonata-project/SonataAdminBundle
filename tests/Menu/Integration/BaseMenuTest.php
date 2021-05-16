@@ -17,11 +17,11 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Renderer\TwigRenderer;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
+use Sonata\AdminBundle\Tests\Fixtures\StubTranslator;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
-use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 /**
  * Base class for tests checking rendering of twig templates.
@@ -29,8 +29,10 @@ use Twig\Environment;
 abstract class BaseMenuTest extends TestCase
 {
     /**
-     * {@inheritdoc}
+     * @var Environment
      */
+    private $environment;
+
     protected function setUp(): void
     {
         // Adapt to both bundle and project-wide test strategy
@@ -40,27 +42,30 @@ abstract class BaseMenuTest extends TestCase
             sprintf('%s/../../../src/Resources/views', __DIR__),
         ], 'is_dir');
 
-        $loader = new StubFilesystemLoader($twigPaths);
+        $loader = new FilesystemLoader($twigPaths);
         $this->environment = new Environment($loader, ['strict_variables' => true]);
     }
 
-    abstract protected function getTemplate();
+    abstract protected function getTemplate(): string;
 
     protected function getTranslator(): TranslatorInterface
     {
         return new StubTranslator();
     }
 
-    protected function renderMenu(ItemInterface $item, array $options = [])
+    /**
+     * @param array<string, mixed> $options
+     */
+    protected function renderMenu(ItemInterface $item, array $options = []): string
     {
         $this->environment->addExtension(new TranslationExtension($this->getTranslator()));
-        $this->renderer = new TwigRenderer(
+        $renderer = new TwigRenderer(
             $this->environment,
             $this->getTemplate(),
             $this->getMockForAbstractClass(MatcherInterface::class)
         );
 
-        return $this->renderer->render($item, $options);
+        return $renderer->render($item, $options);
     }
 
     /**

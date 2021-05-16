@@ -187,7 +187,7 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
     final class PostAdmin extends AbstractAdmin
     {
         // Fields to be shown on create/edit forms
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper
                 ->add('title', TextType:class, [
@@ -217,7 +217,7 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
         }
 
         // Fields to be shown on filter forms
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
         {
             $datagridMapper
                 ->add('title')
@@ -229,7 +229,7 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
         }
 
         // Fields to be shown on lists
-        protected function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $listMapper): void
         {
             $listMapper
                 ->addIdentifier('title')
@@ -242,7 +242,7 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
         }
 
         // Fields to be shown on show action
-        protected function configureShowFields(ShowMapper $showMapper)
+        protected function configureShowFields(ShowMapper $showMapper): void
         {
             $showMapper
                 ->add('id')
@@ -307,8 +307,6 @@ Button:
   CRUD actions
 CRUD:
   Base views for every CRUD action, plus several field views for each field type
-Core:
-  Dashboard view, together with deprecated and stub twig files.
 Form:
   Views related to form rendering
 Helper:

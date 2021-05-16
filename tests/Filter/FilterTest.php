@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Filter;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Filter\FilterFactory;
 use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -24,7 +25,7 @@ class FilterTest extends TestCase
         $filter = new FooFilter();
 
         $this->assertSame(TextType::class, $filter->getFieldType());
-        $this->assertSame(['required' => false], $filter->getFieldOptions());
+        $this->assertSame([], $filter->getFieldOptions());
         $this->assertNull($filter->getLabel());
 
         $options = [
@@ -54,19 +55,6 @@ class FilterTest extends TestCase
         $this->assertSame('>', $filter->getCondition());
     }
 
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testFilterLegacyMethod(): void
-    {
-        $filter = new FooFilter();
-
-        $filter->setValue(42);
-        $this->assertSame(42, $filter->getValue());
-    }
-
     public function testGetFieldOption(): void
     {
         $filter = new FooFilter();
@@ -82,7 +70,7 @@ class FilterTest extends TestCase
     public function testSetFieldOption(): void
     {
         $filter = new FooFilter();
-        $this->assertSame(['required' => false], $filter->getFieldOptions());
+        $this->assertSame([], $filter->getFieldOptions());
 
         $filter->setFieldOption('foo', 'bar');
         $filter->setFieldOption('baz', 12345);
@@ -112,11 +100,27 @@ class FilterTest extends TestCase
         $this->assertSame('foo', $filter->getLabel());
     }
 
+    public function testExceptionOnNonDefinedFilterName(): void
+    {
+        $filter = new FooFilter();
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage(sprintf(
+            'Seems like you didn\'t call `initialize()` on the filter `%s`. Did you create it through `%s::create()`?',
+            FooFilter::class,
+            FilterFactory::class
+        ));
+
+        $filter->getName();
+    }
+
     public function testExceptionOnNonDefinedFieldName(): void
     {
-        $this->expectException(\RuntimeException::class);
-
         $filter = new FooFilter();
+        $filter->initialize('foo');
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The option `field_name` must be set for field: `foo`');
 
         $filter->getFieldName();
     }
@@ -128,33 +132,6 @@ class FilterTest extends TestCase
 
         $filter->callSetActive(true);
         $this->assertTrue($filter->isActive());
-    }
-
-    /**
-     * @dataProvider isActiveData
-     *
-     * @param $expected
-     * @param $value
-     *
-     * @group legacy
-     */
-    public function testDeprecatedIsActive(bool $expected, array $value): void
-    {
-        $filter = new FooFilter();
-        $filter->setValue($value);
-
-        $this->assertSame($expected, $filter->isActive());
-    }
-
-    public function isActiveData(): array
-    {
-        return [
-            [false, []],
-            [false, ['value' => null]],
-            [false, ['value' => '']],
-            [false, ['value' => false]],
-            [true, ['value' => 'active']],
-        ];
     }
 
     public function testGetTranslationDomain(): void
@@ -170,18 +147,10 @@ class FilterTest extends TestCase
         $filter = new FooFilter();
         $filter->initialize('foo');
 
-        try {
-            $filter->getFieldMapping();
-        } catch (\RuntimeException $e) {
-            $this->assertStringContainsString(
-                'The option `field_mapping` must be set for field: `foo`',
-                $e->getMessage()
-            );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The option `field_mapping` must be set for field: `foo`');
 
-            return;
-        }
-
-        $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
+        $filter->getFieldMapping();
     }
 
     public function testGetFieldMapping(): void
@@ -228,18 +197,10 @@ class FilterTest extends TestCase
         $filter = new FooFilter();
         $filter->initialize('foo');
 
-        try {
-            $filter->getAssociationMapping();
-        } catch (\RuntimeException $e) {
-            $this->assertStringContainsString(
-                'The option `association_mapping` must be set for field: `foo`',
-                $e->getMessage()
-            );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The option `association_mapping` must be set for field: `foo`');
 
-            return;
-        }
-
-        $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
+        $filter->getAssociationMapping();
     }
 
     public function testGetAssociationMapping(): void
