@@ -527,18 +527,17 @@ This code manages the many-to-[one|many] association field popup
             jQuery.ajax({
                 type: 'GET',
                 {# NEXT_MAJOR: Remove the 'code' parameter #}
-                url: '{{ path('sonata_admin_short_object_information', {
-                        '_sonata_admin': associationadmin.baseCodeRoute,
-                        'objectId': 'OBJECT_ID',
-                        'uniqid': associationadmin.uniqid,
-                        'code': associationadmin.code,
-                        'linkParameters': sonata_admin.field_description.option('link_parameters', {})
-                    } + (
-                        associationadmin.hasRequest()
-                        ? associationadmin.request.attributes.get('_route_params', {})
-                        : {}
-                    )
-                )}}'.replace('OBJECT_ID', objectId),
+                url: '{{ path('sonata_admin_short_object_information',{
+                    '_sonata_admin': associationadmin.baseCodeRoute,
+                    'objectId': 'OBJECT_ID',
+                    'uniqid': associationadmin.uniqid,
+                    'code': associationadmin.code,
+                    'linkParameters': sonata_admin.field_description.option('link_parameters', {})
+                } + (
+                    associationadmin.hasRequest()
+                    ? associationadmin.request.attributes.get('_route_params', {})
+                    : {}
+                ))}}'.replace('OBJECT_ID', objectId),
                 dataType: 'html',
                 success: function(html) {
                     jQuery('#field_widget_{{ id }}').html(html);
