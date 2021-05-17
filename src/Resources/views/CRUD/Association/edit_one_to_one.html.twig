@@ -28,8 +28,8 @@ file that was distributed with this source code.
                         'uniqid': sonata_admin.field_description.associationadmin.uniqid,
                         'linkParameters': sonata_admin.field_description.option('link_parameters', {})
                     } + (
-                        sonata_admin.admin.root.hasRequest()
-                        ? sonata_admin.admin.root.request.attributes.get('_route_params', {})
+                        sonata_admin.field_description.associationadmin.hasRequest()
+                        ? sonata_admin.field_description.associationadmin.request.attributes.get('_route_params', {})
                         : {}
                     ))) }}
                 {% elseif sonata_admin.field_description.option('placeholder', 'short_object_description_placeholder') %}

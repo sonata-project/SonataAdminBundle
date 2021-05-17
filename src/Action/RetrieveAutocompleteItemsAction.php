@@ -79,7 +79,7 @@ final class RetrieveAutocompleteItemsAction
                 \E_USER_DEPRECATED
             );
 
-            $request->request->set('_sonata_admin', $request->get('admin_code'));
+            $request->query->set('_sonata_admin', $request->get('admin_code'));
         }
 
         try {

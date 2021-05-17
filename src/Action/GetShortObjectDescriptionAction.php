@@ -79,7 +79,7 @@ final class GetShortObjectDescriptionAction
                 \E_USER_DEPRECATED
             );
 
-            $request->request->set('_sonata_admin', $request->get('code'));
+            $request->query->set('_sonata_admin', $request->get('code'));
         }
 
         try {

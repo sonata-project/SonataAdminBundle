@@ -322,7 +322,11 @@ This code manages the many-to-[one|many] association field popup
                                 'objectId': sonata_admin.admin.root.id(sonata_admin.admin.root.subject),
                                 'uniqid': sonata_admin.admin.root.uniqid,
                                 'code': sonata_admin.admin.root.code
-                            }) }}',
+                            } + (
+                                sonata_admin.admin.root.hasRequest()
+                                ? sonata_admin.admin.root.request.attributes.get('_route_params', {})
+                                : {}
+                            ) }}',
                             data: {_xml_http_request: true },
                             dataType: 'html',
                             type: 'POST',
@@ -529,7 +533,11 @@ This code manages the many-to-[one|many] association field popup
                         'uniqid': associationadmin.uniqid,
                         'code': associationadmin.code,
                         'linkParameters': sonata_admin.field_description.option('link_parameters', {})
-                    } + (admin.hasRequest() ? admin.request.attributes.get('_route_params', {}) : {})
+                    } + (
+                        associationadmin.hasRequest()
+                        ? associationadmin.request.attributes.get('_route_params', {})
+                        : {}
+                    )
                 )}}'.replace('OBJECT_ID', objectId),
                 dataType: 'html',
                 success: function(html) {
