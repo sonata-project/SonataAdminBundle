@@ -55,7 +55,7 @@ final class AppendFormFieldElementAction
             $this->adminFetcher = $poolOrAdminFetcher;
         } elseif ($poolOrAdminFetcher instanceof Pool) {
             @trigger_error(sprintf(
-                'Passing other type than %s in argument 2 to %s() is deprecated since sonata-project/admin-bundle 3.x'
+                'Passing other type than %s in argument 2 to %s() is deprecated since sonata-project/admin-bundle 3.100'
                 .' and will throw %s error in 4.0.',
                 AdminFetcherInterface::class,
                 __METHOD__,
@@ -82,7 +82,7 @@ final class AppendFormFieldElementAction
         // NEXT_MAJOR: Remove this BC-layer.
         if (null === $request->get('_sonata_admin')) {
             @trigger_error(
-                'Not passing the "_sonata_admin" parameter in the request is deprecated since sonata-project/admin-bundle 3.x'
+                'Not passing the "_sonata_admin" parameter in the request is deprecated since sonata-project/admin-bundle 3.100'
                 .' and will throw an exception in 4.0.',
                 \E_USER_DEPRECATED
             );
