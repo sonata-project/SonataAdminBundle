@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.100.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.99.1...3.100.0) - 2021-05-18
+### Deprecated
+- [[#7191](https://github.com/sonata-project/SonataAdminBundle/pull/7191)] Passing a `code` value in the request of AppendFormFieldElementAction, GetShortObjectDescriptionAction, RetrieveAutocompleteItemsAction, RetrieveFormFieldElementAction and SetObjectFieldValueAction. Pass `_sonata_admin` instead. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7191](https://github.com/sonata-project/SonataAdminBundle/pull/7191)] Passing a `Pool` argument to the constructor of AppendFormFieldElementAction, GetShortObjectDescriptionAction, RetrieveAutocompleteItemsAction, RetrieveFormFieldElementAction and SetObjectFieldValueAction. Pass an AdminFetcher instead. ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#7191](https://github.com/sonata-project/SonataAdminBundle/pull/7191)] AppendFormFieldElementAction, GetShortObjectDescriptionAction, RetrieveAutocompleteItemsAction, RetrieveFormFieldElementAction and SetObjectFieldValueAction now set the childAdmin subjects to the childAdmin. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7196](https://github.com/sonata-project/SonataAdminBundle/pull/7196)] Changed .select2() to .attr() ([@cecicifu](https://github.com/cecicifu))
+- [[#7196](https://github.com/sonata-project/SonataAdminBundle/pull/7196)] Set id in the value attribute of hidden input after save ([@cecicifu](https://github.com/cecicifu))
+
 ## [3.99.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.99.0...3.99.1) - 2021-05-11
 ### Fixed
 - [[#7181](https://github.com/sonata-project/SonataAdminBundle/pull/7181)] Fix SimplePager pagination ([@VincentLanglet](https://github.com/VincentLanglet))
