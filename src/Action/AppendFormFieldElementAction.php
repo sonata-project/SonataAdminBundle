@@ -56,7 +56,7 @@ final class AppendFormFieldElementAction
         } elseif ($poolOrAdminFetcher instanceof Pool) {
             @trigger_error(sprintf(
                 'Passing other type than %s in argument 2 to %s() is deprecated since sonata-project/admin-bundle 3.x'
-                .' and will throw %s exception in 4.0.',
+                .' and will throw %s error in 4.0.',
                 AdminFetcherInterface::class,
                 __METHOD__,
                 \TypeError::class
@@ -82,8 +82,8 @@ final class AppendFormFieldElementAction
         // NEXT_MAJOR: Remove this BC-layer.
         if (null === $request->get('_sonata_admin')) {
             @trigger_error(
-                'Not passing "_sonata_admin" value in the request is deprecated since sonata-project/admin-bundle 3.x'
-                .' and will throw %s exception in 4.0.',
+                'Not passing the "_sonata_admin" parameter in the request is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will throw an exception in 4.0.',
                 \E_USER_DEPRECATED
             );
 
@@ -94,7 +94,7 @@ final class AppendFormFieldElementAction
             $admin = $this->adminFetcher->get($request);
         } catch (\InvalidArgumentException $e) {
             throw new NotFoundHttpException(sprintf(
-                'Could not find admin for code "%s"',
+                'Could not find admin for code "%s".',
                 $request->get('_sonata_admin')
             ));
         }
