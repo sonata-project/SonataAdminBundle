@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\SetObjectFieldValueAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -39,7 +40,7 @@ use Twig\Loader\ArrayLoader;
 final class SetObjectFieldValueActionTest extends TestCase
 {
     /**
-     * @var AdminFetcherInterface
+     * @var Stub&AdminFetcherInterface
      */
     private $adminFetcher;
 
@@ -85,7 +86,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             'field_template' => 'renderedTemplate',
         ]));
         $this->admin = $this->createMock(AbstractAdmin::class);
-        $this->adminFetcher = $this->createMock(AdminFetcherInterface::class);
+        $this->adminFetcher = $this->createStub(AdminFetcherInterface::class);
         $this->adminFetcher->method('get')->willReturn($this->admin);
         $this->validator = $this->createStub(ValidatorInterface::class);
         $this->modelManager = $this->createStub(ModelManagerInterface::class);

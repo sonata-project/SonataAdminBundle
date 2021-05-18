@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
+use PHPUnit\Framework\MockObject\Stub\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Action\RetrieveFormFieldElementAction;
@@ -31,7 +32,7 @@ use Twig\Environment;
 final class RetrieveFormFieldElementActionTest extends TestCase
 {
     /**
-     * @var AdminFetcherInterface
+     * @var Stub&AdminFetcherInterface
      */
     private $adminFetcher;
 
@@ -59,7 +60,7 @@ final class RetrieveFormFieldElementActionTest extends TestCase
     {
         $this->twig = $this->createStub(Environment::class);
         $this->admin = $this->createMock(AbstractAdmin::class);
-        $this->adminFetcher = $this->createMock(AdminFetcherInterface::class);
+        $this->adminFetcher = $this->createStub(AdminFetcherInterface::class);
         $this->adminFetcher->method('get')->willReturn($this->admin);
         $this->helper = $this->createStub(AdminHelper::class);
         $this->action = new RetrieveFormFieldElementAction(

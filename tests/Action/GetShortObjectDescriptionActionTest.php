@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -28,7 +28,7 @@ use Twig\Loader\ArrayLoader;
 final class GetShortObjectDescriptionActionTest extends TestCase
 {
     /**
-     * @var MockObject&AdminFetcherInterface
+     * @var Stub&AdminFetcherInterface
      */
     private $adminFetcher;
 
@@ -51,7 +51,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
     {
         $this->twig = new Environment(new ArrayLoader(['template' => 'renderedTemplate']));
         $this->admin = $this->createMock(AbstractAdmin::class);
-        $this->adminFetcher = $this->createMock(AdminFetcherInterface::class);
+        $this->adminFetcher = $this->createStub(AdminFetcherInterface::class);
         $this->action = new GetShortObjectDescriptionAction(
             $this->twig,
             $this->adminFetcher

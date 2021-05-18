@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Action;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Action\RetrieveAutocompleteItemsAction;
@@ -33,7 +34,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 final class RetrieveAutocompleteItemsActionTest extends TestCase
 {
     /**
-     * @var AdminFetcherInterface
+     * @var Stub&AdminFetcherInterface
      */
     private $adminFetcher;
 
@@ -50,7 +51,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     protected function setUp(): void
     {
         $this->admin = $this->createMock(AbstractAdmin::class);
-        $this->adminFetcher = $this->createMock(AdminFetcherInterface::class);
+        $this->adminFetcher = $this->createStub(AdminFetcherInterface::class);
         $this->adminFetcher->method('get')->willReturn($this->admin);
         $this->action = new RetrieveAutocompleteItemsAction($this->adminFetcher);
     }
