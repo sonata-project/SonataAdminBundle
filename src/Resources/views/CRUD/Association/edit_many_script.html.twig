@@ -315,7 +315,7 @@ This code manages the many-to-[one|many] association field popup
                         // reload the form element
                         jQuery('#field_widget_{{ id }}').closest('form').ajaxSubmit({
                             url: '{{ path('sonata_admin_retrieve_form_element', {
-                                '_sonata_admin': sonata_admin.admin.root.baseCodeRoute
+                                '_sonata_admin': sonata_admin.admin.root.baseCodeRoute,
                                 'elementId': id,
                                 'subclass': sonata_admin.admin.hasActiveSubClass() ? sonata_admin.admin.getActiveSubclassCode() : null,
                                 'objectId': sonata_admin.admin.root.id(sonata_admin.admin.root.subject),
@@ -324,7 +324,7 @@ This code manages the many-to-[one|many] association field popup
                                 sonata_admin.admin.root.hasRequest()
                                 ? sonata_admin.admin.root.request.attributes.get('_route_params', {})
                                 : {}
-                            ) }}',
+                            )) }}',
                             data: {_xml_http_request: true },
                             dataType: 'html',
                             type: 'POST',
