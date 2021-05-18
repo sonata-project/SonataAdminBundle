@@ -408,10 +408,10 @@ const Admin = {
   setup_per_page_switcher(subject) {
     Admin.log('[core|setup_per_page_switcher] setup page switcher', subject);
 
-    jQuery('select.per-page').on('change', () => {
+    jQuery('select.per-page').on('change', (event) => {
       jQuery('input[type=submit]').hide();
 
-      window.top.location.href = this.options[this.selectedIndex].value;
+      window.top.location.href = event.target.options[event.target.selectedIndex].value;
     });
   },
 
