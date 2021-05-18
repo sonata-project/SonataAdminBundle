@@ -100,7 +100,7 @@ class HelperControllerTest extends TestCase
         $this->admin = $this->createMock(AbstractAdmin::class);
         $this->resolver = new DataTransformerResolver();
 
-        $this->pool->method('getInstance')->willReturn($this->admin);
+        $this->pool->method('getAdminByAdminCode')->willReturn($this->admin);
 
         $this->controller = new HelperController(
             $this->twig,
@@ -121,7 +121,7 @@ class HelperControllerTest extends TestCase
             'uniqid' => 'asdasd123',
             ]);
 
-        $this->pool->method('getInstance')->with($code)->willThrowException(new \InvalidArgumentException());
+        $this->pool->method('getAdminByAdminCode')->with($code)->willThrowException(new \InvalidArgumentException());
 
         $this->expectException(NotFoundHttpException::class);
 

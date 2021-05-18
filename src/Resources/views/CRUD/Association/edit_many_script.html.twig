@@ -314,13 +314,19 @@ This code manages the many-to-[one|many] association field popup
 
                         // reload the form element
                         jQuery('#field_widget_{{ id }}').closest('form').ajaxSubmit({
+                            // NEXT_MAJOR: Remove the 'code' parameter
                             url: '{{ path('sonata_admin_retrieve_form_element', {
+                                '_sonata_admin': sonata_admin.admin.root.baseCodeRoute
                                 'elementId': id,
-                                'subclass':  sonata_admin.admin.hasActiveSubClass() ? sonata_admin.admin.getActiveSubclassCode() : null,
-                                'objectId':  sonata_admin.admin.root.id(sonata_admin.admin.root.subject),
-                                'uniqid':    sonata_admin.admin.root.uniqid,
-                                'code':      sonata_admin.admin.root.code
-                            }) }}',
+                                'subclass': sonata_admin.admin.hasActiveSubClass() ? sonata_admin.admin.getActiveSubclassCode() : null,
+                                'objectId': sonata_admin.admin.root.id(sonata_admin.admin.root.subject),
+                                'uniqid': sonata_admin.admin.root.uniqid,
+                                'code': sonata_admin.admin.root.code
+                            } + (
+                                sonata_admin.admin.root.hasRequest()
+                                ? sonata_admin.admin.root.request.attributes.get('_route_params', {})
+                                : {}
+                            ) }}',
                             data: {_xml_http_request: true },
                             dataType: 'html',
                             type: 'POST',
@@ -520,12 +526,18 @@ This code manages the many-to-[one|many] association field popup
             jQuery('#field_widget_{{ id }}').html("<span><img src=\"{{ asset('bundles/sonataadmin/ajax-loader.gif') }}\" style=\"vertical-align: middle; margin-right: 10px\"/>{{ 'loading_information'|trans([], 'SonataAdminBundle') }}</span>");
             jQuery.ajax({
                 type: 'GET',
-                url: '{{ path('sonata_admin_short_object_information', {
+                {# NEXT_MAJOR: Remove the 'code' parameter #}
+                url: '{{ path('sonata_admin_short_object_information',{
+                    '_sonata_admin': associationadmin.baseCodeRoute,
                     'objectId': 'OBJECT_ID',
                     'uniqid': associationadmin.uniqid,
                     'code': associationadmin.code,
                     'linkParameters': sonata_admin.field_description.option('link_parameters', {})
-                })}}'.replace('OBJECT_ID', objectId),
+                } + (
+                    associationadmin.hasRequest()
+                    ? associationadmin.request.attributes.get('_route_params', {})
+                    : {}
+                ))}}'.replace('OBJECT_ID', objectId),
                 dataType: 'html',
                 success: function(html) {
                     jQuery('#field_widget_{{ id }}').html(html);

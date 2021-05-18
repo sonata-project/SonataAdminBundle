@@ -111,9 +111,13 @@ file that was distributed with this source code.
                                 // admin
                                 {% if sonata_admin.admin is not null %}
                                     'uniqid': '{{ sonata_admin.admin.uniqid }}',
+                                    // NEXT_MAJOR: Remove the admin_code param.
                                     'admin_code': '{{ sonata_admin.admin.code|e('js') }}',
+                                    '_sonata_admin': '{{ sonata_admin.admin.baseCodeRoute|e('js') }}',
                                 {% elseif admin_code %}
-                                    'admin_code':  '{{ admin_code|e('js') }}',
+                                    // NEXT_MAJOR: Remove the admin_code param.
+                                    'admin_code': '{{ admin_code|e('js') }}',
+                                    '_sonata_admin': '{{ admin_code|e('js') }}',
                                 {% endif %}
 
                                  // subclass

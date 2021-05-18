@@ -44,14 +44,17 @@ file that was distributed with this source code.
         {% endif %}
 
         {% if is_editable and x_editable_type %}
+            {# NEXT_MAJOR: Remove the 'code' parameter #}
             {% set url = path(
                 'sonata_admin_set_object_field_value',
-                admin.getPersistentParameters|default([])|merge({
+                {
+                    '_sonata_admin': admin.baseCodeRoute,
                     'context': 'list',
                     'field': field_description.name,
                     'objectId': admin.urlSafeIdentifier(object),
                     'code': admin.code(object)
-                })
+                } + (admin.hasRequest() ? admin.request.attributes.get('_route_params', {}) : {})
+                + admin.getPersistentParameters()
             ) %}
 
             {% if field_description.type == constant('Sonata\\AdminBundle\\Admin\\FieldDescriptionInterface::TYPE_DATE') and value is not empty %}
