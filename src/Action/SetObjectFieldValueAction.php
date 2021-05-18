@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Action;
 
-use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformerResolverInterface;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,9 +30,9 @@ use Twig\Environment;
 final class SetObjectFieldValueAction
 {
     /**
-     * @var Pool
+     * @var AdminFetcherInterface
      */
-    private $pool;
+    private $adminFetcher;
 
     /**
      * @var Environment
@@ -56,13 +56,13 @@ final class SetObjectFieldValueAction
 
     public function __construct(
         Environment $twig,
-        Pool $pool,
+        AdminFetcherInterface $adminFetcher,
         ValidatorInterface $validator,
         DataTransformerResolverInterface $resolver,
         PropertyAccessorInterface $propertyAccessor
     ) {
+        $this->adminFetcher = $adminFetcher;
         $this->twig = $twig;
-        $this->pool = $pool;
         $this->validator = $validator;
         $this->resolver = $resolver;
         $this->propertyAccessor = $propertyAccessor;
@@ -73,14 +73,19 @@ final class SetObjectFieldValueAction
      */
     public function __invoke(Request $request): JsonResponse
     {
+        try {
+            $admin = $this->adminFetcher->get($request);
+        } catch (\InvalidArgumentException $e) {
+            throw new NotFoundHttpException(sprintf(
+                'Could not find admin for code "%s".',
+                $request->get('_sonata_admin')
+            ));
+        }
+
         $field = $request->get('field');
-        $code = $request->get('code');
         $objectId = $request->get('objectId');
         $value = $originalValue = $request->get('value');
         $context = $request->get('context');
-
-        $admin = $this->pool->getInstance($code);
-        $admin->setRequest($request);
 
         // alter should be done by using a post method
         if (!$request->isXmlHttpRequest()) {

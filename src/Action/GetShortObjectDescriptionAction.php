@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Action;
 
-use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,19 +23,19 @@ use Twig\Environment;
 final class GetShortObjectDescriptionAction
 {
     /**
-     * @var Pool
+     * @var AdminFetcherInterface
      */
-    private $pool;
+    private $adminFetcher;
 
     /**
      * @var Environment
      */
     private $twig;
 
-    public function __construct(Environment $twig, Pool $pool)
+    public function __construct(Environment $twig, AdminFetcherInterface $adminFetcher)
     {
-        $this->pool = $pool;
         $this->twig = $twig;
+        $this->adminFetcher = $adminFetcher;
     }
 
     /**
@@ -43,26 +43,16 @@ final class GetShortObjectDescriptionAction
      */
     public function __invoke(Request $request): Response
     {
-        $code = $request->get('code');
-        $objectId = $request->get('objectId');
-        $uniqid = $request->get('uniqid');
-        $linkParameters = $request->get('linkParameters', []);
-
         try {
-            $admin = $this->pool->getInstance($code);
+            $admin = $this->adminFetcher->get($request);
         } catch (\InvalidArgumentException $e) {
             throw new NotFoundHttpException(sprintf(
-                'Could not find admin for code "%s"',
-                $code
+                'Could not find admin for code "%s".',
+                $request->get('_sonata_admin')
             ));
         }
 
-        $admin->setRequest($request);
-
-        if ($uniqid) {
-            $admin->setUniqid($uniqid);
-        }
-
+        $objectId = $request->get('objectId');
         $object = $admin->getObject($objectId);
         if (!$object) {
             throw new NotFoundHttpException(sprintf('Could not find subject for id "%s"', $objectId));
@@ -82,7 +72,7 @@ final class GetShortObjectDescriptionAction
                 'admin' => $admin,
                 'description' => $admin->toString($object),
                 'object' => $object,
-                'link_parameters' => $linkParameters,
+                'link_parameters' => $request->get('linkParameters', []),
             ]));
         }
 

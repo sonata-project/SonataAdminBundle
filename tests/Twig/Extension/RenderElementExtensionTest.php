@@ -127,7 +127,7 @@ final class RenderElementExtensionTest extends TestCase
             ->willReturn($this->templateRegistry);
 
         $this->admin
-            ->method('getCode')
+            ->method('getBaseCodeRoute')
             ->willReturn('sonata_admin_foo_service');
 
         $this->admin
@@ -891,7 +891,7 @@ EOT
         data-value="1"
         data-title="Data"
         data-pk="12345"
-        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=sonata_admin_foo_service"
+        data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
         data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]"
     >
         <span class="label label-success">yes</span>
@@ -912,7 +912,7 @@ EOT
         data-value="0"
         data-title="Data"
         data-pk="12345"
-        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=sonata_admin_foo_service"
+        data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
         data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]"
     >
     <span class="label label-danger">no</span> </span>
@@ -932,7 +932,7 @@ EOT
         data-value="0"
         data-title="Data"
         data-pk="12345"
-        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=sonata_admin_foo_service"
+        data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
         data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]" >
         <span class="label label-danger">no</span> </span>
 </td>
@@ -1100,7 +1100,7 @@ EOT
         data-value="Status1"
         data-title="Data"
         data-pk="12345"
-        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=sonata_admin_foo_service"
+        data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
         data-source="[]"
     >
         Status1
@@ -1121,7 +1121,7 @@ EOT
         data-value="Status1"
         data-title="Data"
         data-pk="12345"
-        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=sonata_admin_foo_service"
+        data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
         data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
         Alias1 </span>
 </td>
@@ -1147,7 +1147,7 @@ EOT
         data-value=""
         data-title="Data"
         data-pk="12345"
-        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=sonata_admin_foo_service"
+        data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
         data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
 
     </span>
@@ -1173,7 +1173,7 @@ EOT
         data-type="select"
         data-value="NoValidKeyInChoices"
         data-title="Data" data-pk="12345"
-        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=sonata_admin_foo_service"
+        data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
         data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
         NoValidKeyInChoices
     </span>
@@ -1200,7 +1200,7 @@ EOT
         data-value="Foo"
         data-title="Data"
         data-pk="12345"
-        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=sonata_admin_foo_service"
+        data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
         data-source="[{&quot;value&quot;:&quot;Foo&quot;,&quot;text&quot;:&quot;Delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
          Delete
     </span>
@@ -1517,7 +1517,7 @@ EOT
         data-value="[&quot;Status1&quot;,&quot;Status2&quot;]"
         data-title="Data"
         data-pk="12345"
-        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=sonata_admin_foo_service"
+        data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
         data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
          Delete, Alias2
     </span>

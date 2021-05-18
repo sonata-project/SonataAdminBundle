@@ -14,25 +14,26 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 final class RetrieveAutocompleteItemsAction
 {
     /**
-     * @var Pool
+     * @var AdminFetcherInterface
      */
-    private $pool;
+    private $adminFetcher;
 
-    public function __construct(Pool $pool)
+    public function __construct(AdminFetcherInterface $adminFetcher)
     {
-        $this->pool = $pool;
+        $this->adminFetcher = $adminFetcher;
     }
 
     /**
@@ -43,10 +44,16 @@ final class RetrieveAutocompleteItemsAction
      */
     public function __invoke(Request $request): JsonResponse
     {
-        $admin = $this->pool->getInstance($request->get('admin_code'));
-        $admin->setRequest($request);
-        $context = $request->get('_context', '');
+        try {
+            $admin = $this->adminFetcher->get($request);
+        } catch (\InvalidArgumentException $e) {
+            throw new NotFoundHttpException(sprintf(
+                'Could not find admin for code "%s".',
+                $request->get('_sonata_admin')
+            ));
+        }
 
+        $context = $request->get('_context', '');
         if ('filter' === $context) {
             $admin->checkAccess('list');
         } elseif (!$admin->hasAccess('create') && !$admin->hasAccess('edit')) {

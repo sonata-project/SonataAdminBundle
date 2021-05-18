@@ -97,9 +97,9 @@ file that was distributed with this source code.
                                 // admin
                                 {% if sonata_admin.admin is not null %}
                                     'uniqid': '{{ sonata_admin.admin.uniqid }}',
-                                    'admin_code': '{{ sonata_admin.admin.code|e('js') }}',
+                                    '_sonata_admin': '{{ sonata_admin.admin.baseCodeRoute|e('js') }}',
                                 {% elseif admin_code %}
-                                    'admin_code':  '{{ admin_code|e('js') }}',
+                                    '_sonata_admin': '{{ admin_code|e('js') }}',
                                 {% endif %}
 
                                  // subclass
@@ -260,15 +260,17 @@ file that was distributed with this source code.
                         {% endif %}
 
                         // append to Select2
-                        autocompleteInput.select2('data', data).append(data).trigger('change');
+                        autocompleteInput.attr('data', data).append(data).trigger('change');
 
                         // manually trigger the `select2:select` event
-                        autocompleteInput.select2('data', data).trigger({
+                        autocompleteInput.attr('data', data).trigger({
                             type: 'select2:select',
                             params: {
                                 data: data
                             }
                         });
+
+                        $('#{{ id }}_hidden_inputs_wrap input:hidden').val(data.value);
                       }
                   }
                 });

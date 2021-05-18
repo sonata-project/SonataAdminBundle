@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\AdminHelper;
-use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,9 +24,9 @@ use Twig\Environment;
 final class RetrieveFormFieldElementAction
 {
     /**
-     * @var Pool
+     * @var AdminFetcherInterface
      */
-    private $pool;
+    private $adminFetcher;
 
     /**
      * @var AdminHelper
@@ -38,11 +38,11 @@ final class RetrieveFormFieldElementAction
      */
     private $twig;
 
-    public function __construct(Environment $twig, Pool $pool, AdminHelper $helper)
+    public function __construct(Environment $twig, AdminFetcherInterface $adminFetcher, AdminHelper $helper)
     {
-        $this->pool = $pool;
         $this->helper = $helper;
         $this->twig = $twig;
+        $this->adminFetcher = $adminFetcher;
     }
 
     /**
@@ -50,18 +50,16 @@ final class RetrieveFormFieldElementAction
      */
     public function __invoke(Request $request): Response
     {
-        $code = $request->get('code');
-        $elementId = $request->get('elementId');
-        $objectId = $request->get('objectId');
-        $uniqid = $request->get('uniqid');
-
-        $admin = $this->pool->getInstance($code);
-        $admin->setRequest($request);
-
-        if ($uniqid) {
-            $admin->setUniqid($uniqid);
+        try {
+            $admin = $this->adminFetcher->get($request);
+        } catch (\InvalidArgumentException $e) {
+            throw new NotFoundHttpException(sprintf(
+                'Could not find admin for code "%s".',
+                $request->get('_sonata_admin')
+            ));
         }
 
+        $objectId = $request->get('objectId');
         if ($objectId) {
             $subject = $admin->getObject($objectId);
             if (!$subject) {
@@ -83,6 +81,7 @@ final class RetrieveFormFieldElementAction
         $form->setData($subject);
         $form->handleRequest($request);
 
+        $elementId = $request->get('elementId');
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
 
         // render the widget

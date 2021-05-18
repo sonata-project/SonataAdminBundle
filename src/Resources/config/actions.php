@@ -48,7 +48,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->public()
             ->args([
                 new ReferenceConfigurator('twig'),
-                new ReferenceConfigurator('sonata.admin.pool'),
+                new ReferenceConfigurator('sonata.admin.request.fetcher'),
                 new ReferenceConfigurator('sonata.admin.helper'),
             ])
 
@@ -56,7 +56,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->public()
             ->args([
                 new ReferenceConfigurator('twig'),
-                new ReferenceConfigurator('sonata.admin.pool'),
+                new ReferenceConfigurator('sonata.admin.request.fetcher'),
                 new ReferenceConfigurator('sonata.admin.helper'),
             ])
 
@@ -64,14 +64,14 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->public()
             ->args([
                 new ReferenceConfigurator('twig'),
-                new ReferenceConfigurator('sonata.admin.pool'),
+                new ReferenceConfigurator('sonata.admin.request.fetcher'),
             ])
 
         ->set('sonata.admin.action.set_object_field_value', SetObjectFieldValueAction::class)
             ->public()
             ->args([
                 new ReferenceConfigurator('twig'),
-                new ReferenceConfigurator('sonata.admin.pool'),
+                new ReferenceConfigurator('sonata.admin.request.fetcher'),
                 new ReferenceConfigurator('validator'),
                 new ReferenceConfigurator('sonata.admin.form.data_transformer_resolver'),
                 new ReferenceConfigurator('property_accessor'),
@@ -80,6 +80,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.action.retrieve_autocomplete_items', RetrieveAutocompleteItemsAction::class)
             ->public()
             ->args([
-                new ReferenceConfigurator('sonata.admin.pool'),
+                new ReferenceConfigurator('sonata.admin.request.fetcher'),
             ]);
 };

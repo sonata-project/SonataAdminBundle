@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Action;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\SetObjectFieldValueAction;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformerResolver;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,9 +37,9 @@ use Twig\Loader\ArrayLoader;
 final class SetObjectFieldValueActionTest extends TestCase
 {
     /**
-     * @var Pool
+     * @var Stub&AdminFetcherInterface
      */
-    private $pool;
+    private $adminFetcher;
 
     /**
      * @var Environment
@@ -89,17 +89,15 @@ final class SetObjectFieldValueActionTest extends TestCase
         ]));
         $this->adminCode = 'sonata.post.admin';
         $this->admin = $this->createMock(AdminInterface::class);
-        $container = new Container();
-        $container->set($this->adminCode, $this->admin);
-        $this->pool = new Pool($container, [$this->adminCode]);
-        $this->admin->expects($this->once())->method('setRequest');
+        $this->adminFetcher = $this->createStub(AdminFetcherInterface::class);
+        $this->adminFetcher->method('get')->willReturn($this->admin);
         $this->validator = $this->createMock(ValidatorInterface::class);
         $this->modelManager = $this->createMock(ModelManagerInterface::class);
         $this->resolver = new DataTransformerResolver();
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $this->action = new SetObjectFieldValueAction(
             $this->twig,
-            $this->pool,
+            $this->adminFetcher,
             $this->validator,
             $this->resolver,
             $propertyAccessor
@@ -117,7 +115,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     {
         $object = new Foo();
         $request = new Request([
-            'code' => $this->adminCode,
+            '_sonata_admin' => 'sonata.post.admin',
             'objectId' => 42,
             'field' => 'enabled',
             'value' => 1,
@@ -127,7 +125,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('getCode')->willReturn($this->adminCode);
+        $this->admin->method('getCode')->willReturn('sonata.post.admin');
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('hasListFieldDescription')->with('enabled')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);
@@ -170,7 +168,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     {
         $object = new Bafoo();
         $request = new Request([
-            'code' => $this->adminCode,
+            '_sonata_admin' => 'sonata.post.admin',
             'objectId' => 42,
             'field' => 'dateProp',
             'value' => '2020-12-12',
@@ -180,7 +178,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('getCode')->willReturn($this->adminCode);
+        $this->admin->method('getCode')->willReturn('sonata.post.admin');
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('hasListFieldDescription')->with('dateProp')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('dateProp')->willReturn($fieldDescription);
@@ -217,7 +215,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $object = new Baz();
         $associationObject = new Bar();
         $request = new Request([
-            'code' => $this->adminCode,
+            '_sonata_admin' => 'sonata.post.admin',
             'objectId' => 42,
             'field' => 'bar',
             'value' => 1,
@@ -227,7 +225,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('getCode')->willReturn($this->adminCode);
+        $this->admin->method('getCode')->willReturn('sonata.post.admin');
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('hasListFieldDescription')->with('bar')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('bar')->willReturn($fieldDescription);
@@ -260,7 +258,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $object = new Baz();
         $object->setBar($bar);
         $request = new Request([
-            'code' => $this->adminCode,
+            '_sonata_admin' => 'sonata.post.admin',
             'objectId' => 42,
             'field' => 'bar.enabled',
             'value' => 1,
@@ -293,7 +291,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     {
         $object = new StatusMultiple();
         $request = new Request([
-            'code' => $this->adminCode,
+            '_sonata_admin' => 'sonata.post.admin',
             'objectId' => 42,
             'field' => 'status',
             'value' => [1, 2],
@@ -303,7 +301,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('getCode')->willReturn($this->adminCode);
+        $this->admin->method('getCode')->willReturn('sonata.post.admin');
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('hasListFieldDescription')->with('status')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('status')->willReturn($fieldDescription);
@@ -331,7 +329,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     {
         $object = new Foo();
         $request = new Request([
-            'code' => $this->adminCode,
+            '_sonata_admin' => 'sonata.post.admin',
             'objectId' => 42,
             'field' => 'enabled',
             'value' => 'yes',
@@ -347,7 +345,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('getCode')->willReturn($this->adminCode);
+        $this->admin->method('getCode')->willReturn('sonata.post.admin');
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('hasListFieldDescription')->with('enabled')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);
@@ -374,7 +372,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     {
         $object = new Foo();
         $request = new Request([
-            'code' => $this->adminCode,
+            '_sonata_admin' => 'sonata.post.admin',
             'objectId' => 42,
             'field' => 'enabled',
             'value' => 'yes',
@@ -393,7 +391,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('getCode')->willReturn($this->adminCode);
+        $this->admin->method('getCode')->willReturn('sonata.post.admin');
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('hasListFieldDescription')->with('enabled')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);
