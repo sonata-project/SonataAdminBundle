@@ -27,7 +27,7 @@ use Sonata\AdminBundle\Exception\NoValueException;
  *  role?: string|string[],
  *  sort_field_mapping?: array<string, mixed>,
  *  sort_parent_association_mappings?: array<array<string, mixed>>,
- *  sortable?: bool,
+ *  sortable?: string|bool,
  *  template?: string,
  *  translation_domain?: string,
  *  type?: string,
