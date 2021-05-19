@@ -208,6 +208,9 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function setSubject(?object $subject): void;
 
+    /**
+     * @phpstan-return T
+     */
     public function getSubject(): object;
 
     /**
