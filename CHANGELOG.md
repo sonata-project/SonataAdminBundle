@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.100.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.100.0...3.100.1) - 2021-05-18
+### Fixed
+- [[#7203](https://github.com/sonata-project/SonataAdminBundle/pull/7203)] `edit_many_script.html.twig` rendering ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [3.100.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.99.1...3.100.0) - 2021-05-18
 ### Deprecated
 - [[#7191](https://github.com/sonata-project/SonataAdminBundle/pull/7191)] Passing a `code` value in the request of AppendFormFieldElementAction, GetShortObjectDescriptionAction, RetrieveAutocompleteItemsAction, RetrieveFormFieldElementAction and SetObjectFieldValueAction. Pass `_sonata_admin` instead. ([@VincentLanglet](https://github.com/VincentLanglet))
