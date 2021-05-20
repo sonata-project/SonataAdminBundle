@@ -305,11 +305,11 @@ body.fixed .content-header .navbar {
 /* sidebar menu styles */
 .sidebar-search {
   padding: 15px;
+}
 
-  li.keep-open > .treeview-menu {
-    display: block !important;
-    height: auto !important;
-  }
+.sidebar-menu li.keep-open > .treeview-menu {
+  display: block !important;
+  height: auto !important;
 }
 
 .arrow {
