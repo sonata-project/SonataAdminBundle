@@ -326,7 +326,7 @@ This code manages the many-to-[one|many] association field popup
                                 sonata_admin.admin.root.hasRequest()
                                 ? sonata_admin.admin.root.request.attributes.get('_route_params', {})
                                 : {}
-                            ) + app.request.query.all
+                            ) + app.request.query.all|default({})
                             ) }}',
                             data: {_xml_http_request: true },
                             dataType: 'html',
@@ -538,7 +538,7 @@ This code manages the many-to-[one|many] association field popup
                     associationadmin.hasRequest()
                     ? associationadmin.request.attributes.get('_route_params', {})
                     : {}
-                ) + app.request.query.all
+                ) + app.request.query.all|default({})
                 )}}'.replace('OBJECT_ID', objectId),
                 dataType: 'html',
                 success: function(html) {

@@ -31,7 +31,7 @@ file that was distributed with this source code.
                         sonata_admin.field_description.associationadmin.hasRequest()
                         ? sonata_admin.field_description.associationadmin.request.attributes.get('_route_params', {})
                         : {}
-                    ) + app.request.query.all
+                    ) + app.request.query.all|default({})
                     )) }}
                 {% elseif sonata_admin.field_description.option('placeholder', 'short_object_description_placeholder') %}
                     <span class="inner-field-short-description">

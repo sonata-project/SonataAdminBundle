@@ -44,7 +44,7 @@ This code manages the one-to-many association field popup
                 sonata_admin.admin.root.hasRequest()
                 ? sonata_admin.admin.root.request.attributes.get('_route_params', {})
                 : {}
-            ) + app.request.query.all
+            ) + app.request.query.all|default({})
             ) }}',
             type: "POST",
             dataType: 'html',
