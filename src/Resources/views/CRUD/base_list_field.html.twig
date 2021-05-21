@@ -55,6 +55,7 @@ file that was distributed with this source code.
                     'code': admin.code(object)
                 } + (admin.hasRequest() ? admin.request.attributes.get('_route_params', {}) : {})
                 + admin.getPersistentParameters()
+                + app.request.query.all
             ) %}
 
             {% if field_description.type == constant('Sonata\\AdminBundle\\Admin\\FieldDescriptionInterface::TYPE_DATE') and value is not empty %}
