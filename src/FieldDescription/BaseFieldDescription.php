@@ -79,7 +79,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $type;
 
     /**
-     * @var string|int the original mapping type
+     * @var string|int|null the original mapping type
      */
     protected $mappingType;
 
