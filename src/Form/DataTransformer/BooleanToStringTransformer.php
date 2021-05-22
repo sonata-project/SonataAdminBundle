@@ -34,7 +34,7 @@ final class BooleanToStringTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param bool $value
+     * @param bool|null $value
      */
     public function transform($value): ?string
     {
@@ -42,7 +42,7 @@ final class BooleanToStringTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param mixed $value
+     * @param string|null $value
      */
     public function reverseTransform($value): bool
     {

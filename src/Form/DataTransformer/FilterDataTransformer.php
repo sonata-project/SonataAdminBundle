@@ -22,10 +22,10 @@ final class FilterDataTransformer implements DataTransformerInterface
     /**
      * @param array<string, mixed>|null $value
      */
-    public function reverseTransform($value): ?FilterData
+    public function reverseTransform($value): FilterData
     {
         if (null === $value) {
-            return null;
+            return FilterData::fromArray([]);
         }
 
         if (!\is_array($value)) {
