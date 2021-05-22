@@ -56,7 +56,7 @@
         "symfony/routing": "^4.4 || ^5.2",
         "symfony/security-acl": "^3.1",
         "symfony/security-bundle": "^4.4 || ^5.2",
-        "symfony/security-core": "^4.4 || ^5.2",
+        "symfony/security-core": "^4.4.24 || ^5.2.8",
         "symfony/security-csrf": "^4.4 || ^5.2",
         "symfony/string": "^5.2",
         "symfony/translation": "^4.4 || ^5.2",
