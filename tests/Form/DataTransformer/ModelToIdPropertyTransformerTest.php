@@ -123,6 +123,16 @@ class ModelToIdPropertyTransformerTest extends TestCase
         yield [[$entity1, $entity2, $entity3], [123, 456, 789, '_labels' => ['example', 'example2', 'example3']], $entity1, $entity2, $entity3];
     }
 
+    public function testReverseTransformInvalidTypeTests(): void
+    {
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false);
+
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Value should not be an array.');
+
+        $transformer->reverseTransform([123]);
+    }
+
     /**
      * @param mixed $params
      *
