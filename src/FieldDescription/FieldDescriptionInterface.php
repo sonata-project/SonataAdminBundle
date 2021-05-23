@@ -237,7 +237,7 @@ interface FieldDescriptionInterface
     /**
      * Returns the mapping type.
      *
-     * @return int|string
+     * @return int|string|null
      */
     public function getMappingType();
 
