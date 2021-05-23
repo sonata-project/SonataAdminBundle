@@ -131,7 +131,7 @@ class SearchHandlerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{class-string|null, int, bool|null, string}>
+     * @phpstan-return iterable<array{class-string|null, int, bool|null, string}>
      */
     public function provideAdminSearchConfigurations(): iterable
     {

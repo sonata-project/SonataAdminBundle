@@ -39,6 +39,8 @@ final class FilterDataTransformer implements DataTransformerInterface
      * @param FilterData|null $value
      *
      * @return array<string, mixed>|null
+     *
+     * @phpstan-return array{type: int|null, value?: mixed}|null
      */
     public function transform($value): ?array
     {

@@ -23,7 +23,7 @@ use Sonata\AdminBundle\Util\ParametersManipulator;
 class ParametersManipulatorTest extends TestCase
 {
     /**
-     * @return iterable<array{array<mixed>, array<mixed>, array<mixed>}>
+     * @phpstan-return iterable<array{array<mixed>, array<mixed>, array<mixed>}>
      */
     public function provideMergeParameters(): iterable
     {

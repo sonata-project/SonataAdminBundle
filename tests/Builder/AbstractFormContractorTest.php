@@ -204,7 +204,7 @@ final class AbstractFormContractorTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: class-string}>
+     * @phpstan-return iterable<array{0: class-string}>
      */
     public function getFieldDescriptionValidationProvider(): iterable
     {

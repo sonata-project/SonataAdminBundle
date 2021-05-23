@@ -84,7 +84,7 @@ final class CRUDControllerTest extends WebTestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @phpstan-return iterable<array{string}>
      */
     public function urlIsSuccessfulDataProvider(): iterable
     {

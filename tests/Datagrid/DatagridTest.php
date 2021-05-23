@@ -370,7 +370,7 @@ final class DatagridTest extends TestCase
     }
 
     /**
-     * @return iterable<array{?string, ?string, int}>
+     * @phpstan-return iterable<array{string|null, string|null, int}>
      */
     public function applyFilterDataProvider(): iterable
     {

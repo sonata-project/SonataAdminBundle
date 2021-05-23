@@ -71,7 +71,7 @@ class ModelsToArrayTransformerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{array<int|string>|null}>
+     * @phpstan-return iterable<array{array<int|string>|null}>
      */
     public function reverseTransformProvider(): iterable
     {
