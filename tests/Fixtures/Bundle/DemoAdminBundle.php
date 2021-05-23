@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class DemoAdminBundle extends Bundle
 {
-    public function setPath($path): void
+    public function setPath(string $path): void
     {
         $this->path = $path;
     }

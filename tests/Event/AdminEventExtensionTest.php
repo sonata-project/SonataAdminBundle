@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Event;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AdminExtensionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
@@ -36,7 +35,10 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdminEventExtensionTest extends TestCase
 {
-    public function getExtension(array $args): AdminExtensionInterface
+    /**
+     * @param mixed[] $args
+     */
+    public function getExtension(array $args): AdminEventExtension
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $stub = $eventDispatcher->expects($this->once())->method('dispatch');

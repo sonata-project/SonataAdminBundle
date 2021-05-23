@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\App\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Tests\App\Admin\TestingParamConverterAdmin;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -21,9 +22,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final class ParamConverterController
 {
     /**
+     * @param AdminInterface<object> $admin
+     *
      * @ParamConverter("admin", class="Sonata\AdminBundle\Tests\App\Admin\TestingParamConverterAdmin")
      */
-    public function withAnnotation($admin): Response
+    public function withAnnotation(AdminInterface $admin): Response
     {
         if (!$admin instanceof TestingParamConverterAdmin) {
             throw new NotFoundHttpException();

@@ -15,25 +15,43 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity;
 
 class Foo
 {
+    /**
+     * @var mixed
+     */
     private $bar;
 
+    /**
+     * @var mixed
+     */
     private $baz;
 
+    /**
+     * @return mixed
+     */
     public function getBar()
     {
         return $this->bar;
     }
 
+    /**
+     * @param mixed $bar
+     */
     public function setBar($bar): void
     {
         $this->bar = $bar;
     }
 
+    /**
+     * @return mixed
+     */
     public function getBaz()
     {
         return $this->baz;
     }
 
+    /**
+     * @param mixed $baz
+     */
     public function setBaz($baz): void
     {
         $this->baz = $baz;

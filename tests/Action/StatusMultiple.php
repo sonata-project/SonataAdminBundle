@@ -15,5 +15,8 @@ namespace Sonata\AdminBundle\Tests\Action;
 
 class StatusMultiple
 {
+    /**
+     * @var mixed[]
+     */
     public $status = [];
 }

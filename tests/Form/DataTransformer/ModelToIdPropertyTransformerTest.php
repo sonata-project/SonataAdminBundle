@@ -102,7 +102,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
     }
 
     /**
-     * @phpstan-return iterable<array{array<Foo>, array<int|string|array<string>>|null, Foo, Foo, Foo}>
+     * @phpstan-return iterable<array-key, array{array<Foo>, array<int|string|array<string>>|null, Foo, Foo, Foo}>
      */
     public function getReverseTransformMultipleTests(): iterable
     {

@@ -56,7 +56,7 @@ class MetadataTest extends TestCase
     }
 
     /**
-     * @phpstan-return iterable<array{bool, string|null}>
+     * @phpstan-return iterable<array-key, array{bool, string|null}>
      */
     public function isImageAvailableProvider(): iterable
     {

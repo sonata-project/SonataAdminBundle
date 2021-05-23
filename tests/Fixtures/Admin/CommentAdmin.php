@@ -21,7 +21,7 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
  */
 class CommentAdmin extends AbstractAdmin
 {
-    public function setClassnameLabel($label): void
+    public function setClassnameLabel(string $label): void
     {
         $this->classnameLabel = $label;
     }

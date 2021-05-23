@@ -35,22 +35,22 @@ use Symfony\Component\Form\Forms;
 final class DatagridTest extends TestCase
 {
     /**
-     * @var Datagrid
+     * @var Datagrid<ProxyQueryInterface>
      */
     private $datagrid;
 
     /**
-     * @var PagerInterface&MockObject
+     * @var PagerInterface<ProxyQueryInterface>&MockObject
      */
     private $pager;
 
     /**
-     * @var ProxyQueryInterface&MockObject
+     * @var ProxyQueryInterface
      */
     private $query;
 
     /**
-     * @var FieldDescriptionCollection
+     * @var FieldDescriptionCollection<FieldDescriptionInterface>
      */
     private $columns;
 
@@ -61,14 +61,12 @@ final class DatagridTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->query = $this->createMock(ProxyQueryInterface::class);
+        $this->query = $this->createStub(ProxyQueryInterface::class);
+        \assert($this->query instanceof ProxyQueryInterface); // https://github.com/vimeo/psalm/issues/5818
+
         $this->columns = new FieldDescriptionCollection();
         $this->pager = $this->createMock(PagerInterface::class);
-
-        $factory = Forms::createFormFactoryBuilder()
-            ->getFormFactory();
-
-        $this->formBuilder = $factory->createBuilder();
+        $this->formBuilder = Forms::createFormFactoryBuilder()->getFormFactory()->createBuilder();
 
         $values = [];
 
@@ -370,7 +368,7 @@ final class DatagridTest extends TestCase
     }
 
     /**
-     * @phpstan-return iterable<array{string|null, string|null, int}>
+     * @phpstan-return iterable<array-key, array{string|null, string|null, int}>
      */
     public function applyFilterDataProvider(): iterable
     {
@@ -458,9 +456,12 @@ final class DatagridTest extends TestCase
     }
 
     /**
+     * @param int|array $perPage
+     * @phpstan-param int|array{value: int} $perPage
+     *
      * @dataProvider getBuildPagerWithPageTests
      */
-    public function testBuildPagerWithPage($page, $perPage): void
+    public function testBuildPagerWithPage(int $page, $perPage): void
     {
         $sortBy = $this->createMock(FieldDescriptionInterface::class);
         $sortBy->expects($this->once())
@@ -510,7 +511,10 @@ final class DatagridTest extends TestCase
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get(DatagridInterface::PER_PAGE));
     }
 
-    public function getBuildPagerWithPageTests(): array
+    /**
+     * @phpstan-return iterable<array-key, array{int, int|array{value: int}}>
+     */
+    public function getBuildPagerWithPageTests(): iterable
     {
         return [
             [3, 50],
@@ -521,7 +525,7 @@ final class DatagridTest extends TestCase
     /**
      * @dataProvider getBuildPagerWithPage2Tests
      */
-    public function testBuildPagerWithPage2($page, $perPage): void
+    public function testBuildPagerWithPage2(int $page, int $perPage): void
     {
         $this->pager->expects($this->once())
             ->method('setMaxPerPage')
@@ -547,7 +551,10 @@ final class DatagridTest extends TestCase
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get(DatagridInterface::PER_PAGE));
     }
 
-    public function getBuildPagerWithPage2Tests(): array
+    /**
+     * @phpstan-return iterable<array-key, array{int, int}>
+     */
+    public function getBuildPagerWithPage2Tests(): iterable
     {
         return [
             [3, 50],

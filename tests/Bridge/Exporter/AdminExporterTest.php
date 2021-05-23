@@ -21,7 +21,10 @@ use Sonata\Exporter\Writer\TypedWriterInterface;
 
 class AdminExporterTest extends TestCase
 {
-    public function provideExportFormats()
+    /**
+     * @phpstan-return iterable<array-key, array{string[], string[], string[]}>
+     */
+    public function provideExportFormats(): iterable
     {
         return [
             'no override' => [['xls'], [], ['xls']],
@@ -30,9 +33,13 @@ class AdminExporterTest extends TestCase
     }
 
     /**
+     * @param string[] $expectedFormats
+     * @param string[] $adminFormats
+     * @param string[] $globalFormats
+     *
      * @dataProvider provideExportFormats
      */
-    public function testAdminHasPriorityOverGlobalSettings(array $expectedFormats, ?array $adminFormats, array $globalFormats): void
+    public function testAdminHasPriorityOverGlobalSettings(array $expectedFormats, array $adminFormats, array $globalFormats): void
     {
         $writers = [];
         foreach ($globalFormats as $exportFormat) {

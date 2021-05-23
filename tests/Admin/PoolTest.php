@@ -20,6 +20,9 @@ use Sonata\AdminBundle\Exception\AdminCodeNotFoundException;
 use Sonata\AdminBundle\Exception\TooManyAdminClassException;
 use Symfony\Component\DependencyInjection\Container;
 
+/**
+ * @phpstan-import-type Group from \Sonata\AdminBundle\Admin\Pool
+ */
 class PoolTest extends TestCase
 {
     /**
@@ -198,6 +201,8 @@ class PoolTest extends TestCase
     }
 
     /**
+     * @param mixed $adminId
+     *
      * @dataProvider getNonStringAdminServiceNames
      */
     public function testGetAdminByAdminCodeWithNonStringCode($adminId): void
@@ -207,7 +212,10 @@ class PoolTest extends TestCase
         $this->pool->getAdminByAdminCode($adminId);
     }
 
-    public function getNonStringAdminServiceNames(): array
+    /**
+     * @phpstan-return iterable<array-key, array{mixed}>
+     */
+    public function getNonStringAdminServiceNames(): iterable
     {
         return [
             [null],
@@ -234,7 +242,10 @@ class PoolTest extends TestCase
         $pool->getAdminByAdminCode($adminId);
     }
 
-    public function getEmptyRootAdminServiceNames()
+    /**
+     * @phpstan-return iterable<array-key, array{string}>
+     */
+    public function getEmptyRootAdminServiceNames(): iterable
     {
         return [
             [''],
@@ -267,7 +278,10 @@ class PoolTest extends TestCase
         $pool->getAdminByAdminCode($adminId);
     }
 
-    public function getInvalidChildAdminServiceNames()
+    /**
+     * @phpstan-return iterable<array-key, array{string}>
+     */
+    public function getInvalidChildAdminServiceNames(): iterable
     {
         return [
             ['admin1|'],
@@ -306,7 +320,10 @@ class PoolTest extends TestCase
         $this->assertTrue($pool->hasAdminByAdminCode($adminId));
     }
 
-    public function getAdminServiceNamesToCheck()
+    /**
+     * @phpstan-return iterable<array-key, array{string}>
+     */
+    public function getAdminServiceNamesToCheck(): iterable
     {
         return [
             ['sonata.news.admin.post'],
@@ -315,6 +332,8 @@ class PoolTest extends TestCase
     }
 
     /**
+     * @param mixed $adminId
+     *
      * @dataProvider getNonStringAdminServiceNames
      */
     public function testHasAdminByAdminCodeWithNonStringCode($adminId): void
@@ -338,7 +357,10 @@ class PoolTest extends TestCase
         $this->assertFalse($this->pool->hasAdminByAdminCode($adminId));
     }
 
-    public function getInvalidAdminServiceNamesToCheck()
+    /**
+     * @phpstan-return iterable<array-key, array{string}>
+     */
+    public function getInvalidAdminServiceNamesToCheck(): iterable
     {
         return [
             [''],
@@ -369,7 +391,10 @@ class PoolTest extends TestCase
         $this->assertFalse($this->pool->hasAdminByAdminCode($adminId));
     }
 
-    public function getInvalidChildAdminServiceNamesToCheck(): array
+    /**
+     * @phpstan-return iterable<array-key, array{string}>
+     */
+    public function getInvalidChildAdminServiceNamesToCheck(): iterable
     {
         return [
             ['sonata.news.admin.post|'],
@@ -411,12 +436,17 @@ class PoolTest extends TestCase
         $this->assertSame(['sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3'], $pool->getAdminServiceIds());
     }
 
+    /**
+     * @phpstan-return Group
+     */
     private function getGroupArray(?string $serviceId = null): array
     {
         $item = [
             'label' => '',
             'route' => '',
+            'route_absolute' => false,
             'route_params' => [],
+            'roles' => [],
         ];
 
         if (null !== $serviceId) {
@@ -424,7 +454,14 @@ class PoolTest extends TestCase
         }
 
         return [
+            'label' => '',
+            'label_catalogue' => '',
+            'icon' => '',
+            'item_adds' => [],
             'items' => ['itemKey' => $item],
+            'keep_open' => false,
+            'on_top' => false,
+            'roles' => [],
         ];
     }
 }

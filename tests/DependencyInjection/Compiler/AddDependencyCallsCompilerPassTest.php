@@ -39,7 +39,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     private $extension;
 
     /**
-     *  @var array
+     *  @var array<string, mixed>
      */
     private $config = [];
 
@@ -577,7 +577,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     protected function getConfig()
     {

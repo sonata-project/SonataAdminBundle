@@ -34,7 +34,7 @@ use Symfony\Component\Config\Definition\Processor;
 final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 {
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private $defaultConfiguration = [];
 
@@ -377,6 +377,9 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         return [new SonataAdminExtension()];
     }
 
+    /**
+     * @return string[]
+     */
     private function getDefaultStylesheets(?string $skin = 'skin-black'): array
     {
         $this->load([

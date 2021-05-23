@@ -28,7 +28,7 @@ final class ShowBuilder implements ShowBuilderInterface
         return new FieldDescriptionCollection();
     }
 
-    public function addField(FieldDescriptionCollection $list, $type, FieldDescriptionInterface $fieldDescription): void
+    public function addField(FieldDescriptionCollection $list, ?string $type, FieldDescriptionInterface $fieldDescription): void
     {
         $fieldDescription->setType($type);
 

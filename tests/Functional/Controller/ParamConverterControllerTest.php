@@ -32,7 +32,7 @@ final class ParamConverterControllerTest extends WebTestCase
     }
 
     /**
-     * @phpstan-return iterable<array{string}>
+     * @phpstan-return iterable<array-key, array{string}>
      */
     public function urlIsSuccessfulDataProvider(): iterable
     {

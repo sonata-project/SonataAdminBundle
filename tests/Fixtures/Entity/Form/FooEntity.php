@@ -16,10 +16,13 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Entity\Form;
 class FooEntity
 {
     /**
-     * @var array
+     * @var mixed[]
      */
     private $values;
 
+    /**
+     * @param mixed[] $values
+     */
     public function __construct(array $values = [])
     {
         $this->values = $values;

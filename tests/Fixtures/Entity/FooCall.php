@@ -15,7 +15,11 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
 
 class FooCall
 {
-    public function __call($method, $arguments)
+    /**
+     * @phpstan-param mixed[] $arguments
+     * @phpstan-return array{string, mixed[]}
+     */
+    public function __call(string $method, array $arguments): array
     {
         return [$method, $arguments];
     }

@@ -19,7 +19,6 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Command\GenerateObjectAclCommand;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Util\ObjectAclManipulatorInterface;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -31,8 +30,6 @@ use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
  */
 class GenerateObjectAclCommandTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
     /**
      * @var Container
      */

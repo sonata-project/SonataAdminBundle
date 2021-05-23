@@ -43,7 +43,7 @@ class DatagridMapperTest extends TestCase
     private $datagridMapper;
 
     /**
-     * @var Datagrid
+     * @var Datagrid<ProxyQueryInterface>
      */
     private $datagrid;
 

@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Tests\Util;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilder;
@@ -26,8 +25,6 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 class FormBuilderIteratorTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
     /**
      * @var EventDispatcherInterface
      */
