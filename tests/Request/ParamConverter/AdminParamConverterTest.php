@@ -17,7 +17,6 @@ use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Request\AdminFetcher;
 use Sonata\AdminBundle\Request\ParamConverter\AdminParamConverter;
@@ -31,7 +30,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final class AdminParamConverterTest extends TestCase
 {
     /**
-     * @var Stub|AdminInterface
+     * @var PostAdmin
      */
     private $admin;
 

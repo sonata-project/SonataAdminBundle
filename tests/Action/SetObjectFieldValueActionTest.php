@@ -62,7 +62,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     private $validator;
 
     /**
-     * @var ModelManagerInterface&MockObject
+     * @var ModelManagerInterface<object>&MockObject
      */
     private $modelManager;
 

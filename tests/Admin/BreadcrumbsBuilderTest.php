@@ -133,6 +133,9 @@ class BreadcrumbsBuilderTest extends TestCase
         );
     }
 
+    /**
+     * @phpstan-return array<array{string}>
+     */
     public function actionProvider(): array
     {
         return [

@@ -19,8 +19,15 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 final class FilterDataTransformer implements DataTransformerInterface
 {
+    /**
+     * @param array<string, mixed>|null $value
+     */
     public function reverseTransform($value): FilterData
     {
+        if (null === $value) {
+            return FilterData::fromArray([]);
+        }
+
         if (!\is_array($value)) {
             throw new UnexpectedTypeException($value, 'array');
         }
@@ -30,8 +37,12 @@ final class FilterDataTransformer implements DataTransformerInterface
 
     /**
      * @param FilterData|null $value
+     *
+     * @return array<string, mixed>|null
+     *
+     * @phpstan-return array{type: int|null, value?: mixed}|null
      */
-    public function transform($value)
+    public function transform($value): ?array
     {
         if (null === $value) {
             return null;

@@ -37,7 +37,7 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
     protected $type;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected $sonataAdmin = [
         'name' => null,
@@ -80,7 +80,10 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
         );
     }
 
-    protected function getSonataAdmin()
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getSonataAdmin(): array
     {
         return $this->sonataAdmin;
     }

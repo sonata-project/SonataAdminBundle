@@ -53,11 +53,11 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param object[]|null $value
+     * @param \Traversable<object>|null $value
      *
      * @return string[]
      *
-     * @phpstan-param T[]|null $value
+     * @phpstan-param \Traversable<T>|null $value
      */
     public function transform($value): array
     {
@@ -74,6 +74,8 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
     }
 
     /**
+     * @param array<int|string>|null $value
+     *
      * @throws UnexpectedTypeException
      *
      * @return Collection<int|string, object>|null
@@ -93,7 +95,6 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
         if ([] === $value) {
             $result = $value;
         } else {
-            $value = array_map('strval', $value);
             $query = $this->modelManager->createQuery($this->class);
             $this->modelManager->addIdentifiersToQuery($this->class, $query, $value);
             $result = $this->modelManager->executeQuery($query);
@@ -115,7 +116,7 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
     }
 
     /**
-     * @return mixed[]
+     * @return array<int|string>
      *
      * @phpstan-param T $model
      */

@@ -72,17 +72,23 @@ class FilterChoiceWidgetTest extends BaseWidgetTest
         );
     }
 
-    protected function getRequiredOption()
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getRequiredOption(): array
     {
         return ['required' => true];
     }
 
-    protected function getChoiceClass()
+    protected function getChoiceClass(): string
     {
         return ChoiceType::class;
     }
 
-    protected function getDefaultOption()
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getDefaultOption(): array
     {
         return [
             'placeholder' => 'Choose an option',

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -26,7 +25,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess;
 class ModelToIdPropertyTransformerTest extends TestCase
 {
     /**
-     * @var ModelManagerInterface&MockObject
+     * @var ModelManagerInterface<object>&MockObject
      */
     private $modelManager;
 
@@ -44,22 +43,24 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $this->modelManager
             ->method('find')
-            ->willReturnCallback(static function (string $class, $id) use ($model) {
+            ->willReturnCallback(static function (string $class, $id) use ($model): ?Foo {
                 if (Foo::class === $class && 123 === $id) {
                     return $model;
                 }
+
+                return null;
             });
 
         $this->assertNull($transformer->reverseTransform(null));
-        $this->assertNull($transformer->reverseTransform(false));
         $this->assertNull($transformer->reverseTransform(''));
         $this->assertNull($transformer->reverseTransform(12));
-        $this->assertNull($transformer->reverseTransform([123]));
-        $this->assertNull($transformer->reverseTransform([123, 456, 789]));
         $this->assertSame($model, $transformer->reverseTransform(123));
     }
 
     /**
+     * @param Foo[]                                $expected
+     * @param array<int|string|array<string>>|null $params
+     *
      * @dataProvider getReverseTransformMultipleTests
      */
     public function testReverseTransformMultiple(array $expected, $params, Foo $entity1, Foo $entity2, Foo $entity3): void
@@ -76,7 +77,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
             ->expects($this->exactly($params ? 1 : 0))
             ->method('executeQuery')
             ->with($this->equalTo($proxyQuery))
-            ->willReturnCallback(static function (ProxyQueryInterface $query) use ($params, $entity1, $entity2, $entity3): array {
+            ->willReturnCallback(static function () use ($params, $entity1, $entity2, $entity3): array {
                 $collection = [];
 
                 if (\in_array(123, $params, true)) {
@@ -100,6 +101,9 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->assertSame($expected, $result->getValues());
     }
 
+    /**
+     * @phpstan-return iterable<array{array<Foo>, array<int|string|array<string>>|null, Foo, Foo, Foo}>
+     */
     public function getReverseTransformMultipleTests(): iterable
     {
         $entity1 = new Foo();
@@ -115,34 +119,46 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $entity3->setBar('example3');
 
         yield [[], null, $entity1, $entity2, $entity3];
-        yield [[], false, $entity1, $entity2, $entity3];
         yield [[$entity1], [123, '_labels' => ['example']], $entity1, $entity2, $entity3];
         yield [[$entity1, $entity2, $entity3], [123, 456, 789, '_labels' => ['example', 'example2', 'example3']], $entity1, $entity2, $entity3];
     }
 
+    public function testReverseTransformInvalidTypeTests(): void
+    {
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false);
+
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Value should not be an array.');
+
+        $transformer->reverseTransform([123]);
+    }
+
     /**
+     * @param mixed $params
+     *
      * @dataProvider getReverseTransformMultipleInvalidTypeTests
      */
-    public function testReverseTransformMultipleInvalidTypeTests(array $expected, $params, string $type): void
+    public function testReverseTransformMultipleInvalidTypeTests($params, string $type): void
     {
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
+
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage(sprintf('Value should be array, %s given.', $type));
 
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
-
-        $result = $transformer->reverseTransform($params);
-        $this->assertInstanceOf(ArrayCollection::class, $result);
-        $this->assertSame($expected, $result->getValues());
+        $transformer->reverseTransform($params);
     }
 
+    /**
+     * @phpstan-return array<array{mixed, string}>
+     */
     public function getReverseTransformMultipleInvalidTypeTests(): array
     {
         return [
-            [[], true, 'boolean'],
-            [[], 12, 'integer'],
-            [[], 12.9, 'double'],
-            [[], '_labels', 'string'],
-            [[], new \stdClass(), 'object'],
+            [true, 'boolean'],
+            [12, 'integer'],
+            [12.9, 'double'],
+            ['_labels', 'string'],
+            [new \stdClass(), 'object'],
         ];
     }
 

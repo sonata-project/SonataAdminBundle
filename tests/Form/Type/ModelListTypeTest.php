@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -20,6 +21,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ModelListTypeTest extends TypeTestCase
 {
+    /**
+     * @var MockObject&ModelManagerInterface<object>
+     */
     private $modelManager;
 
     protected function setUp(): void

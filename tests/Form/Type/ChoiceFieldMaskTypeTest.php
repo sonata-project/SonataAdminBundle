@@ -42,6 +42,9 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
         $this->assertSame(['map' => []], $options);
     }
 
+    /**
+     * @phpstan-return array<array{mixed}>
+     */
     public function setAllowedTypesProvider(): array
     {
         return [
@@ -54,6 +57,8 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
     }
 
     /**
+     * @param mixed $map
+     *
      * @dataProvider setAllowedTypesProvider
      */
     public function testSetAllowedTypes($map): void
@@ -149,6 +154,11 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
         $this->assertSame($expectedMap, $view->vars['map'], '"map" is not as expected');
     }
 
+    /**
+     * @param array<string, mixed> $options
+     *
+     * @return array<string, mixed>
+     */
     private function resolveOptions(array $options): array
     {
         $type = new ChoiceFieldMaskType();

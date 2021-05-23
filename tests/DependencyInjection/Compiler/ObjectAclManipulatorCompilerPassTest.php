@@ -40,6 +40,9 @@ class ObjectAclManipulatorCompilerPassTest extends TestCase
         $this->assertArrayHasKey($serviceId, $availableManagers);
     }
 
+    /**
+     * @phpstan-return iterable<array{ContainerBuilder, string}>
+     */
     public function containerDataProvider(): iterable
     {
         $serviceId = 'sonata.admin.manipulator.acl.object.orm';

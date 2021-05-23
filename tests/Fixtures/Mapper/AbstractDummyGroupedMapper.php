@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 abstract class AbstractDummyGroupedMapper extends BaseGroupedMapper
 {
     /**
-     * @var AdminInterface
+     * @var AdminInterface<object>
      */
     private $admin;
 

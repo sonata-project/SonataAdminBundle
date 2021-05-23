@@ -47,13 +47,13 @@ final class ModelToIdTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param mixed $value
+     * @param int|string|null $value
      *
      * @phpstan-return T|null
      */
     public function reverseTransform($value): ?object
     {
-        if (empty($value) && !\in_array($value, ['0', 0], true)) {
+        if (null === $value || '' === $value) {
             return null;
         }
 
@@ -67,7 +67,7 @@ final class ModelToIdTransformer implements DataTransformerInterface
      */
     public function transform($value): ?string
     {
-        if (empty($value)) {
+        if (null === $value) {
             return null;
         }
 

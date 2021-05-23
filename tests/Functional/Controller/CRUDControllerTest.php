@@ -83,6 +83,9 @@ final class CRUDControllerTest extends WebTestCase
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 
+    /**
+     * @phpstan-return iterable<array{string}>
+     */
     public function urlIsSuccessfulDataProvider(): iterable
     {
         return [

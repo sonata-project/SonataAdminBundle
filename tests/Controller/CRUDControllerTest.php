@@ -3793,11 +3793,9 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('bar', $this->request->request->get('foo'));
     }
 
-    public function getCsrfProvider()
-    {
-        return $this->csrfProvider;
-    }
-
+    /**
+     * @phpstan-return array<array{string, string}>
+     */
     public function getToStringValues()
     {
         return [
