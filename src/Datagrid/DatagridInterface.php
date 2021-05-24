@@ -22,7 +22,6 @@ use Symfony\Component\Form\FormInterface;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-template T of ProxyQueryInterface
- * @psalm-template-covariant T of ProxyQueryInterface
  */
 interface DatagridInterface
 {

@@ -227,9 +227,9 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         return $this->pagerType;
     }
 
-    final public function setManagerType($type): void
+    final public function setManagerType($managerType): void
     {
-        $this->managerType = $type;
+        $this->managerType = $managerType;
     }
 
     final public function getManagerType(): string

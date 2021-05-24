@@ -24,17 +24,17 @@ use Sonata\AdminBundle\Show\ShowMapper;
  */
 final class ModelAdmin extends AbstractAdmin
 {
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('foo')
             ->add('bar')
             ->add('baz');
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('foo')
             ->add('bar')
             ->add('baz')
@@ -47,17 +47,17 @@ final class ModelAdmin extends AbstractAdmin
             ]);
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('foo')
             ->add('bar')
             ->add('baz');
     }
 
-    protected function configureShowFields(ShowMapper $showMapper): void
+    protected function configureShowFields(ShowMapper $show): void
     {
-        $showMapper
+        $show
             ->add('foo')
             ->add('bar')
             ->add('baz');

@@ -24,25 +24,25 @@ use Sonata\AdminBundle\Show\ShowMapper;
  */
 final class AvoidInfiniteLoopAdmin extends AbstractAdmin
 {
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $this->getFilterFieldDescriptions();
         $this->hasFilterFieldDescription('help');
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
         $this->getListFieldDescriptions();
         $this->hasFilterFieldDescription('help');
     }
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
         $this->getFormFieldDescriptions();
         $this->hasFilterFieldDescription('help');
     }
 
-    protected function configureShowFields(ShowMapper $showMapper): void
+    protected function configureShowFields(ShowMapper $show): void
     {
         $this->getShowFieldDescriptions();
         $this->hasFilterFieldDescription('help');
