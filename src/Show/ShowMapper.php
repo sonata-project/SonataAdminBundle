@@ -117,9 +117,9 @@ final class ShowMapper extends BaseGroupedMapper
         return $this;
     }
 
-    public function get(string $name): FieldDescriptionInterface
+    public function get(string $key): FieldDescriptionInterface
     {
-        return $this->list->get($name);
+        return $this->list->get($key);
     }
 
     public function has(string $key): bool

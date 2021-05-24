@@ -29,19 +29,19 @@ use Sonata\AdminBundle\Show\ShowMapper;
  */
 abstract class AbstractAdminExtension implements AdminExtensionInterface
 {
-    public function configureFormFields(FormMapper $formMapper): void
+    public function configureFormFields(FormMapper $form): void
     {
     }
 
-    public function configureListFields(ListMapper $listMapper): void
+    public function configureListFields(ListMapper $list): void
     {
     }
 
-    public function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    public function configureDatagridFilters(DatagridMapper $filter): void
     {
     }
 
-    public function configureShowFields(ShowMapper $showMapper): void
+    public function configureShowFields(ShowMapper $show): void
     {
     }
 

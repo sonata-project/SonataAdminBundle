@@ -105,9 +105,9 @@ final class DatagridMapper implements MapperInterface
         return $this;
     }
 
-    public function get(string $name): FilterInterface
+    public function get(string $key): FilterInterface
     {
-        return $this->datagrid->getFilter($name);
+        return $this->datagrid->getFilter($key);
     }
 
     public function has(string $key): bool

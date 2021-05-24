@@ -141,7 +141,7 @@ interface TaggedAdminInterface extends MutableTemplateRegistryAwareInterface
 
     public function getTranslator(): TranslatorInterface;
 
-    public function setConfigurationPool(Pool $pool): void;
+    public function setConfigurationPool(Pool $configurationPool): void;
 
     public function getConfigurationPool(): Pool;
 

@@ -322,9 +322,9 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         return $this->fieldDescriptionFactory;
     }
 
-    final public function setFormContractor(FormContractorInterface $formBuilder): void
+    final public function setFormContractor(FormContractorInterface $formContractor): void
     {
-        $this->formContractor = $formBuilder;
+        $this->formContractor = $formContractor;
     }
 
     final public function getFormContractor(): FormContractorInterface
