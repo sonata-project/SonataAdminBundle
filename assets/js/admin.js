@@ -681,13 +681,15 @@ const Admin = {
     let stuck = document.getElementById('navbar-stuck');
     if (stuck === null) {
       stuck = document.createElement('style');
-      stuck.setAttribute('type', 'text/css');
+      stuck.id = 'navbar-stuck';
+      stuck.type = 'text/css';
       stuck.dataset.lastOffset = topNavbarHeight;
       stuck.innerHTML = `body.fixed .content-header .navbar.stuck { top: ${topNavbarHeight}px; }`;
       document.head.appendChild(stuck);
     }
 
     if (stuck.dataset.lastOffset !== topNavbarHeight) {
+      stuck.dataset.lastOffset = topNavbarHeight;
       stuck.innerHTML = `body.fixed .content-header .navbar.stuck { top: ${topNavbarHeight}px; }`;
     }
   },
