@@ -121,9 +121,9 @@ class ShowMapper extends BaseGroupedMapper
         return $this;
     }
 
-    public function get($name)
+    public function get($key)
     {
-        return $this->list->get($name);
+        return $this->list->get($key);
     }
 
     public function has($key)

@@ -57,6 +57,9 @@ class CreateClassCacheCommand extends Command
         $this->setDescription('Generate the classes.php files');
     }
 
+    /**
+     * @psalm-suppress InvalidReturnType
+     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $classmap = $this->cacheDir.'/classes.map';

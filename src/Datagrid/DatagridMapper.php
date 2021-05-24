@@ -165,9 +165,9 @@ class DatagridMapper extends BaseMapper implements MapperInterface
         return $this;
     }
 
-    public function get($name)
+    public function get($key)
     {
-        return $this->datagrid->getFilter($name);
+        return $this->datagrid->getFilter($key);
     }
 
     public function has($key)
