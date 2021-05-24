@@ -306,10 +306,10 @@ class AdminTest extends TestCase
     public function testConfigure(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-        $this->assertNotNull($admin->getUniqid());
+        $this->assertNotNull($admin->getUniqId());
 
         $admin->initialize();
-        $this->assertNotNull($admin->getUniqid());
+        $this->assertNotNull($admin->getUniqId());
         $this->assertSame('Post', $admin->getClassnameLabel());
 
         $admin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'Sonata\NewsBundle\Controller\CommentAdminController');
@@ -588,17 +588,17 @@ class AdminTest extends TestCase
     }
 
     /**
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::setUniqid
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getUniqid
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::setUniqId
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getUniqId
      */
-    public function testSetUniqid(): void
+    public function testSetUniqId(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $uniqid = uniqid();
-        $admin->setUniqid($uniqid);
+        $uniqId = uniqid();
+        $admin->setUniqId($uniqId);
 
-        $this->assertSame($uniqid, $admin->getUniqid());
+        $this->assertSame($uniqId, $admin->getUniqId());
     }
 
     public function testToString(): void

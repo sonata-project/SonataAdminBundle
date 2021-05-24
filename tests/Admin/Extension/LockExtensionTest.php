@@ -172,37 +172,37 @@ class LockExtensionTest extends TestCase
 
     public function testPreUpdateIfRequestDoesNotHaveLockVersion(): void
     {
-        $uniqid = 'admin123';
-        $this->configureAdmin($this->modelManager, $uniqid, $this->request);
+        $uniqId = 'admin123';
+        $this->configureAdmin($this->modelManager, $uniqId, $this->request);
 
         $this->modelManager->expects($this->never())->method('lock');
 
-        $this->request->request->set($uniqid, ['something']);
+        $this->request->request->set($uniqId, ['something']);
         $this->lockExtension->preUpdate($this->admin, $this->object);
     }
 
     public function testPreUpdateIfModelManagerIsNotImplementingLockerInterface(): void
     {
-        $uniqid = 'admin123';
+        $uniqId = 'admin123';
         $this->configureAdmin(
             $this->createStub(ModelManagerInterface::class),
-            $uniqid,
+            $uniqId,
             $this->request
         );
         $this->modelManager->expects($this->never())->method('lock');
 
-        $this->request->request->set($uniqid, ['_lock_version' => 1]);
+        $this->request->request->set($uniqId, ['_lock_version' => 1]);
         $this->lockExtension->preUpdate($this->admin, $this->object);
     }
 
     public function testPreUpdateIfObjectIsVersioned(): void
     {
-        $uniqid = 'admin123';
-        $this->configureAdmin($this->modelManager, $uniqid, $this->request);
+        $uniqId = 'admin123';
+        $this->configureAdmin($this->modelManager, $uniqId, $this->request);
 
         $this->modelManager->expects($this->once())->method('lock')->with($this->object, 1);
 
-        $this->request->request->set($uniqid, ['_lock_version' => 1]);
+        $this->request->request->set($uniqId, ['_lock_version' => 1]);
         $this->lockExtension->preUpdate($this->admin, $this->object);
     }
 
@@ -237,10 +237,10 @@ class LockExtensionTest extends TestCase
 
     private function configureAdmin(
         ModelManagerInterface $modelManager,
-        string $uniqid = '',
+        string $uniqId = '',
         ?Request $request = null
     ): void {
-        $this->admin->method('getUniqid')->willReturn($uniqid);
+        $this->admin->method('getUniqId')->willReturn($uniqId);
         $this->admin->method('getModelManager')->willReturn($modelManager);
 
         $this->admin->method('hasRequest')->willReturn(null !== $request);
