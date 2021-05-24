@@ -198,9 +198,9 @@ class FormMapper extends BaseGroupedMapper
         return $this;
     }
 
-    public function get($name)
+    public function get($key)
     {
-        $name = $this->sanitizeFieldName($name);
+        $name = $this->sanitizeFieldName($key);
 
         return $this->formBuilder->get($name);
     }

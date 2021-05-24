@@ -44,22 +44,22 @@ interface AdminExtensionInterface
     /**
      * @return void
      */
-    public function configureFormFields(FormMapper $formMapper);
+    public function configureFormFields(FormMapper $form);
 
     /**
      * @return void
      */
-    public function configureListFields(ListMapper $listMapper);
+    public function configureListFields(ListMapper $list);
 
     /**
      * @return void
      */
-    public function configureDatagridFilters(DatagridMapper $datagridMapper);
+    public function configureDatagridFilters(DatagridMapper $filter);
 
     /**
      * @return void
      */
-    public function configureShowFields(ShowMapper $showMapper);
+    public function configureShowFields(ShowMapper $show);
 
     /**
      * @return void

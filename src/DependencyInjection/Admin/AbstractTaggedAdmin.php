@@ -476,9 +476,9 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     /**
      * @final since sonata-admin/admin-bundle 3.84
      */
-    public function setFormContractor(FormContractorInterface $formBuilder)
+    public function setFormContractor(FormContractorInterface $formContractor)
     {
-        $this->formContractor = $formBuilder;
+        $this->formContractor = $formContractor;
     }
 
     /**

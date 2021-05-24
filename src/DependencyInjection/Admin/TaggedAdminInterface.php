@@ -243,7 +243,7 @@ interface TaggedAdminInterface
     /**
      * @return void
      */
-    public function setConfigurationPool(Pool $pool);
+    public function setConfigurationPool(Pool $configurationPool);
 
     /**
      * NEXT_MAJOR: Uncomment this method.
