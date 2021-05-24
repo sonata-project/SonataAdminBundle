@@ -676,20 +676,19 @@ const Admin = {
   },
 
   refreshNavbarStuckClass(topNavbar) {
-    let stuck = jQuery('#navbar-stuck');
-    const topNavbarHeight = jQuery(topNavbar).outerHeight();
+    const topNavbarHeight = topNavbar.outerHeight();
 
-    if (!stuck.length) {
-      stuck = jQuery('<style id="navbar-stuck">')
-        .prop('type', 'text/css')
-        .data('lastOffset', topNavbarHeight)
-        .appendTo('head');
-
-      stuck.html(`body.fixed .content-header .navbar.stuck { top: ${topNavbarHeight}px; }`);
+    let stuck = document.getElementById('navbar-stuck');
+    if (stuck === null) {
+      stuck = document.createElement('style');
+      stuck.setAttribute('type', 'text/css');
+      stuck.dataset.lastOffset = topNavbarHeight;
+      stuck.innerHTML = `body.fixed .content-header .navbar.stuck { top: ${topNavbarHeight}px; }`;
+      document.head.appendChild(stuck);
     }
 
-    if (stuck.data('lastOffset') !== topNavbarHeight) {
-      stuck.html(`body.fixed .content-header .navbar.stuck { top: ${topNavbarHeight}px; }`);
+    if (stuck.dataset.lastOffset !== topNavbarHeight) {
+      stuck.innerHTML = `body.fixed .content-header .navbar.stuck { top: ${topNavbarHeight}px; }`;
     }
   },
 
