@@ -190,9 +190,9 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function getNewInstance(): object;
 
-    public function setUniqid(string $uniqId): void;
+    public function setUniqId(string $uniqId): void;
 
-    public function getUniqid(): string;
+    public function getUniqId(): string;
 
     public function getClassnameLabel(): string;
 

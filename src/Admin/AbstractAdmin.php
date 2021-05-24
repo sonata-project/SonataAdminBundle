@@ -231,14 +231,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     private $currentChild = false;
 
     /**
-     * NEXT_MAJOR: Rename $uniqId.
-     *
      * The uniqId is used to avoid clashing with 2 admin related to the code
      * ie: a Block linked to a Block.
      *
      * @var string|null
      */
-    private $uniqid;
+    private $uniqId;
 
     /**
      * The current request object.
@@ -1467,18 +1465,18 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return \count($this->children) > 0;
     }
 
-    final public function setUniqid(string $uniqId): void
+    final public function setUniqId(string $uniqId): void
     {
-        $this->uniqid = $uniqId;
+        $this->uniqId = $uniqId;
     }
 
-    final public function getUniqid(): string
+    final public function getUniqId(): string
     {
-        if (!$this->uniqid) {
-            $this->uniqid = sprintf('s%s', uniqid());
+        if (!$this->uniqId) {
+            $this->uniqId = sprintf('s%s', uniqid());
         }
 
-        return $this->uniqid;
+        return $this->uniqId;
     }
 
     final public function getClassnameLabel(): string

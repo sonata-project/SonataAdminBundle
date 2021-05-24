@@ -389,9 +389,9 @@ class CRUDControllerTest extends TestCase
         $uniqueId = '';
 
         $this->admin->expects($this->once())
-            ->method('setUniqid')
-            ->willReturnCallback(static function (string $uniqid) use (&$uniqueId): void {
-                $uniqueId = $uniqid;
+            ->method('setUniqId')
+            ->willReturnCallback(static function (string $uniqId) use (&$uniqueId): void {
+                $uniqueId = $uniqId;
             });
 
         $this->request->query->set('uniqid', '123456');
@@ -405,9 +405,9 @@ class CRUDControllerTest extends TestCase
         $uniqueId = '';
 
         $this->admin->expects($this->once())
-            ->method('setUniqid')
-            ->willReturnCallback(static function (string $uniqid) use (&$uniqueId): void {
-                $uniqueId = $uniqid;
+            ->method('setUniqId')
+            ->willReturnCallback(static function (string $uniqId) use (&$uniqueId): void {
+                $uniqueId = $uniqId;
             });
 
         $this->admin->expects($this->once())

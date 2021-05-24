@@ -76,7 +76,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->method('getBaseCodeRoute')->willReturn('base.Code.Foo');
         $admin->expects($this->once())->method('hasParentFieldDescription')->willReturn(false);
         $admin->expects($this->once())->method('hasRequest')->willReturn(true);
-        $admin->method('getUniqid')->willReturn('foo_uniqueid');
+        $admin->method('getUniqId')->willReturn('foo_uniqueid');
         $admin->expects($this->once())->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
         $admin->method('getRoutes')->willReturn($collection);
         $admin->method('getExtensions')->willReturn([]);
@@ -170,7 +170,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->method('getIdParameter')->willReturn('id');
         $admin->method('hasParentFieldDescription')->willReturn(false);
         $admin->method('hasRequest')->willReturn(true);
-        $admin->method('getUniqid')->willReturn('foo_uniqueid');
+        $admin->method('getUniqId')->willReturn('foo_uniqueid');
         $admin->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
         $admin->method('getRoutes')->willReturn($childCollection);
         $admin->method('getExtensions')->willReturn([]);
@@ -261,7 +261,7 @@ class DefaultRouteGeneratorTest extends TestCase
         // embeded admin (not nested ...)
         $admin->expects($this->once())->method('hasParentFieldDescription')->willReturn(true);
         $admin->expects($this->once())->method('hasRequest')->willReturn(true);
-        $admin->expects($this->any())->method('getUniqid')->willReturn('foo_uniqueid');
+        $admin->expects($this->any())->method('getUniqId')->willReturn('foo_uniqueid');
         $admin->expects($this->once())->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
         $admin->method('getExtensions')->willReturn([]);
         $admin->method('getRoutes')->willReturn($collection);
@@ -289,7 +289,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $fieldDescription->expects($this->once())->method('getOption')->willReturn([]);
 
         $parentAdmin = $this->getMockForAbstractClass(AdminInterface::class);
-        $parentAdmin->method('getUniqid')->willReturn('parent_foo_uniqueid');
+        $parentAdmin->method('getUniqId')->willReturn('parent_foo_uniqueid');
         $parentAdmin->method('getCode')->willReturn('parent_foo_code');
         $parentAdmin->method('getExtensions')->willReturn([]);
 
@@ -339,7 +339,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->method('getIdParameter')->willReturn('id');
         $admin->method('hasParentFieldDescription')->willReturn(false);
         $admin->method('hasRequest')->willReturn(true);
-        $admin->method('getUniqid')->willReturn('foo_uniqueid');
+        $admin->method('getUniqId')->willReturn('foo_uniqueid');
         $admin->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
         $admin->method('getRoutes')->willReturn($childCollection);
         $admin->method('getExtensions')->willReturn([]);
@@ -374,7 +374,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $standaloneAdmin->method('getBaseCodeRoute')->willReturn('base.Code.Child');
         $standaloneAdmin->expects($this->once())->method('hasParentFieldDescription')->willReturn(false);
         $standaloneAdmin->expects($this->once())->method('hasRequest')->willReturn(true);
-        $standaloneAdmin->method('getUniqid')->willReturn('foo_uniqueid');
+        $standaloneAdmin->method('getUniqId')->willReturn('foo_uniqueid');
         $standaloneAdmin->expects($this->once())->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
         $standaloneAdmin->method('getRoutes')->willReturn($standaloneCollection);
         $standaloneAdmin->method('getExtensions')->willReturn([]);
