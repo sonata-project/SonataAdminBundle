@@ -308,10 +308,10 @@ file that was distributed with this source code.
                         {% endif %}
 
                         // append to Select2
-                        autocompleteInput.append(data).trigger('change');
+                        autocompleteInput.select2('data', data).append(data).trigger('change');
 
                         // manually trigger the `select2:select` event
-                        autocompleteInput.trigger({
+                        autocompleteInput.select2('data', data).trigger({
                             type: 'select2:select',
                             params: {
                                 data: data
