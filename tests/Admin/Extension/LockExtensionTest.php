@@ -235,6 +235,9 @@ class LockExtensionTest extends TestCase
         );
     }
 
+    /**
+     * @param ModelManagerInterface<object> $modelManager
+     */
     private function configureAdmin(
         ModelManagerInterface $modelManager,
         string $uniqid = '',

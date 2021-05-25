@@ -37,7 +37,7 @@ class TraversableToCollectionTest extends TestCase
     }
 
     /**
-     * @phpstan-return iterable<array{int, \Traversable<mixed>|array<mixed>}>
+     * @phpstan-return iterable<array-key, array{int, \Traversable<mixed>|array<mixed>}>
      */
     public function provideTraversableValues(): iterable
     {
@@ -68,7 +68,7 @@ class TraversableToCollectionTest extends TestCase
     }
 
     /**
-     * @phpstan-return iterable<array{string, mixed}>
+     * @phpstan-return iterable<array-key, array{string, mixed}>
      */
     public function provideInvalidValues(): iterable
     {

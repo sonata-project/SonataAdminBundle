@@ -635,7 +635,7 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @phpstan-return iterable<array{string, Group}>
+     * @phpstan-return iterable<array-key, array{string, Group}>
      */
     public function getRootMenuItemWithDifferentUrlTypes(): iterable
     {

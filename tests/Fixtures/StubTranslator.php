@@ -17,6 +17,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class StubTranslator implements TranslatorInterface
 {
+    /**
+     * @param mixed[] $parameters
+     */
     public function trans($id, array $parameters = [], $domain = null, $locale = null): string
     {
         $transOpeningTag = '[trans]';

@@ -109,7 +109,10 @@ final class RetrieveFormFieldElementActionTest extends TestCase
         $this->assertSame($response->getContent(), 'block');
     }
 
-    private function configureFormRenderer()
+    /**
+     * @return MockObject&FormRenderer
+     */
+    private function configureFormRenderer(): MockObject
     {
         $runtime = $this->createMock(FormRenderer::class);
 

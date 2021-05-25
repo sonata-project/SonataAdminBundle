@@ -387,6 +387,7 @@ class AdminHelperTest extends TestCase
             ->willReturn($request);
 
         $foo = new class() {
+            /** @var Collection<int, Bar> */
             private $bar;
 
             public function __construct()
@@ -394,11 +395,13 @@ class AdminHelperTest extends TestCase
                 $this->bar = new ArrayCollection();
             }
 
+            /** @return Collection<int, Bar> */
             public function getBar(): Collection
             {
                 return $this->bar;
             }
 
+            /** @param Collection<int, Bar> $bar */
             public function setBar(Collection $bar): void
             {
                 $this->bar = $bar;
@@ -497,7 +500,7 @@ class AdminHelperTest extends TestCase
         $this->helper->appendFormFieldElement($admin, $object, 'uniquePartOfId_sub_object_0_and_more_0_final_data');
     }
 
-    private function getMethodAsPublic($privateMethod): \ReflectionMethod
+    private function getMethodAsPublic(string $privateMethod): \ReflectionMethod
     {
         $reflectionMethod = new \ReflectionMethod(AdminHelper::class, $privateMethod);
         $reflectionMethod->setAccessible(true);

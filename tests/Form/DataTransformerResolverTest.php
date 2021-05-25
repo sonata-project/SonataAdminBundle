@@ -89,7 +89,7 @@ final class DataTransformerResolverTest extends TestCase
     }
 
     /**
-     * @phpstan-return iterable<array{mixed, \DateTimeZone}>
+     * @phpstan-return iterable<array-key, array{mixed, \DateTimeZone}>
      */
     public function getTimeZones(): iterable
     {

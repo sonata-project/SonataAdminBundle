@@ -72,7 +72,7 @@ class ModelTypeTest extends TypeTestCase
     }
 
     /**
-     * @phpstan-return iterable<array{array<string, mixed>, int}>
+     * @phpstan-return iterable<array-key, array{array<string, mixed>, int}>
      */
     public function getGetOptionsTests(): iterable
     {

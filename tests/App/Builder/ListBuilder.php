@@ -28,11 +28,11 @@ final class ListBuilder implements ListBuilderInterface
         return new FieldDescriptionCollection();
     }
 
-    public function buildField($type, FieldDescriptionInterface $fieldDescription): void
+    public function buildField(?string $type, FieldDescriptionInterface $fieldDescription): void
     {
     }
 
-    public function addField(FieldDescriptionCollection $list, $type, FieldDescriptionInterface $fieldDescription): void
+    public function addField(FieldDescriptionCollection $list, ?string $type, FieldDescriptionInterface $fieldDescription): void
     {
         $fieldDescription->setType($type);
         $fieldDescription->getAdmin()->addListFieldDescription($fieldDescription->getName(), $fieldDescription);

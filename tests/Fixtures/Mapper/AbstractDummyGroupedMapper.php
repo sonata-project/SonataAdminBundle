@@ -23,11 +23,17 @@ abstract class AbstractDummyGroupedMapper extends BaseGroupedMapper
      */
     private $admin;
 
+    /**
+     * @param AdminInterface<object> $admin
+     */
     public function __construct(AdminInterface $admin)
     {
         $this->admin = $admin;
     }
 
+    /**
+     * @return AdminInterface<object>
+     */
     public function getAdmin(): AdminInterface
     {
         return $this->admin;

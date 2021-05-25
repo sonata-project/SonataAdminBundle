@@ -75,7 +75,7 @@ final class FilterDataTest extends TestCase
     }
 
     /**
-     * @phpstan-return iterable<array{int|null, int|numeric-string|null}>
+     * @phpstan-return iterable<array-key, array{int|null, int|numeric-string|null}>
      */
     public function getTypes(): iterable
     {

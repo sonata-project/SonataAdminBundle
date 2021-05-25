@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
 
 /**
- * @phpstan-implements \ArrayAccess<string, mixed>
+ * @phpstan-implements \ArrayAccess<string, string|null>
  */
 class FooArrayAccess implements \ArrayAccess
 {
+    /**
+     * @var string|null
+     */
     private $bar;
-
-    private $baz;
 
     public function __toString()
     {
@@ -56,23 +57,13 @@ class FooArrayAccess implements \ArrayAccess
         throw new \BadMethodCallException(sprintf('Array access of class %s is read-only!', static::class));
     }
 
-    public function getBar()
+    public function getBar(): ?string
     {
         return $this->bar;
     }
 
-    public function setBar($bar): void
+    public function setBar(string $bar): void
     {
         $this->bar = $bar;
-    }
-
-    public function getBaz()
-    {
-        return $this->baz;
-    }
-
-    public function setBaz($baz): void
-    {
-        $this->baz = $baz;
     }
 }

@@ -13,19 +13,24 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\ChoiceList;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class ModelChoiceLoaderTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
+    /**
+     * @var MockObject&ModelManagerInterface <object>
+     */
     private $modelManager;
 
+    /**
+     * @var PropertyAccessorInterface
+     */
     private $propertyAccessor;
 
     protected function setUp(): void

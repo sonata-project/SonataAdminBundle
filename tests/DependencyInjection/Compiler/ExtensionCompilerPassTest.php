@@ -48,7 +48,7 @@ class ExtensionCompilerPassTest extends TestCase
     private $extension;
 
     /**
-     *  @var array
+     * @var array<string, mixed>
      */
     private $config = [];
 
@@ -317,6 +317,9 @@ class ExtensionCompilerPassTest extends TestCase
         $container->compile();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getConfig(): array
     {
         $config = [
@@ -480,9 +483,15 @@ class MockAdmin extends AbstractAdmin
 /** @phpstan-extends AbstractAdmin<object> */
 class MockAbstractServiceAdmin extends AbstractAdmin
 {
+    /**
+     * @var mixed
+     */
     private $extraArgument;
 
-    public function __construct($code, $class, $baseControllerName, $extraArgument = null)
+    /**
+     * @param mixed $extraArgument
+     */
+    public function __construct(string $code, string $class, string $baseControllerName, $extraArgument = null)
     {
         $this->extraArgument = $extraArgument;
 

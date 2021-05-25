@@ -201,7 +201,7 @@ class BaseFieldDescriptionTest extends TestCase
     }
 
     /**
-     * @phpstan-return iterable<array{string}>
+     * @phpstan-return iterable<array-key, array{string}>
      */
     public function getFieldValueWithFieldNameDataProvider(): iterable
     {
@@ -252,7 +252,12 @@ class BaseFieldDescriptionTest extends TestCase
         $this->assertSame('ExtensionDomain', $description->getTranslationDomain());
     }
 
-    protected function callMethod($obj, string $name, array $args = [])
+    /**
+     * @param mixed[] $args
+     *
+     * @return mixed
+     */
+    protected function callMethod(object $obj, string $name, array $args = [])
     {
         $class = new \ReflectionClass($obj);
         $method = $class->getMethod($name);

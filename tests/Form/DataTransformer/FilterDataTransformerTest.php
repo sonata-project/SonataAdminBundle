@@ -66,7 +66,7 @@ final class FilterDataTransformerTest extends TestCase
     }
 
     /**
-     * @phpstan-return iterable<array<array{type: int, value: mixed}>>
+     * @phpstan-return iterable<array-key, array<array{type: int, value: mixed}>>
      */
     public function getDataValues(): iterable
     {

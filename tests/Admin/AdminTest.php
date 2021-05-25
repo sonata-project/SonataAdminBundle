@@ -72,7 +72,6 @@ use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 use Sonata\Doctrine\Adapter\AdapterInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -88,8 +87,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdminTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
+    /**
+     * @var string
+     */
     protected $cacheTempFolder;
 
     protected function setUp(): void
@@ -180,7 +180,7 @@ class AdminTest extends TestCase
             [$admin, 'CUSTOM_ROLE', $admin, true],
             [$admin, 'EXTRA_CUSTOM_ROLE', $admin, false],
         ]);
-        $customExtension = $this->createStub(AbstractAdminExtension::class);
+        $customExtension = $this->createMock(AbstractAdminExtension::class);
         $customExtension->method('getAccessMapping')->with($admin)->willReturn(
             ['custom_action' => ['CUSTOM_ROLE', 'EXTRA_CUSTOM_ROLE']]
         );
@@ -218,7 +218,7 @@ class AdminTest extends TestCase
             [$admin, 'CUSTOM_ROLE', $admin, true],
             [$admin, 'EXTRA_CUSTOM_ROLE', $admin, false],
         ]);
-        $customExtension = $this->createStub(AbstractAdminExtension::class);
+        $customExtension = $this->createMock(AbstractAdminExtension::class);
         $customExtension->method('getAccessMapping')->with($admin)->willReturn(
             ['custom_action' => ['CUSTOM_ROLE', 'EXTRA_CUSTOM_ROLE']]
         );
@@ -240,7 +240,7 @@ class AdminTest extends TestCase
             [$admin, 'CUSTOM_ROLE', $admin, true],
             [$admin, 'EXTRA_CUSTOM_ROLE', $admin, true],
         ]);
-        $customExtension = $this->createStub(AbstractAdminExtension::class);
+        $customExtension = $this->createMock(AbstractAdminExtension::class);
         $customExtension->method('getAccessMapping')->with($admin)->willReturn(
             ['custom_action' => ['CUSTOM_ROLE', 'EXTRA_CUSTOM_ROLE']]
         );
@@ -257,9 +257,9 @@ class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\Post',
             'Sonata\NewsBundle\Controller\PostAdminController'
         );
-        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
+        $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler->method('isGranted')->with($admin, 'EDIT_ROLE', $admin)->willReturn(true);
-        $customExtension = $this->createStub(AbstractAdminExtension::class);
+        $customExtension = $this->createMock(AbstractAdminExtension::class);
         $customExtension->method('getAccessMapping')->with($admin)->willReturn(
             ['edit_action' => ['EDIT_ROLE']]
         );
@@ -331,7 +331,10 @@ class AdminTest extends TestCase
         $this->assertSame('comment', $admin->getParentAssociationMapping());
     }
 
-    public function provideGetBaseRoutePattern()
+    /**
+     * @phpstan-return iterable<array-key, array{string, string}>
+     */
+    public function provideGetBaseRoutePattern(): iterable
     {
         return [
             [
@@ -464,7 +467,10 @@ class AdminTest extends TestCase
         $admin->getBaseRoutePattern();
     }
 
-    public function provideGetBaseRouteName()
+    /**
+     * @phpstan-return iterable<array-key, array{string, string}>
+     */
+    public function provideGetBaseRouteName(): iterable
     {
         return [
             [
@@ -768,7 +774,7 @@ class AdminTest extends TestCase
         $this->assertSame($labelTranslatorStrategy, $admin->getLabelTranslatorStrategy());
     }
 
-    public function testGetLabelTranslatorStrategyWithException()
+    public function testGetLabelTranslatorStrategyWithException(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
@@ -876,7 +882,7 @@ class AdminTest extends TestCase
         $this->assertSame($modelManager, $admin->getModelManager());
     }
 
-    public function testGetModelManagerWithException()
+    public function testGetModelManagerWithException(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
@@ -922,7 +928,7 @@ class AdminTest extends TestCase
         $this->assertSame($routeGenerator, $admin->getRouteGenerator());
     }
 
-    public function testGetRouteGeneratorWithException()
+    public function testGetRouteGeneratorWithException(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
@@ -1359,7 +1365,7 @@ class AdminTest extends TestCase
         $tagAdmin->setParent($postAdmin);
         $tagAdmin->addParentAssociationMapping('post', 'post');
 
-        $request = $this->createStub(Request::class);
+        $request = $this->createMock(Request::class);
         $request->method('get')->with('parent_id')->willReturn(42);
         $tagAdmin->setRequest($request);
 
@@ -1391,7 +1397,7 @@ class AdminTest extends TestCase
         $postCategoryAdmin->setParent($postAdmin);
         $postCategoryAdmin->addParentAssociationMapping('post', 'posts');
 
-        $request = $this->createStub(Request::class);
+        $request = $this->createMock(Request::class);
         $request->method('get')->with('parent_id')->willReturn(42);
         $postCategoryAdmin->setRequest($request);
 
@@ -1429,7 +1435,7 @@ class AdminTest extends TestCase
         $tagAdmin = new TagAdmin('admin.tag', Tag::class, 'MyBundle\MyController');
         $tagAdmin->setParentFieldDescription($parentField);
 
-        $request = $this->createStub(Request::class);
+        $request = $this->createMock(Request::class);
         $request->method('get')->with('parent_id')->willReturn(42);
         $tagAdmin->setRequest($request);
 
@@ -1627,9 +1633,9 @@ class AdminTest extends TestCase
     }
 
     /**
-     * @return array
+     * @phpstan-return iterable<array-key, array{int|string}>
      */
-    public function provideGetSubject()
+    public function provideGetSubject(): iterable
     {
         return [
             [23],
@@ -1641,6 +1647,8 @@ class AdminTest extends TestCase
     }
 
     /**
+     * @param int|string $id
+     *
      * @dataProvider provideGetSubject
      */
     public function testGetSubjectFailed($id): void
@@ -1660,6 +1668,8 @@ class AdminTest extends TestCase
     }
 
     /**
+     * @param int|string $id
+     *
      * @dataProvider provideGetSubject
      */
     public function testGetSubject($id): void
@@ -1725,7 +1735,7 @@ class AdminTest extends TestCase
 
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $templateRegistry = $this->createStub(MutableTemplateRegistryInterface::class);
+        $templateRegistry = $this->createMock(MutableTemplateRegistryInterface::class);
         $templateRegistry->method('getTemplate')->with('button_create')->willReturn('Foo.html.twig');
 
         $admin->setTemplateRegistry($templateRegistry);
@@ -1865,7 +1875,7 @@ class AdminTest extends TestCase
     }
 
     /**
-     * @phpstan-return iterable<array{string, Request|null}>
+     * @phpstan-return iterable<array-key, array{string, Request|null}>
      */
     public function getListModeProvider(): iterable
     {
@@ -1913,7 +1923,7 @@ class AdminTest extends TestCase
         $admin->setRouteGenerator($routeGenerator);
         $admin->initialize();
 
-        $templateRegistry = $this->createStub(MutableTemplateRegistryInterface::class);
+        $templateRegistry = $this->createMock(MutableTemplateRegistryInterface::class);
         $templateRegistry->method('getTemplate')->with('action_create')->willReturn('Foo.html.twig');
 
         $admin->setTemplateRegistry($templateRegistry);

@@ -15,12 +15,9 @@ namespace Sonata\AdminBundle\Tests\Templating;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 class TemplateRegistryTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
     /**
      * @var TemplateRegistry
      */
