@@ -10,6 +10,10 @@
 // This file adds compatibility with the Font Awesome fas class
 // and the AdminLTE styles
 
+.foo {
+  display: block;
+}
+
 .carousel-control > .fas {
   display: inline-block;
   font-size: 40px;
