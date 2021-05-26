@@ -189,6 +189,9 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
      */
     private $templateRegistry;
 
+    /**
+     * @phpstan-param class-string<T> $class
+     */
     public function __construct(string $code, string $class, string $baseControllerName)
     {
         $this->code = $code;

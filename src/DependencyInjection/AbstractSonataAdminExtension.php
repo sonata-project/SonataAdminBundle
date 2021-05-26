@@ -86,6 +86,8 @@ abstract class AbstractSonataAdminExtension extends Extension
 
         // let's add some magic, only overwrite template if the SonataIntlBundle is enabled
         $bundles = $container->getParameter('kernel.bundles');
+        \assert(\is_array($bundles));
+
         if (isset($bundles['SonataIntlBundle'])) {
             $defaultConfig['templates']['types']['list'] = array_merge($defaultConfig['templates']['types']['list'], [
                 FieldDescriptionInterface::TYPE_DATE => '@SonataIntl/CRUD/list_date.html.twig',

@@ -29,7 +29,7 @@ class BaseAdminModelManagerTest extends TestCase
         $modelManager->expects($this->once())->method('update');
         $modelManager->expects($this->once())->method('delete');
 
-        $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
+        $admin = new BaseAdminModelManager_Admin('code', \stdClass::class, 'controller');
         $admin->setModelManager($modelManager);
         $admin->setSecurityHandler($securityHandler);
 
@@ -44,7 +44,7 @@ class BaseAdminModelManagerTest extends TestCase
     {
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
         $modelManager->expects($this->once())->method('find')->willReturnCallback(static function (string $class, int $id): void {
-            if ('class' !== $class) {
+            if (\stdClass::class !== $class) {
                 throw new \RuntimeException('Invalid class argument');
             }
 
@@ -53,7 +53,7 @@ class BaseAdminModelManagerTest extends TestCase
             }
         });
 
-        $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
+        $admin = new BaseAdminModelManager_Admin('code', \stdClass::class, 'controller');
         $admin->setModelManager($modelManager);
         $admin->getObject(10);
     }
@@ -65,10 +65,10 @@ class BaseAdminModelManagerTest extends TestCase
         $modelManager
             ->expects($this->once())
             ->method('createQuery')
-            ->with('class')
+            ->with(\stdClass::class)
             ->willReturn($query);
 
-        $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
+        $admin = new BaseAdminModelManager_Admin('code', \stdClass::class, 'controller');
         $admin->setModelManager($modelManager);
         $admin->createQuery();
     }
@@ -81,7 +81,7 @@ class BaseAdminModelManagerTest extends TestCase
             ->method('getNormalizedIdentifier')
             ->willReturn('42');
 
-        $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
+        $admin = new BaseAdminModelManager_Admin('code', \stdClass::class, 'controller');
         $admin->setModelManager($modelManager);
 
         $admin->id(new \stdClass());
