@@ -53,6 +53,7 @@ file that was distributed with this source code.
                     'objectId': admin.urlSafeIdentifier(object)
                 } + (admin.hasRequest() ? admin.request.attributes.get('_route_params', {}) : {})
                 + admin.getPersistentParameters()
+                + app.request.query.all|default({})
             ) %}
 
             {% if field_description.type == constant('Sonata\\AdminBundle\\FieldDescription\\FieldDescriptionInterface::TYPE_DATE') and value is not empty %}
