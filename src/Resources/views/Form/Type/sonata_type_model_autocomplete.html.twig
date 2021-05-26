@@ -69,6 +69,7 @@ file that was distributed with this source code.
                 dropdownAutoWidth: {{ dropdown_auto_width ? 'true' : 'false' }},
                 containerCssClass: '{{ container_css_class ~ ' form-control' }}',
                 dropdownCssClass: '{{ dropdown_css_class }}',
+                dropdownParent: autocompleteInput.parents('.modal').length > 0 ? autocompleteInput.parents('.modal') : $(document.body),
                 ajax: {
                     url:  '{{ url ?: path(route.name, route.parameters|default([])) }}',
                     dataType: 'json',
