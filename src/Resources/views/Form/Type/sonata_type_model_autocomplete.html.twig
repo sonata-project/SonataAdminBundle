@@ -308,9 +308,11 @@ file that was distributed with this source code.
                         {% endif %}
 
                         // append to Select2
+                        // NEXT_MAJOR: Remove ".select2('data', data)" while dropping v3 support
                         autocompleteInput.select2('data', data).append(data).trigger('change');
 
                         // manually trigger the `select2:select` event
+                        // NEXT_MAJOR: Remove ".select2('data', data)" while dropping v3 support
                         autocompleteInput.select2('data', data).trigger({
                             type: 'select2:select',
                             params: {
