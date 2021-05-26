@@ -206,6 +206,11 @@ final class SonataAdminExtension extends Extension
         return 'https://sonata-project.org/schema/dic/admin';
     }
 
+    /**
+     * @param array<string, mixed> $config
+     *
+     * @return string[]
+     */
     private function buildStylesheets(array $config): array
     {
         $config['assets']['stylesheets'][] = sprintf(
@@ -220,6 +225,11 @@ final class SonataAdminExtension extends Extension
         );
     }
 
+    /**
+     * @param array<string, mixed> $config
+     *
+     * @return string[]
+     */
     private function buildJavascripts(array $config): array
     {
         return $this->mergeArray(
@@ -229,6 +239,13 @@ final class SonataAdminExtension extends Extension
         );
     }
 
+    /**
+     * @param string[] $array
+     * @param string[] $addArray
+     * @param string[] $removeArray
+     *
+     * @return string[]
+     */
     private function mergeArray(array $array, array $addArray, array $removeArray = []): array
     {
         foreach ($addArray as $toAdd) {

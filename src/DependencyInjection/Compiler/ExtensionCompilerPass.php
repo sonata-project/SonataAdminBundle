@@ -92,6 +92,8 @@ final class ExtensionCompilerPass implements CompilerPassInterface
 
     /**
      * @param array<string, array<string, array<string, array<string, mixed>>>> $extensionMap
+     *
+     * @return array<string, array<string, mixed>>
      */
     private function getExtensionsForAdmin(string $id, Definition $admin, ContainerBuilder $container, array $extensionMap): array
     {
@@ -226,6 +228,8 @@ final class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
+     * @param \ReflectionClass<object> $class
+     *
      * @phpstan-param class-string $traitName
      */
     private function hasTrait(\ReflectionClass $class, string $traitName): bool
@@ -269,6 +273,9 @@ final class ExtensionCompilerPass implements CompilerPassInterface
 
     /**
      * Add extension configuration to the targets array.
+     *
+     * @param array<string, \SplPriorityQueue<int, Reference>> $targets
+     * @param array<string, mixed>                             $attributes
      */
     private function addExtension(
         array &$targets,

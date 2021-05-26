@@ -39,7 +39,7 @@ final class ShowMapper extends BaseGroupedMapper
     private $list;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface<object>
      */
     private $admin;
 

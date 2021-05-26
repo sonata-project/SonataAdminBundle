@@ -38,7 +38,7 @@ final class PersistenceEvent extends Event
     public const TYPE_POST_REMOVE = 'post_remove';
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface<object>
      */
     private $admin;
 
@@ -52,6 +52,9 @@ final class PersistenceEvent extends Event
      */
     private $type;
 
+    /**
+     * @param AdminInterface<object> $admin
+     */
     public function __construct(AdminInterface $admin, object $object, string $type)
     {
         $this->admin = $admin;
@@ -59,6 +62,9 @@ final class PersistenceEvent extends Event
         $this->type = $type;
     }
 
+    /**
+     * @return AdminInterface<object>
+     */
     public function getAdmin(): AdminInterface
     {
         return $this->admin;

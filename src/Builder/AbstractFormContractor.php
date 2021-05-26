@@ -51,7 +51,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
         return $this->formFactory;
     }
 
-    final public function getFormBuilder($name, array $formOptions = []): FormBuilderInterface
+    final public function getFormBuilder(string $name, array $formOptions = []): FormBuilderInterface
     {
         return $this->getFormFactory()->createNamedBuilder($name, FormType::class, null, $formOptions);
     }
@@ -153,6 +153,11 @@ abstract class AbstractFormContractor implements FormContractorInterface
         return false;
     }
 
+    /**
+     * @param array<string, mixed> $formOptions
+     *
+     * @return array<string, mixed>
+     */
     private function getDefaultAdminTypeOptions(FieldDescriptionInterface $fieldDescription, array $formOptions): array
     {
         $typeOptions = [

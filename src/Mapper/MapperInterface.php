@@ -22,6 +22,9 @@ use Sonata\AdminBundle\Admin\AdminInterface;
  */
 interface MapperInterface
 {
+    /**
+     * @return AdminInterface<object>
+     */
     public function getAdmin(): AdminInterface;
 
     /**

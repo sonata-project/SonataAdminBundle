@@ -204,14 +204,14 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * Define a Collection of child admin, ie /admin/order/{id}/order-element/{childId}.
      *
-     * @var array<string, AdminInterface>
+     * @var array<string, AdminInterface<object>>
      */
     private $children = [];
 
     /**
      * Reference the parent admin.
      *
-     * @var AdminInterface|null
+     * @var AdminInterface<object>|null
      */
     private $parent;
 
@@ -248,7 +248,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * The datagrid instance.
      *
-     * @var DatagridInterface|null
+     * @var DatagridInterface<ProxyQueryInterface>|null
      */
     private $datagrid;
 
@@ -269,6 +269,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     /**
      * @var AdminExtensionInterface[]
+     * @phpstan-var array<AdminExtensionInterface<T>>
      */
     private $extensions = [];
 
@@ -293,12 +294,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * The list collection.
      *
-     * @var FieldDescriptionCollection|null
+     * @var FieldDescriptionCollection<FieldDescriptionInterface>|null
      */
     private $list;
 
     /**
-     * @var FieldDescriptionCollection|null
+     * @var FieldDescriptionCollection<FieldDescriptionInterface>|null
      */
     private $show;
 
@@ -1518,11 +1519,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->currentChild;
     }
 
-    /**
-     * Returns the current child admin instance.
-     *
-     * @return AdminInterface|null the current child admin instance
-     */
     final public function getCurrentChildAdmin(): ?AdminInterface
     {
         foreach ($this->getChildren() as $child) {
@@ -2290,6 +2286,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
     }
 
+    /**
+     * @return DatagridInterface<ProxyQueryInterface>|null
+     */
     private function buildDatagrid(): ?DatagridInterface
     {
         if ($this->loaded['datagrid']) {
@@ -2350,6 +2349,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->datagrid;
     }
 
+    /**
+     * @return FieldDescriptionCollection<FieldDescriptionInterface>|null
+     */
     private function buildShow(): ?FieldDescriptionCollection
     {
         if ($this->loaded['show']) {
@@ -2370,6 +2372,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->show;
     }
 
+    /**
+     * @return FieldDescriptionCollection<FieldDescriptionInterface>|null
+     */
     private function buildList(): ?FieldDescriptionCollection
     {
         if ($this->loaded['list']) {

@@ -44,6 +44,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -100,8 +101,6 @@ class CRUDController extends AbstractController
     }
 
     /**
-     * List action.
-     *
      * @throws AccessDeniedException If access is not granted
      */
     public function listAction(Request $request): Response
@@ -167,8 +166,6 @@ class CRUDController extends AbstractController
     }
 
     /**
-     * Delete action.
-     *
      * @throws NotFoundHttpException If the object does not exist
      * @throws AccessDeniedException If access is not granted
      */
@@ -239,8 +236,6 @@ class CRUDController extends AbstractController
     }
 
     /**
-     * Edit action.
-     *
      * @throws NotFoundHttpException If the object does not exist
      * @throws AccessDeniedException If access is not granted
      */
@@ -347,8 +342,6 @@ class CRUDController extends AbstractController
     }
 
     /**
-     * Batch action.
-     *
      * @throws NotFoundHttpException If the HTTP method is not POST
      * @throws \RuntimeException     If the batch action is not defined
      */
@@ -481,8 +474,6 @@ class CRUDController extends AbstractController
     }
 
     /**
-     * Create action.
-     *
      * @throws AccessDeniedException If access is not granted
      */
     public function createAction(Request $request): Response
@@ -593,8 +584,6 @@ class CRUDController extends AbstractController
     }
 
     /**
-     * Show action.
-     *
      * @throws NotFoundHttpException If the object does not exist
      * @throws AccessDeniedException If access is not granted
      */
@@ -948,7 +937,8 @@ class CRUDController extends AbstractController
     /**
      * Render JSON.
      *
-     * @param mixed $data
+     * @param mixed   $data
+     * @param mixed[] $headers
      *
      * @return JsonResponse with json encoded data
      */
@@ -1125,7 +1115,7 @@ class CRUDController extends AbstractController
     }
 
     /**
-     * Gets ACL users.
+     * @return \Traversable<UserInterface|string>
      */
     protected function getAclUsers(): \Traversable
     {
@@ -1139,7 +1129,7 @@ class CRUDController extends AbstractController
     }
 
     /**
-     * Gets ACL roles.
+     * @return \Traversable<string>
      */
     protected function getAclRoles(): \Traversable
     {
@@ -1265,6 +1255,8 @@ class CRUDController extends AbstractController
 
     /**
      * Translate a message id.
+     *
+     * @param mixed[] $parameters
      */
     final protected function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
     {
@@ -1329,6 +1321,9 @@ class CRUDController extends AbstractController
         }
     }
 
+    /**
+     * @phpstan-return array{_tab?: string}
+     */
     private function getSelectedTab(Request $request): array
     {
         return array_filter(['_tab' => $request->request->get('_tab')]);
@@ -1367,7 +1362,7 @@ class CRUDController extends AbstractController
     /**
      * Checks whether $needle is equal to $haystack or part of it.
      *
-     * @param object|iterable $haystack
+     * @param object|iterable<object> $haystack
      *
      * @return bool true when $haystack equals $needle or $haystack is iterable and contains $needle
      */
@@ -1390,6 +1385,8 @@ class CRUDController extends AbstractController
 
     /**
      * Sets the admin form theme to form view. Used for compatibility between Symfony versions.
+     *
+     * @param string[]|null $theme
      */
     private function setFormTheme(FormView $formView, ?array $theme = null): void
     {

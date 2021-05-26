@@ -40,10 +40,13 @@ final class FormMapper extends BaseGroupedMapper
     private $formBuilder;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface<object>
      */
     private $admin;
 
+    /**
+     * @param AdminInterface<object> $admin
+     */
     public function __construct(
         FormContractorInterface $formContractor,
         FormBuilderInterface $formBuilder,

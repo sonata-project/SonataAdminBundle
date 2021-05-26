@@ -24,6 +24,9 @@ interface DataTransformerResolverInterface
 {
     public function addCustomGlobalTransformer(string $fieldType, DataTransformerInterface $dataTransformer): void;
 
+    /**
+     * @param ModelManagerInterface<object> $modelManager
+     */
     public function resolve(
         FieldDescriptionInterface $fieldDescription,
         ModelManagerInterface $modelManager

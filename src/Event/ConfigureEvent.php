@@ -38,7 +38,7 @@ final class ConfigureEvent extends Event
     public const TYPE_LIST = 'list';
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface<object>
      */
     private $admin;
 
@@ -52,6 +52,9 @@ final class ConfigureEvent extends Event
      */
     private $type;
 
+    /**
+     * @param AdminInterface<object> $admin
+     */
     public function __construct(AdminInterface $admin, MapperInterface $mapper, string $type)
     {
         $this->admin = $admin;
@@ -64,6 +67,9 @@ final class ConfigureEvent extends Event
         return $this->type;
     }
 
+    /**
+     * @return AdminInterface<object>
+     */
     public function getAdmin(): AdminInterface
     {
         return $this->admin;
