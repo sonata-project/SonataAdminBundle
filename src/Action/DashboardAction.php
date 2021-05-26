@@ -22,7 +22,7 @@ use Twig\Environment;
 final class DashboardAction
 {
     /**
-     * @var array
+     * @var array<array<string, mixed>>
      */
     private $dashboardBlocks = [];
 
@@ -41,6 +41,9 @@ final class DashboardAction
      */
     private $twig;
 
+    /**
+     * @param array<array<string, mixed>> $dashboardBlocks
+     */
     public function __construct(
         array $dashboardBlocks,
         TemplateRegistryInterface $templateRegistry,

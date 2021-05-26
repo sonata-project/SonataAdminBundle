@@ -24,6 +24,8 @@ interface ParentAdminInterface
 {
     /**
      * add an Admin child to the current one.
+     *
+     * @param AdminInterface<object> $child
      */
     public function addChild(AdminInterface $child, string $field): void;
 
@@ -33,12 +35,14 @@ interface ParentAdminInterface
     public function hasChild(string $code): bool;
 
     /**
-     * @return AdminInterface[]
+     * @return array<AdminInterface<object>>
      */
     public function getChildren(): array;
 
     /**
      * Returns an admin child with the given $code.
+     *
+     * @return AdminInterface<object>
      */
     public function getChild(string $code): AdminInterface;
 }

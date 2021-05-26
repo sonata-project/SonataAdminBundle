@@ -40,15 +40,19 @@ final class ListMapper implements MapperInterface
     private $builder;
 
     /**
-     * @var FieldDescriptionCollection
+     * @var FieldDescriptionCollection<FieldDescriptionInterface>
      */
     private $list;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface<object>
      */
     private $admin;
 
+    /**
+     * @param AdminInterface<object>                                $admin
+     * @param FieldDescriptionCollection<FieldDescriptionInterface> $list
+     */
     public function __construct(
         ListBuilderInterface $listBuilder,
         FieldDescriptionCollection $list,

@@ -30,7 +30,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 final class ConfigureQueryEvent extends Event
 {
     /**
-     * @var AdminInterface
+     * @var AdminInterface<object>
      */
     private $admin;
 
@@ -44,6 +44,9 @@ final class ConfigureQueryEvent extends Event
      */
     private $context;
 
+    /**
+     * @param AdminInterface<object> $admin
+     */
     public function __construct(AdminInterface $admin, ProxyQueryInterface $proxyQuery, string $context)
     {
         $this->admin = $admin;
@@ -51,6 +54,9 @@ final class ConfigureQueryEvent extends Event
         $this->context = $context;
     }
 
+    /**
+     * @return AdminInterface<object>
+     */
     public function getAdmin(): AdminInterface
     {
         return $this->admin;

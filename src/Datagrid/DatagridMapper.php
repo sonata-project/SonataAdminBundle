@@ -27,20 +27,25 @@ use Sonata\AdminBundle\Mapper\MapperInterface;
 final class DatagridMapper implements MapperInterface
 {
     /**
-     * @var DatagridBuilderInterface
+     * @var DatagridBuilderInterface<ProxyQueryInterface>
      */
     private $builder;
 
     /**
-     * @var DatagridInterface
+     * @var DatagridInterface<ProxyQueryInterface>
      */
     private $datagrid;
 
     /**
-     * @var AdminInterface
+     * @var AdminInterface<object>
      */
     private $admin;
 
+    /**
+     * @param DatagridBuilderInterface<ProxyQueryInterface> $datagridBuilder
+     * @param DatagridInterface<ProxyQueryInterface>        $datagrid
+     * @param AdminInterface<object>                        $admin
+     */
     public function __construct(
         DatagridBuilderInterface $datagridBuilder,
         DatagridInterface $datagrid,

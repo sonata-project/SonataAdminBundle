@@ -37,7 +37,7 @@ final class AdminExporter
     /**
      * Queries an admin for its default export formats, and falls back on global settings.
      *
-     * @param AdminInterface $admin the current admin object
+     * @param AdminInterface<object> $admin the current admin object
      *
      * @return string[] an array of formats
      */
@@ -56,8 +56,8 @@ final class AdminExporter
      * Builds an export filename from the class associated with the provided admin,
      * the current date, and the provided format.
      *
-     * @param AdminInterface $admin  the current admin object
-     * @param string         $format the format of the export file
+     * @param AdminInterface<object> $admin  the current admin object
+     * @param string                 $format the format of the export file
      */
     public function getExportFilename(AdminInterface $admin, string $format): string
     {

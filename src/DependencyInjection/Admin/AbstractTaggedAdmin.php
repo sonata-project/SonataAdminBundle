@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Datagrid\Pager;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exporter\DataSourceInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
@@ -133,7 +134,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     /**
      * The related datagrid builder.
      *
-     * @var DatagridBuilderInterface|null
+     * @var DatagridBuilderInterface<ProxyQueryInterface>|null
      */
     private $datagridBuilder;
 
@@ -227,7 +228,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         return $this->pagerType;
     }
 
-    final public function setManagerType($managerType): void
+    final public function setManagerType(string $managerType): void
     {
         $this->managerType = $managerType;
     }

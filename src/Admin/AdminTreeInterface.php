@@ -20,6 +20,8 @@ interface AdminTreeInterface
 {
     /**
      * Returns the root ancestor or itself if not a child.
+     *
+     * @return AdminInterface<object>
      */
     public function getRootAncestor(): AdminInterface;
 
@@ -32,6 +34,8 @@ interface AdminTreeInterface
     /**
      * Returns the current leaf child admin instance,
      * or null if there's no current child.
+     *
+     * @return AdminInterface<object>|null
      */
     public function getCurrentLeafChildAdmin(): ?AdminInterface;
 }

@@ -22,6 +22,12 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 abstract class AbstractSonataAdminExtension extends Extension
 {
+    /**
+     * @param array<string, mixed> $configs
+     * @param array<string, mixed> $defaultSonataDoctrineConfig
+     *
+     * @return mixed[]
+     */
     protected function fixTemplatesConfiguration(
         array $configs,
         ContainerBuilder $container,

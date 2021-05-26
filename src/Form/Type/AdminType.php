@@ -162,6 +162,8 @@ final class AdminType extends AbstractType
 
     /**
      * @param array<string, mixed> $options
+     *
+     * @return AdminInterface<object>
      */
     private function getAdmin(array $options): AdminInterface
     {

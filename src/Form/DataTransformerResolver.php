@@ -44,6 +44,9 @@ final class DataTransformerResolver implements DataTransformerResolverInterface
         $this->globalCustomTransformers[$fieldType] = $dataTransformer;
     }
 
+    /**
+     * @param ModelManagerInterface<object> $modelManager
+     */
     public function resolve(
         FieldDescriptionInterface $fieldDescription,
         ModelManagerInterface $modelManager

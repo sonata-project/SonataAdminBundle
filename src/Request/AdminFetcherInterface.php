@@ -18,5 +18,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface AdminFetcherInterface
 {
+    /**
+     * @return AdminInterface<object>
+     */
     public function get(Request $request): AdminInterface;
 }

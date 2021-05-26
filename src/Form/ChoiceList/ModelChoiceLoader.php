@@ -27,7 +27,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 final class ModelChoiceLoader implements ChoiceLoaderInterface
 {
     /**
-     * @var ModelManagerInterface
+     * @var ModelManagerInterface<object>
      */
     private $modelManager;
 
@@ -64,7 +64,8 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
     private $choiceList;
 
     /**
-     * @param object[]|null $choices
+     * @param ModelManagerInterface<object> $modelManager
+     * @param object[]|null                 $choices
      *
      * @phpstan-param class-string $class
      */

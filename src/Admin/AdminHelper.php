@@ -75,6 +75,8 @@ class AdminHelper
      * Note:
      *   This code is ugly, but there is no better way of doing it.
      *
+     * @param AdminInterface<object> $admin
+     *
      * @throws \RuntimeException
      * @throws \Exception
      *
@@ -195,7 +197,8 @@ class AdminHelper
     /**
      * Recursively find the class name of the admin responsible for the element at the end of an association chain.
      *
-     * @param string[] $elements
+     * @param AdminInterface<object> $admin
+     * @param string[]               $elements
      */
     private function getModelClassName(AdminInterface $admin, array $elements): string
     {
@@ -211,9 +214,9 @@ class AdminHelper
     /**
      * Get access path to element which works with PropertyAccessor.
      *
-     * @param string       $elementId expects string in format used in form id field.
-     *                                (uniqueIdentifier_model_sub_model or uniqueIdentifier_model_1_sub_model etc.)
-     * @param object|array $model
+     * @param string                      $elementId expects string in format used in form id field.
+     *                                               uniqId_model_sub_model or uniqId_model_1_sub_model etc.
+     * @param object|array<string, mixed> $model
      *
      * @throws \Exception
      */
