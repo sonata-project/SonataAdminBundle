@@ -59,7 +59,7 @@ class ModelManager implements ModelManagerInterface, LockInterface
 
     public function find(string $class, $id): ?object
     {
-        return $this->repository->byId($id);
+        return $this->repository->byId((string) $id);
     }
 
     public function batchDelete(string $class, ProxyQueryInterface $query): void

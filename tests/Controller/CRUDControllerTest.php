@@ -35,6 +35,7 @@ use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
+use Sonata\AdminBundle\Tests\Fixtures\Entity\Entity;
 use Sonata\AdminBundle\Tests\Fixtures\Util\DummyDomainObject;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Sonata\Exporter\Exporter;
@@ -715,8 +716,7 @@ class CRUDControllerTest extends TestCase
 
     public function testPreShow(): void
     {
-        $object = new \stdClass();
-        $object->foo = 123456;
+        $object = new Entity(123456);
 
         $this->admin->expects($this->once())
             ->method('getObject')
@@ -926,8 +926,7 @@ class CRUDControllerTest extends TestCase
 
     public function testPreDelete(): void
     {
-        $object = new \stdClass();
-        $object->foo = 123456;
+        $object = new Entity(123456);
 
         $this->admin->expects($this->once())
             ->method('getObject')
@@ -1427,8 +1426,7 @@ class CRUDControllerTest extends TestCase
 
     public function testPreEdit(): void
     {
-        $object = new \stdClass();
-        $object->foo = 123456;
+        $object = new Entity(123456);
 
         $this->admin->expects($this->once())
             ->method('getObject')
@@ -1932,8 +1930,7 @@ class CRUDControllerTest extends TestCase
 
     public function testPreCreate(): void
     {
-        $object = new \stdClass();
-        $object->foo = 123456;
+        $object = new Entity(123456);
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -1941,7 +1938,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('getClass')
-            ->willReturn(\stdClass::class);
+            ->willReturn(Entity::class);
 
         $this->admin->expects($this->once())
             ->method('getNewInstance')

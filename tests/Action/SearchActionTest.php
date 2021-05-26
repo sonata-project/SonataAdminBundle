@@ -90,7 +90,7 @@ final class SearchActionTest extends TestCase
         $adminCode = 'code';
 
         $this->searchHandler->configureAdminSearch([$adminCode => false]);
-        $admin = new CleanAdmin($adminCode, 'class', 'controller');
+        $admin = new CleanAdmin($adminCode, \stdClass::class, 'controller');
         $this->container->set('foo', $admin);
         $request = new Request(['admin' => 'foo', 'q' => 'fooTerm', 'page' => 5, 'offset' => 10]);
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');

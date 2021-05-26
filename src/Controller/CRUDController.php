@@ -126,14 +126,18 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('list');
 
+        if ($this->has('sonata.admin.admin_exporter')) {
+            $exporter = $this->get('sonata.admin.admin_exporter');
+            \assert($exporter instanceof AdminExporter);
+            $exportFormats = $exporter->getAvailableFormats($this->admin);
+        }
+
         return $this->renderWithExtraParams($template, [
             'action' => 'list',
             'form' => $formView,
             'datagrid' => $datagrid,
             'csrf_token' => $this->getCsrfToken('sonata.batch'),
-            'export_formats' => $this->has('sonata.admin.admin_exporter') ?
-                $this->get('sonata.admin.admin_exporter')->getAvailableFormats($this->admin) :
-                $this->admin->getExportFormats(),
+            'export_formats' => $exportFormats ?? $this->admin->getExportFormats(),
         ]);
     }
 
@@ -632,6 +636,7 @@ class CRUDController extends AbstractController
         $this->admin->checkAccess('history', $object);
 
         $manager = $this->get('sonata.admin.audit.manager');
+        \assert($manager instanceof AuditManagerInterface);
 
         if (!$manager->hasReader($this->admin->getClass())) {
             throw $this->createNotFoundException(sprintf(
@@ -670,6 +675,7 @@ class CRUDController extends AbstractController
         $this->admin->checkAccess('historyViewRevision', $object);
 
         $manager = $this->get('sonata.admin.audit.manager');
+        \assert($manager instanceof AuditManagerInterface);
 
         if (!$manager->hasReader($this->admin->getClass())) {
             throw $this->createNotFoundException(sprintf(
@@ -718,6 +724,7 @@ class CRUDController extends AbstractController
         $this->assertObjectExists($request);
 
         $manager = $this->get('sonata.admin.audit.manager');
+        \assert($manager instanceof AuditManagerInterface);
 
         if (!$manager->hasReader($this->admin->getClass())) {
             throw $this->createNotFoundException(sprintf(
@@ -775,9 +782,12 @@ class CRUDController extends AbstractController
         $format = $request->get('format');
 
         $adminExporter = $this->get('sonata.admin.admin_exporter');
+        \assert($adminExporter instanceof AdminExporter);
         $allowedExportFormats = $adminExporter->getAvailableFormats($this->admin);
         $filename = $adminExporter->getExportFilename($this->admin, $format);
+
         $exporter = $this->get('sonata.exporter.exporter');
+        \assert($exporter instanceof Exporter);
 
         if (!\in_array($format, $allowedExportFormats, true)) {
             throw new \RuntimeException(sprintf(
@@ -819,6 +829,8 @@ class CRUDController extends AbstractController
         $aclRoles = $this->getAclRoles();
 
         $adminObjectAclManipulator = $this->get('sonata.admin.object.manipulator.acl.admin');
+        \assert($adminObjectAclManipulator instanceof AdminObjectAclManipulator);
+
         $adminObjectAclData = new AdminObjectAclData(
             $this->admin,
             $object,

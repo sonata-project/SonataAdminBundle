@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Fixtures\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController;
+use Sonata\AdminBundle\Tests\Fixtures\Entity\Entity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,28 +23,28 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  *
- * @phpstan-extends CRUDController<object>
+ * @phpstan-extends CRUDController<Entity>
  */
 class PreCRUDController extends CRUDController
 {
     protected function preCreate(Request $request, object $object): Response
     {
-        return new Response(sprintf('preCreate called: %s', $object->foo));
+        return new Response(sprintf('preCreate called: %s', $object->getId()));
     }
 
     protected function preEdit(Request $request, object $object): Response
     {
-        return new Response(sprintf('preEdit called: %s', $object->foo));
+        return new Response(sprintf('preEdit called: %s', $object->getId()));
     }
 
     protected function preDelete(Request $request, object $object): Response
     {
-        return new Response(sprintf('preDelete called: %s', $object->foo));
+        return new Response(sprintf('preDelete called: %s', $object->getId()));
     }
 
     protected function preShow(Request $request, object $object): Response
     {
-        return new Response(sprintf('preShow called: %s', $object->foo));
+        return new Response(sprintf('preShow called: %s', $object->getId()));
     }
 
     protected function preList(Request $request): Response
