@@ -266,7 +266,7 @@ file that was distributed with this source code.
             // Select2 v3 data populate.
             // NEXT_MAJOR: Remove while dropping v3 support.
             if (window.Select2 && (undefined==data.length || 0<data.length)) { // Leave placeholder if no data set
-                autocompleteInput.attr('data', data);
+                autocompleteInput.select2('data', data);
             }
 
             // remove unneeded autocomplete text input before form submit
@@ -308,10 +308,12 @@ file that was distributed with this source code.
                         {% endif %}
 
                         // append to Select2
-                        autocompleteInput.attr('data', data).append(data).trigger('change');
+                        // NEXT_MAJOR: Remove ".select2('data', data)" while dropping v3 support
+                        autocompleteInput.select2('data', data).append(data).trigger('change');
 
                         // manually trigger the `select2:select` event
-                        autocompleteInput.attr('data', data).trigger({
+                        // NEXT_MAJOR: Remove ".select2('data', data)" while dropping v3 support
+                        autocompleteInput.select2('data', data).trigger({
                             type: 'select2:select',
                             params: {
                                 data: data
