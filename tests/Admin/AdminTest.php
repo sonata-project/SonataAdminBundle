@@ -338,6 +338,7 @@ class AdminTest extends TestCase
      */
     public function provideGetBaseRoutePattern(): iterable
     {
+        // @phpstan-ignore-next-line
         return [
             [
                 'Application\Sonata\NewsBundle\Entity\Post',
@@ -486,6 +487,7 @@ class AdminTest extends TestCase
      */
     public function provideGetBaseRouteName(): iterable
     {
+        // @phpstan-ignore-next-line
         return [
             [
                 'Application\Sonata\NewsBundle\Entity\Post',
@@ -1197,6 +1199,7 @@ class AdminTest extends TestCase
         $modelManager
             ->method('getNormalizedIdentifier')
             ->willReturnCallback(static function (?object $model = null): ?string {
+                // @phpstan-ignore-next-line
                 return $model ? $model->id : null;
             });
 

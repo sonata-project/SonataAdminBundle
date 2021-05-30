@@ -1759,6 +1759,7 @@ class CRUDControllerTest extends TestCase
         $this->request->headers->set('Accept', 'application/json');
 
         $this->assertInstanceOf(JsonResponse::class, $response = $this->controller->editAction($this->request));
+        $this->assertNotFalse($response->getContent());
         $this->assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $response->getContent());
     }
 
@@ -2441,6 +2442,7 @@ class CRUDControllerTest extends TestCase
         $this->request->headers->set('Accept', 'application/json');
 
         $this->assertInstanceOf(JsonResponse::class, $response = $this->controller->createAction($this->request));
+        $this->assertNotFalse($response->getContent());
         $this->assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $response->getContent());
     }
 
@@ -3823,6 +3825,7 @@ class CRUDControllerTest extends TestCase
         $result = $controller->batchAction($this->request);
 
         $this->assertInstanceOf(Response::class, $result);
+        $this->assertNotFalse($result->getContent());
         $this->assertMatchesRegularExpression('/Redirecting to list/', $result->getContent());
     }
 

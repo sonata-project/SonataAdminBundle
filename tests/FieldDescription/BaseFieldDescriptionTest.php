@@ -168,6 +168,7 @@ class BaseFieldDescriptionTest extends TestCase
     {
         $description = new FieldDescription('name', [
             'accessor' => static function (object $object): int {
+                // @phpstan-ignore-next-line
                 return $object->getFoo();
             },
         ]);

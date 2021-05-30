@@ -251,11 +251,13 @@ class GroupMenuProviderTest extends TestCase
         $this->assertArrayHasKey('label_catalogue', $extras);
         $this->assertSame('SonataAdminBundle', $extras['label_catalogue']);
 
+        $this->assertInstanceOf(MenuItem::class, $menu['route_label']);
         $extras = $menu['route_label']->getExtras();
         $this->assertArrayHasKey('label_catalogue', $extras);
         $this->assertSame('SonataAdminBundle', $extras['label_catalogue']);
 
         $this->assertSame('http://sonata-project/FooRoute?foo=bar', $menu['route_label']->getUri());
+        $this->assertInstanceOf(MenuItem::class, $menu['relative_route']);
         $this->assertSame('/FooRelativeRoute?baz=qux', $menu['relative_route']->getUri());
     }
 
@@ -385,6 +387,7 @@ class GroupMenuProviderTest extends TestCase
 
         $this->assertInstanceOf(ItemInterface::class, $menu);
         $this->assertSame('foo', $menu->getName());
+        $this->assertInstanceOf(ItemInterface::class, $menu['foo_admin_label']);
         $this->assertSame($expectedUrl, $menu['foo_admin_label']->getUri());
     }
 

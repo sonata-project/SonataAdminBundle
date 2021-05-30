@@ -184,7 +184,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         return $acls;
     }
 
-    public function addObjectOwner(MutableAclInterface $acl, ?UserSecurityIdentity $securityIdentity = null): void
+    public function addObjectOwner(MutableAclInterface $acl, UserSecurityIdentity $securityIdentity): void
     {
         if (false === $this->findClassAceIndexByUsername($acl, $securityIdentity->getUsername())) {
             // only add if not already exists

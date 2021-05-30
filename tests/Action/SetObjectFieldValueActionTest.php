@@ -206,7 +206,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $defaultTimezone = new \DateTimeZone(date_default_timezone_get());
-        $expectedDate = new \DateTime($request->query->get('value'), $expectedTimezone);
+        $expectedDate = new \DateTime($request->query->get('value', ''), $expectedTimezone);
         $expectedDate->setTimezone($defaultTimezone);
 
         $dateProp = $object->getDateProp();

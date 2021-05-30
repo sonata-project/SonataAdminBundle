@@ -77,6 +77,6 @@ abstract class BaseMenuTest extends TestCase
             return sprintf('>%s<', trim($value[1]));
         }, $html);
 
-        return $html;
+        return $html ?? '';
     }
 }

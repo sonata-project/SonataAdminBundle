@@ -210,8 +210,11 @@ class ExplainAdminCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName(), 'admin' => 'acme.admin.foo']);
 
+        $explainAdminText = file_get_contents(sprintf('%s/../Fixtures/Command/explain_admin.txt', __DIR__));
+        $this->assertNotFalse($explainAdminText);
+
         $this->assertSame(sprintf(
-            str_replace("\n", \PHP_EOL, file_get_contents(sprintf('%s/../Fixtures/Command/explain_admin.txt', __DIR__))),
+            str_replace("\n", \PHP_EOL, $explainAdminText),
             \get_class($this->admin),
             \get_class($modelManager),
             \get_class($formBuilder),
@@ -260,12 +263,11 @@ class ExplainAdminCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName(), 'admin' => 'acme.admin.foo']);
 
+        $explainAdminText = file_get_contents(sprintf('%s/../Fixtures/Command/explain_admin_empty_validator.txt', __DIR__));
+        $this->assertNotFalse($explainAdminText);
+
         $this->assertSame(sprintf(
-            str_replace(
-                "\n",
-                \PHP_EOL,
-                file_get_contents(sprintf('%s/../Fixtures/Command/explain_admin_empty_validator.txt', __DIR__))
-            ),
+            str_replace("\n", \PHP_EOL, $explainAdminText),
             \get_class($this->admin),
             \get_class($modelManager),
             \get_class($formBuilder),

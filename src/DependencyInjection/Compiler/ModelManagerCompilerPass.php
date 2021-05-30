@@ -49,6 +49,8 @@ final class ModelManagerCompilerPass implements CompilerPassInterface
 
         if (!empty($availableManagers)) {
             $bundles = $container->getParameter('kernel.bundles');
+            \assert(\is_array($bundles));
+
             if (isset($bundles['MakerBundle'])) {
                 $adminMakerDefinition = $container->getDefinition('sonata.admin.maker');
                 $adminMakerDefinition->replaceArgument(1, $availableManagers);

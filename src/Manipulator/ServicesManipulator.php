@@ -59,7 +59,7 @@ final class ServicesManipulator
         $code = "services:\n";
 
         if (is_file($this->file)) {
-            $code = rtrim(file_get_contents($this->file));
+            $code = rtrim(file_get_contents($this->file) ?: '');
             $data = (array) Yaml::parse($code);
 
             if ('' !== $code) {

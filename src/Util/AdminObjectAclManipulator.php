@@ -58,6 +58,9 @@ final class AdminObjectAclManipulator
         $this->maskBuilderClass = $maskBuilderClass;
     }
 
+    /**
+     * @phpstan-return class-string
+     */
     public function getMaskBuilderClass(): string
     {
         return $this->maskBuilderClass;

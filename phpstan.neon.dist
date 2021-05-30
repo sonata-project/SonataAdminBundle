@@ -2,7 +2,7 @@ includes:
     - phpstan-baseline.neon
 
 parameters:
-    level: 6
+    level: max
     bootstrapFiles:
         - vendor/bin/.phpunit/phpunit/vendor/autoload.php
     paths:

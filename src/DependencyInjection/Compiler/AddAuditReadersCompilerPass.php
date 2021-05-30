@@ -39,7 +39,7 @@ final class AddAuditReadersCompilerPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds(self::AUDIT_READER_TAG, true) as $id => $attributes) {
             $serviceDefinition = $container->getDefinition($id);
 
-            if (!is_subclass_of($serviceDefinition->getClass(), AuditReaderInterface::class)) {
+            if (!is_subclass_of($serviceDefinition->getClass() ?? '', AuditReaderInterface::class)) {
                 throw new LogicException(sprintf(
                     'Service "%s" MUST implement "%s".',
                     $id,

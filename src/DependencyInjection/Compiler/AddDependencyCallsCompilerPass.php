@@ -292,6 +292,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $managerType = $attributes['manager_type'];
 
         $overwriteAdminConfiguration = $container->getParameter('sonata.admin.configuration.default_admin_services');
+        \assert(\is_array($overwriteAdminConfiguration));
 
         $defaultAddServices = [
             'model_manager' => sprintf('sonata.admin.manager.%s', $managerType),

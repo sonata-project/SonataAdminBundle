@@ -25,13 +25,13 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess;
 class ModelToIdPropertyTransformerTest extends TestCase
 {
     /**
-     * @var ModelManagerInterface<object>&MockObject
+     * @var ModelManagerInterface<Foo>&MockObject
      */
     private $modelManager;
 
     protected function setUp(): void
     {
-        $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
+        $this->modelManager = $this->createMock(ModelManagerInterface::class);
     }
 
     public function testReverseTransform(): void
@@ -80,15 +80,15 @@ class ModelToIdPropertyTransformerTest extends TestCase
             ->willReturnCallback(static function () use ($params, $entity1, $entity2, $entity3): array {
                 $collection = [];
 
-                if (\in_array(123, $params, true)) {
+                if (\is_array($params) && \in_array(123, $params, true)) {
                     $collection[] = $entity1;
                 }
 
-                if (\in_array(456, $params, true)) {
+                if (\is_array($params) && \in_array(456, $params, true)) {
                     $collection[] = $entity2;
                 }
 
-                if (\in_array(789, $params, true)) {
+                if (\is_array($params) && \in_array(789, $params, true)) {
                     $collection[] = $entity3;
                 }
 
@@ -180,14 +180,17 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
     public function testTransformWorksWithArrayAccessEntity(): void
     {
+        /** @var ModelManagerInterface<FooArrayAccess>&MockObject $modelManager */
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+
         $model = new FooArrayAccess();
         $model->setBar('example');
 
-        $this->modelManager->expects($this->once())
+        $modelManager->expects($this->once())
             ->method('getIdentifierValues')
             ->willReturn([123]);
 
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, FooArrayAccess::class, 'bar', false);
+        $transformer = new ModelToIdPropertyTransformer($modelManager, FooArrayAccess::class, 'bar', false);
 
         $this->assertSame([123, '_labels' => ['example']], $transformer->transform($model));
     }
@@ -202,8 +205,8 @@ class ModelToIdPropertyTransformerTest extends TestCase
             ->method('getIdentifierValues')
             ->willReturn([123]);
 
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, static function ($model) {
-            return $model->getBaz();
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, static function (Foo $model): string {
+            return (string) $model->getBaz();
         });
 
         $this->assertSame([123, '_labels' => ['bazz']], $transformer->transform($model));
@@ -265,9 +268,10 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
 
+        $modelManager = $this->createMock(ModelManagerInterface::class);
         $model = new FooArrayAccess();
         $model->setBar('example');
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, FooArrayAccess::class, 'bar', true);
+        $transformer = new ModelToIdPropertyTransformer($modelManager, FooArrayAccess::class, 'bar', true);
         $transformer->transform($model);
     }
 
@@ -299,7 +303,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
             Foo::class,
             $properties,
             false,
-            function ($model, $property) use ($properties) {
+            function (Foo $model, $property) use ($properties): string {
                 $this->assertSame($properties, $property);
 
                 return 'nice_label';

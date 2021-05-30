@@ -55,7 +55,7 @@ final class RoutesCache
             $routes = [];
 
             $reflection = new \ReflectionObject($admin);
-            if (file_exists($reflection->getFileName())) {
+            if (false !== $reflection->getFileName() && file_exists($reflection->getFileName())) {
                 $resources[] = new FileResource($reflection->getFileName());
             }
 
@@ -65,7 +65,9 @@ final class RoutesCache
 
             foreach ($admin->getExtensions() as $extension) {
                 $reflection = new \ReflectionObject($extension);
-                $resources[] = new FileResource($reflection->getFileName());
+                if (false !== $reflection->getFileName() && file_exists($reflection->getFileName())) {
+                    $resources[] = new FileResource($reflection->getFileName());
+                }
             }
 
             $cache->write(serialize($routes), $resources);

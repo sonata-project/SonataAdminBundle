@@ -30,6 +30,7 @@ use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Sonata\Exporter\Exporter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
@@ -47,7 +48,9 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -189,7 +192,7 @@ class CRUDController extends AbstractController
                 $this->admin->delete($object);
 
                 if ($this->isXmlHttpRequest($request)) {
-                    return $this->renderJson(['result' => 'ok'], Response::HTTP_OK, []);
+                    return $this->renderJson(['result' => 'ok']);
                 }
 
                 $this->addFlash(
@@ -204,7 +207,7 @@ class CRUDController extends AbstractController
                 $this->handleModelManagerException($e);
 
                 if ($this->isXmlHttpRequest($request)) {
-                    return $this->renderJson(['result' => 'error'], Response::HTTP_OK, []);
+                    return $this->renderJson(['result' => 'error']);
                 }
 
                 $this->addFlash(
@@ -894,8 +897,11 @@ class CRUDController extends AbstractController
             ));
         }
 
+        $pool = $this->get('sonata.admin.pool');
+        \assert($pool instanceof Pool);
+
         try {
-            $this->admin = $this->get('sonata.admin.pool')->getAdminByAdminCode($adminCode);
+            $this->admin = $pool->getAdminByAdminCode($adminCode);
         } catch (\InvalidArgumentException $e) {
             throw new \RuntimeException(sprintf(
                 'Unable to find the admin class related to the current controller (%s).',
@@ -1020,7 +1026,7 @@ class CRUDController extends AbstractController
         }
 
         $context = ['exception' => $e];
-        if ($e->getPrevious()) {
+        if (null !== $e->getPrevious()) {
             $context['previous_exception_message'] = $e->getPrevious()->getMessage();
         }
         $this->getLogger()->error($e->getMessage(), $context);
@@ -1136,7 +1142,9 @@ class CRUDController extends AbstractController
             return new \ArrayIterator([]);
         }
 
-        $aclUsers = $this->get('sonata.admin.security.acl_user_manager')->findUsers();
+        $aclUserManager = $this->get('sonata.admin.security.acl_user_manager');
+        \assert($aclUserManager instanceof AdminAclUserManagerInterface);
+        $aclUsers = $aclUserManager->findUsers();
 
         return \is_array($aclUsers) ? new \ArrayIterator($aclUsers) : $aclUsers;
     }
@@ -1148,7 +1156,9 @@ class CRUDController extends AbstractController
     {
         $aclRoles = [];
         $roleHierarchy = $this->getParameter('security.role_hierarchy.roles');
+        \assert(\is_array($roleHierarchy));
         $pool = $this->get('sonata.admin.pool');
+        \assert($pool instanceof Pool);
 
         foreach ($pool->getAdminServiceIds() as $id) {
             try {
@@ -1158,7 +1168,7 @@ class CRUDController extends AbstractController
             }
 
             $baseRole = $admin->getSecurityHandler()->getBaseRole($admin);
-            foreach ($admin->getSecurityInformation() as $role => $permissions) {
+            foreach ($admin->getSecurityInformation() as $role => $_permissions) {
                 $role = sprintf($baseRole, $role);
                 $aclRoles[] = $role;
             }
@@ -1186,8 +1196,10 @@ class CRUDController extends AbstractController
         }
 
         $token = $request->get('_sonata_csrf_token');
+        $tokenManager = $this->get('security.csrf.token_manager');
+        \assert($tokenManager instanceof CsrfTokenManagerInterface);
 
-        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken($intention, $token))) {
+        if (!$tokenManager->isTokenValid(new CsrfToken($intention, $token))) {
             throw new HttpException(Response::HTTP_BAD_REQUEST, 'The csrf token is not valid, CSRF attack?');
         }
     }
@@ -1209,7 +1221,10 @@ class CRUDController extends AbstractController
             return null;
         }
 
-        return $this->get('security.csrf.token_manager')->getToken($intention)->getValue();
+        $tokenManager = $this->get('security.csrf.token_manager');
+        \assert($tokenManager instanceof CsrfTokenManagerInterface);
+
+        return $tokenManager->getToken($intention)->getValue();
     }
 
     /**
@@ -1273,8 +1288,10 @@ class CRUDController extends AbstractController
     final protected function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
     {
         $domain = $domain ?: $this->admin->getTranslationDomain();
+        $translator = $this->get('translator');
+        \assert($translator instanceof TranslatorInterface);
 
-        return $this->get('translator')->trans($id, $parameters, $domain, $locale);
+        return $translator->trans($id, $parameters, $domain, $locale);
     }
 
     protected function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): ?JsonResponse
@@ -1285,6 +1302,7 @@ class CRUDController extends AbstractController
 
         $errors = [];
         foreach ($form->getErrors(true) as $error) {
+            \assert($error instanceof FormError);
             $errors[] = $error->getMessage();
         }
 
@@ -1307,7 +1325,7 @@ class CRUDController extends AbstractController
             'result' => 'ok',
             'objectId' => $this->admin->getNormalizedIdentifier($object),
             'objectName' => $this->escapeHtml($this->admin->toString($object)),
-        ], Response::HTTP_OK);
+        ]);
     }
 
     final protected function assertObjectExists(Request $request, bool $strict = false): void
@@ -1369,7 +1387,7 @@ class CRUDController extends AbstractController
         if (!$parentObjectMatches) {
             throw new \RuntimeException(sprintf(
                 'There is no association between "%s" and "%s"',
-                $parentAdmin->toString($parentAdmin->getObject($parentId)),
+                $parentAdmin->toString($parentAdminObject),
                 $this->admin->toString($object)
             ));
         }
@@ -1407,6 +1425,7 @@ class CRUDController extends AbstractController
     private function setFormTheme(FormView $formView, ?array $theme = null): void
     {
         $twig = $this->get('twig');
+        \assert($twig instanceof Environment);
 
         $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
     }
