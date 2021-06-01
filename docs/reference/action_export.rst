@@ -69,7 +69,7 @@ you can override the ``DataSourceInterface`` class::
 
     final class DataSource implement DataSourceInterface
     {
-        public function createIterator(): SourceIteratorInterface
+        public function createIterator(ProxyQueryInterface $query, array $fields): SourceIteratorInterface
         {
             // Custom implementation
         }
