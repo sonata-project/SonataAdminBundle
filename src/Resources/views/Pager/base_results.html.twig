@@ -25,6 +25,7 @@ file that was distributed with this source code.
     <select class="per-page small form-control" id="{{ admin.uniqid }}_per_page" style="width: auto">
         {% for per_page in admin.getperpageoptions %}
             <option {% if per_page == admin.datagrid.pager.maxperpage %}selected="selected"{% endif %} value="{{ admin.generateUrl(action, {'filter': admin.datagrid.values|merge({
+                (constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_BY')): admin.datagrid.values[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_BY')].name,
                 (constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::PAGE')): 1,
                 (constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::PER_PAGE')): per_page})
             }) }}">
