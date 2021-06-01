@@ -67,7 +67,7 @@ Customizing the query used to fetch the results
 If you want to customize the query used to fetch the results for a specific admin,
 you can override the ``DataSourceInterface`` class::
 
-    final class DataSource implement DataSourceInterface
+    final class DataSource implements DataSourceInterface
     {
         public function createIterator(): SourceIteratorInterface
         {
