@@ -5,6 +5,8 @@ parameters:
     level: max
     bootstrapFiles:
         - vendor/bin/.phpunit/phpunit/vendor/autoload.php
+    symfony:
+        console_application_loader: ./phpstan-console-application.php
     paths:
         - src
         - tests
