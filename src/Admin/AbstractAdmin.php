@@ -1124,7 +1124,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             return null;
         }
 
-        $subClass = $this->getRequest()->query->get('subclass');
+        $subClass = (string) $this->getRequest()->query->get('subclass');
 
         if (!$this->hasSubClass($subClass)) {
             @trigger_error(sprintf(
