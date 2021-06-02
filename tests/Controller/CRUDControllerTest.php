@@ -235,6 +235,7 @@ class CRUDControllerTest extends TestCase
 
         $this->parameterBag = new ParameterBag();
 
+        $this->request->setSession($this->session);
         $this->container->set('sonata.admin.pool', $this->pool);
         $this->container->set('request_stack', $requestStack);
         $this->container->set('foo.admin', $this->admin);

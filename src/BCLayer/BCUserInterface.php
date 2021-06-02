@@ -23,18 +23,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 final class BCUserInterface
 {
-    /**
-     * @return string
-     *
-     * @psalm-suppress UndefinedInterfaceMethod
-     */
     public static function getUsername(UserInterface $user): string
     {
         if (method_exists($user, 'getUserIdentifier')) {
             return $user->getUserIdentifier();
         }
 
-        // @phpstan-ignore-next-line
         return $user->getUsername();
     }
 }

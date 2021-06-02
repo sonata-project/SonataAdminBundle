@@ -260,6 +260,17 @@ file that was distributed with this source code.
                           $('#{{ id }}_hidden_inputs_wrap').html('<input type="hidden" name="{{ full_name }}" value="'+xhr.responseJSON.objectId+'" />');
                         {% endif %}
 
+                        // append to Select2
+                        autocompleteInput.append(data).trigger('change');
+
+                        // manually trigger the `select2:select` event
+                        autocompleteInput.trigger({
+                            type: 'select2:select',
+                            params: {
+                                data: data
+                            }
+                        });
+
                         $('#{{ id }}_hidden_inputs_wrap input:hidden').val(data.value);
                       }
                   }
