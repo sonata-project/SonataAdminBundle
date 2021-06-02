@@ -95,7 +95,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 if ($default) {
                     if (isset($classes[$arguments[1]][Pool::DEFAULT_ADMIN_KEY])) {
                         throw new \RuntimeException(sprintf(
-                            'The class %s has two default admins %s and %s.',
+                            'The class %s has two admins %s and %s with the "default" attribute set to true. Only one is allowed.',
                             $arguments[1],
                             $classes[$arguments[1]][Pool::DEFAULT_ADMIN_KEY],
                             $id
