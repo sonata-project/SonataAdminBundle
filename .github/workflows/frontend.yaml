@@ -36,3 +36,6 @@ jobs:
 
             - name: Run Webpack Encore
               run: yarn encore production
+
+            - name: Check if the compilation is up to date
+              run: git diff --no-patch --exit-code src/Resources/public
