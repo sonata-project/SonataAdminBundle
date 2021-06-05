@@ -1029,7 +1029,7 @@ class CRUDControllerTest extends TestCase
             ->method('getParent')
             ->willReturn($admin);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getParentAssociationMapping')
             ->willReturn('parent');
 
@@ -1437,7 +1437,7 @@ class CRUDControllerTest extends TestCase
             ->method('getParent')
             ->willReturn($parentAdmin);
 
-        $childAdmin->expects($this->once())
+        $childAdmin->expects($this->atLeastOnce())
             ->method('getParentAssociationMapping')
             ->willReturn('parents');
 
