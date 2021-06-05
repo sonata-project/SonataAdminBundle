@@ -95,9 +95,9 @@ class CRUDController extends AbstractController
      *
      * @return Response A Response instance
      */
-    public function renderWithExtraParams(string $view, array $parameters = [], ?Response $response = null): Response
+    public function renderWithExtraParams(Request $request, string $view, array $parameters = [], ?Response $response = null): Response
     {
-        return $this->render($view, $this->addRenderExtraParams($parameters), $response);
+        return $this->render($view, $this->addRenderExtraParams($request, $parameters), $response);
     }
 
     /**
@@ -132,7 +132,7 @@ class CRUDController extends AbstractController
             $exportFormats = $exporter->getAvailableFormats($this->admin);
         }
 
-        return $this->renderWithExtraParams($template, [
+        return $this->renderWithExtraParams($request, $template, [
             'action' => 'list',
             'form' => $formView,
             'datagrid' => $datagrid,
@@ -191,14 +191,14 @@ class CRUDController extends AbstractController
 
         if (Request::METHOD_DELETE === $request->getMethod()) {
             // check the csrf token
-            $this->validateCsrfToken('sonata.delete');
+            $this->validateCsrfToken($request, 'sonata.delete');
 
             $objectName = $this->admin->toString($object);
 
             try {
                 $this->admin->delete($object);
 
-                if ($this->isXmlHttpRequest()) {
+                if ($this->isXmlHttpRequest($request)) {
                     return $this->renderJson(['result' => 'ok'], Response::HTTP_OK, []);
                 }
 
@@ -213,7 +213,7 @@ class CRUDController extends AbstractController
             } catch (ModelManagerException $e) {
                 $this->handleModelManagerException($e);
 
-                if ($this->isXmlHttpRequest()) {
+                if ($this->isXmlHttpRequest($request)) {
                     return $this->renderJson(['result' => 'error'], Response::HTTP_OK, []);
                 }
 
@@ -227,12 +227,12 @@ class CRUDController extends AbstractController
                 );
             }
 
-            return $this->redirectTo($object);
+            return $this->redirectTo($request, $object);
         }
 
         $template = $this->templateRegistry->getTemplate('delete');
 
-        return $this->renderWithExtraParams($template, [
+        return $this->renderWithExtraParams($request, $template, [
             'object' => $object,
             'action' => 'delete',
             'csrf_token' => $this->getCsrfToken('sonata.delete'),
@@ -274,7 +274,7 @@ class CRUDController extends AbstractController
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved
-            if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
+            if ($isFormValid && (!$this->isInPreviewMode($request) || $this->isPreviewApproved($request))) {
                 /** @phpstan-var T $submittedObject */
                 $submittedObject = $form->getData();
                 $this->admin->setSubject($submittedObject);
@@ -282,7 +282,7 @@ class CRUDController extends AbstractController
                 try {
                     $existingObject = $this->admin->update($submittedObject);
 
-                    if ($this->isXmlHttpRequest()) {
+                    if ($this->isXmlHttpRequest($request)) {
                         return $this->handleXmlHttpRequestSuccessResponse($request, $existingObject);
                     }
 
@@ -296,7 +296,7 @@ class CRUDController extends AbstractController
                     );
 
                     // redirect to edit mode
-                    return $this->redirectTo($existingObject);
+                    return $this->redirectTo($request, $existingObject);
                 } catch (ModelManagerException $e) {
                     $this->handleModelManagerException($e);
 
@@ -312,7 +312,7 @@ class CRUDController extends AbstractController
 
             // show an error message if the form failed validation
             if (!$isFormValid) {
-                if ($this->isXmlHttpRequest() && null !== ($response = $this->handleXmlHttpRequestErrorResponse($request, $form))) {
+                if ($this->isXmlHttpRequest($request) && null !== ($response = $this->handleXmlHttpRequestErrorResponse($request, $form))) {
                     return $response;
                 }
 
@@ -324,7 +324,7 @@ class CRUDController extends AbstractController
                         'SonataAdminBundle'
                     )
                 );
-            } elseif ($this->isPreviewRequested()) {
+            } elseif ($this->isPreviewRequested($request)) {
                 // enable the preview template if the form was valid and preview was requested
                 $templateKey = 'preview';
                 $this->admin->getShow();
@@ -337,7 +337,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate($templateKey);
 
-        return $this->renderWithExtraParams($template, [
+        return $this->renderWithExtraParams($request, $template, [
             'action' => 'edit',
             'form' => $formView,
             'object' => $existingObject,
@@ -362,7 +362,7 @@ class CRUDController extends AbstractController
         }
 
         // check the csrf token
-        $this->validateCsrfToken('sonata.batch');
+        $this->validateCsrfToken($request, 'sonata.batch');
 
         $confirmation = $request->get('confirmation', false);
 
@@ -439,7 +439,7 @@ class CRUDController extends AbstractController
                 $batchActions[$action]['template'] :
                 $this->templateRegistry->getTemplate('batch_confirmation');
 
-            return $this->renderWithExtraParams($template, [
+            return $this->renderWithExtraParams($request, $template, [
                 'action' => 'list',
                 'action_label' => $actionLabel,
                 'batch_translation_domain' => $batchTranslationDomain,
@@ -493,9 +493,10 @@ class CRUDController extends AbstractController
 
         if ($class->isAbstract()) {
             return $this->renderWithExtraParams(
+                $request,
                 '@SonataAdmin/CRUD/select_subclass.html.twig',
                 [
-                    'base_template' => $this->getBaseTemplate(),
+                    'base_template' => $this->getBaseTemplate($request),
                     'admin' => $this->admin,
                     'action' => 'create',
                 ],
@@ -521,7 +522,7 @@ class CRUDController extends AbstractController
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved
-            if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
+            if ($isFormValid && (!$this->isInPreviewMode($request) || $this->isPreviewApproved($request))) {
                 /** @phpstan-var T $submittedObject */
                 $submittedObject = $form->getData();
                 $this->admin->setSubject($submittedObject);
@@ -530,7 +531,7 @@ class CRUDController extends AbstractController
                 try {
                     $newObject = $this->admin->create($submittedObject);
 
-                    if ($this->isXmlHttpRequest()) {
+                    if ($this->isXmlHttpRequest($request)) {
                         return $this->handleXmlHttpRequestSuccessResponse($request, $newObject);
                     }
 
@@ -544,7 +545,7 @@ class CRUDController extends AbstractController
                     );
 
                     // redirect to edit mode
-                    return $this->redirectTo($newObject);
+                    return $this->redirectTo($request, $newObject);
                 } catch (ModelManagerException $e) {
                     $this->handleModelManagerException($e);
 
@@ -554,7 +555,7 @@ class CRUDController extends AbstractController
 
             // show an error message if the form failed validation
             if (!$isFormValid) {
-                if ($this->isXmlHttpRequest() && null !== ($response = $this->handleXmlHttpRequestErrorResponse($request, $form))) {
+                if ($this->isXmlHttpRequest($request) && null !== ($response = $this->handleXmlHttpRequestErrorResponse($request, $form))) {
                     return $response;
                 }
 
@@ -566,7 +567,7 @@ class CRUDController extends AbstractController
                         'SonataAdminBundle'
                     )
                 );
-            } elseif ($this->isPreviewRequested()) {
+            } elseif ($this->isPreviewRequested($request)) {
                 // pick the preview template if the form was valid and preview was requested
                 $templateKey = 'preview';
                 $this->admin->getShow();
@@ -579,7 +580,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate($templateKey);
 
-        return $this->renderWithExtraParams($template, [
+        return $this->renderWithExtraParams($request, $template, [
             'action' => 'create',
             'form' => $formView,
             'object' => $newObject,
@@ -613,7 +614,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('show');
 
-        return $this->renderWithExtraParams($template, [
+        return $this->renderWithExtraParams($request, $template, [
             'action' => 'show',
             'object' => $object,
             'elements' => $fields,
@@ -651,7 +652,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('history');
 
-        return $this->renderWithExtraParams($template, [
+        return $this->renderWithExtraParams($request, $template, [
             'action' => 'history',
             'object' => $object,
             'revisions' => $revisions,
@@ -702,7 +703,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('show');
 
-        return $this->renderWithExtraParams($template, [
+        return $this->renderWithExtraParams($request, $template, [
             'action' => 'show',
             'object' => $object,
             'elements' => $this->admin->getShow(),
@@ -761,7 +762,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('show_compare');
 
-        return $this->renderWithExtraParams($template, [
+        return $this->renderWithExtraParams($request, $template, [
             'action' => 'show',
             'object' => $baseObject,
             'object_compare' => $compareObject,
@@ -868,7 +869,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('acl');
 
-        return $this->renderWithExtraParams($template, [
+        return $this->renderWithExtraParams($request, $template, [
             'action' => 'acl',
             'permissions' => $adminObjectAclData->getUserPermissions(),
             'object' => $object,
@@ -877,11 +878,6 @@ class CRUDController extends AbstractController
             'aclUsersForm' => $aclUsersForm->createView(),
             'aclRolesForm' => $aclRolesForm->createView(),
         ]);
-    }
-
-    public function getRequest(): Request
-    {
-        return $this->get('request_stack')->getCurrentRequest();
     }
 
     /**
@@ -938,10 +934,10 @@ class CRUDController extends AbstractController
      *
      * @return array<string, mixed>
      */
-    protected function addRenderExtraParams(array $parameters = []): array
+    protected function addRenderExtraParams(Request $request, array $parameters = []): array
     {
         $parameters['admin'] = $parameters['admin'] ?? $this->admin;
-        $parameters['base_template'] = $parameters['base_template'] ?? $this->getBaseTemplate();
+        $parameters['base_template'] = $parameters['base_template'] ?? $this->getBaseTemplate($request);
 
         return $parameters;
     }
@@ -964,10 +960,8 @@ class CRUDController extends AbstractController
      *
      * @return bool True if the request is an XMLHttpRequest, false otherwise
      */
-    protected function isXmlHttpRequest(): bool
+    protected function isXmlHttpRequest(Request $request): bool
     {
-        $request = $this->getRequest();
-
         return $request->isXmlHttpRequest() || $request->get('_xml_http_request');
     }
 
@@ -992,9 +986,9 @@ class CRUDController extends AbstractController
      *
      * @return string The template name
      */
-    protected function getBaseTemplate(): string
+    protected function getBaseTemplate(Request $request): string
     {
-        if ($this->isXmlHttpRequest()) {
+        if ($this->isXmlHttpRequest($request)) {
             return $this->templateRegistry->getTemplate('ajax');
         }
 
@@ -1022,10 +1016,8 @@ class CRUDController extends AbstractController
      *
      * @phpstan-param T $object
      */
-    protected function redirectTo(object $object): RedirectResponse
+    protected function redirectTo(Request $request, object $object): RedirectResponse
     {
-        $request = $this->getRequest();
-
         $url = false;
 
         if (null !== $request->get('btn_update_and_list')) {
@@ -1085,20 +1077,16 @@ class CRUDController extends AbstractController
     /**
      * Returns true if the preview is requested to be shown.
      */
-    protected function isPreviewRequested(): bool
+    protected function isPreviewRequested(Request $request): bool
     {
-        $request = $this->getRequest();
-
         return null !== $request->get('btn_preview');
     }
 
     /**
      * Returns true if the preview has been approved.
      */
-    protected function isPreviewApproved(): bool
+    protected function isPreviewApproved(Request $request): bool
     {
-        $request = $this->getRequest();
-
         return null !== $request->get('btn_preview_approve');
     }
 
@@ -1108,21 +1096,19 @@ class CRUDController extends AbstractController
      * That means either a preview is requested or the preview has already been shown
      * and it got approved/declined.
      */
-    protected function isInPreviewMode(): bool
+    protected function isInPreviewMode(Request $request): bool
     {
         return $this->admin->supportsPreviewMode()
-        && ($this->isPreviewRequested()
-            || $this->isPreviewApproved()
-            || $this->isPreviewDeclined());
+        && ($this->isPreviewRequested($request)
+            || $this->isPreviewApproved($request)
+            || $this->isPreviewDeclined($request));
     }
 
     /**
      * Returns true if the preview has been declined.
      */
-    protected function isPreviewDeclined(): bool
+    protected function isPreviewDeclined(Request $request): bool
     {
-        $request = $this->getRequest();
-
         return null !== $request->get('btn_preview_decline');
     }
 
@@ -1178,13 +1164,12 @@ class CRUDController extends AbstractController
      *
      * @throws HttpException
      */
-    protected function validateCsrfToken(string $intention): void
+    protected function validateCsrfToken(Request $request, string $intention): void
     {
         if (!$this->has('security.csrf.token_manager')) {
             return;
         }
 
-        $request = $this->getRequest();
         $token = $request->get('_sonata_csrf_token');
 
         if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken($intention, $token))) {
