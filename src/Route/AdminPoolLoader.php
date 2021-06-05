@@ -32,8 +32,6 @@ final class AdminPoolLoader extends Loader
 
     public function __construct(Pool $pool)
     {
-        parent::__construct();
-
         $this->pool = $pool;
     }
 

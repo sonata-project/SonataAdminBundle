@@ -2615,7 +2615,7 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryActionAccessDenied(): void
     {
-        $this->request->query->set('id', 123);
+        $this->request->query->set('id', '123');
 
         $this->admin
             ->method('getObject')
@@ -2632,11 +2632,9 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryActionNotFoundException(): void
     {
-        $this->request->query->set('id', 123);
+        $this->request->query->set('id', '123');
 
-        $this->admin->expects($this->once())
-            ->method('getObject')
-            ->willReturn(null);
+        $this->admin->method('getObject')->willReturn(null);
 
         $this->expectException(NotFoundHttpException::class);
 
