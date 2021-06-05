@@ -199,6 +199,8 @@ class AdminHelper
      *
      * @param AdminInterface<object> $admin
      * @param string[]               $elements
+     *
+     * @phpstan-param non-empty-array<string> $elements
      */
     private function getModelClassName(AdminInterface $admin, array $elements): string
     {
