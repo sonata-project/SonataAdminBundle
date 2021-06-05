@@ -2489,11 +2489,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $menu->setChildrenAttribute('class', 'nav navbar-nav');
         $menu->setExtra('translation_domain', $this->getTranslationDomain());
 
-        // Prevents BC break with KnpMenuBundle v1.x
-        if (method_exists($menu, 'setCurrentUri')) {
-            $menu->setCurrentUri($this->getRequest()->getBaseUrl().$this->getRequest()->getPathInfo());
-        }
-
         $this->configureTabMenu($menu, $action, $childAdmin);
 
         foreach ($this->getExtensions() as $extension) {
