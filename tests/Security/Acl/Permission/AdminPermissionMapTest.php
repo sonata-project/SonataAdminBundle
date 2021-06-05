@@ -59,15 +59,18 @@ class AdminPermissionMapTest extends TestCase
      */
     public function permissionProvider(): array
     {
-        $dataSet = [];
-        $reflection = new \ReflectionClass(AdminPermissionMap::class);
-
-        foreach ($reflection->getConstants() as $permission) {
-            $dataSet[$permission] = [true, $permission];
-        }
-
-        return $dataSet + [
-            'unknown permission' => [false, 'unknown permission'],
+        return [
+            [true, AdminPermissionMap::PERMISSION_VIEW],
+            [true, AdminPermissionMap::PERMISSION_EDIT],
+            [true, AdminPermissionMap::PERMISSION_CREATE],
+            [true, AdminPermissionMap::PERMISSION_DELETE],
+            [true, AdminPermissionMap::PERMISSION_UNDELETE],
+            [true, AdminPermissionMap::PERMISSION_LIST],
+            [true, AdminPermissionMap::PERMISSION_EXPORT],
+            [true, AdminPermissionMap::PERMISSION_OPERATOR],
+            [true, AdminPermissionMap::PERMISSION_MASTER],
+            [true, AdminPermissionMap::PERMISSION_OWNER],
+            [false, 'unknown permission'],
         ];
     }
 

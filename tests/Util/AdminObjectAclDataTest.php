@@ -147,7 +147,6 @@ class AdminObjectAclDataTest extends TestCase
     public function testGetPermissions(): void
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $this->assertIsArray($adminObjectAclData->getPermissions());
 
         foreach ($adminObjectAclData->getPermissions() as $permission) {
             $this->assertIsString($permission);
@@ -157,7 +156,6 @@ class AdminObjectAclDataTest extends TestCase
     public function testGetUserPermissions(): void
     {
         $adminObjectAclDataOwner = $this->createAdminObjectAclData();
-        $this->assertIsArray($adminObjectAclDataOwner->getUserPermissions());
 
         foreach ($adminObjectAclDataOwner->getUserPermissions() as $permission) {
             $this->assertIsString($permission);
@@ -167,7 +165,6 @@ class AdminObjectAclDataTest extends TestCase
         $this->assertContains('MASTER', $adminObjectAclDataOwner->getUserPermissions());
 
         $adminObjectAclData = $this->createAdminObjectAclData(false);
-        $this->assertIsArray($adminObjectAclData->getUserPermissions());
 
         foreach ($adminObjectAclData->getUserPermissions() as $permission) {
             $this->assertIsString($permission);

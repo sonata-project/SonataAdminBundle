@@ -379,6 +379,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         Definition $definition
     ): void {
         $definedTemplates = $container->getParameter('sonata.admin.configuration.templates');
+        \assert(\is_array($definedTemplates));
 
         $methods = [];
         $pos = 0;

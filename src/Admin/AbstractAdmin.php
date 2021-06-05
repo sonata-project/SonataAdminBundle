@@ -2436,7 +2436,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         $formBuilder = $this->getFormBuilder();
         $formBuilder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            $this->preValidate($event->getData());
+            /** @phpstan-var T $data */
+            $data = $event->getData();
+            $this->preValidate($data);
         }, 100);
 
         $this->form = $formBuilder->getForm();

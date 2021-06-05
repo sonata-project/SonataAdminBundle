@@ -87,13 +87,13 @@ class AdminHelperTest extends TestCase
     public function testGetElementAccessPath(): void
     {
         $object = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['getPathToObject'])
+            ->addMethods(['getPathToObject'])
             ->getMock();
         $subObject = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['getAnother'])
+            ->addMethods(['getAnother'])
             ->getMock();
         $sub2Object = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['getMoreThings'])
+            ->addMethods(['getMoreThings'])
             ->getMock();
 
         $object->expects($this->atLeastOnce())->method('getPathToObject')->willReturn([$subObject]);
@@ -113,10 +113,10 @@ class AdminHelperTest extends TestCase
     {
         $path = 'uniquePartOfId_path_to_object_0_more_calls';
         $object = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['getPathToObject'])
+            ->addMethods(['getPathToObject'])
             ->getMock();
         $subObject = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['getMore'])
+            ->addMethods(['getMore'])
             ->getMock();
 
         $object->expects($this->atLeastOnce())->method('getPathToObject')->willReturn([$subObject]);

@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\Admin;
 use Doctrine\Common\Collections\Collection;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
@@ -470,7 +471,7 @@ class AdminTest extends TestCase
     }
 
     /**
-     * @psalm-suppress UndefinedClass
+     * @psalm-suppress ArgumentTypeCoercion, UndefinedClass
      */
     public function testGetBaseRoutePatternWithUnreconizedClassname(): void
     {
@@ -565,7 +566,7 @@ class AdminTest extends TestCase
     }
 
     /**
-     * @psalm-suppress UndefinedClass
+     * @psalm-suppress ArgumentTypeCoercion, UndefinedClass
      */
     public function testGetBaseRouteNameWithUnreconizedClassname(): void
     {
@@ -1810,6 +1811,7 @@ class AdminTest extends TestCase
 
     public function testGetActionButtonsListWithoutExtraChecks(): void
     {
+        /** @var AbstractAdmin<object>&MockObject $admin */
         $admin = $this->getMockBuilder(AbstractAdmin::class)
             ->disableOriginalConstructor()
             ->setMethodsExcept(['getActionButtons', 'configureActionButtons'])

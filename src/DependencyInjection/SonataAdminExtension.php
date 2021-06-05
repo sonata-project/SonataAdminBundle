@@ -84,6 +84,7 @@ final class SonataAdminExtension extends Extension
         }
 
         $configuration = $this->getConfiguration($configs, $container);
+        \assert(null !== $configuration);
         $config = $this->processConfiguration($configuration, $configs);
 
         $config['options']['javascripts'] = $this->buildJavascripts($config);

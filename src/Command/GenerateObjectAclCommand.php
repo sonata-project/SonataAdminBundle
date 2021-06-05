@@ -147,8 +147,9 @@ final class GenerateObjectAclCommand extends QuestionableCommand
     private function getUserModelClass(InputInterface $input, OutputInterface $output): string
     {
         if ('' === $this->userModelClass) {
-            if ($input->getOption('user_model')) {
-                $userModelFromInput = $input->getOption('user_model');
+            $userModel = $input->getOption('user_model');
+            if ($userModel) {
+                $userModelFromInput = $userModel;
             } else {
                 $userModelFromInput = $this->getQuestionHelper()->ask(
                     $input,

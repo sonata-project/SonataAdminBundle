@@ -62,6 +62,8 @@ class ModelToIdPropertyTransformerTest extends TestCase
      * @param array<int|string|array<string>>|null $params
      *
      * @dataProvider getReverseTransformMultipleTests
+     *
+     * @psalm-param (array{_labels?: array<string>}&array<int|string>)|null $params
      */
     public function testReverseTransformMultiple(array $expected, $params, Foo $entity1, Foo $entity2, Foo $entity3): void
     {
@@ -103,6 +105,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
     /**
      * @phpstan-return iterable<array-key, array{array<Foo>, array<int|string|array<string>>|null, Foo, Foo, Foo}>
+     * @psalm-return iterable<array-key, array{array<Foo>, (array{_labels?: array<string>}&array<int|string>)|null, Foo, Foo, Foo}>
      */
     public function getReverseTransformMultipleTests(): iterable
     {

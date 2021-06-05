@@ -125,6 +125,9 @@ final class DatagridMapper implements MapperInterface
         return array_keys($this->datagrid->getFilters());
     }
 
+    /**
+     * @return static
+     */
     public function remove(string $key): self
     {
         $this->getAdmin()->removeFilterFieldDescription($key);
@@ -133,6 +136,9 @@ final class DatagridMapper implements MapperInterface
         return $this;
     }
 
+    /**
+     * @return static
+     */
     public function reorder(array $keys): self
     {
         $this->datagrid->reorderFilters($keys);

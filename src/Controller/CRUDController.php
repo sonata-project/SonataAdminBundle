@@ -63,8 +63,11 @@ class CRUDController extends AbstractController
      * The related Admin class.
      *
      * @var AdminInterface
-     *
      * @phpstan-var AdminInterface<T>
+     *
+     * @psalm-suppress MissingConstructor
+     *
+     * @see ConfigureCRUDControllerListener
      */
     protected $admin;
 
@@ -72,6 +75,10 @@ class CRUDController extends AbstractController
      * The template registry of the related Admin class.
      *
      * @var TemplateRegistryInterface
+     *
+     * @psalm-suppress MissingConstructor
+     *
+     * @see ConfigureCRUDControllerListener
      */
     private $templateRegistry;
 
@@ -387,6 +394,10 @@ class CRUDController extends AbstractController
             $data['all_elements'] = $allElements;
 
             unset($data['_sonata_csrf_token']);
+        }
+
+        if (null === $action) {
+            throw new \RuntimeException('The action is not defined');
         }
 
         $batchActions = $this->admin->getBatchActions();
@@ -1374,15 +1385,8 @@ class CRUDController extends AbstractController
             return;
         }
 
-        if (null === $this->admin->getParentAssociationMapping()) {
-            throw new \RuntimeException('The admin has no parent association mapping');
-        }
-
         $parentAdmin = $this->admin->getParent();
         $parentId = $request->get($parentAdmin->getIdParameter());
-
-        $propertyAccessor = PropertyAccess::createPropertyAccessor();
-        $propertyPath = new PropertyPath($this->admin->getParentAssociationMapping());
 
         $parentAdminObject = $parentAdmin->getObject($parentId);
         if (null === $parentAdminObject) {
@@ -1393,6 +1397,13 @@ class CRUDController extends AbstractController
             ));
         }
 
+        $parentAssociationMapping = $this->admin->getParentAssociationMapping();
+        if (null === $parentAssociationMapping) {
+            throw new \RuntimeException('The admin has no parent association mapping');
+        }
+
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $propertyPath = new PropertyPath($parentAssociationMapping);
         $objectParent = $propertyAccessor->getValue($object, $propertyPath);
 
         // $objectParent may be an array or a Collection when the parent association is many to many.

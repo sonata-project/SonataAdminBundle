@@ -269,10 +269,22 @@ final class ExtensionCompilerPass implements CompilerPassInterface
 
                 return $classReflection->isSubclassOf($subject) || $subjectReflection->getName() === $classReflection->getName();
             case 'implements':
+                if (!interface_exists($subject)) {
+                    return false;
+                }
+
                 return $classReflection->implementsInterface($subject);
             case 'extends':
+                if (!class_exists($subject)) {
+                    return false;
+                }
+
                 return $classReflection->isSubclassOf($subject);
             case 'uses':
+                if (!trait_exists($subject)) {
+                    return false;
+                }
+
                 return $this->hasTrait($classReflection, $subject);
         }
 

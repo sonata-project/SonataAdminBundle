@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Form\Widget;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormTypeInterface;
 
 class FilterChoiceWidgetTest extends BaseWidgetTest
 {
@@ -80,6 +81,9 @@ class FilterChoiceWidgetTest extends BaseWidgetTest
         return ['required' => true];
     }
 
+    /**
+     * @return class-string<FormTypeInterface>
+     */
     protected function getChoiceClass(): string
     {
         return ChoiceType::class;

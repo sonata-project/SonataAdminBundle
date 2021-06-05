@@ -489,7 +489,8 @@ class MockAbstractServiceAdmin extends AbstractAdmin
     private $extraArgument;
 
     /**
-     * @param mixed $extraArgument
+     * @param class-string $class
+     * @param mixed        $extraArgument
      */
     public function __construct(string $code, string $class, string $baseControllerName, $extraArgument = null)
     {

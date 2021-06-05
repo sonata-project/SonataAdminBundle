@@ -1759,8 +1759,9 @@ class CRUDControllerTest extends TestCase
         $this->request->headers->set('Accept', 'application/json');
 
         $this->assertInstanceOf(JsonResponse::class, $response = $this->controller->editAction($this->request));
-        $this->assertNotFalse($response->getContent());
-        $this->assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $response->getContent());
+        $content = $response->getContent();
+        $this->assertNotFalse($content);
+        $this->assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $content);
     }
 
     public function testEditActionAjaxErrorWithoutAcceptApplicationJson(): void
@@ -2442,8 +2443,10 @@ class CRUDControllerTest extends TestCase
         $this->request->headers->set('Accept', 'application/json');
 
         $this->assertInstanceOf(JsonResponse::class, $response = $this->controller->createAction($this->request));
-        $this->assertNotFalse($response->getContent());
-        $this->assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $response->getContent());
+
+        $content = $response->getContent();
+        $this->assertNotFalse($content);
+        $this->assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $content);
     }
 
     public function testCreateActionAjaxErrorWithoutAcceptApplicationJson(): void
@@ -3825,8 +3828,10 @@ class CRUDControllerTest extends TestCase
         $result = $controller->batchAction($this->request);
 
         $this->assertInstanceOf(Response::class, $result);
-        $this->assertNotFalse($result->getContent());
-        $this->assertMatchesRegularExpression('/Redirecting to list/', $result->getContent());
+
+        $content = $result->getContent();
+        $this->assertNotFalse($content);
+        $this->assertMatchesRegularExpression('/Redirecting to list/', $content);
     }
 
     public function testBatchActionWithRequesData(): void

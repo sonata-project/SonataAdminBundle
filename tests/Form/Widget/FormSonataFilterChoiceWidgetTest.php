@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as SymfonyChoiceType;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\FormTypeGuesserInterface;
+use Symfony\Component\Form\FormTypeInterface;
 
 class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
 {
@@ -51,6 +52,9 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
         );
     }
 
+    /**
+     * @return class-string<FormTypeInterface>
+     */
     protected function getChoiceClass(): string
     {
         return ChoiceType::class;

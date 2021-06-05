@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\FormTypeGuesserInterface;
+use Symfony\Component\Form\FormTypeInterface;
 
 class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
 {
@@ -77,6 +78,9 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
         return $extensions;
     }
 
+    /**
+     * @return class-string<FormTypeInterface>
+     */
     protected function getChoiceClass(): string
     {
         return CollectionType::class;
