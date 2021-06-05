@@ -480,7 +480,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->assertInstanceOf(
             Response::class,
-            $this->controller->renderWithExtraParams('@FooAdmin/foo.html.twig', [], null)
+            $this->controller->renderWithExtraParams($this->request, '@FooAdmin/foo.html.twig', [], null)
         );
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
@@ -491,7 +491,7 @@ class CRUDControllerTest extends TestCase
     {
         $response = new Response();
         $response->headers->set('X-foo', 'bar');
-        $responseResult = $this->controller->renderWithExtraParams('@FooAdmin/foo.html.twig', [], $response);
+        $responseResult = $this->controller->renderWithExtraParams($this->request, '@FooAdmin/foo.html.twig', [], $response);
 
         $this->assertSame($response, $responseResult);
         $this->assertSame('bar', $responseResult->headers->get('X-foo'));
@@ -505,6 +505,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(
             Response::class,
             $this->controller->renderWithExtraParams(
+                $this->request,
                 '@FooAdmin/foo.html.twig',
                 ['foo' => 'bar'],
                 null
@@ -522,6 +523,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(
             Response::class,
             $this->controller->renderWithExtraParams(
+                $this->request,
                 '@FooAdmin/foo.html.twig',
                 ['foo' => 'bar'],
                 null
@@ -853,7 +855,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo($route))
             ->willReturn(true);
 
-        $response = $this->protectedTestedMethods['redirectTo']->invoke($this->controller, $object, $this->request);
+        $response = $this->protectedTestedMethods['redirectTo']->invoke($this->controller, $this->request, $object);
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame($expected, $response->getTargetUrl());
     }
@@ -876,7 +878,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'), $object)
             ->willReturn(false);
 
-        $response = $this->protectedTestedMethods['redirectTo']->invoke($this->controller, $object, $this->request);
+        $response = $this->protectedTestedMethods['redirectTo']->invoke($this->controller, $this->request, $object);
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame('list', $response->getTargetUrl());
     }
