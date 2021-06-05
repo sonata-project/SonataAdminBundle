@@ -236,7 +236,12 @@ final class Pool
             return $this->getAdminByAdminCode($adminCode);
         }
 
-        return $this->getAdminByClass($fieldDescription->getTargetModel());
+        $targetModel = $fieldDescription->getTargetModel();
+        if (null === $targetModel) {
+            throw new \InvalidArgumentException('The field description has no target model.');
+        }
+
+        return $this->getAdminByClass($targetModel);
     }
 
     /**

@@ -901,7 +901,9 @@ class CRUDController extends AbstractController
         \assert($pool instanceof Pool);
 
         try {
-            $this->admin = $pool->getAdminByAdminCode($adminCode);
+            /** @phpstan-var AdminInterface<T> $admin */
+            $admin = $pool->getAdminByAdminCode($adminCode);
+            $this->admin = $admin;
         } catch (\InvalidArgumentException $e) {
             throw new \RuntimeException(sprintf(
                 'Unable to find the admin class related to the current controller (%s).',
@@ -1360,7 +1362,7 @@ class CRUDController extends AbstractController
      */
     private function getSelectedTab(Request $request): array
     {
-        return array_filter(['_tab' => $request->request->get('_tab')]);
+        return array_filter(['_tab' => (string) $request->request->get('_tab')]);
     }
 
     /**
@@ -1372,6 +1374,10 @@ class CRUDController extends AbstractController
             return;
         }
 
+        if (null === $this->admin->getParentAssociationMapping()) {
+            throw new \RuntimeException('The admin has no parent association mapping');
+        }
+
         $parentAdmin = $this->admin->getParent();
         $parentId = $request->get($parentAdmin->getIdParameter());
 
@@ -1379,6 +1385,14 @@ class CRUDController extends AbstractController
         $propertyPath = new PropertyPath($this->admin->getParentAssociationMapping());
 
         $parentAdminObject = $parentAdmin->getObject($parentId);
+        if (null === $parentAdminObject) {
+            throw new \RuntimeException(sprintf(
+                'No object was found in the admin "%s" for the id "%s"',
+                \get_class($parentAdmin),
+                $parentId
+            ));
+        }
+
         $objectParent = $propertyAccessor->getValue($object, $propertyPath);
 
         // $objectParent may be an array or a Collection when the parent association is many to many.

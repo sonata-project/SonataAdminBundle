@@ -210,6 +210,7 @@ final class AdminObjectAclManipulator
                 $attr = [];
                 if (
                     self::ACL_ROLES_FORM_NAME === $formBuilder->getName()
+                    && \is_string($aclValue)
                     && isset($securityInformation[$aclValue])
                     && false !== array_search($permission, $securityInformation[$aclValue], true)
                 ) {

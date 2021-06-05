@@ -63,6 +63,7 @@ abstract class QuestionableCommand extends Command
     final protected function getQuestionHelper(): QuestionHelper
     {
         $questionHelper = $this->getHelper('question');
+        \assert(null !== $this->getHelperSet());
 
         if (!$questionHelper instanceof QuestionHelper) {
             $questionHelper = new QuestionHelper();

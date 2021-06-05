@@ -190,6 +190,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
      */
     private function flattenExtensionConfiguration(array $config): array
     {
+        /** @phpstan-var FlattenExtensionMap $extensionMap */
         $extensionMap = [
             'global' => [],
             'excludes' => [],
@@ -220,12 +221,12 @@ final class ExtensionCompilerPass implements CompilerPassInterface
              */
             $optionsMap = array_intersect_key($options, $extensionMap);
 
-            foreach ($optionsMap as $key => $value) {
-                foreach ($value as $source) {
-                    if (!isset($extensionMap[$key][$source])) {
-                        $extensionMap[$key][$source] = [];
+            foreach ($extensionMap as $key => &$value) {
+                foreach ($optionsMap[$key] as $source) {
+                    if (!isset($value[$source])) {
+                        $value[$source] = [];
                     }
-                    $extensionMap[$key][$source][$extension]['priority'] = $options['priority'];
+                    $value[$source][$extension]['priority'] = $options['priority'];
                 }
             }
         }
