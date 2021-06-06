@@ -212,7 +212,7 @@ class CRUDController implements ContainerAwareInterface
     public function deleteAction($id) // NEXT_MAJOR: Remove the unused $id parameter
     {
         $request = $this->getRequest();
-        $this->assertObjectExists($request);
+        $this->assertObjectExists($request, true);
 
         $id = $request->get($this->admin->getIdParameter());
         \assert(null !== $id);
@@ -305,7 +305,7 @@ class CRUDController implements ContainerAwareInterface
         $templateKey = 'edit';
 
         $request = $this->getRequest();
-        $this->assertObjectExists($request);
+        $this->assertObjectExists($request, true);
 
         $id = $request->get($this->admin->getIdParameter());
         \assert(null !== $id);
@@ -696,7 +696,7 @@ class CRUDController implements ContainerAwareInterface
         }
 
         $request = $this->getRequest();
-        $this->assertObjectExists($request);
+        $this->assertObjectExists($request, true);
 
         $id = $request->get($this->admin->getIdParameter());
         \assert(null !== $id);
@@ -750,7 +750,7 @@ class CRUDController implements ContainerAwareInterface
         }
 
         $request = $this->getRequest();
-        $this->assertObjectExists($request);
+        $this->assertObjectExists($request, true);
 
         $id = $request->get($this->admin->getIdParameter());
         \assert(null !== $id);
@@ -798,7 +798,7 @@ class CRUDController implements ContainerAwareInterface
     public function historyViewRevisionAction($id = null, $revision = null) // NEXT_MAJOR: Remove the unused $id parameter
     {
         $request = $this->getRequest();
-        $this->assertObjectExists($request);
+        $this->assertObjectExists($request, true);
 
         $id = $request->get($this->admin->getIdParameter());
         \assert(null !== $id);
@@ -860,7 +860,7 @@ class CRUDController implements ContainerAwareInterface
         $this->admin->checkAccess('historyCompareRevisions');
 
         $request = $this->getRequest();
-        $this->assertObjectExists($request);
+        $this->assertObjectExists($request, true);
 
         $id = $request->get($this->admin->getIdParameter());
         \assert(null !== $id);
@@ -1025,7 +1025,7 @@ class CRUDController implements ContainerAwareInterface
         }
 
         $request = $this->getRequest();
-        $this->assertObjectExists($request);
+        $this->assertObjectExists($request, true);
 
         $id = $request->get($this->admin->getIdParameter());
         \assert(null !== $id);
@@ -1671,26 +1671,26 @@ class CRUDController implements ContainerAwareInterface
         ], Response::HTTP_OK);
     }
 
-    final protected function assertObjectExists(Request $request): void
+    final protected function assertObjectExists(Request $request, bool $strict = false): void
     {
         $admin = $this->admin;
 
         while (null !== $admin) {
             $objectId = $request->get($admin->getIdParameter());
-            if (null === $objectId) {
+            if (null !== $objectId) {
+                $adminObject = $admin->getObject($objectId);
+                if (null === $adminObject) {
+                    throw $this->createNotFoundException(sprintf(
+                        'Unable to find %s object with id: %s.',
+                        $admin->getClassnameLabel(),
+                        $objectId
+                    ));
+                }
+            } elseif ($strict || $admin !== $this->admin) {
                 throw $this->createNotFoundException(sprintf(
                     'Unable to find the %s object id of the admin "%s".',
                     $admin->getClassnameLabel(),
                     \get_class($admin)
-                ));
-            }
-
-            $adminObject = $admin->getObject($objectId);
-            if (null === $adminObject) {
-                throw $this->createNotFoundException(sprintf(
-                    'Unable to find %s object with id: %s.',
-                    $admin->getClassnameLabel(),
-                    $objectId
                 ));
             }
 
