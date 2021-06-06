@@ -212,10 +212,12 @@ class CRUDController implements ContainerAwareInterface
     public function deleteAction($id) // NEXT_MAJOR: Remove the unused $id parameter
     {
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
-
         $this->assertObjectExists($request);
+
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
+        $object = $this->admin->getObject($id);
+        \assert(null !== $object);
 
         $this->checkParentChildAssociation($request, $object);
 
@@ -303,10 +305,12 @@ class CRUDController implements ContainerAwareInterface
         $templateKey = 'edit';
 
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
-        $existingObject = $this->admin->getObject($id);
-
         $this->assertObjectExists($request);
+
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
+        $existingObject = $this->admin->getObject($id);
+        \assert(null !== $existingObject);
 
         $this->checkParentChildAssociation($request, $existingObject);
 
@@ -692,10 +696,12 @@ class CRUDController implements ContainerAwareInterface
         }
 
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
-
         $this->assertObjectExists($request);
+
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
+        $object = $this->admin->getObject($id);
+        \assert(null !== $object);
 
         $this->checkParentChildAssociation($request, $object);
 
@@ -744,10 +750,12 @@ class CRUDController implements ContainerAwareInterface
         }
 
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
-
         $this->assertObjectExists($request);
+
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
+        $object = $this->admin->getObject($id);
+        \assert(null !== $object);
 
         $this->admin->checkAccess('history', $object);
 
@@ -790,10 +798,12 @@ class CRUDController implements ContainerAwareInterface
     public function historyViewRevisionAction($id = null, $revision = null) // NEXT_MAJOR: Remove the unused $id parameter
     {
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
-
         $this->assertObjectExists($request);
+
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
+        $object = $this->admin->getObject($id);
+        \assert(null !== $object);
 
         $this->admin->checkAccess('historyViewRevision', $object);
 
@@ -850,9 +860,10 @@ class CRUDController implements ContainerAwareInterface
         $this->admin->checkAccess('historyCompareRevisions');
 
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
-
         $this->assertObjectExists($request);
+
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
 
         $manager = $this->get('sonata.admin.audit.manager.do-not-use');
 
@@ -1014,10 +1025,12 @@ class CRUDController implements ContainerAwareInterface
         }
 
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
-
         $this->assertObjectExists($request);
+
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
+        $object = $this->admin->getObject($id);
+        \assert(null !== $object);
 
         $this->admin->checkAccess('acl', $object);
 
@@ -1664,17 +1677,21 @@ class CRUDController implements ContainerAwareInterface
 
         while (null !== $admin) {
             $objectId = $request->get($admin->getIdParameter());
+            if (null === $objectId) {
+                throw $this->createNotFoundException(sprintf(
+                    'Unable to find the %s object id of the admin "%s".',
+                    $admin->getClassnameLabel(),
+                    \get_class($admin)
+                ));
+            }
 
-            if (null !== $objectId) {
-                $adminObject = $admin->getObject($objectId);
-
-                if (null === $adminObject) {
-                    throw $this->createNotFoundException(sprintf(
-                        'Unable to find %s object with id: %s.',
-                        $admin->getClassnameLabel(),
-                        $objectId
-                    ));
-                }
+            $adminObject = $admin->getObject($objectId);
+            if (null === $adminObject) {
+                throw $this->createNotFoundException(sprintf(
+                    'Unable to find %s object with id: %s.',
+                    $admin->getClassnameLabel(),
+                    $objectId
+                ));
             }
 
             $admin = $admin->isChild() ? $admin->getParent() : null;
