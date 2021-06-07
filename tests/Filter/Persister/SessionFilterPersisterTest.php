@@ -17,6 +17,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Filter\Persister\SessionFilterPersister;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SessionFilterPersisterTest extends TestCase
@@ -86,6 +88,11 @@ class SessionFilterPersisterTest extends TestCase
 
     private function createPersister(): SessionFilterPersister
     {
-        return new SessionFilterPersister($this->session);
+        $request = new Request();
+        $request->setSession($this->session);
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
+
+        return new SessionFilterPersister($requestStack);
     }
 }

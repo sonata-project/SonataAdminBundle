@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Filter\Persister;
 
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -24,28 +25,31 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 final class SessionFilterPersister implements FilterPersisterInterface
 {
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
-    private $session;
+    private $requestStack;
 
-    public function __construct(SessionInterface $session)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     public function get(string $adminCode): array
     {
-        return $this->session->get($this->buildStorageKey($adminCode), []);
+        // TODO: Use $this->requestStack->getSession() when dropping support of Symfony < 5.3
+        return $this->getSession()->get($this->buildStorageKey($adminCode), []);
     }
 
     public function set(string $adminCode, array $filters): void
     {
-        $this->session->set($this->buildStorageKey($adminCode), $filters);
+        // TODO: Use $this->requestStack->getSession() when dropping support of Symfony < 5.3
+        $this->getSession()->set($this->buildStorageKey($adminCode), $filters);
     }
 
     public function reset(string $adminCode): void
     {
-        $this->session->remove($this->buildStorageKey($adminCode));
+        // TODO: Use $this->requestStack->getSession() when dropping support of Symfony < 5.3
+        $this->getSession()->remove($this->buildStorageKey($adminCode));
     }
 
     /**
@@ -54,5 +58,23 @@ final class SessionFilterPersister implements FilterPersisterInterface
     private function buildStorageKey(string $adminCode): string
     {
         return sprintf('%s.filter.parameters', $adminCode);
+    }
+
+    /**
+     * TODO: Remove it when dropping support of Symfony < 5.3.
+     */
+    private function getSession(): SessionInterface
+    {
+        if (method_exists($this->requestStack, 'getSession')) {
+            return $this->requestStack->getSession();
+        }
+
+        $request = $this->requestStack->getCurrentRequest();
+
+        if (null === $request) {
+            throw new \LogicException('There is currently no session available.');
+        }
+
+        return $request->getSession();
     }
 }
