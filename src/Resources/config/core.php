@@ -139,7 +139,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
         ->set('sonata.admin.filter_persister.session', SessionFilterPersister::class)
             ->args([
-                new ReferenceConfigurator('session'),
+                new ReferenceConfigurator('request_stack'),
             ])
 
         ->alias(FilterPersisterInterface::class, 'sonata.admin.filter_persister.session')
