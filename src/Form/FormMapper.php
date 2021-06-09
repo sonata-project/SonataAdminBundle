@@ -118,8 +118,8 @@ class FormMapper extends BaseGroupedMapper
             $fieldDescriptionOptions['type'] = $type;
         }
 
-        if ($group['translation_domain'] && !isset($fieldDescriptionOptions['translation_domain'])) {
-            $fieldDescriptionOptions['translation_domain'] = $group['translation_domain'];
+        if (!isset($fieldDescriptionOptions['translation_domain'])) {
+            $fieldDescriptionOptions['translation_domain'] = $group['translation_domain'] ?? null;
         }
 
         // NEXT_MAJOR: Remove the check and use `createFieldDescription`.
