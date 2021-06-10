@@ -12,6 +12,7 @@ file that was distributed with this source code.
     <select id="{{ id }}_autocomplete_input" data-sonata-select2="false"
         {%- if read_only|default(false) %} readonly="readonly"{% endif -%}
         {%- if disabled %} disabled="disabled"{% endif %}
+        {%- if multiple %} multiple="multiple"{% endif %}
     >
         {%- for idx, val  in value|filter((val, idx) => idx~'' != '_labels') -%}
             <option value="{{ val }}" selected>{{ value['_labels'][idx] }}</option>
@@ -61,7 +62,6 @@ file that was distributed with this source code.
                 enable: {{ disabled ? 'false' : 'true' }},
                 readonly: {{ attr.read_only|default(false) ? 'true' : 'false' }},
                 minimumInputLength: {{ minimum_input_length }},
-                multiple: {{ multiple ? 'true' : 'false' }},
                 theme: 'bootstrap',
                 width: function() {
                     return Admin.get_select2_width(jQuery(this));
@@ -210,18 +210,6 @@ file that was distributed with this source code.
                 }
             });
 
-            // Initialise the autocomplete
-            var data = [];
-
-            {%- if value is not empty -%}
-                data = {%- if multiple -%}[ {%- endif -%}
-                {%- for idx, val  in value|filter((val, idx) => idx~'' != '_labels') -%}
-                    {%- if not loop.first -%}, {% endif -%}
-                    {id: '{{ val }}', label:'{{ value['_labels'][idx] }}'}
-                {%- endfor -%}
-                {%- if multiple -%} ] {%- endif -%};
-            {% endif -%}
-
             // remove unneeded autocomplete text input before form submit
             autocompleteInput.closest('form').submit(function()
             {
@@ -247,6 +235,17 @@ file that was distributed with this source code.
                           true, true
                           );
 
+                        // append to Select2
+                        autocompleteInput.append(item).trigger('change');
+
+                        // manually trigger the `select2:select` event
+                        autocompleteInput.trigger({
+                            type: 'select2:select',
+                            params: {
+                                data: autocompleteInput.select2('data')
+                            }
+                        });
+
                         {%- if multiple -%}
                           var data = autocompleteInput.select2('data');
                           data.push(item);
@@ -259,19 +258,6 @@ file that was distributed with this source code.
                         {% else %}
                           $('#{{ id }}_hidden_inputs_wrap').html('<input type="hidden" name="{{ full_name }}" value="'+xhr.responseJSON.objectId+'" />');
                         {% endif %}
-
-                        // append to Select2
-                        autocompleteInput.append(data).trigger('change');
-
-                        // manually trigger the `select2:select` event
-                        autocompleteInput.trigger({
-                            type: 'select2:select',
-                            params: {
-                                data: data
-                            }
-                        });
-
-                        $('#{{ id }}_hidden_inputs_wrap input:hidden').val(data.value);
                       }
                   }
                 });
