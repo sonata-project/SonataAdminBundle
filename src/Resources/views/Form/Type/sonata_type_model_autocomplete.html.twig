@@ -246,13 +246,6 @@ file that was distributed with this source code.
                             }
                         });
 
-                        {%- if multiple -%}
-                          var data = autocompleteInput.select2('data');
-                          data.push(item);
-                        {%- else -%}
-                          var data = item;
-                        {%- endif -%}
-
                         {% if multiple %}
                           $('#{{ id }}_hidden_inputs_wrap').append('<input type="hidden" name="{{ full_name }}[]" value="'+xhr.responseJSON.objectId+'" />');
                         {% else %}
