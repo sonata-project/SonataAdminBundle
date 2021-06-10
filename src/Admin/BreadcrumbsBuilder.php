@@ -69,6 +69,8 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
      * Builds breadcrumbs for $action, starting from $menu.
      *
      * Note: the method will be called by the top admin instance (parent => child)
+     *
+     * @param AdminInterface<object> $admin
      */
     public function buildBreadcrumbs(
         AdminInterface $admin,
@@ -146,11 +148,11 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
      * Creates a new menu item from a simple name. The name is normalized and
      * translated with the specified translation domain.
      *
-     * @param AdminInterface       $admin             used for translation
-     * @param ItemInterface        $menu              will be modified and returned
-     * @param string               $name              the source of the final label
-     * @param string               $translationDomain for label translation
-     * @param array<string, mixed> $options           menu item options
+     * @param AdminInterface<object> $admin             used for translation
+     * @param ItemInterface          $menu              will be modified and returned
+     * @param string                 $name              the source of the final label
+     * @param string                 $translationDomain for label translation
+     * @param array<string, mixed>   $options           menu item options
      */
     private function createMenuItem(
         AdminInterface $admin,

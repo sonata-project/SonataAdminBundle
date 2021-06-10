@@ -105,6 +105,9 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
         }
     }
 
+    /**
+     * @return FormTypeFieldExtension[]
+     */
     protected function getTypeExtensions(): array
     {
         return [
@@ -114,6 +117,9 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
         ];
     }
 
+    /**
+     * @param array<string, mixed> $vars
+     */
     protected function renderRow(FormView $view, array $vars = []): string
     {
         return (string) $this->renderer->searchAndRenderBlock($view, 'row', $vars);

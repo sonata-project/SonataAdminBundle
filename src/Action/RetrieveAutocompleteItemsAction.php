@@ -193,6 +193,8 @@ final class RetrieveAutocompleteItemsAction
     /**
      * Retrieve the filter field description given by field name.
      *
+     * @param AdminInterface<object> $admin
+     *
      * @throws \RuntimeException
      */
     private function retrieveFilterFieldDescription(
@@ -214,6 +216,8 @@ final class RetrieveAutocompleteItemsAction
 
     /**
      * Retrieve the form field description given by field name.
+     *
+     * @param AdminInterface<object> $admin
      *
      * @throws \RuntimeException
      */

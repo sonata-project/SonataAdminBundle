@@ -27,8 +27,8 @@ interface BreadcrumbsBuilderInterface
     /**
      * Get breadcrumbs for $action.
      *
-     * @param string $action the name of the action we want to get a
-     *                       breadcrumbs for
+     * @param AdminInterface<object> $admin
+     * @param string                 $action the name of the action we want to get a breadcrumbs for
      *
      * @return ItemInterface[] the breadcrumbs
      */

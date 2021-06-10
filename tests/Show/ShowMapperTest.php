@@ -563,7 +563,7 @@ class ShowMapperTest extends TestCase
                 $list->add($fieldDescription);
             });
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
-        $this->admin = new CleanAdmin('code', 'class', 'controller');
+        $this->admin = new CleanAdmin('code', \stdClass::class, 'controller');
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')

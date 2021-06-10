@@ -11,22 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity;
+namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
 
-class Tag
+class Entity
 {
     /**
-     * @var Post|null
+     * @var int
      */
-    private $post;
+    private $id;
 
-    public function setPost(?Post $post): void
+    public function __construct(int $id)
     {
-        $this->post = $post;
+        $this->id = $id;
     }
 
-    public function getPost(): ?Post
+    public function getId(): int
     {
-        return $this->post;
+        return $this->id;
     }
 }

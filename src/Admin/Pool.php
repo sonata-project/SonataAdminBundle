@@ -20,33 +20,27 @@ use Sonata\AdminBundle\Exception\TooManyAdminClassException;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
 /**
- * @phpstan-type Group = array{
- *  label: string,
- *  label_catalogue: string,
- *  icon: string,
- *  item_adds: array<array-key, array{
- *      admin?: string,
- *      label: string,
- *      roles: list<string>,
- *      route: string,
- *      router_absolute: bool,
- *      route_params: array<string, string>
- *  }>,
- *  items: array<array-key, array{
- *      admin?: string,
- *      label: string,
- *      roles: list<string>,
- *      route: string,
- *      route_absolute: bool,
- *      route_params: array<string, string>
- *  }>,
- *  keep_open: bool,
- *  on_top: bool,
- *  provider?: string,
- *  roles: list<string>
- * }
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-type Item = array{
+ *     admin?: string,
+ *     label: string,
+ *     roles: list<string>,
+ *     route: string,
+ *     route_absolute: bool,
+ *     route_params: array<string, string>
+ * }
+ * @phpstan-type Group = array{
+ *     label: string,
+ *     label_catalogue: string,
+ *     icon: string,
+ *     item_adds: Item[],
+ *     items: Item[],
+ *     keep_open: bool,
+ *     on_top: bool,
+ *     provider?: string,
+ *     roles: list<string>
+ * }
  */
 final class Pool
 {
@@ -99,7 +93,7 @@ final class Pool
      *  label_catalogue: string,
      *  icon: string,
      *  item_adds: array,
-     *  items: array<array-key, AdminInterface>,
+     *  items: array<array-key, AdminInterface<object>>,
      *  keep_open: bool,
      *  on_top: bool,
      *  provider?: string,
@@ -141,7 +135,7 @@ final class Pool
      * @throws TooManyAdminClassException  if there is multiple admin class for the class provided
      *
      * @phpstan-param class-string $class
-     * @phpstan-return AdminInterface
+     * @phpstan-return AdminInterface<object>
      */
     public function getAdminByClass(string $class): AdminInterface
     {
@@ -178,6 +172,8 @@ final class Pool
      * ie : sonata.news.admin.post|sonata.news.admin.comment => return the child class of post.
      *
      * @throws AdminCodeNotFoundException
+     *
+     * @return AdminInterface<object>
      */
     public function getAdminByAdminCode(string $adminCode): AdminInterface
     {
@@ -229,6 +225,8 @@ final class Pool
      * @throws AdminClassNotFoundException if there is no admin for the field description target model
      * @throws TooManyAdminClassException  if there is too many admin for the field description target model
      * @throws AdminCodeNotFoundException  if the admin_code option is invalid
+     *
+     * @return AdminInterface<object>
      */
     public function getAdminByFieldDescription(FieldDescriptionInterface $fieldDescription): AdminInterface
     {
@@ -245,6 +243,8 @@ final class Pool
      * Returns a new admin instance depends on the given code.
      *
      * @throws AdminCodeNotFoundException if the code is not found in admin pool
+     *
+     * @return AdminInterface<object>
      */
     public function getInstance(string $id): AdminInterface
     {

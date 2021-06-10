@@ -41,7 +41,7 @@ class ObjectAclManipulatorCompilerPassTest extends TestCase
     }
 
     /**
-     * @phpstan-return iterable<array{ContainerBuilder, string}>
+     * @phpstan-return iterable<array-key, array{ContainerBuilder, string}>
      */
     public function containerDataProvider(): iterable
     {

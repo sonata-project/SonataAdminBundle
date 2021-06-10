@@ -44,7 +44,7 @@ final class Datagrid implements DatagridInterface
     private $values = [];
 
     /**
-     * @var FieldDescriptionCollection
+     * @var FieldDescriptionCollection<FieldDescriptionInterface>
      */
     private $columns;
 
@@ -83,7 +83,8 @@ final class Datagrid implements DatagridInterface
     private $results;
 
     /**
-     * @param array<string, mixed> $values
+     * @param FieldDescriptionCollection<FieldDescriptionInterface> $columns
+     * @param array<string, mixed>                                  $values
      *
      * @phpstan-param T                 $query
      * @phpstan-param PagerInterface<T> $pager
@@ -293,6 +294,9 @@ final class Datagrid implements DatagridInterface
         return ['filter' => $values];
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     private function applyFilters(array $data): void
     {
         foreach ($this->getFilters() as $name => $filter) {

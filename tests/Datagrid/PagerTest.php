@@ -17,17 +17,14 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
 class PagerTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
     /**
-     * @var Pager&MockObject
+     * @var Pager<ProxyQueryInterface>&MockObject
      */
     private $pager;
 
@@ -62,7 +59,10 @@ class PagerTest extends TestCase
         $this->assertSame($expectedMaxPerPage, $this->pager->getMaxPerPage());
     }
 
-    public function getGetMaxPerPage1Tests(): array
+    /**
+     * @phpstan-return iterable<array-key, array{int, int, int, int|null}>
+     */
+    public function getGetMaxPerPage1Tests(): iterable
     {
         return [
             [123, 1, 123, 1],
@@ -224,7 +224,12 @@ class PagerTest extends TestCase
         $this->assertSame(20, $this->pager->getPreviousPage());
     }
 
-    protected function callMethod($obj, string $name, array $args = [])
+    /**
+     * @param mixed[] $args
+     *
+     * @return mixed
+     */
+    protected function callMethod(object $obj, string $name, array $args = [])
     {
         $class = new \ReflectionClass($obj);
         $method = $class->getMethod($name);

@@ -54,7 +54,7 @@ final class SonataConfiguration
 
     /**
      * @var array
-     * @phpstan-var SonataConfigurationOptions $options
+     * @phpstan-var SonataConfigurationOptions
      */
     private $options;
 

@@ -36,7 +36,7 @@ final class Datagrid implements DatagridInterface
     private $formFactory;
 
     /**
-     * @var PagerInterface
+     * @var PagerInterface<ProxyQueryInterface>
      */
     private $pager;
 
@@ -45,6 +45,9 @@ final class Datagrid implements DatagridInterface
      */
     private $proxyQuery;
 
+    /**
+     * @param PagerInterface<ProxyQueryInterface> $pager
+     */
     public function __construct(
         FormFactoryInterface $formFactory,
         PagerInterface $pager,
@@ -93,6 +96,9 @@ final class Datagrid implements DatagridInterface
         return [];
     }
 
+    /**
+     * @return FieldDescriptionCollection<FieldDescriptionInterface>
+     */
     public function getColumns(): FieldDescriptionCollection
     {
         throw new \BadMethodCallException('Not implemented.');

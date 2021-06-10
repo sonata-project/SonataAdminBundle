@@ -21,7 +21,10 @@ use Sonata\AdminBundle\Form\DataTransformer\BooleanToStringTransformer;
  */
 final class BooleanToStringTransformerTest extends TestCase
 {
-    public function provideTransform(): array
+    /**
+     * @phpstan-return iterable<array-key, array{bool|null, string|null, string}>
+     */
+    public function provideTransform(): iterable
     {
         return [
             [null, null, '1'],
@@ -36,41 +39,36 @@ final class BooleanToStringTransformerTest extends TestCase
     /**
      * @dataProvider provideTransform
      */
-    public function testTransform($value, ?string $expected, string $trueValue): void
+    public function testTransform(?bool $value, ?string $expected, string $trueValue): void
     {
         $transformer = new BooleanToStringTransformer($trueValue);
 
         $this->assertSame($expected, $transformer->transform($value));
     }
 
-    public function provideReverseTransform(): array
+    /**
+     * @phpstan-return iterable<array-key, array{string|null, bool}>
+     */
+    public function provideReverseTransform(): iterable
     {
         return [
             [null, false],
-            [true, true],
-            [1, true],
             ['1', true],
             ['true', true],
             ['yes', true],
             ['on', true],
-            [false, false],
-            [0, false],
             ['0', false],
             ['false', false],
             ['no', false],
             ['off', false],
             ['', false],
-            // invalid values
-            ['foo', false],
-            [new \DateTime(), false],
-            [\PHP_INT_MAX, false],
         ];
     }
 
     /**
      * @dataProvider provideReverseTransform
      */
-    public function testReverseTransform($value, bool $expected): void
+    public function testReverseTransform(?string $value, bool $expected): void
     {
         $transformer = new BooleanToStringTransformer('1');
 

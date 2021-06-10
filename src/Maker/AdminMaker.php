@@ -40,7 +40,7 @@ final class AdminMaker extends AbstractMaker
     private $projectDirectory;
 
     /**
-     * @var array<string, ModelManagerInterface>
+     * @var array<string, ModelManagerInterface<object>>
      */
     private $availableModelManagers;
 
@@ -76,7 +76,7 @@ final class AdminMaker extends AbstractMaker
     private $managerType;
 
     /**
-     * @var ModelManagerInterface
+     * @var ModelManagerInterface<object>
      */
     private $modelManager;
 
@@ -86,7 +86,7 @@ final class AdminMaker extends AbstractMaker
     private $defaultController;
 
     /**
-     * @param array<string, ModelManagerInterface> $modelManagers
+     * @param array<string, ModelManagerInterface<object>> $modelManagers
      */
     public function __construct(string $projectDirectory, array $modelManagers, string $defaultController)
     {

@@ -35,12 +35,12 @@ use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
+use Sonata\AdminBundle\Tests\Fixtures\Entity\Entity;
 use Sonata\AdminBundle\Tests\Fixtures\Util\DummyDomainObject;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 use Sonata\Exporter\Writer\JsonWriter;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -74,10 +74,8 @@ use Twig\Environment;
  */
 class CRUDControllerTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
     /**
-     * @var CRUDController
+     * @var CRUDController<object>
      */
     private $controller;
 
@@ -102,7 +100,7 @@ class CRUDControllerTest extends TestCase
     private $pool;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private $parameters;
 
@@ -132,7 +130,7 @@ class CRUDControllerTest extends TestCase
     private $template;
 
     /**
-     * @var array
+     * @var array<string, \ReflectionMethod>
      */
     private $protectedTestedMethods;
 
@@ -237,6 +235,7 @@ class CRUDControllerTest extends TestCase
 
         $this->parameterBag = new ParameterBag();
 
+        $this->request->setSession($this->session);
         $this->container->set('sonata.admin.pool', $this->pool);
         $this->container->set('request_stack', $requestStack);
         $this->container->set('foo.admin', $this->admin);
@@ -392,9 +391,9 @@ class CRUDControllerTest extends TestCase
         $uniqueId = '';
 
         $this->admin->expects($this->once())
-            ->method('setUniqid')
-            ->willReturnCallback(static function (string $uniqid) use (&$uniqueId): void {
-                $uniqueId = $uniqid;
+            ->method('setUniqId')
+            ->willReturnCallback(static function (string $uniqId) use (&$uniqueId): void {
+                $uniqueId = $uniqId;
             });
 
         $this->request->query->set('uniqid', '123456');
@@ -408,9 +407,9 @@ class CRUDControllerTest extends TestCase
         $uniqueId = '';
 
         $this->admin->expects($this->once())
-            ->method('setUniqid')
-            ->willReturnCallback(static function (string $uniqid) use (&$uniqueId): void {
-                $uniqueId = $uniqid;
+            ->method('setUniqId')
+            ->willReturnCallback(static function (string $uniqId) use (&$uniqueId): void {
+                $uniqueId = $uniqId;
             });
 
         $this->admin->expects($this->once())
@@ -479,10 +478,9 @@ class CRUDControllerTest extends TestCase
 
     public function testRender(): void
     {
-        $this->parameters = [];
         $this->assertInstanceOf(
             Response::class,
-            $this->controller->renderWithExtraParams('@FooAdmin/foo.html.twig', [], null)
+            $this->controller->renderWithExtraParams($this->request, '@FooAdmin/foo.html.twig', [], null)
         );
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
@@ -491,10 +489,9 @@ class CRUDControllerTest extends TestCase
 
     public function testRenderWithResponse(): void
     {
-        $this->parameters = [];
         $response = new Response();
         $response->headers->set('X-foo', 'bar');
-        $responseResult = $this->controller->renderWithExtraParams('@FooAdmin/foo.html.twig', [], $response);
+        $responseResult = $this->controller->renderWithExtraParams($this->request, '@FooAdmin/foo.html.twig', [], $response);
 
         $this->assertSame($response, $responseResult);
         $this->assertSame('bar', $responseResult->headers->get('X-foo'));
@@ -505,10 +502,10 @@ class CRUDControllerTest extends TestCase
 
     public function testRenderCustomParams(): void
     {
-        $this->parameters = [];
         $this->assertInstanceOf(
             Response::class,
             $this->controller->renderWithExtraParams(
+                $this->request,
                 '@FooAdmin/foo.html.twig',
                 ['foo' => 'bar'],
                 null
@@ -522,11 +519,11 @@ class CRUDControllerTest extends TestCase
 
     public function testRenderAjax(): void
     {
-        $this->parameters = [];
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
         $this->assertInstanceOf(
             Response::class,
             $this->controller->renderWithExtraParams(
+                $this->request,
                 '@FooAdmin/foo.html.twig',
                 ['foo' => 'bar'],
                 null
@@ -599,7 +596,6 @@ class CRUDControllerTest extends TestCase
             ->method('getForm')
             ->willReturn($form);
 
-        $this->parameters = [];
         $this->assertInstanceOf(Response::class, $this->controller->listAction($this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
@@ -723,8 +719,7 @@ class CRUDControllerTest extends TestCase
 
     public function testPreShow(): void
     {
-        $object = new \stdClass();
-        $object->foo = 123456;
+        $object = new Entity(123456);
 
         $this->admin->expects($this->once())
             ->method('getObject')
@@ -824,6 +819,9 @@ class CRUDControllerTest extends TestCase
     }
 
     /**
+     * @param array<string, mixed> $queryParams
+     * @param array<string, mixed> $requestParams
+     *
      * @dataProvider getRedirectToTests
      */
     public function testRedirectTo(
@@ -857,7 +855,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo($route))
             ->willReturn(true);
 
-        $response = $this->protectedTestedMethods['redirectTo']->invoke($this->controller, $object, $this->request);
+        $response = $this->protectedTestedMethods['redirectTo']->invoke($this->controller, $this->request, $object);
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame($expected, $response->getTargetUrl());
     }
@@ -880,11 +878,14 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'), $object)
             ->willReturn(false);
 
-        $response = $this->protectedTestedMethods['redirectTo']->invoke($this->controller, $object, $this->request);
+        $response = $this->protectedTestedMethods['redirectTo']->invoke($this->controller, $this->request, $object);
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame('list', $response->getTargetUrl());
     }
 
+    /**
+     * @phpstan-return iterable<array-key, array{string, string, array<string, mixed>, array<string, mixed>, bool}>
+     */
     public function getRedirectToTests()
     {
         return [
@@ -928,8 +929,7 @@ class CRUDControllerTest extends TestCase
 
     public function testPreDelete(): void
     {
-        $object = new \stdClass();
-        $object->foo = 123456;
+        $object = new Entity(123456);
 
         $this->admin->expects($this->once())
             ->method('getObject')
@@ -1429,8 +1429,7 @@ class CRUDControllerTest extends TestCase
 
     public function testPreEdit(): void
     {
-        $object = new \stdClass();
-        $object->foo = 123456;
+        $object = new Entity(123456);
 
         $this->admin->expects($this->once())
             ->method('getObject')
@@ -1934,8 +1933,7 @@ class CRUDControllerTest extends TestCase
 
     public function testPreCreate(): void
     {
-        $object = new \stdClass();
-        $object->foo = 123456;
+        $object = new Entity(123456);
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -1943,7 +1941,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('getClass')
-            ->willReturn(\stdClass::class);
+            ->willReturn(Entity::class);
 
         $this->admin->expects($this->once())
             ->method('getNewInstance')
@@ -3497,6 +3495,9 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('list', $result->getTargetUrl());
     }
 
+    /**
+     * @phpstan-return iterable<array-key, array{array<string, mixed>}>
+     */
     public function provideConfirmationData(): iterable
     {
         yield 'normal data' => [['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false]];
@@ -3507,6 +3508,8 @@ class CRUDControllerTest extends TestCase
     }
 
     /**
+     * @param array<string, mixed> $data
+     *
      * @dataProvider provideConfirmationData
      */
     public function testBatchActionWithConfirmation(array $data): void
@@ -3593,6 +3596,9 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('list', $result->getTargetUrl());
     }
 
+    /**
+     * @phpstan-return iterable<array-key, array{string}>
+     */
     public function provideActionNames(): iterable
     {
         yield ['foo'];
@@ -3794,9 +3800,9 @@ class CRUDControllerTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{string, string}>
+     * @phpstan-return iterable<array-key, array{string, string}>
      */
-    public function getToStringValues()
+    public function getToStringValues(): iterable
     {
         return [
             ['', ''],
@@ -3806,7 +3812,7 @@ class CRUDControllerTest extends TestCase
         ];
     }
 
-    private function assertLoggerLogsModelManagerException($subject, string $method): void
+    private function assertLoggerLogsModelManagerException(MockObject $subject, string $method): void
     {
         $exception = new ModelManagerException(
             $message = 'message',
@@ -3828,6 +3834,9 @@ class CRUDControllerTest extends TestCase
             ]);
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     private function expectTranslate(
         string $id,
         array $parameters = [],

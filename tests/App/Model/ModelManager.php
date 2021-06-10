@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\App\Model;
 
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Model\LockInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\Exporter\Source\SourceIteratorInterface;
 
 /**
  * Class ModelManager.
@@ -61,7 +59,7 @@ class ModelManager implements ModelManagerInterface, LockInterface
 
     public function find(string $class, $id): ?object
     {
-        return $this->repository->byId($id);
+        return $this->repository->byId((string) $id);
     }
 
     public function batchDelete(string $class, ProxyQueryInterface $query): void
@@ -102,14 +100,12 @@ class ModelManager implements ModelManagerInterface, LockInterface
         return true;
     }
 
+    /**
+     * @return Foo[]
+     */
     public function executeQuery(object $query): array
     {
         return [];
-    }
-
-    public function getDataSourceIterator(DatagridInterface $datagrid, array $fields, ?int $firstResult = null, ?int $maxResult = null): SourceIteratorInterface
-    {
-        throw new \BadMethodCallException('Not implemented.');
     }
 
     public function getExportFields(string $class): array

@@ -19,7 +19,6 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Command\GenerateObjectAclCommand;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Util\ObjectAclManipulatorInterface;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -31,8 +30,6 @@ use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
  */
 class GenerateObjectAclCommandTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
     /**
      * @var Container
      */
@@ -87,7 +84,7 @@ class GenerateObjectAclCommandTest extends TestCase
         $admin->setManagerType('bar');
 
         $aclObjectManipulators = [
-            'bar' => new \stdClass(),
+            'bar' => $this->createMock(ObjectAclManipulatorInterface::class),
         ];
 
         $command = new GenerateObjectAclCommand($pool, $aclObjectManipulators);
@@ -102,6 +99,9 @@ class GenerateObjectAclCommandTest extends TestCase
         $this->assertMatchesRegularExpression('/Admin class is using a manager type that has no manipulator implemented : ignoring/', $commandTester->getDisplay());
     }
 
+    /**
+     * @psalm-suppress InvalidArgument
+     */
     public function testExecuteWithManipulatorNotObjectAclManipulatorInterface(): void
     {
         $admin = $this->createStub(AbstractAdmin::class);
@@ -115,6 +115,7 @@ class GenerateObjectAclCommandTest extends TestCase
             'sonata.admin.manipulator.acl.object.bar' => new \stdClass(),
         ];
 
+        // @phpstan-ignore-next-line
         $command = new GenerateObjectAclCommand($pool, $aclObjectManipulators);
 
         $application = new Application();

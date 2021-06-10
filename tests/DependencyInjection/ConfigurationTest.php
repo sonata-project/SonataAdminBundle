@@ -16,14 +16,11 @@ namespace Sonata\AdminBundle\Tests\DependencyInjection;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\DependencyInjection\Configuration;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\FooAdminController;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 use Symfony\Component\Config\Definition\Processor;
 
 class ConfigurationTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
     public function testOptions(): void
     {
         $config = $this->process([]);
@@ -254,9 +251,9 @@ class ConfigurationTest extends TestCase
     /**
      * Processes an array of configurations and returns a compiled version.
      *
-     * @param array $configs An array of raw configurations
+     * @param array<array<string, mixed>> $configs An array of raw configurations
      *
-     * @return array A normalized array
+     * @return array<string, mixed> A normalized array
      */
     protected function process($configs): array
     {

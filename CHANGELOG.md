@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.100.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.100.1...3.100.2) - 2021-05-27
+### Changed
+- [[#7223](https://github.com/sonata-project/SonataAdminBundle/pull/7223)] Reverted the changes of #7196, because they only work for Select2 version 4, that is used on the Master branche. Branche 3.x uses Select2 version 3. ([@willemverspyck](https://github.com/willemverspyck))
+
+### Fixed
+- [[#7211](https://github.com/sonata-project/SonataAdminBundle/pull/7211)] ChildId are not lost anymore when using multiple times the appendFormFieldAction and similar actions. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7214](https://github.com/sonata-project/SonataAdminBundle/pull/7214)] `FieldDescriptionInterface::getMappingType()` return type ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7206](https://github.com/sonata-project/SonataAdminBundle/pull/7206)] Fixed type of `sortable` option in `FieldDescriptionOptions` ([@franmomu](https://github.com/franmomu))
+
 ## [3.100.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.100.0...3.100.1) - 2021-05-18
 ### Fixed
 - [[#7203](https://github.com/sonata-project/SonataAdminBundle/pull/7203)] `edit_many_script.html.twig` rendering ([@VincentLanglet](https://github.com/VincentLanglet))

@@ -60,7 +60,7 @@ final class AdminPreviewBlockService extends AbstractBlockService
         ], $response);
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'Admin preview';
     }
@@ -80,6 +80,8 @@ final class AdminPreviewBlockService extends AbstractBlockService
 
     /**
      * @throws \InvalidArgumentException if the provided admin code is invalid
+     *
+     * @return AdminInterface<object>
      */
     private function getAdmin(string $code): AdminInterface
     {
@@ -92,6 +94,8 @@ final class AdminPreviewBlockService extends AbstractBlockService
 
     /**
      * Maps the block filters to standard admin filters.
+     *
+     * @param AdminInterface<object> $admin
      */
     private function handleFilters(AdminInterface $admin, BlockContextInterface $blockContext): void
     {

@@ -15,7 +15,10 @@ namespace Sonata\AdminBundle\Tests\Action;
 
 class Bar
 {
-    private $enabled;
+    /**
+     * @var bool
+     */
+    private $enabled = false;
 
     public function getEnabled(): bool
     {

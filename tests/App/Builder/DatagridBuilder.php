@@ -33,7 +33,7 @@ final class DatagridBuilder implements DatagridBuilderInterface
     private $formFactory;
 
     /**
-     * @var PagerInterface
+     * @var PagerInterface<ProxyQueryInterface>
      */
     private $pager;
 
@@ -42,6 +42,9 @@ final class DatagridBuilder implements DatagridBuilderInterface
      */
     private $proxyQuery;
 
+    /**
+     * @param PagerInterface<ProxyQueryInterface> $pager
+     */
     public function __construct(
         FormFactoryInterface $formFactory,
         PagerInterface $pager,

@@ -109,21 +109,25 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $options = [];
 
     /**
-     * @var AdminInterface|null the parent Admin instance
+     * @var AdminInterface<object>|null the parent Admin instance
      */
     protected $parent;
 
     /**
-     * @var AdminInterface|null the related admin instance
+     * @var AdminInterface<object>|null the related admin instance
      */
     protected $admin;
 
     /**
-     * @var AdminInterface|null the associated admin class if the object is associated to another entity
+     * @var AdminInterface<object>|null the associated admin class if the object is associated to another entity
      */
     protected $associationAdmin;
 
     /**
+     * @param mixed[] $fieldMapping
+     * @param mixed[] $associationMapping
+     * @param mixed[] $parentAssociationMappings
+     *
      * @phpstan-param FieldDescriptionOptions $options
      */
     public function __construct(

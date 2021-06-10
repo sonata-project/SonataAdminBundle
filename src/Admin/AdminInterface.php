@@ -51,6 +51,9 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
 
     public function attachAdminClass(FieldDescriptionInterface $fieldDescription): void;
 
+    /**
+     * @return DatagridInterface<ProxyQueryInterface>
+     */
     public function getDatagrid(): DatagridInterface;
 
     /**
@@ -140,8 +143,14 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function id(object $model): ?string;
 
+    /**
+     * @return FieldDescriptionCollection<FieldDescriptionInterface>
+     */
     public function getShow(): FieldDescriptionCollection;
 
+    /**
+     * @return FieldDescriptionCollection<FieldDescriptionInterface>
+     */
     public function getList(): FieldDescriptionCollection;
 
     /**
@@ -164,12 +173,17 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function getFilterTheme(): array;
 
+    /**
+     * @phpstan-param AdminExtensionInterface<T> $extension
+     */
     public function addExtension(AdminExtensionInterface $extension): void;
 
     /**
      * Returns an array of extension related to the current Admin.
      *
      * @return AdminExtensionInterface[]
+     *
+     * @phpstan-return array<AdminExtensionInterface<T>>
      */
     public function getExtensions(): array;
 
@@ -190,9 +204,9 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function getNewInstance(): object;
 
-    public function setUniqid(string $uniqId): void;
+    public function setUniqId(string $uniqId): void;
 
-    public function getUniqid(): string;
+    public function getUniqId(): string;
 
     public function getClassnameLabel(): string;
 
@@ -267,8 +281,14 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function createObjectSecurity(object $object): void;
 
+    /**
+     * @return AdminInterface<object>
+     */
     public function getParent(): self;
 
+    /**
+     * @param AdminInterface<object> $parent
+     */
     public function setParent(self $parent): void;
 
     /**
@@ -459,6 +479,8 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
 
     /**
      * Returns the master admin.
+     *
+     * @return AdminInterface<object>
      */
     public function getRoot(): self;
 
@@ -496,6 +518,8 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
 
     /**
      * Returns the current child admin instance.
+     *
+     * @return AdminInterface<object>
      */
     public function getCurrentChildAdmin(): ?self;
 

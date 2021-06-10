@@ -24,6 +24,9 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  * Menu provider based on group options.
  *
  * @author Alexandru Furculita <alex@furculita.net>
+ *
+ * @phpstan-import-type Item from \Sonata\AdminBundle\Admin\Pool
+ * @phpstan-import-type Group from \Sonata\AdminBundle\Admin\Pool
  */
 final class GroupMenuProvider implements MenuProviderInterface
 {
@@ -52,13 +55,13 @@ final class GroupMenuProvider implements MenuProviderInterface
     /**
      * Retrieves the menu based on the group options.
      *
+     * @param mixed[] $options
+     *
      * @throws \InvalidArgumentException if the menu does not exists
      */
     public function get(string $name, array $options = []): ItemInterface
     {
-        /**
-         * @var array{ label: string, label_catalogue: string, icon: string, on_top?: bool, keep_open: bool, provider: string, items: list }
-         */
+        /** @phpstan-var Group $group */
         $group = $options['group'];
 
         $menuItem = $this->menuFactory->createItem($options['name']);
@@ -91,12 +94,18 @@ final class GroupMenuProvider implements MenuProviderInterface
 
     /**
      * Checks whether a menu exists in this provider.
+     *
+     * @param mixed[] $options
      */
     public function has(string $name, array $options = []): bool
     {
         return 'sonata_group_menu' === $name;
     }
 
+    /**
+     * @phpstan-param Item $item
+     * @phpstan-param Group $group
+     */
     private function canGenerateMenuItem(array $item, array $group): bool
     {
         if (isset($item['admin']) && !empty($item['admin'])) {
@@ -134,6 +143,10 @@ final class GroupMenuProvider implements MenuProviderInterface
         return $isItemGranted && $isGroupGranted;
     }
 
+    /**
+     * @phpstan-param Item $item
+     * @phpstan-param Group $group
+     */
     private function generateMenuItem(array $item, array $group): ItemInterface
     {
         if (isset($item['admin']) && !empty($item['admin'])) {

@@ -18,8 +18,14 @@ use Doctrine\Common\Collections\Collection;
 
 class Post
 {
+    /**
+     * @var Collection<int, Tag>
+     */
     private $tags;
 
+    /**
+     * @var Collection<int, PostCategory>
+     */
     private $postCategories;
 
     public function __construct()
@@ -28,11 +34,17 @@ class Post
         $this->postCategories = new ArrayCollection();
     }
 
+    /**
+     * @param Collection<int, Tag> $tags
+     */
     public function setTags(Collection $tags): void
     {
         $this->tags = $tags;
     }
 
+    /**
+     * @return Collection<int, Tag>
+     */
     public function getTags(): Collection
     {
         return $this->tags;
@@ -50,11 +62,17 @@ class Post
         $this->tags->removeElement($tag);
     }
 
+    /**
+     * @param Collection<int, PostCategory> $postCategories
+     */
     public function setPostCategories(Collection $postCategories): void
     {
         $this->postCategories = $postCategories;
     }
 
+    /**
+     * @return Collection<int, PostCategory>
+     */
     public function getPostCategories(): Collection
     {
         return $this->postCategories;

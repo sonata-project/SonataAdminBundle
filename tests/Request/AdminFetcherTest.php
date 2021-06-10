@@ -63,7 +63,7 @@ final class AdminFetcherTest extends TestCase
         $this->adminFetcher->get($request);
     }
 
-    public function testSetsUniqidToAdmin(): void
+    public function testSetsUniqIdToAdmin(): void
     {
         $request = new Request();
         $request->attributes->set('_sonata_admin', 'sonata.admin.post');
@@ -72,7 +72,7 @@ final class AdminFetcherTest extends TestCase
 
         $this->admin
             ->expects($this->once())
-            ->method('setUniqid')
+            ->method('setUniqId')
             ->with($uniqueId);
 
         $this->adminFetcher->get($request);

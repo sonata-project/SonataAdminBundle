@@ -104,20 +104,20 @@ th {
     }
   }
 
-  &.sonata-ba-list-field-order-active a {
-    .sonata-ba-list-field-header-order-asc &::after {
+  &.sonata-ba-list-field-order-active {
+    &.sonata-ba-list-field-header-order-asc a::after {
       content: "↓";
     }
 
-    .sonata-ba-list-field-header-order-desc &::after {
+    &.sonata-ba-list-field-header-order-desc a::after {
       content: "↑";
     }
 
-    .sonata-ba-list-field-header-order-asc &:hover::after {
+    &.sonata-ba-list-field-header-order-asc a:hover::after {
       content: "↑";
     }
 
-    .sonata-ba-list-field-header-order-desc &:hover::after {
+    &.sonata-ba-list-field-header-order-desc a:hover::after {
       content: "↓";
     }
   }

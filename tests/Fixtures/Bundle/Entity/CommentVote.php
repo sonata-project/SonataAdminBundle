@@ -11,20 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Controller;
+namespace Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity;
 
-class AdminControllerHelper_Bar
+class CommentVote
 {
-    public function getAdminTitle()
-    {
-        return 'bar';
-    }
-
-    public function setEnabled($value): void
-    {
-    }
-
-    public function getEnabled(): void
-    {
-    }
 }

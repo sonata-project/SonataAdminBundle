@@ -55,6 +55,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $pool = $container->getDefinition('sonata.admin.pool');
         $defaultController = $container->getParameter('sonata.admin.configuration.default_controller');
+        \assert(\is_string($defaultController));
 
         $defaultValues = [
             'group' => $container->getParameter('sonata.admin.configuration.default_group'),
@@ -94,7 +95,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 if ($default) {
                     if (isset($classes[$arguments[1]][Pool::DEFAULT_ADMIN_KEY])) {
                         throw new \RuntimeException(sprintf(
-                            'The class %s has two default admins %s and %s.',
+                            'The class %s has two admins %s and %s with the "default" attribute set to true. Only one is allowed.',
                             $arguments[1],
                             $classes[$arguments[1]][Pool::DEFAULT_ADMIN_KEY],
                             $id
@@ -244,6 +245,8 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
     /**
      * This method read the attribute keys and configure admin class to use the related dependency.
+     *
+     * @param array<string, mixed> $attributes
      */
     private function applyConfigurationFromAttribute(Definition $definition, array $attributes): void
     {
@@ -277,6 +280,8 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
     /**
      * Apply the default values required by the AdminInterface to the Admin service definition.
+     *
+     * @param array<string, mixed> $attributes
      */
     private function applyDefaults(ContainerBuilder $container, string $serviceId, array $attributes = []): Definition
     {
@@ -346,12 +351,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         }
         $definition->addMethodCall('setListModes', [$listModes]);
 
-        $this->fixTemplates(
-            $serviceId,
-            $container,
-            $definition,
-            $overwriteAdminConfiguration['templates'] ?? ['view' => []]
-        );
+        $this->fixTemplates($serviceId, $container, $definition);
 
         if ($container->hasParameter('sonata.admin.configuration.security.information') && !$definition->hasMethodCall('setSecurityInformation')) {
             $definition->addMethodCall('setSecurityInformation', ['%sonata.admin.configuration.security.information%']);
@@ -375,8 +375,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
     private function fixTemplates(
         string $serviceId,
         ContainerBuilder $container,
-        Definition $definition,
-        array $overwrittenTemplates = []
+        Definition $definition
     ): void {
         $definedTemplates = $container->getParameter('sonata.admin.configuration.templates');
 
@@ -412,8 +411,6 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definition->setMethodCalls($methods);
 
-        $definedTemplates = $overwrittenTemplates['view'] + $definedTemplates;
-
         $templateRegistryId = sprintf('%s.template_registry', $serviceId);
         $templateRegistryDefinition = $container
             ->register($templateRegistryId, MutableTemplateRegistry::class)
@@ -431,6 +428,8 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
     /**
      * Replace the empty arguments required by the Admin service definition.
+     *
+     * @param string[] $defaultArguments
      */
     private function replaceDefaultArguments(
         array $defaultArguments,

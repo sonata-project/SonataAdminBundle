@@ -36,7 +36,7 @@ class ListMapperTest extends TestCase
     private $listMapper;
 
     /**
-     * @var FieldDescriptionCollection
+     * @var FieldDescriptionCollection<FieldDescriptionInterface>
      */
     private $fieldDescriptionCollection;
 

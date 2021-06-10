@@ -15,7 +15,7 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Controller;
 
 class FooAdminController extends AbstractFooAdminController
 {
-    public function fooAction($baz): void
+    public function fooAction(): void
     {
     }
 }

@@ -100,41 +100,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     private const DEFAULT_LIST_PER_PAGE_OPTIONS = [10, 25, 50, 100, 250];
 
     /**
-     * The list FieldDescription constructed from the configureListField method.
-     *
-     * @var array<string, FieldDescriptionInterface>
-     */
-    protected $listFieldDescriptions = [];
-
-    /**
-     * The show FieldDescription constructed from the configureShowFields method.
-     *
-     * @var FieldDescriptionInterface[]
-     */
-    protected $showFieldDescriptions = [];
-
-    /**
-     * The list FieldDescription constructed from the configureFormField method.
-     *
-     * @var FieldDescriptionInterface[]
-     */
-    protected $formFieldDescriptions = [];
-
-    /**
-     * The filter FieldDescription constructed from the configureFilterField method.
-     *
-     * @var FieldDescriptionInterface[]
-     */
-    protected $filterFieldDescriptions = [];
-
-    /**
-     * The maximum number of page numbers to display in the list.
-     *
-     * @var int
-     */
-    protected $maxPageLinks = 25;
-
-    /**
      * The base route name used to generate the routing information.
      *
      * @var string|null
@@ -156,102 +121,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     protected $classnameLabel;
 
     /**
-     * The translation domain to be used to translate messages.
-     *
-     * @var string
-     */
-    protected $translationDomain = 'messages';
-
-    /**
-     * Array of routes related to this admin.
-     *
-     * @var RouteCollectionInterface|null
-     */
-    protected $routes;
-
-    /**
-     * The subject only set in edit/update/create mode.
-     *
-     * @var object|null
-     *
-     * @phpstan-var T|null
-     */
-    protected $subject;
-
-    /**
-     * Define a Collection of child admin, ie /admin/order/{id}/order-element/{childId}.
-     *
-     * @var array<string, AdminInterface>
-     */
-    protected $children = [];
-
-    /**
-     * Reference the parent admin.
-     *
-     * @var AdminInterface|null
-     */
-    protected $parent;
-
-    /**
-     * Reference the parent FieldDescription related to this admin
-     * only set for FieldDescription which is associated to an Sub Admin instance.
-     *
-     * @var FieldDescriptionInterface|null
-     */
-    protected $parentFieldDescription;
-
-    /**
-     * If true then the current admin is part of the nested admin set (from the url).
-     *
-     * @var bool
-     */
-    protected $currentChild = false;
-
-    /**
-     * NEXT_MAJOR: Rename $uniqId.
-     *
-     * The uniqId is used to avoid clashing with 2 admin related to the code
-     * ie: a Block linked to a Block.
-     *
-     * @var string|null
-     */
-    protected $uniqid;
-
-    /**
-     * The current request object.
-     *
-     * @var Request|null
-     */
-    protected $request;
-
-    /**
-     * The datagrid instance.
-     *
-     * @var DatagridInterface|null
-     */
-    protected $datagrid;
-
-    /**
-     * @var ItemInterface|null
-     */
-    protected $menu;
-
-    /**
-     * @var string[]
-     */
-    protected $formTheme = [];
-
-    /**
-     * @var string[]
-     */
-    protected $filterTheme = [];
-
-    /**
-     * @var AdminExtensionInterface[]
-     */
-    protected $extensions = [];
-
-    /**
      * Setting to true will enable preview mode for
      * the entity and show a preview button in the
      * edit/create forms.
@@ -259,11 +128,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * @var bool
      */
     protected $supportsPreviewMode = false;
-
-    /**
-     * @var array<string, bool>
-     */
-    protected $cacheIsGranted = [];
 
     /**
      * Action list for the search result.
@@ -278,6 +142,141 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * @var array<string, string|string[]> [action1 => requiredRole1, action2 => [requiredRole2, requiredRole3]]
      */
     protected $accessMapping = [];
+
+    /**
+     * The list FieldDescription constructed from the configureListField method.
+     *
+     * @var array<string, FieldDescriptionInterface>
+     */
+    private $listFieldDescriptions = [];
+
+    /**
+     * The show FieldDescription constructed from the configureShowFields method.
+     *
+     * @var FieldDescriptionInterface[]
+     */
+    private $showFieldDescriptions = [];
+
+    /**
+     * The list FieldDescription constructed from the configureFormField method.
+     *
+     * @var FieldDescriptionInterface[]
+     */
+    private $formFieldDescriptions = [];
+
+    /**
+     * The filter FieldDescription constructed from the configureFilterField method.
+     *
+     * @var FieldDescriptionInterface[]
+     */
+    private $filterFieldDescriptions = [];
+
+    /**
+     * The maximum number of page numbers to display in the list.
+     *
+     * @var int
+     */
+    private $maxPageLinks = 25;
+
+    /**
+     * The translation domain to be used to translate messages.
+     *
+     * @var string
+     */
+    private $translationDomain = 'messages';
+
+    /**
+     * Array of routes related to this admin.
+     *
+     * @var RouteCollectionInterface|null
+     */
+    private $routes;
+
+    /**
+     * The subject only set in edit/update/create mode.
+     *
+     * @var object|null
+     *
+     * @phpstan-var T|null
+     */
+    private $subject;
+
+    /**
+     * Define a Collection of child admin, ie /admin/order/{id}/order-element/{childId}.
+     *
+     * @var array<string, AdminInterface<object>>
+     */
+    private $children = [];
+
+    /**
+     * Reference the parent admin.
+     *
+     * @var AdminInterface<object>|null
+     */
+    private $parent;
+
+    /**
+     * Reference the parent FieldDescription related to this admin
+     * only set for FieldDescription which is associated to an Sub Admin instance.
+     *
+     * @var FieldDescriptionInterface|null
+     */
+    private $parentFieldDescription;
+
+    /**
+     * If true then the current admin is part of the nested admin set (from the url).
+     *
+     * @var bool
+     */
+    private $currentChild = false;
+
+    /**
+     * The uniqId is used to avoid clashing with 2 admin related to the code
+     * ie: a Block linked to a Block.
+     *
+     * @var string|null
+     */
+    private $uniqId;
+
+    /**
+     * The current request object.
+     *
+     * @var Request|null
+     */
+    private $request;
+
+    /**
+     * The datagrid instance.
+     *
+     * @var DatagridInterface<ProxyQueryInterface>|null
+     */
+    private $datagrid;
+
+    /**
+     * @var ItemInterface|null
+     */
+    private $menu;
+
+    /**
+     * @var string[]
+     */
+    private $formTheme = [];
+
+    /**
+     * @var string[]
+     */
+    private $filterTheme = [];
+
+    /**
+     * @var AdminExtensionInterface[]
+     * @phpstan-var array<AdminExtensionInterface<T>>
+     */
+    private $extensions = [];
+
+    /**
+     * @var array<string, bool>
+     */
+    private $cacheIsGranted = [];
 
     /**
      * @var array<string, string>
@@ -295,12 +294,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * The list collection.
      *
-     * @var FieldDescriptionCollection|null
+     * @var FieldDescriptionCollection<FieldDescriptionInterface>|null
      */
     private $list;
 
     /**
-     * @var FieldDescriptionCollection|null
+     * @var FieldDescriptionCollection<FieldDescriptionInterface>|null
      */
     private $show;
 
@@ -754,8 +753,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             ));
         }
 
-        $subClass = $this->getRequest()->query->get('subclass');
-        \assert(\is_string($subClass));
+        $subClass = (string) $this->getRequest()->query->get('subclass');
 
         if (!$this->hasSubClass($subClass)) {
             throw new \LogicException(sprintf(
@@ -1467,18 +1465,18 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return \count($this->children) > 0;
     }
 
-    final public function setUniqid(string $uniqId): void
+    final public function setUniqId(string $uniqId): void
     {
-        $this->uniqid = $uniqId;
+        $this->uniqId = $uniqId;
     }
 
-    final public function getUniqid(): string
+    final public function getUniqId(): string
     {
-        if (!$this->uniqid) {
-            $this->uniqid = sprintf('s%s', uniqid());
+        if (!$this->uniqId) {
+            $this->uniqId = sprintf('s%s', uniqid());
         }
 
-        return $this->uniqid;
+        return $this->uniqId;
     }
 
     final public function getClassnameLabel(): string
@@ -1520,11 +1518,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->currentChild;
     }
 
-    /**
-     * Returns the current child admin instance.
-     *
-     * @return AdminInterface|null the current child admin instance
-     */
     final public function getCurrentChildAdmin(): ?AdminInterface
     {
         foreach ($this->getChildren() as $child) {
@@ -2292,6 +2285,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
     }
 
+    /**
+     * @return DatagridInterface<ProxyQueryInterface>|null
+     */
     private function buildDatagrid(): ?DatagridInterface
     {
         if ($this->loaded['datagrid']) {
@@ -2352,6 +2348,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->datagrid;
     }
 
+    /**
+     * @return FieldDescriptionCollection<FieldDescriptionInterface>|null
+     */
     private function buildShow(): ?FieldDescriptionCollection
     {
         if ($this->loaded['show']) {
@@ -2372,6 +2371,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->show;
     }
 
+    /**
+     * @return FieldDescriptionCollection<FieldDescriptionInterface>|null
+     */
     private function buildList(): ?FieldDescriptionCollection
     {
         if ($this->loaded['list']) {

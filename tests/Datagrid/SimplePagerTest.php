@@ -20,15 +20,13 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Datagrid\SimplePager;
 
 /**
- * Simple pager.
- *
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Sjoerd Peters <sjoerd.peters@gmail.com>
  */
 class SimplePagerTest extends TestCase
 {
     /**
-     * @var SimplePager
+     * @var SimplePager<ProxyQueryInterface>
      */
     private $pager;
 
@@ -162,9 +160,11 @@ class SimplePagerTest extends TestCase
     }
 
     /**
+     * @param string[] $queryReturnValues
+     *
      * @dataProvider getCurrentPageResultsReturnType
      */
-    public function testGetCurrentPageResultsReturnTypeArrayCollection(array $queryReturnValues, ?int $maxPerPage): void
+    public function testGetCurrentPageResultsReturnTypeArrayCollection(array $queryReturnValues, int $maxPerPage): void
     {
         $this->proxyQuery->expects($this->once())
             ->method('execute')
@@ -176,7 +176,10 @@ class SimplePagerTest extends TestCase
         $this->assertInstanceOf(ArrayCollection::class, $this->pager->getCurrentPageResults());
     }
 
-    public function getCurrentPageResultsReturnType(): array
+    /**
+     * @phpstan-return iterable<array-key, array{string[], int}>
+     */
+    public function getCurrentPageResultsReturnType(): iterable
     {
         return [
             [['foo', 'bar'], 2],

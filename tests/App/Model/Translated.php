@@ -15,7 +15,18 @@ namespace Sonata\AdminBundle\Tests\App\Model;
 
 final class Translated
 {
+    /**
+     * @var string|null
+     */
     public $nameForm;
+
+    /**
+     * @var bool
+     */
     public $isPublished = true;
+
+    /**
+     * @var \DateTime|null
+     */
     public $datePublished;
 }

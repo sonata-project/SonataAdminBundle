@@ -66,6 +66,9 @@ interface DatagridInterface
      */
     public function getValues(): array;
 
+    /**
+     * @return FieldDescriptionCollection<FieldDescriptionInterface>
+     */
     public function getColumns(): FieldDescriptionCollection;
 
     /**

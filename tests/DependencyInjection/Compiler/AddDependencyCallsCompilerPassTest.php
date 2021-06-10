@@ -39,7 +39,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     private $extension;
 
     /**
-     *  @var array
+     *  @var array<string, mixed>
      */
     private $config = [];
 
@@ -571,13 +571,13 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->extension->load([$config], $this->container);
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('The class Sonata\AdminBundle\Tests\DependencyInjection\Compiler\PostEntity has two default admins sonata_post_admin and sonata_post_admin_2.');
+        $this->expectExceptionMessage('The class Sonata\AdminBundle\Tests\DependencyInjection\Compiler\PostEntity has two admins sonata_post_admin and sonata_post_admin_2 with the "default" attribute set to true. Only one is allowed.');
 
         $this->compile();
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     protected function getConfig()
     {

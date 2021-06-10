@@ -51,6 +51,9 @@ final class BreadcrumbsExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @param AdminInterface<object> $admin
+     */
     public function renderBreadcrumbs(
         Environment $environment,
         AdminInterface $admin,
@@ -61,6 +64,9 @@ final class BreadcrumbsExtension extends AbstractExtension
         ]);
     }
 
+    /**
+     * @param AdminInterface<object> $admin
+     */
     public function renderBreadcrumbsForTitle(
         Environment $environment,
         AdminInterface $admin,

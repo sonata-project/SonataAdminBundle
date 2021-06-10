@@ -22,7 +22,7 @@ use Sonata\AdminBundle\Tests\App\Model\Translated;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
- * @phpstan-extends AbstractAdmin<object>
+ * @phpstan-extends AbstractAdmin<Translated>
  */
 final class TranslatedAdmin extends AbstractAdmin
 {
