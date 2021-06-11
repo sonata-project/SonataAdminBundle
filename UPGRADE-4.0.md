@@ -185,7 +185,7 @@ When there is no searchable filters, `SearchHandler::search()` returns `null`. P
 When the service `security.csrf.token_manager` is not available, `getCsrfToken()` returns `null`. Previously, it was returning `false`.
 
 The `isXmlHttpRequest()`, `redirectTo()`, `isPreviewApproved()`, `isInPreviewMode()`, `isPreviewDeclined()`,
-`validateCsrfToken()` signatures was changed. They now require to pass the request as first argument.
+`validateCsrfToken()` signatures were changed. They now require to pass the request as first argument.
 The `CRUDController::getRequest()` method was removed.
 
 ## FilterInterface
