@@ -38,6 +38,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -88,19 +89,6 @@ class CRUDController extends AbstractController
     }
 
     /**
-     * Renders a view while passing mandatory parameters on to the template.
-     *
-     * @param string               $view       The view name
-     * @param array<string, mixed> $parameters An array of parameters to pass to the view
-     *
-     * @return Response A Response instance
-     */
-    public function renderWithExtraParams(Request $request, string $view, array $parameters = [], ?Response $response = null): Response
-    {
-        return $this->render($view, $this->addRenderExtraParams($request, $parameters), $response);
-    }
-
-    /**
      * @throws AccessDeniedException If access is not granted
      */
     public function listAction(Request $request): Response
@@ -132,7 +120,7 @@ class CRUDController extends AbstractController
             $exportFormats = $exporter->getAvailableFormats($this->admin);
         }
 
-        return $this->renderWithExtraParams($request, $template, [
+        return $this->renderWithExtraParams($template, [
             'action' => 'list',
             'form' => $formView,
             'datagrid' => $datagrid,
@@ -232,7 +220,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('delete');
 
-        return $this->renderWithExtraParams($request, $template, [
+        return $this->renderWithExtraParams($template, [
             'object' => $object,
             'action' => 'delete',
             'csrf_token' => $this->getCsrfToken('sonata.delete'),
@@ -337,7 +325,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate($templateKey);
 
-        return $this->renderWithExtraParams($request, $template, [
+        return $this->renderWithExtraParams($template, [
             'action' => 'edit',
             'form' => $formView,
             'object' => $existingObject,
@@ -439,7 +427,7 @@ class CRUDController extends AbstractController
                 $batchActions[$action]['template'] :
                 $this->templateRegistry->getTemplate('batch_confirmation');
 
-            return $this->renderWithExtraParams($request, $template, [
+            return $this->renderWithExtraParams($template, [
                 'action' => 'list',
                 'action_label' => $actionLabel,
                 'batch_translation_domain' => $batchTranslationDomain,
@@ -493,14 +481,10 @@ class CRUDController extends AbstractController
 
         if ($class->isAbstract()) {
             return $this->renderWithExtraParams(
-                $request,
                 '@SonataAdmin/CRUD/select_subclass.html.twig',
                 [
-                    'base_template' => $this->getBaseTemplate($request),
-                    'admin' => $this->admin,
                     'action' => 'create',
                 ],
-                null
             );
         }
 
@@ -580,7 +564,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate($templateKey);
 
-        return $this->renderWithExtraParams($request, $template, [
+        return $this->renderWithExtraParams($template, [
             'action' => 'create',
             'form' => $formView,
             'object' => $newObject,
@@ -614,7 +598,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('show');
 
-        return $this->renderWithExtraParams($request, $template, [
+        return $this->renderWithExtraParams($template, [
             'action' => 'show',
             'object' => $object,
             'elements' => $fields,
@@ -652,7 +636,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('history');
 
-        return $this->renderWithExtraParams($request, $template, [
+        return $this->renderWithExtraParams($template, [
             'action' => 'history',
             'object' => $object,
             'revisions' => $revisions,
@@ -703,7 +687,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('show');
 
-        return $this->renderWithExtraParams($request, $template, [
+        return $this->renderWithExtraParams($template, [
             'action' => 'show',
             'object' => $object,
             'elements' => $this->admin->getShow(),
@@ -762,7 +746,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('show_compare');
 
-        return $this->renderWithExtraParams($request, $template, [
+        return $this->renderWithExtraParams($template, [
             'action' => 'show',
             'object' => $baseObject,
             'object_compare' => $compareObject,
@@ -869,7 +853,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('acl');
 
-        return $this->renderWithExtraParams($request, $template, [
+        return $this->renderWithExtraParams($template, [
             'action' => 'acl',
             'permissions' => $adminObjectAclData->getUserPermissions(),
             'object' => $object,
@@ -930,14 +914,27 @@ class CRUDController extends AbstractController
     }
 
     /**
+     * Renders a view while passing mandatory parameters on to the template.
+     *
+     * @param string               $view       The view name
+     * @param array<string, mixed> $parameters An array of parameters to pass to the view
+     *
+     * @return Response A Response instance
+     */
+    protected function renderWithExtraParams(string $view, array $parameters = [], ?Response $response = null): Response
+    {
+        return $this->render($view, $this->addRenderExtraParams($parameters), $response);
+    }
+
+    /**
      * @param array<string, mixed> $parameters
      *
      * @return array<string, mixed>
      */
-    protected function addRenderExtraParams(Request $request, array $parameters = []): array
+    protected function addRenderExtraParams(array $parameters = []): array
     {
         $parameters['admin'] = $parameters['admin'] ?? $this->admin;
-        $parameters['base_template'] = $parameters['base_template'] ?? $this->getBaseTemplate($request);
+        $parameters['base_template'] = $parameters['base_template'] ?? $this->getBaseTemplate();
 
         return $parameters;
     }
@@ -986,8 +983,13 @@ class CRUDController extends AbstractController
      *
      * @return string The template name
      */
-    protected function getBaseTemplate(Request $request): string
+    protected function getBaseTemplate(): string
     {
+        $requestStack = $this->get('request_stack');
+        \assert($requestStack instanceof RequestStack);
+        $request = $requestStack->getCurrentRequest();
+        \assert(null !== $request);
+
         if ($this->isXmlHttpRequest($request)) {
             return $this->templateRegistry->getTemplate('ajax');
         }

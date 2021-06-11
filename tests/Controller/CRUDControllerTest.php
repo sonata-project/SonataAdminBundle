@@ -313,6 +313,7 @@ class CRUDControllerTest extends TestCase
         // Make some methods public to test them
         $testedMethods = [
             'renderJson',
+            'renderWithExtraParams',
             'isXmlHttpRequest',
             'getBaseTemplate',
             'redirectTo',
@@ -454,25 +455,25 @@ class CRUDControllerTest extends TestCase
     {
         $this->assertSame(
             '@SonataAdmin/standard_layout.html.twig',
-            $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller, $this->request)
+            $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller)
         );
 
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
         $this->assertSame(
             '@SonataAdmin/ajax_layout.html.twig',
-            $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller, $this->request)
+            $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller)
         );
 
         $this->request->headers->remove('X-Requested-With');
         $this->assertSame(
             '@SonataAdmin/standard_layout.html.twig',
-            $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller, $this->request)
+            $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller)
         );
 
         $this->request->attributes->set('_xml_http_request', true);
         $this->assertSame(
             '@SonataAdmin/ajax_layout.html.twig',
-            $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller, $this->request)
+            $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller)
         );
     }
 
@@ -480,7 +481,12 @@ class CRUDControllerTest extends TestCase
     {
         $this->assertInstanceOf(
             Response::class,
-            $this->controller->renderWithExtraParams($this->request, '@FooAdmin/foo.html.twig', [], null)
+            $this->protectedTestedMethods['renderWithExtraParams']->invoke(
+                $this->controller,
+                '@FooAdmin/foo.html.twig',
+                [],
+                null
+            )
         );
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
@@ -491,7 +497,12 @@ class CRUDControllerTest extends TestCase
     {
         $response = new Response();
         $response->headers->set('X-foo', 'bar');
-        $responseResult = $this->controller->renderWithExtraParams($this->request, '@FooAdmin/foo.html.twig', [], $response);
+        $responseResult = $this->protectedTestedMethods['renderWithExtraParams']->invoke(
+            $this->controller,
+            '@FooAdmin/foo.html.twig',
+            [],
+            $response
+        );
 
         $this->assertSame($response, $responseResult);
         $this->assertSame('bar', $responseResult->headers->get('X-foo'));
@@ -504,8 +515,8 @@ class CRUDControllerTest extends TestCase
     {
         $this->assertInstanceOf(
             Response::class,
-            $this->controller->renderWithExtraParams(
-                $this->request,
+            $this->protectedTestedMethods['renderWithExtraParams']->invoke(
+                $this->controller,
                 '@FooAdmin/foo.html.twig',
                 ['foo' => 'bar'],
                 null
@@ -522,8 +533,8 @@ class CRUDControllerTest extends TestCase
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
         $this->assertInstanceOf(
             Response::class,
-            $this->controller->renderWithExtraParams(
-                $this->request,
+            $this->protectedTestedMethods['renderWithExtraParams']->invoke(
+                $this->controller,
                 '@FooAdmin/foo.html.twig',
                 ['foo' => 'bar'],
                 null
