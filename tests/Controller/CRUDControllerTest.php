@@ -703,7 +703,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects($this->once())
             ->method('getObject')
             ->willReturn(null);
 
@@ -714,9 +714,9 @@ class CRUDControllerTest extends TestCase
 
     public function testShowActionAccessDenied(): void
     {
-        $this->expectException(AccessDeniedException::class);
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn(new \stdClass());
 
@@ -725,14 +725,18 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('show'))
             ->will($this->throwException(new AccessDeniedException()));
 
+        $this->expectException(AccessDeniedException::class);
+
         $this->controller->showAction($this->request);
     }
 
     public function testPreShow(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new Entity(123456);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -751,9 +755,11 @@ class CRUDControllerTest extends TestCase
 
     public function testShowAction(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -784,7 +790,7 @@ class CRUDControllerTest extends TestCase
     {
         $object = new \stdClass();
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects($this->once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -913,7 +919,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects($this->once())
             ->method('getObject')
             ->willReturn(null);
 
@@ -924,9 +930,9 @@ class CRUDControllerTest extends TestCase
 
     public function testDeleteActionAccessDenied(): void
     {
-        $this->expectException(AccessDeniedException::class);
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn(new \stdClass());
 
@@ -935,14 +941,18 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('delete'))
             ->will($this->throwException(new AccessDeniedException()));
 
+        $this->expectException(AccessDeniedException::class);
+
         $this->controller->deleteAction($this->request);
     }
 
     public function testPreDelete(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new Entity(123456);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -961,9 +971,11 @@ class CRUDControllerTest extends TestCase
 
     public function testDeleteAction(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -986,6 +998,9 @@ class CRUDControllerTest extends TestCase
 
     public function testDeleteActionChildNoConnectedException(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+        $this->request->attributes->set('parent_id', 42);
+
         $object = new \stdClass();
         $object->parent = 'test';
 
@@ -994,7 +1009,7 @@ class CRUDControllerTest extends TestCase
         $admin = $this->createMock(AdminInterface::class);
         $admin->method('getIdParameter')->willReturn('parent_id');
 
-        $admin->expects($this->exactly(2))
+        $admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object2);
 
@@ -1002,7 +1017,7 @@ class CRUDControllerTest extends TestCase
             ->method('toString')
             ->willReturn('parentObject');
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1022,10 +1037,6 @@ class CRUDControllerTest extends TestCase
             ->method('toString')
             ->willReturn('childObject');
 
-        $this->admin->expects($this->once())
-            ->method('getObject')
-            ->willReturn($object);
-
         $this->admin->expects($this->exactly(2))
             ->method('isChild')
             ->willReturn(true);
@@ -1038,11 +1049,13 @@ class CRUDControllerTest extends TestCase
 
     public function testDeleteActionNoCsrfToken(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $this->container->set('security.csrf.token_manager', null);
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1065,9 +1078,11 @@ class CRUDControllerTest extends TestCase
 
     public function testDeleteActionAjaxSuccess1(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1089,9 +1104,11 @@ class CRUDControllerTest extends TestCase
 
     public function testDeleteActionAjaxSuccess2(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1117,9 +1134,11 @@ class CRUDControllerTest extends TestCase
 
     public function testDeleteActionAjaxError(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1147,11 +1166,11 @@ class CRUDControllerTest extends TestCase
 
     public function testDeleteActionWithModelManagerExceptionInDebugMode(): void
     {
-        $this->expectException(ModelManagerException::class);
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1170,6 +1189,8 @@ class CRUDControllerTest extends TestCase
         $this->request->setMethod(Request::METHOD_DELETE);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
 
+        $this->expectException(ModelManagerException::class);
+
         $this->controller->deleteAction($this->request);
     }
 
@@ -1178,9 +1199,11 @@ class CRUDControllerTest extends TestCase
      */
     public function testDeleteActionSuccess1(string $expectedToStringValue, string $toStringValue): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1211,9 +1234,11 @@ class CRUDControllerTest extends TestCase
      */
     public function testDeleteActionSuccess2(string $expectedToStringValue, string $toStringValue): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1248,11 +1273,13 @@ class CRUDControllerTest extends TestCase
      */
     public function testDeleteActionSuccessNoCsrfTokenProvider(string $expectedToStringValue, string $toStringValue): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $this->container->set('security.csrf.token_manager', null);
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1282,9 +1309,11 @@ class CRUDControllerTest extends TestCase
 
     public function testDeleteActionWrongRequestMethod(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1316,9 +1345,11 @@ class CRUDControllerTest extends TestCase
      */
     public function testDeleteActionError(string $expectedToStringValue, string $toStringValue): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1347,9 +1378,11 @@ class CRUDControllerTest extends TestCase
 
     public function testDeleteActionInvalidCsrfToken(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1375,6 +1408,9 @@ class CRUDControllerTest extends TestCase
 
     public function testDeleteActionChildManyToMany(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+        $this->request->attributes->set('parent_id', 42);
+
         $parent = new \stdClass();
 
         $child = new \stdClass();
@@ -1384,13 +1420,12 @@ class CRUDControllerTest extends TestCase
         $parentAdmin->method('getIdParameter')->willReturn('parent_id');
 
         $childAdmin = $this->admin;
-        $childAdmin->method('getIdParameter')->willReturn('parent_id');
 
-        $parentAdmin->expects($this->once())
+        $parentAdmin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($parent);
 
-        $childAdmin->expects($this->once())
+        $childAdmin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($child);
 
@@ -1413,7 +1448,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects($this->once())
             ->method('getObject')
             ->willReturn(null);
 
@@ -1424,9 +1459,9 @@ class CRUDControllerTest extends TestCase
 
     public function testEditActionAccessDenied(): void
     {
-        $this->expectException(AccessDeniedException::class);
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn(new \stdClass());
 
@@ -1435,14 +1470,18 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'))
             ->will($this->throwException(new AccessDeniedException()));
 
+        $this->expectException(AccessDeniedException::class);
+
         $this->controller->editAction($this->request);
     }
 
     public function testPreEdit(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new Entity(123456);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1461,9 +1500,11 @@ class CRUDControllerTest extends TestCase
 
     public function testEditAction(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1500,9 +1541,11 @@ class CRUDControllerTest extends TestCase
      */
     public function testEditActionSuccess(string $expectedToStringValue, string $toStringValue): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1563,9 +1606,11 @@ class CRUDControllerTest extends TestCase
      */
     public function testEditActionError(string $expectedToStringValue, string $toStringValue): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1617,9 +1662,11 @@ class CRUDControllerTest extends TestCase
 
     public function testEditActionAjaxSuccess(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1671,9 +1718,11 @@ class CRUDControllerTest extends TestCase
 
     public function testEditActionAjaxError(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1715,9 +1764,11 @@ class CRUDControllerTest extends TestCase
 
     public function testEditActionAjaxErrorWithoutAcceptApplicationJson(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1756,9 +1807,11 @@ class CRUDControllerTest extends TestCase
      */
     public function testEditActionWithModelManagerException(string $expectedToStringValue, string $toStringValue): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1818,9 +1871,11 @@ class CRUDControllerTest extends TestCase
 
     public function testEditActionWithPreview(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1872,6 +1927,8 @@ class CRUDControllerTest extends TestCase
 
     public function testEditActionWithLockException(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $object = new \stdClass();
         $class = \get_class($object);
 
@@ -1932,12 +1989,12 @@ class CRUDControllerTest extends TestCase
 
     public function testCreateActionAccessDenied(): void
     {
-        $this->expectException(AccessDeniedException::class);
-
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('create'))
             ->will($this->throwException(new AccessDeniedException()));
+
+        $this->expectException(AccessDeniedException::class);
 
         $this->controller->createAction($this->request);
     }
@@ -2489,23 +2546,18 @@ class CRUDControllerTest extends TestCase
 
     public function testExportActionAccessDenied(): void
     {
-        $this->expectException(AccessDeniedException::class);
-
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('export'))
             ->will($this->throwException(new AccessDeniedException()));
+
+        $this->expectException(AccessDeniedException::class);
 
         $this->controller->exportAction($this->request);
     }
 
     public function testExportActionWrongFormat(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            'Export in format `csv` is not allowed for class: `Foo`. Allowed formats are: `json`'
-        );
-
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('export'));
@@ -2519,6 +2571,11 @@ class CRUDControllerTest extends TestCase
             ->willReturn('Foo');
 
         $this->request->query->set('format', 'csv');
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Export in format `csv` is not allowed for class: `Foo`. Allowed formats are: `json`'
+        );
 
         $this->controller->exportAction($this->request);
     }
@@ -2553,7 +2610,7 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryActionAccessDenied(): void
     {
-        $this->expectException(AccessDeniedException::class);
+        $this->request->query->set('id', 123);
 
         $this->admin
             ->method('getObject')
@@ -2564,16 +2621,19 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('history'))
             ->will($this->throwException(new AccessDeniedException()));
 
+        $this->expectException(AccessDeniedException::class);
         $this->controller->historyAction($this->request);
     }
 
     public function testHistoryActionNotFoundException(): void
     {
-        $this->expectException(NotFoundHttpException::class);
+        $this->request->query->set('id', 123);
 
         $this->admin->expects($this->once())
             ->method('getObject')
             ->willReturn(null);
+
+        $this->expectException(NotFoundHttpException::class);
 
         $this->controller->historyAction($this->request);
     }
@@ -2657,6 +2717,8 @@ class CRUDControllerTest extends TestCase
 
     public function testAclActionAclNotEnabled(): void
     {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
         $this->expectException(NotFoundHttpException::class);
         $this->expectExceptionMessage('ACL are not enabled for this admin');
 
@@ -2671,7 +2733,7 @@ class CRUDControllerTest extends TestCase
             ->method('isAclEnabled')
             ->willReturn(true);
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects($this->once())
             ->method('getObject')
             ->willReturn(null);
 
@@ -2682,7 +2744,7 @@ class CRUDControllerTest extends TestCase
 
     public function testAclActionAccessDenied(): void
     {
-        $this->expectException(AccessDeniedException::class);
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
         $this->admin->expects($this->once())
             ->method('isAclEnabled')
@@ -2690,7 +2752,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
@@ -2699,12 +2761,14 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('acl'), $this->equalTo($object))
             ->will($this->throwException(new AccessDeniedException()));
 
+        $this->expectException(AccessDeniedException::class);
+
         $this->controller->aclAction($this->request);
     }
 
     public function testAclAction(): void
     {
-        $this->request->query->set('id', '123');
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
         $this->admin->expects($this->exactly(2))
             ->method('isAclEnabled')
@@ -2784,7 +2848,7 @@ class CRUDControllerTest extends TestCase
 
     public function testAclActionInvalidUpdate(): void
     {
-        $this->request->query->set('id', '123');
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
         $this->request->request->set(AdminObjectAclManipulator::ACL_USERS_FORM_NAME, []);
 
         $this->admin->expects($this->exactly(2))
@@ -2871,7 +2935,7 @@ class CRUDControllerTest extends TestCase
 
     public function testAclActionSuccessfulUpdate(): void
     {
-        $this->request->query->set('id', '123');
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
         $this->request->request->set(AdminObjectAclManipulator::ACL_ROLES_FORM_NAME, []);
 
         $this->admin->expects($this->exactly(2))
@@ -2955,6 +3019,8 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryViewRevisionActionAccessDenied(): void
     {
+        $this->request->query->set('id', 123);
+
         $this->admin
             ->method('getObject')
             ->willReturn(new \stdClass());
@@ -2973,7 +3039,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->query->set('id', '123');
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects($this->once())
             ->method('getObject')
             ->willReturn(null);
 
@@ -3121,12 +3187,14 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryCompareRevisionsActionAccessDenied(): void
     {
-        $this->expectException(AccessDeniedException::class);
+        $this->request->query->set('id', 123);
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('historyCompareRevisions'))
             ->will($this->throwException(new AccessDeniedException()));
+
+        $this->expectException(AccessDeniedException::class);
 
         $this->controller->historyCompareRevisionsAction($this->request, 'fooBaseRevision', 'fooCompareRevision');
     }

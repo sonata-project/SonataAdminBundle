@@ -163,10 +163,12 @@ class CRUDController extends AbstractController
      */
     public function deleteAction(Request $request): Response
     {
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
+        $this->assertObjectExists($request, true);
 
-        $this->assertObjectExists($request);
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
+        $object = $this->admin->getObject($id);
+        \assert(null !== $object);
 
         $this->checkParentChildAssociation($request, $object);
 
@@ -236,10 +238,12 @@ class CRUDController extends AbstractController
         // the key used to lookup the template
         $templateKey = 'edit';
 
-        $id = $request->get($this->admin->getIdParameter());
-        $existingObject = $this->admin->getObject($id);
+        $this->assertObjectExists($request, true);
 
-        $this->assertObjectExists($request);
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
+        $existingObject = $this->admin->getObject($id);
+        \assert(null !== $existingObject);
 
         $this->checkParentChildAssociation($request, $existingObject);
 
@@ -578,10 +582,12 @@ class CRUDController extends AbstractController
      */
     public function showAction(Request $request): Response
     {
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
+        $this->assertObjectExists($request, true);
 
-        $this->assertObjectExists($request);
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
+        $object = $this->admin->getObject($id);
+        \assert(null !== $object);
 
         $this->checkParentChildAssociation($request, $object);
 
@@ -613,10 +619,12 @@ class CRUDController extends AbstractController
      */
     public function historyAction(Request $request): Response
     {
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
+        $this->assertObjectExists($request, true);
 
-        $this->assertObjectExists($request);
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
+        $object = $this->admin->getObject($id);
+        \assert(null !== $object);
 
         $this->admin->checkAccess('history', $object);
 
@@ -652,10 +660,12 @@ class CRUDController extends AbstractController
      */
     public function historyViewRevisionAction(Request $request, string $revision): Response
     {
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
+        $this->assertObjectExists($request, true);
 
-        $this->assertObjectExists($request);
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
+        $object = $this->admin->getObject($id);
+        \assert(null !== $object);
 
         $this->admin->checkAccess('historyViewRevision', $object);
 
@@ -704,9 +714,10 @@ class CRUDController extends AbstractController
     {
         $this->admin->checkAccess('historyCompareRevisions');
 
-        $id = $request->get($this->admin->getIdParameter());
+        $this->assertObjectExists($request, true);
 
-        $this->assertObjectExists($request);
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
 
         $manager = $this->get('sonata.admin.audit.manager');
         \assert($manager instanceof AuditManagerInterface);
@@ -802,10 +813,12 @@ class CRUDController extends AbstractController
             throw $this->createNotFoundException('ACL are not enabled for this admin');
         }
 
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
+        $this->assertObjectExists($request, true);
 
-        $this->assertObjectExists($request);
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
+        $object = $this->admin->getObject($id);
+        \assert(null !== $object);
 
         $this->admin->checkAccess('acl', $object);
 
@@ -1297,16 +1310,14 @@ class CRUDController extends AbstractController
         ], Response::HTTP_OK);
     }
 
-    final protected function assertObjectExists(Request $request): void
+    final protected function assertObjectExists(Request $request, bool $strict = false): void
     {
         $admin = $this->admin;
 
         while (null !== $admin) {
             $objectId = $request->get($admin->getIdParameter());
-
             if (null !== $objectId) {
                 $adminObject = $admin->getObject($objectId);
-
                 if (null === $adminObject) {
                     throw $this->createNotFoundException(sprintf(
                         'Unable to find %s object with id: %s.',
@@ -1314,6 +1325,12 @@ class CRUDController extends AbstractController
                         $objectId
                     ));
                 }
+            } elseif ($strict || $admin !== $this->admin) {
+                throw $this->createNotFoundException(sprintf(
+                    'Unable to find the %s object id of the admin "%s".',
+                    $admin->getClassnameLabel(),
+                    \get_class($admin)
+                ));
             }
 
             $admin = $admin->isChild() ? $admin->getParent() : null;
