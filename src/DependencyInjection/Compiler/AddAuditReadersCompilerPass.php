@@ -36,7 +36,7 @@ final class AddAuditReadersCompilerPass implements CompilerPassInterface
         $definition = $container->getDefinition('sonata.admin.audit.manager');
         $readers = [];
 
-        foreach ($container->findTaggedServiceIds(self::AUDIT_READER_TAG, true) as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds(self::AUDIT_READER_TAG, true) as $id => $tags) {
             $serviceDefinition = $container->getDefinition($id);
 
             if (!is_subclass_of($serviceDefinition->getClass() ?? '', AuditReaderInterface::class)) {

@@ -1391,7 +1391,7 @@ class CRUDController extends AbstractController
         $parentAdminObject = $parentAdmin->getObject($parentId);
         if (null === $parentAdminObject) {
             throw new \RuntimeException(sprintf(
-                'No object was found in the admin "%s" for the id "%s"',
+                'No object was found in the admin "%s" for the id "%s".',
                 \get_class($parentAdmin),
                 $parentId
             ));
@@ -1399,7 +1399,7 @@ class CRUDController extends AbstractController
 
         $parentAssociationMapping = $this->admin->getParentAssociationMapping();
         if (null === $parentAssociationMapping) {
-            throw new \RuntimeException('The admin has no parent association mapping');
+            throw new \RuntimeException('The admin has no parent association mapping.');
         }
 
         $propertyAccessor = PropertyAccess::createPropertyAccessor();

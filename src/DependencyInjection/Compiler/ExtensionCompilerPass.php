@@ -77,7 +77,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
         $extensionConfig = $container->getParameter('sonata.admin.extension.map');
         $extensionMap = $this->flattenExtensionConfiguration($extensionConfig);
 
-        foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $_attributes) {
+        foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $tags) {
             $admin = $container->getDefinition($id);
 
             if (!isset($targets[$id])) {
@@ -223,9 +223,6 @@ final class ExtensionCompilerPass implements CompilerPassInterface
 
             foreach ($extensionMap as $key => &$value) {
                 foreach ($optionsMap[$key] as $source) {
-                    if (!isset($value[$source])) {
-                        $value[$source] = [];
-                    }
                     $value[$source][$extension]['priority'] = $options['priority'];
                 }
             }

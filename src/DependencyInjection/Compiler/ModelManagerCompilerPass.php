@@ -33,7 +33,7 @@ final class ModelManagerCompilerPass implements CompilerPassInterface
     {
         $availableManagers = [];
 
-        foreach ($container->findTaggedServiceIds(self::MANAGER_TAG) as $id => $_tags) {
+        foreach ($container->findTaggedServiceIds(self::MANAGER_TAG) as $id => $tags) {
             $definition = $container->findDefinition($id);
 
             $class = $definition->getClass();

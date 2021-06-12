@@ -72,7 +72,7 @@ final class SimplePager extends Pager
 
         $query = $this->getQuery();
         if (null === $query) {
-            throw new \LogicException('Uninitialized query');
+            throw new \LogicException('Uninitialized query.');
         }
 
         $results = TraversableToCollection::transform($query->execute());
@@ -94,7 +94,7 @@ final class SimplePager extends Pager
     {
         $query = $this->getQuery();
         if (null === $query) {
-            throw new \LogicException('Uninitialized query');
+            throw new \LogicException('Uninitialized query.');
         }
 
         if (0 === $this->getPage() || 0 === $this->getMaxPerPage()) {
