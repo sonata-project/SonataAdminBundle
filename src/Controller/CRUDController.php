@@ -953,7 +953,7 @@ class CRUDController extends AbstractController
      *
      * @return Response A Response instance
      */
-    protected function renderWithExtraParams(string $view, array $parameters = [], ?Response $response = null): Response
+    final protected function renderWithExtraParams(string $view, array $parameters = [], ?Response $response = null): Response
     {
         return $this->render($view, $this->addRenderExtraParams($parameters), $response);
     }
@@ -972,14 +972,10 @@ class CRUDController extends AbstractController
     }
 
     /**
-     * Render JSON.
-     *
      * @param mixed   $data
      * @param mixed[] $headers
-     *
-     * @return JsonResponse with json encoded data
      */
-    protected function renderJson($data, int $status = Response::HTTP_OK, array $headers = []): JsonResponse
+    final protected function renderJson($data, int $status = Response::HTTP_OK, array $headers = []): JsonResponse
     {
         return new JsonResponse($data, $status, $headers);
     }
@@ -989,7 +985,7 @@ class CRUDController extends AbstractController
      *
      * @return bool True if the request is an XMLHttpRequest, false otherwise
      */
-    protected function isXmlHttpRequest(Request $request): bool
+    final protected function isXmlHttpRequest(Request $request): bool
     {
         return $request->isXmlHttpRequest() || $request->get('_xml_http_request');
     }
@@ -1032,17 +1028,17 @@ class CRUDController extends AbstractController
     /**
      * @throws \Exception
      */
-    protected function handleModelManagerException(\Exception $e): void
+    protected function handleModelManagerException(\Exception $exception): void
     {
         if ($this->getParameter('kernel.debug')) {
-            throw $e;
+            throw $exception;
         }
 
-        $context = ['exception' => $e];
-        if (null !== $e->getPrevious()) {
-            $context['previous_exception_message'] = $e->getPrevious()->getMessage();
+        $context = ['exception' => $exception];
+        if (null !== $exception->getPrevious()) {
+            $context['previous_exception_message'] = $exception->getPrevious()->getMessage();
         }
-        $this->getLogger()->error($e->getMessage(), $context);
+        $this->getLogger()->error($exception->getMessage(), $context);
     }
 
     /**
@@ -1111,7 +1107,7 @@ class CRUDController extends AbstractController
     /**
      * Returns true if the preview is requested to be shown.
      */
-    protected function isPreviewRequested(Request $request): bool
+    final protected function isPreviewRequested(Request $request): bool
     {
         return null !== $request->get('btn_preview');
     }
@@ -1119,7 +1115,7 @@ class CRUDController extends AbstractController
     /**
      * Returns true if the preview has been approved.
      */
-    protected function isPreviewApproved(Request $request): bool
+    final protected function isPreviewApproved(Request $request): bool
     {
         return null !== $request->get('btn_preview_approve');
     }
@@ -1130,7 +1126,7 @@ class CRUDController extends AbstractController
      * That means either a preview is requested or the preview has already been shown
      * and it got approved/declined.
      */
-    protected function isInPreviewMode(Request $request): bool
+    final protected function isInPreviewMode(Request $request): bool
     {
         return $this->admin->supportsPreviewMode()
         && ($this->isPreviewRequested($request)
@@ -1141,7 +1137,7 @@ class CRUDController extends AbstractController
     /**
      * Returns true if the preview has been declined.
      */
-    protected function isPreviewDeclined(Request $request): bool
+    final protected function isPreviewDeclined(Request $request): bool
     {
         return null !== $request->get('btn_preview_decline');
     }
@@ -1149,7 +1145,7 @@ class CRUDController extends AbstractController
     /**
      * @return \Traversable<UserInterface|string>
      */
-    protected function getAclUsers(): \Traversable
+    final protected function getAclUsers(): \Traversable
     {
         if (!$this->has('sonata.admin.security.acl_user_manager')) {
             return new \ArrayIterator([]);
@@ -1165,7 +1161,7 @@ class CRUDController extends AbstractController
     /**
      * @return \Traversable<string>
      */
-    protected function getAclRoles(): \Traversable
+    final protected function getAclRoles(): \Traversable
     {
         $aclRoles = [];
         $roleHierarchy = $this->getParameter('security.role_hierarchy.roles');
@@ -1202,7 +1198,7 @@ class CRUDController extends AbstractController
      *
      * @throws HttpException
      */
-    protected function validateCsrfToken(Request $request, string $intention): void
+    final protected function validateCsrfToken(Request $request, string $intention): void
     {
         if (!$this->has('security.csrf.token_manager')) {
             return;
@@ -1220,15 +1216,15 @@ class CRUDController extends AbstractController
     /**
      * Escape string for html output.
      */
-    protected function escapeHtml(string $s): string
+    final protected function escapeHtml(string $s): string
     {
-        return htmlspecialchars($s, \ENT_QUOTES | \ENT_SUBSTITUTE, 'UTF-8');
+        return htmlspecialchars($s, \ENT_QUOTES | \ENT_SUBSTITUTE);
     }
 
     /**
      * Get CSRF token.
      */
-    protected function getCsrfToken(string $intention): ?string
+    final protected function getCsrfToken(string $intention): ?string
     {
         if (!$this->has('security.csrf.token_manager')) {
             return null;
@@ -1371,15 +1367,30 @@ class CRUDController extends AbstractController
     /**
      * @phpstan-return array{_tab?: string}
      */
-    private function getSelectedTab(Request $request): array
+    final protected function getSelectedTab(Request $request): array
     {
         return array_filter(['_tab' => (string) $request->request->get('_tab')]);
     }
 
     /**
+     * Sets the admin form theme to form view. Used for compatibility between Symfony versions.
+     *
+     * @param string[]|null $theme
+     */
+    final protected function setFormTheme(FormView $formView, ?array $theme = null): void
+    {
+        $twig = $this->get('twig');
+        \assert($twig instanceof Environment);
+        $formRenderer = $twig->getRuntime(FormRenderer::class);
+        \assert($formRenderer instanceof FormRenderer);
+
+        $formRenderer->setTheme($formView, $theme);
+    }
+
+    /**
      * @phpstan-param T $object
      */
-    private function checkParentChildAssociation(Request $request, object $object): void
+    final protected function checkParentChildAssociation(Request $request, object $object): void
     {
         if (!$this->admin->isChild()) {
             return;
@@ -1440,20 +1451,5 @@ class CRUDController extends AbstractController
         }
 
         return false;
-    }
-
-    /**
-     * Sets the admin form theme to form view. Used for compatibility between Symfony versions.
-     *
-     * @param string[]|null $theme
-     */
-    private function setFormTheme(FormView $formView, ?array $theme = null): void
-    {
-        $twig = $this->get('twig');
-        \assert($twig instanceof Environment);
-        $formRenderer = $twig->getRuntime(FormRenderer::class);
-        \assert($formRenderer instanceof FormRenderer);
-
-        $formRenderer->setTheme($formView, $theme);
     }
 }
