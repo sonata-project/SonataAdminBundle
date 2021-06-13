@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.101.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.100.2...3.101.0) - 2021-06-13
+### Added
+- [[#7240](https://github.com/sonata-project/SonataAdminBundle/pull/7240)] `strict` param to `CRUDController::assertObjectExist` in order to check for the existence of the id in the request. ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#7239](https://github.com/sonata-project/SonataAdminBundle/pull/7239)] Display of `history_revision_timestamp.html.twig` ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [3.100.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.100.1...3.100.2) - 2021-05-27
 ### Changed
 - [[#7223](https://github.com/sonata-project/SonataAdminBundle/pull/7223)] Reverted the changes of #7196, because they only work for Select2 version 4, that is used on the Master branche. Branche 3.x uses Select2 version 3. ([@willemverspyck](https://github.com/willemverspyck))
