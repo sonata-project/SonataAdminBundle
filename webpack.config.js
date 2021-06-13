@@ -12,7 +12,7 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 Encore
   .setOutputPath('./src/Resources/public')
-  .setPublicPath('/bundles/sonataadmin')
+  .setPublicPath('.')
   .setManifestKeyPrefix('bundles/sonataadmin')
 
   .cleanupOutputBeforeBuild()
