@@ -1143,7 +1143,7 @@ class CRUDController extends AbstractController
     /**
      * @return \Traversable<UserInterface|string>
      */
-    final protected function getAclUsers(): \Traversable
+    protected function getAclUsers(): \Traversable
     {
         if (!$this->has('sonata.admin.security.acl_user_manager')) {
             return new \ArrayIterator([]);
@@ -1159,7 +1159,7 @@ class CRUDController extends AbstractController
     /**
      * @return \Traversable<string>
      */
-    final protected function getAclRoles(): \Traversable
+    protected function getAclRoles(): \Traversable
     {
         $aclRoles = [];
         $roleHierarchy = $this->getParameter('security.role_hierarchy.roles');
