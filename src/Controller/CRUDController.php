@@ -950,8 +950,6 @@ class CRUDController extends AbstractController
      *
      * @param string               $view       The view name
      * @param array<string, mixed> $parameters An array of parameters to pass to the view
-     *
-     * @return Response A Response instance
      */
     final protected function renderWithExtraParams(string $view, array $parameters = [], ?Response $response = null): Response
     {
