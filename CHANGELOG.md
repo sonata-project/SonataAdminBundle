@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [3.101.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.100.2...3.101.0) - 2021-06-13
 ### Added
-- [[#7240](https://github.com/sonata-project/SonataAdminBundle/pull/7240)] `strict` param to `CRUDController::assertObjectExist` in order to check for the existence of the id in the request. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7240](https://github.com/sonata-project/SonataAdminBundle/pull/7240)] `strict` param to `CRUDController::assertObjectExists()` in order to check for the existence of the id in the request ([@VincentLanglet](https://github.com/VincentLanglet))
 
 ### Fixed
 - [[#7239](https://github.com/sonata-project/SonataAdminBundle/pull/7239)] Display of `history_revision_timestamp.html.twig` ([@VincentLanglet](https://github.com/VincentLanglet))
