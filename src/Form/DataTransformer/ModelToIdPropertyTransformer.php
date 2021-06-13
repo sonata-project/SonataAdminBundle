@@ -26,6 +26,7 @@ use Symfony\Component\Form\DataTransformerInterface;
  * @author Andrej Hudec <pulzarraider@gmail.com>
  *
  * @phpstan-template T of object
+ * @phpstan-template P
  */
 final class ModelToIdPropertyTransformer implements DataTransformerInterface
 {
@@ -44,6 +45,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
 
     /**
      * @var string|string[]
+     * @phpstan-var P
      */
     private $property;
 
@@ -54,16 +56,17 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
 
     /**
      * @var callable|null
+     * @phpstan-var null|callable(T, P): string
      */
     private $toStringCallback;
 
     /**
      * @param string|string[] $property
      *
-     * @phpstan-template P
-     * @phpstan-param ModelManagerInterface<T>         $modelManager
-     * @phpstan-param class-string<T>                  $className
-     * @phpstan-param null|callable(object, P): string $toStringCallback
+     * @phpstan-param ModelManagerInterface<T> $modelManager
+     * @phpstan-param class-string<T> $className
+     * @phpstan-param P $property
+     * @phpstan-param null|callable(T, P): string $toStringCallback
      */
     public function __construct(
         ModelManagerInterface $modelManager,
@@ -136,7 +139,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
      * @psalm-return array{_labels?: array<string>}&array<int|string>
      * @phpstan-return array<int|string|array<string>>
      */
-    public function transform($value)
+    public function transform($value): array
     {
         $result = [];
 
@@ -144,16 +147,15 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
             return $result;
         }
 
-        $isArray = \is_array($value);
         if ($this->multiple) {
-            if (!$isArray && substr(\get_class($value), -1 * \strlen($this->className)) === $this->className) {
+            if (!\is_array($value) && substr(\get_class($value), -1 * \strlen($this->className)) === $this->className) {
                 throw new \InvalidArgumentException(
                     'A multiple selection must be passed a collection not a single value.'
                     .' Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true"'
                     .' is set for many-to-many or one-to-many relations.'
                 );
             }
-            if ($isArray || ($value instanceof \Traversable)) {
+            if (\is_array($value) || $value instanceof \Traversable) {
                 $collection = $value;
             } else {
                 throw new \InvalidArgumentException(
@@ -163,9 +165,9 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
                 );
             }
         } else {
-            if (!$isArray && substr(\get_class($value), -1 * \strlen($this->className)) === $this->className) {
+            if (!\is_array($value) && substr(\get_class($value), -1 * \strlen($this->className)) === $this->className) {
                 $collection = [$value];
-            } elseif ($isArray || $value instanceof \Traversable) {
+            } elseif (\is_array($value) || $value instanceof \Traversable) {
                 throw new \InvalidArgumentException(
                     'A single selection must be passed a single value not a collection.'
                     .' Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true"'
@@ -180,6 +182,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
             throw new \RuntimeException('Please define "property" parameter.');
         }
 
+        /** @phpstan-var array<T>|\Traversable<T> $collection */
         foreach ($collection as $model) {
             $id = current($this->modelManager->getIdentifierValues($model));
 

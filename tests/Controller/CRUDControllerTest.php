@@ -1029,7 +1029,7 @@ class CRUDControllerTest extends TestCase
             ->method('getParent')
             ->willReturn($admin);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->atLeastOnce())
             ->method('getParentAssociationMapping')
             ->willReturn('parent');
 
@@ -1437,7 +1437,7 @@ class CRUDControllerTest extends TestCase
             ->method('getParent')
             ->willReturn($parentAdmin);
 
-        $childAdmin->expects($this->once())
+        $childAdmin->expects($this->atLeastOnce())
             ->method('getParentAssociationMapping')
             ->willReturn('parents');
 
@@ -1759,7 +1759,9 @@ class CRUDControllerTest extends TestCase
         $this->request->headers->set('Accept', 'application/json');
 
         $this->assertInstanceOf(JsonResponse::class, $response = $this->controller->editAction($this->request));
-        $this->assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $response->getContent());
+        $content = $response->getContent();
+        $this->assertNotFalse($content);
+        $this->assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $content);
     }
 
     public function testEditActionAjaxErrorWithoutAcceptApplicationJson(): void
@@ -2441,7 +2443,10 @@ class CRUDControllerTest extends TestCase
         $this->request->headers->set('Accept', 'application/json');
 
         $this->assertInstanceOf(JsonResponse::class, $response = $this->controller->createAction($this->request));
-        $this->assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $response->getContent());
+
+        $content = $response->getContent();
+        $this->assertNotFalse($content);
+        $this->assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $content);
     }
 
     public function testCreateActionAjaxErrorWithoutAcceptApplicationJson(): void
@@ -2610,7 +2615,7 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryActionAccessDenied(): void
     {
-        $this->request->query->set('id', 123);
+        $this->request->query->set('id', '123');
 
         $this->admin
             ->method('getObject')
@@ -2627,11 +2632,9 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryActionNotFoundException(): void
     {
-        $this->request->query->set('id', 123);
+        $this->request->query->set('id', '123');
 
-        $this->admin->expects($this->once())
-            ->method('getObject')
-            ->willReturn(null);
+        $this->admin->method('getObject')->willReturn(null);
 
         $this->expectException(NotFoundHttpException::class);
 
@@ -3823,7 +3826,10 @@ class CRUDControllerTest extends TestCase
         $result = $controller->batchAction($this->request);
 
         $this->assertInstanceOf(Response::class, $result);
-        $this->assertMatchesRegularExpression('/Redirecting to list/', $result->getContent());
+
+        $content = $result->getContent();
+        $this->assertNotFalse($content);
+        $this->assertMatchesRegularExpression('/Redirecting to list/', $content);
     }
 
     public function testBatchActionWithRequesData(): void

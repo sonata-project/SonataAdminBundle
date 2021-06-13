@@ -2029,7 +2029,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     final protected function urlize(string $word, string $sep = '_'): string
     {
-        return strtolower(preg_replace('/[^a-z0-9_]/i', $sep.'$1', $word));
+        return strtolower(preg_replace('/[^a-z0-9_]/i', $sep.'$1', $word) ?? '');
     }
 
     /**
@@ -2436,7 +2436,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         $formBuilder = $this->getFormBuilder();
         $formBuilder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            $this->preValidate($event->getData());
+            /** @phpstan-var T $data */
+            $data = $event->getData();
+            $this->preValidate($data);
         }, 100);
 
         $this->form = $formBuilder->getForm();
@@ -2452,20 +2454,22 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         $this->loaded['routes'] = true;
 
-        $this->routes = new RouteCollection(
+        $routes = new RouteCollection(
             $this->getBaseCodeRoute(),
             $this->getBaseRouteName(),
             $this->getBaseRoutePattern(),
             $this->getBaseControllerName()
         );
 
-        $this->getRouteBuilder()->build($this, $this->routes);
+        $this->getRouteBuilder()->build($this, $routes);
 
-        $this->configureRoutes($this->routes);
+        $this->configureRoutes($routes);
 
         foreach ($this->getExtensions() as $extension) {
-            $extension->configureRoutes($this, $this->routes);
+            $extension->configureRoutes($this, $routes);
         }
+
+        $this->routes = $routes;
 
         return $this->routes;
     }
@@ -2481,20 +2485,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         $this->loaded['tab_menu'] = true;
 
-        $this->menu = $this->getMenuFactory()->createItem('root');
-        $this->menu->setChildrenAttribute('class', 'nav navbar-nav');
-        $this->menu->setExtra('translation_domain', $this->getTranslationDomain());
+        $menu = $this->getMenuFactory()->createItem('root');
+        $menu->setChildrenAttribute('class', 'nav navbar-nav');
+        $menu->setExtra('translation_domain', $this->getTranslationDomain());
 
-        // Prevents BC break with KnpMenuBundle v1.x
-        if (method_exists($this->menu, 'setCurrentUri')) {
-            $this->menu->setCurrentUri($this->getRequest()->getBaseUrl().$this->getRequest()->getPathInfo());
-        }
-
-        $this->configureTabMenu($this->menu, $action, $childAdmin);
+        $this->configureTabMenu($menu, $action, $childAdmin);
 
         foreach ($this->getExtensions() as $extension) {
-            $extension->configureTabMenu($this, $this->menu, $action, $childAdmin);
+            $extension->configureTabMenu($this, $menu, $action, $childAdmin);
         }
+
+        $this->menu = $menu;
 
         return $this->menu;
     }

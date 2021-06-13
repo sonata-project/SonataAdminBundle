@@ -22,6 +22,26 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * @internal
  *
+ * @phpstan-type ExtensionMap = array<string, array{
+ *     global: bool,
+ *     excludes: array<string, string>,
+ *     admins: array<string, string>,
+ *     implements: array<class-string, string>,
+ *     extends: array<class-string, string>,
+ *     instanceof: array<class-string, string>,
+ *     uses: array<class-string, string>,
+ *     priority: int,
+ * }>
+ * @phpstan-type FlattenExtensionMap = array{
+ *     global: array<string, array<string, array{priority: int}>>,
+ *     excludes: array<string, array<string, array{priority: int}>>,
+ *     admins: array<string, array<string, array{priority: int}>>,
+ *     implements: array<string, array<class-string, array{priority: int}>>,
+ *     extends: array<string, array<class-string, array{priority: int}>>,
+ *     instanceof: array<string, array<class-string, array{priority: int}>>,
+ *     uses: array<string, array<class-string, array{priority: int}>>,
+ * }
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 final class ExtensionCompilerPass implements CompilerPassInterface
@@ -51,10 +71,13 @@ final class ExtensionCompilerPass implements CompilerPassInterface
             }
         }
 
+        /**
+         * @phpstan-var ExtensionMap $extensionConfig
+         */
         $extensionConfig = $container->getParameter('sonata.admin.extension.map');
         $extensionMap = $this->flattenExtensionConfiguration($extensionConfig);
 
-        foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $tags) {
             $admin = $container->getDefinition($id);
 
             if (!isset($targets[$id])) {
@@ -94,6 +117,8 @@ final class ExtensionCompilerPass implements CompilerPassInterface
      * @param array<string, array<string, array<string, array<string, mixed>>>> $extensionMap
      *
      * @return array<string, array<string, mixed>>
+     *
+     * @phpstan-param FlattenExtensionMap $extensionMap
      */
     private function getExtensionsForAdmin(string $id, Definition $admin, ContainerBuilder $container, array $extensionMap): array
     {
@@ -133,8 +158,6 @@ final class ExtensionCompilerPass implements CompilerPassInterface
 
     /**
      * Resolves the class argument of the admin to an actual class (in case of %parameter%).
-     *
-     * @phpstan-return class-string
      */
     private function getManagedClass(Definition $admin, ContainerBuilder $container): string
     {
@@ -162,28 +185,12 @@ final class ExtensionCompilerPass implements CompilerPassInterface
      *
      * @return array<string, array<string, array<string, array<string, int>>>> an array with the following structure
      *
-     * @phpstan-param array<string, array{
-     *     global: bool,
-     *     excludes: array<string, string>,
-     *     admins: array<string, string>,
-     *     implements: array<class-string, string>,
-     *     extends: array<class-string, string>,
-     *     instanceof: array<class-string, string>,
-     *     uses: array<class-string, string>,
-     *     priority: int,
-     * }> $config
-     * @phpstan-return array{
-     *     global: array<string, array<string, array{priority: int}>>,
-     *     excludes: array<string, array<string, array{priority: int}>>,
-     *     admins: array<string, array<string, array{priority: int}>>,
-     *     implements: array<string, array<class-string, array{priority: int}>>,
-     *     extends: array<string, array<class-string, array{priority: int}>>,
-     *     instanceof: array<string, array<class-string, array{priority: int}>>,
-     *     uses: array<string, array<class-string, array{priority: int}>>,
-     * }
+     * @phpstan-param ExtensionMap $config
+     * @phpstan-return FlattenExtensionMap
      */
     private function flattenExtensionConfiguration(array $config): array
     {
+        /** @phpstan-var FlattenExtensionMap $extensionMap */
         $extensionMap = [
             'global' => [],
             'excludes' => [],
@@ -214,12 +221,9 @@ final class ExtensionCompilerPass implements CompilerPassInterface
              */
             $optionsMap = array_intersect_key($options, $extensionMap);
 
-            foreach ($optionsMap as $key => $value) {
-                foreach ($value as $source) {
-                    if (!isset($extensionMap[$key][$source])) {
-                        $extensionMap[$key][$source] = [];
-                    }
-                    $extensionMap[$key][$source][$extension]['priority'] = $options['priority'];
+            foreach ($extensionMap as $key => &$value) {
+                foreach ($optionsMap[$key] as $source) {
+                    $value[$source][$extension]['priority'] = $options['priority'];
                 }
             }
         }
@@ -229,8 +233,6 @@ final class ExtensionCompilerPass implements CompilerPassInterface
 
     /**
      * @param \ReflectionClass<object> $class
-     *
-     * @phpstan-param class-string $traitName
      */
     private function hasTrait(\ReflectionClass $class, string $traitName): bool
     {
@@ -247,7 +249,6 @@ final class ExtensionCompilerPass implements CompilerPassInterface
 
     /**
      * @phpstan-param class-string $class
-     * @phpstan-param class-string $subject
      */
     private function isSubtypeOf(string $type, string $subject, string $class): bool
     {
@@ -257,15 +258,19 @@ final class ExtensionCompilerPass implements CompilerPassInterface
             case 'global':
                 return true;
             case 'instanceof':
+                if (!class_exists($subject)) {
+                    return false;
+                }
+
                 $subjectReflection = new \ReflectionClass($subject);
 
                 return $classReflection->isSubclassOf($subject) || $subjectReflection->getName() === $classReflection->getName();
             case 'implements':
-                return $classReflection->implementsInterface($subject);
+                return interface_exists($subject) && $classReflection->implementsInterface($subject);
             case 'extends':
-                return $classReflection->isSubclassOf($subject);
+                return class_exists($subject) && $classReflection->isSubclassOf($subject);
             case 'uses':
-                return $this->hasTrait($classReflection, $subject);
+                return trait_exists($subject) && $this->hasTrait($classReflection, $subject);
         }
 
         return false;

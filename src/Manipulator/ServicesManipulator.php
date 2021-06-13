@@ -59,7 +59,12 @@ final class ServicesManipulator
         $code = "services:\n";
 
         if (is_file($this->file)) {
-            $code = rtrim(file_get_contents($this->file));
+            $content = file_get_contents($this->file);
+            if (false === $content) {
+                throw new \RuntimeException(sprintf('Cannot read the file "%s".', realpath($this->file)));
+            }
+
+            $code = rtrim($content);
             $data = (array) Yaml::parse($code);
 
             if ('' !== $code) {

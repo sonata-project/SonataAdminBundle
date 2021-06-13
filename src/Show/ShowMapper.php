@@ -143,6 +143,9 @@ final class ShowMapper extends BaseGroupedMapper
         return array_keys($this->list->getElements());
     }
 
+    /**
+     * @return static
+     */
     public function reorder(array $keys): self
     {
         $this->getAdmin()->reorderShowGroup($this->getCurrentGroupName(), $keys);

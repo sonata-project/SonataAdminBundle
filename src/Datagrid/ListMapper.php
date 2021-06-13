@@ -178,6 +178,9 @@ final class ListMapper implements MapperInterface
         return $this->list->has($key);
     }
 
+    /**
+     * @return static
+     */
     public function remove(string $key): self
     {
         $this->getAdmin()->removeListFieldDescription($key);
@@ -191,6 +194,9 @@ final class ListMapper implements MapperInterface
         return array_keys($this->list->getElements());
     }
 
+    /**
+     * @return static
+     */
     public function reorder(array $keys): self
     {
         $this->list->reorder($keys);

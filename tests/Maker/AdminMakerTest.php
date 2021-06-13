@@ -95,9 +95,6 @@ class AdminMakerTest extends TestCase
         $this->filesystem->remove($this->projectDirectory);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testExecute(): void
     {
         $maker = new AdminMaker($this->projectDirectory, $this->modelManagers, CRUDController::class);
@@ -121,7 +118,9 @@ class AdminMakerTest extends TestCase
 
         $this->input = new ArrayInput($in, $definition);
 
-        $this->output = new StreamOutput(fopen('php://memory', 'w', false));
+        $stream = fopen('php://memory', 'w', false);
+        $this->assertIsResource($stream);
+        $this->output = new StreamOutput($stream);
 
         $this->io = new ConsoleStyle($this->input, $this->output);
         $autoloaderUtil = $this->createMock(AutoloaderUtil::class);

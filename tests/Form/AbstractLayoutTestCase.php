@@ -42,6 +42,7 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
         parent::setUp();
 
         $reflection = new \ReflectionClass(TwigRendererEngine::class);
+        $this->assertNotFalse($reflection->getFileName());
         $bridgeDirectory = \dirname($reflection->getFileName()).'/../Resources/views/Form';
 
         $loader = new FilesystemLoader([
@@ -67,7 +68,9 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
             },
         ]));
 
-        $this->renderer = $environment->getRuntime(FormRenderer::class);
+        $renderer = $environment->getRuntime(FormRenderer::class);
+        $this->assertInstanceOf(FormRenderer::class, $renderer);
+        $this->renderer = $renderer;
     }
 
     /**
@@ -98,7 +101,7 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
                 1 === $count ? 'once' : $count.' times',
                 1 === $nodeList->length ? 'once' : $nodeList->length.' times',
                 // strip away <root> and </root>
-                substr($dom->saveHTML(), 6, -8)
+                substr($dom->saveHTML() ?: '', 6, -8)
             ));
         } else {
             $this->addToAssertionCount(1);

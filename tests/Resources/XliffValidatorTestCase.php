@@ -70,6 +70,7 @@ abstract class XliffValidatorTestCase extends TestCase
     protected function validatePath(string $path): void
     {
         $files = glob(sprintf('%s/*.xliff', $path));
+        $this->assertIsArray($files);
 
         foreach ($files as $file) {
             $this->validateXliff($file);

@@ -52,16 +52,28 @@ final class AdminMaker extends AbstractMaker
     /**
      * @var string
      * @phpstan-var class-string
+     *
+     * @psalm-suppress MissingConstructor
+     *
+     * @see AdminMaker::configure
      */
     private $modelClass;
 
     /**
      * @var string
+     *
+     * @psalm-suppress MissingConstructor
+     *
+     * @see AdminMaker::configure
      */
     private $modelClassBasename;
 
     /**
      * @var string
+     *
+     * @psalm-suppress MissingConstructor
+     *
+     * @see AdminMaker::configure
      */
     private $adminClassBasename;
 
@@ -72,11 +84,19 @@ final class AdminMaker extends AbstractMaker
 
     /**
      * @var string
+     *
+     * @psalm-suppress MissingConstructor
+     *
+     * @see AdminMaker::configure
      */
     private $managerType;
 
     /**
      * @var ModelManagerInterface<object>
+     *
+     * @psalm-suppress MissingConstructor
+     *
+     * @see AdminMaker::configure
      */
     private $modelManager;
 
@@ -127,7 +147,7 @@ final class AdminMaker extends AbstractMaker
             $input->getArgument('model'),
             [Validators::class, 'validateClass']
         );
-        $this->modelClassBasename = current(\array_slice(explode('\\', $this->modelClass), -1));
+        $this->modelClassBasename = \array_slice(explode('\\', $this->modelClass), -1)[0];
 
         $this->adminClassBasename = $io->ask(
             'The admin class basename',

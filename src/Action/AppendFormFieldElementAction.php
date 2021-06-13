@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,8 +74,8 @@ final class AppendFormFieldElementAction
         $elementId = $request->get('elementId');
         [, $form] = $this->helper->appendFormFieldElement($admin, $subject, $elementId);
 
-        \assert($form instanceof Form);
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
+        \assert(null !== $view);
 
         // render the widget
         $renderer = $this->getFormRenderer();
@@ -87,6 +86,9 @@ final class AppendFormFieldElementAction
 
     private function getFormRenderer(): FormRenderer
     {
-        return $this->twig->getRuntime(FormRenderer::class);
+        $formRenderer = $this->twig->getRuntime(FormRenderer::class);
+        \assert($formRenderer instanceof FormRenderer);
+
+        return $formRenderer;
     }
 }

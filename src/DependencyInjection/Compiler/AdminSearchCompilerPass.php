@@ -65,7 +65,7 @@ final class AdminSearchCompilerPass implements CompilerPassInterface
         $definition = $container->getDefinition($id);
 
         // Trim possible parameter delimiters ("%") from the class name.
-        $adminClass = trim($definition->getClass(), '%');
+        $adminClass = trim($definition->getClass() ?? '', '%');
         if (!class_exists($adminClass) && $container->hasParameter($adminClass)) {
             $adminClass = $container->getParameter($adminClass);
             \assert(\is_string($adminClass));

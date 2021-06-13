@@ -155,7 +155,7 @@ class SimplePagerTest extends TestCase
 
     public function testInitNoQuery(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->pager->init();
     }
 

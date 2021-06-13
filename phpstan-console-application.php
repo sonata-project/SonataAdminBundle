@@ -11,13 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Fixtures\Admin;
+use Sonata\AdminBundle\Tests\App\AppKernel;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 
-use Sonata\AdminBundle\Admin\AbstractAdmin;
+require __DIR__.'/vendor/autoload.php';
 
-/**
- * @phpstan-extends AbstractAdmin<\Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\PostCategory>
- */
-final class PostCategoryAdmin extends AbstractAdmin
-{
-}
+$kernel = new AppKernel();
+
+return new Application($kernel);

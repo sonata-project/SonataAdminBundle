@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType as SymfonyCollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormTypeInterface;
 
 /**
  * This class is use to simulate the Form API.
@@ -62,6 +63,9 @@ final class FormMapper extends BaseGroupedMapper
         return $this->admin;
     }
 
+    /**
+     * @return static
+     */
     public function reorder(array $keys): self
     {
         $this->getAdmin()->reorderFormGroup($this->getCurrentGroupName(), $keys);
@@ -183,6 +187,9 @@ final class FormMapper extends BaseGroupedMapper
         return array_keys($this->formBuilder->all());
     }
 
+    /**
+     * @return static
+     */
     public function remove(string $key): self
     {
         $key = $this->sanitizeFieldName($key);
@@ -199,7 +206,8 @@ final class FormMapper extends BaseGroupedMapper
     }
 
     /**
-     * @param array<string, mixed> $options
+     * @param class-string<FormTypeInterface>|null $type
+     * @param array<string, mixed>                 $options
      */
     public function create(string $name, ?string $type = null, array $options = []): FormBuilderInterface
     {

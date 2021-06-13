@@ -66,7 +66,10 @@ abstract class QuestionableCommand extends Command
 
         if (!$questionHelper instanceof QuestionHelper) {
             $questionHelper = new QuestionHelper();
-            $this->getHelperSet()->set($questionHelper);
+
+            $helperSet = $this->getHelperSet();
+            \assert(null !== $helperSet);
+            $helperSet->set($questionHelper);
         }
 
         return $questionHelper;

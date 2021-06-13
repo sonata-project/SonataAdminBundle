@@ -40,6 +40,7 @@ final class SonataAdminExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $bundles = $container->getParameter('kernel.bundles');
+        \assert(\is_array($bundles));
 
         if (isset($bundles['SonataUserBundle'])) {
             // integrate the SonataUserBundle / FOSUserBundle if the bundle exists
@@ -83,6 +84,7 @@ final class SonataAdminExtension extends Extension
         }
 
         $configuration = $this->getConfiguration($configs, $container);
+        \assert(null !== $configuration);
         $config = $this->processConfiguration($configuration, $configs);
 
         $config['options']['javascripts'] = $this->buildJavascripts($config);
@@ -240,11 +242,11 @@ final class SonataAdminExtension extends Extension
     }
 
     /**
-     * @param string[] $array
-     * @param string[] $addArray
-     * @param string[] $removeArray
+     * @param array<int, string> $array
+     * @param array<int, string> $addArray
+     * @param array<int, string> $removeArray
      *
-     * @return string[]
+     * @return array<int, string>
      */
     private function mergeArray(array $array, array $addArray, array $removeArray = []): array
     {
@@ -252,8 +254,9 @@ final class SonataAdminExtension extends Extension
             $array[] = $toAdd;
         }
         foreach ($removeArray as $toRemove) {
-            if (\in_array($toRemove, $array, true)) {
-                array_splice($array, array_search($toRemove, $array, true), 1);
+            $key = array_search($toRemove, $array, true);
+            if (false !== $key) {
+                array_splice($array, $key, 1);
             }
         }
 

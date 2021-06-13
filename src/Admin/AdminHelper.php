@@ -165,7 +165,7 @@ class AdminHelper
 
             $modelClassName = $this->getModelClassName(
                 $admin,
-                explode('.', preg_replace('#\[\d*?]#', '', $path))
+                explode('.', preg_replace('#\[\d*?]#', '', $path) ?? '')
             );
 
             $collection->add(new $modelClassName());
@@ -199,6 +199,8 @@ class AdminHelper
      *
      * @param AdminInterface<object> $admin
      * @param string[]               $elements
+     *
+     * @phpstan-param non-empty-array<string> $elements
      */
     private function getModelClassName(AdminInterface $admin, array $elements): string
     {
@@ -222,8 +224,8 @@ class AdminHelper
      */
     private function getElementAccessPath(string $elementId, $model): string
     {
-        $idWithoutIdentifier = preg_replace('/^[^_]*_/', '', $elementId);
-        $initialPath = preg_replace('#(_(\d+)_)#', '[$2]_', $idWithoutIdentifier);
+        $idWithoutIdentifier = preg_replace('/^[^_]*_/', '', $elementId) ?? '';
+        $initialPath = preg_replace('#(_(\d+)_)#', '[$2]_', $idWithoutIdentifier) ?? '';
 
         $parts = explode('_', $initialPath);
         $totalPath = '';
