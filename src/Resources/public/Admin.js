@@ -340,10 +340,17 @@ var Admin = {
 
             // Keep only changed values
             $form.find('[name*=filter]').each(function (i, field) {
-                if (JSON.stringify(defaults[field.name] || '') === JSON.stringify(jQuery(field).val())) {
+                var defaultValue = field.multiple ? [] : '';
+
+                if (JSON.stringify(defaults[field.name] || defaultValue) === JSON.stringify(jQuery(field).val() || defaultValue)) {
                     field.removeAttribute('name');
                 }
             });
+
+            // Simulate a reset if no value is different from the default ones.
+            if ($form.find('[name*=filter]').length === 0) {
+                $form.append('<input name="filters" type="hidden" value="reset">');
+            }
         });
 
         /* Advanced filters */
