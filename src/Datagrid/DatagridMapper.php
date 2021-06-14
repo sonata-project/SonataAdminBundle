@@ -63,11 +63,11 @@ class DatagridMapper extends BaseMapper implements MapperInterface
     }
 
     /**
-     * NEXT_MAJOR: Change signature for ($name, ?string $type = null, array $filterOptions = [], array $fieldDescriptionOptions = []).
+     * NEXT_MAJOR: Change signature for ($name, ?string $type = null, array $fieldDescriptionOptions = []).
      *
      * @param FieldDescriptionInterface|string $name
      * @param string|null                      $type
-     * @param array|string|null                $fieldDescriptionOptionsOrDeprecatedFieldType
+     * @param array|string|null                $deprecatedFieldDescriptionOptionsOrDeprecatedFieldType
      * @param array|null                       $deprecatedFieldOptions
      * @param array|null                       $deprecatedFieldDescriptionOptions
      *
@@ -81,13 +81,21 @@ class DatagridMapper extends BaseMapper implements MapperInterface
         $name,
         $type = null,
         array $filterOptions = [],
-        $fieldDescriptionOptionsOrDeprecatedFieldType = [],
+        $deprecatedFieldDescriptionOptionsOrDeprecatedFieldType = [],
         $deprecatedFieldOptions = null,
         $deprecatedFieldDescriptionOptions = []
     ) {
-        // NEXT_MAJOR remove the check and the else part.
-        if (\is_array($fieldDescriptionOptionsOrDeprecatedFieldType)) {
-            $fieldDescriptionOptions = $fieldDescriptionOptionsOrDeprecatedFieldType;
+        // NEXT_MAJOR remove both part of the check and change the method signature.
+        if (\is_array($deprecatedFieldDescriptionOptionsOrDeprecatedFieldType)) {
+            if (\func_num_args() > 3) {
+                @trigger_error(
+                    'Passing the field description options as argument 4 is deprecated'
+                    .' since sonata-project/admin-bundle 3.x. Use the third argument instead.',
+                    \E_USER_DEPRECATED
+                );
+            }
+
+            $fieldDescriptionOptions = $deprecatedFieldDescriptionOptionsOrDeprecatedFieldType;
         } else {
             @trigger_error(
                 'Not passing an array as argument 4 is deprecated since sonata-project/admin-bundle 3.89.',
@@ -104,22 +112,24 @@ class DatagridMapper extends BaseMapper implements MapperInterface
                 $filterOptions['field_options'] = $deprecatedFieldOptions;
             }
 
-            if ($fieldDescriptionOptionsOrDeprecatedFieldType) {
+            if ($deprecatedFieldDescriptionOptionsOrDeprecatedFieldType) {
                 @trigger_error(
                     'Passing the field_type as argument 4 is deprecated since sonata-project/admin-bundle 3.89.'.
                     'Use the `field_type` option of the third argument instead.',
                     \E_USER_DEPRECATED
                 );
 
-                $filterOptions['field_type'] = $fieldDescriptionOptionsOrDeprecatedFieldType;
+                $filterOptions['field_type'] = $deprecatedFieldDescriptionOptionsOrDeprecatedFieldType;
             }
 
             $fieldDescriptionOptions = $deprecatedFieldDescriptionOptions;
         }
 
+        $fieldDescriptionOptions = array_merge($filterOptions, $fieldDescriptionOptions);
+
         if ($name instanceof FieldDescriptionInterface) {
             $fieldDescription = $name;
-            $fieldDescription->mergeOptions($filterOptions);
+            $fieldDescription->mergeOptions($fieldDescriptionOptions);
         } elseif (\is_string($name)) {
             if ($this->getAdmin()->hasFilterFieldDescription($name)) {
                 throw new \LogicException(sprintf(
@@ -128,21 +138,21 @@ class DatagridMapper extends BaseMapper implements MapperInterface
                 ));
             }
 
-            if (!isset($filterOptions['field_name'])) {
-                $filterOptions['field_name'] = substr(strrchr('.'.$name, '.'), 1);
+            if (!isset($fieldDescriptionOptions['field_name'])) {
+                $fieldDescriptionOptions['field_name'] = substr(strrchr('.'.$name, '.'), 1);
             }
 
             // NEXT_MAJOR: Remove the check and use `createFieldDescription`.
             if (method_exists($this->getAdmin(), 'createFieldDescription')) {
                 $fieldDescription = $this->getAdmin()->createFieldDescription(
                     $name,
-                    array_merge($filterOptions, $fieldDescriptionOptions)
+                    $fieldDescriptionOptions
                 );
             } else {
                 $fieldDescription = $this->getAdmin()->getModelManager()->getNewFieldDescriptionInstance(
                     $this->getAdmin()->getClass(),
                     $name,
-                    array_merge($filterOptions, $fieldDescriptionOptions)
+                    $fieldDescriptionOptions
                 );
             }
         } else {

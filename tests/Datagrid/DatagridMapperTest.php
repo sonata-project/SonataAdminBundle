@@ -301,14 +301,14 @@ class DatagridMapperTest extends TestCase
 
         $this->assertTrue($this->datagridMapper->has('bar'));
 
-        $this->datagridMapper->add('quux', 'bar', [], ['role' => 'ROLE_QUX']);
+        $this->datagridMapper->add('quux', 'bar', ['role' => 'ROLE_QUX']);
 
         $this->assertTrue($this->datagridMapper->has('bar'));
         $this->assertFalse($this->datagridMapper->has('quux'));
 
         $this->datagridMapper
-            ->add('foobar', 'bar', [], ['role' => self::DEFAULT_GRANTED_ROLE])
-            ->add('foo', 'bar', [], ['role' => 'ROLE_QUX'])
+            ->add('foobar', 'bar', ['role' => self::DEFAULT_GRANTED_ROLE])
+            ->add('foo', 'bar', ['role' => 'ROLE_QUX'])
             ->add('baz', 'bar');
 
         $this->assertTrue($this->datagridMapper->has('foobar'));
