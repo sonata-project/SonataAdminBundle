@@ -11,11 +11,17 @@
             <code>array_merge(array_flip($keys), $this-&gt;elements)</code>
         </InvalidPropertyAssignmentValue>
     </file>
-    <!-- Will be fixed in Symfony 5.3 https://github.com/symfony/symfony/pull/40604 -->
-    <file src="src/Translator/Extractor/AdminExtractor.php">
-        <MoreSpecificImplementedParamType occurrences="1">
-            <code>$resource</code>
-        </MoreSpecificImplementedParamType>
+    <!-- Remove this when dropping support for Symfony < 5.1 -->
+    <file src="tests/Admin/AdminTest.php">
+        <PropertyTypeCoercion occurrences="2">
+            <code>$query</code>
+        </PropertyTypeCoercion>
+    </file>
+    <!-- https://github.com/vimeo/psalm/issues/5551 -->
+    <file src="tests/Controller/CRUDControllerTest.php">
+        <PossiblyInvalidFunctionCall occurrences="1">
+            <code>$disableHttpMethodParameterOverride()</code>
+        </PossiblyInvalidFunctionCall>
     </file>
     <!-- This error is made on purpose for php version < 8 -->
     <file src="tests/Fixtures/Entity/FooToStringNull.php">

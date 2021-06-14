@@ -42,6 +42,10 @@ final class AddFilterTypeCompilerPass implements CompilerPassInterface
             $serviceDefinition->setShared(false);
 
             $class = $serviceDefinition->getClass();
+            if (null === $class) {
+                throw new InvalidArgumentException('The service "%s" has no class.', $id);
+            }
+
             $reflectionClass = $container->getReflectionClass($class);
 
             if (null === $reflectionClass) {

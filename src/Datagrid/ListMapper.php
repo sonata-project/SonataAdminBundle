@@ -24,6 +24,8 @@ use Sonata\AdminBundle\Mapper\MapperInterface;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
+ * @phpstan-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
+ *
  * @phpstan-template T of object
  * @phpstan-implements MapperInterface<T>
  */
@@ -77,6 +79,8 @@ final class ListMapper implements MapperInterface
      * @param array<string, mixed> $fieldDescriptionOptions
      *
      * @return static
+     *
+     * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */
     public function addIdentifier(string $name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
@@ -100,6 +104,8 @@ final class ListMapper implements MapperInterface
      * @throws \LogicException
      *
      * @return static
+     *
+     * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */
     public function add(string $name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {

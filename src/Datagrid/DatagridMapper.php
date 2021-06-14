@@ -23,6 +23,8 @@ use Sonata\AdminBundle\Mapper\MapperInterface;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
+ * @phpstan-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
+ *
  * @phpstan-template T of object
  * @phpstan-implements MapperInterface<T>
  */
@@ -74,6 +76,7 @@ final class DatagridMapper implements MapperInterface
      * @return static
      *
      * @phpstan-param class-string|null $type
+     * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */
     public function add(
         string $name,

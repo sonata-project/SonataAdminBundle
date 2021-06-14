@@ -21,6 +21,8 @@ final class FilterDataTransformer implements DataTransformerInterface
 {
     /**
      * @param array<string, mixed>|null $value
+     *
+     * @phpstan-param array{type?: int|numeric-string|null, value?: mixed}|null $value
      */
     public function reverseTransform($value): FilterData
     {

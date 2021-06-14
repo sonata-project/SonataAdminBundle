@@ -17,6 +17,7 @@ use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -137,7 +138,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
                     continue;
                 }
 
-                $class = $this->getManagedClass($admin, $container);
+                $class = $this->getManagedClass($id, $admin, $container);
 
                 if (!class_exists($class)) {
                     continue;
@@ -159,20 +160,25 @@ final class ExtensionCompilerPass implements CompilerPassInterface
     /**
      * Resolves the class argument of the admin to an actual class (in case of %parameter%).
      */
-    private function getManagedClass(Definition $admin, ContainerBuilder $container): string
+    private function getManagedClass(string $id, Definition $admin, ContainerBuilder $container): string
     {
+        $adminClass = $admin->getClass();
+        if (null === $adminClass) {
+            throw new InvalidArgumentException(sprintf('The service "%s" has no class.', $id));
+        }
+
         $argument = $admin->getArgument(1);
         $class = $container->getParameterBag()->resolveValue($argument);
 
         if (null === $class) {
-            throw new \DomainException(sprintf('The admin "%s" does not have a valid manager.', $admin->getClass()));
+            throw new \DomainException(sprintf('The admin "%s" does not have a valid manager.', $adminClass));
         }
 
         if (!\is_string($class)) {
             throw new \TypeError(sprintf(
                 'Argument "%s" for admin class "%s" must be of type string, %s given.',
                 $argument,
-                $admin->getClass(),
+                $adminClass,
                 \is_object($class) ? \get_class($class) : \gettype($class)
             ));
         }
