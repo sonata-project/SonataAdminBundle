@@ -3338,22 +3338,16 @@ EOT;
         $mapper = new ListMapper($this->getListBuilder(), $this->list, $this);
 
         if (\count($this->getBatchActions()) > 0 && $this->hasRequest() && !$this->getRequest()->isXmlHttpRequest()) {
-            $fieldDescription = $this->createFieldDescription(
-                ListMapper::NAME_BATCH,
-                [
-                    'label' => 'batch',
-                    // NEXT_MAJOR: Remove this code.
-                    'code' => '_batch',
-                    'sortable' => false,
-                    'virtual_field' => true,
-                ]
-            );
-
-            // NEXT_MAJOR: Remove this line and use commented line below it instead
-            $fieldDescription->setTemplate($this->getTemplate('batch'));
-            // $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('batch'));
-
-            $mapper->add($fieldDescription, ListMapper::TYPE_BATCH);
+            $mapper->add(ListMapper::NAME_BATCH, ListMapper::TYPE_BATCH, [
+                'label' => 'batch',
+                // NEXT_MAJOR: Remove this code.
+                'code' => '_batch',
+                'sortable' => false,
+                'virtual_field' => true,
+                // NEXT_MAJOR: Remove this line and use commented line below it instead
+                'template' => $this->getTemplate('batch'),
+                // 'template' => $this->getTemplateRegistry()->getTemplate('batch'),
+            ]);
         }
 
         $this->configureListFields($mapper);
@@ -3363,22 +3357,16 @@ EOT;
         }
 
         if ($this->hasRequest() && $this->getRequest()->isXmlHttpRequest()) {
-            $fieldDescription = $this->createFieldDescription(
-                ListMapper::NAME_SELECT,
-                [
-                    'label' => false,
-                    // NEXT_MAJOR: Remove this code.
-                    'code' => '_select',
-                    'sortable' => false,
-                    'virtual_field' => false,
-                ]
-            );
-
-            // NEXT_MAJOR: Remove this line and use commented line below it instead
-            $fieldDescription->setTemplate($this->getTemplate('select'));
-            // $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('select'));
-
-            $mapper->add($fieldDescription, ListMapper::TYPE_SELECT);
+            $mapper->add(ListMapper::NAME_SELECT, ListMapper::TYPE_SELECT, [
+                'label' => false,
+                // NEXT_MAJOR: Remove this code.
+                'code' => '_select',
+                'sortable' => false,
+                'virtual_field' => false,
+                // NEXT_MAJOR: Remove this line and use commented line below it instead
+                'template' => $this->getTemplate('select'),
+                // 'template' => $this->getTemplateRegistry()->getTemplate('select'),
+            ]);
         }
     }
 
