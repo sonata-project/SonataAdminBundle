@@ -782,7 +782,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     public function getTranslationDomain()
     {
-        return $this->getOption('translation_domain') ?: $this->getAdmin()->getTranslationDomain();
+        return $this->getOption('translation_domain') ?? $this->getAdmin()->getTranslationDomain();
     }
 
     /**
