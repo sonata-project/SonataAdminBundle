@@ -77,6 +77,8 @@ class FormMapper extends BaseGroupedMapper
     }
 
     /**
+     * NEXT_MAJOR: Restrict the type of the $name parameter to string.
+     *
      * @param FormBuilderInterface|string $name
      * @param string|null                 $type
      * @param array<string, mixed>        $options
@@ -94,7 +96,18 @@ class FormMapper extends BaseGroupedMapper
             return $this;
         }
 
+        // NEXT_MAJOR: Only keep the else part.
         if ($name instanceof FormBuilderInterface) {
+            @trigger_error(
+                sprintf(
+                    'Passing a %s instance as first param of %s is deprecated since sonata-project/admin-bundle 3.x'
+                    .' and will throw an exception in 4.0. You should pass a string instead.',
+                    FormBuilderInterface::class,
+                    __METHOD__
+                ),
+                \E_USER_DEPRECATED
+            );
+
             $fieldName = $name->getName();
         } else {
             $fieldName = $name;

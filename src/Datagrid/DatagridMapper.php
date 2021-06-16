@@ -70,7 +70,7 @@ class DatagridMapper extends BaseMapper implements MapperInterface
     }
 
     /**
-     * NEXT_MAJOR: Change signature for ($name, ?string $type = null, array $filterOptions = [], array $fieldDescriptionOptions = []).
+     * NEXT_MAJOR: Change signature for (string $name, ?string $type = null, array $filterOptions = [], array $fieldDescriptionOptions = []).
      *
      * @param FieldDescriptionInterface|string $name
      * @param string|null                      $type
@@ -124,7 +124,18 @@ class DatagridMapper extends BaseMapper implements MapperInterface
             $fieldDescriptionOptions = $deprecatedFieldDescriptionOptions;
         }
 
+        // NEXT_MAJOR: Only keep the elseif part.
         if ($name instanceof FieldDescriptionInterface) {
+            @trigger_error(
+                sprintf(
+                    'Passing a %s instance as first param of %s is deprecated since sonata-project/admin-bundle 3.x'
+                    .' and will throw an exception in 4.0. You should pass a string instead.',
+                    FieldDescriptionInterface::class,
+                    __METHOD__
+                ),
+                \E_USER_DEPRECATED
+            );
+
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($filterOptions);
         } elseif (\is_string($name)) {

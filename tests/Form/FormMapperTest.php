@@ -446,6 +446,11 @@ class FormMapperTest extends TestCase
         $this->assertFalse($this->formMapper->has('fooName'));
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testAddAcceptFormBuilder(): void
     {
         $formBuilder = $this
@@ -477,6 +482,11 @@ class FormMapperTest extends TestCase
         $this->assertSame($this->formMapper->get('foo'), $formBuilder);
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testAddFormBuilderWithType(): void
     {
         $formBuilder = $this

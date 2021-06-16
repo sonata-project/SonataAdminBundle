@@ -68,7 +68,7 @@ class ListMapperTest extends TestCase
         $this->admin
             ->method('createFieldDescription')
             ->willReturnCallback(function (string $name, array $options = []): FieldDescriptionInterface {
-                $fieldDescription = $this->getFieldDescriptionMock($name);
+                $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name, []]);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
@@ -89,32 +89,19 @@ class ListMapperTest extends TestCase
         $this->listMapper = new ListMapper($listBuilder, $this->fieldDescriptionCollection, $this->admin);
     }
 
-    public function testFluidInterface(): void
-    {
-        $fieldDescription = $this->getFieldDescriptionMock('fooName', 'fooLabel');
-
-        $this->assertSame($this->listMapper, $this->listMapper->add($fieldDescription));
-        $this->assertSame($this->listMapper, $this->listMapper->remove('fooName'));
-        $this->assertSame($this->listMapper, $this->listMapper->reorder([]));
-    }
-
     public function testGet(): void
     {
         $this->assertFalse($this->listMapper->has('fooName'));
 
-        $fieldDescription = $this->getFieldDescriptionMock('fooName', 'fooLabel');
-
-        $this->listMapper->add($fieldDescription);
-        $this->assertSame($fieldDescription, $this->listMapper->get('fooName'));
+        $this->listMapper->add('fooName');
+        $this->assertInstanceOf(FieldDescriptionInterface::class, $this->listMapper->get('fooName'));
     }
 
     public function testAddIdentifier(): void
     {
         $this->assertFalse($this->listMapper->has('fooName'));
 
-        $fieldDescription = $this->getFieldDescriptionMock('fooName', 'fooLabel');
-
-        $this->listMapper->addIdentifier($fieldDescription);
+        $this->listMapper->addIdentifier('fooName');
         $this->assertTrue($this->listMapper->has('fooName'));
 
         $fieldDescription = $this->listMapper->get('fooName');
@@ -239,9 +226,7 @@ class ListMapperTest extends TestCase
     {
         $this->assertFalse($this->listMapper->has('fooName'));
 
-        $fieldDescription = $this->getFieldDescriptionMock('fooName', 'fooLabel');
-
-        $this->listMapper->add($fieldDescription);
+        $this->listMapper->add('fooName');
         $this->assertTrue($this->listMapper->has('fooName'));
 
         $this->listMapper->remove('fooName');
@@ -360,43 +345,34 @@ class ListMapperTest extends TestCase
 
     public function testKeys(): void
     {
-        $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
-        $fieldDescription2 = $this->getFieldDescriptionMock('fooName2', 'fooLabel2');
-
-        $this->listMapper->add($fieldDescription1);
-        $this->listMapper->add($fieldDescription2);
+        $this->listMapper->add('fooName1');
+        $this->listMapper->add('fooName2');
 
         $this->assertSame(['fooName1', 'fooName2'], $this->listMapper->keys());
     }
 
     public function testReorder(): void
     {
-        $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
-        $fieldDescription2 = $this->getFieldDescriptionMock('fooName2', 'fooLabel2');
-        $fieldDescription3 = $this->getFieldDescriptionMock('fooName3', 'fooLabel3');
-        $fieldDescription4 = $this->getFieldDescriptionMock('fooName4', 'fooLabel4');
-
-        $this->listMapper->add($fieldDescription1);
-        $this->listMapper->add($fieldDescription2);
-        $this->listMapper->add($fieldDescription3);
-        $this->listMapper->add($fieldDescription4);
+        $this->listMapper->add('fooName1');
+        $this->listMapper->add('fooName2');
+        $this->listMapper->add('fooName3');
+        $this->listMapper->add('fooName4');
 
         $this->assertSame([
-            'fooName1' => $fieldDescription1,
-            'fooName2' => $fieldDescription2,
-            'fooName3' => $fieldDescription3,
-            'fooName4' => $fieldDescription4,
-        ], $this->fieldDescriptionCollection->getElements());
+            'fooName1',
+            'fooName2',
+            'fooName3',
+            'fooName4',
+        ], array_keys($this->fieldDescriptionCollection->getElements()));
 
         $this->listMapper->reorder(['fooName3', 'fooName2', 'fooName1', 'fooName4']);
 
-        // print_r is used to compare order of items in associative arrays
-        $this->assertSame(print_r([
-            'fooName3' => $fieldDescription3,
-            'fooName2' => $fieldDescription2,
-            'fooName1' => $fieldDescription1,
-            'fooName4' => $fieldDescription4,
-        ], true), print_r($this->fieldDescriptionCollection->getElements(), true));
+        $this->assertSame([
+            'fooName3',
+            'fooName2',
+            'fooName1',
+            'fooName4',
+        ], array_keys($this->fieldDescriptionCollection->getElements()));
     }
 
     public function testAddOptionRole(): void
@@ -430,16 +406,5 @@ class ListMapperTest extends TestCase
             $field->isVirtual(),
             'Failed asserting that FieldDescription with name "'.$field->getName().'" is tagged with virtual flag.'
         );
-    }
-
-    private function getFieldDescriptionMock(string $name, ?string $label = null): BaseFieldDescription
-    {
-        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name, []]);
-
-        if (null !== $label) {
-            $fieldDescription->setOption('label', $label);
-        }
-
-        return $fieldDescription;
     }
 }

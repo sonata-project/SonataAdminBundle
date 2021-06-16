@@ -322,6 +322,8 @@ interface FieldDescriptionInterface
     public function mergeOption($name, array $options = []);
 
     /**
+     * NEXT_MAJOR: Remove this method from the interface.
+     *
      * merge options values.
      */
     public function mergeOptions(array $options = []);
