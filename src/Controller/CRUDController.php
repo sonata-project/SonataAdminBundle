@@ -111,6 +111,8 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x
+     *
      * Renders a view while passing mandatory parameters on to the template.
      *
      * @param string               $view       The view name
@@ -1181,6 +1183,8 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x
+     *
      * Render JSON.
      *
      * @param mixed $data
@@ -1195,6 +1199,8 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x
+     *
      * Returns true if the request is a XMLHttpRequest.
      *
      * @return bool True if the request is an XMLHttpRequest, false otherwise
@@ -1370,6 +1376,8 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x
+     *
      * Returns true if the preview is requested to be shown.
      *
      * @return bool
@@ -1382,6 +1390,8 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x
+     *
      * Returns true if the preview has been approved.
      *
      * @return bool
@@ -1394,6 +1404,8 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x
+     *
      * Returns true if the request is in the preview workflow.
      *
      * That means either a preview is requested or the preview has already been shown
@@ -1410,6 +1422,8 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x
+     *
      * Returns true if the preview has been declined.
      *
      * @return bool
@@ -1487,6 +1501,8 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x
+     *
      * Validate CSRF token for action without form.
      *
      * @param string $intention
@@ -1510,6 +1526,8 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x
+     *
      * Escape string for html output.
      *
      * @param string $s
@@ -1522,6 +1540,8 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x
+     *
      * Get CSRF token.
      *
      * @param string $intention
