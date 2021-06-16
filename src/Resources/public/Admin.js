@@ -50,7 +50,7 @@ var Admin = {
       }
     },
     read_config: function() {
-      var data = $('[data-sonata-admin]').data('sonata-admin');
+      var data = jQuery('[data-sonata-admin]').data('sonata-admin');
 
       this.config = data.config;
       this.translations = data.translations;
@@ -152,7 +152,7 @@ var Admin = {
               })
               // See https://github.com/fronteed/iCheck/issues/244
               .on('ifToggled', function (e) {
-                  $(e.target).trigger('change');
+                  jQuery(e.target).trigger('change');
               });
 
             // In case some checkboxes were already checked (for instance after moving back in the browser's session history), update iCheck checkboxes.
@@ -335,12 +335,12 @@ var Admin = {
             }
 
             var defaults = Admin.convert_query_string_to_object(
-                $.param({'filter': JSON.parse(this.dataset.defaultValues)})
+                jQuery.param({'filter': JSON.parse(this.dataset.defaultValues)})
             );
 
             // Keep only changed values
             $form.find('[name*=filter]').each(function (i, field) {
-                if (JSON.stringify(defaults[field.name] || '') === JSON.stringify($(field).val())) {
+                if (JSON.stringify(defaults[field.name] || '') === JSON.stringify(jQuery(field).val())) {
                     field.removeAttribute('name');
                 }
             });
