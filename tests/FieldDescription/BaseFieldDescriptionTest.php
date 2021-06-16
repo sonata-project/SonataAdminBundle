@@ -108,6 +108,15 @@ class BaseFieldDescriptionTest extends TestCase
         $this->assertTrue($description->isSortable());
     }
 
+    public function testMergeOptions(): void
+    {
+        $description = new FieldDescription('name');
+        $description->setOption('foo', 'bar');
+
+        $description->mergeOptions(['foo' => 'baz']);
+        $this->assertSame('baz', $description->getOption('foo'));
+    }
+
     /**
      * NEXT_MAJOR: Remove this test.
      *
