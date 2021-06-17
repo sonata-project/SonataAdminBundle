@@ -17,12 +17,4 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 
 class TagAdmin extends AbstractAdmin
 {
-    public function getParentAssociationMapping()
-    {
-        if ($this->getParent() instanceof PostAdmin) {
-            return 'post';
-        }
-
-        return null;
-    }
 }

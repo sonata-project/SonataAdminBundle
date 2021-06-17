@@ -29,6 +29,7 @@ use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -1594,23 +1595,36 @@ class AdminTest extends TestCase
     {
         $post = new Post();
 
-        $postAdmin = $this->getMockBuilder(PostAdmin::class)->disableOriginalConstructor()->getMock();
+        $postAdmin = $this->getMockBuilder(PostAdmin::class)->setConstructorArgs([
+            'post',
+            Post::class,
+            CRUDController::class,
+        ])->getMock();
+
+        // NEXT_MAJOR: Remove this 2 lines.
+        $postAdmin->method('getCode')->willReturn('post');
         $postAdmin->method('getObject')->willReturn($post);
+
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager->method('find')->willReturn($post);
+        $postAdmin->setModelManager($modelManager);
+
         $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
         $formBuilder = $this->createStub(FormBuilderInterface::class);
         $formBuilder->method('getForm')->willReturn(null);
 
-        $tag = new Tag();
-
-        $modelManager = $this->createStub(ModelManagerInterface::class);
-        $modelManager->method('getModelInstance')->willReturn($tag);
-
         $tagAdmin = new TagAdmin('admin.tag', Tag::class, 'MyBundle\MyController');
-        $tagAdmin->setModelManager($modelManager);
         $tagAdmin->setParent($postAdmin);
+        $tagAdmin->addParentAssociationMapping('post', 'post');
 
-        $request = $this->createStub(Request::class);
+        // NEXT_MAJOR: Remove these 3 lines.
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager->method('getModelInstance')->willReturn(new Tag());
+        $tagAdmin->setModelManager($modelManager);
+
+        $request = $this->createMock(Request::class);
+        $request->method('get')->with('parent_id')->willReturn(42);
         $tagAdmin->setRequest($request);
 
         $tag = $tagAdmin->getNewInstance();
@@ -1622,23 +1636,36 @@ class AdminTest extends TestCase
     {
         $post = new Post();
 
-        $postAdmin = $this->getMockBuilder(PostAdmin::class)->disableOriginalConstructor()->getMock();
+        $postAdmin = $this->getMockBuilder(PostAdmin::class)->setConstructorArgs([
+            'post',
+            Post::class,
+            CRUDController::class,
+        ])->getMock();
+
+        // NEXT_MAJOR: Remove these 2 lines.
+        $postAdmin->method('getCode')->willReturn('post');
         $postAdmin->method('getObject')->willReturn($post);
+
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager->method('find')->willReturn($post);
+        $postAdmin->setModelManager($modelManager);
+
         $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
         $formBuilder = $this->createStub(FormBuilderInterface::class);
         $formBuilder->method('getForm')->willReturn(null);
 
         $postCategoryAdmin = new PostCategoryAdmin('admin.post_category', PostCategory::class, 'MyBundle\MyController');
+        $postCategoryAdmin->setParent($postAdmin);
+        $postCategoryAdmin->addParentAssociationMapping('post', 'posts');
 
-        // NEXT_MAJOR: Remove next three lines related to model manager.
+        // NEXT_MAJOR: Remove these 3 lines.
         $modelManager = $this->createStub(ModelManagerInterface::class);
         $modelManager->method('getModelInstance')->willReturn(new PostCategory());
         $postCategoryAdmin->setModelManager($modelManager);
 
-        $postCategoryAdmin->setParent($postAdmin);
-
-        $request = $this->createStub(Request::class);
+        $request = $this->createMock(Request::class);
+        $request->method('get')->with('parent_id')->willReturn(42);
         $postCategoryAdmin->setRequest($request);
 
         $postCategory = $postCategoryAdmin->getNewInstance();
