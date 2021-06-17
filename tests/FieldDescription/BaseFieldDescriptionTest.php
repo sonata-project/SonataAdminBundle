@@ -354,8 +354,7 @@ class BaseFieldDescriptionTest extends TestCase
         $description->setAdmin($admin);
 
         $admin->expects($this->never())
-            ->method('getTranslationDomain')
-            ->willReturn('AdminDomain');
+            ->method('getTranslationDomain');
 
         $this->assertFalse($description->getTranslationDomain());
     }
