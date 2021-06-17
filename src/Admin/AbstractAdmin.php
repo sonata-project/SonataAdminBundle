@@ -512,6 +512,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $fields;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getDataSourceIterator()
     {
         $datagrid = $this->getDatagrid();
@@ -620,6 +623,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $object;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function create($object)
     {
         $this->prePersist($object);
@@ -643,6 +649,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $object;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function delete($object)
     {
         $this->preRemove($object);
@@ -710,6 +719,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * @return array<string, mixed>
      */
     public function getFilterParameters()
@@ -840,6 +851,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * Returns the name of the parent related field, so the field can be use to set the default
      * value (ie the parent object) or to filter the object.
      *
@@ -885,6 +898,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * Returns the baseRoutePattern used to generate the routing information.
      *
      * @throws \RuntimeException // NEXT_MAJOR: Remove this tag
@@ -943,6 +958,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * Returns the baseRouteName used to generate the routing information.
      *
      * @throws \RuntimeException // NEXT_MAJOR: Remove this tag
@@ -1014,6 +1031,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return strtolower(preg_replace('/[^a-z0-9_]/i', $sep.'$1', $word));
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getClass()
     {
         if ($this->hasActiveSubClass()) {
@@ -1044,6 +1064,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->class;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getSubClasses()
     {
         return $this->subClasses;
@@ -1064,16 +1087,25 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setSubClasses(array $subClasses)
     {
         $this->subClasses = $subClasses;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function hasSubClass($name)
     {
         return isset($this->subClasses[$name]);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function hasActiveSubClass()
     {
         if (\count($this->subClasses) > 0 && $this->hasRequest()) {
@@ -1083,6 +1115,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return false;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getActiveSubClass()
     {
         if (!$this->hasActiveSubClass()) {
@@ -1105,6 +1140,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getSubClass($this->getActiveSubclassCode());
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getActiveSubclassCode()
     {
         if (!$this->hasActiveSubClass()) {
@@ -1146,6 +1184,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $subClass;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getBatchActions()
     {
         $actions = [];
@@ -1180,6 +1221,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $actions;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getRoutes()
     {
         $this->buildRoutes();
@@ -1203,6 +1247,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $parameter;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function hasRoute($name)
     {
         // NEXT_MAJOR: Remove this check.
@@ -1214,6 +1261,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * @param string      $name
      * @param string|null $adminCode
      *
@@ -1241,6 +1290,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $admin->getRoutes()->getRouteName($name) === $route;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function generateObjectUrl($name, $object, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
     {
         $parameters[$this->getIdParameter()] = $this->getUrlSafeIdentifier($object);
@@ -1248,11 +1300,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->generateUrl($name, $parameters, $referenceType);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function generateUrl($name, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
     {
         return $this->getRouteGenerator()->generateUrl($this, $name, $parameters, $referenceType);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function generateMenuUrl($name, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
     {
         return $this->getRouteGenerator()->generateMenuUrl($this, $name, $parameters, $referenceType);
@@ -1318,6 +1376,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $object;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getFormBuilder()
     {
         $this->formOptions['data_class'] = $this->getClass();
@@ -1334,6 +1395,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * This method is being called by the main admin class and the child class,
      * the getFormBuilder is only call by the main admin class.
      */
@@ -1365,6 +1428,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->attachInlineValidator('sonata_deprecation_mute');
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function attachAdminClass(FieldDescriptionInterface $fieldDescription)
     {
         $pool = $this->getConfigurationPool();
@@ -1411,6 +1477,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $object;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getForm()
     {
         // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
@@ -1419,6 +1488,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->form;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getList()
     {
         // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
@@ -1449,6 +1521,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $query;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getDatagrid()
     {
         // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
@@ -1515,6 +1590,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * @param string $action
      *
      * @return ItemInterface
@@ -1533,7 +1610,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * Returns the root code.
+     * @final since sonata-project/admin-bundle 3.x.
      *
      * @return string the root code
      */
@@ -1543,7 +1620,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * Returns the master admin.
+     * @final since sonata-project/admin-bundle 3.x.
      *
      * @return AdminInterface the root admin class
      */
@@ -1556,11 +1633,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getParentFieldDescription()->getAdmin()->getRoot();
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setBaseControllerName($baseControllerName)
     {
         $this->baseControllerName = $baseControllerName;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getBaseControllerName()
     {
         return $this->baseControllerName;
@@ -1601,6 +1684,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * @return int
      */
     public function getMaxPerPage()
@@ -1613,6 +1698,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * @param int $maxPageLinks
      */
     public function setMaxPageLinks($maxPageLinks)
@@ -1621,6 +1708,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * @return int
      */
     public function getMaxPageLinks()
@@ -1628,6 +1717,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->maxPageLinks;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getFormGroups()
     {
         if (!\is_array($this->formGroups) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
@@ -1641,11 +1733,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->formGroups;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setFormGroups(array $formGroups)
     {
         $this->formGroups = $formGroups;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function removeFieldFromFormGroup($key)
     {
         foreach ($this->formGroups as $name => $formGroup) {
@@ -1658,6 +1756,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * @param string $group
      */
     public function reorderFormGroup($group, array $keys)
@@ -1668,6 +1768,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->setFormGroups($formGroups);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getFormTabs()
     {
         if (!\is_array($this->formTabs) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
@@ -1681,11 +1784,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->formTabs;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setFormTabs(array $formTabs)
     {
         $this->formTabs = $formTabs;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getShowTabs()
     {
         if (!\is_array($this->showTabs) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
@@ -1699,11 +1808,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->showTabs;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setShowTabs(array $showTabs)
     {
         $this->showTabs = $showTabs;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getShowGroups()
     {
         if (!\is_array($this->showGroups) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
@@ -1717,11 +1832,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->showGroups;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setShowGroups(array $showGroups)
     {
         $this->showGroups = $showGroups;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function reorderShowGroup($group, array $keys)
     {
         // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
@@ -1730,11 +1851,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->setShowGroups($showGroups);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription)
     {
         $this->parentFieldDescription = $parentFieldDescription;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getParentFieldDescription()
     {
         if (!$this->hasParentFieldDescription()) {
@@ -1757,11 +1884,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->parentFieldDescription;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function hasParentFieldDescription()
     {
         return $this->parentFieldDescription instanceof FieldDescriptionInterface;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setSubject($subject)
     {
         if (\is_object($subject) && !is_a($subject, $this->getClass(), true)) {
@@ -1778,6 +1911,9 @@ EOT;
         $this->subject = $subject;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getSubject()
     {
         if (!$this->hasSubject()) {
@@ -1799,6 +1935,9 @@ EOT;
         return $this->subject;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function hasSubject()
     {
         if (null === $this->subject && $this->hasRequest() && !$this->hasParentFieldDescription()) {
@@ -1812,6 +1951,9 @@ EOT;
         return null !== $this->subject;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getFormFieldDescriptions()
     {
         // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
@@ -1820,6 +1962,9 @@ EOT;
         return $this->formFieldDescriptions;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getFormFieldDescription($name)
     {
         // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
@@ -1847,7 +1992,7 @@ EOT;
     }
 
     /**
-     * Returns true if the admin has a FieldDescription with the given $name.
+     * @final since sonata-project/admin-bundle 3.x.
      *
      * @param string $name
      *
@@ -1861,13 +2006,16 @@ EOT;
         return \array_key_exists($name, $this->formFieldDescriptions);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function addFormFieldDescription($name, FieldDescriptionInterface $fieldDescription)
     {
         $this->formFieldDescriptions[$name] = $fieldDescription;
     }
 
     /**
-     * remove a FieldDescription.
+     * @final since sonata-project/admin-bundle 3.x.
      *
      * @param string $name
      */
@@ -1877,6 +2025,8 @@ EOT;
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * build and return the collection of form FieldDescription.
      *
      * @return FieldDescriptionInterface[] collection of form FieldDescription
@@ -1890,6 +2040,8 @@ EOT;
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * Returns the form FieldDescription with the given $name.
      *
      * @param string $name
@@ -1922,6 +2074,9 @@ EOT;
         return $this->showFieldDescriptions[$name];
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function hasShowFieldDescription($name)
     {
         // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
@@ -1930,16 +2085,25 @@ EOT;
         return \array_key_exists($name, $this->showFieldDescriptions);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription)
     {
         $this->showFieldDescriptions[$name] = $fieldDescription;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function removeShowFieldDescription($name)
     {
         unset($this->showFieldDescriptions[$name]);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getListFieldDescriptions()
     {
         // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
@@ -1975,6 +2139,9 @@ EOT;
         return $this->listFieldDescriptions[$name];
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function hasListFieldDescription($name)
     {
         // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
@@ -1983,16 +2150,25 @@ EOT;
         return \array_key_exists($name, $this->listFieldDescriptions);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription)
     {
         $this->listFieldDescriptions[$name] = $fieldDescription;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function removeListFieldDescription($name)
     {
         unset($this->listFieldDescriptions[$name]);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getFilterFieldDescription($name)
     {
         // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
@@ -2019,6 +2195,9 @@ EOT;
         return $this->filterFieldDescriptions[$name];
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function hasFilterFieldDescription($name)
     {
         // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
@@ -2027,16 +2206,25 @@ EOT;
         return \array_key_exists($name, $this->filterFieldDescriptions);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription)
     {
         $this->filterFieldDescriptions[$name] = $fieldDescription;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function removeFilterFieldDescription($name)
     {
         unset($this->filterFieldDescriptions[$name]);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getFilterFieldDescriptions()
     {
         // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
@@ -2045,6 +2233,9 @@ EOT;
         return $this->filterFieldDescriptions;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function addChild(AdminInterface $child)
     {
         $parentAdmin = $this;
@@ -2079,16 +2270,25 @@ EOT;
         }
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function hasChild($code)
     {
         return isset($this->children[$code]);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getChildren()
     {
         return $this->children;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getChild($code)
     {
         if (!$this->hasChild($code)) {
@@ -2111,11 +2311,17 @@ EOT;
         return $this->getChildren()[$code];
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setParent(AdminInterface $parent)
     {
         $this->parent = $parent;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getParent()
     {
         if (!$this->isChild()) {
@@ -2176,13 +2382,16 @@ EOT;
         return $child;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function isChild()
     {
         return $this->parent instanceof AdminInterface;
     }
 
     /**
-     * Returns true if the admin has children, false otherwise.
+     * @final since sonata-project/admin-bundle 3.x.
      *
      * @return bool if the admin has children
      */
@@ -2191,11 +2400,17 @@ EOT;
         return \count($this->children) > 0;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setUniqid($uniqId)
     {
         $this->uniqid = $uniqId;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getUniqid()
     {
         if (!$this->uniqid) {
@@ -2206,7 +2421,7 @@ EOT;
     }
 
     /**
-     * Returns the classname label.
+     * @final since sonata-project/admin-bundle 3.x.
      *
      * @return string the classname label
      */
@@ -2257,6 +2472,8 @@ EOT;
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * @param string $name
      *
      * @return mixed|null
@@ -2342,6 +2559,9 @@ EOT;
         return $this;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setCurrentChild($currentChild)
     {
         $this->currentChild = $currentChild;
@@ -2364,13 +2584,16 @@ EOT;
         return $this->currentChild;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function isCurrentChild(): bool
     {
         return $this->currentChild;
     }
 
     /**
-     * Returns the current child admin instance.
+     * @final since sonata-project/admin-bundle 3.x.
      *
      * @return AdminInterface|null the current child admin instance
      */
@@ -2430,21 +2653,33 @@ EOT;
         return $this->getTranslator()->transChoice($id, $count, $parameters, $domain, $locale);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setTranslationDomain($translationDomain)
     {
         $this->translationDomain = $translationDomain;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getTranslationDomain()
     {
         return $this->translationDomain;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getTranslationLabel($label, $context = '', $type = '')
     {
         return $this->getLabelTranslatorStrategy()->getLabel($label, $context, $type);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setRequest(Request $request)
     {
         $this->request = $request;
@@ -2454,6 +2689,9 @@ EOT;
         }
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getRequest()
     {
         if (!$this->request) {
@@ -2464,11 +2702,17 @@ EOT;
         return $this->request;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function hasRequest()
     {
         return null !== $this->request;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getCode()
     {
         return $this->code;
@@ -2491,6 +2735,9 @@ EOT;
         $this->baseCodeRoute = $baseCodeRoute;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getBaseCodeRoute()
     {
         // NEXT_MAJOR: Uncomment the following lines.
@@ -2533,16 +2780,25 @@ EOT;
         return ['LIST'];
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function showIn($context)
     {
         return $this->isGranted($this->getPermissionsShow($context));
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function createObjectSecurity($object)
     {
         $this->getSecurityHandler()->createObjectSecurity($this, $object);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function isGranted($name, $object = null)
     {
         $objectRef = $object ? sprintf('/%s#%s', spl_object_hash($object), $this->id($object)) : '';
@@ -2555,11 +2811,17 @@ EOT;
         return $this->cacheIsGranted[$key];
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getUrlSafeIdentifier($model)
     {
         return $this->getModelManager()->getUrlSafeIdentifier($model);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getNormalizedIdentifier($model)
     {
         return $this->getModelManager()->getNormalizedIdentifier($model);
@@ -2570,6 +2832,9 @@ EOT;
         return $this->getNormalizedIdentifier($model);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getShow()
     {
         // NEXT_MAJOR: Remove the `'sonata_deprecation_mute'` param
@@ -2578,31 +2843,49 @@ EOT;
         return $this->show;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setFormTheme(array $formTheme)
     {
         $this->formTheme = $formTheme;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getFormTheme()
     {
         return $this->formTheme;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setFilterTheme(array $filterTheme)
     {
         $this->filterTheme = $filterTheme;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getFilterTheme()
     {
         return $this->filterTheme;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function addExtension(AdminExtensionInterface $extension)
     {
         $this->extensions[] = $extension;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getExtensions()
     {
         return $this->extensions;
@@ -2629,6 +2912,9 @@ EOT;
         return sprintf('%s:%s', ClassUtils::getClass($object), spl_object_hash($object));
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function supportsPreviewMode()
     {
         return $this->supportsPreviewMode;
@@ -2670,7 +2956,7 @@ EOT;
     }
 
     /**
-     * Returns true if the per page value is allowed, false otherwise.
+     * @final since sonata-project/admin-bundle 3.x.
      *
      * @param int $perPage
      *
@@ -2681,6 +2967,9 @@ EOT;
         return \in_array($perPage, $this->getPerPageOptions(), true);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function isAclEnabled()
     {
         return $this->getSecurityHandler() instanceof AclSecurityHandlerInterface;
@@ -2691,11 +2980,17 @@ EOT;
         return new Metadata($this->toString($object));
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function setListMode($mode)
     {
         $this->getRequest()->getSession()->set(sprintf('%s.list_mode', $this->getCode()), $mode);
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getListMode()
     {
         if (!$this->hasRequest() || !$this->getRequest()->hasSession()) {
@@ -2705,11 +3000,17 @@ EOT;
         return $this->getRequest()->getSession()->get(sprintf('%s.list_mode', $this->getCode()), 'list');
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function getAccessMapping()
     {
         return $this->accessMapping;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.x.
+     */
     public function checkAccess($action, $object = null)
     {
         $access = $this->getAccess();
@@ -2734,6 +3035,8 @@ EOT;
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * Hook to handle access authorization, without throw Exception.
      *
      * @param string      $action
@@ -2865,6 +3168,8 @@ EOT;
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.x.
+     *
      * @param string      $action
      * @param object|null $object
      *
