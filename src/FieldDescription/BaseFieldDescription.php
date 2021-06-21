@@ -349,7 +349,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     final public function getTranslationDomain(): string
     {
-        return $this->getOption('translation_domain') ?: $this->getAdmin()->getTranslationDomain();
+        return $this->getOption('translation_domain') ?? $this->getAdmin()->getTranslationDomain();
     }
 
     final public function isVirtual(): bool

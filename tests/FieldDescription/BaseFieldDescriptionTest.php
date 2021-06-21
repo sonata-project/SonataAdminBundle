@@ -253,6 +253,19 @@ class BaseFieldDescriptionTest extends TestCase
         $this->assertSame('ExtensionDomain', $description->getTranslationDomain());
     }
 
+    public function testGetTranslationDomainWithFalse(): void
+    {
+        $description = new FieldDescription('name', ['translation_domain' => false]);
+
+        $admin = $this->createMock(AdminInterface::class);
+        $description->setAdmin($admin);
+
+        $admin->expects($this->never())
+            ->method('getTranslationDomain');
+
+        $this->assertFalse($description->getTranslationDomain());
+    }
+
     /**
      * @param mixed[] $args
      *

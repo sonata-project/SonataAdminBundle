@@ -365,7 +365,10 @@ abstract class BaseGroupedMapper implements MapperInterface
             $label = $this->getAdmin()->getLabel();
 
             if (null === $label) {
-                $this->with('default', ['auto_created' => true]);
+                $this->with('default', [
+                    'auto_created' => true,
+                    'translation_domain' => null,
+                ]);
             } else {
                 $this->with($label, [
                     'auto_created' => true,
