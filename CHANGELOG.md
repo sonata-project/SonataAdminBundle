@@ -120,7 +120,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - [[#7247](https://github.com/sonata-project/SonataAdminBundle/pull/7247)] Correctly propagate the group translation domain to field description even if it's `false`. ([@VincentLanglet](https://github.com/VincentLanglet))
-- [[#7247](https://github.com/sonata-project/SonataAdminBundle/pull/7247)] Field description stop to use the admin translation domain if the value was set to `false`. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7247](https://github.com/sonata-project/SonataAdminBundle/pull/7247)] Field description stop to use the admin translation domain if the value was set to `false` ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7262](https://github.com/sonata-project/SonataAdminBundle/pull/7262)] Conflicts with other libraries using the `$` variable. ([@phansys](https://github.com/phansys))
 
 ## [3.101.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.100.2...3.101.0) - 2021-06-13
