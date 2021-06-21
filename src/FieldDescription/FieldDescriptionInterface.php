@@ -29,7 +29,7 @@ use Sonata\AdminBundle\Exception\NoValueException;
  *  sort_parent_association_mappings?: array<array<string, mixed>>,
  *  sortable?: string|bool,
  *  template?: string,
- *  translation_domain?: string,
+ *  translation_domain?: string|false,
  *  type?: string,
  *  virtual_field?: bool
  * }&array<string, mixed>
@@ -264,8 +264,10 @@ interface FieldDescriptionInterface
 
     /**
      * Returns the translation domain to use for the current field.
+     *
+     * @return string|false
      */
-    public function getTranslationDomain(): string;
+    public function getTranslationDomain();
 
     /**
      * Returns true if field is sortable.

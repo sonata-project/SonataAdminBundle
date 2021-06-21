@@ -347,7 +347,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->getOption('sort_parent_association_mappings');
     }
 
-    final public function getTranslationDomain(): string
+    final public function getTranslationDomain()
     {
         return $this->getOption('translation_domain') ?? $this->getAdmin()->getTranslationDomain();
     }
