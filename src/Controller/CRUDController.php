@@ -111,7 +111,7 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x
+     * @final since sonata-project/admin-bundle 3.102
      *
      * Renders a view while passing mandatory parameters on to the template.
      *
@@ -1183,7 +1183,7 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x
+     * @final since sonata-project/admin-bundle 3.102
      *
      * Render JSON.
      *
@@ -1199,7 +1199,7 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x
+     * @final since sonata-project/admin-bundle 3.102
      *
      * Returns true if the request is a XMLHttpRequest.
      *
@@ -1376,7 +1376,7 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x
+     * @final since sonata-project/admin-bundle 3.102
      *
      * Returns true if the preview is requested to be shown.
      *
@@ -1390,7 +1390,7 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x
+     * @final since sonata-project/admin-bundle 3.102
      *
      * Returns true if the preview has been approved.
      *
@@ -1404,7 +1404,7 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x
+     * @final since sonata-project/admin-bundle 3.102
      *
      * Returns true if the request is in the preview workflow.
      *
@@ -1422,7 +1422,7 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x
+     * @final since sonata-project/admin-bundle 3.102
      *
      * Returns true if the preview has been declined.
      *
@@ -1501,7 +1501,7 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x
+     * @final since sonata-project/admin-bundle 3.102
      *
      * Validate CSRF token for action without form.
      *
@@ -1526,7 +1526,7 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x
+     * @final since sonata-project/admin-bundle 3.102
      *
      * Escape string for html output.
      *
@@ -1540,7 +1540,7 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x
+     * @final since sonata-project/admin-bundle 3.102
      *
      * Get CSRF token.
      *
