@@ -18,8 +18,7 @@
                             {% if show_group.translation_domain is same as(false) %}
                                 {{ show_group.label }}
                             {% else %}
-                                {% set translationDomain = show_group.translation_domain|default(admin.translationDomain) %}
-                                {{ show_group.label|trans({}, translationDomain) }}
+                                {{ show_group.label|trans({}, show_group.translation_domain|default(admin.translationDomain)) }}
                             {% endif %}
                         {% endblock %}
                     </h4>
