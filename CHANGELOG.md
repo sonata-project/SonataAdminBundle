@@ -119,7 +119,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - [[#7263](https://github.com/sonata-project/SonataAdminBundle/pull/7263)] Overriding `renderWithExtraParams()`, `renderJson()`, `isXmlHttpRequest()`, `isPreviewRequested()`, `isPreviewApproved()`, `isInPreviewMode()`, `isPreviewDeclined()`, `validateCsrfToken()`, `escapeHtml()`, `getCsrfToken()` methods in `CRUDController` ([@VincentLanglet](https://github.com/VincentLanglet))
 
 ### Fixed
-- [[#7247](https://github.com/sonata-project/SonataAdminBundle/pull/7247)] Correctly propagate the group translation domain to field description even if it's `false`. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7247](https://github.com/sonata-project/SonataAdminBundle/pull/7247)] Correctly propagate the group translation domain to field description even if it's `false` ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7247](https://github.com/sonata-project/SonataAdminBundle/pull/7247)] Field description stop to use the admin translation domain if the value was set to `false` ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7262](https://github.com/sonata-project/SonataAdminBundle/pull/7262)] Conflicts with other libraries using the `$` variable ([@phansys](https://github.com/phansys))
 
