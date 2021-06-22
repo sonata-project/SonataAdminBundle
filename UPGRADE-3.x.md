@@ -4,6 +4,17 @@ UPGRADE 3.x
 UPGRADE FROM 3.x to 3.x
 =======================
 
+### `Sonata\AdminBundle\Datagrid\DatagridInterface`
+
+Passing a filter that does not implement `Sonata\AdminBundle\Filter\ChainableFilterInterface`
+as argument 1 for `DatagridInterface::addFilter()` is deprecated.
+
+### `Sonata\AdminBundle\Search\SearchHandler`
+
+"or_group" option is not set anymore to filters implementing `Sonata\AdminBundle\Filter\ChainableFilterInterface`.
+If you are using custom filters and want to use them in the search, you SHOULD implement
+this interface on each one.
+
 ### 'icon' option
 
 We used multiple icon option with different format:

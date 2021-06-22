@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Search;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\Filter\ChainableFilterInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 
 /**
@@ -84,6 +85,7 @@ class SearchHandler
         $datagridValues = $datagrid->getValues();
 
         $found = false;
+        $lastFilter = null;
         foreach ($datagrid->getFilters() as $filter) {
             /** @var FilterInterface $filter */
             $formName = $filter->getFormName();
@@ -101,9 +103,17 @@ class SearchHandler
                     ), \E_USER_DEPRECATED);
                 }
 
-                // NEXT_MAJOR: Remove this line.
+            // NEXT_MAJOR: Remove the `$filter instanceof ChainableFilterInterface` check.
+            if (null !== $lastFilter && $filter instanceof ChainableFilterInterface) {
+                $filter->setPreviousFilter($lastFilter);
+            }
+
+            if ($filter->getOption('global_search', false)) {
                 $filter->setOption('case_sensitive', $this->caseSensitive);
-                $filter->setOption('or_group', $admin->getCode());
+                // NEXT_MAJOR: Remove the following block.
+                if (!$filter instanceof ChainableFilterInterface) {
+                    $filter->setOption('or_group', $admin->getCode());
+                }
                 $filter->setCondition(FilterInterface::CONDITION_OR);
                 $datagrid->setValue($formName, null, $term);
                 $found = true;
@@ -111,6 +121,8 @@ class SearchHandler
                 // Remove any previously set filter that is not configured for the global search.
                 $datagrid->removeFilter($formName);
             }
+
+            $lastFilter = $filter;
         }
 
         if (!$found) {

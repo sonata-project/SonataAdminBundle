@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\Filter\Filter;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Search\SearchableFilterInterface;
 use Sonata\AdminBundle\Search\SearchHandler;
@@ -45,6 +46,7 @@ class SearchHandlerTest extends TestCase
     {
         $filter = $this->createMock(SearchableFilterInterface::class);
         $filter->expects($this->once())->method('isSearchEnabled')->willReturn(true);
+        $filter->expects($this->once())->method('getOption')->with('global_search')->willReturn(true);
 
         $pager = $this->createMock(PagerInterface::class);
         $pager->expects($this->once())->method('setPage');
@@ -59,15 +61,12 @@ class SearchHandlerTest extends TestCase
 
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())->method('getDatagrid')->willReturn($datagrid);
-        $admin->expects($this->exactly(2))->method('getCode')->willReturn($adminCode);
+        $admin->expects($this->once())->method('getCode')->willReturn($adminCode);
 
         $filter
-            ->expects($this->exactly(2))
+            ->expects($this->once())
             ->method('setOption')
-            ->withConsecutive(
-                [$this->equalTo('case_sensitive'), $caseSensitive],
-                [$this->equalTo('or_group'), $adminCode]
-            );
+            ->with($this->equalTo('case_sensitive'), $caseSensitive);
 
         $handler = new SearchHandler($caseSensitive);
         $this->assertInstanceOf(PagerInterface::class, $handler->search($admin, 'myservice'));

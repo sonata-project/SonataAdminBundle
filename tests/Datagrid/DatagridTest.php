@@ -20,8 +20,10 @@ use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use Sonata\AdminBundle\Filter\ChainableFilterInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Form\Type\Filter\DefaultType;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
@@ -32,6 +34,8 @@ use Symfony\Component\Form\Forms;
  */
 final class DatagridTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     /**
      * @var Datagrid
      */
@@ -90,7 +94,7 @@ final class DatagridTest extends TestCase
     {
         $this->assertFalse($this->datagrid->hasFilter('foo'));
 
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(ChainableFilterInterface::class);
         $filter->expects($this->once())
             ->method('getName')
             ->willReturn('foo');
@@ -116,17 +120,17 @@ final class DatagridTest extends TestCase
     {
         $this->assertSame([], $this->datagrid->getFilters());
 
-        $filter1 = $this->createMock(FilterInterface::class);
+        $filter1 = $this->createMock(ChainableFilterInterface::class);
         $filter1->expects($this->once())
             ->method('getName')
             ->willReturn('foo');
 
-        $filter2 = $this->createMock(FilterInterface::class);
+        $filter2 = $this->createMock(ChainableFilterInterface::class);
         $filter2->expects($this->once())
             ->method('getName')
             ->willReturn('bar');
 
-        $filter3 = $this->createMock(FilterInterface::class);
+        $filter3 = $this->createMock(ChainableFilterInterface::class);
         $filter3->expects($this->once())
             ->method('getName')
             ->willReturn('baz');
@@ -146,17 +150,17 @@ final class DatagridTest extends TestCase
     {
         $this->assertSame([], $this->datagrid->getFilters());
 
-        $filter1 = $this->createMock(FilterInterface::class);
+        $filter1 = $this->createMock(ChainableFilterInterface::class);
         $filter1->expects($this->once())
             ->method('getName')
             ->willReturn('foo');
 
-        $filter2 = $this->createMock(FilterInterface::class);
+        $filter2 = $this->createMock(ChainableFilterInterface::class);
         $filter2->expects($this->once())
             ->method('getName')
             ->willReturn('bar');
 
-        $filter3 = $this->createMock(FilterInterface::class);
+        $filter3 = $this->createMock(ChainableFilterInterface::class);
         $filter3->expects($this->once())
             ->method('getName')
             ->willReturn('baz');
@@ -214,7 +218,7 @@ final class DatagridTest extends TestCase
     {
         $this->assertFalse($this->datagrid->hasActiveFilters());
 
-        $filter1 = $this->createMock(FilterInterface::class);
+        $filter1 = $this->createMock(ChainableFilterInterface::class);
         $filter1->expects($this->once())
             ->method('getName')
             ->willReturn('foo');
@@ -226,7 +230,7 @@ final class DatagridTest extends TestCase
 
         $this->assertFalse($this->datagrid->hasActiveFilters());
 
-        $filter2 = $this->createMock(FilterInterface::class);
+        $filter2 = $this->createMock(ChainableFilterInterface::class);
         $filter2->expects($this->once())
             ->method('getName')
             ->willReturn('bar');
@@ -246,7 +250,7 @@ final class DatagridTest extends TestCase
 
     public function testHasDisplayableFiltersNotActive(): void
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(ChainableFilterInterface::class);
         $filter->expects($this->once())
             ->method('getName')
             ->willReturn('foo');
@@ -264,7 +268,7 @@ final class DatagridTest extends TestCase
 
     public function testHasDisplayableFiltersActive(): void
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(ChainableFilterInterface::class);
         $filter->expects($this->once())
             ->method('getName')
             ->willReturn('bar');
@@ -282,7 +286,7 @@ final class DatagridTest extends TestCase
 
     public function testHasDisplayableFiltersAlwaysShow(): void
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(ChainableFilterInterface::class);
         $filter->expects($this->once())
             ->method('getName')
             ->willReturn('bar');
@@ -327,7 +331,7 @@ final class DatagridTest extends TestCase
 
     public function testBuildPager(): void
     {
-        $filter1 = $this->createMock(FilterInterface::class);
+        $filter1 = $this->createMock(ChainableFilterInterface::class);
         $filter1->expects($this->once())
             ->method('getName')
             ->willReturn('foo');
@@ -343,7 +347,7 @@ final class DatagridTest extends TestCase
 
         $this->datagrid->addFilter($filter1);
 
-        $filter2 = $this->createMock(FilterInterface::class);
+        $filter2 = $this->createMock(ChainableFilterInterface::class);
         $filter2->expects($this->once())
             ->method('getName')
             ->willReturn('bar');
@@ -379,7 +383,7 @@ final class DatagridTest extends TestCase
     {
         $this->datagrid->setValue('fooFormName', $type, $value);
 
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(ChainableFilterInterface::class);
         $filter->expects($this->once())->method('getName')->willReturn('foo');
         $filter->method('getFormName')->willReturn('fooFormName');
         $filter->method('isActive')->willReturn(false);
@@ -410,7 +414,7 @@ final class DatagridTest extends TestCase
 
     public function testBuildPagerWithException(): void
     {
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(ChainableFilterInterface::class);
         $filter->expects($this->once())
             ->method('getName')
             ->willReturn('foo');
@@ -455,7 +459,7 @@ final class DatagridTest extends TestCase
 
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, [DatagridInterface::SORT_BY => $sortBy]);
 
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(ChainableFilterInterface::class);
         $filter->expects($this->once())
             ->method('getName')
             ->willReturn('foo');
@@ -504,7 +508,7 @@ final class DatagridTest extends TestCase
 
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, [DatagridInterface::SORT_BY => $sortBy, DatagridInterface::PAGE => $page, DatagridInterface::PER_PAGE => $perPage]);
 
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(ChainableFilterInterface::class);
         $filter->expects($this->once())
             ->method('getName')
             ->willReturn('foo');
@@ -659,5 +663,21 @@ final class DatagridTest extends TestCase
 
         $this->assertSame($page, $result['filter'][DatagridInterface::PAGE]);
         $this->assertSame($name, $result['filter'][DatagridInterface::SORT_BY]);
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
+    public function testAddFilterDeprecation(): void
+    {
+        $this->expectDeprecation(
+            'Passing a filter not implementing "Sonata\AdminBundle\Filter\ChainableFilterInterface" as argument 1'
+            .' for "Sonata\AdminBundle\Datagrid\Datagrid::addFilter()" is deprecated since sonata-project/admin-bundle 3.x'
+            .' and will not be allowed in version 4.0.'
+        );
+
+        $this->datagrid->addFilter($this->createStub(FilterInterface::class));
     }
 }
