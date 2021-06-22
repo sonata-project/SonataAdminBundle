@@ -83,7 +83,11 @@ file that was distributed with this source code.
                                                         <i class="sonata-ba-list-field-header-label-icon {{ field_description.getOption('label_icon') }}" aria-hidden="true"></i>
                                                     {% endif %}
                                                     {% if field_description.label is not same as(false) %}
-                                                        {{ field_description.label|trans({}, field_description.translationDomain) }}
+                                                        {% if field_description.translationDomain is same as(false) %}
+                                                            {{ field_description.label }}
+                                                        {% else %}
+                                                            {{ field_description.label|trans({}, field_description.translationDomain) }}
+                                                        {% endif %}
                                                     {% endif %}
                                                     {% if sortable %}</a>{% endif %}
                                                 </th>
