@@ -1,6 +1,14 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.x to 3.x
+=======================
+
+### `Sonata\AdminBundle\Form\FormMapper`
+
+Deprecated passing `collection` as argument 2 for `FormMapper::add()` method. You MUST pass
+`Symfony\Component\Form\Extension\Core\Type\CollectionType` or `Sonata\AdminBundle\Form\Type\CollectionType` instead.
+
 UPGRADE FROM 3.97 to 3.98
 =========================
 

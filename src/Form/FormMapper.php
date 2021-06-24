@@ -101,9 +101,20 @@ class FormMapper extends BaseGroupedMapper
             $fieldName = $this->sanitizeFieldName($fieldName);
         }
 
-        // change `collection` to `sonata_type_native_collection` form type to
-        // avoid BC break problems
+        // NEXT_MAJOR: Remove the check with "collection".
         if ('collection' === $type || SymfonyCollectionType::class === $type) {
+            // NEXT_MAJOR Remove this "if" block.
+            if ('collection' === $type) {
+                @trigger_error(sprintf(
+                    'Passing "collection" as argument 2 for "%s()" is deprecated since'
+                    .' sonata-project/admin-bundle 3.x and will not work in version 4.0.'
+                    .' You MUST pass "%s" or "%s" instead.',
+                    __METHOD__,
+                    SymfonyCollectionType::class,
+                    CollectionType::class
+                ), \E_USER_DEPRECATED);
+            }
+
             $type = CollectionType::class;
         }
 
