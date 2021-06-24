@@ -1,9 +1,10 @@
 Search
 ======
 
-The admin comes with a basic global search available in the upper navigation menu. The search iterates over admin classes
-and look for filter with the option ``global_search`` set to true. If you are using the ``SonataDoctrineORMBundle``
-any text filter will be set to ``true`` by default.
+The admin comes with a basic global search available in the upper navigation menu. The search iterates over
+admin classes and look for filter extending the ``Sonata\AdminBundle\Search\SearchableFilterInterface`` with
+the method ``isSearchable`` returning true. If you are using the ``SonataDoctrineORMBundle``, the
+``Sonata\DoctrineORMAdminBundle\Filter\StringFilter`` is searchable and rely on a ``global_search`` option.
 
 Disabling the search by admin
 -----------------------------
