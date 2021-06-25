@@ -24,7 +24,13 @@ file that was distributed with this source code.
                 <i class="fa {{ icon|raw }}"></i>
             {% endif %}
             <h3 class="box-title">
-                <a href="#{{ inlineAnchor }}">{{ settings.text|trans({}, translation_domain) }}</a>
+                <a href="#{{ inlineAnchor }}">
+                    {% if translation_domain is same as(false) %}
+                        {{ settings.text }}
+                    {% else %}
+                        {{ settings.text|trans({}, translation_domain) }}
+                    {% endif %}
+                </a>
             </h3>
         </div>
         <div class="box-body {% if results_count > 0 %}table-responsive no-padding{% endif %}">
