@@ -105,9 +105,7 @@ final class FormMapper extends BaseGroupedMapper
             $fieldName = $this->sanitizeFieldName($fieldName);
         }
 
-        // change `collection` to `sonata_type_native_collection` form type to
-        // avoid BC break problems
-        if ('collection' === $type || SymfonyCollectionType::class === $type) {
+        if (SymfonyCollectionType::class === $type) {
             $type = CollectionType::class;
         }
 

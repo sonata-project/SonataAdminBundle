@@ -71,7 +71,11 @@ file that was distributed with this source code.
                   data-type="{{ x_editable_type }}"
                   data-value="{{ data_value }}"
                   {% if field_description.label is not same as(false) %}
-                    data-title="{{ field_description.label|trans({}, field_description.translationDomain) }}"
+                      {% if field_description.translationDomain is same as(false) %}
+                          data-title="{{ field_description.label }}"
+                      {% else %}
+                          data-title="{{ field_description.label|trans({}, field_description.translationDomain) }}"
+                      {% endif %}
                   {% endif %}
                   {% if field_description.type == constant('Sonata\\AdminBundle\\FieldDescription\\FieldDescriptionInterface::TYPE_DATE') %}
                     data-format="yyyy-mm-dd"
