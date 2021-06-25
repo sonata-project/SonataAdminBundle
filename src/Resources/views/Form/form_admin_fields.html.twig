@@ -412,7 +412,7 @@ file that was distributed with this source code.
 
             {# NEXT_MAJOR: Remove this block #}
             {% if sonata_admin is defined and sonata_admin_enabled and sonata_admin.field_description.getHelp('sonata_deprecation_mute')|default(false) %}
-                <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|trans(help_translation_parameters, sonata_admin.field_description.translationDomain ?: admin.translationDomain)|raw }}</span>
+                <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|trans(help_translation_parameters, sonata_admin.field_description.translationDomain ?? admin.translationDomain)|raw }}</span>
             {% endif %}
 
             {{ form_help(form) }}

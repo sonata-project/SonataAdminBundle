@@ -71,7 +71,11 @@ file that was distributed with this source code.
                                                 or filter.option('case_sensitive') is same as(false) and term|lower in match|lower)
                                             %}
                                                 <a class="label label-primary" href="{{ admin.generateUrl('list', {'filter': {(filter.formName): {'value': term}}}) }}">
-                                                    {{ filter.option('label')|trans({}, filter.option('translation_domain', admin.translationDomain)) }}
+                                                    {% if filter.option('translation_domain') is same as(false) %}
+                                                        {{ filter.option('label') }}
+                                                    {% else %}
+                                                        {{ filter.option('label')|trans({}, filter.option('translation_domain', admin.translationDomain)) }}
+                                                    {% endif %}
                                                 </a>
                                             {% endif %}
                                         {% endfor %}

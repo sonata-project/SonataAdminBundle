@@ -46,7 +46,7 @@
                                             {% if form_tab.translation_domain is same as(false) %}
                                                 {{ form_tab.label }}
                                             {% else %}
-                                                {{ form_tab.label|trans({}, form_tab.translation_domain ?: admin.translationDomain) }}
+                                                {{ form_tab.label|trans({}, form_tab.translation_domain ?? admin.translationDomain) }}
                                             {% endif %}
                                         </a>
                                     </li>
