@@ -57,9 +57,6 @@ final class PersistenceEvent extends Event
     private $type;
 
     /**
-     * @param object $object
-     * @param string $type
-     *
      * @phpstan-param AdminInterface<T> $admin
      * @phpstan-param T $object
      */

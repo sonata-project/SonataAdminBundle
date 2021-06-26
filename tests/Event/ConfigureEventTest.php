@@ -21,7 +21,7 @@ use Sonata\AdminBundle\Mapper\MapperInterface;
 class ConfigureEventTest extends TestCase
 {
     /**
-     * @var ConfigureEvent
+     * @var ConfigureEvent<object>
      */
     private $event;
 
@@ -31,7 +31,7 @@ class ConfigureEventTest extends TestCase
     private $admin;
 
     /**
-     * @var MapperInterface
+     * @var MapperInterface<object>
      */
     private $mapper;
 

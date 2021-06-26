@@ -38,7 +38,7 @@ class DatagridMapperTest extends TestCase
     private const DEFAULT_GRANTED_ROLE = 'ROLE_ADMIN_BAZ';
 
     /**
-     * @var DatagridMapper
+     * @var DatagridMapper<object>
      */
     private $datagridMapper;
 

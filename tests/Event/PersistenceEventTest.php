@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Event\PersistenceEvent;
 class PersistenceEventTest extends TestCase
 {
     /**
-     * @var PersistenceEvent
+     * @var PersistenceEvent<object>
      */
     private $event;
 
@@ -30,14 +30,17 @@ class PersistenceEventTest extends TestCase
     private $admin;
 
     /**
-     * @var mixed
+     * @var object
      */
     private $object;
 
     protected function setUp(): void
     {
-        $this->admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $this->object = new \stdClass();
+        /** @var object $object */
+        $object = new \stdClass();
+
+        $this->admin = $this->createMock(AdminInterface::class);
+        $this->object = $object;
 
         $this->event = new PersistenceEvent($this->admin, $this->object, 'Foo');
     }

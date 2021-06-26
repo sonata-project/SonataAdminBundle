@@ -42,9 +42,8 @@ final class ShowMapper extends BaseGroupedMapper
     private $list;
 
     /**
-<<<<<<< HEAD
      * @var AdminInterface<object>
-     * @phpstan-var AdminInterface<T> $admin
+     * @phpstan-var AdminInterface<T>
      */
     private $admin;
 

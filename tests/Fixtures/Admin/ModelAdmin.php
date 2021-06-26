@@ -24,6 +24,9 @@ use Sonata\AdminBundle\Show\ShowMapper;
  */
 final class ModelAdmin extends AbstractAdmin
 {
+    /**
+     * @param DatagridMapper<object> $filter
+     */
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter

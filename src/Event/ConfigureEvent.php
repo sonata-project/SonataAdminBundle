@@ -46,7 +46,7 @@ final class ConfigureEvent extends Event
     private $admin;
 
     /**
-     * @var MapperInterface
+     * @var MapperInterface<object>
      * @phpstan-var MapperInterface<T>
      */
     private $mapper;
@@ -57,8 +57,6 @@ final class ConfigureEvent extends Event
     private $type;
 
     /**
-     * @param string $type
-     *
      * @phpstan-param AdminInterface<T> $admin
      * @phpstan-param MapperInterface<T> $mapper
      */

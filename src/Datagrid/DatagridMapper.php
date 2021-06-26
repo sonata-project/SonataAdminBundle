@@ -46,6 +46,9 @@ final class DatagridMapper implements MapperInterface
     private $admin;
 
     /**
+     * @param DatagridBuilderInterface<ProxyQueryInterface> $datagridBuilder
+     * @param DatagridInterface<ProxyQueryInterface>        $datagrid
+     *
      * @phpstan-param AdminInterface<T> $admin
      */
     public function __construct(
@@ -69,6 +72,8 @@ final class DatagridMapper implements MapperInterface
      * @param array<string, mixed>             $fieldDescriptionOptions
      *
      * @throws \LogicException
+     *
+     * @return static
      *
      * @phpstan-param class-string|null $type
      */
