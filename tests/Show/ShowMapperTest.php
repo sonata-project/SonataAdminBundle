@@ -36,7 +36,7 @@ class ShowMapperTest extends TestCase
     private const DEFAULT_GRANTED_ROLE = 'ROLE_ADMIN_BAZ';
 
     /**
-     * @var ShowMapper
+     * @var ShowMapper<object>
      */
     private $showMapper;
 

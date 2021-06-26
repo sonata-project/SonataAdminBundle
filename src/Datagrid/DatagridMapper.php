@@ -23,6 +23,9 @@ use Sonata\AdminBundle\Mapper\MapperInterface;
  * This class is use to simulate the Form API.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
+ * @phpstan-implements MapperInterface<T>
  */
 final class DatagridMapper implements MapperInterface
 {
@@ -38,13 +41,15 @@ final class DatagridMapper implements MapperInterface
 
     /**
      * @var AdminInterface<object>
+     * @phpstan-var AdminInterface<T>
      */
     private $admin;
 
     /**
      * @param DatagridBuilderInterface<ProxyQueryInterface> $datagridBuilder
      * @param DatagridInterface<ProxyQueryInterface>        $datagrid
-     * @param AdminInterface<object>                        $admin
+     *
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function __construct(
         DatagridBuilderInterface $datagridBuilder,
@@ -67,6 +72,8 @@ final class DatagridMapper implements MapperInterface
      * @param array<string, mixed>             $fieldDescriptionOptions
      *
      * @throws \LogicException
+     *
+     * @return static
      *
      * @phpstan-param class-string|null $type
      */

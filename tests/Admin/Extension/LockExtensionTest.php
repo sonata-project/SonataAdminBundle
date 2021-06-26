@@ -219,6 +219,9 @@ class LockExtensionTest extends TestCase
         return $form;
     }
 
+    /**
+     * @return FormMapper<object>
+     */
     private function configureFormMapper(): FormMapper
     {
         $formBuilder = new FormBuilder(

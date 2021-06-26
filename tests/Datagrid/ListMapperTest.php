@@ -31,7 +31,7 @@ class ListMapperTest extends TestCase
     private const DEFAULT_GRANTED_ROLE = 'ROLE_ADMIN_BAZ';
 
     /**
-     * @var ListMapper
+     * @var ListMapper<object>
      */
     private $listMapper;
 

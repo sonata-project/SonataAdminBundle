@@ -51,7 +51,7 @@ class FormMapperTest extends TestCase
     protected $modelManager;
 
     /**
-     * @var FormMapper
+     * @var FormMapper<object>
      */
     protected $formMapper;
 

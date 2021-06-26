@@ -29,7 +29,7 @@ use Symfony\Component\DependencyInjection\Container;
 class BaseGroupedMapperTest extends TestCase
 {
     /**
-     * @var BaseGroupedMapper
+     * @var BaseGroupedMapper<object>
      */
     protected $baseGroupedMapper;
 
