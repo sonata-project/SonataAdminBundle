@@ -30,18 +30,30 @@ use Sonata\Form\Validator\ErrorElement;
  */
 abstract class AbstractAdminExtension implements AdminExtensionInterface
 {
+    /**
+     * @phpstan-param FormMapper<T> $form
+     */
     public function configureFormFields(FormMapper $form)
     {
     }
 
+    /**
+     * @phpstan-param ListMapper<T> $list
+     */
     public function configureListFields(ListMapper $list)
     {
     }
 
+    /**
+     * @phpstan-param DatagridMapper<T> $filter
+     */
     public function configureDatagridFilters(DatagridMapper $filter)
     {
     }
 
+    /**
+     * @phpstan-param ShowMapper<T> $show
+     */
     public function configureShowFields(ShowMapper $show)
     {
     }

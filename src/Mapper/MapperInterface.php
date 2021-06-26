@@ -21,11 +21,14 @@ use Sonata\AdminBundle\Admin\AdminInterface;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @method array keys()
+ *
+ * @phpstan-template T of object
  */
 interface MapperInterface
 {
     /**
      * @return AdminInterface
+     * @phpstan-return AdminInterface<T>
      */
     public function getAdmin();
 

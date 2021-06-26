@@ -28,6 +28,9 @@ use Sonata\AdminBundle\Mapper\MapperInterface;
  * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
+ * @phpstan-implements MapperInterface<T>
  */
 class ListMapper extends BaseMapper implements MapperInterface
 {
@@ -56,9 +59,13 @@ class ListMapper extends BaseMapper implements MapperInterface
      * NEXT_MAJOR: Make the property private.
      *
      * @var AdminInterface
+     * @phpstan-var AdminInterface<T>
      */
     protected $admin;
 
+    /**
+     * @phpstan-param AdminInterface<T> $admin
+     */
     public function __construct(
         ListBuilderInterface $listBuilder,
         FieldDescriptionCollection $list,

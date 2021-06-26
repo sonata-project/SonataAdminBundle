@@ -29,6 +29,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
  */
 class PersistenceEvent extends Event
 {
@@ -41,11 +43,13 @@ class PersistenceEvent extends Event
 
     /**
      * @var AdminInterface
+     * @phpstan-var AdminInterface<T>
      */
     protected $admin;
 
     /**
      * @var object
+     * @phpstan-var T
      */
     protected $object;
 
@@ -57,6 +61,9 @@ class PersistenceEvent extends Event
     /**
      * @param object $object
      * @param string $type
+     *
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param T $object
      */
     public function __construct(AdminInterface $admin, $object, $type)
     {
@@ -67,6 +74,7 @@ class PersistenceEvent extends Event
 
     /**
      * @return AdminInterface
+     * @phpstan-return AdminInterface<T>
      */
     public function getAdmin()
     {
@@ -75,6 +83,7 @@ class PersistenceEvent extends Event
 
     /**
      * @return object
+     * @phpstan-return T
      */
     public function getObject()
     {
