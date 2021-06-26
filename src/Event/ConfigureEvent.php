@@ -29,6 +29,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  *   - sonata.admin.event.configure.[admin_code].[form|list|datagrid|show] (not implemented yet)
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
  */
 final class ConfigureEvent extends Event
 {
@@ -39,11 +41,13 @@ final class ConfigureEvent extends Event
 
     /**
      * @var AdminInterface<object>
+     * @phpstan-var AdminInterface<T>
      */
     private $admin;
 
     /**
      * @var MapperInterface
+     * @phpstan-var MapperInterface<T>
      */
     private $mapper;
 
@@ -53,7 +57,10 @@ final class ConfigureEvent extends Event
     private $type;
 
     /**
-     * @param AdminInterface<object> $admin
+     * @param string $type
+     *
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param MapperInterface<T> $mapper
      */
     public function __construct(AdminInterface $admin, MapperInterface $mapper, string $type)
     {
@@ -68,13 +75,16 @@ final class ConfigureEvent extends Event
     }
 
     /**
-     * @return AdminInterface<object>
+     * @phpstan-return AdminInterface<T>
      */
     public function getAdmin(): AdminInterface
     {
         return $this->admin;
     }
 
+    /**
+     * @phpstan-return MapperInterface<T>
+     */
     public function getMapper(): MapperInterface
     {
         return $this->mapper;

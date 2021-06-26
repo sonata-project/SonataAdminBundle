@@ -19,11 +19,13 @@ use Sonata\AdminBundle\Admin\AdminInterface;
  * This interface is used to simulate the Form API.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
  */
 interface MapperInterface
 {
     /**
-     * @return AdminInterface<object>
+     * @phpstan-return AdminInterface<T>
      */
     public function getAdmin(): AdminInterface;
 

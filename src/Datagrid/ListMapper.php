@@ -23,6 +23,9 @@ use Sonata\AdminBundle\Mapper\MapperInterface;
  * This class is used to simulate the Form API.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
+ * @phpstan-implements MapperInterface<T>
  */
 final class ListMapper implements MapperInterface
 {
@@ -46,12 +49,14 @@ final class ListMapper implements MapperInterface
 
     /**
      * @var AdminInterface<object>
+     * @phpstan-var AdminInterface<T>
      */
     private $admin;
 
     /**
-     * @param AdminInterface<object>                                $admin
      * @param FieldDescriptionCollection<FieldDescriptionInterface> $list
+     *
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function __construct(
         ListBuilderInterface $listBuilder,

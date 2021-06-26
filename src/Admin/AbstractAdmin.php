@@ -2099,18 +2099,30 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $formOptions;
     }
 
+    /**
+     * @phpstan-param FormMapper<T> $form
+     */
     protected function configureFormFields(FormMapper $form): void
     {
     }
 
+    /**
+     * @phpstan-param ListMapper<T> $list
+     */
     protected function configureListFields(ListMapper $list): void
     {
     }
 
+    /**
+     * @phpstan-param DatagridMapper<T> $filter
+     */
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
     }
 
+    /**
+     * @phpstan-param ShowMapper<T> $show
+     */
     protected function configureShowFields(ShowMapper $show): void
     {
     }
