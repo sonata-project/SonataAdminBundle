@@ -21,6 +21,9 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
  * This class is used to simulate the Form API.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
+ * @phpstan-implements MapperInterface<T>
  */
 abstract class BaseGroupedMapper extends BaseMapper implements MapperInterface
 {

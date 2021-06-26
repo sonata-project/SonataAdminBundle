@@ -3510,18 +3510,30 @@ EOT;
         return $formOptions;
     }
 
+    /**
+     * @phpstan-param FormMapper<T> $form
+     */
     protected function configureFormFields(FormMapper $form)
     {
     }
 
+    /**
+     * @phpstan-param ListMapper<T> $list
+     */
     protected function configureListFields(ListMapper $list)
     {
     }
 
+    /**
+     * @phpstan-param DatagridMapper<T> $filter
+     */
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
     }
 
+    /**
+     * @phpstan-param ShowMapper<T> $show
+     */
     protected function configureShowFields(ShowMapper $show)
     {
     }

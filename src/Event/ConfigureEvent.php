@@ -31,6 +31,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
  */
 class ConfigureEvent extends Event
 {
@@ -41,11 +43,13 @@ class ConfigureEvent extends Event
 
     /**
      * @var AdminInterface
+     * @phpstan-var AdminInterface<T>
      */
     protected $admin;
 
     /**
      * @var MapperInterface
+     * @phpstan-var MapperInterface<T>
      */
     protected $mapper;
 
@@ -56,6 +60,9 @@ class ConfigureEvent extends Event
 
     /**
      * @param string $type
+     *
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param MapperInterface<T> $mapper
      */
     public function __construct(AdminInterface $admin, MapperInterface $mapper, $type)
     {
@@ -74,6 +81,7 @@ class ConfigureEvent extends Event
 
     /**
      * @return AdminInterface
+     * @phpstan-return AdminInterface<T>
      */
     public function getAdmin()
     {
@@ -82,6 +90,7 @@ class ConfigureEvent extends Event
 
     /**
      * @return MapperInterface
+     * @phpstan-return MapperInterface<T>
      */
     public function getMapper()
     {

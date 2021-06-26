@@ -27,6 +27,9 @@ use Symfony\Component\Form\FormBuilderInterface;
  * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
+ * @phpstan-extends BaseGroupedMapper<T>
  */
 class FormMapper extends BaseGroupedMapper
 {
@@ -44,9 +47,13 @@ class FormMapper extends BaseGroupedMapper
      * NEXT_MAJOR: Make the property private.
      *
      * @var AdminInterface
+     * @phpstan-var AdminInterface<T>
      */
     protected $admin;
 
+    /**
+     * @phpstan-param AdminInterface<T> $admin
+     */
     public function __construct(
         FormContractorInterface $formContractor,
         FormBuilderInterface $formBuilder,

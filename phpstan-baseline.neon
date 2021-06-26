@@ -74,13 +74,13 @@ parameters:
 
         -
             # will be fixed in v4. Currently BC break
-            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\<object\\>\\:\\:getFormGroups\\(\\) invoked with 1 parameter, 0 required\\.$#"
+            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\<T of object\\>\\:\\:getFormGroups\\(\\) invoked with 1 parameter, 0 required\\.$#"
             count: 1
             path: src/Form/FormMapper.php
 
         -
             # will be fixed in v4. Currently BC break
-            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\<object\\>\\:\\:getFormTabs\\(\\) invoked with 1 parameter, 0 required\\.$#"
+            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\<T of object\\>\\:\\:getFormTabs\\(\\) invoked with 1 parameter, 0 required\\.$#"
             count: 1
             path: src/Form/FormMapper.php
 
