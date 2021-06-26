@@ -925,6 +925,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
+     * @param string|int|null $id
+     *
      * @phpstan-return T|null
      */
     final public function getObject($id): ?object

@@ -269,7 +269,7 @@ final class CRUDControllerTest extends TestCase
         $this->admin
             ->method('generateUrl')
             ->willReturnCallback(
-                static function ($name, array $parameters = []) {
+                static function (string $name, array $parameters = []): string {
                     $result = $name;
                     if (!empty($parameters)) {
                         $result .= '?'.http_build_query($parameters);
@@ -282,7 +282,7 @@ final class CRUDControllerTest extends TestCase
         $this->admin
             ->method('generateObjectUrl')
             ->willReturnCallback(
-                static function (string $name, $object, array $parameters = []): string {
+                static function (string $name, object $object, array $parameters = []): string {
                     $result = sprintf('%s_%s', \get_class($object), $name);
                     if (!empty($parameters)) {
                         $result .= '?'.http_build_query($parameters);
@@ -2082,7 +2082,7 @@ final class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->exactly(2))
             ->method('checkAccess')
-            ->willReturnCallback(static function (string $name, $objectIn = null) use ($object): void {
+            ->willReturnCallback(static function (string $name, ?object $objectIn = null) use ($object): void {
                 if ('edit' === $name) {
                     return;
                 }
@@ -2164,7 +2164,7 @@ final class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('checkAccess')
-            ->willReturnCallback(static function (string $name, $object = null): void {
+            ->willReturnCallback(static function (string $name, ?object $object = null): void {
                 if ('create' !== $name) {
                     throw new AccessDeniedException();
                 }
@@ -2346,7 +2346,7 @@ final class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->exactly(2))
             ->method('checkAccess')
-            ->willReturnCallback(static function (string $name, $objectIn = null) use ($object): void {
+            ->willReturnCallback(static function (string $name, ?object $objectIn = null) use ($object): void {
                 if ('create' !== $name) {
                     throw new AccessDeniedException();
                 }

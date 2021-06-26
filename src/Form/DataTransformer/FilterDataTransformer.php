@@ -23,6 +23,8 @@ final class FilterDataTransformer implements DataTransformerInterface
      * @param array<string, mixed>|null $value
      *
      * @phpstan-param array{type?: int|numeric-string|null, value?: mixed}|null $value
+     *
+     * @psalm-suppress TypeDoesNotContainType @see https://github.com/vimeo/psalm/issues/5643
      */
     public function reverseTransform($value): FilterData
     {

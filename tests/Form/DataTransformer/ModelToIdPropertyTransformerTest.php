@@ -306,7 +306,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
             Foo::class,
             $properties,
             false,
-            function (Foo $model, $property) use ($properties): string {
+            function (Foo $model, array $property) use ($properties): string {
                 $this->assertSame($properties, $property);
 
                 return 'nice_label';

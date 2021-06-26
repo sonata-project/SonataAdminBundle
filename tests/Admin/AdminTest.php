@@ -1280,7 +1280,7 @@ class AdminTest extends TestCase
         $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
-            ->willReturnCallback(static function (AdminInterface $adminIn, array $attributes, $object = null) use ($admin): bool {
+            ->willReturnCallback(static function (AdminInterface $adminIn, array $attributes, ?object $object = null) use ($admin): bool {
                 return $admin === $adminIn && $attributes === ['LIST'];
             });
 
@@ -1570,7 +1570,7 @@ class AdminTest extends TestCase
         $fieldDescriptionFactory
             ->expects($this->exactly(3))
             ->method('create')
-            ->willReturnCallback(static function ($adminClass, string $name, $filterOptions) use ($fooFieldDescription, $barFieldDescription, $bazFieldDescription) {
+            ->willReturnCallback(static function (string $adminClass, string $name, array $filterOptions) use ($fooFieldDescription, $barFieldDescription, $bazFieldDescription): FieldDescriptionInterface {
                 switch ($name) {
                     case 'foo':
                         $fieldDescription = $fooFieldDescription;
@@ -1616,7 +1616,7 @@ class AdminTest extends TestCase
 
         $datagridBuilder->expects($this->exactly(3))
             ->method('addFilter')
-            ->willReturnCallback(static function ($datagrid, $type, $fieldDescription): void {
+            ->willReturnCallback(static function (DatagridInterface $datagrid, ?string $type, FieldDescriptionInterface $fieldDescription): void {
                 $fieldDescription->getAdmin()->addFilterFieldDescription($fieldDescription->getName(), $fieldDescription);
                 $fieldDescription->mergeOption('field_options', ['required' => false]);
             });
@@ -1893,7 +1893,7 @@ class AdminTest extends TestCase
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
-            ->willReturnCallback(static function (AdminInterface $adminIn, string $attributes, $object = null) use ($admin): bool {
+            ->willReturnCallback(static function (AdminInterface $adminIn, string $attributes, ?object $object = null) use ($admin): bool {
                 return $admin === $adminIn && 'DELETE' === $attributes;
             });
         $admin->setSecurityHandler($securityHandler);
@@ -1973,7 +1973,7 @@ class AdminTest extends TestCase
         $securityHandler = $this->createStub(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
-            ->willReturnCallback(static function (AdminInterface $adminIn, string $attributes, $object = null) use ($admin): bool {
+            ->willReturnCallback(static function (AdminInterface $adminIn, string $attributes, ?object $object = null) use ($admin): bool {
                 return $admin === $adminIn && ('CREATE' === $attributes || 'LIST' === $attributes);
             });
 

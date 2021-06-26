@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Manipulator;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Manipulator\ServicesManipulator;
 
 /**
@@ -46,42 +47,42 @@ class ServicesManipulatorTest extends TestCase
     {
         $this->servicesManipulator->addResource(
             'service_id',
-            'class',
-            'admin_class',
+            \stdClass::class,
+            AdminInterface::class,
             'controller_name',
             'manager_type'
         );
         $this->assertSame(
             "services:
     service_id:
-        class: admin_class
-        arguments: [~, class, controller_name]
+        class: Sonata\AdminBundle\Admin\AdminInterface
+        arguments: [~, stdClass, controller_name]
         tags:
-            - { name: sonata.admin, manager_type: manager_type, group: admin, label: class }
+            - { name: sonata.admin, manager_type: manager_type, group: admin, label: stdClass }
         public: true\n",
             file_get_contents($this->file)
         );
         $this->servicesManipulator->addResource(
             'another_service_id',
-            'another_class',
-            'another_admin_class',
+            \stdClass::class,
+            AdminInterface::class,
             'another_controller_name',
             'another_manager_type'
         );
         $this->assertSame(
             "services:
     service_id:
-        class: admin_class
-        arguments: [~, class, controller_name]
+        class: Sonata\AdminBundle\Admin\AdminInterface
+        arguments: [~, stdClass, controller_name]
         tags:
-            - { name: sonata.admin, manager_type: manager_type, group: admin, label: class }
+            - { name: sonata.admin, manager_type: manager_type, group: admin, label: stdClass }
         public: true
 
     another_service_id:
-        class: another_admin_class
-        arguments: [~, another_class, another_controller_name]
+        class: Sonata\AdminBundle\Admin\AdminInterface
+        arguments: [~, stdClass, another_controller_name]
         tags:
-            - { name: sonata.admin, manager_type: another_manager_type, group: admin, label: another_class }
+            - { name: sonata.admin, manager_type: another_manager_type, group: admin, label: stdClass }
         public: true\n",
             file_get_contents($this->file)
         );
@@ -94,15 +95,15 @@ class ServicesManipulatorTest extends TestCase
 
         $this->servicesManipulator->addResource(
             'service_id',
-            'class',
-            'admin_class',
+            \stdClass::class,
+            AdminInterface::class,
             'controller_name',
             'manager_type'
         );
         $this->servicesManipulator->addResource(
             'service_id',
-            'class',
-            'admin_class',
+            \stdClass::class,
+            AdminInterface::class,
             'controller_name',
             'manager_type'
         );
@@ -113,18 +114,18 @@ class ServicesManipulatorTest extends TestCase
         file_put_contents($this->file, 'services:');
         $this->servicesManipulator->addResource(
             'service_id',
-            'class',
-            'admin_class',
+            \stdClass::class,
+            AdminInterface::class,
             'controller_name',
             'manager_type'
         );
         $this->assertSame(
             "services:
     service_id:
-        class: admin_class
-        arguments: [~, class, controller_name]
+        class: Sonata\AdminBundle\Admin\AdminInterface
+        arguments: [~, stdClass, controller_name]
         tags:
-            - { name: sonata.admin, manager_type: manager_type, group: admin, label: class }
+            - { name: sonata.admin, manager_type: manager_type, group: admin, label: stdClass }
         public: true\n",
             file_get_contents($this->file)
         );

@@ -94,7 +94,7 @@ final class ModelType extends AbstractType
         };
 
         $resolver->setDefaults(array_merge($options, [
-            'compound' => static function (Options $options) {
+            'compound' => static function (Options $options): bool {
                 if (isset($options['multiple']) && $options['multiple']) {
                     if (isset($options['expanded']) && $options['expanded']) {
                         //checkboxes

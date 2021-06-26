@@ -80,7 +80,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
                         'The current field `%s` is not linked to an admin.'
                         .' Please create one for the target model: `%s`.',
                         $fieldDescription->getName(),
-                        $fieldDescription->getTargetModel()
+                        $fieldDescription->getTargetModel() ?? ''
                     ));
                 }
             }
@@ -90,7 +90,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
                     'The current field `%s` is not linked to an admin.'
                     .' Please create one for the target model: `%s`.',
                     $fieldDescription->getName(),
-                    $fieldDescription->getTargetModel()
+                    $fieldDescription->getTargetModel() ?? ''
                 ));
             }
 
@@ -121,7 +121,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
                     'The current field `%s` is not linked to an admin.'
                     .' Please create one for the target model: `%s`.',
                     $fieldDescription->getName(),
-                    $fieldDescription->getTargetModel()
+                    $fieldDescription->getTargetModel() ?? ''
                 ));
             }
 

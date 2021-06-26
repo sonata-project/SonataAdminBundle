@@ -82,6 +82,7 @@ final class FormMapper extends BaseGroupedMapper
      *
      * @return static
      *
+     * @phpstan-param class-string|null $type
      * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */
     public function add(string $name, ?string $type = null, array $options = [], array $fieldDescriptionOptions = []): self
