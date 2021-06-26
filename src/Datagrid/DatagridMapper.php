@@ -143,6 +143,7 @@ class DatagridMapper extends BaseMapper implements MapperInterface
             if (method_exists($this->getAdmin(), 'createFieldDescription')) {
                 $fieldDescription = $this->getAdmin()->createFieldDescription(
                     $name,
+                    // NEXT_MAJOR: Pass only $fieldDescriptionOptions.
                     array_merge($filterOptions, $fieldDescriptionOptions)
                 );
             } else {
@@ -152,6 +153,18 @@ class DatagridMapper extends BaseMapper implements MapperInterface
                     array_merge($filterOptions, $fieldDescriptionOptions)
                 );
             }
+
+            // NEXT_MAJOR: Remove the check.
+            if (method_exists($this->builder, 'getDefaultOptions')) {
+                $filterOptions = array_replace_recursive(
+                    $this->builder->getDefaultOptions($type, $fieldDescription, $filterOptions),
+                    $filterOptions
+                );
+            }
+
+            if (!isset($filterOptions['label'])) {
+                $filterOptions['label'] = $this->getAdmin()->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'filter', 'label');
+            }
         } else {
             throw new \TypeError(
                 'Unknown field name in datagrid mapper.'
@@ -159,14 +172,15 @@ class DatagridMapper extends BaseMapper implements MapperInterface
             );
         }
 
-        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+        // NEXT_MAJOR: Remove this code.
         if (null === $fieldDescription->getLabel('sonata_deprecation_mute')) {
             $fieldDescription->setOption('label', $this->getAdmin()->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'filter', 'label'));
         }
 
         if (!isset($fieldDescriptionOptions['role']) || $this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
             // add the field with the DatagridBuilder
-            $this->builder->addFilter($this->datagrid, $type, $fieldDescription, $this->getAdmin());
+            // @phpstan-ignore-next-line NEXT_MAJOR: Remove this.
+            $this->builder->addFilter($this->datagrid, $type, $fieldDescription, $this->getAdmin(), $filterOptions);
         }
 
         return $this;

@@ -21,10 +21,14 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-template T of \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
+ *
+ * @method array getDefaultOptions(?string $type, FieldDescriptionInterface $fieldDescription)
  */
 interface DatagridBuilderInterface extends BuilderInterface
 {
     /**
+     * NEXT_MAJOR: Add the fifth parameter to the signature.
+     *
      * @param string|null            $type
      * @param AdminInterface<object> $admin
      *
@@ -36,7 +40,17 @@ interface DatagridBuilderInterface extends BuilderInterface
         $type,
         FieldDescriptionInterface $fieldDescription,
         AdminInterface $admin
+        /* array $filterOptions = []*/
     );
+
+    /**
+     * NEXT_MAJOR: Uncomment this.
+     *
+     * Should provide filter options.
+     *
+     * @return array<string, mixed>
+     */
+//    public function getDefaultOptions(?string $type, FieldDescriptionInterface $fieldDescription): array;
 
     /**
      * @param AdminInterface<object> $admin
