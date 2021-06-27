@@ -3210,7 +3210,7 @@ EOT;
                 'template' => $this->getTemplate('action_create'),
                 // 'template' => $this->getTemplateRegistry()->getTemplate('action_create'),
                 'url' => $this->generateUrl('create'),
-                'icon' => 'plus-circle',
+                'icon' => 'fa fa-plus-circle',
             ];
         }
 
@@ -3219,7 +3219,7 @@ EOT;
                 'label' => 'link_list',
                 'translation_domain' => 'SonataAdminBundle',
                 'url' => $this->generateUrl('list'),
-                'icon' => 'list',
+                'icon' => 'fa fa-list',
             ];
         }
 
