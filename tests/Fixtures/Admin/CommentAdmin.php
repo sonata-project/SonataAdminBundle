@@ -27,9 +27,4 @@ class CommentAdmin extends AbstractAdmin
     {
         $collection->remove('edit');
     }
-
-    public function setParentAssociationMapping($associationMapping): void
-    {
-        $this->parentAssociationMapping = $associationMapping;
-    }
 }

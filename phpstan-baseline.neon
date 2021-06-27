@@ -168,6 +168,11 @@ parameters:
             count: 1
             path: src/Datagrid/Pager.php
 
+        -
+            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\<object\\>\\:\\:setParent\\(\\) invoked with 2 parameters, 1 required\\.$#"
+            count: 1
+            path: src/Admin/AbstractAdmin.php
+
 # Symfony related errors
         -
             # Symfony BC break policy
