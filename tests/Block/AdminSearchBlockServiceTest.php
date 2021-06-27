@@ -63,7 +63,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
             'query' => '',
             'page' => 0,
             'per_page' => 10,
-            'icon' => '<i class="fa fa-list"></i>',
+            'icon' => 'fa fa-list',
         ], $blockContext);
     }
 
@@ -88,7 +88,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
             'query' => '',
             'page' => 0,
             'per_page' => 10,
-            'icon' => '<i class="fa fa-list"></i>',
+            'icon' => 'fa fa-list',
         ], $blockContext);
     }
 

@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Twig\Extension;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
-class IconExtension extends AbstractExtension
+final class IconExtension extends AbstractExtension
 {
     public function getFilters(): array
     {
