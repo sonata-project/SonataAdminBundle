@@ -18,6 +18,7 @@ use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Renderer\TwigRenderer;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
+use Sonata\AdminBundle\Twig\Extension\IconExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslator;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -54,6 +55,7 @@ abstract class BaseMenuTest extends TestCase
     protected function renderMenu(ItemInterface $item, array $options = [])
     {
         $this->environment->addExtension(new TranslationExtension($this->getTranslator()));
+        $this->environment->addExtension(new IconExtension());
         $this->renderer = new TwigRenderer(
             $this->environment,
             $this->getTemplate(),

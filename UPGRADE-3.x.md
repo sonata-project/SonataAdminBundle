@@ -4,6 +4,17 @@ UPGRADE 3.x
 UPGRADE FROM 3.x to 3.x
 =======================
 
+### 'icon' option
+
+We used multiple icon option with different format:
+- `<i class="fa fa-plus"></i>`
+- `fa fa-plus`
+- `fa-plus`
+- `plus`
+
+The last two format are now deprecated.  Since we've fixed the deprecation in the code,
+if you've overriden some template, be sure to always render the icons with the new `parse_icon` filter.
+
 ### `Sonata\AdminBundle\Form\FormMapper`
 
 Deprecated passing `collection` as argument 2 for `FormMapper::add()` method. You MUST pass
