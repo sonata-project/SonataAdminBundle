@@ -308,6 +308,23 @@ class AdminTest extends TestCase
     }
 
     /**
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getParent
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::setParent
+     */
+    public function testParent(): void
+    {
+        $postAdmin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'Sonata\NewsBundle\Controller\CommentAdminController');
+        $this->assertFalse($commentAdmin->isChild());
+        $this->assertFalse($commentAdmin->hasParentFieldDescription());
+
+        $commentAdmin->setParent($postAdmin, 'post');
+
+        $this->assertSame($postAdmin, $commentAdmin->getParent());
+        $this->assertSame('post', $commentAdmin->getParentAssociationMapping());
+    }
+
+    /**
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::configure
      */
     public function testConfigure(): void
@@ -328,11 +345,14 @@ class AdminTest extends TestCase
 
     public function testConfigureWithValidParentAssociationMapping(): void
     {
-        $admin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-        $admin->setParentAssociationMapping('Category');
+        $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
+
+        $comment = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'Sonata\NewsBundle\Controller\CommentAdminController');
+        $comment->addChild($admin, 'comment');
 
         $admin->initialize();
-        $this->assertSame('Category', $admin->getParentAssociationMapping());
+
+        $this->assertSame('comment', $admin->getParentAssociationMapping());
     }
 
     public function provideGetBaseRoutePattern()
@@ -417,7 +437,7 @@ class AdminTest extends TestCase
     {
         $postAdmin = new PostAdmin('sonata.post.admin.post', $objFqn, 'Sonata\NewsBundle\Controller\PostAdminController');
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'Sonata\NewsBundle\Controller\CommentAdminController');
-        $commentAdmin->setParent($postAdmin);
+        $commentAdmin->setParent($postAdmin, 'post');
 
         $this->assertSame(sprintf('%s/{id}/comment', $expected), $commentAdmin->getBaseRoutePattern());
     }
@@ -438,8 +458,8 @@ class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\CommentVote',
             'Sonata\NewsBundle\Controller\CommentVoteAdminController'
         );
-        $commentAdmin->setParent($postAdmin);
-        $commentVoteAdmin->setParent($commentAdmin);
+        $commentAdmin->setParent($postAdmin, 'post');
+        $commentVoteAdmin->setParent($commentAdmin, 'comment');
 
         $this->assertSame(sprintf('%s/{id}/comment/{childId}/commentvote', $expected), $commentVoteAdmin->getBaseRoutePattern());
     }
@@ -455,7 +475,7 @@ class AdminTest extends TestCase
     {
         $postAdmin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
         $commentAdmin = new CommentWithCustomRouteAdmin('sonata.post.admin.comment_with_custom_route', 'Application\Sonata\NewsBundle\Entity\Comment', 'Sonata\NewsBundle\Controller\CommentWithCustomRouteAdminController');
-        $commentAdmin->setParent($postAdmin);
+        $commentAdmin->setParent($postAdmin, 'post');
 
         $this->assertSame('/sonata/news/post/{id}/comment-custom', $commentAdmin->getBaseRoutePattern());
     }
@@ -654,7 +674,7 @@ class AdminTest extends TestCase
     {
         $postAdmin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
         $commentAdmin = new CommentWithCustomRouteAdmin('sonata.post.admin.comment_with_custom_route', 'Application\Sonata\NewsBundle\Entity\Comment', 'Sonata\NewsBundle\Controller\CommentWithCustomRouteAdminController');
-        $commentAdmin->setParent($postAdmin);
+        $commentAdmin->setParent($postAdmin, 'post');
 
         $this->assertSame('admin_sonata_news_post_comment_custom', $commentAdmin->getBaseRouteName());
     }
@@ -676,8 +696,8 @@ class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\CommentVote',
             'Sonata\NewsBundle\Controller\CommentVoteAdminController'
         );
-        $commentAdmin->setParent($postAdmin);
-        $commentVoteAdmin->setParent($commentAdmin);
+        $commentAdmin->setParent($postAdmin, 'post');
+        $commentVoteAdmin->setParent($commentAdmin, 'comment');
 
         $this->assertSame('admin_sonata_news_post_comment_custom_commentvote', $commentVoteAdmin->getBaseRouteName());
     }
@@ -1271,7 +1291,7 @@ class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\Comment',
             'Sonata\NewsBundle\Controller\CommentAdminController'
         );
-        $commentAdmin->setParent($postAdmin);
+        $commentAdmin->setParent($postAdmin, 'post');
 
         $this->assertTrue($commentAdmin->isChild());
         $this->assertSame('childId', $commentAdmin->getIdParameter());
@@ -1281,7 +1301,7 @@ class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\CommentVote',
             'Sonata\NewsBundle\Controller\CommentVoteAdminController'
         );
-        $commentVoteAdmin->setParent($commentAdmin);
+        $commentVoteAdmin->setParent($commentAdmin, 'comment');
 
         $this->assertTrue($commentVoteAdmin->isChild());
         $this->assertSame('childChildId', $commentVoteAdmin->getIdParameter());
@@ -1615,8 +1635,7 @@ class AdminTest extends TestCase
         $formBuilder->method('getForm')->willReturn(null);
 
         $tagAdmin = new TagAdmin('admin.tag', Tag::class, 'MyBundle\MyController');
-        $tagAdmin->setParent($postAdmin);
-        $tagAdmin->addParentAssociationMapping('post', 'post');
+        $tagAdmin->setParent($postAdmin, 'post');
 
         // NEXT_MAJOR: Remove these 3 lines.
         $modelManager = $this->createStub(ModelManagerInterface::class);
@@ -1656,8 +1675,7 @@ class AdminTest extends TestCase
         $formBuilder->method('getForm')->willReturn(null);
 
         $postCategoryAdmin = new PostCategoryAdmin('admin.post_category', PostCategory::class, 'MyBundle\MyController');
-        $postCategoryAdmin->setParent($postAdmin);
-        $postCategoryAdmin->addParentAssociationMapping('post', 'posts');
+        $postCategoryAdmin->setParent($postAdmin, 'posts');
 
         // NEXT_MAJOR: Remove these 3 lines.
         $modelManager = $this->createStub(ModelManagerInterface::class);
@@ -1860,8 +1878,7 @@ class AdminTest extends TestCase
         $postAdmin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'Sonata\NewsBundle\Controller\CommentAdminController');
-        $commentAdmin->setParentAssociationMapping('post.author');
-        $commentAdmin->setParent($postAdmin);
+        $commentAdmin->setParent($postAdmin, 'post.author');
 
         $request = $this->createMock(Request::class);
         $query = $this->createMock(ParameterBag::class);

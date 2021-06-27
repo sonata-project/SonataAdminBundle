@@ -856,32 +856,53 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * Returns the name of the parent related field, so the field can be use to set the default
      * value (ie the parent object) or to filter the object.
      *
-     * @throws \InvalidArgumentException
+     * @throws \LogicException
      *
      * @return string|null
      */
     public function getParentAssociationMapping()
     {
-        // NEXT_MAJOR: remove array check
-        if (\is_array($this->parentAssociationMapping) && $this->isChild()) {
-            $parent = $this->getParent()->getCode();
+        if (!$this->isChild()) {
+            // NEXT_MAJOR: Uncomment the exception.
+            @trigger_error(sprintf(
+                'Calling %s() when the admin is not a child admin is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will throw a %s exception in 4.0.',
+                __METHOD__,
+                \LogicException::class
+            ), \E_USER_DEPRECATED);
+//            throw new \LogicException(sprintf(
+//                'Admin "%s" has no parent.',
+//                static::class
+//            ));
 
-            if (\array_key_exists($parent, $this->parentAssociationMapping)) {
-                return $this->parentAssociationMapping[$parent];
-            }
-
-            throw new \InvalidArgumentException(sprintf(
-                'There\'s no association between %s and %s.',
-                $this->getCode(),
-                $this->getParent()->getCode()
-            ));
+            return $this->parentAssociationMapping;
         }
 
-        // NEXT_MAJOR: remove this line
-        return $this->parentAssociationMapping;
+        $parent = $this->getParent()->getCode();
+
+        // NEXT_MAJOR: remove this.
+        if (!\is_array($this->parentAssociationMapping)) {
+            return $this->parentAssociationMapping;
+        }
+
+        // NEXT_MAJOR: Return $this->parentAssociationMapping[$parent] without checks.
+        if (\array_key_exists($parent, $this->parentAssociationMapping)) {
+            return $this->parentAssociationMapping[$parent];
+        }
+
+        // NEXT_MAJOR: Remove this exception
+        throw new \InvalidArgumentException(sprintf(
+            'There\'s no association between "%s" and "%s".',
+            $this->getCode(),
+            $this->getParent()->getCode()
+        ));
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
+     *
      * @param string $code
      * @param string $value
      */
@@ -893,6 +914,11 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 __METHOD__
             ), \E_USER_DEPRECATED);
         }
+
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            __METHOD__
+        ), \E_USER_DEPRECATED);
 
         $this->parentAssociationMapping[$code] = $value;
     }
@@ -2254,15 +2280,14 @@ EOT;
 
         $this->children[$child->getCode()] = $child;
 
-        $child->setParent($this);
-
         // NEXT_MAJOR: remove $args and add $field parameter to this function on next Major
 
         $args = \func_get_args();
 
         if (isset($args[1])) {
-            $child->addParentAssociationMapping($this->getCode(), $args[1]);
+            $child->setParent($this, $args[1]);
         } else {
+            $child->setParent($this);
             @trigger_error(
                 'Calling "addChild" without second argument is deprecated since sonata-project/admin-bundle 3.35 and will not be allowed in 4.0.',
                 \E_USER_DEPRECATED
@@ -2312,11 +2337,38 @@ EOT;
     }
 
     /**
+     * NEXT_MAJOR: Uncomment the `$parentAssociationMapping` argument.
+     *
      * @final since sonata-project/admin-bundle 3.102.
      */
-    public function setParent(AdminInterface $parent)
+    public function setParent(AdminInterface $parent/*, string $parentAssociationMapping*/)
     {
         $this->parent = $parent;
+
+        // NEXT_MAJOR: Uncomment the following line
+        // $this->parentAssociationMapping[$parent->getCode()] = $parentAssociationMapping;
+
+        // NEXT_MAJOR: Remove next line.
+        $args = \func_get_args();
+
+        // NEXT_MAJOR: Remove this entire if-else block.
+        if (\array_key_exists(1, $args)) {
+            if (!\is_string($args[1])) {
+                throw new \TypeError(sprintf(
+                    'Argument 2 passed to "%s()" must be of the type string, "%s" given.',
+                    __METHOD__,
+                    \is_object($args[1]) ? \get_class($args[1]) : \gettype($args[1])
+                ));
+            }
+
+            $this->parentAssociationMapping[$parent->getCode()] = $args[1];
+        } else {
+            @trigger_error(sprintf(
+                'Not passing argument 2 to "%s()" is deprecated since'
+                .' sonata-project/admin-bundle 3.x and will not be allowed in 4.0.',
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+        }
     }
 
     /**

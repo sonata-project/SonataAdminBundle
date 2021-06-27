@@ -46,7 +46,6 @@ use Symfony\Component\HttpFoundation\Request;
  * @method string                          getBaseRoutePattern()
  * @method string                          getBaseRouteName()
  * @method ItemInterface                   getSideMenu(string $action, ?AdminInterface $childAdmin = null)
- * @method void                            addParentAssociationMapping(string $code, string $value)
  * @method string                          getClassnameLabel()
  * @method AdminInterface|null             getCurrentChildAdmin()
  * @method string|null                     getParentAssociationMapping()
@@ -457,9 +456,11 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     public function getParent();
 
     /**
+     * NEXT_MAJOR: Uncomment the `$parentAssociationMapping` argument.
+     *
      * @return void
      */
-    public function setParent(self $parent);
+    public function setParent(self $parent/*, string $parentAssociationMapping*/);
 
     /**
      * Returns true if the Admin class has an Parent Admin defined.
@@ -754,9 +755,6 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
 
 //    NEXT_MAJOR: uncomment this method in 4.0
 //    public function getSideMenu(string $action, ?AdminInterface $childAdmin = null): \Knp\Menu\ItemInterface;
-
-//    NEXT_MAJOR: uncomment this method in 4.0
-//    public function addParentAssociationMapping(string $code, string $value): void;
 
 //    NEXT_MAJOR: uncomment this method in 4.0
 //    /**
