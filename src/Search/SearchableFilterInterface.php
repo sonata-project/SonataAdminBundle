@@ -21,7 +21,7 @@ use Sonata\AdminBundle\Filter\FilterInterface;
 interface SearchableFilterInterface extends FilterInterface
 {
     /**
-     * Return true if the filter should be used in the SearchHandler.
+     * Return true if the filter should be used in the SearchHandler class.
      */
     public function isSearchEnabled(): bool;
 }
