@@ -91,7 +91,7 @@ class SearchHandler
             // NEXT_MAJOR: Remove the $filter->getOption('global_search', false) part.
             if (
                 $filter->getOption('global_search', false)
-                || $filter instanceof SearchableFilterInterface && $filter->isSearchActive()
+                || $filter instanceof SearchableFilterInterface && $filter->isSearchEnabled()
             ) {
                 if (!$filter instanceof SearchableFilterInterface) {
                     @trigger_error(sprintf(

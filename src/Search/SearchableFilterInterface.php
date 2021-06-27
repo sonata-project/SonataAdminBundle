@@ -23,5 +23,5 @@ interface SearchableFilterInterface extends FilterInterface
     /**
      * Return true if the filter should be used in the SearchHandler.
      */
-    public function isSearchActive(): bool;
+    public function isSearchEnabled(): bool;
 }

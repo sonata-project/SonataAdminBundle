@@ -44,7 +44,7 @@ class SearchHandlerTest extends TestCase
     public function testBuildPagerWithSearchableFilter(bool $caseSensitive): void
     {
         $filter = $this->createMock(SearchableFilterInterface::class);
-        $filter->expects($this->once())->method('isSearchActive')->willReturn(true);
+        $filter->expects($this->once())->method('isSearchEnabled')->willReturn(true);
 
         $pager = $this->createMock(PagerInterface::class);
         $pager->expects($this->once())->method('setPage');
@@ -87,7 +87,7 @@ class SearchHandlerTest extends TestCase
     public function testAdminSearch($expected, $filterCallsCount, ?bool $enabled, string $adminCode): void
     {
         $filter = $this->createMock(SearchableFilterInterface::class);
-        $filter->method('isSearchActive')->willReturn(true);
+        $filter->method('isSearchEnabled')->willReturn(true);
 
         $pager = $this->createMock(PagerInterface::class);
         $pager->expects($this->exactly($filterCallsCount))->method('setPage');
@@ -134,11 +134,11 @@ class SearchHandlerTest extends TestCase
     public function testBuildPagerWithDefaultFilters(): void
     {
         $defaultFilter = $this->createMock(SearchableFilterInterface::class);
-        $defaultFilter->expects($this->once())->method('isSearchActive')->willReturn(false);
+        $defaultFilter->expects($this->once())->method('isSearchEnabled')->willReturn(false);
         $defaultFilter->expects($this->once())->method('getFormName')->willReturn('filter1');
 
         $filter = $this->createMock(SearchableFilterInterface::class);
-        $filter->expects($this->once())->method('isSearchActive')->willReturn(true);
+        $filter->expects($this->once())->method('isSearchEnabled')->willReturn(true);
         $filter->expects($this->once())->method('getFormName')->willReturn('filter2');
 
         $pager = $this->createMock(PagerInterface::class);
