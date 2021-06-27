@@ -41,7 +41,7 @@ class SearchHandler
     private $adminsSearchConfig = [];
 
     /**
-     * NEXT_MAJOR: Change signature to __construct(bool $caseSensitive) and remove pool property.
+     * NEXT_MAJOR: Remove the construct.
      *
      * @param Pool|bool $deprecatedPoolOrCaseSensitive
      * @param bool      $caseSensitive
@@ -101,6 +101,7 @@ class SearchHandler
                     ), \E_USER_DEPRECATED);
                 }
 
+                // NEXT_MAJOR: Remove this line.
                 $filter->setOption('case_sensitive', $this->caseSensitive);
                 $filter->setOption('or_group', $admin->getCode());
                 $filter->setCondition(FilterInterface::CONDITION_OR);
