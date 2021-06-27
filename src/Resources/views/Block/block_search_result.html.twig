@@ -28,7 +28,7 @@ file that was distributed with this source code.
         <div class="box box-solid {{ visibility_class }}">
             <div class="box-header with-border {{ visibility_class }}">
                 {% set icon = settings.icon|default('') %}
-                {{ icon|raw }}
+                {{ icon|parse_icon }}
                 <h3 class="box-title">
                     {% if admin.label is not empty %}
                         {{ admin.label|trans({}, admin.translationdomain) }}

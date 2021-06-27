@@ -1,6 +1,6 @@
 {% if admin.subClasses is empty %}
     <a class="btn btn-link btn-flat" href="{{ action.url }}">
-        <i class="fa fa-{{ action.icon }}" aria-hidden="true"></i>
+        {{ action.icon|parse_icon }}
         {% if action.translation_domain is same as(false) %}
             {{ action.label }}
         {% else %}
@@ -9,7 +9,7 @@
     </a>
 {% else %}
     <a class="btn btn-link btn-flat dropdown-toggle" data-toggle="dropdown" href="#">
-        <i class="fa fa-{{ action.icon }}" aria-hidden="true"></i>
+        {{ action.icon|parse_icon }}
         {% if action.translation_domain is same as(false) %}
             {{ action.label }}
         {% else %}
