@@ -42,7 +42,12 @@
                                     {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
                                     <li{% if (not app.request.query.has('_tab') and loop.index == 1) or (tab_query_index == loop.index) %} class="active"{% endif %}>
                                         <a href="#{{ _tab_name }}" class="changer-tab" aria-controls="{{ _tab_name }}" data-toggle="tab">
-                                            <i class="fa fa-exclamation-circle has-errors hide" aria-hidden="true"></i> {{ form_tab.label|trans({}, form_tab.translation_domain ?: admin.translationDomain) }}
+                                            <i class="fa fa-exclamation-circle has-errors hide" aria-hidden="true"></i>
+                                            {% if form_tab.translation_domain is same as(false) %}
+                                                {{ form_tab.label }}
+                                            {% else %}
+                                                {{ form_tab.label|trans({}, form_tab.translation_domain ?? admin.translationDomain) }}
+                                            {% endif %}
                                         </a>
                                     </li>
                                 {% endfor %}
@@ -57,9 +62,11 @@
                                         <div class="box-body  container-fluid">
                                             <div class="sonata-ba-collapsed-fields">
                                                 {% if form_tab.description != false %}
-                                                    <p>
-                                                        {{ form_tab.description|trans({}, form_tab.translation_domain ?: admin.translationDomain)|raw }}
-                                                    </p>
+                                                    {% if form_tab.translation_domain is same as(false) %}
+                                                        <p>{{ form_tab.description|raw }}</p>
+                                                    {% else %}
+                                                        <p>{{ form_tab.description|trans({}, form_tab.translation_domain ?? admin.translationDomain)|raw }}</p>
+                                                    {% endif %}
                                                 {% endif %}
 
                                                 {{ form_helper.render_groups(admin, form, form_tab['groups'], has_tab) }}

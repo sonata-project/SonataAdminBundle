@@ -1,18 +1,32 @@
 {% if admin.subClasses is empty %}
     <a class="btn btn-link btn-flat" href="{{ action.url }}">
         <i class="fa fa-{{ action.icon }}" aria-hidden="true"></i>
-        {{ action.label|trans({}, action.translation_domain|default('SonataAdminBundle')) }}
+        {% if action.translation_domain is same as(false) %}
+            {{ action.label }}
+        {% else %}
+            {{ action.label|trans({}, action.translation_domain|default('SonataAdminBundle')) }}
+        {% endif %}
     </a>
 {% else %}
     <a class="btn btn-link btn-flat dropdown-toggle" data-toggle="dropdown" href="#">
         <i class="fa fa-{{ action.icon }}" aria-hidden="true"></i>
-        {{ action.label|trans({}, action.translation_domain|default('SonataAdminBundle')) }}
+        {% if action.translation_domain is same as(false) %}
+            {{ action.label }}
+        {% else %}
+            {{ action.label|trans({}, action.translation_domain|default('SonataAdminBundle')) }}
+        {% endif %}
         <span class="caret"></span>
     </a>
     <ul class="dropdown-menu">
         {% for subclass in admin.subclasses|keys %}
             <li>
-                <a href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">{{ subclass|trans({}, action.translation_domain|default('SonataAdminBundle')) }}</a>
+                <a href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">
+                    {% if action.translation_domain is same as(false) %}
+                        {{ subclass }}
+                    {% else %}
+                        {{ subclass|trans({}, action.translation_domain|default('SonataAdminBundle')) }}
+                    {% endif %}
+                </a>
             </li>
         {% endfor %}
     </ul>
