@@ -11,12 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Filter;
+namespace Sonata\AdminBundle\Search;
+
+use Sonata\AdminBundle\Filter\FilterInterface;
 
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
  */
-interface ChainableFilterInterface extends FilterInterface
+interface ChainableFilterInterface
 {
     public function setPreviousFilter(FilterInterface $filter): void;
 

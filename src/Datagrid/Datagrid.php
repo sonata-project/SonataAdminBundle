@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Datagrid;
 
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Filter\ChainableFilterInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -36,8 +35,6 @@ class Datagrid implements DatagridInterface
 {
     /**
      * The filter instances.
-     *
-     * NEXT_MAJOR: Replace type hinting with `array<string, ChainableFilterInterface>`
      *
      * @var array<string, FilterInterface>
      */
@@ -179,20 +176,8 @@ class Datagrid implements DatagridInterface
         $this->bound = true;
     }
 
-    /**
-     * NEXT_MAJOR: Use `ChainableFilterInterface` as type declaration for argument 1.
-     */
     public function addFilter(FilterInterface $filter)
     {
-        if (!$filter instanceof ChainableFilterInterface) {
-            @trigger_error(sprintf(
-                'Passing a filter not implementing "%s" as argument 1 for "%s()" is deprecated since sonata-project/admin-bundle 3.x'
-                .' and will not be allowed in version 4.0.',
-                ChainableFilterInterface::class,
-                __METHOD__
-            ), \E_USER_DEPRECATED);
-        }
-
         $this->filters[$filter->getName()] = $filter;
 
         return $filter;
@@ -217,7 +202,7 @@ class Datagrid implements DatagridInterface
                 __METHOD__
             ), \E_USER_DEPRECATED);
 
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare `ChainableFilterInterface` as return type
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare `FilterInterface` as return type
             // throw new \InvalidArgumentException(sprintf(
             //    'Filter named "%s" doesn\'t exist.',
             //    $name

@@ -55,15 +55,11 @@ interface DatagridInterface
     public function buildPager();
 
     /**
-     * NEXT_MAJOR: Use `\Sonata\AdminBundle\Filter\ChainableFilterInterface` as type declaration for argument 1 and return type.
-     *
      * @return FilterInterface
      */
     public function addFilter(FilterInterface $filter);
 
     /**
-     * NEXT_MAJOR: Replace type hinting with array<string, \Sonata\AdminBundle\Filter\ChainableFilterInterface>.
-     *
      * @return array<string, FilterInterface>
      */
     public function getFilters();
@@ -96,8 +92,6 @@ interface DatagridInterface
     public function getForm();
 
     /**
-     * NEXT_MAJOR: Replace the return type hinting with `\Sonata\AdminBundle\Filter\ChainableFilterInterface`.
-     *
      * @param string $name
      *
      * @return FilterInterface
