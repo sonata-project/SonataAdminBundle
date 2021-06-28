@@ -37,7 +37,7 @@ class ConfigurationTest extends TestCase
         $this->assertSame('bundles/sonataadmin/default_mosaic_image.png', $config['options']['mosaic_background']);
         $this->assertSame('default', $config['options']['default_group']);
         $this->assertSame('SonataAdminBundle', $config['options']['default_label_catalogue']);
-        $this->assertSame('<i class="fa fa-folder"></i>', $config['options']['default_icon']);
+        $this->assertSame('fa fa-folder', $config['options']['default_icon']);
     }
 
     public function testBreadcrumbsChildRouteDefaultsToEdit(): void
