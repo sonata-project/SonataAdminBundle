@@ -521,9 +521,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             $parameters = ParametersManipulator::merge($parameters, $filters);
 
             // always force the parent value
-            $parentAssociationMapping = $this->getParentAssociationMapping();
-            if ($this->isChild() && null !== $parentAssociationMapping) {
-                $name = str_replace('.', '__', $parentAssociationMapping);
+            if ($this->isChild() && null !== $this->getParentAssociationMapping()) {
+                $name = str_replace('.', '__', $this->getParentAssociationMapping());
                 $parameters[$name] = ['value' => $this->getRequest()->get($this->getParent()->getIdParameter())];
             }
         }
@@ -549,30 +548,20 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * Returns the name of the parent related field, so the field can be use to set the default
      * value (ie the parent object) or to filter the object.
      *
-     * @throws \InvalidArgumentException
+     * @throws \LogicException
      */
     final public function getParentAssociationMapping(): ?string
     {
-        if ($this->isChild()) {
-            $parent = $this->getParent()->getCode();
-
-            if (\array_key_exists($parent, $this->parentAssociationMapping)) {
-                return $this->parentAssociationMapping[$parent];
-            }
-
-            throw new \InvalidArgumentException(sprintf(
-                'There\'s no association between %s and %s.',
-                $this->getCode(),
-                $this->getParent()->getCode()
+        if (!$this->isChild()) {
+            throw new \LogicException(sprintf(
+                'Admin "%s" has no parent.',
+                static::class
             ));
         }
 
-        return null;
-    }
+        $parent = $this->getParent()->getCode();
 
-    final public function addParentAssociationMapping(string $code, string $value): void
-    {
-        $this->parentAssociationMapping[$code] = $value;
+        return $this->parentAssociationMapping[$parent];
     }
 
     final public function getBaseRoutePattern(): string
@@ -1369,8 +1358,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         $this->children[$child->getCode()] = $child;
 
-        $child->setParent($this);
-        $child->addParentAssociationMapping($this->getCode(), $field);
+        $child->setParent($this, $field);
     }
 
     final public function hasChild(string $code): bool
@@ -1396,9 +1384,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getChildren()[$code];
     }
 
-    final public function setParent(AdminInterface $parent): void
+    final public function setParent(AdminInterface $parent, string $parentAssociationMapping): void
     {
         $this->parent = $parent;
+        $this->parentAssociationMapping[$parent->getCode()] = $parentAssociationMapping;
     }
 
     final public function getParent(): AdminInterface
@@ -2334,23 +2323,22 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->configureDatagridFilters($mapper);
 
         // ok, try to limit to add parent filter
-        $parentAssociationMapping = $this->getParentAssociationMapping();
-        if (
-            $this->isChild()
-            && null !== $parentAssociationMapping
-            && !$mapper->has($parentAssociationMapping)
-        ) {
-            $mapper->add($parentAssociationMapping, null, [
-                'show_filter' => false,
-                'label' => false,
-                'field_type' => ModelHiddenType::class,
-                'field_options' => [
-                    'model_manager' => $this->getModelManager(),
-                ],
-                'operator_type' => HiddenType::class,
-            ], [
-                'admin_code' => $this->getParent()->getCode(),
-            ]);
+        if ($this->isChild()) {
+            $parentAssociationMapping = $this->getParentAssociationMapping();
+
+            if (null !== $parentAssociationMapping && !$mapper->has($parentAssociationMapping)) {
+                $mapper->add($parentAssociationMapping, null, [
+                    'show_filter' => false,
+                    'label' => false,
+                    'field_type' => ModelHiddenType::class,
+                    'field_options' => [
+                        'model_manager' => $this->getModelManager(),
+                    ],
+                    'operator_type' => HiddenType::class,
+                ], [
+                    'admin_code' => $this->getParent()->getCode(),
+                ]);
+            }
         }
 
         foreach ($this->getExtensions() as $extension) {
@@ -2398,19 +2386,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $mapper = new ListMapper($this->getListBuilder(), $this->list, $this);
 
         if (\count($this->getBatchActions()) > 0 && $this->hasRequest() && !$this->getRequest()->isXmlHttpRequest()) {
-            $fieldDescription = $this->createFieldDescription(
-                ListMapper::NAME_BATCH,
-                [
-                    'label' => 'batch',
-                    'sortable' => false,
-                    'virtual_field' => true,
-                ]
-            );
-
-            $fieldDescription->setAdmin($this);
-            $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('batch'));
-
-            $mapper->add($fieldDescription, ListMapper::TYPE_BATCH);
+            $mapper->add(ListMapper::NAME_BATCH, ListMapper::TYPE_BATCH, [
+                'label' => 'batch',
+                'sortable' => false,
+                'virtual_field' => true,
+                'template' => $this->getTemplateRegistry()->getTemplate('batch'),
+            ]);
         }
 
         $this->configureListFields($mapper);
@@ -2420,19 +2401,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         if ($this->hasRequest() && $this->getRequest()->isXmlHttpRequest()) {
-            $fieldDescription = $this->createFieldDescription(
-                ListMapper::NAME_SELECT,
-                [
-                    'label' => false,
-                    'sortable' => false,
-                    'virtual_field' => false,
-                ]
-            );
-
-            $fieldDescription->setAdmin($this);
-            $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('select'));
-
-            $mapper->add($fieldDescription, ListMapper::TYPE_SELECT);
+            $mapper->add(ListMapper::NAME_SELECT, ListMapper::TYPE_SELECT, [
+                'label' => false,
+                'sortable' => false,
+                'virtual_field' => false,
+                'template' => $this->getTemplateRegistry()->getTemplate('select'),
+            ]);
         }
 
         return $this->list;

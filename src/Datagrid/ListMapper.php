@@ -74,12 +74,11 @@ final class ListMapper implements MapperInterface
     }
 
     /**
-     * @param FieldDescriptionInterface|string $name
-     * @param array<string, mixed>             $fieldDescriptionOptions
+     * @param array<string, mixed> $fieldDescriptionOptions
      *
      * @return static
      */
-    public function addIdentifier($name, ?string $type = null, array $fieldDescriptionOptions = []): self
+    public function addIdentifier(string $name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
         $fieldDescriptionOptions['identifier'] = true;
 
@@ -96,15 +95,18 @@ final class ListMapper implements MapperInterface
     }
 
     /**
-     * @param FieldDescriptionInterface|string $name
-     * @param array<string, mixed>             $fieldDescriptionOptions
+     * @param array<string, mixed> $fieldDescriptionOptions
      *
      * @throws \LogicException
      *
      * @return static
      */
-    public function add($name, ?string $type = null, array $fieldDescriptionOptions = []): self
+    public function add(string $name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
+        if (isset($fieldDescriptionOptions['role']) && !$this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
+            return $this;
+        }
+
         // Default sort on "associated_property"
         if (isset($fieldDescriptionOptions['associated_property'])) {
             if (!isset($fieldDescriptionOptions['sortable'])) {
@@ -131,27 +133,17 @@ final class ListMapper implements MapperInterface
             throw new \InvalidArgumentException(sprintf('Value for "identifier" option must be boolean, %s given.', \gettype($fieldDescriptionOptions['identifier'])));
         }
 
-        if ($name instanceof FieldDescriptionInterface) {
-            $fieldDescription = $name;
-            $fieldDescription->mergeOptions($fieldDescriptionOptions);
-        } elseif (\is_string($name)) {
-            if ($this->getAdmin()->hasListFieldDescription($name)) {
-                throw new \LogicException(sprintf(
-                    'Duplicate field name "%s" in list mapper. Names should be unique.',
-                    $name
-                ));
-            }
-
-            $fieldDescription = $this->getAdmin()->createFieldDescription(
-                $name,
-                $fieldDescriptionOptions
-            );
-        } else {
-            throw new \TypeError(
-                'Unknown field name in list mapper.'
-                .' Field name should be either of FieldDescriptionInterface interface or string.'
-            );
+        if ($this->getAdmin()->hasListFieldDescription($name)) {
+            throw new \LogicException(sprintf(
+                'Duplicate field name "%s" in list mapper. Names should be unique.',
+                $name
+            ));
         }
+
+        $fieldDescription = $this->getAdmin()->createFieldDescription(
+            $name,
+            $fieldDescriptionOptions
+        );
 
         if (null === $fieldDescription->getLabel()) {
             $fieldDescription->setOption(
@@ -160,14 +152,11 @@ final class ListMapper implements MapperInterface
             );
         }
 
-        if (!isset($fieldDescriptionOptions['role']) || $this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
-            // add the field with the FormBuilder
-            $this->builder->addField($this->list, $type, $fieldDescription);
+        $this->builder->addField($this->list, $type, $fieldDescription);
 
-            // Ensure batch and action pseudo-fields are tagged as virtual
-            if (\in_array($fieldDescription->getType(), [self::TYPE_ACTIONS, self::TYPE_BATCH, self::TYPE_SELECT], true)) {
-                $fieldDescription->setOption('virtual_field', true);
-            }
+        // Ensure batch and action pseudo-fields are tagged as virtual
+        if (\in_array($fieldDescription->getType(), [self::TYPE_ACTIONS, self::TYPE_BATCH, self::TYPE_SELECT], true)) {
+            $fieldDescription->setOption('virtual_field', true);
         }
 
         return $this;

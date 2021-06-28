@@ -314,11 +314,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->options[$name] = array_merge($this->options[$name], $options);
     }
 
-    final public function mergeOptions(array $options = []): void
-    {
-        $this->setOptions(array_merge_recursive($this->options, $options));
-    }
-
     final public function getMappingType()
     {
         return $this->mappingType;

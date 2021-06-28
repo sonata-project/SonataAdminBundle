@@ -289,7 +289,7 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     /**
      * @param AdminInterface<object> $parent
      */
-    public function setParent(self $parent): void;
+    public function setParent(self $parent, string $parentAssociationMapping): void;
 
     /**
      * Returns true if the Admin class has an Parent Admin defined.
@@ -507,8 +507,6 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      * @param AdminInterface<object>|null $childAdmin
      */
     public function getSideMenu(string $action, ?self $childAdmin = null): ItemInterface;
-
-    public function addParentAssociationMapping(string $code, string $value): void;
 
     /**
      * Returns the name of the parent related field, so the field can be use to set the default

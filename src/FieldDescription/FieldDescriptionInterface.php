@@ -241,13 +241,6 @@ interface FieldDescriptionInterface
     public function mergeOption(string $name, array $options = []): void;
 
     /**
-     * Merge options values.
-     *
-     * @phpstan-param FieldDescriptionOptions $options
-     */
-    public function mergeOptions(array $options = []): void;
-
-    /**
      * Returns the mapping type.
      *
      * @return int|string|null

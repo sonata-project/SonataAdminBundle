@@ -68,45 +68,35 @@ final class ShowMapper extends BaseGroupedMapper
     }
 
     /**
-     * @param FieldDescriptionInterface|string $name
-     *
      * @throws \LogicException
      *
      * @return static
      *
      * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */
-    public function add($name, ?string $type = null, array $fieldDescriptionOptions = []): self
+    public function add(string $name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
         if (!$this->shouldApply()) {
             return $this;
         }
 
-        if ($name instanceof FieldDescriptionInterface) {
-            $fieldDescription = $name;
-            $fieldDescription->mergeOptions($fieldDescriptionOptions);
-        } elseif (\is_string($name)) {
-            if (!$this->getAdmin()->hasShowFieldDescription($name)) {
-                $fieldDescription = $this->getAdmin()->createFieldDescription(
-                    $name,
-                    $fieldDescriptionOptions
-                );
-            } else {
-                throw new \LogicException(sprintf(
-                    'Duplicate field name "%s" in show mapper. Names should be unique.',
-                    $name
-                ));
-            }
-        } else {
-            throw new \TypeError(
-                'Unknown field name in show mapper.'
-                    .' Field name should be either of FieldDescriptionInterface interface or string.'
-            );
+        if (isset($fieldDescriptionOptions['role']) && !$this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
+            return $this;
         }
 
-        $fieldKey = ($name instanceof FieldDescriptionInterface) ? $name->getName() : $name;
+        if (!$this->getAdmin()->hasShowFieldDescription($name)) {
+            $fieldDescription = $this->getAdmin()->createFieldDescription(
+                $name,
+                $fieldDescriptionOptions
+            );
+        } else {
+            throw new \LogicException(sprintf(
+                'Duplicate field name "%s" in show mapper. Names should be unique.',
+                $name
+            ));
+        }
 
-        $this->addFieldToCurrentGroup($fieldKey);
+        $this->addFieldToCurrentGroup($name);
 
         if (null === $fieldDescription->getLabel()) {
             $fieldDescription->setOption('label', $this->getAdmin()->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'show', 'label'));
@@ -114,10 +104,7 @@ final class ShowMapper extends BaseGroupedMapper
 
         $fieldDescription->setOption('safe', $fieldDescription->getOption('safe', false));
 
-        if (!isset($fieldDescriptionOptions['role']) || $this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
-            // add the field with the FormBuilder
-            $this->builder->addField($this->list, $type, $fieldDescription);
-        }
+        $this->builder->addField($this->list, $type, $fieldDescription);
 
         return $this;
     }

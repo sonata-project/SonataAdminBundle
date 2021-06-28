@@ -26,10 +26,8 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\ResolvedFormTypeInterface;
 
 class FormMapperTest extends TestCase
 {
@@ -432,55 +430,6 @@ class FormMapperTest extends TestCase
             ->ifEnd();
 
         $this->assertFalse($this->formMapper->has('fooName'));
-    }
-
-    public function testAddAcceptFormBuilder(): void
-    {
-        $formBuilder = $this
-            ->getMockBuilder(FormBuilder::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $formBuilder
-            ->method('getName')
-            ->willReturn('foo');
-
-        $formType = $this
-            ->getMockBuilder(ResolvedFormTypeInterface::class)
-            ->getMock();
-
-        $innerType = $this
-            ->getMockBuilder(FormType::class)
-            ->getMock();
-
-        $formType->expects($this->once())
-            ->method('getInnerType')
-            ->willReturn($innerType);
-
-        $formBuilder->expects($this->once())
-            ->method('getType')
-            ->willReturn($formType);
-
-        $this->formMapper->add($formBuilder);
-        $this->assertSame($this->formMapper->get('foo'), $formBuilder);
-    }
-
-    public function testAddFormBuilderWithType(): void
-    {
-        $formBuilder = $this
-            ->getMockBuilder(FormBuilder::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $formBuilder
-            ->method('getName')
-            ->willReturn('foo');
-
-        $formBuilder->expects($this->never())
-            ->method('getType');
-
-        $this->formMapper->add($formBuilder, FormType::class);
-        $this->assertSame($this->formMapper->get('foo'), $formBuilder);
     }
 
     public function testGroupRemovingWithoutTab(): void

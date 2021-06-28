@@ -103,7 +103,7 @@ class ShowMapperTest extends TestCase
         $this->admin
             ->method('createFieldDescription')
             ->willReturnCallback(function (string $name, array $options = []): FieldDescriptionInterface {
-                $fieldDescription = $this->getFieldDescriptionMock($name);
+                $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name, []]);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
@@ -139,23 +139,12 @@ class ShowMapperTest extends TestCase
         $this->showMapper = new ShowMapper($this->showBuilder, $this->fieldDescriptionCollection, $this->admin);
     }
 
-    public function testFluidInterface(): void
-    {
-        $fieldDescription = $this->getFieldDescriptionMock('fooName', 'fooLabel');
-
-        $this->assertSame($this->showMapper, $this->showMapper->add($fieldDescription));
-        $this->assertSame($this->showMapper, $this->showMapper->remove('fooName'));
-        $this->assertSame($this->showMapper, $this->showMapper->reorder([]));
-    }
-
     public function testGet(): void
     {
         $this->assertFalse($this->showMapper->has('fooName'));
 
-        $fieldDescription = $this->getFieldDescriptionMock('fooName', 'fooLabel');
-
-        $this->showMapper->add($fieldDescription);
-        $this->assertSame($fieldDescription, $this->showMapper->get('fooName'));
+        $this->showMapper->add('fooName');
+        $this->assertInstanceOf(FieldDescriptionInterface::class, $this->showMapper->get('fooName'));
     }
 
     public function testAdd(): void
@@ -371,25 +360,11 @@ class ShowMapperTest extends TestCase
     {
         $this->assertFalse($this->showMapper->has('fooName'));
 
-        $fieldDescription = $this->getFieldDescriptionMock('fooName', 'fooLabel');
-
-        $this->showMapper->add($fieldDescription);
+        $this->showMapper->add('fooName');
         $this->assertTrue($this->showMapper->has('fooName'));
 
         $this->showMapper->remove('fooName');
         $this->assertFalse($this->showMapper->has('fooName'));
-    }
-
-    /**
-     * @psalm-suppress InvalidScalarArgument
-     */
-    public function testAddException(): void
-    {
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Unknown field name in show mapper. Field name should be either of FieldDescriptionInterface interface or string.');
-
-        // @phpstan-ignore-next-line
-        $this->showMapper->add(12345);
     }
 
     public function testAddDuplicateFieldNameException(): void
@@ -406,11 +381,8 @@ class ShowMapperTest extends TestCase
 
     public function testKeys(): void
     {
-        $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
-        $fieldDescription2 = $this->getFieldDescriptionMock('fooName2', 'fooLabel2');
-
-        $this->showMapper->add($fieldDescription1);
-        $this->showMapper->add($fieldDescription2);
+        $this->showMapper->add('fooName1');
+        $this->showMapper->add('fooName2');
 
         $this->assertSame(['fooName1', 'fooName2'], $this->showMapper->keys());
     }
@@ -419,16 +391,11 @@ class ShowMapperTest extends TestCase
     {
         $this->assertSame([], $this->admin->getShowGroups());
 
-        $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
-        $fieldDescription2 = $this->getFieldDescriptionMock('fooName2', 'fooLabel2');
-        $fieldDescription3 = $this->getFieldDescriptionMock('fooName3', 'fooLabel3');
-        $fieldDescription4 = $this->getFieldDescriptionMock('fooName4', 'fooLabel4');
-
         $this->showMapper->with('Group1');
-        $this->showMapper->add($fieldDescription1);
-        $this->showMapper->add($fieldDescription2);
-        $this->showMapper->add($fieldDescription3);
-        $this->showMapper->add($fieldDescription4);
+        $this->showMapper->add('fooName1');
+        $this->showMapper->add('fooName2');
+        $this->showMapper->add('fooName3');
+        $this->showMapper->add('fooName4');
 
         $this->assertSame([
             'Group1' => [
@@ -579,7 +546,7 @@ class ShowMapperTest extends TestCase
         $fieldDescriptionFactory
             ->method('create')
             ->willReturnCallback(function (string $class, string $name, array $options = []): FieldDescriptionInterface {
-                $fieldDescription = $this->getFieldDescriptionMock($name);
+                $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name, []]);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
@@ -589,16 +556,5 @@ class ShowMapperTest extends TestCase
         $this->admin->setLabelTranslatorStrategy(new NoopLabelTranslatorStrategy());
 
         $this->admin->setShowBuilder(new ShowBuilder());
-    }
-
-    private function getFieldDescriptionMock(string $name, ?string $label = null): BaseFieldDescription
-    {
-        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name, []]);
-
-        if (null !== $label) {
-            $fieldDescription->setOption('label', $label);
-        }
-
-        return $fieldDescription;
     }
 }
