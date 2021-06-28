@@ -24,7 +24,7 @@ file that was distributed with this source code.
         <div class="box box-solid {{ visibility_class }}">
             <div class="box-header with-border {{ visibility_class }}">
                 {% set icon = settings.icon|default('') %}
-                {{ icon|raw }}
+                {{ icon|parse_icon }}
                 <h3 class="box-title">
                     {% if admin.label is not empty %}
                         {{ admin.label|trans({}, admin.translationdomain) }}
@@ -67,7 +67,11 @@ file that was distributed with this source code.
                                                 or filter.option('case_sensitive') is same as(false) and term|lower in match|lower)
                                             %}
                                                 <a class="label label-primary" href="{{ admin.generateUrl('list', {'filter': {(filter.formName): {'value': term}}}) }}">
-                                                    {{ filter.option('label')|trans({}, filter.option('translation_domain', admin.translationDomain)) }}
+                                                    {% if filter.option('translation_domain') is same as(false) %}
+                                                        {{ filter.option('label') }}
+                                                    {% else %}
+                                                        {{ filter.option('label')|trans({}, filter.option('translation_domain', admin.translationDomain)) }}
+                                                    {% endif %}
                                                 </a>
                                             {% endif %}
                                         {% endfor %}

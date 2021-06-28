@@ -30,7 +30,7 @@
                     <li role="presentation" class="divider"></li>
                 {% endif %}
                 <li role="presentation" class="dropdown-header">
-                    {{ group.icon|raw }}
+                    {{ group.icon|parse_icon }}
                     {{ group.label|trans({}, group.label_catalogue) }}
                 </li>
 

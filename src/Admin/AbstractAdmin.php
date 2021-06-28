@@ -1876,7 +1876,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 'translation_domain' => 'SonataAdminBundle',
                 'template' => $this->getTemplateRegistry()->getTemplate('action_create'),
                 'url' => $this->generateUrl('create'),
-                'icon' => 'plus-circle',
+                'icon' => 'fas fa-plus-circle',
             ];
         }
 
@@ -1885,7 +1885,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 'label' => 'link_list',
                 'translation_domain' => 'SonataAdminBundle',
                 'url' => $this->generateUrl('list'),
-                'icon' => 'list',
+                'icon' => 'fas fa-list',
             ];
         }
 

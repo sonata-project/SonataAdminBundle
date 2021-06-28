@@ -20,10 +20,16 @@ file that was distributed with this source code.
         <div class="box-header with-border">
             {% set icon = settings.icon|default('') %}
             {% if icon %}
-                <i class="fas {{ icon|raw }}"></i>
+                {{ icon|parse_icon }}
             {% endif %}
             <h3 class="box-title">
-                <a href="#{{ inlineAnchor }}">{{ settings.text|trans({}, translation_domain) }}</a>
+                <a href="#{{ inlineAnchor }}">
+                    {% if translation_domain is same as(false) %}
+                        {{ settings.text }}
+                    {% else %}
+                        {{ settings.text|trans({}, translation_domain) }}
+                    {% endif %}
+                </a>
             </h3>
         </div>
         <div class="box-body {% if results_count > 0 %}table-responsive no-padding{% endif %}">
@@ -40,10 +46,12 @@ file that was distributed with this source code.
                                     {% if field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_SELECT') %}
                                         <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
                                     {% else %}
-                                        {% filter spaceless %}
+                                        {% apply spaceless %}
                                             <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if field_description.option('header_class') is not null %} {{ field_description.option('header_class') }}{% endif %}"{% if field_description.option('header_style') is not null %} style="{{ field_description.option('header_style') }}"{% endif %}>
                                                 {% if field_description.option('label_icon') %}
-                                                    <i class="sonata-ba-list-field-header-label-icon {{ field_description.option('label_icon') }}" aria-hidden="true"></i>
+                                                    <span class="sonata-ba-list-field-header-label-icon">
+                                                        {{ field_description.option('label_icon')|parse_icon }}
+                                                    </span>
                                                 {% endif %}
                                                 {% if field_description.translationDomain is same as(false) %}
                                                     {{ field_description.label }}
@@ -51,7 +59,7 @@ file that was distributed with this source code.
                                                     {{ field_description.label|trans({}, field_description.translationDomain) }}
                                                 {% endif %}
                                             </th>
-                                        {% endfilter %}
+                                        {% endapply %}
                                     {% endif %}
                                 {% endfor %}
                             </tr>

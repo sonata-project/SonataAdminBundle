@@ -71,7 +71,7 @@ final class AdminStatsBlockService extends AbstractBlockService
     public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'icon' => 'fa-chart-line',
+            'icon' => 'fas fa-chart-line',
             'text' => 'Statistics',
             'translation_domain' => null,
             'color' => 'bg-aqua',

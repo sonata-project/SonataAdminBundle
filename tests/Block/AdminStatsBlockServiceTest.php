@@ -41,7 +41,7 @@ class AdminStatsBlockServiceTest extends BlockServiceTestCase
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings([
-            'icon' => 'fa-chart-line',
+            'icon' => 'fas fa-chart-line',
             'text' => 'Statistics',
             'translation_domain' => null,
             'color' => 'bg-aqua',

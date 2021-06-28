@@ -171,7 +171,7 @@ CASESENSITIVE;
                             ->info('Label Catalogue used for admin services if one isn\'t provided.')
                         ->end()
                         ->scalarNode('default_icon')
-                            ->defaultValue('<i class="fas fa-folder"></i>')
+                            ->defaultValue('fas fa-folder')
                             ->info('Icon used for admin services if one isn\'t provided.')
                         ->end()
                         ->integerNode('dropdown_number_groups_per_colums')->defaultValue(2)->end()

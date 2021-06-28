@@ -117,7 +117,7 @@ The following configuration uses a menu provider to populate the menu group ``my
                 groups:
                     my_group:
                         provider:        'MyBundle:MyMenuProvider:getMyMenu'
-                        icon:            '<i class="fas fa-edit"></i>'
+                        icon:            'fas fa-edit' # html is also supported
 
 With KnpMenuBundle you can create a custom menu by using a builder class
 or by declaring it as a service. Please see the `Knp documentation`_ for
@@ -163,7 +163,7 @@ name ``sonata.admin.event.configure.menu.sidebar``::
                 'label' => 'Daily and monthly reports',
                 'route' => 'app_reports_index',
             ])->setExtras([
-                'icon' => '<i class="fas fa-chart-bar"></i>',
+                'icon' => 'fas fa-bar-chart', // html is also supported
             ]);
         }
     }
@@ -232,7 +232,7 @@ open and ignore open/close effects:
                     keep_open:       true
                     label:           sonata_media
                     label_catalogue: SonataMediaBundle
-                    icon:            '<i class="fas fa-image"></i>'
+                    icon:            'fas fa-image' # html is also supported
                     items:
                         - sonata.media.admin.media
                         - sonata.media.admin.gallery

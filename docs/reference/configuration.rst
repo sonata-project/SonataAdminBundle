@@ -87,7 +87,7 @@ Full Configuration Options
                 form_type: standard
                 default_group: default
                 default_label_catalogue: SonataAdminBundle
-                default_icon: '<i class="fas fa-folder"></i>'
+                default_icon: 'fas fa-folder'
                 dropdown_number_groups_per_colums:  2
                 title_mode: ~ # One of "single_text"; "single_image"; "both"
 
