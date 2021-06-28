@@ -557,6 +557,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     /**
      * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.82, use configureFormOptions() to set $formOptions['constraints'] instead.
      */
     public function validate(ErrorElement $errorElement, $object)
     {
