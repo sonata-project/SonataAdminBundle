@@ -53,6 +53,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 // NEXT_MAJOR: Remove next line.
                 new ReferenceConfigurator('sonata.admin.breadcrumbs_builder'),
                 new ReferenceConfigurator('twig'),
+                new ReferenceConfigurator('sonata.admin.request.fetcher'),
             ])
             // NEXT_MAJOR: Remove the alias.
             ->alias(SearchAction::class, 'sonata.admin.action.search')
