@@ -202,7 +202,7 @@ file that was distributed with this source code.
                                 </div>
 
                                 <div class="pull-right">
-                                    {% if admin.hasRoute('export') and admin.hasAccess('export') and export_formats|length %}
+                                    {% if admin.hasRoute('export') and admin.hasAccess('export') and export_formats|default([])|length %}
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                                 <i class="fas fa-share-square" aria-hidden="true"></i>
