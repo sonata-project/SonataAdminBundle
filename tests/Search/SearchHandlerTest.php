@@ -25,17 +25,17 @@ class SearchHandlerTest extends TestCase
     public function testBuildPagerWithNoGlobalSearchField(): void
     {
         $filter = $this->createMock(FilterInterface::class);
-        $filter->expects($this->once())->method('getOption')->with('global_search')->willReturn(false);
-        $filter->expects($this->never())->method('setOption');
+        $filter->expects(self::once())->method('getOption')->with('global_search')->willReturn(false);
+        $filter->expects(self::never())->method('setOption');
 
         $datagrid = $this->createMock(DatagridInterface::class);
-        $datagrid->expects($this->once())->method('getFilters')->willReturn([$filter]);
+        $datagrid->expects(self::once())->method('getFilters')->willReturn([$filter]);
 
         $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->once())->method('getDatagrid')->willReturn($datagrid);
+        $admin->expects(self::once())->method('getDatagrid')->willReturn($datagrid);
 
         $handler = new SearchHandler(true);
-        $this->assertNull($handler->search($admin, 'myservice'));
+        self::assertNull($handler->search($admin, 'myservice'));
     }
 
     /**
@@ -44,34 +44,34 @@ class SearchHandlerTest extends TestCase
     public function testBuildPagerWithGlobalSearchField(bool $caseSensitive): void
     {
         $filter = $this->getMockForAbstractClass(FilterInterface::class);
-        $filter->expects($this->once())->method('getFormName')->willReturn('formName');
-        $filter->expects($this->once())->method('getOption')->with('global_search')->willReturn(true);
+        $filter->expects(self::once())->method('getFormName')->willReturn('formName');
+        $filter->expects(self::once())->method('getOption')->with('global_search')->willReturn(true);
 
         $pager = $this->createMock(PagerInterface::class);
-        $pager->expects($this->once())->method('setPage');
-        $pager->expects($this->once())->method('setMaxPerPage');
+        $pager->expects(self::once())->method('setPage');
+        $pager->expects(self::once())->method('setMaxPerPage');
 
         $datagrid = $this->createMock(DatagridInterface::class);
-        $datagrid->expects($this->once())->method('getFilters')->willReturn([$filter]);
-        $datagrid->expects($this->once())->method('setValue');
-        $datagrid->expects($this->once())->method('getPager')->willReturn($pager);
+        $datagrid->expects(self::once())->method('getFilters')->willReturn([$filter]);
+        $datagrid->expects(self::once())->method('setValue');
+        $datagrid->expects(self::once())->method('getPager')->willReturn($pager);
 
         $adminCode = 'my.admin';
 
         $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->once())->method('getDatagrid')->willReturn($datagrid);
-        $admin->expects($this->exactly(2))->method('getCode')->willReturn($adminCode);
+        $admin->expects(self::once())->method('getDatagrid')->willReturn($datagrid);
+        $admin->expects(self::exactly(2))->method('getCode')->willReturn($adminCode);
 
         $filter
-            ->expects($this->exactly(2))
+            ->expects(self::exactly(2))
             ->method('setOption')
             ->withConsecutive(
-                [$this->equalTo('case_sensitive'), $caseSensitive],
-                [$this->equalTo('or_group'), $adminCode]
+                [self::equalTo('case_sensitive'), $caseSensitive],
+                [self::equalTo('or_group'), $adminCode]
             );
 
         $handler = new SearchHandler($caseSensitive);
-        $this->assertInstanceOf(PagerInterface::class, $handler->search($admin, 'myservice'));
+        self::assertInstanceOf(PagerInterface::class, $handler->search($admin, 'myservice'));
     }
 
     /**
@@ -93,28 +93,28 @@ class SearchHandlerTest extends TestCase
     public function testAdminSearch(?string $expected, int $filterCallsCount, ?bool $enabled, string $adminCode): void
     {
         $filter = $this->createMock(FilterInterface::class);
-        $filter->expects($this->exactly($filterCallsCount))->method('getOption')->with('global_search')->willReturn(true);
+        $filter->expects(self::exactly($filterCallsCount))->method('getOption')->with('global_search')->willReturn(true);
 
         $pager = $this->createMock(PagerInterface::class);
-        $pager->expects($this->exactly($filterCallsCount))->method('setPage');
-        $pager->expects($this->exactly($filterCallsCount))->method('setMaxPerPage');
+        $pager->expects(self::exactly($filterCallsCount))->method('setPage');
+        $pager->expects(self::exactly($filterCallsCount))->method('setMaxPerPage');
 
         $datagrid = $this->createMock(DatagridInterface::class);
-        $datagrid->expects($this->exactly($filterCallsCount))->method('getFilters')->willReturn([$filter]);
-        $datagrid->expects($this->exactly($filterCallsCount))->method('setValue');
-        $datagrid->expects($this->exactly($filterCallsCount))->method('getPager')->willReturn($pager);
+        $datagrid->expects(self::exactly($filterCallsCount))->method('getFilters')->willReturn([$filter]);
+        $datagrid->expects(self::exactly($filterCallsCount))->method('setValue');
+        $datagrid->expects(self::exactly($filterCallsCount))->method('getPager')->willReturn($pager);
 
         $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->exactly($filterCallsCount))->method('getDatagrid')->willReturn($datagrid);
+        $admin->expects(self::exactly($filterCallsCount))->method('getDatagrid')->willReturn($datagrid);
 
-        $admin->expects($this->exactly(null === $expected ? 1 : 2))->method('getCode')->willReturn($adminCode);
+        $admin->expects(self::exactly(null === $expected ? 1 : 2))->method('getCode')->willReturn($adminCode);
 
         $filter
-            ->expects($this->exactly(null === $expected ? 0 : 2))
+            ->expects(self::exactly(null === $expected ? 0 : 2))
             ->method('setOption')
             ->withConsecutive(
-                [$this->equalTo('case_sensitive'), true],
-                [$this->equalTo('or_group'), $adminCode]
+                [self::equalTo('case_sensitive'), true],
+                [self::equalTo('or_group'), $adminCode]
             );
 
         $handler = new SearchHandler(true);
@@ -124,9 +124,9 @@ class SearchHandlerTest extends TestCase
         }
 
         if (null === $expected) {
-            $this->assertNull($handler->search($admin, 'myservice'));
+            self::assertNull($handler->search($admin, 'myservice'));
         } else {
-            $this->assertInstanceOf($expected, $handler->search($admin, 'myservice'));
+            self::assertInstanceOf($expected, $handler->search($admin, 'myservice'));
         }
     }
 
@@ -143,29 +143,29 @@ class SearchHandlerTest extends TestCase
     public function testBuildPagerWithDefaultFilters(): void
     {
         $defaultFilter = $this->createMock(FilterInterface::class);
-        $defaultFilter->expects($this->once())->method('getOption')->with('global_search')->willReturn(false);
-        $defaultFilter->expects($this->once())->method('getFormName')->willReturn('filter1');
+        $defaultFilter->expects(self::once())->method('getOption')->with('global_search')->willReturn(false);
+        $defaultFilter->expects(self::once())->method('getFormName')->willReturn('filter1');
 
         $filter = $this->createMock(FilterInterface::class);
-        $filter->expects($this->once())->method('getOption')->with('global_search')->willReturn(true);
-        $filter->expects($this->once())->method('getFormName')->willReturn('filter2');
+        $filter->expects(self::once())->method('getOption')->with('global_search')->willReturn(true);
+        $filter->expects(self::once())->method('getFormName')->willReturn('filter2');
 
         $pager = $this->createMock(PagerInterface::class);
-        $pager->expects($this->once())->method('setPage');
-        $pager->expects($this->once())->method('setMaxPerPage');
+        $pager->expects(self::once())->method('setPage');
+        $pager->expects(self::once())->method('setMaxPerPage');
 
         $datagrid = $this->createMock(DatagridInterface::class);
-        $datagrid->expects($this->once())->method('getFilters')->willReturn([$defaultFilter, $filter]);
-        $datagrid->expects($this->once())->method('setValue')->with('filter2', null, 'myservice');
-        $datagrid->expects($this->once())->method('removeFilter')->with('filter1');
-        $datagrid->expects($this->once())->method('getValues')->willReturn(['filter1' => ['type' => null, 'value' => null]]);
-        $datagrid->expects($this->once())->method('getPager')->willReturn($pager);
+        $datagrid->expects(self::once())->method('getFilters')->willReturn([$defaultFilter, $filter]);
+        $datagrid->expects(self::once())->method('setValue')->with('filter2', null, 'myservice');
+        $datagrid->expects(self::once())->method('removeFilter')->with('filter1');
+        $datagrid->expects(self::once())->method('getValues')->willReturn(['filter1' => ['type' => null, 'value' => null]]);
+        $datagrid->expects(self::once())->method('getPager')->willReturn($pager);
 
         $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->once())->method('getDatagrid')->willReturn($datagrid);
+        $admin->expects(self::once())->method('getDatagrid')->willReturn($datagrid);
 
         $handler = new SearchHandler(true);
         $pager = $handler->search($admin, 'myservice');
-        $this->assertInstanceOf(PagerInterface::class, $pager);
+        self::assertInstanceOf(PagerInterface::class, $pager);
     }
 }

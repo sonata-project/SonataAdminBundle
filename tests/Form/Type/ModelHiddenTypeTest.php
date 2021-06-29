@@ -31,20 +31,20 @@ class ModelHiddenTypeTest extends TypeTestCase
 
         $options = $optionResolver->resolve(['model_manager' => $modelManager, 'class' => '\Foo']);
 
-        $this->assertInstanceOf(ModelManagerInterface::class, $options['model_manager']);
-        $this->assertSame($modelManager, $options['model_manager']);
-        $this->assertSame('\Foo', $options['class']);
+        self::assertInstanceOf(ModelManagerInterface::class, $options['model_manager']);
+        self::assertSame($modelManager, $options['model_manager']);
+        self::assertSame('\Foo', $options['class']);
     }
 
     public function testGetBlockPrefix(): void
     {
         $type = new ModelHiddenType();
-        $this->assertSame('sonata_type_model_hidden', $type->getBlockPrefix());
+        self::assertSame('sonata_type_model_hidden', $type->getBlockPrefix());
     }
 
     public function testGetParent(): void
     {
         $type = new ModelHiddenType();
-        $this->assertSame(HiddenType::class, $type->getParent());
+        self::assertSame(HiddenType::class, $type->getParent());
     }
 }

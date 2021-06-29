@@ -25,9 +25,9 @@ class BaseAdminModelManagerTest extends TestCase
         $securityHandler = $this->getMockForAbstractClass(SecurityHandlerInterface::class);
 
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-        $modelManager->expects($this->once())->method('create');
-        $modelManager->expects($this->once())->method('update');
-        $modelManager->expects($this->once())->method('delete');
+        $modelManager->expects(self::once())->method('create');
+        $modelManager->expects(self::once())->method('update');
+        $modelManager->expects(self::once())->method('delete');
 
         $admin = new BaseAdminModelManager_Admin('code', \stdClass::class, 'controller');
         $admin->setModelManager($modelManager);
@@ -43,7 +43,7 @@ class BaseAdminModelManagerTest extends TestCase
     public function testObject(): void
     {
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-        $modelManager->expects($this->once())->method('find')->willReturnCallback(static function (string $class, int $id): void {
+        $modelManager->expects(self::once())->method('find')->willReturnCallback(static function (string $class, int $id): void {
             if (\stdClass::class !== $class) {
                 throw new \RuntimeException('Invalid class argument');
             }
@@ -63,7 +63,7 @@ class BaseAdminModelManagerTest extends TestCase
         $query = $this->createMock(ProxyQueryInterface::class);
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
         $modelManager
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('createQuery')
             ->with(\stdClass::class)
             ->willReturn($query);
@@ -77,7 +77,7 @@ class BaseAdminModelManagerTest extends TestCase
     {
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
-            ->expects($this->exactly(2))
+            ->expects(self::exactly(2))
             ->method('getNormalizedIdentifier')
             ->willReturn('42');
 

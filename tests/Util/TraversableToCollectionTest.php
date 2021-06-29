@@ -32,8 +32,8 @@ class TraversableToCollectionTest extends TestCase
     {
         $collection = TraversableToCollection::transform($value);
 
-        $this->assertInstanceOf(Collection::class, $collection);
-        $this->assertCount($expectedCount, $collection);
+        self::assertInstanceOf(Collection::class, $collection);
+        self::assertCount($expectedCount, $collection);
     }
 
     /**
@@ -46,7 +46,7 @@ class TraversableToCollectionTest extends TestCase
         yield [1, [0]];
         yield [1, ['a']];
         yield [3, ['a', 'b', 'other_offset' => 'c']];
-        yield [2, (static function () { yield from ['d', 'e']; })()];
+        yield [2, (static function (): \Generator { yield from ['d', 'e']; })()];
         yield [4, new ArrayCollection(['f', 'g', 'h', 'i'])];
     }
 

@@ -78,7 +78,7 @@ class AdminMakerTest extends TestCase
      */
     private $filesystem;
 
-    protected function setup(): void
+    protected function setUp(): void
     {
         $managerOrmProxy = $this->createMock(ModelManagerInterface::class);
         $managerOrmProxy->method('getExportFields')->with(Foo::class)
@@ -119,7 +119,7 @@ class AdminMakerTest extends TestCase
         $this->input = new ArrayInput($in, $definition);
 
         $stream = fopen('php://memory', 'w', false);
-        $this->assertIsResource($stream);
+        self::assertIsResource($stream);
         $this->output = new StreamOutput($stream);
 
         $this->io = new ConsoleStyle($this->input, $this->output);

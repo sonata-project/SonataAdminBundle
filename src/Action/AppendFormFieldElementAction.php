@@ -60,9 +60,9 @@ final class AppendFormFieldElementAction
         }
 
         $objectId = $request->get('objectId');
-        if ($objectId) {
+        if (null !== $objectId) {
             $subject = $admin->getObject($objectId);
-            if (!$subject) {
+            if (null === $subject) {
                 throw new NotFoundHttpException(sprintf('Could not find subject for id "%s"', $objectId));
             }
         } else {

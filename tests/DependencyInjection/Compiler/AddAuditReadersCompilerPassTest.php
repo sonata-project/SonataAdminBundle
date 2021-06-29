@@ -42,7 +42,7 @@ final class AddAuditReadersCompilerPassTest extends AbstractCompilerPassTestCase
 
         $this->compile();
 
-        $this->assertContainerBuilderHasServiceLocator(
+        self::assertContainerBuilderHasServiceLocator(
             (string) $this->container->getDefinition('sonata.admin.audit.manager')->getArgument(0),
             [
                 'std_audit_reader' => new Reference('std_audit_reader'),

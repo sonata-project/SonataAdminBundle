@@ -82,7 +82,7 @@ final class SearchActionTest extends TestCase
             'groups' => [],
         ])->willReturn('rendered_search');
 
-        $this->assertInstanceOf(Response::class, ($this->action)($request));
+        self::assertInstanceOf(Response::class, ($this->action)($request));
     }
 
     public function testAjaxCall(): void
@@ -95,6 +95,6 @@ final class SearchActionTest extends TestCase
         $request = new Request(['admin' => 'foo', 'q' => 'fooTerm', 'page' => 5, 'offset' => 10]);
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
-        $this->assertInstanceOf(JsonResponse::class, ($this->action)($request));
+        self::assertInstanceOf(JsonResponse::class, ($this->action)($request));
     }
 }

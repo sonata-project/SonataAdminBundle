@@ -161,9 +161,9 @@ class ExplainAdminCommandTest extends TestCase
     {
         $metadata = $this->createMock(ClassMetadata::class);
 
-        $this->validatorFactory->expects($this->once())
+        $this->validatorFactory->expects(self::once())
             ->method('getMetadataFor')
-            ->with($this->equalTo('Acme\Entity\Foo'))
+            ->with(self::equalTo('Acme\Entity\Foo'))
             ->willReturn($metadata);
 
         $propertyMetadata = $this->createMock(PropertyMetadata::class);
@@ -211,9 +211,9 @@ class ExplainAdminCommandTest extends TestCase
         $commandTester->execute(['command' => $command->getName(), 'admin' => 'acme.admin.foo']);
 
         $explainAdminText = file_get_contents(sprintf('%s/../Fixtures/Command/explain_admin.txt', __DIR__));
-        $this->assertNotFalse($explainAdminText);
+        self::assertNotFalse($explainAdminText);
 
-        $this->assertSame(sprintf(
+        self::assertSame(sprintf(
             str_replace("\n", \PHP_EOL, $explainAdminText),
             \get_class($this->admin),
             \get_class($modelManager),
@@ -227,9 +227,9 @@ class ExplainAdminCommandTest extends TestCase
     {
         $metadata = $this->createMock(ClassMetadata::class);
 
-        $this->validatorFactory->expects($this->once())
+        $this->validatorFactory->expects(self::once())
             ->method('getMetadataFor')
-            ->with($this->equalTo('Acme\Entity\Foo'))
+            ->with(self::equalTo('Acme\Entity\Foo'))
             ->willReturn($metadata);
 
         $metadata->properties = [];
@@ -264,9 +264,9 @@ class ExplainAdminCommandTest extends TestCase
         $commandTester->execute(['command' => $command->getName(), 'admin' => 'acme.admin.foo']);
 
         $explainAdminText = file_get_contents(sprintf('%s/../Fixtures/Command/explain_admin_empty_validator.txt', __DIR__));
-        $this->assertNotFalse($explainAdminText);
+        self::assertNotFalse($explainAdminText);
 
-        $this->assertSame(sprintf(
+        self::assertSame(sprintf(
             str_replace("\n", \PHP_EOL, $explainAdminText),
             \get_class($this->admin),
             \get_class($modelManager),
@@ -291,9 +291,9 @@ class ExplainAdminCommandTest extends TestCase
     {
         $metadata = $this->createStub(GenericMetadata::class);
 
-        $this->validatorFactory->expects($this->once())
+        $this->validatorFactory->expects(self::once())
             ->method('getMetadataFor')
-            ->with($this->equalTo('Acme\Entity\Foo'))
+            ->with(self::equalTo('Acme\Entity\Foo'))
             ->willReturn($metadata);
 
         $modelManager = $this->createStub(ModelManagerInterface::class);

@@ -27,8 +27,8 @@ final class DateTimeRangeTypeTest extends BaseTypeTest
 
         $view = $form->createView();
 
-        $this->assertFalse($view->children['type']->vars['required']);
-        $this->assertFalse($view->children['value']->vars['required']);
+        self::assertFalse($view->children['type']->vars['required']);
+        self::assertFalse($view->children['value']->vars['required']);
     }
 
     public function testGetDefaultOptions(): void
@@ -46,7 +46,7 @@ final class DateTimeRangeTypeTest extends BaseTypeTest
             'field_type' => FormDateTimeRangeType::class,
             'field_options' => ['field_options' => ['date_format' => DateTimeType::HTML5_FORMAT]],
         ];
-        $this->assertSame($expected, $options);
+        self::assertSame($expected, $options);
     }
 
     protected function getTestedType(): string

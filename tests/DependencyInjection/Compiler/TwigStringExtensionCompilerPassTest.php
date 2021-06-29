@@ -26,7 +26,7 @@ class TwigStringExtensionCompilerPassTest extends AbstractCompilerPassTestCase
     {
         $this->compile();
 
-        $this->assertContainerBuilderHasServiceDefinitionWithTag(StringExtension::class, 'twig.extension');
+        self::assertContainerBuilderHasServiceDefinitionWithTag(StringExtension::class, 'twig.extension');
     }
 
     public function testLoadTwigStringExtensionWithExtraBundle(): void
@@ -36,8 +36,8 @@ class TwigStringExtensionCompilerPassTest extends AbstractCompilerPassTestCase
         $this->container->setDefinition('twig.extension.string', $definition);
         $this->compile();
 
-        $this->assertContainerBuilderHasServiceDefinitionWithTag('twig.extension.string', 'twig.extension');
-        $this->assertContainerBuilderNotHasService(StringExtension::class);
+        self::assertContainerBuilderHasServiceDefinitionWithTag('twig.extension.string', 'twig.extension');
+        self::assertContainerBuilderNotHasService(StringExtension::class);
     }
 
     protected function registerCompilerPass(ContainerBuilder $container): void

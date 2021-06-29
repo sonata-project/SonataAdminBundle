@@ -22,7 +22,7 @@ class UnderscoreLabelTranslatorStrategyTest extends TestCase
     {
         $strategy = new UnderscoreLabelTranslatorStrategy();
 
-        $this->assertSame('datagrid.label_is_valid', $strategy->getLabel('isValid', 'datagrid', 'label'));
-        $this->assertSame('breadcrumb.link_is0_valid', $strategy->getLabel('is0Valid', 'breadcrumb', 'link'));
+        self::assertSame('datagrid.label_is_valid', $strategy->getLabel('isValid', 'datagrid', 'label'));
+        self::assertSame('breadcrumb.link_is0_valid', $strategy->getLabel('is0Valid', 'breadcrumb', 'link'));
     }
 }

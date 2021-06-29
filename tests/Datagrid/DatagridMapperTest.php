@@ -118,14 +118,14 @@ class DatagridMapperTest extends TestCase
 
     public function testFluidInterface(): void
     {
-        $this->assertSame($this->datagridMapper, $this->datagridMapper->add('fooName', null, ['field_name' => 'fooFilterName']));
-        $this->assertSame($this->datagridMapper, $this->datagridMapper->remove('fooName'));
-        $this->assertSame($this->datagridMapper, $this->datagridMapper->reorder([]));
+        self::assertSame($this->datagridMapper, $this->datagridMapper->add('fooName', null, ['field_name' => 'fooFilterName']));
+        self::assertSame($this->datagridMapper, $this->datagridMapper->remove('fooName'));
+        self::assertSame($this->datagridMapper, $this->datagridMapper->reorder([]));
     }
 
     public function testGet(): void
     {
-        $this->assertFalse($this->datagridMapper->has('fooName'));
+        self::assertFalse($this->datagridMapper->has('fooName'));
 
         $this->datagridMapper->add('foo.name', null, [
             'field_name' => 'fooFilterName',
@@ -133,13 +133,13 @@ class DatagridMapperTest extends TestCase
         ]);
 
         $filter = $this->datagridMapper->get('foo.name');
-        $this->assertInstanceOf(FilterInterface::class, $filter);
-        $this->assertSame('foo.name', $filter->getName());
-        $this->assertSame('foo__name', $filter->getFormName());
-        $this->assertSame(TextType::class, $filter->getFieldType());
-        $this->assertSame('fooLabel', $filter->getLabel());
-        $this->assertSame([], $filter->getFieldOptions());
-        $this->assertSame([
+        self::assertInstanceOf(FilterInterface::class, $filter);
+        self::assertSame('foo.name', $filter->getName());
+        self::assertSame('foo__name', $filter->getFormName());
+        self::assertSame(TextType::class, $filter->getFieldType());
+        self::assertSame('fooLabel', $filter->getLabel());
+        self::assertSame([], $filter->getFieldOptions());
+        self::assertSame([
             'show_filter' => null,
             'advanced_filter' => true,
             'foo_default_option' => 'bar_default',
@@ -150,7 +150,7 @@ class DatagridMapperTest extends TestCase
 
     public function testGet2(): void
     {
-        $this->assertFalse($this->datagridMapper->has('fooName'));
+        self::assertFalse($this->datagridMapper->has('fooName'));
 
         $this->datagridMapper->add('fooName', \stdClass::class, [
             'label' => 'fooLabel',
@@ -162,13 +162,13 @@ class DatagridMapperTest extends TestCase
         ]);
 
         $filter = $this->datagridMapper->get('fooName');
-        $this->assertInstanceOf(FilterInterface::class, $filter);
-        $this->assertSame('fooName', $filter->getName());
-        $this->assertSame('fooName', $filter->getFormName());
-        $this->assertSame('foo_field_type', $filter->getFieldType());
-        $this->assertSame('fooLabel', $filter->getLabel());
-        $this->assertSame(['foo_field_option' => 'baz'], $filter->getFieldOptions());
-        $this->assertSame([
+        self::assertInstanceOf(FilterInterface::class, $filter);
+        self::assertSame('fooName', $filter->getName());
+        self::assertSame('fooName', $filter->getFormName());
+        self::assertSame('foo_field_type', $filter->getFieldType());
+        self::assertSame('fooLabel', $filter->getLabel());
+        self::assertSame(['foo_field_option' => 'baz'], $filter->getFieldOptions());
+        self::assertSame([
             'show_filter' => null,
             'advanced_filter' => true,
             'foo_default_option' => 'bar_custom',
@@ -184,44 +184,44 @@ class DatagridMapperTest extends TestCase
     {
         $this->datagridMapper->add('fooName');
 
-        $this->assertTrue($this->datagridMapper->has('fooName'));
+        self::assertTrue($this->datagridMapper->has('fooName'));
 
         $filter = $this->datagridMapper->get('fooName');
 
-        $this->assertInstanceOf(FilterInterface::class, $filter);
-        $this->assertSame('fooName', $filter->getName());
-        $this->assertSame('filter.label_fooName', $filter->getLabel());
+        self::assertInstanceOf(FilterInterface::class, $filter);
+        self::assertSame('fooName', $filter->getName());
+        self::assertSame('filter.label_fooName', $filter->getLabel());
     }
 
     public function testAddWithoutFieldName(): void
     {
         $this->datagridMapper->add('foo.bar');
 
-        $this->assertTrue($this->datagridMapper->has('foo.bar'));
+        self::assertTrue($this->datagridMapper->has('foo.bar'));
 
         $filter = $this->datagridMapper->get('foo.bar');
 
-        $this->assertInstanceOf(FilterInterface::class, $filter);
-        $this->assertSame('foo.bar', $filter->getName());
-        $this->assertNull($filter->getOption('field_name'));
+        self::assertInstanceOf(FilterInterface::class, $filter);
+        self::assertSame('foo.bar', $filter->getName());
+        self::assertNull($filter->getOption('field_name'));
     }
 
     public function testAddRemove(): void
     {
-        $this->assertFalse($this->datagridMapper->has('fooName'));
+        self::assertFalse($this->datagridMapper->has('fooName'));
 
         $this->datagridMapper->add('fooName', null, ['field_name' => 'fooFilterName']);
-        $this->assertTrue($this->datagridMapper->has('fooName'));
+        self::assertTrue($this->datagridMapper->has('fooName'));
 
         $this->datagridMapper->remove('fooName');
-        $this->assertFalse($this->datagridMapper->has('fooName'));
+        self::assertFalse($this->datagridMapper->has('fooName'));
     }
 
     public function testAddDuplicateNameException(): void
     {
         $tmpNames = [];
         $this->admin
-            ->expects($this->exactly(2))
+            ->expects(self::exactly(2))
             ->method('hasFilterFieldDescription')
             ->willReturnCallback(static function (string $name) use (&$tmpNames): bool {
                 if (isset($tmpNames[$name])) {
@@ -244,7 +244,7 @@ class DatagridMapperTest extends TestCase
         $this->datagridMapper->add('fooName1', null, ['field_name' => 'fooFilterName1']);
         $this->datagridMapper->add('fooName2', null, ['field_name' => 'fooFilterName2']);
 
-        $this->assertSame(['fooName1', 'fooName2'], $this->datagridMapper->keys());
+        self::assertSame(['fooName1', 'fooName2'], $this->datagridMapper->keys());
     }
 
     public function testReorder(): void
@@ -254,7 +254,7 @@ class DatagridMapperTest extends TestCase
         $this->datagridMapper->add('fooName3', null, ['field_name' => 'fooFilterName3']);
         $this->datagridMapper->add('fooName4', null, ['field_name' => 'fooFilterName4']);
 
-        $this->assertSame([
+        self::assertSame([
             'fooName1',
             'fooName2',
             'fooName3',
@@ -263,7 +263,7 @@ class DatagridMapperTest extends TestCase
 
         $this->datagridMapper->reorder(['fooName3', 'fooName2', 'fooName1', 'fooName4']);
 
-        $this->assertSame([
+        self::assertSame([
             'fooName3',
             'fooName2',
             'fooName1',
@@ -275,20 +275,20 @@ class DatagridMapperTest extends TestCase
     {
         $this->datagridMapper->add('bar', \stdClass::class);
 
-        $this->assertTrue($this->datagridMapper->has('bar'));
+        self::assertTrue($this->datagridMapper->has('bar'));
 
         $this->datagridMapper->add('quux', \stdClass::class, [], ['role' => 'ROLE_QUX']);
 
-        $this->assertTrue($this->datagridMapper->has('bar'));
-        $this->assertFalse($this->datagridMapper->has('quux'));
+        self::assertTrue($this->datagridMapper->has('bar'));
+        self::assertFalse($this->datagridMapper->has('quux'));
 
         $this->datagridMapper
             ->add('foobar', \stdClass::class, [], ['role' => self::DEFAULT_GRANTED_ROLE])
             ->add('foo', \stdClass::class, [], ['role' => 'ROLE_QUX'])
             ->add('baz', \stdClass::class);
 
-        $this->assertTrue($this->datagridMapper->has('foobar'));
-        $this->assertFalse($this->datagridMapper->has('foo'));
-        $this->assertTrue($this->datagridMapper->has('baz'));
+        self::assertTrue($this->datagridMapper->has('foobar'));
+        self::assertFalse($this->datagridMapper->has('foo'));
+        self::assertTrue($this->datagridMapper->has('baz'));
     }
 }

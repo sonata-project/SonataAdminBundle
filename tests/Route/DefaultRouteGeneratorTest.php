@@ -44,13 +44,13 @@ class DefaultRouteGeneratorTest extends TestCase
     public function testGenerate(): void
     {
         $router = $this->getMockForAbstractClass(RouterInterface::class);
-        $router->expects($this->once())->method('generate')->willReturn('/foo/bar');
+        $router->expects(self::once())->method('generate')->willReturn('/foo/bar');
 
         $cache = new RoutesCache($this->cacheTempFolder, true);
 
         $generator = new DefaultRouteGenerator($router, $cache);
 
-        $this->assertSame('/foo/bar', $generator->generate('foo_bar'));
+        self::assertSame('/foo/bar', $generator->generate('foo_bar'));
     }
 
     /**
@@ -74,16 +74,16 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->method('isChild')->willReturn(false);
         $admin->method('getBaseCodeRoute')->willReturn('base.Code.Foo');
-        $admin->expects($this->once())->method('hasParentFieldDescription')->willReturn(false);
-        $admin->expects($this->once())->method('hasRequest')->willReturn(true);
+        $admin->expects(self::once())->method('hasParentFieldDescription')->willReturn(false);
+        $admin->expects(self::once())->method('hasRequest')->willReturn(true);
         $admin->method('getUniqId')->willReturn('foo_uniqueid');
-        $admin->expects($this->once())->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
+        $admin->expects(self::once())->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
         $admin->method('getRoutes')->willReturn($collection);
         $admin->method('getExtensions')->willReturn([]);
         $admin->method('getCode')->willReturn($name);
 
         $router = $this->getMockForAbstractClass(RouterInterface::class);
-        $router->expects($this->once())
+        $router->expects(self::once())
             ->method('generate')
             ->willReturnCallback(static function (string $name, array $parameters = [], int $referenceType = RouterInterface::ABSOLUTE_PATH): string {
                 $params = '';
@@ -106,7 +106,7 @@ class DefaultRouteGeneratorTest extends TestCase
 
         $generator = new DefaultRouteGenerator($router, $cache);
 
-        $this->assertSame($expected, $generator->generateUrl($admin, $name, $parameters, $referenceType));
+        self::assertSame($expected, $generator->generateUrl($admin, $name, $parameters, $referenceType));
     }
 
     /**
@@ -135,10 +135,10 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->method('isChild')->willReturn(false);
         $admin->method('getBaseCodeRoute')->willReturn('base.Code.Route');
-        $admin->expects($this->once())->method('hasParentFieldDescription')->willReturn(false);
-        $admin->expects($this->once())->method('hasRequest')->willReturn(true);
-        $admin->expects($this->once())->method('getPersistentParameters')->willReturn([]);
-        $admin->expects($this->once())->method('getRoutes')->willReturn(new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'BundleName:ControllerName'));
+        $admin->expects(self::once())->method('hasParentFieldDescription')->willReturn(false);
+        $admin->expects(self::once())->method('hasRequest')->willReturn(true);
+        $admin->expects(self::once())->method('getPersistentParameters')->willReturn([]);
+        $admin->expects(self::once())->method('getRoutes')->willReturn(new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'BundleName:ControllerName'));
         $admin->method('getExtensions')->willReturn([]);
         $admin->method('getCode')->willReturn('Code');
 
@@ -183,7 +183,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $parentAdmin->method('getCode')->willReturn($name);
 
         // no request attached in this test, so this will not be used
-        $parentAdmin->expects($this->never())->method('getPersistentParameters')->willReturn(['from' => 'parent']);
+        $parentAdmin->expects(self::never())->method('getPersistentParameters')->willReturn(['from' => 'parent']);
 
         $request = $this->createMock(Request::class);
         $request->attributes = $this->createMock(ParameterBag::class);
@@ -203,9 +203,9 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->method('getCode')->willReturn($name);
 
         $router = $this->getMockForAbstractClass(RouterInterface::class);
-        $router->expects($this->once())
+        $router->expects(self::once())
             ->method('generate')
-            ->willReturnCallback(static function (string $name, array $parameters = []) {
+            ->willReturnCallback(static function (string $name, array $parameters = []): string {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);
@@ -225,7 +225,7 @@ class DefaultRouteGeneratorTest extends TestCase
 
         $generator = new DefaultRouteGenerator($router, $cache);
 
-        $this->assertSame($expected, $generator->generateUrl('child' === $type ? $admin : $parentAdmin, $name, $parameters));
+        self::assertSame($expected, $generator->generateUrl('child' === $type ? $admin : $parentAdmin, $name, $parameters));
     }
 
     /**
@@ -259,15 +259,15 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->method('getCode')->willReturn('base.Code.Parent');
         $admin->method('getBaseCodeRoute')->willReturn('base.Code.Parent');
         // embeded admin (not nested ...)
-        $admin->expects($this->once())->method('hasParentFieldDescription')->willReturn(true);
-        $admin->expects($this->once())->method('hasRequest')->willReturn(true);
-        $admin->expects($this->any())->method('getUniqId')->willReturn('foo_uniqueid');
-        $admin->expects($this->once())->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
+        $admin->expects(self::once())->method('hasParentFieldDescription')->willReturn(true);
+        $admin->expects(self::once())->method('hasRequest')->willReturn(true);
+        $admin->expects(self::any())->method('getUniqId')->willReturn('foo_uniqueid');
+        $admin->expects(self::once())->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
         $admin->method('getExtensions')->willReturn([]);
         $admin->method('getRoutes')->willReturn($collection);
 
         $router = $this->getMockForAbstractClass(RouterInterface::class);
-        $router->expects($this->once())
+        $router->expects(self::once())
             ->method('generate')
             ->willReturnCallback(static function (string $name, array $parameters = []): string {
                 $params = '';
@@ -286,7 +286,7 @@ class DefaultRouteGeneratorTest extends TestCase
             });
 
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getOption')->willReturn([]);
+        $fieldDescription->expects(self::once())->method('getOption')->willReturn([]);
 
         $parentAdmin = $this->getMockForAbstractClass(AdminInterface::class);
         $parentAdmin->method('getUniqId')->willReturn('parent_foo_uniqueid');
@@ -300,7 +300,7 @@ class DefaultRouteGeneratorTest extends TestCase
 
         $generator = new DefaultRouteGenerator($router, $cache);
 
-        $this->assertSame($expected, $generator->generateUrl($admin, $name, $parameters));
+        self::assertSame($expected, $generator->generateUrl($admin, $name, $parameters));
     }
 
     /**
@@ -351,7 +351,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $parentAdmin->method('getExtensions')->willReturn([]);
 
         // no request attached in this test, so this will not be used
-        $parentAdmin->expects($this->never())->method('getPersistentParameters')->willReturn(['from' => 'parent']);
+        $parentAdmin->expects(self::never())->method('getPersistentParameters')->willReturn(['from' => 'parent']);
 
         $request = $this->createMock(Request::class);
         $request->attributes = $this->createMock(ParameterBag::class);
@@ -372,16 +372,16 @@ class DefaultRouteGeneratorTest extends TestCase
         $standaloneAdmin = $this->getMockForAbstractClass(AdminInterface::class);
         $standaloneAdmin->method('isChild')->willReturn(false);
         $standaloneAdmin->method('getBaseCodeRoute')->willReturn('base.Code.Child');
-        $standaloneAdmin->expects($this->once())->method('hasParentFieldDescription')->willReturn(false);
-        $standaloneAdmin->expects($this->once())->method('hasRequest')->willReturn(true);
+        $standaloneAdmin->expects(self::once())->method('hasParentFieldDescription')->willReturn(false);
+        $standaloneAdmin->expects(self::once())->method('hasRequest')->willReturn(true);
         $standaloneAdmin->method('getUniqId')->willReturn('foo_uniqueid');
-        $standaloneAdmin->expects($this->once())->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
+        $standaloneAdmin->expects(self::once())->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
         $standaloneAdmin->method('getRoutes')->willReturn($standaloneCollection);
         $standaloneAdmin->method('getExtensions')->willReturn([]);
         $standaloneAdmin->method('getCode')->willReturn('Code');
 
         $router = $this->getMockForAbstractClass(RouterInterface::class);
-        $router->expects($this->exactly(2))
+        $router->expects(self::exactly(2))
             ->method('generate')
             ->willReturnCallback(static function (string $name, array $parameters = []): string {
                 $params = '';
@@ -405,7 +405,7 @@ class DefaultRouteGeneratorTest extends TestCase
 
         // Generate once to populate cache
         $generator->generateUrl($admin, 'bar', $parameters);
-        $this->assertSame($expected, $generator->generateUrl($standaloneAdmin, $name, $parameters));
+        self::assertSame($expected, $generator->generateUrl($standaloneAdmin, $name, $parameters));
     }
 
     /**

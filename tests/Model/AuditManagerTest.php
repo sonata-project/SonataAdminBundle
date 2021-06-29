@@ -40,12 +40,12 @@ final class AuditManagerTest extends TestCase
         /** @var class-string $foo2 */
         $foo2 = 'Foo\Foo2';
 
-        $this->assertFalse($auditManager->hasReader($foo1));
+        self::assertFalse($auditManager->hasReader($foo1));
 
         $auditManager->setReader('foo_reader', [$foo1, $foo2]);
 
-        $this->assertTrue($auditManager->hasReader($foo1));
-        $this->assertSame($fooReader, $auditManager->getReader($foo1));
+        self::assertTrue($auditManager->hasReader($foo1));
+        self::assertSame($fooReader, $auditManager->getReader($foo1));
     }
 
     public function testGetReaderWithException(): void

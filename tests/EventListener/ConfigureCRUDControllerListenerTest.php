@@ -62,7 +62,7 @@ final class ConfigureCRUDControllerListenerTest extends TestCase
         );
 
         $adminFetcher
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('get')
             ->with($request)
             ->willReturn($admin);

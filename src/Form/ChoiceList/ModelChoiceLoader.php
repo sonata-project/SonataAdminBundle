@@ -83,7 +83,7 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
         $this->property = $property;
         $this->choices = $choices;
 
-        if ($query) {
+        if (null !== $query) {
             if (!$this->modelManager->supportsQuery($query)) {
                 throw new \InvalidArgumentException('The model manager does not support the query.');
             }
@@ -94,8 +94,8 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
 
     public function loadChoiceList($value = null): ChoiceListInterface
     {
-        if (!$this->choiceList) {
-            if ($this->query) {
+        if (null === $this->choiceList) {
+            if (null !== $this->query) {
                 $entities = $this->modelManager->executeQuery($this->query);
             } elseif (\is_array($this->choices)) {
                 $entities = $this->choices;

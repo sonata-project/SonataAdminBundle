@@ -59,7 +59,7 @@ final class DatagridBuilder implements DatagridBuilderInterface
     {
     }
 
-    public function addFilter(DatagridInterface $datagrid, $type, FieldDescriptionInterface $fieldDescription): void
+    public function addFilter(DatagridInterface $datagrid, ?string $type, FieldDescriptionInterface $fieldDescription): void
     {
     }
 

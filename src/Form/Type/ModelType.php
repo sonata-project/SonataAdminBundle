@@ -79,7 +79,7 @@ final class ModelType extends AbstractType
         $options = [];
 
         $options['choice_loader'] = function (Options $options, ?ChoiceListInterface $previousValue) {
-            if ($previousValue && \count($choices = $previousValue->getChoices())) {
+            if (null !== $previousValue && \count($choices = $previousValue->getChoices()) > 0) {
                 return $choices;
             }
 

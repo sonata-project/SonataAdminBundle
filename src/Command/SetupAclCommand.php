@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Command;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Util\AdminAclManipulatorInterface;
 use Symfony\Component\Console\Command\Command;
@@ -64,7 +63,6 @@ final class SetupAclCommand extends Command
                 continue;
             }
 
-            \assert($admin instanceof AdminInterface);
             $this->aclManipulator->configureAcls($output, $admin);
         }
 

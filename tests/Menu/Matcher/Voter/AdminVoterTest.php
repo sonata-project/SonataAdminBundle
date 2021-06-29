@@ -56,9 +56,9 @@ class AdminVoterTest extends AbstractVoterTest
         $item = $this->getMockForAbstractClass(ItemInterface::class);
         $item
             ->method('getExtra')
-            ->with($this->logicalOr(
-                $this->equalTo('admin'),
-                $this->equalTo('route')
+            ->with(self::logicalOr(
+                self::equalTo('admin'),
+                self::equalTo('route')
             ))
             ->willReturn($data);
 

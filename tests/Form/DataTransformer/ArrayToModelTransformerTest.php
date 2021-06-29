@@ -39,7 +39,7 @@ class ArrayToModelTransformerTest extends TestCase
         $transformer = new ArrayToModelTransformer($this->modelManager, FooEntity::class);
 
         $model = new FooEntity();
-        $this->assertSame($model, $transformer->reverseTransform($model));
+        self::assertSame($model, $transformer->reverseTransform($model));
     }
 
     /**
@@ -51,7 +51,7 @@ class ArrayToModelTransformerTest extends TestCase
     {
         $transformer = new ArrayToModelTransformer($this->modelManager, FooEntity::class);
 
-        $this->assertInstanceOf(FooEntity::class, $transformer->reverseTransform($value));
+        self::assertInstanceOf(FooEntity::class, $transformer->reverseTransform($value));
     }
 
     /**
@@ -74,7 +74,7 @@ class ArrayToModelTransformerTest extends TestCase
     {
         $transformer = new ArrayToModelTransformer($this->modelManager, FooEntity::class);
 
-        $this->assertSame($expected, $transformer->transform($value));
+        self::assertSame($expected, $transformer->transform($value));
     }
 
     /**

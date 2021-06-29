@@ -213,7 +213,7 @@ final class AdminMaker extends AbstractMaker
         $this->generateAdmin($io, $generator, $adminClassNameDetails);
 
         $controllerClassFullName = '';
-        if ($this->controllerClassBasename) {
+        if (null !== $this->controllerClassBasename) {
             $controllerClassNameDetails = $generator->createClassNameDetails(
                 $this->controllerClassBasename,
                 'Controller\\',
@@ -249,7 +249,7 @@ final class AdminMaker extends AbstractMaker
         if ($servicesFile = $input->getOption('services')) {
             $file = sprintf('%s/config/%s', $this->projectDirectory, $servicesFile);
             $servicesManipulator = new ServicesManipulator($file);
-            $controllerName = $this->controllerClassBasename ? $controllerClassFullName : '~';
+            $controllerName = null !== $this->controllerClassBasename ? $controllerClassFullName : '~';
 
             $id = $input->getOption('id') ?:
                 $this->getAdminServiceId($this->adminClassBasename);

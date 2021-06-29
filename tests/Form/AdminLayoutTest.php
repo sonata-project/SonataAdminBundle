@@ -33,7 +33,7 @@ final class AdminLayoutTest extends AbstractLayoutTestCase
     [.="[trans]Name[/trans]"]
 EOD;
 
-        $this->assertMatchesXpath($html, $expression);
+        self::assertMatchesXpath($html, $expression);
     }
 
     public function testLabelWithoutTranslation(): void
@@ -55,7 +55,7 @@ EOD;
     [.="Name"]
 EOD;
 
-        $this->assertMatchesXpath($html, $expression);
+        self::assertMatchesXpath($html, $expression);
     }
 
     public function testLabelWithCustomTranslationDomain(): void
@@ -77,7 +77,7 @@ EOD;
     [.="[trans domain=custom_domain]Name[/trans]"]
 EOD;
 
-        $this->assertMatchesXpath($html, $expression);
+        self::assertMatchesXpath($html, $expression);
     }
 
     public function testLabelWithAdminTranslationDomain(): void
@@ -96,7 +96,7 @@ EOD;
     [.="[trans domain=sonata_translation_domain]Name[/trans]"]
 EOD;
 
-        $this->assertMatchesXpath($html, $expression);
+        self::assertMatchesXpath($html, $expression);
     }
 
     public function testHelp(): void
@@ -114,7 +114,7 @@ EOD;
     [.="[trans]Help text test![/trans]"]
 EOD;
 
-        $this->assertMatchesXpath($html, $expression);
+        self::assertMatchesXpath($html, $expression);
     }
 
     public function testHelpWithAdminTranslationDomain(): void
@@ -135,7 +135,7 @@ EOD;
     [.="[trans domain=sonata_translation_domain]Help text test![/trans]"]
 EOD;
 
-        $this->assertMatchesXpath($html, $expression);
+        self::assertMatchesXpath($html, $expression);
     }
 
     public function testRowSetId(): void
@@ -144,7 +144,7 @@ EOD;
         $view = $form->createView();
         $html = $this->renderRow($view);
 
-        $this->assertMatchesXpath($html, '//div[@class="form-group"][@id="sonata-ba-field-container-name"]');
+        self::assertMatchesXpath($html, '//div[@class="form-group"][@id="sonata-ba-field-container-name"]');
     }
 
     public function testRowWithErrors(): void
@@ -156,7 +156,7 @@ EOD;
         $view = $form->createView();
         $html = $this->renderRow($view);
 
-        $this->assertMatchesXpath($html, '/div[@class="form-group has-error"][@id="sonata-ba-field-container-name"]');
+        self::assertMatchesXpath($html, '/div[@class="form-group has-error"][@id="sonata-ba-field-container-name"]');
     }
 
     public function testErrors(): void
@@ -189,7 +189,7 @@ EOD;
     ]
 EOD;
 
-        $this->assertMatchesXpath(
+        self::assertMatchesXpath(
             $html,
             $expression
         );
@@ -206,7 +206,7 @@ EOD;
         $view = $form->createView();
         $html = $this->renderRow($view);
 
-        $this->assertMatchesXpath(
+        self::assertMatchesXpath(
             $html,
             '//div[@class="foo form-group"][@data-value="bar"][@id="sonata-ba-field-container-name"]'
         );

@@ -64,7 +64,7 @@ final class SearchAction
      */
     public function __invoke(Request $request): Response
     {
-        if (!$request->get('admin') || !$request->isXmlHttpRequest()) {
+        if (null === $request->get('admin') || !$request->isXmlHttpRequest()) {
             return new Response($this->twig->render($this->templateRegistry->getTemplate('search'), [
                 'base_template' => $request->isXmlHttpRequest() ?
                     $this->templateRegistry->getTemplate('ajax') :
@@ -84,12 +84,13 @@ final class SearchAction
 
         $page = false;
         $total = false;
-        if ($pager = $this->searchHandler->search(
+        $pager = $this->searchHandler->search(
             $admin,
             $request->get('q'),
             $request->get('page'),
             $request->get('offset')
-        )) {
+        );
+        if (null !== $pager) {
             $pageResults = $pager->getCurrentPageResults();
 
             foreach ($pageResults as $result) {

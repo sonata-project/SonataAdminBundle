@@ -55,7 +55,7 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
 
         $html = $this->renderWidget($choice->createView());
 
-        $this->assertStringContainsString(
+        self::assertStringContainsString(
             'sonata-collection-delete',
             $this->cleanHtmlWhitespace($html)
         );

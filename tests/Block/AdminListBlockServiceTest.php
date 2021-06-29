@@ -47,7 +47,7 @@ class AdminListBlockServiceTest extends BlockServiceTestCase
         $blockService = new AdminListBlockService($this->twig, $this->pool, $this->templateRegistry);
         $blockContext = $this->getBlockContext($blockService);
 
-        $this->assertSettings([
+        self::assertSettings([
             'groups' => false,
         ], $blockContext);
     }

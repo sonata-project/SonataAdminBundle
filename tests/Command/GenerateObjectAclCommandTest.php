@@ -55,7 +55,7 @@ class GenerateObjectAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertMatchesRegularExpression('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
+        self::assertMatchesRegularExpression('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
     }
 
     public function testExecuteWithEmptyManipulators(): void
@@ -71,7 +71,7 @@ class GenerateObjectAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertMatchesRegularExpression('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
+        self::assertMatchesRegularExpression('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
     }
 
     public function testExecuteWithManipulatorNotFound(): void
@@ -96,7 +96,7 @@ class GenerateObjectAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertMatchesRegularExpression('/Admin class is using a manager type that has no manipulator implemented : ignoring/', $commandTester->getDisplay());
+        self::assertMatchesRegularExpression('/Admin class is using a manager type that has no manipulator implemented : ignoring/', $commandTester->getDisplay());
     }
 
     /**
@@ -125,7 +125,7 @@ class GenerateObjectAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertMatchesRegularExpression('/The interface "ObjectAclManipulatorInterface" is not implemented for/', $commandTester->getDisplay());
+        self::assertMatchesRegularExpression('/The interface "ObjectAclManipulatorInterface" is not implemented for/', $commandTester->getDisplay());
     }
 
     public function testExecuteWithManipulator(): void
@@ -138,8 +138,8 @@ class GenerateObjectAclCommandTest extends TestCase
         $admin->setManagerType('bar');
 
         $manipulator = $this->createMock(ObjectAclManipulatorInterface::class);
-        $manipulator->expects($this->once())->method('batchConfigureAcls')
-            ->with($this->isInstanceOf(StreamOutput::class), $admin, null);
+        $manipulator->expects(self::once())->method('batchConfigureAcls')
+            ->with(self::isInstanceOf(StreamOutput::class), $admin, null);
 
         $aclObjectManipulators = [
             'sonata.admin.manipulator.acl.object.bar' => $manipulator,
@@ -166,12 +166,12 @@ class GenerateObjectAclCommandTest extends TestCase
 
         $manipulator = $this->createMock(ObjectAclManipulatorInterface::class);
         $manipulator
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('batchConfigureAcls')
             ->with(
-                $this->isInstanceOf(StreamOutput::class),
+                self::isInstanceOf(StreamOutput::class),
                 $admin,
-                $this->callback(static function (UserSecurityIdentity $userSecurityIdentity): bool {
+                self::callback(static function (UserSecurityIdentity $userSecurityIdentity): bool {
                     return Foo::class === $userSecurityIdentity->getClass();
                 })
             );

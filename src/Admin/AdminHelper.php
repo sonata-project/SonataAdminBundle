@@ -92,7 +92,7 @@ class AdminHelper
         // get the field element
         $childFormBuilder = $this->getChildFormBuilder($formBuilder, $elementId);
 
-        if ($childFormBuilder) {
+        if (null !== $childFormBuilder) {
             $formData = $admin->getRequest()->get($formBuilder->getName(), []);
             if (\array_key_exists($childFormBuilder->getName(), $formData)) {
                 $formData = $admin->getRequest()->get($formBuilder->getName(), []);
@@ -113,7 +113,7 @@ class AdminHelper
         $form->setData($subject);
         $form->handleRequest($admin->getRequest());
 
-        if ($childFormBuilder && $admin->hasFormFieldDescription($childFormBuilder->getName())) {
+        if (null !== $childFormBuilder && $admin->hasFormFieldDescription($childFormBuilder->getName())) {
             // retrieve the FieldDescription
             $fieldDescription = $admin->getFormFieldDescription($childFormBuilder->getName());
 
@@ -181,7 +181,7 @@ class AdminHelper
         $finalForm->setData($form->getData());
 
         // back up delete field
-        if ($childFormBuilder && \count($toDelete) > 0) {
+        if (null !== $childFormBuilder && \count($toDelete) > 0) {
             $i = 0;
             foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
                 if ($childField->has(self::FORM_FIELD_DELETE)) {
@@ -233,8 +233,8 @@ class AdminHelper
         $currentPath = '';
 
         foreach ($parts as $part) {
-            $currentPath .= empty($currentPath) ? $part : '_'.$part;
-            $separator = empty($totalPath) ? '' : '.';
+            $currentPath .= '' === $currentPath ? $part : '_'.$part;
+            $separator = '' === $totalPath ? '' : '.';
 
             if ($this->propertyAccessor->isReadable($model, $totalPath.$separator.$currentPath)) {
                 $totalPath .= $separator.$currentPath;
@@ -242,7 +242,7 @@ class AdminHelper
             }
         }
 
-        if (!empty($currentPath)) {
+        if ('' !== $currentPath) {
             throw new \Exception(sprintf(
                 'Could not get element id from %s Failing part: %s',
                 $elementId,

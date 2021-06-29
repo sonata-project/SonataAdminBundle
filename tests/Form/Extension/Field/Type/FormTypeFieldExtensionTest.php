@@ -30,7 +30,7 @@ final class FormTypeFieldExtensionTest extends TestCase
 {
     public function testExtendedType(): void
     {
-        $this->assertSame([FormType::class], FormTypeFieldExtension::getExtendedTypes());
+        self::assertSame([FormType::class], FormTypeFieldExtension::getExtendedTypes());
     }
 
     public function testDefaultOptions(): void
@@ -42,11 +42,11 @@ final class FormTypeFieldExtensionTest extends TestCase
 
         $options = $resolver->resolve();
 
-        $this->assertArrayHasKey('sonata_admin', $options);
-        $this->assertArrayHasKey('sonata_field_description', $options);
+        self::assertArrayHasKey('sonata_admin', $options);
+        self::assertArrayHasKey('sonata_field_description', $options);
 
-        $this->assertNull($options['sonata_admin']);
-        $this->assertNull($options['sonata_field_description']);
+        self::assertNull($options['sonata_admin']);
+        self::assertNull($options['sonata_field_description']);
     }
 
     public function testbuildViewWithNoSonataAdminArray(): void
@@ -66,8 +66,8 @@ final class FormTypeFieldExtensionTest extends TestCase
         $extension = new FormTypeFieldExtension([], []);
         $extension->buildView($formView, $form, []);
 
-        $this->assertArrayHasKey('sonata_admin', $formView->vars);
-        $this->assertNull($formView->vars['sonata_admin']);
+        self::assertArrayHasKey('sonata_admin', $formView->vars);
+        self::assertNull($formView->vars['sonata_admin']);
     }
 
     public function testBuildFormWithFieldDescription(): void
@@ -99,8 +99,8 @@ final class FormTypeFieldExtensionTest extends TestCase
             'sonata_field_description' => $fieldDescription,
         ]);
 
-        $this->assertTrue($formBuilder->getAttribute('sonata_admin_enabled'));
-        $this->assertSame([
+        self::assertTrue($formBuilder->getAttribute('sonata_admin_enabled'));
+        self::assertSame([
             'name' => 'name',
             'admin' => $admin,
             'value' => null,
@@ -116,7 +116,7 @@ final class FormTypeFieldExtensionTest extends TestCase
     public function testbuildViewWithWithSonataAdmin(): void
     {
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $admin->expects($this->exactly(2))->method('getCode')->willReturn('my.admin.reference');
+        $admin->expects(self::exactly(2))->method('getCode')->willReturn('my.admin.reference');
 
         $eventDispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
 
@@ -139,9 +139,9 @@ final class FormTypeFieldExtensionTest extends TestCase
         $extension = new FormTypeFieldExtension([], []);
         $extension->buildView($formView, $form, []);
 
-        $this->assertArrayHasKey('block_prefixes', $formView->vars);
-        $this->assertArrayHasKey('sonata_admin_enabled', $formView->vars);
-        $this->assertArrayHasKey('sonata_admin', $formView->vars);
+        self::assertArrayHasKey('block_prefixes', $formView->vars);
+        self::assertArrayHasKey('sonata_admin_enabled', $formView->vars);
+        self::assertArrayHasKey('sonata_admin', $formView->vars);
 
         $expected = [
             'form',
@@ -153,8 +153,8 @@ final class FormTypeFieldExtensionTest extends TestCase
             'my_admin_reference_name_text_username',
         ];
 
-        $this->assertSame($expected, $formView->vars['block_prefixes']);
-        $this->assertTrue($formView->vars['sonata_admin_enabled']);
+        self::assertSame($expected, $formView->vars['block_prefixes']);
+        self::assertTrue($formView->vars['sonata_admin_enabled']);
     }
 
     public function testbuildViewWithNestedForm(): void
@@ -180,9 +180,9 @@ final class FormTypeFieldExtensionTest extends TestCase
         $extension = new FormTypeFieldExtension([], []);
         $extension->buildView($formView, $form, []);
 
-        $this->assertArrayHasKey('block_prefixes', $formView->vars);
-        $this->assertArrayHasKey('sonata_admin_enabled', $formView->vars);
-        $this->assertArrayHasKey('sonata_admin', $formView->vars);
+        self::assertArrayHasKey('block_prefixes', $formView->vars);
+        self::assertArrayHasKey('sonata_admin_enabled', $formView->vars);
+        self::assertArrayHasKey('sonata_admin', $formView->vars);
 
         $expected = [
             'value' => null,
@@ -211,7 +211,7 @@ final class FormTypeFieldExtensionTest extends TestCase
             'sonata_admin_code' => 'parent_code',
         ];
 
-        $this->assertSame($expected, $formView->vars);
+        self::assertSame($expected, $formView->vars);
     }
 
     public function testbuildViewWithNestedFormWithNoParent(): void
@@ -226,9 +226,9 @@ final class FormTypeFieldExtensionTest extends TestCase
         $extension = new FormTypeFieldExtension([], []);
         $extension->buildView($formView, $form, []);
 
-        $this->assertArrayNotHasKey('block_prefixes', $formView->vars);
-        $this->assertArrayHasKey('sonata_admin_enabled', $formView->vars);
-        $this->assertArrayHasKey('sonata_admin', $formView->vars);
+        self::assertArrayNotHasKey('block_prefixes', $formView->vars);
+        self::assertArrayHasKey('sonata_admin_enabled', $formView->vars);
+        self::assertArrayHasKey('sonata_admin', $formView->vars);
     }
 
     public function testbuildViewCollectionField(): void
@@ -306,6 +306,6 @@ final class FormTypeFieldExtensionTest extends TestCase
             'admin_parent_checkbox_0__parent_collection_entry_field',
         ];
 
-        $this->assertSame($expected, $formView->vars['block_prefixes']);
+        self::assertSame($expected, $formView->vars['block_prefixes']);
     }
 }

@@ -98,17 +98,13 @@ final class AdminAclManipulator implements AdminAclManipulatorInterface
                         $action = 'update';
                     }
 
-                    if (null !== $output) {
-                        $output->writeln(sprintf('   - %s role: %s, permissions: %s', $action, $role, json_encode($roleAdminPermissions)));
-                    }
+                    $output->writeln(sprintf('   - %s role: %s, permissions: %s', $action, $role, json_encode($roleAdminPermissions)));
 
                     $builder->reset();
                 } elseif (false !== $aceIndex) {
                     $acl->deleteClassAce($aceIndex);
 
-                    if (null !== $output) {
-                        $output->writeln(sprintf('   - remove role: %s', $role));
-                    }
+                    $output->writeln(sprintf('   - remove role: %s', $role));
                 }
             }
 

@@ -53,7 +53,7 @@ class SetupAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertMatchesRegularExpression('/Starting ACL AdminBundle configuration/', $commandTester->getDisplay());
+        self::assertMatchesRegularExpression('/Starting ACL AdminBundle configuration/', $commandTester->getDisplay());
     }
 
     public function testExecuteWithException1(): void
@@ -70,7 +70,7 @@ class SetupAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertMatchesRegularExpression(
+        self::assertMatchesRegularExpression(
             '@Starting ACL AdminBundle configuration\s+Warning : The admin class cannot be initiated from the command line\s+You have requested a non-existent service "acme.admin.foo".@',
             $commandTester->getDisplay()
         );

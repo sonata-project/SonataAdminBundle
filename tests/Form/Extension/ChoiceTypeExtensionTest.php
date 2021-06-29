@@ -26,7 +26,7 @@ class ChoiceTypeExtensionTest extends TestCase
      */
     private $factory;
 
-    protected function setup(): void
+    protected function setUp(): void
     {
         $this->factory = Forms::createFormFactoryBuilder()
             ->addTypeExtensions([new ChoiceTypeExtension()])
@@ -35,7 +35,7 @@ class ChoiceTypeExtensionTest extends TestCase
 
     public function testExtendedType(): void
     {
-        $this->assertSame(
+        self::assertSame(
             [ChoiceType::class],
             ChoiceTypeExtension::getExtendedTypes()
         );
@@ -49,8 +49,8 @@ class ChoiceTypeExtensionTest extends TestCase
             ])
             ->createView();
 
-        $this->assertTrue(isset($view->vars['sortable']));
-        $this->assertTrue($view->vars['sortable']);
+        self::assertTrue(isset($view->vars['sortable']));
+        self::assertTrue($view->vars['sortable']);
     }
 
     public function testDefaultOptionsWithoutSortable(): void
@@ -59,7 +59,7 @@ class ChoiceTypeExtensionTest extends TestCase
             ->create(ChoiceType::class, null, [])
             ->createView();
 
-        $this->assertTrue(isset($view->vars['sortable']));
-        $this->assertFalse($view->vars['sortable']);
+        self::assertTrue(isset($view->vars['sortable']));
+        self::assertFalse($view->vars['sortable']);
     }
 }
