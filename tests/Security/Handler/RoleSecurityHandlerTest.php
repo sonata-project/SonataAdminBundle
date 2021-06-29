@@ -86,7 +86,7 @@ class RoleSecurityHandlerTest extends TestCase
 
         $this->authorizationChecker
             ->method('isGranted')
-            ->willReturnCallback(static function (string $attribute, $object) {
+            ->willReturnCallback(static function (string $attribute, ?object $object) {
                 switch ($attribute) {
                     case 'ROLE_BATMAN':
                     case 'ROLE_IRONMAN':

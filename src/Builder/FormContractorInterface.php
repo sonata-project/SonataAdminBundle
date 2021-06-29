@@ -32,6 +32,8 @@ interface FormContractorInterface extends BuilderInterface
      * @param array<string, mixed> $formOptions
      *
      * @return array<string, mixed>
+     *
+     * @phpstan-param class-string|null $type
      */
     public function getDefaultOptions(
         ?string $type,

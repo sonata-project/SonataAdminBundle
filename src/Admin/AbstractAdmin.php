@@ -521,9 +521,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             $parameters = ParametersManipulator::merge($parameters, $filters);
 
             // always force the parent value
-            if ($this->isChild() && null !== $this->getParentAssociationMapping()) {
-                $name = str_replace('.', '__', $this->getParentAssociationMapping());
-                $parameters[$name] = ['value' => $this->getRequest()->get($this->getParent()->getIdParameter())];
+            if ($this->isChild()) {
+                $parentAssociationMapping = $this->getParentAssociationMapping();
+                if (null !== $parentAssociationMapping) {
+                    $name = str_replace('.', '__', $parentAssociationMapping);
+                    $parameters[$name] = ['value' => $this->getRequest()->get($this->getParent()->getIdParameter())];
+                }
             }
         }
 
@@ -925,6 +928,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
+     * @param string|int|null $id
+     *
      * @phpstan-return T|null
      */
     final public function getObject($id): ?object

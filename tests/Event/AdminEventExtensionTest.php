@@ -31,6 +31,7 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdminEventExtensionTest extends TestCase
@@ -49,7 +50,7 @@ class AdminEventExtensionTest extends TestCase
 
     public function getConfigureEventClosure(string $type): callable
     {
-        return static function ($event) use ($type): bool {
+        return static function (Event $event) use ($type): bool {
             if (!$event instanceof ConfigureEvent) {
                 return false;
             }
@@ -64,7 +65,7 @@ class AdminEventExtensionTest extends TestCase
 
     public function getConfigurePersistenceClosure(string $type): callable
     {
-        return static function ($event) use ($type): bool {
+        return static function (Event $event) use ($type): bool {
             if (!$event instanceof PersistenceEvent) {
                 return false;
             }

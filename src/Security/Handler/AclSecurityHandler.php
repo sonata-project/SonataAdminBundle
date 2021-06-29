@@ -64,11 +64,13 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
 
     /**
      * @var string
+     * @phpstan-var class-string
      */
     private $maskBuilderClass;
 
     /**
      * @param string[] $superAdminRoles
+     * @phpstan-param class-string $maskBuilderClass
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -166,7 +168,6 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
     {
         try {
             $acl = $this->aclProvider->findAcl($objectIdentity);
-            // todo - remove `assert` statement after https://github.com/phpstan/phpstan-symfony/pull/92 is released
             \assert($acl instanceof MutableAclInterface);
         } catch (AclNotFoundException $e) {
             return null;
@@ -178,10 +179,13 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
     public function findObjectAcls(\Traversable $oids, array $sids = []): \SplObjectStorage
     {
         try {
+            /** @var \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface> $acls */
             $acls = $this->aclProvider->findAcls(iterator_to_array($oids), $sids);
         } catch (NotAllAclsFoundException $e) {
+            /** @var \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface> $acls */
             $acls = $e->getPartialResult();
         } catch (AclNotFoundException $e) { // if only one oid, this error is thrown
+            /** @var \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface> $acls */
             $acls = new \SplObjectStorage();
         }
 

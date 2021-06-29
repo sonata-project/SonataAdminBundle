@@ -208,6 +208,7 @@ final class AdminMaker extends AbstractMaker
             'Admin'
         );
 
+        /** @phpstan-var class-string $adminClassFullName */
         $adminClassFullName = $adminClassNameDetails->getFullName();
         $this->generateAdmin($io, $generator, $adminClassNameDetails);
 
@@ -236,6 +237,9 @@ final class AdminMaker extends AbstractMaker
         ));
     }
 
+    /**
+     * @phpstan-param class-string $adminClassFullName
+     */
     private function generateService(
         InputInterface $input,
         ConsoleStyle $io,

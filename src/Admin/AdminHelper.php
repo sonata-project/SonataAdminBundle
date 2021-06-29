@@ -201,12 +201,13 @@ class AdminHelper
      * @param string[]               $elements
      *
      * @phpstan-param non-empty-array<string> $elements
+     * @phpstan-return class-string
      */
     private function getModelClassName(AdminInterface $admin, array $elements): string
     {
         $element = array_shift($elements);
         $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();
-        if (0 === \count($elements)) {
+        if ([] === $elements) {
             return $associationAdmin->getClass();
         }
 

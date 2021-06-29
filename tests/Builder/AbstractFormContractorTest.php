@@ -188,6 +188,8 @@ final class AbstractFormContractorTest extends TestCase
     }
 
     /**
+     * @phpstan-param class-string $formType
+     *
      * @dataProvider getFieldDescriptionValidationProvider
      */
     public function testThrowsExceptionWithInvalidFieldDescriptionInGetDefaultOptions(string $formType): void

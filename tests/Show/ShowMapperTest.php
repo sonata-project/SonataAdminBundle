@@ -534,7 +534,7 @@ class ShowMapperTest extends TestCase
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
-            ->willReturnCallback(static function (AdminInterface $admin, string $attributes, $object = null): bool {
+            ->willReturnCallback(static function (AdminInterface $admin, string $attributes, ?object $object = null): bool {
                 return self::DEFAULT_GRANTED_ROLE === $attributes;
             });
 

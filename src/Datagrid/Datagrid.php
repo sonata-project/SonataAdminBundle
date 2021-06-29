@@ -71,7 +71,7 @@ final class Datagrid implements DatagridInterface
     private $formBuilder;
 
     /**
-     * @var FormInterface
+     * @var FormInterface|null
      */
     private $form;
 
@@ -257,6 +257,7 @@ final class Datagrid implements DatagridInterface
     public function getForm(): FormInterface
     {
         $this->buildPager();
+        \assert(null !== $this->form);
 
         return $this->form;
     }

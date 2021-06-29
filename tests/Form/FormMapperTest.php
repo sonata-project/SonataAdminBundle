@@ -26,6 +26,7 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -180,12 +181,12 @@ class FormMapperTest extends TestCase
         $this->formMapper->with('foobar', [
                 'translation_domain' => 'Foobar',
             ])
-            ->add('foo', 'bar')
+            ->add('foo', TextType::class)
         ->end();
 
         $fieldDescription = $this->admin->getFormFieldDescription('foo');
         $this->assertSame('foo', $fieldDescription->getName());
-        $this->assertSame('bar', $fieldDescription->getType());
+        $this->assertSame(TextType::class, $fieldDescription->getType());
         $this->assertSame('Foobar', $fieldDescription->getTranslationDomain());
 
         $this->assertTrue($this->formMapper->has('foo'));
@@ -230,12 +231,12 @@ class FormMapperTest extends TestCase
         $this->formMapper->with('foobar', [
             'translation_domain' => false,
         ])
-            ->add('foo', 'bar')
+            ->add('foo', TextType::class)
             ->end();
 
         $fieldDescription = $this->admin->getFormFieldDescription('foo');
         $this->assertSame('foo', $fieldDescription->getName());
-        $this->assertSame('bar', $fieldDescription->getType());
+        $this->assertSame(TextType::class, $fieldDescription->getType());
         $this->assertFalse($fieldDescription->getTranslationDomain());
 
         $this->assertTrue($this->formMapper->has('foo'));
@@ -288,7 +289,7 @@ class FormMapperTest extends TestCase
 
         $this->formMapper
             ->ifTrue(true)
-            ->add('foo', 'bar')
+            ->add('foo', TextType::class)
             ->ifEnd();
 
         $this->assertTrue($this->formMapper->has('foo'));
@@ -298,7 +299,7 @@ class FormMapperTest extends TestCase
     {
         $this->formMapper
             ->ifTrue(false)
-            ->add('foo', 'bar')
+            ->add('foo', TextType::class)
             ->ifEnd();
 
         $this->assertFalse($this->formMapper->has('foo'));
@@ -312,9 +313,9 @@ class FormMapperTest extends TestCase
 
         $this->formMapper
             ->ifTrue(false)
-            ->add('foo', 'bar')
+            ->add('foo', TextType::class)
             ->ifEnd()
-            ->add('baz', 'foobaz');
+            ->add('baz', TextType::class);
 
         $this->assertFalse($this->formMapper->has('foo'));
         $this->assertTrue($this->formMapper->has('baz'));
@@ -328,7 +329,7 @@ class FormMapperTest extends TestCase
 
         $this->formMapper
             ->ifFalse(false)
-            ->add('foo', 'bar')
+            ->add('foo', TextType::class)
             ->ifEnd();
 
         $this->assertTrue($this->formMapper->has('foo'));
@@ -338,7 +339,7 @@ class FormMapperTest extends TestCase
     {
         $this->formMapper
             ->ifFalse(true)
-            ->add('foo', 'bar')
+            ->add('foo', TextType::class)
             ->ifEnd();
 
         $this->assertFalse($this->formMapper->has('foo'));
@@ -352,9 +353,9 @@ class FormMapperTest extends TestCase
 
         $this->formMapper
             ->ifFalse(true)
-            ->add('foo', 'bar')
+            ->add('foo', TextType::class)
             ->ifEnd()
-            ->add('baz', 'foobaz');
+            ->add('baz', TextType::class);
 
         $this->assertFalse($this->formMapper->has('foo'));
         $this->assertTrue($this->formMapper->has('baz'));
@@ -487,8 +488,8 @@ class FormMapperTest extends TestCase
             ->willReturn([]);
 
         $this->formMapper
-            ->add('foo', 'bar')
-            ->add('baz', 'foobaz');
+            ->add('foo', TextType::class)
+            ->add('baz', TextType::class);
 
         $this->assertSame(['foo', 'baz'], $this->formMapper->keys());
     }
@@ -500,20 +501,20 @@ class FormMapperTest extends TestCase
             ->willReturn([]);
 
         $this->formMapper
-            ->add('fo.o', 'bar')
-            ->add('ba__z', 'foobaz');
+            ->add('fo.o', TextType::class)
+            ->add('ba__z', TextType::class);
 
         $this->assertSame(['fo__o', 'ba____z'], $this->formMapper->keys());
     }
 
     public function testAddOptionRole(): void
     {
-        $this->formMapper->add('bar', 'bar');
+        $this->formMapper->add('bar', TextType::class);
 
         $this->assertTrue($this->formMapper->has('bar'));
         $this->assertTrue($this->admin->hasFormFieldDescription('bar'));
 
-        $this->formMapper->add('quux', 'bar', [], ['role' => 'ROLE_QUX']);
+        $this->formMapper->add('quux', TextType::class, [], ['role' => 'ROLE_QUX']);
 
         $this->assertTrue($this->formMapper->has('bar'));
         $this->assertFalse($this->formMapper->has('quux'));
@@ -522,9 +523,9 @@ class FormMapperTest extends TestCase
 
         $this->formMapper
             ->with('qux')
-                ->add('foobar', 'bar', [], ['role' => self::DEFAULT_GRANTED_ROLE])
-                ->add('foo', 'bar', [], ['role' => 'ROLE_QUX'])
-                ->add('baz', 'bar')
+                ->add('foobar', TextType::class, [], ['role' => self::DEFAULT_GRANTED_ROLE])
+                ->add('foo', TextType::class, [], ['role' => 'ROLE_QUX'])
+                ->add('baz', TextType::class)
             ->end();
 
         $this->assertArrayHasKey('qux', $this->admin->getFormGroups());

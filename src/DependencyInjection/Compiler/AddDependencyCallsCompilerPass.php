@@ -57,10 +57,17 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $defaultController = $container->getParameter('sonata.admin.configuration.default_controller');
         \assert(\is_string($defaultController));
 
+        $defaultGroup = $container->getParameter('sonata.admin.configuration.default_group');
+        \assert(\is_string($defaultGroup));
+        $defaultLabelCatalogue = $container->getParameter('sonata.admin.configuration.default_label_catalogue');
+        \assert(\is_string($defaultLabelCatalogue));
+        $defaultIcon = $container->getParameter('sonata.admin.configuration.default_icon');
+        \assert(\is_string($defaultIcon));
+
         $defaultValues = [
-            'group' => $container->getParameter('sonata.admin.configuration.default_group'),
-            'label_catalogue' => $container->getParameter('sonata.admin.configuration.default_label_catalogue'),
-            'icon' => $container->getParameter('sonata.admin.configuration.default_icon'),
+            'group' => $defaultGroup,
+            'label_catalogue' => $defaultLabelCatalogue,
+            'icon' => $defaultIcon,
         ];
 
         foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $tags) {
@@ -127,6 +134,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                         'label' => $resolvedGroupName,
                         'label_catalogue' => $labelCatalogue,
                         'icon' => $icon,
+                        'items' => [],
                         'roles' => [],
                         'on_top' => false,
                         'keep_open' => false,
@@ -334,8 +342,10 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $persistFilters = $attributes['persist_filters']
             ?? $container->getParameter('sonata.admin.configuration.filters.persist');
+        \assert(\is_bool($persistFilters));
         $filtersPersister = $attributes['filter_persister']
             ?? $container->getParameter('sonata.admin.configuration.filters.persister');
+        \assert(\is_string($filtersPersister));
 
         // configure filters persistence, if configured to
         if ($persistFilters) {
@@ -345,6 +355,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $showMosaicButton = $overwriteAdminConfiguration['show_mosaic_button']
             ?? $attributes['show_mosaic_button']
             ?? $container->getParameter('sonata.admin.configuration.show.mosaic.button');
+        \assert(\is_bool($showMosaicButton));
 
         $listModes = TaggedAdminInterface::DEFAULT_LIST_MODES;
         if (!$showMosaicButton) {

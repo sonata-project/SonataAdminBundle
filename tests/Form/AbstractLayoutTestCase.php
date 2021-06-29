@@ -125,12 +125,12 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
      */
     protected function renderRow(FormView $view, array $vars = []): string
     {
-        return (string) $this->renderer->searchAndRenderBlock($view, 'row', $vars);
+        return $this->renderer->searchAndRenderBlock($view, 'row', $vars);
     }
 
     protected function renderHelp(FormView $view): string
     {
-        return (string) $this->renderer->searchAndRenderBlock($view, 'help');
+        return $this->renderer->searchAndRenderBlock($view, 'help');
     }
 
     /**
@@ -143,11 +143,11 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
             $vars += ['label' => $label];
         }
 
-        return (string) $this->renderer->searchAndRenderBlock($view, 'label', $vars);
+        return $this->renderer->searchAndRenderBlock($view, 'label', $vars);
     }
 
     protected function renderErrors(FormView $view): string
     {
-        return (string) $this->renderer->searchAndRenderBlock($view, 'errors');
+        return $this->renderer->searchAndRenderBlock($view, 'errors');
     }
 }

@@ -470,7 +470,7 @@ EOT
     {
         $this->fieldDescription->expects($this->once())
             ->method('getOption')
-            ->willReturnCallback(static function ($value, $default = null) {
+            ->willReturnCallback(static function (string $value, $default = null) {
                 if ('associated_property' === $value) {
                     return $default;
                 }
@@ -484,7 +484,7 @@ EOT
     {
         $this->fieldDescription->expects($this->once())
             ->method('getOption')
-            ->willReturnCallback(static function ($value, $default = null) {
+            ->willReturnCallback(static function (string $value, $default = null) {
                 if ('associated_property' === $value) {
                     return 'customToString';
                 }
@@ -504,7 +504,7 @@ EOT
     {
         $this->fieldDescription->expects($this->once())
             ->method('getOption')
-            ->willReturnCallback(static function ($value, $default = null) {
+            ->willReturnCallback(static function (string $value, $default = null) {
                 if ('associated_property' === $value) {
                     return null;
                 }
@@ -522,7 +522,7 @@ EOT
         $this->fieldDescription->expects($this->once())
             ->method('getOption')
 
-            ->willReturnCallback(static function ($value, $default = null) {
+            ->willReturnCallback(static function (string $value, $default = null) {
                 if ('associated_property' === $value) {
                     return 'foo';
                 }
@@ -538,8 +538,7 @@ EOT
     {
         $this->fieldDescription->expects($this->once())
             ->method('getOption')
-
-            ->willReturnCallback(static function ($value, $default = null) {
+            ->willReturnCallback(static function (string $value, $default = null) {
                 if ('associated_property' === $value) {
                     return static function ($element): string {
                         return sprintf('closure %s', $element->foo);

@@ -104,7 +104,7 @@ CASESENSITIVE;
                             ->defaultValue('show')
                             ->info('Perhaps one of the three options: show, fade, hide.')
                             ->validate()
-                                ->ifTrue(static function ($v) {
+                                ->ifTrue(static function (string $v): bool {
                                     return !\in_array($v, ['show', 'fade', 'hide'], true);
                                 })
                                 ->thenInvalid('Configuration value of "global_search.empty_boxes" must be one of show, fade or hide.')
@@ -200,7 +200,7 @@ CASESENSITIVE;
                             ->prototype('array')
                                 ->beforeNormalization()
                                     ->ifArray()
-                                    ->then(static function ($items) {
+                                    ->then(static function (array $items): array {
                                         if (isset($items['provider'])) {
                                             $disallowedItems = ['items', 'label'];
                                             foreach ($disallowedItems as $item) {
@@ -228,7 +228,7 @@ CASESENSITIVE;
                                     ->arrayNode('items')
                                         ->beforeNormalization()
                                             ->ifArray()
-                                            ->then(static function ($items) {
+                                            ->then(static function (array $items): array {
                                                 foreach ($items as $key => $item) {
                                                     if (!\is_array($item)) {
                                                         $item = ['admin' => $item];

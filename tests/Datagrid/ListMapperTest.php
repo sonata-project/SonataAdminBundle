@@ -225,8 +225,8 @@ class ListMapperTest extends TestCase
             [
                 'associated_property' => 'fooAssociatedProperty',
                 'sortable' => false,
-                'sort_parent_association_mappings' => 'fooSortParentAssociationMapping',
-                'sort_field_mapping' => 'fooSortFieldMapping',
+                'sort_parent_association_mappings' => [['fooSortParentAssociationMapping' => null]],
+                'sort_field_mapping' => ['fooSortFieldMapping' => null],
             ]
         );
 
@@ -246,8 +246,8 @@ class ListMapperTest extends TestCase
 
         $this->assertSame('fooAssociatedProperty', $fieldManualSort->getOption('associated_property'));
         $this->assertFalse($fieldManualSort->getOption('sortable'));
-        $this->assertSame('fooSortParentAssociationMapping', $fieldManualSort->getOption('sort_parent_association_mappings'));
-        $this->assertSame('fooSortFieldMapping', $fieldManualSort->getOption('sort_field_mapping'));
+        $this->assertSame([['fooSortParentAssociationMapping' => null]], $fieldManualSort->getOption('sort_parent_association_mappings'));
+        $this->assertSame(['fooSortFieldMapping' => null], $fieldManualSort->getOption('sort_field_mapping'));
     }
 
     public function testCallableAssociationPropertyCannotBeSortable(): void

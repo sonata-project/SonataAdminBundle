@@ -138,6 +138,8 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
      * @phpstan-param T|array<T>|\Traversable<T>|null $value
      * @psalm-return array{_labels?: array<string>}&array<int|string>
      * @phpstan-return array<int|string|array<string>>
+     *
+     * @psalm-suppress PossiblyInvalidArrayAssignment @see https://github.com/vimeo/psalm/issues/5891
      */
     public function transform($value): array
     {

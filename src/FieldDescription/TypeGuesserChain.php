@@ -51,6 +51,9 @@ final class TypeGuesserChain implements TypeGuesserInterface
         $this->guessers = array_merge(...$allGuessers);
     }
 
+    /**
+     * @psalm-suppress ArgumentTypeCoercion @see https://github.com/vimeo/psalm/issues/5938
+     */
     public function guess(FieldDescriptionInterface $fieldDescription): ?TypeGuess
     {
         $guesses = [];
