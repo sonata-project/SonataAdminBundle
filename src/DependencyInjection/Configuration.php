@@ -39,6 +39,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->getRootNode();
         \assert($rootNode instanceof ArrayNodeDefinition);
 
+        // NEXT_MAJOR: Remove this line.
         $caseSensitiveInfo = <<<'CASESENSITIVE'
 Whether the global search should behave case sensitive or not.
 Using case-insensitivity might lead to performance issues.
@@ -111,7 +112,9 @@ CASESENSITIVE;
                                 ->thenInvalid('Configuration value of "global_search.empty_boxes" must be one of show, fade or hide.')
                             ->end()
                         ->end()
+                        // NEXT_MAJOR: Remove this option.
                         ->booleanNode('case_sensitive')
+                            ->setDeprecated('The "%node%" option is deprecated since sonata-project/admin-bundle 3.x.')
                             ->defaultTrue()
                             ->info($caseSensitiveInfo)
                         ->end()

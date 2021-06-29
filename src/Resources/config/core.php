@@ -311,6 +311,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             // NEXT_MAJOR: Remove public and sonata.container.private tag.
             ->public()
             ->tag(AliasDeprecatedPublicServicesCompilerPass::PRIVATE_TAG_NAME, ['version' => '3.98'])
+            // NEXT_MAJOR: Remove the args.
             ->args([
                 '%sonata.admin.configuration.global_search.case_sensitive%',
             ])

@@ -41,7 +41,7 @@ class SearchHandler
     private $adminsSearchConfig = [];
 
     /**
-     * NEXT_MAJOR: Change signature to __construct(bool $caseSensitive) and remove pool property.
+     * NEXT_MAJOR: Remove the construct.
      *
      * @param Pool|bool $deprecatedPoolOrCaseSensitive
      * @param bool      $caseSensitive
@@ -88,7 +88,20 @@ class SearchHandler
             /** @var FilterInterface $filter */
             $formName = $filter->getFormName();
 
-            if ($filter->getOption('global_search', false)) {
+            // NEXT_MAJOR: Remove the $filter->getOption('global_search', false) part.
+            if (
+                $filter->getOption('global_search', false)
+                || $filter instanceof SearchableFilterInterface && $filter->isSearchEnabled()
+            ) {
+                if (!$filter instanceof SearchableFilterInterface) {
+                    @trigger_error(sprintf(
+                        'Passing the "global_search" option to a filter which does not implement %s is deprecated'
+                        .' since sonata-project/admin-bundle 3.x and won\'t work in 4.0.',
+                        SearchableFilterInterface::class
+                    ), \E_USER_DEPRECATED);
+                }
+
+                // NEXT_MAJOR: Remove this line.
                 $filter->setOption('case_sensitive', $this->caseSensitive);
                 $filter->setOption('or_group', $admin->getCode());
                 $filter->setCondition(FilterInterface::CONDITION_OR);
