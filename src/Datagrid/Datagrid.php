@@ -221,7 +221,16 @@ class Datagrid implements DatagridInterface
 
     public function reorderFilters(array $keys)
     {
-        $this->filters = array_merge(array_flip($keys), $this->filters);
+        $orderedFilters = [];
+        foreach ($keys as $name) {
+            if (!$this->hasFilter($name)) {
+                throw new \InvalidArgumentException(sprintf('Filter "%s" does not exist.', $name));
+            }
+
+            $orderedFilters[$name] = $this->filters[$name];
+        }
+
+        $this->filters = $orderedFilters + $this->filters;
     }
 
     public function getValues()

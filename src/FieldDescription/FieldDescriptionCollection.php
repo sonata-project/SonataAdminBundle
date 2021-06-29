@@ -71,11 +71,11 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
      */
     public function get($name)
     {
-        if ($this->has($name)) {
-            return $this->elements[$name];
+        if (!$this->has($name)) {
+            throw new \InvalidArgumentException(sprintf('Element "%s" does not exist.', $name));
         }
 
-        throw new \InvalidArgumentException(sprintf('Element "%s" does not exist.', $name));
+        return $this->elements[$name];
     }
 
     /**
@@ -83,9 +83,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
      */
     public function remove($name)
     {
-        if ($this->has($name)) {
-            unset($this->elements[$name]);
-        }
+        unset($this->elements[$name]);
     }
 
     public function offsetExists($offset)
@@ -126,7 +124,16 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
             array_unshift($keys, ListMapper::NAME_BATCH);
         }
 
-        $this->elements = array_merge(array_flip($keys), $this->elements);
+        $orderedElements = [];
+        foreach ($keys as $name) {
+            if (!$this->has($name)) {
+                throw new \InvalidArgumentException(sprintf('Element "%s" does not exist.', $name));
+            }
+
+            $orderedElements[$name] = $this->elements[$name];
+        }
+
+        $this->elements = $orderedElements + $this->elements;
     }
 }
 
