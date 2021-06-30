@@ -87,7 +87,7 @@ final class AdminSearchBlockService extends AbstractBlockService
         );
 
         if (null === $pager) {
-            $response = $response ?: new Response();
+            $response = $response ?? new Response();
 
             return $response->setContent('')->setStatusCode(204);
         }

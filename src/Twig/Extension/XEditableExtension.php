@@ -114,7 +114,7 @@ final class XEditableExtension extends AbstractExtension
                     break;
                 }
 
-                if ($catalogue) {
+                if (null !== $catalogue) {
                     $text = $this->translator->trans($text, [], $catalogue);
                 }
 

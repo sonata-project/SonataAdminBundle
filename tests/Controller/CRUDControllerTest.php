@@ -271,7 +271,7 @@ final class CRUDControllerTest extends TestCase
             ->willReturnCallback(
                 static function (string $name, array $parameters = []): string {
                     $result = $name;
-                    if (!empty($parameters)) {
+                    if ([] !== $parameters) {
                         $result .= '?'.http_build_query($parameters);
                     }
 
@@ -284,7 +284,7 @@ final class CRUDControllerTest extends TestCase
             ->willReturnCallback(
                 static function (string $name, object $object, array $parameters = []): string {
                     $result = sprintf('%s_%s', \get_class($object), $name);
-                    if (!empty($parameters)) {
+                    if ([] !== $parameters) {
                         $result .= '?'.http_build_query($parameters);
                     }
 

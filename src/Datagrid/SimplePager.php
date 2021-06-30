@@ -61,7 +61,7 @@ final class SimplePager extends Pager
 
     public function countResults(): int
     {
-        return ($this->getPage() - 1) * $this->getMaxPerPage() + $this->thresholdCount;
+        return ($this->getPage() - 1) * $this->getMaxPerPage() + $this->thresholdCount ?? 0;
     }
 
     public function getCurrentPageResults(): iterable
@@ -112,7 +112,7 @@ final class SimplePager extends Pager
 
             $this->results = $this->getCurrentPageResults();
 
-            $t = (int) ceil($this->thresholdCount / $this->getMaxPerPage()) + $this->getPage() - 1;
+            $t = (int) ceil(($this->thresholdCount ?? 0) / $this->getMaxPerPage()) + $this->getPage() - 1;
             $this->setLastPage(max(1, $t));
         }
     }

@@ -62,9 +62,14 @@ class AdminHelper
 
     public function getChildFormView(FormView $formView, string $elementId): ?FormView
     {
-        foreach (new \RecursiveIteratorIterator(new FormViewIterator($formView), \RecursiveIteratorIterator::SELF_FIRST) as $name => $formView) {
+        $iterator = new \RecursiveIteratorIterator(
+            new FormViewIterator($formView),
+            \RecursiveIteratorIterator::SELF_FIRST
+        );
+
+        foreach ($iterator as $name => $currentFormView) {
             if ($name === $elementId) {
-                return $formView;
+                return $currentFormView;
             }
         }
 

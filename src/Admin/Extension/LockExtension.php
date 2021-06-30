@@ -65,7 +65,12 @@ final class LockExtension extends AbstractAdminExtension
 
     public function preUpdate(AdminInterface $admin, object $object): void
     {
-        if (!$admin->hasRequest() || !$data = $admin->getRequest()->get($admin->getUniqId())) {
+        if (!$admin->hasRequest()) {
+            return;
+        }
+
+        $data = $admin->getRequest()->get($admin->getUniqId());
+        if (null === $data || !\is_array($data)) {
             return;
         }
 

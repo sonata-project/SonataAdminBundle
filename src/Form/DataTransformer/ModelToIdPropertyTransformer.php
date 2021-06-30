@@ -145,7 +145,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
     {
         $result = [];
 
-        if (!$value) {
+        if (null === $value) {
             return $result;
         }
 
