@@ -76,7 +76,7 @@ to enable ``allowClear`` or ``data-sonata-select2-allow-clear = "false"`` to dis
 Minimum results for search
 --------------------------
 
-To control the minimum amount of results that are required before the select is searchable you can set the data attribute ``data-sonata-select2-minimumResultsForSearch``. This controls select2's ``minimumResultsForSearch`` parameter:
+To control the minimum amount of results that are required before the select is searchable you can set the data attribute ``data-sonata-select2-minimumResultsForSearch``. This controls select2's ``minimumResultsForSearch`` parameter::
 
 
     use Sonata\AdminBundle\Form\Type\ModelType;
