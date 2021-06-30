@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Security\Handler;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\NoopSecurityHandler;
@@ -62,10 +63,10 @@ class NoopSecurityHandlerTest extends TestCase
     }
 
     /**
-     * @return AdminInterface<object>
+     * @return AdminInterface<object>&MockObject
      */
     private function getSonataAdminObject(): AdminInterface
     {
-        return $this->getMockForAbstractClass(AdminInterface::class);
+        return $this->createMock(AdminInterface::class);
     }
 }

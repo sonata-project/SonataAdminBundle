@@ -219,7 +219,7 @@ class AdminObjectAclDataTest extends TestCase
      */
     protected function createAdmin(bool $isOwner = true, bool $isAclEnabled = true): AdminInterface
     {
-        $securityHandler = $this->getMockForAbstractClass(AclSecurityHandlerInterface::class);
+        $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
 
         $securityHandler
             ->method('getObjectPermissions')
@@ -230,7 +230,7 @@ class AdminObjectAclDataTest extends TestCase
             ->with(self::isInstanceOf(AdminInterface::class))
             ->willReturn([]);
 
-        $admin = $this->getMockForAbstractClass(AdminInterface::class);
+        $admin = $this->createMock(AdminInterface::class);
 
         $admin
             ->method('isGranted')

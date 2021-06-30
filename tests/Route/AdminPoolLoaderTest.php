@@ -52,14 +52,14 @@ class AdminPoolLoaderTest extends TestCase
         $routeCollection2->add('bar');
         $routeCollection2->add('baz');
 
-        $admin1 = $this->getMockForAbstractClass(AdminInterface::class);
+        $admin1 = $this->createMock(AdminInterface::class);
         $admin1->expects(self::once())
             ->method('getRoutes')
             ->willReturn($routeCollection1);
 
         $container->set('foo_admin', $admin1);
 
-        $admin2 = $this->getMockForAbstractClass(AdminInterface::class);
+        $admin2 = $this->createMock(AdminInterface::class);
         $admin2->expects(self::once())
             ->method('getRoutes')
             ->willReturn($routeCollection2);

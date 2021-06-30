@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Block;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminSearchBlockService;
@@ -41,7 +42,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
     private $searchHandler;
 
     /**
-     * @var TemplateRegistryInterface
+     * @var TemplateRegistryInterface&MockObject
      */
     private $templateRegistry;
 

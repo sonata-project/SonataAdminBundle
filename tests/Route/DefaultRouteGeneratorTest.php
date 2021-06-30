@@ -43,7 +43,7 @@ class DefaultRouteGeneratorTest extends TestCase
 
     public function testGenerate(): void
     {
-        $router = $this->getMockForAbstractClass(RouterInterface::class);
+        $router = $this->createMock(RouterInterface::class);
         $router->expects(self::once())->method('generate')->willReturn('/foo/bar');
 
         $cache = new RoutesCache($this->cacheTempFolder, true);
@@ -71,7 +71,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $collection->add('foo');
         $collection->addCollection($childCollection);
 
-        $admin = $this->getMockForAbstractClass(AdminInterface::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin->method('isChild')->willReturn(false);
         $admin->method('getBaseCodeRoute')->willReturn('base.Code.Foo');
         $admin->expects(self::once())->method('hasParentFieldDescription')->willReturn(false);
@@ -82,7 +82,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->method('getExtensions')->willReturn([]);
         $admin->method('getCode')->willReturn($name);
 
-        $router = $this->getMockForAbstractClass(RouterInterface::class);
+        $router = $this->createMock(RouterInterface::class);
         $router->expects(self::once())
             ->method('generate')
             ->willReturnCallback(static function (string $name, array $parameters = [], int $referenceType = RouterInterface::ABSOLUTE_PATH): string {
@@ -132,7 +132,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('unable to find the route `base.Code.Route.foo`');
 
-        $admin = $this->getMockForAbstractClass(AdminInterface::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin->method('isChild')->willReturn(false);
         $admin->method('getBaseCodeRoute')->willReturn('base.Code.Route');
         $admin->expects(self::once())->method('hasParentFieldDescription')->willReturn(false);
@@ -142,7 +142,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->method('getExtensions')->willReturn([]);
         $admin->method('getCode')->willReturn('Code');
 
-        $router = $this->getMockForAbstractClass(RouterInterface::class);
+        $router = $this->createMock(RouterInterface::class);
 
         $cache = new RoutesCache($this->cacheTempFolder, true);
 
@@ -164,7 +164,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $collection->add('foo');
         $collection->addCollection($childCollection);
 
-        $admin = $this->getMockForAbstractClass(AdminInterface::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin->method('isChild')->willReturn(true);
         $admin->method('getBaseCodeRoute')->willReturn('base.Code.Parent|base.Code.Child');
         $admin->method('getIdParameter')->willReturn('id');
@@ -175,7 +175,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->method('getRoutes')->willReturn($childCollection);
         $admin->method('getExtensions')->willReturn([]);
 
-        $parentAdmin = $this->getMockForAbstractClass(AdminInterface::class);
+        $parentAdmin = $this->createMock(AdminInterface::class);
         $parentAdmin->method('getIdParameter')->willReturn('childId');
         $parentAdmin->method('getRoutes')->willReturn($collection);
         $parentAdmin->method('getBaseCodeRoute')->willReturn('base.Code.Parent');
@@ -202,7 +202,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->method('getParent')->willReturn($parentAdmin);
         $admin->method('getCode')->willReturn($name);
 
-        $router = $this->getMockForAbstractClass(RouterInterface::class);
+        $router = $this->createMock(RouterInterface::class);
         $router->expects(self::once())
             ->method('generate')
             ->willReturnCallback(static function (string $name, array $parameters = []): string {
@@ -254,7 +254,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $collection->add('foo');
         $collection->addCollection($childCollection);
 
-        $admin = $this->getMockForAbstractClass(AdminInterface::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin->method('isChild')->willReturn(false);
         $admin->method('getCode')->willReturn('base.Code.Parent');
         $admin->method('getBaseCodeRoute')->willReturn('base.Code.Parent');
@@ -266,7 +266,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->method('getExtensions')->willReturn([]);
         $admin->method('getRoutes')->willReturn($collection);
 
-        $router = $this->getMockForAbstractClass(RouterInterface::class);
+        $router = $this->createMock(RouterInterface::class);
         $router->expects(self::once())
             ->method('generate')
             ->willReturnCallback(static function (string $name, array $parameters = []): string {
@@ -285,10 +285,10 @@ class DefaultRouteGeneratorTest extends TestCase
                 }
             });
 
-        $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription->expects(self::once())->method('getOption')->willReturn([]);
 
-        $parentAdmin = $this->getMockForAbstractClass(AdminInterface::class);
+        $parentAdmin = $this->createMock(AdminInterface::class);
         $parentAdmin->method('getUniqId')->willReturn('parent_foo_uniqueid');
         $parentAdmin->method('getCode')->willReturn('parent_foo_code');
         $parentAdmin->method('getExtensions')->willReturn([]);
@@ -332,7 +332,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $standaloneCollection = new RouteCollection('base.Code.Child', 'admin_acme_child_standalone', '/', 'BundleName:ControllerName');
         $standaloneCollection->add('bar');
 
-        $admin = $this->getMockForAbstractClass(AdminInterface::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin->method('isChild')->willReturn(true);
         $admin->method('getCode')->willReturn('base.Code.Child');
         $admin->method('getBaseCodeRoute')->willReturn('base.Code.Parent|base.Code.Child');
@@ -344,7 +344,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->method('getRoutes')->willReturn($childCollection);
         $admin->method('getExtensions')->willReturn([]);
 
-        $parentAdmin = $this->getMockForAbstractClass(AdminInterface::class);
+        $parentAdmin = $this->createMock(AdminInterface::class);
         $parentAdmin->method('getIdParameter')->willReturn('childId');
         $parentAdmin->method('getRoutes')->willReturn($collection);
         $parentAdmin->method('getCode')->willReturn('base.Code.Parent');
@@ -369,7 +369,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->method('getRequest')->willReturn($request);
         $admin->method('getParent')->willReturn($parentAdmin);
 
-        $standaloneAdmin = $this->getMockForAbstractClass(AdminInterface::class);
+        $standaloneAdmin = $this->createMock(AdminInterface::class);
         $standaloneAdmin->method('isChild')->willReturn(false);
         $standaloneAdmin->method('getBaseCodeRoute')->willReturn('base.Code.Child');
         $standaloneAdmin->expects(self::once())->method('hasParentFieldDescription')->willReturn(false);
@@ -380,7 +380,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $standaloneAdmin->method('getExtensions')->willReturn([]);
         $standaloneAdmin->method('getCode')->willReturn('Code');
 
-        $router = $this->getMockForAbstractClass(RouterInterface::class);
+        $router = $this->createMock(RouterInterface::class);
         $router->expects(self::exactly(2))
             ->method('generate')
             ->willReturnCallback(static function (string $name, array $parameters = []): string {

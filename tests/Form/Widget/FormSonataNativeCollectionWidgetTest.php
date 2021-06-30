@@ -67,7 +67,7 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
     protected function getExtensions(): array
     {
         $extensions = parent::getExtensions();
-        $guesser = $this->getMockForAbstractClass(FormTypeGuesserInterface::class);
+        $guesser = $this->createMock(FormTypeGuesserInterface::class);
         $extension = new TestExtension($guesser);
 
         $extension->addTypeExtension(new FormTypeFieldExtension([], [

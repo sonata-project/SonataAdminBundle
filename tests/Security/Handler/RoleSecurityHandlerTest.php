@@ -230,10 +230,10 @@ class RoleSecurityHandlerTest extends TestCase
     }
 
     /**
-     * @return AdminInterface<object>
+     * @return AdminInterface<object>&MockObject
      */
     private function getSonataAdminObject(): AdminInterface
     {
-        return $this->getMockForAbstractClass(AdminInterface::class);
+        return $this->createMock(AdminInterface::class);
     }
 }

@@ -41,7 +41,7 @@ class ModelTypeTest extends TypeTestCase
      */
     public function testGetOptions(array $options, int $expectedModelManagerFindCalls): void
     {
-        $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
 
         $optionResolver = new OptionsResolver();
 
@@ -88,7 +88,7 @@ class ModelTypeTest extends TypeTestCase
      */
     public function testCompoundOption(bool $expectedCompound, bool $multiple, bool $expanded): void
     {
-        $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
         $optionResolver = new OptionsResolver();
 
         $this->type->configureOptions($optionResolver);

@@ -23,10 +23,10 @@ class PathInfoBuilderTest extends TestCase
 {
     public function testBuild(): void
     {
-        $audit = $this->getMockForAbstractClass(AuditManagerInterface::class);
+        $audit = $this->createMock(AuditManagerInterface::class);
         $audit->expects(self::once())->method('hasReader')->willReturn(true);
 
-        $admin = $this->getMockForAbstractClass(AdminInterface::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin->expects(self::once())->method('getChildren')->willReturn([]);
         $admin->expects(self::once())->method('isAclEnabled')->willReturn(true);
 

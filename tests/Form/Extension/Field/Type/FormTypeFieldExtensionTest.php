@@ -51,7 +51,7 @@ final class FormTypeFieldExtensionTest extends TestCase
 
     public function testbuildViewWithNoSonataAdminArray(): void
     {
-        $eventDispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $parentFormView = new FormView();
         $parentFormView->vars['sonata_admin_enabled'] = false;
@@ -115,10 +115,10 @@ final class FormTypeFieldExtensionTest extends TestCase
 
     public function testbuildViewWithWithSonataAdmin(): void
     {
-        $admin = $this->getMockForAbstractClass(AdminInterface::class);
+        $admin = $this->createMock(AdminInterface::class);
         $admin->expects(self::exactly(2))->method('getCode')->willReturn('my.admin.reference');
 
-        $eventDispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $formView = new FormView();
         $options = [];
@@ -159,7 +159,7 @@ final class FormTypeFieldExtensionTest extends TestCase
 
     public function testbuildViewWithNestedForm(): void
     {
-        $eventDispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $formView = new FormView();
         $formView->vars['name'] = 'format';
@@ -216,7 +216,7 @@ final class FormTypeFieldExtensionTest extends TestCase
 
     public function testbuildViewWithNestedFormWithNoParent(): void
     {
-        $eventDispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $formView = new FormView();
         $options = [];
@@ -233,7 +233,7 @@ final class FormTypeFieldExtensionTest extends TestCase
 
     public function testbuildViewCollectionField(): void
     {
-        $eventDispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $formView = new FormView();
         $formView->vars['name'] = 'field';

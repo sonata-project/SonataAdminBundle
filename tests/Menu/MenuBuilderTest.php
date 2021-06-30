@@ -47,9 +47,9 @@ final class MenuBuilderTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->provider = $this->getMockForAbstractClass(MenuProviderInterface::class);
+        $this->provider = $this->createMock(MenuProviderInterface::class);
         $this->factory = new MenuFactory();
-        $this->eventDispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
+        $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
     }
 
     public function testGetKnpMenuWithDefaultProvider(): void
