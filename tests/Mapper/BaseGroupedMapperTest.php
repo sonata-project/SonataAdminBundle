@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Mapper;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
@@ -29,7 +30,7 @@ use Symfony\Component\DependencyInjection\Container;
 class BaseGroupedMapperTest extends TestCase
 {
     /**
-     * @var BaseGroupedMapper<object>
+     * @var BaseGroupedMapper<object>&MockObject
      */
     protected $baseGroupedMapper;
 

@@ -122,7 +122,7 @@ class AdminTest extends TestCase
 
         $admin = new PostAdmin('sonata.post.admin.post', $class, $baseControllerName);
 
-        $admin->setModelManager($this->getMockForAbstractClass(ModelManagerInterface::class));
+        $admin->setModelManager($this->createMock(ModelManagerInterface::class));
 
         $admin->setSubject(new BlogPost());
         self::assertSame(BlogPost::class, $admin->getClass());
@@ -759,7 +759,7 @@ class AdminTest extends TestCase
     public function testNonExistantSubclass(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
-        $admin->setModelManager($this->getMockForAbstractClass(ModelManagerInterface::class));
+        $admin->setModelManager($this->createMock(ModelManagerInterface::class));
 
         $admin->setRequest(new Request(['subclass' => 'inject']));
 

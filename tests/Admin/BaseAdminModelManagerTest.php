@@ -22,9 +22,9 @@ class BaseAdminModelManagerTest extends TestCase
 {
     public function testHook(): void
     {
-        $securityHandler = $this->getMockForAbstractClass(SecurityHandlerInterface::class);
+        $securityHandler = $this->createMock(SecurityHandlerInterface::class);
 
-        $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager->expects(self::once())->method('create');
         $modelManager->expects(self::once())->method('update');
         $modelManager->expects(self::once())->method('delete');
@@ -42,7 +42,7 @@ class BaseAdminModelManagerTest extends TestCase
 
     public function testObject(): void
     {
-        $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager->expects(self::once())->method('find')->willReturnCallback(static function (string $class, int $id): void {
             if (\stdClass::class !== $class) {
                 throw new \RuntimeException('Invalid class argument');
@@ -61,7 +61,7 @@ class BaseAdminModelManagerTest extends TestCase
     public function testCreateQuery(): void
     {
         $query = $this->createMock(ProxyQueryInterface::class);
-        $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
             ->expects(self::once())
             ->method('createQuery')

@@ -33,7 +33,7 @@ final class XEditableExtensionTest extends TestCase
     {
         $twigExtension = new XEditableExtension(new Translator('en'));
 
-        $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription
             ->method('getOption')
             ->withConsecutive(

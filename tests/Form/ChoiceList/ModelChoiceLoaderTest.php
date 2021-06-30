@@ -24,7 +24,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 class ModelChoiceLoaderTest extends TestCase
 {
     /**
-     * @var MockObject&ModelManagerInterface <object>
+     * @var MockObject&ModelManagerInterface<object>
      */
     private $modelManager;
 

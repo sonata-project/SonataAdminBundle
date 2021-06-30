@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Show;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
@@ -46,7 +47,7 @@ class ShowMapperTest extends TestCase
     private $admin;
 
     /**
-     * @var ShowBuilderInterface
+     * @var ShowBuilderInterface&MockObject
      */
     private $showBuilder;
 
@@ -67,7 +68,7 @@ class ShowMapperTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->showBuilder = $this->getMockForAbstractClass(ShowBuilderInterface::class);
+        $this->showBuilder = $this->createMock(ShowBuilderInterface::class);
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
         $this->admin = $this->createStub(AdminInterface::class);
 
@@ -523,7 +524,7 @@ class ShowMapperTest extends TestCase
 
     private function cleanShowMapper(): void
     {
-        $this->showBuilder = $this->getMockForAbstractClass(ShowBuilderInterface::class);
+        $this->showBuilder = $this->createMock(ShowBuilderInterface::class);
         $this->showBuilder
             ->method('addField')
             ->willReturnCallback(static function (FieldDescriptionCollection $list, ?string $type, FieldDescriptionInterface $fieldDescription): void {

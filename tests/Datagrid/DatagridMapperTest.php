@@ -77,7 +77,7 @@ class DatagridMapperTest extends TestCase
             ): void {
                 $fieldDescription->setType($type);
 
-                $filter = $this->getMockForAbstractClass(Filter::class);
+                $filter = $this->createMock(Filter::class);
 
                 $filter
                     ->method('getDefaultOptions')

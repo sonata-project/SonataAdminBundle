@@ -146,7 +146,7 @@ final class RenderElementExtensionTest extends TestCase
             ->willReturn('12345');
 
         // initialize field description
-        $this->fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
+        $this->fieldDescription = $this->createMock(FieldDescriptionInterface::class);
 
         $this->fieldDescription
             ->method('getName')

@@ -27,7 +27,7 @@ class ModelToIdTransformerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
+        $this->modelManager = $this->createMock(ModelManagerInterface::class);
     }
 
     /**
