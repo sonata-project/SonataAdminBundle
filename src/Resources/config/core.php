@@ -119,9 +119,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->alias(AuditManagerInterface::class, 'sonata.admin.audit.manager')
 
         ->set('sonata.admin.search.handler', SearchHandler::class)
-            ->args([
-                '%sonata.admin.configuration.global_search.case_sensitive%',
-            ])
 
         ->set('sonata.admin.controller.crud', CRUDController::class)
             ->public()

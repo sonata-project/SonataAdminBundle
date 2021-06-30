@@ -62,7 +62,7 @@ final class SearchActionTest extends TestCase
             'layout' => 'layout.html.twig',
         ]);
 
-        $this->searchHandler = new SearchHandler(true);
+        $this->searchHandler = new SearchHandler();
         $this->twig = $this->createMock(Environment::class);
 
         $this->action = new SearchAction(

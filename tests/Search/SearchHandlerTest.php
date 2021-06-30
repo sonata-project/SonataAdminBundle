@@ -18,14 +18,14 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
+use Sonata\AdminBundle\Search\SearchableFilterInterface;
 use Sonata\AdminBundle\Search\SearchHandler;
 
 class SearchHandlerTest extends TestCase
 {
-    public function testBuildPagerWithNoGlobalSearchField(): void
+    public function testBuildPagerWithNonSearchableFilter(): void
     {
         $filter = $this->createMock(FilterInterface::class);
-        $filter->expects(self::once())->method('getOption')->with('global_search')->willReturn(false);
         $filter->expects(self::never())->method('setOption');
 
         $datagrid = $this->createMock(DatagridInterface::class);
@@ -34,18 +34,14 @@ class SearchHandlerTest extends TestCase
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects(self::once())->method('getDatagrid')->willReturn($datagrid);
 
-        $handler = new SearchHandler(true);
+        $handler = new SearchHandler();
         self::assertNull($handler->search($admin, 'myservice'));
     }
 
-    /**
-     * @dataProvider buildPagerWithGlobalSearchFieldProvider
-     */
-    public function testBuildPagerWithGlobalSearchField(bool $caseSensitive): void
+    public function testBuildPagerWithSearchableFilter(): void
     {
-        $filter = $this->getMockForAbstractClass(FilterInterface::class);
-        $filter->expects(self::once())->method('getFormName')->willReturn('formName');
-        $filter->expects(self::once())->method('getOption')->with('global_search')->willReturn(true);
+        $filter = $this->createMock(SearchableFilterInterface::class);
+        $filter->expects(self::once())->method('isSearchEnabled')->willReturn(true);
 
         $pager = $this->createMock(PagerInterface::class);
         $pager->expects(self::once())->method('setPage');
@@ -63,26 +59,14 @@ class SearchHandlerTest extends TestCase
         $admin->expects(self::exactly(2))->method('getCode')->willReturn($adminCode);
 
         $filter
-            ->expects(self::exactly(2))
+            ->expects(self::once())
             ->method('setOption')
             ->withConsecutive(
-                [self::equalTo('case_sensitive'), $caseSensitive],
                 [self::equalTo('or_group'), $adminCode]
             );
 
-        $handler = new SearchHandler($caseSensitive);
+        $handler = new SearchHandler();
         self::assertInstanceOf(PagerInterface::class, $handler->search($admin, 'myservice'));
-    }
-
-    /**
-     * @phpstan-return array<array{bool}>
-     */
-    public function buildPagerWithGlobalSearchFieldProvider(): array
-    {
-        return [
-            [true],
-            [false],
-        ];
     }
 
     /**
@@ -92,8 +76,8 @@ class SearchHandlerTest extends TestCase
      */
     public function testAdminSearch(?string $expected, int $filterCallsCount, ?bool $enabled, string $adminCode): void
     {
-        $filter = $this->createMock(FilterInterface::class);
-        $filter->expects(self::exactly($filterCallsCount))->method('getOption')->with('global_search')->willReturn(true);
+        $filter = $this->createMock(SearchableFilterInterface::class);
+        $filter->method('isSearchEnabled')->willReturn(true);
 
         $pager = $this->createMock(PagerInterface::class);
         $pager->expects(self::exactly($filterCallsCount))->method('setPage');
@@ -110,14 +94,13 @@ class SearchHandlerTest extends TestCase
         $admin->expects(self::exactly(null === $expected ? 1 : 2))->method('getCode')->willReturn($adminCode);
 
         $filter
-            ->expects(self::exactly(null === $expected ? 0 : 2))
+            ->expects(self::exactly(null === $expected ? 0 : 1))
             ->method('setOption')
             ->withConsecutive(
-                [self::equalTo('case_sensitive'), true],
                 [self::equalTo('or_group'), $adminCode]
             );
 
-        $handler = new SearchHandler(true);
+        $handler = new SearchHandler();
 
         if (null !== $enabled) {
             $handler->configureAdminSearch([$adminCode => $enabled]);
@@ -142,12 +125,12 @@ class SearchHandlerTest extends TestCase
 
     public function testBuildPagerWithDefaultFilters(): void
     {
-        $defaultFilter = $this->createMock(FilterInterface::class);
-        $defaultFilter->expects(self::once())->method('getOption')->with('global_search')->willReturn(false);
+        $defaultFilter = $this->createMock(SearchableFilterInterface::class);
+        $defaultFilter->expects(self::once())->method('isSearchEnabled')->willReturn(false);
         $defaultFilter->expects(self::once())->method('getFormName')->willReturn('filter1');
 
-        $filter = $this->createMock(FilterInterface::class);
-        $filter->expects(self::once())->method('getOption')->with('global_search')->willReturn(true);
+        $filter = $this->createMock(SearchableFilterInterface::class);
+        $filter->expects(self::once())->method('isSearchEnabled')->willReturn(true);
         $filter->expects(self::once())->method('getFormName')->willReturn('filter2');
 
         $pager = $this->createMock(PagerInterface::class);
@@ -164,7 +147,7 @@ class SearchHandlerTest extends TestCase
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects(self::once())->method('getDatagrid')->willReturn($datagrid);
 
-        $handler = new SearchHandler(true);
+        $handler = new SearchHandler();
         $pager = $handler->search($admin, 'myservice');
         self::assertInstanceOf(PagerInterface::class, $pager);
     }

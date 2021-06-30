@@ -599,7 +599,6 @@ type of your condition(s)::
     **TODO**:
     * basic filter configuration and options
     * targeting submodel fields using dot-separated notation
-    * advanced filter options (global_search)
 
 Visual configuration
 --------------------
@@ -771,7 +770,7 @@ Combine this with configuring a custom template and you'll have a list column fu
             'template' => 'path/to/your/template.html.twig'
         ]);
     }
-    
+
 .. _`SonataDoctrineORMAdminBundle Documentation`: https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/list_field_definition.html
 .. _`here`: https://github.com/sonata-project/form-extensions/tree/1.x/src/Type
-    
+

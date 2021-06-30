@@ -1,9 +1,10 @@
 Search
 ======
 
-The admin comes with a basic global search available in the upper navigation menu. The search iterates over admin classes
-and look for filter with the option ``global_search`` set to true. If you are using the ``SonataDoctrineORMBundle``
-any text filter will be set to ``true`` by default.
+The admin comes with a basic global search available in the upper navigation menu. The search iterates over
+admin classes and looks for filters implementing the ``Sonata\AdminBundle\Search\SearchableFilterInterface`` interface with
+the method ``isSearchEnabled()`` returning true. If you are using ``SonataDoctrineORMBundle``, the
+``Sonata\DoctrineORMAdminBundle\Filter\StringFilter`` filter is searchable and relies on a ``global_search`` option.
 
 Disabling the search by admin
 -----------------------------
@@ -139,31 +140,3 @@ and it looks like this:
     :align: center
     :alt: Custom view
     :width: 700px
-
-Case sensitive/insensitive
---------------------------
-
-By default all searches are done case-sensitive.
-
-.. note::
-
-    This will support PostgreSQL out of the box, but unless you change the collation of MySQL, MSSQL or SQLite,
-    it will have no effect! They are case-insensitive by default.
-
-To search case-insensitive use the following option:
-
-.. code-block:: yaml
-
-    # config/packages/sonata_admin.yaml
-
-    sonata_admin:
-        global_search:
-            case_sensitive: false
-
-Using case-insensitivity might lead to performance issues. You can find some more information
-`here <https://use-the-index-luke.com/sql/where-clause/functions/case-insensitive-search>`_.
-
-Instead of searching **all** fields case-insensitive with PostgreSQL, you can use a dedicated
-`CITEXT type <https://www.postgresql.org/docs/9.1/citext.html>`_ via
-`opsway/doctrine-dbal-postgresql <https://github.com/opsway/doctrine-dbal-postgresql/blob/master/src/Doctrine/DBAL/Types/Citext.php>`_
-and keep the ``case-sensitive`` option with ``true``.

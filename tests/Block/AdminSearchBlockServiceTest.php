@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminSearchBlockService;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
-use Sonata\AdminBundle\Filter\FilterInterface;
+use Sonata\AdminBundle\Search\SearchableFilterInterface;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\BlockBundle\Test\BlockServiceTestCase;
@@ -50,7 +50,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
         parent::setUp();
 
         $this->pool = new Pool(new Container());
-        $this->searchHandler = new SearchHandler(true);
+        $this->searchHandler = new SearchHandler();
         $this->templateRegistry = $this->createMock(TemplateRegistryInterface::class);
         $this->templateRegistry->method('getTemplate')->willReturn('@SonataAdmin/Block/block_search_result.html.twig');
     }
@@ -84,10 +84,9 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(SearchableFilterInterface::class);
         $filter
-            ->method('getOption')
-            ->with('global_search')
+            ->method('isSearchEnabled')
             ->willReturn(true);
 
         $datagrid
