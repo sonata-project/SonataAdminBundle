@@ -79,7 +79,7 @@ final class Metadata implements MetadataInterface
 
     public function isImageAvailable(): bool
     {
-        return $this->image && self::DEFAULT_MOSAIC_BACKGROUND !== $this->image;
+        return null !== $this->image && self::DEFAULT_MOSAIC_BACKGROUND !== $this->image;
     }
 
     public function getDomain(): ?string

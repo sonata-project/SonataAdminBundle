@@ -370,7 +370,8 @@ class CRUDController extends AbstractController
 
         $forwardedRequest = $request->duplicate();
 
-        if ($data = json_decode((string) $request->get('data', ''), true)) {
+        $data = json_decode((string) $request->get('data', ''), true);
+        if (null !== $data) {
             $action = $data['action'];
             $idx = (array) ($data['idx'] ?? []);
             $allElements = (bool) ($data['all_elements'] ?? false);
@@ -440,9 +441,8 @@ class CRUDController extends AbstractController
             $formView = $datagrid->getForm()->createView();
             $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-            $template = !empty($batchActions[$action]['template']) ?
-                $batchActions[$action]['template'] :
-                $this->templateRegistry->getTemplate('batch_confirmation');
+            $template = $batchActions[$action]['template']
+                ?? $this->templateRegistry->getTemplate('batch_confirmation');
 
             return $this->renderWithExtraParams($template, [
                 'action' => 'list',
@@ -661,7 +661,7 @@ class CRUDController extends AbstractController
             'action' => 'history',
             'object' => $object,
             'revisions' => $revisions,
-            'currentRevision' => $revisions ? current($revisions) : false,
+            'currentRevision' => current($revisions),
         ]);
     }
 
@@ -697,7 +697,7 @@ class CRUDController extends AbstractController
         // retrieve the revisioned object
         $object = $reader->find($this->admin->getClass(), $id, $revision);
 
-        if (!$object) {
+        if (null === $object) {
             throw $this->createNotFoundException(sprintf(
                 'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
                 $id,
@@ -746,7 +746,7 @@ class CRUDController extends AbstractController
 
         // retrieve the base revision
         $baseObject = $reader->find($this->admin->getClass(), $id, $baseRevision);
-        if (!$baseObject) {
+        if (null === $baseObject) {
             throw $this->createNotFoundException(sprintf(
                 'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
                 $id,
@@ -757,7 +757,7 @@ class CRUDController extends AbstractController
 
         // retrieve the compare revision
         $compareObject = $reader->find($this->admin->getClass(), $id, $compareRevision);
-        if (!$compareObject) {
+        if (null === $compareObject) {
             throw $this->createNotFoundException(sprintf(
                 'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
                 $id,
@@ -1012,8 +1012,6 @@ class CRUDController extends AbstractController
      */
     protected function redirectTo(Request $request, object $object): RedirectResponse
     {
-        $url = false;
-
         if (null !== $request->get('btn_update_and_list')) {
             return $this->redirectToList();
         }
@@ -1026,32 +1024,27 @@ class CRUDController extends AbstractController
             if ($this->admin->hasActiveSubClass()) {
                 $params['subclass'] = $request->get('subclass');
             }
-            $url = $this->admin->generateUrl('create', $params);
+
+            return new RedirectResponse($this->admin->generateUrl('create', $params));
         }
 
         if ('DELETE' === $request->getMethod()) {
             return $this->redirectToList();
         }
 
-        if (!$url) {
-            foreach (['edit', 'show'] as $route) {
-                if ($this->admin->hasRoute($route) && $this->admin->hasAccess($route, $object)) {
-                    $url = $this->admin->generateObjectUrl(
-                        $route,
-                        $object,
-                        $this->getSelectedTab($request)
-                    );
+        foreach (['edit', 'show'] as $route) {
+            if ($this->admin->hasRoute($route) && $this->admin->hasAccess($route, $object)) {
+                $url = $this->admin->generateObjectUrl(
+                    $route,
+                    $object,
+                    $this->getSelectedTab($request)
+                );
 
-                    break;
-                }
+                return new RedirectResponse($url);
             }
         }
 
-        if (!$url) {
-            return $this->redirectToList();
-        }
-
-        return new RedirectResponse($url);
+        return $this->redirectToList();
     }
 
     /**
@@ -1061,7 +1054,8 @@ class CRUDController extends AbstractController
     {
         $parameters = [];
 
-        if ($filter = $this->admin->getFilterParameters()) {
+        $filter = $this->admin->getFilterParameters();
+        if ([] !== $filter) {
             $parameters['filter'] = $filter;
         }
 
@@ -1260,7 +1254,7 @@ class CRUDController extends AbstractController
      */
     final protected function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
     {
-        $domain = $domain ?: $this->admin->getTranslationDomain();
+        $domain = $domain ?? $this->admin->getTranslationDomain();
         $translator = $this->get('translator');
         \assert($translator instanceof TranslatorInterface);
 
@@ -1269,7 +1263,7 @@ class CRUDController extends AbstractController
 
     protected function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): ?JsonResponse
     {
-        if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
+        if ([] === array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes())) {
             return $this->renderJson([], Response::HTTP_NOT_ACCEPTABLE);
         }
 
@@ -1290,7 +1284,7 @@ class CRUDController extends AbstractController
      */
     protected function handleXmlHttpRequestSuccessResponse(Request $request, object $object): JsonResponse
     {
-        if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
+        if ([] === array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes())) {
             return $this->renderJson([], Response::HTTP_NOT_ACCEPTABLE);
         }
 

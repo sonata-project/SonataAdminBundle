@@ -511,7 +511,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
                 // if no filters, fetch from storage
                 // otherwise save to storage
-                if (empty($filters)) {
+                if ([] === $filters) {
                     $filters = $this->getFilterPersister()->get($this->getCode());
                 } else {
                     $this->getFilterPersister()->set($this->getCode(), $filters);
@@ -607,7 +607,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
             $this->cachedBaseRoutePattern = sprintf(
                 '/%s%s/%s',
-                empty($matches[1]) ? '' : $this->urlize($matches[1], '-').'/',
+                '' === $matches[1] ? '' : $this->urlize($matches[1], '-').'/',
                 $this->urlize($matches[3], '-'),
                 $this->urlize($matches[5], '-')
             );
@@ -662,7 +662,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
             $this->cachedBaseRouteName = sprintf(
                 'admin_%s%s_%s',
-                empty($matches[1]) ? '' : $this->urlize($matches[1]).'_',
+                '' === $matches[1] ? '' : $this->urlize($matches[1]).'_',
                 $this->urlize($matches[3]),
                 $this->urlize($matches[5])
             );
@@ -1063,7 +1063,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         foreach ($this->formGroups as $name => $formGroup) {
             unset($this->formGroups[$name]['fields'][$key]);
 
-            if (empty($this->formGroups[$name]['fields'])) {
+            if ([] === $this->formGroups[$name]['fields']) {
                 unset($this->formGroups[$name]);
             }
         }
@@ -1784,7 +1784,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         $buttonList = [];
 
-        if (self::MASK_OF_ACTION_CREATE & $actionBit
+        if (0 !== (self::MASK_OF_ACTION_CREATE & $actionBit)
             && $this->hasRoute('create')
             && $this->hasAccess('create')
         ) {
@@ -1793,7 +1793,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             ];
         }
 
-        $canAccessObject = self::MASK_OF_ACTIONS_USING_OBJECT & $actionBit && null !== $object && null !== $this->id($object);
+        $canAccessObject = 0 !== (self::MASK_OF_ACTIONS_USING_OBJECT & $actionBit)
+            && null !== $object
+            && null !== $this->id($object);
 
         if ($canAccessObject
             && self::MASK_OF_ACTION_EDIT & $actionBit
@@ -1837,7 +1839,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             ];
         }
 
-        if (self::MASK_OF_ACTION_LIST & $actionBit
+        if (0 !== (self::MASK_OF_ACTION_LIST & $actionBit)
             && $this->hasRoute('list')
             && $this->hasAccess('list')
         ) {

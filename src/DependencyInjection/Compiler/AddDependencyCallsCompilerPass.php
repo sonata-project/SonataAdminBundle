@@ -88,7 +88,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 $this->applyConfigurationFromAttribute($definition, $attributes);
                 $this->applyDefaults($container, $id, $attributes);
 
-                $arguments = $parentDefinition ?
+                $arguments = null !== $parentDefinition ?
                     array_merge($parentDefinition->getArguments(), $definition->getArguments()) :
                     $definition->getArguments();
 
@@ -143,7 +143,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 $groupDefaults[$resolvedGroupName]['items'][] = [
                     'admin' => $id,
-                    'label' => !empty($attributes['label']) ? $attributes['label'] : '',
+                    'label' => $attributes['label'] ?? '',
                     'route' => '',
                     'route_params' => [],
                     'route_absolute' => false,
@@ -162,7 +162,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $dashboardGroupsSettings = $container->getParameter('sonata.admin.configuration.dashboard_groups');
         \assert(\is_array($dashboardGroupsSettings));
 
-        if (!empty($dashboardGroupsSettings)) {
+        if ([] !== $dashboardGroupsSettings) {
             $groups = $dashboardGroupsSettings;
 
             foreach ($dashboardGroupsSettings as $groupName => $group) {
@@ -181,42 +181,42 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     ];
                 }
 
-                if (empty($group['items'])) {
+                if (!isset($group['items']) || [] === $group['items']) {
                     $groups[$resolvedGroupName]['items'] = $groupDefaults[$resolvedGroupName]['items'];
                 }
 
-                if (empty($group['label'])) {
+                if (!isset($group['label']) || '' === $group['label']) {
                     $groups[$resolvedGroupName]['label'] = $groupDefaults[$resolvedGroupName]['label'];
                 }
 
-                if (empty($group['label_catalogue'])) {
+                if (!isset($group['label_catalogue']) || '' === $group['label_catalogue']) {
                     $groups[$resolvedGroupName]['label_catalogue'] = $groupDefaults[$resolvedGroupName]['label_catalogue'];
                 }
 
-                if (empty($group['icon'])) {
+                if (!isset($group['icon']) || '' === $group['icon']) {
                     $groups[$resolvedGroupName]['icon'] = $groupDefaults[$resolvedGroupName]['icon'];
                 }
 
-                if (!empty($group['item_adds'])) {
+                if (isset($group['item_adds']) && [] !== $group['item_adds']) {
                     $groups[$resolvedGroupName]['items'] = array_merge($groups[$resolvedGroupName]['items'], $group['item_adds']);
                 }
 
-                if (empty($group['roles'])) {
+                if (!isset($group['roles']) || [] === $group['roles']) {
                     $groups[$resolvedGroupName]['roles'] = $groupDefaults[$resolvedGroupName]['roles'];
                 }
 
                 if (
                     isset($groups[$resolvedGroupName]['on_top'])
-                    && !empty($group['on_top'])
-                    && (\count($groups[$resolvedGroupName]['items']) > 1)
+                    && ($group['on_top'] ?? false)
+                    && \count($groups[$resolvedGroupName]['items']) > 1
                 ) {
                     throw new \RuntimeException('You can\'t use "on_top" option with multiple same name groups.');
                 }
-                if (empty($group['on_top'])) {
+                if (!isset($group['on_top'])) {
                     $groups[$resolvedGroupName]['on_top'] = $groupDefaults[$resolvedGroupName]['on_top'];
                 }
 
-                if (empty($group['keep_open'])) {
+                if (!isset($group['keep_open'])) {
                     $groups[$resolvedGroupName]['keep_open'] = $groupDefaults[$resolvedGroupName]['keep_open'];
                 }
             }
@@ -227,10 +227,10 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 usort(
                     $element['items'],
                     static function (array $a, array $b): int {
-                        $a = !empty($a['label']) ? $a['label'] : $a['admin'];
-                        $b = !empty($b['label']) ? $b['label'] : $b['admin'];
+                        $labelA = isset($a['label']) && '' !== $a['label'] ? $a['label'] : $a['admin'];
+                        $labelB = isset($b['label']) && '' !== $b['label'] ? $b['label'] : $b['admin'];
 
-                        return $a <=> $b;
+                        return $labelA <=> $labelB;
                     }
                 );
             };
@@ -450,10 +450,10 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         ?Definition $parentDefinition = null
     ): void {
         $arguments = $definition->getArguments();
-        $parentArguments = $parentDefinition ? $parentDefinition->getArguments() : [];
+        $parentArguments = null !== $parentDefinition ? $parentDefinition->getArguments() : [];
 
         foreach ($defaultArguments as $index => $value) {
-            $declaredInParent = $parentDefinition && \array_key_exists($index, $parentArguments);
+            $declaredInParent = null !== $parentDefinition && \array_key_exists($index, $parentArguments);
             $argumentValue = $declaredInParent ? $parentArguments[$index] : $arguments[$index];
 
             if (null === $argumentValue || 0 === \strlen($argumentValue)) {

@@ -41,7 +41,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
     {
         $fieldDescription->setOption('edit', $fieldDescription->getOption('edit', 'standard'));
 
-        if ($fieldDescription->describesAssociation() || $fieldDescription->getOption('admin_code')) {
+        if ($fieldDescription->describesAssociation() || null !== $fieldDescription->getOption('admin_code')) {
             $fieldDescription->getAdmin()->attachAdminClass($fieldDescription);
         }
     }

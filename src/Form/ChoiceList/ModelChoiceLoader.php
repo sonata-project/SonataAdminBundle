@@ -119,13 +119,14 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
                     ));
                 }
 
-                $id = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($model));
-
                 if (!\array_key_exists($valueObject, $choices)) {
                     $choices[$valueObject] = [];
                 }
 
-                $choices[$valueObject][] = $id;
+                $choices[$valueObject][] = implode(
+                    AdapterInterface::ID_SEPARATOR,
+                    $this->getIdentifierValues($model)
+                );
             }
 
             $finalChoices = [];

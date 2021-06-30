@@ -246,7 +246,8 @@ final class ExtensionCompilerPass implements CompilerPassInterface
             return true;
         }
 
-        if (!$parentClass = $class->getParentClass()) {
+        $parentClass = $class->getParentClass();
+        if (false === $parentClass) {
             return false;
         }
 

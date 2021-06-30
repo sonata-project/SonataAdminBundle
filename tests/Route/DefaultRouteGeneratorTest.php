@@ -88,7 +88,7 @@ class DefaultRouteGeneratorTest extends TestCase
             ->willReturnCallback(static function (string $name, array $parameters = [], int $referenceType = RouterInterface::ABSOLUTE_PATH): string {
                 $params = '';
                 $domain = RouterInterface::ABSOLUTE_URL === $referenceType ? self::ROUTER_DOMAIN : '';
-                if (!empty($parameters)) {
+                if ([] !== $parameters) {
                     $params .= '?'.http_build_query($parameters);
                 }
 
@@ -207,7 +207,7 @@ class DefaultRouteGeneratorTest extends TestCase
             ->method('generate')
             ->willReturnCallback(static function (string $name, array $parameters = []): string {
                 $params = '';
-                if (!empty($parameters)) {
+                if ([] !== $parameters) {
                     $params .= '?'.http_build_query($parameters);
                 }
 
@@ -271,7 +271,7 @@ class DefaultRouteGeneratorTest extends TestCase
             ->method('generate')
             ->willReturnCallback(static function (string $name, array $parameters = []): string {
                 $params = '';
-                if (!empty($parameters)) {
+                if ([] !== $parameters) {
                     $params .= '?'.http_build_query($parameters);
                 }
 
@@ -385,7 +385,7 @@ class DefaultRouteGeneratorTest extends TestCase
             ->method('generate')
             ->willReturnCallback(static function (string $name, array $parameters = []): string {
                 $params = '';
-                if (!empty($parameters)) {
+                if ([] !== $parameters) {
                     $params .= '?'.http_build_query($parameters);
                 }
 

@@ -93,7 +93,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
         /*
          * We have a child, so we need to upgrade block prefix
          */
-        if ($view->parent && $view->parent->vars['sonata_admin_enabled'] && !$sonataAdmin['admin']) {
+        if ($view->parent && $view->parent->vars['sonata_admin_enabled'] && !($sonataAdmin['admin'] ?? false)) {
             $blockPrefixes = $view->vars['block_prefixes'];
             $baseName = str_replace('.', '_', $view->parent->vars['sonata_admin_code']);
 
@@ -122,7 +122,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
         }
 
         // avoid to add extra information not required by non admin field
-        if ($sonataAdmin && $form->getConfig()->getAttribute('sonata_admin_enabled', true)) {
+        if (\is_array($sonataAdmin) && $form->getConfig()->getAttribute('sonata_admin_enabled', true)) {
             $sonataAdmin['value'] = $form->getData();
 
             // add a new block types, so the Admin Form element can be tweaked based on the admin code

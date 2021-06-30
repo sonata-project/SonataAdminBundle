@@ -78,7 +78,7 @@ final class RouteCollection implements RouteCollectionInterface
         array $methods = [],
         string $condition = ''
     ): RouteCollectionInterface {
-        $pattern = sprintf('%s/%s', $this->baseRoutePattern, $pattern ?: $name);
+        $pattern = sprintf('%s/%s', $this->baseRoutePattern, $pattern ?? $name);
         $code = $this->getCode($name);
 
         if (!isset($defaults['_controller'])) {

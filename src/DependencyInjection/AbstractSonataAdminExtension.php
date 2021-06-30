@@ -108,7 +108,7 @@ abstract class AbstractSonataAdminExtension extends Extension
             ]);
         }
 
-        if (!empty($defaultSonataDoctrineConfig)) {
+        if ([] !== $defaultSonataDoctrineConfig) {
             $defaultConfig = array_merge_recursive($defaultConfig, $defaultSonataDoctrineConfig);
         }
 

@@ -75,7 +75,7 @@ final class GroupMenuProvider implements MenuProviderInterface
 
             if (false === $menuItem->hasChildren()) {
                 $menuItem->setDisplay(false);
-            } elseif (!empty($group['keep_open'])) {
+            } elseif ($group['keep_open'] ?? false) {
                 $menuItem->setAttribute('class', 'keep-open');
                 $menuItem->setExtra('keep_open', $group['keep_open']);
             }
@@ -108,7 +108,7 @@ final class GroupMenuProvider implements MenuProviderInterface
      */
     private function canGenerateMenuItem(array $item, array $group): bool
     {
-        if (isset($item['admin']) && !empty($item['admin'])) {
+        if (isset($item['admin']) && '' !== $item['admin']) {
             $admin = $this->pool->getInstance($item['admin']);
 
             // skip menu item if no `list` url is available or user doesn't have the LIST access rights
@@ -119,7 +119,7 @@ final class GroupMenuProvider implements MenuProviderInterface
         // Still must be granted unanimously to group and item
 
         $isItemGranted = true;
-        if (!empty($item['roles'])) {
+        if (isset($item['roles']) && [] !== $item['roles']) {
             $isItemGranted = false;
             foreach ($item['roles'] as $role) {
                 if ($this->checker->isGranted($role)) {
@@ -130,7 +130,7 @@ final class GroupMenuProvider implements MenuProviderInterface
         }
 
         $isGroupGranted = true;
-        if (!empty($group['roles'])) {
+        if (isset($group['roles']) && [] !== $group['roles']) {
             $isGroupGranted = false;
             foreach ($group['roles'] as $role) {
                 if ($this->checker->isGranted($role)) {
@@ -149,7 +149,7 @@ final class GroupMenuProvider implements MenuProviderInterface
      */
     private function generateMenuItem(array $item, array $group): ItemInterface
     {
-        if (isset($item['admin']) && !empty($item['admin'])) {
+        if (isset($item['admin']) && '' !== $item['admin']) {
             $admin = $this->pool->getInstance($item['admin']);
 
             $options = $admin->generateMenuUrl(

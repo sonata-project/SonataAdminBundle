@@ -87,7 +87,7 @@ final class GenerateObjectAclCommand extends QuestionableCommand
             }
         }
 
-        if (!$this->aclObjectManipulators) {
+        if ([] === $this->aclObjectManipulators) {
             $output->writeln('No manipulators are implemented : <info>ignoring</info>');
 
             return 1;
@@ -120,11 +120,13 @@ final class GenerateObjectAclCommand extends QuestionableCommand
             }
 
             $manipulatorId = sprintf('sonata.admin.manipulator.acl.object.%s', $admin->getManagerType());
-            if (!$manipulator = $this->aclObjectManipulators[$manipulatorId] ?? null) {
+            if (!isset($this->aclObjectManipulators[$manipulatorId])) {
                 $output->writeln('Admin class is using a manager type that has no manipulator implemented : <info>ignoring</info>');
 
                 continue;
             }
+
+            $manipulator = $this->aclObjectManipulators[$manipulatorId];
             if (!$manipulator instanceof ObjectAclManipulatorInterface) {
                 $output->writeln(sprintf('The interface "ObjectAclManipulatorInterface" is not implemented for %s: <info>ignoring</info>', \get_class($manipulator)));
 
