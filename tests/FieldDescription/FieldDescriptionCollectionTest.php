@@ -113,4 +113,23 @@ class FieldDescriptionCollectionTest extends TestCase
         $actualElements = array_keys($collection->getElements());
         $this->assertSame($newOrder, $actualElements, 'the order is wrong');
     }
+
+    public function testReorderWithInvalidName(): void
+    {
+        $collection = new FieldDescriptionCollection();
+
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
+        $fieldDescription->method('getName')->willReturn('title');
+        $collection->add($fieldDescription);
+
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
+        $fieldDescription->method('getName')->willReturn('position');
+        $collection->add($fieldDescription);
+
+        self::expectException(\InvalidArgumentException::class);
+        self::expectExceptionMessage('Element "foo" does not exist.');
+
+        $newOrder = ['foo', 'title'];
+        $collection->reorder($newOrder);
+    }
 }
