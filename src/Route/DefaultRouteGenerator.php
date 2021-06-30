@@ -97,14 +97,14 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
             // merge link parameter if any provided by the parent field
             $parameters = array_merge($parameters, $linkParameters);
 
-            $parameters['uniqid'] = $admin->getUniqid();
+            $parameters['uniqid'] = $admin->getUniqId();
             $parameters['code'] = $admin->getCode();
             $parameters['pcode'] = $admin->getParentFieldDescription()->getAdmin()->getCode();
-            $parameters['puniqid'] = $admin->getParentFieldDescription()->getAdmin()->getUniqid();
+            $parameters['puniqid'] = $admin->getParentFieldDescription()->getAdmin()->getUniqId();
         }
 
         if ('update' === $name || '|update' === substr($name, -7)) {
-            $parameters['uniqid'] = $admin->getUniqid();
+            $parameters['uniqid'] = $admin->getUniqId();
             $parameters['code'] = $admin->getCode();
         }
 
@@ -146,7 +146,7 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
         $codePrefix = $admin->getBaseCodeRoute();
 
         // someone provide a code, so it is a child
-        if (strpos($name, '.')) {
+        if (strpos($name, '.') > 0) {
             return sprintf('%s|%s', $codePrefix, $name);
         }
 

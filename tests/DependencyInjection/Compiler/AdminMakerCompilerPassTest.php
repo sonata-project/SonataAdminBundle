@@ -26,7 +26,7 @@ final class AdminMakerCompilerPassTest extends AbstractCompilerPassTestCase
     {
         $this->compile();
 
-        $this->assertContainerBuilderNotHasService('sonata.admin.maker');
+        self::assertContainerBuilderNotHasService('sonata.admin.maker');
     }
 
     public function testDoesNothingWithoutDefaultControllerParameter(): void
@@ -41,7 +41,7 @@ final class AdminMakerCompilerPassTest extends AbstractCompilerPassTestCase
 
         $this->compile();
 
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
+        self::assertContainerBuilderHasServiceDefinitionWithArgument(
             'sonata.admin.maker',
             2,
             CRUDController::class
@@ -62,7 +62,7 @@ final class AdminMakerCompilerPassTest extends AbstractCompilerPassTestCase
 
         $this->compile();
 
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
+        self::assertContainerBuilderHasServiceDefinitionWithArgument(
             'sonata.admin.maker',
             2,
             CRUDController::class
@@ -86,7 +86,7 @@ final class AdminMakerCompilerPassTest extends AbstractCompilerPassTestCase
 
         $this->compile();
 
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
+        self::assertContainerBuilderHasServiceDefinitionWithArgument(
             'sonata.admin.maker',
             2,
             CRUDController::class

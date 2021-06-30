@@ -45,22 +45,22 @@ class ConfigureEventTest extends TestCase
 
     public function testGetType(): void
     {
-        $this->assertSame('Foo', $this->event->getType());
+        self::assertSame('Foo', $this->event->getType());
     }
 
     public function testGetAdmin(): void
     {
         $result = $this->event->getAdmin();
 
-        $this->assertInstanceOf(AdminInterface::class, $result);
-        $this->assertSame($this->admin, $result);
+        self::assertInstanceOf(AdminInterface::class, $result);
+        self::assertSame($this->admin, $result);
     }
 
     public function testGetMapper(): void
     {
         $result = $this->event->getMapper();
 
-        $this->assertInstanceOf(MapperInterface::class, $result);
-        $this->assertSame($this->mapper, $result);
+        self::assertInstanceOf(MapperInterface::class, $result);
+        self::assertSame($this->mapper, $result);
     }
 }

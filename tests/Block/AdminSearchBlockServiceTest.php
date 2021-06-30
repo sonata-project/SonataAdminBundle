@@ -66,7 +66,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
         );
         $blockContext = $this->getBlockContext($blockService);
 
-        $this->assertSettings([
+        self::assertSettings([
             'admin_code' => '',
             'query' => '',
             'page' => 0,

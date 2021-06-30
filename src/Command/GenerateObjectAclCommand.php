@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Command;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Util\ObjectAclManipulatorInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -132,7 +131,6 @@ final class GenerateObjectAclCommand extends QuestionableCommand
                 continue;
             }
 
-            \assert($admin instanceof AdminInterface);
             $manipulator->batchConfigureAcls($output, $admin, $securityIdentity);
         }
 
@@ -148,7 +146,7 @@ final class GenerateObjectAclCommand extends QuestionableCommand
     {
         if ('' === $this->userModelClass) {
             $userModel = $input->getOption('user_model');
-            if ($userModel) {
+            if (null !== $userModel) {
                 $userModelFromInput = $userModel;
             } else {
                 $userModelFromInput = $this->getQuestionHelper()->ask(

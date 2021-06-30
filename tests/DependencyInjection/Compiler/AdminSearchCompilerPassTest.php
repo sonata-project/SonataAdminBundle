@@ -43,7 +43,7 @@ final class AdminSearchCompilerPassTest extends AbstractCompilerPassTestCase
 
         $this->compile();
 
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+        self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata.admin.search.handler',
             'configureAdminSearch',
             [['admin.foo' => true, 'admin.bar' => false]]

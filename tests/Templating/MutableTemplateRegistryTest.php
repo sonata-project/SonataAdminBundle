@@ -33,7 +33,7 @@ final class MutableTemplateRegistryTest extends TestCase
 
     public function testGetTemplates(): void
     {
-        $this->assertSame(['list' => '@FooAdmin/CRUD/list.html.twig'], $this->templateRegistry->getTemplates());
+        self::assertSame(['list' => '@FooAdmin/CRUD/list.html.twig'], $this->templateRegistry->getTemplates());
 
         $templates = [
             'show' => '@FooAdmin/CRUD/show.html.twig',
@@ -41,17 +41,17 @@ final class MutableTemplateRegistryTest extends TestCase
         ];
 
         $this->templateRegistry->setTemplates($templates);
-        $this->assertSame($templates + ['list' => '@FooAdmin/CRUD/list.html.twig'], $this->templateRegistry->getTemplates());
+        self::assertSame($templates + ['list' => '@FooAdmin/CRUD/list.html.twig'], $this->templateRegistry->getTemplates());
     }
 
     public function testGetTemplateAfterSetTemplate(): void
     {
         $this->templateRegistry->setTemplate('edit', '@FooAdmin/CRUD/edit.html.twig');
 
-        $this->assertTrue($this->templateRegistry->hasTemplate('edit'));
-        $this->assertSame('@FooAdmin/CRUD/edit.html.twig', $this->templateRegistry->getTemplate('edit'));
+        self::assertTrue($this->templateRegistry->hasTemplate('edit'));
+        self::assertSame('@FooAdmin/CRUD/edit.html.twig', $this->templateRegistry->getTemplate('edit'));
 
-        $this->assertFalse($this->templateRegistry->hasTemplate('nonexist_template'));
+        self::assertFalse($this->templateRegistry->hasTemplate('nonexist_template'));
     }
 
     public function testGetTemplateAfterSetTemplates(): void
@@ -63,9 +63,9 @@ final class MutableTemplateRegistryTest extends TestCase
 
         $this->templateRegistry->setTemplates($templates);
 
-        $this->assertTrue($this->templateRegistry->hasTemplate('edit'));
-        $this->assertSame('@FooAdmin/CRUD/edit.html.twig', $this->templateRegistry->getTemplate('edit'));
+        self::assertTrue($this->templateRegistry->hasTemplate('edit'));
+        self::assertSame('@FooAdmin/CRUD/edit.html.twig', $this->templateRegistry->getTemplate('edit'));
 
-        $this->assertFalse($this->templateRegistry->hasTemplate('nonexist_template'));
+        self::assertFalse($this->templateRegistry->hasTemplate('nonexist_template'));
     }
 }

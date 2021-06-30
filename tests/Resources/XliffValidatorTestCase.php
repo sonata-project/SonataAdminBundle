@@ -42,10 +42,10 @@ abstract class XliffValidatorTestCase extends TestCase
         $this->validatePath($path);
 
         if (\count($this->errors) > 0) {
-            $this->fail(sprintf('Unable to parse xliff files: %s', implode(', ', $this->errors)));
+            self::fail(sprintf('Unable to parse xliff files: %s', implode(', ', $this->errors)));
         }
 
-        $this->assertCount(
+        self::assertCount(
             0,
             $this->errors,
             sprintf('Unable to parse xliff files: %s', implode(', ', $this->errors))
@@ -61,7 +61,7 @@ abstract class XliffValidatorTestCase extends TestCase
     {
         try {
             $this->loader->load($file, 'en');
-            $this->assertTrue(true, sprintf('Successful loading file: %s', $file));
+            self::assertTrue(true, sprintf('Successful loading file: %s', $file));
         } catch (InvalidResourceException $e) {
             $this->errors[] = sprintf('%s => %s', $file, $e->getMessage());
         }
@@ -70,7 +70,7 @@ abstract class XliffValidatorTestCase extends TestCase
     protected function validatePath(string $path): void
     {
         $files = glob(sprintf('%s/*.xliff', $path));
-        $this->assertIsArray($files);
+        self::assertIsArray($files);
 
         foreach ($files as $file) {
             $this->validateXliff($file);

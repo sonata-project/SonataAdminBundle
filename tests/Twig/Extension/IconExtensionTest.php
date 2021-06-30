@@ -25,7 +25,7 @@ final class IconExtensionTest extends TestCase
     {
         $twigExtension = new IconExtension();
 
-        $this->assertSame($expected, $twigExtension->parseIcon($icon));
+        self::assertSame($expected, $twigExtension->parseIcon($icon));
     }
 
     /**

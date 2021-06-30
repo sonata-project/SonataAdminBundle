@@ -40,7 +40,7 @@ class AdminStatsBlockServiceTest extends BlockServiceTestCase
         $blockService = new AdminStatsBlockService($this->twig, $this->pool);
         $blockContext = $this->getBlockContext($blockService);
 
-        $this->assertSettings([
+        self::assertSettings([
             'icon' => 'fas fa-chart-line',
             'text' => 'Statistics',
             'translation_domain' => null,

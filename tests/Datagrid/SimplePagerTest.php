@@ -43,86 +43,86 @@ class SimplePagerTest extends TestCase
 
     public function testInitNumPages(): void
     {
-        $this->proxyQuery->expects($this->once())
+        $this->proxyQuery->expects(self::once())
                 ->method('execute')
                 ->willReturn(new ArrayCollection(array_fill(0, 13, new \stdClass())));
 
-        $this->proxyQuery->expects($this->once())
+        $this->proxyQuery->expects(self::once())
             ->method('setMaxResults')
-            ->with($this->equalTo(21));
+            ->with(self::equalTo(21));
 
-        $this->proxyQuery->expects($this->once())
+        $this->proxyQuery->expects(self::once())
             ->method('setFirstResult')
-            ->with($this->equalTo(0));
+            ->with(self::equalTo(0));
 
         $this->pager->setQuery($this->proxyQuery);
         $this->pager->init();
 
-        $this->assertSame(2, $this->pager->getLastPage());
+        self::assertSame(2, $this->pager->getLastPage());
 
         // We're not knowing exactly the result number, at least 13 (the result found)
-        $this->assertSame(13, $this->pager->countResults());
+        self::assertSame(13, $this->pager->countResults());
     }
 
     public function testInitOffset(): void
     {
-        $this->proxyQuery->expects($this->once())
+        $this->proxyQuery->expects(self::once())
             ->method('execute')
             ->willReturn(new ArrayCollection(array_fill(0, 13, new \stdClass())));
 
-        $this->proxyQuery->expects($this->once())
+        $this->proxyQuery->expects(self::once())
             ->method('setMaxResults')
-            ->with($this->equalTo(21));
+            ->with(self::equalTo(21));
 
         // Asserting that the offset will be set correctly
-        $this->proxyQuery->expects($this->once())
+        $this->proxyQuery->expects(self::once())
             ->method('setFirstResult')
-            ->with($this->equalTo(10));
+            ->with(self::equalTo(10));
 
         $this->pager->setQuery($this->proxyQuery);
         $this->pager->setPage(2);
         $this->pager->init();
 
-        $this->assertSame(3, $this->pager->getLastPage());
+        self::assertSame(3, $this->pager->getLastPage());
 
         // We're not knowing exactly the result number, at least 10 (first page) + 13 (the result found)
-        $this->assertSame(23, $this->pager->countResults());
+        self::assertSame(23, $this->pager->countResults());
     }
 
     public function testLasPage(): void
     {
-        $this->proxyQuery->expects($this->once())
+        $this->proxyQuery->expects(self::once())
             ->method('execute')
             ->willReturn(new ArrayCollection(array_fill(0, 9, new \stdClass())));
 
-        $this->proxyQuery->expects($this->once())
+        $this->proxyQuery->expects(self::once())
             ->method('setMaxResults')
-            ->with($this->equalTo(21));
+            ->with(self::equalTo(21));
 
         // Asserting that the offset will be set correctly
-        $this->proxyQuery->expects($this->once())
+        $this->proxyQuery->expects(self::once())
             ->method('setFirstResult')
-            ->with($this->equalTo(10));
+            ->with(self::equalTo(10));
 
         $this->pager->setQuery($this->proxyQuery);
         $this->pager->setPage(2);
         $this->pager->init();
 
-        $this->assertSame(2, $this->pager->getLastPage());
+        self::assertSame(2, $this->pager->getLastPage());
 
         // We're knowing exactly the result number: 10 (first page) + 9 (this page)
-        $this->assertSame(19, $this->pager->countResults());
+        self::assertSame(19, $this->pager->countResults());
     }
 
     public function testNoPagesPerConfig(): void
     {
-        $this->proxyQuery->expects($this->once())
+        $this->proxyQuery->expects(self::once())
             ->method('setMaxResults')
-            ->with($this->equalTo(0));
+            ->with(self::equalTo(0));
 
-        $this->proxyQuery->expects($this->once())
+        $this->proxyQuery->expects(self::once())
             ->method('setFirstResult')
-            ->with($this->equalTo(0));
+            ->with(self::equalTo(0));
 
         $this->pager->setQuery($this->proxyQuery);
 
@@ -130,27 +130,27 @@ class SimplePagerTest extends TestCase
         $this->pager->setMaxPerPage(0);
         $this->pager->init();
 
-        $this->assertSame(0, $this->pager->getLastPage());
-        $this->assertSame(0, $this->pager->countResults());
+        self::assertSame(0, $this->pager->getLastPage());
+        self::assertSame(0, $this->pager->countResults());
     }
 
     public function testNoPagesForNoResults(): void
     {
-        $this->proxyQuery->expects($this->once())
+        $this->proxyQuery->expects(self::once())
             ->method('execute')
             ->willReturn([]);
 
-        $this->proxyQuery->expects($this->once())
+        $this->proxyQuery->expects(self::once())
             ->method('setMaxResults')
-            ->with($this->equalTo(21));
-        $this->proxyQuery->expects($this->once())
+            ->with(self::equalTo(21));
+        $this->proxyQuery->expects(self::once())
             ->method('setFirstResult')
-            ->with($this->equalTo(0));
+            ->with(self::equalTo(0));
 
         $this->pager->setQuery($this->proxyQuery);
         $this->pager->init();
-        $this->assertSame(1, $this->pager->getLastPage());
-        $this->assertSame(0, $this->pager->countResults());
+        self::assertSame(1, $this->pager->getLastPage());
+        self::assertSame(0, $this->pager->countResults());
     }
 
     public function testInitNoQuery(): void
@@ -166,14 +166,14 @@ class SimplePagerTest extends TestCase
      */
     public function testGetCurrentPageResultsReturnTypeArrayCollection(array $queryReturnValues, int $maxPerPage): void
     {
-        $this->proxyQuery->expects($this->once())
+        $this->proxyQuery->expects(self::once())
             ->method('execute')
             ->willReturn($queryReturnValues);
 
         $this->pager->setQuery($this->proxyQuery);
         $this->pager->setMaxPerPage($maxPerPage);
 
-        $this->assertInstanceOf(ArrayCollection::class, $this->pager->getCurrentPageResults());
+        self::assertInstanceOf(ArrayCollection::class, $this->pager->getCurrentPageResults());
     }
 
     /**

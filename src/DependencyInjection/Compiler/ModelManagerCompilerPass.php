@@ -48,7 +48,7 @@ final class ModelManagerCompilerPass implements CompilerPassInterface
             $availableManagers[$id] = $definition;
         }
 
-        if (!empty($availableManagers)) {
+        if ([] !== $availableManagers) {
             $bundles = $container->getParameter('kernel.bundles');
             \assert(\is_array($bundles));
 

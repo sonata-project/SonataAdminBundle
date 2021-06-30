@@ -21,21 +21,21 @@ class MaskBuilderTest extends TestCase
     public function testGetPattern(): void
     {
         $builder = new MaskBuilder();
-        $this->assertSame(MaskBuilder::ALL_OFF, $builder->getPattern());
+        self::assertSame(MaskBuilder::ALL_OFF, $builder->getPattern());
 
         $builder->add('view');
-        $this->assertSame(sprintf('%sV', str_repeat('.', 31)), $builder->getPattern());
+        self::assertSame(sprintf('%sV', str_repeat('.', 31)), $builder->getPattern());
 
         $builder->add('owner');
-        $this->assertSame(sprintf('%sN......V', str_repeat('.', 24)), $builder->getPattern());
+        self::assertSame(sprintf('%sN......V', str_repeat('.', 24)), $builder->getPattern());
 
         $builder->add('list');
-        $this->assertSame(sprintf('%sL....N......V', str_repeat('.', 19)), $builder->getPattern());
+        self::assertSame(sprintf('%sL....N......V', str_repeat('.', 19)), $builder->getPattern());
 
         $builder->add('export');
-        $this->assertSame(sprintf('%sEL....N......V', str_repeat('.', 18)), $builder->getPattern());
+        self::assertSame(sprintf('%sEL....N......V', str_repeat('.', 18)), $builder->getPattern());
 
         $builder->add(1 << 10);
-        $this->assertSame(sprintf('%sEL.%s..N......V', str_repeat('.', 18), MaskBuilder::ON), $builder->getPattern());
+        self::assertSame(sprintf('%sEL.%s..N......V', str_repeat('.', 18), MaskBuilder::ON), $builder->getPattern());
     }
 }

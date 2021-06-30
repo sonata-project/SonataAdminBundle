@@ -82,7 +82,7 @@ final class RetrieveAutocompleteItemsAction
             $formAutocomplete = $admin->getForm()->get($fieldDescription->getName());
 
             $formAutocompleteConfig = $formAutocomplete->getConfig();
-            if ($formAutocompleteConfig->getAttribute('disabled')) {
+            if (true === $formAutocompleteConfig->getAttribute('disabled')) {
                 throw new AccessDeniedException(
                     'Autocomplete list can`t be retrieved because the form element is disabled or read_only.'
                 );

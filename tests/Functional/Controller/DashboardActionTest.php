@@ -26,6 +26,6 @@ final class DashboardActionTest extends TestCase
         $client = new KernelBrowser(new AppKernel());
         $client->request(Request::METHOD_GET, '/admin/dashboard');
 
-        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        self::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 }

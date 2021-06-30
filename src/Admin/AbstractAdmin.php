@@ -403,7 +403,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function initialize(): void
     {
-        if (!$this->classnameLabel) {
+        if (null === $this->classnameLabel) {
             $namespaceSeparatorPos = strrpos($this->getClass(), '\\');
             $this->classnameLabel = false !== $namespaceSeparatorPos
                 ? substr($this->getClass(), $namespaceSeparatorPos + 1)
@@ -575,7 +575,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         if ($this->isChild()) { // the admin class is a child, prefix it with the parent route pattern
             $baseRoutePattern = $this->baseRoutePattern;
-            if (!$baseRoutePattern) {
+            if (null === $baseRoutePattern) {
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
@@ -593,7 +593,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 $this->getParent()->getRouterIdParameter(),
                 $baseRoutePattern
             );
-        } elseif ($this->baseRoutePattern) {
+        } elseif (null !== $this->baseRoutePattern) {
             $this->cachedBaseRoutePattern = $this->baseRoutePattern;
         } else {
             preg_match(self::CLASS_REGEX, $this->class, $matches);
@@ -629,7 +629,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
             $baseRouteName = $this->baseRouteName;
-            if (!$baseRouteName) {
+            if (null === $baseRouteName) {
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
@@ -647,7 +647,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 $this->getParent()->getBaseRouteName(),
                 $baseRouteName
             );
-        } elseif ($this->baseRouteName) {
+        } elseif (null !== $this->baseRouteName) {
             $this->cachedBaseRouteName = $this->baseRouteName;
         } else {
             preg_match(self::CLASS_REGEX, $this->class, $matches);
@@ -828,7 +828,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $request = $this->getRequest();
         $route = $request->get('_route');
 
-        if ($adminCode) {
+        if (null !== $adminCode) {
             $pool = $this->getConfigurationPool();
 
             if ($pool->hasAdminByAdminCode($adminCode)) {
@@ -877,7 +877,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function getFormBuilder(): FormBuilderInterface
     {
         $formBuilder = $this->getFormContractor()->getFormBuilder(
-            $this->getUniqid(),
+            $this->getUniqId(),
             ['data_class' => $this->getClass()] + $this->getFormOptions(),
         );
 
@@ -1466,7 +1466,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function getUniqId(): string
     {
-        if (!$this->uniqId) {
+        if (null === $this->uniqId) {
             $this->uniqId = sprintf('s%s', uniqid());
         }
 
@@ -1549,7 +1549,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function getRequest(): Request
     {
-        if (!$this->request) {
+        if (null === $this->request) {
             throw new \LogicException('The Request object has not been set');
         }
 
@@ -1592,11 +1592,11 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function isGranted($name, ?object $object = null): bool
     {
-        $objectRef = $object ? sprintf('/%s#%s', spl_object_hash($object), $this->id($object) ?? '') : '';
+        $objectRef = null !== $object ? sprintf('/%s#%s', spl_object_hash($object), $this->id($object) ?? '') : '';
         $key = md5(json_encode($name).$objectRef);
 
         if (!\array_key_exists($key, $this->cacheIsGranted)) {
-            $this->cacheIsGranted[$key] = $this->getSecurityHandler()->isGranted($this, $name, $object ?: $this);
+            $this->cacheIsGranted[$key] = $this->getSecurityHandler()->isGranted($this, $name, $object ?? $this);
         }
 
         return $this->cacheIsGranted[$key];
@@ -2262,7 +2262,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     final protected function appendParentObject(object $object): void
     {
-        if ($this->isChild() && $this->getParentAssociationMapping()) {
+        if ($this->isChild() && null !== $this->getParentAssociationMapping()) {
             $parentAdmin = $this->getParent();
             $parentObject = $parentAdmin->getObject($this->getRequest()->get($parentAdmin->getIdParameter()));
 
@@ -2426,7 +2426,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->loaded['form'] = true;
 
         $formBuilder = $this->getFormBuilder();
-        $formBuilder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $formBuilder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             /** @phpstan-var T $data */
             $data = $event->getData();
             $this->preValidate($data);

@@ -32,14 +32,14 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
             ],
         ]);
 
-        $this->assertSame(['foo' => ['field1', 'field2'], 'bar' => ['field3']], $options['map']);
+        self::assertSame(['foo' => ['field1', 'field2'], 'bar' => ['field3']], $options['map']);
     }
 
     public function testGetDefaultOptions2(): void
     {
         $options = $this->resolveOptions([]);
 
-        $this->assertSame(['map' => []], $options);
+        self::assertSame(['map' => []], $options);
     }
 
     /**
@@ -72,13 +72,13 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
     public function testGetBlockPrefix(): void
     {
         $type = new ChoiceFieldMaskType();
-        $this->assertSame('sonata_type_choice_field_mask', $type->getBlockPrefix());
+        self::assertSame('sonata_type_choice_field_mask', $type->getBlockPrefix());
     }
 
     public function testGetParent(): void
     {
         $type = new ChoiceFieldMaskType();
-        $this->assertSame(ChoiceType::class, $type->getParent());
+        self::assertSame(ChoiceType::class, $type->getParent());
     }
 
     public function testBuildView(): void
@@ -122,8 +122,8 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
             ],
         ];
 
-        $this->assertSame(array_values($expectedAllFields), array_values($view->vars['all_fields']), '"all_fields" is not as expected');
-        $this->assertSame($expectedMap, $view->vars['map'], '"map" is not as expected');
+        self::assertSame(array_values($expectedAllFields), array_values($view->vars['all_fields']), '"all_fields" is not as expected');
+        self::assertSame($expectedMap, $view->vars['map'], '"map" is not as expected');
     }
 
     public function testBuildViewWithFaultyMapValues(): void
@@ -150,8 +150,8 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
             'array' => ['field_1', 'field_2'],
         ];
 
-        $this->assertSame(array_values($expectedAllFields), array_values($view->vars['all_fields']), '"all_fields" is not as expected');
-        $this->assertSame($expectedMap, $view->vars['map'], '"map" is not as expected');
+        self::assertSame(array_values($expectedAllFields), array_values($view->vars['all_fields']), '"all_fields" is not as expected');
+        self::assertSame($expectedMap, $view->vars['map'], '"map" is not as expected');
     }
 
     /**

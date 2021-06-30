@@ -155,6 +155,6 @@ class ParametersManipulatorTest extends TestCase
      */
     public function testMergeParameters(array $parameters, array $newParameters, array $result): void
     {
-        $this->assertSame($result, ParametersManipulator::merge($parameters, $newParameters));
+        self::assertSame($result, ParametersManipulator::merge($parameters, $newParameters));
     }
 }

@@ -84,7 +84,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $this->configureFormConfig('barField', true);
 
         $this->admin->method('getNewInstance')->willReturn($object);
-        $this->admin->expects($this->once())->method('setSubject')->with($object);
+        $this->admin->expects(self::once())->method('setSubject')->with($object);
         $this->admin->method('hasAccess')->with('create')->willReturn(true);
         $this->admin->method('getFormFieldDescriptions')->willReturn([]);
         $this->admin->method('hasFormFieldDescription')->with('barField')->willReturn(true);
@@ -114,7 +114,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $this->configureFormConfig('barField');
 
         $this->admin->method('getNewInstance')->willReturn($object);
-        $this->admin->expects($this->once())->method('setSubject')->with($object);
+        $this->admin->expects(self::once())->method('setSubject')->with($object);
         $this->admin->method('hasAccess')->with('create')->willReturn(true);
         $this->admin->method('hasFormFieldDescription')->with('barField')->willReturn(true);
         $this->admin->method('getFormFieldDescription')->with('barField')->willReturn($fieldDescription);
@@ -125,9 +125,9 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertSame('{"status":"KO","message":"Too short search string."}', $response->getContent());
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame('application/json', $response->headers->get('Content-Type'));
+        self::assertSame('{"status":"KO","message":"Too short search string."}', $response->getContent());
     }
 
     public function testRetrieveAutocompleteItems(): void
@@ -146,7 +146,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
         $datagrid->method('hasFilter')->with('foo')->willReturn(true);
         $datagrid->method('getFilter')->with('foo')->willReturn($filter);
-        $datagrid->expects($this->exactly(3))->method('setValue')->withConsecutive(
+        $datagrid->expects(self::exactly(3))->method('setValue')->withConsecutive(
             ['foo', null, 'sonata'],
             [DatagridInterface::PER_PAGE, null, 10],
             [DatagridInterface::PAGE, null, 1]
@@ -154,9 +154,9 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertSame('{"status":"OK","more":false,"items":[{"id":"123","label":"FOO"}]}', $response->getContent());
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame('application/json', $response->headers->get('Content-Type'));
+        self::assertSame('{"status":"OK","more":false,"items":[{"id":"123","label":"FOO"}]}', $response->getContent());
     }
 
     public function testRetrieveAutocompleteItemsComplexPropertyArray(): void
@@ -184,7 +184,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
             ['entity.property', $filter],
             ['entity2.property2', $filter2],
         ]);
-        $datagrid->expects($this->exactly(4))->method('setValue')->withConsecutive(
+        $datagrid->expects(self::exactly(4))->method('setValue')->withConsecutive(
             ['entity__property', null, 'sonata'],
             ['entity2__property2', null, 'sonata'],
             [DatagridInterface::PER_PAGE, null, 10],
@@ -193,9 +193,9 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertSame('{"status":"OK","more":false,"items":[{"id":"123","label":"FOO"}]}', $response->getContent());
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame('application/json', $response->headers->get('Content-Type'));
+        self::assertSame('{"status":"OK","more":false,"items":[{"id":"123","label":"FOO"}]}', $response->getContent());
     }
 
     public function testRetrieveAutocompleteItemsComplexProperty(): void
@@ -214,7 +214,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
         $datagrid->method('hasFilter')->with('entity.property')->willReturn(true);
         $datagrid->method('getFilter')->with('entity.property')->willReturn($filter);
-        $datagrid->expects($this->exactly(3))->method('setValue')->withConsecutive(
+        $datagrid->expects(self::exactly(3))->method('setValue')->withConsecutive(
             ['entity__property', null, 'sonata'],
             [DatagridInterface::PER_PAGE, null, 10],
             [DatagridInterface::PAGE, null, 1]
@@ -222,9 +222,9 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertSame('{"status":"OK","more":false,"items":[{"id":"123","label":"FOO"}]}', $response->getContent());
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame('application/json', $response->headers->get('Content-Type'));
+        self::assertSame('{"status":"OK","more":false,"items":[{"id":"123","label":"FOO"}]}', $response->getContent());
     }
 
     private function configureAutocompleteItemsDatagrid(): MockObject
@@ -238,13 +238,13 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getNewInstance')->willReturn($model);
-        $this->admin->expects($this->once())->method('setSubject')->with($model);
+        $this->admin->expects(self::once())->method('setSubject')->with($model);
         $this->admin->method('hasAccess')->with('create')->willReturn(true);
         $this->admin->method('hasFormFieldDescription')->with('barField')->willReturn(true);
         $this->admin->method('getFormFieldDescription')->with('barField')->willReturn($fieldDescription);
         $this->admin->method('getFormFieldDescriptions')->willReturn([]);
         $this->admin->method('id')->with($model)->willReturn('123');
-        $targetAdmin->expects($this->once())->method('checkAccess')->with('list');
+        $targetAdmin->expects(self::once())->method('checkAccess')->with('list');
         $targetAdmin->method('getDatagrid')->willReturn($datagrid);
         $targetAdmin->method('getObjectMetadata')->with($model)->willReturn($metadata);
         $metadata->method('getTitle')->willReturn('FOO');

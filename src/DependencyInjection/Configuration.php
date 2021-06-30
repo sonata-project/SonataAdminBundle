@@ -64,7 +64,7 @@ CASESENSITIVE;
                                 ->performNoDeepMerging()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(static function ($v) {
+                                    ->then(static function ($v): array {
                                         return [$v];
                                     })
                                 ->end()

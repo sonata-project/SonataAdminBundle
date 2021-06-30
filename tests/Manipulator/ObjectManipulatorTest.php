@@ -22,12 +22,12 @@ class ObjectManipulatorTest extends TestCase
     public function testAddInstance(): void
     {
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBar']);
-        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([]);
+        $fieldDescription->expects(self::once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBar']);
+        $fieldDescription->expects(self::once())->method('getParentAssociationMappings')->willReturn([]);
 
         $instance = new \stdClass();
         $object = $this->getMockBuilder(\stdClass::class)->addMethods(['addFooBar'])->getMock();
-        $object->expects($this->once())->method('addFooBar')->with($instance);
+        $object->expects(self::once())->method('addFooBar')->with($instance);
 
         ObjectManipulator::addInstance($object, $instance, $fieldDescription);
     }
@@ -35,16 +35,16 @@ class ObjectManipulatorTest extends TestCase
     public function testAddInstanceWithParentAssociation(): void
     {
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBar']);
-        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([['fieldName' => 'parent']]);
+        $fieldDescription->expects(self::once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBar']);
+        $fieldDescription->expects(self::once())->method('getParentAssociationMappings')->willReturn([['fieldName' => 'parent']]);
 
         $instance = new \stdClass();
 
         $object2 = $this->getMockBuilder(\stdClass::class)->addMethods(['addFooBar'])->getMock();
-        $object2->expects($this->once())->method('addFooBar')->with($instance);
+        $object2->expects(self::once())->method('addFooBar')->with($instance);
 
         $object1 = $this->getMockBuilder(\stdClass::class)->addMethods(['getParent'])->getMock();
-        $object1->expects($this->once())->method('getParent')->willReturn($object2);
+        $object1->expects(self::once())->method('getParent')->willReturn($object2);
 
         ObjectManipulator::addInstance($object1, $instance, $fieldDescription);
     }
@@ -52,12 +52,12 @@ class ObjectManipulatorTest extends TestCase
     public function testAddInstancePlural(): void
     {
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBars']);
-        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([]);
+        $fieldDescription->expects(self::once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBars']);
+        $fieldDescription->expects(self::once())->method('getParentAssociationMappings')->willReturn([]);
 
         $instance = new \stdClass();
         $object = $this->getMockBuilder(\stdClass::class)->addMethods(['addFooBar'])->getMock();
-        $object->expects($this->once())->method('addFooBar')->with($instance);
+        $object->expects(self::once())->method('addFooBar')->with($instance);
 
         ObjectManipulator::addInstance($object, $instance, $fieldDescription);
     }
@@ -65,12 +65,12 @@ class ObjectManipulatorTest extends TestCase
     public function testAddInstanceInflector(): void
     {
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['fieldName' => 'entries']);
-        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([]);
+        $fieldDescription->expects(self::once())->method('getAssociationMapping')->willReturn(['fieldName' => 'entries']);
+        $fieldDescription->expects(self::once())->method('getParentAssociationMappings')->willReturn([]);
 
         $instance = new \stdClass();
         $object = $this->getMockBuilder(\stdClass::class)->addMethods(['addEntry'])->getMock();
-        $object->expects($this->once())->method('addEntry')->with($instance);
+        $object->expects(self::once())->method('addEntry')->with($instance);
 
         ObjectManipulator::addInstance($object, $instance, $fieldDescription);
     }
@@ -78,12 +78,12 @@ class ObjectManipulatorTest extends TestCase
     public function testSetObject(): void
     {
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['mappedBy' => 'parent']);
-        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([]);
+        $fieldDescription->expects(self::once())->method('getAssociationMapping')->willReturn(['mappedBy' => 'parent']);
+        $fieldDescription->expects(self::once())->method('getParentAssociationMappings')->willReturn([]);
 
         $object = new \stdClass();
         $instance = $this->getMockBuilder(\stdClass::class)->addMethods(['setParent'])->getMock();
-        $instance->expects($this->once())->method('setParent')->with($object);
+        $instance->expects(self::once())->method('setParent')->with($object);
 
         ObjectManipulator::setObject($instance, $object, $fieldDescription);
     }
@@ -91,7 +91,7 @@ class ObjectManipulatorTest extends TestCase
     public function testSetObjectWithNullMapped(): void
     {
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['mappedBy' => null]);
+        $fieldDescription->expects(self::once())->method('getAssociationMapping')->willReturn(['mappedBy' => null]);
 
         ObjectManipulator::setObject(new \stdClass(), new \stdClass(), $fieldDescription);
     }
@@ -99,7 +99,7 @@ class ObjectManipulatorTest extends TestCase
     public function testSetObjectWithoutMappedBy(): void
     {
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn([]);
+        $fieldDescription->expects(self::once())->method('getAssociationMapping')->willReturn([]);
 
         ObjectManipulator::setObject(new \stdClass(), new \stdClass(), $fieldDescription);
     }
@@ -107,16 +107,16 @@ class ObjectManipulatorTest extends TestCase
     public function testSetObjectWithParentAssociation(): void
     {
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['mappedBy' => 'fooBar']);
-        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([['fieldName' => 'parent']]);
+        $fieldDescription->expects(self::once())->method('getAssociationMapping')->willReturn(['mappedBy' => 'fooBar']);
+        $fieldDescription->expects(self::once())->method('getParentAssociationMappings')->willReturn([['fieldName' => 'parent']]);
 
         $object2 = new \stdClass();
 
         $instance = $this->getMockBuilder(\stdClass::class)->addMethods(['setFooBar'])->getMock();
-        $instance->expects($this->once())->method('setFooBar')->with($object2);
+        $instance->expects(self::once())->method('setFooBar')->with($object2);
 
         $object1 = $this->getMockBuilder(\stdClass::class)->addMethods(['getParent'])->getMock();
-        $object1->expects($this->once())->method('getParent')->willReturn($object2);
+        $object1->expects(self::once())->method('getParent')->willReturn($object2);
 
         ObjectManipulator::setObject($instance, $object1, $fieldDescription);
     }
@@ -124,8 +124,8 @@ class ObjectManipulatorTest extends TestCase
     public function testSetObjectProperty(): void
     {
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['mappedBy' => 'parent']);
-        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([]);
+        $fieldDescription->expects(self::once())->method('getAssociationMapping')->willReturn(['mappedBy' => 'parent']);
+        $fieldDescription->expects(self::once())->method('getParentAssociationMappings')->willReturn([]);
 
         $object = new \stdClass();
         $instance = new class() {
@@ -141,8 +141,8 @@ class ObjectManipulatorTest extends TestCase
     public function testSetObjectPropertyWithParentAssociation(): void
     {
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['mappedBy' => 'fooBar']);
-        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([['fieldName' => 'parent']]);
+        $fieldDescription->expects(self::once())->method('getAssociationMapping')->willReturn(['mappedBy' => 'fooBar']);
+        $fieldDescription->expects(self::once())->method('getParentAssociationMappings')->willReturn([['fieldName' => 'parent']]);
 
         $object2 = new \stdClass();
         $instance = new class() {

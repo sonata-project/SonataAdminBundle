@@ -115,7 +115,7 @@ final class GroupExtensionTest extends TestCase
             ->with('create')
             ->willReturn(false);
 
-        $this->assertSame([
+        self::assertSame([
             [
                 'items' => [
                     'itemKey' => $adminCreatable,

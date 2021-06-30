@@ -43,13 +43,13 @@ class ModelListTypeTest extends TypeTestCase
 
         $options = $optionResolver->resolve();
 
-        $this->assertNull($options['model_manager']);
-        $this->assertNull($options['class']);
-        $this->assertSame('link_add', $options['btn_add']);
-        $this->assertSame('link_edit', $options['btn_edit']);
-        $this->assertSame('link_list', $options['btn_list']);
-        $this->assertSame('link_delete', $options['btn_delete']);
-        $this->assertSame('SonataAdminBundle', $options['btn_catalogue']);
+        self::assertNull($options['model_manager']);
+        self::assertNull($options['class']);
+        self::assertSame('link_add', $options['btn_add']);
+        self::assertSame('link_edit', $options['btn_edit']);
+        self::assertSame('link_list', $options['btn_list']);
+        self::assertSame('link_delete', $options['btn_delete']);
+        self::assertSame('SonataAdminBundle', $options['btn_catalogue']);
     }
 
     public function testSubmitValidData(): void
@@ -63,8 +63,8 @@ class ModelListTypeTest extends TypeTestCase
             ]
         );
 
-        $this->modelManager->expects($this->once())->method('find')->with('My\Entity', '42');
+        $this->modelManager->expects(self::once())->method('find')->with('My\Entity', '42');
         $form->submit('42');
-        $this->assertTrue($form->isSynchronized());
+        self::assertTrue($form->isSynchronized());
     }
 }

@@ -42,7 +42,7 @@ final class LockExtension extends AbstractAdminExtension
             $data = $event->getData();
             $form = $event->getForm();
 
-            if (!\is_object($data) || $form->getParent()) {
+            if (!\is_object($data) || null !== $form->getParent()) {
                 return;
             }
 

@@ -91,7 +91,7 @@ abstract class BaseGroupedMapper implements MapperInterface
         if (\array_key_exists('tab', $options) && $options['tab']) {
             $tabs = $this->getTabs();
 
-            if ($this->currentTab) {
+            if (null !== $this->currentTab) {
                 if (isset($tabs[$this->currentTab]['auto_created']) && true === $tabs[$this->currentTab]['auto_created']) {
                     throw new \LogicException('New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields.');
                 }
@@ -103,7 +103,7 @@ abstract class BaseGroupedMapper implements MapperInterface
                 ));
             }
 
-            if ($this->currentGroup) {
+            if (null !== $this->currentGroup) {
                 throw new \LogicException(sprintf('You should open tab before adding new group "%s".', $name));
             }
 
@@ -118,7 +118,7 @@ abstract class BaseGroupedMapper implements MapperInterface
 
             $this->currentTab = $code;
         } else {
-            if ($this->currentGroup) {
+            if (null !== $this->currentGroup) {
                 throw new \LogicException(sprintf(
                     'You should close previous group "%s" with end() before adding new tab "%s".',
                     $this->currentGroup,
@@ -126,7 +126,7 @@ abstract class BaseGroupedMapper implements MapperInterface
                 ));
             }
 
-            if (!$this->currentTab) {
+            if (null === $this->currentTab) {
                 // no tab define
                 $this->with('default', [
                     'tab' => true,
@@ -156,7 +156,7 @@ abstract class BaseGroupedMapper implements MapperInterface
             $tabs = $this->getTabs();
         }
 
-        if ($this->currentGroup && isset($tabs[$this->currentTab]) && !\in_array($this->currentGroup, $tabs[$this->currentTab]['groups'], true)) {
+        if (null !== $this->currentGroup && isset($tabs[$this->currentTab]) && !\in_array($this->currentGroup, $tabs[$this->currentTab]['groups'], true)) {
             $tabs[$this->currentTab]['groups'][] = $this->currentGroup;
         }
 
@@ -196,7 +196,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      */
     final public function ifEnd(): self
     {
-        if (empty($this->apply)) {
+        if ([] === $this->apply) {
             throw new \LogicException('No open ifTrue() or ifFalse(), you cannot use ifEnd()');
         }
 
@@ -364,7 +364,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      */
     final protected function getCurrentGroupName(): string
     {
-        if (!$this->currentGroup) {
+        if (null === $this->currentGroup) {
             $label = $this->getAdmin()->getLabel();
 
             if (null === $label) {

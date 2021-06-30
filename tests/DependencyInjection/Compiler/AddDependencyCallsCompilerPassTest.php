@@ -80,51 +80,51 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $this->compile();
 
-        $this->assertContainerBuilderHasParameter('sonata.admin.configuration.dashboard_groups');
+        self::assertContainerBuilderHasParameter('sonata.admin.configuration.dashboard_groups');
 
         $dashboardGroupsSettings = $this->container->getParameter('sonata.admin.configuration.dashboard_groups');
-        $this->assertIsArray($dashboardGroupsSettings);
+        self::assertIsArray($dashboardGroupsSettings);
 
-        $this->assertArrayHasKey('sonata_group_one', $dashboardGroupsSettings);
+        self::assertArrayHasKey('sonata_group_one', $dashboardGroupsSettings);
 
-        $this->assertArrayHasKey('label', $dashboardGroupsSettings['sonata_group_one']);
-        $this->assertArrayHasKey('label_catalogue', $dashboardGroupsSettings['sonata_group_one']);
-        $this->assertArrayHasKey('items', $dashboardGroupsSettings['sonata_group_one']);
-        $this->assertArrayHasKey('item_adds', $dashboardGroupsSettings['sonata_group_one']);
-        $this->assertArrayHasKey('roles', $dashboardGroupsSettings['sonata_group_one']);
-        $this->assertSame('Group One Label', $dashboardGroupsSettings['sonata_group_one']['label']);
-        $this->assertSame('SonataAdminBundle', $dashboardGroupsSettings['sonata_group_one']['label_catalogue']);
-        $this->assertFalse($dashboardGroupsSettings['sonata_group_one']['on_top']);
-        $this->assertTrue($dashboardGroupsSettings['sonata_group_three']['on_top']);
-        $this->assertFalse($dashboardGroupsSettings['sonata_group_one']['keep_open']);
-        $this->assertArrayHasKey('admin', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
-        $this->assertArrayHasKey('route_params', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
-        $this->assertContains('sonata_post_admin', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
-        $this->assertArrayHasKey('route', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
-        $this->assertArrayHasKey('label', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
-        $this->assertArrayHasKey('route_params', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
-        $this->assertContains('blog_name', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
-        $this->assertContains('Blog', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
-        $this->assertSame('blog_name', $dashboardGroupsSettings['sonata_group_one']['items'][1]['route']);
-        $this->assertSame('Blog', $dashboardGroupsSettings['sonata_group_one']['items'][1]['label']);
-        $this->assertSame([], $dashboardGroupsSettings['sonata_group_one']['items'][1]['route_params']);
-        $this->assertArrayHasKey('route', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
-        $this->assertArrayHasKey('label', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
-        $this->assertArrayHasKey('route_params', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
-        $this->assertContains('blog_article', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
-        $this->assertContains('Article', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
-        $this->assertSame('blog_article', $dashboardGroupsSettings['sonata_group_one']['items'][2]['route']);
-        $this->assertSame('Article', $dashboardGroupsSettings['sonata_group_one']['items'][2]['label']);
-        $this->assertSame(['articleId' => 3], $dashboardGroupsSettings['sonata_group_one']['items'][2]['route_params']);
-        $this->assertContains('sonata_news_admin', $dashboardGroupsSettings['sonata_group_one']['item_adds']);
-        $this->assertContains('ROLE_ONE', $dashboardGroupsSettings['sonata_group_one']['roles']);
+        self::assertArrayHasKey('label', $dashboardGroupsSettings['sonata_group_one']);
+        self::assertArrayHasKey('label_catalogue', $dashboardGroupsSettings['sonata_group_one']);
+        self::assertArrayHasKey('items', $dashboardGroupsSettings['sonata_group_one']);
+        self::assertArrayHasKey('item_adds', $dashboardGroupsSettings['sonata_group_one']);
+        self::assertArrayHasKey('roles', $dashboardGroupsSettings['sonata_group_one']);
+        self::assertSame('Group One Label', $dashboardGroupsSettings['sonata_group_one']['label']);
+        self::assertSame('SonataAdminBundle', $dashboardGroupsSettings['sonata_group_one']['label_catalogue']);
+        self::assertFalse($dashboardGroupsSettings['sonata_group_one']['on_top']);
+        self::assertTrue($dashboardGroupsSettings['sonata_group_three']['on_top']);
+        self::assertFalse($dashboardGroupsSettings['sonata_group_one']['keep_open']);
+        self::assertArrayHasKey('admin', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
+        self::assertArrayHasKey('route_params', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
+        self::assertContains('sonata_post_admin', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
+        self::assertArrayHasKey('route', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
+        self::assertArrayHasKey('label', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
+        self::assertArrayHasKey('route_params', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
+        self::assertContains('blog_name', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
+        self::assertContains('Blog', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
+        self::assertSame('blog_name', $dashboardGroupsSettings['sonata_group_one']['items'][1]['route']);
+        self::assertSame('Blog', $dashboardGroupsSettings['sonata_group_one']['items'][1]['label']);
+        self::assertSame([], $dashboardGroupsSettings['sonata_group_one']['items'][1]['route_params']);
+        self::assertArrayHasKey('route', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
+        self::assertArrayHasKey('label', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
+        self::assertArrayHasKey('route_params', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
+        self::assertContains('blog_article', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
+        self::assertContains('Article', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
+        self::assertSame('blog_article', $dashboardGroupsSettings['sonata_group_one']['items'][2]['route']);
+        self::assertSame('Article', $dashboardGroupsSettings['sonata_group_one']['items'][2]['label']);
+        self::assertSame(['articleId' => 3], $dashboardGroupsSettings['sonata_group_one']['items'][2]['route_params']);
+        self::assertContains('sonata_news_admin', $dashboardGroupsSettings['sonata_group_one']['item_adds']);
+        self::assertContains('ROLE_ONE', $dashboardGroupsSettings['sonata_group_one']['roles']);
 
-        $this->assertArrayHasKey('sonata_group_two', $dashboardGroupsSettings);
-        $this->assertArrayHasKey('provider', $dashboardGroupsSettings['sonata_group_two']);
-        $this->assertStringContainsString('my_menu', $dashboardGroupsSettings['sonata_group_two']['provider']);
+        self::assertArrayHasKey('sonata_group_two', $dashboardGroupsSettings);
+        self::assertArrayHasKey('provider', $dashboardGroupsSettings['sonata_group_two']);
+        self::assertStringContainsString('my_menu', $dashboardGroupsSettings['sonata_group_two']['provider']);
 
-        $this->assertArrayHasKey('sonata_group_five', $dashboardGroupsSettings);
-        $this->assertTrue($dashboardGroupsSettings['sonata_group_five']['keep_open']);
+        self::assertArrayHasKey('sonata_group_five', $dashboardGroupsSettings);
+        self::assertTrue($dashboardGroupsSettings['sonata_group_five']['keep_open']);
     }
 
     /**
@@ -137,119 +137,119 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $this->compile();
 
-        $this->assertContainerBuilderHasService('sonata.admin.pool');
-        $this->assertContainerBuilderHasService('sonata_post_admin');
-        $this->assertContainerBuilderHasService('sonata_article_admin');
-        $this->assertContainerBuilderHasService('sonata_news_admin');
+        self::assertContainerBuilderHasService('sonata.admin.pool');
+        self::assertContainerBuilderHasService('sonata_post_admin');
+        self::assertContainerBuilderHasService('sonata_article_admin');
+        self::assertContainerBuilderHasService('sonata_news_admin');
 
         $poolDefinition = $this->container->findDefinition('sonata.admin.pool');
         $adminServiceIds = $poolDefinition->getArgument(1);
         $adminGroups = $poolDefinition->getArgument(2);
         $adminClasses = $poolDefinition->getArgument(3);
 
-        $this->assertContains('sonata_post_admin', $adminServiceIds);
-        $this->assertContains('sonata_article_admin', $adminServiceIds);
-        $this->assertContains('sonata_news_admin', $adminServiceIds);
+        self::assertContains('sonata_post_admin', $adminServiceIds);
+        self::assertContains('sonata_article_admin', $adminServiceIds);
+        self::assertContains('sonata_news_admin', $adminServiceIds);
 
-        $this->assertContains('sonata_post_admin', $poolDefinition->getArgument(1));
-        $this->assertArrayHasKey('sonata_group_one', $poolDefinition->getArgument(2));
-        $this->assertArrayHasKey(NewsEntity::class, $poolDefinition->getArgument(3));
+        self::assertContains('sonata_post_admin', $poolDefinition->getArgument(1));
+        self::assertArrayHasKey('sonata_group_one', $poolDefinition->getArgument(2));
+        self::assertArrayHasKey(NewsEntity::class, $poolDefinition->getArgument(3));
 
-        $this->assertArrayHasKey('sonata_group_one', $adminGroups);
-        $this->assertArrayHasKey('label', $adminGroups['sonata_group_one']);
-        $this->assertArrayHasKey('label_catalogue', $adminGroups['sonata_group_one']);
-        $this->assertArrayHasKey('items', $adminGroups['sonata_group_one']);
-        $this->assertArrayHasKey('item_adds', $adminGroups['sonata_group_one']);
-        $this->assertArrayHasKey('roles', $adminGroups['sonata_group_one']);
-        $this->assertSame('Group One Label', $adminGroups['sonata_group_one']['label']);
-        $this->assertSame('SonataAdminBundle', $adminGroups['sonata_group_one']['label_catalogue']);
-        $this->assertFalse($adminGroups['sonata_group_one']['on_top']);
-        $this->assertTrue($adminGroups['sonata_group_three']['on_top']);
-        $this->assertFalse($adminGroups['sonata_group_one']['keep_open']);
-        $this->assertStringContainsString(
+        self::assertArrayHasKey('sonata_group_one', $adminGroups);
+        self::assertArrayHasKey('label', $adminGroups['sonata_group_one']);
+        self::assertArrayHasKey('label_catalogue', $adminGroups['sonata_group_one']);
+        self::assertArrayHasKey('items', $adminGroups['sonata_group_one']);
+        self::assertArrayHasKey('item_adds', $adminGroups['sonata_group_one']);
+        self::assertArrayHasKey('roles', $adminGroups['sonata_group_one']);
+        self::assertSame('Group One Label', $adminGroups['sonata_group_one']['label']);
+        self::assertSame('SonataAdminBundle', $adminGroups['sonata_group_one']['label_catalogue']);
+        self::assertFalse($adminGroups['sonata_group_one']['on_top']);
+        self::assertTrue($adminGroups['sonata_group_three']['on_top']);
+        self::assertFalse($adminGroups['sonata_group_one']['keep_open']);
+        self::assertStringContainsString(
             'sonata_post_admin',
             $adminGroups['sonata_group_one']['items'][0]['admin']
         );
-        $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['items']);
-        $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['item_adds']);
-        $this->assertNotContains('sonata_article_admin', $adminGroups['sonata_group_one']['items']);
-        $this->assertContains('ROLE_ONE', $adminGroups['sonata_group_one']['roles']);
+        self::assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['items']);
+        self::assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['item_adds']);
+        self::assertNotContains('sonata_article_admin', $adminGroups['sonata_group_one']['items']);
+        self::assertContains('ROLE_ONE', $adminGroups['sonata_group_one']['roles']);
 
-        $this->assertArrayHasKey('sonata_group_two', $adminGroups);
-        $this->assertArrayHasKey('provider', $adminGroups['sonata_group_two']);
-        $this->assertStringContainsString('my_menu', $adminGroups['sonata_group_two']['provider']);
+        self::assertArrayHasKey('sonata_group_two', $adminGroups);
+        self::assertArrayHasKey('provider', $adminGroups['sonata_group_two']);
+        self::assertStringContainsString('my_menu', $adminGroups['sonata_group_two']['provider']);
 
-        $this->assertArrayHasKey('sonata_group_five', $adminGroups);
-        $this->assertTrue($adminGroups['sonata_group_five']['keep_open']);
+        self::assertArrayHasKey('sonata_group_five', $adminGroups);
+        self::assertTrue($adminGroups['sonata_group_five']['keep_open']);
 
-        $this->assertArrayHasKey(PostEntity::class, $adminClasses);
-        $this->assertContains('sonata_post_admin', $adminClasses[PostEntity::class]);
-        $this->assertArrayHasKey(ArticleEntity::class, $adminClasses);
-        $this->assertContains('sonata_article_admin', $adminClasses[ArticleEntity::class]);
-        $this->assertArrayHasKey(NewsEntity::class, $adminClasses);
-        $this->assertContains('sonata_news_admin', $adminClasses[NewsEntity::class]);
+        self::assertArrayHasKey(PostEntity::class, $adminClasses);
+        self::assertContains('sonata_post_admin', $adminClasses[PostEntity::class]);
+        self::assertArrayHasKey(ArticleEntity::class, $adminClasses);
+        self::assertContains('sonata_article_admin', $adminClasses[ArticleEntity::class]);
+        self::assertArrayHasKey(NewsEntity::class, $adminClasses);
+        self::assertContains('sonata_news_admin', $adminClasses[NewsEntity::class]);
 
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+        self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_news_admin',
             'setRouteBuilder',
             ['sonata.admin.route.path_info']
         );
 
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+        self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_news_admin',
             'setPagerType',
             ['simple']
         );
 
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+        self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_news_admin',
             'setFormTheme',
             [['some_form_template.twig']]
         );
 
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+        self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_news_admin',
             'setFilterTheme',
             [['some_filter_template.twig']]
         );
 
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+        self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_news_admin',
             'setModelManager',
             [new Reference('my.model.manager')]
         );
 
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+        self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_article_admin',
             'setPagerType',
             ['simple']
         );
 
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+        self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_article_admin',
             'setFormTheme',
             [['custom_form_theme.twig']]
         );
 
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+        self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_article_admin',
             'setFilterTheme',
             [['custom_filter_theme.twig']]
         );
 
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+        self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_post_admin',
             'setPagerType',
             ['simple']
         );
 
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+        self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_post_admin',
             'setFormTheme',
             [['some_form_template.twig']]
         );
 
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+        self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_post_admin',
             'setFilterTheme',
             [['some_filter_template.twig']]
@@ -271,8 +271,8 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         // use array_values to check groups position
         $adminGroups = array_values($this->container->findDefinition('sonata.admin.pool')->getArgument(2));
 
-        $this->assertSame('sonata_group_one', $adminGroups['0']['label'], 'second group in configuration, first in list');
-        $this->assertSame('1 Entry', $adminGroups[0]['items'][0]['label'], 'second entry for group in configuration, first in list');
+        self::assertSame('sonata_group_one', $adminGroups['0']['label'], 'second group in configuration, first in list');
+        self::assertSame('1 Entry', $adminGroups[0]['items'][0]['label'], 'second entry for group in configuration, first in list');
     }
 
     public function testProcessGroupNameAsParameter(): void
@@ -294,8 +294,8 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->compile();
 
         $adminGroups = $this->container->findDefinition('sonata.admin.pool')->getArgument(2);
-        $this->assertArrayHasKey('resolved_group_name', $adminGroups);
-        $this->assertArrayNotHasKey('%sonata.admin.parameter.groupname%', $adminGroups);
+        self::assertArrayHasKey('resolved_group_name', $adminGroups);
+        self::assertArrayNotHasKey('%sonata.admin.parameter.groupname%', $adminGroups);
     }
 
     public function testApplyTemplatesConfiguration(): void
@@ -306,13 +306,13 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $this->compile();
 
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+        self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_post_admin',
             'setLabel',
             [null]
         );
 
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+        self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_post_admin',
             'setPagerType',
             ['simple']
@@ -320,8 +320,8 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $postAdminTemplates = $this->container->findDefinition('sonata_post_admin.template_registry')->getArgument(0);
 
-        $this->assertSame('@SonataAdmin/Pager/simple_pager_results.html.twig', $postAdminTemplates['pager_results']);
-        $this->assertSame('@SonataAdmin/Button/create_button.html.twig', $postAdminTemplates['button_create']);
+        self::assertSame('@SonataAdmin/Pager/simple_pager_results.html.twig', $postAdminTemplates['pager_results']);
+        self::assertSame('@SonataAdmin/Button/create_button.html.twig', $postAdminTemplates['button_create']);
     }
 
     public function testApplyShowMosaicButtonConfiguration(): void
@@ -332,13 +332,13 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $this->compile();
 
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+        self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_report_one_admin',
             'setListModes',
             [['list' => ['class' => 'fas fa-list fa-fw']]]
         );
 
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+        self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_report_two_admin',
             'setListModes',
             [TaggedAdminInterface::DEFAULT_LIST_MODES]
@@ -350,7 +350,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->setUpContainer();
 
         $config = $this->config;
-        $this->assertArrayHasKey('sonata_group_four', $config['dashboard']['groups']);
+        self::assertArrayHasKey('sonata_group_four', $config['dashboard']['groups']);
 
         $config['dashboard']['groups']['sonata_group_four']['items'][] = [
             'route' => 'blog_article',
@@ -469,7 +469,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         try {
             $this->compile();
         } catch (\RuntimeException $e) {
-            $this->fail('An expected exception has been raised.');
+            self::fail('An expected exception has been raised.');
         }
     }
 
@@ -513,23 +513,23 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $pool = $this->container->findDefinition('sonata.admin.pool');
         $adminServiceIds = $pool->getArgument(1);
 
-        $this->assertContains('sonata_post_one_admin', $adminServiceIds);
-        $this->assertContains('sonata_post_two_admin', $adminServiceIds);
+        self::assertContains('sonata_post_one_admin', $adminServiceIds);
+        self::assertContains('sonata_post_two_admin', $adminServiceIds);
 
-        $this->assertContainerBuilderHasService('sonata_post_one_admin');
-        $this->assertContainerBuilderHasService('sonata_post_two_admin');
+        self::assertContainerBuilderHasService('sonata_post_one_admin');
+        self::assertContainerBuilderHasService('sonata_post_two_admin');
 
         $definition = $this->container->findDefinition('sonata_post_one_admin');
-        $this->assertSame('sonata_post_one_admin', $definition->getArgument(0));
-        $this->assertSame(PostEntity::class, $definition->getArgument(1));
-        $this->assertSame('sonata.admin.controller.crud', $definition->getArgument(2));
-        $this->assertSame('extra_argument_1', $definition->getArgument(3));
+        self::assertSame('sonata_post_one_admin', $definition->getArgument(0));
+        self::assertSame(PostEntity::class, $definition->getArgument(1));
+        self::assertSame('sonata.admin.controller.crud', $definition->getArgument(2));
+        self::assertSame('extra_argument_1', $definition->getArgument(3));
 
         $definition = $this->container->findDefinition('sonata_post_two_admin');
-        $this->assertSame('sonata_post_two_admin', $definition->getArgument(0));
-        $this->assertSame(PostEntity::class, $definition->getArgument(1));
-        $this->assertSame('sonata.admin.controller.crud', $definition->getArgument(2));
-        $this->assertSame('extra_argument_2', $definition->getArgument(3));
+        self::assertSame('sonata_post_two_admin', $definition->getArgument(0));
+        self::assertSame(PostEntity::class, $definition->getArgument(1));
+        self::assertSame('sonata.admin.controller.crud', $definition->getArgument(2));
+        self::assertSame('extra_argument_2', $definition->getArgument(3));
     }
 
     public function testDefaultControllerCanBeChanged(): void
@@ -549,7 +549,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $this->compile();
 
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
+        self::assertContainerBuilderHasServiceDefinitionWithArgument(
             'sonata_without_controller',
             2,
             FooAdminController::class

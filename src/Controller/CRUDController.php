@@ -430,8 +430,7 @@ class CRUDController extends AbstractController
             return $this->redirectToList();
         }
 
-        $askConfirmation = $batchActions[$action]['ask_confirmation'] ??
-            true;
+        $askConfirmation = $batchActions[$action]['ask_confirmation'] ?? true;
 
         if ($askConfirmation && 'ok' !== $confirmation) {
             $actionLabel = $batchActions[$action]['label'];

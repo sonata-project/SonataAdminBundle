@@ -48,7 +48,7 @@ class FilterFactoryTest extends TestCase
     public function testCreateFilter(): void
     {
         $filter = $this->createMock(FilterInterface::class);
-        $filter->expects($this->once())
+        $filter->expects(self::once())
             ->method('initialize');
 
         $container = new Container();

@@ -50,33 +50,33 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
     {
         $this->load();
 
-        $this->assertContainerBuilderHasService(Pool::class);
-        $this->assertContainerBuilderHasService(FilterFactoryInterface::class);
-        $this->assertContainerBuilderHasService(BreadcrumbsBuilderInterface::class);
-        $this->assertContainerBuilderHasService(LabelTranslatorStrategyInterface::class);
-        $this->assertContainerBuilderHasService(AuditManagerInterface::class);
-        $this->assertContainerBuilderHasService(FilterPersisterInterface::class);
+        self::assertContainerBuilderHasService(Pool::class);
+        self::assertContainerBuilderHasService(FilterFactoryInterface::class);
+        self::assertContainerBuilderHasService(BreadcrumbsBuilderInterface::class);
+        self::assertContainerBuilderHasService(LabelTranslatorStrategyInterface::class);
+        self::assertContainerBuilderHasService(AuditManagerInterface::class);
+        self::assertContainerBuilderHasService(FilterPersisterInterface::class);
     }
 
     public function testHasServiceDefinitionForLockExtension(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $this->load(['options' => ['lock_protection' => true]]);
-        $this->assertContainerBuilderHasService('sonata.admin.lock.extension');
+        self::assertContainerBuilderHasService('sonata.admin.lock.extension');
     }
 
     public function testNotHasServiceDefinitionForLockExtension(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $this->load(['options' => ['lock_protection' => false]]);
-        $this->assertContainerBuilderNotHasService('sonata.admin.lock.extension');
+        self::assertContainerBuilderNotHasService('sonata.admin.lock.extension');
     }
 
     public function testLoadsExporterServiceDefinitionWhenExporterBundleIsRegistered(): void
     {
         $this->container->setParameter('kernel.bundles', ['SonataExporterBundle' => 'whatever']);
         $this->load();
-        $this->assertContainerBuilderHasService(
+        self::assertContainerBuilderHasService(
             'sonata.admin.admin_exporter',
             AdminExporter::class
         );
@@ -86,11 +86,11 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
     {
         $this->container->setParameter('kernel.bundles', ['SensioFrameworkExtraBundle' => 'whatever']);
         $this->load();
-        $this->assertContainerBuilderHasService(
+        self::assertContainerBuilderHasService(
             'sonata.admin.param_converter',
             AdminParamConverter::class
         );
-        $this->assertContainerBuilderHasServiceDefinitionWithTag(
+        self::assertContainerBuilderHasServiceDefinitionWithTag(
             'sonata.admin.param_converter',
             'request.param_converter',
             ['converter' => 'sonata_admin']
@@ -102,8 +102,8 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->container->setParameter('kernel.bundles', []);
         $this->load();
 
-        $this->assertContainerBuilderHasParameter('sonata.admin.configuration.security.role_admin');
-        $this->assertContainerBuilderHasParameter('sonata.admin.configuration.security.role_super_admin');
+        self::assertContainerBuilderHasParameter('sonata.admin.configuration.security.role_admin');
+        self::assertContainerBuilderHasParameter('sonata.admin.configuration.security.role_super_admin');
     }
 
     public function testHasDefaultServiceParameters(): void
@@ -111,10 +111,10 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->container->setParameter('kernel.bundles', []);
         $this->load();
 
-        $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_group');
-        $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_label_catalogue');
-        $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_icon');
-        $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_controller');
+        self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_group');
+        self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_label_catalogue');
+        self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_icon');
+        self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_controller');
     }
 
     public function testExtraStylesheetsGetAdded(): void
@@ -130,7 +130,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
 
-        $this->assertSame(
+        self::assertSame(
             array_merge($this->getDefaultStylesheets(), $extraStylesheets),
             $stylesheets
         );
@@ -151,7 +151,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
 
-        $this->assertSame(
+        self::assertSame(
             array_values(
                 array_diff($this->defaultConfiguration['assets']['stylesheets'], $removeStylesheets)
             ),
@@ -171,7 +171,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $javascripts = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['javascripts'];
 
-        $this->assertSame(
+        self::assertSame(
             array_merge($this->defaultConfiguration['assets']['javascripts'], $extraJavascripts),
             $javascripts
         );
@@ -191,7 +191,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $javascripts = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['javascripts'];
 
-        $this->assertSame(
+        self::assertSame(
             array_values(
                 array_diff($this->defaultConfiguration['assets']['javascripts'], $removeJavascripts)
             ),
@@ -222,7 +222,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
 
-        $this->assertSame(
+        self::assertSame(
             array_merge(
                 array_diff($this->defaultConfiguration['assets']['stylesheets'], $removeStylesheets),
                 $extraStylesheets
@@ -232,7 +232,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $javascripts = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['javascripts'];
 
-        $this->assertSame(
+        self::assertSame(
             array_merge(
                 array_diff($this->defaultConfiguration['assets']['javascripts'], $removeJavascripts),
                 $extraJavascripts
@@ -245,7 +245,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
     {
         $this->load();
 
-        $this->assertSame([
+        self::assertSame([
             'user_block' => '@SonataAdmin/Core/user_block.html.twig',
             'add_block' => '@SonataAdmin/Core/add_block.html.twig',
             'layout' => '@SonataAdmin/standard_layout.html.twig',
@@ -293,14 +293,14 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
     public function testLoadIntlTemplate(): void
     {
         $bundles = $this->container->getParameter('kernel.bundles');
-        $this->assertIsArray($bundles);
+        self::assertIsArray($bundles);
 
         $this->container->setParameter('kernel.bundles', array_merge($bundles, ['SonataIntlBundle' => true]));
         $this->load();
 
         $templates = $this->container->getParameter('sonata.admin.configuration.templates');
-        $this->assertIsArray($templates);
-        $this->assertSame('@SonataIntl/CRUD/history_revision_timestamp.html.twig', $templates['history_revision_timestamp']);
+        self::assertIsArray($templates);
+        self::assertSame('@SonataIntl/CRUD/history_revision_timestamp.html.twig', $templates['history_revision_timestamp']);
     }
 
     public function testDefaultSkin(): void
@@ -311,8 +311,8 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
         $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
 
-        $this->assertSame($this->getDefaultStylesheets(), $stylesheets);
-        $this->assertSame('skin-black', $skin);
+        self::assertSame($this->getDefaultStylesheets(), $stylesheets);
+        self::assertSame('skin-black', $skin);
     }
 
     public function testSetSkin(): void
@@ -327,8 +327,8 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
         $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
 
-        $this->assertSame($this->getDefaultStylesheets('skin-blue'), $stylesheets);
-        $this->assertSame('skin-blue', $skin);
+        self::assertSame($this->getDefaultStylesheets('skin-blue'), $stylesheets);
+        self::assertSame('skin-blue', $skin);
     }
 
     public function testSetDefaultSkin(): void
@@ -343,8 +343,8 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
         $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
 
-        $this->assertSame($this->getDefaultStylesheets(), $stylesheets);
-        $this->assertSame('skin-black', $skin);
+        self::assertSame($this->getDefaultStylesheets(), $stylesheets);
+        self::assertSame('skin-black', $skin);
     }
 
     public function testSetInvalidSkin(): void
@@ -365,11 +365,11 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $autoconfiguredInstancesOf = $this->container->getAutoconfiguredInstanceof();
 
-        $this->assertArrayHasKey(ModelManagerInterface::class, $autoconfiguredInstancesOf);
-        $this->assertTrue($autoconfiguredInstancesOf[ModelManagerInterface::class]->hasTag(ModelManagerCompilerPass::MANAGER_TAG));
+        self::assertArrayHasKey(ModelManagerInterface::class, $autoconfiguredInstancesOf);
+        self::assertTrue($autoconfiguredInstancesOf[ModelManagerInterface::class]->hasTag(ModelManagerCompilerPass::MANAGER_TAG));
 
-        $this->assertArrayHasKey(AuditReaderInterface::class, $autoconfiguredInstancesOf);
-        $this->assertTrue($autoconfiguredInstancesOf[AuditReaderInterface::class]->hasTag(AddAuditReadersCompilerPass::AUDIT_READER_TAG));
+        self::assertArrayHasKey(AuditReaderInterface::class, $autoconfiguredInstancesOf);
+        self::assertTrue($autoconfiguredInstancesOf[AuditReaderInterface::class]->hasTag(AddAuditReadersCompilerPass::AUDIT_READER_TAG));
     }
 
     protected function getContainerExtensions(): array

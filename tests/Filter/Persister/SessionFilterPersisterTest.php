@@ -40,7 +40,7 @@ class SessionFilterPersisterTest extends TestCase
 
     public function testGetDefaultValueFromSessionIfNotDefined(): void
     {
-        $this->session->expects($this->once())->method('get')
+        $this->session->expects(self::once())->method('get')
             ->with('admin.customer.filter.parameters', [])
             ->willReturn([]);
 
@@ -55,7 +55,7 @@ class SessionFilterPersisterTest extends TestCase
             DatagridInterface::SORT_ORDER => 'ASC',
             DatagridInterface::PER_PAGE => 25,
         ];
-        $this->session->expects($this->once())->method('get')
+        $this->session->expects(self::once())->method('get')
             ->with('admin.customer.filter.parameters', [])
             ->willReturn($filters);
 
@@ -70,7 +70,7 @@ class SessionFilterPersisterTest extends TestCase
             DatagridInterface::SORT_ORDER => 'ASC',
             DatagridInterface::PER_PAGE => 25,
         ];
-        $this->session->expects($this->once())->method('set')
+        $this->session->expects(self::once())->method('set')
             ->with('admin.customer.filter.parameters', $filters)
             ->willReturn(null);
 
@@ -79,7 +79,7 @@ class SessionFilterPersisterTest extends TestCase
 
     public function testResetValueToSession(): void
     {
-        $this->session->expects($this->once())->method('remove')
+        $this->session->expects(self::once())->method('remove')
             ->with('admin.customer.filter.parameters')
             ->willReturn(null);
 

@@ -60,7 +60,7 @@ final class GroupExtension extends AbstractExtension
         $groups = [];
 
         foreach ($this->pool->getDashboardGroups() as $group) {
-            $filteredGroups = array_filter($group['items'], static function (AdminInterface $admin) {
+            $filteredGroups = array_filter($group['items'], static function (AdminInterface $admin): bool {
                 return $admin->hasRoute('create') && $admin->hasAccess('create');
             });
 

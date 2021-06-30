@@ -54,23 +54,23 @@ final class SonataConfigurationTest extends TestCase
 
     public function testGetTitle(): void
     {
-        $this->assertSame('title', $this->configuration->getTitle());
+        self::assertSame('title', $this->configuration->getTitle());
     }
 
     public function testGetLogo(): void
     {
-        $this->assertSame('/path/to/logo.png', $this->configuration->getLogo());
+        self::assertSame('/path/to/logo.png', $this->configuration->getLogo());
     }
 
     public function testGetOption(): void
     {
-        $this->assertTrue($this->configuration->getOption('html5_validate'));
-        $this->assertFalse($this->configuration->getOption('lock_protection'));
+        self::assertTrue($this->configuration->getOption('html5_validate'));
+        self::assertFalse($this->configuration->getOption('lock_protection'));
     }
 
     public function testGetOptionDefault(): void
     {
-        $this->assertNull($this->configuration->getOption('pager_links'));
-        $this->assertSame(1, $this->configuration->getOption('pager_links', 1));
+        self::assertNull($this->configuration->getOption('pager_links'));
+        self::assertSame(1, $this->configuration->getOption('pager_links', 1));
     }
 }

@@ -106,7 +106,7 @@ class FormMapperTest extends TestCase
     {
         $this->formMapper->with('foobar');
 
-        $this->assertSame(['default' => [
+        self::assertSame(['default' => [
             'collapsed' => false,
             'class' => false,
             'description' => false,
@@ -121,7 +121,7 @@ class FormMapperTest extends TestCase
             'tab' => true,
         ]], $this->admin->getFormTabs());
 
-        $this->assertSame(['foobar' => [
+        self::assertSame(['foobar' => [
             'collapsed' => false,
             'class' => false,
             'description' => false,
@@ -142,7 +142,7 @@ class FormMapperTest extends TestCase
             'role' => self::DEFAULT_GRANTED_ROLE,
         ]);
 
-        $this->assertSame(['foobar' => [
+        self::assertSame(['foobar' => [
             'collapsed' => false,
             'class' => false,
             'description' => false,
@@ -156,7 +156,7 @@ class FormMapperTest extends TestCase
             'role' => self::DEFAULT_GRANTED_ROLE,
         ]], $this->admin->getFormGroups());
 
-        $this->assertSame(['default' => [
+        self::assertSame(['default' => [
             'collapsed' => false,
             'class' => false,
             'description' => false,
@@ -174,7 +174,7 @@ class FormMapperTest extends TestCase
 
     public function testWithFieldsCascadeTranslationDomain(): void
     {
-        $this->contractor->expects($this->once())
+        $this->contractor->expects(self::once())
             ->method('getDefaultOptions')
             ->willReturn([]);
 
@@ -185,13 +185,13 @@ class FormMapperTest extends TestCase
         ->end();
 
         $fieldDescription = $this->admin->getFormFieldDescription('foo');
-        $this->assertSame('foo', $fieldDescription->getName());
-        $this->assertSame(TextType::class, $fieldDescription->getType());
-        $this->assertSame('Foobar', $fieldDescription->getTranslationDomain());
+        self::assertSame('foo', $fieldDescription->getName());
+        self::assertSame(TextType::class, $fieldDescription->getType());
+        self::assertSame('Foobar', $fieldDescription->getTranslationDomain());
 
-        $this->assertTrue($this->formMapper->has('foo'));
+        self::assertTrue($this->formMapper->has('foo'));
 
-        $this->assertSame(['default' => [
+        self::assertSame(['default' => [
             'collapsed' => false,
             'class' => false,
             'description' => false,
@@ -206,7 +206,7 @@ class FormMapperTest extends TestCase
             'tab' => true,
         ]], $this->admin->getFormTabs());
 
-        $this->assertSame(['foobar' => [
+        self::assertSame(['foobar' => [
             'collapsed' => false,
             'class' => false,
             'description' => false,
@@ -224,7 +224,7 @@ class FormMapperTest extends TestCase
 
     public function testWithFieldsCascadeTranslationDomainFalse(): void
     {
-        $this->contractor->expects($this->once())
+        $this->contractor->expects(self::once())
             ->method('getDefaultOptions')
             ->willReturn([]);
 
@@ -235,13 +235,13 @@ class FormMapperTest extends TestCase
             ->end();
 
         $fieldDescription = $this->admin->getFormFieldDescription('foo');
-        $this->assertSame('foo', $fieldDescription->getName());
-        $this->assertSame(TextType::class, $fieldDescription->getType());
-        $this->assertFalse($fieldDescription->getTranslationDomain());
+        self::assertSame('foo', $fieldDescription->getName());
+        self::assertSame(TextType::class, $fieldDescription->getType());
+        self::assertFalse($fieldDescription->getTranslationDomain());
 
-        $this->assertTrue($this->formMapper->has('foo'));
+        self::assertTrue($this->formMapper->has('foo'));
 
-        $this->assertSame(['default' => [
+        self::assertSame(['default' => [
             'collapsed' => false,
             'class' => false,
             'description' => false,
@@ -256,7 +256,7 @@ class FormMapperTest extends TestCase
             'tab' => true,
         ]], $this->admin->getFormTabs());
 
-        $this->assertSame(['foobar' => [
+        self::assertSame(['foobar' => [
             'collapsed' => false,
             'class' => false,
             'description' => false,
@@ -283,7 +283,7 @@ class FormMapperTest extends TestCase
 
     public function testIfTrueApply(): void
     {
-        $this->contractor->expects($this->once())
+        $this->contractor->expects(self::once())
             ->method('getDefaultOptions')
             ->willReturn([]);
 
@@ -292,7 +292,7 @@ class FormMapperTest extends TestCase
             ->add('foo', TextType::class)
             ->ifEnd();
 
-        $this->assertTrue($this->formMapper->has('foo'));
+        self::assertTrue($this->formMapper->has('foo'));
     }
 
     public function testIfTrueNotApply(): void
@@ -302,12 +302,12 @@ class FormMapperTest extends TestCase
             ->add('foo', TextType::class)
             ->ifEnd();
 
-        $this->assertFalse($this->formMapper->has('foo'));
+        self::assertFalse($this->formMapper->has('foo'));
     }
 
     public function testIfTrueCombination(): void
     {
-        $this->contractor->expects($this->once())
+        $this->contractor->expects(self::once())
             ->method('getDefaultOptions')
             ->willReturn([]);
 
@@ -317,13 +317,13 @@ class FormMapperTest extends TestCase
             ->ifEnd()
             ->add('baz', TextType::class);
 
-        $this->assertFalse($this->formMapper->has('foo'));
-        $this->assertTrue($this->formMapper->has('baz'));
+        self::assertFalse($this->formMapper->has('foo'));
+        self::assertTrue($this->formMapper->has('baz'));
     }
 
     public function testIfFalseApply(): void
     {
-        $this->contractor->expects($this->once())
+        $this->contractor->expects(self::once())
             ->method('getDefaultOptions')
             ->willReturn([]);
 
@@ -332,7 +332,7 @@ class FormMapperTest extends TestCase
             ->add('foo', TextType::class)
             ->ifEnd();
 
-        $this->assertTrue($this->formMapper->has('foo'));
+        self::assertTrue($this->formMapper->has('foo'));
     }
 
     public function testIfFalseNotApply(): void
@@ -342,12 +342,12 @@ class FormMapperTest extends TestCase
             ->add('foo', TextType::class)
             ->ifEnd();
 
-        $this->assertFalse($this->formMapper->has('foo'));
+        self::assertFalse($this->formMapper->has('foo'));
     }
 
     public function testIfFalseCombination(): void
     {
-        $this->contractor->expects($this->once())
+        $this->contractor->expects(self::once())
             ->method('getDefaultOptions')
             ->willReturn([]);
 
@@ -357,8 +357,8 @@ class FormMapperTest extends TestCase
             ->ifEnd()
             ->add('baz', TextType::class);
 
-        $this->assertFalse($this->formMapper->has('foo'));
-        $this->assertTrue($this->formMapper->has('baz'));
+        self::assertFalse($this->formMapper->has('foo'));
+        self::assertTrue($this->formMapper->has('baz'));
     }
 
     public function testIfTrueNested(): void
@@ -370,7 +370,7 @@ class FormMapperTest extends TestCase
                 ->ifEnd()
             ->ifEnd();
 
-        $this->assertTrue($this->formMapper->has('fooName'));
+        self::assertTrue($this->formMapper->has('fooName'));
     }
 
     public function testIfFalseNested(): void
@@ -382,7 +382,7 @@ class FormMapperTest extends TestCase
                 ->ifEnd()
             ->ifEnd();
 
-        $this->assertTrue($this->formMapper->has('fooName'));
+        self::assertTrue($this->formMapper->has('fooName'));
     }
 
     public function testIfCombinationNested(): void
@@ -394,7 +394,7 @@ class FormMapperTest extends TestCase
                 ->ifEnd()
             ->ifEnd();
 
-        $this->assertTrue($this->formMapper->has('fooName'));
+        self::assertTrue($this->formMapper->has('fooName'));
     }
 
     public function testIfFalseCombinationNested2(): void
@@ -406,7 +406,7 @@ class FormMapperTest extends TestCase
                 ->ifEnd()
             ->ifEnd();
 
-        $this->assertTrue($this->formMapper->has('fooName'));
+        self::assertTrue($this->formMapper->has('fooName'));
     }
 
     public function testIfFalseCombinationNested3(): void
@@ -418,7 +418,7 @@ class FormMapperTest extends TestCase
                 ->ifEnd()
             ->ifEnd();
 
-        $this->assertFalse($this->formMapper->has('fooName'));
+        self::assertFalse($this->formMapper->has('fooName'));
     }
 
     public function testIfFalseCombinationNested4(): void
@@ -430,7 +430,7 @@ class FormMapperTest extends TestCase
                 ->ifEnd()
             ->ifEnd();
 
-        $this->assertFalse($this->formMapper->has('fooName'));
+        self::assertFalse($this->formMapper->has('fooName'));
     }
 
     public function testGroupRemovingWithoutTab(): void
@@ -439,7 +439,7 @@ class FormMapperTest extends TestCase
 
         $this->formMapper->removeGroup('foobar');
 
-        $this->assertSame([], $this->admin->getFormGroups());
+        self::assertSame([], $this->admin->getFormGroups());
     }
 
     public function testGroupRemovingWithTab(): void
@@ -448,7 +448,7 @@ class FormMapperTest extends TestCase
 
         $this->formMapper->removeGroup('foobar', 'mytab');
 
-        $this->assertSame([], $this->admin->getFormGroups());
+        self::assertSame([], $this->admin->getFormGroups());
     }
 
     public function testGroupRemovingWithoutTabAndWithTabRemoving(): void
@@ -457,8 +457,8 @@ class FormMapperTest extends TestCase
 
         $this->formMapper->removeGroup('foobar', 'default', true);
 
-        $this->assertSame([], $this->admin->getFormGroups());
-        $this->assertSame([], $this->admin->getFormTabs());
+        self::assertSame([], $this->admin->getFormGroups());
+        self::assertSame([], $this->admin->getFormTabs());
     }
 
     public function testGroupRemovingWithTabAndWithTabRemoving(): void
@@ -467,8 +467,8 @@ class FormMapperTest extends TestCase
 
         $this->formMapper->removeGroup('foobar', 'mytab', true);
 
-        $this->assertSame([], $this->admin->getFormGroups());
-        $this->assertSame([], $this->admin->getFormTabs());
+        self::assertSame([], $this->admin->getFormGroups());
+        self::assertSame([], $this->admin->getFormTabs());
     }
 
     public function testTabRemoving(): void
@@ -477,8 +477,8 @@ class FormMapperTest extends TestCase
 
         $this->formMapper->removeTab('mytab');
 
-        $this->assertSame([], $this->admin->getFormGroups());
-        $this->assertSame([], $this->admin->getFormTabs());
+        self::assertSame([], $this->admin->getFormGroups());
+        self::assertSame([], $this->admin->getFormTabs());
     }
 
     public function testKeys(): void
@@ -491,7 +491,7 @@ class FormMapperTest extends TestCase
             ->add('foo', TextType::class)
             ->add('baz', TextType::class);
 
-        $this->assertSame(['foo', 'baz'], $this->formMapper->keys());
+        self::assertSame(['foo', 'baz'], $this->formMapper->keys());
     }
 
     public function testFieldNameIsSanitized(): void
@@ -504,20 +504,20 @@ class FormMapperTest extends TestCase
             ->add('fo.o', TextType::class)
             ->add('ba__z', TextType::class);
 
-        $this->assertSame(['fo__o', 'ba____z'], $this->formMapper->keys());
+        self::assertSame(['fo__o', 'ba____z'], $this->formMapper->keys());
     }
 
     public function testAddOptionRole(): void
     {
         $this->formMapper->add('bar', TextType::class);
 
-        $this->assertTrue($this->formMapper->has('bar'));
-        $this->assertTrue($this->admin->hasFormFieldDescription('bar'));
+        self::assertTrue($this->formMapper->has('bar'));
+        self::assertTrue($this->admin->hasFormFieldDescription('bar'));
 
         $this->formMapper->add('quux', TextType::class, [], ['role' => 'ROLE_QUX']);
 
-        $this->assertTrue($this->formMapper->has('bar'));
-        $this->assertFalse($this->formMapper->has('quux'));
+        self::assertTrue($this->formMapper->has('bar'));
+        self::assertFalse($this->formMapper->has('quux'));
 
         $this->formMapper->end(); // Close default
 
@@ -528,16 +528,16 @@ class FormMapperTest extends TestCase
                 ->add('baz', TextType::class)
             ->end();
 
-        $this->assertArrayHasKey('qux', $this->admin->getFormGroups());
+        self::assertArrayHasKey('qux', $this->admin->getFormGroups());
 
-        $this->assertTrue($this->formMapper->has('foobar'));
-        $this->assertTrue($this->admin->hasFormFieldDescription('foobar'));
+        self::assertTrue($this->formMapper->has('foobar'));
+        self::assertTrue($this->admin->hasFormFieldDescription('foobar'));
 
-        $this->assertFalse($this->formMapper->has('foo'));
-        $this->assertFalse($this->admin->hasFormFieldDescription('foo'));
+        self::assertFalse($this->formMapper->has('foo'));
+        self::assertFalse($this->admin->hasFormFieldDescription('foo'));
 
-        $this->assertTrue($this->formMapper->has('baz'));
-        $this->assertTrue($this->admin->hasFormFieldDescription('baz'));
+        self::assertTrue($this->formMapper->has('baz'));
+        self::assertTrue($this->admin->hasFormFieldDescription('baz'));
     }
 
     private function getFieldDescriptionMock(

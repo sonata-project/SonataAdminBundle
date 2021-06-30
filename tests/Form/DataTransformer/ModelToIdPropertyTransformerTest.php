@@ -51,10 +51,10 @@ class ModelToIdPropertyTransformerTest extends TestCase
                 return null;
             });
 
-        $this->assertNull($transformer->reverseTransform(null));
-        $this->assertNull($transformer->reverseTransform(''));
-        $this->assertNull($transformer->reverseTransform(12));
-        $this->assertSame($model, $transformer->reverseTransform(123));
+        self::assertNull($transformer->reverseTransform(null));
+        self::assertNull($transformer->reverseTransform(''));
+        self::assertNull($transformer->reverseTransform(12));
+        self::assertSame($model, $transformer->reverseTransform(123));
     }
 
     /**
@@ -71,14 +71,14 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $transformer = new ModelToIdPropertyTransformer($modelManager, Foo::class, 'bar', true);
         $proxyQuery = $this->createMock(ProxyQueryInterface::class);
         $modelManager
-            ->expects($this->exactly($params ? 1 : 0))
+            ->expects(self::exactly($params ? 1 : 0))
             ->method('createQuery')
-            ->with($this->equalTo(Foo::class))
+            ->with(self::equalTo(Foo::class))
             ->willReturn($proxyQuery);
         $modelManager
-            ->expects($this->exactly($params ? 1 : 0))
+            ->expects(self::exactly($params ? 1 : 0))
             ->method('executeQuery')
-            ->with($this->equalTo($proxyQuery))
+            ->with(self::equalTo($proxyQuery))
             ->willReturnCallback(static function () use ($params, $entity1, $entity2, $entity3): array {
                 $collection = [];
 
@@ -98,9 +98,9 @@ class ModelToIdPropertyTransformerTest extends TestCase
             });
 
         $result = $transformer->reverseTransform($params);
-        $this->assertInstanceOf(Collection::class, $result);
-        $this->assertCount(\count($expected), $result);
-        $this->assertSame($expected, $result->getValues());
+        self::assertInstanceOf(Collection::class, $result);
+        self::assertCount(\count($expected), $result);
+        self::assertSame($expected, $result->getValues());
     }
 
     /**
@@ -170,15 +170,15 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $model = new Foo();
         $model->setBar('example');
 
-        $this->modelManager->expects($this->once())
+        $this->modelManager->expects(self::once())
             ->method('getIdentifierValues')
             ->willReturn([123]);
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false);
 
-        $this->assertSame([], $transformer->transform(null));
+        self::assertSame([], $transformer->transform(null));
 
-        $this->assertSame([123, '_labels' => ['example']], $transformer->transform($model));
+        self::assertSame([123, '_labels' => ['example']], $transformer->transform($model));
     }
 
     public function testTransformWorksWithArrayAccessEntity(): void
@@ -189,13 +189,13 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $model = new FooArrayAccess();
         $model->setBar('example');
 
-        $modelManager->expects($this->once())
+        $modelManager->expects(self::once())
             ->method('getIdentifierValues')
             ->willReturn([123]);
 
         $transformer = new ModelToIdPropertyTransformer($modelManager, FooArrayAccess::class, 'bar', false);
 
-        $this->assertSame([123, '_labels' => ['example']], $transformer->transform($model));
+        self::assertSame([123, '_labels' => ['example']], $transformer->transform($model));
     }
 
     public function testTransformToStringCallback(): void
@@ -204,7 +204,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $model->setBar('example');
         $model->setBaz('bazz');
 
-        $this->modelManager->expects($this->once())
+        $this->modelManager->expects(self::once())
             ->method('getIdentifierValues')
             ->willReturn([123]);
 
@@ -212,7 +212,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
             return (string) $model->getBaz();
         });
 
-        $this->assertSame([123, '_labels' => ['bazz']], $transformer->transform($model));
+        self::assertSame([123, '_labels' => ['bazz']], $transformer->transform($model));
     }
 
     public function testTransformMultiple(): void
@@ -226,7 +226,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $entity3 = new Foo();
         $entity3->setBar('baz');
 
-        $this->modelManager->expects($this->exactly(3))
+        $this->modelManager->expects(self::exactly(3))
             ->method('getIdentifierValues')
             ->willReturnCallback(static function (Foo $value) use ($entity1, $entity2, $entity3): array {
                 if ($value === $entity1) {
@@ -246,9 +246,9 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 
-        $this->assertSame([], $transformer->transform(null));
+        self::assertSame([], $transformer->transform(null));
 
-        $this->assertSame([
+        self::assertSame([
             123,
             '_labels' => ['foo', 'bar', 'baz'],
             456,
@@ -306,20 +306,20 @@ class ModelToIdPropertyTransformerTest extends TestCase
             Foo::class,
             $properties,
             false,
-            function (Foo $model, array $property) use ($properties): string {
-                $this->assertSame($properties, $property);
+            static function (Foo $model, array $property) use ($properties): string {
+                self::assertSame($properties, $property);
 
                 return 'nice_label';
             }
         );
 
         $model = new Foo();
-        $this->modelManager->expects($this->once())
+        $this->modelManager->expects(self::once())
             ->method('getIdentifierValues')
             ->willReturn([123]);
 
         $value = $transformer->transform($model);
-        $this->assertSame([
+        self::assertSame([
             123,
             '_labels' => ['nice_label'],
         ], $value);

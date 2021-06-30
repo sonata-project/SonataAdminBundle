@@ -56,7 +56,7 @@ final class AddFilterTypeCompilerPassTest extends AbstractCompilerPassTestCase
 
         $this->compile();
 
-        $this->assertContainerBuilderHasServiceLocator(
+        self::assertContainerBuilderHasServiceLocator(
             (string) $this->container->getDefinition('sonata.admin.builder.filter.factory')->getArgument(0),
             [
                 FooFilter::class => 'acme.demo.foo_filter',

@@ -31,13 +31,13 @@ class NoopSecurityHandlerTest extends TestCase
 
     public function testIsGranted(): void
     {
-        $this->assertTrue($this->handler->isGranted($this->getSonataAdminObject(), ['TOTO']));
-        $this->assertTrue($this->handler->isGranted($this->getSonataAdminObject(), 'TOTO'));
+        self::assertTrue($this->handler->isGranted($this->getSonataAdminObject(), ['TOTO']));
+        self::assertTrue($this->handler->isGranted($this->getSonataAdminObject(), 'TOTO'));
     }
 
     public function testBuildSecurityInformation(): void
     {
-        $this->assertSame([], $this->handler->buildSecurityInformation($this->getSonataAdminObject()));
+        self::assertSame([], $this->handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
     /**
@@ -58,7 +58,7 @@ class NoopSecurityHandlerTest extends TestCase
 
     public function testGetBaseRole(): void
     {
-        $this->assertSame('', $this->handler->getBaseRole($this->getSonataAdminObject()));
+        self::assertSame('', $this->handler->getBaseRole($this->getSonataAdminObject()));
     }
 
     /**

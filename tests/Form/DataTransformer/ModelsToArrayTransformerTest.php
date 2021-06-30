@@ -31,7 +31,7 @@ class ModelsToArrayTransformerTest extends TestCase
             Foo::class
         );
 
-        $this->assertInstanceOf(ModelsToArrayTransformer::class, $transformer);
+        self::assertInstanceOf(ModelsToArrayTransformer::class, $transformer);
     }
 
     /**
@@ -47,11 +47,11 @@ class ModelsToArrayTransformerTest extends TestCase
             $proxyQuery = $this->createStub(ProxyQueryInterface::class);
             $modelManager
                 ->method('createQuery')
-                ->with($this->equalTo(Foo::class))
+                ->with(self::equalTo(Foo::class))
                 ->willReturn($proxyQuery);
             $modelManager
                 ->method('executeQuery')
-                ->with($this->equalTo($proxyQuery))
+                ->with(self::equalTo($proxyQuery))
                 ->willReturn($value);
         }
 
@@ -63,10 +63,10 @@ class ModelsToArrayTransformerTest extends TestCase
         $result = $transformer->reverseTransform($value);
 
         if (null === $value) {
-            $this->assertNull($result);
+            self::assertNull($result);
         } else {
-            $this->assertInstanceOf(Collection::class, $result);
-            $this->assertCount(\count($value), $result);
+            self::assertInstanceOf(Collection::class, $result);
+            self::assertCount(\count($value), $result);
         }
     }
 
@@ -84,13 +84,13 @@ class ModelsToArrayTransformerTest extends TestCase
     {
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
-            ->expects($this->never())
+            ->expects(self::never())
             ->method('createQuery');
         $modelManager
-            ->expects($this->never())
+            ->expects(self::never())
             ->method('addIdentifiersToQuery');
         $modelManager
-            ->expects($this->never())
+            ->expects(self::never())
             ->method('executeQuery');
 
         $transformer = new ModelsToArrayTransformer(
@@ -100,8 +100,8 @@ class ModelsToArrayTransformerTest extends TestCase
 
         $result = $transformer->reverseTransform([]);
 
-        $this->assertInstanceOf(Collection::class, $result);
-        $this->assertCount(0, $result);
+        self::assertInstanceOf(Collection::class, $result);
+        self::assertCount(0, $result);
     }
 
     /**
@@ -132,11 +132,11 @@ class ModelsToArrayTransformerTest extends TestCase
         $proxyQuery = $this->createStub(ProxyQueryInterface::class);
         $modelManager
             ->method('createQuery')
-            ->with($this->equalTo(Foo::class))
+            ->with(self::equalTo(Foo::class))
             ->willReturn($proxyQuery);
         $modelManager
             ->method('executeQuery')
-            ->with($this->equalTo($proxyQuery))
+            ->with(self::equalTo($proxyQuery))
             ->willReturn($reverseTransformCollection);
 
         $transformer = new ModelsToArrayTransformer(

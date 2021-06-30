@@ -26,7 +26,7 @@ class ValidatorsTest extends TestCase
      */
     public function testValidateUsername(string $expected, string $value): void
     {
-        $this->assertSame($expected, Validators::validateUsername($value));
+        self::assertSame($expected, Validators::validateUsername($value));
     }
 
     /**
@@ -52,7 +52,7 @@ class ValidatorsTest extends TestCase
      */
     public function testValidateClass(string $expected, string $value): void
     {
-        $this->assertSame($expected, Validators::validateClass($value));
+        self::assertSame($expected, Validators::validateClass($value));
     }
 
     /**
@@ -93,7 +93,7 @@ class ValidatorsTest extends TestCase
      */
     public function testValidateAdminClassBasename(string $expected, string $value): void
     {
-        $this->assertSame($expected, Validators::validateAdminClassBasename($value));
+        self::assertSame($expected, Validators::validateAdminClassBasename($value));
     }
 
     /**
@@ -135,7 +135,7 @@ class ValidatorsTest extends TestCase
      */
     public function testValidateControllerClassBasename(string $expected, string $value): void
     {
-        $this->assertSame($expected, Validators::validateControllerClassBasename($value));
+        self::assertSame($expected, Validators::validateControllerClassBasename($value));
     }
 
     /**
@@ -194,7 +194,7 @@ class ValidatorsTest extends TestCase
      */
     public function testValidateServicesFile(string $expected, string $value): void
     {
-        $this->assertSame($expected, Validators::validateServicesFile($value));
+        self::assertSame($expected, Validators::validateServicesFile($value));
     }
 
     /**
@@ -218,7 +218,7 @@ class ValidatorsTest extends TestCase
      */
     public function testValidateServiceId(string $value): void
     {
-        $this->assertSame($value, Validators::validateServiceId($value));
+        self::assertSame($value, Validators::validateServiceId($value));
     }
 
     /**

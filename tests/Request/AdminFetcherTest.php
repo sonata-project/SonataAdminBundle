@@ -71,7 +71,7 @@ final class AdminFetcherTest extends TestCase
         $request->query->set('uniqid', $uniqueId);
 
         $this->admin
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setUniqId')
             ->with($uniqueId);
 
@@ -84,24 +84,24 @@ final class AdminFetcherTest extends TestCase
         $request->attributes->set('_sonata_admin', 'sonata.admin.post');
 
         $this->admin
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('isChild')
             ->willReturn(true);
 
         $adminParent = $this->createMock(AdminInterface::class);
 
         $this->admin
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getParent')
             ->willReturn($adminParent);
 
         $this->admin
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setCurrentChild')
             ->with(true);
 
         $adminParent
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setRequest')
             ->with($request);
 
