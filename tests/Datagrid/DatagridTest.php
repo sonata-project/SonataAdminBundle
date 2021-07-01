@@ -165,6 +165,23 @@ final class DatagridTest extends TestCase
         self::assertSame(['bar', 'baz', 'foo'], array_keys($this->datagrid->getFilters()));
     }
 
+    public function testReorderWithInvalidFilter(): void
+    {
+        $filter1 = $this->createMock(FilterInterface::class);
+        $filter1->method('getName')->willReturn('foo');
+
+        $filter2 = $this->createMock(FilterInterface::class);
+        $filter2->method('getName')->willReturn('bar');
+
+        $this->datagrid->addFilter($filter1);
+        $this->datagrid->addFilter($filter2);
+
+        self::expectException(\InvalidArgumentException::class);
+        self::expectExceptionMessage('Filter "baz" does not exist.');
+
+        $this->datagrid->reorderFilters(['bar', 'baz', 'foo']);
+    }
+
     public function testGetValues(): void
     {
         self::assertSame([], $this->datagrid->getValues());
