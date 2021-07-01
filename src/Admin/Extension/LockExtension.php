@@ -70,7 +70,7 @@ final class LockExtension extends AbstractAdminExtension
         }
 
         $data = $admin->getRequest()->get($admin->getUniqId());
-        if (null === $data || !\is_array($data)) {
+        if (!\is_array($data)) {
             return;
         }
 
