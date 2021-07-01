@@ -63,6 +63,7 @@ $rules = [
 
 $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
+    ->exclude('node_modules')
     ->exclude('Resources/skeleton')
     ->exclude('Resources/public/vendor')
     ->exclude('var')
