@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="3.13.1@afd8874a9e4562eac42a02de90e42e430c3a1db1">
-    <file src="src/Datagrid/Datagrid.php">
-        <InvalidPropertyAssignmentValue occurrences="1">
-            <code>array_merge(array_flip($keys), $this-&gt;filters)</code>
-        </InvalidPropertyAssignmentValue>
-    </file>
-    <file src="src/FieldDescription/FieldDescriptionCollection.php">
-        <InvalidPropertyAssignmentValue occurrences="2">
-            <code>$this-&gt;elements</code>
-            <code>array_merge(array_flip($keys), $this-&gt;elements)</code>
-        </InvalidPropertyAssignmentValue>
-    </file>
     <!-- Remove this when dropping support for Symfony < 5.1 -->
     <file src="tests/Admin/AdminTest.php">
         <PropertyTypeCoercion occurrences="2">
