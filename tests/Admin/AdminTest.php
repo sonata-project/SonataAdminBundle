@@ -2877,7 +2877,8 @@ class AdminTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
 
-        $formFactory = new FormFactory(new FormRegistry([], new ResolvedFormTypeFactory()));
+        $registry = new FormRegistry([], new ResolvedFormTypeFactory());
+        $formFactory = new FormFactory($registry);
         $modelManager = $this->createStub(ModelManagerInterface::class);
         $modelManager
             ->method('getDefaultSortValues')
@@ -2888,7 +2889,7 @@ class AdminTest extends TestCase
 
         $admin->setModelManager($modelManager);
 
-        $admin->setFormContractor(new FormContractor($formFactory));
+        $admin->setFormContractor(new FormContractor($formFactory, $registry));
 
         $admin->setShowBuilder(new ShowBuilder());
 

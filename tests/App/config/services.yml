@@ -16,6 +16,7 @@ services:
         class: Sonata\AdminBundle\Tests\App\Builder\FormContractor
         arguments:
             - '@form.factory'
+            - '@form.registry'
 
     sonata.admin.builder.test_show:
         class: Sonata\AdminBundle\Tests\App\Builder\ShowBuilder
