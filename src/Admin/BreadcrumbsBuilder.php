@@ -153,6 +153,9 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
      * @param string                 $name              the source of the final label
      * @param string                 $translationDomain for label translation
      * @param array<string, mixed>   $options           menu item options
+     *
+     * @phpstan-template T of object
+     * @phpstan-param AdminInterface<T> $admin
      */
     private function createMenuItem(
         AdminInterface $admin,

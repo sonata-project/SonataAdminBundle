@@ -196,6 +196,9 @@ final class RetrieveAutocompleteItemsAction
      * @param AdminInterface<object> $admin
      *
      * @throws \RuntimeException
+     *
+     * @phpstan-template T of object
+     * @phpstan-param AdminInterface<T> $admin
      */
     private function retrieveFilterFieldDescription(
         AdminInterface $admin,

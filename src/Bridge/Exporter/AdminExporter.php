@@ -40,6 +40,9 @@ final class AdminExporter
      * @param AdminInterface<object> $admin the current admin object
      *
      * @return string[] an array of formats
+     *
+     * @phpstan-template T of object
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function getAvailableFormats(AdminInterface $admin): array
     {
@@ -58,6 +61,9 @@ final class AdminExporter
      *
      * @param AdminInterface<object> $admin  the current admin object
      * @param string                 $format the format of the export file
+     *
+     * @phpstan-template T of object
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function getExportFilename(AdminInterface $admin, string $format): string
     {
