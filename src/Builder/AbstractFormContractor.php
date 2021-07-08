@@ -159,8 +159,9 @@ abstract class AbstractFormContractor implements FormContractorInterface
 
         // handle form type inheritance and check all parent types
         $resolvedType = $this->formRegistry->getType($type);
-        if (null !== $resolvedType->getParent()) {
-            $parentType = \get_class($resolvedType->getParent()->getInnerType());
+        $parentType = $resolvedType->getParent();
+        if (null !== $parentType) {
+            $parentType = \get_class($parentType->getInnerType());
 
             // all types have "Symfony\Component\Form\Extension\Core\Type\FormType" as parent
             // so we ignore it here for performance reasons

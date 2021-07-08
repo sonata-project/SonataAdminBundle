@@ -25,6 +25,7 @@ use Sonata\AdminBundle\Form\Type\ModelHiddenType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Tests\Fixtures\Form\MyCustomType;
 use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -59,7 +60,7 @@ final class AbstractFormContractorTest extends TestCase
         $formRegistry = $this->createStub(FormRegistryInterface::class);
         $formRegistry->method('getType')->willReturnCallback(function (string $type) {
             $resolvedType = $this->createStub(ResolvedFormTypeInterface::class);
-            if ('MyCustomType' === $type) {
+            if (MyCustomType::class === $type) {
                 $parentType = $this->createStub(ResolvedFormTypeInterface::class);
                 $parentType->method('getInnerType')->willReturn(new ModelType($this->createStub(PropertyAccessor::class)));
                 $resolvedType->method('getParent')->willReturn($parentType);
@@ -111,7 +112,7 @@ final class AbstractFormContractorTest extends TestCase
             ModelListType::class,
             ModelHiddenType::class,
             ModelAutocompleteType::class,
-            'MyCustomType',
+            MyCustomType::class,
         ];
         $adminTypes = [
             AdminType::class,
