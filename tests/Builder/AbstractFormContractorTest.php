@@ -58,12 +58,12 @@ final class AbstractFormContractorTest extends TestCase
             ->getMockForAbstractClass();
 
         $this->formFactory = $this->createMock(FormFactoryInterface::class);
-        $formRegistry = $this->createMock(FormRegistryInterface::class);
+        $formRegistry = $this->createStub(FormRegistryInterface::class);
         $formRegistry->method('getType')->willReturnCallback(function (string $type) {
-            $resolvedType = $this->createMock(ResolvedFormTypeInterface::class);
+            $resolvedType = $this->createStub(ResolvedFormTypeInterface::class);
             if ('MyCustomType' === $type) {
-                $parentType = $this->createMock(ResolvedFormTypeInterface::class);
-                $parentType->method('getInnerType')->willReturn(new ModelType($this->createMock(PropertyAccessor::class)));
+                $parentType = $this->createStub(ResolvedFormTypeInterface::class);
+                $parentType->method('getInnerType')->willReturn(new ModelType($this->createStub(PropertyAccessor::class)));
                 $resolvedType->method('getParent')->willReturn($parentType);
             }
 
