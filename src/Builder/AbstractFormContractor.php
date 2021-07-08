@@ -24,6 +24,7 @@ use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormRegistryInterface;
 
 abstract class AbstractFormContractor implements FormContractorInterface
 {
@@ -32,9 +33,15 @@ abstract class AbstractFormContractor implements FormContractorInterface
      */
     protected $formFactory;
 
-    public function __construct(FormFactoryInterface $formFactory)
+    /**
+     * @var FormRegistryInterface
+     */
+    protected $formRegistry;
+
+    public function __construct(FormFactoryInterface $formFactory, FormRegistryInterface $formRegistry)
     {
         $this->formFactory = $formFactory;
+        $this->formRegistry = $formRegistry;
     }
 
     final public function fixFieldDescription(FieldDescriptionInterface $fieldDescription): void
@@ -147,6 +154,18 @@ abstract class AbstractFormContractor implements FormContractorInterface
         foreach ($classes as $class) {
             if (is_a($type, $class, true)) {
                 return true;
+            }
+        }
+
+        // handle form type inheritance and check all parent types
+        $resolvedType = $this->formRegistry->getType($type);
+        if (null !== $resolvedType->getParent()) {
+            $parentType = \get_class($resolvedType->getParent()->getInnerType());
+
+            // all types have "Symfony\Component\Form\Extension\Core\Type\FormType" as parent
+            // so we ignore it here for performance reasons
+            if (FormType::class !== $parentType) {
+                return $this->isAnyInstanceOf($parentType, $classes);
             }
         }
 

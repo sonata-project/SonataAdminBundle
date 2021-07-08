@@ -28,6 +28,9 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormRegistryInterface;
+use Symfony\Component\Form\ResolvedFormTypeInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 final class AbstractFormContractorTest extends TestCase
 {
@@ -53,8 +56,19 @@ final class AbstractFormContractorTest extends TestCase
         $this->fieldDescription = $this->createMock(FieldDescriptionInterface::class);
 
         $this->formFactory = $this->createMock(FormFactoryInterface::class);
+        $formRegistry = $this->createStub(FormRegistryInterface::class);
+        $formRegistry->method('getType')->willReturnCallback(function (string $type) {
+            $resolvedType = $this->createStub(ResolvedFormTypeInterface::class);
+            if ('MyCustomType' === $type) {
+                $parentType = $this->createStub(ResolvedFormTypeInterface::class);
+                $parentType->method('getInnerType')->willReturn(new ModelType($this->createStub(PropertyAccessor::class)));
+                $resolvedType->method('getParent')->willReturn($parentType);
+            }
 
-        $this->formContractor = new class($this->formFactory) extends AbstractFormContractor {
+            return $resolvedType;
+        });
+
+        $this->formContractor = new class($this->formFactory, $formRegistry) extends AbstractFormContractor {
             protected function hasAssociation(FieldDescriptionInterface $fieldDescription): bool
             {
                 return $fieldDescription->describesAssociation();
@@ -97,6 +111,7 @@ final class AbstractFormContractorTest extends TestCase
             ModelListType::class,
             ModelHiddenType::class,
             ModelAutocompleteType::class,
+            'MyCustomType',
         ];
         $adminTypes = [
             AdminType::class,
@@ -126,7 +141,7 @@ final class AbstractFormContractorTest extends TestCase
         }
 
         // collection type
-        foreach ($collectionTypes as $index => $formType) {
+        foreach ($collectionTypes as $formType) {
             $options = $this->formContractor->getDefaultOptions($formType, $this->fieldDescription, [
                 'by_reference' => false,
             ]);

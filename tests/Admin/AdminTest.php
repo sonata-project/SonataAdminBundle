@@ -2212,12 +2212,13 @@ class AdminTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
 
-        $formFactory = new FormFactory(new FormRegistry([], new ResolvedFormTypeFactory()));
+        $registry = new FormRegistry([], new ResolvedFormTypeFactory());
+        $formFactory = new FormFactory($registry);
 
         $admin = new AvoidInfiniteLoopAdmin('code', \stdClass::class, 'controller');
         $admin->setSubject(new \stdClass());
 
-        $admin->setFormContractor(new FormContractor($formFactory));
+        $admin->setFormContractor(new FormContractor($formFactory, $registry));
 
         $admin->setShowBuilder(new ShowBuilder());
 
