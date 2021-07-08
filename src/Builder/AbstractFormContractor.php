@@ -25,6 +25,7 @@ use Sonata\AdminBundle\Form\Type\ModelTypeList;
 use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormRegistryInterface;
 
 abstract class AbstractFormContractor implements FormContractorInterface
 {
@@ -33,9 +34,27 @@ abstract class AbstractFormContractor implements FormContractorInterface
      */
     protected $formFactory;
 
-    public function __construct(FormFactoryInterface $formFactory)
+    /**
+     * NEXT_MAJOR: make not nullable.
+     *
+     * @var FormRegistryInterface|null
+     */
+    protected $formRegistry;
+
+    // NEXT_MAJOR: make $formRegistry mandatory
+    public function __construct(FormFactoryInterface $formFactory, ?FormRegistryInterface $formRegistry = null)
     {
         $this->formFactory = $formFactory;
+        $this->formRegistry = $formRegistry;
+
+        // NEXT_MAJOR: remove this block
+        if (null === $formRegistry) {
+            @trigger_error(sprintf(
+                'Not passing argument 2 of type %s to %s::__construct() is deprecated since sonata-project/admin-bundle 3.x and will fail in 4.0.',
+                FormRegistryInterface::class,
+                static::class
+            ), \E_USER_DEPRECATED);
+        }
     }
 
     /**
@@ -188,6 +207,21 @@ abstract class AbstractFormContractor implements FormContractorInterface
         foreach ($classes as $class) {
             if (is_a($type, $class, true)) {
                 return true;
+            }
+        }
+
+        // NEXT_MAJOR: remove if condition
+        if (null !== $this->formRegistry) {
+            // handle form type inheritance and check all parent types
+            $resolvedType = $this->formRegistry->getType($type);
+            if (null !== $resolvedType->getParent()) {
+                $parentType = \get_class($resolvedType->getParent()->getInnerType());
+
+                // all types have "Symfony\Component\Form\Extension\Core\Type\FormType" as parent
+                // so we ignore it here for performance reasons
+                if (FormType::class !== $parentType) {
+                    return $this->isAnyInstanceOf($parentType, $classes);
+                }
             }
         }
 
