@@ -80,8 +80,6 @@ class AdminHelper
      * Note:
      *   This code is ugly, but there is no better way of doing it.
      *
-     * @param AdminInterface<object> $admin
-     *
      * @throws \RuntimeException
      * @throws \Exception
      *
@@ -204,8 +202,7 @@ class AdminHelper
     /**
      * Recursively find the class name of the admin responsible for the element at the end of an association chain.
      *
-     * @param AdminInterface<object> $admin
-     * @param string[]               $elements
+     * @param string[] $elements
      *
      * @phpstan-template T of object
      * @phpstan-param AdminInterface<T> $admin

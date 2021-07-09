@@ -98,8 +98,6 @@ final class AdminPreviewBlockService extends AbstractBlockService
     /**
      * Maps the block filters to standard admin filters.
      *
-     * @param AdminInterface<object> $admin
-     *
      * @phpstan-template T of object
      * @phpstan-param AdminInterface<T> $admin
      */
