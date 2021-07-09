@@ -36,7 +36,7 @@ class Datagrid implements DatagridInterface
     /**
      * The filter instances.
      *
-     * @var array<string, mixed>
+     * @var array<string, FilterInterface>
      */
     protected $filters = [];
 

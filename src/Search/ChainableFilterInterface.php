@@ -16,12 +16,13 @@ namespace Sonata\AdminBundle\Search;
 use Sonata\AdminBundle\Filter\FilterInterface;
 
 /**
- * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Javier Spagnoletti <phansys@gmail.com>
  */
-interface SearchableFilterInterface extends FilterInterface, ChainableFilterInterface
+interface ChainableFilterInterface
 {
-    /**
-     * Return true if the filter should be used in the SearchHandler class.
-     */
-    public function isSearchEnabled(): bool;
+    public function setPreviousFilter(FilterInterface $filter): void;
+
+    public function getPreviousFilter(): ?FilterInterface;
+
+    public function hasPreviousFilter(): bool;
 }

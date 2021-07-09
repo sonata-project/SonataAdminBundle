@@ -81,6 +81,37 @@ class SearchHandlerTest extends TestCase
         ];
     }
 
+    public function testBuildPagerWithMultipleSearchableFilter(): void
+    {
+        $filter1 = $this->createMock(SearchableFilterInterface::class);
+        $filter1->expects(self::once())->method('isSearchEnabled')->willReturn(true);
+
+        $filter2 = $this->createMock(SearchableFilterInterface::class);
+        $filter2->expects(self::once())->method('isSearchEnabled')->willReturn(false);
+
+        $filter3 = $this->createMock(SearchableFilterInterface::class);
+        $filter3->expects(self::once())->method('isSearchEnabled')->willReturn(true);
+        $filter3->expects(self::once())->method('setPreviousFilter')->with($filter1);
+
+        $pager = $this->createMock(PagerInterface::class);
+        $pager->expects(self::once())->method('setPage');
+        $pager->expects(self::once())->method('setMaxPerPage');
+
+        $datagrid = $this->createMock(DatagridInterface::class);
+        $datagrid->expects(self::once())->method('getFilters')->willReturn([$filter1, $filter2, $filter3]);
+        $datagrid->expects(self::exactly(2))->method('setValue');
+        $datagrid->expects(self::once())->method('getPager')->willReturn($pager);
+
+        $adminCode = 'my.admin';
+
+        $admin = $this->createStub(AdminInterface::class);
+        $admin->method('getDatagrid')->willReturn($datagrid);
+        $admin->method('getCode')->willReturn($adminCode);
+
+        $handler = new SearchHandler(true);
+        $this->assertInstanceOf(PagerInterface::class, $handler->search($admin, 'myservice'));
+    }
+
     /**
      * @dataProvider provideAdminSearchConfigurations
      */

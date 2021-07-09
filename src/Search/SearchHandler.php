@@ -84,6 +84,7 @@ class SearchHandler
         $datagridValues = $datagrid->getValues();
 
         $found = false;
+        $previousFilter = null;
         foreach ($datagrid->getFilters() as $filter) {
             /** @var FilterInterface $filter */
             $formName = $filter->getFormName();
@@ -93,20 +94,26 @@ class SearchHandler
                 $filter->getOption('global_search', false)
                 || $filter instanceof SearchableFilterInterface && $filter->isSearchEnabled()
             ) {
+                // NEXT_MAJOR: Remove the if part and keep the elseif part.
                 if (!$filter instanceof SearchableFilterInterface) {
                     @trigger_error(sprintf(
                         'Passing the "global_search" option to a filter which does not implement %s is deprecated'
                         .' since sonata-project/admin-bundle 3.x and won\'t work in 4.0.',
                         SearchableFilterInterface::class
                     ), \E_USER_DEPRECATED);
+                } elseif (null !== $previousFilter) {
+                    $filter->setPreviousFilter($previousFilter);
                 }
 
                 // NEXT_MAJOR: Remove this line.
                 $filter->setOption('case_sensitive', $this->caseSensitive);
+                // NEXT_MAJOR: Remove this line.
                 $filter->setOption('or_group', $admin->getCode());
                 $filter->setCondition(FilterInterface::CONDITION_OR);
                 $datagrid->setValue($formName, null, $term);
                 $found = true;
+
+                $previousFilter = $filter;
             } elseif (isset($datagridValues[$formName])) {
                 // Remove any previously set filter that is not configured for the global search.
                 $datagrid->removeFilter($formName);
