@@ -973,6 +973,8 @@ class CRUDController extends AbstractController
      *
      * @param string               $view       The view name
      * @param array<string, mixed> $parameters An array of parameters to pass to the view
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x
      */
     final protected function renderWithExtraParams(string $view, array $parameters = [], ?Response $response = null): Response
     {
@@ -983,6 +985,8 @@ class CRUDController extends AbstractController
      * @param array<string, mixed> $parameters
      *
      * @return array<string, mixed>
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x
      */
     protected function addRenderExtraParams(array $parameters = []): array
     {
