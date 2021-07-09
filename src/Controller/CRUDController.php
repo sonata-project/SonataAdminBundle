@@ -62,7 +62,7 @@ class CRUDController extends AbstractController
     /**
      * The related Admin class.
      *
-     * @var AdminInterface
+     * @var AdminInterface<object>
      * @phpstan-var AdminInterface<T>
      *
      * @psalm-suppress MissingConstructor

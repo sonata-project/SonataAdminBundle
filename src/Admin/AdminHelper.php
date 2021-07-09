@@ -80,11 +80,11 @@ class AdminHelper
      * Note:
      *   This code is ugly, but there is no better way of doing it.
      *
-     * @param AdminInterface<object> $admin
-     *
      * @throws \RuntimeException
      * @throws \Exception
      *
+     * @phpstan-template T of object
+     * @phpstan-param AdminInterface<T> $admin
      * @phpstan-return array{\Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface|null, \Symfony\Component\Form\FormInterface}
      */
     public function appendFormFieldElement(AdminInterface $admin, object $subject, string $elementId): array
@@ -202,9 +202,10 @@ class AdminHelper
     /**
      * Recursively find the class name of the admin responsible for the element at the end of an association chain.
      *
-     * @param AdminInterface<object> $admin
-     * @param string[]               $elements
+     * @param string[] $elements
      *
+     * @phpstan-template T of object
+     * @phpstan-param AdminInterface<T> $admin
      * @phpstan-param non-empty-array<string> $elements
      * @phpstan-return class-string
      */
