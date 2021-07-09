@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Search;
 
-use Sonata\AdminBundle\Filter\FilterInterface;
-
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-interface SearchableFilterInterface extends FilterInterface
+interface SearchableFilterInterface extends ChainableFilterInterface
 {
     /**
      * Return true if the filter should be used in the SearchHandler class.

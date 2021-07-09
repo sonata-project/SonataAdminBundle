@@ -59,15 +59,12 @@ class SearchHandlerTest extends TestCase
 
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())->method('getDatagrid')->willReturn($datagrid);
-        $admin->expects($this->exactly(2))->method('getCode')->willReturn($adminCode);
+        $admin->expects($this->once())->method('getCode')->willReturn($adminCode);
 
         $filter
-            ->expects($this->exactly(2))
+            ->expects($this->once())
             ->method('setOption')
-            ->withConsecutive(
-                [$this->equalTo('case_sensitive'), $caseSensitive],
-                [$this->equalTo('or_group'), $adminCode]
-            );
+            ->with($this->equalTo('case_sensitive'), $caseSensitive);
 
         $handler = new SearchHandler($caseSensitive);
         $this->assertInstanceOf(PagerInterface::class, $handler->search($admin, 'myservice'));
@@ -101,15 +98,12 @@ class SearchHandlerTest extends TestCase
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->exactly($filterCallsCount))->method('getDatagrid')->willReturn($datagrid);
 
-        $admin->expects($this->exactly(false === $expected ? 1 : 2))->method('getCode')->willReturn($adminCode);
+        $admin->expects($this->once())->method('getCode')->willReturn($adminCode);
 
         $filter
-            ->expects($this->exactly(false === $expected ? 0 : 2))
+            ->expects($this->exactly(false === $expected ? 0 : 1))
             ->method('setOption')
-            ->withConsecutive(
-                [$this->equalTo('case_sensitive'), true],
-                [$this->equalTo('or_group'), $adminCode]
-            );
+            ->with($this->equalTo('case_sensitive'), true);
 
         $handler = new SearchHandler(true);
 

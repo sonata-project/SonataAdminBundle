@@ -94,7 +94,16 @@ class SearchHandler
                 $filter->getOption('global_search', false)
                 || $filter instanceof SearchableFilterInterface && $filter->isSearchEnabled()
             ) {
-                if (!$filter instanceof SearchableFilterInterface) {
+                if ($filter instanceof SearchableFilterInterface) {
+                    if (null !== $previousFilter) {
+                        $filter->setPreviousFilter($previousFilter);
+                    }
+
+                    $previousFilter = $filter;
+                } else {
+                    // NEXT_MAJOR: Remove this `else` block.
+                    $filter->setOption('or_group', $admin->getCode());
+
                     @trigger_error(sprintf(
                         'Passing the "global_search" option to a filter which does not implement %s is deprecated'
                         .' since sonata-project/admin-bundle 3.x and won\'t work in 4.0.',
@@ -104,17 +113,6 @@ class SearchHandler
 
                 // NEXT_MAJOR: Remove this line.
                 $filter->setOption('case_sensitive', $this->caseSensitive);
-
-                if ($filter instanceof ChainableFilterInterface) {
-                    if (null !== $previousFilter) {
-                        $filter->setPreviousFilter($previousFilter);
-                    }
-
-                    $previousFilter = $filter;
-                } else {
-                    // NEXT_MAJOR: Remove this `else` block.
-                    $filter->setOption('or_group', $admin->getCode());
-                }
 
                 $filter->setCondition(FilterInterface::CONDITION_OR);
                 $datagrid->setValue($formName, null, $term);

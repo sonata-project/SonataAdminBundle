@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Filter\FilterInterface;
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
  */
-interface ChainableFilterInterface
+interface ChainableFilterInterface extends FilterInterface
 {
     public function setPreviousFilter(FilterInterface $filter): void;
 
