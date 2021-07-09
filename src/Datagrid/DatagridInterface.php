@@ -60,7 +60,7 @@ interface DatagridInterface
     public function addFilter(FilterInterface $filter);
 
     /**
-     * @return array<string, mixed>
+     * @return array<string, FilterInterface>
      */
     public function getFilters();
 
