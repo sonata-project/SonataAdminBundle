@@ -296,7 +296,9 @@ final class ExtensionCompilerPass implements CompilerPassInterface
         array $attributes
     ): void {
         if (!isset($targets[$target])) {
-            $targets[$target] = new \SplPriorityQueue();
+            /** @phpstan-var \SplPriorityQueue<int, Reference> $queue */
+            $queue = new \SplPriorityQueue();
+            $targets[$target] = $queue;
         }
 
         $priority = $attributes['priority'] ?? 0;

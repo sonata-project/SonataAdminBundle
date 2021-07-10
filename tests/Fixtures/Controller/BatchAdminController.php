@@ -20,6 +20,10 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * BatchAdminController is used to test relevant batch action.
  *
+ * @psalm-suppress MissingConstructor
+ *
+ * @see ConfigureCRUDControllerListener
+ *
  * @phpstan-extends CRUDController<object>
  */
 final class BatchAdminController extends CRUDController

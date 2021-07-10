@@ -20,6 +20,8 @@ use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @psalm-suppress PropertyNotSetInConstructor add `parent::__construct()` call when dropping support of symfony/symfony-config < 5.3.
  */
 final class AdminPoolLoader extends Loader
 {

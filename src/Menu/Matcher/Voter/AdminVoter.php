@@ -70,6 +70,8 @@ final class AdminVoter implements VoterInterface
 
     /**
      * TODO: Remove it when dropping support of Symfony < 5.3.
+     *
+     * @psalm-suppress DeprecatedMethod
      */
     private function getMainRequest(): ?Request
     {

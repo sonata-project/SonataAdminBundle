@@ -21,6 +21,10 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  *
+ * @psalm-suppress MissingConstructor
+ *
+ * @see ConfigureCRUDControllerListener
+ *
  * @phpstan-extends CRUDController<Entity>
  */
 final class PreCRUDController extends CRUDController
