@@ -17,7 +17,7 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 use Sonata\AdminBundle\Menu\Matcher\Voter\ActiveVoter;
 
-class ActiveVoterTest extends AbstractVoterTest
+final class ActiveVoterTest extends AbstractVoterTest
 {
     public function createVoter($dataVoter, $route): VoterInterface
     {

@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Controller;
 
-class FooAdminController extends AbstractFooAdminController
+final class FooAdminController
 {
-    public function fooAction(): void
-    {
-    }
 }

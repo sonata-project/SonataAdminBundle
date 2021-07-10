@@ -20,7 +20,7 @@ use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-class ModelTypeTest extends TypeTestCase
+final class ModelTypeTest extends TypeTestCase
 {
     /**
      * @var ModelType

@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Controller\FooAdminController;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 use Symfony\Component\Config\Definition\Processor;
 
-class ConfigurationTest extends TestCase
+final class ConfigurationTest extends TestCase
 {
     public function testOptions(): void
     {

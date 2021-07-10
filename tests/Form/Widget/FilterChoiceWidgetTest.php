@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Tests\Form\Widget;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormTypeInterface;
 
-class FilterChoiceWidgetTest extends BaseWidgetTest
+final class FilterChoiceWidgetTest extends BaseWidgetTest
 {
     protected $type = 'filter';
 

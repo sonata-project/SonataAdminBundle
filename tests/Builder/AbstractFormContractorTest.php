@@ -126,7 +126,7 @@ final class AbstractFormContractorTest extends TestCase
         }
 
         // collection type
-        foreach ($collectionTypes as $index => $formType) {
+        foreach ($collectionTypes as $formType) {
             $options = $this->formContractor->getDefaultOptions($formType, $this->fieldDescription, [
                 'by_reference' => false,
             ]);

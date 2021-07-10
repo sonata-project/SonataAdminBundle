@@ -29,7 +29,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *
  * @author Grégoire Paris <postmaster@greg0ire.fr>
  */
-class BreadcrumbsBuilderTest extends TestCase
+final class BreadcrumbsBuilderTest extends TestCase
 {
     public function testChildGetBreadCrumbs(): void
     {

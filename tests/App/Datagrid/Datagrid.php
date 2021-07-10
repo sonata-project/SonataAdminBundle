@@ -24,8 +24,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 
 /**
- * Class Datagrid.
- *
  * @phpstan-implements DatagridInterface<ProxyQueryInterface>
  */
 final class Datagrid implements DatagridInterface

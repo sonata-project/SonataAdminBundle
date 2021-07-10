@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @phpstan-extends CRUDController<object>
  */
-class BatchAdminController extends CRUDController
+final class BatchAdminController extends CRUDController
 {
     /**
      * Returns true if $idx contains 123 and 456.

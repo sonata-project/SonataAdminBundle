@@ -34,7 +34,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class AdminEventExtensionTest extends TestCase
+final class AdminEventExtensionTest extends TestCase
 {
     /**
      * @param mixed[] $args

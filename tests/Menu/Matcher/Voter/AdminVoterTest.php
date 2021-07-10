@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Menu\Matcher\Voter\AdminVoter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class AdminVoterTest extends AbstractVoterTest
+final class AdminVoterTest extends AbstractVoterTest
 {
     public function provideData(): array
     {

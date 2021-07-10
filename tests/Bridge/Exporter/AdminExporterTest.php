@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Writer\TypedWriterInterface;
 
-class AdminExporterTest extends TestCase
+final class AdminExporterTest extends TestCase
 {
     /**
      * @phpstan-return iterable<array-key, array{string[], string[], string[]}>

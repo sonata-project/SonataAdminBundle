@@ -22,7 +22,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
-class ModelsToArrayTransformerTest extends TestCase
+final class ModelsToArrayTransformerTest extends TestCase
 {
     public function testConstructor(): void
     {

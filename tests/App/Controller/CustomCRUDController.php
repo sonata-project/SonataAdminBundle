@@ -18,6 +18,6 @@ use Sonata\AdminBundle\Controller\CRUDController;
 /**
  * @phpstan-extends CRUDController<object>
  */
-class CustomCRUDController extends CRUDController
+final class CustomCRUDController extends CRUDController
 {
 }

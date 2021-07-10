@@ -25,7 +25,7 @@ use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class AdminPoolLoaderTest extends TestCase
+final class AdminPoolLoaderTest extends TestCase
 {
     public function testSupports(): void
     {

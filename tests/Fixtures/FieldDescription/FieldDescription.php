@@ -15,7 +15,7 @@ namespace Sonata\AdminBundle\Tests\Fixtures\FieldDescription;
 
 use Sonata\AdminBundle\FieldDescription\BaseFieldDescription;
 
-class FieldDescription extends BaseFieldDescription
+final class FieldDescription extends BaseFieldDescription
 {
     public function getTargetEntity(): ?string
     {

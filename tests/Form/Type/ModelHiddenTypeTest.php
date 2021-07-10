@@ -19,7 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ModelHiddenTypeTest extends TypeTestCase
+final class ModelHiddenTypeTest extends TypeTestCase
 {
     public function testGetDefaultOptions(): void
     {

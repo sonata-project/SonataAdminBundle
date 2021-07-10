@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity;
 
-class Foo
+final class Foo
 {
     /**
      * @var mixed

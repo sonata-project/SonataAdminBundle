@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Tests\Object;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Object\Metadata;
 
-class MetadataTest extends TestCase
+final class MetadataTest extends TestCase
 {
     public function testGetters(): void
     {

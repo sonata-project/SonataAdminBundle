@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class SessionFilterPersisterTest extends TestCase
+final class SessionFilterPersisterTest extends TestCase
 {
     /**
      * @var SessionInterface&MockObject

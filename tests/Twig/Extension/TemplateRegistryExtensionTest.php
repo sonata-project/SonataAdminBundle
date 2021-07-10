@@ -21,12 +21,8 @@ use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension;
 use Symfony\Component\DependencyInjection\Container;
-use Twig\TwigFunction;
 
-/**
- * Class TemplateRegistryExtensionTest.
- */
-class TemplateRegistryExtensionTest extends TestCase
+final class TemplateRegistryExtensionTest extends TestCase
 {
     /**
      * @var TemplateRegistryExtension
@@ -54,16 +50,6 @@ class TemplateRegistryExtensionTest extends TestCase
             $templateRegistry,
             $pool
         );
-    }
-
-    public function getFunctionsTest(): void
-    {
-        $expected = [
-            new TwigFunction('get_admin_template', [$this->extension, 'getAdminTemplate']),
-            new TwigFunction('get_global_template', [$this->extension, 'getGlobalTemplate']),
-        ];
-
-        self::assertSame($expected, $this->extension->getFunctions());
     }
 
     public function testGetAdminTemplate(): void

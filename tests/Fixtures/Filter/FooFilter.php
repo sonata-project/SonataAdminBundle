@@ -17,7 +17,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Filter;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 
-class FooFilter extends Filter
+final class FooFilter extends Filter
 {
     public function apply(ProxyQueryInterface $query, FilterData $filterData): void
     {

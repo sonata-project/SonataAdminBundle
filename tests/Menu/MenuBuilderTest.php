@@ -79,7 +79,7 @@ final class MenuBuilderTest extends TestCase
         self::assertInstanceOf(ItemInterface::class, $menu);
         self::assertArrayHasKey('bar', $menu->getChildren());
 
-        foreach ($menu->getChildren() as $key => $child) {
+        foreach ($menu->getChildren() as $child) {
             self::assertInstanceOf(MenuItem::class, $child);
             self::assertSame('bar', $child->getName());
             self::assertSame('bar', $child->getLabel());
@@ -121,7 +121,7 @@ final class MenuBuilderTest extends TestCase
         self::assertInstanceOf(ItemInterface::class, $menu);
         self::assertArrayHasKey('bar', $menu->getChildren());
 
-        foreach ($menu->getChildren() as $key => $child) {
+        foreach ($menu->getChildren() as $child) {
             self::assertInstanceOf(MenuItem::class, $child);
             self::assertSame('bar', $child->getName());
             self::assertSame('bar', $child->getLabel());

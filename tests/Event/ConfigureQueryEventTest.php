@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Event\ConfigureQueryEvent;
 
-class ConfigureQueryEventTest extends TestCase
+final class ConfigureQueryEventTest extends TestCase
 {
     /**
      * @var ConfigureQueryEvent

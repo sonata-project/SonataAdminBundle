@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 
-class BaseAdminModelManagerTest extends TestCase
+final class BaseAdminModelManagerTest extends TestCase
 {
     public function testHook(): void
     {

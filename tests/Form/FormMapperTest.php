@@ -21,7 +21,6 @@ use Sonata\AdminBundle\FieldDescription\BaseFieldDescription;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
@@ -30,7 +29,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 
-class FormMapperTest extends TestCase
+final class FormMapperTest extends TestCase
 {
     private const DEFAULT_GRANTED_ROLE = 'ROLE_ADMIN_BAZ';
 
@@ -43,11 +42,6 @@ class FormMapperTest extends TestCase
      * @var AdminInterface<object>
      */
     protected $admin;
-
-    /**
-     * @var ModelManagerInterface<object>
-     */
-    protected $modelManager;
 
     /**
      * @var FormMapper<object>

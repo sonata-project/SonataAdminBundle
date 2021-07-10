@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
-class AclSecurityHandlerTest extends TestCase
+final class AclSecurityHandlerTest extends TestCase
 {
     public function testAcl(): void
     {

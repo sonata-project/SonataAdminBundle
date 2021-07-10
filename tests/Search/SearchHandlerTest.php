@@ -21,7 +21,7 @@ use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Search\SearchableFilterInterface;
 use Sonata\AdminBundle\Search\SearchHandler;
 
-class SearchHandlerTest extends TestCase
+final class SearchHandlerTest extends TestCase
 {
     public function testBuildPagerWithNonSearchableFilter(): void
     {

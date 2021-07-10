@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Route\PathInfoBuilder;
 use Sonata\AdminBundle\Route\RouteCollection;
 
-class PathInfoBuilderTest extends TestCase
+final class PathInfoBuilderTest extends TestCase
 {
     public function testBuild(): void
     {

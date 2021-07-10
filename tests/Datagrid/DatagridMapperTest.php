@@ -33,7 +33,7 @@ use Symfony\Component\Form\FormBuilder;
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class DatagridMapperTest extends TestCase
+final class DatagridMapperTest extends TestCase
 {
     private const DEFAULT_GRANTED_ROLE = 'ROLE_ADMIN_BAZ';
 

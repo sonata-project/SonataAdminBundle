@@ -22,7 +22,7 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess;
 
-class ModelToIdPropertyTransformerTest extends TestCase
+final class ModelToIdPropertyTransformerTest extends TestCase
 {
     /**
      * @var ModelManagerInterface<Foo>&MockObject

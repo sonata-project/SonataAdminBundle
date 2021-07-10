@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Twig\Extra\String\StringExtension;
 
-class TwigStringExtensionCompilerPassTest extends AbstractCompilerPassTestCase
+final class TwigStringExtensionCompilerPassTest extends AbstractCompilerPassTestCase
 {
     public function testLoadTwigStringExtension(): void
     {

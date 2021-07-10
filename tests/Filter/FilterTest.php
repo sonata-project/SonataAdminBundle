@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Filter\FilterFactory;
 use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class FilterTest extends TestCase
+final class FilterTest extends TestCase
 {
     public function testFilter(): void
     {

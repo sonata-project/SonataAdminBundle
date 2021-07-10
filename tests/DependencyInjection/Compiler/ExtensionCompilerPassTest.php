@@ -22,7 +22,6 @@ use Sonata\AdminBundle\Admin\AdminExtensionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
-use Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait;
 use Sonata\BlockBundle\DependencyInjection\SonataBlockExtension;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Component\Config\FileLocatorInterface;
@@ -40,7 +39,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-class ExtensionCompilerPassTest extends TestCase
+final class ExtensionCompilerPassTest extends TestCase
 {
     /**
      * @var SonataAdminExtension
@@ -480,26 +479,9 @@ class MockAdmin extends AbstractAdmin
 {
 }
 
-/** @phpstan-extends AbstractAdmin<object> */
-class MockAbstractServiceAdmin extends AbstractAdmin
+trait TimestampableTrait
 {
-    /**
-     * @var mixed
-     */
-    private $extraArgument;
-
-    /**
-     * @param class-string $class
-     * @param mixed        $extraArgument
-     */
-    public function __construct(string $code, string $class, string $baseControllerName, $extraArgument = null)
-    {
-        $this->extraArgument = $extraArgument;
-
-        parent::__construct($code, $class, $baseControllerName);
-    }
 }
-
 class Post
 {
 }

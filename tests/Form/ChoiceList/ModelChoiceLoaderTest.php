@@ -21,7 +21,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
-class ModelChoiceLoaderTest extends TestCase
+final class ModelChoiceLoaderTest extends TestCase
 {
     /**
      * @var MockObject&ModelManagerInterface<object>

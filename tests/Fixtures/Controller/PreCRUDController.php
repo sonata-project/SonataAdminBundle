@@ -19,13 +19,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * PreCRUDController.
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  *
  * @phpstan-extends CRUDController<Entity>
  */
-class PreCRUDController extends CRUDController
+final class PreCRUDController extends CRUDController
 {
     protected function preCreate(Request $request, object $object): Response
     {

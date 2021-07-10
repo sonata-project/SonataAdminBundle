@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Container;
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-class AdminStatsBlockServiceTest extends BlockServiceTestCase
+final class AdminStatsBlockServiceTest extends BlockServiceTestCase
 {
     /**
      * @var Pool

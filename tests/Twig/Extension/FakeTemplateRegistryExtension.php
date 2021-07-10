@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Tests\Twig\Extension;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class FakeTemplateRegistryExtension extends AbstractExtension
+final class FakeTemplateRegistryExtension extends AbstractExtension
 {
     public function getFunctions(): array
     {

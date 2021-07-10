@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Tests\Translator;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy;
 
-class BCLabelTranslatorStrategyTest extends TestCase
+final class BCLabelTranslatorStrategyTest extends TestCase
 {
     public function testLabel(): void
     {
