@@ -114,7 +114,7 @@ CASESENSITIVE;
                         ->end()
                         // NEXT_MAJOR: Remove this option.
                         ->booleanNode('case_sensitive')
-                            ->setDeprecated('The "%node%" option is deprecated since sonata-project/admin-bundle 3.x.')
+                            ->setDeprecated('The "%node%" option is deprecated since sonata-project/admin-bundle 3.103.')
                             ->defaultTrue()
                             ->info($caseSensitiveInfo)
                         ->end()

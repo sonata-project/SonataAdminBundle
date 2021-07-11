@@ -642,7 +642,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     public function mergeOptions(array $options = [])
     {
         @trigger_error(sprintf(
-            'The "%s()" method is deprecated since version 3.x and will be removed in 4.0.',
+            'The "%s()" method is deprecated since version 3.103 and will be removed in 4.0.',
             __METHOD__
         ), \E_USER_DEPRECATED);
 

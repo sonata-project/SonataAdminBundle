@@ -100,7 +100,7 @@ class FormMapper extends BaseGroupedMapper
         if ($name instanceof FormBuilderInterface) {
             @trigger_error(
                 sprintf(
-                    'Passing a %s instance as first param of %s is deprecated since sonata-project/admin-bundle 3.x'
+                    'Passing a %s instance as first param of %s is deprecated since sonata-project/admin-bundle 3.103'
                     .' and will throw an exception in 4.0. You should pass a string instead.',
                     FormBuilderInterface::class,
                     __METHOD__
@@ -127,7 +127,7 @@ class FormMapper extends BaseGroupedMapper
             if ('collection' === $type) {
                 @trigger_error(sprintf(
                     'Passing "collection" as argument 2 for "%s()" is deprecated since'
-                    .' sonata-project/admin-bundle 3.x and will not work in version 4.0.'
+                    .' sonata-project/admin-bundle 3.103 and will not work in version 4.0.'
                     .' You MUST pass "%s" or "%s" instead.',
                     __METHOD__,
                     SymfonyCollectionType::class,

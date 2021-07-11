@@ -87,7 +87,7 @@ class ShowMapper extends BaseGroupedMapper
         if ($name instanceof FieldDescriptionInterface) {
             @trigger_error(
                 sprintf(
-                    'Passing a %s instance as first param of %s is deprecated since sonata-project/admin-bundle 3.x'
+                    'Passing a %s instance as first param of %s is deprecated since sonata-project/admin-bundle 3.103'
                     .' and will throw an exception in 4.0. You should pass a string instead.',
                     FieldDescriptionInterface::class,
                     __METHOD__
