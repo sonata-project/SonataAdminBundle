@@ -52,6 +52,11 @@ final class TemplateRegistryExtensionTest extends TestCase
         );
     }
 
+    public function testGetFunctions(): void
+    {
+        self::assertCount(2, $this->extension->getFunctions());
+    }
+
     public function testGetAdminTemplate(): void
     {
         self::assertSame(
