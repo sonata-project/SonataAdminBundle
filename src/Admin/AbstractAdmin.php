@@ -3599,9 +3599,9 @@ EOT;
     /**
      * Allows you to customize batch actions.
      *
-     * @param array<string, mixed> $actions List of actions
+     * @param array<string, array<string, mixed>> $actions List of actions
      *
-     * @return array<string, mixed>
+     * @return array<string, array<string, mixed>>
      */
     protected function configureBatchActions($actions)
     {
