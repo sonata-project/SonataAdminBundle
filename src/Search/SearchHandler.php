@@ -98,7 +98,7 @@ class SearchHandler
                 if (!$filter instanceof SearchableFilterInterface) {
                     @trigger_error(sprintf(
                         'Passing the "global_search" option to a filter which does not implement %s is deprecated'
-                        .' since sonata-project/admin-bundle 3.x and won\'t work in 4.0.',
+                        .' since sonata-project/admin-bundle 3.103 and won\'t work in 4.0.',
                         SearchableFilterInterface::class
                     ), \E_USER_DEPRECATED);
                 } elseif (null !== $previousFilter) {

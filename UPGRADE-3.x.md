@@ -1,8 +1,8 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.x to 3.x
-=======================
+UPGRADE FROM 3.102 to 3.103
+===========================
 
 ### `Sonata\AdminBundle\Search\SearchHandler`
 

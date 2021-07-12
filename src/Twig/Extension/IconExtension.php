@@ -35,7 +35,7 @@ final class IconExtension extends AbstractExtension
         if ('fa-' === substr($icon, 0, 3)) {
             // only the icon name is used by dev: 'fa-plus'
             @trigger_error(
-                'The icon format "fa-icon" is deprecated since sonata-project/admin-bundle 3.x.'
+                'The icon format "fa-icon" is deprecated since sonata-project/admin-bundle 3.103.'
                 .' You should use the full name `fa fa-icon` instead.',
                 \E_USER_DEPRECATED
             );
@@ -52,7 +52,7 @@ final class IconExtension extends AbstractExtension
         ) {
             // NEXT_MAJOR: uncomment the exception.
             @trigger_error(
-                'The icon format "icon" is deprecated since sonata-project/admin-bundle 3.x.'
+                'The icon format "icon" is deprecated since sonata-project/admin-bundle 3.103.'
                 .' You should use the full name `fa fa-icon` instead.',
                 \E_USER_DEPRECATED
             );

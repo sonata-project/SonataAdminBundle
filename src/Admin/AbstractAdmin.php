@@ -867,7 +867,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         if (!$this->isChild()) {
             // NEXT_MAJOR: Uncomment the exception.
             @trigger_error(sprintf(
-                'Calling %s() when the admin is not a child admin is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s() when the admin is not a child admin is deprecated since sonata-project/admin-bundle 3.103'
                 .' and will throw a %s exception in 4.0.',
                 __METHOD__,
                 \LogicException::class
@@ -903,7 +903,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.103 and will be removed in 4.0.
      *
      * @param string $code
      * @param string $value
@@ -918,7 +918,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         @trigger_error(sprintf(
-            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.103 and will be removed in 4.0.',
             __METHOD__
         ), \E_USER_DEPRECATED);
 
@@ -2367,7 +2367,7 @@ EOT;
         } else {
             @trigger_error(sprintf(
                 'Not passing argument 2 to "%s()" is deprecated since'
-                .' sonata-project/admin-bundle 3.x and will not be allowed in 4.0.',
+                .' sonata-project/admin-bundle 3.103 and will not be allowed in 4.0.',
                 __METHOD__
             ), \E_USER_DEPRECATED);
         }
