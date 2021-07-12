@@ -57,8 +57,14 @@ class RoleSecurityHandler implements SecurityHandlerInterface
             $attributes = [$attributes];
         }
 
+        $useAll = false;
         foreach ($attributes as $pos => $attribute) {
-            $attributes[$pos] = sprintf($this->getBaseRole($admin), $attribute);
+            // If the attribute is not already a ROLE_ we generate the related role.
+            if (0 !== strpos($attribute, 'ROLE_')) {
+                $attributes[$pos] = sprintf($this->getBaseRole($admin), $attribute);
+                // All the admin related role are available when you have the `_ALL` role.
+                $useAll = true;
+            }
         }
 
         $allRole = sprintf($this->getBaseRole($admin), 'ALL');
@@ -66,7 +72,7 @@ class RoleSecurityHandler implements SecurityHandlerInterface
         try {
             return $this->isAnyGranted($this->superAdminRoles)
                 || $this->isAnyGranted($attributes, $object)
-                || $this->isAnyGranted([$allRole], $object);
+                || $useAll && $this->isAnyGranted([$allRole], $object);
         } catch (AuthenticationCredentialsNotFoundException $e) {
             return false;
         }
