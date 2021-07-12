@@ -36,7 +36,7 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * @author Gaurav Singh Faujdar <faujdar@gmail.com>
  */
-class AdminMakerTest extends TestCase
+final class AdminMakerTest extends TestCase
 {
     /**
      * @var string

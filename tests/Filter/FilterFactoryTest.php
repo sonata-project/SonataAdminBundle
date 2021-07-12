@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Form\Type\Filter\DefaultType;
 use Symfony\Component\DependencyInjection\Container;
 
-class FilterFactoryTest extends TestCase
+final class FilterFactoryTest extends TestCase
 {
     public function testUnknownClassType(): void
     {

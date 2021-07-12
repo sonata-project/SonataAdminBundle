@@ -52,7 +52,6 @@ final class SearchHandler
         $found = false;
 
         foreach ($datagrid->getFilters() as $filter) {
-            /** @var FilterInterface $filter */
             $formName = $filter->getFormName();
 
             if ($filter instanceof SearchableFilterInterface && $filter->isSearchEnabled()) {

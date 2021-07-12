@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Manipulator\ObjectManipulator;
 
-class ObjectManipulatorTest extends TestCase
+final class ObjectManipulatorTest extends TestCase
 {
     public function testAddInstance(): void
     {

@@ -23,6 +23,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 final class BCUserInterface
 {
+    /**
+     * @psalm-suppress DeprecatedMethod
+     */
     public static function getUsername(UserInterface $user): string
     {
         if (method_exists($user, 'getUserIdentifier')) {

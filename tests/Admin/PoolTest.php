@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Container;
 /**
  * @phpstan-import-type Group from \Sonata\AdminBundle\Admin\Pool
  */
-class PoolTest extends TestCase
+final class PoolTest extends TestCase
 {
     /**
      * @var Container

@@ -31,7 +31,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-class AdminHelperTest extends TestCase
+final class AdminHelperTest extends TestCase
 {
     /**
      * @var AdminHelper

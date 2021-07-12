@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
-class Baz
+final class Baz
 {
     /**
      * @var Bar|null

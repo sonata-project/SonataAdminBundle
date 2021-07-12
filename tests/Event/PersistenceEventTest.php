@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Event\PersistenceEvent;
 
-class PersistenceEventTest extends TestCase
+final class PersistenceEventTest extends TestCase
 {
     /**
      * @var PersistenceEvent<object>

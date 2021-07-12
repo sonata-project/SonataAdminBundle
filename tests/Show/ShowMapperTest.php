@@ -28,11 +28,9 @@ use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 
 /**
- * Test for ShowMapper.
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ShowMapperTest extends TestCase
+final class ShowMapperTest extends TestCase
 {
     private const DEFAULT_GRANTED_ROLE = 'ROLE_ADMIN_BAZ';
 

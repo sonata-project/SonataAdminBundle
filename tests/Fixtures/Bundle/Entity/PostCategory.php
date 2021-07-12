@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-class PostCategory
+final class PostCategory
 {
     /**
      * @var Collection<int, Post>

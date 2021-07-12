@@ -23,11 +23,9 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\DependencyInjection\Container;
 
 /**
- * Test for BaseGroupedMapper.
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class BaseGroupedMapperTest extends TestCase
+final class BaseGroupedMapperTest extends TestCase
 {
     /**
      * @var BaseGroupedMapper<object>&MockObject

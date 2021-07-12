@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @author Baptiste Meyer <baptiste@les-tilleuls.coop>
  */
-class AclMatrixTypeTest extends TypeTestCase
+final class AclMatrixTypeTest extends TypeTestCase
 {
     public function testGetDefaultOptions(): void
     {

@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Command\Validators;
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ValidatorsTest extends TestCase
+final class ValidatorsTest extends TestCase
 {
     /**
      * @dataProvider getValidateUsernameTests

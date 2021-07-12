@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Tests\Translator;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 
-class UnderscoreLabelTranslatorStrategyTest extends TestCase
+final class UnderscoreLabelTranslatorStrategyTest extends TestCase
 {
     public function testLabel(): void
     {

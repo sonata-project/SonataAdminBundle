@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ModelListTypeTest extends TypeTestCase
+final class ModelListTypeTest extends TypeTestCase
 {
     /**
      * @var MockObject&ModelManagerInterface<object>

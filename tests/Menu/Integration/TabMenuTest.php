@@ -17,7 +17,7 @@ use Knp\Menu\MenuFactory;
 use Knp\Menu\MenuItem;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class TabMenuTest extends BaseMenuTest
+final class TabMenuTest extends BaseMenuTest
 {
     /**
      * @var TranslatorInterface|null

@@ -23,7 +23,7 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
  * @phpstan-implements LockInterface<Foo>
  * @phpstan-implements ModelManagerInterface<Foo>
  */
-class ModelManager implements ModelManagerInterface, LockInterface
+final class ModelManager implements ModelManagerInterface, LockInterface
 {
     /**
      * @var FooRepository

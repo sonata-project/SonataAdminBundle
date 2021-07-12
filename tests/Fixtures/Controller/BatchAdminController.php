@@ -20,9 +20,13 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * BatchAdminController is used to test relevant batch action.
  *
+ * @psalm-suppress MissingConstructor
+ *
+ * @see ConfigureCRUDControllerListener
+ *
  * @phpstan-extends CRUDController<object>
  */
-class BatchAdminController extends CRUDController
+final class BatchAdminController extends CRUDController
 {
     /**
      * Returns true if $idx contains 123 and 456.

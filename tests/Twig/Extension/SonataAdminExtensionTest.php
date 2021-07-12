@@ -28,11 +28,9 @@ use Twig\Extra\String\StringExtension;
 use Twig\Loader\FilesystemLoader;
 
 /**
- * Test for SonataAdminExtension.
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class SonataAdminExtensionTest extends TestCase
+final class SonataAdminExtensionTest extends TestCase
 {
     /**
      * @var SonataAdminExtension

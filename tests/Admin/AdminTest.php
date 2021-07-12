@@ -87,7 +87,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class AdminTest extends TestCase
+final class AdminTest extends TestCase
 {
     /**
      * @var string

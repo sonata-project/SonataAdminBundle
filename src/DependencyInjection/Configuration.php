@@ -56,8 +56,8 @@ final class Configuration implements ConfigurationInterface
                                 ->performNoDeepMerging()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(static function ($v): array {
-                                        return [$v];
+                                    ->then(static function (string $value): array {
+                                        return [$value];
                                     })
                                 ->end()
                                 ->prototype('scalar')->end()

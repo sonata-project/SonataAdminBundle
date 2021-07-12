@@ -17,7 +17,7 @@ use Sonata\AdminBundle\Form\Type\Operator\StringOperatorType;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class StringOperatorTypeTest extends TypeTestCase
+final class StringOperatorTypeTest extends TypeTestCase
 {
     public function testConfigureOptions(): void
     {

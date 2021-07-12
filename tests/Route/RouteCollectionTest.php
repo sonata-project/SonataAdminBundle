@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 
-class RouteCollectionTest extends TestCase
+final class RouteCollectionTest extends TestCase
 {
     public function testGetter(): void
     {

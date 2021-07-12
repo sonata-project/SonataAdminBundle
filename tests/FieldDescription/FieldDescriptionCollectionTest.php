@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
-class FieldDescriptionCollectionTest extends TestCase
+final class FieldDescriptionCollectionTest extends TestCase
 {
     public function testMethods(): void
     {

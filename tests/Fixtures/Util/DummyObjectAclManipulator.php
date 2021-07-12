@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Util\ObjectAclManipulator;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
-class DummyObjectAclManipulator extends ObjectAclManipulator
+final class DummyObjectAclManipulator extends ObjectAclManipulator
 {
     public function batchConfigureAcls(OutputInterface $output, AdminInterface $admin, ?UserSecurityIdentity $securityIdentity = null): void
     {

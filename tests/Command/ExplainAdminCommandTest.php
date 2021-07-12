@@ -40,7 +40,7 @@ use Symfony\Component\Validator\Mapping\PropertyMetadata;
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ExplainAdminCommandTest extends TestCase
+final class ExplainAdminCommandTest extends TestCase
 {
     /**
      * @var Application

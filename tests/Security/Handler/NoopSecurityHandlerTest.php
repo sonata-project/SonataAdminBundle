@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\NoopSecurityHandler;
 
-class NoopSecurityHandlerTest extends TestCase
+final class NoopSecurityHandlerTest extends TestCase
 {
     /**
      * @var NoopSecurityHandler

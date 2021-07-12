@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
 
-class AdminPermissionMapTest extends TestCase
+final class AdminPermissionMapTest extends TestCase
 {
     /**
      * @var AdminPermissionMap

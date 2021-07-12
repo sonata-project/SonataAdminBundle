@@ -21,7 +21,7 @@ use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ChoiceFieldMaskTypeTest extends TypeTestCase
+final class ChoiceFieldMaskTypeTest extends TypeTestCase
 {
     public function testGetDefaultOptions(): void
     {

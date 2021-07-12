@@ -28,7 +28,7 @@ use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
  */
-class GenerateObjectAclCommandTest extends TestCase
+final class GenerateObjectAclCommandTest extends TestCase
 {
     /**
      * @var Container

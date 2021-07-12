@@ -26,7 +26,7 @@ use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ListMapperTest extends TestCase
+final class ListMapperTest extends TestCase
 {
     private const DEFAULT_GRANTED_ROLE = 'ROLE_ADMIN_BAZ';
 
