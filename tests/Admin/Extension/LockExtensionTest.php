@@ -31,7 +31,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class LockExtensionTest extends TestCase
+final class LockExtensionTest extends TestCase
 {
     /**
      * @var LockExtension
@@ -141,7 +141,6 @@ class LockExtensionTest extends TestCase
 
     public function testConfigureFormFieldsWhenModelManagerHasNoLockedVersion(): void
     {
-        $data = new \stdClass();
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
         $this->configureAdmin($this->modelManager);

@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Tests\Templating;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 
-class TemplateRegistryTest extends TestCase
+final class TemplateRegistryTest extends TestCase
 {
     /**
      * @var TemplateRegistry

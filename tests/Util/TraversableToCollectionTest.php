@@ -21,7 +21,7 @@ use Sonata\AdminBundle\Util\TraversableToCollection;
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
  */
-class TraversableToCollectionTest extends TestCase
+final class TraversableToCollectionTest extends TestCase
 {
     /**
      * @param \Traversable<mixed>|array<mixed> $value

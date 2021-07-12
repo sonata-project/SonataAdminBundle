@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity;
 
-class CommentVote
+final class CommentVote
 {
 }

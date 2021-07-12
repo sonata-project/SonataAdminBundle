@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooCall;
 use Sonata\AdminBundle\Tests\Fixtures\FieldDescription\FieldDescription;
 
-class BaseFieldDescriptionTest extends TestCase
+final class BaseFieldDescriptionTest extends TestCase
 {
     public function testConstruct(): void
     {

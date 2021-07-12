@@ -23,7 +23,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 /**
  * @author Mike Meier <mike.meier@ibrows.ch>
  */
-class FormBuilderIteratorTest extends TestCase
+final class FormBuilderIteratorTest extends TestCase
 {
     /**
      * @var EventDispatcherInterface

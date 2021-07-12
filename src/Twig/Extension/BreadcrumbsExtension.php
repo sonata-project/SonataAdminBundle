@@ -53,6 +53,9 @@ final class BreadcrumbsExtension extends AbstractExtension
 
     /**
      * @param AdminInterface<object> $admin
+     *
+     * @phpstan-template T of object
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function renderBreadcrumbs(
         Environment $environment,
@@ -66,6 +69,9 @@ final class BreadcrumbsExtension extends AbstractExtension
 
     /**
      * @param AdminInterface<object> $admin
+     *
+     * @phpstan-template T of object
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function renderBreadcrumbsForTitle(
         Environment $environment,

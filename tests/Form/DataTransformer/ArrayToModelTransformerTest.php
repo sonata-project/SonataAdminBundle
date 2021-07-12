@@ -17,12 +17,11 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ArrayToModelTransformerTest extends TestCase
+final class ArrayToModelTransformerTest extends TestCase
 {
     /**
      * @var MockObject&ModelManagerInterface<object>
@@ -36,31 +35,31 @@ class ArrayToModelTransformerTest extends TestCase
 
     public function testReverseTransformEntity(): void
     {
-        $transformer = new ArrayToModelTransformer($this->modelManager, FooEntity::class);
+        $transformer = new ArrayToModelTransformer($this->modelManager, \stdClass::class);
 
-        $model = new FooEntity();
+        $model = new \stdClass();
         self::assertSame($model, $transformer->reverseTransform($model));
     }
 
     /**
-     * @param FooEntity|array<string, mixed>|null $value
+     * @param \stdClass|array<string, mixed>|null $value
      *
      * @dataProvider getReverseTransformTests
      */
     public function testReverseTransform($value): void
     {
-        $transformer = new ArrayToModelTransformer($this->modelManager, FooEntity::class);
+        $transformer = new ArrayToModelTransformer($this->modelManager, \stdClass::class);
 
-        self::assertInstanceOf(FooEntity::class, $transformer->reverseTransform($value));
+        self::assertInstanceOf(\stdClass::class, $transformer->reverseTransform($value));
     }
 
     /**
-     * @phpstan-return iterable<array-key, array{FooEntity|array<string, mixed>|null}>
+     * @phpstan-return iterable<array-key, array{\stdClass|array<string, mixed>|null}>
      */
     public function getReverseTransformTests(): iterable
     {
         return [
-            [new FooEntity()],
+            [new \stdClass()],
             [[]],
             [['foo' => 'bar']],
             [null],
@@ -70,19 +69,19 @@ class ArrayToModelTransformerTest extends TestCase
     /**
      * @dataProvider getTransformTests
      */
-    public function testTransform(?FooEntity $expected, ?FooEntity $value): void
+    public function testTransform(?\stdClass $expected, ?\stdClass $value): void
     {
-        $transformer = new ArrayToModelTransformer($this->modelManager, FooEntity::class);
+        $transformer = new ArrayToModelTransformer($this->modelManager, \stdClass::class);
 
         self::assertSame($expected, $transformer->transform($value));
     }
 
     /**
-     * @phpstan-return iterable<array-key, array{FooEntity|null, FooEntity|null}>
+     * @phpstan-return iterable<array-key, array{\stdClass|null, \stdClass|null}>
      */
     public function getTransformTests(): iterable
     {
-        $foo = new FooEntity();
+        $foo = new \stdClass();
 
         return [
             [$foo, $foo],

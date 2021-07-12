@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
-class DefaultRouteGeneratorTest extends TestCase
+final class DefaultRouteGeneratorTest extends TestCase
 {
     private const ROUTER_DOMAIN = 'http://sonata-project';
 

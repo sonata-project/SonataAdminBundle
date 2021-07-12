@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\Container;
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ListAdminCommandTest extends TestCase
+final class ListAdminCommandTest extends TestCase
 {
     public function testExecute(): void
     {

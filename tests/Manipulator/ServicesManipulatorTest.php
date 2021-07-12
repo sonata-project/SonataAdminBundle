@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Manipulator\ServicesManipulator;
 /**
  * @author Marek Stipek <mario.dweller@seznam.cz>
  */
-class ServicesManipulatorTest extends TestCase
+final class ServicesManipulatorTest extends TestCase
 {
     /**
      * @var ServicesManipulator

@@ -20,7 +20,7 @@ use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\FormTypeInterface;
 
-class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
+final class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
 {
     protected $type = 'form';
 

@@ -37,9 +37,10 @@ final class AdminExporter
     /**
      * Queries an admin for its default export formats, and falls back on global settings.
      *
-     * @param AdminInterface<object> $admin the current admin object
-     *
      * @return string[] an array of formats
+     *
+     * @phpstan-template T of object
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function getAvailableFormats(AdminInterface $admin): array
     {
@@ -56,8 +57,10 @@ final class AdminExporter
      * Builds an export filename from the class associated with the provided admin,
      * the current date, and the provided format.
      *
-     * @param AdminInterface<object> $admin  the current admin object
-     * @param string                 $format the format of the export file
+     * @param string $format the format of the export file
+     *
+     * @phpstan-template T of object
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function getExportFilename(AdminInterface $admin, string $format): string
     {

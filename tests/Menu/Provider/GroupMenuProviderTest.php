@@ -29,7 +29,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 /**
  * @phpstan-import-type Group from \Sonata\AdminBundle\Admin\Pool
  */
-class GroupMenuProviderTest extends TestCase
+final class GroupMenuProviderTest extends TestCase
 {
     /**
      * @var Pool

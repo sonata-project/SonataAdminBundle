@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Event\ConfigureEvent;
 use Sonata\AdminBundle\Mapper\MapperInterface;
 
-class ConfigureEventTest extends TestCase
+final class ConfigureEventTest extends TestCase
 {
     /**
      * @var ConfigureEvent<object>

@@ -21,7 +21,7 @@ use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\FormTypeInterface;
 
-class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
+final class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
 {
     protected $type = 'filter';
 

@@ -110,6 +110,9 @@ final class AdminPermissionMap implements PermissionMapInterface
     ];
 
     /**
+     * @param string $permission
+     * @param object $object
+     *
      * @return int[]|null
      */
     public function getMasks($permission, $object): ?array

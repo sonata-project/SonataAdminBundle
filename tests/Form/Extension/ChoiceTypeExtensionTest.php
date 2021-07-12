@@ -19,7 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;
 
-class ChoiceTypeExtensionTest extends TestCase
+final class ChoiceTypeExtensionTest extends TestCase
 {
     /**
      * @var FormFactoryInterface

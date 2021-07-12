@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
 
-class Bar
+final class Bar
 {
 }

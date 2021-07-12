@@ -20,7 +20,7 @@ use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class ModelReferenceTypeTest extends TypeTestCase
+final class ModelReferenceTypeTest extends TypeTestCase
 {
     /**
      * @var MockObject&ModelManagerInterface<object>

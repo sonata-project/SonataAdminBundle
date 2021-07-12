@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
-class ModelToIdTransformerTest extends TestCase
+final class ModelToIdTransformerTest extends TestCase
 {
     /**
      * @var ModelManagerInterface<object>&MockObject

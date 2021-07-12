@@ -56,18 +56,18 @@ use Twig\Environment;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-template T of object
+ *
+ * @psalm-suppress MissingConstructor
+ *
+ * @see ConfigureCRUDControllerListener
  */
 class CRUDController extends AbstractController
 {
     /**
      * The related Admin class.
      *
-     * @var AdminInterface
+     * @var AdminInterface<object>
      * @phpstan-var AdminInterface<T>
-     *
-     * @psalm-suppress MissingConstructor
-     *
-     * @see ConfigureCRUDControllerListener
      */
     protected $admin;
 
@@ -75,10 +75,6 @@ class CRUDController extends AbstractController
      * The template registry of the related Admin class.
      *
      * @var TemplateRegistryInterface
-     *
-     * @psalm-suppress MissingConstructor
-     *
-     * @see ConfigureCRUDControllerListener
      */
     private $templateRegistry;
 

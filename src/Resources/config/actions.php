@@ -31,7 +31,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 '%sonata.admin.configuration.dashboard_blocks%',
                 new ReferenceConfigurator('sonata.admin.global_template_registry'),
-                new ReferenceConfigurator('sonata.admin.pool'),
                 new ReferenceConfigurator('twig'),
             ])
 

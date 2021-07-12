@@ -23,7 +23,7 @@ use Sonata\AdminBundle\Datagrid\SimplePager;
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Sjoerd Peters <sjoerd.peters@gmail.com>
  */
-class SimplePagerTest extends TestCase
+final class SimplePagerTest extends TestCase
 {
     /**
      * @var SimplePager<ProxyQueryInterface>

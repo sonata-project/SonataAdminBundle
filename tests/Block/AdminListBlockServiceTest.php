@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Container;
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-class AdminListBlockServiceTest extends BlockServiceTestCase
+final class AdminListBlockServiceTest extends BlockServiceTestCase
 {
     /**
      * @var Pool

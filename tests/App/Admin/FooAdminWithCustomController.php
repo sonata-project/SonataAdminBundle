@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\App\Admin;
 
-class FooAdminWithCustomController extends FooAdmin
+final class FooAdminWithCustomController extends FooAdmin
 {
     protected $baseRoutePattern = 'tests/app/foo-with-custom-controller';
     protected $baseRouteName = 'admin_foo_with_custom_controller';

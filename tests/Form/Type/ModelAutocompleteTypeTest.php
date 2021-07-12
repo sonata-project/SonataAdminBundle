@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ModelAutocompleteTypeTest extends TypeTestCase
+final class ModelAutocompleteTypeTest extends TypeTestCase
 {
     /**
      * @var ModelAutocompleteType

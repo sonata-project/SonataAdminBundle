@@ -21,11 +21,9 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 /**
- * Test for RoleSecurityHandler.
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class RoleSecurityHandlerTest extends TestCase
+final class RoleSecurityHandlerTest extends TestCase
 {
     /**
      * @var AdminInterface<object>&MockObject

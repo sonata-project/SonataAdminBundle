@@ -24,7 +24,7 @@ use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 /**
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  */
-class AdminObjectAclDataTest extends TestCase
+final class AdminObjectAclDataTest extends TestCase
 {
     public function testGetAdmin(): void
     {

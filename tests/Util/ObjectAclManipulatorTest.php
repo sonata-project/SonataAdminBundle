@@ -26,7 +26,7 @@ use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 /**
  * @author Grégoire Paris <postmaster@greg0ire.fr>
  */
-class ObjectAclManipulatorTest extends TestCase
+final class ObjectAclManipulatorTest extends TestCase
 {
     /**
      * @var MockObject&OutputInterface

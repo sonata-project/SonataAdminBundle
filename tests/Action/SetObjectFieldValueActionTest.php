@@ -72,11 +72,6 @@ final class SetObjectFieldValueActionTest extends TestCase
     private $resolver;
 
     /**
-     * @var string
-     */
-    private $adminCode;
-
-    /**
      * @var MockObject&MutableTemplateRegistryInterface
      */
     private $templateRegistry;
@@ -87,7 +82,6 @@ final class SetObjectFieldValueActionTest extends TestCase
             'admin_template' => 'renderedTemplate',
             'field_template' => 'renderedTemplate',
         ]));
-        $this->adminCode = 'sonata.post.admin';
         $this->admin = $this->createMock(AdminInterface::class);
         $this->adminFetcher = $this->createStub(AdminFetcherInterface::class);
         $this->adminFetcher->method('get')->willReturn($this->admin);

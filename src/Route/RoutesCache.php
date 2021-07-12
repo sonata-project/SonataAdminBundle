@@ -44,6 +44,9 @@ final class RoutesCache
      * @throws \RuntimeException
      *
      * @return array<string, string>
+     *
+     * @phpstan-template T of object
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function load(AdminInterface $admin): array
     {
