@@ -29,6 +29,9 @@ final class SonataAdminExtension extends AbstractExtension
      */
     private $pool;
 
+    /**
+     * @internal This class should only be used through Twig
+     */
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;

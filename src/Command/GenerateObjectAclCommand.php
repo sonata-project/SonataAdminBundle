@@ -47,6 +47,8 @@ final class GenerateObjectAclCommand extends QuestionableCommand
 
     /**
      * @param ObjectAclManipulatorInterface[] $aclObjectManipulators
+     *
+     * @internal This class should only be used through the console
      */
     public function __construct(Pool $pool, array $aclObjectManipulators)
     {

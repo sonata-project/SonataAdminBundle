@@ -30,6 +30,9 @@ final class ListAdminCommand extends Command
      */
     private $pool;
 
+    /**
+     * @internal This class should only be used through the console
+     */
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;

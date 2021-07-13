@@ -27,7 +27,7 @@ final class BreadcrumbsExtension extends AbstractExtension
     private $breadcrumbsBuilder;
 
     /**
-     * @internal
+     * @internal This class should only be used through Twig
      */
     public function __construct(BreadcrumbsBuilderInterface $breadcrumbsBuilder)
     {
