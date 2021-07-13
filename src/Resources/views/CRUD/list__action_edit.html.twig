@@ -10,12 +10,21 @@ file that was distributed with this source code.
 #}
 
 {% if admin.hasAccess('edit', object) and admin.hasRoute('edit') %}
+    {% set _button_mode = sonata_config.getOption('button_mode') %}
     <a
         href="{{ admin.generateObjectUrl('edit', object, actions.link_parameters|default([])) }}"
         class="btn btn-sm btn-default edit_link"
         title="{{ 'action_edit'|trans({}, 'SonataAdminBundle') }}"
     >
-        <i class="fa fa-pencil" aria-hidden="true"></i>
-        {{ 'action_edit'|trans({}, 'SonataAdminBundle') }}
+        {% if _button_mode != 'text' %}
+            <i class="fa fa-edit" aria-hidden="true"></i>
+        {% endif %}
+        {% if _button_mode == 'icon' %}
+            <span class="sr-only">
+                {{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}
+            </span>
+        {% else %}
+            {{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}
+        {% endif %}
     </a>
 {% endif %}

@@ -160,6 +160,14 @@ CASESENSITIVE;
                                 'skin-yellow-light',
                             ])
                         ->end()
+                        ->enumNode('button_mode')
+                            ->defaultValue('both')
+                            ->values([
+                                'both',
+                                'icon',
+                                'text',
+                                ])
+                        ->end()
                         ->booleanNode('use_select2')->defaultTrue()->end()
                         ->booleanNode('use_icheck')->defaultTrue()->end()
                         ->booleanNode('use_bootlint')->defaultFalse()->end()
