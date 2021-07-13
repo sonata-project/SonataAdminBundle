@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\SearchAction;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
@@ -38,6 +40,11 @@ final class SearchActionTest extends TestCase
      * @var Pool
      */
     private $pool;
+
+    /**
+     * @var AdminFetcherInterface&MockObject
+     */
+    private $adminFetcherInterface;
 
     /**
      * @var SearchHandler
@@ -65,6 +72,7 @@ final class SearchActionTest extends TestCase
     {
         $this->container = new Container();
         $this->pool = new Pool($this->container, ['foo']);
+        $this->adminFetcherInterface = $this->createMock(AdminFetcherInterface::class);
 
         $templateRegistry = new TemplateRegistry([
             'search' => 'search.html.twig',
@@ -81,7 +89,8 @@ final class SearchActionTest extends TestCase
             $templateRegistry,
             // NEXT_MAJOR: Remove next line.
             $this->breadcrumbsBuilder,
-            $this->twig
+            $this->twig,
+            $this->adminFetcherInterface
         );
     }
 
@@ -108,7 +117,13 @@ final class SearchActionTest extends TestCase
         $this->searchHandler->configureAdminSearch([$adminCode => false]);
         $admin = new CleanAdmin($adminCode, 'class', 'controller');
         $this->container->set('foo', $admin);
-        $request = new Request(['admin' => 'foo']);
+
+        $this->adminFetcherInterface
+            ->expects($this->once())
+            ->method('get')
+            ->willReturn($admin);
+
+        $request = new Request(['_sonata_admin' => 'foo']);
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $this->assertInstanceOf(JsonResponse::class, ($this->action)($request));

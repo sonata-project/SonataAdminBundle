@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Action;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\Request\AdminFetcher;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,6 +31,11 @@ final class SearchAction
      * @var Pool
      */
     private $pool;
+
+    /**
+     * @var AdminFetcherInterface
+     */
+    private $adminFetcher;
 
     /**
      * @var SearchHandler
@@ -54,20 +59,33 @@ final class SearchAction
      */
     private $twig;
 
+    // NEXT_MAJOR: Make the last param mandatory.
     public function __construct(
         Pool $pool,
         SearchHandler $searchHandler,
         TemplateRegistryInterface $templateRegistry,
         // NEXT_MAJOR: Remove next line.
         BreadcrumbsBuilderInterface $breadcrumbsBuilder,
-        Environment $twig
+        Environment $twig,
+        ?AdminFetcherInterface $adminFetcher = null
     ) {
+        // NEXT_MAJOR: Remove this.
+        if (null === $adminFetcher) {
+            @trigger_error(sprintf(
+                'Not passing an %s as argument 6 is deprecated since sonata-project/admin-bundle 3.x.',
+                AdminFetcherInterface::class,
+            ), \E_USER_DEPRECATED);
+
+            $adminFetcher = new AdminFetcher($pool);
+        }
+
         $this->pool = $pool;
         $this->searchHandler = $searchHandler;
         $this->templateRegistry = $templateRegistry;
         // NEXT_MAJOR: Remove next line.
         $this->breadcrumbsBuilder = $breadcrumbsBuilder;
         $this->twig = $twig;
+        $this->adminFetcher = $adminFetcher;
     }
 
     /**
@@ -78,7 +96,18 @@ final class SearchAction
      */
     public function __invoke(Request $request): Response
     {
-        if (!$request->get('admin') || !$request->isXmlHttpRequest()) {
+        // NEXT_MAJOR: Remove this BC-layer.
+        if (null === $request->get('_sonata_admin') && null !== $request->get('admin')) {
+            @trigger_error(
+                'Not passing the "_sonata_admin" parameter in the request is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will throw an exception in 4.0.',
+                \E_USER_DEPRECATED
+            );
+
+            $request->query->set('_sonata_admin', $request->get('admin'));
+        }
+
+        if (null === $request->get('_sonata_admin') || !$request->isXmlHttpRequest()) {
             return new Response($this->twig->render($this->templateRegistry->getTemplate('search'), [
                 'base_template' => $request->isXmlHttpRequest() ?
                     $this->templateRegistry->getTemplate('ajax') :
@@ -92,15 +121,7 @@ final class SearchAction
             ]));
         }
 
-        try {
-            $admin = $this->pool->getAdminByAdminCode($request->get('admin'));
-        } catch (ServiceNotFoundException $e) {
-            throw new \RuntimeException('Unable to find the Admin instance', $e->getCode(), $e);
-        }
-
-        if (!$admin instanceof AdminInterface) {
-            throw new \RuntimeException('The requested service is not an Admin instance');
-        }
+        $admin = $this->adminFetcher->get($request);
 
         $results = [];
 
