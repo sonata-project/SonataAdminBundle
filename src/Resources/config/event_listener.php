@@ -11,16 +11,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Sonata\AdminBundle\EventListener\AdminEventListener;
 use Sonata\AdminBundle\EventListener\AssetsInstallCommandListener;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Util\BCDeprecationParameters;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     // Use "service" function for creating references to services when dropping support for Symfony 4.4
     // Use "param" function for creating references to parameters when dropping support for Symfony 5.1
     $containerConfigurator->services()
+
+        ->set(AdminEventListener::class)
+            ->tag('kernel.event_subscriber', [])
+            ->args([
+                ref('twig'),
+                ref(AdminFetcherInterface::class),
+                ref('sonata.admin.global_template_registry'),
+                ref('sonata.admin.breadcrumbs_builder'),
+            ])
 
         ->set('sonata.admin.listener.assets_install', AssetsInstallCommandListener::class)
             ->tag('kernel.event_listener', [

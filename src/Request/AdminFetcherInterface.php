@@ -14,9 +14,14 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Request;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Exception\AdminCodeNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 
 interface AdminFetcherInterface
 {
+    /**
+     * @throws \InvalidArgumentException
+     * @throws AdminCodeNotFoundException
+     */
     public function get(Request $request): AdminInterface;
 }
