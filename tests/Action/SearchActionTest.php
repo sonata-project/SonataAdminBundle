@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\SearchAction;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
@@ -42,11 +40,8 @@ final class SearchActionTest extends TestCase
     private $pool;
 
     /**
-     * @var AdminFetcherInterface&MockObject
-     */
-    private $adminFetcherInterface;
-
-    /**
+     * NEXT_MAJOR: Remove this property.
+     *
      * @var SearchHandler
      */
     private $searchHandler;
@@ -72,7 +67,6 @@ final class SearchActionTest extends TestCase
     {
         $this->container = new Container();
         $this->pool = new Pool($this->container, ['foo']);
-        $this->adminFetcherInterface = $this->createMock(AdminFetcherInterface::class);
 
         $templateRegistry = new TemplateRegistry([
             'search' => 'search.html.twig',
@@ -85,12 +79,12 @@ final class SearchActionTest extends TestCase
 
         $this->action = new SearchAction(
             $this->pool,
+            // NEXT_MAJOR: Remove next line.
             $this->searchHandler,
             $templateRegistry,
             // NEXT_MAJOR: Remove next line.
             $this->breadcrumbsBuilder,
-            $this->twig,
-            $this->adminFetcherInterface
+            $this->twig
         );
     }
 
@@ -110,6 +104,11 @@ final class SearchActionTest extends TestCase
         $this->assertInstanceOf(Response::class, ($this->action)($request));
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testAjaxCall(): void
     {
         $adminCode = 'code';
@@ -117,13 +116,7 @@ final class SearchActionTest extends TestCase
         $this->searchHandler->configureAdminSearch([$adminCode => false]);
         $admin = new CleanAdmin($adminCode, 'class', 'controller');
         $this->container->set('foo', $admin);
-
-        $this->adminFetcherInterface
-            ->expects($this->once())
-            ->method('get')
-            ->willReturn($admin);
-
-        $request = new Request(['_sonata_admin' => 'foo']);
+        $request = new Request(['admin' => 'foo']);
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $this->assertInstanceOf(JsonResponse::class, ($this->action)($request));

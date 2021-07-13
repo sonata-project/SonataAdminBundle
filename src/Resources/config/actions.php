@@ -48,12 +48,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->public()
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
+                // NEXT_MAJOR: Remove next line.
                 new ReferenceConfigurator('sonata.admin.search.handler'),
                 new ReferenceConfigurator('sonata.admin.global_template_registry'),
                 // NEXT_MAJOR: Remove next line.
                 new ReferenceConfigurator('sonata.admin.breadcrumbs_builder'),
                 new ReferenceConfigurator('twig'),
-                new ReferenceConfigurator('sonata.admin.request.fetcher'),
             ])
             // NEXT_MAJOR: Remove the alias.
             ->alias(SearchAction::class, 'sonata.admin.action.search')
