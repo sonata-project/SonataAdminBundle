@@ -321,8 +321,11 @@ The available options are:
     $formMapper
         ->add('category', ModelAutocompleteType::class, [
             'property' => 'title',
-            'response_item_callback' => function ($admin, $entity, &$item) {
+            'response_item_callback' => function (AdminInterface $admin, object $entity, array $item): array {
                 $item['type'] = $entity->getType();
+
+                return $item;
+
             },
         ])
     ;
