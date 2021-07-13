@@ -190,7 +190,7 @@ file that was distributed with this source code.
                                             <select name="action" style="width: auto; height: auto" class="form-control">
                                                 {% for action, options in batchactions %}
                                                     <option value="{{ action }}">
-                                                        {% if options.translation_domain is same as(false) %}
+                                                        {% if options.translation_domain is defined and options.translation_domain is same as(false) %}
                                                             {{ options.label }}
                                                         {% else %}
                                                             {{ options.label|trans({}, options.translation_domain ?? admin.translationDomain) }}
@@ -284,7 +284,7 @@ file that was distributed with this source code.
                             <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
                                 <i class="fa {{ filterDisplayed ? 'fa-check-square-o' : 'fa-square-o' }}"></i>
                                 {% if filter.label is not same as(false) %}
-                                    {% if filter.translationDomain is same as(false) %}
+                                    {% if filter.translationDomain is defined and filter.translationDomain is same as(false) %}
                                         {{ filter.label }}
                                     {% else %}
                                         {{ filter.label|trans(filter.option('label_translation_parameters', {}), filter.translationDomain ?? admin.translationDomain) }}
@@ -327,7 +327,7 @@ file that was distributed with this source code.
                                     <div class="form-group {% block sonata_list_filter_group_class %}{% endblock %}" id="filter-{{ admin.uniqid }}-{{ filter.name }}" sonata-filter="{{ filterCanBeDisplayed ? 'true' : 'false' }}" style="display: {% if filterDisplayed %}block{% else %}none{% endif %}">
                                         {% if filter.label is not same as(false) %}
                                             <label for="{{ form[filter.formName].children['value'].vars.id }}" class="col-sm-3 control-label">
-                                                {% if filter.translationDomain is same as(false) %}
+                                                {% if filter.translationDomain is defined and filter.translationDomain is same as(false) %}
                                                     {{ filter.label }}
                                                 {% else %}
                                                     {{ filter.label|trans(filter.option('label_translation_parameters', {}), filter.translationDomain ?? admin.translationDomain) }}
