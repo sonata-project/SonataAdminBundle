@@ -325,7 +325,6 @@ The available options are:
                 $item['type'] = $entity->getType();
 
                 return $item;
-
             },
         ])
     ;
