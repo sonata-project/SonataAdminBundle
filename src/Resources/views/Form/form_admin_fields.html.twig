@@ -216,7 +216,12 @@ file that was distributed with this source code.
             {% endif %}
         {% endif %}
 
-        <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}{% if placeholder is defined and placeholder is not none and sonata_config.getOption('use_select2') %} data-placeholder="{{ dataPlaceholder }}"{% endif %}>
+        {% set select2 = false %}
+        {% if sonata_config is defined and sonata_config.getOption('use_select2') %}
+            {% set select2 = true %}
+        {% endif %}
+
+        <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}{% if placeholder is defined and placeholder is not none and select2 %} data-placeholder="{{ dataPlaceholder }}"{% endif %}>
             {% if empty_value is defined and empty_value is not none %}
                 <option value=""{% if required and value is empty %} selected="selected"{% endif %}>
                     {% if empty_value != '' %}
@@ -227,7 +232,7 @@ file that was distributed with this source code.
                         {% endif %}
                     {% endif %}
                 </option>
-            {% elseif placeholder is defined and placeholder is not none and not sonata_config.getOption('use_select2') %}
+            {% elseif placeholder is defined and placeholder is not none and not select2 %}
                 <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ dataPlaceholder }}</option>
             {% endif %}
             {% if preferred_choices|length > 0 %}
