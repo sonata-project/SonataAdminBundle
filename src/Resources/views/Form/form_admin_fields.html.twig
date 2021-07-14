@@ -207,7 +207,16 @@ file that was distributed with this source code.
     {% if (sortable is defined) and sortable and multiple %}
         {{ block('sonata_type_choice_multiple_sortable') }}
     {% else %}
-        <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %} >
+        {% set dataPlaceholder = placeholder %}
+        {% if placeholder != '' %}
+            {% if not sonata_admin.admin %}
+                {% set dataPlaceholder = placeholder|trans({}, translation_domain) %}
+            {% else %}
+                {% set dataPlaceholder = placeholder|trans({}, sonata_admin.field_description.translationDomain) %}
+            {% endif %}
+        {% endif %}
+
+        <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}{% if placeholder is defined and placeholder is not none and sonata_config.getOption('use_select2') %} data-placeholder="{{ dataPlaceholder }}"{% endif %}>
             {% if empty_value is defined and empty_value is not none %}
                 <option value=""{% if required and value is empty %} selected="selected"{% endif %}>
                     {% if empty_value != '' %}
@@ -218,16 +227,8 @@ file that was distributed with this source code.
                         {% endif %}
                     {% endif %}
                 </option>
-            {% elseif placeholder is defined and placeholder is not none %}
-                <option value=""{% if required and value is empty %} selected="selected"{% endif %}>
-                    {% if placeholder != '' %}
-                        {% if not sonata_admin.admin %}
-                            {{- placeholder|trans({}, translation_domain) -}}
-                        {% else %}
-                            {{- placeholder|trans({}, sonata_admin.field_description.translationDomain) -}}
-                        {% endif %}
-                    {% endif %}
-                </option>
+            {% elseif placeholder is defined and placeholder is not none and not sonata_config.getOption('use_select2') %}
+                <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ dataPlaceholder }}</option>
             {% endif %}
             {% if preferred_choices|length > 0 %}
                 {% set options = preferred_choices %}
