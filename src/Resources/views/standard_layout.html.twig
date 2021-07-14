@@ -125,10 +125,18 @@ file that was distributed with this source code.
                 {% block logo %}
                     {% apply spaceless %}
                         <a class="logo" href="{{ path('sonata_admin_dashboard') }}">
-                            {% if 'single_image' == sonata_config.getOption('title_mode') or 'both' == sonata_config.getOption('title_mode') %}
+                            {# NEXT_MAJOR: Remove the title_mode check #}
+                            {% if 'icon' == sonata_config.getOption('logo_content')
+                                or 'all' == sonata_config.getOption('logo_content')
+                                and ('single_image' == sonata_config.getOption('title_mode') or 'both' == sonata_config.getOption('title_mode'))
+                            %}
                                 <img src="{{ asset(sonata_config.logo) }}" alt="{{ sonata_config.title }}">
                             {% endif %}
-                            {% if 'single_text' == sonata_config.getOption('title_mode') or 'both' == sonata_config.getOption('title_mode') %}
+                            {# NEXT_MAJOR: Remove the title_mode check #}
+                            {% if 'text' == sonata_config.getOption('logo_content')
+                                or 'all' == sonata_config.getOption('logo_content')
+                                and ('single_text' == sonata_config.getOption('title_mode') or 'both' == sonata_config.getOption('title_mode'))
+                            %}
                                 <span>{{ sonata_config.title }}</span>
                             {% endif %}
                         </a>
