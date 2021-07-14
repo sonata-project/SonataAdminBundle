@@ -18,6 +18,7 @@ use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Renderer\TwigRenderer;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Tests\Fixtures\StubTranslator;
+use Sonata\AdminBundle\Twig\Extension\IconExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -59,10 +60,11 @@ abstract class BaseMenuTest extends TestCase
     protected function renderMenu(ItemInterface $item, array $options = []): string
     {
         $this->environment->addExtension(new TranslationExtension($this->getTranslator()));
+        $this->environment->addExtension(new IconExtension());
         $renderer = new TwigRenderer(
             $this->environment,
             $this->getTemplate(),
-            $this->getMockForAbstractClass(MatcherInterface::class)
+            $this->createMock(MatcherInterface::class)
         );
 
         return $renderer->render($item, $options);
@@ -73,10 +75,10 @@ abstract class BaseMenuTest extends TestCase
      */
     protected function cleanHtmlWhitespace(string $html): string
     {
-        $html = preg_replace_callback('/>([^<]+)</', static function ($value) {
+        $html = preg_replace_callback('/>([^<]+)</', static function ($value): string {
             return sprintf('>%s<', trim($value[1]));
         }, $html);
 
-        return $html;
+        return $html ?? '';
     }
 }

@@ -89,7 +89,7 @@ final class AppendFormFieldElementActionTest extends TestCase
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getClass')->willReturn(\get_class($object));
-        $this->admin->expects($this->once())->method('setSubject')->with($object);
+        $this->admin->expects(self::once())->method('setSubject')->with($object);
         $this->admin->method('getFormTheme')->willReturn([]);
         $this->helper->method('appendFormFieldElement')->with($this->admin, $object, 'element_42')->willReturn([
             $this->createStub(FieldDescriptionInterface::class),
@@ -98,13 +98,13 @@ final class AppendFormFieldElementActionTest extends TestCase
         $this->helper->method('getChildFormView')->with($formView, 'element_42')->willReturn($formView);
         $modelManager->method('find')->with(\get_class($object), 42)->willReturn($object);
         $form->method('createView')->willReturn($formView);
-        $renderer->expects($this->once())->method('setTheme')->with($formView);
+        $renderer->expects(self::once())->method('setTheme')->with($formView);
         $renderer->method('searchAndRenderBlock')->with($formView, 'widget')->willReturn('block');
 
         $response = ($this->action)($request);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame($response->getContent(), 'block');
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame($response->getContent(), 'block');
     }
 
     /**

@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType as SymfonyCollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormTypeInterface;
 
 /**
  * This class is use to simulate the Form API.
@@ -26,6 +27,9 @@ use Symfony\Component\Form\FormBuilderInterface;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
+ *
+ * @phpstan-template T of object
+ * @phpstan-extends BaseGroupedMapper<T>
  */
 final class FormMapper extends BaseGroupedMapper
 {
@@ -41,11 +45,12 @@ final class FormMapper extends BaseGroupedMapper
 
     /**
      * @var AdminInterface<object>
+     * @phpstan-var AdminInterface<T>
      */
     private $admin;
 
     /**
-     * @param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function __construct(
         FormContractorInterface $formContractor,
@@ -62,6 +67,9 @@ final class FormMapper extends BaseGroupedMapper
         return $this->admin;
     }
 
+    /**
+     * @return static
+     */
     public function reorder(array $keys): self
     {
         $this->getAdmin()->reorderFormGroup($this->getCurrentGroupName(), $keys);
@@ -70,14 +78,14 @@ final class FormMapper extends BaseGroupedMapper
     }
 
     /**
-     * @param FormBuilderInterface|string $name
-     * @param array<string, mixed>        $options
+     * @param array<string, mixed> $options
      *
      * @return static
      *
+     * @phpstan-param class-string|null $type
      * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */
-    public function add($name, ?string $type = null, array $options = [], array $fieldDescriptionOptions = []): self
+    public function add(string $name, ?string $type = null, array $options = [], array $fieldDescriptionOptions = []): self
     {
         if (!$this->shouldApply()) {
             return $this;
@@ -87,79 +95,51 @@ final class FormMapper extends BaseGroupedMapper
             return $this;
         }
 
-        if ($name instanceof FormBuilderInterface) {
-            $fieldName = $name->getName();
-        } else {
-            $fieldName = $name;
-        }
-
-        // "Dot" notation is not allowed as form name, but can be used as property path to access nested data.
-        if (!$name instanceof FormBuilderInterface && !isset($options['property_path'])) {
-            $options['property_path'] = $fieldName;
-
-            // fix the form name
-            $fieldName = $this->sanitizeFieldName($fieldName);
-        }
-
-        // change `collection` to `sonata_type_native_collection` form type to
-        // avoid BC break problems
-        if ('collection' === $type || SymfonyCollectionType::class === $type) {
+        if (SymfonyCollectionType::class === $type) {
             $type = CollectionType::class;
         }
 
-        $group = $this->addFieldToCurrentGroup($fieldName);
-
-        // Try to autodetect type
-        if ($name instanceof FormBuilderInterface && null === $type) {
-            $fieldDescriptionOptions['type'] = \get_class($name->getType()->getInnerType());
-        }
+        $group = $this->addFieldToCurrentGroup($name);
 
         if (!isset($fieldDescriptionOptions['type']) && \is_string($type)) {
             $fieldDescriptionOptions['type'] = $type;
         }
 
-        if ($group['translation_domain'] && !isset($fieldDescriptionOptions['translation_domain'])) {
-            $fieldDescriptionOptions['translation_domain'] = $group['translation_domain'];
+        if (!isset($fieldDescriptionOptions['translation_domain'])) {
+            $fieldDescriptionOptions['translation_domain'] = $group['translation_domain'] ?? null;
         }
 
         $fieldDescription = $this->getAdmin()->createFieldDescription(
-            $name instanceof FormBuilderInterface ? $name->getName() : $name,
+            $name,
             $fieldDescriptionOptions
         );
 
         // Note that the builder var is actually the formContractor:
         $this->builder->fixFieldDescription($fieldDescription);
 
-        if ($fieldName !== $name) {
-            $fieldDescription->setName($fieldName);
+        // Note that the builder var is actually the formContractor:
+        $options = array_replace_recursive(
+            $this->builder->getDefaultOptions($type, $fieldDescription, $options),
+            $options
+        );
+
+        // be compatible with mopa if not installed, avoid generating an exception for invalid option
+        // force the default to false ...
+        if (!isset($options['label_render'])) {
+            $options['label_render'] = false;
         }
 
-        if ($name instanceof FormBuilderInterface) {
-            $child = $name;
-            $type = null;
-            $options = [];
-        } else {
-            $child = $fieldDescription->getName();
-
-            // Note that the builder var is actually the formContractor:
-            $options = array_replace_recursive(
-                $this->builder->getDefaultOptions($type, $fieldDescription, $options),
-                $options
-            );
-
-            // be compatible with mopa if not installed, avoid generating an exception for invalid option
-            // force the default to false ...
-            if (!isset($options['label_render'])) {
-                $options['label_render'] = false;
-            }
-
-            if (!isset($options['label'])) {
-                $options['label'] = $this->getAdmin()->getLabelTranslatorStrategy()->getLabel($name, 'form', 'label');
-            }
+        if (!isset($options['label'])) {
+            $options['label'] = $this->getAdmin()->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'form', 'label');
         }
 
-        $this->getAdmin()->addFormFieldDescription($fieldName, $fieldDescription);
-        $this->formBuilder->add($child, $type, $options);
+        // "Dot" notation is not allowed as form name, but can be used as property path to access nested data.
+        if (!isset($options['property_path'])) {
+            $options['property_path'] = $name;
+        }
+
+        $this->getAdmin()->addFormFieldDescription($fieldDescription->getName(), $fieldDescription);
+        $this->formBuilder->add($this->sanitizeFieldName($fieldDescription->getName()), $type, $options);
 
         return $this;
     }
@@ -183,6 +163,9 @@ final class FormMapper extends BaseGroupedMapper
         return array_keys($this->formBuilder->all());
     }
 
+    /**
+     * @return static
+     */
     public function remove(string $key): self
     {
         $key = $this->sanitizeFieldName($key);
@@ -199,7 +182,8 @@ final class FormMapper extends BaseGroupedMapper
     }
 
     /**
-     * @param array<string, mixed> $options
+     * @param class-string<FormTypeInterface>|null $type
+     * @param array<string, mixed>                 $options
      */
     public function create(string $name, ?string $type = null, array $options = []): FormBuilderInterface
     {

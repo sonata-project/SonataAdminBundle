@@ -42,6 +42,7 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
         parent::setUp();
 
         $reflection = new \ReflectionClass(TwigRendererEngine::class);
+        self::assertNotFalse($reflection->getFileName());
         $bridgeDirectory = \dirname($reflection->getFileName()).'/../Resources/views/Form';
 
         $loader = new FilesystemLoader([
@@ -67,7 +68,9 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
             },
         ]));
 
-        $this->renderer = $environment->getRuntime(FormRenderer::class);
+        $renderer = $environment->getRuntime(FormRenderer::class);
+        self::assertInstanceOf(FormRenderer::class, $renderer);
+        $this->renderer = $renderer;
     }
 
     /**
@@ -81,7 +84,7 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
             // the top level
             $dom->loadXML('<root>'.$html.'</root>');
         } catch (\Exception $e) {
-            $this->fail(sprintf(
+            self::fail(sprintf(
                 "Failed loading HTML:\n\n%s\n\nError: %s",
                 $html,
                 $e->getMessage()
@@ -92,13 +95,13 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
 
         if ($nodeList->length !== $count) {
             $dom->formatOutput = true;
-            $this->fail(sprintf(
+            self::fail(sprintf(
                 "Failed asserting that \n\n%s\n\nmatches exactly %s. Matches %s in \n\n%s",
                 $expression,
                 1 === $count ? 'once' : $count.' times',
                 1 === $nodeList->length ? 'once' : $nodeList->length.' times',
                 // strip away <root> and </root>
-                substr($dom->saveHTML(), 6, -8)
+                substr($dom->saveHTML() ?: '', 6, -8)
             ));
         } else {
             $this->addToAssertionCount(1);
@@ -122,12 +125,12 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
      */
     protected function renderRow(FormView $view, array $vars = []): string
     {
-        return (string) $this->renderer->searchAndRenderBlock($view, 'row', $vars);
+        return $this->renderer->searchAndRenderBlock($view, 'row', $vars);
     }
 
     protected function renderHelp(FormView $view): string
     {
-        return (string) $this->renderer->searchAndRenderBlock($view, 'help');
+        return $this->renderer->searchAndRenderBlock($view, 'help');
     }
 
     /**
@@ -140,11 +143,11 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
             $vars += ['label' => $label];
         }
 
-        return (string) $this->renderer->searchAndRenderBlock($view, 'label', $vars);
+        return $this->renderer->searchAndRenderBlock($view, 'label', $vars);
     }
 
     protected function renderErrors(FormView $view): string
     {
-        return (string) $this->renderer->searchAndRenderBlock($view, 'errors');
+        return $this->renderer->searchAndRenderBlock($view, 'errors');
     }
 }

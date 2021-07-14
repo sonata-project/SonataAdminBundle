@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Writer\TypedWriterInterface;
 
-class AdminExporterTest extends TestCase
+final class AdminExporterTest extends TestCase
 {
     /**
      * @phpstan-return iterable<array-key, array{string[], string[], string[]}>
@@ -44,7 +44,7 @@ class AdminExporterTest extends TestCase
         $writers = [];
         foreach ($globalFormats as $exportFormat) {
             $writer = $this->createMock(TypedWriterInterface::class);
-            $writer->expects($this->once())
+            $writer->expects(self::once())
                 ->method('getFormat')
                 ->willReturn($exportFormat);
             $writers[] = $writer;
@@ -52,21 +52,21 @@ class AdminExporterTest extends TestCase
 
         $exporter = new Exporter($writers);
         $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->once())
+        $admin->expects(self::once())
             ->method('getExportFormats')
             ->willReturn($adminFormats);
         $adminExporter = new AdminExporter($exporter);
-        $this->assertSame($expectedFormats, $adminExporter->getAvailableFormats($admin));
+        self::assertSame($expectedFormats, $adminExporter->getAvailableFormats($admin));
     }
 
     public function testGetExportFilename(): void
     {
         $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->once())
+        $admin->expects(self::once())
             ->method('getClass')
             ->willReturn('MyProject\AppBundle\Model\MyClass');
         $adminExporter = new AdminExporter(new Exporter());
-        $this->assertMatchesRegularExpression(
+        self::assertMatchesRegularExpression(
             '#export_myclass_\d{4}_\d{2}_\d{2}_\d{2}_\d{2}_\d{2}.csv#',
             $adminExporter->getExportFilename($admin, 'csv')
         );

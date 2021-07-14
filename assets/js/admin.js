@@ -304,10 +304,19 @@ const Admin = {
 
       // Keep only changed values
       $form.find('[name*=filter]').each((index, element) => {
-        if (JSON.stringify(defaults[element.name] || '') === JSON.stringify(jQuery(element).val())) {
+        const defaultValue = element.multiple ? [] : '';
+        const defaultElementValue = defaults[element.name] || defaultValue;
+        const elementValue = jQuery(element).val() || defaultValue;
+
+        if (JSON.stringify(defaultElementValue) === JSON.stringify(elementValue)) {
           element.removeAttribute('name');
         }
       });
+
+      // Simulate a reset if no value is different from the default ones.
+      if ($form.find('[name*=filter]').length === 0) {
+        $form.append('<input name="filters" type="hidden" value="reset">');
+      }
     });
 
     /* Advanced filters */
@@ -667,15 +676,22 @@ const Admin = {
   },
 
   refreshNavbarStuckClass(topNavbar) {
-    let stuck = jQuery('#navbar-stuck');
+    const topNavbarHeight = topNavbar.outerHeight();
 
-    if (!stuck.length) {
-      stuck = jQuery('<style id="navbar-stuck">')
-        .prop('type', 'text/css')
-        .appendTo('head');
+    let stuck = document.getElementById('navbar-stuck');
+    if (stuck === null) {
+      stuck = document.createElement('style');
+      stuck.id = 'navbar-stuck';
+      stuck.type = 'text/css';
+      stuck.dataset.lastOffset = topNavbarHeight;
+      stuck.innerHTML = `body.fixed .content-header .navbar.stuck { top: ${topNavbarHeight}px; }`;
+      document.head.appendChild(stuck);
     }
 
-    stuck.html(`body.fixed .content-header .navbar.stuck { top: ${jQuery(topNavbar).outerHeight()}px; }`);
+    if (stuck.dataset.lastOffset !== topNavbarHeight) {
+      stuck.dataset.lastOffset = topNavbarHeight;
+      stuck.innerHTML = `body.fixed .content-header .navbar.stuck { top: ${topNavbarHeight}px; }`;
+    }
   },
 
   // http://davidwalsh.name/javascript-debounce-function

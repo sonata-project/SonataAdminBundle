@@ -19,8 +19,9 @@ use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as SymfonyChoiceType;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\FormTypeGuesserInterface;
+use Symfony\Component\Form\FormTypeInterface;
 
-class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
+final class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
 {
     protected $type = 'filter';
 
@@ -35,22 +36,25 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
         $html = $this->cleanHtmlWhitespace($this->renderWidget($choice->createView()));
         $html = $this->cleanHtmlAttributeWhitespace($html);
 
-        $this->assertStringContainsString(
+        self::assertStringContainsString(
             '<option value="1">[trans]label_type_contains[/trans]</option>',
             $html
         );
 
-        $this->assertStringContainsString(
+        self::assertStringContainsString(
             '<option value="2">[trans]label_type_not_contains[/trans]</option>',
             $html
         );
 
-        $this->assertStringContainsString(
+        self::assertStringContainsString(
             '<option value="3">[trans]label_type_equals[/trans]</option></select>',
             $html
         );
     }
 
+    /**
+     * @return class-string<FormTypeInterface>
+     */
     protected function getChoiceClass(): string
     {
         return ChoiceType::class;
@@ -62,7 +66,7 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
     protected function getExtensions(): array
     {
         $extensions = parent::getExtensions();
-        $guesser = $this->getMockForAbstractClass(FormTypeGuesserInterface::class);
+        $guesser = $this->createMock(FormTypeGuesserInterface::class);
         $extension = new TestExtension($guesser);
         $type = new ChoiceType();
         $extension->addType($type);

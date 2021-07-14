@@ -132,21 +132,21 @@ final class RenderElementExtensionTest extends TestCase
 
         $this->admin
             ->method('id')
-            ->with($this->equalTo($this->object))
+            ->with(self::equalTo($this->object))
             ->willReturn('12345');
 
         $this->admin
             ->method('getUrlSafeIdentifier')
-            ->with($this->equalTo($this->object))
+            ->with(self::equalTo($this->object))
             ->willReturn('12345');
 
         $this->admin
             ->method('getNormalizedIdentifier')
-            ->with($this->equalTo($this->object))
+            ->with(self::equalTo($this->object))
             ->willReturn('12345');
 
         // initialize field description
-        $this->fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
+        $this->fieldDescription = $this->createMock(FieldDescriptionInterface::class);
 
         $this->fieldDescription
             ->method('getName')
@@ -236,7 +236,7 @@ final class RenderElementExtensionTest extends TestCase
                 }
             });
 
-        $this->assertSame(
+        self::assertSame(
             $this->removeExtraWhitespace($expected),
             $this->removeExtraWhitespace($this->twigExtension->renderListElement(
                 $this->environment,
@@ -255,7 +255,7 @@ final class RenderElementExtensionTest extends TestCase
             ->method('getTemplate')
             ->willReturn('@SonataAdmin/CRUD/list_string.html.twig');
 
-        $this->assertSame(
+        self::assertSame(
             $this->removeExtraWhitespace('<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> Extra value </td>'),
             $this->removeExtraWhitespace($this->twigExtension->renderListElement(
                 $this->environment,
@@ -288,7 +288,7 @@ final class RenderElementExtensionTest extends TestCase
 
         $this->environment->enableDebug();
 
-        $this->assertSame(
+        self::assertSame(
             $this->removeExtraWhitespace(
                 <<<'EOT'
 <!-- START
@@ -365,7 +365,7 @@ EOT
                 }
             });
 
-        $this->assertSame(
+        self::assertSame(
             $this->removeExtraWhitespace($expected),
             $this->removeExtraWhitespace(
                 $this->twigExtension->renderViewElement(
@@ -448,7 +448,7 @@ EOT
             $comparedObject->name = $objectName;
         }
 
-        $this->assertSame(
+        self::assertSame(
             $this->removeExtraWhitespace($expected),
             $this->removeExtraWhitespace(
                 $this->twigExtension->renderViewElementCompare(
@@ -463,31 +463,33 @@ EOT
 
     public function testRenderRelationElementNoObject(): void
     {
-        $this->assertSame('foo', $this->twigExtension->renderRelationElement('foo', $this->fieldDescription));
+        self::assertSame('foo', $this->twigExtension->renderRelationElement('foo', $this->fieldDescription));
     }
 
     public function testRenderRelationElementToString(): void
     {
-        $this->fieldDescription->expects($this->once())
+        $this->fieldDescription->expects(self::once())
             ->method('getOption')
-            ->willReturnCallback(static function ($value, $default = null) {
+            ->willReturnCallback(static function (string $value, $default = null) {
                 if ('associated_property' === $value) {
                     return $default;
                 }
             });
 
         $element = new FooToString();
-        $this->assertSame('salut', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
+        self::assertSame('salut', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
     public function testRenderRelationElementCustomToString(): void
     {
-        $this->fieldDescription->expects($this->once())
+        $this->fieldDescription->expects(self::once())
             ->method('getOption')
-            ->willReturnCallback(static function ($value, $default = null) {
+            ->willReturnCallback(static function (string $value, $default = null) {
                 if ('associated_property' === $value) {
                     return 'customToString';
                 }
+
+                return $default;
             });
 
         $element = new class() {
@@ -497,17 +499,19 @@ EOT
             }
         };
 
-        $this->assertSame('fooBar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
+        self::assertSame('fooBar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
     public function testRenderRelationElementMethodNotExist(): void
     {
-        $this->fieldDescription->expects($this->once())
+        $this->fieldDescription->expects(self::once())
             ->method('getOption')
-            ->willReturnCallback(static function ($value, $default = null) {
+            ->willReturnCallback(static function (string $value, $default = null) {
                 if ('associated_property' === $value) {
                     return null;
                 }
+
+                return $default;
             });
 
         $element = new \stdClass();
@@ -519,38 +523,41 @@ EOT
 
     public function testRenderRelationElementWithPropertyPath(): void
     {
-        $this->fieldDescription->expects($this->once())
+        $this->fieldDescription->expects(self::once())
             ->method('getOption')
 
-            ->willReturnCallback(static function ($value, $default = null) {
+            ->willReturnCallback(static function (string $value, $default = null) {
                 if ('associated_property' === $value) {
                     return 'foo';
                 }
+
+                return $default;
             });
 
         $element = new \stdClass();
         $element->foo = 'bar';
 
-        $this->assertSame('bar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
+        self::assertSame('bar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
     public function testRenderRelationElementWithClosure(): void
     {
-        $this->fieldDescription->expects($this->once())
+        $this->fieldDescription->expects(self::once())
             ->method('getOption')
-
-            ->willReturnCallback(static function ($value, $default = null) {
+            ->willReturnCallback(static function (string $value, $default = null) {
                 if ('associated_property' === $value) {
                     return static function ($element): string {
                         return sprintf('closure %s', $element->foo);
                     };
                 }
+
+                return $default;
             });
 
         $element = new \stdClass();
         $element->foo = 'bar';
 
-        $this->assertSame(
+        self::assertSame(
             'closure bar',
             $this->twigExtension->renderRelationElement($element, $this->fieldDescription)
         );
@@ -2105,11 +2112,7 @@ EOT
 
     private function removeExtraWhitespace(string $string): string
     {
-        return trim(preg_replace(
-            '/\s+/',
-            ' ',
-            $string
-        ));
+        return trim(preg_replace('/\s+/', ' ', $string) ?? '');
     }
 
     private function registerRequiredTwigExtensions(): void

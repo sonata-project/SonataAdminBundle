@@ -40,8 +40,8 @@ final class SecurityExtensionTest extends TestCase
                 ['bar', null, true],
             ]);
 
-        $this->assertTrue($twigExtension->isGrantedAffirmative(['foo', 'bar']));
-        $this->assertFalse($twigExtension->isGrantedAffirmative('foo'));
-        $this->assertTrue($twigExtension->isGrantedAffirmative('bar'));
+        self::assertTrue($twigExtension->isGrantedAffirmative(['foo', 'bar']));
+        self::assertFalse($twigExtension->isGrantedAffirmative('foo'));
+        self::assertTrue($twigExtension->isGrantedAffirmative('bar'));
     }
 }

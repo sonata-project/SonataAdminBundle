@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Resources;
 
-class XliffTest extends XliffValidatorTestCase
+final class XliffTest extends XliffValidatorTestCase
 {
     /**
      * @phpstan-return array<array{string}>

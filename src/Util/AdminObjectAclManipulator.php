@@ -58,6 +58,9 @@ final class AdminObjectAclManipulator
         $this->maskBuilderClass = $maskBuilderClass;
     }
 
+    /**
+     * @phpstan-return class-string
+     */
     public function getMaskBuilderClass(): string
     {
         return $this->maskBuilderClass;
@@ -184,7 +187,7 @@ final class AdminObjectAclManipulator
         // Retrieve object identity
         $objectIdentity = ObjectIdentity::fromDomainObject($data->getObject());
         $acl = $data->getSecurityHandler()->getObjectAcl($objectIdentity);
-        if (!$acl) {
+        if (null === $acl) {
             $acl = $data->getSecurityHandler()->createAcl($objectIdentity);
         }
 
@@ -207,6 +210,7 @@ final class AdminObjectAclManipulator
                 $attr = [];
                 if (
                     self::ACL_ROLES_FORM_NAME === $formBuilder->getName()
+                    && \is_string($aclValue)
                     && isset($securityInformation[$aclValue])
                     && false !== array_search($permission, $securityInformation[$aclValue], true)
                 ) {

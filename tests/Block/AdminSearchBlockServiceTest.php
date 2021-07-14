@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Block;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminSearchBlockService;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
-use Sonata\AdminBundle\Filter\FilterInterface;
+use Sonata\AdminBundle\Search\SearchableFilterInterface;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\BlockBundle\Test\BlockServiceTestCase;
@@ -41,7 +42,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
     private $searchHandler;
 
     /**
-     * @var TemplateRegistryInterface
+     * @var TemplateRegistryInterface&MockObject
      */
     private $templateRegistry;
 
@@ -50,7 +51,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
         parent::setUp();
 
         $this->pool = new Pool(new Container());
-        $this->searchHandler = new SearchHandler(true);
+        $this->searchHandler = new SearchHandler();
         $this->templateRegistry = $this->createMock(TemplateRegistryInterface::class);
         $this->templateRegistry->method('getTemplate')->willReturn('@SonataAdmin/Block/block_search_result.html.twig');
     }
@@ -66,12 +67,12 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
         );
         $blockContext = $this->getBlockContext($blockService);
 
-        $this->assertSettings([
+        self::assertSettings([
             'admin_code' => '',
             'query' => '',
             'page' => 0,
             'per_page' => 10,
-            'icon' => '<i class="fas fa-list"></i>',
+            'icon' => 'fas fa-list',
         ], $blockContext);
     }
 
@@ -84,10 +85,9 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
-        $filter = $this->createMock(FilterInterface::class);
+        $filter = $this->createMock(SearchableFilterInterface::class);
         $filter
-            ->method('getOption')
-            ->with('global_search')
+            ->method('isSearchEnabled')
             ->willReturn(true);
 
         $datagrid

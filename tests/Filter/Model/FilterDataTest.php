@@ -51,15 +51,15 @@ final class FilterDataTest extends TestCase
     public function testEmptyArray(): void
     {
         $filterData = FilterData::fromArray([]);
-        $this->assertFalse($filterData->hasValue());
-        $this->assertNull($filterData->getType());
+        self::assertFalse($filterData->hasValue());
+        self::assertNull($filterData->getType());
     }
 
     public function testHasValue(): void
     {
-        $this->assertFalse(FilterData::fromArray([])->hasValue());
-        $this->assertTrue(FilterData::fromArray(['value' => ''])->hasValue());
-        $this->assertTrue(FilterData::fromArray(['value' => null])->hasValue());
+        self::assertFalse(FilterData::fromArray([])->hasValue());
+        self::assertTrue(FilterData::fromArray(['value' => ''])->hasValue());
+        self::assertTrue(FilterData::fromArray(['value' => null])->hasValue());
     }
 
     /**
@@ -71,7 +71,7 @@ final class FilterDataTest extends TestCase
      */
     public function testGetType(?int $expected, $type): void
     {
-        $this->assertSame($expected, FilterData::fromArray(['type' => $type])->getType());
+        self::assertSame($expected, FilterData::fromArray(['type' => $type])->getType());
     }
 
     /**
@@ -91,7 +91,7 @@ final class FilterDataTest extends TestCase
      */
     public function testGetValue($value): void
     {
-        $this->assertSame($value, FilterData::fromArray(['value' => $value])->getValue());
+        self::assertSame($value, FilterData::fromArray(['value' => $value])->getValue());
     }
 
     /**
@@ -110,8 +110,8 @@ final class FilterDataTest extends TestCase
         $filterData = FilterData::fromArray(['type' => 1, 'value' => 'value']);
         $newFilterData = $filterData->changeValue('new_value');
 
-        $this->assertSame(1, $newFilterData->getType());
-        $this->assertSame('new_value', $newFilterData->getValue());
+        self::assertSame(1, $newFilterData->getType());
+        self::assertSame('new_value', $newFilterData->getValue());
     }
 
     public function testGetValueThrowsExceptionIfValueNotPresent(): void

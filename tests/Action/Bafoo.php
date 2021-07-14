@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
-class Bafoo
+final class Bafoo
 {
     /**
      * @var \DateTime|null

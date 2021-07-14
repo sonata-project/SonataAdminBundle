@@ -86,7 +86,7 @@
     {% import "knp_menu.html.twig" as macros %}
     <a href="{{ item.uri }}"{{ macros.attributes(item.linkAttributes) }}>
         {% if item.attribute('icon') is not empty %}
-            <i class="{{ item.attribute('icon') }}"></i>
+            {{ item.attribute('icon')|parse_icon }}
         {% endif %}
         {{ block('label') }}
     </a>
@@ -96,7 +96,7 @@
     {% import "knp_menu.html.twig" as macros %}
     <span {{ macros.attributes(item.labelAttributes) }}>
         {% if item.attribute('icon') is not empty %}
-            <i class="{{ item.attribute('icon') }}"></i>
+            {{ item.attribute('icon')|parse_icon }}
         {% endif %}
         {{ block('label') }}
     </span>
@@ -111,7 +111,7 @@
     {%- set attributes = attributes|merge({'data-toggle': 'dropdown'}) %}
     <a href="#"{{ macros.attributes(attributes) }}>
         {% if item.attribute('icon') is not empty %}
-            <i class="{{ item.attribute('icon') }}"></i>
+            {{ item.attribute('icon')|parse_icon }}
         {% endif %}
         {{ block('label') }}
         <b class="caret"></b>

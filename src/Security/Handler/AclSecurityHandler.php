@@ -25,6 +25,7 @@ use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -63,11 +64,13 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
 
     /**
      * @var string
+     * @phpstan-var class-string
      */
     private $maskBuilderClass;
 
     /**
      * @param string[] $superAdminRoles
+     * @phpstan-param class-string $maskBuilderClass
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -144,7 +147,10 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         }
 
         // retrieving the security identity of the currently logged-in user
-        $user = $this->tokenStorage->getToken()->getUser();
+        $token = $this->tokenStorage->getToken();
+        \assert(null !== $token);
+        $user = $token->getUser();
+        \assert($user instanceof UserInterface);
         $securityIdentity = UserSecurityIdentity::fromAccount($user);
 
         $this->addObjectOwner($acl, $securityIdentity);
@@ -162,7 +168,6 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
     {
         try {
             $acl = $this->aclProvider->findAcl($objectIdentity);
-            // todo - remove `assert` statement after https://github.com/phpstan/phpstan-symfony/pull/92 is released
             \assert($acl instanceof MutableAclInterface);
         } catch (AclNotFoundException $e) {
             return null;
@@ -174,17 +179,20 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
     public function findObjectAcls(\Traversable $oids, array $sids = []): \SplObjectStorage
     {
         try {
+            /** @var \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface> $acls */
             $acls = $this->aclProvider->findAcls(iterator_to_array($oids), $sids);
         } catch (NotAllAclsFoundException $e) {
+            /** @var \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface> $acls */
             $acls = $e->getPartialResult();
         } catch (AclNotFoundException $e) { // if only one oid, this error is thrown
+            /** @var \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface> $acls */
             $acls = new \SplObjectStorage();
         }
 
         return $acls;
     }
 
-    public function addObjectOwner(MutableAclInterface $acl, ?UserSecurityIdentity $securityIdentity = null): void
+    public function addObjectOwner(MutableAclInterface $acl, UserSecurityIdentity $securityIdentity): void
     {
         if (false === $this->findClassAceIndexByUsername($acl, $securityIdentity->getUsername())) {
             // only add if not already exists

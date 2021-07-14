@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Tests\Templating;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 
-class TemplateRegistryTest extends TestCase
+final class TemplateRegistryTest extends TestCase
 {
     /**
      * @var TemplateRegistry
@@ -40,7 +40,7 @@ class TemplateRegistryTest extends TestCase
             'edit' => '@FooAdmin/CRUD/edit.html.twig',
         ];
 
-        $this->assertSame($templates, $this->templateRegistry->getTemplates());
+        self::assertSame($templates, $this->templateRegistry->getTemplates());
     }
 
     public function testThrowExceptionIfTheTemplateDoesNotExist(): void
@@ -48,7 +48,7 @@ class TemplateRegistryTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Template named "foo" doesn\'t exist.');
 
-        $this->assertFalse($this->templateRegistry->hasTemplate('foo'));
+        self::assertFalse($this->templateRegistry->hasTemplate('foo'));
 
         $this->templateRegistry->getTemplate('foo');
     }

@@ -29,7 +29,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 /**
  * @phpstan-import-type Group from \Sonata\AdminBundle\Admin\Pool
  */
-class GroupMenuProviderTest extends TestCase
+final class GroupMenuProviderTest extends TestCase
 {
     /**
      * @var Pool
@@ -86,7 +86,7 @@ class GroupMenuProviderTest extends TestCase
 
     public function testGroupMenuProviderName(): void
     {
-        $this->assertTrue($this->provider->has('sonata_group_menu'));
+        self::assertTrue($this->provider->has('sonata_group_menu'));
     }
 
     /**
@@ -110,20 +110,20 @@ class GroupMenuProviderTest extends TestCase
             ]
         );
 
-        $this->assertInstanceOf(ItemInterface::class, $menu);
-        $this->assertSame('foo', $menu->getName());
+        self::assertInstanceOf(ItemInterface::class, $menu);
+        self::assertSame('foo', $menu->getName());
 
         $children = $menu->getChildren();
 
-        $this->assertCount(1, $children);
-        $this->assertArrayHasKey('foo_admin_label', $children);
-        $this->assertArrayNotHasKey('route_label', $children);
-        $this->assertInstanceOf(MenuItem::class, $menu['foo_admin_label']);
-        $this->assertSame('foo_admin_label', $menu['foo_admin_label']->getLabel());
+        self::assertCount(1, $children);
+        self::assertArrayHasKey('foo_admin_label', $children);
+        self::assertArrayNotHasKey('route_label', $children);
+        self::assertInstanceOf(MenuItem::class, $menu['foo_admin_label']);
+        self::assertSame('foo_admin_label', $menu['foo_admin_label']->getLabel());
 
         $extras = $menu['foo_admin_label']->getExtras();
-        $this->assertArrayHasKey('label_catalogue', $extras);
-        $this->assertSame($extras['label_catalogue'], 'SonataAdminBundle');
+        self::assertArrayHasKey('label_catalogue', $extras);
+        self::assertSame($extras['label_catalogue'], 'SonataAdminBundle');
     }
 
     public function unanimousGrantCheckerMock(string $role): bool
@@ -156,11 +156,11 @@ class GroupMenuProviderTest extends TestCase
             ]
         );
 
-        $this->assertInstanceOf(ItemInterface::class, $menu);
+        self::assertInstanceOf(ItemInterface::class, $menu);
 
         $children = $menu->getChildren();
 
-        $this->assertCount(4, $children);
+        self::assertCount(4, $children);
     }
 
     /**
@@ -184,11 +184,11 @@ class GroupMenuProviderTest extends TestCase
         );
         $isBazItem = $adminGroups['roles'] === ['baz'];
 
-        $this->assertInstanceOf(ItemInterface::class, $menu);
-        $this->assertSame(!$isBazItem, $menu->isDisplayed());
+        self::assertInstanceOf(ItemInterface::class, $menu);
+        self::assertSame(!$isBazItem, $menu->isDisplayed());
 
         $children = $menu->getChildren();
-        $this->assertCount($isBazItem ? 0 : 3, $children);
+        self::assertCount($isBazItem ? 0 : 3, $children);
     }
 
     /**
@@ -210,9 +210,9 @@ class GroupMenuProviderTest extends TestCase
                 'group' => $adminGroups,
             ]
         );
-        $this->assertInstanceOf(ItemInterface::class, $menu);
+        self::assertInstanceOf(ItemInterface::class, $menu);
 
-        $this->assertTrue($menu->isDisplayed());
+        self::assertTrue($menu->isDisplayed());
     }
 
     /**
@@ -236,27 +236,29 @@ class GroupMenuProviderTest extends TestCase
             ]
         );
 
-        $this->assertInstanceOf(ItemInterface::class, $menu);
-        $this->assertSame('foo', $menu->getName());
+        self::assertInstanceOf(ItemInterface::class, $menu);
+        self::assertSame('foo', $menu->getName());
 
         $children = $menu->getChildren();
 
-        $this->assertCount(3, $children);
-        $this->assertArrayHasKey('foo_admin_label', $children);
-        $this->assertArrayHasKey('route_label', $children);
-        $this->assertInstanceOf(MenuItem::class, $menu['foo_admin_label']);
-        $this->assertSame('foo_admin_label', $menu['foo_admin_label']->getLabel());
+        self::assertCount(3, $children);
+        self::assertArrayHasKey('foo_admin_label', $children);
+        self::assertArrayHasKey('route_label', $children);
+        self::assertInstanceOf(MenuItem::class, $menu['foo_admin_label']);
+        self::assertSame('foo_admin_label', $menu['foo_admin_label']->getLabel());
 
         $extras = $menu['foo_admin_label']->getExtras();
-        $this->assertArrayHasKey('label_catalogue', $extras);
-        $this->assertSame('SonataAdminBundle', $extras['label_catalogue']);
+        self::assertArrayHasKey('label_catalogue', $extras);
+        self::assertSame('SonataAdminBundle', $extras['label_catalogue']);
 
+        self::assertInstanceOf(MenuItem::class, $menu['route_label']);
         $extras = $menu['route_label']->getExtras();
-        $this->assertArrayHasKey('label_catalogue', $extras);
-        $this->assertSame('SonataAdminBundle', $extras['label_catalogue']);
+        self::assertArrayHasKey('label_catalogue', $extras);
+        self::assertSame('SonataAdminBundle', $extras['label_catalogue']);
 
-        $this->assertSame('http://sonata-project/FooRoute?foo=bar', $menu['route_label']->getUri());
-        $this->assertSame('/FooRelativeRoute?baz=qux', $menu['relative_route']->getUri());
+        self::assertSame('http://sonata-project/FooRoute?foo=bar', $menu['route_label']->getUri());
+        self::assertInstanceOf(MenuItem::class, $menu['relative_route']);
+        self::assertSame('/FooRelativeRoute?baz=qux', $menu['relative_route']->getUri());
     }
 
     /**
@@ -280,10 +282,10 @@ class GroupMenuProviderTest extends TestCase
             ]
         );
 
-        $this->assertInstanceOf(ItemInterface::class, $menu);
-        $this->assertArrayNotHasKey('foo_admin_label', $menu->getChildren());
-        $this->assertArrayHasKey('route_label', $menu->getChildren());
-        $this->assertCount(2, $menu->getChildren());
+        self::assertInstanceOf(ItemInterface::class, $menu);
+        self::assertArrayNotHasKey('foo_admin_label', $menu->getChildren());
+        self::assertArrayHasKey('route_label', $menu->getChildren());
+        self::assertCount(2, $menu->getChildren());
     }
 
     /**
@@ -307,10 +309,10 @@ class GroupMenuProviderTest extends TestCase
             ]
         );
 
-        $this->assertInstanceOf(ItemInterface::class, $menu);
-        $this->assertArrayNotHasKey('foo_admin_label', $menu->getChildren());
-        $this->assertArrayHasKey('route_label', $menu->getChildren());
-        $this->assertCount(2, $menu->getChildren());
+        self::assertInstanceOf(ItemInterface::class, $menu);
+        self::assertArrayNotHasKey('foo_admin_label', $menu->getChildren());
+        self::assertArrayHasKey('route_label', $menu->getChildren());
+        self::assertCount(2, $menu->getChildren());
     }
 
     /**
@@ -330,8 +332,8 @@ class GroupMenuProviderTest extends TestCase
             ]
         );
 
-        $this->assertInstanceOf(ItemInterface::class, $menu);
-        $this->assertCount(0, $menu->getChildren());
+        self::assertInstanceOf(ItemInterface::class, $menu);
+        self::assertCount(0, $menu->getChildren());
     }
 
     /**
@@ -357,9 +359,9 @@ class GroupMenuProviderTest extends TestCase
             ]
         );
 
-        $this->assertInstanceOf(ItemInterface::class, $menu);
-        $this->assertSame('keep-open', $menu->getAttribute('class'));
-        $this->assertTrue($menu->getExtra('keep_open'));
+        self::assertInstanceOf(ItemInterface::class, $menu);
+        self::assertSame('keep-open', $menu->getAttribute('class'));
+        self::assertTrue($menu->getExtra('keep_open'));
     }
 
     /**
@@ -383,9 +385,10 @@ class GroupMenuProviderTest extends TestCase
             ]
         );
 
-        $this->assertInstanceOf(ItemInterface::class, $menu);
-        $this->assertSame('foo', $menu->getName());
-        $this->assertSame($expectedUrl, $menu['foo_admin_label']->getUri());
+        self::assertInstanceOf(ItemInterface::class, $menu);
+        self::assertSame('foo', $menu->getName());
+        self::assertInstanceOf(ItemInterface::class, $menu['foo_admin_label']);
+        self::assertSame($expectedUrl, $menu['foo_admin_label']->getUri());
     }
 
     /**
@@ -692,14 +695,14 @@ class GroupMenuProviderTest extends TestCase
     private function getAdminMock(bool $hasRoute = true, bool $isGranted = true): AdminInterface
     {
         $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->once())
+        $admin->expects(self::once())
             ->method('hasRoute')
-            ->with($this->equalTo('list'))
+            ->with(self::equalTo('list'))
             ->willReturn($hasRoute);
 
         $admin
             ->method('hasAccess')
-            ->with($this->equalTo('list'))
+            ->with(self::equalTo('list'))
             ->willReturn($isGranted);
 
         $admin->method('getLabel')->willReturn('foo_admin_label');

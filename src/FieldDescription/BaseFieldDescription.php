@@ -314,11 +314,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->options[$name] = array_merge($this->options[$name], $options);
     }
 
-    final public function mergeOptions(array $options = []): void
-    {
-        $this->setOptions(array_merge_recursive($this->options, $options));
-    }
-
     final public function getMappingType()
     {
         return $this->mappingType;
@@ -347,9 +342,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->getOption('sort_parent_association_mappings');
     }
 
-    final public function getTranslationDomain(): string
+    final public function getTranslationDomain()
     {
-        return $this->getOption('translation_domain') ?: $this->getAdmin()->getTranslationDomain();
+        return $this->getOption('translation_domain') ?? $this->getAdmin()->getTranslationDomain();
     }
 
     final public function isVirtual(): bool

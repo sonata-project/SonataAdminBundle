@@ -42,7 +42,7 @@ final class LockExtension extends AbstractAdminExtension
             $data = $event->getData();
             $form = $event->getForm();
 
-            if (!\is_object($data) || $form->getParent()) {
+            if (!\is_object($data) || null !== $form->getParent()) {
                 return;
             }
 
@@ -65,7 +65,12 @@ final class LockExtension extends AbstractAdminExtension
 
     public function preUpdate(AdminInterface $admin, object $object): void
     {
-        if (!$admin->hasRequest() || !$data = $admin->getRequest()->get($admin->getUniqId())) {
+        if (!$admin->hasRequest()) {
+            return;
+        }
+
+        $data = $admin->getRequest()->get($admin->getUniqId());
+        if (!\is_array($data)) {
             return;
         }
 

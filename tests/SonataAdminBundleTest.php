@@ -31,13 +31,13 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class SonataAdminBundleTest extends TestCase
+final class SonataAdminBundleTest extends TestCase
 {
     public function testBuild(): void
     {
         $containerBuilder = $this->createMock(ContainerBuilder::class);
 
-        $containerBuilder->expects($this->exactly(11))
+        $containerBuilder->expects(self::exactly(11))
             ->method('addCompilerPass')
             ->withConsecutive(
                 [new AddDependencyCallsCompilerPass()],

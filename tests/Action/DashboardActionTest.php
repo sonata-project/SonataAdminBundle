@@ -16,14 +16,12 @@ namespace Sonata\AdminBundle\Tests\Action;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\DashboardAction;
-use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-class DashboardActionTest extends TestCase
+final class DashboardActionTest extends TestCase
 {
     /**
      * @var MutableTemplateRegistryInterface&Stub
@@ -37,18 +35,13 @@ class DashboardActionTest extends TestCase
 
     protected function setUp(): void
     {
-        $container = new Container();
-
         $this->templateRegistry = $this->createStub(MutableTemplateRegistryInterface::class);
-
-        $pool = new Pool($container);
 
         $twig = $this->createMock(Environment::class);
 
         $this->action = new DashboardAction(
             [],
             $this->templateRegistry,
-            $pool,
             $twig
         );
     }
@@ -62,7 +55,7 @@ class DashboardActionTest extends TestCase
             ['dashboard', 'dashboard.html'],
         ]);
 
-        $this->assertInstanceOf(Response::class, ($this->action)($request));
+        self::assertInstanceOf(Response::class, ($this->action)($request));
     }
 
     public function testDashboardActionAjaxLayout(): void
@@ -75,6 +68,6 @@ class DashboardActionTest extends TestCase
             ['dashboard', 'dashboard.html'],
         ]);
 
-        $this->assertInstanceOf(Response::class, ($this->action)($request));
+        self::assertInstanceOf(Response::class, ($this->action)($request));
     }
 }

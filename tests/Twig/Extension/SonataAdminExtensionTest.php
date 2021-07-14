@@ -28,11 +28,9 @@ use Twig\Extra\String\StringExtension;
 use Twig\Loader\FilesystemLoader;
 
 /**
- * Test for SonataAdminExtension.
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class SonataAdminExtensionTest extends TestCase
+final class SonataAdminExtensionTest extends TestCase
 {
     /**
      * @var SonataAdminExtension
@@ -120,12 +118,12 @@ class SonataAdminExtensionTest extends TestCase
 
         $this->admin
             ->method('id')
-            ->with($this->equalTo($this->object))
+            ->with(self::equalTo($this->object))
             ->willReturn('12345');
 
         $this->admin
             ->method('getNormalizedIdentifier')
-            ->with($this->equalTo($this->object))
+            ->with(self::equalTo($this->object))
             ->willReturn('12345');
 
         $this->adminBar = $this->createMock(AdminInterface::class);
@@ -134,7 +132,7 @@ class SonataAdminExtensionTest extends TestCase
             ->willReturn(true);
         $this->adminBar
             ->method('getNormalizedIdentifier')
-            ->with($this->equalTo($this->object))
+            ->with(self::equalTo($this->object))
             ->willReturn('12345');
 
         $this->container->set('sonata_admin_foo_service', $this->admin);
@@ -152,16 +150,16 @@ class SonataAdminExtensionTest extends TestCase
             [\stdClass::class => ['sonata_admin_foo_service']]
         );
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(self::once())
             ->method('getUrlSafeIdentifier')
-            ->with($this->equalTo($model))
+            ->with(self::equalTo($model))
             ->willReturn('1234567');
 
         $this->container->set('sonata_admin_foo_service', $this->admin);
 
         $twigExtension = new SonataAdminExtension($pool);
 
-        $this->assertSame('1234567', $twigExtension->getUrlSafeIdentifier($model));
+        self::assertSame('1234567', $twigExtension->getUrlSafeIdentifier($model));
     }
 
     public function testGetUrlsafeIdentifier_GivenAdmin_Foo(): void
@@ -181,17 +179,17 @@ class SonataAdminExtensionTest extends TestCase
             ]]
         );
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(self::once())
             ->method('getUrlSafeIdentifier')
-            ->with($this->equalTo($model))
+            ->with(self::equalTo($model))
             ->willReturn('1234567');
 
-        $this->adminBar->expects($this->never())
+        $this->adminBar->expects(self::never())
             ->method('getUrlSafeIdentifier');
 
         $twigExtension = new SonataAdminExtension($pool);
 
-        $this->assertSame('1234567', $twigExtension->getUrlSafeIdentifier($model, $this->admin));
+        self::assertSame('1234567', $twigExtension->getUrlSafeIdentifier($model, $this->admin));
     }
 
     public function testGetUrlsafeIdentifier_GivenAdmin_Bar(): void
@@ -208,16 +206,16 @@ class SonataAdminExtensionTest extends TestCase
             ]]
         );
 
-        $this->admin->expects($this->never())
+        $this->admin->expects(self::never())
             ->method('getUrlSafeIdentifier');
 
-        $this->adminBar->expects($this->once())
+        $this->adminBar->expects(self::once())
             ->method('getUrlSafeIdentifier')
-            ->with($this->equalTo($model))
+            ->with(self::equalTo($model))
             ->willReturn('1234567');
 
         $twigExtension = new SonataAdminExtension($pool);
 
-        $this->assertSame('1234567', $twigExtension->getUrlSafeIdentifier($model, $this->adminBar));
+        self::assertSame('1234567', $twigExtension->getUrlSafeIdentifier($model, $this->adminBar));
     }
 }

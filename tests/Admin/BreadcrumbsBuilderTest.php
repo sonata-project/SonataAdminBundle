@@ -29,7 +29,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *
  * @author Grégoire Paris <postmaster@greg0ire.fr>
  */
-class BreadcrumbsBuilderTest extends TestCase
+final class BreadcrumbsBuilderTest extends TestCase
 {
     public function testChildGetBreadCrumbs(): void
     {
@@ -97,7 +97,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $admin->method('getClassnameLabel')->willReturn('my_class_name');
 
         $breadcrumbs = $breadcrumbsBuilder->getBreadcrumbs($childAdmin, $action);
-        $this->assertCount(5, $breadcrumbs);
+        self::assertCount(5, $breadcrumbs);
 
         [$dashboardMenu, $adminListMenu, $adminSubjectMenu, $childMenu] = $breadcrumbs;
 
@@ -221,9 +221,9 @@ class BreadcrumbsBuilderTest extends TestCase
 
         if ('list' === $action) {
             $admin->method('isChild')->willReturn(true);
-            $menu->expects($this->once())->method('setUri')->with(null);
+            $menu->expects(self::once())->method('setUri')->with(null);
         } else {
-            $menu->expects($this->never())->method('setUri');
+            $menu->expects(self::never())->method('setUri');
         }
 
         $request = $this->createMock(Request::class);

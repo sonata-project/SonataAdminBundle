@@ -31,7 +31,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class LockExtensionTest extends TestCase
+final class LockExtensionTest extends TestCase
 {
     /**
      * @var LockExtension
@@ -76,7 +76,7 @@ class LockExtensionTest extends TestCase
 
     public function testModelManagerImplementsLockInterface(): void
     {
-        $this->assertInstanceOf(LockInterface::class, $this->modelManager);
+        self::assertInstanceOf(LockInterface::class, $this->modelManager);
     }
 
     public function testConfigureFormFields(): void
@@ -89,7 +89,7 @@ class LockExtensionTest extends TestCase
 
         $this->modelManager->method('getLockVersion')->with($this->object)->willReturn(1);
 
-        $form->expects($this->once())->method('add')->with(
+        $form->expects(self::once())->method('add')->with(
             '_lock_version',
             HiddenType::class,
             ['mapped' => false, 'data' => 1]
@@ -107,7 +107,7 @@ class LockExtensionTest extends TestCase
         $this->configureAdmin($modelManager);
         $event = new FormEvent($form, $this->object);
 
-        $form->expects($this->never())->method('add');
+        $form->expects(self::never())->method('add');
 
         $this->lockExtension->configureFormFields($formMapper);
         $this->eventDispatcher->dispatch($event, FormEvents::PRE_SET_DATA);
@@ -119,7 +119,7 @@ class LockExtensionTest extends TestCase
         $form = $this->configureForm();
         $event = new FormEvent($form, null);
 
-        $form->expects($this->never())->method('add');
+        $form->expects(self::never())->method('add');
 
         $this->lockExtension->configureFormFields($formMapper);
         $this->eventDispatcher->dispatch($event, FormEvents::PRE_SET_DATA);
@@ -133,7 +133,7 @@ class LockExtensionTest extends TestCase
         $event = new FormEvent($form, $this->object);
 
         $form->method('getParent')->willReturn('parent');
-        $form->expects($this->never())->method('add');
+        $form->expects(self::never())->method('add');
 
         $this->lockExtension->configureFormFields($formMapper);
         $this->eventDispatcher->dispatch($event, FormEvents::PRE_SET_DATA);
@@ -141,14 +141,13 @@ class LockExtensionTest extends TestCase
 
     public function testConfigureFormFieldsWhenModelManagerHasNoLockedVersion(): void
     {
-        $data = new \stdClass();
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
         $this->configureAdmin($this->modelManager);
         $event = new FormEvent($form, $this->object);
 
         $this->modelManager->method('getLockVersion')->with($this->object)->willReturn(null);
-        $form->expects($this->never())->method('add');
+        $form->expects(self::never())->method('add');
 
         $this->lockExtension->configureFormFields($formMapper);
         $this->eventDispatcher->dispatch($event, FormEvents::PRE_SET_DATA);
@@ -157,7 +156,7 @@ class LockExtensionTest extends TestCase
     public function testPreUpdateIfAdminHasNoRequest(): void
     {
         $this->configureAdmin($this->modelManager);
-        $this->modelManager->expects($this->never())->method('lock');
+        $this->modelManager->expects(self::never())->method('lock');
 
         $this->lockExtension->preUpdate($this->admin, $this->object);
     }
@@ -165,7 +164,7 @@ class LockExtensionTest extends TestCase
     public function testPreUpdateIfObjectIsNotVersioned(): void
     {
         $this->configureAdmin($this->modelManager);
-        $this->modelManager->expects($this->never())->method('lock');
+        $this->modelManager->expects(self::never())->method('lock');
 
         $this->lockExtension->preUpdate($this->admin, $this->object);
     }
@@ -175,7 +174,7 @@ class LockExtensionTest extends TestCase
         $uniqId = 'admin123';
         $this->configureAdmin($this->modelManager, $uniqId, $this->request);
 
-        $this->modelManager->expects($this->never())->method('lock');
+        $this->modelManager->expects(self::never())->method('lock');
 
         $this->request->request->set($uniqId, ['something']);
         $this->lockExtension->preUpdate($this->admin, $this->object);
@@ -189,7 +188,7 @@ class LockExtensionTest extends TestCase
             $uniqId,
             $this->request
         );
-        $this->modelManager->expects($this->never())->method('lock');
+        $this->modelManager->expects(self::never())->method('lock');
 
         $this->request->request->set($uniqId, ['_lock_version' => 1]);
         $this->lockExtension->preUpdate($this->admin, $this->object);
@@ -200,7 +199,7 @@ class LockExtensionTest extends TestCase
         $uniqId = 'admin123';
         $this->configureAdmin($this->modelManager, $uniqId, $this->request);
 
-        $this->modelManager->expects($this->once())->method('lock')->with($this->object, 1);
+        $this->modelManager->expects(self::once())->method('lock')->with($this->object, 1);
 
         $this->request->request->set($uniqId, ['_lock_version' => 1]);
         $this->lockExtension->preUpdate($this->admin, $this->object);
@@ -219,6 +218,9 @@ class LockExtensionTest extends TestCase
         return $form;
     }
 
+    /**
+     * @return FormMapper<object>
+     */
     private function configureFormMapper(): FormMapper
     {
         $formBuilder = new FormBuilder(

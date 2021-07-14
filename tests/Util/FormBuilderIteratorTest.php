@@ -23,7 +23,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 /**
  * @author Mike Meier <mike.meier@ibrows.ch>
  */
-class FormBuilderIteratorTest extends TestCase
+final class FormBuilderIteratorTest extends TestCase
 {
     /**
      * @var EventDispatcherInterface
@@ -52,14 +52,14 @@ class FormBuilderIteratorTest extends TestCase
     {
         $this->builder->add('name', TextType::class);
         $iterator = new FormBuilderIterator($this->builder);
-        $this->assertInstanceOf(\get_class($iterator), $iterator->getChildren());
-        $this->assertSame('name_name', $iterator->key());
+        self::assertInstanceOf(\get_class($iterator), $iterator->getChildren());
+        self::assertSame('name_name', $iterator->key());
     }
 
     public function testHasChildren(): void
     {
         $this->builder->add('name', TextType::class);
         $iterator = new FormBuilderIterator($this->builder);
-        $this->assertTrue($iterator->hasChildren());
+        self::assertTrue($iterator->hasChildren());
     }
 }

@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Menu\Matcher\Voter\AdminVoter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class AdminVoterTest extends AbstractVoterTest
+final class AdminVoterTest extends AbstractVoterTest
 {
     public function provideData(): array
     {
@@ -53,12 +53,12 @@ class AdminVoterTest extends AbstractVoterTest
 
     protected function createItem($data): ItemInterface
     {
-        $item = $this->getMockForAbstractClass(ItemInterface::class);
+        $item = $this->createMock(ItemInterface::class);
         $item
             ->method('getExtra')
-            ->with($this->logicalOr(
-                $this->equalTo('admin'),
-                $this->equalTo('route')
+            ->with(self::logicalOr(
+                self::equalTo('admin'),
+                self::equalTo('route')
             ))
             ->willReturn($data);
 

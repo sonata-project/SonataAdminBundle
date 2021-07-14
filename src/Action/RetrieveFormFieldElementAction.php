@@ -60,9 +60,9 @@ final class RetrieveFormFieldElementAction
         }
 
         $objectId = $request->get('objectId');
-        if ($objectId) {
+        if (null !== $objectId) {
             $subject = $admin->getObject($objectId);
-            if (!$subject) {
+            if (null === $subject) {
                 throw new NotFoundHttpException(sprintf(
                     'Unable to find the object id: %s, class: %s',
                     $objectId,
@@ -83,6 +83,7 @@ final class RetrieveFormFieldElementAction
 
         $elementId = $request->get('elementId');
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
+        \assert(null !== $view);
 
         // render the widget
         $renderer = $this->getFormRenderer();
@@ -93,6 +94,9 @@ final class RetrieveFormFieldElementAction
 
     private function getFormRenderer(): FormRenderer
     {
-        return $this->twig->getRuntime(FormRenderer::class);
+        $formRenderer = $this->twig->getRuntime(FormRenderer::class);
+        \assert($formRenderer instanceof FormRenderer);
+
+        return $formRenderer;
     }
 }

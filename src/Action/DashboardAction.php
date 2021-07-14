@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Action;
 
-use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,11 +31,6 @@ final class DashboardAction
     private $templateRegistry;
 
     /**
-     * @var Pool
-     */
-    private $pool;
-
-    /**
      * @var Environment
      */
     private $twig;
@@ -47,12 +41,10 @@ final class DashboardAction
     public function __construct(
         array $dashboardBlocks,
         TemplateRegistryInterface $templateRegistry,
-        Pool $pool,
         Environment $twig
     ) {
         $this->dashboardBlocks = $dashboardBlocks;
         $this->templateRegistry = $templateRegistry;
-        $this->pool = $pool;
         $this->twig = $twig;
     }
 

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Command;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Util\ObjectAclManipulatorInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -88,7 +87,7 @@ final class GenerateObjectAclCommand extends QuestionableCommand
             }
         }
 
-        if (!$this->aclObjectManipulators) {
+        if ([] === $this->aclObjectManipulators) {
             $output->writeln('No manipulators are implemented : <info>ignoring</info>');
 
             return 1;
@@ -121,18 +120,19 @@ final class GenerateObjectAclCommand extends QuestionableCommand
             }
 
             $manipulatorId = sprintf('sonata.admin.manipulator.acl.object.%s', $admin->getManagerType());
-            if (!$manipulator = $this->aclObjectManipulators[$manipulatorId] ?? null) {
+            if (!isset($this->aclObjectManipulators[$manipulatorId])) {
                 $output->writeln('Admin class is using a manager type that has no manipulator implemented : <info>ignoring</info>');
 
                 continue;
             }
+
+            $manipulator = $this->aclObjectManipulators[$manipulatorId];
             if (!$manipulator instanceof ObjectAclManipulatorInterface) {
                 $output->writeln(sprintf('The interface "ObjectAclManipulatorInterface" is not implemented for %s: <info>ignoring</info>', \get_class($manipulator)));
 
                 continue;
             }
 
-            \assert($admin instanceof AdminInterface);
             $manipulator->batchConfigureAcls($output, $admin, $securityIdentity);
         }
 
@@ -147,8 +147,9 @@ final class GenerateObjectAclCommand extends QuestionableCommand
     private function getUserModelClass(InputInterface $input, OutputInterface $output): string
     {
         if ('' === $this->userModelClass) {
-            if ($input->getOption('user_model')) {
-                $userModelFromInput = $input->getOption('user_model');
+            $userModel = $input->getOption('user_model');
+            if (null !== $userModel) {
+                $userModelFromInput = $userModel;
             } else {
                 $userModelFromInput = $this->getQuestionHelper()->ask(
                     $input,

@@ -1,6 +1,25 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.x to 3.x
+=======================
+
+### 'icon' option
+
+We used multiple icon option with different format:
+- `<i class="fa fa-plus"></i>`
+- `fa fa-plus`
+- `fa-plus`
+- `plus`
+
+The last two format are now deprecated.  Since we've fixed the deprecation in the code,
+if you've overriden some template, be sure to always render the icons with the new `parse_icon` filter.
+
+### `Sonata\AdminBundle\Form\FormMapper`
+
+Deprecated passing `collection` as argument 2 for `FormMapper::add()` method. You MUST pass
+`Symfony\Component\Form\Extension\Core\Type\CollectionType` or `Sonata\AdminBundle\Form\Type\CollectionType` instead.
+
 UPGRADE FROM 3.97 to 3.98
 =========================
 
@@ -1179,7 +1198,7 @@ The Twig extension method that fallback to a default template when the specified
 You can no longer rely on that and should always specify templates that exist.
 
 ## Deprecated AbstractAdmin methods
-- `buildBreacrumbs` is deprecated, and no replacement is given, it will become an internal method.
+- `buildBreadcrumbs` is deprecated, and no replacement is given, it will become an internal method.
 - `getBreadcrumbs` is deprecated in favor of the homonym method of the `sonata.admin.breadcrumbs_builder` service.
 - The breadcrumbs builder accessors are deprecated,
 the `sonata.admin.breadcrumbs_builder` service should be used directly instead.

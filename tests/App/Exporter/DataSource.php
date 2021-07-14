@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Exporter\DataSourceInterface;
 use Sonata\Exporter\Source\ArraySourceIterator;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 
-class DataSource implements DataSourceInterface
+final class DataSource implements DataSourceInterface
 {
     public function createIterator(ProxyQueryInterface $query, array $fields): SourceIteratorInterface
     {

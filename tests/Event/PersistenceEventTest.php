@@ -13,50 +13,54 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Event;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Event\PersistenceEvent;
 
-class PersistenceEventTest extends TestCase
+final class PersistenceEventTest extends TestCase
 {
     /**
-     * @var PersistenceEvent
+     * @var PersistenceEvent<object>
      */
     private $event;
 
     /**
-     * @var AdminInterface<object>
+     * @var AdminInterface<object>&MockObject
      */
     private $admin;
 
     /**
-     * @var mixed
+     * @var object
      */
     private $object;
 
     protected function setUp(): void
     {
-        $this->admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $this->object = new \stdClass();
+        /** @var object $object */
+        $object = new \stdClass();
+
+        $this->admin = $this->createMock(AdminInterface::class);
+        $this->object = $object;
 
         $this->event = new PersistenceEvent($this->admin, $this->object, 'Foo');
     }
 
     public function testGetType(): void
     {
-        $this->assertSame('Foo', $this->event->getType());
+        self::assertSame('Foo', $this->event->getType());
     }
 
     public function testGetAdmin(): void
     {
         $result = $this->event->getAdmin();
 
-        $this->assertInstanceOf(AdminInterface::class, $result);
-        $this->assertSame($this->admin, $result);
+        self::assertInstanceOf(AdminInterface::class, $result);
+        self::assertSame($this->admin, $result);
     }
 
     public function testGetObject(): void
     {
-        $this->assertSame($this->object, $this->event->getObject());
+        self::assertSame($this->object, $this->event->getObject());
     }
 }

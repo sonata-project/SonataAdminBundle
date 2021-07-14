@@ -20,6 +20,8 @@ use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @psalm-suppress PropertyNotSetInConstructor add `parent::__construct()` call when dropping support of symfony/symfony-config < 5.3.
  */
 final class AdminPoolLoader extends Loader
 {
@@ -63,7 +65,7 @@ final class AdminPoolLoader extends Loader
             }
 
             $reflection = new \ReflectionObject($admin);
-            if (file_exists($reflection->getFileName())) {
+            if (false !== $reflection->getFileName() && file_exists($reflection->getFileName())) {
                 $collection->addResource(new FileResource($reflection->getFileName()));
             }
         }

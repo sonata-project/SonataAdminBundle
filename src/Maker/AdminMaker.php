@@ -52,16 +52,28 @@ final class AdminMaker extends AbstractMaker
     /**
      * @var string
      * @phpstan-var class-string
+     *
+     * @psalm-suppress PropertyNotSetInConstructor
+     *
+     * @see AdminMaker::configure
      */
     private $modelClass;
 
     /**
      * @var string
+     *
+     * @psalm-suppress PropertyNotSetInConstructor
+     *
+     * @see AdminMaker::configure
      */
     private $modelClassBasename;
 
     /**
      * @var string
+     *
+     * @psalm-suppress PropertyNotSetInConstructor
+     *
+     * @see AdminMaker::configure
      */
     private $adminClassBasename;
 
@@ -72,11 +84,19 @@ final class AdminMaker extends AbstractMaker
 
     /**
      * @var string
+     *
+     * @psalm-suppress PropertyNotSetInConstructor
+     *
+     * @see AdminMaker::configure
      */
     private $managerType;
 
     /**
      * @var ModelManagerInterface<object>
+     *
+     * @psalm-suppress PropertyNotSetInConstructor
+     *
+     * @see AdminMaker::configure
      */
     private $modelManager;
 
@@ -127,11 +147,11 @@ final class AdminMaker extends AbstractMaker
             $input->getArgument('model'),
             [Validators::class, 'validateClass']
         );
-        $this->modelClassBasename = current(\array_slice(explode('\\', $this->modelClass), -1));
+        $this->modelClassBasename = \array_slice(explode('\\', $this->modelClass), -1)[0];
 
         $this->adminClassBasename = $io->ask(
             'The admin class basename',
-            $input->getOption('admin') ?: sprintf('%sAdmin', $this->modelClassBasename),
+            $input->getOption('admin') ?? sprintf('%sAdmin', $this->modelClassBasename),
             [Validators::class, 'validateAdminClassBasename']
         );
         if (\count($this->availableModelManagers) > 1) {
@@ -143,7 +163,7 @@ final class AdminMaker extends AbstractMaker
         if ($io->confirm('Do you want to generate a controller?', false)) {
             $this->controllerClassBasename = $io->ask(
                 'The controller class basename',
-                $input->getOption('controller') ?: sprintf('%sAdminController', $this->modelClassBasename),
+                $input->getOption('controller') ?? sprintf('%sAdminController', $this->modelClassBasename),
                 [Validators::class, 'validateControllerClassBasename']
             );
             $input->setOption('controller', $this->controllerClassBasename);
@@ -188,11 +208,12 @@ final class AdminMaker extends AbstractMaker
             'Admin'
         );
 
+        /** @phpstan-var class-string $adminClassFullName */
         $adminClassFullName = $adminClassNameDetails->getFullName();
         $this->generateAdmin($io, $generator, $adminClassNameDetails);
 
         $controllerClassFullName = '';
-        if ($this->controllerClassBasename) {
+        if (null !== $this->controllerClassBasename) {
             $controllerClassNameDetails = $generator->createClassNameDetails(
                 $this->controllerClassBasename,
                 'Controller\\',
@@ -216,6 +237,9 @@ final class AdminMaker extends AbstractMaker
         ));
     }
 
+    /**
+     * @phpstan-param class-string $adminClassFullName
+     */
     private function generateService(
         InputInterface $input,
         ConsoleStyle $io,
@@ -225,10 +249,9 @@ final class AdminMaker extends AbstractMaker
         if ($servicesFile = $input->getOption('services')) {
             $file = sprintf('%s/config/%s', $this->projectDirectory, $servicesFile);
             $servicesManipulator = new ServicesManipulator($file);
-            $controllerName = $this->controllerClassBasename ? $controllerClassFullName : '~';
+            $controllerName = null !== $this->controllerClassBasename ? $controllerClassFullName : '~';
 
-            $id = $input->getOption('id') ?:
-                $this->getAdminServiceId($this->adminClassBasename);
+            $id = $input->getOption('id') ?? $this->getAdminServiceId($this->adminClassBasename);
 
             $servicesManipulator->addResource(
                 $id,
@@ -306,7 +329,7 @@ final class AdminMaker extends AbstractMaker
         $this->modelClass = Validators::validateClass($input->getArgument('model'));
         $this->modelClassBasename = (new \ReflectionClass($this->modelClass))->getShortName();
         $this->adminClassBasename = Validators::validateAdminClassBasename(
-            $input->getOption('admin') ?: sprintf('%sAdmin', $this->modelClassBasename)
+            $input->getOption('admin') ?? sprintf('%sAdmin', $this->modelClassBasename)
         );
 
         if ($this->controllerClassBasename = $input->getOption('controller')) {
@@ -317,7 +340,7 @@ final class AdminMaker extends AbstractMaker
             throw new \InvalidArgumentException('There are no model managers registered.');
         }
 
-        $this->managerType = $input->getOption('manager') ?: array_keys($this->availableModelManagers)[0];
+        $this->managerType = $input->getOption('manager') ?? array_keys($this->availableModelManagers)[0];
         $this->modelManager = $this->availableModelManagers[$this->managerType] ?? current($this->availableModelManagers);
     }
 }

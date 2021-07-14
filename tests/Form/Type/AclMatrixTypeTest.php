@@ -21,12 +21,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @author Baptiste Meyer <baptiste@les-tilleuls.coop>
  */
-class AclMatrixTypeTest extends TypeTestCase
+final class AclMatrixTypeTest extends TypeTestCase
 {
     public function testGetDefaultOptions(): void
     {
         $type = new AclMatrixType();
-        $user = $this->getMockForAbstractClass(UserInterface::class);
+        $user = $this->createMock(UserInterface::class);
 
         $permissions = [
             'OWNER' => [
@@ -46,8 +46,8 @@ class AclMatrixTypeTest extends TypeTestCase
             'permissions' => $permissions,
         ]);
 
-        $this->assertInstanceOf(UserInterface::class, $options['acl_value']);
-        $this->assertSame($user, $options['acl_value']);
-        $this->assertSame($permissions, $options['permissions']);
+        self::assertInstanceOf(UserInterface::class, $options['acl_value']);
+        self::assertSame($user, $options['acl_value']);
+        self::assertSame($permissions, $options['permissions']);
     }
 }

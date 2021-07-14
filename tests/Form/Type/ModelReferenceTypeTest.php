@@ -20,7 +20,7 @@ use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class ModelReferenceTypeTest extends TypeTestCase
+final class ModelReferenceTypeTest extends TypeTestCase
 {
     /**
      * @var MockObject&ModelManagerInterface<object>
@@ -46,9 +46,9 @@ class ModelReferenceTypeTest extends TypeTestCase
                 'class' => 'My\Entity',
             ]
         );
-        $this->modelManager->expects($this->once())->method('find')->with('My\Entity', '42');
+        $this->modelManager->expects(self::once())->method('find')->with('My\Entity', '42');
         $form->submit($formData);
-        $this->assertTrue($form->isSynchronized());
+        self::assertTrue($form->isSynchronized());
     }
 
     /**

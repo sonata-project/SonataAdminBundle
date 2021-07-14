@@ -36,7 +36,8 @@ final class ModelManagerCompilerPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds(self::MANAGER_TAG) as $id => $tags) {
             $definition = $container->findDefinition($id);
 
-            if (!is_subclass_of($definition->getClass(), ModelManagerInterface::class)) {
+            $class = $definition->getClass();
+            if (null === $class || !is_subclass_of($class, ModelManagerInterface::class)) {
                 throw new LogicException(sprintf(
                     'Service "%s" must implement `%s`.',
                     $id,
@@ -47,8 +48,10 @@ final class ModelManagerCompilerPass implements CompilerPassInterface
             $availableManagers[$id] = $definition;
         }
 
-        if (!empty($availableManagers)) {
+        if ([] !== $availableManagers) {
             $bundles = $container->getParameter('kernel.bundles');
+            \assert(\is_array($bundles));
+
             if (isset($bundles['MakerBundle'])) {
                 $adminMakerDefinition = $container->getDefinition('sonata.admin.maker');
                 $adminMakerDefinition->replaceArgument(1, $availableManagers);

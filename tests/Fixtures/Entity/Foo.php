@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
 
-class Foo
+final class Foo
 {
     /**
-     * @var string|int
+     * @var string|int|null
      */
     private $bar;
 
     /**
-     * @var string|int
+     * @var string|int|null
      */
     private $baz;
 
@@ -31,7 +31,7 @@ class Foo
     }
 
     /**
-     * @return int|string
+     * @return int|string|null
      */
     public function getBar()
     {
@@ -47,7 +47,7 @@ class Foo
     }
 
     /**
-     * @return int|string
+     * @return int|string|null
      */
     public function getBaz()
     {

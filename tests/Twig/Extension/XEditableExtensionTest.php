@@ -33,7 +33,7 @@ final class XEditableExtensionTest extends TestCase
     {
         $twigExtension = new XEditableExtension(new Translator('en'));
 
-        $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription
             ->method('getOption')
             ->withConsecutive(
@@ -42,13 +42,13 @@ final class XEditableExtensionTest extends TestCase
                 ['required'],
                 ['multiple']
             )
-            ->will($this->onConsecutiveCalls(
+            ->will(self::onConsecutiveCalls(
                 $options['choices'],
                 'MyCatalogue',
                 $options['multiple'] ?? null
             ));
 
-        $this->assertSame($expectedChoices, $twigExtension->getXEditableChoices($fieldDescription));
+        self::assertSame($expectedChoices, $twigExtension->getXEditableChoices($fieldDescription));
     }
 
     /**

@@ -71,7 +71,7 @@ final class Datagrid implements DatagridInterface
     private $formBuilder;
 
     /**
-     * @var FormInterface
+     * @var FormInterface|null
      */
     private $form;
 
@@ -205,7 +205,16 @@ final class Datagrid implements DatagridInterface
 
     public function reorderFilters(array $keys): void
     {
-        $this->filters = array_merge(array_flip($keys), $this->filters);
+        $orderedFilters = [];
+        foreach ($keys as $name) {
+            if (!$this->hasFilter($name)) {
+                throw new \InvalidArgumentException(sprintf('Filter "%s" does not exist.', $name));
+            }
+
+            $orderedFilters[$name] = $this->filters[$name];
+        }
+
+        $this->filters = $orderedFilters + $this->filters;
     }
 
     public function getValues(): array
@@ -257,6 +266,7 @@ final class Datagrid implements DatagridInterface
     public function getForm(): FormInterface
     {
         $this->buildPager();
+        \assert(null !== $this->form);
 
         return $this->form;
     }

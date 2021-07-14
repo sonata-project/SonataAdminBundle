@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Route\RoutesCache;
 use Sonata\AdminBundle\Route\RoutesCacheWarmUp;
 use Symfony\Component\DependencyInjection\Container;
 
-class RoutesCacheWarmUpTest extends TestCase
+final class RoutesCacheWarmUpTest extends TestCase
 {
     /**
      * @var RoutesCacheWarmUp
@@ -35,6 +35,6 @@ class RoutesCacheWarmUpTest extends TestCase
 
     public function testIsOptional(): void
     {
-        $this->assertTrue($this->routesCacheWarmUp->isOptional());
+        self::assertTrue($this->routesCacheWarmUp->isOptional());
     }
 }

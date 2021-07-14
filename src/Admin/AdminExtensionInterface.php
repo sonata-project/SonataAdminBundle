@@ -28,12 +28,24 @@ use Sonata\AdminBundle\Show\ShowMapper;
  */
 interface AdminExtensionInterface
 {
+    /**
+     * @phpstan-param FormMapper<T> $form
+     */
     public function configureFormFields(FormMapper $form): void;
 
+    /**
+     * @phpstan-param ListMapper<T> $list
+     */
     public function configureListFields(ListMapper $list): void;
 
+    /**
+     * @phpstan-param DatagridMapper<T> $filter
+     */
     public function configureDatagridFilters(DatagridMapper $filter): void;
 
+    /**
+     * @phpstan-param ShowMapper<T> $show
+     */
     public function configureShowFields(ShowMapper $show): void;
 
     /**

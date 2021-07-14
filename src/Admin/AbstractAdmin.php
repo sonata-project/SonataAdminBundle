@@ -403,7 +403,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function initialize(): void
     {
-        if (!$this->classnameLabel) {
+        if (null === $this->classnameLabel) {
             $namespaceSeparatorPos = strrpos($this->getClass(), '\\');
             $this->classnameLabel = false !== $namespaceSeparatorPos
                 ? substr($this->getClass(), $namespaceSeparatorPos + 1)
@@ -511,7 +511,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
                 // if no filters, fetch from storage
                 // otherwise save to storage
-                if (empty($filters)) {
+                if ([] === $filters) {
                     $filters = $this->getFilterPersister()->get($this->getCode());
                 } else {
                     $this->getFilterPersister()->set($this->getCode(), $filters);
@@ -521,10 +521,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             $parameters = ParametersManipulator::merge($parameters, $filters);
 
             // always force the parent value
-            $parentAssociationMapping = $this->getParentAssociationMapping();
-            if ($this->isChild() && null !== $parentAssociationMapping) {
-                $name = str_replace('.', '__', $parentAssociationMapping);
-                $parameters[$name] = ['value' => $this->getRequest()->get($this->getParent()->getIdParameter())];
+            if ($this->isChild()) {
+                $parentAssociationMapping = $this->getParentAssociationMapping();
+                if (null !== $parentAssociationMapping) {
+                    $name = str_replace('.', '__', $parentAssociationMapping);
+                    $parameters[$name] = ['value' => $this->getRequest()->get($this->getParent()->getIdParameter())];
+                }
             }
         }
 
@@ -549,30 +551,20 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * Returns the name of the parent related field, so the field can be use to set the default
      * value (ie the parent object) or to filter the object.
      *
-     * @throws \InvalidArgumentException
+     * @throws \LogicException
      */
     final public function getParentAssociationMapping(): ?string
     {
-        if ($this->isChild()) {
-            $parent = $this->getParent()->getCode();
-
-            if (\array_key_exists($parent, $this->parentAssociationMapping)) {
-                return $this->parentAssociationMapping[$parent];
-            }
-
-            throw new \InvalidArgumentException(sprintf(
-                'There\'s no association between %s and %s.',
-                $this->getCode(),
-                $this->getParent()->getCode()
+        if (!$this->isChild()) {
+            throw new \LogicException(sprintf(
+                'Admin "%s" has no parent.',
+                static::class
             ));
         }
 
-        return null;
-    }
+        $parent = $this->getParent()->getCode();
 
-    final public function addParentAssociationMapping(string $code, string $value): void
-    {
-        $this->parentAssociationMapping[$code] = $value;
+        return $this->parentAssociationMapping[$parent];
     }
 
     final public function getBaseRoutePattern(): string
@@ -583,7 +575,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         if ($this->isChild()) { // the admin class is a child, prefix it with the parent route pattern
             $baseRoutePattern = $this->baseRoutePattern;
-            if (!$baseRoutePattern) {
+            if (null === $baseRoutePattern) {
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
@@ -601,7 +593,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 $this->getParent()->getRouterIdParameter(),
                 $baseRoutePattern
             );
-        } elseif ($this->baseRoutePattern) {
+        } elseif (null !== $this->baseRoutePattern) {
             $this->cachedBaseRoutePattern = $this->baseRoutePattern;
         } else {
             preg_match(self::CLASS_REGEX, $this->class, $matches);
@@ -615,7 +607,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
             $this->cachedBaseRoutePattern = sprintf(
                 '/%s%s/%s',
-                empty($matches[1]) ? '' : $this->urlize($matches[1], '-').'/',
+                '' === $matches[1] ? '' : $this->urlize($matches[1], '-').'/',
                 $this->urlize($matches[3], '-'),
                 $this->urlize($matches[5], '-')
             );
@@ -637,7 +629,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
             $baseRouteName = $this->baseRouteName;
-            if (!$baseRouteName) {
+            if (null === $baseRouteName) {
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
@@ -655,7 +647,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 $this->getParent()->getBaseRouteName(),
                 $baseRouteName
             );
-        } elseif ($this->baseRouteName) {
+        } elseif (null !== $this->baseRouteName) {
             $this->cachedBaseRouteName = $this->baseRouteName;
         } else {
             preg_match(self::CLASS_REGEX, $this->class, $matches);
@@ -670,7 +662,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
             $this->cachedBaseRouteName = sprintf(
                 'admin_%s%s_%s',
-                empty($matches[1]) ? '' : $this->urlize($matches[1]).'_',
+                '' === $matches[1] ? '' : $this->urlize($matches[1]).'_',
                 $this->urlize($matches[3]),
                 $this->urlize($matches[5])
             );
@@ -836,7 +828,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $request = $this->getRequest();
         $route = $request->get('_route');
 
-        if ($adminCode) {
+        if (null !== $adminCode) {
             $pool = $this->getConfigurationPool();
 
             if ($pool->hasAdminByAdminCode($adminCode)) {
@@ -885,7 +877,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function getFormBuilder(): FormBuilderInterface
     {
         $formBuilder = $this->getFormContractor()->getFormBuilder(
-            $this->getUniqid(),
+            $this->getUniqId(),
             ['data_class' => $this->getClass()] + $this->getFormOptions(),
         );
 
@@ -936,6 +928,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
+     * @param string|int|null $id
+     *
      * @phpstan-return T|null
      */
     final public function getObject($id): ?object
@@ -1069,7 +1063,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         foreach ($this->formGroups as $name => $formGroup) {
             unset($this->formGroups[$name]['fields'][$key]);
 
-            if (empty($this->formGroups[$name]['fields'])) {
+            if ([] === $this->formGroups[$name]['fields']) {
                 unset($this->formGroups[$name]);
             }
         }
@@ -1369,8 +1363,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         $this->children[$child->getCode()] = $child;
 
-        $child->setParent($this);
-        $child->addParentAssociationMapping($this->getCode(), $field);
+        $child->setParent($this, $field);
     }
 
     final public function hasChild(string $code): bool
@@ -1396,9 +1389,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getChildren()[$code];
     }
 
-    final public function setParent(AdminInterface $parent): void
+    final public function setParent(AdminInterface $parent, string $parentAssociationMapping): void
     {
         $this->parent = $parent;
+        $this->parentAssociationMapping[$parent->getCode()] = $parentAssociationMapping;
     }
 
     final public function getParent(): AdminInterface
@@ -1472,7 +1466,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function getUniqId(): string
     {
-        if (!$this->uniqId) {
+        if (null === $this->uniqId) {
             $this->uniqId = sprintf('s%s', uniqid());
         }
 
@@ -1555,7 +1549,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function getRequest(): Request
     {
-        if (!$this->request) {
+        if (null === $this->request) {
             throw new \LogicException('The Request object has not been set');
         }
 
@@ -1598,11 +1592,11 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function isGranted($name, ?object $object = null): bool
     {
-        $objectRef = $object ? sprintf('/%s#%s', spl_object_hash($object), $this->id($object) ?? '') : '';
+        $objectRef = null !== $object ? sprintf('/%s#%s', spl_object_hash($object), $this->id($object) ?? '') : '';
         $key = md5(json_encode($name).$objectRef);
 
         if (!\array_key_exists($key, $this->cacheIsGranted)) {
-            $this->cacheIsGranted[$key] = $this->getSecurityHandler()->isGranted($this, $name, $object ?: $this);
+            $this->cacheIsGranted[$key] = $this->getSecurityHandler()->isGranted($this, $name, $object ?? $this);
         }
 
         return $this->cacheIsGranted[$key];
@@ -1790,7 +1784,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         $buttonList = [];
 
-        if (self::MASK_OF_ACTION_CREATE & $actionBit
+        if (0 !== (self::MASK_OF_ACTION_CREATE & $actionBit)
             && $this->hasRoute('create')
             && $this->hasAccess('create')
         ) {
@@ -1799,7 +1793,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             ];
         }
 
-        $canAccessObject = self::MASK_OF_ACTIONS_USING_OBJECT & $actionBit && null !== $object && null !== $this->id($object);
+        $canAccessObject = 0 !== (self::MASK_OF_ACTIONS_USING_OBJECT & $actionBit)
+            && null !== $object
+            && null !== $this->id($object);
 
         if ($canAccessObject
             && self::MASK_OF_ACTION_EDIT & $actionBit
@@ -1843,7 +1839,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             ];
         }
 
-        if (self::MASK_OF_ACTION_LIST & $actionBit
+        if (0 !== (self::MASK_OF_ACTION_LIST & $actionBit)
             && $this->hasRoute('list')
             && $this->hasAccess('list')
         ) {
@@ -1876,7 +1872,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 'translation_domain' => 'SonataAdminBundle',
                 'template' => $this->getTemplateRegistry()->getTemplate('action_create'),
                 'url' => $this->generateUrl('create'),
-                'icon' => 'plus-circle',
+                'icon' => 'fas fa-plus-circle',
             ];
         }
 
@@ -1885,7 +1881,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 'label' => 'link_list',
                 'translation_domain' => 'SonataAdminBundle',
                 'url' => $this->generateUrl('list'),
-                'icon' => 'list',
+                'icon' => 'fas fa-list',
             ];
         }
 
@@ -2029,7 +2025,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     final protected function urlize(string $word, string $sep = '_'): string
     {
-        return strtolower(preg_replace('/[^a-z0-9_]/i', $sep.'$1', $word));
+        return strtolower(preg_replace('/[^a-z0-9_]/i', $sep.'$1', $word) ?? '');
     }
 
     /**
@@ -2099,18 +2095,30 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $formOptions;
     }
 
+    /**
+     * @phpstan-param FormMapper<T> $form
+     */
     protected function configureFormFields(FormMapper $form): void
     {
     }
 
+    /**
+     * @phpstan-param ListMapper<T> $list
+     */
     protected function configureListFields(ListMapper $list): void
     {
     }
 
+    /**
+     * @phpstan-param DatagridMapper<T> $filter
+     */
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
     }
 
+    /**
+     * @phpstan-param ShowMapper<T> $show
+     */
     protected function configureShowFields(ShowMapper $show): void
     {
     }
@@ -2256,7 +2264,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     final protected function appendParentObject(object $object): void
     {
-        if ($this->isChild() && $this->getParentAssociationMapping()) {
+        if ($this->isChild() && null !== $this->getParentAssociationMapping()) {
             $parentAdmin = $this->getParent();
             $parentObject = $parentAdmin->getObject($this->getRequest()->get($parentAdmin->getIdParameter()));
 
@@ -2322,23 +2330,22 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->configureDatagridFilters($mapper);
 
         // ok, try to limit to add parent filter
-        $parentAssociationMapping = $this->getParentAssociationMapping();
-        if (
-            $this->isChild()
-            && null !== $parentAssociationMapping
-            && !$mapper->has($parentAssociationMapping)
-        ) {
-            $mapper->add($parentAssociationMapping, null, [
-                'show_filter' => false,
-                'label' => false,
-                'field_type' => ModelHiddenType::class,
-                'field_options' => [
-                    'model_manager' => $this->getModelManager(),
-                ],
-                'operator_type' => HiddenType::class,
-            ], [
-                'admin_code' => $this->getParent()->getCode(),
-            ]);
+        if ($this->isChild()) {
+            $parentAssociationMapping = $this->getParentAssociationMapping();
+
+            if (null !== $parentAssociationMapping && !$mapper->has($parentAssociationMapping)) {
+                $mapper->add($parentAssociationMapping, null, [
+                    'show_filter' => false,
+                    'label' => false,
+                    'field_type' => ModelHiddenType::class,
+                    'field_options' => [
+                        'model_manager' => $this->getModelManager(),
+                    ],
+                    'operator_type' => HiddenType::class,
+                ], [
+                    'admin_code' => $this->getParent()->getCode(),
+                ]);
+            }
         }
 
         foreach ($this->getExtensions() as $extension) {
@@ -2386,19 +2393,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $mapper = new ListMapper($this->getListBuilder(), $this->list, $this);
 
         if (\count($this->getBatchActions()) > 0 && $this->hasRequest() && !$this->getRequest()->isXmlHttpRequest()) {
-            $fieldDescription = $this->createFieldDescription(
-                ListMapper::NAME_BATCH,
-                [
-                    'label' => 'batch',
-                    'sortable' => false,
-                    'virtual_field' => true,
-                ]
-            );
-
-            $fieldDescription->setAdmin($this);
-            $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('batch'));
-
-            $mapper->add($fieldDescription, ListMapper::TYPE_BATCH);
+            $mapper->add(ListMapper::NAME_BATCH, ListMapper::TYPE_BATCH, [
+                'label' => 'batch',
+                'sortable' => false,
+                'virtual_field' => true,
+                'template' => $this->getTemplateRegistry()->getTemplate('batch'),
+            ]);
         }
 
         $this->configureListFields($mapper);
@@ -2408,19 +2408,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         if ($this->hasRequest() && $this->getRequest()->isXmlHttpRequest()) {
-            $fieldDescription = $this->createFieldDescription(
-                ListMapper::NAME_SELECT,
-                [
-                    'label' => false,
-                    'sortable' => false,
-                    'virtual_field' => false,
-                ]
-            );
-
-            $fieldDescription->setAdmin($this);
-            $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('select'));
-
-            $mapper->add($fieldDescription, ListMapper::TYPE_SELECT);
+            $mapper->add(ListMapper::NAME_SELECT, ListMapper::TYPE_SELECT, [
+                'label' => false,
+                'sortable' => false,
+                'virtual_field' => false,
+                'template' => $this->getTemplateRegistry()->getTemplate('select'),
+            ]);
         }
 
         return $this->list;
@@ -2435,8 +2428,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->loaded['form'] = true;
 
         $formBuilder = $this->getFormBuilder();
-        $formBuilder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            $this->preValidate($event->getData());
+        $formBuilder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
+            /** @phpstan-var T $data */
+            $data = $event->getData();
+            $this->preValidate($data);
         }, 100);
 
         $this->form = $formBuilder->getForm();
@@ -2452,20 +2447,22 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         $this->loaded['routes'] = true;
 
-        $this->routes = new RouteCollection(
+        $routes = new RouteCollection(
             $this->getBaseCodeRoute(),
             $this->getBaseRouteName(),
             $this->getBaseRoutePattern(),
             $this->getBaseControllerName()
         );
 
-        $this->getRouteBuilder()->build($this, $this->routes);
+        $this->getRouteBuilder()->build($this, $routes);
 
-        $this->configureRoutes($this->routes);
+        $this->configureRoutes($routes);
 
         foreach ($this->getExtensions() as $extension) {
-            $extension->configureRoutes($this, $this->routes);
+            $extension->configureRoutes($this, $routes);
         }
+
+        $this->routes = $routes;
 
         return $this->routes;
     }
@@ -2481,20 +2478,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         $this->loaded['tab_menu'] = true;
 
-        $this->menu = $this->getMenuFactory()->createItem('root');
-        $this->menu->setChildrenAttribute('class', 'nav navbar-nav');
-        $this->menu->setExtra('translation_domain', $this->getTranslationDomain());
+        $menu = $this->getMenuFactory()->createItem('root');
+        $menu->setChildrenAttribute('class', 'nav navbar-nav');
+        $menu->setExtra('translation_domain', $this->getTranslationDomain());
 
-        // Prevents BC break with KnpMenuBundle v1.x
-        if (method_exists($this->menu, 'setCurrentUri')) {
-            $this->menu->setCurrentUri($this->getRequest()->getBaseUrl().$this->getRequest()->getPathInfo());
-        }
-
-        $this->configureTabMenu($this->menu, $action, $childAdmin);
+        $this->configureTabMenu($menu, $action, $childAdmin);
 
         foreach ($this->getExtensions() as $extension) {
-            $extension->configureTabMenu($this, $this->menu, $action, $childAdmin);
+            $extension->configureTabMenu($this, $menu, $action, $childAdmin);
         }
+
+        $this->menu = $menu;
 
         return $this->menu;
     }

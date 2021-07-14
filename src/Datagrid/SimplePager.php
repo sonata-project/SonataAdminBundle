@@ -26,7 +26,7 @@ use Sonata\AdminBundle\Util\TraversableToCollection;
 final class SimplePager extends Pager
 {
     /**
-     * @var iterable<array-key, object>|null
+     * @var iterable<object>|null
      */
     protected $results;
 
@@ -61,7 +61,7 @@ final class SimplePager extends Pager
 
     public function countResults(): int
     {
-        return ($this->getPage() - 1) * $this->getMaxPerPage() + $this->thresholdCount;
+        return ($this->getPage() - 1) * $this->getMaxPerPage() + $this->thresholdCount ?? 0;
     }
 
     public function getCurrentPageResults(): iterable
@@ -70,7 +70,12 @@ final class SimplePager extends Pager
             return $this->results;
         }
 
-        $results = TraversableToCollection::transform($this->getQuery()->execute());
+        $query = $this->getQuery();
+        if (null === $query) {
+            throw new \LogicException('Uninitialized query.');
+        }
+
+        $results = TraversableToCollection::transform($query->execute());
         $this->thresholdCount = $results->count();
 
         if ($this->thresholdCount > $this->getMaxPerPage()) {
@@ -83,30 +88,31 @@ final class SimplePager extends Pager
     }
 
     /**
-     * @throws \RuntimeException the query is uninitialized
+     * @throws \LogicException the query is uninitialized
      */
     public function init(): void
     {
-        if (!$this->getQuery()) {
-            throw new \RuntimeException('Uninitialized query');
+        $query = $this->getQuery();
+        if (null === $query) {
+            throw new \LogicException('Uninitialized query.');
         }
 
         if (0 === $this->getPage() || 0 === $this->getMaxPerPage()) {
             $this->setLastPage(0);
-            $this->getQuery()->setFirstResult(0);
-            $this->getQuery()->setMaxResults(0);
+            $query->setFirstResult(0);
+            $query->setMaxResults(0);
         } else {
             $offset = ($this->getPage() - 1) * $this->getMaxPerPage();
-            $this->getQuery()->setFirstResult($offset);
+            $query->setFirstResult($offset);
 
             $maxOffset = $this->getThreshold() > 0
                 ? $this->getMaxPerPage() * $this->threshold + 1 : $this->getMaxPerPage() + 1;
 
-            $this->getQuery()->setMaxResults($maxOffset);
+            $query->setMaxResults($maxOffset);
 
             $this->results = $this->getCurrentPageResults();
 
-            $t = (int) ceil($this->thresholdCount / $this->getMaxPerPage()) + $this->getPage() - 1;
+            $t = (int) ceil(($this->thresholdCount ?? 0) / $this->getMaxPerPage()) + $this->getPage() - 1;
             $this->setLastPage(max(1, $t));
         }
     }

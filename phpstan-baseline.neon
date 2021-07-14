@@ -11,4 +11,10 @@ parameters:
             path: tests/Fixtures/Entity/FooToStringNull.php
         - # The phpstan-param is less precise than the psalm-param https://github.com/phpstan/phpstan/issues/4703
             message: '#^Parameter \#3 \$idx of method Sonata\\AdminBundle\\Model\\ModelManagerInterface\<T of object\>\:\:addIdentifiersToQuery\(\) expects array\<int\|string\>\&nonEmpty\, array\<array\<string\>\|int\|string\>\&nonEmpty given\.$#'
-            path: src/Form\DataTransformer/ModelToIdPropertyTransformer.php
+            path: src/Form/DataTransformer/ModelToIdPropertyTransformer.php
+        - # PHPStan doesn't solve type of Maker argument/option https://github.com/phpstan/phpstan-symfony/issues/167
+            message: '#array<string>(\|bool)?\|string(\|null)?(\sgiven)?.$#'
+            path: src/Maker/AdminMaker.php
+        - # PHPStan doesn't solve type of Maker argument/option https://github.com/phpstan/phpstan-symfony/issues/167
+            message: '#array<string>\|string\|true(\sgiven)?.$#'
+            path: src/Maker/AdminMaker.php

@@ -28,6 +28,6 @@ final class AdminAddInitializeCallCompilerPassTest extends TestCase
 
         (new AdminAddInitializeCallCompilerPass())->process($builder);
 
-        $this->assertSame([['initialize', []]], $builder->getDefinition('foo')->getMethodCalls());
+        self::assertSame([['initialize', []]], $builder->getDefinition('foo')->getMethodCalls());
     }
 }

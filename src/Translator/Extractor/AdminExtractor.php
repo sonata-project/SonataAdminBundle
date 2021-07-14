@@ -96,7 +96,7 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
             $this->domain = $admin->getTranslationDomain();
 
             $label = $admin->getLabel();
-            if (!empty($label)) {
+            if (null !== $label && '' !== $label) {
                 $catalogue->set($label, $this->prefix.$label, $admin->getTranslationDomain());
             }
 

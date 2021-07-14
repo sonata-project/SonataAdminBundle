@@ -23,8 +23,7 @@ file that was distributed with this source code.
                                 {% if form_group.translation_domain is same as(false) %}
                                     {{ form_group.label }}
                                 {% else %}
-                                    {% set translationDomain = form_group.translation_domain|default(associationAdmin.translationDomain) %}
-                                    {{ form_group.label|trans({}, translationDomain) }}
+                                    {{ form_group.label|trans({}, form_group.translation_domain ?? associationAdmin.translationDomain) }}
                                 {% endif %}
                             </a>
                         </li>

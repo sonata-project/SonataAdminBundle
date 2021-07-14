@@ -11,8 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Fixtures\DependencyInjection;
+namespace Sonata\AdminBundle\Tests\Fixtures\Form;
 
-trait TimestampableTrait
+use Sonata\AdminBundle\Form\Type\ModelType;
+use Symfony\Component\Form\AbstractType;
+
+class MyCustomType extends AbstractType
 {
+    public function getParent(): string
+    {
+        return ModelType::class;
+    }
 }

@@ -77,7 +77,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         string $action,
         ?ItemInterface $menu = null
     ): ItemInterface {
-        if (!$menu) {
+        if (null === $menu) {
             $menu = $admin->getMenuFactory()->createItem('root');
 
             $menu = $menu->addChild(
@@ -103,7 +103,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
 
         $childAdmin = $admin->getCurrentChildAdmin();
 
-        if ($childAdmin && $admin->hasSubject()) {
+        if (null !== $childAdmin && $admin->hasSubject()) {
             $id = $admin->getRequest()->get($admin->getIdParameter());
 
             $menu = $menu->addChild(
@@ -148,11 +148,13 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
      * Creates a new menu item from a simple name. The name is normalized and
      * translated with the specified translation domain.
      *
-     * @param AdminInterface<object> $admin             used for translation
-     * @param ItemInterface          $menu              will be modified and returned
-     * @param string                 $name              the source of the final label
-     * @param string                 $translationDomain for label translation
-     * @param array<string, mixed>   $options           menu item options
+     * @param ItemInterface        $menu              will be modified and returned
+     * @param string               $name              the source of the final label
+     * @param string               $translationDomain for label translation
+     * @param array<string, mixed> $options           menu item options
+     *
+     * @phpstan-template T of object
+     * @phpstan-param AdminInterface<T> $admin
      */
     private function createMenuItem(
         AdminInterface $admin,

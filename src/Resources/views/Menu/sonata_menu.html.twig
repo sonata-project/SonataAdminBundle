@@ -24,7 +24,7 @@
     {% apply spaceless %}
         {%- set translation_domain = item.extra('label_catalogue', 'messages') -%}
         {%- if item.extra('on_top') is defined and not item.extra('on_top') -%}
-            {%- set icon = item.extra('icon')|default(item.level > 1 ? '<i class="fas fa-angle-double-right" aria-hidden="true"></i>' : '') -%}
+            {%- set icon = item.extra('icon')|default(item.level > 1 ? 'fas fa-angle-double-right' : '') -%}
         {%- else -%}
             {%- set icon = item.extra('icon') -%}
         {%- endif -%}
@@ -38,7 +38,7 @@
         <a href="#">
             {%- set translation_domain = item.extra('label_catalogue', 'messages') -%}
             {%- set icon = item.extra('icon')|default('') -%}
-            {{ icon|raw }}
+            {{ icon|parse_icon }}
             {{ parent() }}
             {%- if item.extra('keep_open') is not defined or not item.extra('keep_open') -%}
                 <span class="pull-right-container"><i class="fas pull-right fa-angle-left"></i></span>
@@ -50,7 +50,7 @@
 {% block label %}
     {% apply spaceless %}
         {%- if is_link|default(false) -%}
-            {{ icon|default|raw }}
+            {{ icon|default('')|parse_icon }}
         {%- endif -%}
         {# We use method accessor instead of ".label" since `item` implements `ArrayAccess` and could have a property called "label". #}
         {%- set item_label = item.getLabel() -%}

@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="3.13.1@afd8874a9e4562eac42a02de90e42e430c3a1db1">
-    <file src="src/Datagrid/Datagrid.php">
-        <InvalidPropertyAssignmentValue occurrences="1">
-            <code>array_merge(array_flip($keys), $this-&gt;filters)</code>
-        </InvalidPropertyAssignmentValue>
+    <!-- Remove this when dropping support for Symfony < 5.1 -->
+    <file src="tests/Admin/AdminTest.php">
+        <PropertyTypeCoercion occurrences="2">
+            <code>$query</code>
+        </PropertyTypeCoercion>
     </file>
-    <file src="src/FieldDescription/FieldDescriptionCollection.php">
-        <InvalidPropertyAssignmentValue occurrences="2">
-            <code>$this-&gt;elements</code>
-            <code>array_merge(array_flip($keys), $this-&gt;elements)</code>
-        </InvalidPropertyAssignmentValue>
-    </file>
-    <!-- Will be fixed in Symfony 5.3 https://github.com/symfony/symfony/pull/40604 -->
-    <file src="src/Translator/Extractor/AdminExtractor.php">
-        <MoreSpecificImplementedParamType occurrences="1">
-            <code>$resource</code>
-        </MoreSpecificImplementedParamType>
+    <!-- https://github.com/vimeo/psalm/issues/5551 -->
+    <file src="tests/Controller/CRUDControllerTest.php">
+        <PossiblyInvalidFunctionCall occurrences="1">
+            <code>$disableHttpMethodParameterOverride()</code>
+        </PossiblyInvalidFunctionCall>
     </file>
     <!-- This error is made on purpose for php version < 8 -->
     <file src="tests/Fixtures/Entity/FooToStringNull.php">

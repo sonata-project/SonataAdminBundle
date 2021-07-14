@@ -25,7 +25,7 @@ final class TwigStringExtensionCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        foreach ($container->findTaggedServiceIds('twig.extension') as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds('twig.extension') as $id => $tags) {
             if (StringExtension::class === $container->getDefinition($id)->getClass()) {
                 return;
             }

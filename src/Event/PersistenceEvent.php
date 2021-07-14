@@ -27,6 +27,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  *   - sonata.admin.event.persistence.[admin_code].[pre|post]_[persist|update|remove)  (not implemented yet)
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
  */
 final class PersistenceEvent extends Event
 {
@@ -39,11 +41,13 @@ final class PersistenceEvent extends Event
 
     /**
      * @var AdminInterface<object>
+     * @phpstan-var AdminInterface<T>
      */
     private $admin;
 
     /**
      * @var object
+     * @phpstan-var T
      */
     private $object;
 
@@ -53,7 +57,8 @@ final class PersistenceEvent extends Event
     private $type;
 
     /**
-     * @param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param T $object
      */
     public function __construct(AdminInterface $admin, object $object, string $type)
     {
@@ -63,13 +68,16 @@ final class PersistenceEvent extends Event
     }
 
     /**
-     * @return AdminInterface<object>
+     * @phpstan-return AdminInterface<T>
      */
     public function getAdmin(): AdminInterface
     {
         return $this->admin;
     }
 
+    /**
+     * @phpstan-return T
+     */
     public function getObject(): object
     {
         return $this->object;

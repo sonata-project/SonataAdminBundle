@@ -93,7 +93,7 @@ abstract class Pager implements PagerInterface
     {
         $countResults = $this->countResults();
 
-        return $this->getMaxPerPage() && $countResults > $this->getMaxPerPage();
+        return $this->getMaxPerPage() > 0 && $countResults > $this->getMaxPerPage();
     }
 
     final public function getFirstPage(): int
@@ -127,7 +127,7 @@ abstract class Pager implements PagerInterface
 
         if ($this->page <= 0) {
             // set first page, which depends on a maximum set
-            $this->page = $this->getMaxPerPage() ? 1 : 0;
+            $this->page = $this->getMaxPerPage() > 0 ? 1 : 0;
         }
     }
 

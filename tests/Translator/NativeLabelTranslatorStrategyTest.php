@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Tests\Translator;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 
-class NativeLabelTranslatorStrategyTest extends TestCase
+final class NativeLabelTranslatorStrategyTest extends TestCase
 {
     /**
      * @dataProvider getLabelTests
@@ -25,7 +25,7 @@ class NativeLabelTranslatorStrategyTest extends TestCase
     {
         $strategy = new NativeLabelTranslatorStrategy();
 
-        $this->assertSame($expectedLabel, $strategy->getLabel($label, 'form', 'label'));
+        self::assertSame($expectedLabel, $strategy->getLabel($label, 'form', 'label'));
     }
 
     /**

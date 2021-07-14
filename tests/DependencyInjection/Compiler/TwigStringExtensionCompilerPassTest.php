@@ -20,13 +20,13 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Twig\Extra\String\StringExtension;
 
-class TwigStringExtensionCompilerPassTest extends AbstractCompilerPassTestCase
+final class TwigStringExtensionCompilerPassTest extends AbstractCompilerPassTestCase
 {
     public function testLoadTwigStringExtension(): void
     {
         $this->compile();
 
-        $this->assertContainerBuilderHasServiceDefinitionWithTag(StringExtension::class, 'twig.extension');
+        self::assertContainerBuilderHasServiceDefinitionWithTag(StringExtension::class, 'twig.extension');
     }
 
     public function testLoadTwigStringExtensionWithExtraBundle(): void
@@ -36,8 +36,8 @@ class TwigStringExtensionCompilerPassTest extends AbstractCompilerPassTestCase
         $this->container->setDefinition('twig.extension.string', $definition);
         $this->compile();
 
-        $this->assertContainerBuilderHasServiceDefinitionWithTag('twig.extension.string', 'twig.extension');
-        $this->assertContainerBuilderNotHasService(StringExtension::class);
+        self::assertContainerBuilderHasServiceDefinitionWithTag('twig.extension.string', 'twig.extension');
+        self::assertContainerBuilderNotHasService(StringExtension::class);
     }
 
     protected function registerCompilerPass(ContainerBuilder $container): void

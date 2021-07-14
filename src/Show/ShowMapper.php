@@ -25,6 +25,9 @@ use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
+ *
+ * @phpstan-template T of object
+ * @phpstan-extends BaseGroupedMapper<T>
  */
 final class ShowMapper extends BaseGroupedMapper
 {
@@ -40,12 +43,14 @@ final class ShowMapper extends BaseGroupedMapper
 
     /**
      * @var AdminInterface<object>
+     * @phpstan-var AdminInterface<T>
      */
     private $admin;
 
     /**
      * @param FieldDescriptionCollection<FieldDescriptionInterface> $list
-     * @param AdminInterface<object>                                $admin
+     *
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function __construct(
         ShowBuilderInterface $showBuilder,
@@ -63,45 +68,35 @@ final class ShowMapper extends BaseGroupedMapper
     }
 
     /**
-     * @param FieldDescriptionInterface|string $name
-     *
      * @throws \LogicException
      *
      * @return static
      *
      * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */
-    public function add($name, ?string $type = null, array $fieldDescriptionOptions = []): self
+    public function add(string $name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
         if (!$this->shouldApply()) {
             return $this;
         }
 
-        if ($name instanceof FieldDescriptionInterface) {
-            $fieldDescription = $name;
-            $fieldDescription->mergeOptions($fieldDescriptionOptions);
-        } elseif (\is_string($name)) {
-            if (!$this->getAdmin()->hasShowFieldDescription($name)) {
-                $fieldDescription = $this->getAdmin()->createFieldDescription(
-                    $name,
-                    $fieldDescriptionOptions
-                );
-            } else {
-                throw new \LogicException(sprintf(
-                    'Duplicate field name "%s" in show mapper. Names should be unique.',
-                    $name
-                ));
-            }
-        } else {
-            throw new \TypeError(
-                'Unknown field name in show mapper.'
-                    .' Field name should be either of FieldDescriptionInterface interface or string.'
-            );
+        if (isset($fieldDescriptionOptions['role']) && !$this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
+            return $this;
         }
 
-        $fieldKey = ($name instanceof FieldDescriptionInterface) ? $name->getName() : $name;
+        if (!$this->getAdmin()->hasShowFieldDescription($name)) {
+            $fieldDescription = $this->getAdmin()->createFieldDescription(
+                $name,
+                $fieldDescriptionOptions
+            );
+        } else {
+            throw new \LogicException(sprintf(
+                'Duplicate field name "%s" in show mapper. Names should be unique.',
+                $name
+            ));
+        }
 
-        $this->addFieldToCurrentGroup($fieldKey);
+        $this->addFieldToCurrentGroup($name);
 
         if (null === $fieldDescription->getLabel()) {
             $fieldDescription->setOption('label', $this->getAdmin()->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'show', 'label'));
@@ -109,10 +104,7 @@ final class ShowMapper extends BaseGroupedMapper
 
         $fieldDescription->setOption('safe', $fieldDescription->getOption('safe', false));
 
-        if (!isset($fieldDescriptionOptions['role']) || $this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
-            // add the field with the FormBuilder
-            $this->builder->addField($this->list, $type, $fieldDescription);
-        }
+        $this->builder->addField($this->list, $type, $fieldDescription);
 
         return $this;
     }
@@ -143,6 +135,9 @@ final class ShowMapper extends BaseGroupedMapper
         return array_keys($this->list->getElements());
     }
 
+    /**
+     * @return static
+     */
     public function reorder(array $keys): self
     {
         $this->getAdmin()->reorderShowGroup($this->getCurrentGroupName(), $keys);

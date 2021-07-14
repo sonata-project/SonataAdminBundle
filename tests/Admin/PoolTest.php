@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Container;
 /**
  * @phpstan-import-type Group from \Sonata\AdminBundle\Admin\Pool
  */
-class PoolTest extends TestCase
+final class PoolTest extends TestCase
 {
     /**
      * @var Container
@@ -44,13 +44,13 @@ class PoolTest extends TestCase
     public function testGetDashboardGroups(): void
     {
         $adminGroup1 = $this->createMock(AdminInterface::class);
-        $adminGroup1->expects($this->once())->method('showIn')->willReturn(true);
+        $adminGroup1->expects(self::once())->method('showIn')->willReturn(true);
 
         $adminGroup2 = $this->createMock(AdminInterface::class);
-        $adminGroup2->expects($this->once())->method('showIn')->willReturn(false);
+        $adminGroup2->expects(self::once())->method('showIn')->willReturn(false);
 
         $adminGroup3 = $this->createMock(AdminInterface::class);
-        $adminGroup3->expects($this->once())->method('showIn')->willReturn(false);
+        $adminGroup3->expects(self::once())->method('showIn')->willReturn(false);
 
         $this->container->set('sonata.user.admin.group1', $adminGroup1);
         $this->container->set('sonata.user.admin.group2', $adminGroup2);
@@ -69,8 +69,8 @@ class PoolTest extends TestCase
 
         $groups = $pool->getDashboardGroups();
 
-        $this->assertCount(1, $groups);
-        $this->assertSame($adminGroup1, $groups['adminGroup1']['items']['itemKey']);
+        self::assertCount(1, $groups);
+        self::assertSame($adminGroup1, $groups['adminGroup1']['items']['itemKey']);
     }
 
     public function testGetAdminForClassWithTooManyRegisteredAdmin(): void
@@ -81,7 +81,7 @@ class PoolTest extends TestCase
             $class => ['sonata.user.admin.group1', 'sonata.user.admin.group2'],
         ]);
 
-        $this->assertTrue($pool->hasAdminByClass($class));
+        self::assertTrue($pool->hasAdminByClass($class));
 
         $this->expectException(TooManyAdminClassException::class);
 
@@ -98,8 +98,8 @@ class PoolTest extends TestCase
             $class => [Pool::DEFAULT_ADMIN_KEY => 'sonata.user.admin.group1', 'sonata.user.admin.group2'],
         ]);
 
-        $this->assertTrue($pool->hasAdminByClass($class));
-        $this->assertInstanceOf(AdminInterface::class, $pool->getAdminByClass($class));
+        self::assertTrue($pool->hasAdminByClass($class));
+        self::assertInstanceOf(AdminInterface::class, $pool->getAdminByClass($class));
     }
 
     public function testGetAdminForClassWhenAdminClassIsSet(): void
@@ -110,8 +110,8 @@ class PoolTest extends TestCase
 
         $pool = new Pool($this->container, ['sonata.user.admin.group1'], [], [$class => ['sonata.user.admin.group1']]);
 
-        $this->assertTrue($pool->hasAdminByClass($class));
-        $this->assertInstanceOf(AdminInterface::class, $pool->getAdminByClass($class));
+        self::assertTrue($pool->hasAdminByClass($class));
+        self::assertInstanceOf(AdminInterface::class, $pool->getAdminByClass($class));
     }
 
     public function testGetInstanceWithUndefinedServiceId(): void
@@ -141,7 +141,7 @@ class PoolTest extends TestCase
 
         $pool = new Pool($this->container, ['sonata.news.admin.post']);
 
-        $this->assertInstanceOf(AdminInterface::class, $pool->getAdminByAdminCode('sonata.news.admin.post'));
+        self::assertInstanceOf(AdminInterface::class, $pool->getAdminByAdminCode('sonata.news.admin.post'));
     }
 
     public function testGetAdminByAdminCodeForChildClass(): void
@@ -153,16 +153,16 @@ class PoolTest extends TestCase
 
         $childAdmin = $this->createMock(AdminInterface::class);
 
-        $adminMock->expects($this->once())
+        $adminMock->expects(self::once())
             ->method('getChild')
-            ->with($this->equalTo('sonata.news.admin.comment'))
+            ->with(self::equalTo('sonata.news.admin.comment'))
             ->willReturn($childAdmin);
 
         $this->container->set('sonata.news.admin.post', $adminMock);
 
         $pool = new Pool($this->container, ['sonata.news.admin.post', 'sonata.news.admin.comment']);
 
-        $this->assertSame($childAdmin, $pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.comment'));
+        self::assertSame($childAdmin, $pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.comment'));
     }
 
     public function testGetAdminByAdminCodeWithInvalidCode(): void
@@ -232,7 +232,7 @@ class PoolTest extends TestCase
     public function testGetAdminByAdminCodeWithInvalidRootCode(string $adminId): void
     {
         $adminMock = $this->createMock(AdminInterface::class);
-        $adminMock->expects($this->never())
+        $adminMock->expects(self::never())
             ->method('hasChild');
 
         $pool = new Pool($this->container, [$adminId]);
@@ -263,7 +263,7 @@ class PoolTest extends TestCase
         $adminMock
             ->method('hasChild')
             ->willReturn(false);
-        $adminMock->expects($this->never())
+        $adminMock->expects(self::never())
             ->method('getChild');
 
         $this->container->set('admin1', $adminMock);
@@ -302,14 +302,14 @@ class PoolTest extends TestCase
             $adminMock
                 ->method('hasChild')
                 ->willReturn(true);
-            $adminMock->expects($this->once())
+            $adminMock->expects(self::once())
                 ->method('getChild')
-                ->with($this->equalTo('sonata.news.admin.comment'))
+                ->with(self::equalTo('sonata.news.admin.comment'))
                 ->willReturn($childAdminMock);
         } else {
-            $adminMock->expects($this->never())
+            $adminMock->expects(self::never())
                 ->method('hasChild');
-            $adminMock->expects($this->never())
+            $adminMock->expects(self::never())
                 ->method('getChild');
         }
 
@@ -317,7 +317,7 @@ class PoolTest extends TestCase
 
         $pool = new Pool($this->container, ['sonata.news.admin.post', 'sonata.news.admin.comment']);
 
-        $this->assertTrue($pool->hasAdminByAdminCode($adminId));
+        self::assertTrue($pool->hasAdminByAdminCode($adminId));
     }
 
     /**
@@ -351,10 +351,10 @@ class PoolTest extends TestCase
         $adminMock
             ->method('hasChild')
             ->willReturn(false);
-        $adminMock->expects($this->never())
+        $adminMock->expects(self::never())
             ->method('getChild');
 
-        $this->assertFalse($this->pool->hasAdminByAdminCode($adminId));
+        self::assertFalse($this->pool->hasAdminByAdminCode($adminId));
     }
 
     /**
@@ -371,7 +371,7 @@ class PoolTest extends TestCase
 
     public function testHasAdminByAdminCodeWithNonExistentCode(): void
     {
-        $this->assertFalse($this->pool->hasAdminByAdminCode('sonata.news.admin.nonexistent_code'));
+        self::assertFalse($this->pool->hasAdminByAdminCode('sonata.news.admin.nonexistent_code'));
     }
 
     /**
@@ -383,12 +383,12 @@ class PoolTest extends TestCase
         $adminMock
             ->method('hasChild')
             ->willReturn(false);
-        $adminMock->expects($this->never())
+        $adminMock->expects(self::never())
             ->method('getChild');
 
         $this->container->set('sonata.news.admin.post', $adminMock);
 
-        $this->assertFalse($this->pool->hasAdminByAdminCode($adminId));
+        self::assertFalse($this->pool->hasAdminByAdminCode($adminId));
     }
 
     /**
@@ -408,7 +408,7 @@ class PoolTest extends TestCase
         $class = \stdClass::class;
 
         $pool = new Pool($this->container, [], [], [$class => ['sonata.user.admin.group1']]);
-        $this->assertSame([$class => ['sonata.user.admin.group1']], $pool->getAdminClasses());
+        self::assertSame([$class => ['sonata.user.admin.group1']], $pool->getAdminClasses());
     }
 
     public function testGetAdminGroups(): void
@@ -427,13 +427,13 @@ class PoolTest extends TestCase
         ];
 
         $pool = new Pool($this->container, [], $groups);
-        $this->assertSame($groups, $pool->getAdminGroups());
+        self::assertSame($groups, $pool->getAdminGroups());
     }
 
     public function testGetAdminServiceIds(): void
     {
         $pool = new Pool($this->container, ['sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3']);
-        $this->assertSame(['sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3'], $pool->getAdminServiceIds());
+        self::assertSame(['sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3'], $pool->getAdminServiceIds());
     }
 
     /**

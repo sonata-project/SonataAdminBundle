@@ -36,12 +36,16 @@ final class AddFilterTypeCompilerPass implements CompilerPassInterface
         $definition = $container->getDefinition('sonata.admin.builder.filter.factory');
         $services = [];
 
-        foreach ($container->findTaggedServiceIds('sonata.admin.filter.type') as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds('sonata.admin.filter.type') as $id => $tags) {
             $serviceDefinition = $container->getDefinition($id);
 
             $serviceDefinition->setShared(false);
 
             $class = $serviceDefinition->getClass();
+            if (null === $class) {
+                throw new InvalidArgumentException('The service "%s" has no class.', $id);
+            }
+
             $reflectionClass = $container->getReflectionClass($class);
 
             if (null === $reflectionClass) {

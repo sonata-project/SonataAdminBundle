@@ -40,7 +40,7 @@ use Symfony\Component\Validator\Mapping\PropertyMetadata;
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ExplainAdminCommandTest extends TestCase
+final class ExplainAdminCommandTest extends TestCase
 {
     /**
      * @var Application
@@ -161,9 +161,9 @@ class ExplainAdminCommandTest extends TestCase
     {
         $metadata = $this->createMock(ClassMetadata::class);
 
-        $this->validatorFactory->expects($this->once())
+        $this->validatorFactory->expects(self::once())
             ->method('getMetadataFor')
-            ->with($this->equalTo('Acme\Entity\Foo'))
+            ->with(self::equalTo('Acme\Entity\Foo'))
             ->willReturn($metadata);
 
         $propertyMetadata = $this->createMock(PropertyMetadata::class);
@@ -210,8 +210,11 @@ class ExplainAdminCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName(), 'admin' => 'acme.admin.foo']);
 
-        $this->assertSame(sprintf(
-            str_replace("\n", \PHP_EOL, file_get_contents(sprintf('%s/../Fixtures/Command/explain_admin.txt', __DIR__))),
+        $explainAdminText = file_get_contents(sprintf('%s/../Fixtures/Command/explain_admin.txt', __DIR__));
+        self::assertNotFalse($explainAdminText);
+
+        self::assertSame(sprintf(
+            str_replace("\n", \PHP_EOL, $explainAdminText),
             \get_class($this->admin),
             \get_class($modelManager),
             \get_class($formBuilder),
@@ -224,9 +227,9 @@ class ExplainAdminCommandTest extends TestCase
     {
         $metadata = $this->createMock(ClassMetadata::class);
 
-        $this->validatorFactory->expects($this->once())
+        $this->validatorFactory->expects(self::once())
             ->method('getMetadataFor')
-            ->with($this->equalTo('Acme\Entity\Foo'))
+            ->with(self::equalTo('Acme\Entity\Foo'))
             ->willReturn($metadata);
 
         $metadata->properties = [];
@@ -260,12 +263,11 @@ class ExplainAdminCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName(), 'admin' => 'acme.admin.foo']);
 
-        $this->assertSame(sprintf(
-            str_replace(
-                "\n",
-                \PHP_EOL,
-                file_get_contents(sprintf('%s/../Fixtures/Command/explain_admin_empty_validator.txt', __DIR__))
-            ),
+        $explainAdminText = file_get_contents(sprintf('%s/../Fixtures/Command/explain_admin_empty_validator.txt', __DIR__));
+        self::assertNotFalse($explainAdminText);
+
+        self::assertSame(sprintf(
+            str_replace("\n", \PHP_EOL, $explainAdminText),
             \get_class($this->admin),
             \get_class($modelManager),
             \get_class($formBuilder),
@@ -289,9 +291,9 @@ class ExplainAdminCommandTest extends TestCase
     {
         $metadata = $this->createStub(GenericMetadata::class);
 
-        $this->validatorFactory->expects($this->once())
+        $this->validatorFactory->expects(self::once())
             ->method('getMetadataFor')
-            ->with($this->equalTo('Acme\Entity\Foo'))
+            ->with(self::equalTo('Acme\Entity\Foo'))
             ->willReturn($metadata);
 
         $modelManager = $this->createStub(ModelManagerInterface::class);

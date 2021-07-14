@@ -23,8 +23,8 @@ final class ChoiceTypeTest extends BaseTypeTest
 
         $view = $form->createView();
 
-        $this->assertFalse($view->children['type']->vars['required']);
-        $this->assertFalse($view->children['value']->vars['required']);
+        self::assertFalse($view->children['type']->vars['required']);
+        self::assertFalse($view->children['value']->vars['required']);
     }
 
     protected function getTestedType(): string

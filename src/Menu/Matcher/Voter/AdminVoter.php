@@ -61,7 +61,7 @@ final class AdminVoter implements VoterInterface
         }
 
         $route = $item->getExtra('route');
-        if ($route && $request && $route === $request->get('_route')) {
+        if (null !== $route && null !== $request && $route === $request->get('_route')) {
             return true;
         }
 
@@ -70,6 +70,8 @@ final class AdminVoter implements VoterInterface
 
     /**
      * TODO: Remove it when dropping support of Symfony < 5.3.
+     *
+     * @psalm-suppress DeprecatedMethod
      */
     private function getMainRequest(): ?Request
     {

@@ -54,7 +54,7 @@ final class GetShortObjectDescriptionAction
 
         $objectId = $request->get('objectId');
         $object = $admin->getObject($objectId);
-        if (!$object) {
+        if (null === $object) {
             throw new NotFoundHttpException(sprintf('Could not find subject for id "%s"', $objectId));
         }
 

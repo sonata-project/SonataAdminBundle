@@ -16,15 +16,15 @@ namespace Sonata\AdminBundle\Tests\Translator;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy;
 
-class BCLabelTranslatorStrategyTest extends TestCase
+final class BCLabelTranslatorStrategyTest extends TestCase
 {
     public function testLabel(): void
     {
         $strategy = new BCLabelTranslatorStrategy();
 
-        $this->assertSame('Isvalid', $strategy->getLabel('isValid', 'form', 'label'));
-        $this->assertSame('Plainpassword', $strategy->getLabel('plainPassword', 'form', 'label'));
+        self::assertSame('Isvalid', $strategy->getLabel('isValid', 'form', 'label'));
+        self::assertSame('Plainpassword', $strategy->getLabel('plainPassword', 'form', 'label'));
 
-        $this->assertSame('breadcrumb.link_projectversion_list', $strategy->getLabel('ProjectVersion_list', 'breadcrumb', 'link'));
+        self::assertSame('breadcrumb.link_projectversion_list', $strategy->getLabel('ProjectVersion_list', 'breadcrumb', 'link'));
     }
 }

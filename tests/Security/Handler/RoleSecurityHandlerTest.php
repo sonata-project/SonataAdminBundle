@@ -21,11 +21,9 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 /**
- * Test for RoleSecurityHandler.
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class RoleSecurityHandlerTest extends TestCase
+final class RoleSecurityHandlerTest extends TestCase
 {
     /**
      * @var AdminInterface<object>&MockObject
@@ -50,11 +48,11 @@ class RoleSecurityHandlerTest extends TestCase
     {
         $handler = new RoleSecurityHandler($this->authorizationChecker, ['ROLE_BATMAN', 'ROLE_IRONMAN']);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(self::once())
             ->method('getCode')
             ->willReturn($code);
 
-        $this->assertSame($expected, $handler->getBaseRole($this->admin));
+        self::assertSame($expected, $handler->getBaseRole($this->admin));
     }
 
     /**
@@ -86,7 +84,7 @@ class RoleSecurityHandlerTest extends TestCase
 
         $this->authorizationChecker
             ->method('isGranted')
-            ->willReturnCallback(static function (string $attribute, $object) {
+            ->willReturnCallback(static function (string $attribute, ?object $object): bool {
                 switch ($attribute) {
                     case 'ROLE_BATMAN':
                     case 'ROLE_IRONMAN':
@@ -102,7 +100,7 @@ class RoleSecurityHandlerTest extends TestCase
                 }
             });
 
-        $this->assertSame($expected, $handler->isGranted($this->admin, $operation, $object));
+        self::assertSame($expected, $handler->isGranted($this->admin, $operation, $object));
     }
 
     /**
@@ -218,7 +216,7 @@ class RoleSecurityHandlerTest extends TestCase
     public function testBuildSecurityInformation(): void
     {
         $handler = $this->getRoleSecurityHandler(['ROLE_FOO']);
-        $this->assertSame([], $handler->buildSecurityInformation($this->getSonataAdminObject()));
+        self::assertSame([], $handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
     /**
@@ -230,10 +228,10 @@ class RoleSecurityHandlerTest extends TestCase
     }
 
     /**
-     * @return AdminInterface<object>
+     * @return AdminInterface<object>&MockObject
      */
     private function getSonataAdminObject(): AdminInterface
     {
-        return $this->getMockForAbstractClass(AdminInterface::class);
+        return $this->createMock(AdminInterface::class);
     }
 }

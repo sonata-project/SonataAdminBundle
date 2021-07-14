@@ -36,7 +36,7 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * @author Gaurav Singh Faujdar <faujdar@gmail.com>
  */
-class AdminMakerTest extends TestCase
+final class AdminMakerTest extends TestCase
 {
     /**
      * @var string
@@ -78,7 +78,7 @@ class AdminMakerTest extends TestCase
      */
     private $filesystem;
 
-    protected function setup(): void
+    protected function setUp(): void
     {
         $managerOrmProxy = $this->createMock(ModelManagerInterface::class);
         $managerOrmProxy->method('getExportFields')->with(Foo::class)
@@ -95,9 +95,6 @@ class AdminMakerTest extends TestCase
         $this->filesystem->remove($this->projectDirectory);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testExecute(): void
     {
         $maker = new AdminMaker($this->projectDirectory, $this->modelManagers, CRUDController::class);
@@ -121,7 +118,9 @@ class AdminMakerTest extends TestCase
 
         $this->input = new ArrayInput($in, $definition);
 
-        $this->output = new StreamOutput(fopen('php://memory', 'w', false));
+        $stream = fopen('php://memory', 'w', false);
+        self::assertIsResource($stream);
+        $this->output = new StreamOutput($stream);
 
         $this->io = new ConsoleStyle($this->input, $this->output);
         $autoloaderUtil = $this->createMock(AutoloaderUtil::class);

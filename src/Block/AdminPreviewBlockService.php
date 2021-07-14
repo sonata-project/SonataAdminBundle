@@ -43,6 +43,9 @@ final class AdminPreviewBlockService extends AbstractBlockService
 
     public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
     {
+        $template = $blockContext->getTemplate();
+        \assert(\is_string($template));
+
         $admin = $this->getAdmin($blockContext->getSetting('code'));
         $this->handleFilters($admin, $blockContext);
 
@@ -52,7 +55,7 @@ final class AdminPreviewBlockService extends AbstractBlockService
 
         $datagrid = $admin->getDatagrid();
 
-        return $this->renderPrivateResponse($blockContext->getTemplate(), [
+        return $this->renderPrivateResponse($template, [
             'block' => $blockContext->getBlock(),
             'settings' => $blockContext->getSettings(),
             'admin' => $admin,
@@ -95,7 +98,8 @@ final class AdminPreviewBlockService extends AbstractBlockService
     /**
      * Maps the block filters to standard admin filters.
      *
-     * @param AdminInterface<object> $admin
+     * @phpstan-template T of object
+     * @phpstan-param AdminInterface<T> $admin
      */
     private function handleFilters(AdminInterface $admin, BlockContextInterface $blockContext): void
     {

@@ -26,7 +26,7 @@ interface DatagridBuilderInterface extends BuilderInterface
 {
     /**
      * @phpstan-param DatagridInterface<T> $datagrid
-     * @phpstan-param class-string         $type
+     * @phpstan-param class-string|null    $type
      */
     public function addFilter(
         DatagridInterface $datagrid,

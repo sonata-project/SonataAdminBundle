@@ -78,7 +78,7 @@ final class RouteCollection implements RouteCollectionInterface
         array $methods = [],
         string $condition = ''
     ): RouteCollectionInterface {
-        $pattern = sprintf('%s/%s', $this->baseRoutePattern, $pattern ?: $name);
+        $pattern = sprintf('%s/%s', $this->baseRoutePattern, $pattern ?? $name);
         $code = $this->getCode($name);
 
         if (!isset($defaults['_controller'])) {
@@ -93,7 +93,7 @@ final class RouteCollection implements RouteCollectionInterface
 
         $defaults['_sonata_name'] = $this->getRouteName($name);
 
-        $element = static function () use ($pattern, $defaults, $requirements, $options, $host, $schemes, $methods, $condition) {
+        $element = static function () use ($pattern, $defaults, $requirements, $options, $host, $schemes, $methods, $condition): Route {
             return new Route($pattern, $defaults, $requirements, $options, $host, $schemes, $methods, $condition);
         };
         $this->addElement($code, $element);

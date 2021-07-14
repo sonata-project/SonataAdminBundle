@@ -42,7 +42,7 @@ final class ModelManagerCompilerPassTest extends TestCase
         $compilerPass = new ModelManagerCompilerPass();
         $compilerPass->process($containerBuilder);
 
-        $this->assertCount(0, $adminMaker->getArgument(1));
+        self::assertCount(0, $adminMaker->getArgument(1));
     }
 
     public function testProcessWithTaggedManagerDefinition(): void
@@ -64,7 +64,7 @@ final class ModelManagerCompilerPassTest extends TestCase
         $compilerPass = new ModelManagerCompilerPass();
         $compilerPass->process($containerBuilder);
 
-        $this->assertCount(1, $adminMaker->getArgument(1));
+        self::assertCount(1, $adminMaker->getArgument(1));
     }
 
     public function testProcessWithInvalidTaggedManagerDefinition(): void

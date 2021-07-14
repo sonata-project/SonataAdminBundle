@@ -24,19 +24,9 @@ use Sonata\AdminBundle\Filter\FilterInterface;
 final class SearchHandler
 {
     /**
-     * @var bool
-     */
-    private $caseSensitive;
-
-    /**
      * @var array<string, bool>
      */
     private $adminsSearchConfig = [];
-
-    public function __construct(bool $caseSensitive = true)
-    {
-        $this->caseSensitive = $caseSensitive;
-    }
 
     /**
      * @param AdminInterface<object> $admin
@@ -44,6 +34,9 @@ final class SearchHandler
      * @throws \RuntimeException
      *
      * @return PagerInterface<ProxyQueryInterface>
+     *
+     * @phpstan-template T of object
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function search(AdminInterface $admin, string $term, int $page = 0, int $offset = 20): ?PagerInterface
     {
@@ -59,11 +52,9 @@ final class SearchHandler
         $found = false;
 
         foreach ($datagrid->getFilters() as $filter) {
-            /** @var FilterInterface $filter */
             $formName = $filter->getFormName();
 
-            if ($filter->getOption('global_search', false)) {
-                $filter->setOption('case_sensitive', $this->caseSensitive);
+            if ($filter instanceof SearchableFilterInterface && $filter->isSearchEnabled()) {
                 $filter->setOption('or_group', $admin->getCode());
                 $filter->setCondition(FilterInterface::CONDITION_OR);
                 $datagrid->setValue($formName, null, $term);

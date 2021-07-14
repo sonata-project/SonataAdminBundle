@@ -17,7 +17,7 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 use Sonata\AdminBundle\Menu\Matcher\Voter\ActiveVoter;
 
-class ActiveVoterTest extends AbstractVoterTest
+final class ActiveVoterTest extends AbstractVoterTest
 {
     public function createVoter($dataVoter, $route): VoterInterface
     {
@@ -38,12 +38,12 @@ class ActiveVoterTest extends AbstractVoterTest
      */
     protected function createItem($data): ItemInterface
     {
-        $item = $this->getMockForAbstractClass(ItemInterface::class);
+        $item = $this->createMock(ItemInterface::class);
         $item
             ->method('getExtra')
-            ->with($this->logicalOr(
-                $this->equalTo('active'),
-                $this->equalTo('sonata_admin')
+            ->with(self::logicalOr(
+                self::equalTo('active'),
+                self::equalTo('sonata_admin')
             ))
             ->willReturnCallback(static function (string $name) use ($data) {
                 if ('active' === $name) {

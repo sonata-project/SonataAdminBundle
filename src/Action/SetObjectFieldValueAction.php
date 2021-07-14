@@ -101,7 +101,7 @@ final class SetObjectFieldValueAction
         }
 
         $object = $admin->getObject($objectId);
-        if (!$object) {
+        if (null === $object) {
             return new JsonResponse('Object does not exist', Response::HTTP_NOT_FOUND);
         }
 
@@ -120,7 +120,7 @@ final class SetObjectFieldValueAction
 
         $fieldDescription = $admin->getListFieldDescription($field);
 
-        if (!$fieldDescription->getOption('editable')) {
+        if (true !== $fieldDescription->getOption('editable')) {
             return new JsonResponse('The field cannot be edited, editable option must be set to true', Response::HTTP_BAD_REQUEST);
         }
 
@@ -146,7 +146,7 @@ final class SetObjectFieldValueAction
                 $value = $dataTransformer->reverseTransform($value);
             }
 
-            if (!$value && FieldDescriptionInterface::TYPE_CHOICE === $fieldDescription->getType()) {
+            if (null === $value && FieldDescriptionInterface::TYPE_CHOICE === $fieldDescription->getType()) {
                 return new JsonResponse(sprintf(
                     'Edit failed, object with id: %s not found in association: %s.',
                     $originalValue,
@@ -159,7 +159,7 @@ final class SetObjectFieldValueAction
 
         $violations = $this->validator->validate($object);
 
-        if (\count($violations)) {
+        if (\count($violations) > 0) {
             $messages = [];
 
             foreach ($violations as $violation) {

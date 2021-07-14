@@ -37,29 +37,28 @@ final class ServicesManipulator
         public: true
 ';
 
-    /**
-     * @param string $file
-     */
-    public function __construct($file)
+    public function __construct(string $file)
     {
-        $this->file = (string) $file;
+        $this->file = $file;
     }
 
     /**
-     * @param string $serviceId
-     * @param string $modelClass
-     * @param string $adminClass
-     * @param string $controllerName
-     * @param string $managerType
+     * @phpstan-param class-string $modelClass
+     * @phpstan-param class-string $adminClass
      *
      * @throws \RuntimeException
      */
-    public function addResource($serviceId, $modelClass, $adminClass, $controllerName, $managerType): void
+    public function addResource(string $serviceId, string $modelClass, string $adminClass, string $controllerName, string $managerType): void
     {
         $code = "services:\n";
 
         if (is_file($this->file)) {
-            $code = rtrim(file_get_contents($this->file));
+            $content = file_get_contents($this->file);
+            if (false === $content) {
+                throw new \RuntimeException(sprintf('Cannot read the file "%s".', realpath($this->file)));
+            }
+
+            $code = rtrim($content);
             $data = (array) Yaml::parse($code);
 
             if ('' !== $code) {

@@ -44,33 +44,46 @@ final class RoutesCache
      * @throws \RuntimeException
      *
      * @return array<string, string>
+     *
+     * @phpstan-template T of object
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function load(AdminInterface $admin): array
     {
         $filename = sprintf('%s/route_%s', $this->cacheFolder, md5($admin->getCode()));
 
         $cache = new ConfigCache($filename, $this->debug);
-        if (!$cache->isFresh()) {
-            $resources = [];
-            $routes = [];
-
-            $reflection = new \ReflectionObject($admin);
-            if (file_exists($reflection->getFileName())) {
-                $resources[] = new FileResource($reflection->getFileName());
+        if ($cache->isFresh()) {
+            $content = file_get_contents($filename);
+            if (false !== $content) {
+                $routes = unserialize($content);
+                if (false !== $routes) {
+                    return $routes;
+                }
             }
-
-            foreach ($admin->getRoutes()->getElements() as $code => $route) {
-                $routes[$code] = $route->getDefault('_sonata_name');
-            }
-
-            foreach ($admin->getExtensions() as $extension) {
-                $reflection = new \ReflectionObject($extension);
-                $resources[] = new FileResource($reflection->getFileName());
-            }
-
-            $cache->write(serialize($routes), $resources);
         }
 
-        return unserialize(file_get_contents($filename));
+        $resources = [];
+        $routes = [];
+
+        $reflection = new \ReflectionObject($admin);
+        if (false !== $reflection->getFileName() && file_exists($reflection->getFileName())) {
+            $resources[] = new FileResource($reflection->getFileName());
+        }
+
+        foreach ($admin->getRoutes()->getElements() as $code => $route) {
+            $routes[$code] = $route->getDefault('_sonata_name');
+        }
+
+        foreach ($admin->getExtensions() as $extension) {
+            $reflection = new \ReflectionObject($extension);
+            if (false !== $reflection->getFileName() && file_exists($reflection->getFileName())) {
+                $resources[] = new FileResource($reflection->getFileName());
+            }
+        }
+
+        $cache->write(serialize($routes), $resources);
+
+        return $routes;
     }
 }

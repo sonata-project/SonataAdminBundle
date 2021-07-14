@@ -41,7 +41,7 @@ final class MergeCollectionListener implements EventSubscriberInterface
         // looks like there is no way to remove other listeners
         $event->stopPropagation();
 
-        if (!$collection) {
+        if (null === $collection) {
             $collection = $data;
         } elseif (0 === \count($data)) {
             $collection->clear();

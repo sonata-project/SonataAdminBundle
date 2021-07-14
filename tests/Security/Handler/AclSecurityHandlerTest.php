@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
-class AclSecurityHandlerTest extends TestCase
+final class AclSecurityHandlerTest extends TestCase
 {
     public function testAcl(): void
     {
@@ -41,8 +41,8 @@ class AclSecurityHandlerTest extends TestCase
 
         $handler = new AclSecurityHandler($this->createMock(TokenStorageInterface::class), $authorizationChecker, $aclProvider, MaskBuilder::class, []);
 
-        $this->assertTrue($handler->isGranted($admin, ['TOTO']));
-        $this->assertTrue($handler->isGranted($admin, 'TOTO'));
+        self::assertTrue($handler->isGranted($admin, ['TOTO']));
+        self::assertTrue($handler->isGranted($admin, 'TOTO'));
 
         $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $authorizationChecker
@@ -51,8 +51,8 @@ class AclSecurityHandlerTest extends TestCase
 
         $handler = new AclSecurityHandler($this->createMock(TokenStorageInterface::class), $authorizationChecker, $aclProvider, MaskBuilder::class, []);
 
-        $this->assertFalse($handler->isGranted($admin, ['TOTO']));
-        $this->assertFalse($handler->isGranted($admin, 'TOTO'));
+        self::assertFalse($handler->isGranted($admin, ['TOTO']));
+        self::assertFalse($handler->isGranted($admin, 'TOTO'));
     }
 
     public function testBuildInformation(): void
@@ -63,11 +63,11 @@ class AclSecurityHandlerTest extends TestCase
 
         $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->once())
+        $admin->expects(self::once())
             ->method('getCode')
             ->willReturn('test');
 
-        $admin->expects($this->once())
+        $admin->expects(self::once())
             ->method('getSecurityInformation')
             ->willReturn($informations);
 
@@ -77,7 +77,7 @@ class AclSecurityHandlerTest extends TestCase
 
         $results = $handler->buildSecurityInformation($admin);
 
-        $this->assertArrayHasKey('ROLE_TEST_EDIT', $results);
+        self::assertArrayHasKey('ROLE_TEST_EDIT', $results);
     }
 
     public function testWithAuthenticationCredentialsNotFoundException(): void
@@ -87,13 +87,13 @@ class AclSecurityHandlerTest extends TestCase
         $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $authorizationChecker
             ->method('isGranted')
-            ->will($this->throwException(new AuthenticationCredentialsNotFoundException('FAIL')));
+            ->will(self::throwException(new AuthenticationCredentialsNotFoundException('FAIL')));
 
         $aclProvider = $this->createMock(MutableAclProviderInterface::class);
 
         $handler = new AclSecurityHandler($this->createMock(TokenStorageInterface::class), $authorizationChecker, $aclProvider, MaskBuilder::class, []);
 
-        $this->assertFalse($handler->isGranted($admin, 'raise exception', $admin));
+        self::assertFalse($handler->isGranted($admin, 'raise exception', $admin));
     }
 
     public function testWithNonAuthenticationCredentialsNotFoundException(): void
@@ -105,13 +105,13 @@ class AclSecurityHandlerTest extends TestCase
         $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $authorizationChecker
             ->method('isGranted')
-            ->will($this->throwException(new \RuntimeException('FAIL')));
+            ->will(self::throwException(new \RuntimeException('FAIL')));
 
         $aclProvider = $this->createMock(MutableAclProviderInterface::class);
 
         $handler = new AclSecurityHandler($this->createMock(TokenStorageInterface::class), $authorizationChecker, $aclProvider, MaskBuilder::class, []);
 
-        $this->assertFalse($handler->isGranted($admin, 'raise exception', $admin));
+        self::assertFalse($handler->isGranted($admin, 'raise exception', $admin));
     }
 
     public function testSuccessfulUpdateAcl(): void
@@ -120,7 +120,7 @@ class AclSecurityHandlerTest extends TestCase
         $aclProvider = $this->createMock(MutableAclProviderInterface::class);
 
         $aclProvider
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('updateAcl')
             ->with($acl);
 

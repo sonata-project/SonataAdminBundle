@@ -281,7 +281,7 @@ EOT;
         string $defaultTemplate,
         Environment $environment
     ): TemplateWrapper {
-        $templateName = $fieldDescription->getTemplate() ?: $defaultTemplate;
+        $templateName = $fieldDescription->getTemplate() ?? $defaultTemplate;
 
         return $environment->load($templateName);
     }

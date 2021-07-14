@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
 
-class AdminPermissionMapTest extends TestCase
+final class AdminPermissionMapTest extends TestCase
 {
     /**
      * @var AdminPermissionMap
@@ -38,17 +38,17 @@ class AdminPermissionMapTest extends TestCase
                 new \stdClass()
             );
 
-            $this->assertIsArray($masks);
+            self::assertIsArray($masks);
 
             foreach ($masks as $mask) {
-                $this->assertIsString(MaskBuilder::getCode($mask));
+                self::assertIsString(MaskBuilder::getCode($mask));
             }
         }
     }
 
     public function testGetMaskReturnsNullIfPermissionIsNotSupported(): void
     {
-        $this->assertNull($this->permissionMap->getMasks(
+        self::assertNull($this->permissionMap->getMasks(
             'unknown permission',
             new \stdClass()
         ));
@@ -59,15 +59,18 @@ class AdminPermissionMapTest extends TestCase
      */
     public function permissionProvider(): array
     {
-        $dataSet = [];
-        $reflection = new \ReflectionClass(AdminPermissionMap::class);
-
-        foreach ($reflection->getConstants() as $permission) {
-            $dataSet[$permission] = [true, $permission];
-        }
-
-        return $dataSet + [
-            'unknown permission' => [false, 'unknown permission'],
+        return [
+            [true, AdminPermissionMap::PERMISSION_VIEW],
+            [true, AdminPermissionMap::PERMISSION_EDIT],
+            [true, AdminPermissionMap::PERMISSION_CREATE],
+            [true, AdminPermissionMap::PERMISSION_DELETE],
+            [true, AdminPermissionMap::PERMISSION_UNDELETE],
+            [true, AdminPermissionMap::PERMISSION_LIST],
+            [true, AdminPermissionMap::PERMISSION_EXPORT],
+            [true, AdminPermissionMap::PERMISSION_OPERATOR],
+            [true, AdminPermissionMap::PERMISSION_MASTER],
+            [true, AdminPermissionMap::PERMISSION_OWNER],
+            [false, 'unknown permission'],
         ];
     }
 
@@ -76,6 +79,6 @@ class AdminPermissionMapTest extends TestCase
      */
     public function testContainsReturnsABoolean(bool $expectedResult, string $permission): void
     {
-        $this->assertSame($expectedResult, $this->permissionMap->contains($permission));
+        self::assertSame($expectedResult, $this->permissionMap->contains($permission));
     }
 }

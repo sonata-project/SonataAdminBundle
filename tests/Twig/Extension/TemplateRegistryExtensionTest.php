@@ -21,12 +21,8 @@ use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension;
 use Symfony\Component\DependencyInjection\Container;
-use Twig\TwigFunction;
 
-/**
- * Class TemplateRegistryExtensionTest.
- */
-class TemplateRegistryExtensionTest extends TestCase
+final class TemplateRegistryExtensionTest extends TestCase
 {
     /**
      * @var TemplateRegistryExtension
@@ -56,19 +52,14 @@ class TemplateRegistryExtensionTest extends TestCase
         );
     }
 
-    public function getFunctionsTest(): void
+    public function testGetFunctions(): void
     {
-        $expected = [
-            new TwigFunction('get_admin_template', [$this->extension, 'getAdminTemplate']),
-            new TwigFunction('get_global_template', [$this->extension, 'getGlobalTemplate']),
-        ];
-
-        $this->assertSame($expected, $this->extension->getFunctions());
+        self::assertCount(2, $this->extension->getFunctions());
     }
 
     public function testGetAdminTemplate(): void
     {
-        $this->assertSame(
+        self::assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
             $this->extension->getAdminTemplate('edit', 'admin.post')
         );
@@ -80,7 +71,7 @@ class TemplateRegistryExtensionTest extends TestCase
 
         $this->expectExceptionMessage('Admin service "admin.non-existing" not found in admin pool. Did you mean "admin.post" or one of those: []?');
 
-        $this->assertSame(
+        self::assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
             $this->extension->getAdminTemplate('edit', 'admin.non-existing')
         );
@@ -88,7 +79,7 @@ class TemplateRegistryExtensionTest extends TestCase
 
     public function testGetGlobalTemplate(): void
     {
-        $this->assertSame(
+        self::assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
             $this->extension->getGlobalTemplate('edit')
         );

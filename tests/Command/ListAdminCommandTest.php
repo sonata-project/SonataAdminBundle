@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\Container;
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ListAdminCommandTest extends TestCase
+final class ListAdminCommandTest extends TestCase
 {
     public function testExecute(): void
     {
@@ -54,6 +54,6 @@ class ListAdminCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertMatchesRegularExpression('@Admin services:\s+acme.admin.foo\s+Acme\\\Entity\\\Foo\s+acme.admin.bar\s+Acme\\\Entity\\\Bar@', $commandTester->getDisplay());
+        self::assertMatchesRegularExpression('@Admin services:\s+acme.admin.foo\s+Acme\\\Entity\\\Foo\s+acme.admin.bar\s+Acme\\\Entity\\\Bar@', $commandTester->getDisplay());
     }
 }

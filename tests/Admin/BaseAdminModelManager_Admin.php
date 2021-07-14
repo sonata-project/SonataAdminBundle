@@ -18,6 +18,6 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 /**
  * @phpstan-extends AbstractAdmin<object>
  */
-class BaseAdminModelManager_Admin extends AbstractAdmin
+final class BaseAdminModelManager_Admin extends AbstractAdmin
 {
 }

@@ -45,7 +45,7 @@ final class AdminPreviewBlockServiceTest extends BlockServiceTestCase
         $blockService = new AdminPreviewBlockService($this->createStub(Environment::class), $this->pool);
         $blockContext = $this->getBlockContext($blockService);
 
-        $this->assertSettings([
+        self::assertSettings([
             'text' => 'Preview',
             'filters' => [],
             'icon' => false,

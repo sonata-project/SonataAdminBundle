@@ -14,6 +14,7 @@ declare(strict_types=1);
 use Sonata\AdminBundle\Twig\Extension\BreadcrumbsExtension;
 use Sonata\AdminBundle\Twig\Extension\CanonicalizeExtension;
 use Sonata\AdminBundle\Twig\Extension\GroupExtension;
+use Sonata\AdminBundle\Twig\Extension\IconExtension;
 use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
 use Sonata\AdminBundle\Twig\Extension\SecurityExtension;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
@@ -45,10 +46,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         ->set('sonata.admin.group.extension', GroupExtension::class)
-        ->tag('twig.extension')
-        ->args([
-            new ReferenceConfigurator('sonata.admin.pool'),
-        ])
+            ->tag('twig.extension')
+            ->args([
+                new ReferenceConfigurator('sonata.admin.pool'),
+            ])
+
+        ->set('sonata.admin.twig.icon_extension', IconExtension::class)
+            ->tag('twig.extension')
 
         ->set('sonata.security.twig.extension', SecurityExtension::class)
             ->tag('twig.extension')

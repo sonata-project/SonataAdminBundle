@@ -27,19 +27,16 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 final class Configuration implements ConfigurationInterface
 {
+    /**
+     * @psalm-suppress PossiblyNullReference, PossiblyUndefinedMethod
+     *
+     * @see https://github.com/psalm/psalm-plugin-symfony/issues/174
+     */
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('sonata_admin');
         $rootNode = $treeBuilder->getRootNode();
         \assert($rootNode instanceof ArrayNodeDefinition);
-
-        $caseSensitiveInfo = <<<'CASESENSITIVE'
-Whether the global search should behave case sensitive or not.
-Using case-insensitivity might lead to performance issues.
-
-See https://use-the-index-luke.com/sql/where-clause/functions/case-insensitive-search
-for more information.
-CASESENSITIVE;
 
         $rootNode
             ->fixXmlConfig('option')
@@ -59,8 +56,8 @@ CASESENSITIVE;
                                 ->performNoDeepMerging()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(static function ($v) {
-                                        return [$v];
+                                    ->then(static function (string $value): array {
+                                        return [$value];
                                     })
                                 ->end()
                                 ->prototype('scalar')->end()
@@ -99,15 +96,11 @@ CASESENSITIVE;
                             ->defaultValue('show')
                             ->info('Perhaps one of the three options: show, fade, hide.')
                             ->validate()
-                                ->ifTrue(static function ($v) {
+                                ->ifTrue(static function (string $v): bool {
                                     return !\in_array($v, ['show', 'fade', 'hide'], true);
                                 })
                                 ->thenInvalid('Configuration value of "global_search.empty_boxes" must be one of show, fade or hide.')
                             ->end()
-                        ->end()
-                        ->booleanNode('case_sensitive')
-                            ->defaultTrue()
-                            ->info($caseSensitiveInfo)
                         ->end()
                     ->end()
                 ->end()
@@ -166,7 +159,7 @@ CASESENSITIVE;
                             ->info('Label Catalogue used for admin services if one isn\'t provided.')
                         ->end()
                         ->scalarNode('default_icon')
-                            ->defaultValue('<i class="fas fa-folder"></i>')
+                            ->defaultValue('fas fa-folder')
                             ->info('Icon used for admin services if one isn\'t provided.')
                         ->end()
                         ->integerNode('dropdown_number_groups_per_colums')->defaultValue(2)->end()
@@ -195,7 +188,7 @@ CASESENSITIVE;
                             ->prototype('array')
                                 ->beforeNormalization()
                                     ->ifArray()
-                                    ->then(static function ($items) {
+                                    ->then(static function (array $items): array {
                                         if (isset($items['provider'])) {
                                             $disallowedItems = ['items', 'label'];
                                             foreach ($disallowedItems as $item) {
@@ -223,7 +216,7 @@ CASESENSITIVE;
                                     ->arrayNode('items')
                                         ->beforeNormalization()
                                             ->ifArray()
-                                            ->then(static function ($items) {
+                                            ->then(static function (array $items): array {
                                                 foreach ($items as $key => $item) {
                                                     if (!\is_array($item)) {
                                                         $item = ['admin' => $item];

@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Container;
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-class AdminStatsBlockServiceTest extends BlockServiceTestCase
+final class AdminStatsBlockServiceTest extends BlockServiceTestCase
 {
     /**
      * @var Pool
@@ -40,8 +40,8 @@ class AdminStatsBlockServiceTest extends BlockServiceTestCase
         $blockService = new AdminStatsBlockService($this->twig, $this->pool);
         $blockContext = $this->getBlockContext($blockService);
 
-        $this->assertSettings([
-            'icon' => 'fa-chart-line',
+        self::assertSettings([
+            'icon' => 'fas fa-chart-line',
             'text' => 'Statistics',
             'translation_domain' => null,
             'color' => 'bg-aqua',

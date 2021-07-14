@@ -107,7 +107,7 @@ final class Pool
         foreach ($this->adminGroups as $name => $adminGroup) {
             if (isset($adminGroup['items'])) {
                 $items = array_filter(array_map(function (array $item): ?AdminInterface {
-                    if (!isset($item['admin']) || empty($item['admin'])) {
+                    if (!isset($item['admin']) || '' === $item['admin']) {
                         return null;
                     }
 
@@ -178,8 +178,8 @@ final class Pool
     public function getAdminByAdminCode(string $adminCode): AdminInterface
     {
         $codes = explode('|', $adminCode);
-        $code = trim(array_shift($codes));
-        $admin = $this->getInstance($code);
+        $rootCode = trim(array_shift($codes));
+        $admin = $this->getInstance($rootCode);
 
         foreach ($codes as $code) {
             if (!\in_array($code, $this->adminServiceIds, true)) {
@@ -236,7 +236,12 @@ final class Pool
             return $this->getAdminByAdminCode($adminCode);
         }
 
-        return $this->getAdminByClass($fieldDescription->getTargetModel());
+        $targetModel = $fieldDescription->getTargetModel();
+        if (null === $targetModel) {
+            throw new \InvalidArgumentException('The field description has no target model.');
+        }
+
+        return $this->getAdminByClass($targetModel);
     }
 
     /**

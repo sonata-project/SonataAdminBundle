@@ -17,19 +17,20 @@ use Doctrine\Inflector\InflectorFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Sonata\Exporter\Exporter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
@@ -38,6 +39,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -46,20 +48,25 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-template T of object
+ *
+ * @psalm-suppress MissingConstructor
+ *
+ * @see ConfigureCRUDControllerListener
  */
 class CRUDController extends AbstractController
 {
     /**
      * The related Admin class.
      *
-     * @var AdminInterface
-     *
+     * @var AdminInterface<object>
      * @phpstan-var AdminInterface<T>
      */
     protected $admin;
@@ -75,9 +82,9 @@ class CRUDController extends AbstractController
     {
         return [
             'sonata.admin.pool' => Pool::class,
-            'sonata.admin.breadcrumbs_builder' => BreadcrumbsBuilderInterface::class,
             'sonata.admin.audit.manager' => AuditManagerInterface::class,
             'sonata.admin.object.manipulator.acl.admin' => AdminObjectAclManipulator::class,
+            'sonata.admin.request.fetcher' => AdminFetcherInterface::class,
             'sonata.exporter.exporter' => '?'.Exporter::class,
             'sonata.admin.admin_exporter' => '?'.AdminExporter::class,
             'sonata.admin.security.acl_user_manager' => '?'.AdminAclUserManagerInterface::class,
@@ -85,19 +92,6 @@ class CRUDController extends AbstractController
             'logger' => '?'.LoggerInterface::class,
             'translator' => TranslatorInterface::class,
         ] + parent::getSubscribedServices();
-    }
-
-    /**
-     * Renders a view while passing mandatory parameters on to the template.
-     *
-     * @param string               $view       The view name
-     * @param array<string, mixed> $parameters An array of parameters to pass to the view
-     *
-     * @return Response A Response instance
-     */
-    public function renderWithExtraParams(Request $request, string $view, array $parameters = [], ?Response $response = null): Response
-    {
-        return $this->render($view, $this->addRenderExtraParams($request, $parameters), $response);
     }
 
     /**
@@ -132,7 +126,7 @@ class CRUDController extends AbstractController
             $exportFormats = $exporter->getAvailableFormats($this->admin);
         }
 
-        return $this->renderWithExtraParams($request, $template, [
+        return $this->renderWithExtraParams($template, [
             'action' => 'list',
             'form' => $formView,
             'datagrid' => $datagrid,
@@ -175,10 +169,12 @@ class CRUDController extends AbstractController
      */
     public function deleteAction(Request $request): Response
     {
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
+        $this->assertObjectExists($request, true);
 
-        $this->assertObjectExists($request);
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
+        $object = $this->admin->getObject($id);
+        \assert(null !== $object);
 
         $this->checkParentChildAssociation($request, $object);
 
@@ -199,7 +195,7 @@ class CRUDController extends AbstractController
                 $this->admin->delete($object);
 
                 if ($this->isXmlHttpRequest($request)) {
-                    return $this->renderJson(['result' => 'ok'], Response::HTTP_OK, []);
+                    return $this->renderJson(['result' => 'ok']);
                 }
 
                 $this->addFlash(
@@ -214,7 +210,7 @@ class CRUDController extends AbstractController
                 $this->handleModelManagerException($e);
 
                 if ($this->isXmlHttpRequest($request)) {
-                    return $this->renderJson(['result' => 'error'], Response::HTTP_OK, []);
+                    return $this->renderJson(['result' => 'error']);
                 }
 
                 $this->addFlash(
@@ -232,7 +228,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('delete');
 
-        return $this->renderWithExtraParams($request, $template, [
+        return $this->renderWithExtraParams($template, [
             'object' => $object,
             'action' => 'delete',
             'csrf_token' => $this->getCsrfToken('sonata.delete'),
@@ -248,10 +244,12 @@ class CRUDController extends AbstractController
         // the key used to lookup the template
         $templateKey = 'edit';
 
-        $id = $request->get($this->admin->getIdParameter());
-        $existingObject = $this->admin->getObject($id);
+        $this->assertObjectExists($request, true);
 
-        $this->assertObjectExists($request);
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
+        $existingObject = $this->admin->getObject($id);
+        \assert(null !== $existingObject);
 
         $this->checkParentChildAssociation($request, $existingObject);
 
@@ -337,7 +335,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate($templateKey);
 
-        return $this->renderWithExtraParams($request, $template, [
+        return $this->renderWithExtraParams($template, [
             'action' => 'edit',
             'form' => $formView,
             'object' => $existingObject,
@@ -368,7 +366,8 @@ class CRUDController extends AbstractController
 
         $forwardedRequest = $request->duplicate();
 
-        if ($data = json_decode((string) $request->get('data', ''), true)) {
+        $data = json_decode((string) $request->get('data', ''), true);
+        if (null !== $data) {
             $action = $data['action'];
             $idx = (array) ($data['idx'] ?? []);
             $allElements = (bool) ($data['all_elements'] ?? false);
@@ -392,6 +391,10 @@ class CRUDController extends AbstractController
             $data['all_elements'] = $allElements;
 
             unset($data['_sonata_csrf_token']);
+        }
+
+        if (null === $action) {
+            throw new \RuntimeException('The action is not defined');
         }
 
         $batchActions = $this->admin->getBatchActions();
@@ -424,8 +427,7 @@ class CRUDController extends AbstractController
             return $this->redirectToList();
         }
 
-        $askConfirmation = $batchActions[$action]['ask_confirmation'] ??
-            true;
+        $askConfirmation = $batchActions[$action]['ask_confirmation'] ?? true;
 
         if ($askConfirmation && 'ok' !== $confirmation) {
             $actionLabel = $batchActions[$action]['label'];
@@ -435,11 +437,10 @@ class CRUDController extends AbstractController
             $formView = $datagrid->getForm()->createView();
             $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-            $template = !empty($batchActions[$action]['template']) ?
-                $batchActions[$action]['template'] :
-                $this->templateRegistry->getTemplate('batch_confirmation');
+            $template = $batchActions[$action]['template']
+                ?? $this->templateRegistry->getTemplate('batch_confirmation');
 
-            return $this->renderWithExtraParams($request, $template, [
+            return $this->renderWithExtraParams($template, [
                 'action' => 'list',
                 'action_label' => $actionLabel,
                 'batch_translation_domain' => $batchTranslationDomain,
@@ -493,14 +494,10 @@ class CRUDController extends AbstractController
 
         if ($class->isAbstract()) {
             return $this->renderWithExtraParams(
-                $request,
                 '@SonataAdmin/CRUD/select_subclass.html.twig',
                 [
-                    'base_template' => $this->getBaseTemplate($request),
-                    'admin' => $this->admin,
                     'action' => 'create',
                 ],
-                null
             );
         }
 
@@ -580,7 +577,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate($templateKey);
 
-        return $this->renderWithExtraParams($request, $template, [
+        return $this->renderWithExtraParams($template, [
             'action' => 'create',
             'form' => $formView,
             'object' => $newObject,
@@ -594,10 +591,12 @@ class CRUDController extends AbstractController
      */
     public function showAction(Request $request): Response
     {
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
+        $this->assertObjectExists($request, true);
 
-        $this->assertObjectExists($request);
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
+        $object = $this->admin->getObject($id);
+        \assert(null !== $object);
 
         $this->checkParentChildAssociation($request, $object);
 
@@ -614,7 +613,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('show');
 
-        return $this->renderWithExtraParams($request, $template, [
+        return $this->renderWithExtraParams($template, [
             'action' => 'show',
             'object' => $object,
             'elements' => $fields,
@@ -629,10 +628,12 @@ class CRUDController extends AbstractController
      */
     public function historyAction(Request $request): Response
     {
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
+        $this->assertObjectExists($request, true);
 
-        $this->assertObjectExists($request);
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
+        $object = $this->admin->getObject($id);
+        \assert(null !== $object);
 
         $this->admin->checkAccess('history', $object);
 
@@ -652,11 +653,11 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('history');
 
-        return $this->renderWithExtraParams($request, $template, [
+        return $this->renderWithExtraParams($template, [
             'action' => 'history',
             'object' => $object,
             'revisions' => $revisions,
-            'currentRevision' => $revisions ? current($revisions) : false,
+            'currentRevision' => current($revisions),
         ]);
     }
 
@@ -668,10 +669,12 @@ class CRUDController extends AbstractController
      */
     public function historyViewRevisionAction(Request $request, string $revision): Response
     {
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
+        $this->assertObjectExists($request, true);
 
-        $this->assertObjectExists($request);
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
+        $object = $this->admin->getObject($id);
+        \assert(null !== $object);
 
         $this->admin->checkAccess('historyViewRevision', $object);
 
@@ -690,7 +693,7 @@ class CRUDController extends AbstractController
         // retrieve the revisioned object
         $object = $reader->find($this->admin->getClass(), $id, $revision);
 
-        if (!$object) {
+        if (null === $object) {
             throw $this->createNotFoundException(sprintf(
                 'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
                 $id,
@@ -703,7 +706,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('show');
 
-        return $this->renderWithExtraParams($request, $template, [
+        return $this->renderWithExtraParams($template, [
             'action' => 'show',
             'object' => $object,
             'elements' => $this->admin->getShow(),
@@ -720,9 +723,10 @@ class CRUDController extends AbstractController
     {
         $this->admin->checkAccess('historyCompareRevisions');
 
-        $id = $request->get($this->admin->getIdParameter());
+        $this->assertObjectExists($request, true);
 
-        $this->assertObjectExists($request);
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
 
         $manager = $this->get('sonata.admin.audit.manager');
         \assert($manager instanceof AuditManagerInterface);
@@ -738,7 +742,7 @@ class CRUDController extends AbstractController
 
         // retrieve the base revision
         $baseObject = $reader->find($this->admin->getClass(), $id, $baseRevision);
-        if (!$baseObject) {
+        if (null === $baseObject) {
             throw $this->createNotFoundException(sprintf(
                 'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
                 $id,
@@ -749,7 +753,7 @@ class CRUDController extends AbstractController
 
         // retrieve the compare revision
         $compareObject = $reader->find($this->admin->getClass(), $id, $compareRevision);
-        if (!$compareObject) {
+        if (null === $compareObject) {
             throw $this->createNotFoundException(sprintf(
                 'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
                 $id,
@@ -762,7 +766,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('show_compare');
 
-        return $this->renderWithExtraParams($request, $template, [
+        return $this->renderWithExtraParams($template, [
             'action' => 'show',
             'object' => $baseObject,
             'object_compare' => $compareObject,
@@ -818,10 +822,12 @@ class CRUDController extends AbstractController
             throw $this->createNotFoundException('ACL are not enabled for this admin');
         }
 
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
+        $this->assertObjectExists($request, true);
 
-        $this->assertObjectExists($request);
+        $id = $request->get($this->admin->getIdParameter());
+        \assert(null !== $id);
+        $object = $this->admin->getObject($id);
+        \assert(null !== $object);
 
         $this->admin->checkAccess('acl', $object);
 
@@ -869,7 +875,7 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('acl');
 
-        return $this->renderWithExtraParams($request, $template, [
+        return $this->renderWithExtraParams($template, [
             'action' => 'acl',
             'permissions' => $adminObjectAclData->getUserPermissions(),
             'object' => $object,
@@ -887,24 +893,9 @@ class CRUDController extends AbstractController
      */
     final public function configureAdmin(Request $request): void
     {
-        $adminCode = $request->get('_sonata_admin');
+        $adminFetcher = $this->container->get('sonata.admin.request.fetcher');
 
-        if (null === $adminCode) {
-            throw new \InvalidArgumentException(sprintf(
-                'There is no `_sonata_admin` defined for the controller `%s` and the current route `%s`.',
-                static::class,
-                $request->get('_route')
-            ));
-        }
-
-        try {
-            $this->admin = $this->get('sonata.admin.pool')->getAdminByAdminCode($adminCode);
-        } catch (\InvalidArgumentException $e) {
-            throw new \RuntimeException(sprintf(
-                'Unable to find the admin class related to the current controller (%s).',
-                static::class
-            ));
-        }
+        $this->admin = $adminFetcher->get($request);
 
         if (!$this->admin->hasTemplateRegistry()) {
             throw new \RuntimeException(sprintf(
@@ -914,19 +905,17 @@ class CRUDController extends AbstractController
         }
 
         $this->templateRegistry = $this->admin->getTemplateRegistry();
+    }
 
-        $rootAdmin = $this->admin;
-
-        while ($rootAdmin->isChild()) {
-            $rootAdmin->setCurrentChild(true);
-            $rootAdmin = $rootAdmin->getParent();
-        }
-
-        $rootAdmin->setRequest($request);
-
-        if ($request->get('uniqid')) {
-            $this->admin->setUniqid($request->get('uniqid'));
-        }
+    /**
+     * Renders a view while passing mandatory parameters on to the template.
+     *
+     * @param string               $view       The view name
+     * @param array<string, mixed> $parameters An array of parameters to pass to the view
+     */
+    final protected function renderWithExtraParams(string $view, array $parameters = [], ?Response $response = null): Response
+    {
+        return $this->render($view, $this->addRenderExtraParams($parameters), $response);
     }
 
     /**
@@ -934,23 +923,19 @@ class CRUDController extends AbstractController
      *
      * @return array<string, mixed>
      */
-    protected function addRenderExtraParams(Request $request, array $parameters = []): array
+    protected function addRenderExtraParams(array $parameters = []): array
     {
         $parameters['admin'] = $parameters['admin'] ?? $this->admin;
-        $parameters['base_template'] = $parameters['base_template'] ?? $this->getBaseTemplate($request);
+        $parameters['base_template'] = $parameters['base_template'] ?? $this->getBaseTemplate();
 
         return $parameters;
     }
 
     /**
-     * Render JSON.
-     *
      * @param mixed   $data
      * @param mixed[] $headers
-     *
-     * @return JsonResponse with json encoded data
      */
-    protected function renderJson($data, int $status = Response::HTTP_OK, array $headers = []): JsonResponse
+    final protected function renderJson($data, int $status = Response::HTTP_OK, array $headers = []): JsonResponse
     {
         return new JsonResponse($data, $status, $headers);
     }
@@ -960,7 +945,7 @@ class CRUDController extends AbstractController
      *
      * @return bool True if the request is an XMLHttpRequest, false otherwise
      */
-    protected function isXmlHttpRequest(Request $request): bool
+    final protected function isXmlHttpRequest(Request $request): bool
     {
         return $request->isXmlHttpRequest() || $request->get('_xml_http_request');
     }
@@ -986,8 +971,13 @@ class CRUDController extends AbstractController
      *
      * @return string The template name
      */
-    protected function getBaseTemplate(Request $request): string
+    protected function getBaseTemplate(): string
     {
+        $requestStack = $this->get('request_stack');
+        \assert($requestStack instanceof RequestStack);
+        $request = $requestStack->getCurrentRequest();
+        \assert(null !== $request);
+
         if ($this->isXmlHttpRequest($request)) {
             return $this->templateRegistry->getTemplate('ajax');
         }
@@ -998,17 +988,17 @@ class CRUDController extends AbstractController
     /**
      * @throws \Exception
      */
-    protected function handleModelManagerException(\Exception $e): void
+    protected function handleModelManagerException(\Exception $exception): void
     {
         if ($this->getParameter('kernel.debug')) {
-            throw $e;
+            throw $exception;
         }
 
-        $context = ['exception' => $e];
-        if ($e->getPrevious()) {
-            $context['previous_exception_message'] = $e->getPrevious()->getMessage();
+        $context = ['exception' => $exception];
+        if (null !== $exception->getPrevious()) {
+            $context['previous_exception_message'] = $exception->getPrevious()->getMessage();
         }
-        $this->getLogger()->error($e->getMessage(), $context);
+        $this->getLogger()->error($exception->getMessage(), $context);
     }
 
     /**
@@ -1018,8 +1008,6 @@ class CRUDController extends AbstractController
      */
     protected function redirectTo(Request $request, object $object): RedirectResponse
     {
-        $url = false;
-
         if (null !== $request->get('btn_update_and_list')) {
             return $this->redirectToList();
         }
@@ -1032,32 +1020,27 @@ class CRUDController extends AbstractController
             if ($this->admin->hasActiveSubClass()) {
                 $params['subclass'] = $request->get('subclass');
             }
-            $url = $this->admin->generateUrl('create', $params);
+
+            return new RedirectResponse($this->admin->generateUrl('create', $params));
         }
 
         if ('DELETE' === $request->getMethod()) {
             return $this->redirectToList();
         }
 
-        if (!$url) {
-            foreach (['edit', 'show'] as $route) {
-                if ($this->admin->hasRoute($route) && $this->admin->hasAccess($route, $object)) {
-                    $url = $this->admin->generateObjectUrl(
-                        $route,
-                        $object,
-                        $this->getSelectedTab($request)
-                    );
+        foreach (['edit', 'show'] as $route) {
+            if ($this->admin->hasRoute($route) && $this->admin->hasAccess($route, $object)) {
+                $url = $this->admin->generateObjectUrl(
+                    $route,
+                    $object,
+                    $this->getSelectedTab($request)
+                );
 
-                    break;
-                }
+                return new RedirectResponse($url);
             }
         }
 
-        if (!$url) {
-            return $this->redirectToList();
-        }
-
-        return new RedirectResponse($url);
+        return $this->redirectToList();
     }
 
     /**
@@ -1067,7 +1050,8 @@ class CRUDController extends AbstractController
     {
         $parameters = [];
 
-        if ($filter = $this->admin->getFilterParameters()) {
+        $filter = $this->admin->getFilterParameters();
+        if ([] !== $filter) {
             $parameters['filter'] = $filter;
         }
 
@@ -1077,7 +1061,7 @@ class CRUDController extends AbstractController
     /**
      * Returns true if the preview is requested to be shown.
      */
-    protected function isPreviewRequested(Request $request): bool
+    final protected function isPreviewRequested(Request $request): bool
     {
         return null !== $request->get('btn_preview');
     }
@@ -1085,7 +1069,7 @@ class CRUDController extends AbstractController
     /**
      * Returns true if the preview has been approved.
      */
-    protected function isPreviewApproved(Request $request): bool
+    final protected function isPreviewApproved(Request $request): bool
     {
         return null !== $request->get('btn_preview_approve');
     }
@@ -1096,7 +1080,7 @@ class CRUDController extends AbstractController
      * That means either a preview is requested or the preview has already been shown
      * and it got approved/declined.
      */
-    protected function isInPreviewMode(Request $request): bool
+    final protected function isInPreviewMode(Request $request): bool
     {
         return $this->admin->supportsPreviewMode()
         && ($this->isPreviewRequested($request)
@@ -1107,7 +1091,7 @@ class CRUDController extends AbstractController
     /**
      * Returns true if the preview has been declined.
      */
-    protected function isPreviewDeclined(Request $request): bool
+    final protected function isPreviewDeclined(Request $request): bool
     {
         return null !== $request->get('btn_preview_decline');
     }
@@ -1121,7 +1105,9 @@ class CRUDController extends AbstractController
             return new \ArrayIterator([]);
         }
 
-        $aclUsers = $this->get('sonata.admin.security.acl_user_manager')->findUsers();
+        $aclUserManager = $this->get('sonata.admin.security.acl_user_manager');
+        \assert($aclUserManager instanceof AdminAclUserManagerInterface);
+        $aclUsers = $aclUserManager->findUsers();
 
         return \is_array($aclUsers) ? new \ArrayIterator($aclUsers) : $aclUsers;
     }
@@ -1133,7 +1119,9 @@ class CRUDController extends AbstractController
     {
         $aclRoles = [];
         $roleHierarchy = $this->getParameter('security.role_hierarchy.roles');
+        \assert(\is_array($roleHierarchy));
         $pool = $this->get('sonata.admin.pool');
+        \assert($pool instanceof Pool);
 
         foreach ($pool->getAdminServiceIds() as $id) {
             try {
@@ -1143,7 +1131,7 @@ class CRUDController extends AbstractController
             }
 
             $baseRole = $admin->getSecurityHandler()->getBaseRole($admin);
-            foreach ($admin->getSecurityInformation() as $role => $permissions) {
+            foreach ($admin->getSecurityInformation() as $role => $_permissions) {
                 $role = sprintf($baseRole, $role);
                 $aclRoles[] = $role;
             }
@@ -1164,15 +1152,17 @@ class CRUDController extends AbstractController
      *
      * @throws HttpException
      */
-    protected function validateCsrfToken(Request $request, string $intention): void
+    final protected function validateCsrfToken(Request $request, string $intention): void
     {
         if (!$this->has('security.csrf.token_manager')) {
             return;
         }
 
         $token = $request->get('_sonata_csrf_token');
+        $tokenManager = $this->get('security.csrf.token_manager');
+        \assert($tokenManager instanceof CsrfTokenManagerInterface);
 
-        if (!$this->get('security.csrf.token_manager')->isTokenValid(new CsrfToken($intention, $token))) {
+        if (!$tokenManager->isTokenValid(new CsrfToken($intention, $token))) {
             throw new HttpException(Response::HTTP_BAD_REQUEST, 'The csrf token is not valid, CSRF attack?');
         }
     }
@@ -1180,21 +1170,24 @@ class CRUDController extends AbstractController
     /**
      * Escape string for html output.
      */
-    protected function escapeHtml(string $s): string
+    final protected function escapeHtml(string $s): string
     {
-        return htmlspecialchars($s, \ENT_QUOTES | \ENT_SUBSTITUTE, 'UTF-8');
+        return htmlspecialchars($s, \ENT_QUOTES | \ENT_SUBSTITUTE);
     }
 
     /**
      * Get CSRF token.
      */
-    protected function getCsrfToken(string $intention): ?string
+    final protected function getCsrfToken(string $intention): ?string
     {
         if (!$this->has('security.csrf.token_manager')) {
             return null;
         }
 
-        return $this->get('security.csrf.token_manager')->getToken($intention)->getValue();
+        $tokenManager = $this->get('security.csrf.token_manager');
+        \assert($tokenManager instanceof CsrfTokenManagerInterface);
+
+        return $tokenManager->getToken($intention)->getValue();
     }
 
     /**
@@ -1257,19 +1250,22 @@ class CRUDController extends AbstractController
      */
     final protected function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
     {
-        $domain = $domain ?: $this->admin->getTranslationDomain();
+        $domain = $domain ?? $this->admin->getTranslationDomain();
+        $translator = $this->get('translator');
+        \assert($translator instanceof TranslatorInterface);
 
-        return $this->get('translator')->trans($id, $parameters, $domain, $locale);
+        return $translator->trans($id, $parameters, $domain, $locale);
     }
 
     protected function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): ?JsonResponse
     {
-        if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
+        if ([] === array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes())) {
             return $this->renderJson([], Response::HTTP_NOT_ACCEPTABLE);
         }
 
         $errors = [];
         foreach ($form->getErrors(true) as $error) {
+            \assert($error instanceof FormError);
             $errors[] = $error->getMessage();
         }
 
@@ -1284,7 +1280,7 @@ class CRUDController extends AbstractController
      */
     protected function handleXmlHttpRequestSuccessResponse(Request $request, object $object): JsonResponse
     {
-        if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
+        if ([] === array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes())) {
             return $this->renderJson([], Response::HTTP_NOT_ACCEPTABLE);
         }
 
@@ -1292,19 +1288,17 @@ class CRUDController extends AbstractController
             'result' => 'ok',
             'objectId' => $this->admin->getNormalizedIdentifier($object),
             'objectName' => $this->escapeHtml($this->admin->toString($object)),
-        ], Response::HTTP_OK);
+        ]);
     }
 
-    final protected function assertObjectExists(Request $request): void
+    final protected function assertObjectExists(Request $request, bool $strict = false): void
     {
         $admin = $this->admin;
 
         while (null !== $admin) {
             $objectId = $request->get($admin->getIdParameter());
-
             if (null !== $objectId) {
                 $adminObject = $admin->getObject($objectId);
-
                 if (null === $adminObject) {
                     throw $this->createNotFoundException(sprintf(
                         'Unable to find %s object with id: %s.',
@@ -1312,6 +1306,12 @@ class CRUDController extends AbstractController
                         $objectId
                     ));
                 }
+            } elseif ($strict || $admin !== $this->admin) {
+                throw $this->createNotFoundException(sprintf(
+                    'Unable to find the %s object id of the admin "%s".',
+                    $admin->getClassnameLabel(),
+                    \get_class($admin)
+                ));
             }
 
             $admin = $admin->isChild() ? $admin->getParent() : null;
@@ -1321,15 +1321,30 @@ class CRUDController extends AbstractController
     /**
      * @phpstan-return array{_tab?: string}
      */
-    private function getSelectedTab(Request $request): array
+    final protected function getSelectedTab(Request $request): array
     {
-        return array_filter(['_tab' => $request->request->get('_tab')]);
+        return array_filter(['_tab' => (string) $request->request->get('_tab')]);
+    }
+
+    /**
+     * Sets the admin form theme to form view. Used for compatibility between Symfony versions.
+     *
+     * @param string[]|null $theme
+     */
+    final protected function setFormTheme(FormView $formView, ?array $theme = null): void
+    {
+        $twig = $this->get('twig');
+        \assert($twig instanceof Environment);
+        $formRenderer = $twig->getRuntime(FormRenderer::class);
+        \assert($formRenderer instanceof FormRenderer);
+
+        $formRenderer->setTheme($formView, $theme);
     }
 
     /**
      * @phpstan-param T $object
      */
-    private function checkParentChildAssociation(Request $request, object $object): void
+    final protected function checkParentChildAssociation(Request $request, object $object): void
     {
         if (!$this->admin->isChild()) {
             return;
@@ -1338,10 +1353,22 @@ class CRUDController extends AbstractController
         $parentAdmin = $this->admin->getParent();
         $parentId = $request->get($parentAdmin->getIdParameter());
 
-        $propertyAccessor = PropertyAccess::createPropertyAccessor();
-        $propertyPath = new PropertyPath($this->admin->getParentAssociationMapping());
-
         $parentAdminObject = $parentAdmin->getObject($parentId);
+        if (null === $parentAdminObject) {
+            throw new \RuntimeException(sprintf(
+                'No object was found in the admin "%s" for the id "%s".',
+                \get_class($parentAdmin),
+                $parentId
+            ));
+        }
+
+        $parentAssociationMapping = $this->admin->getParentAssociationMapping();
+        if (null === $parentAssociationMapping) {
+            throw new \RuntimeException('The admin has no parent association mapping.');
+        }
+
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $propertyPath = new PropertyPath($parentAssociationMapping);
         $objectParent = $propertyAccessor->getValue($object, $propertyPath);
 
         // $objectParent may be an array or a Collection when the parent association is many to many.
@@ -1350,7 +1377,7 @@ class CRUDController extends AbstractController
         if (!$parentObjectMatches) {
             throw new \RuntimeException(sprintf(
                 'There is no association between "%s" and "%s"',
-                $parentAdmin->toString($parentAdmin->getObject($parentId)),
+                $parentAdmin->toString($parentAdminObject),
                 $this->admin->toString($object)
             ));
         }
@@ -1378,17 +1405,5 @@ class CRUDController extends AbstractController
         }
 
         return false;
-    }
-
-    /**
-     * Sets the admin form theme to form view. Used for compatibility between Symfony versions.
-     *
-     * @param string[]|null $theme
-     */
-    private function setFormTheme(FormView $formView, ?array $theme = null): void
-    {
-        $twig = $this->get('twig');
-
-        $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
     }
 }

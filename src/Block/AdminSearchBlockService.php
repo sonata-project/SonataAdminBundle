@@ -87,7 +87,7 @@ final class AdminSearchBlockService extends AbstractBlockService
         );
 
         if (null === $pager) {
-            $response = $response ?: new Response();
+            $response = $response ?? new Response();
 
             return $response->setContent('')->setStatusCode(204);
         }
@@ -115,7 +115,7 @@ final class AdminSearchBlockService extends AbstractBlockService
                 'query' => '',
                 'page' => 0,
                 'per_page' => 10,
-                'icon' => '<i class="fas fa-list"></i>',
+                'icon' => 'fas fa-list',
             ])
             ->setRequired('admin_code')
             ->setAllowedTypes('admin_code', ['string']);

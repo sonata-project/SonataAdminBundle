@@ -16,13 +16,13 @@ namespace Sonata\AdminBundle\Tests\Translator;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy;
 
-class FormLabelTranslatorStrategyTest extends TestCase
+final class FormLabelTranslatorStrategyTest extends TestCase
 {
     public function testLabel(): void
     {
         $strategy = new FormLabelTranslatorStrategy();
 
-        $this->assertSame('Isvalid', $strategy->getLabel('isValid', 'form', 'label'));
-        $this->assertSame('Plainpassword', $strategy->getLabel('plainPassword', 'form', 'label'));
+        self::assertSame('Isvalid', $strategy->getLabel('isValid', 'form', 'label'));
+        self::assertSame('Plainpassword', $strategy->getLabel('plainPassword', 'form', 'label'));
     }
 }

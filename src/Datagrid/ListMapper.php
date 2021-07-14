@@ -23,6 +23,11 @@ use Sonata\AdminBundle\Mapper\MapperInterface;
  * This class is used to simulate the Form API.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
+ *
+ * @phpstan-template T of object
+ * @phpstan-implements MapperInterface<T>
  */
 final class ListMapper implements MapperInterface
 {
@@ -46,12 +51,14 @@ final class ListMapper implements MapperInterface
 
     /**
      * @var AdminInterface<object>
+     * @phpstan-var AdminInterface<T>
      */
     private $admin;
 
     /**
-     * @param AdminInterface<object>                                $admin
      * @param FieldDescriptionCollection<FieldDescriptionInterface> $list
+     *
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function __construct(
         ListBuilderInterface $listBuilder,
@@ -69,12 +76,13 @@ final class ListMapper implements MapperInterface
     }
 
     /**
-     * @param FieldDescriptionInterface|string $name
-     * @param array<string, mixed>             $fieldDescriptionOptions
+     * @param array<string, mixed> $fieldDescriptionOptions
      *
      * @return static
+     *
+     * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */
-    public function addIdentifier($name, ?string $type = null, array $fieldDescriptionOptions = []): self
+    public function addIdentifier(string $name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
         $fieldDescriptionOptions['identifier'] = true;
 
@@ -91,15 +99,20 @@ final class ListMapper implements MapperInterface
     }
 
     /**
-     * @param FieldDescriptionInterface|string $name
-     * @param array<string, mixed>             $fieldDescriptionOptions
+     * @param array<string, mixed> $fieldDescriptionOptions
      *
      * @throws \LogicException
      *
      * @return static
+     *
+     * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */
-    public function add($name, ?string $type = null, array $fieldDescriptionOptions = []): self
+    public function add(string $name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
+        if (isset($fieldDescriptionOptions['role']) && !$this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
+            return $this;
+        }
+
         // Default sort on "associated_property"
         if (isset($fieldDescriptionOptions['associated_property'])) {
             if (!isset($fieldDescriptionOptions['sortable'])) {
@@ -126,27 +139,17 @@ final class ListMapper implements MapperInterface
             throw new \InvalidArgumentException(sprintf('Value for "identifier" option must be boolean, %s given.', \gettype($fieldDescriptionOptions['identifier'])));
         }
 
-        if ($name instanceof FieldDescriptionInterface) {
-            $fieldDescription = $name;
-            $fieldDescription->mergeOptions($fieldDescriptionOptions);
-        } elseif (\is_string($name)) {
-            if ($this->getAdmin()->hasListFieldDescription($name)) {
-                throw new \LogicException(sprintf(
-                    'Duplicate field name "%s" in list mapper. Names should be unique.',
-                    $name
-                ));
-            }
-
-            $fieldDescription = $this->getAdmin()->createFieldDescription(
-                $name,
-                $fieldDescriptionOptions
-            );
-        } else {
-            throw new \TypeError(
-                'Unknown field name in list mapper.'
-                .' Field name should be either of FieldDescriptionInterface interface or string.'
-            );
+        if ($this->getAdmin()->hasListFieldDescription($name)) {
+            throw new \LogicException(sprintf(
+                'Duplicate field name "%s" in list mapper. Names should be unique.',
+                $name
+            ));
         }
+
+        $fieldDescription = $this->getAdmin()->createFieldDescription(
+            $name,
+            $fieldDescriptionOptions
+        );
 
         if (null === $fieldDescription->getLabel()) {
             $fieldDescription->setOption(
@@ -155,14 +158,11 @@ final class ListMapper implements MapperInterface
             );
         }
 
-        if (!isset($fieldDescriptionOptions['role']) || $this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
-            // add the field with the FormBuilder
-            $this->builder->addField($this->list, $type, $fieldDescription);
+        $this->builder->addField($this->list, $type, $fieldDescription);
 
-            // Ensure batch and action pseudo-fields are tagged as virtual
-            if (\in_array($fieldDescription->getType(), [self::TYPE_ACTIONS, self::TYPE_BATCH, self::TYPE_SELECT], true)) {
-                $fieldDescription->setOption('virtual_field', true);
-            }
+        // Ensure batch and action pseudo-fields are tagged as virtual
+        if (\in_array($fieldDescription->getType(), [self::TYPE_ACTIONS, self::TYPE_BATCH, self::TYPE_SELECT], true)) {
+            $fieldDescription->setOption('virtual_field', true);
         }
 
         return $this;
@@ -178,6 +178,9 @@ final class ListMapper implements MapperInterface
         return $this->list->has($key);
     }
 
+    /**
+     * @return static
+     */
     public function remove(string $key): self
     {
         $this->getAdmin()->removeListFieldDescription($key);
@@ -191,6 +194,9 @@ final class ListMapper implements MapperInterface
         return array_keys($this->list->getElements());
     }
 
+    /**
+     * @return static
+     */
     public function reorder(array $keys): self
     {
         $this->list->reorder($keys);

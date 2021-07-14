@@ -18,16 +18,16 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 
-class BaseAdminModelManagerTest extends TestCase
+final class BaseAdminModelManagerTest extends TestCase
 {
     public function testHook(): void
     {
-        $securityHandler = $this->getMockForAbstractClass(SecurityHandlerInterface::class);
+        $securityHandler = $this->createMock(SecurityHandlerInterface::class);
 
-        $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-        $modelManager->expects($this->once())->method('create');
-        $modelManager->expects($this->once())->method('update');
-        $modelManager->expects($this->once())->method('delete');
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager->expects(self::once())->method('create');
+        $modelManager->expects(self::once())->method('update');
+        $modelManager->expects(self::once())->method('delete');
 
         $admin = new BaseAdminModelManager_Admin('code', \stdClass::class, 'controller');
         $admin->setModelManager($modelManager);
@@ -42,8 +42,8 @@ class BaseAdminModelManagerTest extends TestCase
 
     public function testObject(): void
     {
-        $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-        $modelManager->expects($this->once())->method('find')->willReturnCallback(static function (string $class, int $id): void {
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager->expects(self::once())->method('find')->willReturnCallback(static function (string $class, int $id): void {
             if (\stdClass::class !== $class) {
                 throw new \RuntimeException('Invalid class argument');
             }
@@ -61,9 +61,9 @@ class BaseAdminModelManagerTest extends TestCase
     public function testCreateQuery(): void
     {
         $query = $this->createMock(ProxyQueryInterface::class);
-        $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('createQuery')
             ->with(\stdClass::class)
             ->willReturn($query);
@@ -77,7 +77,7 @@ class BaseAdminModelManagerTest extends TestCase
     {
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
-            ->expects($this->exactly(2))
+            ->expects(self::exactly(2))
             ->method('getNormalizedIdentifier')
             ->willReturn('42');
 

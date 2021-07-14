@@ -50,8 +50,8 @@ final class AdminFetcher implements AdminFetcherInterface
 
         $rootAdmin->setRequest($request);
 
-        if ($request->get('uniqid')) {
-            $admin->setUniqid($request->get('uniqid'));
+        if (null !== $request->get('uniqid')) {
+            $admin->setUniqId($request->get('uniqid'));
         }
 
         return $admin;

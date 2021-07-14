@@ -72,11 +72,6 @@ final class SetObjectFieldValueActionTest extends TestCase
     private $resolver;
 
     /**
-     * @var string
-     */
-    private $adminCode;
-
-    /**
      * @var MockObject&MutableTemplateRegistryInterface
      */
     private $templateRegistry;
@@ -87,7 +82,6 @@ final class SetObjectFieldValueActionTest extends TestCase
             'admin_template' => 'renderedTemplate',
             'field_template' => 'renderedTemplate',
         ]));
-        $this->adminCode = 'sonata.post.admin';
         $this->admin = $this->createMock(AdminInterface::class);
         $this->adminFetcher = $this->createStub(AdminFetcherInterface::class);
         $this->adminFetcher->method('get')->willReturn($this->admin);
@@ -129,7 +123,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('hasListFieldDescription')->with('enabled')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);
-        $this->admin->expects($this->once())->method('update')->with($object);
+        $this->admin->expects(self::once())->method('update')->with($object);
         $this->templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $fieldDescription->method('getOption')->willReturnMap([
             ['editable', null, true],
@@ -143,7 +137,7 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     /**
@@ -187,7 +181,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('hasListFieldDescription')->with('dateProp')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('dateProp')->willReturn($fieldDescription);
-        $this->admin->expects($this->once())->method('update')->with($object);
+        $this->admin->expects(self::once())->method('update')->with($object);
 
         $this->templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $fieldDescription->method('getOption')->willReturnMap([
@@ -203,16 +197,16 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $defaultTimezone = new \DateTimeZone(date_default_timezone_get());
-        $expectedDate = new \DateTime($request->query->get('value'), $expectedTimezone);
+        $expectedDate = new \DateTime('2020-12-12', $expectedTimezone);
         $expectedDate->setTimezone($defaultTimezone);
 
         $dateProp = $object->getDateProp();
-        $this->assertInstanceOf(\DateTime::class, $dateProp);
-        $this->assertSame($expectedDate->format('Y-m-d'), $dateProp->format('Y-m-d'));
-        $this->assertSame($defaultTimezone->getName(), $dateProp->getTimezone()->getName());
+        self::assertInstanceOf(\DateTime::class, $dateProp);
+        self::assertSame($expectedDate->format('Y-m-d'), $dateProp->format('Y-m-d'));
+        self::assertSame($defaultTimezone->getName(), $dateProp->getTimezone()->getName());
     }
 
     public function testSetObjectFieldValueActionOnARelationField(): void
@@ -235,7 +229,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->method('hasListFieldDescription')->with('bar')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('bar')->willReturn($fieldDescription);
         $this->admin->method('getClass')->willReturn(\get_class($object));
-        $this->admin->expects($this->once())->method('update')->with($object);
+        $this->admin->expects(self::once())->method('update')->with($object);
         $this->templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $fieldDescription->method('getType')->willReturn('choice');
         $fieldDescription->method('getOption')->willReturnMap([
@@ -253,8 +247,8 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertSame($associationObject, $object->getBar());
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        self::assertSame($associationObject, $object->getBar());
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function testSetObjectFieldValueActionWithViolations(): void
@@ -288,8 +282,8 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $this->assertSame(json_encode("error1\nerror2"), $response->getContent());
+        self::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        self::assertSame(json_encode("error1\nerror2"), $response->getContent());
     }
 
     public function testSetObjectFieldEditableMultipleValue(): void
@@ -310,7 +304,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('hasListFieldDescription')->with('status')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('status')->willReturn($fieldDescription);
-        $this->admin->expects($this->once())->method('update')->with($object);
+        $this->admin->expects(self::once())->method('update')->with($object);
         $this->templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $fieldDescription->method('getOption')->willReturnMap([
             ['data_transformer', null, null],
@@ -326,8 +320,8 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertSame([1, 2], $object->status);
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        self::assertSame([1, 2], $object->status);
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function testSetObjectFieldTransformed(): void
@@ -354,7 +348,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('hasListFieldDescription')->with('enabled')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);
-        $this->admin->expects($this->once())->method('update')->with($object);
+        $this->admin->expects(self::once())->method('update')->with($object);
         $this->templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $fieldDescription->method('getOption')->willReturnMap([
             ['data_transformer', null, $dataTransformer],
@@ -369,8 +363,8 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertTrue($object->getEnabled());
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        self::assertTrue($object->getEnabled());
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function testSetObjectFieldOverrideTransformer(): void
@@ -400,7 +394,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('hasListFieldDescription')->with('enabled')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);
-        $this->admin->expects($this->once())->method('update')->with($object);
+        $this->admin->expects(self::once())->method('update')->with($object);
         $this->templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $fieldDescription->method('getOption')->willReturnMap([
             ['data_transformer', null, $dataTransformer],
@@ -415,8 +409,8 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertTrue($object->getEnabled());
-        $this->assertTrue($isOverridden);
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        self::assertTrue($object->getEnabled());
+        self::assertTrue($isOverridden);
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 }
