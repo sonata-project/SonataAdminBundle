@@ -36,6 +36,9 @@ final class SetupAclCommand extends Command
      */
     private $aclManipulator;
 
+    /**
+     * @internal This class should only be used through the console
+     */
     public function __construct(Pool $pool, AdminAclManipulatorInterface $aclManipulator)
     {
         $this->pool = $pool;

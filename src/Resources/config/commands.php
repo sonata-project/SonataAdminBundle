@@ -27,7 +27,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('console.command')
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
-                new ReferenceConfigurator('validator'),
             ])
 
         ->set('sonata.admin.command.generate_object_acl', GenerateObjectAclCommand::class)

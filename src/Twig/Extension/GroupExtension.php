@@ -26,7 +26,7 @@ final class GroupExtension extends AbstractExtension
     private $pool;
 
     /**
-     * @internal
+     * @internal This class should only be used through Twig
      */
     public function __construct(Pool $pool)
     {
