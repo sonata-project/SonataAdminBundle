@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Action\RetrieveAutocompleteItemsAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
@@ -201,7 +202,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
+        $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO","foo":"bar"}]}', $response->getContent());
     }
 
     public function testRetrieveAutocompleteItemsComplexProperty(): void
@@ -332,7 +333,11 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
             ['items_per_page', null, 10],
             ['req_param_name_page_number', null, DatagridInterface::PAGE],
             ['target_admin_access_action', null, 'list'],
-            ['response_item_callback', null, null],
+            ['response_item_callback', null, static function (AdminInterface $admin, object $model, array $item): array {
+                $item['foo'] = 'bar';
+
+                return $item;
+            }],
         ]);
     }
 }
