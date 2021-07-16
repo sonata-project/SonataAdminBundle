@@ -125,40 +125,9 @@ final class Datagrid implements DatagridInterface
             return;
         }
 
-        foreach ($this->getFilters() as $filter) {
-            [$type, $options] = $filter->getRenderSettings();
+        $form = $this->buildForm();
 
-            $this->formBuilder->add($filter->getFormName(), $type, $options);
-        }
-
-        $hiddenType = HiddenType::class;
-
-        $this->formBuilder->add(DatagridInterface::SORT_BY, $hiddenType);
-        $this->formBuilder->get(DatagridInterface::SORT_BY)->addViewTransformer(new CallbackTransformer(
-            static function ($value) {
-                return $value;
-            },
-            static function ($value) {
-                return $value instanceof FieldDescriptionInterface ? $value->getName() : $value;
-            }
-        ));
-
-        $this->formBuilder->add(DatagridInterface::SORT_ORDER, $hiddenType);
-        $this->formBuilder->add(DatagridInterface::PAGE, $hiddenType);
-
-        if (isset($this->values[DatagridInterface::PER_PAGE]) && \is_array($this->values[DatagridInterface::PER_PAGE])) {
-            $this->formBuilder->add(DatagridInterface::PER_PAGE, CollectionType::class, [
-                'entry_type' => $hiddenType,
-                'allow_add' => true,
-            ]);
-        } else {
-            $this->formBuilder->add(DatagridInterface::PER_PAGE, $hiddenType);
-        }
-
-        $this->form = $this->formBuilder->getForm();
-        $this->form->submit($this->values);
-
-        $this->applyFilters($this->form->getData() ?? []);
+        $this->applyFilters($form->getData() ?? []);
         $this->applySorting();
 
         $this->pager->setMaxPerPage($this->getMaxPerPage(25));
@@ -265,10 +234,7 @@ final class Datagrid implements DatagridInterface
 
     public function getForm(): FormInterface
     {
-        $this->buildPager();
-        \assert(null !== $this->form);
-
-        return $this->form;
+        return $this->buildForm();
     }
 
     public function getSortParameters(FieldDescriptionInterface $fieldDescription): array
@@ -381,5 +347,47 @@ final class Datagrid implements DatagridInterface
 
         return $values[DatagridInterface::SORT_BY]->getName() === $fieldDescription->getName()
             || $values[DatagridInterface::SORT_BY]->getName() === $fieldDescription->getOption('sortable');
+    }
+
+    private function buildForm(): FormInterface
+    {
+        if (null !== $this->form) {
+            return $this->form;
+        }
+
+        foreach ($this->getFilters() as $filter) {
+            [$type, $options] = $filter->getRenderSettings();
+
+            $this->formBuilder->add($filter->getFormName(), $type, $options);
+        }
+
+        $hiddenType = HiddenType::class;
+
+        $this->formBuilder->add(DatagridInterface::SORT_BY, $hiddenType);
+        $this->formBuilder->get(DatagridInterface::SORT_BY)->addViewTransformer(new CallbackTransformer(
+            static function ($value) {
+                return $value;
+            },
+            static function ($value) {
+                return $value instanceof FieldDescriptionInterface ? $value->getName() : $value;
+            }
+        ));
+
+        $this->formBuilder->add(DatagridInterface::SORT_ORDER, $hiddenType);
+        $this->formBuilder->add(DatagridInterface::PAGE, $hiddenType);
+
+        if (isset($this->values[DatagridInterface::PER_PAGE]) && \is_array($this->values[DatagridInterface::PER_PAGE])) {
+            $this->formBuilder->add(DatagridInterface::PER_PAGE, CollectionType::class, [
+                'entry_type' => $hiddenType,
+                'allow_add' => true,
+            ]);
+        } else {
+            $this->formBuilder->add(DatagridInterface::PER_PAGE, $hiddenType);
+        }
+
+        $this->form = $this->formBuilder->getForm();
+        $this->form->submit($this->values);
+
+        return $this->form;
     }
 }

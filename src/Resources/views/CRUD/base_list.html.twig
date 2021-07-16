@@ -38,14 +38,16 @@ file that was distributed with this source code.
             <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
         {% endif %}
 
+        {% set datagrid_has_results = admin.datagrid.results|length > 0 %}
+
         {# Add a margin if no pager to prevent dropdown cropping on window #}
         <div class="box box-primary"{% if admin.datagrid.pager.lastPage == 1 %} style="margin-bottom: 100px;"{% endif %}>
-            <div class="box-body{% if admin.datagrid.results|length > 0 %} table-responsive no-padding{% endif %}">
+            <div class="box-body{% if datagrid_has_results %} table-responsive no-padding{% endif %}">
                 {{ sonata_block_render_event('sonata.admin.list.table.top', { 'admin': admin }) }}
 
                 {% block list_header %}{% endblock %}
 
-                {% if admin.datagrid.results|length > 0 %}
+                {% if datagrid_has_results %}
                     {% block table %}
                         <table class="table table-bordered table-striped table-hover sonata-ba-list">
                         {% block table_header %}
@@ -138,7 +140,7 @@ file that was distributed with this source code.
                 {{ sonata_block_render_event('sonata.admin.list.table.bottom', { 'admin': admin }) }}
             </div>
             {% block list_footer %}
-                {% if admin.datagrid.results|length > 0 %}
+                {% if datagrid_has_results %}
                     <div class="box-footer">
                         <div class="form-inline clearfix">
                             {% if not app.request.isXmlHttpRequest %}
