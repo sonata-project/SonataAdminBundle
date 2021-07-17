@@ -361,9 +361,7 @@ final class Datagrid implements DatagridInterface
             $this->formBuilder->add($filter->getFormName(), $type, $options);
         }
 
-        $hiddenType = HiddenType::class;
-
-        $this->formBuilder->add(DatagridInterface::SORT_BY, $hiddenType);
+        $this->formBuilder->add(DatagridInterface::SORT_BY, HiddenType::class);
         $this->formBuilder->get(DatagridInterface::SORT_BY)->addViewTransformer(new CallbackTransformer(
             static function ($value) {
                 return $value;
@@ -373,16 +371,16 @@ final class Datagrid implements DatagridInterface
             }
         ));
 
-        $this->formBuilder->add(DatagridInterface::SORT_ORDER, $hiddenType);
-        $this->formBuilder->add(DatagridInterface::PAGE, $hiddenType);
+        $this->formBuilder->add(DatagridInterface::SORT_ORDER, HiddenType::class);
+        $this->formBuilder->add(DatagridInterface::PAGE, HiddenType::class);
 
         if (isset($this->values[DatagridInterface::PER_PAGE]) && \is_array($this->values[DatagridInterface::PER_PAGE])) {
             $this->formBuilder->add(DatagridInterface::PER_PAGE, CollectionType::class, [
-                'entry_type' => $hiddenType,
+                'entry_type' => HiddenType::class,
                 'allow_add' => true,
             ]);
         } else {
-            $this->formBuilder->add(DatagridInterface::PER_PAGE, $hiddenType);
+            $this->formBuilder->add(DatagridInterface::PER_PAGE, HiddenType::class);
         }
 
         $this->form = $this->formBuilder->getForm();
