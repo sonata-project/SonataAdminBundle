@@ -20,7 +20,7 @@ file that was distributed with this source code.
                                 data-toggle="tab"
                             >
                                 <i class="icon-exclamation-sign has-errors hide"></i>
-                                {% if form_group.translation_domain is same as(false) %}
+                                {% if form_group.translation_domain is defined and form_group.translation_domain is same as(false) %}
                                     {{ form_group.label }}
                                 {% else %}
                                     {{ form_group.label|trans({}, form_group.translation_domain ?? associationAdmin.translationDomain) }}

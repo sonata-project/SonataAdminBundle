@@ -15,7 +15,7 @@
                 <div class="box-header">
                     <h4 class="box-title">
                         {% block show_title %}
-                            {% if show_group.translation_domain is same as(false) %}
+                            {% if show_group.translation_domain is defined and show_group.translation_domain is same as(false) %}
                                 {{ show_group.label }}
                             {% else %}
                                 {{ show_group.label|trans({}, show_group.translation_domain ?? admin.translationDomain) }}
