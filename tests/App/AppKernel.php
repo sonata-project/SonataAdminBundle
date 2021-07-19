@@ -26,9 +26,11 @@ use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorageFactory;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use Symfony\Component\Security\Http\Authentication\AuthenticatorManager;
 
 final class AppKernel extends Kernel
 {
@@ -84,23 +86,40 @@ final class AppKernel extends Kernel
 
     protected function configureContainer(ContainerBuilder $containerBuilder, LoaderInterface $loader): void
     {
-        $containerBuilder->loadFromExtension('framework', [
+        $frameworkConfig = [
             'secret' => 'MySecret',
             'fragments' => ['enabled' => true],
             'form' => ['enabled' => true],
-            'session' => ['handler_id' => 'session.handler.native_file', 'storage_id' => 'session.storage.mock_file', 'name' => 'MOCKSESSID'],
             'assets' => null,
             'test' => true,
             'router' => ['utf8' => true],
             'translator' => [
                 'default_path' => '%kernel.project_dir%/translations',
             ],
-        ]);
+        ];
 
-        $containerBuilder->loadFromExtension('security', [
-            'firewalls' => ['main' => ['anonymous' => true]],
+        // TODO: Remove else case when dropping support of Symfony < 5.3
+        if (class_exists(NativeSessionStorageFactory::class)) {
+            $frameworkConfig['session'] = ['storage_factory_id' => 'session.storage.factory.mock_file'];
+        } else {
+            $frameworkConfig['session'] = ['storage_id' => 'session.storage.mock_file'];
+        }
+
+        $containerBuilder->loadFromExtension('framework', $frameworkConfig);
+
+        $securityConfig = [
+            'firewalls' => ['main' => []],
             'providers' => ['in_memory' => ['memory' => null]],
-        ]);
+        ];
+
+        // TODO: Remove else case when dropping support of Symfony < 5.3
+        if (class_exists(AuthenticatorManager::class)) {
+            $securityConfig['enable_authenticator_manager'] = true;
+        } else {
+            $securityConfig['firewalls']['main']['anonymous'] = true;
+        }
+
+        $containerBuilder->loadFromExtension('security', $securityConfig);
 
         $containerBuilder->loadFromExtension('twig', [
             'strict_variables' => '%kernel.debug%',
