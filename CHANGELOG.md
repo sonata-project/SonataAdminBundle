@@ -12,7 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - [[#7320](https://github.com/sonata-project/SonataAdminBundle/pull/7320)] `response_item_callback` callback signature. ([@VincentLanglet](https://github.com/VincentLanglet))
 
 ### Deprecated
-- [[#7325](https://github.com/sonata-project/SonataAdminBundle/pull/7325)] Option `title_mode`. Use `logo_content` instead. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7325](https://github.com/sonata-project/SonataAdminBundle/pull/7325)] Option `title_mode`. Use `logo_content` instead ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7290](https://github.com/sonata-project/SonataAdminBundle/pull/7290)] Passing `admin` in the request of search action. ([@VincentLanglet](https://github.com/VincentLanglet))
 
 ### Fixed
