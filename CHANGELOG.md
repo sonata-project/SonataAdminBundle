@@ -18,7 +18,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - [[#7335](https://github.com/sonata-project/SonataAdminBundle/pull/7335)] Crash on choice field inline edition with a 0 value ([@soullivaneuh](https://github.com/soullivaneuh))
 - [[#7332](https://github.com/sonata-project/SonataAdminBundle/pull/7332)] Accessing on non existent array keys `translation_domain` ([@VincentLanglet](https://github.com/VincentLanglet))
-- [[#7320](https://github.com/sonata-project/SonataAdminBundle/pull/7320)] `response_item_callback` option of ModelAutocompleteFilter. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7320](https://github.com/sonata-project/SonataAdminBundle/pull/7320)] `response_item_callback` option of ModelAutocompleteFilter ([@VincentLanglet](https://github.com/VincentLanglet))
 
 ## [3.103.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.102.0...3.103.0) - 2021-07-11
 ### Added
