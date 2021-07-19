@@ -168,7 +168,6 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
     {
         try {
             $acl = $this->aclProvider->findAcl($objectIdentity);
-            \assert($acl instanceof MutableAclInterface);
         } catch (AclNotFoundException $e) {
             return null;
         }
@@ -248,7 +247,8 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
     public function findClassAceIndexByRole(MutableAclInterface $acl, string $role)
     {
         foreach ($acl->getClassAces() as $index => $entry) {
-            if ($entry->getSecurityIdentity() instanceof RoleSecurityIdentity && $entry->getSecurityIdentity()->getRole() === $role) {
+            $securityIdentity = $entry->getSecurityIdentity();
+            if ($securityIdentity instanceof RoleSecurityIdentity && $securityIdentity->getRole() === $role) {
                 return $index;
             }
         }
@@ -259,7 +259,8 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
     public function findClassAceIndexByUsername(MutableAclInterface $acl, string $username)
     {
         foreach ($acl->getClassAces() as $index => $entry) {
-            if ($entry->getSecurityIdentity() instanceof UserSecurityIdentity && $entry->getSecurityIdentity()->getUsername() === $username) {
+            $securityIdentity = $entry->getSecurityIdentity();
+            if ($securityIdentity instanceof UserSecurityIdentity && $securityIdentity->getUsername() === $username) {
                 return $index;
             }
         }

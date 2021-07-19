@@ -38,7 +38,7 @@ final class BooleanToStringTransformer implements DataTransformerInterface
      */
     public function transform($value): ?string
     {
-        return $value ? $this->trueValue : null;
+        return true === $value ? $this->trueValue : null;
     }
 
     /**

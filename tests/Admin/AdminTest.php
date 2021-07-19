@@ -1611,7 +1611,7 @@ final class AdminTest extends TestCase
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
         $datagridBuilder->expects(self::once())
             ->method('getBaseDatagrid')
-            ->with($this->identicalTo($modelAdmin))
+            ->with(self::identicalTo($modelAdmin))
             ->willReturn($datagrid);
 
         $datagridBuilder->expects(self::exactly(3))

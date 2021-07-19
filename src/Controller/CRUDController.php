@@ -431,7 +431,7 @@ class CRUDController extends AbstractController
 
         $askConfirmation = $batchActions[$action]['ask_confirmation'] ?? true;
 
-        if ($askConfirmation && 'ok' !== $confirmation) {
+        if (true === $askConfirmation && 'ok' !== $confirmation) {
             $actionLabel = $batchActions[$action]['label'];
             $batchTranslationDomain = $batchActions[$action]['translation_domain'] ??
                 $this->admin->getTranslationDomain();
@@ -992,7 +992,9 @@ class CRUDController extends AbstractController
      */
     protected function handleModelManagerException(\Exception $exception): void
     {
-        if ($this->getParameter('kernel.debug')) {
+        $debug = $this->getParameter('kernel.debug');
+        \assert(\is_bool($debug));
+        if ($debug) {
             throw $exception;
         }
 

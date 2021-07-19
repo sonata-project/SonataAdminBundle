@@ -55,18 +55,24 @@ final class GroupMenuProvider implements MenuProviderInterface
     /**
      * Retrieves the menu based on the group options.
      *
-     * @param mixed[] $options
+     * @param array<string, mixed> $options
      *
      * @throws \InvalidArgumentException if the menu does not exists
      */
     public function get(string $name, array $options = []): ItemInterface
     {
+        if (!isset($options['name'])) {
+            throw new \InvalidArgumentException('TODO');
+        }
+        $menuItem = $this->menuFactory->createItem($options['name']);
+
+        if (!isset($options['group'])) {
+            throw new \InvalidArgumentException('TODO');
+        }
         /** @phpstan-var Group $group */
         $group = $options['group'];
 
-        $menuItem = $this->menuFactory->createItem($options['name']);
-
-        if (!\array_key_exists('on_top', $group) || false === $group['on_top']) {
+        if (false === $group['on_top']) {
             foreach ($group['items'] as $item) {
                 if ($this->canGenerateMenuItem($item, $group)) {
                     $menuItem->addChild($this->generateMenuItem($item, $group));
@@ -75,18 +81,20 @@ final class GroupMenuProvider implements MenuProviderInterface
 
             if (false === $menuItem->hasChildren()) {
                 $menuItem->setDisplay(false);
-            } elseif ($group['keep_open'] ?? false) {
+            } elseif ($group['keep_open']) {
                 $menuItem->setAttribute('class', 'keep-open');
                 $menuItem->setExtra('keep_open', $group['keep_open']);
             }
-        } elseif (1 === \count($group['items'])) {
-            if ($this->canGenerateMenuItem($group['items'][0], $group)) {
-                $menuItem = $this->generateMenuItem($group['items'][0], $group);
-                $menuItem->setExtra('on_top', $group['on_top']);
-            } else {
-                $menuItem->setDisplay(false);
-            }
+        } elseif (
+            1 === \count($group['items'])
+            && $this->canGenerateMenuItem($group['items'][0], $group)
+        ) {
+            $menuItem = $this->generateMenuItem($group['items'][0], $group);
+            $menuItem->setExtra('on_top', $group['on_top']);
+        } else {
+            $menuItem->setDisplay(false);
         }
+
         $menuItem->setLabel($group['label']);
 
         return $menuItem;

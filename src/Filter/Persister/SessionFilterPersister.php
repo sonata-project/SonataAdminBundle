@@ -65,6 +65,7 @@ final class SessionFilterPersister implements FilterPersisterInterface
      */
     private function getSession(): SessionInterface
     {
+        // @phpstan-ignore-next-line
         if (method_exists($this->requestStack, 'getSession')) {
             return $this->requestStack->getSession();
         }
