@@ -40,7 +40,7 @@
                                     <li{% if (not app.request.query.has('_tab') and loop.index == 1) or (tab_query_index == loop.index) %} class="active"{% endif %}>
                                         <a href="#{{ _tab_name }}" class="changer-tab" aria-controls="{{ _tab_name }}" data-toggle="tab">
                                             <i class="fas fa-exclamation-circle has-errors hide" aria-hidden="true"></i>
-                                            {% if form_tab.translation_domain is same as(false) %}
+                                            {% if form_tab.translation_domain is defined and form_tab.translation_domain is same as(false) %}
                                                 {{ form_tab.label }}
                                             {% else %}
                                                 {{ form_tab.label|trans({}, form_tab.translation_domain ?? admin.translationDomain) }}
@@ -59,7 +59,7 @@
                                         <div class="box-body  container-fluid">
                                             <div class="sonata-ba-collapsed-fields">
                                                 {% if form_tab.description != false %}
-                                                    {% if form_tab.translation_domain is same as(false) %}
+                                                    {% if form_tab.translation_domain is defined and form_tab.translation_domain is same as(false) %}
                                                         <p>{{ form_tab.description|raw }}</p>
                                                     {% else %}
                                                         <p>{{ form_tab.description|trans({}, form_tab.translation_domain ?? admin.translationDomain)|raw }}</p>
@@ -93,44 +93,61 @@
                         {% if objectId is not null %}
                             <button type="submit" class="btn btn-success" name="btn_update"><i class="fas fa-save" aria-hidden="true"></i> {{ 'btn_update'|trans({}, 'SonataAdminBundle') }}</button>
                             {% if admin.hasRoute('delete') and admin.hasAccess('delete', object) %}
-                                {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
-                                <a class="btn btn-danger" href="{{ admin.generateObjectUrl('delete', object) }}">
-                                    <i class="fas fa-minus-circle" aria-hidden="true"></i> {{ 'link_delete'|trans({}, 'SonataAdminBundle') }}
-                                </a>
+                                {% block btn_delete %}
+                                    {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
+                                    <a class="btn btn-danger" href="{{ admin.generateObjectUrl('delete', object) }}">
+                                        <i class="fas fa-minus-circle" aria-hidden="true"></i> {{ 'link_delete'|trans({}, 'SonataAdminBundle') }}
+                                    </a>
+                                {% endblock %}
                             {% endif %}
                         {% else %}
-                            <button type="submit" class="btn btn-success" name="btn_create"><i class="fas fa-plus-circle" aria-hidden="true"></i> {{ 'btn_create'|trans({}, 'SonataAdminBundle') }}</button>
+                            {% block btn_create %}
+                                <button type="submit" class="btn btn-success" name="btn_create"><i class="fas fa-plus-circle" aria-hidden="true"></i> {{ 'btn_create'|trans({}, 'SonataAdminBundle') }}</button>
+                            {% endblock %}
                         {% endif %}
                     {% else %}
                         {% if admin.supportsPreviewMode %}
-                            <button class="btn btn-info persist-preview" name="btn_preview" type="submit">
-                                <i class="fas fa-eye" aria-hidden="true"></i>
-                                {{ 'btn_preview'|trans({}, 'SonataAdminBundle') }}
-                            </button>
+                            {% block btn_preview %}
+                                <button class="btn btn-info persist-preview" name="btn_preview" type="submit">
+                                    <i class="fas fa-eye" aria-hidden="true"></i>
+                                    {{ 'btn_preview'|trans({}, 'SonataAdminBundle') }}
+                                </button>
+                            {% endblock %}
                         {% endif %}
                         {% if objectId is not null %}
-                            <button type="submit" class="btn btn-success" name="btn_update_and_edit"><i class="fas fa-save" aria-hidden="true"></i> {{ 'btn_update_and_edit_again'|trans({}, 'SonataAdminBundle') }}</button>
+                            {% block btn_update_and_edit %}
+                                <button type="submit" class="btn btn-success" name="btn_update_and_edit"><i class="fas fa-save" aria-hidden="true"></i> {{ 'btn_update_and_edit_again'|trans({}, 'SonataAdminBundle') }}</button>
+                            {% endblock %}
 
                             {% if admin.hasRoute('list') and admin.hasAccess('list') %}
-                                <button type="submit" class="btn btn-success" name="btn_update_and_list"><i class="fas fa-save"></i> <i class="fas fa-list" aria-hidden="true"></i> {{ 'btn_update_and_return_to_list'|trans({}, 'SonataAdminBundle') }}</button>
+                                {% block btn_update_and_list %}
+                                    <button type="submit" class="btn btn-success" name="btn_update_and_list"><i class="fas fa-save"></i> <i class="fas fa-list" aria-hidden="true"></i> {{ 'btn_update_and_return_to_list'|trans({}, 'SonataAdminBundle') }}</button>
+                                {% endblock %}
                             {% endif %}
 
                             {% if admin.hasRoute('delete') and admin.hasAccess('delete', object) %}
-                                {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
-                                <a class="btn btn-danger" href="{{ admin.generateObjectUrl('delete', object) }}"><i class="fas fa-minus-circle" aria-hidden="true"></i> {{ 'link_delete'|trans({}, 'SonataAdminBundle') }}</a>
+                                {{ block('btn_delete') }}
                             {% endif %}
 
                             {% if admin.isAclEnabled() and admin.hasRoute('acl') and admin.hasAccess('acl', object) %}
-                                <a class="btn btn-info" href="{{ admin.generateObjectUrl('acl', object) }}"><i class="fas fa-users" aria-hidden="true"></i> {{ 'link_edit_acl'|trans({}, 'SonataAdminBundle') }}</a>
+                                {% block btn_acl %}
+                                    <a class="btn btn-info" href="{{ admin.generateObjectUrl('acl', object) }}"><i class="fas fa-users" aria-hidden="true"></i> {{ 'link_edit_acl'|trans({}, 'SonataAdminBundle') }}</a>
+                                {% endblock %}
                             {% endif %}
                         {% else %}
                             {% if admin.hasroute('edit') and admin.hasAccess('edit') %}
-                                <button class="btn btn-success" type="submit" name="btn_create_and_edit"><i class="fas fa-save" aria-hidden="true"></i> {{ 'btn_create_and_edit_again'|trans({}, 'SonataAdminBundle') }}</button>
+                                {% block btn_create_and_edit %}
+                                    <button class="btn btn-success" type="submit" name="btn_create_and_edit"><i class="fas fa-save" aria-hidden="true"></i> {{ 'btn_create_and_edit_again'|trans({}, 'SonataAdminBundle') }}</button>
+                                {% endblock %}
                             {% endif %}
                             {% if admin.hasroute('list') and admin.hasAccess('list') %}
-                                <button type="submit" class="btn btn-success" name="btn_create_and_list"><i class="fas fa-save"></i> <i class="fas fa-list" aria-hidden="true"></i> {{ 'btn_create_and_return_to_list'|trans({}, 'SonataAdminBundle') }}</button>
+                                {% block btn_create_and_list %}
+                                    <button type="submit" class="btn btn-success" name="btn_create_and_list"><i class="fas fa-save"></i> <i class="fas fa-list" aria-hidden="true"></i> {{ 'btn_create_and_return_to_list'|trans({}, 'SonataAdminBundle') }}</button>
+                                {% endblock %}
                             {% endif %}
-                            <button class="btn btn-success" type="submit" name="btn_create_and_create"><i class="fas fa-plus-circle" aria-hidden="true"></i> {{ 'btn_create_and_create_a_new_one'|trans({}, 'SonataAdminBundle') }}</button>
+                            {% block btn_create_and_create %}
+                                <button class="btn btn-success" type="submit" name="btn_create_and_create"><i class="fas fa-plus-circle" aria-hidden="true"></i> {{ 'btn_create_and_create_a_new_one'|trans({}, 'SonataAdminBundle') }}</button>
+                            {% endblock %}
                         {% endif %}
                     {% endif %}
                 {% endblock %}

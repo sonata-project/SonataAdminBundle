@@ -90,6 +90,7 @@ final class RoleSecurityHandlerTest extends TestCase
                     case 'ROLE_IRONMAN':
                     case 'ROLE_FOO_BAR_ABC':
                     case 'ROLE_FOO_BAR_BAZ_ALL':
+                    case 'ROLE_CUSTOM':
                         return true;
                     case 'ROLE_AUTH_EXCEPTION':
                         throw new AuthenticationCredentialsNotFoundException();
@@ -169,6 +170,11 @@ final class RoleSecurityHandlerTest extends TestCase
             [false, [], 'foo.bar.baz.xyz', 'BAZ', new \stdClass()],
             [false, [], 'foo.bar.baz.xyz', ['BAZ'], new \stdClass()],
             [false, ['ROLE_AUTH_EXCEPTION'], 'foo.bar.baz.xyz', ['BAZ'], new \stdClass()],
+
+            //role
+            [false, [], 'foo.bar', ['CUSTOM']],
+            [true, [], 'foo.bar', ['ROLE_CUSTOM']],
+            [false, [], 'foo.bar', ['ROLE_ANOTHER_CUSTOM']],
 
             // ALL role
             [true, [], 'foo.bar.baz', 'LIST'],

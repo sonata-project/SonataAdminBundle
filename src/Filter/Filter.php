@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Filter;
 
+use Sonata\AdminBundle\Search\ChainableFilterInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-abstract class Filter implements FilterInterface
+abstract class Filter implements FilterInterface, ChainableFilterInterface
 {
     /**
      * @var string|null
@@ -39,6 +40,11 @@ abstract class Filter implements FilterInterface
      * @var bool
      */
     private $active = false;
+
+    /**
+     * @var FilterInterface|null
+     */
+    private $previousFilter;
 
     final public function initialize(string $name, array $options = []): void
     {
@@ -204,6 +210,21 @@ abstract class Filter implements FilterInterface
     final public function getTranslationDomain(): ?string
     {
         return $this->getOption('translation_domain');
+    }
+
+    final public function setPreviousFilter(FilterInterface $filter): void
+    {
+        $this->previousFilter = $filter;
+    }
+
+    final public function getPreviousFilter(): ?FilterInterface
+    {
+        return $this->previousFilter;
+    }
+
+    final public function hasPreviousFilter(): bool
+    {
+        return null !== $this->previousFilter;
     }
 
     final protected function setActive(bool $active): void

@@ -195,7 +195,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
         self::assertInstanceOf(Response::class, $response);
         self::assertSame('application/json', $response->headers->get('Content-Type'));
-        self::assertSame('{"status":"OK","more":false,"items":[{"id":"123","label":"FOO"}]}', $response->getContent());
+        self::assertSame('{"status":"OK","more":false,"items":[{"id":"123","label":"FOO","foo":"bar"}]}', $response->getContent());
     }
 
     public function testRetrieveAutocompleteItemsComplexProperty(): void
@@ -319,7 +319,11 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
             ['items_per_page', null, 10],
             ['req_param_name_page_number', null, DatagridInterface::PAGE],
             ['target_admin_access_action', null, 'list'],
-            ['response_item_callback', null, null],
+            ['response_item_callback', null, static function (AdminInterface $admin, object $model, array $item): array {
+                $item['foo'] = 'bar';
+
+                return $item;
+            }],
         ]);
     }
 }

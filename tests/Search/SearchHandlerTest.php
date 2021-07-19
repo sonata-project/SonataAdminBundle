@@ -56,17 +56,41 @@ final class SearchHandlerTest extends TestCase
 
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects(self::once())->method('getDatagrid')->willReturn($datagrid);
-        $admin->expects(self::exactly(2))->method('getCode')->willReturn($adminCode);
-
-        $filter
-            ->expects(self::once())
-            ->method('setOption')
-            ->withConsecutive(
-                [self::equalTo('or_group'), $adminCode]
-            );
+        $admin->expects(self::once())->method('getCode')->willReturn($adminCode);
 
         $handler = new SearchHandler();
         self::assertInstanceOf(PagerInterface::class, $handler->search($admin, 'myservice'));
+    }
+
+    public function testBuildPagerWithMultipleSearchableFilter(): void
+    {
+        $filter1 = $this->createMock(SearchableFilterInterface::class);
+        $filter1->expects(self::once())->method('isSearchEnabled')->willReturn(true);
+
+        $filter2 = $this->createMock(SearchableFilterInterface::class);
+        $filter2->expects(self::once())->method('isSearchEnabled')->willReturn(false);
+
+        $filter3 = $this->createMock(SearchableFilterInterface::class);
+        $filter3->expects(self::once())->method('isSearchEnabled')->willReturn(true);
+        $filter3->expects(self::once())->method('setPreviousFilter')->with($filter1);
+
+        $pager = $this->createMock(PagerInterface::class);
+        $pager->expects(self::once())->method('setPage');
+        $pager->expects(self::once())->method('setMaxPerPage');
+
+        $datagrid = $this->createMock(DatagridInterface::class);
+        $datagrid->expects(self::once())->method('getFilters')->willReturn([$filter1, $filter2, $filter3]);
+        $datagrid->expects(self::exactly(2))->method('setValue');
+        $datagrid->expects(self::once())->method('getPager')->willReturn($pager);
+
+        $adminCode = 'my.admin';
+
+        $admin = $this->createStub(AdminInterface::class);
+        $admin->method('getDatagrid')->willReturn($datagrid);
+        $admin->method('getCode')->willReturn($adminCode);
+
+        $handler = new SearchHandler();
+        $this->assertInstanceOf(PagerInterface::class, $handler->search($admin, 'myservice'));
     }
 
     /**
@@ -91,14 +115,7 @@ final class SearchHandlerTest extends TestCase
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects(self::exactly($filterCallsCount))->method('getDatagrid')->willReturn($datagrid);
 
-        $admin->expects(self::exactly(null === $expected ? 1 : 2))->method('getCode')->willReturn($adminCode);
-
-        $filter
-            ->expects(self::exactly(null === $expected ? 0 : 1))
-            ->method('setOption')
-            ->withConsecutive(
-                [self::equalTo('or_group'), $adminCode]
-            );
+        $admin->expects(self::once())->method('getCode')->willReturn($adminCode);
 
         $handler = new SearchHandler();
 

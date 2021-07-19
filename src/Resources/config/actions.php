@@ -38,7 +38,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->public()
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
-                new ReferenceConfigurator('sonata.admin.search.handler'),
                 new ReferenceConfigurator('sonata.admin.global_template_registry'),
                 new ReferenceConfigurator('twig'),
             ])

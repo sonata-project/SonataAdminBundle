@@ -47,7 +47,7 @@ file that was distributed with this source code.
                         {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
                         <li{% if (not app.request.query.has('_tab') and loop.index == 1) or (tab_query_index == loop.index) %} class="active"{% endif %}>
                             <a href="#{{ _tab_name }}" class="changer-tab" aria-controls="{{ _tab_name }}" data-toggle="tab">
-                                {% if show_tab.translation_domain is same as(false) %}
+                                {% if show_tab.translation_domain is defined and show_tab.translation_domain is same as(false) %}
                                     {{ show_tab.label }}
                                 {% else %}
                                     {{ show_tab.label|trans({}, show_tab.translation_domain ?? admin.translationDomain) }}
@@ -99,7 +99,7 @@ file that was distributed with this source code.
                         <div class="box-header">
                             <h4 class="box-title">
                                 {% block show_title %}
-                                    {% if show_group.translation_domain is same as(false) %}
+                                    {% if show_group.translation_domain is defined and show_group.translation_domain is same as(false) %}
                                         {{ show_group.label }}
                                     {% else %}
                                         {{ show_group.label|trans({}, show_group.translation_domain ?? admin.translationDomain) }}

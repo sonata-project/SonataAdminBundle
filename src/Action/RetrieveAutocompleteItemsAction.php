@@ -177,7 +177,7 @@ final class RetrieveAutocompleteItemsAction
             ];
 
             if (\is_callable($responseItemCallback)) {
-                \call_user_func($responseItemCallback, $admin, $model, $item);
+                $item = \call_user_func($responseItemCallback, $admin, $model, $item);
             }
 
             $items[] = $item;

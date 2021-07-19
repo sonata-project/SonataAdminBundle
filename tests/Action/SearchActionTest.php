@@ -17,11 +17,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\SearchAction;
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
@@ -37,11 +34,6 @@ final class SearchActionTest extends TestCase
      * @var Pool
      */
     private $pool;
-
-    /**
-     * @var SearchHandler
-     */
-    private $searchHandler;
 
     /**
      * @var SearchAction
@@ -62,12 +54,10 @@ final class SearchActionTest extends TestCase
             'layout' => 'layout.html.twig',
         ]);
 
-        $this->searchHandler = new SearchHandler();
         $this->twig = $this->createMock(Environment::class);
 
         $this->action = new SearchAction(
             $this->pool,
-            $this->searchHandler,
             $templateRegistry,
             $this->twig
         );
@@ -83,18 +73,5 @@ final class SearchActionTest extends TestCase
         ])->willReturn('rendered_search');
 
         self::assertInstanceOf(Response::class, ($this->action)($request));
-    }
-
-    public function testAjaxCall(): void
-    {
-        $adminCode = 'code';
-
-        $this->searchHandler->configureAdminSearch([$adminCode => false]);
-        $admin = new CleanAdmin($adminCode, \stdClass::class, 'controller');
-        $this->container->set('foo', $admin);
-        $request = new Request(['admin' => 'foo', 'q' => 'fooTerm', 'page' => 5, 'offset' => 10]);
-        $request->headers->set('X-Requested-With', 'XMLHttpRequest');
-
-        self::assertInstanceOf(JsonResponse::class, ($this->action)($request));
     }
 }

@@ -50,15 +50,20 @@ final class SearchHandler
         $datagridValues = $datagrid->getValues();
 
         $found = false;
-
+        $previousFilter = null;
         foreach ($datagrid->getFilters() as $filter) {
             $formName = $filter->getFormName();
 
             if ($filter instanceof SearchableFilterInterface && $filter->isSearchEnabled()) {
-                $filter->setOption('or_group', $admin->getCode());
+                if (null !== $previousFilter) {
+                    $filter->setPreviousFilter($previousFilter);
+                }
+
                 $filter->setCondition(FilterInterface::CONDITION_OR);
                 $datagrid->setValue($formName, null, $term);
                 $found = true;
+
+                $previousFilter = $filter;
             } elseif (isset($datagridValues[$formName])) {
                 // Remove any previously set filter that is not configured for the global search.
                 $datagrid->removeFilter($formName);
