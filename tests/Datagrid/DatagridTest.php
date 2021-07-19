@@ -62,6 +62,7 @@ final class DatagridTest extends TestCase
     protected function setUp(): void
     {
         $this->query = $this->createStub(ProxyQueryInterface::class);
+        \assert($this->query instanceof ProxyQueryInterface); // https://github.com/vimeo/psalm/issues/5818
 
         $this->columns = new FieldDescriptionCollection();
         $this->pager = $this->createMock(PagerInterface::class);
