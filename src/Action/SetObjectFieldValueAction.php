@@ -225,7 +225,7 @@ final class SetObjectFieldValueAction
                 $value = $dataTransformer->reverseTransform($value);
             }
 
-            if (!$value && FieldDescriptionInterface::TYPE_CHOICE === $fieldDescription->getType()) {
+            if (null === $value && FieldDescriptionInterface::TYPE_CHOICE === $fieldDescription->getType()) {
                 return new JsonResponse(sprintf(
                     'Edit failed, object with id: %s not found in association: %s.',
                     $originalValue,
