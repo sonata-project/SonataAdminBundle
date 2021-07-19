@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [3.104.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.103.0...3.104.0) - 2021-07-20
 ### Added
-- [[#7325](https://github.com/sonata-project/SonataAdminBundle/pull/7325)] Option `list_action_button_content`. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7325](https://github.com/sonata-project/SonataAdminBundle/pull/7325)] Option `list_action_button_content` ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7299](https://github.com/sonata-project/SonataAdminBundle/pull/7299)] Added support for non admin prefixed `ROLE_*` roles by the RoleSecurityHandler. ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7306](https://github.com/sonata-project/SonataAdminBundle/pull/7306)] New `block` twig in order to override the button display by the admin in the base_edit_form. ([@VincentLanglet](https://github.com/VincentLanglet))
 
