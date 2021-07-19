@@ -181,7 +181,7 @@ CASESENSITIVE;
                         ->integerNode('dropdown_number_groups_per_colums')->defaultValue(2)->end()
                         // NEXT_MAJOR: Remove this option.
                         ->enumNode('title_mode')
-                            ->setDeprecated('The "%node%" option is deprecated since sonata-project/admin-bundle 3.x. Use "logo_content" instead.')
+                            ->setDeprecated('The "%node%" option is deprecated since sonata-project/admin-bundle 3.104. Use "logo_content" instead.')
                             ->values(['single_text', 'single_image', 'both'])
                             ->defaultValue('both')
                             ->cannotBeEmpty()
