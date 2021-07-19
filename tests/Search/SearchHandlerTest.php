@@ -90,7 +90,7 @@ final class SearchHandlerTest extends TestCase
         $admin->method('getCode')->willReturn($adminCode);
 
         $handler = new SearchHandler();
-        $this->assertInstanceOf(PagerInterface::class, $handler->search($admin, 'myservice'));
+        self::assertInstanceOf(PagerInterface::class, $handler->search($admin, 'myservice'));
     }
 
     /**

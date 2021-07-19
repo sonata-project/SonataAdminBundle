@@ -37,7 +37,7 @@ final class ChoiceTypeExtension extends AbstractTypeExtension
      */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
-        $view->vars['sortable'] = \array_key_exists('sortable', $options) && $options['sortable'];
+        $view->vars['sortable'] = \array_key_exists('sortable', $options) && true === $options['sortable'];
     }
 
     /**

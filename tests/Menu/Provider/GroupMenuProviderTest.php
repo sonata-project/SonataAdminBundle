@@ -68,9 +68,9 @@ final class GroupMenuProviderTest extends TestCase
         $urlGenerator->method('generate')->willReturnCallback(static function (string $name, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string {
             switch ($referenceType) {
                 case UrlGeneratorInterface::ABSOLUTE_URL:
-                    return sprintf('http://sonata-project/%s%s', $name, $parameters ? '?'.http_build_query($parameters) : '');
+                    return sprintf('http://sonata-project/%s%s', $name, [] !== $parameters ? '?'.http_build_query($parameters) : '');
                 case UrlGeneratorInterface::ABSOLUTE_PATH:
-                    return sprintf('/%s%s', $name, $parameters ? '?'.http_build_query($parameters) : '');
+                    return sprintf('/%s%s', $name, [] !== $parameters ? '?'.http_build_query($parameters) : '');
                 default:
                     throw new \InvalidArgumentException(sprintf(
                         'Dummy router does not support the reference type "%s".',

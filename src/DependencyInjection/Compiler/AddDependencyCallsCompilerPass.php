@@ -220,7 +220,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $groups[$resolvedGroupName]['keep_open'] = $groupDefaults[$resolvedGroupName]['keep_open'];
                 }
             }
-        } elseif ($container->getParameter('sonata.admin.configuration.sort_admins')) {
+        } elseif (true === $container->getParameter('sonata.admin.configuration.sort_admins')) {
             $groups = $groupDefaults;
 
             $elementSort = static function (array &$element): void {

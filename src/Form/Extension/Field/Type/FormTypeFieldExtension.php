@@ -122,7 +122,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
         }
 
         // avoid to add extra information not required by non admin field
-        if (\is_array($sonataAdmin) && $form->getConfig()->getAttribute('sonata_admin_enabled', true)) {
+        if (\is_array($sonataAdmin) && true === $form->getConfig()->getAttribute('sonata_admin_enabled', true)) {
             $sonataAdmin['value'] = $form->getData();
 
             // add a new block types, so the Admin Form element can be tweaked based on the admin code

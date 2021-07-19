@@ -43,7 +43,7 @@ final class AdminType extends AbstractType
             $admin->getParentFieldDescription()->setAssociationAdmin($admin);
         }
 
-        if ($options['delete'] && $admin->hasAccess('delete')) {
+        if (true === $options['delete'] && $admin->hasAccess('delete')) {
             if (!\array_key_exists('translation_domain', $options['delete_options']['type_options'])) {
                 $options['delete_options']['type_options']['translation_domain'] = $admin->getTranslationDomain();
             }
@@ -89,7 +89,7 @@ final class AdminType extends AbstractType
                         // no object here, we create a new one
                         $subject = $admin->getNewInstance();
 
-                        if ($options['collection_by_reference']) {
+                        if (true === $options['collection_by_reference']) {
                             $subject = ObjectManipulator::addInstance($parentSubject, $subject, $parentFieldDescription);
                         } else {
                             $subject = ObjectManipulator::setObject($subject, $parentSubject, $parentFieldDescription);

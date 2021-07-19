@@ -92,7 +92,7 @@ final class DataTransformerResolver implements DataTransformerResolverInterface
     {
         $outputTimezone = $fieldDescription->getOption('timezone');
 
-        if (!$outputTimezone) {
+        if (null === $outputTimezone || false === $outputTimezone) {
             return null;
         }
 

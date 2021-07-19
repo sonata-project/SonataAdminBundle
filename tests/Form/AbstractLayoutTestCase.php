@@ -95,13 +95,15 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
 
         if ($nodeList->length !== $count) {
             $dom->formatOutput = true;
+            $savedHtml = $dom->saveHTML();
+
             self::fail(sprintf(
                 "Failed asserting that \n\n%s\n\nmatches exactly %s. Matches %s in \n\n%s",
                 $expression,
                 1 === $count ? 'once' : $count.' times',
                 1 === $nodeList->length ? 'once' : $nodeList->length.' times',
                 // strip away <root> and </root>
-                substr($dom->saveHTML() ?: '', 6, -8)
+                substr(false !== $savedHtml ? $savedHtml : '', 6, -8)
             ));
         } else {
             $this->addToAssertionCount(1);

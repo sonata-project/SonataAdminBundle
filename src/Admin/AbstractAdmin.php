@@ -1798,7 +1798,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             && null !== $this->id($object);
 
         if ($canAccessObject
-            && self::MASK_OF_ACTION_EDIT & $actionBit
+            && 0 !== (self::MASK_OF_ACTION_EDIT & $actionBit)
             && $this->hasRoute('edit')
             && $this->hasAccess('edit', $object)
         ) {
@@ -1808,7 +1808,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         if ($canAccessObject
-            && self::MASK_OF_ACTION_HISTORY & $actionBit
+            && 0 !== (self::MASK_OF_ACTION_HISTORY & $actionBit)
             && $this->hasRoute('history')
             && $this->hasAccess('history', $object)
         ) {
@@ -1818,7 +1818,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         if ($canAccessObject
-            && self::MASK_OF_ACTION_ACL & $actionBit
+            && 0 !== (self::MASK_OF_ACTION_ACL & $actionBit)
             && $this->isAclEnabled()
             && $this->hasRoute('acl')
             && $this->hasAccess('acl', $object)
@@ -1829,7 +1829,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         if ($canAccessObject
-            && self::MASK_OF_ACTION_SHOW & $actionBit
+            && 0 !== (self::MASK_OF_ACTION_SHOW & $actionBit)
             && $this->hasRoute('show')
             && $this->hasAccess('show', $object)
             && \count($this->getShow()) > 0
