@@ -52,7 +52,7 @@ abstract class QuestionableCommand extends Command
      *
      * NEXT_MAJOR: Remove `$separator` argument
      *
-     * @return string
+     * @return bool
      */
     final protected function askConfirmation(
         InputInterface $input,
