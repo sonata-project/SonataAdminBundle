@@ -22,7 +22,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [3.103.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.102.0...3.103.0) - 2021-07-11
 ### Added
-- [[#7308](https://github.com/sonata-project/SonataAdminBundle/pull/7308)] `ChainableFilterInterface`. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7308](https://github.com/sonata-project/SonataAdminBundle/pull/7308)] `ChainableFilterInterface` ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7285](https://github.com/sonata-project/SonataAdminBundle/pull/7285)] Added deprecated annotation to AbstractAdmin validate() method. ([@7ochem](https://github.com/7ochem))
 - [[#7275](https://github.com/sonata-project/SonataAdminBundle/pull/7275)] SearchableFilterInterface ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7283](https://github.com/sonata-project/SonataAdminBundle/pull/7283)] Added `IconExtension` twig extension. ([@VincentLanglet](https://github.com/VincentLanglet))
