@@ -78,7 +78,7 @@ final class SearchAction
     {
         if (null !== $request->get('admin')) {
             @trigger_error(
-                'Passing an "admin" parameter in the request is deprecated since sonata-project/admin-bundle 3.x'
+                'Passing an "admin" parameter in the request is deprecated since sonata-project/admin-bundle 3.104'
                 .' and will be ignored in 4.0.',
                 \E_USER_DEPRECATED
             );
