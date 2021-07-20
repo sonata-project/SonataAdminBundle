@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Exception\NoValueException;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @phpstan-type FieldDescriptionOptions = array{
+ * @psalm-type FieldDescriptionOptions = array{
  *  accessor?: string|callable|\Symfony\Component\PropertyAccess\PropertyPathInterface,
  *  associated_property?: string|callable|\Symfony\Component\PropertyAccess\PropertyPathInterface,
  *  label?: string|false|null,
@@ -33,6 +33,7 @@ use Sonata\AdminBundle\Exception\NoValueException;
  *  type?: string,
  *  virtual_field?: bool
  * }&array<string, mixed>
+ * @phpstan-type FieldDescriptionOptions = array<string, mixed>
  */
 interface FieldDescriptionInterface
 {
