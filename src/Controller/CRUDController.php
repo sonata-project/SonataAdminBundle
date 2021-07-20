@@ -108,7 +108,9 @@ class CRUDController extends AbstractController
             return $preResponse;
         }
 
-        if ($listMode = $request->get('_list_mode')) {
+        $listMode = $request->get('_list_mode');
+
+        if (null !== $listMode) {
             $this->admin->setListMode($listMode);
         }
 

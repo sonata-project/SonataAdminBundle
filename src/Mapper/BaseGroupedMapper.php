@@ -88,7 +88,7 @@ abstract class BaseGroupedMapper implements MapperInterface
         $code = $name;
 
         // Open
-        if (\array_key_exists('tab', $options) && $options['tab']) {
+        if (true === ($options['tab'] ?? false)) {
             $tabs = $this->getTabs();
 
             if (null !== $this->currentTab) {

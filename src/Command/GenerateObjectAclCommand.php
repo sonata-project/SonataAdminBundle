@@ -79,7 +79,7 @@ final class GenerateObjectAclCommand extends QuestionableCommand
             '',
         ]);
 
-        if ($input->getOption('user_model')) {
+        if (null !== $input->getOption('user_model')) {
             try {
                 $this->getUserModelClass($input, $output);
             } catch (\Exception $e) {

@@ -51,7 +51,7 @@ final class ModelAutocompleteType extends AbstractType
         $builder->setAttribute('to_string_callback', $options['to_string_callback']);
         $builder->setAttribute('target_admin_access_action', $options['target_admin_access_action']);
 
-        if ($options['multiple']) {
+        if (true === $options['multiple']) {
             $resizeListener = new ResizeFormListener(HiddenType::class, [], true, true, true);
 
             $builder->addEventSubscriber($resizeListener);

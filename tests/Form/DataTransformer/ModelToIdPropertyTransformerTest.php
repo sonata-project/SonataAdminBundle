@@ -71,12 +71,12 @@ final class ModelToIdPropertyTransformerTest extends TestCase
         $transformer = new ModelToIdPropertyTransformer($modelManager, Foo::class, 'bar', true);
         $proxyQuery = $this->createMock(ProxyQueryInterface::class);
         $modelManager
-            ->expects(self::exactly($params ? 1 : 0))
+            ->expects(self::exactly(null !== $params ? 1 : 0))
             ->method('createQuery')
             ->with(self::equalTo(Foo::class))
             ->willReturn($proxyQuery);
         $modelManager
-            ->expects(self::exactly($params ? 1 : 0))
+            ->expects(self::exactly(null !== $params ? 1 : 0))
             ->method('executeQuery')
             ->with(self::equalTo($proxyQuery))
             ->willReturnCallback(static function () use ($params, $entity1, $entity2, $entity3): array {

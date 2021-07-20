@@ -161,6 +161,8 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $dashboardGroupsSettings = $container->getParameter('sonata.admin.configuration.dashboard_groups');
         \assert(\is_array($dashboardGroupsSettings));
+        $sortAdmins = $container->getParameter('sonata.admin.configuration.sort_admins');
+        \assert(\is_bool($sortAdmins));
 
         if ([] !== $dashboardGroupsSettings) {
             $groups = $dashboardGroupsSettings;
@@ -220,7 +222,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $groups[$resolvedGroupName]['keep_open'] = $groupDefaults[$resolvedGroupName]['keep_open'];
                 }
             }
-        } elseif ($container->getParameter('sonata.admin.configuration.sort_admins')) {
+        } elseif ($sortAdmins) {
             $groups = $groupDefaults;
 
             $elementSort = static function (array &$element): void {
