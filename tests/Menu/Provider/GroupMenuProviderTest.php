@@ -118,10 +118,12 @@ final class GroupMenuProviderTest extends TestCase
         self::assertCount(1, $children);
         self::assertArrayHasKey('foo_admin_label', $children);
         self::assertArrayNotHasKey('route_label', $children);
-        self::assertInstanceOf(MenuItem::class, $menu['foo_admin_label']);
-        self::assertSame('foo_admin_label', $menu['foo_admin_label']->getLabel());
 
-        $extras = $menu['foo_admin_label']->getExtras();
+        $item = $menu['foo_admin_label'];
+        self::assertInstanceOf(MenuItem::class, $item);
+        self::assertSame('foo_admin_label', $item->getLabel());
+
+        $extras = $item->getExtras();
         self::assertArrayHasKey('label_catalogue', $extras);
         self::assertSame($extras['label_catalogue'], 'SonataAdminBundle');
     }
@@ -244,10 +246,12 @@ final class GroupMenuProviderTest extends TestCase
         self::assertCount(3, $children);
         self::assertArrayHasKey('foo_admin_label', $children);
         self::assertArrayHasKey('route_label', $children);
-        self::assertInstanceOf(MenuItem::class, $menu['foo_admin_label']);
-        self::assertSame('foo_admin_label', $menu['foo_admin_label']->getLabel());
 
-        $extras = $menu['foo_admin_label']->getExtras();
+        $item = $menu['foo_admin_label'];
+        self::assertInstanceOf(MenuItem::class, $item);
+        self::assertSame('foo_admin_label', $item->getLabel());
+
+        $extras = $item->getExtras();
         self::assertArrayHasKey('label_catalogue', $extras);
         self::assertSame('SonataAdminBundle', $extras['label_catalogue']);
 
