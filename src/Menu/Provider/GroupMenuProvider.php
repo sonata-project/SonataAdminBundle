@@ -62,12 +62,12 @@ final class GroupMenuProvider implements MenuProviderInterface
     public function get(string $name, array $options = []): ItemInterface
     {
         if (!isset($options['name'])) {
-            throw new \InvalidArgumentException('TODO');
+            throw new \InvalidArgumentException('The option "name" is required.');
         }
         $menuItem = $this->menuFactory->createItem($options['name']);
 
         if (!isset($options['group'])) {
-            throw new \InvalidArgumentException('TODO');
+            throw new \InvalidArgumentException('The option "group" is required.');
         }
         /** @phpstan-var Group $group */
         $group = $options['group'];
