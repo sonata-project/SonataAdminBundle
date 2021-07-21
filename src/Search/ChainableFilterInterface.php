@@ -22,7 +22,7 @@ interface ChainableFilterInterface
 {
     public function setPreviousFilter(FilterInterface $filter): void;
 
-    public function getPreviousFilter(): ?FilterInterface;
+    public function getPreviousFilter(): FilterInterface;
 
     public function hasPreviousFilter(): bool;
 }

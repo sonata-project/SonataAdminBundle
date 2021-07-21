@@ -217,8 +217,13 @@ abstract class Filter implements FilterInterface, ChainableFilterInterface
         $this->previousFilter = $filter;
     }
 
-    final public function getPreviousFilter(): ?FilterInterface
+    final public function getPreviousFilter(): FilterInterface
     {
+        if (!$this->hasPreviousFilter()) {
+            throw new \LogicException(sprintf('Filter "%s" has no previous filter.', $this->getName()));
+        }
+        \assert(null !== $this->previousFilter);
+
         return $this->previousFilter;
     }
 
