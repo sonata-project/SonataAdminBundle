@@ -50,7 +50,7 @@ abstract class QuestionableCommand extends Command
         OutputInterface $output,
         string $questionText,
         string $default
-    ): string {
+    ): bool {
         $questionHelper = $this->getQuestionHelper();
         $question = new ConfirmationQuestion(
             (new Question($questionText, $default))->getQuestion(),

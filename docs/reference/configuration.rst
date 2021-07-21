@@ -89,7 +89,8 @@ Full Configuration Options
                 default_label_catalogue: SonataAdminBundle
                 default_icon: 'fas fa-folder'
                 dropdown_number_groups_per_colums:  2
-                title_mode: ~ # One of "single_text"; "single_image"; "both"
+                logo_content: 'all' # One of "text"; "icon"; "all"
+                list_action_button_content: 'all' # One of "text"; "icon"; "all"
 
                 # Enable locking when editing an object, if the corresponding object manager supports it.
                 lock_protection: false

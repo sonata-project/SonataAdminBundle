@@ -696,6 +696,20 @@ You need to add option ``show_mosaic_button`` in your admin services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: admin, label: News, show_mosaic_button: false }
 
+Show Icons on Action Buttons
+----------------------------
+
+You can choose if the action buttons on the list-page show an icon, text or both.
+
+.. code-block:: yaml
+
+    # config/packages/sonata_admin.yaml
+
+    sonata_admin:
+        options:
+            # Choices are: text, icon or all (default)
+            list_action_button_content: icon
+
 Checkbox range selection
 ------------------------
 

@@ -2,9 +2,27 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.104.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.103.0...3.104.0) - 2021-07-20
+### Added
+- [[#7325](https://github.com/sonata-project/SonataAdminBundle/pull/7325)] Option `list_action_button_content` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7299](https://github.com/sonata-project/SonataAdminBundle/pull/7299)] Added support for non admin prefixed `ROLE_*` roles by the RoleSecurityHandler ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7306](https://github.com/sonata-project/SonataAdminBundle/pull/7306)] New `block` twig in order to override the button display by the admin in the base_edit_form ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Changed
+- [[#7320](https://github.com/sonata-project/SonataAdminBundle/pull/7320)] `response_item_callback` callback signature ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Deprecated
+- [[#7325](https://github.com/sonata-project/SonataAdminBundle/pull/7325)] Option `title_mode`. Use `logo_content` instead ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7290](https://github.com/sonata-project/SonataAdminBundle/pull/7290)] Passing `admin` in the request of search action ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#7335](https://github.com/sonata-project/SonataAdminBundle/pull/7335)] Crash on choice field inline edition with a 0 value ([@soullivaneuh](https://github.com/soullivaneuh))
+- [[#7332](https://github.com/sonata-project/SonataAdminBundle/pull/7332)] Accessing on non existent array keys `translation_domain` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7320](https://github.com/sonata-project/SonataAdminBundle/pull/7320)] `response_item_callback` option of ModelAutocompleteFilter ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [3.103.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.102.0...3.103.0) - 2021-07-11
 ### Added
-- [[#7308](https://github.com/sonata-project/SonataAdminBundle/pull/7308)] `ChainableFilterInterface`. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7308](https://github.com/sonata-project/SonataAdminBundle/pull/7308)] `ChainableFilterInterface` ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7285](https://github.com/sonata-project/SonataAdminBundle/pull/7285)] Added deprecated annotation to AbstractAdmin validate() method. ([@7ochem](https://github.com/7ochem))
 - [[#7275](https://github.com/sonata-project/SonataAdminBundle/pull/7275)] SearchableFilterInterface ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7283](https://github.com/sonata-project/SonataAdminBundle/pull/7283)] Added `IconExtension` twig extension. ([@VincentLanglet](https://github.com/VincentLanglet))
