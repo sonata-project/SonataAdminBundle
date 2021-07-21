@@ -949,7 +949,9 @@ class CRUDController extends AbstractController
      */
     final protected function isXmlHttpRequest(Request $request): bool
     {
-        return $request->isXmlHttpRequest() || $request->get('_xml_http_request');
+        return $request->isXmlHttpRequest()
+            || $request->request->getBoolean('_xml_http_request')
+            || $request->query->getBoolean('_xml_http_request');
     }
 
     /**

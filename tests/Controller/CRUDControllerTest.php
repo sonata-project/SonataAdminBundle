@@ -350,7 +350,7 @@ final class CRUDControllerTest extends TestCase
     {
         $data = ['example' => '123', 'foo' => 'bar'];
 
-        $this->request->attributes->set('_xml_http_request', true);
+        $this->request->query->set('_xml_http_request', true);
         $this->request->headers->set('Content-Type', 'multipart/form-data');
         $response = $this->protectedTestedMethods['renderJson']->invoke($this->controller, $data, 200, [], $this->request);
 
@@ -369,7 +369,7 @@ final class CRUDControllerTest extends TestCase
         $this->request->headers->remove('X-Requested-With');
         self::assertFalse($this->protectedTestedMethods['isXmlHttpRequest']->invoke($this->controller, $this->request));
 
-        $this->request->attributes->set('_xml_http_request', true);
+        $this->request->query->set('_xml_http_request', true);
         self::assertTrue($this->protectedTestedMethods['isXmlHttpRequest']->invoke($this->controller, $this->request));
     }
 
@@ -422,7 +422,7 @@ final class CRUDControllerTest extends TestCase
             $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller)
         );
 
-        $this->request->attributes->set('_xml_http_request', true);
+        $this->request->request->set('_xml_http_request', true);
         self::assertSame(
             '@SonataAdmin/ajax_layout.html.twig',
             $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller)
