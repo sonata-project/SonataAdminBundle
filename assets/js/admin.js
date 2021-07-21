@@ -92,7 +92,7 @@ const Admin = {
 
         select.removeClass('form-control');
 
-        if (select.find('option[value=""]').length || select.attr('data-placeholder').length || select.attr('data-sonata-select2-allow-clear') === 'true') {
+        if (select.find('option[value=""]').length || (select.attr('data-placeholder') && select.attr('data-placeholder').length) || select.attr('data-sonata-select2-allow-clear') === 'true') {
           allowClearEnabled = true;
         } else if (select.attr('data-sonata-select2-allow-clear') === 'false') {
           allowClearEnabled = false;
