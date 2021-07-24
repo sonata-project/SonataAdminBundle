@@ -127,11 +127,11 @@ th {
   > li {
     word-wrap: break-word;
   }
+}
 
-  &.nav-stacked > li.item > span.matches {
-    display: block;
-    padding: 10px 15px;
-    position: relative;
+.search-box-item {
+  .matches {
+    overflow-x: scroll;
 
     > a.label {
       margin: 0 1px;

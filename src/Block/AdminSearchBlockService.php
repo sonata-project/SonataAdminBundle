@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Block;
 
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Filter\FilterInterface;
+use Sonata\AdminBundle\Search\SearchableFilterInterface;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\BlockBundle\Block\BlockContextInterface;
@@ -93,7 +94,7 @@ final class AdminSearchBlockService extends AbstractBlockService
         }
 
         $filters = array_filter($admin->getDatagrid()->getFilters(), static function (FilterInterface $filter): bool {
-            return $filter->isActive();
+            return $filter instanceof SearchableFilterInterface && $filter->isSearchEnabled();
         });
 
         return $this->renderPrivateResponse($this->templateRegistry->getTemplate('search_result_block'), [
