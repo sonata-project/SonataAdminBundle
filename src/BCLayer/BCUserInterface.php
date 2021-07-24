@@ -28,6 +28,7 @@ final class BCUserInterface
      */
     public static function getUsername(UserInterface $user): string
     {
+        // @phpstan-ignore-next-line
         if (method_exists($user, 'getUserIdentifier')) {
             return $user->getUserIdentifier();
         }

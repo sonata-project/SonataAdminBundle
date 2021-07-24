@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
@@ -35,17 +36,17 @@ use Symfony\Component\Form\Forms;
 final class DatagridTest extends TestCase
 {
     /**
-     * @var Datagrid<ProxyQueryInterface>
+     * @var Datagrid<ProxyQueryInterface&Stub>
      */
     private $datagrid;
 
     /**
-     * @var PagerInterface<ProxyQueryInterface>&MockObject
+     * @var PagerInterface<ProxyQueryInterface&Stub>&MockObject
      */
     private $pager;
 
     /**
-     * @var ProxyQueryInterface
+     * @var ProxyQueryInterface&Stub
      */
     private $query;
 
@@ -62,15 +63,10 @@ final class DatagridTest extends TestCase
     protected function setUp(): void
     {
         $this->query = $this->createStub(ProxyQueryInterface::class);
-        \assert($this->query instanceof ProxyQueryInterface); // https://github.com/vimeo/psalm/issues/5818
-
         $this->columns = new FieldDescriptionCollection();
         $this->pager = $this->createMock(PagerInterface::class);
         $this->formBuilder = Forms::createFormFactoryBuilder()->getFormFactory()->createBuilder();
-
-        $values = [];
-
-        $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, $values);
+        $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, []);
     }
 
     public function testGetPager(): void

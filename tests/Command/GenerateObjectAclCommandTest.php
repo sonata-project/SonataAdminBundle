@@ -99,35 +99,6 @@ final class GenerateObjectAclCommandTest extends TestCase
         self::assertMatchesRegularExpression('/Admin class is using a manager type that has no manipulator implemented : ignoring/', $commandTester->getDisplay());
     }
 
-    /**
-     * @psalm-suppress InvalidArgument
-     */
-    public function testExecuteWithManipulatorNotObjectAclManipulatorInterface(): void
-    {
-        $admin = $this->createStub(AbstractAdmin::class);
-        $container = new Container();
-        $container->set('acme.admin.foo', $admin);
-        $pool = new Pool($container, ['acme.admin.foo']);
-
-        $admin->setManagerType('bar');
-
-        $aclObjectManipulators = [
-            'sonata.admin.manipulator.acl.object.bar' => new \stdClass(),
-        ];
-
-        // @phpstan-ignore-next-line
-        $command = new GenerateObjectAclCommand($pool, $aclObjectManipulators);
-
-        $application = new Application();
-        $application->add($command);
-
-        $command = $application->find('sonata:admin:generate-object-acl');
-        $commandTester = new CommandTester($command);
-        $commandTester->execute(['command' => $command->getName()]);
-
-        self::assertMatchesRegularExpression('/The interface "ObjectAclManipulatorInterface" is not implemented for/', $commandTester->getDisplay());
-    }
-
     public function testExecuteWithManipulator(): void
     {
         $admin = $this->createStub(AbstractAdmin::class);

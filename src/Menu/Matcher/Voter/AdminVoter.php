@@ -75,6 +75,7 @@ final class AdminVoter implements VoterInterface
      */
     private function getMainRequest(): ?Request
     {
+        // @phpstan-ignore-next-line
         if (method_exists($this->requestStack, 'getMainRequest')) {
             return $this->requestStack->getMainRequest();   // symfony 5.3+
         }

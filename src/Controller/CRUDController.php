@@ -431,7 +431,7 @@ class CRUDController extends AbstractController
 
         $askConfirmation = $batchActions[$action]['ask_confirmation'] ?? true;
 
-        if ($askConfirmation && 'ok' !== $confirmation) {
+        if (true === $askConfirmation && 'ok' !== $confirmation) {
             $actionLabel = $batchActions[$action]['label'];
             $batchTranslationDomain = $batchActions[$action]['translation_domain'] ??
                 $this->admin->getTranslationDomain();
@@ -949,7 +949,9 @@ class CRUDController extends AbstractController
      */
     final protected function isXmlHttpRequest(Request $request): bool
     {
-        return $request->isXmlHttpRequest() || $request->get('_xml_http_request');
+        return $request->isXmlHttpRequest()
+            || $request->request->getBoolean('_xml_http_request')
+            || $request->query->getBoolean('_xml_http_request');
     }
 
     /**
@@ -992,7 +994,9 @@ class CRUDController extends AbstractController
      */
     protected function handleModelManagerException(\Exception $exception): void
     {
-        if ($this->getParameter('kernel.debug')) {
+        $debug = $this->getParameter('kernel.debug');
+        \assert(\is_bool($debug));
+        if ($debug) {
             throw $exception;
         }
 

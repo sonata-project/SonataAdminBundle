@@ -117,7 +117,7 @@ final class GenerateObjectAclCommand extends QuestionableCommand
             }
 
             $objectOwner = $input->getOption('object_owner');
-            if (!$input->getOption('step') && $objectOwner) {
+            if (!$input->getOption('step') && null !== $objectOwner) {
                 $securityIdentity = new UserSecurityIdentity($objectOwner, $this->getUserModelClass($input, $output));
             }
 
@@ -128,14 +128,7 @@ final class GenerateObjectAclCommand extends QuestionableCommand
                 continue;
             }
 
-            $manipulator = $this->aclObjectManipulators[$manipulatorId];
-            if (!$manipulator instanceof ObjectAclManipulatorInterface) {
-                $output->writeln(sprintf('The interface "ObjectAclManipulatorInterface" is not implemented for %s: <info>ignoring</info>', \get_class($manipulator)));
-
-                continue;
-            }
-
-            $manipulator->batchConfigureAcls($output, $admin, $securityIdentity);
+            $this->aclObjectManipulators[$manipulatorId]->batchConfigureAcls($output, $admin, $securityIdentity);
         }
 
         return 0;

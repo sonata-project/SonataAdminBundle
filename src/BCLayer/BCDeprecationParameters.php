@@ -28,6 +28,7 @@ final class BCDeprecationParameters
      */
     public static function forConfig(string $message, string $version): array
     {
+        // @phpstan-ignore-next-line
         if (method_exists(BaseNode::class, 'getDeprecation')) {
             return [
                 'sonata-project/admin-bundle',

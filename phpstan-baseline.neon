@@ -1,7 +1,13 @@
 parameters:
     ignoreErrors:
+        - # Disallow VariableMethodCallRule and VariablePropertyFetchRule
+            message: '#^Variable (method call|property access)#'
+            path: .
         - # https://github.com/phpstan/phpstan-phpunit/issues/87
             message: '#^Trying to mock an undefined method [a-zA-Z]*\(\) on class stdClass\.$#'
+            path: tests/
+        - # https://github.com/phpstan/phpstan-strict-rules/issues/130
+            message: '#^Call to static method PHPUnit\\Framework\\Assert::.* will always evaluate to true\.$#'
             path: tests/
         - # BC for Symfony 4 since InputBag was introduce in Symfony 5
             message: '#^Property Symfony\\Component\\HttpFoundation\\Request\:\:\$query \(Symfony\\Component\\HttpFoundation\\InputBag\) does not accept Symfony\\Component\\HttpFoundation\\ParameterBag\.$#'
@@ -18,3 +24,12 @@ parameters:
         - # PHPStan doesn't solve type of Maker argument/option https://github.com/phpstan/phpstan-symfony/issues/167
             message: '#array<string>\|string\|true(\sgiven)?.$#'
             path: src/Maker/AdminMaker.php
+        - # `treatPhpdocAsCertain: false` should not report this https://github.com/phpstan/phpstan/issues/5333
+            message: '#^Instanceof between Symfony\\Component\\Routing\\Route and Symfony\\Component\\Routing\\Route will always evaluate to true\.$#'
+            path: src/Route/RouteCollection.php
+        - # DataTransformer contravariance is not really mandatory
+            message: '#(reverseTransform|transform)\(\) should be contravariant#'
+            path: src/Form/DataTransformer
+        - # Generic with intersection is buggy https://github.com/phpstan/phpstan/issues/5336
+            message: '#Sonata\\AdminBundle\\Datagrid\\(Datagrid|PagerInterface)<PHPUnit\\Framework\\MockObject\\Stub&Sonata\\AdminBundle\\Datagrid\\ProxyQueryInterface>#'
+            path: tests/Datagrid/DatagridTest.php
