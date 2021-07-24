@@ -1256,6 +1256,41 @@ final class CRUDControllerTest extends TestCase
     /**
      * @dataProvider getToStringValues
      */
+    public function testDeleteActionSuccess3(string $expectedToStringValue, string $toStringValue): void
+    {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
+        $object = new \stdClass();
+
+        $this->admin->expects(self::atLeastOnce())
+            ->method('getObject')
+            ->willReturn($object);
+
+        $this->admin->expects(self::once())
+            ->method('checkAccess')
+            ->with(self::equalTo('delete'));
+
+        $this->admin->expects(self::once())
+            ->method('toString')
+            ->with(self::equalTo($object))
+            ->willReturn($toStringValue);
+
+        $this->expectTranslate('flash_delete_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
+
+        $this->request->setMethod(Request::METHOD_POST);
+
+        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
+
+        $response = $this->controller->deleteAction($this->request);
+
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertSame(['flash_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
+        self::assertSame('list', $response->getTargetUrl());
+    }
+
+    /**
+     * @dataProvider getToStringValues
+     */
     public function testDeleteActionSuccessNoCsrfTokenProvider(string $expectedToStringValue, string $toStringValue): void
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);

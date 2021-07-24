@@ -187,7 +187,7 @@ class CRUDController extends AbstractController
             return $preResponse;
         }
 
-        if (in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_DELETE], true)) {
+        if (\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_DELETE], true)) {
             // check the csrf token
             $this->validateCsrfToken($request, 'sonata.delete');
 
