@@ -37,7 +37,7 @@ file that was distributed with this source code.
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
 
-                    <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt" aria-hidden="true"></i> {{ 'btn_delete'|trans({}, 'SonataAdminBundle') }}</button>
+                    <button type="submit" name=btn_delete class="btn btn-danger"><i class="fas fa-trash-alt" aria-hidden="true"></i> {{ 'btn_delete'|trans({}, 'SonataAdminBundle') }}</button>
                     {% if admin.hasRoute('edit') and admin.hasAccess('edit', object) %}
                         {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
 

@@ -187,7 +187,7 @@ class CRUDController extends AbstractController
             return $preResponse;
         }
 
-        if (Request::METHOD_DELETE === $request->getMethod()) {
+        if (in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_DELETE], true)) {
             // check the csrf token
             $this->validateCsrfToken($request, 'sonata.delete');
 
@@ -1026,7 +1026,7 @@ class CRUDController extends AbstractController
             return new RedirectResponse($this->admin->generateUrl('create', $params));
         }
 
-        if ('DELETE' === $request->getMethod()) {
+        if (null !== $request->get('btn_delete')) {
             return $this->redirectToList();
         }
 
