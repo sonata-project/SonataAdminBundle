@@ -246,7 +246,8 @@ final class AdminMaker extends AbstractMaker
         string $adminClassFullName,
         string $controllerClassFullName
     ): void {
-        if ($servicesFile = $input->getOption('services')) {
+        $servicesFile = $input->getOption('services');
+        if (null !== $servicesFile) {
             $file = sprintf('%s/config/%s', $this->projectDirectory, $servicesFile);
             $servicesManipulator = new ServicesManipulator($file);
             $controllerName = null !== $this->controllerClassBasename ? $controllerClassFullName : '~';
@@ -332,7 +333,8 @@ final class AdminMaker extends AbstractMaker
             $input->getOption('admin') ?? sprintf('%sAdmin', $this->modelClassBasename)
         );
 
-        if ($this->controllerClassBasename = $input->getOption('controller')) {
+        $this->controllerClassBasename = $input->getOption('controller');
+        if (null !== $this->controllerClassBasename) {
             $this->controllerClassBasename = Validators::validateControllerClassBasename($this->controllerClassBasename);
         }
 

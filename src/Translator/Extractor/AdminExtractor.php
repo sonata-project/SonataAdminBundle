@@ -79,7 +79,7 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
     /**
      * Extracts translation messages from files, a file or a directory to the catalogue.
      *
-     * @param string|string[] $resource Files, a file or a directory
+     * @param string|iterable<string> $resource Files, a file or a directory
      */
     public function extract($resource, MessageCatalogue $catalogue): void
     {
