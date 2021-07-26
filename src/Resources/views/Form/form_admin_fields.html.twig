@@ -229,7 +229,7 @@ file that was distributed with this source code.
                         {% endif %}
                     {% endif %}
                 </option>
-            {% elseif placeholder is defined and placeholder is not none and not use_select2 %}
+            {% elseif placeholder is defined and placeholder is not none %}
                 <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ data_placeholder }}</option>
             {% endif %}
             {% if preferred_choices|length > 0 %}
