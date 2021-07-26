@@ -1376,11 +1376,20 @@ final class AdminTest extends TestCase
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
         $extension = $this->createMock(AdminExtensionInterface::class);
-        $extension->expects(self::once())->method('configurePersistentParameters')->willReturn($expected);
+        $extension->method('configurePersistentParameters')->willReturn($expected);
 
         $admin->addExtension($extension);
 
         self::assertSame($expected, $admin->getPersistentParameters());
+        self::assertSame('foobar', $admin->getPersistentParameter('context'));
+    }
+
+    public function testGetPersistentParameterDefaultValue(): void
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
+
+        self::assertNull($admin->getPersistentParameter('foo'));
+        self::assertSame('bar', $admin->getPersistentParameter('foo', 'bar'));
     }
 
     public function testGetNewInstanceForChildAdminWithParentValue(): void

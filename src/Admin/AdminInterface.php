@@ -418,9 +418,11 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     public function getPersistentParameters(): array;
 
     /**
+     * @param mixed $default
+     *
      * @return mixed
      */
-    public function getPersistentParameter(string $name);
+    public function getPersistentParameter(string $name, $default = null);
 
     /**
      * Set the current child status.
