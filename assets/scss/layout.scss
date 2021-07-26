@@ -131,7 +131,8 @@ th {
 
 .search-box-item {
   .matches {
-    overflow-x: scroll;
+    overflow-x: auto;
+    white-space: nowrap;
 
     > a.label {
       margin: 0 1px;
