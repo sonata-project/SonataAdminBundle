@@ -133,7 +133,7 @@ final class AdminMaker extends AbstractMaker
             ->addOption('admin', 'a', InputOption::VALUE_OPTIONAL, 'The admin class basename')
             ->addOption('controller', 'c', InputOption::VALUE_OPTIONAL, 'The controller class basename')
             ->addOption('manager', 'm', InputOption::VALUE_OPTIONAL, 'The model manager type')
-            ->addOption('services', 's', InputOption::VALUE_OPTIONAL, 'The services YAML file', 'services.yaml')
+            ->addOption('services', 's', InputOption::VALUE_OPTIONAL, 'The services YAML file')
             ->addOption('id', 'i', InputOption::VALUE_OPTIONAL, 'The admin service ID');
 
         $inputConfig->setArgumentAsNonInteractive('model');
@@ -168,7 +168,7 @@ final class AdminMaker extends AbstractMaker
             );
             $input->setOption('controller', $this->controllerClassBasename);
         }
-        $input->setOption('services', false);
+        $input->setOption('services', null);
         if ($io->confirm('Do you want to update the services YAML configuration file?', true)) {
             $path = sprintf('%s/config/', $this->projectDirectory);
             $servicesFile = $io->ask(
