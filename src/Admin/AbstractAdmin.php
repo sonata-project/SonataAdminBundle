@@ -1495,11 +1495,11 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $parameters;
     }
 
-    final public function getPersistentParameter(string $name)
+    final public function getPersistentParameter(string $name, $default = null)
     {
         $parameters = $this->getPersistentParameters();
 
-        return $parameters[$name] ?? null;
+        return $parameters[$name] ?? $default;
     }
 
     final public function setCurrentChild(bool $currentChild): void
