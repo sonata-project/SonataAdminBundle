@@ -165,8 +165,6 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     {
         try {
             $acl = $this->aclProvider->findAcl($objectIdentity);
-            // todo - remove `assert` statement after https://github.com/phpstan/phpstan-symfony/pull/92 is released
-            \assert($acl instanceof MutableAclInterface);
         } catch (AclNotFoundException $e) {
             return null;
         }

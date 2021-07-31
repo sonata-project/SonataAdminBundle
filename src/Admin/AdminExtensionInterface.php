@@ -43,21 +43,29 @@ interface AdminExtensionInterface
 {
     /**
      * @return void
+     *
+     * @phpstan-param FormMapper<T> $form
      */
     public function configureFormFields(FormMapper $form);
 
     /**
      * @return void
+     *
+     * @phpstan-param ListMapper<T> $list
      */
     public function configureListFields(ListMapper $list);
 
     /**
      * @return void
+     *
+     * @phpstan-param DatagridMapper<T> $filter
      */
     public function configureDatagridFilters(DatagridMapper $filter);
 
     /**
      * @return void
+     *
+     * @phpstan-param ShowMapper<T> $show
      */
     public function configureShowFields(ShowMapper $show);
 
