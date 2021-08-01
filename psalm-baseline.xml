@@ -123,13 +123,4 @@
             <code>ContainerInterface $container</code>
         </ContainerDependency>
     </file>
-    <!-- https://github.com/vimeo/psalm/issues/6212 -->
-    <file src="src/Event/AdminEventExtension.php">
-        <InvalidArgument occurrences="4">
-            <code>new ConfigureEvent($form-&gt;getAdmin(), $form, ConfigureEvent::TYPE_FORM)</code>
-            <code>new ConfigureEvent($list-&gt;getAdmin(), $list, ConfigureEvent::TYPE_LIST)</code>
-            <code>new ConfigureEvent($filter-&gt;getAdmin(), $filter, ConfigureEvent::TYPE_DATAGRID)</code>
-            <code>new ConfigureEvent($show-&gt;getAdmin(), $show, ConfigureEvent::TYPE_SHOW)</code>
-        </InvalidArgument>
-    </file>
 </files>
