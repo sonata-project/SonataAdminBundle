@@ -80,9 +80,33 @@ parameters:
 
         -
             # will be fixed in v4. Currently BC break
+            message: "#^Method Sonata\\\\AdminBundle\\\\FieldDescription\\\\FieldDescriptionInterface\\:\\:getLabel\\(\\) invoked with 1 parameter, 0 required\\.$#"
+            count: 1
+            path: src/Show/ShowMapper.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\<T of object\\>\\:\\:getShowGroups\\(\\) invoked with 1 parameter, 0 required\\.$#"
+            count: 1
+            path: src/Show/ShowMapper.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\<T of object\\>\\:\\:getShowTabs\\(\\) invoked with 1 parameter, 0 required\\.$#"
+            count: 1
+            path: src/Show/ShowMapper.php
+
+        -
+            # will be fixed in v4. Currently BC break
             message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\<T of object\\>\\:\\:getFormTabs\\(\\) invoked with 1 parameter, 0 required\\.$#"
             count: 1
             path: src/Form/FormMapper.php
+
+        -
+            # will be fixed in v4.
+            message: "#^Right side of && is always true\\.$#"
+            count: 1
+            path: src/Mapper/BaseGroupedMapper.php
 
         -
             # will be fixed in v4. Currently BC break

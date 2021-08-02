@@ -24,6 +24,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
  *
  * @phpstan-template T of object
  * @phpstan-implements MapperInterface<T>
+ * @phpstan-extends BaseMapper<T>
  */
 abstract class BaseGroupedMapper extends BaseMapper implements MapperInterface
 {

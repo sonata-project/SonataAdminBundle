@@ -22,11 +22,14 @@ use Sonata\AdminBundle\Builder\BuilderInterface;
  * This class is used to simulate the Form API.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
  */
 abstract class BaseMapper
 {
     /**
      * @var AdminInterface
+     * @phpstan-var AdminInterface<T>
      */
     protected $admin;
 
@@ -35,6 +38,9 @@ abstract class BaseMapper
      */
     protected $builder;
 
+    /**
+     * @phpstan-param AdminInterface<T> $admin
+     */
     public function __construct(BuilderInterface $builder, AdminInterface $admin)
     {
         @trigger_error(sprintf(
@@ -46,6 +52,9 @@ abstract class BaseMapper
         $this->admin = $admin;
     }
 
+    /**
+     * @phpstan-return AdminInterface<T>
+     */
     public function getAdmin()
     {
         return $this->admin;

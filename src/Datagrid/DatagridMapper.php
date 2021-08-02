@@ -30,6 +30,7 @@ use Sonata\AdminBundle\Mapper\MapperInterface;
  *
  * @phpstan-template T of object
  * @phpstan-implements MapperInterface<T>
+ * @phpstan-extends BaseMapper<T>
  */
 class DatagridMapper extends BaseMapper implements MapperInterface
 {
