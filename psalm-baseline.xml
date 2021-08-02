@@ -6,15 +6,6 @@
             <code>$query</code>
         </PropertyTypeCoercion>
     </file>
-    <!-- https://github.com/vimeo/psalm/issues/5551 -->
-    <file src="tests/Controller/CRUDControllerTest.php">
-        <PossiblyInvalidFunctionCall occurrences="1">
-            <code>$disableHttpMethodParameterOverride()</code>
-        </PossiblyInvalidFunctionCall>
-        <UndefinedPropertyAssignment occurrences="1">
-            <code>self::$httpMethodParameterOverride</code>
-        </UndefinedPropertyAssignment>
-    </file>
     <!-- This error is made on purpose for php version < 8 -->
     <file src="tests/Fixtures/Entity/FooToStringNull.php">
         <InvalidToString occurrences="1">
