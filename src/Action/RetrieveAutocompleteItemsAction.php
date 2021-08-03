@@ -21,6 +21,7 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Request\AdminFetcher;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
+use Sonata\AdminBundle\Search\ChainableFilterInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -156,36 +157,49 @@ final class RetrieveAutocompleteItemsAction
             }
 
             $callback($targetAdmin, $property, $searchText);
-        } else {
-            if (\is_array($property)) {
-                // multiple properties
-                foreach ($property as $prop) {
-                    if (!$datagrid->hasFilter($prop)) {
-                        throw new \RuntimeException(sprintf(
-                            'To retrieve autocomplete items,'
-                            .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
-                            $prop,
-                            \get_class($targetAdmin)
-                        ));
-                    }
-
-                    $filter = $datagrid->getFilter($prop);
-                    $filter->setCondition(FilterInterface::CONDITION_OR);
-
-                    $datagrid->setValue($filter->getFormName(), null, $searchText);
-                }
-            } else {
-                if (!$datagrid->hasFilter($property)) {
+        } elseif (\is_array($property)) {
+            $previousFilter = null;
+            foreach ($property as $prop) {
+                if (!$datagrid->hasFilter($prop)) {
                     throw new \RuntimeException(sprintf(
-                        'To retrieve autocomplete items,'
-                        .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
-                        $property,
+                        'To retrieve autocomplete items, you MUST add the filter "%s"'
+                        .' to the %s::configureDatagridFilters() method.',
+                        $prop,
                         \get_class($targetAdmin)
                     ));
                 }
 
-                $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $searchText);
+                $filter = $datagrid->getFilter($prop);
+                if (!$filter instanceof ChainableFilterInterface) {
+                    throw new \RuntimeException(sprintf(
+                        'To retrieve autocomplete items with multiple properties,'
+                        .' the filter "%s" of the admin "%s" MUST implements "%s".',
+                        $filter->getName(),
+                        \get_class($targetAdmin),
+                        ChainableFilterInterface::class
+                    ));
+                }
+
+                $filter->setCondition(FilterInterface::CONDITION_OR);
+                if (null !== $previousFilter) {
+                    $filter->setPreviousFilter($previousFilter);
+                }
+
+                $datagrid->setValue($filter->getFormName(), null, $searchText);
+
+                $previousFilter = $filter;
             }
+        } else {
+            if (!$datagrid->hasFilter($property)) {
+                throw new \RuntimeException(sprintf(
+                    'To retrieve autocomplete items, you MUST add the filter "%s"'
+                    .' to the %s::configureDatagridFilters() method.',
+                    $property,
+                    \get_class($targetAdmin)
+                ));
+            }
+
+            $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $searchText);
         }
 
         $datagrid->setValue(DatagridInterface::PER_PAGE, null, $itemsPerPage);

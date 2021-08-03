@@ -23,6 +23,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use Sonata\AdminBundle\Filter\Filter;
 use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
@@ -199,6 +200,11 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         );
 
         $response = ($this->action)($request);
+
+        self::assertSame(Filter::CONDITION_OR, $filter->getCondition());
+        self::assertNull($filter->getPreviousFilter());
+        self::assertSame(Filter::CONDITION_OR, $filter2->getCondition());
+        self::assertSame($filter, $filter2->getPreviousFilter());
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
