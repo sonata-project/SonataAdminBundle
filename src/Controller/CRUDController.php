@@ -967,7 +967,7 @@ class CRUDController implements ContainerAwareInterface
                 date('Y_m_d_H_i_s', strtotime('now')),
                 $format
             );
-            $exporter = $this->get('sonata.admin.exporter.do-not-use');
+            $exporter = $this->get('sonata.admin.exporter');
         } else {
             $adminExporter = $this->get('sonata.admin.admin_exporter.do-not-use');
             $allowedExportFormats = $adminExporter->getAvailableFormats($this->admin);
