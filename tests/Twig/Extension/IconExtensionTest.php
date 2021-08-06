@@ -39,6 +39,7 @@ final class IconExtensionTest extends TestCase
             ['fa fa-cog', '<i class="fa fa-cog" aria-hidden="true"></i>'],
             ['far fa-cog', '<i class="far fa-cog" aria-hidden="true"></i>'],
             ['fas fa-cog', '<i class="fas fa-cog" aria-hidden="true"></i>'],
+            ['fab fa-font-awesome', '<i class="fab fa-font-awesome" aria-hidden="true"></i>'],
             ['fal fa-cog', '<i class="fal fa-cog" aria-hidden="true"></i>'],
             ['fad fa-cog', '<i class="fad fa-cog" aria-hidden="true"></i>'],
         ];
