@@ -28,6 +28,9 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * NEXT_MAJOR: Remove this class.
+ */
 final class AdminParamConverterTest extends TestCase
 {
     /**
