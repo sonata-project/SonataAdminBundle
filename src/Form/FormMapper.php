@@ -17,12 +17,13 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
+use Sonata\BlockBundle\Form\Mapper\FormMapper as BlockFormMapper;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType as SymfonyCollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormTypeInterface;
 
 /**
- * This class is use to simulate the Form API.
+ * This class is used to simulate the Form API.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -31,7 +32,7 @@ use Symfony\Component\Form\FormTypeInterface;
  * @phpstan-template T of object
  * @phpstan-extends BaseGroupedMapper<T>
  */
-final class FormMapper extends BaseGroupedMapper
+final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
 {
     /**
      * @var FormContractorInterface
