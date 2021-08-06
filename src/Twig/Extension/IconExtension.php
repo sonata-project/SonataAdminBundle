@@ -35,6 +35,7 @@ final class IconExtension extends AbstractExtension
             0 !== strpos($icon, 'fa ')
             && 0 !== strpos($icon, 'fas ')
             && 0 !== strpos($icon, 'far ')
+            && 0 !== strpos($icon, 'fab ')
             && 0 !== strpos($icon, 'fal ')
             && 0 !== strpos($icon, 'fad ')
         ) {

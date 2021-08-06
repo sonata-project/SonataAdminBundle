@@ -7,10 +7,14 @@
  * file that was distributed with this source code.
  */
 
-// This file adds compatibility with the Font Awesome fas class
-// and the AdminLTE styles
+// This file adds compatibility with the Font Awesome
+// fas, far, fab, fal and fad classes and the AdminLTE styles
 
-.carousel-control > .fas {
+.carousel-control > .fas,
+.carousel-control > .far,
+.carousel-control > .fab,
+.carousel-control > .fal,
+.carousel-control > .fad {
   display: inline-block;
   font-size: 40px;
   margin-top: -20px;
@@ -19,12 +23,20 @@
   z-index: 5;
 }
 
-.btn-app > .fas {
+.btn-app > .fas,
+.btn-app > .far,
+.btn-app > .fab,
+.btn-app > .fal,
+.btn-app > .fad {
   display: block;
   font-size: 20px;
 }
 
-.box-header > .fas {
+.box-header > .fas,
+.box-header > .far,
+.box-header > .fab,
+.box-header > .fal,
+.box-header > .fad {
   display: inline-block;
   font-size: 18px;
   line-height: 1;
@@ -32,7 +44,11 @@
   margin-right: 5px;
 }
 
-.timeline > li > .fas {
+.timeline > li > .fas,
+.timeline > li > .far,
+.timeline > li > .fab,
+.timeline > li > .fal,
+.timeline > li > .fad {
   background: #d2d6de;
   border-radius: 50%;
   color: #666;
@@ -46,24 +62,48 @@
   width: 30px;
 }
 
-.treeview-menu > li > a > .fas {
+.treeview-menu > li > a > .fas,
+.treeview-menu > li > a > .far,
+.treeview-menu > li > a > .fab,
+.treeview-menu > li > a > .fal,
+.treeview-menu > li > a > .fad {
   width: 20px;
 }
 
-.nav-pills > li > a > .fas {
+.nav-pills > li > a > .fas,
+.nav-pills > li > a > .far,
+.nav-pills > li > a > .fab,
+.nav-pills > li > a > .fal,
+.nav-pills > li > a > .fad {
   margin-right: 5px;
 }
 
-.dropdown-menu > li > a > .fas {
+.dropdown-menu > li > a > .fas,
+.dropdown-menu > li > a > .far,
+.dropdown-menu > li > a > .fab,
+.dropdown-menu > li > a > .fal,
+.dropdown-menu > li > a > .fad {
   margin-right: 10px;
 }
 
-.sidebar-menu > li > a > .fas {
+.sidebar-menu > li > a > .fas,
+.sidebar-menu > li > a > .far,
+.sidebar-menu > li > a > .fab,
+.sidebar-menu > li > a > .fal,
+.sidebar-menu > li > a > .fad {
   width: 20px;
 }
 
 .box .overlay > .fas,
-.overlay-wrapper .overlay > .fas {
+.box .overlay > .far,
+.box .overlay > .fab,
+.box .overlay > .fal,
+.box .overlay > .fad,
+.overlay-wrapper .overlay > .fas,
+.overlay-wrapper .overlay > .far,
+.overlay-wrapper .overlay > .fab,
+.overlay-wrapper .overlay > .fal,
+.overlay-wrapper .overlay > .fad {
   color: #000;
   font-size: 30px;
   left: 50%;
@@ -73,49 +113,101 @@
   top: 50%;
 }
 
-.todo-list > li .tools > .fas {
+.todo-list > li .tools > .fas,
+.todo-list > li .tools > .far,
+.todo-list > li .tools > .fab,
+.todo-list > li .tools > .fal,
+.todo-list > li .tools > .fad {
   cursor: pointer;
   margin-right: 5px;
 }
 
-.user-panel > .info > a > .fas {
+.user-panel > .info > a > .fas,
+.user-panel > .info > a > .far,
+.user-panel > .info > a > .fab,
+.user-panel > .info > a > .fal,
+.user-panel > .info > a > .fad {
   margin-right: 3px;
 }
 
-.content-header > .breadcrumb > li > a > .fas {
+.content-header > .breadcrumb > li > a > .fas,
+.content-header > .breadcrumb > li > a > .far,
+.content-header > .breadcrumb > li > a > .fab,
+.content-header > .breadcrumb > li > a > .fal,
+.content-header > .breadcrumb > li > a > .fad {
   margin-right: 5px;
 }
 
-.nav-tabs-custom > .nav-tabs > li.header > .fas {
+.nav-tabs-custom > .nav-tabs > li.header > .fas,
+.nav-tabs-custom > .nav-tabs > li.header > .far,
+.nav-tabs-custom > .nav-tabs > li.header > .fab,
+.nav-tabs-custom > .nav-tabs > li.header > .fal,
+.nav-tabs-custom > .nav-tabs > li.header > .fad {
   margin-right: 5px;
 }
 
-.main-header .navbar .nav > li.user > a > .fas {
+.main-header .navbar .nav > li.user > a > .fas,
+.main-header .navbar .nav > li.user > a > .far,
+.main-header .navbar .nav > li.user > a > .fab,
+.main-header .navbar .nav > li.user > a > .fal,
+.main-header .navbar .nav > li.user > a > .fad {
   margin-right: 5px;
 }
 
-.navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a > .fas {
+.navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a > .fas,
+.navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a > .far,
+.navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a > .fab,
+.navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a > .fal,
+.navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a > .fad {
   width: 20px;
 }
 
-.form-control-feedback.fas {
+.form-control-feedback.fas,
+.form-control-feedback.far,
+.form-control-feedback.fab,
+.form-control-feedback.fal,
+.form-control-feedback.fad {
   line-height: 34px;
 }
 
 .input-lg + .form-control-feedback.fas,
-.input-group-lg + .form-control-feedback.fas {
+.input-lg + .form-control-feedback.far,
+.input-lg + .form-control-feedback.fab,
+.input-lg + .form-control-feedback.fal,
+.input-lg + .form-control-feedback.fad,
+.input-group-lg + .form-control-feedback.fas,
+.input-group-lg + .form-control-feedback.far,
+.input-group-lg + .form-control-feedback.fab,
+.input-group-lg + .form-control-feedback.fal,
+.input-group-lg + .form-control-feedback.fad {
   line-height: 46px;
 }
 
 .input-sm + .form-control-feedback.fas,
-.input-group-sm + .form-control-feedback.fas {
+.input-sm + .form-control-feedback.far,
+.input-sm + .form-control-feedback.fab,
+.input-sm + .form-control-feedback.fal,
+.input-sm + .form-control-feedback.fad,
+.input-group-sm + .form-control-feedback.fas,
+.input-group-sm + .form-control-feedback.far,
+.input-group-sm + .form-control-feedback.fab,
+.input-group-sm + .form-control-feedback.fal,
+.input-group-sm + .form-control-feedback.fad {
   line-height: 30px;
 }
 
-.form-group-lg .form-control + .form-control-feedback.fas {
+.form-group-lg .form-control + .form-control-feedback.fas,
+.form-group-lg .form-control + .form-control-feedback.far,
+.form-group-lg .form-control + .form-control-feedback.fab,
+.form-group-lg .form-control + .form-control-feedback.fal,
+.form-group-lg .form-control + .form-control-feedback.fad {
   line-height: 46px;
 }
 
-.form-group-sm .form-control + .form-control-feedback.fas {
+.form-group-sm .form-control + .form-control-feedback.fas,
+.form-group-sm .form-control + .form-control-feedback.far,
+.form-group-sm .form-control + .form-control-feedback.fab,
+.form-group-sm .form-control + .form-control-feedback.fal,
+.form-group-sm .form-control + .form-control-feedback.fad {
   line-height: 30px;
 }
