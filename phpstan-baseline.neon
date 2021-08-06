@@ -133,6 +133,24 @@ parameters:
             path: src/Form/FormMapper.php
 
         -
+            # will be fixed in v4. Currently BC break
+            message: "#^Method Sonata\\\\BlockBundle\\\\Block\\\\Service\\\\AbstractBlockService\\:\\:__construct\\(\\) invoked with 2 parameters, 1 required\\.$#"
+            count: 1
+            path: src/Block/AdminListBlockService.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Method Sonata\\\\BlockBundle\\\\Block\\\\Service\\\\AbstractBlockService\\:\\:__construct\\(\\) invoked with 2 parameters, 1 required\\.$#"
+            count: 1
+            path: src/Block/AdminSearchBlockService.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Method Sonata\\\\BlockBundle\\\\Block\\\\Service\\\\AbstractBlockService\\:\\:__construct\\(\\) invoked with 2 parameters, 1 required\\.$#"
+            count: 1
+            path: src/Block/AdminStatsBlockService.php
+
+        -
             # will be fixed in v4. The file won't exist
             message: "#^Call to static method load\\(\\) on an unknown class Symfony\\\\Component\\\\ClassLoader\\\\ClassCollectionLoader\\.$#"
             count: 1
