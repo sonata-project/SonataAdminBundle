@@ -274,7 +274,7 @@ class CRUDControllerTest extends TestCase
         $this->container->set('templating', $templating);
         $this->container->set('twig', $twig);
         $this->container->set('session', $this->session);
-        $this->container->set('sonata.admin.exporter.do-not-use', $exporter);
+        $this->container->set('sonata.admin.exporter', $exporter);
         $this->container->set('sonata.admin.audit.manager.do-not-use', $this->auditManager);
         $this->container->set('sonata.admin.object.manipulator.acl.admin.do-not-use', $this->adminObjectAclManipulator);
         $this->container->set('security.csrf.token_manager', $this->csrfProvider);
