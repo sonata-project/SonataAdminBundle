@@ -17,11 +17,11 @@ use Sonata\AdminBundle\Tests\App\Admin\AdminAsParameterAdmin;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-final class InvokableController
+final class AdminAsParameterController
 {
-    public function __invoke(AdminAsParameterAdmin $admin): Response
+    public function test(AdminAsParameterAdmin $admin): Response
     {
-        if ('invokable' !== $admin->getUniqid()) {
+        if ('test' !== $admin->getUniqid()) {
             throw new BadRequestHttpException();
         }
 

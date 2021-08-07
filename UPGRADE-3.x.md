@@ -1,6 +1,43 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.104 to 3.105
+===========================
+
+### Deprecated the use of ParamConverter to fetch an admin as parameter
+
+Using `@ParamConverter` annotation to fetch an admin service is deprecated and will not work in version 4.0. Instead,
+you MUST type-hint with the appropriate admin class.
+
+The `Sonata\AdminBundle\Request\ParamConverter\AdminParamConverter` class has been deprecated.
+
+Before:
+```php
+final class MyController
+{
+    /**
+     * @ParamConverter("admin", class="App\Admin\MyAdmin")
+     */
+    public function custom($admin): Response
+    {
+        return new Response();
+    }
+}
+```
+
+After:
+```php
+use App\Admin\MyAdmin;
+
+final class MyController
+{
+    public function custom(MyAdmin $admin): Response
+    {
+        return new Response();
+    }
+}
+```
+
 UPGRADE FROM 3.102 to 3.103
 ===========================
 

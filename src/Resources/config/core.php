@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Extension\LockExtension;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\CRUDController;
+use Sonata\AdminBundle\ArgumentResolver\AdminValueResolver;
 use Sonata\AdminBundle\Event\AdminEventExtension;
 use Sonata\AdminBundle\Filter\FilterFactory;
 use Sonata\AdminBundle\Filter\FilterFactoryInterface;
@@ -151,5 +152,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('sonata.admin.pool'),
             ])
 
-        ->alias(AdminFetcherInterface::class, 'sonata.admin.request.fetcher');
+        ->alias(AdminFetcherInterface::class, 'sonata.admin.request.fetcher')
+
+        ->set('sonata.admin.argument_resolver.admin', AdminValueResolver::class)
+            ->args([
+                new ReferenceConfigurator('sonata.admin.request.fetcher'),
+            ])
+            ->tag('controller.argument_value_resolver');
 };

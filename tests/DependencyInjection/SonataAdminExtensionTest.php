@@ -82,6 +82,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         );
     }
 
+    // Remove this test.
     public function testLoadsParamConverterServiceDefinitionWhenSensioFrameworkExtraBundleIsRegistered(): void
     {
         $this->container->setParameter('kernel.bundles', ['SensioFrameworkExtraBundle' => 'whatever']);
