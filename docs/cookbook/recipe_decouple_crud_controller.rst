@@ -6,10 +6,10 @@ Decouple from CRUDController
     The ability to inject an Admin to an action and ``AdminFetcherInterface`` service were introduced in 3.99.
 
 When creating custom actions, we can create our controllers without extending ``CRUDController``. What we usually need
-is to access the ``admin`` instance associated to the action, to do so we can use a param converter or
+is to access the ``admin`` instance associated to the action, to do so we can type-hint to the admin class or use
 the ``AdminFetcherInterface`` service.
 
-If you are using ``SensioFrameworkExtraBundle``, then you can add your Admin as parameter of the action::
+You can add your Admin as parameter of the action::
 
     // src/Controller/CarAdminController.php
 

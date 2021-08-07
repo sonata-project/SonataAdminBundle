@@ -21,6 +21,11 @@ use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @deprecated since sonata-project/admin-bundle 3.x.
+ *
+ * NEXT_MAJOR: Remove this class.
+ */
 final class AdminParamConverter implements ParamConverterInterface
 {
     /**

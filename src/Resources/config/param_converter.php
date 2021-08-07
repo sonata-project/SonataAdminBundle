@@ -15,6 +15,9 @@ use Sonata\AdminBundle\Request\ParamConverter\AdminParamConverter;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 
+/*
+ * NEXT_MAJOR: Remove this file.
+ */
 return static function (ContainerConfigurator $containerConfigurator): void {
     // Use "service" function for creating references to services when dropping support for Symfony 4.4
     $containerConfigurator->services()

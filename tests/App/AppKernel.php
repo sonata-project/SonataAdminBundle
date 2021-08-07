@@ -43,6 +43,7 @@ final class AppKernel extends Kernel
     {
         $bundles = [
             new FrameworkBundle(),
+            // NEXT_MAJOR: Remove next line and "sensio/framework-extra-bundle" package from composer.json.
             new SensioFrameworkExtraBundle(),
             new TwigBundle(),
             new SecurityBundle(),

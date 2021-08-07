@@ -84,6 +84,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             $loader->load('exporter.php');
         }
 
+        // NEXT_MAJOR: Remove this block.
         if (isset($bundles['SensioFrameworkExtraBundle'])) {
             $loader->load('param_converter.php');
         }

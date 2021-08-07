@@ -13,13 +13,18 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\App\Controller;
 
-use Sonata\AdminBundle\Tests\App\Admin\TestingParamConverterAdmin;
+use Sonata\AdminBundle\Tests\App\Admin\AdminAsParameterAdmin;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class InvokableController
 {
-    public function __invoke(TestingParamConverterAdmin $admin): Response
+    public function __invoke(AdminAsParameterAdmin $admin): Response
     {
+        if ('invokable' !== $admin->getUniqid()) {
+            throw new BadRequestHttpException();
+        }
+
         return new Response();
     }
 }

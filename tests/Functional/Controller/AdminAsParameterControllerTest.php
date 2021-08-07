@@ -18,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-final class ParamConverterControllerTest extends WebTestCase
+final class AdminAsParameterControllerTest extends WebTestCase
 {
     /**
      * @dataProvider urlIsSuccessfulDataProvider
@@ -34,9 +34,10 @@ final class ParamConverterControllerTest extends WebTestCase
     public function urlIsSuccessfulDataProvider(): iterable
     {
         return [
-            ['/admin/tests/app/testing-param-converter/withAnnotation'],
-            ['/admin/tests/app/testing-param-converter/withoutAnnotation'],
-            ['/admin/tests/app/testing-param-converter/invokable'],
+            ['/admin/tests/app/admin-as-parameter/test?uniqid=test'],
+            ['/admin/tests/app/admin-as-parameter/invokable?uniqid=invokable'],
+            // NEXT_MAJOR: Remove next line.
+            ['/admin/tests/app/admin-as-parameter/withAnnotation'],
         ];
     }
 

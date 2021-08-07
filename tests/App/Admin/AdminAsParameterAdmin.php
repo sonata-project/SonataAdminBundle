@@ -17,19 +17,20 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Tests\App\Controller\InvokableController;
 
-final class TestingParamConverterAdmin extends AbstractAdmin
+final class AdminAsParameterAdmin extends AbstractAdmin
 {
-    protected $baseRoutePattern = 'tests/app/testing-param-converter';
-    protected $baseRouteName = 'admin_testing_param_converter';
+    protected $baseRoutePattern = 'tests/app/admin-as-parameter';
+    protected $baseRouteName = 'admin_admin_as_parameter';
 
     protected function configureRoutes(RouteCollection $collection): void
     {
+        // NEXT_MAJOR: Remove this route
         $collection->add('withAnnotation', null, [
-            '_controller' => 'Sonata\AdminBundle\Tests\App\Controller\ParamConverterController::withAnnotation',
+            '_controller' => 'Sonata\AdminBundle\Tests\App\Controller\AdminAsParameterController::withAnnotation',
         ]);
 
-        $collection->add('withoutAnnotation', null, [
-            '_controller' => 'Sonata\AdminBundle\Tests\App\Controller\ParamConverterController::withoutAnnotation',
+        $collection->add('test', null, [
+            '_controller' => 'Sonata\AdminBundle\Tests\App\Controller\AdminAsParameterController::test',
         ]);
 
         $collection->add('invokable', null, [

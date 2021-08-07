@@ -14,26 +14,33 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\App\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sonata\AdminBundle\Tests\App\Admin\TestingParamConverterAdmin;
+use Sonata\AdminBundle\Tests\App\Admin\AdminAsParameterAdmin;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-final class ParamConverterController
+final class AdminAsParameterController
 {
     /**
-     * @ParamConverter("admin", class="Sonata\AdminBundle\Tests\App\Admin\TestingParamConverterAdmin")
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @ParamConverter("admin", class="Sonata\AdminBundle\Tests\App\Admin\AdminAsParameterAdmin")
      */
     public function withAnnotation($admin): Response
     {
-        if (!$admin instanceof TestingParamConverterAdmin) {
+        if (!$admin instanceof AdminAsParameterAdmin) {
             throw new NotFoundHttpException();
         }
 
         return new Response();
     }
 
-    public function withoutAnnotation(TestingParamConverterAdmin $admin): Response
+    public function test(AdminAsParameterAdmin $admin): Response
     {
+        if ('test' !== $admin->getUniqid()) {
+            throw new BadRequestHttpException();
+        }
+
         return new Response();
     }
 }
