@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * @deprecated since sonata-project/admin-bundle 3.x.
+ * @deprecated since sonata-project/admin-bundle 3.105.
  *
  * NEXT_MAJOR: Remove this class.
  */

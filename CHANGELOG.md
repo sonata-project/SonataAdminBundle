@@ -2,6 +2,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.105.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.104.0...3.105.0) - 2021-08-07
+### Added
+- [[#7356](https://github.com/sonata-project/SonataAdminBundle/pull/7356)] Added support for `psr/log` ^2.0. ([@jordisala1991](https://github.com/jordisala1991))
+
+### Deprecated
+- [[#7362](https://github.com/sonata-project/SonataAdminBundle/pull/7362)] Deprecated using `@ParamConverter` annotation for injecting admin services ([@franmomu](https://github.com/franmomu))
+
+### Fixed
+- [[#7363](https://github.com/sonata-project/SonataAdminBundle/pull/7363)] Requesting a non existent service "sonata.admin.exporter.do-not-use". ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7360](https://github.com/sonata-project/SonataAdminBundle/pull/7360)] `RetrieveAutocompleItemsAction` when used with an array of property ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [3.104.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.103.0...3.104.0) - 2021-07-20
 ### Added
 - [[#7325](https://github.com/sonata-project/SonataAdminBundle/pull/7325)] Option `list_action_button_content` ([@VincentLanglet](https://github.com/VincentLanglet))
