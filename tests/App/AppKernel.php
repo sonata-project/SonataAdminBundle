@@ -125,10 +125,6 @@ final class AppKernel extends Kernel
             'form_themes' => ['@SonataAdmin/Form/form_admin_fields.html.twig'],
         ]);
 
-        $containerBuilder->loadFromExtension('sensio_framework_extra', [
-            'router' => ['annotations' => false],
-        ]);
-
         $loader->load(sprintf('%s/config/services.yml', $this->getProjectDir()));
     }
 

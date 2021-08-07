@@ -195,8 +195,9 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $response = ($this->action)($request);
 
         self::assertSame(FilterInterface::CONDITION_OR, $filter->getCondition());
-        self::assertNull($filter->getPreviousFilter());
+        self::assertFalse($filter->hasPreviousFilter());
         self::assertSame(FilterInterface::CONDITION_OR, $filter2->getCondition());
+        self::assertTrue($filter2->hasPreviousFilter());
         self::assertSame($filter, $filter2->getPreviousFilter());
 
         self::assertInstanceOf(Response::class, $response);

@@ -21,7 +21,7 @@ final class AdminAsParameterController
 {
     public function test(AdminAsParameterAdmin $admin): Response
     {
-        if ('test' !== $admin->getUniqid()) {
+        if ('test' !== $admin->getUniqId()) {
             throw new BadRequestHttpException();
         }
 

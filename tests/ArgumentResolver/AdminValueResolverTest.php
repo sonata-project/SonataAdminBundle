@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\ArgumentResolver;
 
-use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
@@ -29,7 +28,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 final class AdminValueResolverTest extends TestCase
 {
     /**
-     * @var Stub&AdminInterface
+     * @var PostAdmin
      */
     private $admin;
 
@@ -55,7 +54,7 @@ final class AdminValueResolverTest extends TestCase
      */
     public function testSupports(bool $expectedSupport, Request $request, ArgumentMetadata $argumentMetadata): void
     {
-        $this->assertSame($expectedSupport, $this->adminValueResolver->supports($request, $argumentMetadata));
+        self::assertSame($expectedSupport, $this->adminValueResolver->supports($request, $argumentMetadata));
     }
 
     /**
@@ -104,8 +103,11 @@ final class AdminValueResolverTest extends TestCase
 
         $argument = new ArgumentMetadata('_sonata_admin', PostAdmin::class, false, false, null);
 
-        $this->assertTrue($this->adminValueResolver->supports($request, $argument));
-        $this->assertSame([$this->admin], $this->iterableToArray($this->adminValueResolver->resolve($request, $argument)));
+        self::assertTrue($this->adminValueResolver->supports($request, $argument));
+        self::assertSame(
+            [$this->admin],
+            $this->iterableToArray($this->adminValueResolver->resolve($request, $argument))
+        );
     }
 
     /**

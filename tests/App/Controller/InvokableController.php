@@ -21,7 +21,7 @@ final class InvokableController
 {
     public function __invoke(AdminAsParameterAdmin $admin): Response
     {
-        if ('invokable' !== $admin->getUniqid()) {
+        if ('invokable' !== $admin->getUniqId()) {
             throw new BadRequestHttpException();
         }
 

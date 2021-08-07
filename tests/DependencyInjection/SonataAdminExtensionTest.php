@@ -26,7 +26,6 @@ use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\AuditReaderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Request\ParamConverter\AdminParamConverter;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
@@ -79,22 +78,6 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         self::assertContainerBuilderHasService(
             'sonata.admin.admin_exporter',
             AdminExporter::class
-        );
-    }
-
-    // Remove this test.
-    public function testLoadsParamConverterServiceDefinitionWhenSensioFrameworkExtraBundleIsRegistered(): void
-    {
-        $this->container->setParameter('kernel.bundles', ['SensioFrameworkExtraBundle' => 'whatever']);
-        $this->load();
-        self::assertContainerBuilderHasService(
-            'sonata.admin.param_converter',
-            AdminParamConverter::class
-        );
-        self::assertContainerBuilderHasServiceDefinitionWithTag(
-            'sonata.admin.param_converter',
-            'request.param_converter',
-            ['converter' => 'sonata_admin']
         );
     }
 
