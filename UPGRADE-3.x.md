@@ -1,8 +1,8 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.x to 3.x
-=======================
+UPGRADE FROM 3.104 to 3.105
+===========================
 
 ### Deprecated the use of ParamConverter to fetch an admin as parameter
 
