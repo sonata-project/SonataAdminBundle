@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\ArgumentResolver;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\ArgumentResolver\AdminValueResolver;
 use Sonata\AdminBundle\Request\AdminFetcher;
@@ -58,7 +57,7 @@ final class AdminValueResolverTest extends TestCase
     }
 
     /**
-     * @psalm-return iterable<array{bool, Request, ArgumentMetadata}>
+     * @phpstan-return iterable<array-key, array{bool, Request, ArgumentMetadata}>
      */
     public function supportDataProvider(): iterable
     {
@@ -111,14 +110,16 @@ final class AdminValueResolverTest extends TestCase
     }
 
     /**
-     * @param iterable<AdminInterface> $iterable
-     *
-     * @return AdminInterface[]
+     * @phpstan-template T
+     * @phpstan-param iterable<T> $iterable
+     * @phpstan-return array<T>
      */
     private function iterableToArray(iterable $iterable): array
     {
         $array = [];
-        array_push($array, ...$iterable);
+        foreach ($iterable as $admin) {
+            $array[] = $admin;
+        }
 
         return $array;
     }
