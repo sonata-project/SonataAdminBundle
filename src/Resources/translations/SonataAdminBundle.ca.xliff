@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" datatype="plaintext" original="">
+  <file source-language="en" datatype="plaintext" original="" target-language="ca">
     <body>
       <trans-unit id="sonata_administration">
         <source>sonata_administration</source>
@@ -132,7 +132,7 @@
       </trans-unit>
       <trans-unit id="no_result">
         <source>no_result</source>
-        <target>No s'han trobat resultats.</target>
+        <target>No s'han trobat resultats</target>
       </trans-unit>
       <trans-unit id="confirm_msg">
         <source>confirm_msg</source>
