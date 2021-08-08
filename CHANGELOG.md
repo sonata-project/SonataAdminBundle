@@ -2,6 +2,70 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.0.rc.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.0.0-alpha-2...4.0.0.rc.1) - 2021-08-08
+### Added
+- [[#7364](https://github.com/sonata-project/SonataAdminBundle/pull/7364)]  `FormMapper` now implements the `BlockBundle/FormMapper` interface ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7348](https://github.com/sonata-project/SonataAdminBundle/pull/7348)] Support for POST request to deleteAction. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7351](https://github.com/sonata-project/SonataAdminBundle/pull/7351)] Added second parameter to `AdminInterface::getPersistentParameter()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7205](https://github.com/sonata-project/SonataAdminBundle/pull/7205)] Added missing generic phpdoc for `AdminInterface::getSubject()` method ([@franmomu](https://github.com/franmomu))
+
+### Changed
+- [[#7358](https://github.com/sonata-project/SonataAdminBundle/pull/7358)] Icon for filters ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7310](https://github.com/sonata-project/SonataAdminBundle/pull/7310)] Remove unused code and add some `final` keyword ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7252](https://github.com/sonata-project/SonataAdminBundle/pull/7252)] Add final to multiple method of CRUDController ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7345](https://github.com/sonata-project/SonataAdminBundle/pull/7345)] Make `getPreviousFilter()` non nullable ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7347](https://github.com/sonata-project/SonataAdminBundle/pull/7347)] Block_search_result.html.twig now display all the possible filter and not only the matching ones. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7238](https://github.com/sonata-project/SonataAdminBundle/pull/7238)] `isXmlHttpRequest()`, `redirectTo()`, `isPreviewApproved()`, `isInPreviewMode()`, `isPreviewDeclined()`, `validateCsrfToken()` signatures. They now require to pass the request as first argument. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7241](https://github.com/sonata-project/SonataAdminBundle/pull/7241)] Changed argument 1 of `SessionFilterPersister::__construct()` from `SessionInterface` to `RequestStack` ([@franmomu](https://github.com/franmomu))
+- [[#7220](https://github.com/sonata-project/SonataAdminBundle/pull/7220)] All the protected property of the AsbtractAdmin with a specific setter are now private. ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#7350](https://github.com/sonata-project/SonataAdminBundle/pull/7350)] Fixed behavior of placeholder (empty value) for select2 choice fields ([@dmaicher](https://github.com/dmaicher))
+- [[#7330](https://github.com/sonata-project/SonataAdminBundle/pull/7330)] Fix for not showing placeholder when using Select2 with ChoiceType ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7342](https://github.com/sonata-project/SonataAdminBundle/pull/7342)] Fixed broken javascript using `select2` ([@franmomu](https://github.com/franmomu))
+- [[#7193](https://github.com/sonata-project/SonataAdminBundle/pull/7193)] Scroll lag on Safari due to refreshNavbarStuckClass call. ([@moostrich](https://github.com/moostrich))
+- [[#7253](https://github.com/sonata-project/SonataAdminBundle/pull/7253)] Allow relative path to resources ([@jderusse](https://github.com/jderusse))
+- [[#7249](https://github.com/sonata-project/SonataAdminBundle/pull/7249)] "multiple" option of AutocompleteType ([@willemverspyck](https://github.com/willemverspyck))
+- [[#7219](https://github.com/sonata-project/SonataAdminBundle/pull/7219)] Fix the css of sort arrows in lists. ([@Laffesz](https://github.com/Laffesz))
+- [[#7224](https://github.com/sonata-project/SonataAdminBundle/pull/7224)] Focus on Select2 or CKEditor in modal dialog ([@willemverspyck](https://github.com/willemverspyck))
+- [[#7208](https://github.com/sonata-project/SonataAdminBundle/pull/7208)] Fixed `keep_open` option to always keep open a group menu ([@franmomu](https://github.com/franmomu))
+- [[#7202](https://github.com/sonata-project/SonataAdminBundle/pull/7202)] Missing comma & bracket ([@cecicifu](https://github.com/cecicifu))
+- [[#7198](https://github.com/sonata-project/SonataAdminBundle/pull/7198)] Pagination results per page selector ([@1ed](https://github.com/1ed))
+
+### Removed
+- [[#7354](https://github.com/sonata-project/SonataAdminBundle/pull/7354)] Removed support for Symfony 5.2 ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7354](https://github.com/sonata-project/SonataAdminBundle/pull/7354)] Removed support for SensioFrameworkExtraBundle < 6.1 ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7319](https://github.com/sonata-project/SonataAdminBundle/pull/7319)] Properties and getters validation from ExplainAdminCommand. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7238](https://github.com/sonata-project/SonataAdminBundle/pull/7238)] `CRUDController::getRequest()` method ([@VincentLanglet](https://github.com/VincentLanglet))
+
+## [4.0.0-alpha-2](https://github.com/sonata-project/SonataAdminBundle/compare/4.0.0-alpha-1...4.0.0-alpha-2) - 2021-05-14
+### Added
+- [[#7131](https://github.com/sonata-project/SonataAdminBundle/pull/7131)] Add Source Sans Pro font source files ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7022](https://github.com/sonata-project/SonataAdminBundle/pull/7022)] Added `FilterData` to model the data from a filter ([@franmomu](https://github.com/franmomu))
+- [[#7034](https://github.com/sonata-project/SonataAdminBundle/pull/7034)] Added integration with webpack encore ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7034](https://github.com/sonata-project/SonataAdminBundle/pull/7034)] Npm as a package manager for internal assets ([@jordisala1991](https://github.com/jordisala1991))
+### Changed
+- [[#7133](https://github.com/sonata-project/SonataAdminBundle/pull/7133)] Upgrade to Font Awesome 5 maintaining compatibility with version 4 icons ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7109](https://github.com/sonata-project/SonataAdminBundle/pull/7109)] Move public images to `src/Resources/public/images` directory ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7106](https://github.com/sonata-project/SonataAdminBundle/pull/7106)] Unify js files into a single `app.js` file ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7022](https://github.com/sonata-project/SonataAdminBundle/pull/7022)] Changed `FilterInterface::apply()` to accept a `FilterData` instance instead of `array` in argument 4 ([@franmomu](https://github.com/franmomu))
+- [[#7098](https://github.com/sonata-project/SonataAdminBundle/pull/7098)] Unify vendor js files into a single `app.js` file ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7084](https://github.com/sonata-project/SonataAdminBundle/pull/7084)] Unify css files into a single `app.css` file ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7084](https://github.com/sonata-project/SonataAdminBundle/pull/7084)] Move remaining third party assets from `src/Resources/public` to `assets` directory. Only necessary assets are exposed to the `public` dir ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7073](https://github.com/sonata-project/SonataAdminBundle/pull/7073)] Move css files to root assets directory and only expose the minified `app.css` ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7067](https://github.com/sonata-project/SonataAdminBundle/pull/7067)] Upgrade all npm packages to their latest patch release ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7067](https://github.com/sonata-project/SonataAdminBundle/pull/7067)] Upgrade `jquery-form` to v4 ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7067](https://github.com/sonata-project/SonataAdminBundle/pull/7067)] Upgrade `jquery.scrollto` to v2 ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7048](https://github.com/sonata-project/SonataAdminBundle/pull/7048)] Upgrade to Select2 ^4.0. ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7034](https://github.com/sonata-project/SonataAdminBundle/pull/7034)] Changed paths of javascript and css files ([@jordisala1991](https://github.com/jordisala1991))
+### Removed
+- [[#7147](https://github.com/sonata-project/SonataAdminBundle/pull/7147)] Support for phpcr ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7067](https://github.com/sonata-project/SonataAdminBundle/pull/7067)] Removed Ionicons dependency ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7034](https://github.com/sonata-project/SonataAdminBundle/pull/7034)] Bower as a package manager ([@jordisala1991](https://github.com/jordisala1991))
+
+## [4.0.0-alpha-1](https://github.com/sonata-project/SonataAdminBundle/compare/3.105.0...4.0.0-alpha-1) - 2021-04-11
+See UPGRADE-4.0.md
+
 ## [3.105.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.104.0...3.105.0) - 2021-08-07
 ### Added
 - [[#7356](https://github.com/sonata-project/SonataAdminBundle/pull/7356)] Added support for `psr/log` ^2.0. ([@jordisala1991](https://github.com/jordisala1991))
