@@ -19,7 +19,7 @@ lint-yaml:
 .PHONY: lint-yaml
 
 lint-xml:
-	find . \( -name '*.xml' -or -name '*.xliff' \) \
+	find . -name '*.xml' \
 		-not -path './vendor/*' \
 		-not -path './src/Resources/public/vendor/*' \
 		| while read xmlFile; \
@@ -29,6 +29,18 @@ lint-xml:
 	done
 
 .PHONY: lint-xml
+
+lint-xliff:
+	find . -name '*.xliff' \
+		-not -path './vendor/*' \
+		-not -path './src/Resources/public/vendor/*' \
+		| while read xmlFile; \
+	do \
+		XMLLINT_INDENT='  ' xmllint --encode UTF-8 --format "$$xmlFile"|diff - "$$xmlFile"; \
+		if [ $$? -ne 0 ] ;then exit 1; fi; \
+	done
+
+.PHONY: lint-xliff
 
 lint-php:
 	php-cs-fixer fix --ansi --verbose --diff --dry-run

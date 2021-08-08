@@ -17,7 +17,7 @@ indent_size = 4
 [.yamllint]
 indent_size = 4
 
-[*.{js,json,scss,css}]
+[*.{js,json,scss,css,xliff}]
 indent_size = 2
 
 [composer.json]
