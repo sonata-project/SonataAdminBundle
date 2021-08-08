@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="bg" datatype="plaintext" original="SonataAdminBundle.en.xliff">
+  <file source-language="en" target-language="bg" datatype="plaintext" original="">
     <body>
       <trans-unit id="sonata_administration">
         <source>sonata_administration</source>
