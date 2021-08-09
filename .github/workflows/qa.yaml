@@ -8,6 +8,7 @@ on:
     push:
         branches:
             - 3.x
+            - 4.x
             - master
     pull_request:
 
