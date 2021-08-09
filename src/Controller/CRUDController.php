@@ -68,6 +68,8 @@ class CRUDController extends AbstractController
      *
      * @var AdminInterface<object>
      * @phpstan-var AdminInterface<T>
+     *
+     * @psalm-suppress PropertyNotSetInConstructor
      */
     protected $admin;
 
@@ -75,6 +77,8 @@ class CRUDController extends AbstractController
      * The template registry of the related Admin class.
      *
      * @var TemplateRegistryInterface
+     *
+     * @psalm-suppress PropertyNotSetInConstructor
      */
     private $templateRegistry;
 
