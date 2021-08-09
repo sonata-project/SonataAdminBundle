@@ -355,16 +355,6 @@ body.fixed .content-header .navbar.stuck {
     word-wrap: break-word;
 }
 
-.sonata-search-result-list.nav-stacked > li.item > span.matches {
-    position: relative;
-    display: block;
-    padding: 10px 15px;
-}
-
-.sonata-search-result-list.nav-stacked > li.item > span.matches > a.label {
-   margin: 0 1px;
-}
-
 .form-actions.stuck {
     position:fixed;
     bottom:0;
