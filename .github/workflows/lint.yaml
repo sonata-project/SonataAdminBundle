@@ -8,6 +8,7 @@ on:
     push:
         branches:
             - 3.x
+            - 4.x
             - master
     pull_request:
 
@@ -72,5 +73,8 @@ jobs:
             - name: Install required dependencies
               run: sudo apt-get update && sudo apt-get install libxml2-utils
 
-            - name: Lint files
+            - name: Lint xml files
               run: make lint-xml
+
+            - name: Lint xliff files
+              run: make lint-xliff
