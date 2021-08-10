@@ -499,6 +499,17 @@ final class FormMapperTest extends TestCase
             ->add('ba__z', TextType::class);
 
         self::assertSame(['fo__o', 'ba____z'], $this->formMapper->keys());
+
+        // FormFieldDescriptions have the original key.
+        self::assertTrue($this->admin->hasFormFieldDescription('fo.o'));
+        self::assertTrue($this->admin->hasFormFieldDescription('ba__z'));
+
+        $formGroups = $this->admin->getFormGroups();
+
+        self::assertArrayHasKey('default', $formGroups);
+        self::assertIsArray($formGroups['default']);
+        self::assertArrayHasKey('fields', $formGroups['default']);
+        self::assertSame(['fo.o' => 'fo__o', 'ba__z' => 'ba____z'], $formGroups['default']['fields']);
     }
 
     public function testAddOptionRole(): void

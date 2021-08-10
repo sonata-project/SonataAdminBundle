@@ -110,11 +110,11 @@ file that was distributed with this source code.
                         <div class="box-body table-responsive no-padding">
                             <table class="table">
                                 <tbody>
-                                {% for field_name in show_group.fields %}
+                                {% for show_field_name in show_group.fields %}
                                     {% block show_field %}
                                         <tr class="sonata-ba-view-container">
-                                            {% if elements[field_name] is defined %}
-                                                {{ elements[field_name]|render_view_element(object) }}
+                                            {% if elements[show_field_name] is defined %}
+                                                {{ elements[show_field_name]|render_view_element(object) }}
                                             {% endif %}
                                         </tr>
                                     {% endblock %}

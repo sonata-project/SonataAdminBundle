@@ -343,13 +343,13 @@ abstract class BaseGroupedMapper implements MapperInterface
     /**
      * @return array<string, mixed>
      */
-    final protected function addFieldToCurrentGroup(string $fieldName): array
+    final protected function addFieldToCurrentGroup(string $fieldName, ?string $name = null): array
     {
         // Note this line must happen before the next line.
         // See https://github.com/sonata-project/SonataAdminBundle/pull/1351
         $currentGroup = $this->getCurrentGroupName();
         $groups = $this->getGroups();
-        $groups[$currentGroup]['fields'][$fieldName] = $fieldName;
+        $groups[$currentGroup]['fields'][$fieldName] = $name ?? $fieldName;
         $this->setGroups($groups);
 
         return $groups[$currentGroup];

@@ -100,7 +100,10 @@ final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
             $type = CollectionType::class;
         }
 
-        $group = $this->addFieldToCurrentGroup($name);
+        // We're accessing form fields with the name added to the group.
+        // Since the sanitized name is used by the form builder, the group keep a reference to it.
+        $sanitizedName = $this->sanitizeFieldName($name);
+        $group = $this->addFieldToCurrentGroup($name, $sanitizedName);
 
         if (!isset($fieldDescriptionOptions['type']) && \is_string($type)) {
             $fieldDescriptionOptions['type'] = $type;
@@ -140,7 +143,7 @@ final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
         }
 
         $this->getAdmin()->addFormFieldDescription($fieldDescription->getName(), $fieldDescription);
-        $this->formBuilder->add($this->sanitizeFieldName($fieldDescription->getName()), $type, $options);
+        $this->formBuilder->add($sanitizedName, $type, $options);
 
         return $this;
     }
