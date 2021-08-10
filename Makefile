@@ -54,7 +54,7 @@ cs-fix-php:
 .PHONY: cs-fix-php
 
 cs-fix-xml:
-	find . \( -name '*.xml' -or -name '*.xliff' \) \
+	find . -name '*.xml' \
 		-not -path './vendor/*' \
 		-not -path './src/Resources/public/vendor/*' \
 		| while read xmlFile; \
@@ -62,6 +62,16 @@ cs-fix-xml:
 		XMLLINT_INDENT='    ' xmllint --encode UTF-8 --format "$$xmlFile" --output "$$xmlFile"; \
 	done
 .PHONY: cs-fix-xml
+
+cs-fix-xliff:
+	find . -name '*.xliff' \
+		-not -path './vendor/*' \
+		-not -path './src/Resources/public/vendor/*' \
+		| while read xmlFile; \
+	do \
+		XMLLINT_INDENT='  ' xmllint --encode UTF-8 --format "$$xmlFile" --output "$$xmlFile"; \
+	done
+.PHONY: cs-fix-xliff
 
 build:
 	mkdir $@
