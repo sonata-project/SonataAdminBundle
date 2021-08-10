@@ -46,7 +46,7 @@ lint-php:
 	php-cs-fixer fix --ansi --verbose --diff --dry-run
 .PHONY: lint-php
 
-cs-fix: cs-fix-php cs-fix-xml
+cs-fix: cs-fix-php cs-fix-xml cs-fix-xliff
 .PHONY: cs-fix
 
 cs-fix-php:
