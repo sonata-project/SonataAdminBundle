@@ -7,6 +7,7 @@ name: Frontend
 on:
     push:
         branches:
+            - 4.x
             - master
     pull_request:
 
