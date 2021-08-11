@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\ArgumentResolver;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Exception\AdminCodeNotFoundException;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
@@ -40,7 +39,7 @@ final class AdminValueResolver implements ArgumentValueResolverInterface
 
         try {
             $admin = $this->adminFetcher->get($request);
-        } catch (AdminCodeNotFoundException $exception) {
+        } catch (\InvalidArgumentException $exception) {
             return false;
         }
 

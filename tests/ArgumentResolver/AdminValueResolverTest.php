@@ -69,6 +69,12 @@ final class AdminValueResolverTest extends TestCase
             new ArgumentMetadata('_sonata_admin', __CLASS__, false, false, null),
         ];
 
+        yield 'Admin code must be passed' => [
+            false,
+            Request::create('/'),
+            new ArgumentMetadata('_sonata_admin', PostAdmin::class, false, false, null),
+        ];
+
         $request = Request::create('/');
         $request->attributes->set('_sonata_admin', 'non_existing');
 
