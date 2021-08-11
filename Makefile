@@ -85,7 +85,7 @@ endif
 .PHONY: test
 
 docs:
-	cd docs && sphinx-build -W -b html -d _build/doctrees . _build/html
+	cd docs && sphinx-build -W -b dirhtml -d _build/doctrees . _build/html
 .PHONY: docs
 
 phpstan:
