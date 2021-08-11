@@ -6,6 +6,7 @@
 *.md export-ignore
 tests export-ignore
 docs export-ignore
+.readthedocs.yaml export-ignore
 Makefile export-ignore
 phpunit.xml.dist export-ignore
 phpstan.neon.dist export-ignore
