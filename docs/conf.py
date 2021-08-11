@@ -29,11 +29,13 @@ from pygments.lexers.web import PhpLexer
 # -- General configuration -----------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-#needs_sphinx = '1.0'
+needs_sphinx = '1.8.5'
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sensio.sphinx.configurationblock', 'sensio.sphinx.phpcode']
+extensions = [
+    'sensio.sphinx.codeblock', 'sensio.sphinx.configurationblock', 'sensio.sphinx.phpcode'
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -49,7 +51,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'SonataAdminBundle'
-copyright = u'2010-2020, Thomas Rabaix'
+copyright = u'2010-2021, Thomas Rabaix'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -102,7 +104,9 @@ highlight_language = 'php'
 # enable highlighting for PHP code not between ``<?php ... ?>`` by default
 lexers['php'] = PhpLexer(startinline=True)
 lexers['php-annotations'] = PhpLexer(startinline=True)
+lexers['php-attributes'] = PhpLexer(startinline=True)
 lexers['php-standalone'] = PhpLexer(startinline=True)
+lexers['php-symfony'] = PhpLexer(startinline=True)
 
 # -- Options for HTML output ---------------------------------------------------
 import sphinx_rtd_theme
