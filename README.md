@@ -52,4 +52,4 @@ This package is available under the [MIT license](LICENSE).
 [documentation_stable_badge]: https://readthedocs.org/projects/sonata-project-sonataadminbundle/badge/?version=4.x
 [documentation_stable_link]: https://docs.sonata-project.org/projects/SonataAdminBundle/en/4.x/?badge=4.x
 [documentation_unstable_badge]: https://readthedocs.org/projects/sonata-project-sonataadminbundle/badge/?version=master
-[documentation_unstable_link]: https://docs.readthedocs.org/projects/SonataAdminBundle/en/master/?badge=master
+[documentation_unstable_link]: https://docs.sonata-project.org/projects/SonataAdminBundle/en/master/?badge=master
