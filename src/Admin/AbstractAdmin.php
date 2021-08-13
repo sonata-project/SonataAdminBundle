@@ -2131,6 +2131,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * @param array<string, array<string, mixed>> $buttonList
      *
      * @return array<string, array<string, mixed>>
+     *
+     * @phpstan-param T|null $object
      */
     protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
     {
