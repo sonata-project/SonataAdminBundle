@@ -66,6 +66,7 @@ file that was distributed with this source code.
                 width: function() {
                     return Admin.get_select2_width(jQuery(this));
                 },
+                language: "{{ canonicalize_locale_for_select2() }}",
                 dropdownAutoWidth: {{ dropdown_auto_width ? 'true' : 'false' }},
                 containerCssClass: '{{ container_css_class ~ ' form-control' }}',
                 dropdownCssClass: '{{ dropdown_css_class }}',
