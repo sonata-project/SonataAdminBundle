@@ -1,9 +1,0 @@
-{% extends get_admin_template('base_list_field', admin.code) %}
-
-{% block field %}
-    {%- include '@SonataAdmin/CRUD/display_html.html.twig' with {
-        value: value,
-        truncate: field_description.option('truncate'),
-        strip: field_description.option('strip'),
-    } only -%}
-{% endblock %}

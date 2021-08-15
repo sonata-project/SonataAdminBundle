@@ -1,9 +1,0 @@
-{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
-
-{% block field %}
-    {%- include '@SonataAdmin/CRUD/display_html.html.twig' with {
-        value: value,
-        truncate: field_description.option('truncate'),
-        strip: field_description.option('strip'),
-    } only -%}
-{% endblock %}
