@@ -785,6 +785,5 @@ Combine this with configuring a custom template and you'll have a list column fu
         ]);
     }
 
-.. _`SonataDoctrineORMAdminBundle Documentation`: https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/list_field_definition.html
+.. _`SonataDoctrineORMAdminBundle Documentation`: https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle/en/3.x/reference/list_field_definition
 .. _`here`: https://github.com/sonata-project/form-extensions/tree/1.x/src/Type
-

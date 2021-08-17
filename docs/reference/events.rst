@@ -45,4 +45,4 @@ Block events help you customize your templates. Available events are :
 - ``sonata.admin.show.bottom``
 
 If you want more information about block events, you should check the
-`"Event" section of block bundle documentation <https://sonata-project.org/bundles/block/master/doc/reference/events.html>`_.
+`"Event" section of block bundle documentation <https://docs.sonata-project.org/projects/SonataBlockBundle/en/3.x/reference/events>`_.

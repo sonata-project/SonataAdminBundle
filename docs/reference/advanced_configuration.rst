@@ -471,4 +471,4 @@ adding the following in the configuration:
         sonata_admin:
             default_controller: App\Controller\DefaultCRUDController
 
-.. _`Core's documentation`: https://sonata-project.org/bundles/core/master/doc/reference/form_types.html#sonata-type-translatable-choice
+.. _`Core's documentation`: https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle/en/3.x/reference/form_types.html#sonata-type-translatable-choice

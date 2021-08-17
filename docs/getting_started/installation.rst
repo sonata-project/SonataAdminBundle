@@ -159,6 +159,6 @@ provided admin functionality for the admin bundle yet. Fortunately, you'll
 learn how to do this in the :doc:`next chapter <creating_an_admin>`.
 
 .. _`installation chapter`: https://getcomposer.org/doc/00-intro.md
-.. _SonataDoctrineORMAdminBundle: https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/index.html
-.. _SonataDoctrineMongoDBAdminBundle: https://sonata-project.org/bundles/mongo-admin/master/doc/index.html
-.. _SonataDoctrinePhpcrAdminBundle: https://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/index.html
+.. _SonataDoctrineORMAdminBundle: https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle/en/3.x/
+.. _SonataDoctrineMongoDBAdminBundle: https://docs.sonata-project.org/projects/SonataDoctrineMongoDBAdminBundle/en/3.x/
+.. _SonataDoctrinePhpcrAdminBundle: https://docs.sonata-project.org/projects/SonataDoctrinePhpcrAdminBundle/en/2.x/
