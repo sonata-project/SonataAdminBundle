@@ -50,7 +50,7 @@ cs-fix: cs-fix-php cs-fix-xml cs-fix-xliff
 .PHONY: cs-fix
 
 cs-fix-php:
-	php-cs-fixer fix --verbose
+	vendor/bin/php-cs-fixer fix --verbose
 .PHONY: cs-fix-php
 
 cs-fix-xml:
@@ -78,9 +78,9 @@ build:
 
 test:
 ifeq ($(shell php --modules|grep --quiet pcov;echo $$?), 0)
-	vendor/bin/simple-phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
+	vendor/bin/phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
 else
-	vendor/bin/simple-phpunit -c phpunit.xml.dist
+	vendor/bin/phpunit -c phpunit.xml.dist
 endif
 .PHONY: test
 

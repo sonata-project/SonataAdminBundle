@@ -16,8 +16,6 @@ file that was distributed with this source code.
 HEADER;
 
 $rules = [
-    '@PHP56Migration' => true,
-    '@PHP56Migration:risky' => true,
     '@PHP70Migration' => true,
     '@PHP70Migration:risky' => true,
     '@PHP71Migration' => true,
@@ -66,12 +64,13 @@ $finder = PhpCsFixer\Finder::create()
     ->exclude('node_modules')
     ->exclude('Resources/skeleton')
     ->exclude('Resources/public/vendor')
-    ->exclude('var')
-;
+    ->exclude('var');
 
-return PhpCsFixer\Config::create()
+$config = new PhpCsFixer\Config();
+$config
     ->setFinder($finder)
     ->setRiskyAllowed(true)
     ->setRules($rules)
-    ->setUsingCache(true)
-;
+    ->setUsingCache(true);
+
+return $config;

@@ -62,19 +62,18 @@ jobs:
             - name: Add PHPUnit matcher
               run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-            - name: "Globally install symfony/flex"
+            - name: Globally install symfony/flex
               if: matrix.symfony-require != ''
-              run: "composer global require --no-progress --no-scripts --no-plugins symfony/flex"
+              run: composer global require --no-progress --no-scripts --no-plugins symfony/flex
 
             - name: Install variant
               if: matrix.variant != 'normal' && !startsWith(matrix.variant, 'symfony/symfony')
               run: composer require ${{ matrix.variant }} --no-update
 
-            - name: "Install Composer dependencies (${{ matrix.dependencies }})"
-              uses: "ramsey/composer-install@v1"
+            - name: Install Composer dependencies (${{ matrix.dependencies }})
+              uses: ramsey/composer-install@v1
               with:
-                  dependency-versions: "${{ matrix.dependencies }}"
-                  composer-options: "--prefer-dist --prefer-stable"
+                  dependency-versions: ${{ matrix.dependencies }}
 
             - name: Run Tests
               run: make test

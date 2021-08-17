@@ -22,10 +22,18 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
 
-            - name: Run PHP-CS-Fixer
-              uses: docker://oskarstark/php-cs-fixer-ga:2.18.5
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
               with:
-                  args: --ansi --verbose --diff --dry-run
+                  php-version: 8.0
+                  coverage: none
+                  tools: composer:v2
+
+            - name: Install Composer dependencies (highest)
+              uses: ramsey/composer-install@v1
+
+            - name: PHP-CS-Fixer
+              run: vendor/bin/php-cs-fixer fix --ansi --verbose --diff --dry-run
 
     composer-normalize:
         name: composer-normalize
