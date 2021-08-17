@@ -5,7 +5,7 @@
 /build/
 /node_modules/
 /vendor/
-.php_cs.cache
+.php-cs-fixer.cache
 composer.lock
 phpunit.xml
 phpstan.neon
