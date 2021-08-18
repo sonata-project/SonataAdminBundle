@@ -38,6 +38,7 @@ For more information about optional libraries:
 
     **TODO**
     * options available when adding fields, inc custom templates
+    * targeting submodel fields using dot-separated notation
 
 Routes
 ~~~~~~

@@ -30,8 +30,25 @@ SonataAdmin Options that may affect the list view:
 .. note::
 
     **TODO**:
-    * a note about Routes and how disabling them disables the related action
     * adding custom columns
+    * targeting submodel fields using dot-separated notation
+
+Routes
+~~~~~~
+
+You can disable listing entities by removing the corresponding routes in your Admin.
+For more detailed information about routes, see :doc:`routing`::
+
+    // src/Admin/PersonAdmin.php
+
+    final class PersonAdmin extends AbstractAdmin
+    {
+        protected function configureRoutes(RouteCollectionInterface $collection): void
+        {
+            // Removing the list route will disable listing entities.
+            $collection->remove('list');
+        }
+    }
 
 Customizing the fields displayed on the list page
 -------------------------------------------------

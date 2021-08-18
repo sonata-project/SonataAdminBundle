@@ -69,9 +69,9 @@ the controller to make it Invokable::
 Now we only need to add the new route in ``configureRoutes``::
 
     use App\Controller\CarAdminCloneAction;
-    use Sonata\AdminBundle\Route\RouteCollection;
+    use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection)
     {
         $collection
             ->add('clone', $this->getRouterIdParameter().'/clone', [

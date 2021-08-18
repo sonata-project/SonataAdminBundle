@@ -9,11 +9,25 @@ Basic configuration
 .. note::
 
     **TODO**:
-    * a note about Routes and how disabling them disables the related action
-    * a note about lifecycle events triggered by delete?
     * options available when adding general fields, inc custom templates
     * targeting submodel fields using dot-separated notation
-    * (Note, if this is very similar to the form documentation it can be combined)
+
+Routes
+~~~~~~
+
+You can disable showing entities by removing the corresponding routes in your Admin.
+For more detailed information about routes, see :doc:`routing`::
+
+    // src/Admin/PersonAdmin.php
+
+    final class PersonAdmin extends AbstractAdmin
+    {
+        protected function configureRoutes(RouteCollectionInterface $collection): void
+        {
+            // Removing the show route will disable showing entities.
+            $collection->remove('show');
+        }
+    }
 
 Group options
 ~~~~~~~~~~~~~
