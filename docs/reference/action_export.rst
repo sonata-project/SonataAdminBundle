@@ -15,6 +15,23 @@ from a lot of flexibility:
 
 See `the exporter bundle documentation`_ for more information.
 
+Routes
+~~~~~~
+
+You can disable exporting entities by removing the corresponding routes in your Admin.
+For more detailed information about routes, see :doc:`routing`::
+
+    // src/Admin/PersonAdmin.php
+
+    final class PersonAdmin extends AbstractAdmin
+    {
+        protected function configureRoutes(RouteCollectionInterface $collection): void
+        {
+            // Removing the export route will disable exporting entities.
+            $collection->remove('export');
+        }
+    }
+
 Translation
 ~~~~~~~~~~~
 
