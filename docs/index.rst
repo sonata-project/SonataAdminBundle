@@ -46,7 +46,6 @@ The demo website can be found at https://demo.sonata-project.org.
    reference/action_export
    reference/saving_hooks
    reference/form_types
-   reference/form_help_message
    reference/field_types
    reference/batch_actions
    reference/console
