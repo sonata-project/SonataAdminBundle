@@ -20,7 +20,6 @@ storage bundles. The official storage bundles are:
 
 * `SonataDoctrineORMAdminBundle`_ (integrates the Doctrine ORM);
 * `SonataDoctrineMongoDBAdminBundle`_ (integrates the Doctrine MongoDB ODM);
-* `SonataDoctrinePhpcrAdminBundle`_ (integrates the Doctrine PHPCR ODM).
 
 You can download them in the same way as the SonataAdminBundle. Please, choose one
 and follow its installation instructions before proceeding.
@@ -78,7 +77,7 @@ Enable the "translator" service
 -------------------------------
 
 The translator service is required by SonataAdmin to display all labels properly.
-For more information: https://symfony.com/doc/4.4/translation.html#configuration
+For more information: https://symfony.com/doc/5.4/translation.html#configuration
 
 .. configuration-block::
 
@@ -159,6 +158,5 @@ provided admin functionality for the admin bundle yet. Fortunately, you'll
 learn how to do this in the :doc:`next chapter <creating_an_admin>`.
 
 .. _`installation chapter`: https://getcomposer.org/doc/00-intro.md
-.. _SonataDoctrineORMAdminBundle: https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle/en/3.x/
-.. _SonataDoctrineMongoDBAdminBundle: https://docs.sonata-project.org/projects/SonataDoctrineMongoDBAdminBundle/en/3.x/
-.. _SonataDoctrinePhpcrAdminBundle: https://docs.sonata-project.org/projects/SonataDoctrinePhpcrAdminBundle/en/2.x/
+.. _SonataDoctrineORMAdminBundle: https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle/en/4.x/
+.. _SonataDoctrineMongoDBAdminBundle: https://docs.sonata-project.org/projects/SonataDoctrineMongoDBAdminBundle/en/4.x/

@@ -47,12 +47,12 @@ This is currently limited to scalar types (text, integer, url...) and choice typ
     In ``FieldDescriptionInterface::TYPE_TIME`` and ``FieldDescriptionInterface::TYPE_DATETIME`` field types, ``timezone`` syntax must match twig's
     ``date`` filter specification, available at: `https://twig.symfony.com/doc/2.x/filters/date.html <https://twig.symfony.com/doc/2.x/filters/date.html>`_
     and php timezone list: `https://www.php.net/manual/en/timezones.php <https://www.php.net/manual/en/timezones.php>`_
-    You can use in lists what `view-timezone <https://symfony.com/doc/4.4/reference/forms/types/datetime.html#view-timezone>`_ allows on forms,
+    You can use in lists what `view-timezone <https://symfony.com/doc/5.4/reference/forms/types/datetime.html#view-timezone>`_ allows on forms,
     a way to render the date in the user timezone::
 
-        protected function configureListFields(ListMapper $listMapper): void
+        protected function configureListFields(ListMapper $list): void
         {
-            $listMapper
+            $list
 
                 // store date in UTC but display is in the user timezone
                 ->add('date', null, [
@@ -94,9 +94,9 @@ Option                                  Description
 
 .. code-block:: php
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('options', FieldDescriptionInterface::TYPE_ARRAY, [
                 'inline' => true,
                 'display' => 'both',
@@ -121,9 +121,9 @@ Option                                  Description
 
 .. code-block:: php
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('invalid', FieldDescriptionInterface::TYPE_BOOLEAN, [
                 'editable' => true,
                 'inverse'  => true,
@@ -156,10 +156,10 @@ Option                                  Description
 
 .. code-block:: php
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $list)
     {
         // For the value `prog`, the displayed text is `In progress`. The `App` catalogue will be used to translate `In progress` message.
-        $listMapper
+        $list
             ->add('status', FieldDescriptionInterface::TYPE_CHOICE, [
                 'choices' => [
                     'prep' => 'Prepared',
@@ -173,10 +173,10 @@ Option                                  Description
 
 The ``FieldDescriptionInterface::TYPE_CHOICE`` field type also supports multiple values that can be separated by a ``delimiter``::
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
         // For the value `['r', 'b']`, the displayed text ist `red | blue`.
-        $listMapper
+        $list
             ->add('colors', FieldDescriptionInterface::TYPE_CHOICE, [
                 'multiple' => true,
                 'delimiter' => ' | ',
@@ -214,9 +214,9 @@ Option                                  Description
 
 .. code-block:: php
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             // Output for value `http://example.com`:
             // `<a href="http://example.com">http://example.com</a>`
             ->add('targetUrl', FieldDescriptionInterface::TYPE_URL)
@@ -284,9 +284,9 @@ Option                      Description
 
 .. code-block:: php
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
 
             // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
             // `<p><strong>Creating a Template for the Field</strong> and form</p>` (no escaping is done)
@@ -355,7 +355,7 @@ section matching your model manager. The example below uses
         templates:
             types:
                 show: # or "list"
-                    dump: 'fieldtypes/show_dump.html.twig'
+                    dump: 'field_types/show_dump.html.twig'
 
 Now add a twig file to your ``templates/`` directory. The example below
 uses ``@SonataAdmin/CRUD/base_show_field.html.twig`` to provide the row
@@ -365,7 +365,7 @@ rewrite the contents of the field content cell in this row.
 
 .. code-block:: html+twig
 
-    {# templates/fieldtypes/show_dump.html.twig #}
+    {# templates/field_types/show_dump.html.twig #}
 
     {% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
 
@@ -376,3 +376,11 @@ rewrite the contents of the field content cell in this row.
 Take a look at the default templates in
 ``@SonataAdmin/Resources/views/CRUD`` to get an idea of the
 possibilities when writing field templates.
+
+You can now use it in your admin::
+
+    protected function configureShowFields(ShowMapper $show): void
+    {
+        $show
+            ->add('foo', 'dump');
+    }

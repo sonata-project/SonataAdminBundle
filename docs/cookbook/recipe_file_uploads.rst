@@ -160,9 +160,9 @@ Both of these are straightforward when you know what to do::
 
     final class ImageAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper): void
+        protected function configureFormFields(FormMapper $form): void
         {
-            $formMapper
+            $form
                 ->add('file', FileType::class, [
                     'required' => false
                 ])
@@ -219,9 +219,9 @@ looks like this::
 
     final class PostAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper): void
+        protected function configureFormFields(FormMapper $form): void
         {
-            $formMapper
+            $form
                 ->add('linkedImage1', AdminType::class, [
                     'delete' => false,
                 ])
@@ -304,4 +304,4 @@ happening.
 
 To learn how to add an image preview to your ``ImageAdmin`` take a look at the related cookbook entry.
 
-.. _`uploading files with Doctrine and Symfony`: https://symfony.com/doc/4.4/controller/upload_file.html
+.. _`uploading files with Doctrine and Symfony`: https://symfony.com/doc/5.4/controller/upload_file.html

@@ -24,7 +24,7 @@ User Entity
 ^^^^^^^^^^^
 
 This represents your security user, you can read more about it
-`here <https://symfony.com/doc/4.4/security.html#a-create-your-user-class>`__::
+`here <https://symfony.com/doc/5.4/security.html#a-create-your-user-class>`__::
 
     namespace App\Entity;
 
@@ -63,7 +63,7 @@ UserProvider
 ^^^^^^^^^^^^
 
 This represents your user provider, it will be used to load your security users, read
-more about it `here <https://symfony.com/doc/4.4/security.html#b-the-user-provider>`__::
+more about it `here <https://symfony.com/doc/5.4/security.html#b-the-user-provider>`__::
 
     namespace App\Security;
 
@@ -154,7 +154,7 @@ AdminLoginAuthenticator
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 This represents your custom authentication system, read
-more about it `here <https://symfony.com/doc/4.4/security/guard_authentication.html#step-2-create-the-authenticator-class>`__::
+more about it `here <https://symfony.com/doc/5.4/security/guard_authentication.html#step-2-create-the-authenticator-class>`__::
 
     namespace App\Security;
 

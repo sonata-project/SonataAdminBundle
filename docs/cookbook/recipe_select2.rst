@@ -34,9 +34,9 @@ set data attribute ``data-sonata-select2 = "false"`` to this form element::
 
     use Sonata\AdminBundle\Form\Type\ModelType;
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('category', ModelType::class, [
                 'attr' => [
                     'data-sonata-select2' => 'false'
@@ -58,9 +58,9 @@ to enable ``allowClear`` or ``data-sonata-select2-allow-clear = "false"`` to dis
 
     use Sonata\AdminBundle\Form\Type\ModelType;
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('category', ModelType::class, [
                 'attr' => [
                     'data-sonata-select2-allow-clear' => 'false'
@@ -81,9 +81,9 @@ To control the minimum amount of results that are required before the select is 
 
     use Sonata\AdminBundle\Form\Type\ModelType;
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('category', ModelType::class, [
                 'attr' => [
                     'data-sonata-select2-minimumResultsForSearch' => '10',

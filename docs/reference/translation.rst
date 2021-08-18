@@ -78,7 +78,7 @@ Setting the translation domain on an individual field::
 
     use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
-    $formMapper
+    $form
         ->with('form.my_group')
             ->add('publishable', CheckboxType::class, [], [
                 'translation_domain' => 'MyTranslationDomain',
@@ -92,7 +92,7 @@ over-rides that setting for one of the fields::
     use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
     use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-    $formMapper
+    $form
         ->with('form.my_group', ['translation_domain' => 'MyDomain'])
             ->add('publishable', CheckboxType::class, [], [
                 'translation_domain' => 'AnotherDomain',
@@ -114,9 +114,9 @@ label can be defined as the third argument of the ``add`` method::
 
     final class PageAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper): void
+        protected function configureFormFields(FormMapper $form): void
         {
-            $formMapper
+            $form
                 ->add('isValid', null, [
                     'required' => false,
                     'label' => 'label.is_valid',

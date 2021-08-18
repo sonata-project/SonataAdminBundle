@@ -247,17 +247,17 @@ So we are going to start by creating this ``UserBundle\Admin\UserHasExpectations
 
     final class UserHasExpectationsAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper): void
+        protected function configureFormFields(FormMapper $form): void
         {
-            $formMapper
+            $form
                 ->add('expectation', 'sonata_type_model', ['required' => false])
                 ->add('position', 'hidden')
             ;
         }
 
-        protected function configureListFields(ListMapper $listMapper): void
+        protected function configureListFields(ListMapper $list): void
         {
-            $listMapper
+            $list
                 ->add('expectation')
                 ->add('user')
                 ->add('position')
@@ -278,9 +278,9 @@ So we are going to start by creating this ``UserBundle\Admin\UserHasExpectations
 
 Now update the ``UserBundle\Admin\UserAdmin.php`` by adding the ``sonata_type_model`` field::
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('userHasExpectations', 'sonata_type_model', [
                 'label'        => 'User\'s expectations',
                 'query'        => $this->modelManager->createQuery('UserBundle\Entity\Expectation'),
@@ -291,14 +291,14 @@ Now update the ``UserBundle\Admin\UserAdmin.php`` by adding the ``sonata_type_mo
             ])
         ;
 
-        $formMapper
+        $form
             ->get('userHasExpectations')
             ->addModelTransformer(new ExpectationDataTransformer($this->getSubject(), $this->modelManager));
     }
 
 There is two important things that we need to show here :
 * We use the field ``userHasExpectations`` of the user, but we need a list of ``Expectation`` to be displayed, that's explain the use of ``query``.
-* We want to persist ``UserHasExpectations``Entities, but we manage ``Expectation``, so we need to use a custom `ModelTransformer <https://symfony.com/doc/4.4/form/data_transformers.html>`_ to deal with it.
+* We want to persist ``UserHasExpectations``Entities, but we manage ``Expectation``, so we need to use a custom `ModelTransformer <https://symfony.com/doc/5.4/form/data_transformers.html>`_ to deal with it.
 
 Part 4 : Data Transformer
 ^^^^^^^^^^^^^^^^^^^^^^^^^

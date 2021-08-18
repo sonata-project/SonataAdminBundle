@@ -236,19 +236,19 @@ take into account these new subclasses::
 
     // src/Admin/PersonAdmin.php
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
         $subject = $this->getSubject();
 
-        $formMapper
+        $form
             ->add('name')
         ;
 
         if ($subject instanceof Teacher) {
-            $formMapper->add('course', 'text');
+            $form->add('course', 'text');
         }
         elseif ($subject instanceof Student) {
-            $formMapper->add('year', 'integer');
+            $form->add('year', 'integer');
         }
     }
 
@@ -470,5 +470,3 @@ adding the following in the configuration:
 
         sonata_admin:
             default_controller: App\Controller\DefaultCRUDController
-
-.. _`Core's documentation`: https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle/en/3.x/reference/form_types.html#sonata-type-translatable-choice
