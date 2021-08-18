@@ -48,12 +48,7 @@ Form Group Descriptions
 
 A form group description is a block of text rendered below the group title.
 These can be used to describe a section of a form. The text is not escaped,
-so HTML can be used.
-
-Example
-^^^^^^^
-
-.. code-block:: php
+so HTML can be used::
 
     // src/Admin/PostAdmin.php
 

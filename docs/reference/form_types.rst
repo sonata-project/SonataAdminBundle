@@ -680,7 +680,7 @@ This bundle handle the native Symfony ``collection`` form type by adding:
 .. _form_types_fielddescription_options:
 
 FieldDescription options
-^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------
 
 The fourth parameter to FormMapper::add() allows you to pass in ``FieldDescription``
 options as an array. The most useful of these is ``admin_code``, which allows you to
@@ -717,7 +717,8 @@ Other specific field configuration options are detailed in the related
 abstraction layer documentation.
 
 Adding a FormBuilderInterface
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------------
+
 You can add Symfony ``FormBuilderInterface`` instances to the ``FormMapper``. This allows you to
 re-use a model form type. When adding a field using a ``FormBuilderInterface``, the type is guessed.
 

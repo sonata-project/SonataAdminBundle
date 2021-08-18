@@ -6,6 +6,11 @@ admin classes and looks for filters implementing the ``Sonata\AdminBundle\Search
 the method ``isSearchEnabled()`` returning true. If you are using ``SonataDoctrineORMBundle``, the
 ``Sonata\DoctrineORMAdminBundle\Filter\StringFilter`` filter is searchable and relies on a ``global_search`` option.
 
+.. note::
+
+    The current implementation can be expensive if you have a lot of entities
+    as the resulting query does a ``LIKE %query% OR LIKE %query%``...
+
 Disabling the search by admin
 -----------------------------
 
@@ -25,6 +30,9 @@ to ``false`` at your admin definition using the tag ``sonata.admin``.
 
 Customization
 -------------
+
+Configure the search templates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The main action is using the template ``@SonataAdmin/Core/search.html.twig``. And each search is handled by a
 ``block``, the template for the block is ``@SonataAdmin/Block/block_search_result.html.twig``.
@@ -73,8 +81,8 @@ You can also configure the block template per admin while defining the admin:
               </call>
           </service>
 
-Configure the default search result action
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Configure the default search result actions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In general the search result generates a link to the edit action of an item or is using the show action, if the edit
 route is disabled or you haven't the required permission. You can change this behavior by overriding the
@@ -88,14 +96,6 @@ permissions exists. If no route is found, the item will be displayed as a text::
         protected $searchResultActions = ['edit', 'show'];
     }
 
-Performance
------------
-
-The current implementation can be expensive if you have a lot of entities as the resulting query does a ``LIKE %query% OR LIKE %query%``...
-
-.. note::
-
-    There is a work in progress to use an async JavaScript solution to better load data from the database.
 
 Customize visibility of empty result boxes
 ------------------------------------------

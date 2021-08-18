@@ -157,7 +157,7 @@ So, what does this code do?
 This is the most basic example of the Admin class. You can configure a lot more
 with the Admin class. This will be covered by other, more advanced, articles.
 
-Step 3: Register the Admin class
+Step 2: Register the Admin class
 --------------------------------
 
 You've now created an Admin class, but there is currently no way for the
@@ -184,7 +184,7 @@ provides a compiler pass which takes care of configuring it correctly for you.
 You can often tweak things using tag attributes. The code shown here is the
 shortest code needed to get it working.
 
-Step 4: Register SonataAdmin custom Routes
+Step 3: Register SonataAdmin custom Routes
 ------------------------------------------
 
 SonataAdminBundle generates routes for the Admin classes on the fly. To load these

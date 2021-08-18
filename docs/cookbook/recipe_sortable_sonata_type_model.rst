@@ -18,8 +18,6 @@ User got some expectations, but some are more relevant than the others.
 Pre-requisites
 --------------
 
-Configuration
-^^^^^^^^^^^^^
 - you already have SonataAdmin and DoctrineORM up and running.
 - you already have a ``UserBundle``.
 - you already have ``User`` and ``Expectation`` Entities classes.

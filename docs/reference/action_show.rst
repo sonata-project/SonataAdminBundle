@@ -13,7 +13,7 @@ Basic configuration
     * targeting submodel fields using dot-separated notation
 
 Routes
-^^^^^^
+------
 
 You can disable showing entities by removing the corresponding routes in your Admin.
 For more detailed information about routes, see :doc:`routing`::
@@ -30,7 +30,7 @@ For more detailed information about routes, see :doc:`routing`::
     }
 
 Group options
-^^^^^^^^^^^^^
+-------------
 
 When adding a group to your show page, you may specify some options for the group itself.
 
@@ -41,8 +41,9 @@ When adding a group to your show page, you may specify some options for the grou
   you know what you're doing).
 - ``box_class``: the class for your group box in the admin; by default,
   the value is set to ``box box-primary``.
-- ``description``: to complete
-- ``translation_domain``: to complete
+- ``description``: A text shown at the top of the show group.
+- ``translation_domain``: The translation domain for the show group title
+  (the Admin translation domain is used by default).
 
 To specify options, do as follow::
 

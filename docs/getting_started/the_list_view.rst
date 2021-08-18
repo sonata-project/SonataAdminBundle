@@ -15,6 +15,9 @@ rows instead.
 Configuring the List Mapper
 ---------------------------
 
+Defining Field(s)
+^^^^^^^^^^^^^^^^^
+
 Fixing the above problem is not that complex: Add the fields you want to show
 on the list page to the list view::
 
@@ -108,6 +111,9 @@ category::
 Adding Filter/Search Options
 ----------------------------
 
+Basic filters
+^^^^^^^^^^^^^
+
 Assume you had a very successful blog site containing many blog posts. After a
 while, finding the blog post you wanted to edit would be like finding a needle
 in a haystack. As with all user experience problems, Sonata provides a solution
@@ -139,22 +145,17 @@ Filtering by Category
 ^^^^^^^^^^^^^^^^^^^^^
 
 Filtering by another model's properties is a little bit more difficult. The add
-field has 5 arguments::
+field has 4 arguments::
 
     public function add(
-        $name,
-
-        // filter
-        $type = null,
+        string $name,
+        ?string $type = null,
         array $filterOptions = [],
-
-        // field
-        $fieldType = null,
-        $fieldOptions = null
+        array $fieldDescriptionOptions = []
     )
 
-As you can see, you can both customize the type used to filter and the type
-used to display the search field. You can rely on the type guessing mechanism
+You can both customize the type used to filter and the type used to display the search
+field with the `$filterOptions` argument. You can rely on the type guessing mechanism
 of Sonata to pick the correct field types. However, you still need to configure
 the search field to use the ``name`` property of the Category::
 
