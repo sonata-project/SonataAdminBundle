@@ -13,7 +13,7 @@ Basic configuration
     * targeting submodel fields using dot-separated notation
 
 Routes
-~~~~~~
+^^^^^^
 
 You can disable showing entities by removing the corresponding routes in your Admin.
 For more detailed information about routes, see :doc:`routing`::
@@ -30,7 +30,7 @@ For more detailed information about routes, see :doc:`routing`::
     }
 
 Group options
-~~~~~~~~~~~~~
+^^^^^^^^^^^^^
 
 When adding a group to your show page, you may specify some options for the group itself.
 
@@ -147,7 +147,7 @@ The following is a working example of a ShowAction::
     Setting this option to ``false`` will make the label empty.
 
 Setting up a custom show template (very useful)
-===============================================
+-----------------------------------------------
 
 The first thing you need to do is define it in app/config/config/yml:
 

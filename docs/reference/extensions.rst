@@ -28,7 +28,7 @@ created objects and other admin features::
     }
 
 Configuration
-~~~~~~~~~~~~~
+^^^^^^^^^^^^^
 
 There are two ways to configure your extensions and connect them to an admin.
 

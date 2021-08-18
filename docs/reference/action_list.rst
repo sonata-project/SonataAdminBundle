@@ -34,7 +34,7 @@ SonataAdmin Options that may affect the list view:
     * targeting submodel fields using dot-separated notation
 
 Routes
-~~~~~~
+^^^^^^
 
 You can disable listing entities by removing the corresponding routes in your Admin.
 For more detailed information about routes, see :doc:`routing`::
@@ -802,5 +802,5 @@ Combine this with configuring a custom template and you'll have a list column fu
         ]);
     }
 
-.. _`SonataDoctrineORMAdminBundle Documentation`: https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle/en/4.x/reference/list_field_definition
+.. _`SonataDoctrineORMAdminBundle Documentation`: https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle/en/4.x/reference/list_field_definition/
 .. _`here`: https://github.com/sonata-project/form-extensions/tree/1.x/src/Type

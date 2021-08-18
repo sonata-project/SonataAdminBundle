@@ -14,7 +14,7 @@ Basic configuration
     * a note about lifecycle events triggered by delete?
 
 Routes
-~~~~~~
+^^^^^^
 
 You can disable deleting entities by removing the corresponding routes in your Admin.
 For more detailed information about routes, see :doc:`routing`::

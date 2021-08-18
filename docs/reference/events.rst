@@ -4,7 +4,7 @@ Events
 An event mechanism is available to add an extra entry point to extend an Admin instance.
 
 ConfigureEvent
-~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^
 
 This event is generated when a form, list, show, datagrid is configured. The event names are:
 
@@ -14,7 +14,7 @@ This event is generated when a form, list, show, datagrid is configured. The eve
 - ``sonata.admin.event.configure.show``
 
 PersistenceEvent
-~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^
 
 This event is generated when a persistency layer update, save or delete an object. The event names are:
 
@@ -26,12 +26,12 @@ This event is generated when a persistency layer update, save or delete an objec
 - ``sonata.admin.event.persistence.post_remove``
 
 ConfigureQueryEvent
-~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^
 
 This event is generated when a list query is defined. The event name is: ``sonata.admin.event.configure.query``
 
 BlockEvent
-~~~~~~~~~~
+^^^^^^^^^^
 
 Block events help you customize your templates. Available events are :
 
