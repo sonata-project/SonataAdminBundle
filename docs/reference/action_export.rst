@@ -64,6 +64,7 @@ method in your admin class::
 
 Customizing the query used to fetch the results
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 If you want to customize the query used to fetch the results for a specific admin,
 you can override the ``DataSourceInterface`` class::
 
@@ -77,10 +78,4 @@ you can override the ``DataSourceInterface`` class::
 
 And then you can override the datasource set to the admin class.
 
-.. note::
-
-    **TODO**:
-    * customising the templates used to render the output
-    * publish the exporter documentation on the project's website and update the link
-
-.. _`the exporter bundle documentation`: https://github.com/sonata-project/exporter/blob/2.x/docs/reference/symfony.rst
+.. _`the exporter bundle documentation`: https://docs.sonata-project.org/projects/sonata-project-exporter/en/2.x/

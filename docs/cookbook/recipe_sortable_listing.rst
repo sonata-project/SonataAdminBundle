@@ -6,7 +6,7 @@ This is a full working example of how to implement a sortable feature in your So
 Background
 ----------
 
-A sortable behavior is already available for one-to-many relationships (https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle/en/3.x/reference/form_field_definition/#advanced-usage-one-to-many).
+A sortable behavior is already available for one-to-many relationships (https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle/en/4.x/reference/form_field_definition/#advanced-usage-one-to-many).
 However there is no packaged solution to have some up and down arrows to sort
 your records such as showed in the following screen
 
@@ -72,7 +72,7 @@ feature in your configuration such as
 In our ``ClientAdmin`` we are going to add a custom action in the ``configureListFields`` method
 and use the default twig template provided in the ``pixSortableBehaviorBundle``::
 
-    $listMapper
+    $list
         ->add(ListMapper::NAME_ACTIONS, null, [
             'actions' => [
                 'move' => [
@@ -135,9 +135,9 @@ Now we need to define the sort by field to be ``$position``::
             $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
         }
 
-        protected function configureListFields(ListMapper $listMapper): void
+        protected function configureListFields(ListMapper $list): void
         {
-            $listMapper
+            $list
                 ->addIdentifier('name')
                 ->add('enabled')
                 ->add(ListMapper::NAME_ACTIONS, null, [

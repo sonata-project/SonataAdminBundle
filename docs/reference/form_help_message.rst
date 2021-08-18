@@ -17,9 +17,9 @@ Example
 
     final class PostAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper): void
+        protected function configureFormFields(FormMapper $form): void
         {
-            $formMapper
+            $form
                 ->with('General')
                     ->add('title', null, [
                         'help' => 'Set the title of a web page'
@@ -59,9 +59,9 @@ Example
 
     final class PostAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper): void
+        protected function configureFormFields(FormMapper $form): void
         {
-            $formMapper
+            $form
                 ->with('General', [
                     'description' => 'This section contains general settings for the web page'
                 ])
@@ -76,4 +76,4 @@ Example
         }
     }
 
-.. _`Symfony 'help' option`: https://symfony.com/doc/4.4/reference/forms/types/form.html#help
+.. _`Symfony 'help' option`: https://symfony.com/doc/5.4/reference/forms/types/form.html#help

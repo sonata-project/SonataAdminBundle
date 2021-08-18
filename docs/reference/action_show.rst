@@ -39,9 +39,9 @@ To specify options, do as follow::
 
     final class PersonAdmin extends AbstractAdmin
     {
-        protected function configureShowFields(ShowMapper $showMapper): void
+        protected function configureShowFields(ShowMapper $show): void
         {
-            $showMapper
+            $show
                 ->tab('General') // the tab call is optional
                     ->with('Addresses', [
                         'class'       => 'col-md-8',
@@ -65,21 +65,21 @@ Here is an example of how to achieve this::
 
     final class PersonAdmin extends ParentAdmin
     {
-        protected function configureShowFields(ShowMapper $showMapper): void
+        protected function configureShowFields(ShowMapper $show): void
         {
-            parent::configureShowFields($showMapper);
+            parent::configureShowFields($show);
 
             // remove one field
-            $showMapper->remove('field_to_remove');
+            $show->remove('field_to_remove');
 
             // remove a group from the "default" tab
-            $showMapper->removeGroup('GroupToRemove1');
+            $show->removeGroup('GroupToRemove1');
 
             // remove a group from a specific tab
-            $showMapper->removeGroup('GroupToRemove2', 'Tab2');
+            $show->removeGroup('GroupToRemove2', 'Tab2');
 
             // remove a group from a specific tab and also remove the tab if it ends up being empty
-            $showMapper->removeGroup('GroupToRemove3', 'Tab3', true);
+            $show->removeGroup('GroupToRemove3', 'Tab3', true);
         }
     }
 
@@ -101,11 +101,11 @@ The following is a working example of a ShowAction::
 
     final class ClientAdmin extends AbstractAdmin
     {
-        protected function configureShowFields(ShowMapper $showMapper): void
+        protected function configureShowFields(ShowMapper $show): void
         {
             // here we set the fields of the ShowMapper variable,
-            // $showMapper (but this can be called anything)
-            $showMapper
+            // $show (but this can be called anything)
+            $show
 
                  // The default option is to display the value
                  // as text (for boolean this will be 1 or 0)
@@ -128,7 +128,7 @@ The following is a working example of a ShowAction::
 
     To customize the displayed label of a show field you can use the ``label`` option::
 
-        $showMapper->add('name', null, ['label' => 'UserName']);
+        $show->add('name', null, ['label' => 'UserName']);
 
     Setting this option to ``false`` will make the label empty.
 

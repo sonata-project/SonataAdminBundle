@@ -789,5 +789,5 @@ return an iterable collection of roles::
 
 
 .. _`SonataUserBundle's documentation area`: https://docs.sonata-project.org/projects/SonataUserBundle/en/4.x/reference/installation/
-.. _`changing the access decision strategy`: https://symfony.com/doc/4.4/security/voters.html#changing-the-access-decision-strategy
-.. _`create your own voter`: https://symfony.com/doc/4.4/security/voters.html
+.. _`changing the access decision strategy`: https://symfony.com/doc/5.4/security/voters.html#changing-the-access-decision-strategy
+.. _`create your own voter`: https://symfony.com/doc/5.4/security/voters.html

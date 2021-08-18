@@ -187,9 +187,9 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
     final class PostAdmin extends AbstractAdmin
     {
         // Fields to be shown on create/edit forms
-        protected function configureFormFields(FormMapper $formMapper): void
+        protected function configureFormFields(FormMapper $form): void
         {
-            $formMapper
+            $form
                 ->add('title', TextType:class, [
                     'label' => 'Post Title'
                 ])
@@ -217,9 +217,9 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
         }
 
         // Fields to be shown on filter forms
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+        protected function configureDatagridFilters(DatagridMapper $datagrid): void
         {
-            $datagridMapper
+            $datagrid
                 ->add('title')
                 ->add('author')
                 ->add('privateNotes', null, [], [
@@ -229,9 +229,9 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
         }
 
         // Fields to be shown on lists
-        protected function configureListFields(ListMapper $listMapper): void
+        protected function configureListFields(ListMapper $list): void
         {
-            $listMapper
+            $list
                 ->addIdentifier('title')
                 ->add('slug')
                 ->add('author')
@@ -242,9 +242,9 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
         }
 
         // Fields to be shown on show action
-        protected function configureShowFields(ShowMapper $showMapper): void
+        protected function configureShowFields(ShowMapper $show): void
         {
-            $showMapper
+            $show
                 ->add('id')
                 ->add('title')
                 ->add('slug')

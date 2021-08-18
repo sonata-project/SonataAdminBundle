@@ -1,12 +1,11 @@
 Admin Bundle
 ============
 
-**SonataAdminBundle is split into 4 bundles:**
+**SonataAdminBundle is split into 3 bundles:**
 
 * `SonataAdminBundle <https://github.com/sonata-project/SonataAdminBundle>`_: contains core libraries and services
 * `SonataDoctrineORMAdminBundle <https://github.com/sonata-project/SonataDoctrineORMAdminBundle>`_: integrates Doctrine ORM project with the admin bundle
 * `SonataDoctrineMongoDBAdminBundle <https://github.com/sonata-project/SonataDoctrineMongoDBAdminBundle>`_: integrates MongoDB with the admin bundle
-* `SonataDoctrinePhpcrAdminBundle <https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle>`_: integrates PHPCR with the admin bundle
 
 The demo website can be found at https://demo.sonata-project.org.
 
@@ -27,6 +26,7 @@ The demo website can be found at https://demo.sonata-project.org.
     getting_started/creating_an_admin
     getting_started/the_form_view
     getting_started/the_list_view
+    getting_started/the_show_view
 
 .. toctree::
    :caption: Reference Guide

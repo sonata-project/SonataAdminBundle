@@ -24,9 +24,9 @@ on the list page to the list view::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureListFields(ListMapper $listMapper): void
+        protected function configureListFields(ListMapper $list): void
         {
-            $listMapper
+            $list
                 ->add('title')
                 ->add('draft')
             ;
@@ -63,9 +63,9 @@ instead of ``ListMapper#add()``::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureListFields(ListMapper $listMapper): void
+        protected function configureListFields(ListMapper $list): void
         {
-            $listMapper
+            $list
                 ->addIdentifier('title')
                 ->add('draft')
             ;
@@ -95,9 +95,9 @@ category::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureListFields(ListMapper $listMapper): void
+        protected function configureListFields(ListMapper $list): void
         {
-            $listMapper
+            $list
                 ->addIdentifier('title')
                 ->add('category.name')
                 ->add('draft')
@@ -126,9 +126,9 @@ would do something like::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+        protected function configureDatagridFilters(DatagridMapper $datagrid): void
         {
-            $datagridMapper->add('title');
+            $datagrid->add('title');
         }
     }
 
@@ -168,9 +168,9 @@ the search field to use the ``name`` property of the Category::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+        protected function configureDatagridFilters(DatagridMapper $datagrid): void
         {
-            $datagridMapper
+            $datagrid
                 ->add('title')
                 ->add('category', null, [
                     'field_type' => EntityType::class,
@@ -198,11 +198,5 @@ This time, you've learned how to find posts to edit. You've learned how to
 create a nice list view and how to add options to search, order and filter
 this list.
 
-There might have been some very difficult things, but imagine the difficulty
-writing everything yourself! As you're now already quite good with the basics,
-you can start reading other articles in the documentation, like:
-
-* :doc:`Customizing the Dashboard <../reference/dashboard>`
-* :doc:`Configuring the Security system <../reference/security>`
-* :doc:`Adding export functionality <../reference/action_export>`
-* :doc:`Adding a preview page <../reference/preview_mode>`
+In the :doc:`next chapter <the_show_view>`, you're going to look at the show
+action.

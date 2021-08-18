@@ -121,19 +121,24 @@ easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin`
 
     final class CategoryAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper): void
+        protected function configureFormFields(FormMapper $form): void
         {
-            $formMapper->add('name', TextType::class);
+            $form->add('name', TextType::class);
         }
 
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+        protected function configureDatagridFilters(DatagridMapper $datagrid): void
         {
-            $datagridMapper->add('name');
+            $datagrid->add('name');
         }
 
-        protected function configureListFields(ListMapper $listMapper): void
+        protected function configureListFields(ListMapper $list): void
         {
-            $listMapper->addIdentifier('name');
+            $list->addIdentifier('name');
+        }
+
+        protected function configureShowFields(ShowMapper $show): void
+        {
+            $show->add('name');
         }
     }
 
@@ -144,9 +149,10 @@ So, what does this code do?
   of the Symfony Form component;
 * **configureDatagridFilters()**: This method configures the filters, used to filter and sort
   the list of models;
-* **configureListFields()**: Here you specify which fields are shown when all models are
+* **configureListFields()**: This method configures which fields are shown when all models are
   listed (the ``addIdentifier()`` method means that this field will link to the
-  show/edit page of this particular model).
+  show/edit page of this particular model);
+* **configureShowFields()**: This method configures which fields are displayed on the show action.
 
 This is the most basic example of the Admin class. You can configure a lot more
 with the Admin class. This will be covered by other, more advanced, articles.
@@ -217,6 +223,6 @@ entity and learn more about this class.
     If you're not seeing the nice labels, but instead something like
     "link_add", you should make sure that you've `enabled the translator`_.
 
-.. _`enabled the translator`: https://symfony.com/doc/4.4/translation.html#configuration
+.. _`enabled the translator`: https://symfony.com/doc/5.4/translation.html#configuration
 
 In the :doc:`next chapter <the_form_view>`, you're going to look at the form view.
