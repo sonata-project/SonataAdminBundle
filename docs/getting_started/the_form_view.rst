@@ -115,7 +115,7 @@ When an admin would like to create a new category, they need to go to the
 category admin page and create a new category.
 
 Using the Sonata Model Type
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To make life easier for admins, you can use the
 :ref:`ModelType field <field-types-model>`. This field type will
@@ -201,7 +201,7 @@ This will now result in a much nicer edit page:
    :width: 700px
 
 Using Tabs
-~~~~~~~~~~
+^^^^^^^^^^
 
 If you get even more options, you can also use multiple tabs by using the
 ``tab()`` shortcut method::

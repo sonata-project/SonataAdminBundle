@@ -50,7 +50,7 @@ There seem to be nothing that looks like a link. That's correct, you need to
 tell Sonata which field(s) you want to use as a link.
 
 Defining the Identifier Field(s)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The fields which contain a link to the edit pages are called identifier fields.
 It makes sense to make the title field link to the edit page, so you can add it
@@ -76,7 +76,7 @@ When saving this, you can now see that the title field has the link you were
 looking for.
 
 Displaying Other Models
-~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^
 
 Now you probably also want the Category to be included in the list. To do that,
 you need to reference it. You can't add the ``category`` field to the list
@@ -136,7 +136,7 @@ This will add a little block to the left of the block showing a search input
 for the title field.
 
 Filtering by Category
-~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^
 
 Filtering by another model's properties is a little bit more difficult. The add
 field has 5 arguments::

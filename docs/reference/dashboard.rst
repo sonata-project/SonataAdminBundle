@@ -298,7 +298,7 @@ of them containing the respectively configured groups.
 .. _`SonataBlock documentation page`: https://docs.sonata-project.org/projects/SonataBlockBundle/en/3.x/
 
 Statistic Block
-~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^
 
 A statistic block can be used to display a simple counter with a color, an font awesome icon and a text. A
 counter is related to the filters from one admin
@@ -348,7 +348,7 @@ which could also have a pluralized translation target:
     </trans-unit>
 
 Preview Block
-~~~~~~~~~~~~~
+^^^^^^^^^^^^^
 
 A preview block can be used to display a brief of an admin list.
 
@@ -375,7 +375,7 @@ A preview block can be used to display a brief of an admin list.
                                 _sort_order: DESC
 
 Dashboard Layout
-~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^
 
 Supported positions right now are the following:
 

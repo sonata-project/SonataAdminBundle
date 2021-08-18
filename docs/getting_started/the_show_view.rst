@@ -2,7 +2,7 @@ The Show View
 =============
 
 Now your admin allows you to create, edit and list blog posts and categories.
-But what if you just want to have a detailed view of one blog ? This chapter
+But what if you just want to have a detailed view of one blog? This chapter
 will tead you how to use the show view.
 
 If you're still on http://localhost:8000/admin/app/blogpost/list, you'll see a
