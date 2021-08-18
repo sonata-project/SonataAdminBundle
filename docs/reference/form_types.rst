@@ -778,7 +778,9 @@ Types options
 General
 ^^^^^^^
 
-- ``label``: You can set the ``label`` option to ``false`` if you don't want to show it::
+You can use any of the `Symfony form options`_ to customize the form fields. For instance
+
+- You can set the ``label`` option to ``false`` if you don't want to show it::
 
     // src/Admin/PageAdmin.php
 
@@ -796,6 +798,31 @@ General
             ;
         }
     }
+
+- You can use the ``help`` option to add messages that are rendered together with form fields::
+
+    // src/Admin/PostAdmin.php
+
+    final class PostAdmin extends AbstractAdmin
+    {
+        protected function configureFormFields(FormMapper $form): void
+        {
+            $form
+                ->with('General')
+                    ->add('title', null, [
+                        'help' => 'Set the title of a web page'
+                    ])
+                    ->add('keywords', null, [
+                        'help' => 'Set the keywords of a web page'
+                    ])
+                ->end()
+            ;
+        }
+    }
+
+.. figure:: ../images/help_message.png
+   :align: center
+   :alt: Example of the two form fields with help messages.
 
 Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -826,3 +853,4 @@ Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType
 .. _`Symfony PropertyPath`: https://github.com/symfony/property-access/blob/5.4/PropertyPath.php
 .. _`ORM`: https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle/en/4.x/reference/form_field_definition/
 .. _`MongoDB`: https://docs.sonata-project.org/projects/SonataDoctrineMongoDBAdminBundle/en/4.x/reference/form_field_definition/
+.. _`Symfony form options`: https://symfony.com/doc/5.4/reference/forms/types/form.html
