@@ -34,7 +34,7 @@ SonataAdmin Options that may affect the list view:
     * targeting submodel fields using dot-separated notation
 
 Routes
-^^^^^^
+------
 
 You can disable listing entities by removing the corresponding routes in your Admin.
 For more detailed information about routes, see :doc:`routing`::
@@ -316,9 +316,6 @@ You can customize the list query thanks to the ``configureQuery`` method::
 
 Customizing the sort order
 --------------------------
-
-Configure the default ordering in the list view
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Configuring the default ordering column can be achieved by overriding the
 ``configureDefaultSortValues()`` method. All three keys ``DatagridInterface::PAGE``,

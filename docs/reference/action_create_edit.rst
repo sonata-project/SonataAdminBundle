@@ -41,7 +41,7 @@ For more information about optional libraries:
     * targeting submodel fields using dot-separated notation
 
 Routes
-^^^^^^
+------
 
 You can disable creating or editing entities by removing the corresponding routes in your Admin.
 For more detailed information about routes, see :doc:`routing`::
@@ -110,7 +110,7 @@ has 4 parameters:
     through getters/setters or public access.
 
 FormGroup options
-^^^^^^^^^^^^^^^^^
+-----------------
 
 When adding a form group to your edit/create form, you may specify some
 options for the group itself.

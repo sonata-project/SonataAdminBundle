@@ -16,7 +16,7 @@ from a lot of flexibility:
 See `the exporter bundle documentation`_ for more information.
 
 Routes
-^^^^^^
+------
 
 You can disable exporting entities by removing the corresponding routes in your Admin.
 For more detailed information about routes, see :doc:`routing`::
@@ -33,7 +33,7 @@ For more detailed information about routes, see :doc:`routing`::
     }
 
 Translation
-^^^^^^^^^^^
+-----------
 
 All field names are translated by default.
 An internal mechanism checks if a field matching the translator strategy
@@ -41,7 +41,7 @@ label exists in the current translation file and will use the field name
 as a fallback.
 
 Picking which fields to export
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------------
 
 By default, all fields are exported. More accurately, it depends on the
 persistence backend you are using, but for instance, the doctrine ORM backend
@@ -69,7 +69,7 @@ You can also tweak the list by creating an admin extension that implements the
     }
 
 Overriding the export formats for a specific admin
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------------------------------
 
 Changing the export formats can be done by defining a ``getExportFormats()``
 method in your admin class::
@@ -80,7 +80,7 @@ method in your admin class::
     }
 
 Customizing the query used to fetch the results
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------------------------------
 
 If you want to customize the query used to fetch the results for a specific admin,
 you can override the ``DataSourceInterface`` class::

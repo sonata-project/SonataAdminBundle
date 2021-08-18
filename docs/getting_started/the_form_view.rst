@@ -83,6 +83,9 @@ However, the category field will reference another model. How can you solve that
 Adding Fields that Reference Other Models
 -----------------------------------------
 
+Using the Entity Type
+^^^^^^^^^^^^^^^^^^^^^
+
 You have a couple different choices on how to add fields that reference other
 models. The most basic choice is to use the ``EntityType`` provided by
 the Doctrine Bridge. This will render a choice field with the available
@@ -142,8 +145,11 @@ dialog with the admin of the referenced model in it::
    :alt: Sonata ModelType
    :width: 700px
 
+Using Groups and Tabs
+---------------------
+
 Using Groups
-------------
+^^^^^^^^^^^^
 
 Currently, everything is put into one block. Since the form only has three
 fields, it is still usable, but it can become quite a mess pretty quick. To
