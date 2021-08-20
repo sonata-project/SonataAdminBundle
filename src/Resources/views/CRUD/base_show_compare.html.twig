@@ -14,8 +14,8 @@ file that was distributed with this source code.
 {%- block show_field -%}
     {% apply spaceless %}
         <tr class="sonata-ba-view-container history-audit-compare">
-            {% if elements[field_name] is defined %}
-                {{ elements[field_name]|render_view_element_compare(object, object_compare) }}
+            {% if elements[show_field_name] is defined %}
+                {{ elements[show_field_name]|render_view_element_compare(object, object_compare) }}
             {% endif %}
         </tr>
     {% endapply %}
