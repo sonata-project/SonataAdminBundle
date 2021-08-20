@@ -92,7 +92,7 @@ final class Configuration implements ConfigurationInterface
                                 AdminPermissionMap::PERMISSION_UNDELETE,
                                 AdminPermissionMap::PERMISSION_OPERATOR,
                                 AdminPermissionMap::PERMISSION_MASTER,
-                                AdminPermissionMap::PERMISSION_OWNER
+                                AdminPermissionMap::PERMISSION_OWNER,
                             ])
                             ->prototype('scalar')->end()
                         ->end()
