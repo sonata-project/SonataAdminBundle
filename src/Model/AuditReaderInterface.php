@@ -29,7 +29,7 @@ interface AuditReaderInterface
     public function find(string $className, $id, $revisionId): ?object;
 
     /**
-     * @return object[]
+     * @return Revision[]
      *
      * @phpstan-param class-string $className
      */
@@ -40,12 +40,12 @@ interface AuditReaderInterface
      *
      * @phpstan-param class-string $className
      */
-    public function findRevision(string $className, $revisionId): ?object;
+    public function findRevision(string $className, $revisionId): ?Revision;
 
     /**
      * @param int|string $id
      *
-     * @return object[]
+     * @return Revision[]
      *
      * @phpstan-param class-string $className
      */
