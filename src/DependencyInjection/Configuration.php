@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
+use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -62,7 +63,15 @@ final class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                         ->arrayNode('admin_permissions')
-                            ->defaultValue(['CREATE', 'LIST', 'DELETE', 'UNDELETE', 'EXPORT', 'OPERATOR', 'MASTER'])
+                            ->defaultValue([
+                                AdminPermissionMap::PERMISSION_CREATE,
+                                AdminPermissionMap::PERMISSION_LIST,
+                                AdminPermissionMap::PERMISSION_DELETE,
+                                AdminPermissionMap::PERMISSION_UNDELETE,
+                                AdminPermissionMap::PERMISSION_EXPORT,
+                                AdminPermissionMap::PERMISSION_OPERATOR,
+                                AdminPermissionMap::PERMISSION_MASTER,
+                            ])
                             ->prototype('scalar')->end()
                         ->end()
                         ->scalarNode('role_admin')
@@ -76,7 +85,15 @@ final class Configuration implements ConfigurationInterface
                             ->info('Role which will perform all admin actions, see dashboard, menu and search groups regardless of its configuration')
                         ->end()
                         ->arrayNode('object_permissions')
-                            ->defaultValue(['VIEW', 'EDIT', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER'])
+                            ->defaultValue([
+                                AdminPermissionMap::PERMISSION_VIEW,
+                                AdminPermissionMap::PERMISSION_EDIT,
+                                AdminPermissionMap::PERMISSION_DELETE,
+                                AdminPermissionMap::PERMISSION_UNDELETE,
+                                AdminPermissionMap::PERMISSION_OPERATOR,
+                                AdminPermissionMap::PERMISSION_MASTER,
+                                AdminPermissionMap::PERMISSION_OWNER,
+                            ])
                             ->prototype('scalar')->end()
                         ->end()
                         ->scalarNode('acl_user_manager')->defaultNull()->end()

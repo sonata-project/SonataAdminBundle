@@ -30,6 +30,7 @@ use Sonata\AdminBundle\Object\Metadata;
 use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
+use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Util\Instantiator;
@@ -2192,17 +2193,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final protected function getAccess(): array
     {
         $access = array_merge([
-            'acl' => 'MASTER',
-            'export' => 'EXPORT',
-            'historyCompareRevisions' => 'EDIT',
-            'historyViewRevision' => 'EDIT',
-            'history' => 'EDIT',
-            'edit' => 'EDIT',
-            'show' => 'VIEW',
-            'create' => 'CREATE',
-            'delete' => 'DELETE',
-            'batchDelete' => 'DELETE',
-            'list' => 'LIST',
+            'acl' => AdminPermissionMap::PERMISSION_MASTER,
+            'export' => AdminPermissionMap::PERMISSION_EXPORT,
+            'historyCompareRevisions' => AdminPermissionMap::PERMISSION_EDIT,
+            'historyViewRevision' => AdminPermissionMap::PERMISSION_EDIT,
+            'history' => AdminPermissionMap::PERMISSION_EDIT,
+            'edit' => AdminPermissionMap::PERMISSION_EDIT,
+            'show' => AdminPermissionMap::PERMISSION_VIEW,
+            'create' => AdminPermissionMap::PERMISSION_CREATE,
+            'delete' => AdminPermissionMap::PERMISSION_DELETE,
+            'batchDelete' => AdminPermissionMap::PERMISSION_DELETE,
+            'list' => AdminPermissionMap::PERMISSION_LIST,
         ], $this->getAccessMapping());
 
         foreach ($this->getExtensions() as $extension) {
