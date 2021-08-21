@@ -42,7 +42,7 @@ file that was distributed with this source code.
                     {% block table_header %}
                         <thead>
                             <tr class="sonata-ba-list-field-header">
-                                {% for field_description in admin.list.elements %}
+                                {% for field_description in admin.list.getElements() %}
                                     {% if field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_SELECT') %}
                                         <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
                                     {% else %}
