@@ -40,7 +40,7 @@ class FooAdmin extends AbstractAdmin
                 'sortable' => true,
             ])
             // Check for https://github.com/sonata-project/SonataAdminBundle/issues/7447
-            ->add('elements');
+            ->add('elements', FieldDescriptionInterface::TYPE_ARRAY);
     }
 
     protected function configureFormFields(FormMapper $form): void
