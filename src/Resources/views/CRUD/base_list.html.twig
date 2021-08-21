@@ -53,7 +53,7 @@ file that was distributed with this source code.
                         {% block table_header %}
                             <thead>
                                 <tr class="sonata-ba-list-field-header">
-                                    {% for field_description in admin.list.elements %}
+                                    {% for field_description in admin.list.getElements() %}
                                         {% if admin.hasRoute('batch') and field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_BATCH') and batchactions|length > 0 %}
                                             <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
                                               <input type="checkbox" id="list_batch_checkbox">
