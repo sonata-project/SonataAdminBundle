@@ -35,9 +35,12 @@ class FooAdmin extends AbstractAdmin
 
     protected function configureListFields(ListMapper $list): void
     {
-        $list->add('name', FieldDescriptionInterface::TYPE_STRING, [
-            'sortable' => true,
-        ]);
+        $list
+            ->add('name', FieldDescriptionInterface::TYPE_STRING, [
+                'sortable' => true,
+            ])
+            // Check for https://github.com/sonata-project/SonataAdminBundle/issues/7447
+            ->add('elements', FieldDescriptionInterface::TYPE_ARRAY);
     }
 
     protected function configureFormFields(FormMapper $form): void

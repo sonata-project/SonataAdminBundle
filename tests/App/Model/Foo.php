@@ -25,10 +25,19 @@ final class Foo
      */
     private $name;
 
-    public function __construct(string $id, string $name)
+    /**
+     * @var string[]
+     */
+    private $elements;
+
+    /**
+     * @param string[] $elements
+     */
+    public function __construct(string $id, string $name, array $elements = [])
     {
         $this->id = $id;
         $this->name = $name;
+        $this->elements = $elements;
     }
 
     public function getId(): string
@@ -39,5 +48,13 @@ final class Foo
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getElements(): array
+    {
+        return $this->elements;
     }
 }

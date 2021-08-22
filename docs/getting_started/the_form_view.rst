@@ -22,14 +22,14 @@ The basic class definition will look the same as the ``CategoryAdmin``::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper): void
+        protected function configureFormFields(FormMapper $form): void
         {
-            // ... configure $formMapper
+            // ... configure $form
         }
 
-        protected function configureListFields(ListMapper $listMapper): void
+        protected function configureListFields(ListMapper $list): void
         {
-            // ... configure $listMapper
+            // ... configure $list
         }
     }
 
@@ -70,9 +70,9 @@ you can add them straight away::
     use Symfony\Component\Form\Extension\Core\Type\TextType;
     use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('title', TextType::class)
             ->add('body', TextareaType::class)
         ;
@@ -82,6 +82,9 @@ However, the category field will reference another model. How can you solve that
 
 Adding Fields that Reference Other Models
 -----------------------------------------
+
+Using the Entity Type
+^^^^^^^^^^^^^^^^^^^^^
 
 You have a couple different choices on how to add fields that reference other
 models. The most basic choice is to use the ``EntityType`` provided by
@@ -93,9 +96,9 @@ entities as choice::
     use App\Entity\Category;
     use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             // ...
             ->add('category', EntityType::class, [
                 'class' => Category::class,
@@ -115,7 +118,7 @@ When an admin would like to create a new category, they need to go to the
 category admin page and create a new category.
 
 Using the Sonata Model Type
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To make life easier for admins, you can use the
 :ref:`ModelType field <field-types-model>`. This field type will
@@ -127,9 +130,9 @@ dialog with the admin of the referenced model in it::
     use App\Entity\Category;
     use Sonata\AdminBundle\Form\Type\ModelType;
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('category', ModelType::class, [
                 'class' => Category::class,
                 'property' => 'name',
@@ -142,8 +145,11 @@ dialog with the admin of the referenced model in it::
    :alt: Sonata ModelType
    :width: 700px
 
+Using Groups and Tabs
+---------------------
+
 Using Groups
-------------
+^^^^^^^^^^^^
 
 Currently, everything is put into one block. Since the form only has three
 fields, it is still usable, but it can become quite a mess pretty quick. To
@@ -159,9 +165,9 @@ category field to a Meta data group. To do this, use the ``with()`` method::
     use Symfony\Component\Form\Extension\Core\Type\TextType;
     use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Content')
                 ->add('title', TextType::class)
                 ->add('body', TextareaType::class)
@@ -181,9 +187,9 @@ order to tweak the styling::
 
     // src/Admin/BlogPostAdmin.php
 
-    protected function configureFormFields(FormMapper $formMapper): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('Content', ['class' => 'col-md-9'])
                 // ...
             ->end()
@@ -201,12 +207,12 @@ This will now result in a much nicer edit page:
    :width: 700px
 
 Using Tabs
-~~~~~~~~~~
+^^^^^^^^^^
 
 If you get even more options, you can also use multiple tabs by using the
 ``tab()`` shortcut method::
 
-    $formMapper
+    $form
         ->tab('Post')
             ->with('Content', ...)
                 // ...
@@ -263,7 +269,7 @@ started by creating a form and ended up with a nice edit page for your admin.
 In the :doc:`next chapter <the_list_view>`, you're going to look at the list
 and datagrid actions.
 
-.. _`Symfony Form component`: https://symfony.com/doc/4.4/forms.html
-.. _`field type reference`: https://symfony.com/doc/4.4/reference/forms/types.html
-.. _`entity field type`: https://symfony.com/doc/4.4/reference/forms/types/entity.html
-.. _`choice_label`: https://symfony.com/doc/4.4/reference/forms/types/entity.html#choice-label
+.. _`Symfony Form component`: https://symfony.com/doc/5.4/forms.html
+.. _`field type reference`: https://symfony.com/doc/5.4/reference/forms/types.html
+.. _`entity field type`: https://symfony.com/doc/5.4/reference/forms/types/entity.html
+.. _`choice_label`: https://symfony.com/doc/5.4/reference/forms/types/entity.html#choice-label

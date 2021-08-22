@@ -16,7 +16,7 @@ file that was distributed with this source code.
 {% endif %}
 
 <td class="sonata-ba-list-field sonata-ba-list-field-inline-fields"
-    colspan="{{ admin.list.elements|length - (admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_ACTIONS')) + admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_BATCH'))) }}"
+    colspan="{{ admin.list.getElements()|length - (admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_ACTIONS')) + admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_BATCH'))) }}"
     objectId="{{ admin.id(object) }}">
     {% block row %}{% endblock %}
 </td>

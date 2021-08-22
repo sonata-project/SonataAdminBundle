@@ -30,8 +30,25 @@ SonataAdmin Options that may affect the list view:
 .. note::
 
     **TODO**:
-    * a note about Routes and how disabling them disables the related action
     * adding custom columns
+    * targeting submodel fields using dot-separated notation
+
+Routes
+------
+
+You can disable listing entities by removing the corresponding routes in your Admin.
+For more detailed information about routes, see :doc:`routing`::
+
+    // src/Admin/PersonAdmin.php
+
+    final class PersonAdmin extends AbstractAdmin
+    {
+        protected function configureRoutes(RouteCollectionInterface $collection): void
+        {
+            // Removing the list route will disable listing entities.
+            $collection->remove('list');
+        }
+    }
 
 Customizing the fields displayed on the list page
 -------------------------------------------------
@@ -41,9 +58,9 @@ Here is an example::
 
     // ...
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             // addIdentifier allows to specify that this column
             // will provide a link to the entity
             // (edit or show route, depends on your access rights)
@@ -266,9 +283,9 @@ expected by your object::
 
     // ...
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('moderation_status', 'choice', [
                 'editable' => true,
                 'choices' => ModerationStatus::choices(),
@@ -299,9 +316,6 @@ You can customize the list query thanks to the ``configureQuery`` method::
 
 Customizing the sort order
 --------------------------
-
-Configure the default ordering in the list view
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Configuring the default ordering column can be achieved by overriding the
 ``configureDefaultSortValues()`` method. All three keys ``DatagridInterface::PAGE``,
@@ -386,9 +400,9 @@ You can add filters to let user control which data will be displayed::
 
     final class ClientAdmin extends AbstractAdmin
     {
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+        protected function configureDatagridFilters(DatagridMapper $datagrid): void
         {
-            $datagridMapper
+            $datagrid
                 ->add('phone')
                 ->add('email')
             ;
@@ -403,9 +417,9 @@ filter he wants to use.
 To make the filter always visible (even when it is inactive), set the parameter
 ``show_filter`` to ``true``::
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $datagrid): void
     {
-        $datagridMapper
+        $datagrid
             ->add('phone')
             ->add('email', null, [
                 'show_filter' => true
@@ -418,9 +432,9 @@ To make the filter always visible (even when it is inactive), set the parameter
 By default the template generates an ``operator`` for a filter which defaults to ``sonata_type_equal``.
 Though this ``operator_type`` is automatically detected it can be changed or even be hidden::
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $datagrid): void
     {
-        $datagridMapper
+        $datagrid
             ->add('foo', null, [
                 'operator_type' => 'sonata_type_boolean'
             ])
@@ -436,9 +450,9 @@ If you don't need the advanced filters, or all your ``operator_type``
 are hidden, you can disable them by setting ``advanced_filter`` to ``false``.
 You need to disable all advanced filters to make the button disappear::
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+    protected function configureDatagridFilters(DatagridMapper $datagrid): void
     {
-        $datagridMapper
+        $datagrid
             ->add('bar', null, [
                 'operator_type' => 'hidden',
                 'advanced_filter' => false
@@ -541,9 +555,9 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the
 
     final class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+        protected function configureDatagridFilters(DatagridMapper $datagrid): void
         {
-            $datagridMapper
+            $datagrid
                 ->add('full_text', CallbackFilter::class, [
                     'callback' => [$this, 'getFullTextFilter'],
                     'field_type' => TextType::class,
@@ -735,9 +749,9 @@ a field based on the other fields of your model::
 
     // src/Admin/UserAdmin.php
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $list)
     {
-        $listMapper->addIdentifier('fullName');
+        $list->addIdentifier('fullName');
     }
 
 In situations where the data are not available in the model or it is more performant
@@ -763,27 +777,27 @@ query and displayed::
         return $query;
     }
 
-    protected function configureListFields(ListMapper $listMapper): void
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper->addIdentifier('numberofcomments');
+        $list->addIdentifier('numberofcomments');
     }
 
 
 Lastly, you can also define your list fields as ``virtual``.
 This way, Sonata's FieldDescription will always return a value of null, as documented here:
-https://symfony.com/doc/current/bundles/SonataAdminBundle/cookbook/recipe_virtual_field.html
+https://docs.sonata-project.org/projects/SonataAdminBundle/en/4.x/cookbook/recipe_virtual_field/
 
 Combine this with configuring a custom template and you'll have a list column fully customizable in what it eventually renders. ::
 
     // src/Admin/PostAdmin.php
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $list)
     {
-        $listMapper->add('thisPropertyDoesNotExist', null, [
+        $list->add('thisPropertyDoesNotExist', null, [
             'virtual_field' => true,
             'template' => 'path/to/your/template.html.twig'
         ]);
     }
 
-.. _`SonataDoctrineORMAdminBundle Documentation`: https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle/en/3.x/reference/list_field_definition
+.. _`SonataDoctrineORMAdminBundle Documentation`: https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle/en/4.x/reference/list_field_definition/
 .. _`here`: https://github.com/sonata-project/form-extensions/tree/1.x/src/Type

@@ -9,14 +9,28 @@ Basic configuration
 .. note::
 
     **TODO**:
-    * a note about Routes and how disabling them disables the related action
-    * a note about lifecycle events triggered by delete?
     * options available when adding general fields, inc custom templates
     * targeting submodel fields using dot-separated notation
-    * (Note, if this is very similar to the form documentation it can be combined)
+
+Routes
+------
+
+You can disable showing entities by removing the corresponding routes in your Admin.
+For more detailed information about routes, see :doc:`routing`::
+
+    // src/Admin/PersonAdmin.php
+
+    final class PersonAdmin extends AbstractAdmin
+    {
+        protected function configureRoutes(RouteCollectionInterface $collection): void
+        {
+            // Removing the show route will disable showing entities.
+            $collection->remove('show');
+        }
+    }
 
 Group options
-~~~~~~~~~~~~~
+-------------
 
 When adding a group to your show page, you may specify some options for the group itself.
 
@@ -27,8 +41,9 @@ When adding a group to your show page, you may specify some options for the grou
   you know what you're doing).
 - ``box_class``: the class for your group box in the admin; by default,
   the value is set to ``box box-primary``.
-- ``description``: to complete
-- ``translation_domain``: to complete
+- ``description``: A text shown at the top of the show group.
+- ``translation_domain``: The translation domain for the show group title
+  (the Admin translation domain is used by default).
 
 To specify options, do as follow::
 
@@ -39,9 +54,9 @@ To specify options, do as follow::
 
     final class PersonAdmin extends AbstractAdmin
     {
-        protected function configureShowFields(ShowMapper $showMapper): void
+        protected function configureShowFields(ShowMapper $show): void
         {
-            $showMapper
+            $show
                 ->tab('General') // the tab call is optional
                     ->with('Addresses', [
                         'class'       => 'col-md-8',
@@ -65,21 +80,21 @@ Here is an example of how to achieve this::
 
     final class PersonAdmin extends ParentAdmin
     {
-        protected function configureShowFields(ShowMapper $showMapper): void
+        protected function configureShowFields(ShowMapper $show): void
         {
-            parent::configureShowFields($showMapper);
+            parent::configureShowFields($show);
 
             // remove one field
-            $showMapper->remove('field_to_remove');
+            $show->remove('field_to_remove');
 
             // remove a group from the "default" tab
-            $showMapper->removeGroup('GroupToRemove1');
+            $show->removeGroup('GroupToRemove1');
 
             // remove a group from a specific tab
-            $showMapper->removeGroup('GroupToRemove2', 'Tab2');
+            $show->removeGroup('GroupToRemove2', 'Tab2');
 
             // remove a group from a specific tab and also remove the tab if it ends up being empty
-            $showMapper->removeGroup('GroupToRemove3', 'Tab3', true);
+            $show->removeGroup('GroupToRemove3', 'Tab3', true);
         }
     }
 
@@ -101,11 +116,11 @@ The following is a working example of a ShowAction::
 
     final class ClientAdmin extends AbstractAdmin
     {
-        protected function configureShowFields(ShowMapper $showMapper): void
+        protected function configureShowFields(ShowMapper $show): void
         {
             // here we set the fields of the ShowMapper variable,
-            // $showMapper (but this can be called anything)
-            $showMapper
+            // $show (but this can be called anything)
+            $show
 
                  // The default option is to display the value
                  // as text (for boolean this will be 1 or 0)
@@ -128,12 +143,12 @@ The following is a working example of a ShowAction::
 
     To customize the displayed label of a show field you can use the ``label`` option::
 
-        $showMapper->add('name', null, ['label' => 'UserName']);
+        $show->add('name', null, ['label' => 'UserName']);
 
     Setting this option to ``false`` will make the label empty.
 
 Setting up a custom show template (very useful)
-===============================================
+-----------------------------------------------
 
 The first thing you need to do is define it in app/config/config/yml:
 

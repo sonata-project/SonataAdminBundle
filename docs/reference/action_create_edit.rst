@@ -38,9 +38,10 @@ For more information about optional libraries:
 
     **TODO**
     * options available when adding fields, inc custom templates
+    * targeting submodel fields using dot-separated notation
 
 Routes
-~~~~~~
+------
 
 You can disable creating or editing entities by removing the corresponding routes in your Admin.
 For more detailed information about routes, see :doc:`routing`::
@@ -74,9 +75,9 @@ groups::
 
     final class PersonAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper): void
+        protected function configureFormFields(FormMapper $form): void
         {
-            $formMapper
+            $form
                 ->tab('General') // The tab call is optional
                     ->with('Addresses')
                         ->add('title') // Add a field and let Sonata decide which type to use
@@ -109,7 +110,7 @@ has 4 parameters:
     through getters/setters or public access.
 
 FormGroup options
-~~~~~~~~~~~~~~~~~
+-----------------
 
 When adding a form group to your edit/create form, you may specify some
 options for the group itself.
@@ -131,9 +132,9 @@ To specify options, do as follows::
 
     final class PersonAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper): void
+        protected function configureFormFields(FormMapper $form): void
         {
-            $formMapper
+            $form
                 ->tab('General') // the tab call is optional
                     ->with('Addresses', [
                         'class'       => 'col-md-8',

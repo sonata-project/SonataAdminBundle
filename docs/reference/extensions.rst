@@ -14,9 +14,9 @@ created objects and other admin features::
 
     final class PublishStatusAdminExtension extends AbstractAdminExtension
     {
-        protected function configureFormFields(FormMapper $formMapper): void
+        protected function configureFormFields(FormMapper $form): void
         {
-            $formMapper
+            $form
                 ->add('status', ChoiceType::class, [
                     'choices' => [
                         'draft' => 'Draft',
@@ -28,7 +28,7 @@ created objects and other admin features::
     }
 
 Configuration
-~~~~~~~~~~~~~
+^^^^^^^^^^^^^
 
 There are two ways to configure your extensions and connect them to an admin.
 

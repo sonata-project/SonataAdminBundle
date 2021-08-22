@@ -1,10 +1,6 @@
 Decouple from CRUDController
 ============================
 
-.. versionadded:: 3.99
-
-    The ability to inject an Admin to an action and ``AdminFetcherInterface`` service were introduced in 3.99.
-
 When creating custom actions, we can create our controllers without extending ``CRUDController``. What we usually need
 is to access the ``admin`` instance associated to the action, to do so we can type-hint to the admin class or use
 the ``AdminFetcherInterface`` service.
@@ -69,9 +65,9 @@ the controller to make it Invokable::
 Now we only need to add the new route in ``configureRoutes``::
 
     use App\Controller\CarAdminCloneAction;
-    use Sonata\AdminBundle\Route\RouteCollection;
+    use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection)
     {
         $collection
             ->add('clone', $this->getRouterIdParameter().'/clone', [

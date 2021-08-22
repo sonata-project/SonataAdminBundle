@@ -15,6 +15,9 @@ rows instead.
 Configuring the List Mapper
 ---------------------------
 
+Defining Field(s)
+^^^^^^^^^^^^^^^^^
+
 Fixing the above problem is not that complex: Add the fields you want to show
 on the list page to the list view::
 
@@ -24,9 +27,9 @@ on the list page to the list view::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureListFields(ListMapper $listMapper): void
+        protected function configureListFields(ListMapper $list): void
         {
-            $listMapper
+            $list
                 ->add('title')
                 ->add('draft')
             ;
@@ -50,7 +53,7 @@ There seem to be nothing that looks like a link. That's correct, you need to
 tell Sonata which field(s) you want to use as a link.
 
 Defining the Identifier Field(s)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The fields which contain a link to the edit pages are called identifier fields.
 It makes sense to make the title field link to the edit page, so you can add it
@@ -63,9 +66,9 @@ instead of ``ListMapper#add()``::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureListFields(ListMapper $listMapper): void
+        protected function configureListFields(ListMapper $list): void
         {
-            $listMapper
+            $list
                 ->addIdentifier('title')
                 ->add('draft')
             ;
@@ -76,7 +79,7 @@ When saving this, you can now see that the title field has the link you were
 looking for.
 
 Displaying Other Models
-~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^
 
 Now you probably also want the Category to be included in the list. To do that,
 you need to reference it. You can't add the ``category`` field to the list
@@ -95,9 +98,9 @@ category::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureListFields(ListMapper $listMapper): void
+        protected function configureListFields(ListMapper $list): void
         {
-            $listMapper
+            $list
                 ->addIdentifier('title')
                 ->add('category.name')
                 ->add('draft')
@@ -107,6 +110,9 @@ category::
 
 Adding Filter/Search Options
 ----------------------------
+
+Basic filters
+^^^^^^^^^^^^^
 
 Assume you had a very successful blog site containing many blog posts. After a
 while, finding the blog post you wanted to edit would be like finding a needle
@@ -126,9 +132,9 @@ would do something like::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+        protected function configureDatagridFilters(DatagridMapper $datagrid): void
         {
-            $datagridMapper->add('title');
+            $datagrid->add('title');
         }
     }
 
@@ -136,25 +142,20 @@ This will add a little block to the left of the block showing a search input
 for the title field.
 
 Filtering by Category
-~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^
 
 Filtering by another model's properties is a little bit more difficult. The add
-field has 5 arguments::
+field has 4 arguments::
 
     public function add(
-        $name,
-
-        // filter
-        $type = null,
+        string $name,
+        ?string $type = null,
         array $filterOptions = [],
-
-        // field
-        $fieldType = null,
-        $fieldOptions = null
+        array $fieldDescriptionOptions = []
     )
 
-As you can see, you can both customize the type used to filter and the type
-used to display the search field. You can rely on the type guessing mechanism
+You can both customize the type used to filter and the type used to display the search
+field with the `$filterOptions` argument. You can rely on the type guessing mechanism
 of Sonata to pick the correct field types. However, you still need to configure
 the search field to use the ``name`` property of the Category::
 
@@ -168,9 +169,9 @@ the search field to use the ``name`` property of the Category::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
+        protected function configureDatagridFilters(DatagridMapper $datagrid): void
         {
-            $datagridMapper
+            $datagrid
                 ->add('title')
                 ->add('category', null, [
                     'field_type' => EntityType::class,
@@ -198,11 +199,5 @@ This time, you've learned how to find posts to edit. You've learned how to
 create a nice list view and how to add options to search, order and filter
 this list.
 
-There might have been some very difficult things, but imagine the difficulty
-writing everything yourself! As you're now already quite good with the basics,
-you can start reading other articles in the documentation, like:
-
-* :doc:`Customizing the Dashboard <../reference/dashboard>`
-* :doc:`Configuring the Security system <../reference/security>`
-* :doc:`Adding export functionality <../reference/action_export>`
-* :doc:`Adding a preview page <../reference/preview_mode>`
+In the :doc:`next chapter <the_show_view>`, you're going to look at the show
+action.
