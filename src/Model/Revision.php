@@ -21,9 +21,9 @@ final class Revision
     private $id;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeInterface
      */
-    private $timestamp;
+    private $dateTime;
 
     /**
      * @var string
@@ -33,11 +33,19 @@ final class Revision
     /**
      * @param int|string $id
      */
-    public function __construct($id, \DateTime $timestamp, string $username)
+    public function __construct($id, \DateTimeInterface $dateTime, string $username)
     {
         $this->id = $id;
-        $this->timestamp = $timestamp;
+        $this->dateTime = $dateTime;
         $this->username = $username;
+    }
+
+    /**
+     * @return int|string
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
@@ -48,9 +56,14 @@ final class Revision
         return $this->id;
     }
 
-    public function getTimestamp(): \DateTime
+    public function getDateTime(): \DateTimeInterface
     {
-        return $this->timestamp;
+        return $this->dateTime;
+    }
+
+    public function getTimestamp(): \DateTimeInterface
+    {
+        return $this->dateTime;
     }
 
     public function getUsername(): string
