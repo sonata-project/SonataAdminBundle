@@ -33,7 +33,7 @@ interface AdminAclManipulatorInterface
     /**
      * Add the class ACE's to the admin ACL.
      *
-     * @param array<string, string[]> $roleInformation
+     * @param AdminInterface<object> $admin
      *
      * @return bool TRUE if admin class ACEs are added, FALSE if not
      */
@@ -41,6 +41,6 @@ interface AdminAclManipulatorInterface
         OutputInterface $output,
         MutableAclInterface $acl,
         AclSecurityHandlerInterface $securityHandler,
-        array $roleInformation = []
+        AdminInterface $admin
     ): bool;
 }
