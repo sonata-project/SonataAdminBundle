@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Security\Handler;
 
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
@@ -76,9 +77,9 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
     /**
      * Add the object class ACE's to the object ACL.
      *
-     * @param array<string, string[]> $roleInformation
+     * @param AdminInterface<object> $admin
      */
-    public function addObjectClassAces(MutableAclInterface $acl, array $roleInformation = []): void;
+    public function addObjectClassAces(MutableAclInterface $acl, AdminInterface $admin): void;
 
     /**
      * Create an object ACL.

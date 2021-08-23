@@ -91,8 +91,7 @@ final class ObjectAclManipulatorTest extends TestCase
         $securityHandler->expects(self::once())->method('findObjectAcls')->with($this->oids)->willReturn($acls);
         $securityHandler->expects(self::once())->method('createAcl')->with(self::isInstanceOf(ObjectIdentityInterface::class))->willReturn($acl);
         $securityHandler->expects(self::atLeastOnce())->method('addObjectOwner')->with($acl, self::isInstanceOf(UserSecurityIdentity::class));
-        $securityHandler->expects(self::atLeastOnce())->method('buildSecurityInformation')->with($this->admin)->willReturn([]);
-        $securityHandler->expects(self::atLeastOnce())->method('addObjectClassAces')->with($acl, []);
+        $securityHandler->expects(self::atLeastOnce())->method('addObjectClassAces')->with($acl, $this->admin);
         $securityHandler->expects(self::atLeastOnce())->method('updateAcl')->with($acl)->willThrowException(new \Exception('test exception'));
         $this->output->method('writeln')->with(self::logicalAnd(
             self::stringContains('ignoring'),
