@@ -500,6 +500,10 @@ final class FormMapperTest extends TestCase
 
         self::assertSame(['fo__o', 'ba____z'], $this->formMapper->keys());
 
+        // The original key can be recomputed.
+        self::assertSame('fo.o', FormMapper::unsanitizeFormBuilderName('fo__o'));
+        self::assertSame('ba__z', FormMapper::unsanitizeFormBuilderName('ba____z'));
+
         // FormFieldDescriptions have the original key.
         self::assertTrue($this->admin->hasFormFieldDescription('fo.o'));
         self::assertTrue($this->admin->hasFormFieldDescription('ba__z'));

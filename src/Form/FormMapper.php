@@ -172,10 +172,11 @@ final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
      */
     public function remove(string $key): self
     {
-        $key = $this->sanitizeFieldName($key);
         $this->getAdmin()->removeFormFieldDescription($key);
         $this->getAdmin()->removeFieldFromFormGroup($key);
-        $this->formBuilder->remove($key);
+
+        $sanitizedKey = $this->sanitizeFieldName($key);
+        $this->formBuilder->remove($sanitizedKey);
 
         return $this;
     }
@@ -192,6 +193,14 @@ final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
     public function create(string $name, ?string $type = null, array $options = []): FormBuilderInterface
     {
         return $this->formBuilder->create($name, $type, $options);
+    }
+
+    /**
+     * Reverse transform of the `sanitizeFieldName` method.
+     */
+    public static function unsanitizeFormBuilderName(string $formBuilderName): string
+    {
+        return str_replace(['__', '..'], ['.', '__'], $formBuilderName);
     }
 
     protected function getGroups(): array
@@ -220,9 +229,8 @@ final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
     }
 
     /**
-     * Symfony default form class sadly can't handle
-     * form element with dots in its name (when data
-     * get bound, the default dataMapper is a PropertyPathMapper).
+     * Symfony default form class can't handle form element with dots in its
+     * name (when data get bound, the default dataMapper is a PropertyPathMapper).
      * So use this trick to avoid any issue.
      */
     private function sanitizeFieldName(string $fieldName): string

@@ -298,6 +298,8 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function setFormGroups(array $formGroups): void;
 
+    public function removeFieldFromFormGroup(string $key): void;
+
     /**
      * @param string[] $keys
      */
@@ -323,8 +325,6 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function setShowTabs(array $showTabs): void;
 
-    public function removeFieldFromFormGroup(string $key): void;
-
     /**
      * Returns the show groups.
      *
@@ -338,6 +338,8 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      * @param array<string, mixed> $showGroups
      */
     public function setShowGroups(array $showGroups): void;
+
+    public function removeFieldFromShowGroup(string $key): void;
 
     /**
      * Reorder items in showGroup.
