@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Fixtures\Model;
 
 use Sonata\AdminBundle\Model\AuditReaderInterface;
+use Sonata\AdminBundle\Model\Revision;
 
 final class AuditReader implements AuditReaderInterface
 {
@@ -25,19 +26,19 @@ final class AuditReader implements AuditReaderInterface
     public function findRevisionHistory(string $className, int $limit = 20, int $offset = 0): array
     {
         return [
-            new \stdClass(),
+            new Revision(1, new \DateTime(), 'Jack'),
         ];
     }
 
-    public function findRevision(string $className, $revisionId): ?object
+    public function findRevision(string $className, $revisionId): ?Revision
     {
-        return new \stdClass();
+        return new Revision(1, new \DateTime(), 'Jack');
     }
 
     public function findRevisions(string $className, $id): array
     {
         return [
-            new \stdClass(),
+            new Revision(1, new \DateTime(), 'Jack'),
         ];
     }
 
