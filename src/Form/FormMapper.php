@@ -195,14 +195,6 @@ final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
         return $this->formBuilder->create($name, $type, $options);
     }
 
-    /**
-     * Reverse transform of the `sanitizeFieldName` method.
-     */
-    public static function unsanitizeFormBuilderName(string $formBuilderName): string
-    {
-        return str_replace(['__', '..'], ['.', '__'], $formBuilderName);
-    }
-
     protected function getGroups(): array
     {
         return $this->getAdmin()->getFormGroups();

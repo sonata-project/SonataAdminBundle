@@ -152,6 +152,7 @@ final class AdminHelperTest extends TestCase
         ];
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $fieldDescription->method('getName')->willReturn('bar');
         $fieldDescription->method('getAssociationAdmin')->willReturn($associationAdmin);
         $fieldDescription->method('getAssociationMapping')->willReturn($associationMapping);
         $fieldDescription->method('getParentAssociationMappings')->willReturn([]);
@@ -209,7 +210,9 @@ final class AdminHelperTest extends TestCase
         $formFactory = $this->createStub(FormFactoryInterface::class);
         $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
         $formBuilder = new FormBuilder('test', \get_class($foo), $eventDispatcher, $formFactory);
-        $childFormBuilder = new FormBuilder('bar', \stdClass::class, $eventDispatcher, $formFactory);
+        $childFormBuilder = new FormBuilder('bar', \stdClass::class, $eventDispatcher, $formFactory, [
+            'sonata_field_description' => $fieldDescription,
+        ]);
         $childFormBuilder->setCompound(true);
         $childFormBuilder->setDataMapper($dataMapper);
         $subChildFormBuilder = new FormBuilder('baz', \stdClass::class, $eventDispatcher, $formFactory);
