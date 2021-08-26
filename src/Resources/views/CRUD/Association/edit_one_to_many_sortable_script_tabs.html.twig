@@ -24,7 +24,7 @@ file that was distributed with this source code.
             var tabs = parent.find('> .nav-tabs');
             jQuery('.sonata-ba-sortable-handler', tabs).remove();
             $('<li class="sonata-ba-sortable-handler pull-right"></li>')
-                    .prepend('<span class="ui-icon ui-icon-grip-solid-horizontal"></span>')
+                    .prepend('<i class="fas fa-grip-lines"></i>')
                     .appendTo(tabs);
             jQuery('input', element).hide();
         });

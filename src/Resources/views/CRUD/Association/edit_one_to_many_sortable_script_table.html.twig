@@ -21,7 +21,7 @@ file that was distributed with this source code.
         jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ id }}-{{ sonata_admin.field_description.option('sortable') }}').each(function(index, element) {
             // remove the sortable handler and put it back
             jQuery('span.sonata-ba-sortable-handler', element).remove();
-            jQuery(element).append('<span class="sonata-ba-sortable-handler ui-icon ui-icon-grip-solid-horizontal"></span>');
+            jQuery(element).append('<span class="sonata-ba-sortable-handler"><i class="fas fa-grip-lines"></i></span>');
             jQuery('input', element).hide();
         });
 
