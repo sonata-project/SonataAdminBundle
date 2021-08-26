@@ -2,7 +2,25 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [4.0.0.rc.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.0.0-alpha-2...4.0.0.rc.1) - 2021-08-08
+## [4.0.0-rc.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.0.0-rc.1...4.0.0-rc.2) - 2021-08-24
+### Added
+- [[#7449](https://github.com/sonata-project/SonataAdminBundle/pull/7449)] `Revision` class ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Changed
+- [[#7449](https://github.com/sonata-project/SonataAdminBundle/pull/7449)] `AuditReaderInterface::findRevision()` return type ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#7448](https://github.com/sonata-project/SonataAdminBundle/pull/7448)] Display of list when a field is called `elements`. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7433](https://github.com/sonata-project/SonataAdminBundle/pull/7433)] Make Select2 use the locale. ([@vindert](https://github.com/vindert))
+- [[#7445](https://github.com/sonata-project/SonataAdminBundle/pull/7445)] Display of the `base_show_compare` template ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7386](https://github.com/sonata-project/SonataAdminBundle/pull/7386)] Display of nested form fields by the  FormMapper ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7386](https://github.com/sonata-project/SonataAdminBundle/pull/7386)] `AbstractAdmin::configureActionButtons()` phpdoc for phpstan ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7388](https://github.com/sonata-project/SonataAdminBundle/pull/7388)] Do not throw error when trying to inject an admin as a service in an action. ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Security
+- [[#7393](https://github.com/sonata-project/SonataAdminBundle/pull/7393)] Bump yarn dependencies ([@VincentLanglet](https://github.com/VincentLanglet))
+
+## [4.0.0-rc.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.0.0-alpha-2...4.0.0.rc.1) - 2021-08-08
 ### Added
 - [[#7364](https://github.com/sonata-project/SonataAdminBundle/pull/7364)]  `FormMapper` now implements the `BlockBundle/FormMapper` interface ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7348](https://github.com/sonata-project/SonataAdminBundle/pull/7348)] Support for POST request to deleteAction. ([@VincentLanglet](https://github.com/VincentLanglet))
