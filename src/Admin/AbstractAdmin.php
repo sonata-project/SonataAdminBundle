@@ -1061,7 +1061,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function removeFieldFromFormGroup(string $key): void
     {
-        foreach ($this->formGroups as $name => $formGroup) {
+        foreach ($this->formGroups as $name => $_formGroup) {
             unset($this->formGroups[$name]['fields'][$key]);
 
             if ([] === $this->formGroups[$name]['fields']) {
@@ -1105,6 +1105,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function setShowGroups(array $showGroups): void
     {
         $this->showGroups = $showGroups;
+    }
+
+    final public function removeFieldFromShowGroup(string $key): void
+    {
+        foreach ($this->showGroups as $name => $_showGroup) {
+            unset($this->showGroups[$name]['fields'][$key]);
+
+            if ([] === $this->showGroups[$name]['fields']) {
+                unset($this->showGroups[$name]);
+            }
+        }
     }
 
     final public function reorderShowGroup(string $group, array $keys): void

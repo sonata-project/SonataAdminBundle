@@ -125,6 +125,7 @@ final class ShowMapper extends BaseGroupedMapper
     public function remove(string $key): self
     {
         $this->getAdmin()->removeShowFieldDescription($key);
+        $this->getAdmin()->removeFieldFromShowGroup($key);
         $this->list->remove($key);
 
         return $this;

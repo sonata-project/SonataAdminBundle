@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Admin;
 
 use Doctrine\Common\Collections\Collection;
 use Sonata\AdminBundle\Exception\NoValueException;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Manipulator\ObjectManipulator;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
 use Sonata\AdminBundle\Util\FormViewIterator;
@@ -118,9 +119,15 @@ class AdminHelper
         $form->setData($subject);
         $form->handleRequest($admin->getRequest());
 
-        if (null !== $childFormBuilder && $admin->hasFormFieldDescription($childFormBuilder->getName())) {
+        if (
+            null !== $childFormBuilder
+            && $childFormBuilder->getOption('sonata_field_description') instanceof FieldDescriptionInterface
+            && $admin->hasFormFieldDescription($childFormBuilder->getOption('sonata_field_description')->getName())
+        ) {
             // retrieve the FieldDescription
-            $fieldDescription = $admin->getFormFieldDescription($childFormBuilder->getName());
+            $fieldDescription = $admin->getFormFieldDescription(
+                $childFormBuilder->getOption('sonata_field_description')->getName()
+            );
 
             try {
                 $value = $fieldDescription->getValue($form->getData());
