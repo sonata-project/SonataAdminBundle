@@ -1887,18 +1887,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $actions;
     }
 
-    /**
-     * @phpstan-param T $object
-     */
-    final public function getSearchResultLink(object $object): ?string
-    {
-        if ($this->hasRoute('show') && $this->hasAccess('show', $object)) {
-            return $this->generateObjectUrl('show', $object);
-        }
-
-        return null;
-    }
-
     final public function createFieldDescription(string $propertyName, array $options = []): FieldDescriptionInterface
     {
         $fieldDescriptionFactory = $this->getFieldDescriptionFactory();
