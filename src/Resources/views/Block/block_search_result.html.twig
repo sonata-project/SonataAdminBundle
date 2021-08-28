@@ -59,15 +59,17 @@ file that was distributed with this source code.
                 <div class="box-body no-padding">
                     <ul class="nav nav-stacked sonata-search-result-list">
                         {% for result in current_page_results %}
-                            {% if admin.hasRoute('show') and admin.hasAccess('show', result) %}
-                                <li>
-                                    <a href="{{ admin.generateObjectUrl('show', result) }}">
-                                        {{ admin.toString(result) }}
-                                    </a>
-                                </li>
-                            {% else %}
-                                <li><a>{{ admin.toString(result) }}</a></li>
-                            {% endif %}
+                            {% block search_result %}
+                                {% if admin.hasRoute('show') and admin.hasAccess('show', result) %}
+                                    <li>
+                                        <a href="{{ admin.generateObjectUrl('show', result) }}">
+                                            {{ admin.toString(result) }}
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li><a>{{ admin.toString(result) }}</a></li>
+                                {% endif %}
+                            {% endblock %}
                         {% endfor %}
                     </ul>
                 </div>
