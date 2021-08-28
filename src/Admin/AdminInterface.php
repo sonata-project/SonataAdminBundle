@@ -463,13 +463,6 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     public function isCurrentRoute(string $name, ?string $adminCode = null): bool;
 
     /**
-     * Returns the result link for an object.
-     *
-     * @phpstan-param T $object
-     */
-    public function getSearchResultLink(object $object): ?string;
-
-    /**
      * Returns the master admin.
      *
      * @return AdminInterface<object>
