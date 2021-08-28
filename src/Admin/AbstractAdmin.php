@@ -131,13 +131,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     protected $supportsPreviewMode = false;
 
     /**
-     * Action list for the search result.
-     *
-     * @var string[]
-     */
-    protected $searchResultActions = ['edit', 'show'];
-
-    /**
      * The list FieldDescription constructed from the configureListField method.
      *
      * @var array<string, FieldDescriptionInterface>
@@ -1899,10 +1892,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     final public function getSearchResultLink(object $object): ?string
     {
-        foreach ($this->searchResultActions as $action) {
-            if ($this->hasRoute($action) && $this->hasAccess($action, $object)) {
-                return $this->generateObjectUrl($action, $object);
-            }
+        if ($this->hasRoute('show') && $this->hasAccess('show', $object)) {
+            return $this->generateObjectUrl('show', $object);
         }
 
         return null;

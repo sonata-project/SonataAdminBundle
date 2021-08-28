@@ -10,26 +10,26 @@ file that was distributed with this source code.
 #}
 
 <td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}"{% if field_description.option('row_align') %} style="text-align:{{ field_description.option('row_align') }}"{% endif %}>
-    {% set route = field_description.option('route').name|default(null) %}
+    {% set route_name = field_description.option('route').name|default('show') %}
+    {% set route_parameters = field_description.option('route').parameters|default([]) %}
 
     {% if
         field_description.option('identifier', false)
-        and route
-        and admin.hasRoute(route)
-        and admin.hasAccess(route, route in ['show', 'edit'] ? object : null)
+        and admin.hasRoute(route_name)
+        and admin.hasAccess(route_name, route_name in ['show', 'edit'] ? object : null)
     %}
-        <a class="sonata-link-identifier" href="{{ admin.generateObjectUrl(route, object, field_description.option('route').parameters) }}">
+        <a class="sonata-link-identifier" href="{{ admin.generateObjectUrl(route_name, object, route_parameters) }}">
             {%- block field %}
                 {% apply spaceless %}
-                {% if field_description.option('collapse') is not null %}
-                    {% set collapse = field_description.option('collapse') %}
-                    <div class="sonata-readmore"
-                          data-readmore-height="{{ collapse.height|default(40) }}"
-                          data-readmore-more="{{ collapse.more|default('read_more')|trans({}, 'SonataAdminBundle') }}"
-                          data-readmore-less="{{ collapse.less|default('read_less')|trans({}, 'SonataAdminBundle') }}">{{ value }}</div>
-                {% else %}
-                    {{ value }}
-                {% endif %}
+                    {% if field_description.option('collapse') is not null %}
+                        {% set collapse = field_description.option('collapse') %}
+                        <div class="sonata-readmore"
+                              data-readmore-height="{{ collapse.height|default(40) }}"
+                              data-readmore-more="{{ collapse.more|default('read_more')|trans({}, 'SonataAdminBundle') }}"
+                              data-readmore-less="{{ collapse.less|default('read_less')|trans({}, 'SonataAdminBundle') }}">{{ value }}</div>
+                    {% else %}
+                        {{ value }}
+                    {% endif %}
                 {% endapply %}
             {% endblock -%}
         </a>

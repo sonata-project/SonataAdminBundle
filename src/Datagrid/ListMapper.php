@@ -86,15 +86,6 @@ final class ListMapper implements MapperInterface
     {
         $fieldDescriptionOptions['identifier'] = true;
 
-        if (!isset($fieldDescriptionOptions['route']['name'])) {
-            $routeName = ($this->getAdmin()->hasAccess('edit') && $this->getAdmin()->hasRoute('edit')) ? 'edit' : 'show';
-            $fieldDescriptionOptions['route']['name'] = $routeName;
-        }
-
-        if (!isset($fieldDescriptionOptions['route']['parameters'])) {
-            $fieldDescriptionOptions['route']['parameters'] = [];
-        }
-
         return $this->add($name, $type, $fieldDescriptionOptions);
     }
 
