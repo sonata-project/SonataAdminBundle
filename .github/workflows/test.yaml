@@ -76,8 +76,8 @@ jobs:
                   dependency-versions: "${{ matrix.dependencies }}"
                   composer-options: "--prefer-dist --prefer-stable"
 
-            - name: Run Tests
-              run: make test
+            - name: Run Tests with coverage
+              run: make coverage
 
             - name: Send coverage to Codecov
               uses: codecov/codecov-action@v1
