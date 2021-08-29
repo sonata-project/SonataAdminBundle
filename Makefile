@@ -77,12 +77,12 @@ build:
 	mkdir $@
 
 test:
-ifeq ($(shell php --modules|grep --quiet pcov;echo $$?), 0)
-	vendor/bin/simple-phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
-else
 	vendor/bin/simple-phpunit -c phpunit.xml.dist
-endif
 .PHONY: test
+
+coverage:
+	vendor/bin/simple-phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
+.PHONY: coverage
 
 docs:
 	cd docs && sphinx-build -W -b dirhtml -d _build/doctrees . _build/html
