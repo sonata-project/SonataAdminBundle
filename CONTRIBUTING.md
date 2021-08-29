@@ -358,8 +358,8 @@ If you want to change some dependencies, here are the rules:
 - Lower version dropping is accepted as a Backward Compatible change according to [semver][semver_dependencies_update],
 but some extra rules MUST be respected here:
   - PHP versions that are under the [orange zone][php_supported_versions] (Security Support) **MUST NOT** be dropped on the stable branch.
-  - PHP versions that are under the [green zone][php_supported_versions] (Active Support) **MUST NOT** be dropped on the master branch.
-  - If it's a Symfony package, at least the last LTS version **MUST** be supported, even on master.
+  - PHP versions that are under the [green zone][php_supported_versions] (Active Support) **MUST NOT** be dropped on the unstable branch.
+  - If it's a Symfony package, at least the last LTS version **MUST** be supported, even on the unstable branch.
   - Generally, don't drop dependency version if it doesn't have a big impact on the code.
   - Backward Compatible code related to the dropped version **MUST** be dropped on the same PR.
     This will allow seeing if this version drop **is really worth it** or not.
