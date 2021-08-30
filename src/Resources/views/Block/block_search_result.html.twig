@@ -57,13 +57,11 @@ file that was distributed with this source code.
             </div>
             {% if has_results %}
                 <div class="box-body no-padding">
-                    <ul class="nav nav-stacked sonata-search-result-list products-list">
+                    <ul class="nav nav-stacked sonata-search-result-list">
                         {% for result in current_page_results %}
                             {% set link = admin.getSearchResultLink(result) %}
                             {% if link %}
-                                <li class="item no-padding">
-                                    <a class="main pull-left" href="{{ link }}">{{ admin.toString(result) }}</a>
-                                </li>
+                                <li><a href="{{ link }}">{{ admin.toString(result) }}</a></li>
                             {% else %}
                                 <li><a>{{ admin.toString(result) }}</a></li>
                             {% endif %}
