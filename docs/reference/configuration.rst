@@ -86,6 +86,7 @@ Full Configuration Options
                 use_stickyforms: true
                 pager_links: null
                 form_type: standard
+                default_admin_route: show
                 default_group: default
                 default_label_catalogue: SonataAdminBundle
                 default_icon: 'fas fa-folder'
@@ -120,6 +121,7 @@ Full Configuration Options
                         id: ~
                     position: right
                     class: col-md-4
+
             default_admin_services:
                 model_manager: null
                 data_source: null
@@ -208,9 +210,14 @@ Full Configuration Options
                     extends: []
                     instanceof: []
                     uses: []
+
             persist_filters: false
             filter_persister: sonata.admin.filter_persister.session
             show_mosaic_button: true
+
             global_search:
                 empty_boxes: show
-                case_sensitive: true
+                admin_route: show
+
+            breadcrumbs:
+                child_admin_route: show

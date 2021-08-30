@@ -51,14 +51,21 @@ final class AdminSearchBlockService extends AbstractBlockService
     private $emptyBoxesOption;
 
     /**
+     * @var string
+     */
+    private $defaultAdminRoute;
+
+    /**
      * @phpstan-param 'show'|'hide'|'fade' $emptyBoxesOption
+     * @phpstan-param 'show'|'edit'        $defaultAdminRoute
      */
     public function __construct(
         Environment $twig,
         Pool $pool,
         SearchHandler $searchHandler,
         TemplateRegistryInterface $templateRegistry,
-        string $emptyBoxesOption
+        string $emptyBoxesOption,
+        string $defaultAdminRoute
     ) {
         parent::__construct($twig);
 
@@ -66,6 +73,7 @@ final class AdminSearchBlockService extends AbstractBlockService
         $this->searchHandler = $searchHandler;
         $this->templateRegistry = $templateRegistry;
         $this->emptyBoxesOption = $emptyBoxesOption;
+        $this->defaultAdminRoute = $defaultAdminRoute;
     }
 
     public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
@@ -105,6 +113,7 @@ final class AdminSearchBlockService extends AbstractBlockService
             'filters' => $filters,
             'admin' => $admin,
             'show_empty_boxes' => $this->emptyBoxesOption,
+            'default_admin_route' => $this->defaultAdminRoute,
         ], $response);
     }
 

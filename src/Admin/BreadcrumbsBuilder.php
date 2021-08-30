@@ -42,7 +42,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'child_admin_route' => 'edit',
+            'child_admin_route' => 'show',
         ]);
     }
 
@@ -150,7 +150,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
      *
      * @param ItemInterface        $menu              will be modified and returned
      * @param string               $name              the source of the final label
-     * @param string               $translationDomain for label translation
+     * @param string|null          $translationDomain for label translation
      * @param array<string, mixed> $options           menu item options
      *
      * @phpstan-template T of object
