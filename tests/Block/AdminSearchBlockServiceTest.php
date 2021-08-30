@@ -63,6 +63,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
             $this->pool,
             $this->searchHandler,
             $this->templateRegistry,
+            'show',
             'show'
         );
         $blockContext = $this->getBlockContext($blockService);
@@ -108,6 +109,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
             $pool,
             $this->searchHandler,
             $this->templateRegistry,
+            'show',
             'show'
         );
         $blockContext = $this->getBlockContext($blockService);
@@ -139,6 +141,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
             $pool,
             $this->searchHandler,
             $this->templateRegistry,
+            'show',
             'show'
         );
         $blockContext = $this->getBlockContext($blockService);

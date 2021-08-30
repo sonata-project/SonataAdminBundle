@@ -81,8 +81,23 @@ You can also configure the block template per admin while defining the admin:
               </call>
           </service>
 
+Configure the default search result actions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In general the search result generates a link to the show action of an item or
+displayed as a text if the show route is disabled or you haven't the required
+permission. You can change this behavior by overriding the option
+
+.. code-block:: yaml
+
+    # config/packages/sonata_admin.yaml
+
+    sonata_admin:
+        global_search:
+            admin_route: edit
+
 Customize visibility of empty result boxes
-------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 By default all the admin boxes are shown in search results and it looks like this:
 

@@ -12,7 +12,7 @@ file that was distributed with this source code.
 {% extends get_admin_template('base_list_field', admin.code) %}
 
 {% block field %}
-    {% set route_name = field_description.option('route').name|default('show') %}
+    {% set route_name = field_description.option('route').name|default(sonata_config.getOption('default_admin_route')) %}
     {% set route_parameters = field_description.option('route').parameters|default([]) %}
 
     {% if field_description.hasassociationadmin and field_description.associationadmin.hasRoute(route_name) %}

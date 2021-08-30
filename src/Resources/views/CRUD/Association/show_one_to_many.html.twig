@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 {% block field %}
     <ul class="sonata-ba-show-one-to-many">
-        {% set route_name = field_description.option('route').name|default('show') %}
+        {% set route_name = field_description.option('route').name|default(sonata_config.getOption('default_admin_route')) %}
         {% set route_parameters = field_description.option('route').parameters|default([]) %}
 
         {% for element in value %}

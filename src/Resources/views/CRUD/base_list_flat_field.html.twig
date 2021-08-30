@@ -10,7 +10,7 @@ file that was distributed with this source code.
 #}
 
 <span class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}">
-    {% set route_name = field_description.option('route').name|default('show') %}
+    {% set route_name = field_description.option('route').name|default(sonata_config.getOption('default_admin_route')) %}
     {% set route_parameters = field_description.option('route').parameters|default([]) %}
 
     {% if
