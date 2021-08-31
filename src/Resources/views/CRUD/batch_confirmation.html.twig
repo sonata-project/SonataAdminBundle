@@ -48,7 +48,9 @@ file that was distributed with this source code.
                         {{ form_rest(form) }}
                     </div>
 
-                    <button type="submit" class="btn btn-danger">{{ 'btn_execute_batch_action'|trans({}, 'SonataAdminBundle') }}</button>
+                    <button type="submit" class="btn btn-danger">
+                        {{ 'btn_execute_batch_action'|trans({}, 'SonataAdminBundle') }}
+                    </button>
 
                     {% if admin.hasRoute('list') and admin.hasAccess('list') %}
                         {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}

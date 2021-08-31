@@ -58,7 +58,7 @@ final class AdminAclManipulator implements AdminAclManipulatorInterface
 
         // create admin ACL
         $output->writeln(sprintf(' > install ACL for %s', $admin->getCode()));
-        $configResult = $this->addAdminClassAces($output, $acl, $securityHandler, $securityHandler->buildSecurityInformation($admin));
+        $configResult = $this->addAdminClassAces($output, $acl, $securityHandler, $admin);
 
         if ($configResult) {
             $securityHandler->updateAcl($acl);
@@ -72,12 +72,12 @@ final class AdminAclManipulator implements AdminAclManipulatorInterface
         OutputInterface $output,
         MutableAclInterface $acl,
         AclSecurityHandlerInterface $securityHandler,
-        array $roleInformation = []
+        AdminInterface $admin
     ): bool {
         if (\count($securityHandler->getAdminPermissions()) > 0) {
             $builder = new $this->maskBuilderClass();
 
-            foreach ($roleInformation as $role => $permissions) {
+            foreach ($securityHandler->buildSecurityInformation($admin) as $role => $permissions) {
                 $aceIndex = $securityHandler->findClassAceIndexByRole($acl, $role);
                 $roleAdminPermissions = [];
 

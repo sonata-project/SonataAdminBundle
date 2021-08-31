@@ -154,7 +154,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         $securityIdentity = UserSecurityIdentity::fromAccount($user);
 
         $this->addObjectOwner($acl, $securityIdentity);
-        $this->addObjectClassAces($acl, $this->buildSecurityInformation($admin));
+        $this->addObjectClassAces($acl, $admin);
         $this->updateAcl($acl);
     }
 
@@ -199,11 +199,11 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         }
     }
 
-    public function addObjectClassAces(MutableAclInterface $acl, array $roleInformation = []): void
+    public function addObjectClassAces(MutableAclInterface $acl, AdminInterface $admin): void
     {
         $builder = new $this->maskBuilderClass();
 
-        foreach ($roleInformation as $role => $permissions) {
+        foreach ($this->buildSecurityInformation($admin) as $role => $permissions) {
             $aceIndex = $this->findClassAceIndexByRole($acl, $role);
             $hasRole = false;
 
