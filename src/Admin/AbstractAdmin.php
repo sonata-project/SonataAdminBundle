@@ -138,13 +138,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     protected $searchResultActions = ['edit', 'show'];
 
     /**
-     * The Access mapping.
-     *
-     * @var array<string, string|string[]> [action1 => requiredRole1, action2 => [requiredRole2, requiredRole3]]
-     */
-    protected $accessMapping = [];
-
-    /**
      * The list FieldDescription constructed from the configureListField method.
      *
      * @var array<string, FieldDescriptionInterface>
@@ -1731,11 +1724,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getRequest()->getSession()->get(sprintf('%s.list_mode', $this->getCode()), 'list');
     }
 
-    final public function getAccessMapping(): array
-    {
-        return $this->accessMapping;
-    }
-
     final public function checkAccess(string $action, ?object $object = null): void
     {
         $access = $this->getAccess();
@@ -2222,6 +2210,14 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         return $access;
+    }
+
+    /**
+     * @return array<string, string|string[]> [action1 => requiredRole1, action2 => [requiredRole2, requiredRole3]]
+     */
+    protected function getAccessMapping(): array
+    {
+        return [];
     }
 
     /**
