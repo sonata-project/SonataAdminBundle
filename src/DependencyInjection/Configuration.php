@@ -88,6 +88,7 @@ final class Configuration implements ConfigurationInterface
                             ->defaultValue([
                                 AdminPermissionMap::PERMISSION_VIEW,
                                 AdminPermissionMap::PERMISSION_EDIT,
+                                AdminPermissionMap::PERMISSION_HISTORY,
                                 AdminPermissionMap::PERMISSION_DELETE,
                                 AdminPermissionMap::PERMISSION_UNDELETE,
                                 AdminPermissionMap::PERMISSION_OPERATOR,

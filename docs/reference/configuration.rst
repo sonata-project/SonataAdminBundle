@@ -61,6 +61,7 @@ Full Configuration Options
                     # Defaults:
                     - VIEW
                     - EDIT
+                    - HISTORY
                     - DELETE
                     - UNDELETE
                     - OPERATOR

@@ -62,6 +62,7 @@ final class AdminPermissionMapTest extends TestCase
         return [
             [true, AdminPermissionMap::PERMISSION_VIEW],
             [true, AdminPermissionMap::PERMISSION_EDIT],
+            [true, AdminPermissionMap::PERMISSION_HISTORY],
             [true, AdminPermissionMap::PERMISSION_CREATE],
             [true, AdminPermissionMap::PERMISSION_DELETE],
             [true, AdminPermissionMap::PERMISSION_UNDELETE],

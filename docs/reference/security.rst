@@ -90,7 +90,7 @@ Using ACL:
                 # acl security information
                 information:
                     GUEST:    [VIEW, LIST]
-                    STAFF:    [EDIT, LIST, CREATE]
+                    STAFF:    [EDIT, HISTORY, LIST, CREATE]
                     EDITOR:   [OPERATOR, EXPORT]
                     ADMIN:    [MASTER]
 
@@ -99,7 +99,7 @@ Using ACL:
                 admin_permissions: [CREATE, LIST, DELETE, UNDELETE, EXPORT, OPERATOR, MASTER]
 
                 # permission related to the objects
-                object_permissions: [VIEW, EDIT, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]
+                object_permissions: [VIEW, EDIT, HISTORY, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]
 
 Later, we will explain how to set up ACL with the ``FriendsOfSymfony/UserBundle``.
 
@@ -126,6 +126,7 @@ LIST         view the list of objects
 VIEW         view the detail of one object
 CREATE       create a new object
 EDIT         update an existing object
+HISTORY      access to the history of edition of an object
 DELETE       delete an existing object
 EXPORT       (for the native Sonata export links)
 **ALL**      **grants LIST, VIEW, CREATE, EDIT, DELETE and EXPORT**
