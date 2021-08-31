@@ -2206,9 +2206,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $access = array_merge([
             'acl' => AdminPermissionMap::PERMISSION_MASTER,
             'export' => AdminPermissionMap::PERMISSION_EXPORT,
-            'historyCompareRevisions' => AdminPermissionMap::PERMISSION_EDIT,
-            'historyViewRevision' => AdminPermissionMap::PERMISSION_EDIT,
-            'history' => AdminPermissionMap::PERMISSION_EDIT,
+            'historyCompareRevisions' => AdminPermissionMap::PERMISSION_HISTORY,
+            'historyViewRevision' => AdminPermissionMap::PERMISSION_HISTORY,
+            'history' => AdminPermissionMap::PERMISSION_HISTORY,
             'edit' => AdminPermissionMap::PERMISSION_EDIT,
             'show' => AdminPermissionMap::PERMISSION_VIEW,
             'create' => AdminPermissionMap::PERMISSION_CREATE,

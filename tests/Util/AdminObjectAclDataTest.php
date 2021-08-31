@@ -15,11 +15,11 @@ namespace Sonata\AdminBundle\Tests\Util;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Security\Acl\Domain\Acl;
-use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 
 /**
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
@@ -223,7 +223,7 @@ final class AdminObjectAclDataTest extends TestCase
 
         $securityHandler
             ->method('getObjectPermissions')
-            ->willReturn(['VIEW', 'EDIT', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER']);
+            ->willReturn(['VIEW', 'EDIT', 'HISTORY', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER']);
 
         $securityHandler
             ->method('buildSecurityInformation')

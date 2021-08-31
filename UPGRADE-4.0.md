@@ -259,3 +259,9 @@ protected function configureListFields(ListMapper $listMapper)
 }
 ```
 but the best is to use the constant `ListMapper::NAME_ACTIONS`.
+
+## History actions
+
+Instead of relying on the `ROLE_MYADMIN_EDIT` role, a new `ROLE_MYADMIN_HISTORY`
+role was introduced to get access to the history actions. If you use the
+revisions be sure to add this role to your users.
