@@ -10,7 +10,7 @@ parameters:
             message: '#^Call to static method PHPUnit\\Framework\\Assert::.* will always evaluate to true\.$#'
             path: tests/
         - # BC for Symfony 4 since InputBag was introduce in Symfony 5
-            message: '#^Property Symfony\\Component\\HttpFoundation\\Request\:\:\$query \(Symfony\\Component\\HttpFoundation\\InputBag\) does not accept Symfony\\Component\\HttpFoundation\\ParameterBag\.$#'
+            message: '#^Property Symfony\\Component\\HttpFoundation\\Request\:\:\$query \(Symfony\\Component\\HttpFoundation\\InputBag\<string\>\) does not accept Symfony\\Component\\HttpFoundation\\ParameterBag\.$#'
             path: tests/Admin/AdminTest.php
         - # This error is made on purpose for php version < 8
             message: '#^Method Sonata\\AdminBundle\\Tests\\Fixtures\\Entity\\FooToStringNull\:\:__toString\(\) should return string but returns null\.$#'
