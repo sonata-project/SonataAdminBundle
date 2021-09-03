@@ -9,12 +9,12 @@ file that was distributed with this source code.
 
 #}
 
-<!--
-This template can be customized to match your needs. You should only extends the template and used the differents block to customize the view:
-    - sonata_mosaic_default_view
-    - sonata_mosaic_hover_view
-    - sonata_mosaic_description
--->
+{#
+    This template can be customized to match your needs. You should only extends the template and used the differents block to customize the view:
+        - sonata_mosaic_default_view
+        - sonata_mosaic_hover_view
+        - sonata_mosaic_description
+#}
 
 <tr>
     <td colspan="{{ admin.list.getElements()|length - (app.request.isXmlHttpRequest ? (admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_ACTIONS')) + admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_BATCH'))) : 0) }}">
@@ -66,7 +66,7 @@ This template can be customized to match your needs. You should only extends the
                         </div>
                     </div>
                 {% endset %}
-                <div class="col-xs-6 col-sm-3 mosaic-box sonata-ba-list-field-batch sonata-ba-list-field"
+                <div class="col-xs-6 col-md-2 mosaic-box sonata-ba-list-field-batch sonata-ba-list-field"
                      objectId="{{ admin.id(object) }}">
                     {% if admin.hasAccess('edit', object) and admin.hasRoute('edit') %}
                         <a class="mosaic-inner-link"
