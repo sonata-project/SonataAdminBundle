@@ -9,19 +9,13 @@ file that was distributed with this source code.
 
 #}
 
-
-{#
-
-This code manages the one-to-many association field popup
-
-#}
-
 {% autoescape false %}
 
-<!-- edit one association -->
+{#
+    This code manages the one-to-many association field popup
+#}
 
 <script type="text/javascript">
-
     // handle the add link
     var field_add_{{ id }} = function(event) {
 
@@ -97,7 +91,5 @@ This code manages the one-to-many association field popup
         return false;
     }
 </script>
-
-<!-- / edit one association -->
 
 {% endautoescape %}

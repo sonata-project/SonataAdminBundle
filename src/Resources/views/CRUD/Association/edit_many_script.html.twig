@@ -9,27 +9,18 @@ file that was distributed with this source code.
 
 #}
 
-
-{#
-
-This code manages the many-to-[one|many] association field popup
-
-#}
-
 {% autoescape false %}
 
 {% set associationadmin = sonata_admin.field_description.associationadmin %}
 
-<!-- edit many association -->
+{#
+    This code manages the many-to-[one|many] association field popup
+    Handle link click in a list:
+    - if the parent has an objectId defined then the related input get updated
+    - if the parent has NO object then an ajax request is made to refresh the popup
+#}
 
 <script type="text/javascript">
-
-    {#
-      handle link click in a list :
-        - if the parent has an objectId defined then the related input get updated
-        - if the parent has NO object then an ajax request is made to refresh the popup
-    #}
-
     var field_dialog_form_list_link_{{ id }} = function(event) {
         initialize_popup_{{ id }}();
 
@@ -550,11 +541,7 @@ This code manages the many-to-[one|many] association field popup
                 jQuery('#field_actions_{{ id }} a.btn-warning').removeClass('hidden').attr('href', edit_button_url);
             {% endif %}
         });
-
     {% endif %}
-
-
 </script>
-<!-- / edit many association -->
 
 {% endautoescape %}
