@@ -89,7 +89,7 @@ final class AppendFormFieldElementActionTest extends TestCase
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getClass')->willReturn(\get_class($object));
-        $this->admin->expects($this->once())->method('setSubject')->with($object);
+        $this->admin->expects(static::once())->method('setSubject')->with($object);
         $this->admin->method('getFormTheme')->willReturn($formView);
         $this->helper->method('appendFormFieldElement')->with($this->admin, $object, null)->willReturn([
             $this->createStub(FieldDescriptionInterface::class),
@@ -99,13 +99,13 @@ final class AppendFormFieldElementActionTest extends TestCase
             ->willReturn($formView);
         $modelManager->method('find')->with(\get_class($object), 42)->willReturn($object);
         $form->method('createView')->willReturn($formView);
-        $renderer->expects($this->once())->method('setTheme')->with($formView);
+        $renderer->expects(static::once())->method('setTheme')->with($formView);
         $renderer->method('searchAndRenderBlock')->with($formView, 'widget')->willReturn('block');
 
         $response = ($this->action)($request);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame($response->getContent(), 'block');
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame($response->getContent(), 'block');
     }
 
     private function configureFormRenderer()

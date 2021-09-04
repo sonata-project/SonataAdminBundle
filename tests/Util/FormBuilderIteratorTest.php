@@ -62,15 +62,15 @@ class FormBuilderIteratorTest extends TestCase
     {
         $this->builder->add('name', TextType::class);
         $iterator = new FormBuilderIterator($this->builder);
-        $this->assertInstanceOf(\get_class($iterator), $iterator->getChildren());
-        $this->assertSame('name_name', $iterator->key());
+        static::assertInstanceOf(\get_class($iterator), $iterator->getChildren());
+        static::assertSame('name_name', $iterator->key());
     }
 
     public function testHasChildren(): void
     {
         $this->builder->add('name', TextType::class);
         $iterator = new FormBuilderIterator($this->builder);
-        $this->assertTrue($iterator->hasChildren());
+        static::assertTrue($iterator->hasChildren());
     }
 
     /**
@@ -85,6 +85,6 @@ class FormBuilderIteratorTest extends TestCase
         $this->builder->add('name', TextType::class);
         $iterator = new FormBuilderIterator($this->builder, new \stdClass());
 
-        $this->assertSame($iterator->key(), 'name_name');
+        static::assertSame($iterator->key(), 'name_name');
     }
 }

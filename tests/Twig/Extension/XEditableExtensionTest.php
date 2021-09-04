@@ -39,13 +39,13 @@ final class XEditableExtensionTest extends TestCase
                 ['required'],
                 ['multiple']
             )
-            ->will($this->onConsecutiveCalls(
+            ->will(static::onConsecutiveCalls(
                 $options['choices'],
                 'MyCatalogue',
                 $options['multiple'] ?? null
             ));
 
-        $this->assertSame($expectedChoices, $twigExtension->getXEditableChoices($fieldDescription));
+        static::assertSame($expectedChoices, $twigExtension->getXEditableChoices($fieldDescription));
     }
 
     /**

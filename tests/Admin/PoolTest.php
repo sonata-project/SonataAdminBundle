@@ -61,8 +61,8 @@ class PoolTest extends TestCase
         $this->expectDeprecation('Method "Sonata\AdminBundle\Admin\Pool::getGroups()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.');
 
         $result = $this->pool->getGroups();
-        $this->assertArrayHasKey('adminGroup1', $result);
-        $this->assertArrayHasKey('sonata.user.admin.group1', $result['adminGroup1']);
+        static::assertArrayHasKey('adminGroup1', $result);
+        static::assertArrayHasKey('sonata.user.admin.group1', $result['adminGroup1']);
     }
 
     /**
@@ -78,20 +78,20 @@ class PoolTest extends TestCase
 
         $this->expectDeprecation('Method "Sonata\AdminBundle\Admin\Pool::hasGroup()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.');
 
-        $this->assertTrue($this->pool->hasGroup('adminGroup1'));
-        $this->assertFalse($this->pool->hasGroup('adminGroup2'));
+        static::assertTrue($this->pool->hasGroup('adminGroup1'));
+        static::assertFalse($this->pool->hasGroup('adminGroup2'));
     }
 
     public function testGetDashboardGroups(): void
     {
         $adminGroup1 = $this->createMock(AdminInterface::class);
-        $adminGroup1->expects($this->once())->method('showIn')->willReturn(true);
+        $adminGroup1->expects(static::once())->method('showIn')->willReturn(true);
 
         $adminGroup2 = $this->createMock(AdminInterface::class);
-        $adminGroup2->expects($this->once())->method('showIn')->willReturn(false);
+        $adminGroup2->expects(static::once())->method('showIn')->willReturn(false);
 
         $adminGroup3 = $this->createMock(AdminInterface::class);
-        $adminGroup3->expects($this->once())->method('showIn')->willReturn(false);
+        $adminGroup3->expects(static::once())->method('showIn')->willReturn(false);
 
         $this->container->set('sonata.user.admin.group1', $adminGroup1);
         $this->container->set('sonata.user.admin.group2', $adminGroup2);
@@ -118,8 +118,8 @@ class PoolTest extends TestCase
 
         $groups = $pool->getDashboardGroups();
 
-        $this->assertCount(1, $groups);
-        $this->assertSame($adminGroup1, $groups['adminGroup1']['items']['itemKey']);
+        static::assertCount(1, $groups);
+        static::assertSame($adminGroup1, $groups['adminGroup1']['items']['itemKey']);
     }
 
     /**
@@ -151,7 +151,7 @@ class PoolTest extends TestCase
 
         $this->expectDeprecation('Method "Sonata\AdminBundle\Admin\Pool::getAdminsByGroup()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.');
 
-        $this->assertSame([], $this->pool->getAdminsByGroup('adminGroup1'));
+        static::assertSame([], $this->pool->getAdminsByGroup('adminGroup1'));
     }
 
     /**
@@ -181,8 +181,8 @@ class PoolTest extends TestCase
 
         $this->expectDeprecation('Method "Sonata\AdminBundle\Admin\Pool::getAdminsByGroup()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.');
 
-        $this->assertCount(2, $this->pool->getAdminsByGroup('adminGroup1'));
-        $this->assertCount(1, $this->pool->getAdminsByGroup('adminGroup2'));
+        static::assertCount(2, $this->pool->getAdminsByGroup('adminGroup1'));
+        static::assertCount(1, $this->pool->getAdminsByGroup('adminGroup2'));
     }
 
     public function testGetAdminForClassWithTooManyRegisteredAdmin(): void
@@ -191,7 +191,7 @@ class PoolTest extends TestCase
             'someclass' => ['sonata.user.admin.group1', 'sonata.user.admin.group2'],
         ]);
 
-        $this->assertTrue($pool->hasAdminByClass('someclass'));
+        static::assertTrue($pool->hasAdminByClass('someclass'));
 
         // NEXT_MAJOR: Remove this line and uncomment the following one.
         $this->expectException(\RuntimeException::class);
@@ -208,8 +208,8 @@ class PoolTest extends TestCase
             'someclass' => [Pool::DEFAULT_ADMIN_KEY => 'sonata.user.admin.group1', 'sonata.user.admin.group2'],
         ]);
 
-        $this->assertTrue($pool->hasAdminByClass('someclass'));
-        $this->assertInstanceOf(AdminInterface::class, $pool->getAdminByClass('someclass'));
+        static::assertTrue($pool->hasAdminByClass('someclass'));
+        static::assertInstanceOf(AdminInterface::class, $pool->getAdminByClass('someclass'));
     }
 
     public function testGetAdminForClassWhenAdminClassIsSet(): void
@@ -218,8 +218,8 @@ class PoolTest extends TestCase
 
         $pool = new Pool($this->container, ['sonata.user.admin.group1'], [], ['someclass' => ['sonata.user.admin.group1']]);
 
-        $this->assertTrue($pool->hasAdminByClass('someclass'));
-        $this->assertInstanceOf(AdminInterface::class, $pool->getAdminByClass('someclass'));
+        static::assertTrue($pool->hasAdminByClass('someclass'));
+        static::assertInstanceOf(AdminInterface::class, $pool->getAdminByClass('someclass'));
     }
 
     public function testGetInstanceWithUndefinedServiceId(): void
@@ -249,7 +249,7 @@ class PoolTest extends TestCase
 
         $pool = new Pool($this->container, ['sonata.news.admin.post']);
 
-        $this->assertInstanceOf(AdminInterface::class, $pool->getAdminByAdminCode('sonata.news.admin.post'));
+        static::assertInstanceOf(AdminInterface::class, $pool->getAdminByAdminCode('sonata.news.admin.post'));
     }
 
     public function testGetAdminByAdminCodeForChildClass(): void
@@ -261,16 +261,16 @@ class PoolTest extends TestCase
 
         $childAdmin = $this->createMock(AdminInterface::class);
 
-        $adminMock->expects($this->once())
+        $adminMock->expects(static::once())
             ->method('getChild')
-            ->with($this->equalTo('sonata.news.admin.comment'))
+            ->with(static::equalTo('sonata.news.admin.comment'))
             ->willReturn($childAdmin);
 
         $this->container->set('sonata.news.admin.post', $adminMock);
 
         $pool = new Pool($this->container, ['sonata.news.admin.post', 'sonata.news.admin.comment']);
 
-        $this->assertSame($childAdmin, $pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.comment'));
+        static::assertSame($childAdmin, $pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.comment'));
     }
 
     /**
@@ -290,7 +290,7 @@ class PoolTest extends TestCase
 
         // NEXT_MAJOR: remove the assertion around getAdminByAdminCode(), remove the "@group" and "@expectedDeprecation" annotations, and uncomment the following line
         // $this->expectException(AdminCodeNotFoundException::class);
-        $this->assertFalse($this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid'));
+        static::assertFalse($this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid'));
     }
 
     /**
@@ -304,7 +304,7 @@ class PoolTest extends TestCase
     {
         // NEXT_MAJOR: remove the assertion around getAdminByAdminCode(), remove the "@group" and "@expectedDeprecation" annotations, and uncomment the following line
         // $this->expectException(\TypeError::class);
-        $this->assertFalse($this->pool->getAdminByAdminCode($adminId));
+        static::assertFalse($this->pool->getAdminByAdminCode($adminId));
     }
 
     public function getNonStringAdminServiceNames(): array
@@ -332,7 +332,7 @@ class PoolTest extends TestCase
 
         $this->container->set('sonata.news.admin.post', $adminMock);
         $this->pool->setAdminServiceIds(['sonata.news.admin.post', 'sonata.news.admin.valid']);
-        $this->assertFalse($this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid'));
+        static::assertFalse($this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid'));
 
         // NEXT_MAJOR: remove the "@group" and "@expectedDeprecation" annotations, the previous assertion and uncomment the following lines
         // $this->expectException(AdminCodeNotFoundException::class);
@@ -347,7 +347,7 @@ class PoolTest extends TestCase
     public function testGetAdminByAdminCodeWithInvalidRootCode(string $adminId): void
     {
         $adminMock = $this->createMock(AdminInterface::class);
-        $adminMock->expects($this->never())
+        $adminMock->expects(static::never())
             ->method('hasChild');
 
         $pool = new Pool($this->container, [$adminId]);
@@ -379,7 +379,7 @@ class PoolTest extends TestCase
         $adminMock
             ->method('hasChild')
             ->willReturn(false);
-        $adminMock->expects($this->never())
+        $adminMock->expects(static::never())
             ->method('getChild');
 
         $this->container->set('admin1', $adminMock);
@@ -387,7 +387,7 @@ class PoolTest extends TestCase
 
         // NEXT_MAJOR: remove the assertion around getAdminByAdminCode(), remove the "@group" and "@expectedDeprecation" annotations, and uncomment the following line
         // $this->expectException(AdminCodeNotFoundException::class);
-        $this->assertFalse($pool->getAdminByAdminCode($adminId));
+        static::assertFalse($pool->getAdminByAdminCode($adminId));
     }
 
     public function getInvalidChildAdminServiceNames()
@@ -411,14 +411,14 @@ class PoolTest extends TestCase
             $adminMock
                 ->method('hasChild')
                 ->willReturn(true);
-            $adminMock->expects($this->once())
+            $adminMock->expects(static::once())
                 ->method('getChild')
-                ->with($this->equalTo('sonata.news.admin.comment'))
+                ->with(static::equalTo('sonata.news.admin.comment'))
                 ->willReturn($childAdminMock);
         } else {
-            $adminMock->expects($this->never())
+            $adminMock->expects(static::never())
                 ->method('hasChild');
-            $adminMock->expects($this->never())
+            $adminMock->expects(static::never())
                 ->method('getChild');
         }
 
@@ -426,7 +426,7 @@ class PoolTest extends TestCase
 
         $pool = new Pool($this->container, ['sonata.news.admin.post', 'sonata.news.admin.comment']);
 
-        $this->assertTrue($pool->hasAdminByAdminCode($adminId));
+        static::assertTrue($pool->hasAdminByAdminCode($adminId));
     }
 
     public function getAdminServiceNamesToCheck()
@@ -455,10 +455,10 @@ class PoolTest extends TestCase
         $adminMock
             ->method('hasChild')
             ->willReturn(false);
-        $adminMock->expects($this->never())
+        $adminMock->expects(static::never())
             ->method('getChild');
 
-        $this->assertFalse($this->pool->hasAdminByAdminCode($adminId));
+        static::assertFalse($this->pool->hasAdminByAdminCode($adminId));
     }
 
     public function getInvalidAdminServiceNamesToCheck()
@@ -472,7 +472,7 @@ class PoolTest extends TestCase
 
     public function testHasAdminByAdminCodeWithNonExistentCode(): void
     {
-        $this->assertFalse($this->pool->hasAdminByAdminCode('sonata.news.admin.nonexistent_code'));
+        static::assertFalse($this->pool->hasAdminByAdminCode('sonata.news.admin.nonexistent_code'));
     }
 
     /**
@@ -488,14 +488,14 @@ class PoolTest extends TestCase
         $adminMock
             ->method('hasChild')
             ->willReturn(false);
-        $adminMock->expects($this->never())
+        $adminMock->expects(static::never())
             ->method('getChild');
 
         $this->container->set('sonata.news.admin.post', $adminMock);
 
         $this->pool->setAdminServiceIds(['sonata.news.admin.post']);
 
-        $this->assertFalse($this->pool->hasAdminByAdminCode($adminId));
+        static::assertFalse($this->pool->hasAdminByAdminCode($adminId));
     }
 
     public function getInvalidChildAdminServiceNamesToCheck(): array
@@ -510,19 +510,19 @@ class PoolTest extends TestCase
     public function testGetAdminClasses(): void
     {
         $pool = new Pool($this->container, [], [], ['someclass' => 'sonata.user.admin.group1']);
-        $this->assertSame(['someclass' => 'sonata.user.admin.group1'], $pool->getAdminClasses());
+        static::assertSame(['someclass' => 'sonata.user.admin.group1'], $pool->getAdminClasses());
     }
 
     public function testGetAdminGroups(): void
     {
         $pool = new Pool($this->container, [], ['adminGroup1' => 'sonata.user.admin.group1']);
-        $this->assertSame(['adminGroup1' => 'sonata.user.admin.group1'], $pool->getAdminGroups());
+        static::assertSame(['adminGroup1' => 'sonata.user.admin.group1'], $pool->getAdminGroups());
     }
 
     public function testGetAdminServiceIds(): void
     {
         $pool = new Pool($this->container, ['sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3']);
-        $this->assertSame(['sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3'], $pool->getAdminServiceIds());
+        static::assertSame(['sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3'], $pool->getAdminServiceIds());
     }
 
     /**
@@ -532,7 +532,7 @@ class PoolTest extends TestCase
      */
     public function testGetContainer(): void
     {
-        $this->assertInstanceOf(ContainerInterface::class, $this->pool->getContainer());
+        static::assertInstanceOf(ContainerInterface::class, $this->pool->getContainer());
     }
 
     /**
@@ -541,12 +541,12 @@ class PoolTest extends TestCase
     public function testTemplate(): void
     {
         $templateRegistry = $this->createMock(MutableTemplateRegistryInterface::class);
-        $templateRegistry->expects($this->once())->method('getTemplate')->with('ajax')
+        $templateRegistry->expects(static::once())->method('getTemplate')->with('ajax')
             ->willReturn('Foo.html.twig');
 
         $this->pool->setTemplateRegistry($templateRegistry);
 
-        $this->assertSame('Foo.html.twig', $this->pool->getTemplate('ajax'));
+        static::assertSame('Foo.html.twig', $this->pool->getTemplate('ajax'));
     }
 
     /**
@@ -560,14 +560,14 @@ class PoolTest extends TestCase
         ];
 
         $templateRegistry = $this->createMock(MutableTemplateRegistryInterface::class);
-        $templateRegistry->expects($this->once())->method('setTemplates')->with($templates);
-        $templateRegistry->expects($this->once())->method('getTemplates')->willReturn($templates);
+        $templateRegistry->expects(static::once())->method('setTemplates')->with($templates);
+        $templateRegistry->expects(static::once())->method('getTemplates')->willReturn($templates);
 
         $this->pool->setTemplateRegistry($templateRegistry);
 
         $this->pool->setTemplates($templates);
 
-        $this->assertSame($templates, $this->pool->getTemplates());
+        static::assertSame($templates, $this->pool->getTemplates());
     }
 
     /**
@@ -594,7 +594,7 @@ class PoolTest extends TestCase
 
         $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getTitleLogo()" method is deprecated since version 3.83 and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getLogo()" instead.');
 
-        $this->assertSame('/path/to/pic.png', $pool->getTitleLogo());
+        static::assertSame('/path/to/pic.png', $pool->getTitleLogo());
     }
 
     /**
@@ -608,7 +608,7 @@ class PoolTest extends TestCase
 
         $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getTitle()" method is deprecated since version 3.83 and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getTitle()" instead.');
 
-        $this->assertSame('Sonata Admin', $pool->getTitle());
+        static::assertSame('Sonata Admin', $pool->getTitle());
     }
 
     /**
@@ -620,11 +620,11 @@ class PoolTest extends TestCase
     {
         $pool = new Pool($this->container, 'Sonata Admin', '/path/to/pic.png', ['foo' => 'bar']);
 
-        $this->assertSame('bar', $pool->getOption('foo'));
+        static::assertSame('bar', $pool->getOption('foo'));
 
         $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getOption()" method is deprecated since version 3.83 and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getOption()" instead.');
 
-        $this->assertNull($pool->getOption('non_existent_option'));
+        static::assertNull($pool->getOption('non_existent_option'));
     }
 
     /**
@@ -636,7 +636,7 @@ class PoolTest extends TestCase
     {
         $this->expectDeprecation('The "Sonata\AdminBundle\Admin\Pool::getOption()" method is deprecated since version 3.83 and will be removed in 4.0. Use "Sonata\AdminBundle\SonataConfiguration::getOption()" instead.');
 
-        $this->assertSame([], $this->pool->getOption('nonexistantarray', []));
+        static::assertSame([], $this->pool->getOption('nonexistantarray', []));
     }
 
     private function getItemArray(?string $serviceId = null): array

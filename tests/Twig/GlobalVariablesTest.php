@@ -44,12 +44,12 @@ class GlobalVariablesTest extends TestCase
 
     public function testUrl(): void
     {
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('generateUrl')
             ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', ['foo'], UrlGeneratorInterface::ABSOLUTE_PATH)
             ->willReturn(true);
 
-        $this->pool->expects($this->once())
+        $this->pool->expects(static::once())
             ->method('getAdminByAdminCode')
             ->with('sonata.page.admin.page')
             ->willReturn($this->admin);
@@ -61,12 +61,12 @@ class GlobalVariablesTest extends TestCase
 
     public function testObjectUrl(): void
     {
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('generateObjectUrl')
             ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', 'foo', ['bar'], UrlGeneratorInterface::ABSOLUTE_PATH)
             ->willReturn(true);
 
-        $this->pool->expects($this->once())
+        $this->pool->expects(static::once())
             ->method('getAdminByAdminCode')
             ->with('sonata.page.admin.page')
             ->willReturn($this->admin);
@@ -82,12 +82,12 @@ class GlobalVariablesTest extends TestCase
      */
     public function testWithContainer(): void
     {
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('generateUrl')
             ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', ['foo'], UrlGeneratorInterface::ABSOLUTE_PATH)
             ->willReturn(true);
 
-        $this->pool->expects($this->once())
+        $this->pool->expects(static::once())
             ->method('getAdminByAdminCode')
             ->with('sonata.page.admin.page')
             ->willReturn($this->admin);
@@ -97,7 +97,7 @@ class GlobalVariablesTest extends TestCase
 
         $globalVariables = new GlobalVariables($container);
 
-        $this->assertSame($this->pool, $globalVariables->getAdminPool());
+        static::assertSame($this->pool, $globalVariables->getAdminPool());
 
         $globalVariables->url($this->code, $this->action, ['foo']);
     }
@@ -117,7 +117,7 @@ class GlobalVariablesTest extends TestCase
 
     public function testGetMosaicBackground(): void
     {
-        $this->assertSame(
+        static::assertSame(
             'image.png',
             (new GlobalVariables($this->pool, 'image.png'))->getMosaicBackground()
         );
@@ -125,6 +125,6 @@ class GlobalVariablesTest extends TestCase
 
     public function testGetMosaicBackgroundNull(): void
     {
-        $this->assertNull((new GlobalVariables($this->pool))->getMosaicBackground());
+        static::assertNull((new GlobalVariables($this->pool))->getMosaicBackground());
     }
 }

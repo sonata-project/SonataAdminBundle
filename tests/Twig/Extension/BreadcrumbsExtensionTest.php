@@ -106,7 +106,7 @@ final class BreadcrumbsExtensionTest extends TestCase
             ->method('getBreadcrumbs')
             ->willReturn([$item, $item2, $item3]);
 
-        $this->assertSame(
+        static::assertSame(
             'Label for item 2 &gt; [trans domain=custom_translation_domain]Label for item 3 with custom_parameter[/trans]',
             $this->removeExtraWhitespace($this->breadcrumbsExtension->renderBreadcrumbsForTitle(
                 $this->environment,
@@ -179,7 +179,7 @@ final class BreadcrumbsExtensionTest extends TestCase
             .'</li>'
             .'<li class="active"><span>Label for item 3</span></li>';
 
-        $this->assertSame(
+        static::assertSame(
             $expected,
             $this->removeExtraWhitespace($this->breadcrumbsExtension->renderBreadcrumbs(
                 $this->environment,
@@ -215,7 +215,7 @@ final class BreadcrumbsExtensionTest extends TestCase
         };
 
         $this->breadcrumbBuilder
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('getBreadcrumbs');
 
         $this->expectDeprecation('Overriding "breadcrumbs_builder" parameter in twig templates is deprecated since sonata-project/admin-bundle version 3.98 and this parameter will be removed in 4.0. Use "sonata.admin.breadcrumbs_builder" service instead.');
@@ -234,7 +234,7 @@ final class BreadcrumbsExtensionTest extends TestCase
             $customBreadcrumbsBuilder
         );
 
-        $this->assertSame(2, $customBreadcrumbsBuilder->numberOfCalls);
+        static::assertSame(2, $customBreadcrumbsBuilder->numberOfCalls);
     }
 
     private function removeExtraWhitespace(string $string): string

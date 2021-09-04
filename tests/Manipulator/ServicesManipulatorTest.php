@@ -53,7 +53,7 @@ class ServicesManipulatorTest extends TestCase
             'controller_name',
             'manager_type'
         );
-        $this->assertSame(
+        static::assertSame(
             "services:
     service_id:
         class: admin_class
@@ -70,7 +70,7 @@ class ServicesManipulatorTest extends TestCase
             'another_controller_name',
             'another_manager_type'
         );
-        $this->assertSame(
+        static::assertSame(
             "services:
     service_id:
         class: admin_class
@@ -120,7 +120,7 @@ class ServicesManipulatorTest extends TestCase
             'controller_name',
             'manager_type'
         );
-        $this->assertSame(
+        static::assertSame(
             "services:
     service_id:
         class: admin_class

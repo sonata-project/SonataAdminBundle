@@ -115,7 +115,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
         $blockContext->setSetting('admin_code', $adminCode);
 
         $this->searchHandler->configureAdminSearch([$adminCode => false]);
-        $admin->expects(self::once())->method('checkAccess')->with('list')->willReturn(true);
+        $admin->expects(static::once())->method('checkAccess')->with('list')->willReturn(true);
 
         $response = $blockService->execute($blockContext);
 

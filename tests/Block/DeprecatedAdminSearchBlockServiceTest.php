@@ -85,9 +85,9 @@ class DeprecatedAdminSearchBlockServiceTest extends BlockServiceTestCase
         );
         $blockContext = $this->getBlockContext($blockService);
 
-        $this->searchHandler->expects(self::once())->method('search')->willReturn(false);
-        $this->pool->expects(self::once())->method('getAdminByAdminCode')->willReturn($admin);
-        $admin->expects(self::once())->method('checkAccess')->with('list')->willReturn(true);
+        $this->searchHandler->expects(static::once())->method('search')->willReturn(false);
+        $this->pool->expects(static::once())->method('getAdminByAdminCode')->willReturn($admin);
+        $admin->expects(static::once())->method('checkAccess')->with('list')->willReturn(true);
 
         $response = $blockService->execute($blockContext);
 

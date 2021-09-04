@@ -34,12 +34,12 @@ class ModelTypeListTest extends TypeTestCase
 
         $options = $optionResolver->resolve();
 
-        $this->assertNull($options['model_manager']);
-        $this->assertNull($options['class']);
-        $this->assertSame('link_add', $options['btn_add']);
-        $this->assertSame('link_edit', $options['btn_edit']);
-        $this->assertSame('link_list', $options['btn_list']);
-        $this->assertSame('link_delete', $options['btn_delete']);
-        $this->assertSame('SonataAdminBundle', $options['btn_catalogue']);
+        static::assertNull($options['model_manager']);
+        static::assertNull($options['class']);
+        static::assertSame('link_add', $options['btn_add']);
+        static::assertSame('link_edit', $options['btn_edit']);
+        static::assertSame('link_list', $options['btn_list']);
+        static::assertSame('link_delete', $options['btn_delete']);
+        static::assertSame('SonataAdminBundle', $options['btn_catalogue']);
     }
 }

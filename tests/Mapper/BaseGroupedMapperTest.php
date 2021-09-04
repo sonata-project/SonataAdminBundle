@@ -96,39 +96,39 @@ class BaseGroupedMapperTest extends TestCase
 
     public function testWith(): void
     {
-        $this->assertCount(0, $this->tabs);
-        $this->assertCount(0, $this->groups);
-        $this->assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->with('fooGroup'));
-        $this->assertCount(1, $this->tabs);
-        $this->assertCount(1, $this->groups);
+        static::assertCount(0, $this->tabs);
+        static::assertCount(0, $this->groups);
+        static::assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->with('fooGroup'));
+        static::assertCount(1, $this->tabs);
+        static::assertCount(1, $this->groups);
     }
 
     public function testEnd(): void
     {
-        $this->assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->with('fooGroup'));
+        static::assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->with('fooGroup'));
     }
 
     public function testTab(): void
     {
-        $this->assertCount(0, $this->tabs);
-        $this->assertCount(0, $this->groups);
-        $this->assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->tab('fooTab'));
-        $this->assertCount(1, $this->tabs);
-        $this->assertCount(0, $this->groups);
+        static::assertCount(0, $this->tabs);
+        static::assertCount(0, $this->groups);
+        static::assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->tab('fooTab'));
+        static::assertCount(1, $this->tabs);
+        static::assertCount(0, $this->groups);
     }
 
     public function testTab2(): void
     {
-        $this->assertCount(0, $this->tabs);
-        $this->assertCount(0, $this->groups);
-        $this->assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->with('fooTab', ['tab' => true]));
-        $this->assertCount(1, $this->tabs);
-        $this->assertCount(0, $this->groups);
+        static::assertCount(0, $this->tabs);
+        static::assertCount(0, $this->groups);
+        static::assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->with('fooTab', ['tab' => true]));
+        static::assertCount(1, $this->tabs);
+        static::assertCount(0, $this->groups);
     }
 
     public function testFluidInterface(): void
     {
-        $this->assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->tab('fooTab')->with('fooGroup1')->end()->with('fooGroup2')->end()->with('fooGroup3')->end()->end()->tab('barTab')->with('barGroup1')->end()->with('barGroup2')->end()->with('barGroup3')->end()->end());
+        static::assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->tab('fooTab')->with('fooGroup1')->end()->with('fooGroup2')->end()->with('fooGroup3')->end()->end()->tab('barTab')->with('barGroup1')->end()->with('barGroup2')->end()->with('barGroup3')->end()->end());
     }
 
     public function testGroupNotClosedException(): void
@@ -160,37 +160,37 @@ class BaseGroupedMapperTest extends TestCase
 
     public function testHasOpenTab(): void
     {
-        $this->assertFalse($this->baseGroupedMapper->hasOpenTab(), '->hasOpenTab() returns false when there are no tabs');
+        static::assertFalse($this->baseGroupedMapper->hasOpenTab(), '->hasOpenTab() returns false when there are no tabs');
 
         $this->baseGroupedMapper->tab('fooTab');
-        $this->assertTrue($this->baseGroupedMapper->hasOpenTab(), '->hasOpenTab() returns true when there is an open tab');
+        static::assertTrue($this->baseGroupedMapper->hasOpenTab(), '->hasOpenTab() returns true when there is an open tab');
 
         $this->baseGroupedMapper->end();
-        $this->assertFalse($this->baseGroupedMapper->hasOpenTab(), '->hasOpenTab() returns false when all tabs are closed');
+        static::assertFalse($this->baseGroupedMapper->hasOpenTab(), '->hasOpenTab() returns false when all tabs are closed');
     }
 
     public function testIfTrueApply(): void
     {
         $this->baseGroupedMapper->ifTrue(true)->tab('fooTab')->ifEnd();
-        $this->assertTrue($this->baseGroupedMapper->hasOpenTab());
+        static::assertTrue($this->baseGroupedMapper->hasOpenTab());
     }
 
     public function testIfTrueNotApply(): void
     {
         $this->baseGroupedMapper->ifTrue(false)->tab('fooTab')->ifEnd();
-        $this->assertFalse($this->baseGroupedMapper->hasOpenTab());
+        static::assertFalse($this->baseGroupedMapper->hasOpenTab());
     }
 
     public function testIfFalseApply(): void
     {
         $this->baseGroupedMapper->ifFalse(false)->tab('fooTab')->ifEnd();
-        $this->assertTrue($this->baseGroupedMapper->hasOpenTab());
+        static::assertTrue($this->baseGroupedMapper->hasOpenTab());
     }
 
     public function testIfFalseNotApply(): void
     {
         $this->baseGroupedMapper->ifFalse(true)->tab('fooTab')->ifEnd();
-        $this->assertFalse($this->baseGroupedMapper->hasOpenTab());
+        static::assertFalse($this->baseGroupedMapper->hasOpenTab());
     }
 
     public function testEndException(): void
@@ -240,8 +240,8 @@ class BaseGroupedMapperTest extends TestCase
 
         $this->baseGroupedMapper->with($name, $options);
 
-        $this->assertSame($translated ? 'label_default' : 'default', $this->tabs['default']['label']);
-        $this->assertSame($expectedLabel, $this->groups[$name]['label']);
+        static::assertSame($translated ? 'label_default' : 'default', $this->tabs['default']['label']);
+        static::assertSame($expectedLabel, $this->groups[$name]['label']);
     }
 
     public function getTabs(): array

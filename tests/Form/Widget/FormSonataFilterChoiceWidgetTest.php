@@ -40,17 +40,17 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
         $html = $this->cleanHtmlWhitespace($this->renderWidget($choice->createView()));
         $html = $this->cleanHtmlAttributeWhitespace($html);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             '<option value="1">[trans]label_type_contains[/trans]</option>',
             $html
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             '<option value="2">[trans]label_type_not_contains[/trans]</option>',
             $html
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             '<option value="3">[trans]label_type_equals[/trans]</option></select>',
             $html
         );

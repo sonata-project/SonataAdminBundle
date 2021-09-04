@@ -54,7 +54,7 @@ final class TypeGuesserChainTest extends TestCase
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
 
         $typeGuesserChain = new TypeGuesserChain([$guesser1, $guesser2, $guesser3]);
-        $this->assertSame($typeGuess2, $typeGuesserChain->guess($fieldDescription));
+        static::assertSame($typeGuess2, $typeGuesserChain->guess($fieldDescription));
 
         $typeGuess4 = new TypeGuess('foo4', [], Guess::LOW_CONFIDENCE);
         $guesser4 = $this->createStub(TypeGuesserInterface::class);
@@ -63,7 +63,7 @@ final class TypeGuesserChainTest extends TestCase
                 ->willReturn($typeGuess4);
 
         $typeGuesserChain = new TypeGuesserChain([$guesser4, $typeGuesserChain]);
-        $this->assertSame($typeGuess2, $typeGuesserChain->guess($fieldDescription));
+        static::assertSame($typeGuess2, $typeGuesserChain->guess($fieldDescription));
     }
 
     /**
@@ -97,7 +97,7 @@ final class TypeGuesserChainTest extends TestCase
         $property = 'firstName';
 
         $typeGuesserChain = new TypeGuesserChain([$guesser1, $guesser2, $guesser3]);
-        $this->assertSame($typeGuess2, $typeGuesserChain->guessType($class, $property, $modelManager));
+        static::assertSame($typeGuess2, $typeGuesserChain->guessType($class, $property, $modelManager));
 
         $typeGuess4 = new TypeGuess('foo4', [], Guess::LOW_CONFIDENCE);
         $guesser4 = $this->createStub(DeprecatedTypeGuesserInterface::class);
@@ -106,6 +106,6 @@ final class TypeGuesserChainTest extends TestCase
             ->willReturn($typeGuess4);
 
         $typeGuesserChain = new TypeGuesserChain([$guesser4, $typeGuesserChain]);
-        $this->assertSame($typeGuess2, $typeGuesserChain->guessType($class, $property, $modelManager));
+        static::assertSame($typeGuess2, $typeGuesserChain->guessType($class, $property, $modelManager));
     }
 }

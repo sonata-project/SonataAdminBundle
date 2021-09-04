@@ -40,14 +40,14 @@ class ObjectAclManipulatorTest extends TestCase
 
     public function testConfigureAclsIgnoresNonAclSecurityHandlers(): void
     {
-        $this->admin->expects($this->once())->method('getSecurityHandler');
-        $this->admin->expects($this->once())->method('getCode')->willReturn('test');
-        $this->output->expects($this->once())->method('writeln')->with($this->logicalAnd(
-            $this->stringContains('ignoring'),
-            $this->stringContains('test')
+        $this->admin->expects(static::once())->method('getSecurityHandler');
+        $this->admin->expects(static::once())->method('getCode')->willReturn('test');
+        $this->output->expects(static::once())->method('writeln')->with(static::logicalAnd(
+            static::stringContains('ignoring'),
+            static::stringContains('test')
         ));
         $manipulator = new DummyObjectAclManipulator();
-        $this->assertSame(
+        static::assertSame(
             [0, 0],
             $manipulator->configureAcls(
                 $this->output,
@@ -62,27 +62,27 @@ class ObjectAclManipulatorTest extends TestCase
     {
         $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
         $acls = $this->createMock('SplObjectStorage');
-        $acls->expects($this->atLeastOnce())->method('contains')->with($this->isInstanceOf(ObjectIdentityInterface::class))
+        $acls->expects(static::atLeastOnce())->method('contains')->with(static::isInstanceOf(ObjectIdentityInterface::class))
             ->willReturn(false, true);
         $acl = $this->createStub(AclInterface::class);
-        $acls->expects($this->once())->method('offsetGet')->with($this->isInstanceOf(ObjectIdentityInterface::class))
+        $acls->expects(static::once())->method('offsetGet')->with(static::isInstanceOf(ObjectIdentityInterface::class))
             ->willReturn($acl);
-        $securityHandler->expects($this->once())->method('findObjectAcls')->with($this->oids)->willReturn($acls);
-        $securityHandler->expects($this->once())->method('createAcl')->with($this->isInstanceOf(ObjectIdentityInterface::class))->willReturn($acl);
-        $securityHandler->expects($this->atLeastOnce())->method('addObjectOwner')->with($acl, $this->isInstanceOf(UserSecurityIdentity::class));
-        $securityHandler->expects($this->atLeastOnce())->method('buildSecurityInformation')->with($this->admin)->willReturn([]);
-        $securityHandler->expects($this->atLeastOnce())->method('addObjectClassAces')->with($acl, []);
-        $securityHandler->expects($this->atLeastOnce())->method('updateAcl')->with($acl)->willThrowException(new \Exception('test exception'));
-        $this->output->method('writeln')->with($this->logicalAnd(
-            $this->stringContains('ignoring'),
-            $this->stringContains('test exception')
+        $securityHandler->expects(static::once())->method('findObjectAcls')->with($this->oids)->willReturn($acls);
+        $securityHandler->expects(static::once())->method('createAcl')->with(static::isInstanceOf(ObjectIdentityInterface::class))->willReturn($acl);
+        $securityHandler->expects(static::atLeastOnce())->method('addObjectOwner')->with($acl, static::isInstanceOf(UserSecurityIdentity::class));
+        $securityHandler->expects(static::atLeastOnce())->method('buildSecurityInformation')->with($this->admin)->willReturn([]);
+        $securityHandler->expects(static::atLeastOnce())->method('addObjectClassAces')->with($acl, []);
+        $securityHandler->expects(static::atLeastOnce())->method('updateAcl')->with($acl)->willThrowException(new \Exception('test exception'));
+        $this->output->method('writeln')->with(static::logicalAnd(
+            static::stringContains('ignoring'),
+            static::stringContains('test exception')
         ));
 
-        $this->admin->expects($this->once())->method('getSecurityHandler')->willReturn($securityHandler);
+        $this->admin->expects(static::once())->method('getSecurityHandler')->willReturn($securityHandler);
 
         $manipulator = new DummyObjectAclManipulator();
 
-        $this->assertSame(
+        static::assertSame(
             [1, 1],
             $manipulator->configureAcls(
                 $this->output,

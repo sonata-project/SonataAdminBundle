@@ -29,22 +29,22 @@ class ConfigurationTest extends TestCase
     {
         $config = $this->process([]);
 
-        $this->assertTrue($config['options']['html5_validate']);
-        $this->assertNull($config['options']['pager_links']);
-        $this->assertTrue($config['options']['confirm_exit']);
-        $this->assertFalse($config['options']['js_debug']);
-        $this->assertTrue($config['options']['use_icheck']);
-        $this->assertSame('bundles/sonataadmin/default_mosaic_image.png', $config['options']['mosaic_background']);
-        $this->assertSame('default', $config['options']['default_group']);
-        $this->assertSame('SonataAdminBundle', $config['options']['default_label_catalogue']);
-        $this->assertSame('fa fa-folder', $config['options']['default_icon']);
+        static::assertTrue($config['options']['html5_validate']);
+        static::assertNull($config['options']['pager_links']);
+        static::assertTrue($config['options']['confirm_exit']);
+        static::assertFalse($config['options']['js_debug']);
+        static::assertTrue($config['options']['use_icheck']);
+        static::assertSame('bundles/sonataadmin/default_mosaic_image.png', $config['options']['mosaic_background']);
+        static::assertSame('default', $config['options']['default_group']);
+        static::assertSame('SonataAdminBundle', $config['options']['default_label_catalogue']);
+        static::assertSame('fa fa-folder', $config['options']['default_icon']);
     }
 
     public function testBreadcrumbsChildRouteDefaultsToEdit(): void
     {
         $config = $this->process([]);
 
-        $this->assertSame('edit', $config['breadcrumbs']['child_admin_route']);
+        static::assertSame('edit', $config['breadcrumbs']['child_admin_route']);
     }
 
     public function testOptionsWithInvalidFormat(): void
@@ -77,7 +77,7 @@ class ConfigurationTest extends TestCase
             ],
         ]]);
 
-        $this->assertSame('@SonataAdmin/mycustomtemplate.html.twig', $config['admin_services']['my_admin_id']['templates']['view']['user_block']);
+        static::assertSame('@SonataAdmin/mycustomtemplate.html.twig', $config['admin_services']['my_admin_id']['templates']['view']['user_block']);
     }
 
     /**
@@ -91,7 +91,7 @@ class ConfigurationTest extends TestCase
             'admin_services' => ['my_admin_id' => []],
         ]]);
 
-        $this->assertSame([
+        static::assertSame([
             'model_manager' => null,
             'data_source' => null,
             'field_description_factory' => null,
@@ -123,7 +123,7 @@ class ConfigurationTest extends TestCase
             'default_admin_services' => [],
         ]]);
 
-        $this->assertSame([
+        static::assertSame([
             'model_manager' => null,
             'data_source' => null,
             'field_description_factory' => null,
@@ -146,7 +146,7 @@ class ConfigurationTest extends TestCase
     {
         $config = $this->process([]);
 
-        $this->assertEmpty($config['dashboard']['blocks'][0]['roles']);
+        static::assertEmpty($config['dashboard']['blocks'][0]['roles']);
     }
 
     public function testDashboardWithRoles(): void
@@ -160,7 +160,7 @@ class ConfigurationTest extends TestCase
             ],
         ]]);
 
-        $this->assertSame($config['dashboard']['blocks'][0]['roles'], ['ROLE_ADMIN']);
+        static::assertSame($config['dashboard']['blocks'][0]['roles'], ['ROLE_ADMIN']);
     }
 
     public function testDashboardGroups(): void
@@ -190,8 +190,8 @@ class ConfigurationTest extends TestCase
             ],
         ]]);
 
-        $this->assertCount(4, $config['dashboard']['groups']['bar']['items']);
-        $this->assertSame(
+        static::assertCount(4, $config['dashboard']['groups']['bar']['items']);
+        static::assertSame(
             $config['dashboard']['groups']['bar']['items'][0],
             [
                 'admin' => 'item1',
@@ -200,7 +200,7 @@ class ConfigurationTest extends TestCase
                 'route_absolute' => false,
             ]
         );
-        $this->assertSame(
+        static::assertSame(
             $config['dashboard']['groups']['bar']['items'][1],
             [
                 'admin' => 'item2',
@@ -209,7 +209,7 @@ class ConfigurationTest extends TestCase
                 'route_absolute' => false,
             ]
         );
-        $this->assertSame(
+        static::assertSame(
             $config['dashboard']['groups']['bar']['items'][2],
             [
                 'label' => 'fooLabel',
@@ -219,7 +219,7 @@ class ConfigurationTest extends TestCase
                 'roles' => [],
             ]
         );
-        $this->assertSame(
+        static::assertSame(
             $config['dashboard']['groups']['bar']['items'][3],
             [
                 'label' => 'barLabel',
@@ -257,8 +257,8 @@ class ConfigurationTest extends TestCase
             ],
         ]]);
 
-        $this->assertCount(1, $config['dashboard']['groups']['bar']['items']);
-        $this->assertSame(
+        static::assertCount(1, $config['dashboard']['groups']['bar']['items']);
+        static::assertSame(
             $config['dashboard']['groups']['bar']['items'][0],
             [
                 'label' => '',
@@ -314,31 +314,31 @@ class ConfigurationTest extends TestCase
     {
         $config = $this->process([[]]);
 
-        $this->assertSame('ROLE_SONATA_ADMIN', $config['security']['role_admin']);
-        $this->assertSame('ROLE_SUPER_ADMIN', $config['security']['role_super_admin']);
+        static::assertSame('ROLE_SONATA_ADMIN', $config['security']['role_admin']);
+        static::assertSame('ROLE_SUPER_ADMIN', $config['security']['role_super_admin']);
     }
 
     public function testExtraAssetsDefaults(): void
     {
         $config = $this->process([[]]);
 
-        $this->assertSame([], $config['assets']['extra_stylesheets']);
-        $this->assertSame([], $config['assets']['extra_javascripts']);
+        static::assertSame([], $config['assets']['extra_stylesheets']);
+        static::assertSame([], $config['assets']['extra_javascripts']);
     }
 
     public function testRemoveAssetsDefaults(): void
     {
         $config = $this->process([[]]);
 
-        $this->assertSame([], $config['assets']['remove_stylesheets']);
-        $this->assertSame([], $config['assets']['remove_javascripts']);
+        static::assertSame([], $config['assets']['remove_stylesheets']);
+        static::assertSame([], $config['assets']['remove_javascripts']);
     }
 
     public function testDefaultControllerIsCRUDController(): void
     {
         $config = $this->process([]);
 
-        $this->assertSame(CRUDController::class, $config['default_controller']);
+        static::assertSame(CRUDController::class, $config['default_controller']);
     }
 
     public function testSettingDefaultController(): void
@@ -347,7 +347,7 @@ class ConfigurationTest extends TestCase
             'default_controller' => FooAdminController::class,
         ]]);
 
-        $this->assertSame(FooAdminController::class, $config['default_controller']);
+        static::assertSame(FooAdminController::class, $config['default_controller']);
     }
 
     /**

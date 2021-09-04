@@ -30,8 +30,8 @@ class TraversableToCollectionTest extends TestCase
     {
         $collection = TraversableToCollection::transform($value);
 
-        $this->assertInstanceOf(Collection::class, $collection);
-        $this->assertCount($expectedCount, $collection);
+        static::assertInstanceOf(Collection::class, $collection);
+        static::assertCount($expectedCount, $collection);
     }
 
     public function provideTraversableValues(): iterable

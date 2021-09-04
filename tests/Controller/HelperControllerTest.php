@@ -136,8 +136,8 @@ class HelperControllerTest extends TestCase
             'uniqid' => 'asdasd123',
         ]);
 
-        $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
-        $this->admin->expects($this->once())->method('setUniqid')->with('asdasd123');
+        $this->admin->expects(static::once())->method('setRequest')->with(static::isInstanceOf(Request::class));
+        $this->admin->expects(static::once())->method('setUniqid')->with('asdasd123');
         $this->admin->method('getObject')->with(42)->willReturn(null);
 
         $this->expectException(\RuntimeException::class);
@@ -154,13 +154,13 @@ class HelperControllerTest extends TestCase
             '_format' => 'html',
         ]);
 
-        $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
-        $this->admin->expects($this->once())->method('setUniqid')->with('asdasd123');
+        $this->admin->expects(static::once())->method('setRequest')->with(static::isInstanceOf(Request::class));
+        $this->admin->expects(static::once())->method('setUniqid')->with('asdasd123');
         $this->admin->method('getObject')->with(null)->willReturn(null);
 
         $response = $this->controller->getShortObjectDescriptionAction($request);
 
-        $this->assertInstanceOf(Response::class, $response);
+        static::assertInstanceOf(Response::class, $response);
     }
 
     public function testGetShortObjectDescriptionActionObject(): void
@@ -173,8 +173,8 @@ class HelperControllerTest extends TestCase
         ]);
         $object = new AdminControllerHelper_Foo();
 
-        $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
-        $this->admin->expects($this->once())->method('setUniqid')->with('asdasd123');
+        $this->admin->expects(static::once())->method('setRequest')->with(static::isInstanceOf(Request::class));
+        $this->admin->expects(static::once())->method('setUniqid')->with('asdasd123');
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getTemplate')->with('short_object_description')->willReturn('template');
         $this->admin->method('toString')->with($object)->willReturn('bar');
@@ -187,7 +187,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->getShortObjectDescriptionAction($request);
 
-        $this->assertSame('renderedTemplate', $response->getContent());
+        static::assertSame('renderedTemplate', $response->getContent());
     }
 
     public function testSetObjectFieldValueAction(): void
@@ -211,12 +211,12 @@ class HelperControllerTest extends TestCase
         $container = new Container();
         $modelManager = $this->createStub(ModelManagerInterface::class);
 
-        $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
+        $this->admin->expects(static::once())->method('setRequest')->with(static::isInstanceOf(Request::class));
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);
-        $this->admin->expects($this->once())->method('update')->with($object);
+        $this->admin->expects(static::once())->method('update')->with($object);
         // NEXT_MAJOR: Remove this line
         $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $this->admin->method('getModelManager')->willReturn($modelManager);
@@ -239,7 +239,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->setObjectFieldValueAction($request);
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function testSetObjectFieldValueActionOnARelationField(): void
@@ -266,13 +266,13 @@ class HelperControllerTest extends TestCase
         $templateRegistry = $this->createStub(TemplateRegistryInterface::class);
         $container = new Container();
 
-        $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
+        $this->admin->expects(static::once())->method('setRequest')->with(static::isInstanceOf(Request::class));
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('bar')->willReturn($fieldDescription);
         $this->admin->method('getClass')->willReturn(\get_class($object));
-        $this->admin->expects($this->once())->method('update')->with($object);
+        $this->admin->expects(static::once())->method('update')->with($object);
         $container->set('sonata.post.admin.template_registry', $templateRegistry);
         // NEXT_MAJOR: Remove this line
         $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
@@ -298,7 +298,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->setObjectFieldValueAction($request);
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function testAppendFormFieldElementAction(): void
@@ -318,10 +318,10 @@ class HelperControllerTest extends TestCase
 
         $renderer = $this->configureFormRenderer();
 
-        $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
+        $this->admin->expects(static::once())->method('setRequest')->with(static::isInstanceOf(Request::class));
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getClass')->willReturn(\get_class($object));
-        $this->admin->expects($this->once())->method('setSubject')->with($object);
+        $this->admin->expects(static::once())->method('setSubject')->with($object);
         $this->admin->method('getFormTheme')->willReturn($formView);
         $this->helper->method('appendFormFieldElement')->with($this->admin, $object, null)->willReturn([
             $this->createStub(FieldDescriptionInterface::class),
@@ -331,13 +331,13 @@ class HelperControllerTest extends TestCase
             ->willReturn($formView);
         $modelManager->method('find')->with(\get_class($object), 42)->willReturn($object);
         $form->method('createView')->willReturn($formView);
-        $renderer->expects($this->once())->method('setTheme')->with($formView, $formView);
+        $renderer->expects(static::once())->method('setTheme')->with($formView, $formView);
         $renderer->method('searchAndRenderBlock')->with($formView, 'widget')->willReturn('block');
 
         $response = $this->controller->appendFormFieldElementAction($request);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame($response->getContent(), 'block');
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame($response->getContent(), 'block');
     }
 
     public function testRetrieveFormFieldElementAction(): void
@@ -358,26 +358,26 @@ class HelperControllerTest extends TestCase
 
         $renderer = $this->configureFormRenderer();
 
-        $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
+        $this->admin->expects(static::once())->method('setRequest')->with(static::isInstanceOf(Request::class));
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getClass')->willReturn(\get_class($object));
-        $this->admin->expects($this->once())->method('setSubject')->with($object);
+        $this->admin->expects(static::once())->method('setSubject')->with($object);
         $this->admin->method('getFormTheme')->willReturn($formView);
         $this->admin->method('getFormBuilder')->willReturn($formBuilder);
         $this->helper->method('getChildFormView')->with($formView, null)
             ->willReturn($formView);
         $modelManager->method('find')->with(\get_class($object), 42)->willReturn($object);
-        $form->expects($this->once())->method('setData')->with($object);
-        $form->expects($this->once())->method('handleRequest')->with($request);
+        $form->expects(static::once())->method('setData')->with($object);
+        $form->expects(static::once())->method('handleRequest')->with($request);
         $form->method('createView')->willReturn($formView);
         $formBuilder->method('getForm')->willReturn($form);
-        $renderer->expects($this->once())->method('setTheme')->with($formView, $formView);
+        $renderer->expects(static::once())->method('setTheme')->with($formView, $formView);
         $renderer->method('searchAndRenderBlock')->with($formView, 'widget')->willReturn('block');
 
         $response = $this->controller->retrieveFormFieldElementAction($request);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame($response->getContent(), 'block');
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame($response->getContent(), 'block');
     }
 
     public function testSetObjectFieldValueActionWithViolations(): void
@@ -397,7 +397,7 @@ class HelperControllerTest extends TestCase
         $propertyAccessor = new PropertyAccessor();
         $modelManager = $this->createStub(ModelManagerInterface::class);
 
-        $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
+        $this->admin->expects(static::once())->method('setRequest')->with(static::isInstanceOf(Request::class));
         $this->pool->method('getPropertyAccessor')->willReturn($propertyAccessor);
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
@@ -414,8 +414,8 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->setObjectFieldValueAction($request);
 
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $this->assertSame(json_encode("error1\nerror2"), $response->getContent());
+        static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        static::assertSame(json_encode("error1\nerror2"), $response->getContent());
     }
 
     public function testRetrieveAutocompleteItemsActionNotGranted(): void
@@ -424,7 +424,7 @@ class HelperControllerTest extends TestCase
             'admin_code' => 'foo.admin',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
-        $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
+        $this->admin->expects(static::once())->method('setRequest')->with(static::isInstanceOf(Request::class));
         $this->admin->method('hasAccess')->willReturnMap([
             ['create', false],
             ['edit', false],
@@ -450,9 +450,9 @@ class HelperControllerTest extends TestCase
 
         $this->configureFormConfig('barField', true);
 
-        $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
+        $this->admin->expects(static::once())->method('setRequest')->with(static::isInstanceOf(Request::class));
         $this->admin->method('getNewInstance')->willReturn($object);
-        $this->admin->expects($this->once())->method('setSubject')->with($object);
+        $this->admin->expects(static::once())->method('setSubject')->with($object);
         $this->admin->method('hasAccess')->with('create')->willReturn(true);
         $this->admin->method('getFormFieldDescriptions')->willReturn(null);
         $this->admin->method('getFormFieldDescription')->with('barField')->willReturn($fieldDescription);
@@ -483,9 +483,9 @@ class HelperControllerTest extends TestCase
 
         $this->configureFormConfig('barField');
 
-        $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
+        $this->admin->expects(static::once())->method('setRequest')->with(static::isInstanceOf(Request::class));
         $this->admin->method('getNewInstance')->willReturn($object);
-        $this->admin->expects($this->once())->method('setSubject')->with($object);
+        $this->admin->expects(static::once())->method('setSubject')->with($object);
         $this->admin->method('hasAccess')->with('create')->willReturn(true);
         $this->admin->method('getFormFieldDescription')->with('barField')->willReturn($fieldDescription);
         $this->admin->method('getFormFieldDescriptions')->willReturn(null);
@@ -496,9 +496,9 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertSame('{"status":"KO","message":"Too short search string."}', $response->getContent());
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame('application/json', $response->headers->get('Content-Type'));
+        static::assertSame('{"status":"KO","message":"Too short search string."}', $response->getContent());
     }
 
     public function testRetrieveAutocompleteItems(): void
@@ -515,11 +515,11 @@ class HelperControllerTest extends TestCase
         $filter = new FooFilter();
         $filter->initialize('foo');
 
-        $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
+        $this->admin->expects(static::once())->method('setRequest')->with(static::isInstanceOf(Request::class));
 
         $datagrid->method('hasFilter')->with('foo')->willReturn(true);
         $datagrid->method('getFilter')->with('foo')->willReturn($filter);
-        $datagrid->expects($this->exactly(3))->method('setValue')->withConsecutive(
+        $datagrid->expects(static::exactly(3))->method('setValue')->withConsecutive(
             ['foo', null, 'sonata'],
             [DatagridInterface::PER_PAGE, null, 10],
             [DatagridInterface::PAGE, null, 1]
@@ -527,9 +527,9 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame('application/json', $response->headers->get('Content-Type'));
+        static::assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
 
     public function testRetrieveAutocompleteItemsComplexPropertyArray(): void
@@ -543,7 +543,7 @@ class HelperControllerTest extends TestCase
         $this->configureFormConfigComplexPropertyArray('barField');
         $datagrid = $this->configureAutocompleteItemsDatagrid();
 
-        $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
+        $this->admin->expects(static::once())->method('setRequest')->with(static::isInstanceOf(Request::class));
 
         $filter = new FooFilter();
         $filter->initialize('entity.property');
@@ -559,7 +559,7 @@ class HelperControllerTest extends TestCase
             ['entity.property', $filter],
             ['entity2.property2', $filter2],
         ]);
-        $datagrid->expects($this->exactly(4))->method('setValue')->withConsecutive(
+        $datagrid->expects(static::exactly(4))->method('setValue')->withConsecutive(
             ['entity__property', null, 'sonata'],
             ['entity2__property2', null, 'sonata'],
             [DatagridInterface::PER_PAGE, null, 10],
@@ -568,9 +568,9 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame('application/json', $response->headers->get('Content-Type'));
+        static::assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
 
     public function testRetrieveAutocompleteItemsComplexProperty(): void
@@ -587,11 +587,11 @@ class HelperControllerTest extends TestCase
         $filter = new FooFilter();
         $filter->initialize('entity.property');
 
-        $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
+        $this->admin->expects(static::once())->method('setRequest')->with(static::isInstanceOf(Request::class));
 
         $datagrid->method('hasFilter')->with('entity.property')->willReturn(true);
         $datagrid->method('getFilter')->with('entity.property')->willReturn($filter);
-        $datagrid->expects($this->exactly(3))->method('setValue')->withConsecutive(
+        $datagrid->expects(static::exactly(3))->method('setValue')->withConsecutive(
             ['entity__property', null, 'sonata'],
             [DatagridInterface::PER_PAGE, null, 10],
             [DatagridInterface::PAGE, null, 1]
@@ -599,9 +599,9 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame('application/json', $response->headers->get('Content-Type'));
+        static::assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
 
     private function configureAutocompleteItemsDatagrid(): MockObject
@@ -617,15 +617,15 @@ class HelperControllerTest extends TestCase
             ->addMethods(['getTargetModel'])
             ->getMockForAbstractClass();
 
-        $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
+        $this->admin->expects(static::once())->method('setRequest')->with(static::isInstanceOf(Request::class));
         $this->admin->method('getNewInstance')->willReturn($model);
-        $this->admin->expects($this->once())->method('setSubject')->with($model);
+        $this->admin->expects(static::once())->method('setSubject')->with($model);
         $this->admin->method('hasAccess')->with('create')->willReturn(true);
         $this->admin->method('getFormFieldDescription')->with('barField')->willReturn($fieldDescription);
         $this->admin->method('getFormFieldDescriptions')->willReturn(null);
         $this->admin->method('id')->with($model)->willReturn(123);
-        $targetAdmin->expects($this->once())->method('checkAccess')->with('list');
-        $targetAdmin->expects($this->once())->method('setFilterPersister')->with(null);
+        $targetAdmin->expects(static::once())->method('checkAccess')->with('list');
+        $targetAdmin->expects(static::once())->method('setFilterPersister')->with(null);
         $targetAdmin->method('getDatagrid')->willReturn($datagrid);
         $targetAdmin->method('getObjectMetadata')->with($model)->willReturn($metadata);
         $metadata->method('getTitle')->willReturn('FOO');
@@ -647,7 +647,7 @@ class HelperControllerTest extends TestCase
         $formType = $this->createStub(Form::class);
         $formConfig = $this->createStub(FormConfigInterface::class);
 
-        $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
+        $this->admin->expects(static::once())->method('setRequest')->with(static::isInstanceOf(Request::class));
         $this->admin->method('getForm')->willReturn($form);
         $form->method('get')->with($field)->willReturn($formType);
         $formType->method('getConfig')->willReturn($formConfig);
@@ -669,7 +669,7 @@ class HelperControllerTest extends TestCase
         $formType = $this->createStub(Form::class);
         $formConfig = $this->createStub(FormConfigInterface::class);
 
-        $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
+        $this->admin->expects(static::once())->method('setRequest')->with(static::isInstanceOf(Request::class));
         $this->admin->method('getForm')->willReturn($form);
         $form->method('get')->with($field)->willReturn($formType);
         $formType->method('getConfig')->willReturn($formConfig);
@@ -691,7 +691,7 @@ class HelperControllerTest extends TestCase
         $formType = $this->createStub(Form::class);
         $formConfig = $this->createStub(FormConfigInterface::class);
 
-        $this->admin->expects($this->once())->method('setRequest')->with($this->isInstanceOf(Request::class));
+        $this->admin->expects(static::once())->method('setRequest')->with(static::isInstanceOf(Request::class));
         $this->admin->method('getForm')->willReturn($form);
         $form->method('get')->with($field)->willReturn($formType);
         $formType->method('getConfig')->willReturn($formConfig);

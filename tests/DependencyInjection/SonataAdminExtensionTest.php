@@ -185,9 +185,9 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
 
         // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($stylesheets, $poolStylesheets);
+        static::assertSame($stylesheets, $poolStylesheets);
 
-        $this->assertSame(
+        static::assertSame(
             array_merge($this->getDefaultStylesheets(), $extraStylesheets),
             $stylesheets
         );
@@ -211,9 +211,9 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
 
         // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($stylesheets, $poolStylesheets);
+        static::assertSame($stylesheets, $poolStylesheets);
 
-        $this->assertSame(
+        static::assertSame(
             array_values(
                 array_diff($this->defaultConfiguration['assets']['stylesheets'], $removeStylesheets)
             ),
@@ -236,9 +236,9 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $javascripts = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['javascripts'];
 
         // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($javascripts, $poolJavascripts);
+        static::assertSame($javascripts, $poolJavascripts);
 
-        $this->assertSame(
+        static::assertSame(
             array_merge($this->defaultConfiguration['assets']['javascripts'], $extraJavascripts),
             $javascripts
         );
@@ -262,9 +262,9 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $javascripts = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['javascripts'];
 
         // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($javascripts, $poolJavascripts);
+        static::assertSame($javascripts, $poolJavascripts);
 
-        $this->assertSame(
+        static::assertSame(
             array_values(
                 array_diff($this->defaultConfiguration['assets']['javascripts'], $removeJavascripts)
             ),
@@ -299,9 +299,9 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
 
         // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($stylesheets, $poolStylesheets);
+        static::assertSame($stylesheets, $poolStylesheets);
 
-        $this->assertSame(
+        static::assertSame(
             array_merge(
                 array_diff($this->defaultConfiguration['assets']['stylesheets'], $removeStylesheets),
                 $extraStylesheets
@@ -314,9 +314,9 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $javascripts = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['javascripts'];
 
         // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($javascripts, $poolJavascripts);
+        static::assertSame($javascripts, $poolJavascripts);
 
-        $this->assertSame(
+        static::assertSame(
             array_merge(
                 array_diff($this->defaultConfiguration['assets']['javascripts'], $removeJavascripts),
                 $extraJavascripts
@@ -329,7 +329,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
     {
         $this->load();
 
-        $this->assertSame([
+        static::assertSame([
             'user_block' => '@SonataAdmin/Core/user_block.html.twig',
             'add_block' => '@SonataAdmin/Core/add_block.html.twig',
             'layout' => '@SonataAdmin/standard_layout.html.twig',
@@ -380,17 +380,17 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->container->setParameter('kernel.bundles', $bundlesWithSonataIntlBundle);
         $this->load();
         $templates = $this->container->getParameter('sonata.admin.configuration.templates');
-        $this->assertSame('@SonataIntl/CRUD/history_revision_timestamp.html.twig', $templates['history_revision_timestamp']);
+        static::assertSame('@SonataIntl/CRUD/history_revision_timestamp.html.twig', $templates['history_revision_timestamp']);
     }
 
     public function testLegacyTextExtensionConfiguration(): void
     {
         $this->load();
 
-        $this->assertTrue($this->container->getParameter('sonata.admin.configuration.legacy_twig_text_extension'));
+        static::assertTrue($this->container->getParameter('sonata.admin.configuration.legacy_twig_text_extension'));
         $this->assertContainerBuilderHasService('sonata.string.twig.extension');
 
-        $this->assertSame(
+        static::assertSame(
             'sonata.deprecated_text.twig.extension',
             (string) $this->container->getDefinition('sonata.string.twig.extension')->getArgument(0)
         );
@@ -402,7 +402,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         ]);
 
         $this->assertContainerBuilderHasService('sonata.string.twig.extension');
-        $this->assertNull($this->container->getDefinition('sonata.string.twig.extension')->getArgument(0));
+        static::assertNull($this->container->getDefinition('sonata.string.twig.extension')->getArgument(0));
     }
 
     public function testDefaultSkin(): void
@@ -415,17 +415,17 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
 
         // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($stylesheets, $poolStylesheets);
+        static::assertSame($stylesheets, $poolStylesheets);
 
         // NEXT_MAJOR: Remove next line.
         $poolSkin = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['skin'];
         $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
 
         // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($skin, $poolSkin);
+        static::assertSame($skin, $poolSkin);
 
-        $this->assertSame($this->getDefaultStylesheets(), $stylesheets);
-        $this->assertSame('skin-black', $skin);
+        static::assertSame($this->getDefaultStylesheets(), $stylesheets);
+        static::assertSame('skin-black', $skin);
     }
 
     public function testSetSkin(): void
@@ -442,17 +442,17 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
 
         // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($stylesheets, $poolStylesheets);
+        static::assertSame($stylesheets, $poolStylesheets);
 
         // NEXT_MAJOR: Remove next line.
         $poolSkin = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['skin'];
         $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
 
         // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($skin, $poolSkin);
+        static::assertSame($skin, $poolSkin);
 
-        $this->assertSame($this->getDefaultStylesheets('skin-blue'), $stylesheets);
-        $this->assertSame('skin-blue', $skin);
+        static::assertSame($this->getDefaultStylesheets('skin-blue'), $stylesheets);
+        static::assertSame('skin-blue', $skin);
     }
 
     public function testSetDefaultSkin(): void
@@ -469,14 +469,14 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
 
         // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($stylesheets, $poolStylesheets);
+        static::assertSame($stylesheets, $poolStylesheets);
 
         // NEXT_MAJOR: Remove next line.
         $poolSkin = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['skin'];
         $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
 
-        $this->assertSame($this->getDefaultStylesheets(), $stylesheets);
-        $this->assertSame('skin-black', $skin);
+        static::assertSame($this->getDefaultStylesheets(), $stylesheets);
+        static::assertSame('skin-black', $skin);
     }
 
     public function testSetInvalidSkin(): void
@@ -497,11 +497,11 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $autoconfiguredInstancesOf = $this->container->getAutoconfiguredInstanceof();
 
-        $this->assertArrayHasKey(ModelManagerInterface::class, $autoconfiguredInstancesOf);
-        $this->assertTrue($autoconfiguredInstancesOf[ModelManagerInterface::class]->hasTag(ModelManagerCompilerPass::MANAGER_TAG));
+        static::assertArrayHasKey(ModelManagerInterface::class, $autoconfiguredInstancesOf);
+        static::assertTrue($autoconfiguredInstancesOf[ModelManagerInterface::class]->hasTag(ModelManagerCompilerPass::MANAGER_TAG));
 
-        $this->assertArrayHasKey(AuditReaderInterface::class, $autoconfiguredInstancesOf);
-        $this->assertTrue($autoconfiguredInstancesOf[AuditReaderInterface::class]->hasTag(AddAuditReadersCompilerPass::AUDIT_READER_TAG));
+        static::assertArrayHasKey(AuditReaderInterface::class, $autoconfiguredInstancesOf);
+        static::assertTrue($autoconfiguredInstancesOf[AuditReaderInterface::class]->hasTag(AddAuditReadersCompilerPass::AUDIT_READER_TAG));
     }
 
     protected function getContainerExtensions(): array
@@ -522,7 +522,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
 
         // NEXT_MAJOR: Remove this assertion.
-        $this->assertSame($skin, $poolSkin);
+        static::assertSame($skin, $poolSkin);
 
         $defaultStylesheets = $this->defaultConfiguration['assets']['stylesheets'];
         $defaultStylesheets[] = sprintf(

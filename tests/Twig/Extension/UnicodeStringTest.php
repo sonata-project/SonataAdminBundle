@@ -32,8 +32,8 @@ final class UnicodeStringTest extends TestCase
     public function testAscii(): void
     {
         $s = static::createFromString('Dieser Wert sollte größer oder gleich');
-        $this->assertSame('Dieser Wert sollte grosser oder gleich', (string) $s->ascii());
-        $this->assertSame('Dieser Wert sollte groesser oder gleich', (string) $s->ascii(['de-ASCII']));
+        static::assertSame('Dieser Wert sollte grosser oder gleich', (string) $s->ascii());
+        static::assertSame('Dieser Wert sollte groesser oder gleich', (string) $s->ascii(['de-ASCII']));
     }
 
     /**
@@ -43,7 +43,7 @@ final class UnicodeStringTest extends TestCase
     {
         $instance = static::createFromString($origin)->truncate($length, $ellipsis, $preserve);
 
-        $this->assertSame((string) static::createFromString($expected), (string) $instance);
+        static::assertSame((string) static::createFromString($expected), (string) $instance);
     }
 
     public static function provideTruncate(): iterable
@@ -73,7 +73,7 @@ final class UnicodeStringTest extends TestCase
         $instance = static::createFromString($actual);
         $actual = $instance->wordwrap($length, $break, $cut);
 
-        $this->assertSame((string) $expected, (string) $actual);
+        static::assertSame((string) $expected, (string) $actual);
     }
 
     public function wordwrapProvider(): iterable

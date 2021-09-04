@@ -182,17 +182,17 @@ final class RenderElementExtensionTest extends TestCase
 
         $this->admin
             ->method('id')
-            ->with($this->equalTo($this->object))
+            ->with(static::equalTo($this->object))
             ->willReturn(12345);
 
         $this->admin
             ->method('getUrlSafeIdentifier')
-            ->with($this->equalTo($this->object))
+            ->with(static::equalTo($this->object))
             ->willReturn(12345);
 
         $this->admin
             ->method('getNormalizedIdentifier')
-            ->with($this->equalTo($this->object))
+            ->with(static::equalTo($this->object))
             ->willReturn(12345);
 
         $this->adminBar = $this->createMock(AbstractAdmin::class);
@@ -201,7 +201,7 @@ final class RenderElementExtensionTest extends TestCase
             ->willReturn(true);
         $this->adminBar
             ->method('getNormalizedIdentifier')
-            ->with($this->equalTo($this->object))
+            ->with(static::equalTo($this->object))
             ->willReturn(12345);
 
         $container->set('sonata_admin_foo_service', $this->admin);
@@ -307,7 +307,7 @@ final class RenderElementExtensionTest extends TestCase
         // NEXT_MAJOR: Remove next line.
         $this->expectDeprecation('The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).');
 
-        $this->assertSame(
+        static::assertSame(
             $this->removeExtraWhitespace($expected),
             $this->removeExtraWhitespace($this->twigExtension->renderListElement(
                 $this->environment,
@@ -340,7 +340,7 @@ final class RenderElementExtensionTest extends TestCase
         // NEXT_MAJOR: Remove next line.
         $this->expectDeprecation('The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).');
 
-        $this->assertSame(
+        static::assertSame(
             $this->removeExtraWhitespace('<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> Extra value </td>'),
             $this->removeExtraWhitespace($this->twigExtension->renderListElement(
                 $this->environment,
@@ -375,7 +375,7 @@ final class RenderElementExtensionTest extends TestCase
         // NEXT_MAJOR: Remove next line.
         $this->expectDeprecation('Accessing a non existing value for the field "fd_name" is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.');
 
-        $this->assertSame(
+        static::assertSame(
             $this->removeExtraWhitespace('<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> </td>'),
             $this->removeExtraWhitespace($this->twigExtension->renderListElement(
                 $this->environment,
@@ -428,7 +428,7 @@ final class RenderElementExtensionTest extends TestCase
             ->method('getTemplate')
             ->willReturn('@SonataAdmin/CRUD/list_nonexistent_template.html.twig');
 
-        $this->assertSame(
+        static::assertSame(
             $this->removeExtraWhitespace($expected),
             $this->removeExtraWhitespace($this->twigExtension->renderListElement(
                 $this->environment,
@@ -451,25 +451,25 @@ final class RenderElementExtensionTest extends TestCase
         $this->templateRegistry->method('getTemplate')->with('base_list_field')
             ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
-        $this->fieldDescription->expects($this->once())
+        $this->fieldDescription->expects(static::once())
             ->method('getValue')
             ->willReturn('Foo');
 
-        $this->fieldDescription->expects($this->once())
+        $this->fieldDescription->expects(static::once())
             ->method('getFieldName')
             ->willReturn('Foo_name');
 
-        $this->fieldDescription->expects($this->exactly(2))
+        $this->fieldDescription->expects(static::exactly(2))
             ->method('getType')
             ->willReturn('nonexistent');
 
-        $this->fieldDescription->expects($this->once())
+        $this->fieldDescription->expects(static::once())
             ->method('getTemplate')
             ->willReturn('@SonataAdmin/CRUD/list_nonexistent_template.html.twig');
 
-        $this->logger->expects($this->once())
+        $this->logger->expects(static::once())
             ->method('warning')
-            ->with(($this->stringStartsWith($this->removeExtraWhitespace(
+            ->with((static::stringStartsWith($this->removeExtraWhitespace(
                 'An error occured trying to load the template
                 "@SonataAdmin/CRUD/list_nonexistent_template.html.twig"
                 for the field "Foo_name", the default template
@@ -496,7 +496,7 @@ final class RenderElementExtensionTest extends TestCase
         $this->templateRegistry->method('getTemplate')->with('base_list_field')
             ->willReturn('@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig');
 
-        $this->fieldDescription->expects($this->once())
+        $this->fieldDescription->expects(static::once())
             ->method('getTemplate')
             ->willReturn('@SonataAdmin/CRUD/list_nonexistent_template.html.twig');
 
@@ -532,7 +532,7 @@ final class RenderElementExtensionTest extends TestCase
 
         $this->environment->enableDebug();
 
-        $this->assertSame(
+        static::assertSame(
             $this->removeExtraWhitespace(
                 <<<'EOT'
 <!-- START
@@ -610,7 +610,7 @@ EOT
                 }
             });
 
-        $this->assertSame(
+        static::assertSame(
             $this->removeExtraWhitespace($expected),
             $this->removeExtraWhitespace(
                 $this->twigExtension->renderViewElement(
@@ -685,7 +685,7 @@ EOT
                 }
             });
 
-        $this->assertSame(
+        static::assertSame(
             $this->removeExtraWhitespace($expected),
             $this->removeExtraWhitespace(
                 $this->twigExtension->renderViewElement(
@@ -825,7 +825,7 @@ EOT
             $comparedObject->name = $objectName;
         }
 
-        $this->assertSame(
+        static::assertSame(
             $this->removeExtraWhitespace($expected),
             $this->removeExtraWhitespace(
                 $this->twigExtension->renderViewElementCompare(
@@ -840,12 +840,12 @@ EOT
 
     public function testRenderRelationElementNoObject(): void
     {
-        $this->assertSame('foo', $this->twigExtension->renderRelationElement('foo', $this->fieldDescription));
+        static::assertSame('foo', $this->twigExtension->renderRelationElement('foo', $this->fieldDescription));
     }
 
     public function testRenderRelationElementToString(): void
     {
-        $this->fieldDescription->expects($this->exactly(2))
+        $this->fieldDescription->expects(static::exactly(2))
             ->method('getOption')
             ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
@@ -854,7 +854,7 @@ EOT
             });
 
         $element = new FooToString();
-        $this->assertSame('salut', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
+        static::assertSame('salut', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
     /**
@@ -864,7 +864,7 @@ EOT
      */
     public function testDeprecatedRelationElementToString(): void
     {
-        $this->fieldDescription->expects($this->exactly(2))
+        $this->fieldDescription->expects(static::exactly(2))
             ->method('getOption')
             ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_tostring' === $value) {
@@ -873,7 +873,7 @@ EOT
             });
 
         $element = new FooToString();
-        $this->assertSame(
+        static::assertSame(
             'salut',
             $this->twigExtension->renderRelationElement($element, $this->fieldDescription)
         );
@@ -881,7 +881,7 @@ EOT
 
     public function testRenderRelationElementCustomToString(): void
     {
-        $this->fieldDescription->expects($this->once())
+        $this->fieldDescription->expects(static::once())
             ->method('getOption')
             ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
@@ -896,7 +896,7 @@ EOT
             }
         };
 
-        $this->assertSame('fooBar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
+        static::assertSame('fooBar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
     /**
@@ -907,7 +907,7 @@ EOT
     public function testRenderRelationElementMethodNotExist(): void
     {
         // NEXT_MAJOR: change $this->exactly(2) for $this->once()
-        $this->fieldDescription->expects($this->exactly(2))
+        $this->fieldDescription->expects(static::exactly(2))
             ->method('getOption')
 
             ->willReturnCallback(static function ($value, $default = null) {
@@ -934,7 +934,7 @@ EOT
      */
     public function testRenderRelationElementMethodWithDeprecatedAssociatedToString(): void
     {
-        $this->fieldDescription->expects($this->exactly(2))
+        $this->fieldDescription->expects(static::exactly(2))
             ->method('getOption')
             ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
@@ -953,12 +953,12 @@ EOT
             }
         };
 
-        $this->assertSame('fooBar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
+        static::assertSame('fooBar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
     public function testRenderRelationElementWithPropertyPath(): void
     {
-        $this->fieldDescription->expects($this->once())
+        $this->fieldDescription->expects(static::once())
             ->method('getOption')
 
             ->willReturnCallback(static function ($value, $default = null) {
@@ -970,12 +970,12 @@ EOT
         $element = new \stdClass();
         $element->foo = 'bar';
 
-        $this->assertSame('bar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
+        static::assertSame('bar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
     public function testRenderRelationElementWithClosure(): void
     {
-        $this->fieldDescription->expects($this->once())
+        $this->fieldDescription->expects(static::once())
             ->method('getOption')
 
             ->willReturnCallback(static function ($value, $default = null) {
@@ -989,7 +989,7 @@ EOT
         $element = new \stdClass();
         $element->foo = 'bar';
 
-        $this->assertSame(
+        static::assertSame(
             'closure bar',
             $this->twigExtension->renderRelationElement($element, $this->fieldDescription)
         );

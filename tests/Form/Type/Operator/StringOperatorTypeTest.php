@@ -33,7 +33,7 @@ class StringOperatorTypeTest extends TypeTestCase
         ];
         $formType->configureOptions($optionsResolver);
         $options = $optionsResolver->resolve([]);
-        $this->assertSame($expectedChoices, $options['choices']);
-        $this->assertSame('SonataAdminBundle', $options['choice_translation_domain']);
+        static::assertSame($expectedChoices, $options['choices']);
+        static::assertSame('SonataAdminBundle', $options['choice_translation_domain']);
     }
 }

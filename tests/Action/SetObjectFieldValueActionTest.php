@@ -122,7 +122,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);
-        $this->admin->expects($this->once())->method('update')->with($object);
+        $this->admin->expects(static::once())->method('update')->with($object);
         // NEXT_MAJOR: Remove this line
         $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
@@ -147,7 +147,7 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function getTimeZones(): iterable
@@ -188,7 +188,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('dateProp')->willReturn($fieldDescription);
-        $this->admin->expects($this->once())->method('update')->with($object);
+        $this->admin->expects(static::once())->method('update')->with($object);
 
         $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
@@ -214,15 +214,15 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $defaultTimezone = new \DateTimeZone(date_default_timezone_get());
         $expectedDate = new \DateTime($request->query->get('value'), $expectedTimezone);
         $expectedDate->setTimezone($defaultTimezone);
 
-        $this->assertInstanceOf(\DateTime::class, $object->getDateProp());
-        $this->assertSame($expectedDate->format('Y-m-d'), $object->getDateProp()->format('Y-m-d'));
-        $this->assertSame($defaultTimezone->getName(), $object->getDateProp()->getTimezone()->getName());
+        static::assertInstanceOf(\DateTime::class, $object->getDateProp());
+        static::assertSame($expectedDate->format('Y-m-d'), $object->getDateProp()->format('Y-m-d'));
+        static::assertSame($defaultTimezone->getName(), $object->getDateProp()->getTimezone()->getName());
     }
 
     public function testSetObjectFieldValueActionOnARelationField(): void
@@ -250,7 +250,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('bar')->willReturn($fieldDescription);
         $this->admin->method('getClass')->willReturn(\get_class($object));
-        $this->admin->expects($this->once())->method('update')->with($object);
+        $this->admin->expects(static::once())->method('update')->with($object);
         $container->set('sonata.post.admin.template_registry', $templateRegistry);
         // NEXT_MAJOR: Remove this line
         $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
@@ -279,8 +279,8 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertSame($associationObject, $object->getBar());
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        static::assertSame($associationObject, $object->getBar());
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function testSetObjectFieldValueActionWithViolations(): void
@@ -313,8 +313,8 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $this->assertSame(json_encode("error1\nerror2"), $response->getContent());
+        static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        static::assertSame(json_encode("error1\nerror2"), $response->getContent());
     }
 
     public function testSetObjectFieldEditableMultipleValue(): void
@@ -337,7 +337,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('status')->willReturn($fieldDescription);
-        $this->admin->expects($this->once())->method('update')->with($object);
+        $this->admin->expects(static::once())->method('update')->with($object);
         // NEXT_MAJOR: Remove this line
         $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
@@ -364,8 +364,8 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertSame([1, 2], $object->status);
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        static::assertSame([1, 2], $object->status);
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function testSetObjectFieldTransformed(): void
@@ -394,7 +394,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);
-        $this->admin->expects($this->once())->method('update')->with($object);
+        $this->admin->expects(static::once())->method('update')->with($object);
         // NEXT_MAJOR: Remove this line
         $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
@@ -420,8 +420,8 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertTrue($object->getEnabled());
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        static::assertTrue($object->getEnabled());
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function testSetObjectFieldOverrideTransformer(): void
@@ -453,7 +453,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);
-        $this->admin->expects($this->once())->method('update')->with($object);
+        $this->admin->expects(static::once())->method('update')->with($object);
         // NEXT_MAJOR: Remove this line
         $this->admin->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
@@ -479,8 +479,8 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertTrue($object->getEnabled());
-        $this->assertTrue($isOverridden);
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        static::assertTrue($object->getEnabled());
+        static::assertTrue($isOverridden);
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 }

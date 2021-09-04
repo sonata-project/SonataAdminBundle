@@ -48,8 +48,8 @@ class PagerTest extends TestCase
      */
     public function testGetMaxPerPage1(int $expectedMaxPerPage, int $expectedPage, int $maxPerPage, ?int $page): void
     {
-        $this->assertSame(10, $this->pager->getMaxPerPage());
-        $this->assertSame(1, $this->pager->getPage());
+        static::assertSame(10, $this->pager->getMaxPerPage());
+        static::assertSame(1, $this->pager->getPage());
 
         if (null !== $page) {
             $this->pager->setPage($page);
@@ -57,8 +57,8 @@ class PagerTest extends TestCase
 
         $this->pager->setMaxPerPage($maxPerPage);
 
-        $this->assertSame($expectedPage, $this->pager->getPage());
-        $this->assertSame($expectedMaxPerPage, $this->pager->getMaxPerPage());
+        static::assertSame($expectedPage, $this->pager->getPage());
+        static::assertSame($expectedMaxPerPage, $this->pager->getMaxPerPage());
     }
 
     public function getGetMaxPerPage1Tests(): array
@@ -77,35 +77,35 @@ class PagerTest extends TestCase
 
     public function testGetMaxPerPage2(): void
     {
-        $this->assertSame(10, $this->pager->getMaxPerPage());
-        $this->assertSame(1, $this->pager->getPage());
+        static::assertSame(10, $this->pager->getMaxPerPage());
+        static::assertSame(1, $this->pager->getPage());
 
         $this->pager->setMaxPerPage(0);
         $this->pager->setPage(0);
 
-        $this->assertSame(0, $this->pager->getMaxPerPage());
-        $this->assertSame(0, $this->pager->getPage());
+        static::assertSame(0, $this->pager->getMaxPerPage());
+        static::assertSame(0, $this->pager->getPage());
 
         $this->pager->setMaxPerPage(12);
 
-        $this->assertSame(12, $this->pager->getMaxPerPage());
-        $this->assertSame(1, $this->pager->getPage());
+        static::assertSame(12, $this->pager->getMaxPerPage());
+        static::assertSame(1, $this->pager->getPage());
     }
 
     public function testGetMaxPerPage3(): void
     {
-        $this->assertSame(10, $this->pager->getMaxPerPage());
-        $this->assertSame(1, $this->pager->getPage());
+        static::assertSame(10, $this->pager->getMaxPerPage());
+        static::assertSame(1, $this->pager->getPage());
 
         $this->pager->setMaxPerPage(0);
 
-        $this->assertSame(0, $this->pager->getMaxPerPage());
-        $this->assertSame(0, $this->pager->getPage());
+        static::assertSame(0, $this->pager->getMaxPerPage());
+        static::assertSame(0, $this->pager->getPage());
 
         $this->pager->setMaxPerPage(-1);
 
-        $this->assertSame(1, $this->pager->getMaxPerPage());
-        $this->assertSame(1, $this->pager->getPage());
+        static::assertSame(1, $this->pager->getMaxPerPage());
+        static::assertSame(1, $this->pager->getPage());
     }
 
     /**
@@ -116,18 +116,18 @@ class PagerTest extends TestCase
     public function testGetCurrentMaxLink(): void
     {
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getCurrentMaxLink()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
-        $this->assertSame(1, $this->pager->getCurrentMaxLink());
+        static::assertSame(1, $this->pager->getCurrentMaxLink());
 
         $this->pager->getLinks();
-        $this->assertSame(1, $this->pager->getCurrentMaxLink());
+        static::assertSame(1, $this->pager->getCurrentMaxLink());
 
         $this->callMethod($this->pager, 'setLastPage', [20]);
         $this->pager->getLinks(10);
-        $this->assertSame(10, $this->pager->getCurrentMaxLink());
+        static::assertSame(10, $this->pager->getCurrentMaxLink());
 
         $this->pager->setMaxPageLinks(5);
         $this->pager->setPage(2);
-        $this->assertSame(10, $this->pager->getCurrentMaxLink());
+        static::assertSame(10, $this->pager->getCurrentMaxLink());
     }
 
     /**
@@ -138,10 +138,10 @@ class PagerTest extends TestCase
     public function testGetMaxRecordLimit(): void
     {
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getMaxRecordLimit()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
-        $this->assertFalse($this->pager->getMaxRecordLimit());
+        static::assertFalse($this->pager->getMaxRecordLimit());
 
         $this->pager->setMaxRecordLimit(99);
-        $this->assertSame(99, $this->pager->getMaxRecordLimit());
+        static::assertSame(99, $this->pager->getMaxRecordLimit());
     }
 
     /**
@@ -151,11 +151,11 @@ class PagerTest extends TestCase
      */
     public function testGetNbResults(): void
     {
-        $this->assertSame(0, $this->pager->getNbResults());
+        static::assertSame(0, $this->pager->getNbResults());
 
         $this->setProperty($this->pager, 'nbResults', 100);
 
-        $this->assertSame(100, $this->pager->getNbResults());
+        static::assertSame(100, $this->pager->getNbResults());
     }
 
     /**
@@ -166,11 +166,11 @@ class PagerTest extends TestCase
     public function testCount(): void
     {
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::count()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
-        $this->assertSame(0, $this->pager->count());
+        static::assertSame(0, $this->pager->count());
 
         $this->setProperty($this->pager, 'nbResults', 100);
 
-        $this->assertSame(100, $this->pager->count());
+        static::assertSame(100, $this->pager->count());
     }
 
     public function testGetQuery(): void
@@ -178,7 +178,7 @@ class PagerTest extends TestCase
         $query = $this->createMock(ProxyQueryInterface::class);
 
         $this->pager->setQuery($query);
-        $this->assertSame($query, $this->pager->getQuery());
+        static::assertSame($query, $this->pager->getQuery());
     }
 
     /**
@@ -189,11 +189,11 @@ class PagerTest extends TestCase
     public function testGetCountColumn(): void
     {
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getCountColumn()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
-        $this->assertSame(['id'], $this->pager->getCountColumn());
+        static::assertSame(['id'], $this->pager->getCountColumn());
 
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::setCountColumn()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->pager->setCountColumn(['foo']);
-        $this->assertSame(['foo'], $this->pager->getCountColumn());
+        static::assertSame(['foo'], $this->pager->getCountColumn());
     }
 
     /**
@@ -204,113 +204,113 @@ class PagerTest extends TestCase
     public function testParameters(): void
     {
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getParameter()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
-        $this->assertNull($this->pager->getParameter('foo', null));
-        $this->assertSame('bar', $this->pager->getParameter('foo', 'bar'));
+        static::assertNull($this->pager->getParameter('foo', null));
+        static::assertSame('bar', $this->pager->getParameter('foo', 'bar'));
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::hasParameter()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
-        $this->assertFalse($this->pager->hasParameter('foo'));
-        $this->assertSame([], $this->pager->getParameters());
+        static::assertFalse($this->pager->hasParameter('foo'));
+        static::assertSame([], $this->pager->getParameters());
 
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::setParameter()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->pager->setParameter('foo', 'foo_value');
 
-        $this->assertTrue($this->pager->hasParameter('foo'));
-        $this->assertSame('foo_value', $this->pager->getParameter('foo', null));
-        $this->assertSame('foo_value', $this->pager->getParameter('foo', 'bar'));
-        $this->assertSame(['foo' => 'foo_value'], $this->pager->getParameters());
+        static::assertTrue($this->pager->hasParameter('foo'));
+        static::assertSame('foo_value', $this->pager->getParameter('foo', null));
+        static::assertSame('foo_value', $this->pager->getParameter('foo', 'bar'));
+        static::assertSame(['foo' => 'foo_value'], $this->pager->getParameters());
 
         $this->pager->setParameter('foo', 'baz');
 
-        $this->assertTrue($this->pager->hasParameter('foo'));
-        $this->assertSame('baz', $this->pager->getParameter('foo', null));
-        $this->assertSame('baz', $this->pager->getParameter('foo', 'bar'));
-        $this->assertSame(['foo' => 'baz'], $this->pager->getParameters());
+        static::assertTrue($this->pager->hasParameter('foo'));
+        static::assertSame('baz', $this->pager->getParameter('foo', null));
+        static::assertSame('baz', $this->pager->getParameter('foo', 'bar'));
+        static::assertSame(['foo' => 'baz'], $this->pager->getParameters());
 
         $this->pager->setParameter('foo2', 'foo2_value');
 
-        $this->assertTrue($this->pager->hasParameter('foo2'));
-        $this->assertSame('foo2_value', $this->pager->getParameter('foo2', null));
-        $this->assertSame('foo2_value', $this->pager->getParameter('foo2', 'bar'));
-        $this->assertSame(['foo' => 'baz', 'foo2' => 'foo2_value'], $this->pager->getParameters());
+        static::assertTrue($this->pager->hasParameter('foo2'));
+        static::assertSame('foo2_value', $this->pager->getParameter('foo2', null));
+        static::assertSame('foo2_value', $this->pager->getParameter('foo2', 'bar'));
+        static::assertSame(['foo' => 'baz', 'foo2' => 'foo2_value'], $this->pager->getParameters());
     }
 
     public function testGetMaxPageLinks(): void
     {
-        $this->assertSame(0, $this->pager->getMaxPageLinks());
+        static::assertSame(0, $this->pager->getMaxPageLinks());
 
         $this->pager->setMaxPageLinks(123);
-        $this->assertSame(123, $this->pager->getMaxPageLinks());
+        static::assertSame(123, $this->pager->getMaxPageLinks());
     }
 
     public function testIsFirstPage(): void
     {
-        $this->assertTrue($this->pager->isFirstPage());
+        static::assertTrue($this->pager->isFirstPage());
 
         $this->pager->setPage(123);
-        $this->assertFalse($this->pager->isFirstPage());
+        static::assertFalse($this->pager->isFirstPage());
     }
 
     public function testIsLastPage(): void
     {
-        $this->assertTrue($this->pager->isLastPage());
-        $this->assertSame(1, $this->pager->getLastPage());
+        static::assertTrue($this->pager->isLastPage());
+        static::assertSame(1, $this->pager->getLastPage());
 
         $this->pager->setPage(10);
         $this->callMethod($this->pager, 'setLastPage', [50]);
-        $this->assertSame(50, $this->pager->getLastPage());
-        $this->assertFalse($this->pager->isLastPage());
+        static::assertSame(50, $this->pager->getLastPage());
+        static::assertFalse($this->pager->isLastPage());
 
         $this->pager->setPage(50);
-        $this->assertTrue($this->pager->isLastPage());
+        static::assertTrue($this->pager->isLastPage());
 
         $this->callMethod($this->pager, 'setLastPage', [20]);
-        $this->assertSame(20, $this->pager->getPage());
-        $this->assertSame(20, $this->pager->getLastPage());
-        $this->assertTrue($this->pager->isLastPage());
+        static::assertSame(20, $this->pager->getPage());
+        static::assertSame(20, $this->pager->getLastPage());
+        static::assertTrue($this->pager->isLastPage());
     }
 
     public function testGetLinks(): void
     {
-        $this->assertSame([], $this->pager->getLinks());
+        static::assertSame([], $this->pager->getLinks());
 
         $this->pager->setPage(1);
         $this->pager->setMaxPageLinks(1);
-        $this->assertSame([1], $this->pager->getLinks());
-        $this->assertSame([1], $this->pager->getLinks(10));
+        static::assertSame([1], $this->pager->getLinks());
+        static::assertSame([1], $this->pager->getLinks(10));
 
         $this->pager->setPage(1);
         $this->pager->setMaxPageLinks(7);
         $this->callMethod($this->pager, 'setLastPage', [50]);
-        $this->assertCount(7, $this->pager->getLinks());
-        $this->assertSame([1, 2, 3, 4, 5, 6, 7], $this->pager->getLinks());
+        static::assertCount(7, $this->pager->getLinks());
+        static::assertSame([1, 2, 3, 4, 5, 6, 7], $this->pager->getLinks());
 
         $this->pager->setPage(10);
         $this->pager->setMaxPageLinks(12);
-        $this->assertCount(5, $this->pager->getLinks(5));
-        $this->assertSame([8, 9, 10, 11, 12], $this->pager->getLinks(5));
+        static::assertCount(5, $this->pager->getLinks(5));
+        static::assertSame([8, 9, 10, 11, 12], $this->pager->getLinks(5));
 
         $this->pager->setPage(10);
         $this->pager->setMaxPageLinks(6);
-        $this->assertCount(6, $this->pager->getLinks());
-        $this->assertSame([7, 8, 9, 10, 11, 12], $this->pager->getLinks());
+        static::assertCount(6, $this->pager->getLinks());
+        static::assertSame([7, 8, 9, 10, 11, 12], $this->pager->getLinks());
 
         $this->pager->setPage(50);
         $this->pager->setMaxPageLinks(6);
-        $this->assertCount(6, $this->pager->getLinks());
-        $this->assertSame([45, 46, 47, 48, 49, 50], $this->pager->getLinks());
+        static::assertCount(6, $this->pager->getLinks());
+        static::assertSame([45, 46, 47, 48, 49, 50], $this->pager->getLinks());
     }
 
     public function testHaveToPaginate(): void
     {
-        $this->assertFalse($this->pager->haveToPaginate());
+        static::assertFalse($this->pager->haveToPaginate());
 
         $this->pager->setMaxPerPage(10);
-        $this->assertFalse($this->pager->haveToPaginate());
+        static::assertFalse($this->pager->haveToPaginate());
 
-        $this->pager->expects($this->once())
+        $this->pager->expects(static::once())
             ->method('countResults')
             ->willReturn(100);
 
-        $this->assertTrue($this->pager->haveToPaginate());
+        static::assertTrue($this->pager->haveToPaginate());
     }
 
     /**
@@ -320,7 +320,7 @@ class PagerTest extends TestCase
      */
     public function testIterator(): void
     {
-        $this->assertInstanceOf(\Iterator::class, $this->pager);
+        static::assertInstanceOf(\Iterator::class, $this->pager);
 
         $object1 = new \stdClass();
         $object1->foo = 'bar1';
@@ -344,15 +344,15 @@ class PagerTest extends TestCase
             ++$counter;
         }
 
-        $this->assertSame(3, $counter);
-        $this->assertSame($object3, $value);
-        $this->assertSame($expectedObjects, $values);
+        static::assertSame(3, $counter);
+        static::assertSame($object3, $value);
+        static::assertSame($expectedObjects, $values);
 
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::valid()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
-        $this->assertFalse($this->pager->valid());
+        static::assertFalse($this->pager->valid());
 
         $this->callMethod($this->pager, 'resetIterator');
-        $this->assertTrue($this->pager->valid());
+        static::assertTrue($this->pager->valid());
     }
 
     /**
@@ -367,7 +367,7 @@ class PagerTest extends TestCase
             ->willReturn([]);
 
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::valid()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
-        $this->assertFalse($this->pager->valid());
+        static::assertFalse($this->pager->valid());
     }
 
     /**
@@ -382,7 +382,7 @@ class PagerTest extends TestCase
             ->willReturn([]);
 
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::next()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
-        $this->assertFalse($this->pager->next());
+        static::assertFalse($this->pager->next());
     }
 
     /**
@@ -397,7 +397,7 @@ class PagerTest extends TestCase
             ->willReturn([123 => new \stdClass()]);
 
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::key()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
-        $this->assertSame(123, $this->pager->key());
+        static::assertSame(123, $this->pager->key());
     }
 
     /**
@@ -414,7 +414,7 @@ class PagerTest extends TestCase
             ->willReturn([$object]);
 
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::current()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
-        $this->assertSame($object, $this->pager->current());
+        static::assertSame($object, $this->pager->current());
     }
 
     /**
@@ -425,21 +425,21 @@ class PagerTest extends TestCase
     public function testGetCursor(): void
     {
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getCursor()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
-        $this->assertSame(1, $this->pager->getCursor());
+        static::assertSame(1, $this->pager->getCursor());
 
         $this->pager->setCursor(0);
-        $this->assertSame(1, $this->pager->getCursor());
+        static::assertSame(1, $this->pager->getCursor());
 
         $this->pager->setCursor(300);
-        $this->assertSame(0, $this->pager->getCursor());
+        static::assertSame(0, $this->pager->getCursor());
 
         $this->setProperty($this->pager, 'nbResults', 100);
 
         $this->pager->setCursor(5);
-        $this->assertSame(5, $this->pager->getCursor());
+        static::assertSame(5, $this->pager->getCursor());
 
         $this->pager->setCursor(300);
-        $this->assertSame(100, $this->pager->getCursor());
+        static::assertSame(100, $this->pager->getCursor());
     }
 
     /**
@@ -491,49 +491,49 @@ class PagerTest extends TestCase
         $this->pager->setQuery($query);
 
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getObjectByCursor()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
-        $this->assertSame($object1, $this->pager->getObjectByCursor(1));
+        static::assertSame($object1, $this->pager->getObjectByCursor(1));
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getCursor()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
-        $this->assertSame(1, $this->pager->getCursor());
+        static::assertSame(1, $this->pager->getCursor());
 
         $id = 1;
-        $this->assertSame($object2, $this->pager->getObjectByCursor(2));
-        $this->assertSame(2, $this->pager->getCursor());
+        static::assertSame($object2, $this->pager->getObjectByCursor(2));
+        static::assertSame(2, $this->pager->getCursor());
 
         $id = 2;
-        $this->assertSame($object3, $this->pager->getObjectByCursor(3));
-        $this->assertSame(3, $this->pager->getCursor());
+        static::assertSame($object3, $this->pager->getObjectByCursor(3));
+        static::assertSame(3, $this->pager->getCursor());
 
         $id = 3;
-        $this->assertNull($this->pager->getObjectByCursor(4));
-        $this->assertSame(3, $this->pager->getCursor());
+        static::assertNull($this->pager->getObjectByCursor(4));
+        static::assertSame(3, $this->pager->getCursor());
     }
 
     public function testGetFirstPage(): void
     {
-        $this->assertSame(1, $this->pager->getFirstPage());
+        static::assertSame(1, $this->pager->getFirstPage());
     }
 
     public function testGetNextPage(): void
     {
-        $this->assertSame(1, $this->pager->getNextPage());
+        static::assertSame(1, $this->pager->getNextPage());
 
         $this->pager->setPage(3);
         $this->callMethod($this->pager, 'setLastPage', [20]);
-        $this->assertSame(4, $this->pager->getNextPage());
+        static::assertSame(4, $this->pager->getNextPage());
 
         $this->pager->setPage(21);
-        $this->assertSame(20, $this->pager->getNextPage());
+        static::assertSame(20, $this->pager->getNextPage());
     }
 
     public function testGetPreviousPage(): void
     {
-        $this->assertSame(1, $this->pager->getPreviousPage());
+        static::assertSame(1, $this->pager->getPreviousPage());
 
         $this->pager->setPage(3);
-        $this->assertSame(2, $this->pager->getPreviousPage());
+        static::assertSame(2, $this->pager->getPreviousPage());
 
         $this->pager->setPage(21);
-        $this->assertSame(20, $this->pager->getPreviousPage());
+        static::assertSame(20, $this->pager->getPreviousPage());
     }
 
     /**
@@ -544,19 +544,19 @@ class PagerTest extends TestCase
     public function testGetFirstIndex(): void
     {
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getFirstIndex()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
-        $this->assertSame(1, $this->pager->getFirstIndex());
+        static::assertSame(1, $this->pager->getFirstIndex());
 
         $this->pager->setMaxPerPage(0);
         $this->pager->setPage(0);
-        $this->assertSame(1, $this->pager->getFirstIndex());
+        static::assertSame(1, $this->pager->getFirstIndex());
 
         $this->pager->setPage(2);
         $this->pager->setMaxPerPage(10);
-        $this->assertSame(11, $this->pager->getFirstIndex());
+        static::assertSame(11, $this->pager->getFirstIndex());
 
         $this->pager->setPage(4);
         $this->pager->setMaxPerPage(7);
-        $this->assertSame(22, $this->pager->getFirstIndex());
+        static::assertSame(22, $this->pager->getFirstIndex());
     }
 
     /**
@@ -567,24 +567,24 @@ class PagerTest extends TestCase
     public function testGetLastIndex(): void
     {
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getLastIndex()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
-        $this->assertSame(0, $this->pager->getLastIndex());
+        static::assertSame(0, $this->pager->getLastIndex());
 
         $this->pager->setMaxPerPage(0);
         $this->pager->setPage(0);
-        $this->assertSame(0, $this->pager->getLastIndex());
+        static::assertSame(0, $this->pager->getLastIndex());
 
         $this->setProperty($this->pager, 'nbResults', 100);
 
-        $this->assertSame(100, $this->pager->getLastIndex());
+        static::assertSame(100, $this->pager->getLastIndex());
 
         $this->pager->setPage(2);
-        $this->assertSame(0, $this->pager->getLastIndex());
+        static::assertSame(0, $this->pager->getLastIndex());
 
         $this->pager->setMaxPerPage(10);
-        $this->assertSame(20, $this->pager->getLastIndex());
+        static::assertSame(20, $this->pager->getLastIndex());
 
         $this->pager->setPage(11);
-        $this->assertSame(100, $this->pager->getLastIndex());
+        static::assertSame(100, $this->pager->getLastIndex());
     }
 
     /**
@@ -595,7 +595,7 @@ class PagerTest extends TestCase
     public function testGetNext(): void
     {
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getNext()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
-        $this->assertNull($this->pager->getNext());
+        static::assertNull($this->pager->getNext());
 
         $object1 = new \stdClass();
         $object1->foo = 'bar1';
@@ -639,16 +639,16 @@ class PagerTest extends TestCase
         $this->pager->setQuery($query);
 
         $this->pager->setCursor(1);
-        $this->assertSame($object1, $this->pager->getCurrent());
+        static::assertSame($object1, $this->pager->getCurrent());
 
         ++$id;
-        $this->assertSame($object2, $this->pager->getNext());
+        static::assertSame($object2, $this->pager->getNext());
 
         ++$id;
-        $this->assertSame($object3, $this->pager->getNext());
+        static::assertSame($object3, $this->pager->getNext());
 
         ++$id;
-        $this->assertNull($this->pager->getNext());
+        static::assertNull($this->pager->getNext());
     }
 
     /**
@@ -659,7 +659,7 @@ class PagerTest extends TestCase
     public function testGetPrevious(): void
     {
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::getPrevious()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
-        $this->assertNull($this->pager->getPrevious());
+        static::assertNull($this->pager->getPrevious());
 
         $object1 = new \stdClass();
         $object1->foo = 'bar1';
@@ -703,16 +703,16 @@ class PagerTest extends TestCase
         $this->pager->setQuery($query);
 
         $this->pager->setCursor(2);
-        $this->assertSame($object3, $this->pager->getCurrent());
+        static::assertSame($object3, $this->pager->getCurrent());
 
         --$id;
-        $this->assertSame($object2, $this->pager->getPrevious());
+        static::assertSame($object2, $this->pager->getPrevious());
 
         --$id;
-        $this->assertSame($object1, $this->pager->getPrevious());
+        static::assertSame($object1, $this->pager->getPrevious());
 
         --$id;
-        $this->assertNull($this->pager->getPrevious());
+        static::assertNull($this->pager->getPrevious());
     }
 
     /**
@@ -725,16 +725,16 @@ class PagerTest extends TestCase
         $pagerClone = clone $this->pager;
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::serialize()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $data = $this->pager->serialize();
-        $this->assertNotEmpty($data);
+        static::assertNotEmpty($data);
 
         $this->pager->setPage(12);
         $this->pager->setMaxPerPage(4);
         $this->pager->setMaxPageLinks(6);
 
         $this->pager->unserialize($data);
-        $this->assertSame($pagerClone->getPage(), $this->pager->getPage());
-        $this->assertSame($pagerClone->getMaxPerPage(), $this->pager->getMaxPerPage());
-        $this->assertSame($pagerClone->getMaxPageLinks(), $this->pager->getMaxPageLinks());
+        static::assertSame($pagerClone->getPage(), $this->pager->getPage());
+        static::assertSame($pagerClone->getMaxPerPage(), $this->pager->getMaxPerPage());
+        static::assertSame($pagerClone->getMaxPageLinks(), $this->pager->getMaxPageLinks());
     }
 
     /**
@@ -765,17 +765,17 @@ class PagerTest extends TestCase
         $this->expectDeprecation('The method "Sonata\AdminBundle\Datagrid\Pager::unserialize()" is deprecated since sonata-project/admin-bundle 3.84 and will be removed in 4.0.');
         $this->pager->unserialize(serialize($serialized));
 
-        $this->assertSame(7, $this->pager->getMaxPerPage());
-        $this->assertSame(6, $this->pager->getPage());
-        $this->assertSame(5, $this->pager->getMaxPageLinks());
-        $this->assertSame(4, $this->pager->getLastPage());
-        $this->assertSame(['idx'], $this->pager->getCountColumn());
-        $this->assertSame(30, $this->pager->getNbResults());
-        $this->assertSame(3, $this->pager->getCursor());
-        $this->assertSame(['foo' => 'bar'], $this->pager->getParameters());
-        $this->assertSame(2, $this->pager->getCurrentMaxLink());
-        $this->assertSame(22, $this->pager->getMaxRecordLimit());
-        $this->assertNull($this->pager->getQuery());
+        static::assertSame(7, $this->pager->getMaxPerPage());
+        static::assertSame(6, $this->pager->getPage());
+        static::assertSame(5, $this->pager->getMaxPageLinks());
+        static::assertSame(4, $this->pager->getLastPage());
+        static::assertSame(['idx'], $this->pager->getCountColumn());
+        static::assertSame(30, $this->pager->getNbResults());
+        static::assertSame(3, $this->pager->getCursor());
+        static::assertSame(['foo' => 'bar'], $this->pager->getParameters());
+        static::assertSame(2, $this->pager->getCurrentMaxLink());
+        static::assertSame(22, $this->pager->getMaxRecordLimit());
+        static::assertNull($this->pager->getQuery());
     }
 
     protected function callMethod($obj, string $name, array $args = [])

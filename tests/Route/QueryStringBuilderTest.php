@@ -27,13 +27,13 @@ class QueryStringBuilderTest extends TestCase
     public function testBuild(array $expectedRoutes, bool $hasReader, bool $aclEnabled, ?AdminInterface $getParent): void
     {
         $audit = $this->getMockForAbstractClass(AuditManagerInterface::class);
-        $audit->expects($this->once())->method('hasReader')->willReturn($hasReader);
+        $audit->expects(static::once())->method('hasReader')->willReturn($hasReader);
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $admin->expects($this->once())->method('isChild')->willReturn($getParent instanceof AdminInterface);
+        $admin->expects(static::once())->method('isChild')->willReturn($getParent instanceof AdminInterface);
         $admin->method('getParent')->willReturn($getParent);
         $admin->method('getChildren')->willReturn([]);
-        $admin->expects($this->once())->method('isAclEnabled')->willReturn($aclEnabled);
+        $admin->expects(static::once())->method('isAclEnabled')->willReturn($aclEnabled);
 
         $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'baseControllerName');
 
@@ -41,10 +41,10 @@ class QueryStringBuilderTest extends TestCase
 
         $pathBuilder->build($admin, $routeCollection);
 
-        $this->assertCount(\count($expectedRoutes), $routeCollection->getElements());
+        static::assertCount(\count($expectedRoutes), $routeCollection->getElements());
 
         foreach ($expectedRoutes as $expectedRoute) {
-            $this->assertTrue($routeCollection->has($expectedRoute), sprintf('Expected route: "%s" doesn`t exist.', $expectedRoute));
+            static::assertTrue($routeCollection->has($expectedRoute), sprintf('Expected route: "%s" doesn`t exist.', $expectedRoute));
         }
     }
 
@@ -61,7 +61,7 @@ class QueryStringBuilderTest extends TestCase
     public function testBuildWithChildren(): void
     {
         $audit = $this->getMockForAbstractClass(AuditManagerInterface::class);
-        $audit->expects($this->once())->method('hasReader')->willReturn(true);
+        $audit->expects(static::once())->method('hasReader')->willReturn(true);
 
         $childRouteCollection1 = new RouteCollection('child1.Code.Route', 'child1RouteName', 'child1RoutePattern', 'child1ControllerName');
         $childRouteCollection1->add('foo');
@@ -71,15 +71,15 @@ class QueryStringBuilderTest extends TestCase
         $childRouteCollection2->add('baz');
 
         $child1 = $this->getMockForAbstractClass(AdminInterface::class);
-        $child1->expects($this->once())->method('getRoutes')->willReturn($childRouteCollection1);
+        $child1->expects(static::once())->method('getRoutes')->willReturn($childRouteCollection1);
 
         $child2 = $this->getMockForAbstractClass(AdminInterface::class);
-        $child2->expects($this->once())->method('getRoutes')->willReturn($childRouteCollection2);
+        $child2->expects(static::once())->method('getRoutes')->willReturn($childRouteCollection2);
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $admin->expects($this->once())->method('isChild')->willReturn(false);
-        $admin->expects($this->once())->method('getChildren')->willReturn([$child1, $child2]);
-        $admin->expects($this->once())->method('isAclEnabled')->willReturn(true);
+        $admin->expects(static::once())->method('isChild')->willReturn(false);
+        $admin->expects(static::once())->method('getChildren')->willReturn([$child1, $child2]);
+        $admin->expects(static::once())->method('isAclEnabled')->willReturn(true);
 
         $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'baseControllerName');
 
@@ -88,10 +88,10 @@ class QueryStringBuilderTest extends TestCase
         $pathBuilder->build($admin, $routeCollection);
 
         $expectedRoutes = ['list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision', 'history_compare_revisions', 'acl', 'child1.Code.Route.foo', 'child1.Code.Route.bar', 'child2.Code.Route.baz'];
-        $this->assertCount(\count($expectedRoutes), $routeCollection->getElements());
+        static::assertCount(\count($expectedRoutes), $routeCollection->getElements());
 
         foreach ($expectedRoutes as $expectedRoute) {
-            $this->assertTrue($routeCollection->has($expectedRoute), sprintf('Expected route: "%s" doesn`t exist.', $expectedRoute));
+            static::assertTrue($routeCollection->has($expectedRoute), sprintf('Expected route: "%s" doesn`t exist.', $expectedRoute));
         }
     }
 }

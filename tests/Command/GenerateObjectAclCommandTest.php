@@ -58,7 +58,7 @@ class GenerateObjectAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertMatchesRegularExpression('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
+        static::assertMatchesRegularExpression('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
     }
 
     public function testExecuteWithEmptyManipulators(): void
@@ -74,7 +74,7 @@ class GenerateObjectAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertMatchesRegularExpression('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
+        static::assertMatchesRegularExpression('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
     }
 
     public function testExecuteWithManipulatorNotFound(): void
@@ -99,7 +99,7 @@ class GenerateObjectAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertMatchesRegularExpression('/Admin class is using a manager type that has no manipulator implemented : ignoring/', $commandTester->getDisplay());
+        static::assertMatchesRegularExpression('/Admin class is using a manager type that has no manipulator implemented : ignoring/', $commandTester->getDisplay());
     }
 
     public function testExecuteWithManipulatorNotObjectAclManipulatorInterface(): void
@@ -124,7 +124,7 @@ class GenerateObjectAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertMatchesRegularExpression('/The interface "ObjectAclManipulatorInterface" is not implemented for/', $commandTester->getDisplay());
+        static::assertMatchesRegularExpression('/The interface "ObjectAclManipulatorInterface" is not implemented for/', $commandTester->getDisplay());
     }
 
     public function testExecuteWithManipulator(): void
@@ -137,8 +137,8 @@ class GenerateObjectAclCommandTest extends TestCase
         $admin->method('getManagerType')->willReturn('bar');
 
         $manipulator = $this->createMock(ObjectAclManipulatorInterface::class);
-        $manipulator->expects($this->once())->method('batchConfigureAcls')
-            ->with($this->isInstanceOf(StreamOutput::class), $admin, null);
+        $manipulator->expects(static::once())->method('batchConfigureAcls')
+            ->with(static::isInstanceOf(StreamOutput::class), $admin, null);
 
         $aclObjectManipulators = [
             'sonata.admin.manipulator.acl.object.bar' => $manipulator,
@@ -167,12 +167,12 @@ class GenerateObjectAclCommandTest extends TestCase
 
         $manipulator = $this->createMock(ObjectAclManipulatorInterface::class);
         $manipulator
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('batchConfigureAcls')
             ->with(
-                $this->isInstanceOf(StreamOutput::class),
+                static::isInstanceOf(StreamOutput::class),
                 $admin,
-                $this->callback(static function (UserSecurityIdentity $userSecurityIdentity): bool {
+                static::callback(static function (UserSecurityIdentity $userSecurityIdentity): bool {
                     return Foo::class === $userSecurityIdentity->getClass();
                 })
             );

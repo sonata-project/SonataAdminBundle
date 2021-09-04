@@ -46,7 +46,7 @@ final class CanonicalizeExtensionTest extends TestCase
     public function testCanonicalizedLocaleForMoment(?string $expected, string $original): void
     {
         $this->changeLocale($original);
-        $this->assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForMoment());
+        static::assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForMoment());
     }
 
     /**
@@ -55,7 +55,7 @@ final class CanonicalizeExtensionTest extends TestCase
     public function testCanonicalizedLocaleForSelect2(?string $expected, string $original): void
     {
         $this->changeLocale($original);
-        $this->assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForSelect2());
+        static::assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForSelect2());
     }
 
     /**

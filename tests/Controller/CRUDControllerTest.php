@@ -192,7 +192,7 @@ class CRUDControllerTest extends TestCase
 
         $templating = $this->createMock(DelegatingEngine::class);
 
-        $templatingRenderReturnCallback = $this->returnCallback(function (
+        $templatingRenderReturnCallback = static::returnCallback(function (
             $view,
             array $parameters = [],
             ?Response $response = null
@@ -407,8 +407,8 @@ class CRUDControllerTest extends TestCase
         $this->request->headers->set('Content-Type', 'application/x-www-form-urlencoded');
         $response = $this->protectedTestedMethods['renderJson']->invoke($this->controller, $data, 200, [], $this->request);
 
-        $this->assertSame($response->headers->get('Content-Type'), 'application/json');
-        $this->assertSame(json_encode($data), $response->getContent());
+        static::assertSame($response->headers->get('Content-Type'), 'application/json');
+        static::assertSame(json_encode($data), $response->getContent());
     }
 
     public function testRenderJson2(): void
@@ -418,8 +418,8 @@ class CRUDControllerTest extends TestCase
         $this->request->headers->set('Content-Type', 'multipart/form-data');
         $response = $this->protectedTestedMethods['renderJson']->invoke($this->controller, $data, 200, [], $this->request);
 
-        $this->assertSame($response->headers->get('Content-Type'), 'application/json');
-        $this->assertSame(json_encode($data), $response->getContent());
+        static::assertSame($response->headers->get('Content-Type'), 'application/json');
+        static::assertSame(json_encode($data), $response->getContent());
     }
 
     public function testRenderJsonAjax(): void
@@ -430,23 +430,23 @@ class CRUDControllerTest extends TestCase
         $this->request->headers->set('Content-Type', 'multipart/form-data');
         $response = $this->protectedTestedMethods['renderJson']->invoke($this->controller, $data, 200, [], $this->request);
 
-        $this->assertSame($response->headers->get('Content-Type'), 'application/json');
-        $this->assertSame(json_encode($data), $response->getContent());
+        static::assertSame($response->headers->get('Content-Type'), 'application/json');
+        static::assertSame(json_encode($data), $response->getContent());
     }
 
     public function testIsXmlHttpRequest(): void
     {
-        $this->assertFalse($this->protectedTestedMethods['isXmlHttpRequest']->invoke($this->controller, $this->request));
+        static::assertFalse($this->protectedTestedMethods['isXmlHttpRequest']->invoke($this->controller, $this->request));
 
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
-        $this->assertTrue($this->protectedTestedMethods['isXmlHttpRequest']->invoke($this->controller, $this->request));
+        static::assertTrue($this->protectedTestedMethods['isXmlHttpRequest']->invoke($this->controller, $this->request));
 
         $this->request->headers->remove('X-Requested-With');
-        $this->assertFalse($this->protectedTestedMethods['isXmlHttpRequest']->invoke($this->controller, $this->request));
+        static::assertFalse($this->protectedTestedMethods['isXmlHttpRequest']->invoke($this->controller, $this->request));
 
         $this->request->attributes->set('_xml_http_request', true);
-        $this->assertTrue($this->protectedTestedMethods['isXmlHttpRequest']->invoke($this->controller, $this->request));
+        static::assertTrue($this->protectedTestedMethods['isXmlHttpRequest']->invoke($this->controller, $this->request));
     }
 
     /**
@@ -456,7 +456,7 @@ class CRUDControllerTest extends TestCase
      */
     public function testConfigureCallsConfigureAdmin(): void
     {
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('setRequest');
 
         $this->expectDeprecation('The "Sonata\AdminBundle\Controller\CRUDController::configure()" method is deprecated since sonata-project/admin-bundle version 3.86 and will be removed in 4.0 version.');
@@ -468,7 +468,7 @@ class CRUDControllerTest extends TestCase
     {
         $uniqueId = '';
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('setUniqid')
             ->willReturnCallback(static function (int $uniqid) use (&$uniqueId): void {
                 $uniqueId = $uniqid;
@@ -477,34 +477,34 @@ class CRUDControllerTest extends TestCase
         $this->request->query->set('uniqid', 123456);
         $this->controller->configureAdmin($this->request);
 
-        $this->assertSame(123456, $uniqueId);
+        static::assertSame(123456, $uniqueId);
     }
 
     public function testConfigureAdminChild(): void
     {
         $uniqueId = '';
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('setUniqid')
             ->willReturnCallback(static function ($uniqid) use (&$uniqueId): void {
                 $uniqueId = $uniqid;
             });
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('isChild')
             ->willReturn(true);
 
         $adminParent = $this->getMockBuilder(AbstractAdmin::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getParent')
             ->willReturn($adminParent);
 
         $this->request->query->set('uniqid', 123456);
         $this->controller->configureAdmin($this->request);
 
-        $this->assertSame(123456, $uniqueId);
+        static::assertSame(123456, $uniqueId);
     }
 
     public function testConfigureAdminWithException(): void
@@ -530,25 +530,25 @@ class CRUDControllerTest extends TestCase
 
     public function testGetBaseTemplate(): void
     {
-        $this->assertSame(
+        static::assertSame(
             '@SonataAdmin/standard_layout.html.twig',
             $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller, $this->request)
         );
 
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
-        $this->assertSame(
+        static::assertSame(
             '@SonataAdmin/ajax_layout.html.twig',
             $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller, $this->request)
         );
 
         $this->request->headers->remove('X-Requested-With');
-        $this->assertSame(
+        static::assertSame(
             '@SonataAdmin/standard_layout.html.twig',
             $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller, $this->request)
         );
 
         $this->request->attributes->set('_xml_http_request', true);
-        $this->assertSame(
+        static::assertSame(
             '@SonataAdmin/ajax_layout.html.twig',
             $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller, $this->request)
         );
@@ -557,15 +557,15 @@ class CRUDControllerTest extends TestCase
     public function testRender(): void
     {
         $this->parameters = [];
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             Response::class,
             $this->controller->renderWithExtraParams('@FooAdmin/foo.html.twig', [], null)
         );
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
-        $this->assertSame('@FooAdmin/foo.html.twig', $this->template);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame('@FooAdmin/foo.html.twig', $this->template);
     }
 
     public function testRenderWithResponse(): void
@@ -575,19 +575,19 @@ class CRUDControllerTest extends TestCase
         $response->headers->set('X-foo', 'bar');
         $responseResult = $this->controller->renderWithExtraParams('@FooAdmin/foo.html.twig', [], $response);
 
-        $this->assertSame($response, $responseResult);
-        $this->assertSame('bar', $responseResult->headers->get('X-foo'));
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($response, $responseResult);
+        static::assertSame('bar', $responseResult->headers->get('X-foo'));
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
-        $this->assertSame('@FooAdmin/foo.html.twig', $this->template);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame('@FooAdmin/foo.html.twig', $this->template);
     }
 
     public function testRenderCustomParams(): void
     {
         $this->parameters = [];
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             Response::class,
             $this->controller->renderWithExtraParams(
                 '@FooAdmin/foo.html.twig',
@@ -595,19 +595,19 @@ class CRUDControllerTest extends TestCase
                 null
             )
         );
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
-        $this->assertSame('bar', $this->parameters['foo']);
-        $this->assertSame('@FooAdmin/foo.html.twig', $this->template);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame('bar', $this->parameters['foo']);
+        static::assertSame('@FooAdmin/foo.html.twig', $this->template);
     }
 
     public function testRenderAjax(): void
     {
         $this->parameters = [];
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             Response::class,
             $this->controller->renderWithExtraParams(
                 '@FooAdmin/foo.html.twig',
@@ -615,22 +615,22 @@ class CRUDControllerTest extends TestCase
                 null
             )
         );
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
-        $this->assertSame('bar', $this->parameters['foo']);
-        $this->assertSame('@FooAdmin/foo.html.twig', $this->template);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame('bar', $this->parameters['foo']);
+        static::assertSame('@FooAdmin/foo.html.twig', $this->template);
     }
 
     public function testListActionAccessDenied(): void
     {
         $this->expectException(AccessDeniedException::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('list'))
-            ->will($this->throwException(new AccessDeniedException()));
+            ->with(static::equalTo('list'))
+            ->will(static::throwException(new AccessDeniedException()));
 
         $this->controller->listAction();
     }
@@ -639,20 +639,20 @@ class CRUDControllerTest extends TestCase
     {
         $this->admin
             ->method('hasRoute')
-            ->with($this->equalTo('list'))
+            ->with(static::equalTo('list'))
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('list'))
+            ->with(static::equalTo('list'))
             ->willReturn(true);
 
         $controller = new PreCRUDController();
         $controller->setContainer($this->container);
 
         $response = $controller->listAction();
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame('preList called', $response->getContent());
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame('preList called', $response->getContent());
     }
 
     public function testListAction(): void
@@ -661,54 +661,54 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('hasRoute')
-            ->with($this->equalTo('list'))
+            ->with(static::equalTo('list'))
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('list'))
+            ->with(static::equalTo('list'))
             ->willReturn(true);
 
         $form = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('createView')
             ->willReturn($this->createMock(FormView::class));
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
-        $datagrid->expects($this->once())
+        $datagrid->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
         $this->parameters = [];
-        $this->assertInstanceOf(Response::class, $this->controller->listAction());
+        static::assertInstanceOf(Response::class, $this->controller->listAction());
 
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
 
-        $this->assertSame('list', $this->parameters['action']);
-        $this->assertInstanceOf(FormView::class, $this->parameters['form']);
-        $this->assertInstanceOf(DatagridInterface::class, $this->parameters['datagrid']);
-        $this->assertSame('csrf-token-123_sonata.batch', $this->parameters['csrf_token']);
-        $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/list.html.twig', $this->template);
+        static::assertSame('list', $this->parameters['action']);
+        static::assertInstanceOf(FormView::class, $this->parameters['form']);
+        static::assertInstanceOf(DatagridInterface::class, $this->parameters['datagrid']);
+        static::assertSame('csrf-token-123_sonata.batch', $this->parameters['csrf_token']);
+        static::assertSame([], $this->session->getFlashBag()->all());
+        static::assertSame('@SonataAdmin/CRUD/list.html.twig', $this->template);
     }
 
     public function testBatchActionDeleteAccessDenied(): void
     {
         $this->expectException(AccessDeniedException::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('batchDelete'))
-            ->will($this->throwException(new AccessDeniedException()));
+            ->with(static::equalTo('batchDelete'))
+            ->will(static::throwException(new AccessDeniedException()));
 
         $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class));
     }
@@ -717,16 +717,16 @@ class CRUDControllerTest extends TestCase
     {
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('batchDelete'))
+            ->with(static::equalTo('batchDelete'))
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getModelManager')
             ->willReturn($modelManager);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getFilterParameters')
             ->willReturn(['foo' => 'bar']);
 
@@ -734,9 +734,9 @@ class CRUDControllerTest extends TestCase
 
         $result = $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class));
 
-        $this->assertInstanceOf(RedirectResponse::class, $result);
-        $this->assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
-        $this->assertSame('list?filter%5Bfoo%5D=bar', $result->getTargetUrl());
+        static::assertInstanceOf(RedirectResponse::class, $result);
+        static::assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
+        static::assertSame('list?filter%5Bfoo%5D=bar', $result->getTargetUrl());
     }
 
     public function testBatchActionDeleteWithModelManagerException(): void
@@ -744,11 +744,11 @@ class CRUDControllerTest extends TestCase
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $this->assertLoggerLogsModelManagerException($modelManager, 'batchDelete');
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getModelManager')
             ->willReturn($modelManager);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getFilterParameters')
             ->willReturn(['foo' => 'bar']);
 
@@ -756,9 +756,9 @@ class CRUDControllerTest extends TestCase
 
         $result = $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class));
 
-        $this->assertInstanceOf(RedirectResponse::class, $result);
-        $this->assertSame(['flash_batch_delete_error'], $this->session->getFlashBag()->get('sonata_flash_error'));
-        $this->assertSame('list?filter%5Bfoo%5D=bar', $result->getTargetUrl());
+        static::assertInstanceOf(RedirectResponse::class, $result);
+        static::assertSame(['flash_batch_delete_error'], $this->session->getFlashBag()->get('sonata_flash_error'));
+        static::assertSame('list?filter%5Bfoo%5D=bar', $result->getTargetUrl());
     }
 
     public function testBatchActionDeleteWithModelManagerExceptionInDebugMode(): void
@@ -766,17 +766,17 @@ class CRUDControllerTest extends TestCase
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $this->expectException(ModelManagerException::class);
 
-        $modelManager->expects($this->once())
+        $modelManager->expects(static::once())
             ->method('batchDelete')
             ->willReturnCallback(static function (): void {
                 throw new ModelManagerException();
             });
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getModelManager')
             ->willReturn($modelManager);
 
-        $this->kernel->expects($this->once())
+        $this->kernel->expects(static::once())
             ->method('isDebug')
             ->willReturn(true);
 
@@ -787,7 +787,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn(null);
 
@@ -800,14 +800,14 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn(new \stdClass());
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('show'))
-            ->will($this->throwException(new AccessDeniedException()));
+            ->with(static::equalTo('show'))
+            ->will(static::throwException(new AccessDeniedException()));
 
         $this->expectException(AccessDeniedException::class);
 
@@ -821,21 +821,21 @@ class CRUDControllerTest extends TestCase
         $object = new \stdClass();
         $object->foo = 123456;
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('show'))
+            ->with(static::equalTo('show'))
             ->willReturn(true);
 
         $controller = new PreCRUDController();
         $controller->setContainer($this->container);
 
         $response = $controller->showAction();
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame('preShow called: 123456', $response->getContent());
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame('preShow called: 123456', $response->getContent());
     }
 
     public function testShowAction(): void
@@ -844,51 +844,51 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('show'))
+            ->with(static::equalTo('show'))
             ->willReturn(true);
 
         $show = $this->createMock(FieldDescriptionCollection::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getShow')
             ->willReturn($show);
 
-        $this->assertInstanceOf(Response::class, $this->controller->showAction(null));
+        static::assertInstanceOf(Response::class, $this->controller->showAction(null));
 
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
 
-        $this->assertSame('show', $this->parameters['action']);
-        $this->assertInstanceOf(FieldDescriptionCollection::class, $this->parameters['elements']);
-        $this->assertSame($object, $this->parameters['object']);
+        static::assertSame('show', $this->parameters['action']);
+        static::assertInstanceOf(FieldDescriptionCollection::class, $this->parameters['elements']);
+        static::assertSame($object, $this->parameters['object']);
 
-        $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/show.html.twig', $this->template);
+        static::assertSame([], $this->session->getFlashBag()->all());
+        static::assertSame('@SonataAdmin/CRUD/show.html.twig', $this->template);
     }
 
     public function testShowActionWithParentAdminAndNonexistentObject(): void
     {
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->never())
+        $this->admin->expects(static::never())
             ->method('checkAccess');
 
-        $this->admin->expects($this->never())
+        $this->admin->expects(static::never())
             ->method('getShow');
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('isChild')
             ->willReturn(true);
 
@@ -898,23 +898,23 @@ class CRUDControllerTest extends TestCase
         // NEXT_MAJOR: Mock `AdminInterface` when the `getClassnameLabel()` method is available.
         $parentAdmin = $this->createMock(AbstractAdmin::class);
 
-        $parentAdmin->expects($this->once())
+        $parentAdmin->expects(static::once())
             ->method('getObject')
             ->willReturn(null);
 
         $parentAdminIdParameter = 'parentId';
 
-        $parentAdmin->expects($this->once())
+        $parentAdmin->expects(static::once())
             ->method('getIdParameter')
             ->willReturn($parentAdminIdParameter);
 
-        $parentAdmin->expects($this->once())
+        $parentAdmin->expects(static::once())
             ->method('getClassnameLabel')
             ->willReturn('NonexistentParentObject');
 
         $this->request->attributes->set($parentAdminIdParameter, 21);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getParent')
             ->willReturn($parentAdmin);
 
@@ -950,17 +950,17 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('hasRoute')
-            ->with($this->equalTo($route))
+            ->with(static::equalTo($route))
             ->willReturn(true);
 
         $this->admin
             ->method('hasAccess')
-            ->with($this->equalTo($route))
+            ->with(static::equalTo($route))
             ->willReturn(true);
 
         $response = $this->protectedTestedMethods['redirectTo']->invoke($this->controller, $object, $this->request);
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertSame($expected, $response->getTargetUrl());
+        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertSame($expected, $response->getTargetUrl());
     }
 
     public function testRedirectToWithObject(): void
@@ -971,19 +971,19 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->exactly(2))->method('hasRoute')->willReturnMap([
+        $this->admin->expects(static::exactly(2))->method('hasRoute')->willReturnMap([
             ['edit', true],
             ['show', false],
         ]);
 
         $this->admin
             ->method('hasAccess')
-            ->with($this->equalTo('edit'), $object)
+            ->with(static::equalTo('edit'), $object)
             ->willReturn(false);
 
         $response = $this->protectedTestedMethods['redirectTo']->invoke($this->controller, $object, $this->request);
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertSame('list', $response->getTargetUrl());
+        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertSame('list', $response->getTargetUrl());
     }
 
     public function getRedirectToTests()
@@ -1002,7 +1002,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn(null);
 
@@ -1015,14 +1015,14 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn(new \stdClass());
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
-            ->will($this->throwException(new AccessDeniedException()));
+            ->with(static::equalTo('delete'))
+            ->will(static::throwException(new AccessDeniedException()));
 
         $this->expectException(AccessDeniedException::class);
 
@@ -1036,21 +1036,21 @@ class CRUDControllerTest extends TestCase
         $object = new \stdClass();
         $object->foo = 123456;
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
+            ->with(static::equalTo('delete'))
             ->willReturn(true);
 
         $controller = new PreCRUDController();
         $controller->setContainer($this->container);
 
         $response = $controller->deleteAction(null);
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame('preDelete called: 123456', $response->getContent());
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame('preDelete called: 123456', $response->getContent());
     }
 
     public function testDeleteAction(): void
@@ -1059,28 +1059,28 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
+            ->with(static::equalTo('delete'))
             ->willReturn(true);
 
-        $this->assertInstanceOf(Response::class, $this->controller->deleteAction(21));
+        static::assertInstanceOf(Response::class, $this->controller->deleteAction(21));
 
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
 
-        $this->assertSame('delete', $this->parameters['action']);
-        $this->assertSame($object, $this->parameters['object']);
-        $this->assertSame('csrf-token-123_sonata.delete', $this->parameters['csrf_token']);
+        static::assertSame('delete', $this->parameters['action']);
+        static::assertSame($object, $this->parameters['object']);
+        static::assertSame('csrf-token-123_sonata.delete', $this->parameters['csrf_token']);
 
-        $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/delete.html.twig', $this->template);
+        static::assertSame([], $this->session->getFlashBag()->all());
+        static::assertSame('@SonataAdmin/CRUD/delete.html.twig', $this->template);
     }
 
     /**
@@ -1100,23 +1100,23 @@ class CRUDControllerTest extends TestCase
         $admin = $this->createMock(PostAdmin::class);
         $admin->method('getIdParameter')->willReturn('parent_id');
 
-        $admin->expects($this->atLeastOnce())
+        $admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object2);
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects(static::exactly(2))
             ->method('isChild')
             ->willReturn(true);
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects(static::exactly(2))
             ->method('getParent')
             ->willReturn($admin);
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects(static::exactly(2))
             ->method('getParentAssociationMapping')
             ->willReturn('parent');
 
@@ -1131,18 +1131,18 @@ class CRUDControllerTest extends TestCase
 
         $admin = $this->createMock(PostAdmin::class);
 
-        $admin->expects($this->never())
+        $admin->expects(static::never())
             ->method('getObject');
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects(static::exactly(2))
             ->method('isChild')
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getParentAssociationMapping')
             ->willReturn(false);
 
@@ -1157,28 +1157,28 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
+            ->with(static::equalTo('delete'))
             ->willReturn(true);
 
-        $this->assertInstanceOf(Response::class, $this->controller->deleteAction(1));
+        static::assertInstanceOf(Response::class, $this->controller->deleteAction(1));
 
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
 
-        $this->assertSame('delete', $this->parameters['action']);
-        $this->assertSame($object, $this->parameters['object']);
-        $this->assertFalse($this->parameters['csrf_token']);
+        static::assertSame('delete', $this->parameters['action']);
+        static::assertSame($object, $this->parameters['object']);
+        static::assertFalse($this->parameters['csrf_token']);
 
-        $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/delete.html.twig', $this->template);
+        static::assertSame([], $this->session->getFlashBag()->all());
+        static::assertSame('@SonataAdmin/CRUD/delete.html.twig', $this->template);
     }
 
     public function testDeleteActionAjaxSuccess1(): void
@@ -1187,13 +1187,13 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
+            ->with(static::equalTo('delete'))
             ->willReturn(true);
 
         $this->request->setMethod(Request::METHOD_DELETE);
@@ -1203,9 +1203,9 @@ class CRUDControllerTest extends TestCase
 
         $response = $this->controller->deleteAction(21);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(json_encode(['result' => 'ok']), $response->getContent());
-        $this->assertSame([], $this->session->getFlashBag()->all());
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame(json_encode(['result' => 'ok']), $response->getContent());
+        static::assertSame([], $this->session->getFlashBag()->all());
     }
 
     public function testDeleteActionAjaxSuccess2(): void
@@ -1214,13 +1214,13 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
+            ->with(static::equalTo('delete'))
             ->willReturn(true);
 
         $this->request->setMethod(Request::METHOD_POST);
@@ -1233,10 +1233,10 @@ class CRUDControllerTest extends TestCase
 
         $response = $this->controller->deleteAction(21);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(json_encode(['result' => 'ok']), $response->getContent());
-        $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame(Request::METHOD_DELETE, $this->request->getMethod());
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame(json_encode(['result' => 'ok']), $response->getContent());
+        static::assertSame([], $this->session->getFlashBag()->all());
+        static::assertSame(Request::METHOD_DELETE, $this->request->getMethod());
     }
 
     public function testDeleteActionAjaxError(): void
@@ -1245,13 +1245,13 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
+            ->with(static::equalTo('delete'))
             ->willReturn(true);
 
         $this->admin
@@ -1267,9 +1267,9 @@ class CRUDControllerTest extends TestCase
 
         $response = $this->controller->deleteAction(21);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(json_encode(['result' => 'error']), $response->getContent());
-        $this->assertSame([], $this->session->getFlashBag()->all());
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame(json_encode(['result' => 'error']), $response->getContent());
+        static::assertSame([], $this->session->getFlashBag()->all());
     }
 
     public function testDeleteActionWithModelManagerExceptionInDebugMode(): void
@@ -1278,22 +1278,22 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
+            ->with(static::equalTo('delete'))
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('delete')
             ->willReturnCallback(static function (): void {
                 throw new ModelManagerException();
             });
 
-        $this->kernel->expects($this->once())
+        $this->kernel->expects(static::once())
             ->method('isDebug')
             ->willReturn(true);
 
@@ -1314,20 +1314,20 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('toString')
-            ->with($this->equalTo($object))
+            ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_delete_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
+            ->with(static::equalTo('delete'))
             ->willReturn(true);
 
         $this->request->setMethod(Request::METHOD_DELETE);
@@ -1336,9 +1336,9 @@ class CRUDControllerTest extends TestCase
 
         $response = $this->controller->deleteAction(21);
 
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertSame(['flash_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
-        $this->assertSame('list', $response->getTargetUrl());
+        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertSame(['flash_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
+        static::assertSame('list', $response->getTargetUrl());
     }
 
     /**
@@ -1350,18 +1350,18 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
+            ->with(static::equalTo('delete'))
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('toString')
-            ->with($this->equalTo($object))
+            ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_delete_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
@@ -1375,10 +1375,10 @@ class CRUDControllerTest extends TestCase
 
         $response = $this->controller->deleteAction(21);
 
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertSame(['flash_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
-        $this->assertSame('list', $response->getTargetUrl());
-        $this->assertSame(Request::METHOD_DELETE, $this->request->getMethod());
+        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertSame(['flash_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
+        static::assertSame('list', $response->getTargetUrl());
+        static::assertSame(Request::METHOD_DELETE, $this->request->getMethod());
     }
 
     /**
@@ -1392,18 +1392,18 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
+            ->with(static::equalTo('delete'))
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('toString')
-            ->with($this->equalTo($object))
+            ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_delete_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
@@ -1415,10 +1415,10 @@ class CRUDControllerTest extends TestCase
 
         $response = $this->controller->deleteAction(21);
 
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertSame(['flash_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
-        $this->assertSame('list', $response->getTargetUrl());
-        $this->assertSame(Request::METHOD_DELETE, $this->request->getMethod());
+        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertSame(['flash_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
+        static::assertSame('list', $response->getTargetUrl());
+        static::assertSame(Request::METHOD_DELETE, $this->request->getMethod());
     }
 
     public function testDeleteActionWrongRequestMethod(): void
@@ -1427,13 +1427,13 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
+            ->with(static::equalTo('delete'))
             ->willReturn(true);
 
         //without POST request parameter "_method" should not be used as real REST method
@@ -1441,20 +1441,20 @@ class CRUDControllerTest extends TestCase
 
         Request::enableHttpMethodParameterOverride();
 
-        $this->assertInstanceOf(Response::class, $this->controller->deleteAction(21));
+        static::assertInstanceOf(Response::class, $this->controller->deleteAction(21));
 
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
 
-        $this->assertSame('delete', $this->parameters['action']);
-        $this->assertSame($object, $this->parameters['object']);
-        $this->assertSame('csrf-token-123_sonata.delete', $this->parameters['csrf_token']);
+        static::assertSame('delete', $this->parameters['action']);
+        static::assertSame($object, $this->parameters['object']);
+        static::assertSame('csrf-token-123_sonata.delete', $this->parameters['csrf_token']);
 
-        $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/delete.html.twig', $this->template);
-        $this->assertSame(Request::METHOD_GET, $this->request->getMethod());
+        static::assertSame([], $this->session->getFlashBag()->all());
+        static::assertSame('@SonataAdmin/CRUD/delete.html.twig', $this->template);
+        static::assertSame(Request::METHOD_GET, $this->request->getMethod());
     }
 
     /**
@@ -1466,18 +1466,18 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
+            ->with(static::equalTo('delete'))
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('toString')
-            ->with($this->equalTo($object))
+            ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_delete_error', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
@@ -1489,9 +1489,9 @@ class CRUDControllerTest extends TestCase
 
         $response = $this->controller->deleteAction(21);
 
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertSame(['flash_delete_error'], $this->session->getFlashBag()->get('sonata_flash_error'));
-        $this->assertSame('list', $response->getTargetUrl());
+        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertSame(['flash_delete_error'], $this->session->getFlashBag()->get('sonata_flash_error'));
+        static::assertSame('list', $response->getTargetUrl());
     }
 
     public function testDeleteActionInvalidCsrfToken(): void
@@ -1500,13 +1500,13 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
+            ->with(static::equalTo('delete'))
             ->willReturn(true);
 
         $this->request->setMethod(Request::METHOD_POST);
@@ -1518,11 +1518,11 @@ class CRUDControllerTest extends TestCase
         try {
             $this->controller->deleteAction(21);
         } catch (HttpException $e) {
-            $this->assertSame('The csrf token is not valid, CSRF attack?', $e->getMessage());
-            $this->assertSame(400, $e->getStatusCode());
+            static::assertSame('The csrf token is not valid, CSRF attack?', $e->getMessage());
+            static::assertSame(400, $e->getStatusCode());
         }
 
-        $this->assertSame(Request::METHOD_DELETE, $this->request->getMethod());
+        static::assertSame(Request::METHOD_DELETE, $this->request->getMethod());
     }
 
     public function testDeleteActionChildManyToMany(): void
@@ -1540,23 +1540,23 @@ class CRUDControllerTest extends TestCase
 
         $childAdmin = $this->admin;
 
-        $parentAdmin->expects($this->atLeastOnce())
+        $parentAdmin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($parent);
 
-        $childAdmin->expects($this->atLeastOnce())
+        $childAdmin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($child);
 
-        $childAdmin->expects($this->exactly(2))
+        $childAdmin->expects(static::exactly(2))
             ->method('isChild')
             ->willReturn(true);
 
-        $childAdmin->expects($this->exactly(2))
+        $childAdmin->expects(static::exactly(2))
             ->method('getParent')
             ->willReturn($parentAdmin);
 
-        $childAdmin->expects($this->exactly(2))
+        $childAdmin->expects(static::exactly(2))
             ->method('getParentAssociationMapping')
             ->willReturn('parents');
 
@@ -1567,7 +1567,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn(null);
 
@@ -1580,14 +1580,14 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn(new \stdClass());
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('edit'))
-            ->will($this->throwException(new AccessDeniedException()));
+            ->with(static::equalTo('edit'))
+            ->will(static::throwException(new AccessDeniedException()));
 
         $this->expectException(AccessDeniedException::class);
 
@@ -1601,21 +1601,21 @@ class CRUDControllerTest extends TestCase
         $object = new \stdClass();
         $object->foo = 123456;
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('edit'))
+            ->with(static::equalTo('edit'))
             ->willReturn(true);
 
         $controller = new PreCRUDController();
         $controller->setContainer($this->container);
 
         $response = $controller->editAction();
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame('preEdit called: 123456', $response->getContent());
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame('preEdit called: 123456', $response->getContent());
     }
 
     public function testEditAction(): void
@@ -1624,18 +1624,18 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('edit'))
+            ->with(static::equalTo('edit'))
             ->willReturn(true);
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
@@ -1645,18 +1645,18 @@ class CRUDControllerTest extends TestCase
             ->method('createView')
             ->willReturn($formView);
 
-        $this->assertInstanceOf(Response::class, $this->controller->editAction());
+        static::assertInstanceOf(Response::class, $this->controller->editAction());
 
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
 
-        $this->assertSame('edit', $this->parameters['action']);
-        $this->assertInstanceOf(FormView::class, $this->parameters['form']);
-        $this->assertSame($object, $this->parameters['object']);
-        $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
+        static::assertSame('edit', $this->parameters['action']);
+        static::assertInstanceOf(FormView::class, $this->parameters['form']);
+        static::assertSame($object, $this->parameters['object']);
+        static::assertSame([], $this->session->getFlashBag()->all());
+        static::assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
     /**
@@ -1668,49 +1668,49 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('update')
             ->willReturnArgument(0);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('edit'));
+            ->with(static::equalTo('edit'));
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('hasRoute')
-            ->with($this->equalTo('edit'))
+            ->with(static::equalTo('edit'))
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('hasAccess')
-            ->with($this->equalTo('edit'))
+            ->with(static::equalTo('edit'))
             ->willReturn(true);
 
         $form = $this->createMock(Form::class);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('getData')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isSubmitted')
             ->willReturn(true);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isValid')
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('toString')
-            ->with($this->equalTo($object))
+            ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_edit_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
@@ -1719,9 +1719,9 @@ class CRUDControllerTest extends TestCase
 
         $response = $this->controller->editAction();
 
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertSame(['flash_edit_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
-        $this->assertSame('stdClass_edit', $response->getTargetUrl());
+        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertSame(['flash_edit_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
+        static::assertSame('stdClass_edit', $response->getTargetUrl());
     }
 
     /**
@@ -1733,32 +1733,32 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('edit'))
+            ->with(static::equalTo('edit'))
             ->willReturn(true);
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isSubmitted')
             ->willReturn(true);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isValid')
             ->willReturn(false);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('toString')
-            ->with($this->equalTo($object))
+            ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_edit_error', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
@@ -1771,19 +1771,19 @@ class CRUDControllerTest extends TestCase
             ->method('createView')
             ->willReturn($formView);
 
-        $this->assertInstanceOf(Response::class, $this->controller->editAction());
+        static::assertInstanceOf(Response::class, $this->controller->editAction());
 
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
 
-        $this->assertSame('edit', $this->parameters['action']);
-        $this->assertInstanceOf(FormView::class, $this->parameters['form']);
-        $this->assertSame($object, $this->parameters['object']);
+        static::assertSame('edit', $this->parameters['action']);
+        static::assertInstanceOf(FormView::class, $this->parameters['form']);
+        static::assertSame($object, $this->parameters['object']);
 
-        $this->assertSame(['sonata_flash_error' => ['flash_edit_error']], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
+        static::assertSame(['sonata_flash_error' => ['flash_edit_error']], $this->session->getFlashBag()->all());
+        static::assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
     public function testEditActionAjaxSuccess(): void
@@ -1792,43 +1792,43 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('update')
             ->willReturnArgument(0);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('edit'))
+            ->with(static::equalTo('edit'))
             ->willReturn(true);
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isSubmitted')
             ->willReturn(true);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isValid')
             ->willReturn(true);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('getData')
             ->willReturn($object);
 
         $this->admin
             ->method('getNormalizedIdentifier')
-            ->with($this->equalTo($object))
+            ->with(static::equalTo($object))
             ->willReturn('foo_normalized');
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('toString')
             ->willReturn('foo');
 
@@ -1837,9 +1837,9 @@ class CRUDControllerTest extends TestCase
 
         $response = $this->controller->editAction();
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(json_encode(['result' => 'ok', 'objectId' => 'foo_normalized', 'objectName' => 'foo']), $response->getContent());
-        $this->assertSame([], $this->session->getFlashBag()->all());
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame(json_encode(['result' => 'ok', 'objectId' => 'foo_normalized', 'objectName' => 'foo']), $response->getContent());
+        static::assertSame([], $this->session->getFlashBag()->all());
     }
 
     public function testEditActionAjaxError(): void
@@ -1848,35 +1848,35 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('edit'))
+            ->with(static::equalTo('edit'))
             ->willReturn(true);
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isSubmitted')
             ->willReturn(true);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isValid')
             ->willReturn(false);
 
         $formError = $this->createMock(FormError::class);
-        $formError->expects($this->atLeastOnce())
+        $formError->expects(static::atLeastOnce())
             ->method('getMessage')
             ->willReturn('Form error message');
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('getErrors')
             ->with(true)
             ->willReturn([$formError]);
@@ -1885,8 +1885,8 @@ class CRUDControllerTest extends TestCase
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
         $this->request->headers->set('Accept', 'application/json');
 
-        $this->assertInstanceOf(JsonResponse::class, $response = $this->controller->editAction());
-        $this->assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $response->getContent());
+        static::assertInstanceOf(JsonResponse::class, $response = $this->controller->editAction());
+        static::assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $response->getContent());
     }
 
     /**
@@ -1898,26 +1898,26 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('edit'))
+            ->with(static::equalTo('edit'))
             ->willReturn(true);
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isSubmitted')
             ->willReturn(true);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isValid')
             ->willReturn(false);
 
@@ -1929,7 +1929,7 @@ class CRUDControllerTest extends TestCase
             ->method('createView')
             ->willReturn($formView);
 
-        $this->translator->expects($this->once())
+        $this->translator->expects(static::once())
             ->method('trans')
             ->willReturn('flash message');
 
@@ -1940,18 +1940,18 @@ class CRUDControllerTest extends TestCase
             $this->request->getMethod(),
             $this->request->getUri()
         ));
-        $this->assertInstanceOf(Response::class, $response = $this->controller->editAction());
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
+        static::assertInstanceOf(Response::class, $response = $this->controller->editAction());
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
-        $this->assertSame('edit', $this->parameters['action']);
-        $this->assertInstanceOf(FormView::class, $this->parameters['form']);
-        $this->assertSame($object, $this->parameters['object']);
-        $this->assertSame([
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame('edit', $this->parameters['action']);
+        static::assertInstanceOf(FormView::class, $this->parameters['form']);
+        static::assertSame($object, $this->parameters['object']);
+        static::assertSame([
             'sonata_flash_error' => [0 => 'flash message'],
         ], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
+        static::assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
     /**
@@ -1963,13 +1963,13 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('edit'))
+            ->with(static::equalTo('edit'))
             ->willReturn(true);
 
         $this->admin
@@ -1978,26 +1978,26 @@ class CRUDControllerTest extends TestCase
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isValid')
             ->willReturn(true);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('getData')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('toString')
-            ->with($this->equalTo($object))
+            ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_edit_error', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isSubmitted')
             ->willReturn(true);
         $this->request->setMethod(Request::METHOD_POST);
@@ -2009,19 +2009,19 @@ class CRUDControllerTest extends TestCase
             ->willReturn($formView);
 
         $this->assertLoggerLogsModelManagerException($this->admin, 'update');
-        $this->assertInstanceOf(Response::class, $this->controller->editAction());
+        static::assertInstanceOf(Response::class, $this->controller->editAction());
 
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
 
-        $this->assertSame('edit', $this->parameters['action']);
-        $this->assertInstanceOf(FormView::class, $this->parameters['form']);
-        $this->assertSame($object, $this->parameters['object']);
+        static::assertSame('edit', $this->parameters['action']);
+        static::assertInstanceOf(FormView::class, $this->parameters['form']);
+        static::assertSame($object, $this->parameters['object']);
 
-        $this->assertSame(['sonata_flash_error' => ['flash_edit_error']], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
+        static::assertSame(['sonata_flash_error' => ['flash_edit_error']], $this->session->getFlashBag()->all());
+        static::assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
     public function testEditActionWithPreview(): void
@@ -2030,22 +2030,22 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('edit'))
+            ->with(static::equalTo('edit'))
             ->willReturn(true);
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('supportsPreviewMode')
             ->willReturn(true);
 
@@ -2055,30 +2055,30 @@ class CRUDControllerTest extends TestCase
             ->method('createView')
             ->willReturn($formView);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isSubmitted')
             ->willReturn(true);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isValid')
             ->willReturn(true);
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('btn_preview', 'Preview');
 
-        $this->assertInstanceOf(Response::class, $this->controller->editAction());
+        static::assertInstanceOf(Response::class, $this->controller->editAction());
 
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
 
-        $this->assertSame('edit', $this->parameters['action']);
-        $this->assertInstanceOf(FormView::class, $this->parameters['form']);
-        $this->assertSame($object, $this->parameters['object']);
+        static::assertSame('edit', $this->parameters['action']);
+        static::assertInstanceOf(FormView::class, $this->parameters['form']);
+        static::assertSame($object, $this->parameters['object']);
 
-        $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/preview.html.twig', $this->template);
+        static::assertSame([], $this->session->getFlashBag()->all());
+        static::assertSame('@SonataAdmin/CRUD/preview.html.twig', $this->template);
     }
 
     public function testEditActionWithLockException(): void
@@ -2094,7 +2094,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('checkAccess')
-            ->with($this->equalTo('edit'))
+            ->with(static::equalTo('edit'))
             ->willReturn(true);
 
         $this->admin
@@ -2107,7 +2107,7 @@ class CRUDControllerTest extends TestCase
             ->method('isValid')
             ->willReturn(true);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('getData')
             ->willReturn($object);
 
@@ -2122,11 +2122,11 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('update')
-            ->will($this->throwException(new LockException()));
+            ->will(static::throwException(new LockException()));
 
         $this->admin
             ->method('toString')
-            ->with($this->equalTo($object))
+            ->with(static::equalTo($object))
             ->willReturn($class);
 
         $formView = $this->createMock(FormView::class);
@@ -2141,15 +2141,15 @@ class CRUDControllerTest extends TestCase
             '%link_end%' => '</a>',
         ], 'SonataAdminBundle');
 
-        $this->assertInstanceOf(Response::class, $this->controller->editAction());
+        static::assertInstanceOf(Response::class, $this->controller->editAction());
     }
 
     public function testCreateActionAccessDenied(): void
     {
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('create'))
-            ->will($this->throwException(new AccessDeniedException()));
+            ->with(static::equalTo('create'))
+            ->will(static::throwException(new AccessDeniedException()));
 
         $this->expectException(AccessDeniedException::class);
 
@@ -2161,16 +2161,16 @@ class CRUDControllerTest extends TestCase
         $object = new \stdClass();
         $object->foo = 123456;
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('create'))
+            ->with(static::equalTo('create'))
             ->willReturn(true);
 
         $this->admin
             ->method('getClass')
             ->willReturn(\stdClass::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getNewInstance')
             ->willReturn($object);
 
@@ -2178,15 +2178,15 @@ class CRUDControllerTest extends TestCase
         $controller->setContainer($this->container);
 
         $response = $controller->createAction();
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame('preCreate called: 123456', $response->getContent());
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame('preCreate called: 123456', $response->getContent());
     }
 
     public function testCreateAction(): void
     {
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('create'))
+            ->with(static::equalTo('create'))
             ->willReturn(true);
 
         $object = new \stdClass();
@@ -2195,13 +2195,13 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn(\stdClass::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getNewInstance')
             ->willReturn($object);
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
@@ -2211,19 +2211,19 @@ class CRUDControllerTest extends TestCase
             ->method('createView')
             ->willReturn($formView);
 
-        $this->assertInstanceOf(Response::class, $this->controller->createAction());
+        static::assertInstanceOf(Response::class, $this->controller->createAction());
 
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
 
-        $this->assertSame('create', $this->parameters['action']);
-        $this->assertInstanceOf(FormView::class, $this->parameters['form']);
-        $this->assertSame($object, $this->parameters['object']);
+        static::assertSame('create', $this->parameters['action']);
+        static::assertInstanceOf(FormView::class, $this->parameters['form']);
+        static::assertSame($object, $this->parameters['object']);
 
-        $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
+        static::assertSame([], $this->session->getFlashBag()->all());
+        static::assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
     /**
@@ -2233,7 +2233,7 @@ class CRUDControllerTest extends TestCase
     {
         $object = new \stdClass();
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects(static::exactly(2))
             ->method('checkAccess')
             ->willReturnCallback(static function (string $name, $objectIn = null) use ($object): bool {
                 if ('edit' === $name) {
@@ -2251,21 +2251,21 @@ class CRUDControllerTest extends TestCase
                 return $objectIn === $object;
             });
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('hasRoute')
-            ->with($this->equalTo('edit'))
+            ->with(static::equalTo('edit'))
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('hasAccess')
-            ->with($this->equalTo('edit'))
+            ->with(static::equalTo('edit'))
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getNewInstance')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('create')
             ->willReturnArgument(0);
 
@@ -2275,25 +2275,25 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn(\stdClass::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isSubmitted')
             ->willReturn(true);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isValid')
             ->willReturn(true);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('getData')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('toString')
-            ->with($this->equalTo($object))
+            ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_create_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
@@ -2302,9 +2302,9 @@ class CRUDControllerTest extends TestCase
 
         $response = $this->controller->createAction();
 
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertSame(['flash_create_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
-        $this->assertSame('stdClass_edit', $response->getTargetUrl());
+        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertSame(['flash_create_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
+        static::assertSame('stdClass_edit', $response->getTargetUrl());
     }
 
     public function testCreateActionAccessDenied2(): void
@@ -2326,7 +2326,7 @@ class CRUDControllerTest extends TestCase
                 throw new AccessDeniedException();
             });
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getNewInstance')
             ->willReturn($object);
 
@@ -2336,19 +2336,19 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn(\stdClass::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isSubmitted')
             ->willReturn(true);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('getData')
             ->willReturn($object);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isValid')
             ->willReturn(true);
 
@@ -2362,9 +2362,9 @@ class CRUDControllerTest extends TestCase
      */
     public function testCreateActionError(string $expectedToStringValue, string $toStringValue): void
     {
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('create'))
+            ->with(static::equalTo('create'))
             ->willReturn(true);
 
         $object = new \stdClass();
@@ -2373,27 +2373,27 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn(\stdClass::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getNewInstance')
             ->willReturn($object);
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isSubmitted')
             ->willReturn(true);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isValid')
             ->willReturn(false);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('toString')
-            ->with($this->equalTo($object))
+            ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_create_error', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
@@ -2406,19 +2406,19 @@ class CRUDControllerTest extends TestCase
             ->method('createView')
             ->willReturn($formView);
 
-        $this->assertInstanceOf(Response::class, $this->controller->createAction());
+        static::assertInstanceOf(Response::class, $this->controller->createAction());
 
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
 
-        $this->assertSame('create', $this->parameters['action']);
-        $this->assertInstanceOf(FormView::class, $this->parameters['form']);
-        $this->assertSame($object, $this->parameters['object']);
+        static::assertSame('create', $this->parameters['action']);
+        static::assertInstanceOf(FormView::class, $this->parameters['form']);
+        static::assertSame($object, $this->parameters['object']);
 
-        $this->assertSame(['sonata_flash_error' => ['flash_create_error']], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
+        static::assertSame(['sonata_flash_error' => ['flash_create_error']], $this->session->getFlashBag()->all());
+        static::assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
     /**
@@ -2426,9 +2426,9 @@ class CRUDControllerTest extends TestCase
      */
     public function testCreateActionWithModelManagerException(string $expectedToStringValue, string $toStringValue): void
     {
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects(static::exactly(2))
             ->method('checkAccess')
-            ->with($this->equalTo('create'))
+            ->with(static::equalTo('create'))
             ->willReturn(true);
 
         $this->admin
@@ -2437,32 +2437,32 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getNewInstance')
             ->willReturn($object);
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isValid')
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('toString')
-            ->with($this->equalTo($object))
+            ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_create_error', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isSubmitted')
             ->willReturn(true);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('getData')
             ->willReturn($object);
 
@@ -2476,26 +2476,26 @@ class CRUDControllerTest extends TestCase
 
         $this->assertLoggerLogsModelManagerException($this->admin, 'create');
 
-        $this->assertInstanceOf(Response::class, $this->controller->createAction());
+        static::assertInstanceOf(Response::class, $this->controller->createAction());
 
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
 
-        $this->assertSame('create', $this->parameters['action']);
-        $this->assertInstanceOf(FormView::class, $this->parameters['form']);
-        $this->assertSame($object, $this->parameters['object']);
+        static::assertSame('create', $this->parameters['action']);
+        static::assertInstanceOf(FormView::class, $this->parameters['form']);
+        static::assertSame($object, $this->parameters['object']);
 
-        $this->assertSame(['sonata_flash_error' => ['flash_create_error']], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
+        static::assertSame(['sonata_flash_error' => ['flash_create_error']], $this->session->getFlashBag()->all());
+        static::assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
     public function testCreateActionAjaxSuccess(): void
     {
         $object = new \stdClass();
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects(static::exactly(2))
             ->method('checkAccess')
             ->willReturnCallback(static function (string $name, $objectIn = null) use ($object): bool {
                 if ('create' !== $name) {
@@ -2509,29 +2509,29 @@ class CRUDControllerTest extends TestCase
                 return $objectIn === $object;
             });
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getNewInstance')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('create')
             ->willReturnArgument(0);
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isSubmitted')
             ->willReturn(true);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isValid')
             ->willReturn(true);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('getData')
             ->willReturn($object);
 
@@ -2539,12 +2539,12 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn(\stdClass::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getNormalizedIdentifier')
-            ->with($this->equalTo($object))
+            ->with(static::equalTo($object))
             ->willReturn('foo_normalized');
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('toString')
             ->willReturn('foo');
 
@@ -2553,21 +2553,21 @@ class CRUDControllerTest extends TestCase
 
         $response = $this->controller->createAction();
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(json_encode(['result' => 'ok', 'objectId' => 'foo_normalized', 'objectName' => 'foo']), $response->getContent());
-        $this->assertSame([], $this->session->getFlashBag()->all());
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame(json_encode(['result' => 'ok', 'objectId' => 'foo_normalized', 'objectName' => 'foo']), $response->getContent());
+        static::assertSame([], $this->session->getFlashBag()->all());
     }
 
     public function testCreateActionAjaxError(): void
     {
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('create'))
+            ->with(static::equalTo('create'))
             ->willReturn(true);
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getNewInstance')
             ->willReturn($object);
 
@@ -2577,24 +2577,24 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn(\stdClass::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isSubmitted')
             ->willReturn(true);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isValid')
             ->willReturn(false);
 
         $formError = $this->createMock(FormError::class);
-        $formError->expects($this->atLeastOnce())
+        $formError->expects(static::atLeastOnce())
             ->method('getMessage')
             ->willReturn('Form error message');
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('getErrors')
             ->with(true)
             ->willReturn([$formError]);
@@ -2603,8 +2603,8 @@ class CRUDControllerTest extends TestCase
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
         $this->request->headers->set('Accept', 'application/json');
 
-        $this->assertInstanceOf(JsonResponse::class, $response = $this->controller->createAction());
-        $this->assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $response->getContent());
+        static::assertInstanceOf(JsonResponse::class, $response = $this->controller->createAction());
+        static::assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $response->getContent());
     }
 
     /**
@@ -2612,14 +2612,14 @@ class CRUDControllerTest extends TestCase
      */
     public function testCreateActionAjaxErrorWithoutAcceptApplicationJson(): void
     {
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('create'))
+            ->with(static::equalTo('create'))
             ->willReturn(true);
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getNewInstance')
             ->willReturn($object);
 
@@ -2629,15 +2629,15 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn(\stdClass::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isSubmitted')
             ->willReturn(true);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isValid')
             ->willReturn(false);
 
@@ -2649,7 +2649,7 @@ class CRUDControllerTest extends TestCase
             ->method('createView')
             ->willReturn($formView);
 
-        $this->translator->expects($this->once())
+        $this->translator->expects(static::once())
             ->method('trans')
             ->willReturn('flash message');
 
@@ -2660,30 +2660,30 @@ class CRUDControllerTest extends TestCase
             $this->request->getMethod(),
             $this->request->getUri()
         ));
-        $this->assertInstanceOf(Response::class, $response = $this->controller->createAction());
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
+        static::assertInstanceOf(Response::class, $response = $this->controller->createAction());
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
-        $this->assertSame('create', $this->parameters['action']);
-        $this->assertInstanceOf(FormView::class, $this->parameters['form']);
-        $this->assertSame($object, $this->parameters['object']);
-        $this->assertSame([
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame('create', $this->parameters['action']);
+        static::assertInstanceOf(FormView::class, $this->parameters['form']);
+        static::assertSame($object, $this->parameters['object']);
+        static::assertSame([
             'sonata_flash_error' => [0 => 'flash message'],
         ], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
+        static::assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
     public function testCreateActionWithPreview(): void
     {
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('create'))
+            ->with(static::equalTo('create'))
             ->willReturn(true);
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getNewInstance')
             ->willReturn($object);
 
@@ -2693,11 +2693,11 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn(\stdClass::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('supportsPreviewMode')
             ->willReturn(true);
 
@@ -2707,38 +2707,38 @@ class CRUDControllerTest extends TestCase
             ->method('createView')
             ->willReturn($formView);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isSubmitted')
             ->willReturn(true);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('isValid')
             ->willReturn(true);
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('btn_preview', 'Preview');
 
-        $this->assertInstanceOf(Response::class, $this->controller->createAction());
+        static::assertInstanceOf(Response::class, $this->controller->createAction());
 
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
 
-        $this->assertSame('create', $this->parameters['action']);
-        $this->assertInstanceOf(FormView::class, $this->parameters['form']);
-        $this->assertSame($object, $this->parameters['object']);
+        static::assertSame('create', $this->parameters['action']);
+        static::assertInstanceOf(FormView::class, $this->parameters['form']);
+        static::assertSame($object, $this->parameters['object']);
 
-        $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/preview.html.twig', $this->template);
+        static::assertSame([], $this->session->getFlashBag()->all());
+        static::assertSame('@SonataAdmin/CRUD/preview.html.twig', $this->template);
     }
 
     public function testExportActionAccessDenied(): void
     {
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('export'))
-            ->will($this->throwException(new AccessDeniedException()));
+            ->with(static::equalTo('export'))
+            ->will(static::throwException(new AccessDeniedException()));
 
         $this->expectException(AccessDeniedException::class);
 
@@ -2747,12 +2747,12 @@ class CRUDControllerTest extends TestCase
 
     public function testExportActionWrongFormat(): void
     {
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('export'))
+            ->with(static::equalTo('export'))
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getExportFormats')
             ->willReturn(['json']);
 
@@ -2772,27 +2772,27 @@ class CRUDControllerTest extends TestCase
 
     public function testExportAction(): void
     {
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('export'))
+            ->with(static::equalTo('export'))
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getExportFormats')
             ->willReturn(['json']);
 
         $dataSourceIterator = $this->createMock(SourceIteratorInterface::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getDataSourceIterator')
             ->willReturn($dataSourceIterator);
 
         $this->request->query->set('format', 'json');
 
         $response = $this->controller->exportAction($this->request);
-        $this->assertInstanceOf(StreamedResponse::class, $response);
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertSame([], $this->session->getFlashBag()->all());
+        static::assertInstanceOf(StreamedResponse::class, $response);
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
+        static::assertSame([], $this->session->getFlashBag()->all());
     }
 
     public function testHistoryActionAccessDenied(): void
@@ -2803,10 +2803,10 @@ class CRUDControllerTest extends TestCase
             ->method('getObject')
             ->willReturn(new \stdClass());
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('history'))
-            ->will($this->throwException(new AccessDeniedException()));
+            ->with(static::equalTo('history'))
+            ->will(static::throwException(new AccessDeniedException()));
 
         $this->expectException(AccessDeniedException::class);
         $this->controller->historyAction();
@@ -2816,7 +2816,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->query->set('id', 123);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn(null);
 
@@ -2829,14 +2829,14 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->query->set('id', 123);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('history'))
+            ->with(static::equalTo('history'))
             ->willReturn(true);
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects(static::exactly(2))
             ->method('getObject')
             ->willReturn($object);
 
@@ -2844,9 +2844,9 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn('Foo');
 
-        $this->auditManager->expects($this->once())
+        $this->auditManager->expects(static::once())
             ->method('hasReader')
-            ->with($this->equalTo('Foo'))
+            ->with(static::equalTo('Foo'))
             ->willReturn(false);
 
         $this->expectException(NotFoundHttpException::class);
@@ -2859,14 +2859,14 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->query->set('id', 123);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('history'))
+            ->with(static::equalTo('history'))
             ->willReturn(true);
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects(static::exactly(2))
             ->method('getObject')
             ->willReturn($object);
 
@@ -2874,36 +2874,36 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn('Foo');
 
-        $this->auditManager->expects($this->once())
+        $this->auditManager->expects(static::once())
             ->method('hasReader')
-            ->with($this->equalTo('Foo'))
+            ->with(static::equalTo('Foo'))
             ->willReturn(true);
 
         $reader = $this->createMock(AuditReaderInterface::class);
 
-        $this->auditManager->expects($this->once())
+        $this->auditManager->expects(static::once())
             ->method('getReader')
-            ->with($this->equalTo('Foo'))
+            ->with(static::equalTo('Foo'))
             ->willReturn($reader);
 
-        $reader->expects($this->once())
+        $reader->expects(static::once())
             ->method('findRevisions')
-            ->with($this->equalTo('Foo'), $this->equalTo(123))
+            ->with(static::equalTo('Foo'), static::equalTo(123))
             ->willReturn([]);
 
-        $this->assertInstanceOf(Response::class, $this->controller->historyAction(null));
+        static::assertInstanceOf(Response::class, $this->controller->historyAction(null));
 
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
 
-        $this->assertSame('history', $this->parameters['action']);
-        $this->assertSame([], $this->parameters['revisions']);
-        $this->assertSame($object, $this->parameters['object']);
+        static::assertSame('history', $this->parameters['action']);
+        static::assertSame([], $this->parameters['revisions']);
+        static::assertSame($object, $this->parameters['object']);
 
-        $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/history.html.twig', $this->template);
+        static::assertSame([], $this->session->getFlashBag()->all());
+        static::assertSame('@SonataAdmin/CRUD/history.html.twig', $this->template);
     }
 
     public function testAclActionAclNotEnabled(): void
@@ -2925,11 +2925,11 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('isAclEnabled')
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn(null);
 
@@ -2946,11 +2946,11 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('isAclEnabled')
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn(null);
 
@@ -2963,20 +2963,20 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('isAclEnabled')
             ->willReturn(true);
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->atLeastOnce())
+        $this->admin->expects(static::atLeastOnce())
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('acl'), $this->equalTo($object))
-            ->will($this->throwException(new AccessDeniedException()));
+            ->with(static::equalTo('acl'), static::equalTo($object))
+            ->will(static::throwException(new AccessDeniedException()));
 
         $this->expectException(AccessDeniedException::class);
 
@@ -2987,13 +2987,13 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects(static::exactly(2))
             ->method('isAclEnabled')
             ->willReturn(true);
 
         $object = new DummyDomainObject();
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects(static::exactly(2))
             ->method('getObject')
             ->willReturn($object);
 
@@ -3009,7 +3009,7 @@ class CRUDControllerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $aclUsersForm->expects($this->once())
+        $aclUsersForm->expects(static::once())
             ->method('createView')
             ->willReturn($this->createMock(FormView::class));
 
@@ -3017,7 +3017,7 @@ class CRUDControllerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $aclRolesForm->expects($this->once())
+        $aclRolesForm->expects(static::once())
             ->method('createView')
             ->willReturn($this->createMock(FormView::class));
 
@@ -3046,23 +3046,23 @@ class CRUDControllerTest extends TestCase
             ->method('getSecurityHandler')
             ->willReturn($aclSecurityHandler);
 
-        $this->assertInstanceOf(Response::class, $this->controller->aclAction(null));
+        static::assertInstanceOf(Response::class, $this->controller->aclAction(null));
 
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
 
-        $this->assertSame('acl', $this->parameters['action']);
-        $this->assertSame([], $this->parameters['permissions']);
-        $this->assertSame($object, $this->parameters['object']);
-        $this->assertInstanceOf(\ArrayIterator::class, $this->parameters['users']);
-        $this->assertInstanceOf(\ArrayIterator::class, $this->parameters['roles']);
-        $this->assertInstanceOf(FormView::class, $this->parameters['aclUsersForm']);
-        $this->assertInstanceOf(FormView::class, $this->parameters['aclRolesForm']);
+        static::assertSame('acl', $this->parameters['action']);
+        static::assertSame([], $this->parameters['permissions']);
+        static::assertSame($object, $this->parameters['object']);
+        static::assertInstanceOf(\ArrayIterator::class, $this->parameters['users']);
+        static::assertInstanceOf(\ArrayIterator::class, $this->parameters['roles']);
+        static::assertInstanceOf(FormView::class, $this->parameters['aclUsersForm']);
+        static::assertInstanceOf(FormView::class, $this->parameters['aclRolesForm']);
 
-        $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/acl.html.twig', $this->template);
+        static::assertSame([], $this->session->getFlashBag()->all());
+        static::assertSame('@SonataAdmin/CRUD/acl.html.twig', $this->template);
     }
 
     public function testAclActionInvalidUpdate(): void
@@ -3070,13 +3070,13 @@ class CRUDControllerTest extends TestCase
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
         $this->request->request->set(AdminObjectAclManipulator::ACL_USERS_FORM_NAME, []);
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects(static::exactly(2))
             ->method('isAclEnabled')
             ->willReturn(true);
 
         $object = new DummyDomainObject();
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects(static::exactly(2))
             ->method('getObject')
             ->willReturn($object);
 
@@ -3092,11 +3092,11 @@ class CRUDControllerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $aclUsersForm->expects($this->once())
+        $aclUsersForm->expects(static::once())
             ->method('isValid')
             ->willReturn(false);
 
-        $aclUsersForm->expects($this->once())
+        $aclUsersForm->expects(static::once())
             ->method('createView')
             ->willReturn($this->createMock(FormView::class));
 
@@ -3104,7 +3104,7 @@ class CRUDControllerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $aclRolesForm->expects($this->once())
+        $aclRolesForm->expects(static::once())
             ->method('createView')
             ->willReturn($this->createMock(FormView::class));
 
@@ -3135,23 +3135,23 @@ class CRUDControllerTest extends TestCase
 
         $this->request->setMethod(Request::METHOD_POST);
 
-        $this->assertInstanceOf(Response::class, $this->controller->aclAction());
+        static::assertInstanceOf(Response::class, $this->controller->aclAction());
 
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
 
-        $this->assertSame('acl', $this->parameters['action']);
-        $this->assertSame([], $this->parameters['permissions']);
-        $this->assertSame($object, $this->parameters['object']);
-        $this->assertInstanceOf(\ArrayIterator::class, $this->parameters['users']);
-        $this->assertInstanceOf(\ArrayIterator::class, $this->parameters['roles']);
-        $this->assertInstanceOf(FormView::class, $this->parameters['aclUsersForm']);
-        $this->assertInstanceOf(FormView::class, $this->parameters['aclRolesForm']);
+        static::assertSame('acl', $this->parameters['action']);
+        static::assertSame([], $this->parameters['permissions']);
+        static::assertSame($object, $this->parameters['object']);
+        static::assertInstanceOf(\ArrayIterator::class, $this->parameters['users']);
+        static::assertInstanceOf(\ArrayIterator::class, $this->parameters['roles']);
+        static::assertInstanceOf(FormView::class, $this->parameters['aclUsersForm']);
+        static::assertInstanceOf(FormView::class, $this->parameters['aclRolesForm']);
 
-        $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/acl.html.twig', $this->template);
+        static::assertSame([], $this->session->getFlashBag()->all());
+        static::assertSame('@SonataAdmin/CRUD/acl.html.twig', $this->template);
     }
 
     public function testAclActionSuccessfulUpdate(): void
@@ -3159,13 +3159,13 @@ class CRUDControllerTest extends TestCase
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
         $this->request->request->set(AdminObjectAclManipulator::ACL_ROLES_FORM_NAME, []);
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects(static::exactly(2))
             ->method('isAclEnabled')
             ->willReturn(true);
 
         $object = new DummyDomainObject();
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects(static::exactly(2))
             ->method('getObject')
             ->willReturn($object);
 
@@ -3197,7 +3197,7 @@ class CRUDControllerTest extends TestCase
             ->method('createView')
             ->willReturn($this->createMock(FormView::class));
 
-        $aclRolesForm->expects($this->once())
+        $aclRolesForm->expects(static::once())
             ->method('isValid')
             ->willReturn(true);
 
@@ -3232,10 +3232,10 @@ class CRUDControllerTest extends TestCase
 
         $response = $this->controller->aclAction();
 
-        $this->assertInstanceOf(RedirectResponse::class, $response);
+        static::assertInstanceOf(RedirectResponse::class, $response);
 
-        $this->assertSame(['flash_acl_edit_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
-        $this->assertSame(sprintf('%s_acl', DummyDomainObject::class), $response->getTargetUrl());
+        static::assertSame(['flash_acl_edit_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
+        static::assertSame(sprintf('%s_acl', DummyDomainObject::class), $response->getTargetUrl());
     }
 
     public function testHistoryViewRevisionActionAccessDenied(): void
@@ -3246,10 +3246,10 @@ class CRUDControllerTest extends TestCase
             ->method('getObject')
             ->willReturn(new \stdClass());
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('historyViewRevision'))
-            ->will($this->throwException(new AccessDeniedException()));
+            ->with(static::equalTo('historyViewRevision'))
+            ->will(static::throwException(new AccessDeniedException()));
 
         $this->expectException(AccessDeniedException::class);
 
@@ -3260,11 +3260,11 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->query->set('id', 123);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn(null);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getClassnameLabel')
             ->willReturn('MyObjectWithRevisions');
 
@@ -3278,14 +3278,14 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->query->set('id', 123);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('historyViewRevision'))
+            ->with(static::equalTo('historyViewRevision'))
             ->willReturn(true);
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects(static::exactly(2))
             ->method('getObject')
             ->willReturn($object);
 
@@ -3293,9 +3293,9 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn('Foo');
 
-        $this->auditManager->expects($this->once())
+        $this->auditManager->expects(static::once())
             ->method('hasReader')
-            ->with($this->equalTo('Foo'))
+            ->with(static::equalTo('Foo'))
             ->willReturn(false);
 
         $this->expectException(NotFoundHttpException::class);
@@ -3308,14 +3308,14 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->query->set('id', 123);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('historyViewRevision'))
+            ->with(static::equalTo('historyViewRevision'))
             ->willReturn(true);
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects(static::exactly(2))
             ->method('getObject')
             ->willReturn($object);
 
@@ -3323,21 +3323,21 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn('Foo');
 
-        $this->auditManager->expects($this->once())
+        $this->auditManager->expects(static::once())
             ->method('hasReader')
-            ->with($this->equalTo('Foo'))
+            ->with(static::equalTo('Foo'))
             ->willReturn(true);
 
         $reader = $this->createMock(AuditReaderInterface::class);
 
-        $this->auditManager->expects($this->once())
+        $this->auditManager->expects(static::once())
             ->method('getReader')
-            ->with($this->equalTo('Foo'))
+            ->with(static::equalTo('Foo'))
             ->willReturn($reader);
 
-        $reader->expects($this->once())
+        $reader->expects(static::once())
             ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo(456))
+            ->with(static::equalTo('Foo'), static::equalTo(123), static::equalTo(456))
             ->willReturn(null);
 
         $this->expectException(NotFoundHttpException::class);
@@ -3352,14 +3352,14 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->query->set('id', 123);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('historyViewRevision'))
+            ->with(static::equalTo('historyViewRevision'))
             ->willReturn(true);
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects(static::exactly(2))
             ->method('getObject')
             ->willReturn($object);
 
@@ -3367,59 +3367,59 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn('Foo');
 
-        $this->auditManager->expects($this->once())
+        $this->auditManager->expects(static::once())
             ->method('hasReader')
-            ->with($this->equalTo('Foo'))
+            ->with(static::equalTo('Foo'))
             ->willReturn(true);
 
         $reader = $this->createMock(AuditReaderInterface::class);
 
-        $this->auditManager->expects($this->once())
+        $this->auditManager->expects(static::once())
             ->method('getReader')
-            ->with($this->equalTo('Foo'))
+            ->with(static::equalTo('Foo'))
             ->willReturn($reader);
 
         $objectRevision = new \stdClass();
         $objectRevision->revision = 456;
 
-        $reader->expects($this->once())
+        $reader->expects(static::once())
             ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo(456))
+            ->with(static::equalTo('Foo'), static::equalTo(123), static::equalTo(456))
             ->willReturn($objectRevision);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('setSubject')
-            ->with($this->equalTo($objectRevision))
+            ->with(static::equalTo($objectRevision))
             ->willReturn(null);
 
         $fieldDescriptionCollection = new FieldDescriptionCollection();
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getShow')
             ->willReturn($fieldDescriptionCollection);
 
-        $this->assertInstanceOf(Response::class, $this->controller->historyViewRevisionAction(123, 456));
+        static::assertInstanceOf(Response::class, $this->controller->historyViewRevisionAction(123, 456));
 
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
 
-        $this->assertSame('show', $this->parameters['action']);
-        $this->assertSame($objectRevision, $this->parameters['object']);
-        $this->assertSame($fieldDescriptionCollection, $this->parameters['elements']);
+        static::assertSame('show', $this->parameters['action']);
+        static::assertSame($objectRevision, $this->parameters['object']);
+        static::assertSame($fieldDescriptionCollection, $this->parameters['elements']);
 
-        $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/show.html.twig', $this->template);
+        static::assertSame([], $this->session->getFlashBag()->all());
+        static::assertSame('@SonataAdmin/CRUD/show.html.twig', $this->template);
     }
 
     public function testHistoryCompareRevisionsActionAccessDenied(): void
     {
         $this->request->query->set('id', 123);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('historyCompareRevisions'))
-            ->will($this->throwException(new AccessDeniedException()));
+            ->with(static::equalTo('historyCompareRevisions'))
+            ->will(static::throwException(new AccessDeniedException()));
 
         $this->expectException(AccessDeniedException::class);
 
@@ -3430,16 +3430,16 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->query->set('id', 123);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('historyCompareRevisions'))
+            ->with(static::equalTo('historyCompareRevisions'))
             ->willReturn(true);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn(null);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getClassnameLabel')
             ->willReturn('MyObjectWithRevisions');
 
@@ -3453,14 +3453,14 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->query->set('id', 123);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('historyCompareRevisions'))
+            ->with(static::equalTo('historyCompareRevisions'))
             ->willReturn(true);
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -3468,9 +3468,9 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn('Foo');
 
-        $this->auditManager->expects($this->once())
+        $this->auditManager->expects(static::once())
             ->method('hasReader')
-            ->with($this->equalTo('Foo'))
+            ->with(static::equalTo('Foo'))
             ->willReturn(false);
 
         $this->expectException(NotFoundHttpException::class);
@@ -3483,14 +3483,14 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->query->set('id', 123);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('historyCompareRevisions'))
+            ->with(static::equalTo('historyCompareRevisions'))
             ->willReturn(true);
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -3498,22 +3498,22 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn('Foo');
 
-        $this->auditManager->expects($this->once())
+        $this->auditManager->expects(static::once())
             ->method('hasReader')
-            ->with($this->equalTo('Foo'))
+            ->with(static::equalTo('Foo'))
             ->willReturn(true);
 
         $reader = $this->createMock(AuditReaderInterface::class);
 
-        $this->auditManager->expects($this->once())
+        $this->auditManager->expects(static::once())
             ->method('getReader')
-            ->with($this->equalTo('Foo'))
+            ->with(static::equalTo('Foo'))
             ->willReturn($reader);
 
         // once because it will not be found and therefore the second call won't be executed
-        $reader->expects($this->once())
+        $reader->expects(static::once())
             ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo(456))
+            ->with(static::equalTo('Foo'), static::equalTo(123), static::equalTo(456))
             ->willReturn(null);
 
         $this->expectException(NotFoundHttpException::class);
@@ -3528,14 +3528,14 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->query->set('id', 123);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('historyCompareRevisions'))
+            ->with(static::equalTo('historyCompareRevisions'))
             ->willReturn(true);
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -3543,23 +3543,23 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn('Foo');
 
-        $this->auditManager->expects($this->once())
+        $this->auditManager->expects(static::once())
             ->method('hasReader')
-            ->with($this->equalTo('Foo'))
+            ->with(static::equalTo('Foo'))
             ->willReturn(true);
 
         $reader = $this->createMock(AuditReaderInterface::class);
 
-        $this->auditManager->expects($this->once())
+        $this->auditManager->expects(static::once())
             ->method('getReader')
-            ->with($this->equalTo('Foo'))
+            ->with(static::equalTo('Foo'))
             ->willReturn($reader);
 
         $objectRevision = new \stdClass();
         $objectRevision->revision = 456;
 
         // first call should return, so the second call will throw an exception
-        $reader->expects($this->exactly(2))->method('find')->willReturnMap([
+        $reader->expects(static::exactly(2))->method('find')->willReturnMap([
             ['Foo', 123, 456, $objectRevision],
             ['Foo', 123, 789, null],
         ]);
@@ -3576,14 +3576,14 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->query->set('id', 123);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('historyCompareRevisions'))
+            ->with(static::equalTo('historyCompareRevisions'))
             ->willReturn(true);
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -3591,16 +3591,16 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn('Foo');
 
-        $this->auditManager->expects($this->once())
+        $this->auditManager->expects(static::once())
             ->method('hasReader')
-            ->with($this->equalTo('Foo'))
+            ->with(static::equalTo('Foo'))
             ->willReturn(true);
 
         $reader = $this->createMock(AuditReaderInterface::class);
 
-        $this->auditManager->expects($this->once())
+        $this->auditManager->expects(static::once())
             ->method('getReader')
-            ->with($this->equalTo('Foo'))
+            ->with(static::equalTo('Foo'))
             ->willReturn($reader);
 
         $objectRevision = new \stdClass();
@@ -3609,35 +3609,35 @@ class CRUDControllerTest extends TestCase
         $compareObjectRevision = new \stdClass();
         $compareObjectRevision->revision = 789;
 
-        $reader->expects($this->exactly(2))->method('find')->willReturnMap([
+        $reader->expects(static::exactly(2))->method('find')->willReturnMap([
             ['Foo', 123, 456, $objectRevision],
             ['Foo', 123, 789, $compareObjectRevision],
         ]);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('setSubject')
-            ->with($this->equalTo($objectRevision))
+            ->with(static::equalTo($objectRevision))
             ->willReturn(null);
 
         $fieldDescriptionCollection = new FieldDescriptionCollection();
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getShow')
             ->willReturn($fieldDescriptionCollection);
 
-        $this->assertInstanceOf(Response::class, $this->controller->historyCompareRevisionsAction(123, 456, 789));
+        static::assertInstanceOf(Response::class, $this->controller->historyCompareRevisionsAction(123, 456, 789));
 
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
 
-        $this->assertSame('show', $this->parameters['action']);
-        $this->assertSame($objectRevision, $this->parameters['object']);
-        $this->assertSame($compareObjectRevision, $this->parameters['object_compare']);
-        $this->assertSame($fieldDescriptionCollection, $this->parameters['elements']);
+        static::assertSame('show', $this->parameters['action']);
+        static::assertSame($objectRevision, $this->parameters['object']);
+        static::assertSame($compareObjectRevision, $this->parameters['object_compare']);
+        static::assertSame($fieldDescriptionCollection, $this->parameters['elements']);
 
-        $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/show_compare.html.twig', $this->template);
+        static::assertSame([], $this->session->getFlashBag()->all());
+        static::assertSame('@SonataAdmin/CRUD/show_compare.html.twig', $this->template);
     }
 
     /**
@@ -3655,14 +3655,14 @@ class CRUDControllerTest extends TestCase
         $this->request->attributes->set('base_revision', $baseRevision);
         $this->request->attributes->set('compare_revision', $compareRevision);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('historyCompareRevisions'))
+            ->with(static::equalTo('historyCompareRevisions'))
             ->willReturn(true);
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -3670,16 +3670,16 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn('Foo');
 
-        $this->auditManager->expects($this->once())
+        $this->auditManager->expects(static::once())
             ->method('hasReader')
-            ->with($this->equalTo('Foo'))
+            ->with(static::equalTo('Foo'))
             ->willReturn(true);
 
         $reader = $this->createMock(AuditReaderInterface::class);
 
-        $this->auditManager->expects($this->once())
+        $this->auditManager->expects(static::once())
             ->method('getReader')
-            ->with($this->equalTo('Foo'))
+            ->with(static::equalTo('Foo'))
             ->willReturn($reader);
 
         $objectRevision = new \stdClass();
@@ -3688,17 +3688,17 @@ class CRUDControllerTest extends TestCase
         $compareObjectRevision = new \stdClass();
         $compareObjectRevision->revision = $compareRevision;
 
-        $reader->expects($this->exactly(2))->method('find')->willReturnMap([
+        $reader->expects(static::exactly(2))->method('find')->willReturnMap([
             ['Foo', $subjectId, $baseRevision, $objectRevision],
             ['Foo', $subjectId, $compareRevision, $compareObjectRevision],
         ]);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('setSubject')
-            ->with($this->equalTo($objectRevision));
+            ->with(static::equalTo($objectRevision));
 
         $fieldDescriptionCollection = new FieldDescriptionCollection();
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getShow')
             ->willReturn($fieldDescriptionCollection);
 
@@ -3712,7 +3712,7 @@ class CRUDControllerTest extends TestCase
             ' is deprecated since sonata-project/admin-bundle 3.92. Use "compareRevision" parameter instead.'
         );
 
-        $this->assertInstanceOf(Response::class, $this->controller->historyCompareRevisionsAction());
+        static::assertInstanceOf(Response::class, $this->controller->historyCompareRevisionsAction());
     }
 
     public function testBatchActionWrongMethod(): void
@@ -3735,7 +3735,7 @@ class CRUDControllerTest extends TestCase
 
         $batchActions = [];
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
@@ -3755,8 +3755,8 @@ class CRUDControllerTest extends TestCase
         try {
             $this->controller->batchAction();
         } catch (HttpException $e) {
-            $this->assertSame('The csrf token is not valid, CSRF attack?', $e->getMessage());
-            $this->assertSame(400, $e->getStatusCode());
+            static::assertSame('The csrf token is not valid, CSRF attack?', $e->getMessage());
+            static::assertSame(400, $e->getStatusCode());
         }
     }
 
@@ -3769,12 +3769,12 @@ class CRUDControllerTest extends TestCase
     {
         $batchActions = ['foo' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
         $datagrid = $this->createMock(DatagridInterface::class);
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
@@ -3799,26 +3799,26 @@ class CRUDControllerTest extends TestCase
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
         $query = $this->createMock(ProxyQueryInterface::class);
-        $datagrid->expects($this->once())
+        $datagrid->expects(static::once())
             ->method('getQuery')
             ->willReturn($query);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('batchDelete'))
+            ->with(static::equalTo('batchDelete'))
             ->willReturn(true);
 
         $this->admin
@@ -3829,9 +3829,9 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn('Foo');
 
-        $modelManager->expects($this->once())
+        $modelManager->expects(static::once())
             ->method('addIdentifiersToQuery')
-            ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(['123', '456']))
+            ->with(static::equalTo('Foo'), static::equalTo($query), static::equalTo(['123', '456']))
             ->willReturn(true);
 
         $this->expectTranslate('flash_batch_delete_success', [], 'SonataAdminBundle');
@@ -3840,14 +3840,14 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('data', json_encode(['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
-        $this->assertNull($this->request->get('idx'));
+        static::assertNull($this->request->get('idx'));
 
         $result = $this->controller->batchAction();
 
-        $this->assertNull($this->request->get('idx'), 'Ensure original request is not modified by calling `CRUDController::batchAction()`.');
-        $this->assertInstanceOf(RedirectResponse::class, $result);
-        $this->assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
-        $this->assertSame('list', $result->getTargetUrl());
+        static::assertNull($this->request->get('idx'), 'Ensure original request is not modified by calling `CRUDController::batchAction()`.');
+        static::assertInstanceOf(RedirectResponse::class, $result);
+        static::assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
+        static::assertSame('list', $result->getTargetUrl());
     }
 
     /**
@@ -3859,26 +3859,26 @@ class CRUDControllerTest extends TestCase
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
         $query = $this->createMock(ProxyQueryInterface::class);
-        $datagrid->expects($this->once())
+        $datagrid->expects(static::once())
             ->method('getQuery')
             ->willReturn($query);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('batchDelete'))
+            ->with(static::equalTo('batchDelete'))
             ->willReturn(true);
 
         $this->admin
@@ -3889,9 +3889,9 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn('Foo');
 
-        $modelManager->expects($this->once())
+        $modelManager->expects(static::once())
             ->method('addIdentifiersToQuery')
-            ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(['123', '456']))
+            ->with(static::equalTo('Foo'), static::equalTo($query), static::equalTo(['123', '456']))
             ->willReturn(true);
 
         $this->expectTranslate('flash_batch_delete_success', [], 'SonataAdminBundle');
@@ -3903,9 +3903,9 @@ class CRUDControllerTest extends TestCase
 
         $result = $this->controller->batchAction();
 
-        $this->assertInstanceOf(RedirectResponse::class, $result);
-        $this->assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
-        $this->assertSame('list', $result->getTargetUrl());
+        static::assertInstanceOf(RedirectResponse::class, $result);
+        static::assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
+        static::assertSame('list', $result->getTargetUrl());
     }
 
     public function provideConfirmationData(): iterable
@@ -3927,7 +3927,7 @@ class CRUDControllerTest extends TestCase
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'translation_domain' => 'FooBarBaz', 'ask_confirmation' => true]];
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
@@ -3937,7 +3937,7 @@ class CRUDControllerTest extends TestCase
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
@@ -3945,30 +3945,30 @@ class CRUDControllerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('createView')
             ->willReturn($this->createMock(FormView::class));
 
-        $datagrid->expects($this->once())
+        $datagrid->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
-        $this->assertInstanceOf(Response::class, $this->controller->batchAction());
+        static::assertInstanceOf(Response::class, $this->controller->batchAction());
 
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
+        static::assertSame($this->admin, $this->parameters['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         // NEXT_MAJOR: Remove next line.
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
+        static::assertSame($this->pool, $this->parameters['admin_pool']);
 
-        $this->assertSame('list', $this->parameters['action']);
-        $this->assertSame($datagrid, $this->parameters['datagrid']);
-        $this->assertInstanceOf(FormView::class, $this->parameters['form']);
-        $this->assertSame($data, $this->parameters['data']);
-        $this->assertSame('csrf-token-123_sonata.batch', $this->parameters['csrf_token']);
-        $this->assertSame('Foo Bar', $this->parameters['action_label']);
+        static::assertSame('list', $this->parameters['action']);
+        static::assertSame($datagrid, $this->parameters['datagrid']);
+        static::assertInstanceOf(FormView::class, $this->parameters['form']);
+        static::assertSame($data, $this->parameters['data']);
+        static::assertSame('csrf-token-123_sonata.batch', $this->parameters['csrf_token']);
+        static::assertSame('Foo Bar', $this->parameters['action_label']);
 
-        $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/batch_confirmation.html.twig', $this->template);
+        static::assertSame([], $this->session->getFlashBag()->all());
+        static::assertSame('@SonataAdmin/CRUD/batch_confirmation.html.twig', $this->template);
     }
 
     /**
@@ -3985,13 +3985,13 @@ class CRUDControllerTest extends TestCase
 
         $batchActions = [$actionName => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
@@ -4002,14 +4002,14 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('idx', ['789']);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
-        $this->assertNull($this->request->get('all_elements'));
+        static::assertNull($this->request->get('all_elements'));
 
         $result = $controller->batchAction();
 
-        $this->assertNull($this->request->get('all_elements'), 'Ensure original request is not modified by calling `CRUDController::batchAction()`.');
-        $this->assertInstanceOf(RedirectResponse::class, $result);
-        $this->assertSame(['flash_batch_empty'], $this->session->getFlashBag()->get('sonata_flash_info'));
-        $this->assertSame('list', $result->getTargetUrl());
+        static::assertNull($this->request->get('all_elements'), 'Ensure original request is not modified by calling `CRUDController::batchAction()`.');
+        static::assertInstanceOf(RedirectResponse::class, $result);
+        static::assertSame(['flash_batch_empty'], $this->session->getFlashBag()->get('sonata_flash_info'));
+        static::assertSame('list', $result->getTargetUrl());
     }
 
     public function provideActionNames(): iterable
@@ -4024,7 +4024,7 @@ class CRUDControllerTest extends TestCase
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'ask_confirmation' => true, 'template' => 'custom_template.html.twig']];
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
@@ -4036,23 +4036,23 @@ class CRUDControllerTest extends TestCase
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
         $form = $this->createMock(Form::class);
 
-        $form->expects($this->once())
+        $form->expects(static::once())
             ->method('createView')
             ->willReturn($this->createMock(FormView::class));
 
-        $datagrid->expects($this->once())
+        $datagrid->expects(static::once())
             ->method('getForm')
             ->willReturn($form);
 
         $this->controller->batchAction();
 
-        $this->assertSame('custom_template.html.twig', $this->template);
+        static::assertSame('custom_template.html.twig', $this->template);
     }
 
     /**
@@ -4067,13 +4067,13 @@ class CRUDControllerTest extends TestCase
 
         $batchActions = ['foo' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
@@ -4086,9 +4086,9 @@ class CRUDControllerTest extends TestCase
 
         $result = $controller->batchAction();
 
-        $this->assertInstanceOf(RedirectResponse::class, $result);
-        $this->assertSame(['flash_foo_error'], $this->session->getFlashBag()->get('sonata_flash_info'));
-        $this->assertSame('list', $result->getTargetUrl());
+        static::assertInstanceOf(RedirectResponse::class, $result);
+        static::assertSame(['flash_foo_error'], $this->session->getFlashBag()->get('sonata_flash_info'));
+        static::assertSame('list', $result->getTargetUrl());
     }
 
     /**
@@ -4100,13 +4100,13 @@ class CRUDControllerTest extends TestCase
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'ask_confirmation' => true]];
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
@@ -4119,9 +4119,9 @@ class CRUDControllerTest extends TestCase
 
         $result = $this->controller->batchAction();
 
-        $this->assertInstanceOf(RedirectResponse::class, $result);
-        $this->assertSame(['flash_batch_empty'], $this->session->getFlashBag()->get('sonata_flash_info'));
-        $this->assertSame('list', $result->getTargetUrl());
+        static::assertInstanceOf(RedirectResponse::class, $result);
+        static::assertSame(['flash_batch_empty'], $this->session->getFlashBag()->get('sonata_flash_info'));
+        static::assertSame('list', $result->getTargetUrl());
     }
 
     /**
@@ -4136,18 +4136,18 @@ class CRUDControllerTest extends TestCase
 
         $batchActions = ['bar' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
         $query = $this->createMock(ProxyQueryInterface::class);
-        $datagrid->expects($this->once())
+        $datagrid->expects(static::once())
             ->method('getQuery')
             ->willReturn($query);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
@@ -4169,8 +4169,8 @@ class CRUDControllerTest extends TestCase
         $this->expectTranslate('flash_batch_no_elements_processed', [], 'SonataAdminBundle');
         $result = $controller->batchAction();
 
-        $this->assertInstanceOf(Response::class, $result);
-        $this->assertMatchesRegularExpression('/Redirecting to list/', $result->getContent());
+        static::assertInstanceOf(Response::class, $result);
+        static::assertMatchesRegularExpression('/Redirecting to list/', $result->getContent());
     }
 
     /**
@@ -4182,26 +4182,26 @@ class CRUDControllerTest extends TestCase
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
         $query = $this->createMock(ProxyQueryInterface::class);
-        $datagrid->expects($this->once())
+        $datagrid->expects(static::once())
             ->method('getQuery')
             ->willReturn($query);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with($this->equalTo('batchDelete'))
+            ->with(static::equalTo('batchDelete'))
             ->willReturn(true);
 
         $this->admin
@@ -4212,9 +4212,9 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn('Foo');
 
-        $modelManager->expects($this->once())
+        $modelManager->expects(static::once())
             ->method('addIdentifiersToQuery')
-            ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(['123', '456']))
+            ->with(static::equalTo('Foo'), static::equalTo($query), static::equalTo(['123', '456']))
             ->willReturn(true);
 
         $this->expectTranslate('flash_batch_delete_success', [], 'SonataAdminBundle');
@@ -4226,10 +4226,10 @@ class CRUDControllerTest extends TestCase
 
         $result = $this->controller->batchAction();
 
-        $this->assertInstanceOf(RedirectResponse::class, $result);
-        $this->assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
-        $this->assertSame('list', $result->getTargetUrl());
-        $this->assertSame('bar', $this->request->request->get('foo'));
+        static::assertInstanceOf(RedirectResponse::class, $result);
+        static::assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
+        static::assertSame('list', $result->getTargetUrl());
+        static::assertSame('bar', $this->request->request->get('foo'));
     }
 
     /**
@@ -4265,13 +4265,13 @@ class CRUDControllerTest extends TestCase
             new \Exception($previousExceptionMessage = 'very useful message')
         );
 
-        $subject->expects($this->once())
+        $subject->expects(static::once())
             ->method($method)
             ->willReturnCallback(static function () use ($exception): void {
                 throw $exception;
             });
 
-        $this->logger->expects($this->once())
+        $this->logger->expects(static::once())
             ->method('error')
             ->with($message, [
                 'exception' => $exception,
@@ -4285,9 +4285,9 @@ class CRUDControllerTest extends TestCase
         ?string $domain = null,
         ?string $locale = null
     ): void {
-        $this->translator->expects($this->once())
+        $this->translator->expects(static::once())
             ->method('trans')
-            ->with($this->equalTo($id), $this->equalTo($parameters), $this->equalTo($domain), $this->equalTo($locale))
+            ->with(static::equalTo($id), static::equalTo($parameters), static::equalTo($domain), static::equalTo($locale))
             ->willReturn($id);
     }
 }

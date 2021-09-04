@@ -66,7 +66,7 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertMatchesRegularExpression('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
+        static::assertMatchesRegularExpression('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
     }
 
     public function testExecuteWithEmptyManipulators(): void
@@ -84,7 +84,7 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertMatchesRegularExpression('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
+        static::assertMatchesRegularExpression('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
     }
 
     public function testExecuteWithManipulatorNotFound(): void
@@ -119,7 +119,7 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertMatchesRegularExpression('/Admin class is using a manager type that has no manipulator implemented : ignoring/', $commandTester->getDisplay());
+        static::assertMatchesRegularExpression('/Admin class is using a manager type that has no manipulator implemented : ignoring/', $commandTester->getDisplay());
     }
 
     public function testExecuteWithManipulatorNotObjectAclManipulatorInterface(): void
@@ -154,7 +154,7 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertMatchesRegularExpression('/The interface "ObjectAclManipulatorInterface" is not implemented for/', $commandTester->getDisplay());
+        static::assertMatchesRegularExpression('/The interface "ObjectAclManipulatorInterface" is not implemented for/', $commandTester->getDisplay());
     }
 
     public function testExecuteWithManipulator(): void
@@ -177,9 +177,9 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
 
         $manipulator = $this->createMock(ObjectAclManipulatorInterface::class);
         $manipulator
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('batchConfigureAcls')
-            ->with($this->isInstanceOf(StreamOutput::class), $admin, null);
+            ->with(static::isInstanceOf(StreamOutput::class), $admin, null);
 
         $aclObjectManipulators = [
             'sonata.admin.manipulator.acl.object.bar' => $manipulator,
@@ -244,7 +244,7 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
             '--user_model' => 'AppBundle:User',
         ]);
 
-        $this->assertMatchesRegularExpression(sprintf('/The command "%s" has a dependency on a non-existent service "doctrine"./', GenerateObjectAclCommand::getDefaultName()), $commandTester->getDisplay());
+        static::assertMatchesRegularExpression(sprintf('/The command "%s" has a dependency on a non-existent service "doctrine"./', GenerateObjectAclCommand::getDefaultName()), $commandTester->getDisplay());
     }
 
     public function testExecuteWithDeprecatedUserModelNotationAndInternalSetter(): void
@@ -271,7 +271,7 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
             '--user_model' => 'AppBundle:User',
         ]);
 
-        $this->assertMatchesRegularExpression('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
+        static::assertMatchesRegularExpression('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
     }
 
     public function testExecuteWithUserModel(): void
@@ -294,12 +294,12 @@ final class DeprecatedGenerateObjectAclCommandTest extends TestCase
 
         $manipulator = $this->createMock(ObjectAclManipulatorInterface::class);
         $manipulator
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('batchConfigureAcls')
             ->with(
-                $this->isInstanceOf(StreamOutput::class),
+                static::isInstanceOf(StreamOutput::class),
                 $admin,
-                $this->callback(static function (UserSecurityIdentity $userSecurityIdentity): bool {
+                static::callback(static function (UserSecurityIdentity $userSecurityIdentity): bool {
                     return Foo::class === $userSecurityIdentity->getClass();
                 })
             );
