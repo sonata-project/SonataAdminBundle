@@ -30,14 +30,14 @@ final class AliasDeprecatedPublicServicesCompilerPassTest extends TestCase
 
         (new AliasDeprecatedPublicServicesCompilerPass())->process($container);
 
-        $this->assertTrue($container->hasAlias('foo'));
+        static::assertTrue($container->hasAlias('foo'));
 
         $alias = $container->getAlias('foo');
 
-        $this->assertSame('.sonata.container.private.foo', (string) $alias);
-        $this->assertTrue($alias->isPublic());
-        $this->assertFalse($alias->isPrivate());
-        $this->assertTrue(
+        static::assertSame('.sonata.container.private.foo', (string) $alias);
+        static::assertTrue($alias->isPublic());
+        static::assertFalse($alias->isPrivate());
+        static::assertTrue(
             'Accessing the "foo" service directly from the container is deprecated, use dependency injection instead.' === $alias->getDeprecationMessage('foo')
             || 'The "foo" service alias is deprecated. You should stop using it, as it will be removed in the future.' === $alias->getDeprecationMessage('foo')
         );

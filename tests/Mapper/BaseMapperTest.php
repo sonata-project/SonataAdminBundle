@@ -49,6 +49,6 @@ class BaseMapperTest extends TestCase
 
     public function testGetAdmin(): void
     {
-        $this->assertSame($this->admin, $this->baseMapper->getAdmin());
+        static::assertSame($this->admin, $this->baseMapper->getAdmin());
     }
 }

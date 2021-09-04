@@ -100,25 +100,25 @@ class BreadcrumbsBuilderTest extends TestCase
                 throw new \Exception('Unexpected class and id combination');
             });
 
-        $menuFactory->expects($this->exactly(5))
+        $menuFactory->expects(static::exactly(5))
             ->method('createItem')
             ->with('root')
             ->willReturn($menu);
 
-        $menu->expects($this->once())
+        $menu->expects(static::once())
             ->method('setUri')
-            ->with($this->identicalTo(null));
+            ->with(static::identicalTo(null));
 
-        $menu->expects($this->exactly(5))
+        $menu->expects(static::exactly(5))
             ->method('getParent')
             ->willReturn(null);
 
-        $routeGenerator->expects($this->exactly(5))
+        $routeGenerator->expects(static::exactly(5))
             ->method('generate')
             ->with('sonata_admin_dashboard')
             ->willReturn('http://somehost.com');
 
-        $translatorStrategy->expects($this->exactly(10))
+        $translatorStrategy->expects(static::exactly(10))
             ->method('getLabel')
             ->withConsecutive(
                 ['DummySubject_list'],
@@ -137,7 +137,7 @@ class BreadcrumbsBuilderTest extends TestCase
                 ['DummySubject_list'],
                 ['Comment_list']
             )
-            ->will($this->onConsecutiveCalls(
+            ->will(static::onConsecutiveCalls(
                 'someOtherLabel',
                 'someInterestingLabel',
                 'someFancyLabel',
@@ -153,7 +153,7 @@ class BreadcrumbsBuilderTest extends TestCase
                 'someOkayishLabel'
             ));
 
-        $menu->expects($this->exactly(24))
+        $menu->expects(static::exactly(24))
             ->method('addChild')
             ->withConsecutive(
                 ['link_breadcrumb_dashboard'],
@@ -244,7 +244,7 @@ class BreadcrumbsBuilderTest extends TestCase
                 ['DummySubject_repost'],
                 ['DummySubject_list']
             )
-            ->will($this->onConsecutiveCalls(
+            ->will(static::onConsecutiveCalls(
                 'someOtherLabel',
                 'someInterestingLabel',
                 'someCoolLabel'
@@ -269,7 +269,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $postAdmin->getBreadcrumbs('repost');
         $postAdmin->setSubject(new DummySubject());
         $flagBreadcrumb = $postAdmin->getBreadcrumbs('flag');
-        $this->assertSame($flagBreadcrumb, $postAdmin->getBreadcrumbs('flag'));
+        static::assertSame($flagBreadcrumb, $postAdmin->getBreadcrumbs('flag'));
     }
 
     public function testUnitChildGetBreadCrumbs(): void
@@ -295,7 +295,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $childAdmin->method('isChild')->willReturn(true);
         $childAdmin->method('getParent')->willReturn($admin);
         $childAdmin->method('getTranslationDomain')->willReturn('ChildBundle');
-        $childAdmin->expects($this->atLeastOnce())->method('getLabelTranslatorStrategy')
+        $childAdmin->expects(static::atLeastOnce())->method('getLabelTranslatorStrategy')
             ->willReturn($labelTranslatorStrategy);
         $childAdmin->method('getClassnameLabel')->willReturn('my_child_class_name');
         $childAdmin->method('hasRoute')->with('list')->willReturn(true);
@@ -337,7 +337,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $admin->method('getClassnameLabel')->willReturn('my_class_name');
 
         $breadcrumbs = $breadcrumbsBuilder->getBreadcrumbs($childAdmin, $action);
-        $this->assertCount(5, $breadcrumbs);
+        static::assertCount(5, $breadcrumbs);
         [
             $dashboardMenu,
             $adminListMenu,
@@ -345,23 +345,23 @@ class BreadcrumbsBuilderTest extends TestCase
             $childMenu,
         ] = $breadcrumbs;
 
-        self::assertSame('link_breadcrumb_dashboard', $dashboardMenu->getName());
-        self::assertSame('/dashboard', $dashboardMenu->getUri());
-        self::assertSame(
+        static::assertSame('link_breadcrumb_dashboard', $dashboardMenu->getName());
+        static::assertSame('/dashboard', $dashboardMenu->getUri());
+        static::assertSame(
             ['translation_domain' => 'SonataAdminBundle'],
             $dashboardMenu->getExtras()
         );
 
-        self::assertSame('My class', $adminListMenu->getName());
-        self::assertSame('/myadmin/list', $adminListMenu->getUri());
-        self::assertSame(
+        static::assertSame('My class', $adminListMenu->getName());
+        static::assertSame('/myadmin/list', $adminListMenu->getUri());
+        static::assertSame(
             ['translation_domain' => 'FooBundle'],
             $adminListMenu->getExtras()
         );
 
-        self::assertSame('My subject', $adminSubjectMenu->getName());
-        self::assertSame('/myadmin/my-object', $adminSubjectMenu->getUri());
-        self::assertSame(
+        static::assertSame('My subject', $adminSubjectMenu->getName());
+        static::assertSame('/myadmin/my-object', $adminSubjectMenu->getUri());
+        static::assertSame(
             [
                 'translation_domain' => false,
                 'safe_label' => false,
@@ -369,9 +369,9 @@ class BreadcrumbsBuilderTest extends TestCase
             $adminSubjectMenu->getExtras()
         );
 
-        self::assertSame('My child class', $childMenu->getName());
-        self::assertSame('/myadmin/my-object/mychildadmin/list', $childMenu->getUri());
-        self::assertSame(
+        static::assertSame('My child class', $childMenu->getName());
+        static::assertSame('/myadmin/my-object/mychildadmin/list', $childMenu->getUri());
+        static::assertSame(
             ['translation_domain' => 'ChildBundle'],
             $childMenu->getExtras()
         );
@@ -460,9 +460,9 @@ class BreadcrumbsBuilderTest extends TestCase
 
         if ('list' === $action) {
             $admin->method('isChild')->willReturn(true);
-            $menu->expects($this->once())->method('setUri')->with(null);
+            $menu->expects(static::once())->method('setUri')->with(null);
         } else {
-            $menu->expects($this->never())->method('setUri');
+            $menu->expects(static::never())->method('setUri');
         }
 
         $request = $this->createStub(Request::class);

@@ -75,10 +75,10 @@ final class AdminPreviewBlockServiceTest extends BlockServiceTestCase
         $blockService = new AdminPreviewBlockService($twig, $pool);
         $blockContext = $this->getBlockContext($blockService)->setSetting('code', 'admin.bar');
 
-        $admin->expects(self::once())->method('checkAccess')->with('list')->willReturn(true);
-        $admin->expects(self::exactly(2))->method('getDatagrid')->willReturn($datagrid);
-        $admin->expects(self::once())->method('getList')->willReturn(new FieldDescriptionCollection());
-        $twig->expects(self::once())->method('render')->willReturn($responseContent);
+        $admin->expects(static::once())->method('checkAccess')->with('list')->willReturn(true);
+        $admin->expects(static::exactly(2))->method('getDatagrid')->willReturn($datagrid);
+        $admin->expects(static::once())->method('getList')->willReturn(new FieldDescriptionCollection());
+        $twig->expects(static::once())->method('render')->willReturn($responseContent);
 
         $response = $blockService->execute($blockContext);
 

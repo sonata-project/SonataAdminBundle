@@ -68,7 +68,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
         $this->adminFetcher->method('get')->willThrowException(new \InvalidArgumentException());
 
-        $this->admin->expects($this->never())->method('setRequest');
+        $this->admin->expects(static::never())->method('setRequest');
 
         $this->expectException(NotFoundHttpException::class);
 
@@ -117,7 +117,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
         $this->admin->method('getObject')->with(null)->willReturn(null);
 
-        $this->assertInstanceOf(Response::class, ($this->action)($request));
+        static::assertInstanceOf(Response::class, ($this->action)($request));
     }
 
     public function testGetShortObjectDescriptionActionObject(): void
@@ -138,7 +138,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertSame('renderedTemplate', $response->getContent());
+        static::assertSame('renderedTemplate', $response->getContent());
     }
 
     /**
@@ -163,8 +163,8 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertSame('{"result":{"id":"","label":""}}', $response->getContent());
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame('{"result":{"id":"","label":""}}', $response->getContent());
     }
 
     public function testGetShortObjectDescriptionActionObjectAsJson(): void
@@ -186,6 +186,6 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertSame('{"result":{"id":42,"label":"bar"}}', $response->getContent());
+        static::assertSame('{"result":{"id":42,"label":"bar"}}', $response->getContent());
     }
 }

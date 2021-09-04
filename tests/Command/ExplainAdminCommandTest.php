@@ -158,9 +158,9 @@ class ExplainAdminCommandTest extends TestCase
     {
         $metadata = $this->createMock(ClassMetadata::class);
 
-        $this->validatorFactory->expects($this->once())
+        $this->validatorFactory->expects(static::once())
             ->method('getMetadataFor')
-            ->with($this->equalTo('Acme\Entity\Foo'))
+            ->with(static::equalTo('Acme\Entity\Foo'))
             ->willReturn($metadata);
 
         $propertyMetadata = $this->getMockForAbstractClass(GenericMetadata::class);
@@ -207,7 +207,7 @@ class ExplainAdminCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName(), 'admin' => 'acme.admin.foo']);
 
-        $this->assertSame(sprintf(
+        static::assertSame(sprintf(
             str_replace("\n", \PHP_EOL, file_get_contents(sprintf('%s/../Fixtures/Command/explain_admin.txt', __DIR__))),
             \get_class($this->admin),
             \get_class($modelManager),
@@ -221,9 +221,9 @@ class ExplainAdminCommandTest extends TestCase
     {
         $metadata = $this->createMock(ClassMetadata::class);
 
-        $this->validatorFactory->expects($this->once())
+        $this->validatorFactory->expects(static::once())
             ->method('getMetadataFor')
-            ->with($this->equalTo('Acme\Entity\Foo'))
+            ->with(static::equalTo('Acme\Entity\Foo'))
             ->willReturn($metadata);
 
         $metadata->properties = [];
@@ -257,7 +257,7 @@ class ExplainAdminCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName(), 'admin' => 'acme.admin.foo']);
 
-        $this->assertSame(sprintf(
+        static::assertSame(sprintf(
             str_replace(
                 "\n",
                 \PHP_EOL,
@@ -286,9 +286,9 @@ class ExplainAdminCommandTest extends TestCase
     {
         $metadata = $this->createStub(GenericMetadata::class);
 
-        $this->validatorFactory->expects($this->once())
+        $this->validatorFactory->expects(static::once())
             ->method('getMetadataFor')
-            ->with($this->equalTo('Acme\Entity\Foo'))
+            ->with(static::equalTo('Acme\Entity\Foo'))
             ->willReturn($metadata);
 
         $metadata->properties = [];

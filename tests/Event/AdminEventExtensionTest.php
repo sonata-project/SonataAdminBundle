@@ -39,7 +39,7 @@ class AdminEventExtensionTest extends TestCase
     public function getExtension(array $args): AdminExtensionInterface
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $stub = $eventDispatcher->expects($this->once())->method('dispatch');
+        $stub = $eventDispatcher->expects(static::once())->method('dispatch');
         $stub->with(...$args);
 
         return new AdminEventExtension($eventDispatcher);
@@ -79,8 +79,8 @@ class AdminEventExtensionTest extends TestCase
     {
         $this
             ->getExtension([
-                $this->callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_FORM)),
-                $this->equalTo('sonata.admin.event.configure.form'),
+                static::callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_FORM)),
+                static::equalTo('sonata.admin.event.configure.form'),
             ])
             ->configureFormFields(new FormMapper(
                 $this->createStub(FormContractorInterface::class),
@@ -93,8 +93,8 @@ class AdminEventExtensionTest extends TestCase
     {
         $this
             ->getExtension([
-                $this->callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_LIST)),
-                $this->equalTo('sonata.admin.event.configure.list'),
+                static::callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_LIST)),
+                static::equalTo('sonata.admin.event.configure.list'),
             ])
             ->configureListFields(new ListMapper(
                 $this->createStub(ListBuilderInterface::class),
@@ -107,8 +107,8 @@ class AdminEventExtensionTest extends TestCase
     {
         $this
             ->getExtension([
-                $this->callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_DATAGRID)),
-                $this->equalTo('sonata.admin.event.configure.datagrid'),
+                static::callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_DATAGRID)),
+                static::equalTo('sonata.admin.event.configure.datagrid'),
             ])
             ->configureDatagridFilters(new DatagridMapper(
                 $this->createStub(DatagridBuilderInterface::class),
@@ -121,8 +121,8 @@ class AdminEventExtensionTest extends TestCase
     {
         $this
             ->getExtension([
-                $this->callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_SHOW)),
-                $this->equalTo('sonata.admin.event.configure.show'),
+                static::callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_SHOW)),
+                static::equalTo('sonata.admin.event.configure.show'),
             ])
             ->configureShowFields(new ShowMapper(
                 $this->createStub(ShowBuilderInterface::class),
@@ -134,56 +134,56 @@ class AdminEventExtensionTest extends TestCase
     public function testPreUpdate(): void
     {
         $this->getExtension([
-            $this->callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_PRE_UPDATE)),
-            $this->equalTo('sonata.admin.event.persistence.pre_update'),
+            static::callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_PRE_UPDATE)),
+            static::equalTo('sonata.admin.event.persistence.pre_update'),
         ])->preUpdate($this->createMock(AdminInterface::class), new \stdClass());
     }
 
     public function testConfigureQuery(): void
     {
         $this->getExtension([
-            $this->isInstanceOf(ConfigureQueryEvent::class),
-            $this->equalTo('sonata.admin.event.configure.query'),
+            static::isInstanceOf(ConfigureQueryEvent::class),
+            static::equalTo('sonata.admin.event.configure.query'),
         ])->configureQuery($this->createMock(AdminInterface::class), $this->createMock(ProxyQueryInterface::class));
     }
 
     public function testPostUpdate(): void
     {
         $this->getExtension([
-            $this->callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_POST_UPDATE)),
-            $this->equalTo('sonata.admin.event.persistence.post_update'),
+            static::callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_POST_UPDATE)),
+            static::equalTo('sonata.admin.event.persistence.post_update'),
         ])->postUpdate($this->createMock(AdminInterface::class), new \stdClass());
     }
 
     public function testPrePersist(): void
     {
         $this->getExtension([
-            $this->callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_PRE_PERSIST)),
-            $this->equalTo('sonata.admin.event.persistence.pre_persist'),
+            static::callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_PRE_PERSIST)),
+            static::equalTo('sonata.admin.event.persistence.pre_persist'),
         ])->prePersist($this->createMock(AdminInterface::class), new \stdClass());
     }
 
     public function testPostPersist(): void
     {
         $this->getExtension([
-            $this->callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_POST_PERSIST)),
-            $this->equalTo('sonata.admin.event.persistence.post_persist'),
+            static::callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_POST_PERSIST)),
+            static::equalTo('sonata.admin.event.persistence.post_persist'),
         ])->postPersist($this->createMock(AdminInterface::class), new \stdClass());
     }
 
     public function testPreRemove(): void
     {
         $this->getExtension([
-            $this->callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_PRE_REMOVE)),
-            $this->equalTo('sonata.admin.event.persistence.pre_remove'),
+            static::callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_PRE_REMOVE)),
+            static::equalTo('sonata.admin.event.persistence.pre_remove'),
         ])->preRemove($this->createMock(AdminInterface::class), new \stdClass());
     }
 
     public function testPostRemove(): void
     {
         $this->getExtension([
-            $this->callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_POST_REMOVE)),
-            $this->equalTo('sonata.admin.event.persistence.post_remove'),
+            static::callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_POST_REMOVE)),
+            static::equalTo('sonata.admin.event.persistence.post_remove'),
         ])->postRemove($this->createMock(AdminInterface::class), new \stdClass());
     }
 }

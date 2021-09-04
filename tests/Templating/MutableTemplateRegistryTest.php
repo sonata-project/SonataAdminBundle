@@ -36,7 +36,7 @@ final class MutableTemplateRegistryTest extends TestCase
 
     public function testGetTemplates(): void
     {
-        $this->assertSame(['list' => '@FooAdmin/CRUD/list.html.twig'], $this->templateRegistry->getTemplates());
+        static::assertSame(['list' => '@FooAdmin/CRUD/list.html.twig'], $this->templateRegistry->getTemplates());
 
         $templates = [
             'show' => '@FooAdmin/CRUD/show.html.twig',
@@ -45,7 +45,7 @@ final class MutableTemplateRegistryTest extends TestCase
 
         $this->templateRegistry->setTemplates($templates);
         // NEXT_MAJOR: remove this first assert and uncomment second
-        $this->assertSame($templates, $this->templateRegistry->getTemplates());
+        static::assertSame($templates, $this->templateRegistry->getTemplates());
         //$this->assertSame($templates + ['list' => '@FooAdmin/CRUD/list.html.twig'], $this->templateRegistry->getTemplates());
     }
 
@@ -56,13 +56,13 @@ final class MutableTemplateRegistryTest extends TestCase
     {
         $this->templateRegistry->setTemplate('edit', '@FooAdmin/CRUD/edit.html.twig');
 
-        $this->assertTrue($this->templateRegistry->hasTemplate('edit'));
-        $this->assertSame('@FooAdmin/CRUD/edit.html.twig', $this->templateRegistry->getTemplate('edit'));
+        static::assertTrue($this->templateRegistry->hasTemplate('edit'));
+        static::assertSame('@FooAdmin/CRUD/edit.html.twig', $this->templateRegistry->getTemplate('edit'));
 
-        $this->assertFalse($this->templateRegistry->hasTemplate('nonexist_template'));
+        static::assertFalse($this->templateRegistry->hasTemplate('nonexist_template'));
         // NEXT_MAJOR: remove this line
         $this->expectDeprecation('Passing a nonexistent template name as argument 1 to Sonata\AdminBundle\Templating\AbstractTemplateRegistry::getTemplate() is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0.');
-        $this->assertNull($this->templateRegistry->getTemplate('nonexist_template'));
+        static::assertNull($this->templateRegistry->getTemplate('nonexist_template'));
         // NEXT_MAJOR: Remove previous assertion, the "@group" annotations and uncomment the following line
         // $this->assertFalse($this->templateRegistry->hasTemplate('nonexist_template'));
     }
@@ -79,12 +79,12 @@ final class MutableTemplateRegistryTest extends TestCase
 
         $this->templateRegistry->setTemplates($templates);
 
-        $this->assertTrue($this->templateRegistry->hasTemplate('edit'));
-        $this->assertSame('@FooAdmin/CRUD/edit.html.twig', $this->templateRegistry->getTemplate('edit'));
+        static::assertTrue($this->templateRegistry->hasTemplate('edit'));
+        static::assertSame('@FooAdmin/CRUD/edit.html.twig', $this->templateRegistry->getTemplate('edit'));
         // NEXT_MAJOR: remove this line
         $this->expectDeprecation('Passing a nonexistent template name as argument 1 to Sonata\AdminBundle\Templating\AbstractTemplateRegistry::getTemplate() is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0.');
-        $this->assertNull($this->templateRegistry->getTemplate('nonexist_template'));
-        $this->assertFalse($this->templateRegistry->hasTemplate('nonexist_template'));
+        static::assertNull($this->templateRegistry->getTemplate('nonexist_template'));
+        static::assertFalse($this->templateRegistry->hasTemplate('nonexist_template'));
         // NEXT_MAJOR: Remove previous assertion, the "@group" annotations and uncomment the following line
         // $this->assertFalse($this->templateRegistry->hasTemplate('nonexist_template'));
     }

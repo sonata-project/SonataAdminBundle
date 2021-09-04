@@ -25,9 +25,9 @@ class BaseAdminModelManagerTest extends TestCase
         $securityHandler = $this->getMockForAbstractClass(SecurityHandlerInterface::class);
 
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-        $modelManager->expects($this->once())->method('create');
-        $modelManager->expects($this->once())->method('update');
-        $modelManager->expects($this->once())->method('delete');
+        $modelManager->expects(static::once())->method('create');
+        $modelManager->expects(static::once())->method('update');
+        $modelManager->expects(static::once())->method('delete');
 
         $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
         $admin->setModelManager($modelManager);
@@ -43,7 +43,7 @@ class BaseAdminModelManagerTest extends TestCase
     public function testObject(): void
     {
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-        $modelManager->expects($this->once())->method('find')->willReturnCallback(static function (string $class, int $id): void {
+        $modelManager->expects(static::once())->method('find')->willReturnCallback(static function (string $class, int $id): void {
             if ('class' !== $class) {
                 throw new \RuntimeException('Invalid class argument');
             }
@@ -63,7 +63,7 @@ class BaseAdminModelManagerTest extends TestCase
         $query = $this->createMock(ProxyQueryInterface::class);
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
         $modelManager
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('createQuery')
             ->with('class')
             ->willReturn($query);
@@ -76,7 +76,7 @@ class BaseAdminModelManagerTest extends TestCase
     public function testId(): void
     {
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-        $modelManager->expects($this->exactly(2))->method('getNormalizedIdentifier');
+        $modelManager->expects(static::exactly(2))->method('getNormalizedIdentifier');
 
         $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
         $admin->setModelManager($modelManager);

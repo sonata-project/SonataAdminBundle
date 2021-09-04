@@ -64,7 +64,7 @@ class CoreControllerTest extends TestCase
         $controller = new CoreController();
         $controller->setContainer($container);
 
-        $this->assertInstanceOf(Response::class, $controller->dashboardAction());
+        static::assertInstanceOf(Response::class, $controller->dashboardAction());
     }
 
     /**
@@ -106,6 +106,6 @@ class CoreControllerTest extends TestCase
 
         $response = $controller->dashboardAction();
 
-        $this->assertInstanceOf(Response::class, $response);
+        static::assertInstanceOf(Response::class, $response);
     }
 }

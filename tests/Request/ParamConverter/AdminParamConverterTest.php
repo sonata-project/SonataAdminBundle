@@ -58,10 +58,10 @@ final class AdminParamConverterTest extends TestCase
     public function testSupports(): void
     {
         $config = $this->createConfiguration(AbstractAdmin::class);
-        $this->assertTrue($this->converter->supports($config));
+        static::assertTrue($this->converter->supports($config));
 
         $config = $this->createConfiguration(__CLASS__);
-        $this->assertFalse($this->converter->supports($config));
+        static::assertFalse($this->converter->supports($config));
     }
 
     public function testThrows404WhenAdminCodeNotFound(): void
@@ -88,8 +88,8 @@ final class AdminParamConverterTest extends TestCase
         $request->attributes->set('_sonata_admin', 'sonata.admin.post');
 
         $variableName = 'myAdmin';
-        $this->assertTrue($this->converter->apply($request, $this->createConfiguration(PostAdmin::class, $variableName)));
-        $this->assertSame($this->admin, $request->attributes->get($variableName));
+        static::assertTrue($this->converter->apply($request, $this->createConfiguration(PostAdmin::class, $variableName)));
+        static::assertSame($this->admin, $request->attributes->get($variableName));
     }
 
     /**

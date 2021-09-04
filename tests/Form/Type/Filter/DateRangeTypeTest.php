@@ -24,8 +24,8 @@ final class DateRangeTypeTest extends BaseTypeTest
 
         $view = $form->createView();
 
-        $this->assertFalse($view->children['type']->vars['required']);
-        $this->assertTrue($view->children['value']->vars['required']);
+        static::assertFalse($view->children['type']->vars['required']);
+        static::assertTrue($view->children['value']->vars['required']);
     }
 
     protected function getTestedType(): string

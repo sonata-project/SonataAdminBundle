@@ -33,22 +33,22 @@ final class SonataConfigurationTest extends TestCase
 
     public function testGetTitle(): void
     {
-        $this->assertSame('title', $this->configuration->getTitle());
+        static::assertSame('title', $this->configuration->getTitle());
     }
 
     public function testGetLogo(): void
     {
-        $this->assertSame('/path/to/logo.png', $this->configuration->getLogo());
+        static::assertSame('/path/to/logo.png', $this->configuration->getLogo());
     }
 
     public function testGetOption(): void
     {
-        $this->assertTrue($this->configuration->getOption('html5_validate'));
-        $this->assertFalse($this->configuration->getOption('lock_protection'));
+        static::assertTrue($this->configuration->getOption('html5_validate'));
+        static::assertFalse($this->configuration->getOption('lock_protection'));
     }
 
     public function testGetOptionDefault(): void
     {
-        $this->assertSame('group', $this->configuration->getOption('default_group', 'group'));
+        static::assertSame('group', $this->configuration->getOption('default_group', 'group'));
     }
 }

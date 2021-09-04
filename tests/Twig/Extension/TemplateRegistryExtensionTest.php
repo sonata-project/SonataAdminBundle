@@ -78,7 +78,7 @@ class TemplateRegistryExtensionTest extends TestCase
             new TwigFunction('get_admin_pool_template', [$this->extension, 'getGlobalTemplate'], ['deprecated' => true]),
         ];
 
-        $this->assertSame($expected, $this->extension->getFunctions());
+        static::assertSame($expected, $this->extension->getFunctions());
     }
 
     public function testGetAdminTemplate(): void
@@ -88,7 +88,7 @@ class TemplateRegistryExtensionTest extends TestCase
 
         $this->container->set('admin.post.template_registry', $this->templateRegistry);
 
-        $this->assertSame(
+        static::assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
             $this->extension->getAdminTemplate('edit', 'admin.post')
         );
@@ -102,7 +102,7 @@ class TemplateRegistryExtensionTest extends TestCase
         $this->expectExceptionMessage('You have requested a non-existent service "admin.post"');
         // $this->expectExceptionMessage('You have requested a non-existent service "admin.post.template_registry"');
 
-        $this->assertSame(
+        static::assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
             $this->extension->getAdminTemplate('edit', 'admin.post')
         );
@@ -110,7 +110,7 @@ class TemplateRegistryExtensionTest extends TestCase
 
     public function testGetGlobalTemplate(): void
     {
-        $this->assertSame(
+        static::assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
             $this->extension->getGlobalTemplate('edit')
         );

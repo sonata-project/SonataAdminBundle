@@ -69,12 +69,12 @@ class ChoiceTypeExtensionTest extends TestCase
     {
         $extension = new ChoiceTypeExtension();
 
-        $this->assertSame(
+        static::assertSame(
             ChoiceType::class,
             $extension->getExtendedType()
         );
 
-        $this->assertSame(
+        static::assertSame(
             [ChoiceType::class],
             ChoiceTypeExtension::getExtendedTypes()
         );
@@ -88,8 +88,8 @@ class ChoiceTypeExtensionTest extends TestCase
             ])
             ->createView();
 
-        $this->assertTrue(isset($view->vars['sortable']));
-        $this->assertTrue($view->vars['sortable']);
+        static::assertTrue(isset($view->vars['sortable']));
+        static::assertTrue($view->vars['sortable']);
     }
 
     public function testDefaultOptionsWithoutSortable(): void
@@ -98,7 +98,7 @@ class ChoiceTypeExtensionTest extends TestCase
             ->create(ChoiceType::class, null, [])
             ->createView();
 
-        $this->assertTrue(isset($view->vars['sortable']));
-        $this->assertFalse($view->vars['sortable']);
+        static::assertTrue(isset($view->vars['sortable']));
+        static::assertFalse($view->vars['sortable']);
     }
 }

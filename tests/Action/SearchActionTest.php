@@ -101,7 +101,7 @@ final class SearchActionTest extends TestCase
             'groups' => [],
         ])->willReturn('rendered_search');
 
-        $this->assertInstanceOf(Response::class, ($this->action)($request));
+        static::assertInstanceOf(Response::class, ($this->action)($request));
     }
 
     /**
@@ -119,6 +119,6 @@ final class SearchActionTest extends TestCase
         $request = new Request(['admin' => 'foo']);
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
-        $this->assertInstanceOf(JsonResponse::class, ($this->action)($request));
+        static::assertInstanceOf(JsonResponse::class, ($this->action)($request));
     }
 }

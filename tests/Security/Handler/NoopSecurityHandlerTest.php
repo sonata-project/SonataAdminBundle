@@ -31,28 +31,28 @@ class NoopSecurityHandlerTest extends TestCase
 
     public function testIsGranted(): void
     {
-        $this->assertTrue($this->handler->isGranted($this->getSonataAdminObject(), ['TOTO']));
-        $this->assertTrue($this->handler->isGranted($this->getSonataAdminObject(), 'TOTO'));
+        static::assertTrue($this->handler->isGranted($this->getSonataAdminObject(), ['TOTO']));
+        static::assertTrue($this->handler->isGranted($this->getSonataAdminObject(), 'TOTO'));
     }
 
     public function testBuildSecurityInformation(): void
     {
-        $this->assertSame([], $this->handler->buildSecurityInformation($this->getSonataAdminObject()));
+        static::assertSame([], $this->handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
     public function testCreateObjectSecurity(): void
     {
-        $this->assertNull($this->handler->createObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
+        static::assertNull($this->handler->createObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
     }
 
     public function testDeleteObjectSecurity(): void
     {
-        $this->assertNull($this->handler->deleteObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
+        static::assertNull($this->handler->deleteObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
     }
 
     public function testGetBaseRole(): void
     {
-        $this->assertSame('', $this->handler->getBaseRole($this->getSonataAdminObject()));
+        static::assertSame('', $this->handler->getBaseRole($this->getSonataAdminObject()));
     }
 
     private function getSonataAdminObject(): AdminInterface

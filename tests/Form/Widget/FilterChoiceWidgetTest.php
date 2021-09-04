@@ -34,7 +34,7 @@ class FilterChoiceWidgetTest extends BaseWidgetTest
 
         $html = $this->renderWidget($choice->createView());
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             '<option value="" selected="selected">[trans]Choose an option[/trans]</option>',
             $this->cleanHtmlWhitespace($html)
         );
@@ -50,7 +50,7 @@ class FilterChoiceWidgetTest extends BaseWidgetTest
 
         $html = $this->renderWidget($choice->createView());
 
-        $this->assertStringNotContainsString(
+        static::assertStringNotContainsString(
             'required="required"',
             $this->cleanHtmlWhitespace($html)
         );
@@ -66,7 +66,7 @@ class FilterChoiceWidgetTest extends BaseWidgetTest
 
         $html = $this->renderWidget($choice->createView());
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             'required="required"',
             $this->cleanHtmlWhitespace($html)
         );

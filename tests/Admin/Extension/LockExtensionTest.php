@@ -82,7 +82,7 @@ class LockExtensionTest extends TestCase
 
         $this->modelManager->method('getLockVersion')->with([])->willReturn(1);
 
-        $form->expects($this->once())->method('add')->with(
+        $form->expects(static::once())->method('add')->with(
             '_lock_version',
             HiddenType::class,
             ['mapped' => false, 'data' => 1]
@@ -100,7 +100,7 @@ class LockExtensionTest extends TestCase
         $this->configureAdmin(null, null, $modelManager);
         $event = new FormEvent($form, []);
 
-        $form->expects($this->never())->method('add');
+        $form->expects(static::never())->method('add');
 
         $this->lockExtension->configureFormFields($formMapper);
         $this->eventDispatcher->dispatch($event, FormEvents::PRE_SET_DATA);
@@ -112,7 +112,7 @@ class LockExtensionTest extends TestCase
         $form = $this->configureForm();
         $event = new FormEvent($form, null);
 
-        $form->expects($this->never())->method('add');
+        $form->expects(static::never())->method('add');
 
         $this->lockExtension->configureFormFields($formMapper);
         $this->eventDispatcher->dispatch($event, FormEvents::PRE_SET_DATA);
@@ -125,7 +125,7 @@ class LockExtensionTest extends TestCase
         $event = new FormEvent($form, []);
 
         $form->method('getParent')->willReturn('parent');
-        $form->expects($this->never())->method('add');
+        $form->expects(static::never())->method('add');
 
         $this->lockExtension->configureFormFields($formMapper);
         $this->eventDispatcher->dispatch($event, FormEvents::PRE_SET_DATA);
@@ -139,7 +139,7 @@ class LockExtensionTest extends TestCase
         $event = new FormEvent($form, []);
 
         $this->modelManager->method('getLockVersion')->with([])->willReturn(null);
-        $form->expects($this->never())->method('add');
+        $form->expects(static::never())->method('add');
 
         $this->lockExtension->configureFormFields($formMapper);
         $this->eventDispatcher->dispatch($event, FormEvents::PRE_SET_DATA);
@@ -147,7 +147,7 @@ class LockExtensionTest extends TestCase
 
     public function testPreUpdateIfAdminHasNoRequest(): void
     {
-        $this->modelManager->expects($this->never())->method('lock');
+        $this->modelManager->expects(static::never())->method('lock');
 
         $this->lockExtension->preUpdate($this->admin, $this->object);
     }
@@ -155,7 +155,7 @@ class LockExtensionTest extends TestCase
     public function testPreUpdateIfObjectIsNotVersioned(): void
     {
         $this->configureAdmin();
-        $this->modelManager->expects($this->never())->method('lock');
+        $this->modelManager->expects(static::never())->method('lock');
 
         $this->lockExtension->preUpdate($this->admin, $this->object);
     }
@@ -165,7 +165,7 @@ class LockExtensionTest extends TestCase
         $uniqid = 'admin123';
         $this->configureAdmin($uniqid, $this->request);
 
-        $this->modelManager->expects($this->never())->method('lock');
+        $this->modelManager->expects(static::never())->method('lock');
 
         $this->request->request->set($uniqid, ['something']);
         $this->lockExtension->preUpdate($this->admin, $this->object);
@@ -179,7 +179,7 @@ class LockExtensionTest extends TestCase
             $this->request,
             $this->createStub(ModelManagerInterface::class)
         );
-        $this->modelManager->expects($this->never())->method('lock');
+        $this->modelManager->expects(static::never())->method('lock');
 
         $this->request->request->set($uniqid, ['_lock_version' => 1]);
         $this->lockExtension->preUpdate($this->admin, $this->object);
@@ -190,7 +190,7 @@ class LockExtensionTest extends TestCase
         $uniqid = 'admin123';
         $this->configureAdmin($uniqid, $this->request, $this->modelManager);
 
-        $this->modelManager->expects($this->once())->method('lock')->with($this->object, 1);
+        $this->modelManager->expects(static::once())->method('lock')->with($this->object, 1);
 
         $this->request->request->set($uniqid, ['_lock_version' => 1]);
         $this->lockExtension->preUpdate($this->admin, $this->object);

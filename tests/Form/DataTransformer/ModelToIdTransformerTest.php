@@ -31,23 +31,23 @@ class ModelToIdTransformerTest extends TestCase
         $transformer = new ModelToIdTransformer($this->modelManager, 'TEST');
 
         $this->modelManager
-                ->expects($this->exactly(2))
+                ->expects(static::exactly(2))
                 ->method('find')
                 ->willReturn(true);
 
-        $this->assertFalse(\in_array(false, ['0', 0], true));
+        static::assertFalse(\in_array(false, ['0', 0], true));
 
         // we pass 0 as integer
-        $this->assertTrue($transformer->reverseTransform(0));
+        static::assertTrue($transformer->reverseTransform(0));
 
         // we pass 0 as string
-        $this->assertTrue($transformer->reverseTransform('0'));
+        static::assertTrue($transformer->reverseTransform('0'));
 
         // we pass null must return null
-        $this->assertNull($transformer->reverseTransform(null));
+        static::assertNull($transformer->reverseTransform(null));
 
         // we pass false, must return null
-        $this->assertNull($transformer->reverseTransform(false));
+        static::assertNull($transformer->reverseTransform(false));
     }
 
     /**
@@ -59,7 +59,7 @@ class ModelToIdTransformerTest extends TestCase
 
         $this->modelManager->method('find');
 
-        $this->assertSame($expected, $transformer->reverseTransform($value));
+        static::assertSame($expected, $transformer->reverseTransform($value));
     }
 
     public function getReverseTransformValues()
@@ -74,17 +74,17 @@ class ModelToIdTransformerTest extends TestCase
 
     public function testTransform(): void
     {
-        $this->modelManager->expects($this->once())
+        $this->modelManager->expects(static::once())
             ->method('getNormalizedIdentifier')
             ->willReturn(123);
 
         $transformer = new ModelToIdTransformer($this->modelManager, 'TEST');
 
-        $this->assertNull($transformer->transform(null));
-        $this->assertNull($transformer->transform(false));
-        $this->assertNull($transformer->transform(0));
-        $this->assertNull($transformer->transform('0'));
+        static::assertNull($transformer->transform(null));
+        static::assertNull($transformer->transform(false));
+        static::assertNull($transformer->transform(0));
+        static::assertNull($transformer->transform('0'));
 
-        $this->assertSame(123, $transformer->transform(new \stdClass()));
+        static::assertSame(123, $transformer->transform(new \stdClass()));
     }
 }

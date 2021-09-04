@@ -29,7 +29,7 @@ final class IconExtensionTest extends TestCase
     {
         $twigExtension = new IconExtension();
 
-        $this->assertSame($expected, $twigExtension->parseIcon($icon));
+        static::assertSame($expected, $twigExtension->parseIcon($icon));
     }
 
     public function iconProvider(): iterable

@@ -63,7 +63,7 @@ class AdminExtractorTest extends TestCase
     protected function setUp(): void
     {
         if (!interface_exists(ExtractorInterface::class)) {
-            $this->markTestSkipped('JMS Translator Bundle does not exist');
+            static::markTestSkipped('JMS Translator Bundle does not exist');
         }
 
         $this->fooAdmin = $this->getMockForAbstractClass(AdminInterface::class);
@@ -101,8 +101,8 @@ class AdminExtractorTest extends TestCase
     {
         $catalogue = $this->adminExtractor->extract();
 
-        $this->assertInstanceOf(MessageCatalogue::class, $catalogue);
-        $this->assertFalse($catalogue->has(new Message('foo', 'foo_admin_domain')));
+        static::assertInstanceOf(MessageCatalogue::class, $catalogue);
+        static::assertFalse($catalogue->has(new Message('foo', 'foo_admin_domain')));
     }
 
     public function testExtract(): void
@@ -122,19 +122,19 @@ class AdminExtractorTest extends TestCase
 
         $catalogue = $this->adminExtractor->extract();
 
-        $this->assertCount(2, $catalogue->getDomains());
+        static::assertCount(2, $catalogue->getDomains());
 
-        $this->assertTrue($catalogue->has(new Message('foo', 'foo_admin_domain')));
-        $this->assertFalse($catalogue->has(new Message('nonexistent', 'foo_admin_domain')));
+        static::assertTrue($catalogue->has(new Message('foo', 'foo_admin_domain')));
+        static::assertFalse($catalogue->has(new Message('nonexistent', 'foo_admin_domain')));
 
-        $this->assertInstanceOf(Message::class, $catalogue->get('foo', 'foo_admin_domain'));
+        static::assertInstanceOf(Message::class, $catalogue->get('foo', 'foo_admin_domain'));
 
         $message = $catalogue->get('foo', 'foo_admin_domain');
-        $this->assertSame('foo', $message->getId());
-        $this->assertSame('foo_admin_domain', $message->getDomain());
+        static::assertSame('foo', $message->getId());
+        static::assertSame('foo_admin_domain', $message->getDomain());
 
-        $this->assertTrue($catalogue->has(new Message('group', 'admin_domain')));
-        $this->assertTrue($catalogue->has(new Message('foo_label', 'foo_admin_domain')));
+        static::assertTrue($catalogue->has(new Message('group', 'admin_domain')));
+        static::assertTrue($catalogue->has(new Message('foo_label', 'foo_admin_domain')));
     }
 
     public function testExtractWithException(): void
@@ -153,7 +153,7 @@ class AdminExtractorTest extends TestCase
 
     public function testExtractCallsBreadcrumbs(): void
     {
-        $this->breadcrumbsBuilder->expects($this->exactly(2 * 6))
+        $this->breadcrumbsBuilder->expects(static::exactly(2 * 6))
             ->method('getBreadcrumbs');
         $this->adminExtractor->extract();
     }

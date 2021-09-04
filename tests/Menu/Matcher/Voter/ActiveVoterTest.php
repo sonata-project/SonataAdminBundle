@@ -47,9 +47,9 @@ class ActiveVoterTest extends AbstractVoterTest
         $item = $this->getMockForAbstractClass(ItemInterface::class);
         $item
             ->method('getExtra')
-            ->with($this->logicalOr(
-                $this->equalTo('active'),
-                $this->equalTo('sonata_admin')
+            ->with(static::logicalOr(
+                static::equalTo('active'),
+                static::equalTo('sonata_admin')
             ))
             ->willReturnCallback(static function (string $name) use ($data) {
                 if ('active' === $name) {

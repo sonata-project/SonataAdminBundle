@@ -44,19 +44,19 @@ class PersistenceEventTest extends TestCase
 
     public function testGetType(): void
     {
-        $this->assertSame('Foo', $this->event->getType());
+        static::assertSame('Foo', $this->event->getType());
     }
 
     public function testGetAdmin(): void
     {
         $result = $this->event->getAdmin();
 
-        $this->assertInstanceOf(AdminInterface::class, $result);
-        $this->assertSame($this->admin, $result);
+        static::assertInstanceOf(AdminInterface::class, $result);
+        static::assertSame($this->admin, $result);
     }
 
     public function testGetObject(): void
     {
-        $this->assertSame($this->object, $this->event->getObject());
+        static::assertSame($this->object, $this->event->getObject());
     }
 }

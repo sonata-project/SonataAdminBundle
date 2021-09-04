@@ -70,7 +70,7 @@ final class AdminExtractorTest extends TestCase
         $catalogue = new MessageCatalogue('en');
 
         $this->adminExtractor->extract([], $catalogue);
-        $this->assertFalse($catalogue->has('foo', 'foo_admin_domain'));
+        static::assertFalse($catalogue->has('foo', 'foo_admin_domain'));
     }
 
     public function testExtract(): void
@@ -86,12 +86,12 @@ final class AdminExtractorTest extends TestCase
 
         $this->adminExtractor->extract([], $catalogue);
 
-        $this->assertCount(2, $catalogue->getDomains());
+        static::assertCount(2, $catalogue->getDomains());
         $message = $catalogue->get('foo', 'foo_admin_domain');
-        $this->assertSame('foo', $message);
+        static::assertSame('foo', $message);
 
-        $this->assertTrue($catalogue->has('group', 'admin_domain'));
-        $this->assertTrue($catalogue->has('foo_label', 'foo_admin_domain'));
+        static::assertTrue($catalogue->has('group', 'admin_domain'));
+        static::assertTrue($catalogue->has('foo_label', 'foo_admin_domain'));
     }
 
     public function testExtractWithException(): void
@@ -113,7 +113,7 @@ final class AdminExtractorTest extends TestCase
         $numberOfAdmins = \count($this->pool->getAdminServiceIds());
         $numberOfActionsToCheck = 6;
 
-        $this->breadcrumbsBuilder->expects($this->exactly($numberOfAdmins * $numberOfActionsToCheck))
+        $this->breadcrumbsBuilder->expects(static::exactly($numberOfAdmins * $numberOfActionsToCheck))
             ->method('getBreadcrumbs');
         $catalogue = new MessageCatalogue('en');
 
@@ -123,10 +123,10 @@ final class AdminExtractorTest extends TestCase
     public function testExtractSetsSubject(): void
     {
         $this->fooAdmin
-            ->expects($this->exactly(1))
+            ->expects(static::exactly(1))
             ->method('setSubject');
         $this->fooAdmin
-            ->expects($this->exactly(1))
+            ->expects(static::exactly(1))
             ->method('getNewInstance');
 
         $catalogue = new MessageCatalogue('en');

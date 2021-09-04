@@ -45,7 +45,7 @@ class TabMenuTest extends BaseMenuTest
         $factory = new MenuFactory();
         $menu = new MenuItem('test-menu', $factory);
         $menu->addChild('some-label', ['uri' => '/whatever']);
-        $this->assertStringContainsString('my-translation', $this->renderMenu($menu));
+        static::assertStringContainsString('my-translation', $this->renderMenu($menu));
     }
 
     public function testLabelTranslationWithParameters(): void
@@ -66,7 +66,7 @@ class TabMenuTest extends BaseMenuTest
         $menu->addChild('some-label', ['uri' => '/whatever'])
             ->setExtra('translation_params', $params);
 
-        $this->assertStringContainsString('my-translation', $this->renderMenu($menu));
+        static::assertStringContainsString('my-translation', $this->renderMenu($menu));
     }
 
     public function testLabelTranslationDomainOverride(): void
@@ -85,8 +85,8 @@ class TabMenuTest extends BaseMenuTest
         $menu->addChild('some-other-label', ['uri' => '/whatever']);
 
         $html = $this->renderMenu($menu);
-        $this->assertStringContainsString('my-translation', $html);
-        $this->assertStringContainsString('my-other-translation', $html);
+        static::assertStringContainsString('my-translation', $html);
+        static::assertStringContainsString('my-other-translation', $html);
     }
 
     protected function getTemplate()

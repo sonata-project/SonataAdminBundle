@@ -28,7 +28,7 @@ final class AdminAsParameterControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request(Request::METHOD_GET, $url);
 
-        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 
     public function urlIsSuccessfulDataProvider(): iterable

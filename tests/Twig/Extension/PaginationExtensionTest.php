@@ -45,7 +45,7 @@ final class PaginationExtensionTest extends TestCase
             ->willReturn($datagrid);
 
         $extension = new PaginationExtension();
-        $this->assertSame($paginationParameters, $extension->getPaginationParameters($admin, 1));
+        static::assertSame($paginationParameters, $extension->getPaginationParameters($admin, 1));
     }
 
     /**
@@ -75,7 +75,7 @@ final class PaginationExtensionTest extends TestCase
             ->willReturn($modelManager);
 
         $extension = new PaginationExtension();
-        $this->assertSame($paginationParameters, $extension->getPaginationParameters($admin, 1));
+        static::assertSame($paginationParameters, $extension->getPaginationParameters($admin, 1));
     }
 
     public function testGetSortParameters(): void
@@ -101,7 +101,7 @@ final class PaginationExtensionTest extends TestCase
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
 
         $extension = new PaginationExtension();
-        $this->assertSame($sortParameters, $extension->getSortParameters($fieldDescription, $admin));
+        static::assertSame($sortParameters, $extension->getSortParameters($fieldDescription, $admin));
     }
 
     /**
@@ -134,6 +134,6 @@ final class PaginationExtensionTest extends TestCase
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
 
         $extension = new PaginationExtension();
-        $this->assertSame($sortParameters, $extension->getSortParameters($fieldDescription, $admin));
+        static::assertSame($sortParameters, $extension->getSortParameters($fieldDescription, $admin));
     }
 }

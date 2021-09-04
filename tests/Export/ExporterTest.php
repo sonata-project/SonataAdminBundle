@@ -43,10 +43,10 @@ class ExporterTest extends TestCase
     public function testGetResponse(string $format, string $filename, string $contentType): void
     {
         if (!class_exists(CoreExporter::class)) {
-            $this->markTestSkipped('Not test Exporter from removed SonataCoreBundle.');
+            static::markTestSkipped('Not test Exporter from removed SonataCoreBundle.');
         }
 
-        $this->markTestSkipped();
+        static::markTestSkipped();
         $source = new ArraySourceIterator([
             ['foo' => 'bar'],
         ]);
@@ -54,10 +54,10 @@ class ExporterTest extends TestCase
         $exporter = new Exporter();
         $response = $exporter->getResponse($format, $filename, $source);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame($contentType, $response->headers->get('Content-Type'));
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame($contentType, $response->headers->get('Content-Type'));
         // Quotes does not appear on some sonata versions.
-        $this->assertMatchesRegularExpression(sprintf('/attachment; filename="?%s"?/', $filename), $response->headers->get('Content-Disposition'));
+        static::assertMatchesRegularExpression(sprintf('/attachment; filename="?%s"?/', $filename), $response->headers->get('Content-Disposition'));
     }
 
     public function getGetResponseTests()

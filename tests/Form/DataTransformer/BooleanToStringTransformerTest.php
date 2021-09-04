@@ -40,7 +40,7 @@ final class BooleanToStringTransformerTest extends TestCase
     {
         $transformer = new BooleanToStringTransformer($trueValue);
 
-        $this->assertSame($expected, $transformer->transform($value));
+        static::assertSame($expected, $transformer->transform($value));
     }
 
     public function provideReverseTransform(): array
@@ -74,6 +74,6 @@ final class BooleanToStringTransformerTest extends TestCase
     {
         $transformer = new BooleanToStringTransformer('1');
 
-        $this->assertSame($expected, $transformer->reverseTransform($value));
+        static::assertSame($expected, $transformer->reverseTransform($value));
     }
 }
