@@ -50,6 +50,7 @@ $rules = [
     'php_unit_set_up_tear_down_visibility' => true,
     'php_unit_strict' => true,
     'php_unit_test_annotation' => false,
+    'php_unit_test_case_static_method_calls' => true,
     'phpdoc_order' => true,
     'single_line_throw' => false,
     'static_lambda' => true,
@@ -58,21 +59,18 @@ $rules = [
     'void_return' => false,
 ];
 
-
 $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
     ->exclude('node_modules')
     ->exclude('Resources/skeleton')
     ->exclude('Resources/public/vendor')
-    ->exclude('var')
-;
+    ->exclude('var');
 
 $config = new PhpCsFixer\Config();
 $config
     ->setFinder($finder)
     ->setRiskyAllowed(true)
     ->setRules($rules)
-    ->setUsingCache(true)
-;
+    ->setUsingCache(true);
 
 return $config;
