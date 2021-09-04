@@ -41,8 +41,8 @@ final class AclSecurityHandlerTest extends TestCase
 
         $handler = new AclSecurityHandler($this->createMock(TokenStorageInterface::class), $authorizationChecker, $aclProvider, MaskBuilder::class, []);
 
-        self::assertTrue($handler->isGranted($admin, ['TOTO']));
-        self::assertTrue($handler->isGranted($admin, 'TOTO'));
+        static::assertTrue($handler->isGranted($admin, ['TOTO']));
+        static::assertTrue($handler->isGranted($admin, 'TOTO'));
 
         $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $authorizationChecker
@@ -51,8 +51,8 @@ final class AclSecurityHandlerTest extends TestCase
 
         $handler = new AclSecurityHandler($this->createMock(TokenStorageInterface::class), $authorizationChecker, $aclProvider, MaskBuilder::class, []);
 
-        self::assertFalse($handler->isGranted($admin, ['TOTO']));
-        self::assertFalse($handler->isGranted($admin, 'TOTO'));
+        static::assertFalse($handler->isGranted($admin, ['TOTO']));
+        static::assertFalse($handler->isGranted($admin, 'TOTO'));
     }
 
     public function testBuildInformation(): void
@@ -63,11 +63,11 @@ final class AclSecurityHandlerTest extends TestCase
 
         $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $admin = $this->createMock(AdminInterface::class);
-        $admin->expects(self::once())
+        $admin->expects(static::once())
             ->method('getCode')
             ->willReturn('test');
 
-        $admin->expects(self::once())
+        $admin->expects(static::once())
             ->method('getSecurityInformation')
             ->willReturn($informations);
 
@@ -77,7 +77,7 @@ final class AclSecurityHandlerTest extends TestCase
 
         $results = $handler->buildSecurityInformation($admin);
 
-        self::assertArrayHasKey('ROLE_TEST_EDIT', $results);
+        static::assertArrayHasKey('ROLE_TEST_EDIT', $results);
     }
 
     public function testWithAuthenticationCredentialsNotFoundException(): void
@@ -87,13 +87,13 @@ final class AclSecurityHandlerTest extends TestCase
         $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $authorizationChecker
             ->method('isGranted')
-            ->will(self::throwException(new AuthenticationCredentialsNotFoundException('FAIL')));
+            ->will(static::throwException(new AuthenticationCredentialsNotFoundException('FAIL')));
 
         $aclProvider = $this->createMock(MutableAclProviderInterface::class);
 
         $handler = new AclSecurityHandler($this->createMock(TokenStorageInterface::class), $authorizationChecker, $aclProvider, MaskBuilder::class, []);
 
-        self::assertFalse($handler->isGranted($admin, 'raise exception', $admin));
+        static::assertFalse($handler->isGranted($admin, 'raise exception', $admin));
     }
 
     public function testWithNonAuthenticationCredentialsNotFoundException(): void
@@ -105,13 +105,13 @@ final class AclSecurityHandlerTest extends TestCase
         $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $authorizationChecker
             ->method('isGranted')
-            ->will(self::throwException(new \RuntimeException('FAIL')));
+            ->will(static::throwException(new \RuntimeException('FAIL')));
 
         $aclProvider = $this->createMock(MutableAclProviderInterface::class);
 
         $handler = new AclSecurityHandler($this->createMock(TokenStorageInterface::class), $authorizationChecker, $aclProvider, MaskBuilder::class, []);
 
-        self::assertFalse($handler->isGranted($admin, 'raise exception', $admin));
+        static::assertFalse($handler->isGranted($admin, 'raise exception', $admin));
     }
 
     public function testSuccessfulUpdateAcl(): void
@@ -120,7 +120,7 @@ final class AclSecurityHandlerTest extends TestCase
         $aclProvider = $this->createMock(MutableAclProviderInterface::class);
 
         $aclProvider
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('updateAcl')
             ->with($acl);
 

@@ -46,9 +46,9 @@ final class ModelReferenceTypeTest extends TypeTestCase
                 'class' => 'My\Entity',
             ]
         );
-        $this->modelManager->expects(self::once())->method('find')->with('My\Entity', '42');
+        $this->modelManager->expects(static::once())->method('find')->with('My\Entity', '42');
         $form->submit($formData);
-        self::assertTrue($form->isSynchronized());
+        static::assertTrue($form->isSynchronized());
     }
 
     /**

@@ -40,7 +40,7 @@ final class TemplateRegistryTest extends TestCase
             'edit' => '@FooAdmin/CRUD/edit.html.twig',
         ];
 
-        self::assertSame($templates, $this->templateRegistry->getTemplates());
+        static::assertSame($templates, $this->templateRegistry->getTemplates());
     }
 
     public function testThrowExceptionIfTheTemplateDoesNotExist(): void
@@ -48,7 +48,7 @@ final class TemplateRegistryTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Template named "foo" doesn\'t exist.');
 
-        self::assertFalse($this->templateRegistry->hasTemplate('foo'));
+        static::assertFalse($this->templateRegistry->hasTemplate('foo'));
 
         $this->templateRegistry->getTemplate('foo');
     }

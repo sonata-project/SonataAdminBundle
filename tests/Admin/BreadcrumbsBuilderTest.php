@@ -97,27 +97,27 @@ final class BreadcrumbsBuilderTest extends TestCase
         $admin->method('getClassnameLabel')->willReturn('my_class_name');
 
         $breadcrumbs = $breadcrumbsBuilder->getBreadcrumbs($childAdmin, $action);
-        self::assertCount(5, $breadcrumbs);
+        static::assertCount(5, $breadcrumbs);
 
         [$dashboardMenu, $adminListMenu, $adminSubjectMenu, $childMenu] = $breadcrumbs;
 
-        self::assertSame('link_breadcrumb_dashboard', $dashboardMenu->getName());
-        self::assertSame('/dashboard', $dashboardMenu->getUri());
-        self::assertSame(
+        static::assertSame('link_breadcrumb_dashboard', $dashboardMenu->getName());
+        static::assertSame('/dashboard', $dashboardMenu->getUri());
+        static::assertSame(
             ['translation_domain' => 'SonataAdminBundle'],
             $dashboardMenu->getExtras()
         );
 
-        self::assertSame('My class', $adminListMenu->getName());
-        self::assertSame('/myadmin/list', $adminListMenu->getUri());
-        self::assertSame(
+        static::assertSame('My class', $adminListMenu->getName());
+        static::assertSame('/myadmin/list', $adminListMenu->getUri());
+        static::assertSame(
             ['translation_domain' => 'FooBundle'],
             $adminListMenu->getExtras()
         );
 
-        self::assertSame('My subject', $adminSubjectMenu->getName());
-        self::assertSame('/myadmin/my-object', $adminSubjectMenu->getUri());
-        self::assertSame(
+        static::assertSame('My subject', $adminSubjectMenu->getName());
+        static::assertSame('/myadmin/my-object', $adminSubjectMenu->getUri());
+        static::assertSame(
             [
                 'translation_domain' => false,
                 'safe_label' => false,
@@ -125,9 +125,9 @@ final class BreadcrumbsBuilderTest extends TestCase
             $adminSubjectMenu->getExtras()
         );
 
-        self::assertSame('My child class', $childMenu->getName());
-        self::assertSame('/myadmin/my-object/mychildadmin/list', $childMenu->getUri());
-        self::assertSame(
+        static::assertSame('My child class', $childMenu->getName());
+        static::assertSame('/myadmin/my-object/mychildadmin/list', $childMenu->getUri());
+        static::assertSame(
             ['translation_domain' => 'ChildBundle'],
             $childMenu->getExtras()
         );
@@ -221,9 +221,9 @@ final class BreadcrumbsBuilderTest extends TestCase
 
         if ('list' === $action) {
             $admin->method('isChild')->willReturn(true);
-            $menu->expects(self::once())->method('setUri')->with(null);
+            $menu->expects(static::once())->method('setUri')->with(null);
         } else {
-            $menu->expects(self::never())->method('setUri');
+            $menu->expects(static::never())->method('setUri');
         }
 
         $request = $this->createMock(Request::class);

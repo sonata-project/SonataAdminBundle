@@ -35,6 +35,6 @@ final class RoutesCacheWarmUpTest extends TestCase
 
     public function testIsOptional(): void
     {
-        self::assertTrue($this->routesCacheWarmUp->isOptional());
+        static::assertTrue($this->routesCacheWarmUp->isOptional());
     }
 }

@@ -52,7 +52,7 @@ final class DataTransformerResolverTest extends TestCase
 
     public function testFailedResolve(): void
     {
-        self::assertNull($this->resolve());
+        static::assertNull($this->resolve());
     }
 
     /**
@@ -84,8 +84,8 @@ final class DataTransformerResolverTest extends TestCase
 
         $dataTransformer = $this->resolve();
 
-        self::assertInstanceOf(DataTransformerInterface::class, $dataTransformer);
-        self::assertSame($customDataTransformer, $dataTransformer);
+        static::assertInstanceOf(DataTransformerInterface::class, $dataTransformer);
+        static::assertSame($customDataTransformer, $dataTransformer);
     }
 
     /**
@@ -121,7 +121,7 @@ final class DataTransformerResolverTest extends TestCase
 
         $dataTransformer = $this->resolve();
 
-        self::assertInstanceOf(DateTimeToStringTransformer::class, $dataTransformer);
+        static::assertInstanceOf(DateTimeToStringTransformer::class, $dataTransformer);
 
         $value = '2020-12-12';
         $defaultTimezone = new \DateTimeZone(date_default_timezone_get());
@@ -130,21 +130,21 @@ final class DataTransformerResolverTest extends TestCase
 
         $resultDate = $dataTransformer->reverseTransform($value);
 
-        self::assertInstanceOf(\DateTime::class, $resultDate);
-        self::assertSame($expectedDate->format(\DateTime::ATOM), $resultDate->format(\DateTime::ATOM));
-        self::assertSame($defaultTimezone->getName(), $resultDate->getTimezone()->getName());
+        static::assertInstanceOf(\DateTime::class, $resultDate);
+        static::assertSame($expectedDate->format(\DateTime::ATOM), $resultDate->format(\DateTime::ATOM));
+        static::assertSame($defaultTimezone->getName(), $resultDate->getTimezone()->getName());
 
         // test laze-load
         $secondDataTransformer = $this->resolve();
 
-        self::assertSame($dataTransformer, $secondDataTransformer);
+        static::assertSame($dataTransformer, $secondDataTransformer);
     }
 
     public function testResolveChoiceWithoutClassName(): void
     {
         $this->fieldDescription->method('getType')->willReturn('choice');
 
-        self::assertNull($this->resolve());
+        static::assertNull($this->resolve());
     }
 
     public function testResolveChoiceBadClassName(): void
@@ -156,7 +156,7 @@ final class DataTransformerResolverTest extends TestCase
         $this->fieldDescription->method('getType')->willReturn('choice');
         $this->fieldDescription->method('getTargetModel')->willReturn(\DateTime::class);
 
-        self::assertNull($this->resolve());
+        static::assertNull($this->resolve());
     }
 
     public function testResolveChoice(): void
@@ -175,8 +175,8 @@ final class DataTransformerResolverTest extends TestCase
 
         $dataTransformer = $this->resolve();
 
-        self::assertInstanceOf(ModelToIdTransformer::class, $dataTransformer);
-        self::assertSame($object, $dataTransformer->reverseTransform($newId));
+        static::assertInstanceOf(ModelToIdTransformer::class, $dataTransformer);
+        static::assertSame($object, $dataTransformer->reverseTransform($newId));
     }
 
     /**
@@ -198,8 +198,8 @@ final class DataTransformerResolverTest extends TestCase
 
         $dataTransformer = $this->resolve();
 
-        self::assertInstanceOf(DataTransformerInterface::class, $dataTransformer);
-        self::assertSame($customDataTransformer, $dataTransformer);
+        static::assertInstanceOf(DataTransformerInterface::class, $dataTransformer);
+        static::assertSame($customDataTransformer, $dataTransformer);
     }
 
     /**
@@ -219,8 +219,8 @@ final class DataTransformerResolverTest extends TestCase
 
         $dataTransformer = $this->resolve();
 
-        self::assertInstanceOf(DataTransformerInterface::class, $dataTransformer);
-        self::assertSame($customDataTransformer, $dataTransformer);
+        static::assertInstanceOf(DataTransformerInterface::class, $dataTransformer);
+        static::assertSame($customDataTransformer, $dataTransformer);
     }
 
     private function resolve(): ?DataTransformerInterface

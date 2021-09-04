@@ -46,8 +46,8 @@ final class AclMatrixTypeTest extends TypeTestCase
             'permissions' => $permissions,
         ]);
 
-        self::assertInstanceOf(UserInterface::class, $options['acl_value']);
-        self::assertSame($user, $options['acl_value']);
-        self::assertSame($permissions, $options['permissions']);
+        static::assertInstanceOf(UserInterface::class, $options['acl_value']);
+        static::assertSame($user, $options['acl_value']);
+        static::assertSame($permissions, $options['permissions']);
     }
 }

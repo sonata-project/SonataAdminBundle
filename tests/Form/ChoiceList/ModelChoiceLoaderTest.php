@@ -59,7 +59,7 @@ final class ModelChoiceLoaderTest extends TestCase
         $fooB->setBar(2);
         $fooB->setBaz('baz');
 
-        $this->modelManager->expects(self::once())
+        $this->modelManager->expects(static::once())
             ->method('findBy')
             ->willReturn([$fooA, $fooB]);
 
@@ -81,6 +81,6 @@ final class ModelChoiceLoaderTest extends TestCase
             2 => 'baz (id: 2)',
         ];
 
-        self::assertSame($expectedChoices, $modelChoiceLoader->loadChoiceList()->getOriginalKeys());
+        static::assertSame($expectedChoices, $modelChoiceLoader->loadChoiceList()->getOriginalKeys());
     }
 }

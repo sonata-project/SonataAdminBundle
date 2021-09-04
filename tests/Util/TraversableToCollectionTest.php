@@ -32,8 +32,8 @@ final class TraversableToCollectionTest extends TestCase
     {
         $collection = TraversableToCollection::transform($value);
 
-        self::assertInstanceOf(Collection::class, $collection);
-        self::assertCount($expectedCount, $collection);
+        static::assertInstanceOf(Collection::class, $collection);
+        static::assertCount($expectedCount, $collection);
     }
 
     /**

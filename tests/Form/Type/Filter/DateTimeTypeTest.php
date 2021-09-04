@@ -23,8 +23,8 @@ final class DateTimeTypeTest extends BaseTypeTest
 
         $view = $form->createView();
 
-        self::assertFalse($view->children['type']->vars['required']);
-        self::assertFalse($view->children['value']->vars['required']);
+        static::assertFalse($view->children['type']->vars['required']);
+        static::assertFalse($view->children['value']->vars['required']);
     }
 
     protected function getTestedType(): string

@@ -46,22 +46,22 @@ final class ConfigureQueryEventTest extends TestCase
 
     public function testGetContext(): void
     {
-        self::assertSame('Foo', $this->event->getContext());
+        static::assertSame('Foo', $this->event->getContext());
     }
 
     public function testGetAdmin(): void
     {
         $result = $this->event->getAdmin();
 
-        self::assertInstanceOf(AdminInterface::class, $result);
-        self::assertSame($this->admin, $result);
+        static::assertInstanceOf(AdminInterface::class, $result);
+        static::assertSame($this->admin, $result);
     }
 
     public function testGetProxyQuery(): void
     {
         $result = $this->event->getProxyQuery();
 
-        self::assertInstanceOf(ProxyQueryInterface::class, $result);
-        self::assertSame($this->proxyQuery, $result);
+        static::assertInstanceOf(ProxyQueryInterface::class, $result);
+        static::assertSame($this->proxyQuery, $result);
     }
 }

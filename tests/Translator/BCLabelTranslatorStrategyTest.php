@@ -22,9 +22,9 @@ final class BCLabelTranslatorStrategyTest extends TestCase
     {
         $strategy = new BCLabelTranslatorStrategy();
 
-        self::assertSame('Isvalid', $strategy->getLabel('isValid', 'form', 'label'));
-        self::assertSame('Plainpassword', $strategy->getLabel('plainPassword', 'form', 'label'));
+        static::assertSame('Isvalid', $strategy->getLabel('isValid', 'form', 'label'));
+        static::assertSame('Plainpassword', $strategy->getLabel('plainPassword', 'form', 'label'));
 
-        self::assertSame('breadcrumb.link_projectversion_list', $strategy->getLabel('ProjectVersion_list', 'breadcrumb', 'link'));
+        static::assertSame('breadcrumb.link_projectversion_list', $strategy->getLabel('ProjectVersion_list', 'breadcrumb', 'link'));
     }
 }

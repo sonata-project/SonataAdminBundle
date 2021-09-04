@@ -43,15 +43,15 @@ final class FilterDataTransformerTest extends TestCase
 
         $filterData = $transformer->reverseTransform($value);
 
-        self::assertSame($value['type'], $filterData->getType());
-        self::assertSame($value['value'], $filterData->getValue());
+        static::assertSame($value['type'], $filterData->getType());
+        static::assertSame($value['value'], $filterData->getValue());
     }
 
     public function testTransformReturnsNullOnNull(): void
     {
         $transformer = new FilterDataTransformer();
 
-        self::assertNull($transformer->transform(null));
+        static::assertNull($transformer->transform(null));
     }
 
     /**
@@ -62,7 +62,7 @@ final class FilterDataTransformerTest extends TestCase
     {
         $transformer = new FilterDataTransformer();
 
-        self::assertSame($value, $transformer->transform(FilterData::fromArray($value)));
+        static::assertSame($value, $transformer->transform(FilterData::fromArray($value)));
     }
 
     /**

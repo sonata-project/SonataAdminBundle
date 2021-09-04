@@ -72,6 +72,6 @@ final class SearchActionTest extends TestCase
             'groups' => [],
         ])->willReturn('rendered_search');
 
-        self::assertInstanceOf(Response::class, ($this->action)($request));
+        static::assertInstanceOf(Response::class, ($this->action)($request));
     }
 }

@@ -37,7 +37,7 @@ final class SonataAdminBundleTest extends TestCase
     {
         $containerBuilder = $this->createMock(ContainerBuilder::class);
 
-        $containerBuilder->expects(self::exactly(11))
+        $containerBuilder->expects(static::exactly(11))
             ->method('addCompilerPass')
             ->withConsecutive(
                 [new AddDependencyCallsCompilerPass()],

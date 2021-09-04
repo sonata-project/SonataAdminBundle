@@ -113,7 +113,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
         $blockContext = $this->getBlockContext($blockService);
         $blockContext->setSetting('admin_code', $adminCode);
 
-        $admin->expects(self::once())->method('checkAccess')->with('list');
+        $admin->expects(static::once())->method('checkAccess')->with('list');
 
         $response = $blockService->execute($blockContext);
 
@@ -145,9 +145,9 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
         $blockContext->setSetting('admin_code', $adminCode);
 
         $this->searchHandler->configureAdminSearch([$adminCode => false]);
-        $admin->expects(self::once())->method('checkAccess')->with('list');
+        $admin->expects(static::once())->method('checkAccess')->with('list');
 
-        $this->twig->expects(self::never())->method('render');
+        $this->twig->expects(static::never())->method('render');
 
         $response = $blockService->execute($blockContext);
 

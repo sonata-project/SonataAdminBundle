@@ -24,9 +24,9 @@ final class FilterTest extends TestCase
     {
         $filter = new FooFilter();
 
-        self::assertSame(TextType::class, $filter->getFieldType());
-        self::assertSame([], $filter->getFieldOptions());
-        self::assertNull($filter->getLabel());
+        static::assertSame(TextType::class, $filter->getFieldType());
+        static::assertSame([], $filter->getFieldOptions());
+        static::assertNull($filter->getLabel());
 
         $options = [
             'label' => 'foo',
@@ -37,8 +37,8 @@ final class FilterTest extends TestCase
 
         $filter->setOptions($options);
 
-        self::assertSame('foo', $filter->getOption('label'));
-        self::assertSame('foo', $filter->getLabel());
+        static::assertSame('foo', $filter->getOption('label'));
+        static::assertSame('foo', $filter->getLabel());
 
         $expected = array_merge([
             'show_filter' => null,
@@ -46,13 +46,13 @@ final class FilterTest extends TestCase
             'foo' => 'bar',
         ], $options);
 
-        self::assertSame($expected, $filter->getOptions());
-        self::assertSame('name', $filter->getFieldName());
+        static::assertSame($expected, $filter->getOptions());
+        static::assertSame('name', $filter->getFieldName());
 
-        self::assertSame('default', $filter->getOption('fake', 'default'));
+        static::assertSame('default', $filter->getOption('fake', 'default'));
 
         $filter->setCondition('>');
-        self::assertSame('>', $filter->getCondition());
+        static::assertSame('>', $filter->getCondition());
     }
 
     public function testGetFieldOption(): void
@@ -62,22 +62,22 @@ final class FilterTest extends TestCase
             'field_options' => ['foo' => 'bar', 'baz' => 12345],
         ]);
 
-        self::assertSame(['foo' => 'bar', 'baz' => 12345], $filter->getFieldOptions());
-        self::assertSame('bar', $filter->getFieldOption('foo'));
-        self::assertSame(12345, $filter->getFieldOption('baz'));
+        static::assertSame(['foo' => 'bar', 'baz' => 12345], $filter->getFieldOptions());
+        static::assertSame('bar', $filter->getFieldOption('foo'));
+        static::assertSame(12345, $filter->getFieldOption('baz'));
     }
 
     public function testSetFieldOption(): void
     {
         $filter = new FooFilter();
-        self::assertSame([], $filter->getFieldOptions());
+        static::assertSame([], $filter->getFieldOptions());
 
         $filter->setFieldOption('foo', 'bar');
         $filter->setFieldOption('baz', 12345);
 
-        self::assertSame(['foo' => 'bar', 'baz' => 12345], $filter->getFieldOptions());
-        self::assertSame('bar', $filter->getFieldOption('foo'));
-        self::assertSame(12345, $filter->getFieldOption('baz'));
+        static::assertSame(['foo' => 'bar', 'baz' => 12345], $filter->getFieldOptions());
+        static::assertSame('bar', $filter->getFieldOption('foo'));
+        static::assertSame(12345, $filter->getFieldOption('baz'));
     }
 
     public function testInitialize(): void
@@ -87,9 +87,9 @@ final class FilterTest extends TestCase
             'field_name' => 'bar',
         ]);
 
-        self::assertSame('name', $filter->getName());
-        self::assertSame('bar', $filter->getOption('field_name'));
-        self::assertSame('bar', $filter->getFieldName());
+        static::assertSame('name', $filter->getName());
+        static::assertSame('bar', $filter->getOption('field_name'));
+        static::assertSame('bar', $filter->getFieldName());
     }
 
     public function testLabel(): void
@@ -97,7 +97,7 @@ final class FilterTest extends TestCase
         $filter = new FooFilter();
         $filter->setLabel('foo');
 
-        self::assertSame('foo', $filter->getLabel());
+        static::assertSame('foo', $filter->getLabel());
     }
 
     public function testExceptionOnNonDefinedFilterName(): void
@@ -128,18 +128,18 @@ final class FilterTest extends TestCase
     public function testIsActive(): void
     {
         $filter = new FooFilter();
-        self::assertFalse($filter->isActive());
+        static::assertFalse($filter->isActive());
 
         $filter->callSetActive(true);
-        self::assertTrue($filter->isActive());
+        static::assertTrue($filter->isActive());
     }
 
     public function testGetTranslationDomain(): void
     {
         $filter = new FooFilter();
-        self::assertNull($filter->getTranslationDomain());
+        static::assertNull($filter->getTranslationDomain());
         $filter->setOption('translation_domain', 'baz');
-        self::assertSame('baz', $filter->getTranslationDomain());
+        static::assertSame('baz', $filter->getTranslationDomain());
     }
 
     public function testGetFieldMappingException(): void
@@ -167,7 +167,7 @@ final class FilterTest extends TestCase
 
         $filter = new FooFilter();
         $filter->setOption('field_mapping', $fieldMapping);
-        self::assertSame($fieldMapping, $filter->getFieldMapping());
+        static::assertSame($fieldMapping, $filter->getFieldMapping());
     }
 
     public function testGetParentAssociationMappings(): void
@@ -187,9 +187,9 @@ final class FilterTest extends TestCase
         ];
 
         $filter = new FooFilter();
-        self::assertSame([], $filter->getParentAssociationMappings());
+        static::assertSame([], $filter->getParentAssociationMappings());
         $filter->setOption('parent_association_mappings', $parentAssociationMapping);
-        self::assertSame($parentAssociationMapping, $filter->getParentAssociationMappings());
+        static::assertSame($parentAssociationMapping, $filter->getParentAssociationMappings());
     }
 
     public function testGetAssociationMappingException(): void
@@ -220,6 +220,6 @@ final class FilterTest extends TestCase
 
         $filter = new FooFilter();
         $filter->setOption('association_mapping', $associationMapping);
-        self::assertSame($associationMapping, $filter->getAssociationMapping());
+        static::assertSame($associationMapping, $filter->getAssociationMapping());
     }
 }

@@ -51,10 +51,10 @@ final class ModelToIdPropertyTransformerTest extends TestCase
                 return null;
             });
 
-        self::assertNull($transformer->reverseTransform(null));
-        self::assertNull($transformer->reverseTransform(''));
-        self::assertNull($transformer->reverseTransform(12));
-        self::assertSame($model, $transformer->reverseTransform(123));
+        static::assertNull($transformer->reverseTransform(null));
+        static::assertNull($transformer->reverseTransform(''));
+        static::assertNull($transformer->reverseTransform(12));
+        static::assertSame($model, $transformer->reverseTransform(123));
     }
 
     /**
@@ -71,14 +71,14 @@ final class ModelToIdPropertyTransformerTest extends TestCase
         $transformer = new ModelToIdPropertyTransformer($modelManager, Foo::class, 'bar', true);
         $proxyQuery = $this->createMock(ProxyQueryInterface::class);
         $modelManager
-            ->expects(self::exactly(null !== $params ? 1 : 0))
+            ->expects(static::exactly(null !== $params ? 1 : 0))
             ->method('createQuery')
-            ->with(self::equalTo(Foo::class))
+            ->with(static::equalTo(Foo::class))
             ->willReturn($proxyQuery);
         $modelManager
-            ->expects(self::exactly(null !== $params ? 1 : 0))
+            ->expects(static::exactly(null !== $params ? 1 : 0))
             ->method('executeQuery')
-            ->with(self::equalTo($proxyQuery))
+            ->with(static::equalTo($proxyQuery))
             ->willReturnCallback(static function () use ($params, $entity1, $entity2, $entity3): array {
                 $collection = [];
 
@@ -98,9 +98,9 @@ final class ModelToIdPropertyTransformerTest extends TestCase
             });
 
         $result = $transformer->reverseTransform($params);
-        self::assertInstanceOf(Collection::class, $result);
-        self::assertCount(\count($expected), $result);
-        self::assertSame($expected, $result->getValues());
+        static::assertInstanceOf(Collection::class, $result);
+        static::assertCount(\count($expected), $result);
+        static::assertSame($expected, $result->getValues());
     }
 
     /**
@@ -170,15 +170,15 @@ final class ModelToIdPropertyTransformerTest extends TestCase
         $model = new Foo();
         $model->setBar('example');
 
-        $this->modelManager->expects(self::once())
+        $this->modelManager->expects(static::once())
             ->method('getIdentifierValues')
             ->willReturn([123]);
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false);
 
-        self::assertSame([], $transformer->transform(null));
+        static::assertSame([], $transformer->transform(null));
 
-        self::assertSame([123, '_labels' => ['example']], $transformer->transform($model));
+        static::assertSame([123, '_labels' => ['example']], $transformer->transform($model));
     }
 
     public function testTransformWorksWithArrayAccessEntity(): void
@@ -189,13 +189,13 @@ final class ModelToIdPropertyTransformerTest extends TestCase
         $model = new FooArrayAccess();
         $model->setBar('example');
 
-        $modelManager->expects(self::once())
+        $modelManager->expects(static::once())
             ->method('getIdentifierValues')
             ->willReturn([123]);
 
         $transformer = new ModelToIdPropertyTransformer($modelManager, FooArrayAccess::class, 'bar', false);
 
-        self::assertSame([123, '_labels' => ['example']], $transformer->transform($model));
+        static::assertSame([123, '_labels' => ['example']], $transformer->transform($model));
     }
 
     public function testTransformToStringCallback(): void
@@ -204,7 +204,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
         $model->setBar('example');
         $model->setBaz('bazz');
 
-        $this->modelManager->expects(self::once())
+        $this->modelManager->expects(static::once())
             ->method('getIdentifierValues')
             ->willReturn([123]);
 
@@ -212,7 +212,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
             return (string) $model->getBaz();
         });
 
-        self::assertSame([123, '_labels' => ['bazz']], $transformer->transform($model));
+        static::assertSame([123, '_labels' => ['bazz']], $transformer->transform($model));
     }
 
     public function testTransformMultiple(): void
@@ -226,7 +226,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
         $entity3 = new Foo();
         $entity3->setBar('baz');
 
-        $this->modelManager->expects(self::exactly(3))
+        $this->modelManager->expects(static::exactly(3))
             ->method('getIdentifierValues')
             ->willReturnCallback(static function (Foo $value) use ($entity1, $entity2, $entity3): array {
                 if ($value === $entity1) {
@@ -246,9 +246,9 @@ final class ModelToIdPropertyTransformerTest extends TestCase
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 
-        self::assertSame([], $transformer->transform(null));
+        static::assertSame([], $transformer->transform(null));
 
-        self::assertSame([
+        static::assertSame([
             123,
             '_labels' => ['foo', 'bar', 'baz'],
             456,
@@ -314,12 +314,12 @@ final class ModelToIdPropertyTransformerTest extends TestCase
         );
 
         $model = new Foo();
-        $this->modelManager->expects(self::once())
+        $this->modelManager->expects(static::once())
             ->method('getIdentifierValues')
             ->willReturn([123]);
 
         $value = $transformer->transform($model);
-        self::assertSame([
+        static::assertSame([
             123,
             '_labels' => ['nice_label'],
         ], $value);

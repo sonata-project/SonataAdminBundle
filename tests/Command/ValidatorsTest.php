@@ -26,7 +26,7 @@ final class ValidatorsTest extends TestCase
      */
     public function testValidateUsername(string $expected, string $value): void
     {
-        self::assertSame($expected, Validators::validateUsername($value));
+        static::assertSame($expected, Validators::validateUsername($value));
     }
 
     /**
@@ -52,7 +52,7 @@ final class ValidatorsTest extends TestCase
      */
     public function testValidateClass(string $expected, string $value): void
     {
-        self::assertSame($expected, Validators::validateClass($value));
+        static::assertSame($expected, Validators::validateClass($value));
     }
 
     /**
@@ -93,7 +93,7 @@ final class ValidatorsTest extends TestCase
      */
     public function testValidateAdminClassBasename(string $expected, string $value): void
     {
-        self::assertSame($expected, Validators::validateAdminClassBasename($value));
+        static::assertSame($expected, Validators::validateAdminClassBasename($value));
     }
 
     /**
@@ -135,7 +135,7 @@ final class ValidatorsTest extends TestCase
      */
     public function testValidateControllerClassBasename(string $expected, string $value): void
     {
-        self::assertSame($expected, Validators::validateControllerClassBasename($value));
+        static::assertSame($expected, Validators::validateControllerClassBasename($value));
     }
 
     /**
@@ -194,7 +194,7 @@ final class ValidatorsTest extends TestCase
      */
     public function testValidateServicesFile(string $expected, string $value): void
     {
-        self::assertSame($expected, Validators::validateServicesFile($value));
+        static::assertSame($expected, Validators::validateServicesFile($value));
     }
 
     /**
@@ -218,7 +218,7 @@ final class ValidatorsTest extends TestCase
      */
     public function testValidateServiceId(string $value): void
     {
-        self::assertSame($value, Validators::validateServiceId($value));
+        static::assertSame($value, Validators::validateServiceId($value));
     }
 
     /**

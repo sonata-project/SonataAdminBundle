@@ -25,7 +25,7 @@ final class NativeLabelTranslatorStrategyTest extends TestCase
     {
         $strategy = new NativeLabelTranslatorStrategy();
 
-        self::assertSame($expectedLabel, $strategy->getLabel($label, 'form', 'label'));
+        static::assertSame($expectedLabel, $strategy->getLabel($label, 'form', 'label'));
     }
 
     /**

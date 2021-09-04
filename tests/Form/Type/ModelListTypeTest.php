@@ -43,13 +43,13 @@ final class ModelListTypeTest extends TypeTestCase
 
         $options = $optionResolver->resolve();
 
-        self::assertNull($options['model_manager']);
-        self::assertNull($options['class']);
-        self::assertSame('link_add', $options['btn_add']);
-        self::assertSame('link_edit', $options['btn_edit']);
-        self::assertSame('link_list', $options['btn_list']);
-        self::assertSame('link_delete', $options['btn_delete']);
-        self::assertSame('SonataAdminBundle', $options['btn_catalogue']);
+        static::assertNull($options['model_manager']);
+        static::assertNull($options['class']);
+        static::assertSame('link_add', $options['btn_add']);
+        static::assertSame('link_edit', $options['btn_edit']);
+        static::assertSame('link_list', $options['btn_list']);
+        static::assertSame('link_delete', $options['btn_delete']);
+        static::assertSame('SonataAdminBundle', $options['btn_catalogue']);
     }
 
     public function testSubmitValidData(): void
@@ -63,8 +63,8 @@ final class ModelListTypeTest extends TypeTestCase
             ]
         );
 
-        $this->modelManager->expects(self::once())->method('find')->with('My\Entity', '42');
+        $this->modelManager->expects(static::once())->method('find')->with('My\Entity', '42');
         $form->submit('42');
-        self::assertTrue($form->isSynchronized());
+        static::assertTrue($form->isSynchronized());
     }
 }
