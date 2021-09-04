@@ -80,7 +80,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormRegistry;
 use Symfony\Component\Form\ResolvedFormTypeFactory;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -1528,21 +1527,16 @@ final class AdminTest extends TestCase
         $postAdmin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
         $postAdmin->addChild($commentAdmin, 'post__author');
 
-        $request = $this->createMock(Request::class);
-        $query = new ParameterBag();
-        $query
-            ->set('filter', [
-                'filter' => [
-                    DatagridInterface::PAGE => '1',
-                    DatagridInterface::PER_PAGE => '32',
-                ],
-            ]);
+        $request = new Request();
 
-        $request->query = $query;
+        $request->query->set('filter', [
+            'filter' => [
+                DatagridInterface::PAGE => '1',
+                DatagridInterface::PER_PAGE => '32',
+            ],
+        ]);
 
-        $request
-            ->method('get')
-            ->willReturn($authorId);
+        $request->attributes->set($postAdmin->getIdParameter(), $authorId);
 
         $commentAdmin->setRequest($request);
 
@@ -1998,10 +1992,8 @@ final class AdminTest extends TestCase
 
         $subjectId = uniqid();
 
-        $request = $this->createMock(Request::class);
-        $query = new ParameterBag();
-        $query
-            ->set('filter', [
+        $request = new Request([
+            'filter' => [
                 'a' => [
                     'value' => 'b',
                 ],
@@ -2013,13 +2005,8 @@ final class AdminTest extends TestCase
                     'type' => '5',
                     'value' => 'test',
                 ],
-            ]);
-
-        $request->query = $query;
-
-        $request
-            ->method('get')
-            ->willReturn($subjectId);
+            ],
+        ]);
 
         $admin->setRequest($request);
 
