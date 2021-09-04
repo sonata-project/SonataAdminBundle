@@ -140,23 +140,23 @@ final class ShowMapperTest extends TestCase
 
     public function testGet(): void
     {
-        self::assertFalse($this->showMapper->has('fooName'));
+        static::assertFalse($this->showMapper->has('fooName'));
 
         $this->showMapper->add('fooName');
-        self::assertInstanceOf(FieldDescriptionInterface::class, $this->showMapper->get('fooName'));
+        static::assertInstanceOf(FieldDescriptionInterface::class, $this->showMapper->get('fooName'));
     }
 
     public function testAdd(): void
     {
         $this->showMapper->add('fooName');
 
-        self::assertTrue($this->showMapper->has('fooName'));
+        static::assertTrue($this->showMapper->has('fooName'));
 
         $fieldDescription = $this->showMapper->get('fooName');
 
-        self::assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
-        self::assertSame('fooName', $fieldDescription->getName());
-        self::assertSame('fooName', $fieldDescription->getOption('label'));
+        static::assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
+        static::assertSame('fooName', $fieldDescription->getName());
+        static::assertSame('fooName', $fieldDescription->getOption('label'));
     }
 
     public function testIfTrueApply(): void
@@ -165,12 +165,12 @@ final class ShowMapperTest extends TestCase
         $this->showMapper->add('fooName');
         $this->showMapper->ifEnd();
 
-        self::assertTrue($this->showMapper->has('fooName'));
+        static::assertTrue($this->showMapper->has('fooName'));
         $fieldDescription = $this->showMapper->get('fooName');
 
-        self::assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
-        self::assertSame('fooName', $fieldDescription->getName());
-        self::assertSame('fooName', $fieldDescription->getOption('label'));
+        static::assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
+        static::assertSame('fooName', $fieldDescription->getName());
+        static::assertSame('fooName', $fieldDescription->getOption('label'));
     }
 
     public function testIfTrueApplyWithTab(): void
@@ -179,12 +179,12 @@ final class ShowMapperTest extends TestCase
         $this->showMapper->tab('fooTab')->add('fooName')->end();
         $this->showMapper->ifEnd();
 
-        self::assertTrue($this->showMapper->has('fooName'));
+        static::assertTrue($this->showMapper->has('fooName'));
         $fieldDescription = $this->showMapper->get('fooName');
 
-        self::assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
-        self::assertSame('fooName', $fieldDescription->getName());
-        self::assertSame('fooName', $fieldDescription->getOption('label'));
+        static::assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
+        static::assertSame('fooName', $fieldDescription->getName());
+        static::assertSame('fooName', $fieldDescription->getOption('label'));
     }
 
     public function testIfTrueNotApply(): void
@@ -193,7 +193,7 @@ final class ShowMapperTest extends TestCase
         $this->showMapper->add('fooName');
         $this->showMapper->ifEnd();
 
-        self::assertFalse($this->showMapper->has('fooName'));
+        static::assertFalse($this->showMapper->has('fooName'));
     }
 
     public function testIfTrueNotApplyWithTab(): void
@@ -202,7 +202,7 @@ final class ShowMapperTest extends TestCase
         $this->showMapper->tab('fooTab')->add('fooName')->end();
         $this->showMapper->ifEnd();
 
-        self::assertFalse($this->showMapper->has('fooName'));
+        static::assertFalse($this->showMapper->has('fooName'));
     }
 
     public function testIfTrueCombination(): void
@@ -212,13 +212,13 @@ final class ShowMapperTest extends TestCase
         $this->showMapper->ifEnd();
         $this->showMapper->add('barName');
 
-        self::assertFalse($this->showMapper->has('fooName'));
-        self::assertTrue($this->showMapper->has('barName'));
+        static::assertFalse($this->showMapper->has('fooName'));
+        static::assertTrue($this->showMapper->has('barName'));
         $fieldDescription = $this->showMapper->get('barName');
 
-        self::assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
-        self::assertSame('barName', $fieldDescription->getName());
-        self::assertSame('barName', $fieldDescription->getOption('label'));
+        static::assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
+        static::assertSame('barName', $fieldDescription->getName());
+        static::assertSame('barName', $fieldDescription->getOption('label'));
     }
 
     public function testIfFalseApply(): void
@@ -227,12 +227,12 @@ final class ShowMapperTest extends TestCase
         $this->showMapper->add('fooName');
         $this->showMapper->ifEnd();
 
-        self::assertTrue($this->showMapper->has('fooName'));
+        static::assertTrue($this->showMapper->has('fooName'));
         $fieldDescription = $this->showMapper->get('fooName');
 
-        self::assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
-        self::assertSame('fooName', $fieldDescription->getName());
-        self::assertSame('fooName', $fieldDescription->getOption('label'));
+        static::assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
+        static::assertSame('fooName', $fieldDescription->getName());
+        static::assertSame('fooName', $fieldDescription->getOption('label'));
     }
 
     public function testIfFalseApplyWithTab(): void
@@ -241,12 +241,12 @@ final class ShowMapperTest extends TestCase
         $this->showMapper->tab('fooTab')->add('fooName')->end();
         $this->showMapper->ifEnd();
 
-        self::assertTrue($this->showMapper->has('fooName'));
+        static::assertTrue($this->showMapper->has('fooName'));
         $fieldDescription = $this->showMapper->get('fooName');
 
-        self::assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
-        self::assertSame('fooName', $fieldDescription->getName());
-        self::assertSame('fooName', $fieldDescription->getOption('label'));
+        static::assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
+        static::assertSame('fooName', $fieldDescription->getName());
+        static::assertSame('fooName', $fieldDescription->getOption('label'));
     }
 
     public function testIfFalseNotApply(): void
@@ -255,7 +255,7 @@ final class ShowMapperTest extends TestCase
         $this->showMapper->add('fooName');
         $this->showMapper->ifEnd();
 
-        self::assertFalse($this->showMapper->has('fooName'));
+        static::assertFalse($this->showMapper->has('fooName'));
     }
 
     public function testIfFalseNotApplyWithTab(): void
@@ -264,7 +264,7 @@ final class ShowMapperTest extends TestCase
         $this->showMapper->tab('fooTab')->add('fooName')->end();
         $this->showMapper->ifEnd();
 
-        self::assertFalse($this->showMapper->has('fooName'));
+        static::assertFalse($this->showMapper->has('fooName'));
     }
 
     public function testIfFalseCombination(): void
@@ -274,13 +274,13 @@ final class ShowMapperTest extends TestCase
         $this->showMapper->ifEnd();
         $this->showMapper->add('barName');
 
-        self::assertFalse($this->showMapper->has('fooName'));
-        self::assertTrue($this->showMapper->has('barName'));
+        static::assertFalse($this->showMapper->has('fooName'));
+        static::assertTrue($this->showMapper->has('barName'));
         $fieldDescription = $this->showMapper->get('barName');
 
-        self::assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
-        self::assertSame('barName', $fieldDescription->getName());
-        self::assertSame('barName', $fieldDescription->getOption('label'));
+        static::assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
+        static::assertSame('barName', $fieldDescription->getName());
+        static::assertSame('barName', $fieldDescription->getOption('label'));
     }
 
     public function testIfTrueNested(): void
@@ -292,7 +292,7 @@ final class ShowMapperTest extends TestCase
                 ->ifEnd()
             ->ifEnd();
 
-        self::assertTrue($this->showMapper->has('fooName'));
+        static::assertTrue($this->showMapper->has('fooName'));
     }
 
     public function testIfFalseNested(): void
@@ -304,7 +304,7 @@ final class ShowMapperTest extends TestCase
                 ->ifEnd()
             ->ifEnd();
 
-        self::assertTrue($this->showMapper->has('fooName'));
+        static::assertTrue($this->showMapper->has('fooName'));
     }
 
     public function testIfCombinationNested(): void
@@ -316,7 +316,7 @@ final class ShowMapperTest extends TestCase
                 ->ifEnd()
             ->ifEnd();
 
-        self::assertTrue($this->showMapper->has('fooName'));
+        static::assertTrue($this->showMapper->has('fooName'));
     }
 
     public function testIfFalseCombinationNested2(): void
@@ -328,7 +328,7 @@ final class ShowMapperTest extends TestCase
                 ->ifEnd()
             ->ifEnd();
 
-        self::assertTrue($this->showMapper->has('fooName'));
+        static::assertTrue($this->showMapper->has('fooName'));
     }
 
     public function testIfFalseCombinationNested3(): void
@@ -340,7 +340,7 @@ final class ShowMapperTest extends TestCase
                 ->ifEnd()
             ->ifEnd();
 
-        self::assertFalse($this->showMapper->has('fooName'));
+        static::assertFalse($this->showMapper->has('fooName'));
     }
 
     public function testIfFalseCombinationNested4(): void
@@ -352,18 +352,18 @@ final class ShowMapperTest extends TestCase
                 ->ifEnd()
             ->ifEnd();
 
-        self::assertFalse($this->showMapper->has('fooName'));
+        static::assertFalse($this->showMapper->has('fooName'));
     }
 
     public function testAddRemove(): void
     {
-        self::assertFalse($this->showMapper->has('fooName'));
+        static::assertFalse($this->showMapper->has('fooName'));
 
         $this->showMapper->add('fooName');
-        self::assertTrue($this->showMapper->has('fooName'));
+        static::assertTrue($this->showMapper->has('fooName'));
 
         $this->showMapper->remove('fooName');
-        self::assertFalse($this->showMapper->has('fooName'));
+        static::assertFalse($this->showMapper->has('fooName'));
     }
 
     public function testAddDuplicateFieldNameException(): void
@@ -383,12 +383,12 @@ final class ShowMapperTest extends TestCase
         $this->showMapper->add('fooName1');
         $this->showMapper->add('fooName2');
 
-        self::assertSame(['fooName1', 'fooName2'], $this->showMapper->keys());
+        static::assertSame(['fooName1', 'fooName2'], $this->showMapper->keys());
     }
 
     public function testReorder(): void
     {
-        self::assertSame([], $this->admin->getShowGroups());
+        static::assertSame([], $this->admin->getShowGroups());
 
         $this->showMapper->with('Group1');
         $this->showMapper->add('fooName1');
@@ -396,7 +396,7 @@ final class ShowMapperTest extends TestCase
         $this->showMapper->add('fooName3');
         $this->showMapper->add('fooName4');
 
-        self::assertSame([
+        static::assertSame([
             'Group1' => [
                 'collapsed' => false,
                 'class' => false,
@@ -413,7 +413,7 @@ final class ShowMapperTest extends TestCase
         $this->showMapper->reorder(['fooName3', 'fooName2', 'fooName1', 'fooName4']);
 
         // print_r is used to compare order of items in associative arrays
-        self::assertSame(print_r([
+        static::assertSame(print_r([
             'Group1' => [
                 'collapsed' => false,
                 'class' => false,
@@ -435,7 +435,7 @@ final class ShowMapperTest extends TestCase
         $this->showMapper->with('groupfoo1');
         $this->showMapper->removeGroup('groupfoo1');
 
-        self::assertSame([], $this->admin->getShowGroups());
+        static::assertSame([], $this->admin->getShowGroups());
     }
 
     public function testGroupRemovingWithTab(): void
@@ -445,7 +445,7 @@ final class ShowMapperTest extends TestCase
         $this->showMapper->tab('mytab')->with('groupfoo2');
         $this->showMapper->removeGroup('groupfoo2', 'mytab');
 
-        self::assertSame([], $this->admin->getShowGroups());
+        static::assertSame([], $this->admin->getShowGroups());
     }
 
     public function testGroupRemovingWithoutTabAndWithTabRemoving(): void
@@ -455,8 +455,8 @@ final class ShowMapperTest extends TestCase
         $this->showMapper->with('groupfoo3');
         $this->showMapper->removeGroup('groupfoo3', 'default', true);
 
-        self::assertSame([], $this->admin->getShowGroups());
-        self::assertSame([], $this->admin->getShowTabs());
+        static::assertSame([], $this->admin->getShowGroups());
+        static::assertSame([], $this->admin->getShowTabs());
     }
 
     public function testGroupRemovingWithTabAndWithTabRemoving(): void
@@ -466,8 +466,8 @@ final class ShowMapperTest extends TestCase
         $this->showMapper->tab('mytab2')->with('groupfoo4');
         $this->showMapper->removeGroup('groupfoo4', 'mytab2', true);
 
-        self::assertSame([], $this->admin->getShowGroups());
-        self::assertSame([], $this->admin->getShowTabs());
+        static::assertSame([], $this->admin->getShowGroups());
+        static::assertSame([], $this->admin->getShowTabs());
     }
 
     public function testTabRemoving(): void
@@ -477,19 +477,19 @@ final class ShowMapperTest extends TestCase
         $this->showMapper->tab('mytab2')->with('groupfoo4');
         $this->showMapper->removeTab('mytab2');
 
-        self::assertSame([], $this->admin->getShowGroups());
-        self::assertSame([], $this->admin->getShowTabs());
+        static::assertSame([], $this->admin->getShowGroups());
+        static::assertSame([], $this->admin->getShowTabs());
     }
 
     public function testEmptyFieldLabel(): void
     {
         $this->showMapper->add('foo', null, ['label' => false]);
 
-        self::assertFalse($this->showMapper->get('foo')->getOption('label'));
+        static::assertFalse($this->showMapper->get('foo')->getOption('label'));
 
         $this->showMapper->add('bar', null, ['label' => null]);
 
-        self::assertSame('bar', $this->showMapper->get('bar')->getOption('label'));
+        static::assertSame('bar', $this->showMapper->get('bar')->getOption('label'));
     }
 
     public function testAddOptionRole(): void
@@ -498,12 +498,12 @@ final class ShowMapperTest extends TestCase
 
         $this->showMapper->add('bar', 'bar');
 
-        self::assertTrue($this->showMapper->has('bar'));
+        static::assertTrue($this->showMapper->has('bar'));
 
         $this->showMapper->add('quux', 'bar', ['role' => 'ROLE_QUX']);
 
-        self::assertTrue($this->showMapper->has('bar'));
-        self::assertFalse($this->showMapper->has('quux'));
+        static::assertTrue($this->showMapper->has('bar'));
+        static::assertFalse($this->showMapper->has('quux'));
 
         $this->showMapper->end(); // Close default
 
@@ -514,10 +514,10 @@ final class ShowMapperTest extends TestCase
                 ->add('baz', 'bar')
             ->end();
 
-        self::assertArrayHasKey('qux', $this->admin->getShowGroups());
-        self::assertTrue($this->showMapper->has('foobar'));
-        self::assertFalse($this->showMapper->has('foo'));
-        self::assertTrue($this->showMapper->has('baz'));
+        static::assertArrayHasKey('qux', $this->admin->getShowGroups());
+        static::assertTrue($this->showMapper->has('foobar'));
+        static::assertFalse($this->showMapper->has('foo'));
+        static::assertTrue($this->showMapper->has('baz'));
     }
 
     private function cleanShowMapper(): void

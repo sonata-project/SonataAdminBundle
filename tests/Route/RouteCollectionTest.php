@@ -25,34 +25,34 @@ final class RouteCollectionTest extends TestCase
     {
         $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'baseControllerName');
 
-        self::assertSame('base.Code.Route', $routeCollection->getBaseCodeRoute());
-        self::assertSame('baseRouteName', $routeCollection->getBaseRouteName());
-        self::assertSame('baseRoutePattern', $routeCollection->getBaseRoutePattern());
-        self::assertSame('baseControllerName', $routeCollection->getBaseControllerName());
+        static::assertSame('base.Code.Route', $routeCollection->getBaseCodeRoute());
+        static::assertSame('baseRouteName', $routeCollection->getBaseRouteName());
+        static::assertSame('baseRoutePattern', $routeCollection->getBaseRoutePattern());
+        static::assertSame('baseControllerName', $routeCollection->getBaseControllerName());
     }
 
     public function testActionify(): void
     {
         $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'BundleName:ControllerName');
 
-        self::assertSame('fooBar', $routeCollection->actionify('Foo bar'));
-        self::assertSame('bar', $routeCollection->actionify('Foo.bar'));
+        static::assertSame('fooBar', $routeCollection->actionify('Foo bar'));
+        static::assertSame('bar', $routeCollection->actionify('Foo.bar'));
     }
 
     public function testActionifyService(): void
     {
         $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'baseControllerService');
 
-        self::assertSame('fooBarAction', $routeCollection->actionify('Foo bar'));
-        self::assertSame('barAction', $routeCollection->actionify('Foo.bar'));
+        static::assertSame('fooBarAction', $routeCollection->actionify('Foo bar'));
+        static::assertSame('barAction', $routeCollection->actionify('Foo.bar'));
     }
 
     public function testCode(): void
     {
         $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'baseControllerName');
 
-        self::assertSame('base.Code.Route.test', $routeCollection->getCode('test'));
-        self::assertSame('base.Code.Route.test', $routeCollection->getCode('base.Code.Route.test'));
+        static::assertSame('base.Code.Route.test', $routeCollection->getCode('test'));
+        static::assertSame('base.Code.Route.test', $routeCollection->getCode('base.Code.Route.test'));
     }
 
     public function testCollection(): void
@@ -60,42 +60,42 @@ final class RouteCollectionTest extends TestCase
         $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'baseControllerName');
 
         $routeCollection->add('view');
-        self::assertTrue($routeCollection->has('view'));
-        self::assertTrue($routeCollection->hasCached('view'));
+        static::assertTrue($routeCollection->has('view'));
+        static::assertTrue($routeCollection->hasCached('view'));
 
         $routeCollection->remove('view');
-        self::assertFalse($routeCollection->has('view'));
-        self::assertTrue($routeCollection->hasCached('view'));
+        static::assertFalse($routeCollection->has('view'));
+        static::assertTrue($routeCollection->hasCached('view'));
 
         $routeCollection->restore('view');
-        self::assertTrue($routeCollection->has('view'));
-        self::assertTrue($routeCollection->hasCached('view'));
+        static::assertTrue($routeCollection->has('view'));
+        static::assertTrue($routeCollection->hasCached('view'));
 
         $routeCollection->add('create');
         $route = $routeCollection->get('create');
 
-        self::assertInstanceOf(Route::class, $route);
+        static::assertInstanceOf(Route::class, $route);
 
         $routeCollection->add('view');
         $routeCollection->add('edit');
         $routeCollection->clear();
-        self::assertFalse($routeCollection->has('create'));
-        self::assertFalse($routeCollection->has('view'));
-        self::assertFalse($routeCollection->has('edit'));
+        static::assertFalse($routeCollection->has('create'));
+        static::assertFalse($routeCollection->has('view'));
+        static::assertFalse($routeCollection->has('edit'));
 
         $routeCollection->add('create');
         $routeCollection->add('view');
         $routeCollection->add('edit');
         $routeCollection->add('list');
         $routeCollection->clearExcept(['create', 'edit']);
-        self::assertTrue($routeCollection->has('create'));
-        self::assertTrue($routeCollection->has('edit'));
-        self::assertFalse($routeCollection->has('view'));
-        self::assertFalse($routeCollection->has('list'));
+        static::assertTrue($routeCollection->has('create'));
+        static::assertTrue($routeCollection->has('edit'));
+        static::assertFalse($routeCollection->has('view'));
+        static::assertFalse($routeCollection->has('list'));
 
         $routeCollection->clearExcept('create');
-        self::assertTrue($routeCollection->has('create'));
-        self::assertFalse($routeCollection->has('edit'));
+        static::assertTrue($routeCollection->has('create'));
+        static::assertFalse($routeCollection->has('edit'));
     }
 
     public function testGetWithException(): void
@@ -119,11 +119,11 @@ final class RouteCollectionTest extends TestCase
 
         $parentCollection->addCollection($childCollection);
 
-        self::assertTrue($parentCollection->has('view'));
-        self::assertTrue($parentCollection->has('edit'));
-        self::assertFalse($parentCollection->has('create'));
+        static::assertTrue($parentCollection->has('view'));
+        static::assertTrue($parentCollection->has('edit'));
+        static::assertFalse($parentCollection->has('create'));
 
-        self::assertFalse($parentCollection->has('baseCodeRouteChild.edit'));
+        static::assertFalse($parentCollection->has('baseCodeRouteChild.edit'));
     }
 
     public function testRoute(): void
@@ -134,9 +134,9 @@ final class RouteCollectionTest extends TestCase
 
         $route = $routeCollection->get('view');
 
-        self::assertSame('BundleName:ControllerName:view', $route->getDefault('_controller'));
-        self::assertSame('baseCodeRoute', $route->getDefault('_sonata_admin'));
-        self::assertSame('baseRouteName_view', $route->getDefault('_sonata_name'));
+        static::assertSame('BundleName:ControllerName:view', $route->getDefault('_controller'));
+        static::assertSame('baseCodeRoute', $route->getDefault('_sonata_admin'));
+        static::assertSame('baseRouteName_view', $route->getDefault('_sonata_name'));
     }
 
     public function testRouteWithAllConstructorParameters(): void
@@ -173,13 +173,13 @@ final class RouteCollectionTest extends TestCase
 
         $combinedPattern = sprintf('/%s/%s', $baseRoutePattern, $pattern);
 
-        self::assertSame($combinedPattern, $route->getPath());
-        self::assertArrayHasKey('_controller', $route->getDefaults());
-        self::assertArrayHasKey('page', $route->getRequirements());
-        self::assertArrayHasKey('debug', $route->getOptions());
-        self::assertSame($host, $route->getHost());
-        self::assertSame($methods, $route->getMethods());
-        self::assertSame($condition, $route->getCondition());
+        static::assertSame($combinedPattern, $route->getPath());
+        static::assertArrayHasKey('_controller', $route->getDefaults());
+        static::assertArrayHasKey('page', $route->getRequirements());
+        static::assertArrayHasKey('debug', $route->getOptions());
+        static::assertSame($host, $route->getHost());
+        static::assertSame($methods, $route->getMethods());
+        static::assertSame($condition, $route->getCondition());
     }
 
     public function testRouteControllerService(): void
@@ -190,9 +190,9 @@ final class RouteCollectionTest extends TestCase
 
         $route = $routeCollection->get('view');
 
-        self::assertSame('baseControllerServiceName::viewAction', $route->getDefault('_controller'));
-        self::assertSame('baseCodeRoute', $route->getDefault('_sonata_admin'));
-        self::assertSame('baseRouteName_view', $route->getDefault('_sonata_name'));
+        static::assertSame('baseControllerServiceName::viewAction', $route->getDefault('_controller'));
+        static::assertSame('baseCodeRoute', $route->getDefault('_sonata_admin'));
+        static::assertSame('baseRouteName_view', $route->getDefault('_sonata_name'));
     }
 
     public function testControllerWithFQCN(): void
@@ -201,7 +201,7 @@ final class RouteCollectionTest extends TestCase
         $routeCollection->add('view');
         $route = $routeCollection->get('view');
 
-        self::assertSame('Sonata\AdminBundle\Controller\CRUDController::viewAction', $route->getDefault('_controller'));
+        static::assertSame('Sonata\AdminBundle\Controller\CRUDController::viewAction', $route->getDefault('_controller'));
     }
 
     public function testControllerWithBundleSubFolder(): void
@@ -210,6 +210,6 @@ final class RouteCollectionTest extends TestCase
         $routeCollection->add('view');
         $route = $routeCollection->get('view');
 
-        self::assertSame('AppBundle\Admin:Test:view', $route->getDefault('_controller'));
+        static::assertSame('AppBundle\Admin:Test:view', $route->getDefault('_controller'));
     }
 }

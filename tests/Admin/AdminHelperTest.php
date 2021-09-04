@@ -53,8 +53,8 @@ final class AdminHelperTest extends TestCase
         $childFormBuilder = new FormBuilder('elementId', \stdClass::class, $eventDispatcher, $formFactory);
         $formBuilder->add($childFormBuilder);
 
-        self::assertNull($this->helper->getChildFormBuilder($formBuilder, 'foo'));
-        self::assertInstanceOf(FormBuilder::class, $this->helper->getChildFormBuilder($formBuilder, 'test_elementId'));
+        static::assertNull($this->helper->getChildFormBuilder($formBuilder, 'foo'));
+        static::assertInstanceOf(FormBuilder::class, $this->helper->getChildFormBuilder($formBuilder, 'test_elementId'));
     }
 
     public function testGetGrandChildFormBuilder(): void
@@ -69,7 +69,7 @@ final class AdminHelperTest extends TestCase
         $formBuilder->add($childFormBuilder);
         $childFormBuilder->add($grandchildFormBuilder);
 
-        self::assertInstanceOf(FormBuilder::class, $this->helper->getChildFormBuilder($formBuilder, 'parent_child_grandchild'));
+        static::assertInstanceOf(FormBuilder::class, $this->helper->getChildFormBuilder($formBuilder, 'parent_child_grandchild'));
     }
 
     public function testGetChildFormView(): void
@@ -80,8 +80,8 @@ final class AdminHelperTest extends TestCase
         $formView->children['child'] = $child;
         $child->vars['id'] = 'test_elementId';
 
-        self::assertNull($this->helper->getChildFormView($formView, 'foo'));
-        self::assertInstanceOf(FormView::class, $this->helper->getChildFormView($formView, 'test_elementId'));
+        static::assertNull($this->helper->getChildFormView($formView, 'foo'));
+        static::assertInstanceOf(FormView::class, $this->helper->getChildFormView($formView, 'test_elementId'));
     }
 
     public function testGetElementAccessPath(): void
@@ -96,9 +96,9 @@ final class AdminHelperTest extends TestCase
             ->addMethods(['getMoreThings'])
             ->getMock();
 
-        $object->expects(self::atLeastOnce())->method('getPathToObject')->willReturn([$subObject]);
-        $subObject->expects(self::atLeastOnce())->method('getAnother')->willReturn($sub2Object);
-        $sub2Object->expects(self::atLeastOnce())->method('getMoreThings')->willReturn('Value');
+        $object->expects(static::atLeastOnce())->method('getPathToObject')->willReturn([$subObject]);
+        $subObject->expects(static::atLeastOnce())->method('getAnother')->willReturn($sub2Object);
+        $sub2Object->expects(static::atLeastOnce())->method('getMoreThings')->willReturn('Value');
 
         $path = $this->getMethodAsPublic('getElementAccessPath')->invoke(
             $this->helper,
@@ -106,7 +106,7 @@ final class AdminHelperTest extends TestCase
             $object
         );
 
-        self::assertSame('path_to_object[0].another.more_things', $path);
+        static::assertSame('path_to_object[0].another.more_things', $path);
     }
 
     public function testItThrowsExceptionWhenDoesNotFindTheFullPath(): void
@@ -119,8 +119,8 @@ final class AdminHelperTest extends TestCase
             ->addMethods(['getMore'])
             ->getMock();
 
-        $object->expects(self::atLeastOnce())->method('getPathToObject')->willReturn([$subObject]);
-        $subObject->expects(self::atLeastOnce())->method('getMore')->willReturn('Value');
+        $object->expects(static::atLeastOnce())->method('getPathToObject')->willReturn([$subObject]);
+        $subObject->expects(static::atLeastOnce())->method('getMore')->willReturn('Value');
 
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage(sprintf('Could not get element id from %s Failing part: calls', $path));
@@ -186,7 +186,7 @@ final class AdminHelperTest extends TestCase
         ]);
 
         $admin
-            ->expects(self::atLeastOnce())
+            ->expects(static::atLeastOnce())
             ->method('getRequest')
             ->willReturn($request);
 
@@ -200,11 +200,11 @@ final class AdminHelperTest extends TestCase
 
         $bar = new \stdClass();
         $associationAdmin
-            ->expects(self::atLeastOnce())
+            ->expects(static::atLeastOnce())
             ->method('getNewInstance')
             ->willReturn($bar);
 
-        $foo->expects(self::atLeastOnce())->method('addBar')->with($bar);
+        $foo->expects(static::atLeastOnce())->method('addBar')->with($bar);
 
         $dataMapper = $this->createStub(DataMapperInterface::class);
         $formFactory = $this->createStub(FormFactoryInterface::class);
@@ -225,13 +225,13 @@ final class AdminHelperTest extends TestCase
         $formBuilder->setDataMapper($dataMapper);
         $formBuilder->add($childFormBuilder);
 
-        $associationAdmin->expects(self::atLeastOnce())->method('setSubject')->with($bar);
+        $associationAdmin->expects(static::atLeastOnce())->method('setSubject')->with($bar);
         $admin->method('getFormBuilder')->willReturn($formBuilder);
 
         $finalForm = $this->helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
 
         foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
-            self::assertFalse($childField->has('_delete'));
+            static::assertFalse($childField->has('_delete'));
         }
 
         $deleteFormBuilder = new FormBuilder('_delete', null, $eventDispatcher, $formFactory);
@@ -240,8 +240,8 @@ final class AdminHelperTest extends TestCase
         $finalForm = $this->helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
 
         foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
-            self::assertTrue($childField->has('_delete'));
-            self::assertSame('', $childField->get('_delete')->getData());
+            static::assertTrue($childField->has('_delete'));
+            static::assertSame('', $childField->get('_delete')->getData());
         }
     }
 
@@ -440,7 +440,7 @@ final class AdminHelperTest extends TestCase
         $finalForm = $this->helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
 
         foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
-            self::assertFalse($childField->has('_delete'));
+            static::assertFalse($childField->has('_delete'));
         }
     }
 
@@ -461,7 +461,7 @@ final class AdminHelperTest extends TestCase
         ]);
 
         $admin
-            ->expects(self::atLeastOnce())
+            ->expects(static::atLeastOnce())
             ->method('getRequest')
             ->willReturn($request);
         $object = $this->getMockBuilder(\stdClass::class)
@@ -483,10 +483,10 @@ final class AdminHelperTest extends TestCase
         $formBuilder = new FormBuilder('test', \get_class($object), $eventDispatcher, $formFactory);
         $childFormBuilder = new FormBuilder('subObject', \get_class($subObject), $eventDispatcher, $formFactory);
 
-        $object->expects(self::atLeastOnce())->method('getSubObject')->willReturn([$subObject]);
-        $subObject->expects(self::atLeastOnce())->method('getAnd')->willReturn($sub2Object);
-        $sub2Object->expects(self::atLeastOnce())->method('getMore')->willReturn([$sub3Object]);
-        $sub3Object->expects(self::atLeastOnce())->method('getFinalData')->willReturn('value');
+        $object->expects(static::atLeastOnce())->method('getSubObject')->willReturn([$subObject]);
+        $subObject->expects(static::atLeastOnce())->method('getAnd')->willReturn($sub2Object);
+        $sub2Object->expects(static::atLeastOnce())->method('getMore')->willReturn([$sub3Object]);
+        $sub3Object->expects(static::atLeastOnce())->method('getFinalData')->willReturn('value');
 
         $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
         $formBuilder->setCompound(true);
@@ -495,7 +495,7 @@ final class AdminHelperTest extends TestCase
 
         $admin->method('hasSubject')->willReturn(true);
         $admin->method('getSubject')->willReturn($object);
-        $admin->expects(self::once())->method('getFormBuilder')->willReturn($formBuilder);
+        $admin->expects(static::once())->method('getFormBuilder')->willReturn($formBuilder);
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(sprintf('Collection must be an instance of %s, "string" given.', Collection::class));

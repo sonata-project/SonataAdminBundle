@@ -49,23 +49,23 @@ final class ModelTypeTest extends TypeTestCase
 
         $resolvedOptions = $optionResolver->resolve(['model_manager' => $modelManager, 'class' => \stdClass::class] + $options);
 
-        self::assertFalse($resolvedOptions['compound']);
-        self::assertSame('choice', $resolvedOptions['template']);
-        self::assertFalse($resolvedOptions['multiple']);
-        self::assertFalse($resolvedOptions['expanded']);
-        self::assertInstanceOf(ModelManagerInterface::class, $resolvedOptions['model_manager']);
-        self::assertSame(\stdClass::class, $resolvedOptions['class']);
-        self::assertNull($resolvedOptions['property']);
-        self::assertNull($resolvedOptions['query']);
-        self::assertSame($options['choices'] ?? null, $resolvedOptions['choices']);
-        self::assertCount(0, $resolvedOptions['preferred_choices']);
-        self::assertSame('link_add', $resolvedOptions['btn_add']);
-        self::assertSame('link_list', $resolvedOptions['btn_list']);
-        self::assertSame('link_delete', $resolvedOptions['btn_delete']);
-        self::assertSame('SonataAdminBundle', $resolvedOptions['btn_catalogue']);
-        self::assertInstanceOf(ModelChoiceLoader::class, $resolvedOptions['choice_loader']);
+        static::assertFalse($resolvedOptions['compound']);
+        static::assertSame('choice', $resolvedOptions['template']);
+        static::assertFalse($resolvedOptions['multiple']);
+        static::assertFalse($resolvedOptions['expanded']);
+        static::assertInstanceOf(ModelManagerInterface::class, $resolvedOptions['model_manager']);
+        static::assertSame(\stdClass::class, $resolvedOptions['class']);
+        static::assertNull($resolvedOptions['property']);
+        static::assertNull($resolvedOptions['query']);
+        static::assertSame($options['choices'] ?? null, $resolvedOptions['choices']);
+        static::assertCount(0, $resolvedOptions['preferred_choices']);
+        static::assertSame('link_add', $resolvedOptions['btn_add']);
+        static::assertSame('link_list', $resolvedOptions['btn_list']);
+        static::assertSame('link_delete', $resolvedOptions['btn_delete']);
+        static::assertSame('SonataAdminBundle', $resolvedOptions['btn_catalogue']);
+        static::assertInstanceOf(ModelChoiceLoader::class, $resolvedOptions['choice_loader']);
 
-        $modelManager->expects(self::exactly($expectedModelManagerFindCalls))
+        $modelManager->expects(static::exactly($expectedModelManagerFindCalls))
             ->method('findBy')
             ->willReturn([]);
         $resolvedOptions['choice_loader']->loadChoiceList();
@@ -95,21 +95,21 @@ final class ModelTypeTest extends TypeTestCase
 
         $options = $optionResolver->resolve(['model_manager' => $modelManager, 'class' => \stdClass::class, 'choices' => [], 'multiple' => $multiple, 'expanded' => $expanded]);
 
-        self::assertSame($expectedCompound, $options['compound']);
-        self::assertSame('choice', $options['template']);
-        self::assertSame($multiple, $options['multiple']);
-        self::assertSame($expanded, $options['expanded']);
-        self::assertInstanceOf(ModelManagerInterface::class, $options['model_manager']);
-        self::assertSame(\stdClass::class, $options['class']);
-        self::assertNull($options['property']);
-        self::assertNull($options['query']);
-        self::assertCount(0, $options['choices']);
-        self::assertCount(0, $options['preferred_choices']);
-        self::assertSame('link_add', $options['btn_add']);
-        self::assertSame('link_list', $options['btn_list']);
-        self::assertSame('link_delete', $options['btn_delete']);
-        self::assertSame('SonataAdminBundle', $options['btn_catalogue']);
-        self::assertInstanceOf(ModelChoiceLoader::class, $options['choice_loader']);
+        static::assertSame($expectedCompound, $options['compound']);
+        static::assertSame('choice', $options['template']);
+        static::assertSame($multiple, $options['multiple']);
+        static::assertSame($expanded, $options['expanded']);
+        static::assertInstanceOf(ModelManagerInterface::class, $options['model_manager']);
+        static::assertSame(\stdClass::class, $options['class']);
+        static::assertNull($options['property']);
+        static::assertNull($options['query']);
+        static::assertCount(0, $options['choices']);
+        static::assertCount(0, $options['preferred_choices']);
+        static::assertSame('link_add', $options['btn_add']);
+        static::assertSame('link_list', $options['btn_list']);
+        static::assertSame('link_delete', $options['btn_delete']);
+        static::assertSame('SonataAdminBundle', $options['btn_catalogue']);
+        static::assertInstanceOf(ModelChoiceLoader::class, $options['choice_loader']);
     }
 
     /**

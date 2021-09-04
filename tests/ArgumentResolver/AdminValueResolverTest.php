@@ -53,7 +53,7 @@ final class AdminValueResolverTest extends TestCase
      */
     public function testSupports(bool $expectedSupport, Request $request, ArgumentMetadata $argumentMetadata): void
     {
-        self::assertSame($expectedSupport, $this->adminValueResolver->supports($request, $argumentMetadata));
+        static::assertSame($expectedSupport, $this->adminValueResolver->supports($request, $argumentMetadata));
     }
 
     /**
@@ -108,8 +108,8 @@ final class AdminValueResolverTest extends TestCase
 
         $argument = new ArgumentMetadata('_sonata_admin', PostAdmin::class, false, false, null);
 
-        self::assertTrue($this->adminValueResolver->supports($request, $argument));
-        self::assertSame(
+        static::assertTrue($this->adminValueResolver->supports($request, $argument));
+        static::assertSame(
             [$this->admin],
             $this->iterableToArray($this->adminValueResolver->resolve($request, $argument))
         );

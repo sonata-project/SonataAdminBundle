@@ -42,11 +42,11 @@ final class ModelToIdTransformerTest extends TestCase
 
         $found = new \stdClass();
         $this->modelManager
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('find')
             ->willReturn($found);
 
-        self::assertSame($found, $transformer->reverseTransform($value));
+        static::assertSame($found, $transformer->reverseTransform($value));
     }
 
     /**
@@ -65,23 +65,23 @@ final class ModelToIdTransformerTest extends TestCase
         $className = \stdClass::class;
         $transformer = new ModelToIdTransformer($this->modelManager, $className);
 
-        $this->modelManager->expects(self::never())->method('find');
+        $this->modelManager->expects(static::never())->method('find');
 
-        self::assertNull($transformer->reverseTransform(null));
-        self::assertNull($transformer->reverseTransform(''));
+        static::assertNull($transformer->reverseTransform(null));
+        static::assertNull($transformer->reverseTransform(''));
     }
 
     public function testTransform(): void
     {
-        $this->modelManager->expects(self::once())
+        $this->modelManager->expects(static::once())
             ->method('getNormalizedIdentifier')
             ->willReturn('123');
 
         $className = \stdClass::class;
         $transformer = new ModelToIdTransformer($this->modelManager, $className);
 
-        self::assertNull($transformer->transform(null));
+        static::assertNull($transformer->transform(null));
 
-        self::assertSame('123', $transformer->transform(new \stdClass()));
+        static::assertSame('123', $transformer->transform(new \stdClass()));
     }
 }

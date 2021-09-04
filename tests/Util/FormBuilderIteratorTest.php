@@ -52,14 +52,14 @@ final class FormBuilderIteratorTest extends TestCase
     {
         $this->builder->add('name', TextType::class);
         $iterator = new FormBuilderIterator($this->builder);
-        self::assertInstanceOf(\get_class($iterator), $iterator->getChildren());
-        self::assertSame('name_name', $iterator->key());
+        static::assertInstanceOf(\get_class($iterator), $iterator->getChildren());
+        static::assertSame('name_name', $iterator->key());
     }
 
     public function testHasChildren(): void
     {
         $this->builder->add('name', TextType::class);
         $iterator = new FormBuilderIterator($this->builder);
-        self::assertTrue($iterator->hasChildren());
+        static::assertTrue($iterator->hasChildren());
     }
 }

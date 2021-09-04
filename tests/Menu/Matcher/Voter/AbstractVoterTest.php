@@ -36,7 +36,7 @@ abstract class AbstractVoterTest extends TestCase
         $item = $this->createItem($itemData);
         $voter = $this->createVoter($voterData, $route);
 
-        self::assertSame($expected, $voter->matchItem($item));
+        static::assertSame($expected, $voter->matchItem($item));
     }
 
     /**

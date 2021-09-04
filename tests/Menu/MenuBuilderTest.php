@@ -68,7 +68,7 @@ final class MenuBuilderTest extends TestCase
         ];
 
         $this->provider
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('get')
             ->with('sonata_group_menu')
             ->willReturn($this->factory->createItem('bar')->addChild('foo')->getParent());
@@ -76,20 +76,20 @@ final class MenuBuilderTest extends TestCase
         $builder = $this->createMenuBuilder($adminGroups);
         $menu = $builder->createSidebarMenu();
 
-        self::assertInstanceOf(ItemInterface::class, $menu);
-        self::assertArrayHasKey('bar', $menu->getChildren());
+        static::assertInstanceOf(ItemInterface::class, $menu);
+        static::assertArrayHasKey('bar', $menu->getChildren());
 
         foreach ($menu->getChildren() as $child) {
-            self::assertInstanceOf(MenuItem::class, $child);
-            self::assertSame('bar', $child->getName());
-            self::assertSame('bar', $child->getLabel());
+            static::assertInstanceOf(MenuItem::class, $child);
+            static::assertSame('bar', $child->getName());
+            static::assertSame('bar', $child->getLabel());
 
             // menu items
             $children = $child->getChildren();
-            self::assertCount(1, $children);
-            self::assertArrayHasKey('foo', $children);
-            self::assertInstanceOf(MenuItem::class, $child['foo']);
-            self::assertSame('foo', $child['foo']->getLabel());
+            static::assertCount(1, $children);
+            static::assertArrayHasKey('foo', $children);
+            static::assertInstanceOf(MenuItem::class, $child['foo']);
+            static::assertSame('foo', $child['foo']->getLabel());
         }
     }
 
@@ -110,7 +110,7 @@ final class MenuBuilderTest extends TestCase
         ];
 
         $this->provider
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('get')
             ->with('my_menu')
             ->willReturn($this->factory->createItem('bar')->addChild('foo')->getParent());
@@ -118,20 +118,20 @@ final class MenuBuilderTest extends TestCase
         $builder = $this->createMenuBuilder($adminGroups);
         $menu = $builder->createSidebarMenu();
 
-        self::assertInstanceOf(ItemInterface::class, $menu);
-        self::assertArrayHasKey('bar', $menu->getChildren());
+        static::assertInstanceOf(ItemInterface::class, $menu);
+        static::assertArrayHasKey('bar', $menu->getChildren());
 
         foreach ($menu->getChildren() as $child) {
-            self::assertInstanceOf(MenuItem::class, $child);
-            self::assertSame('bar', $child->getName());
-            self::assertSame('bar', $child->getLabel());
+            static::assertInstanceOf(MenuItem::class, $child);
+            static::assertSame('bar', $child->getName());
+            static::assertSame('bar', $child->getLabel());
 
             // menu items
             $children = $child->getChildren();
-            self::assertCount(1, $children);
-            self::assertArrayHasKey('foo', $children);
-            self::assertInstanceOf(MenuItem::class, $child['foo']);
-            self::assertSame('foo', $child['foo']->getLabel());
+            static::assertCount(1, $children);
+            static::assertArrayHasKey('foo', $children);
+            static::assertInstanceOf(MenuItem::class, $child['foo']);
+            static::assertSame('foo', $child['foo']->getLabel());
         }
     }
 
@@ -153,15 +153,15 @@ final class MenuBuilderTest extends TestCase
         $builder = $this->createMenuBuilder($adminGroups);
 
         $this->eventDispatcher
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('dispatch')
             ->with(
-                self::isInstanceOf(ConfigureMenuEvent::class),
-                self::equalTo('sonata.admin.event.configure.menu.sidebar')
+                static::isInstanceOf(ConfigureMenuEvent::class),
+                static::equalTo('sonata.admin.event.configure.menu.sidebar')
             );
 
         $this->provider
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('get')
             ->with('sonata_group_menu')
             ->willReturn($this->factory->createItem('bar'));

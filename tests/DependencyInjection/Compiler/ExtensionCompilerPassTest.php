@@ -72,10 +72,10 @@ final class ExtensionCompilerPassTest extends TestCase
     {
         $this->extension->load([], $container = $this->getContainer());
 
-        self::assertTrue($container->hasParameter(sprintf('%s.extension.map', $this->root)));
-        self::assertIsArray($extensionMap = $container->getParameter(sprintf('%s.extension.map', $this->root)));
+        static::assertTrue($container->hasParameter(sprintf('%s.extension.map', $this->root)));
+        static::assertIsArray($extensionMap = $container->getParameter(sprintf('%s.extension.map', $this->root)));
 
-        self::assertSame([], $extensionMap);
+        static::assertSame([], $extensionMap);
     }
 
     /**
@@ -94,20 +94,20 @@ final class ExtensionCompilerPassTest extends TestCase
         $method->setAccessible(true);
         $extensionMap = $method->invokeArgs(new ExtensionCompilerPass(), [$extensionMap]);
 
-        self::assertArrayHasKey('admins', $extensionMap);
-        self::assertArrayHasKey('excludes', $extensionMap);
-        self::assertArrayHasKey('implements', $extensionMap);
-        self::assertArrayHasKey('extends', $extensionMap);
-        self::assertArrayHasKey('instanceof', $extensionMap);
-        self::assertArrayHasKey('uses', $extensionMap);
+        static::assertArrayHasKey('admins', $extensionMap);
+        static::assertArrayHasKey('excludes', $extensionMap);
+        static::assertArrayHasKey('implements', $extensionMap);
+        static::assertArrayHasKey('extends', $extensionMap);
+        static::assertArrayHasKey('instanceof', $extensionMap);
+        static::assertArrayHasKey('uses', $extensionMap);
 
-        self::assertEmpty($extensionMap['global']);
-        self::assertEmpty($extensionMap['admins']);
-        self::assertEmpty($extensionMap['excludes']);
-        self::assertEmpty($extensionMap['implements']);
-        self::assertEmpty($extensionMap['extends']);
-        self::assertEmpty($extensionMap['instanceof']);
-        self::assertEmpty($extensionMap['uses']);
+        static::assertEmpty($extensionMap['global']);
+        static::assertEmpty($extensionMap['admins']);
+        static::assertEmpty($extensionMap['excludes']);
+        static::assertEmpty($extensionMap['implements']);
+        static::assertEmpty($extensionMap['extends']);
+        static::assertEmpty($extensionMap['instanceof']);
+        static::assertEmpty($extensionMap['uses']);
     }
 
     /**
@@ -128,56 +128,56 @@ final class ExtensionCompilerPassTest extends TestCase
         $extensionMap = $method->invokeArgs(new ExtensionCompilerPass(), [$extensionMap]);
 
         // Admins
-        self::assertArrayHasKey('admins', $extensionMap);
-        self::assertCount(1, $extensionMap['admins']);
+        static::assertArrayHasKey('admins', $extensionMap);
+        static::assertCount(1, $extensionMap['admins']);
 
-        self::assertArrayHasKey('sonata_extension_publish', $extensionMap['admins']['sonata_post_admin']);
-        self::assertCount(1, $extensionMap['admins']['sonata_post_admin']);
+        static::assertArrayHasKey('sonata_extension_publish', $extensionMap['admins']['sonata_post_admin']);
+        static::assertCount(1, $extensionMap['admins']['sonata_post_admin']);
 
         // Excludes
-        self::assertArrayHasKey('excludes', $extensionMap);
-        self::assertCount(2, $extensionMap['excludes']);
+        static::assertArrayHasKey('excludes', $extensionMap);
+        static::assertCount(2, $extensionMap['excludes']);
 
-        self::assertArrayHasKey('sonata_article_admin', $extensionMap['excludes']);
-        self::assertCount(1, $extensionMap['excludes']['sonata_article_admin']);
-        self::assertArrayHasKey('sonata_extension_history', $extensionMap['excludes']['sonata_article_admin']);
+        static::assertArrayHasKey('sonata_article_admin', $extensionMap['excludes']);
+        static::assertCount(1, $extensionMap['excludes']['sonata_article_admin']);
+        static::assertArrayHasKey('sonata_extension_history', $extensionMap['excludes']['sonata_article_admin']);
 
-        self::assertArrayHasKey('sonata_post_admin', $extensionMap['excludes']);
-        self::assertCount(1, $extensionMap['excludes']['sonata_post_admin']);
-        self::assertArrayHasKey('sonata_extension_order', $extensionMap['excludes']['sonata_post_admin']);
+        static::assertArrayHasKey('sonata_post_admin', $extensionMap['excludes']);
+        static::assertCount(1, $extensionMap['excludes']['sonata_post_admin']);
+        static::assertArrayHasKey('sonata_extension_order', $extensionMap['excludes']['sonata_post_admin']);
 
         // Implements
-        self::assertArrayHasKey('implements', $extensionMap);
-        self::assertCount(1, $extensionMap['implements']);
+        static::assertArrayHasKey('implements', $extensionMap);
+        static::assertCount(1, $extensionMap['implements']);
 
-        self::assertArrayHasKey(Publishable::class, $extensionMap['implements']);
-        self::assertCount(2, $extensionMap['implements'][Publishable::class]);
-        self::assertArrayHasKey('sonata_extension_publish', $extensionMap['implements'][Publishable::class]);
-        self::assertArrayHasKey('sonata_extension_order', $extensionMap['implements'][Publishable::class]);
+        static::assertArrayHasKey(Publishable::class, $extensionMap['implements']);
+        static::assertCount(2, $extensionMap['implements'][Publishable::class]);
+        static::assertArrayHasKey('sonata_extension_publish', $extensionMap['implements'][Publishable::class]);
+        static::assertArrayHasKey('sonata_extension_order', $extensionMap['implements'][Publishable::class]);
 
         // Extends
-        self::assertArrayHasKey('extends', $extensionMap);
-        self::assertCount(1, $extensionMap['extends']);
+        static::assertArrayHasKey('extends', $extensionMap);
+        static::assertCount(1, $extensionMap['extends']);
 
-        self::assertArrayHasKey(Post::class, $extensionMap['extends']);
-        self::assertCount(1, $extensionMap['extends'][Post::class]);
-        self::assertArrayHasKey('sonata_extension_order', $extensionMap['extends'][Post::class]);
+        static::assertArrayHasKey(Post::class, $extensionMap['extends']);
+        static::assertCount(1, $extensionMap['extends'][Post::class]);
+        static::assertArrayHasKey('sonata_extension_order', $extensionMap['extends'][Post::class]);
 
         // Instanceof
-        self::assertArrayHasKey('instanceof', $extensionMap);
-        self::assertCount(1, $extensionMap['instanceof']);
+        static::assertArrayHasKey('instanceof', $extensionMap);
+        static::assertCount(1, $extensionMap['instanceof']);
 
-        self::assertArrayHasKey(Post::class, $extensionMap['instanceof']);
-        self::assertCount(1, $extensionMap['instanceof'][Post::class]);
-        self::assertArrayHasKey('sonata_extension_history', $extensionMap['instanceof'][Post::class]);
+        static::assertArrayHasKey(Post::class, $extensionMap['instanceof']);
+        static::assertCount(1, $extensionMap['instanceof'][Post::class]);
+        static::assertArrayHasKey('sonata_extension_history', $extensionMap['instanceof'][Post::class]);
 
         // Uses
-        self::assertArrayHasKey('uses', $extensionMap);
+        static::assertArrayHasKey('uses', $extensionMap);
 
-        self::assertCount(1, $extensionMap['uses']);
-        self::assertArrayHasKey(TimestampableTrait::class, $extensionMap['uses']);
-        self::assertCount(1, $extensionMap['uses'][TimestampableTrait::class]);
-        self::assertArrayHasKey('sonata_extension_post', $extensionMap['uses'][TimestampableTrait::class]);
+        static::assertCount(1, $extensionMap['uses']);
+        static::assertArrayHasKey(TimestampableTrait::class, $extensionMap['uses']);
+        static::assertCount(1, $extensionMap['uses'][TimestampableTrait::class]);
+        static::assertArrayHasKey('sonata_extension_post', $extensionMap['uses'][TimestampableTrait::class]);
     }
 
     /**
@@ -241,16 +241,16 @@ final class ExtensionCompilerPassTest extends TestCase
         $extensionsPass->process($container);
         $container->compile();
 
-        self::assertTrue($container->hasDefinition('sonata_extension_global'));
-        self::assertTrue($container->hasDefinition('sonata_extension_publish'));
-        self::assertTrue($container->hasDefinition('sonata_extension_history'));
-        self::assertTrue($container->hasDefinition('sonata_extension_order'));
-        self::assertTrue($container->hasDefinition('sonata_extension_security'));
-        self::assertTrue($container->hasDefinition('sonata_extension_timestamp'));
+        static::assertTrue($container->hasDefinition('sonata_extension_global'));
+        static::assertTrue($container->hasDefinition('sonata_extension_publish'));
+        static::assertTrue($container->hasDefinition('sonata_extension_history'));
+        static::assertTrue($container->hasDefinition('sonata_extension_order'));
+        static::assertTrue($container->hasDefinition('sonata_extension_security'));
+        static::assertTrue($container->hasDefinition('sonata_extension_timestamp'));
 
-        self::assertTrue($container->hasDefinition('sonata_post_admin'));
-        self::assertTrue($container->hasDefinition('sonata_article_admin'));
-        self::assertTrue($container->hasDefinition('sonata_news_admin'));
+        static::assertTrue($container->hasDefinition('sonata_post_admin'));
+        static::assertTrue($container->hasDefinition('sonata_article_admin'));
+        static::assertTrue($container->hasDefinition('sonata_news_admin'));
 
         $globalExtension = $container->get('sonata_extension_global');
         $securityExtension = $container->get('sonata_extension_security');
@@ -260,39 +260,39 @@ final class ExtensionCompilerPassTest extends TestCase
         $filterExtension = $container->get('sonata_extension_filter');
 
         $def = $container->get('sonata_post_admin');
-        self::assertInstanceOf(AdminInterface::class, $def);
+        static::assertInstanceOf(AdminInterface::class, $def);
 
         $extensions = $def->getExtensions();
-        self::assertCount(5, $extensions);
+        static::assertCount(5, $extensions);
 
-        self::assertSame($historyExtension, $extensions[0]);
-        self::assertSame($publishExtension, $extensions[2]);
-        self::assertSame($securityExtension, $extensions[3]);
-        self::assertSame($globalExtension, $extensions[4]);
+        static::assertSame($historyExtension, $extensions[0]);
+        static::assertSame($publishExtension, $extensions[2]);
+        static::assertSame($securityExtension, $extensions[3]);
+        static::assertSame($globalExtension, $extensions[4]);
 
         $def = $container->get('sonata_article_admin');
-        self::assertInstanceOf(AdminInterface::class, $def);
+        static::assertInstanceOf(AdminInterface::class, $def);
 
         $extensions = $def->getExtensions();
-        self::assertCount(6, $extensions);
+        static::assertCount(6, $extensions);
 
-        self::assertSame($filterExtension, $extensions[0]);
-        self::assertSame($securityExtension, $extensions[1]);
-        self::assertSame($publishExtension, $extensions[2]);
-        self::assertSame($orderExtension, $extensions[4]);
-        self::assertSame($globalExtension, $extensions[5]);
+        static::assertSame($filterExtension, $extensions[0]);
+        static::assertSame($securityExtension, $extensions[1]);
+        static::assertSame($publishExtension, $extensions[2]);
+        static::assertSame($orderExtension, $extensions[4]);
+        static::assertSame($globalExtension, $extensions[5]);
 
         $def = $container->get('sonata_news_admin');
-        self::assertInstanceOf(AdminInterface::class, $def);
+        static::assertInstanceOf(AdminInterface::class, $def);
 
         $extensions = $def->getExtensions();
-        self::assertCount(6, $extensions);
+        static::assertCount(6, $extensions);
 
-        self::assertSame($historyExtension, $extensions[0]);
-        self::assertSame($securityExtension, $extensions[2]);
-        self::assertSame($filterExtension, $extensions[3]);
-        self::assertSame($orderExtension, $extensions[4]);
-        self::assertSame($globalExtension, $extensions[5]);
+        static::assertSame($historyExtension, $extensions[0]);
+        static::assertSame($securityExtension, $extensions[2]);
+        static::assertSame($filterExtension, $extensions[3]);
+        static::assertSame($orderExtension, $extensions[4]);
+        static::assertSame($globalExtension, $extensions[5]);
     }
 
     /**

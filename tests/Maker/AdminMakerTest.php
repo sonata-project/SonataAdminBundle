@@ -119,7 +119,7 @@ final class AdminMakerTest extends TestCase
         $this->input = new ArrayInput($in, $definition);
 
         $stream = fopen('php://memory', 'w', false);
-        self::assertIsResource($stream);
+        static::assertIsResource($stream);
         $this->output = new StreamOutput($stream);
 
         $this->io = new ConsoleStyle($this->input, $this->output);

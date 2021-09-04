@@ -35,7 +35,7 @@ final class ChoiceTypeExtensionTest extends TestCase
 
     public function testExtendedType(): void
     {
-        self::assertSame(
+        static::assertSame(
             [ChoiceType::class],
             ChoiceTypeExtension::getExtendedTypes()
         );
@@ -49,8 +49,8 @@ final class ChoiceTypeExtensionTest extends TestCase
             ])
             ->createView();
 
-        self::assertTrue(isset($view->vars['sortable']));
-        self::assertTrue($view->vars['sortable']);
+        static::assertTrue(isset($view->vars['sortable']));
+        static::assertTrue($view->vars['sortable']);
     }
 
     public function testDefaultOptionsWithoutSortable(): void
@@ -59,7 +59,7 @@ final class ChoiceTypeExtensionTest extends TestCase
             ->create(ChoiceType::class, null, [])
             ->createView();
 
-        self::assertTrue(isset($view->vars['sortable']));
-        self::assertFalse($view->vars['sortable']);
+        static::assertTrue(isset($view->vars['sortable']));
+        static::assertFalse($view->vars['sortable']);
     }
 }

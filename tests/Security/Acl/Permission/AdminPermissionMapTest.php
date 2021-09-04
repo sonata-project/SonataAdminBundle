@@ -38,17 +38,17 @@ final class AdminPermissionMapTest extends TestCase
                 new \stdClass()
             );
 
-            self::assertIsArray($masks);
+            static::assertIsArray($masks);
 
             foreach ($masks as $mask) {
-                self::assertIsString(MaskBuilder::getCode($mask));
+                static::assertIsString(MaskBuilder::getCode($mask));
             }
         }
     }
 
     public function testGetMaskReturnsNullIfPermissionIsNotSupported(): void
     {
-        self::assertNull($this->permissionMap->getMasks(
+        static::assertNull($this->permissionMap->getMasks(
             'unknown permission',
             new \stdClass()
         ));
@@ -79,6 +79,6 @@ final class AdminPermissionMapTest extends TestCase
      */
     public function testContainsReturnsABoolean(bool $expectedResult, string $permission): void
     {
-        self::assertSame($expectedResult, $this->permissionMap->contains($permission));
+        static::assertSame($expectedResult, $this->permissionMap->contains($permission));
     }
 }

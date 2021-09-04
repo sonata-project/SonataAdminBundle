@@ -25,22 +25,22 @@ final class ConfigurationTest extends TestCase
     {
         $config = $this->process([]);
 
-        self::assertTrue($config['options']['html5_validate']);
-        self::assertNull($config['options']['pager_links']);
-        self::assertTrue($config['options']['confirm_exit']);
-        self::assertFalse($config['options']['js_debug']);
-        self::assertTrue($config['options']['use_icheck']);
-        self::assertSame('bundles/sonataadmin/images/default_mosaic_image.png', $config['options']['mosaic_background']);
-        self::assertSame('default', $config['options']['default_group']);
-        self::assertSame('SonataAdminBundle', $config['options']['default_label_catalogue']);
-        self::assertSame('fas fa-folder', $config['options']['default_icon']);
+        static::assertTrue($config['options']['html5_validate']);
+        static::assertNull($config['options']['pager_links']);
+        static::assertTrue($config['options']['confirm_exit']);
+        static::assertFalse($config['options']['js_debug']);
+        static::assertTrue($config['options']['use_icheck']);
+        static::assertSame('bundles/sonataadmin/images/default_mosaic_image.png', $config['options']['mosaic_background']);
+        static::assertSame('default', $config['options']['default_group']);
+        static::assertSame('SonataAdminBundle', $config['options']['default_label_catalogue']);
+        static::assertSame('fas fa-folder', $config['options']['default_icon']);
     }
 
     public function testBreadcrumbsChildRouteDefaultsToEdit(): void
     {
         $config = $this->process([]);
 
-        self::assertSame('edit', $config['breadcrumbs']['child_admin_route']);
+        static::assertSame('edit', $config['breadcrumbs']['child_admin_route']);
     }
 
     public function testOptionsWithInvalidFormat(): void
@@ -60,7 +60,7 @@ final class ConfigurationTest extends TestCase
             'default_admin_services' => [],
         ]]);
 
-        self::assertSame([
+        static::assertSame([
             'model_manager' => null,
             'data_source' => null,
             'field_description_factory' => null,
@@ -83,7 +83,7 @@ final class ConfigurationTest extends TestCase
     {
         $config = $this->process([]);
 
-        self::assertEmpty($config['dashboard']['blocks'][0]['roles']);
+        static::assertEmpty($config['dashboard']['blocks'][0]['roles']);
     }
 
     public function testDashboardWithRoles(): void
@@ -97,7 +97,7 @@ final class ConfigurationTest extends TestCase
             ],
         ]]);
 
-        self::assertSame($config['dashboard']['blocks'][0]['roles'], ['ROLE_ADMIN']);
+        static::assertSame($config['dashboard']['blocks'][0]['roles'], ['ROLE_ADMIN']);
     }
 
     public function testDashboardGroups(): void
@@ -127,8 +127,8 @@ final class ConfigurationTest extends TestCase
             ],
         ]]);
 
-        self::assertCount(4, $config['dashboard']['groups']['bar']['items']);
-        self::assertSame(
+        static::assertCount(4, $config['dashboard']['groups']['bar']['items']);
+        static::assertSame(
             $config['dashboard']['groups']['bar']['items'][0],
             [
                 'admin' => 'item1',
@@ -137,7 +137,7 @@ final class ConfigurationTest extends TestCase
                 'route_absolute' => false,
             ]
         );
-        self::assertSame(
+        static::assertSame(
             $config['dashboard']['groups']['bar']['items'][1],
             [
                 'admin' => 'item2',
@@ -146,7 +146,7 @@ final class ConfigurationTest extends TestCase
                 'route_absolute' => false,
             ]
         );
-        self::assertSame(
+        static::assertSame(
             $config['dashboard']['groups']['bar']['items'][2],
             [
                 'label' => 'fooLabel',
@@ -156,7 +156,7 @@ final class ConfigurationTest extends TestCase
                 'roles' => [],
             ]
         );
-        self::assertSame(
+        static::assertSame(
             $config['dashboard']['groups']['bar']['items'][3],
             [
                 'label' => 'barLabel',
@@ -212,31 +212,31 @@ final class ConfigurationTest extends TestCase
     {
         $config = $this->process([[]]);
 
-        self::assertSame('ROLE_SONATA_ADMIN', $config['security']['role_admin']);
-        self::assertSame('ROLE_SUPER_ADMIN', $config['security']['role_super_admin']);
+        static::assertSame('ROLE_SONATA_ADMIN', $config['security']['role_admin']);
+        static::assertSame('ROLE_SUPER_ADMIN', $config['security']['role_super_admin']);
     }
 
     public function testExtraAssetsDefaults(): void
     {
         $config = $this->process([[]]);
 
-        self::assertSame([], $config['assets']['extra_stylesheets']);
-        self::assertSame([], $config['assets']['extra_javascripts']);
+        static::assertSame([], $config['assets']['extra_stylesheets']);
+        static::assertSame([], $config['assets']['extra_javascripts']);
     }
 
     public function testRemoveAssetsDefaults(): void
     {
         $config = $this->process([[]]);
 
-        self::assertSame([], $config['assets']['remove_stylesheets']);
-        self::assertSame([], $config['assets']['remove_javascripts']);
+        static::assertSame([], $config['assets']['remove_stylesheets']);
+        static::assertSame([], $config['assets']['remove_javascripts']);
     }
 
     public function testDefaultControllerIsCRUDController(): void
     {
         $config = $this->process([]);
 
-        self::assertSame('sonata.admin.controller.crud', $config['default_controller']);
+        static::assertSame('sonata.admin.controller.crud', $config['default_controller']);
     }
 
     public function testSettingDefaultController(): void
@@ -245,7 +245,7 @@ final class ConfigurationTest extends TestCase
             'default_controller' => FooAdminController::class,
         ]]);
 
-        self::assertSame(FooAdminController::class, $config['default_controller']);
+        static::assertSame(FooAdminController::class, $config['default_controller']);
     }
 
     /**

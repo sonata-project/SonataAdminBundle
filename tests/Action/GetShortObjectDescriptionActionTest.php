@@ -69,7 +69,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
         $this->adminFetcher->method('get')->willThrowException(new \InvalidArgumentException());
 
-        $this->admin->expects(self::never())->method('setRequest');
+        $this->admin->expects(static::never())->method('setRequest');
 
         $this->expectException(NotFoundHttpException::class);
 
@@ -131,7 +131,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        self::assertSame('renderedTemplate', $response->getContent());
+        static::assertSame('renderedTemplate', $response->getContent());
     }
 
     public function testGetShortObjectDescriptionActionEmptyObjectIdAsJson(): void
@@ -170,6 +170,6 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        self::assertSame('{"result":{"id":"42","label":"bar"}}', $response->getContent());
+        static::assertSame('{"result":{"id":"42","label":"bar"}}', $response->getContent());
     }
 }

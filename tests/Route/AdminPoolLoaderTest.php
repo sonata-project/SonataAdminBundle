@@ -34,8 +34,8 @@ final class AdminPoolLoaderTest extends TestCase
 
         $adminPoolLoader = new AdminPoolLoader($pool);
 
-        self::assertTrue($adminPoolLoader->supports('foo', 'sonata_admin'));
-        self::assertFalse($adminPoolLoader->supports('foo', 'bar'));
+        static::assertTrue($adminPoolLoader->supports('foo', 'sonata_admin'));
+        static::assertFalse($adminPoolLoader->supports('foo', 'bar'));
     }
 
     public function testLoad(): void
@@ -53,14 +53,14 @@ final class AdminPoolLoaderTest extends TestCase
         $routeCollection2->add('baz');
 
         $admin1 = $this->createMock(AdminInterface::class);
-        $admin1->expects(self::once())
+        $admin1->expects(static::once())
             ->method('getRoutes')
             ->willReturn($routeCollection1);
 
         $container->set('foo_admin', $admin1);
 
         $admin2 = $this->createMock(AdminInterface::class);
-        $admin2->expects(self::once())
+        $admin2->expects(static::once())
             ->method('getRoutes')
             ->willReturn($routeCollection2);
 
@@ -68,9 +68,9 @@ final class AdminPoolLoaderTest extends TestCase
 
         $collection = $adminPoolLoader->load('foo', 'sonata_admin');
 
-        self::assertInstanceOf(SymfonyRouteCollection::class, $collection);
-        self::assertInstanceOf(SymfonyRoute::class, $collection->get('baseRouteNameFoo_foo'));
-        self::assertInstanceOf(SymfonyRoute::class, $collection->get('baseRouteNameBar_bar'));
-        self::assertInstanceOf(SymfonyRoute::class, $collection->get('baseRouteNameBar_bar'));
+        static::assertInstanceOf(SymfonyRouteCollection::class, $collection);
+        static::assertInstanceOf(SymfonyRoute::class, $collection->get('baseRouteNameFoo_foo'));
+        static::assertInstanceOf(SymfonyRoute::class, $collection->get('baseRouteNameBar_bar'));
+        static::assertInstanceOf(SymfonyRoute::class, $collection->get('baseRouteNameBar_bar'));
     }
 }

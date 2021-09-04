@@ -25,31 +25,31 @@ final class FieldDescriptionCollectionTest extends TestCase
         $collection = new FieldDescriptionCollection();
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects(self::once())->method('getName')->willReturn('title');
+        $fieldDescription->expects(static::once())->method('getName')->willReturn('title');
         $collection->add($fieldDescription);
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects(self::once())->method('getName')->willReturn('position');
+        $fieldDescription->expects(static::once())->method('getName')->willReturn('position');
         $collection->add($fieldDescription);
 
-        self::assertFalse($collection->has('foo'));
-        self::assertFalse(isset($collection['foo']));
-        self::assertTrue($collection->has('title'));
-        self::assertTrue(isset($collection['title']));
+        static::assertFalse($collection->has('foo'));
+        static::assertFalse(isset($collection['foo']));
+        static::assertTrue($collection->has('title'));
+        static::assertTrue(isset($collection['title']));
 
-        self::assertCount(2, $collection->getElements());
-        self::assertCount(2, $collection);
+        static::assertCount(2, $collection->getElements());
+        static::assertCount(2, $collection);
 
-        self::assertInstanceOf(FieldDescriptionInterface::class, $collection['title']);
-        self::assertInstanceOf(FieldDescriptionInterface::class, $collection->get('title'));
+        static::assertInstanceOf(FieldDescriptionInterface::class, $collection['title']);
+        static::assertInstanceOf(FieldDescriptionInterface::class, $collection->get('title'));
 
         $collection->remove('title');
-        self::assertFalse($collection->has('title'));
+        static::assertFalse($collection->has('title'));
 
         unset($collection['position']);
 
-        self::assertCount(0, $collection->getElements());
-        self::assertCount(0, $collection);
+        static::assertCount(0, $collection->getElements());
+        static::assertCount(0, $collection);
     }
 
     public function testNonExistentField(): void
@@ -76,18 +76,18 @@ final class FieldDescriptionCollectionTest extends TestCase
         $collection = new FieldDescriptionCollection();
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects(self::once())->method('getName')->willReturn('title');
+        $fieldDescription->expects(static::once())->method('getName')->willReturn('title');
         $collection->add($fieldDescription);
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects(self::once())->method('getName')->willReturn('position');
+        $fieldDescription->expects(static::once())->method('getName')->willReturn('position');
         $collection->add($fieldDescription);
 
         $newOrder = ['position', 'title'];
         $collection->reorder($newOrder);
 
         $actualElements = array_keys($collection->getElements());
-        self::assertSame($newOrder, $actualElements, 'the order is wrong');
+        static::assertSame($newOrder, $actualElements, 'the order is wrong');
     }
 
     public function testReorderListWithBatchField(): void
@@ -95,15 +95,15 @@ final class FieldDescriptionCollectionTest extends TestCase
         $collection = new FieldDescriptionCollection();
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects(self::once())->method('getName')->willReturn('title');
+        $fieldDescription->expects(static::once())->method('getName')->willReturn('title');
         $collection->add($fieldDescription);
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects(self::once())->method('getName')->willReturn('position');
+        $fieldDescription->expects(static::once())->method('getName')->willReturn('position');
         $collection->add($fieldDescription);
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects(self::once())->method('getName')->willReturn(ListMapper::NAME_BATCH);
+        $fieldDescription->expects(static::once())->method('getName')->willReturn(ListMapper::NAME_BATCH);
         $collection->add($fieldDescription);
 
         $newOrder = ['position', 'title'];
@@ -111,7 +111,7 @@ final class FieldDescriptionCollectionTest extends TestCase
         array_unshift($newOrder, ListMapper::NAME_BATCH);
 
         $actualElements = array_keys($collection->getElements());
-        self::assertSame($newOrder, $actualElements, 'the order is wrong');
+        static::assertSame($newOrder, $actualElements, 'the order is wrong');
     }
 
     public function testReorderWithInvalidName(): void
