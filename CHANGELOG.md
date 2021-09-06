@@ -2,6 +2,35 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.0.0-rc.2...4.0.0) - 2021-09-05
+### Added
+- [[#7464](https://github.com/sonata-project/SonataAdminBundle/pull/7464)] New role `ROLE_MYADMIN_HISTORY` to access to the history actions ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7452](https://github.com/sonata-project/SonataAdminBundle/pull/7452)] `AdminInterface::removeFieldFromShowGroup` method ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7452](https://github.com/sonata-project/SonataAdminBundle/pull/7452)] `AbstractAdmin::removeFieldFromShowGroup` method ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Changed
+- [[#7458](https://github.com/sonata-project/SonataAdminBundle/pull/7458)] Fail fast when using ACL as security handler without security.acl.provider service ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7454](https://github.com/sonata-project/SonataAdminBundle/pull/7454)] The route used by search result is now `show`. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7454](https://github.com/sonata-project/SonataAdminBundle/pull/7454)] The route used by `ListMapper::addIdentifier()` is now `show` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7464](https://github.com/sonata-project/SonataAdminBundle/pull/7464)] `AbstractAdmin::getAccessMapping` visibility ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7450](https://github.com/sonata-project/SonataAdminBundle/pull/7450)] `AclSecurityHandlerInterface::addObjectClassAces()` signature ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7450](https://github.com/sonata-project/SonataAdminBundle/pull/7450)] `AclSecurityHandler::addObjectClassAces()` signature ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7450](https://github.com/sonata-project/SonataAdminBundle/pull/7450)] `AdminAclManipulator::addAdminClassAces()` signature ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7450](https://github.com/sonata-project/SonataAdminBundle/pull/7450)] `AdminAclManipulatorInterface::addAdminClassAces()` signature ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#7455](https://github.com/sonata-project/SonataAdminBundle/pull/7455)] Missing translation on batch confirmation page. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7452](https://github.com/sonata-project/SonataAdminBundle/pull/7452)] Fix `CollectionType` for nested fields. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7452](https://github.com/sonata-project/SonataAdminBundle/pull/7452)] `ShowMapper::remove` method now correctly remove the field from the groups. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7453](https://github.com/sonata-project/SonataAdminBundle/pull/7453)] Add Font Awesome icon instead of the jQuery UI icon ([@willemverspyck](https://github.com/willemverspyck))
+
+### Removed
+- [[#7454](https://github.com/sonata-project/SonataAdminBundle/pull/7454)] `AbstractAdmin::searchResultAction()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7454](https://github.com/sonata-project/SonataAdminBundle/pull/7454)] `AbstractAdmin::getSearchResultLink()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7454](https://github.com/sonata-project/SonataAdminBundle/pull/7454)] `AdminInterface::getSearchResultLink()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7464](https://github.com/sonata-project/SonataAdminBundle/pull/7464)] Access to the history actions with the role `ROLE_MYADMIN_EDIT` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7464](https://github.com/sonata-project/SonataAdminBundle/pull/7464)] `AdminInterface::getAccessMapping` method ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.0.0-rc.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.0.0-rc.1...4.0.0-rc.2) - 2021-08-24
 ### Added
 - [[#7449](https://github.com/sonata-project/SonataAdminBundle/pull/7449)] `Revision` class ([@VincentLanglet](https://github.com/VincentLanglet))
