@@ -36,11 +36,11 @@ final class ConfigurationTest extends TestCase
         static::assertSame('fas fa-folder', $config['options']['default_icon']);
     }
 
-    public function testBreadcrumbsChildRouteDefaultsToEdit(): void
+    public function testBreadcrumbsChildRouteDefaultsToShow(): void
     {
         $config = $this->process([]);
 
-        static::assertSame('edit', $config['breadcrumbs']['child_admin_route']);
+        static::assertSame('show', $config['breadcrumbs']['child_admin_route']);
     }
 
     public function testOptionsWithInvalidFormat(): void

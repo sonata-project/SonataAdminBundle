@@ -88,6 +88,7 @@ final class Configuration implements ConfigurationInterface
                             ->defaultValue([
                                 AdminPermissionMap::PERMISSION_VIEW,
                                 AdminPermissionMap::PERMISSION_EDIT,
+                                AdminPermissionMap::PERMISSION_HISTORY,
                                 AdminPermissionMap::PERMISSION_DELETE,
                                 AdminPermissionMap::PERMISSION_UNDELETE,
                                 AdminPermissionMap::PERMISSION_OPERATOR,
@@ -117,6 +118,10 @@ final class Configuration implements ConfigurationInterface
                                 ->thenInvalid('Configuration value of "global_search.empty_boxes" must be one of show, fade or hide.')
                             ->end()
                         ->end()
+                        ->scalarNode('admin_route')
+                            ->defaultValue('show')
+                            ->info('Change the default route used to generate the link to the object')
+                        ->end()
                     ->end()
                 ->end()
 
@@ -130,7 +135,7 @@ final class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('child_admin_route')
-                            ->defaultValue('edit')
+                            ->defaultValue('show')
                             ->info('Change the default route used to generate the link to the parent object, when in a child admin')
                         ->end()
                     ->end()
@@ -165,6 +170,10 @@ final class Configuration implements ConfigurationInterface
                         ->booleanNode('use_stickyforms')->defaultTrue()->end()
                         ->integerNode('pager_links')->defaultNull()->end()
                         ->scalarNode('form_type')->defaultValue('standard')->end()
+                        ->scalarNode('default_admin_route')
+                            ->defaultValue('show')
+                            ->info('Name of the admin route to be used as a default to generate the link to the object')
+                        ->end()
                         ->scalarNode('default_group')
                             ->defaultValue('default')
                             ->info('Group used for admin services if one isn\'t provided.')

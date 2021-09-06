@@ -213,7 +213,7 @@ final class BreadcrumbsBuilderTest extends TestCase
 
         $admin->method('hasRoute')->willReturnMap([
             ['list', true],
-            ['edit', false],
+            ['show', false],
         ]);
         $admin->method('hasAccess')->with('list')->willReturn(true);
         $admin->method('generateUrl')->with('list')->willReturn('/myadmin/list');

@@ -17,6 +17,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use Sonata\AdminBundle\SonataConfiguration;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
@@ -111,6 +112,33 @@ final class RenderElementExtensionTest extends TestCase
             'autoescape' => 'html',
             'optimizations' => 0,
         ]);
+        $this->environment->addGlobal('sonata_config', new SonataConfiguration('title', '/path/to/logo.png', [
+            'confirm_exit' => true,
+            'default_admin_route' => 'show',
+            'default_group' => 'default',
+            'default_icon' => '<i class="fas fa-folder"></i>',
+            'default_label_catalogue' => 'SonataAdminBundle',
+            'dropdown_number_groups_per_colums' => 2,
+            'form_type' => 'standard',
+            'html5_validate' => true,
+            'javascripts' => [],
+            'js_debug' => false,
+            'list_action_button_content' => 'all',
+            'lock_protection' => false,
+            'logo_content' => 'text',
+            'mosaic_background' => 'bundles/sonataadmin/images/default_mosaic_image.png',
+            'pager_links' => null,
+            'role_admin' => 'ROLE_SONATA_ADMIN',
+            'role_super_admin' => 'ROLE_SUPER_ADMIN',
+            'search' => true,
+            'skin' => 'black',
+            'sort_admins' => true,
+            'stylesheets' => [],
+            'use_bootlint' => false,
+            'use_icheck' => true,
+            'use_select2' => true,
+            'use_stickyforms' => false,
+        ]));
 
         $this->twigExtension = new RenderElementExtension($propertyAccessor);
 

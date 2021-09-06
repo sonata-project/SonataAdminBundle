@@ -59,9 +59,12 @@ file that was distributed with this source code.
                 <div class="box-body no-padding">
                     <ul class="nav nav-stacked sonata-search-result-list">
                         {% for result in current_page_results %}
-                            {% set link = admin.getSearchResultLink(result) %}
-                            {% if link %}
-                                <li><a href="{{ link }}">{{ admin.toString(result) }}</a></li>
+                            {% if admin.hasRoute(admin_route) and admin.hasAccess(admin_route, result) %}
+                                <li>
+                                    <a href="{{ admin.generateObjectUrl(admin_route, result) }}">
+                                        {{ admin.toString(result) }}
+                                    </a>
+                                </li>
                             {% else %}
                                 <li><a>{{ admin.toString(result) }}</a></li>
                             {% endif %}

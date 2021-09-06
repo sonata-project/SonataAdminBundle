@@ -131,20 +131,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     protected $supportsPreviewMode = false;
 
     /**
-     * Action list for the search result.
-     *
-     * @var string[]
-     */
-    protected $searchResultActions = ['edit', 'show'];
-
-    /**
-     * The Access mapping.
-     *
-     * @var array<string, string|string[]> [action1 => requiredRole1, action2 => [requiredRole2, requiredRole3]]
-     */
-    protected $accessMapping = [];
-
-    /**
      * The list FieldDescription constructed from the configureListField method.
      *
      * @var array<string, FieldDescriptionInterface>
@@ -1731,11 +1717,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getRequest()->getSession()->get(sprintf('%s.list_mode', $this->getCode()), 'list');
     }
 
-    final public function getAccessMapping(): array
-    {
-        return $this->accessMapping;
-    }
-
     final public function checkAccess(string $action, ?object $object = null): void
     {
         $access = $this->getAccess();
@@ -1904,20 +1885,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         return $actions;
-    }
-
-    /**
-     * @phpstan-param T $object
-     */
-    final public function getSearchResultLink(object $object): ?string
-    {
-        foreach ($this->searchResultActions as $action) {
-            if ($this->hasRoute($action) && $this->hasAccess($action, $object)) {
-                return $this->generateObjectUrl($action, $object);
-            }
-        }
-
-        return null;
     }
 
     final public function createFieldDescription(string $propertyName, array $options = []): FieldDescriptionInterface
@@ -2206,9 +2173,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $access = array_merge([
             'acl' => AdminPermissionMap::PERMISSION_MASTER,
             'export' => AdminPermissionMap::PERMISSION_EXPORT,
-            'historyCompareRevisions' => AdminPermissionMap::PERMISSION_EDIT,
-            'historyViewRevision' => AdminPermissionMap::PERMISSION_EDIT,
-            'history' => AdminPermissionMap::PERMISSION_EDIT,
+            'historyCompareRevisions' => AdminPermissionMap::PERMISSION_HISTORY,
+            'historyViewRevision' => AdminPermissionMap::PERMISSION_HISTORY,
+            'history' => AdminPermissionMap::PERMISSION_HISTORY,
             'edit' => AdminPermissionMap::PERMISSION_EDIT,
             'show' => AdminPermissionMap::PERMISSION_VIEW,
             'create' => AdminPermissionMap::PERMISSION_CREATE,
@@ -2222,6 +2189,14 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         return $access;
+    }
+
+    /**
+     * @return array<string, string|string[]> [action1 => requiredRole1, action2 => [requiredRole2, requiredRole3]]
+     */
+    protected function getAccessMapping(): array
+    {
+        return [];
     }
 
     /**

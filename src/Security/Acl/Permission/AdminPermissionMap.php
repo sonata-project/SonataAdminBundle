@@ -26,6 +26,7 @@ final class AdminPermissionMap implements PermissionMapInterface
 {
     public const PERMISSION_VIEW = 'VIEW';
     public const PERMISSION_EDIT = 'EDIT';
+    public const PERMISSION_HISTORY = 'HISTORY';
     public const PERMISSION_CREATE = 'CREATE';
     public const PERMISSION_DELETE = 'DELETE';
     public const PERMISSION_UNDELETE = 'UNDELETE';
@@ -53,6 +54,13 @@ final class AdminPermissionMap implements PermissionMapInterface
 
         self::PERMISSION_EDIT => [
             MaskBuilder::MASK_EDIT,
+            MaskBuilder::MASK_OPERATOR,
+            MaskBuilder::MASK_MASTER,
+            MaskBuilder::MASK_OWNER,
+        ],
+
+        self::PERMISSION_HISTORY => [
+            MaskBuilder::MASK_HISTORY,
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
             MaskBuilder::MASK_OWNER,

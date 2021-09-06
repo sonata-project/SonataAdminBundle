@@ -255,7 +255,6 @@ final class CRUDControllerTest extends TestCase
         ]);
 
         $this->admin->method('getIdParameter')->willReturn('id');
-        $this->admin->method('getAccessMapping')->willReturn([]);
         $this->admin->method('getCode')->willReturn('foo.admin');
         $this->admin->method('hasTemplateRegistry')->willReturn(true);
         $this->admin->method('getTemplateRegistry')->willReturn($this->templateRegistry);
