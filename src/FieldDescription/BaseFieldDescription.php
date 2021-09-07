@@ -414,15 +414,15 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             ));
         }
 
-        $propertyAccesor = PropertyAccess::createPropertyAccessorBuilder()
+        $propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
             ->enableMagicCall()
             ->getPropertyAccessor();
 
         try {
-            return $propertyAccesor->getValue($object, $accessor);
+            return $propertyAccessor->getValue($object, $accessor);
         } catch (ExceptionInterface $exception) {
             throw new NoValueException(
-                sprintf('Cannot access property "%s" in class "%s".', $this->getName(), \get_class($object)),
+                sprintf('Cannot access property "%s" in class "%s".', $this->getName(), $this->getAdmin()->getClass()),
                 (int) $exception->getCode(),
                 $exception
             );
