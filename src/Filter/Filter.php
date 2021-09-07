@@ -91,12 +91,12 @@ abstract class Filter implements FilterInterface, ChainableFilterInterface
         $this->options[$name] = $value;
     }
 
-    final public function getFieldType(): string
+    public function getFieldType(): string
     {
         return $this->getOption('field_type', TextType::class);
     }
 
-    final public function getFieldOptions(): array
+    public function getFieldOptions(): array
     {
         return $this->getOption('field_options', []);
     }
