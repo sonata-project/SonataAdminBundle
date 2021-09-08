@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.105.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.105.0...3.105.1) - 2021-09-08
+### Fixed
+- [[#7387](https://github.com/sonata-project/SonataAdminBundle/pull/7387)] Do not throw error when trying to inject an admin as a service in an action. ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Removed
+- [[#7376](https://github.com/sonata-project/SonataAdminBundle/pull/7376)] Information about the matching filters in the search results, because it does not work for cascaded oneToMany filters. ([@core23](https://github.com/core23))
+
 ## [3.105.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.104.0...3.105.0) - 2021-08-07
 ### Added
 - [[#7356](https://github.com/sonata-project/SonataAdminBundle/pull/7356)] Added support for `psr/log` ^2.0. ([@jordisala1991](https://github.com/jordisala1991))
