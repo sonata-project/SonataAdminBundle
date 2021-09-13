@@ -299,6 +299,9 @@ For instance, assuming you want to introduce a new method to an existing interfa
 
 namespace Foo;
 
+/**
+ * @method void usefulMethod()
+ */
 interface BarInterface
 {
   /**
@@ -306,7 +309,7 @@ interface BarInterface
    *
    * This method does useful stuff.
    */
-  // public function usefulMethod();
+  // public function usefulMethod(): void;
 
   // …
 }
