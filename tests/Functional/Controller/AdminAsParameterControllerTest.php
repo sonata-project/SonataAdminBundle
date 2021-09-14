@@ -42,7 +42,7 @@ final class AdminAsParameterControllerTest extends WebTestCase
         ];
     }
 
-    protected static function getKernelClass()
+    protected static function getKernelClass(): string
     {
         return AppKernel::class;
     }
