@@ -1766,92 +1766,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      *
      * @phpstan-param T|null $object
      */
-    private function getInternalActionButtons(string $action, ?object $object = null): array
-    {
-        // nothing to do for non-internal actions
-        if (!isset(self::INTERNAL_ACTIONS[$action])) {
-            return [];
-        }
-
-        $buttonList = [];
-
-        $actionBit = self::INTERNAL_ACTIONS[$action];
-
-        if (0 !== (self::MASK_OF_ACTION_CREATE & $actionBit)
-            && $this->hasRoute('create')
-            && $this->hasAccess('create')
-        ) {
-            $buttonList['create'] = [
-                'template' => $this->getTemplateRegistry()->getTemplate('button_create'),
-            ];
-        }
-
-        $canAccessObject = 0 !== (self::MASK_OF_ACTIONS_USING_OBJECT & $actionBit)
-            && null !== $object
-            && null !== $this->id($object);
-
-        if ($canAccessObject
-            && 0 !== (self::MASK_OF_ACTION_EDIT & $actionBit)
-            && $this->hasRoute('edit')
-            && $this->hasAccess('edit', $object)
-        ) {
-            $buttonList['edit'] = [
-                'template' => $this->getTemplateRegistry()->getTemplate('button_edit'),
-            ];
-        }
-
-        if ($canAccessObject
-            && 0 !== (self::MASK_OF_ACTION_HISTORY & $actionBit)
-            && $this->hasRoute('history')
-            && $this->hasAccess('history', $object)
-        ) {
-            $buttonList['history'] = [
-                'template' => $this->getTemplateRegistry()->getTemplate('button_history'),
-            ];
-        }
-
-        if ($canAccessObject
-            && 0 !== (self::MASK_OF_ACTION_ACL & $actionBit)
-            && $this->isAclEnabled()
-            && $this->hasRoute('acl')
-            && $this->hasAccess('acl', $object)
-        ) {
-            $buttonList['acl'] = [
-                'template' => $this->getTemplateRegistry()->getTemplate('button_acl'),
-            ];
-        }
-
-        if ($canAccessObject
-            && 0 !== (self::MASK_OF_ACTION_SHOW & $actionBit)
-            && $this->hasRoute('show')
-            && $this->hasAccess('show', $object)
-            && \count($this->getShow()) > 0
-        ) {
-            $buttonList['show'] = [
-                'template' => $this->getTemplateRegistry()->getTemplate('button_show'),
-            ];
-        }
-
-        if (0 !== (self::MASK_OF_ACTION_LIST & $actionBit)
-            && $this->hasRoute('list')
-            && $this->hasAccess('list')
-        ) {
-            $buttonList['list'] = [
-                'template' => $this->getTemplateRegistry()->getTemplate('button_list'),
-            ];
-        }
-
-        return $buttonList;
-    }
-
-    /**
-     * @return array<string, array<string, mixed>>
-     *
-     * @phpstan-param T|null $object
-     */
     final public function getActionButtons(string $action, ?object $object = null): array
     {
-        $buttonList = $this->getInternalActionButtons($buttonList, $action, $object);
+        $buttonList = $this->getInternalActionButtons($action, $object);
         $buttonList = $this->configureActionButtons($buttonList, $action, $object);
 
         foreach ($this->getExtensions() as $extension) {
@@ -2295,6 +2212,89 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 ObjectManipulator::setObject($object, $parentObject, $this->getParentFieldDescription());
             }
         }
+    }
+
+    /**
+     * @return array<string, array<string, mixed>>
+     *
+     * @phpstan-param T|null $object
+     */
+    private function getInternalActionButtons(string $action, ?object $object = null): array
+    {
+        // nothing to do for non-internal actions
+        if (!isset(self::INTERNAL_ACTIONS[$action])) {
+            return [];
+        }
+
+        $buttonList = [];
+
+        $actionBit = self::INTERNAL_ACTIONS[$action];
+
+        if (0 !== (self::MASK_OF_ACTION_CREATE & $actionBit)
+            && $this->hasRoute('create')
+            && $this->hasAccess('create')
+        ) {
+            $buttonList['create'] = [
+                'template' => $this->getTemplateRegistry()->getTemplate('button_create'),
+            ];
+        }
+
+        $canAccessObject = 0 !== (self::MASK_OF_ACTIONS_USING_OBJECT & $actionBit)
+            && null !== $object
+            && null !== $this->id($object);
+
+        if ($canAccessObject
+            && 0 !== (self::MASK_OF_ACTION_EDIT & $actionBit)
+            && $this->hasRoute('edit')
+            && $this->hasAccess('edit', $object)
+        ) {
+            $buttonList['edit'] = [
+                'template' => $this->getTemplateRegistry()->getTemplate('button_edit'),
+            ];
+        }
+
+        if ($canAccessObject
+            && 0 !== (self::MASK_OF_ACTION_HISTORY & $actionBit)
+            && $this->hasRoute('history')
+            && $this->hasAccess('history', $object)
+        ) {
+            $buttonList['history'] = [
+                'template' => $this->getTemplateRegistry()->getTemplate('button_history'),
+            ];
+        }
+
+        if ($canAccessObject
+            && 0 !== (self::MASK_OF_ACTION_ACL & $actionBit)
+            && $this->isAclEnabled()
+            && $this->hasRoute('acl')
+            && $this->hasAccess('acl', $object)
+        ) {
+            $buttonList['acl'] = [
+                'template' => $this->getTemplateRegistry()->getTemplate('button_acl'),
+            ];
+        }
+
+        if ($canAccessObject
+            && 0 !== (self::MASK_OF_ACTION_SHOW & $actionBit)
+            && $this->hasRoute('show')
+            && $this->hasAccess('show', $object)
+            && \count($this->getShow()) > 0
+        ) {
+            $buttonList['show'] = [
+                'template' => $this->getTemplateRegistry()->getTemplate('button_show'),
+            ];
+        }
+
+        if (0 !== (self::MASK_OF_ACTION_LIST & $actionBit)
+            && $this->hasRoute('list')
+            && $this->hasAccess('list')
+        ) {
+            $buttonList['list'] = [
+                'template' => $this->getTemplateRegistry()->getTemplate('button_list'),
+            ];
+        }
+
+        return $buttonList;
     }
 
     /**
