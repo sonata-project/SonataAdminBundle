@@ -1762,18 +1762,18 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * @param array<string, array<string, mixed>> $buttonList
-     *
      * @return array<string, array<string, mixed>>
      *
      * @phpstan-param T|null $object
      */
-    private function getInternalActionButtons(array $buttonList, string $action, ?object $object = null): array
+    private function getInternalActionButtons(string $action, ?object $object = null): array
     {
         // nothing to do for non-internal actions
         if (!isset(self::INTERNAL_ACTIONS[$action])) {
             return [];
         }
+
+        $buttonList = [];
 
         $actionBit = self::INTERNAL_ACTIONS[$action];
 
@@ -1851,7 +1851,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     final public function getActionButtons(string $action, ?object $object = null): array
     {
-        $buttonList = [];
         $buttonList = $this->getInternalActionButtons($buttonList, $action, $object);
         $buttonList = $this->configureActionButtons($buttonList, $action, $object);
 
