@@ -1768,7 +1768,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      *
      * @phpstan-param T|null $object
      */
-    final private function getInternalActionButtons(array $buttonList, string $action, ?object $object = null): array
+    private function getInternalActionButtons(array $buttonList, string $action, ?object $object = null): array
     {
         // nothing to do for non-internal actions
         if (!isset(self::INTERNAL_ACTIONS[$action])) {
