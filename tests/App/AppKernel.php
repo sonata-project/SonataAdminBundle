@@ -40,9 +40,9 @@ final class AppKernel extends Kernel
         parent::__construct('test', false);
     }
 
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
-        $bundles = [
+        return [
             new FrameworkBundle(),
             new TwigBundle(),
             new SecurityBundle(),
@@ -53,8 +53,6 @@ final class AppKernel extends Kernel
             new SonataTwigBundle(),
             new SonataFormBundle(),
         ];
-
-        return $bundles;
     }
 
     public function getCacheDir(): string
@@ -67,7 +65,7 @@ final class AppKernel extends Kernel
         return sprintf('%slog', $this->getBaseDir());
     }
 
-    public function getProjectDir()
+    public function getProjectDir(): string
     {
         return __DIR__;
     }
