@@ -1573,6 +1573,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getCode();
     }
 
+    /**
+     * @return string
+     */
     public function getObjectIdentifier()
     {
         return $this->getCode();
