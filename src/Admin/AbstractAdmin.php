@@ -1768,8 +1768,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     final public function getActionButtons(string $action, ?object $object = null): array
     {
-        $internalButtonList = $this->getDefaultActionButtons($action, $object);
-        $buttonList = $this->configureActionButtons($internalButtonList, $action, $object);
+        $defaultButtonList = $this->getDefaultActionButtons($action, $object);
+        $buttonList = $this->configureActionButtons($defaultButtonList, $action, $object);
 
         foreach ($this->getExtensions() as $extension) {
             $buttonList = $extension->configureActionButtons($this, $buttonList, $action, $object);
