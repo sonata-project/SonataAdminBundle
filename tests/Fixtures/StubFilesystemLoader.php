@@ -21,7 +21,7 @@ final class StubFilesystemLoader extends FilesystemLoader
      * @param string $name
      * @param bool   $throw
      */
-    protected function findTemplate($name, $throw = true)
+    protected function findTemplate($name, $throw = true): ?string
     {
         // strip away bundle name
         $parts = explode(':', $name);
