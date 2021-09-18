@@ -8,7 +8,7 @@ on:
     push:
         branches:
             - 4.x
-            - master
+            - 5.x
     pull_request:
 
 jobs:
