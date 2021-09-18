@@ -9,7 +9,7 @@ on:
         branches:
             - 3.x
             - 4.x
-            - master
+            - 5.x
     pull_request:
 
 jobs:
