@@ -73,6 +73,10 @@ jobs:
             - name: Allow unstable dependencies
               run: composer config minimum-stability dev
 
+            - name: Remove dev dependencies not compatible with Symfony 6
+              if: matrix.symfony-require == '6.0.*'
+              run: composer remove vimeo/psalm psalm/plugin-phpunit psalm/plugin-symfony weirdan/doctrine-psalm-plugin --dev --no-update --no-interaction
+
             - name: "Install Composer dependencies (${{ matrix.dependencies }})"
               uses: "ramsey/composer-install@v1"
               with:
