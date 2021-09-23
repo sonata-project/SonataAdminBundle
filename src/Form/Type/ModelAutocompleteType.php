@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Form\Type;
 
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\EventListener\ResizeFormListener;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -108,8 +109,6 @@ final class ModelAutocompleteType extends AbstractType
             'attr' => [],
             'compound' => $compound,
             'error_bubbling' => false,
-            'model_manager' => null,
-            'class' => null,
             'admin_code' => null,
             'callback' => null,
             'multiple' => false,
@@ -153,7 +152,10 @@ final class ModelAutocompleteType extends AbstractType
             'template' => '@SonataAdmin/Form/Type/sonata_type_model_autocomplete.html.twig',
         ]);
 
-        $resolver->setRequired(['property']);
+        $resolver->setRequired(['property', 'model_manager', 'class']);
+        $resolver->setAllowedTypes('model_manager', ModelManagerInterface::class);
+        $resolver->setAllowedTypes('class', 'string');
+        $resolver->setAllowedTypes('property', ['string', 'array']);
     }
 
     public function getBlockPrefix(): string

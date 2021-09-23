@@ -36,15 +36,15 @@ final class ModelListTypeTest extends TypeTestCase
     public function testGetDefaultOptions(): void
     {
         $type = new ModelListType();
-
+        $modelManager = $this->createMock(ModelManagerInterface::class);
         $optionResolver = new OptionsResolver();
 
         $type->configureOptions($optionResolver);
 
-        $options = $optionResolver->resolve();
+        $options = $optionResolver->resolve(['model_manager' => $modelManager, 'class' => '\Foo']);
 
-        static::assertNull($options['model_manager']);
-        static::assertNull($options['class']);
+        static::assertInstanceOf(ModelManagerInterface::class, $options['model_manager']);
+        static::assertSame('\Foo', $options['class']);
         static::assertSame('link_add', $options['btn_add']);
         static::assertSame('link_edit', $options['btn_edit']);
         static::assertSame('link_list', $options['btn_list']);

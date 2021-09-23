@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Form\Type;
 
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -39,12 +40,14 @@ final class ModelHiddenType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'model_manager' => null,
-            'class' => null,
             'attr' => [
                 'hidden' => true,
             ],
         ]);
+
+        $resolver->setRequired(['model_manager', 'class']);
+        $resolver->setAllowedTypes('model_manager', ModelManagerInterface::class);
+        $resolver->setAllowedTypes('class', 'string');
     }
 
     /**
