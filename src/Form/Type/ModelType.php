@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 use Sonata\AdminBundle\Form\EventListener\MergeCollectionListener;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -117,8 +118,6 @@ final class ModelType extends AbstractType
             'template' => 'choice',
             'multiple' => false,
             'expanded' => false,
-            'model_manager' => null,
-            'class' => null,
             'property' => null,
             'query' => null,
             'choices' => null,
@@ -128,6 +127,10 @@ final class ModelType extends AbstractType
             'btn_delete' => 'link_delete',
             'btn_catalogue' => 'SonataAdminBundle',
         ]));
+
+        $resolver->setRequired(['model_manager', 'class']);
+        $resolver->setAllowedTypes('model_manager', ModelManagerInterface::class);
+        $resolver->setAllowedTypes('class', 'string');
     }
 
     /**
