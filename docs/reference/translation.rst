@@ -11,32 +11,23 @@ There are two main catalogue names in an Admin class:
 Ideally the ``messages`` catalogue should be changed to avoid any issues with
 other Admin classes.
 
-You have two options to configure the catalogue for the Admin class:
+You can configure the catalogue for the Admin class by injecting the value through the container:
 
-* override the ``$translationDomain`` property::
+.. configuration-block::
 
-      final class PageAdmin extends AbstractAdmin
-      {
-          protected $translationDomain = 'SonataPageBundle'; // default is 'messages'
-      }
+    .. code-block:: xml
 
-* inject the value through the container
+        <!-- config/services.xml -->
 
-    .. configuration-block::
-
-        .. code-block:: xml
-
-            <!-- config/services.xml -->
-
-            <service id="sonata.page.admin.page" class="Sonata\PageBundle\Admin\PageAdmin">
-                <tag name="sonata.admin" manager_type="orm" group="sonata_page" label="Page"/>
-                <argument/>
-                <argument>Application\Sonata\PageBundle\Entity\Page</argument>
-                <argument/>
-                <call method="setTranslationDomain">
-                    <argument>SonataPageBundle</argument>
-                </call>
-            </service>
+        <service id="sonata.page.admin.page" class="Sonata\PageBundle\Admin\PageAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="sonata_page" label="Page"/>
+            <argument/>
+            <argument>Application\Sonata\PageBundle\Entity\Page</argument>
+            <argument/>
+            <call method="setTranslationDomain">
+                <argument>SonataPageBundle</argument>
+            </call>
+        </service>
 
 An Admin instance always gets the ``translator`` instance, so it can be used to
 translate messages within the ``configureFields`` method or in templates.
