@@ -377,7 +377,7 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     /**
      * Returns SourceIterator.
      *
-     * @return SourceIteratorInterface<array<mixed>>
+     * @return SourceIteratorInterface
      */
     public function getDataSourceIterator();
 

@@ -20,8 +20,6 @@ interface DataSourceInterface
 {
     /**
      * @param string[] $fields
-     *
-     * @return SourceIteratorInterface<array<mixed>>
      */
     public function createIterator(ProxyQueryInterface $query, array $fields): SourceIteratorInterface;
 }
