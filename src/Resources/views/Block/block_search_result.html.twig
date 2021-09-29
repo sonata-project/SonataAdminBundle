@@ -15,7 +15,7 @@ file that was distributed with this source code.
     {% set results_count = pager ? pager.countResults() : 0 %}
     {% set has_results = results_count > 0 %}
     {% set current_page_results = has_results ? pager.currentPageResults : [] %}
-    {% set visibility_class = 'sonata-search-result-' ~ has_results ? 'show' : show_empty_boxes %}
+    {% set visibility_class = 'sonata-search-result-' ~ (has_results ? 'show' : show_empty_boxes) %}
 
     <div class="col-lg-4 col-md-6 search-box-item {{ visibility_class }}">
         <div class="box box-solid {{ visibility_class }}">
