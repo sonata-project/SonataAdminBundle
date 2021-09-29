@@ -10,7 +10,7 @@
         "sonata",
         "symfony"
     ],
-    "homepage": "https://sonata-project.org/bundles/admin",
+    "homepage": "https://docs.sonata-project.org/projects/SonataAdminBundle",
     "license": "MIT",
     "authors": [
         {
