@@ -20,7 +20,7 @@ namespace Sonata\AdminBundle;
  *  default_icon: string,
  *  default_label_catalogue: string,
  *  dropdown_number_groups_per_colums: int,
- *  form_type: string,
+ *  form_type: 'standard'|'horizontal',
  *  html5_validate: bool,
  *  javascripts: list<string>,
  *  js_debug: bool,
