@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.0.0...4.0.1) - 2021-10-01
+### Changed
+- [[#7506](https://github.com/sonata-project/SonataAdminBundle/pull/7506)] Improved error message when a required option is not passed to the FormType. ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#7514](https://github.com/sonata-project/SonataAdminBundle/pull/7514)] `empty_boxes` option ([@krubenrc](https://github.com/krubenrc))
+- [[#7509](https://github.com/sonata-project/SonataAdminBundle/pull/7509)] Do not display empty user-block on the navbar ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7483](https://github.com/sonata-project/SonataAdminBundle/pull/7483)] Issue where `configureActionButtons()` is not being called in custom actions. ([@toooni](https://github.com/toooni))
+- [[#7487](https://github.com/sonata-project/SonataAdminBundle/pull/7487)] Deprecations triggered with Symfony 5.4 ([@franmomu](https://github.com/franmomu))
+
 ## [4.0.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.0.0-rc.2...4.0.0) - 2021-09-05
 ### Added
 - [[#7464](https://github.com/sonata-project/SonataAdminBundle/pull/7464)] New role `ROLE_MYADMIN_HISTORY` to access to the history actions ([@VincentLanglet](https://github.com/VincentLanglet))
