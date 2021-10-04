@@ -199,6 +199,10 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
             [DatagridInterface::PAGE, null, 1]
         );
 
+        $datagrid->expects(static::once())
+            ->method('reorderFilters')
+            ->with(['entity.property', 'entity2.property2']);
+
         $response = ($this->action)($request);
 
         static::assertSame(Filter::CONDITION_OR, $filter->getCondition());
