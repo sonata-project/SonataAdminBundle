@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [3.105.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.105.1...3.105.2) - 2021-10-05
 ### Fixed
-- [[#7521](https://github.com/sonata-project/SonataAdminBundle/pull/7521)] Correctly display the default icon in the admin menu if none are provided. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7521](https://github.com/sonata-project/SonataAdminBundle/pull/7521)] Correctly display the default icon in the admin menu if none are provided ([@VincentLanglet](https://github.com/VincentLanglet))
 
 ## [3.105.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.105.0...3.105.1) - 2021-09-08
 ### Fixed
