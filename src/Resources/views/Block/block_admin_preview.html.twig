@@ -19,10 +19,7 @@ file that was distributed with this source code.
     {% set results_count = attribute(admin.datagrid.pager, 'countResults') is defined ? admin.datagrid.pager.countResults : admin.datagrid.pager.nbResults %}
     <div class="box box-primary" id="{{ inlineAnchor }}">
         <div class="box-header with-border">
-            {% set icon = settings.icon|default('')|parse_icon %}
-            {% if icon %}
-                {{ icon }}
-            {% endif %}
+            {{ settings.icon|default('')|parse_icon }}
             <h3 class="box-title">
                 <a href="#{{ inlineAnchor }}">
                     {% if translation_domain is same as(false) %}
