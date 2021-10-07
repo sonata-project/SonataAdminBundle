@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.105.3](https://github.com/sonata-project/SonataAdminBundle/compare/3.105.2...3.105.3) - 2021-10-07
+### Fixed
+- [[#7524](https://github.com/sonata-project/SonataAdminBundle/pull/7524)] HTML icon rendering in the menu ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [3.105.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.105.1...3.105.2) - 2021-10-05
 ### Fixed
 - [[#7521](https://github.com/sonata-project/SonataAdminBundle/pull/7521)] Correctly display the default icon in the admin menu if none are provided ([@VincentLanglet](https://github.com/VincentLanglet))
