@@ -234,21 +234,23 @@ For example, you can `create your own voter`_
 Customizing the handler behavior
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you want to change the handler behavior (for example, to pass the current object to voters), extend
-``Sonata\AdminBundle\Security\Handler\RoleSecurityHandler``, and override the ``isGranted`` method.
+If you want to change the handler behavior, create your own handler implementing 
+``Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface``.
 
 Then declare your handler as a service:
 
 .. configuration-block::
 
-    .. code-block:: xml
+    .. code-block:: yaml
+    
+        # config/packages/services.yaml
 
-        <service id="app.security.handler.role" class="App\Security\Handler\RoleSecurityHandler" public="false">
-            <argument type="service" id="security.context" on-invalid="null"/>
-            <argument type="collection">
-                <argument>ROLE_SUPER_ADMIN</argument>
-            </argument>
-        </service>
+        app.security.handler.role:
+            class="App\Security\Handler\RoleSecurityHandler"
+            public: false
+            arguments:
+                - '@security.authorization_checker'
+                - ['%sonata.admin.configuration.security.role_super_admin%']
 
 And specify it as Sonata security handler on your configuration:
 
@@ -259,8 +261,8 @@ And specify it as Sonata security handler on your configuration:
         # config/packages/sonata_admin.yaml
 
         sonata_admin:
-            security:
-                handler: app.security.handler.role
+            default_admin_services:
+                security_handler: app.security.handler.role
 
 ACL and FriendsOfSymfony/UserBundle
 -----------------------------------
