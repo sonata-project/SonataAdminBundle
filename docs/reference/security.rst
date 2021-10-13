@@ -237,21 +237,6 @@ Customizing the handler behavior
 If you want to change the handler behavior, create your own handler implementing 
 ``Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface``.
 
-Then declare your handler as a service:
-
-.. configuration-block::
-
-    .. code-block:: yaml
-    
-        # config/packages/services.yaml
-
-        app.security.handler.role:
-            class="App\Security\Handler\RoleSecurityHandler"
-            public: false
-            arguments:
-                - '@security.authorization_checker'
-                - ['%sonata.admin.configuration.security.role_super_admin%']
-
 And specify it as Sonata security handler on your configuration:
 
 .. configuration-block::
@@ -262,7 +247,7 @@ And specify it as Sonata security handler on your configuration:
 
         sonata_admin:
             default_admin_services:
-                security_handler: app.security.handler.role
+                security_handler: App\Security\Handler\MySecurityHandler
 
 ACL and FriendsOfSymfony/UserBundle
 -----------------------------------
