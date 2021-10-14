@@ -59,6 +59,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Admin\ModelAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostCategoryAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostWithCustomRouteAdmin;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\PostWithoutBatchRouteAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\TagAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\BlogPost;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment;
@@ -1887,9 +1888,9 @@ final class AdminTest extends TestCase
 
         $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
         $routeGenerator
-            ->expects(static::once())
+            ->expects(static::exactly(2))
             ->method('hasAdminRoute')
-            ->with($admin, 'delete')
+            ->withConsecutive([$admin, 'batch'], [$admin, 'delete'])
             ->willReturn(true);
         $admin->setRouteGenerator($routeGenerator);
 
@@ -1899,6 +1900,29 @@ final class AdminTest extends TestCase
             ->willReturnCallback(static function (AdminInterface $adminIn, string $attributes, ?object $object = null) use ($admin): bool {
                 return $admin === $adminIn && 'DELETE' === $attributes;
             });
+        $admin->setSecurityHandler($securityHandler);
+
+        static::assertSame($expected, $admin->getBatchActions());
+    }
+
+    public function testGetBatchActionsWithoutBatchRoute(): void
+    {
+        $expected = [];
+
+        $pathInfo = new PathInfoBuilder($this->createMock(AuditManagerInterface::class));
+        $routerMock = $this->createMock(RouterInterface::class);
+
+        $routeGenerator = new DefaultRouteGenerator(
+            $routerMock,
+            new RoutesCache($this->cacheTempFolder, true)
+        );
+
+        $admin = new PostWithoutBatchRouteAdmin('sonata.post.admin.model', Post::class, 'Sonata\FooBundle\Controller\ModelAdminController');
+        $admin->setRouteBuilder($pathInfo);
+        $admin->setRouteGenerator($routeGenerator);
+        $admin->initialize();
+
+        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
         $admin->setSecurityHandler($securityHandler);
 
         static::assertSame($expected, $admin->getBatchActions());
