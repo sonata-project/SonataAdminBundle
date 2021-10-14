@@ -746,6 +746,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function getBatchActions(): array
     {
+        if (!$this->hasRoute('batch')) {
+            return [];
+        }
+
         $actions = [];
 
         if ($this->hasRoute('delete') && $this->hasAccess('delete')) {
