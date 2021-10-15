@@ -240,6 +240,14 @@ class AdminHelper
 
             $collection = $this->propertyAccessor->getValue($subject, $path);
 
+            if (!($collection instanceof \ArrayAccess) && !is_array($collection)) {
+                throw new \TypeError(sprintf(
+                    'Collection must be an instance of %s or array, %s given.',
+                    \ArrayAccess::class,
+                    \is_object($collection) ? 'instance of "'.\get_class($collection).'"' : '"'.\gettype($collection).'"'
+                ));
+            }
+
             $modelClassName = $this->getEntityClassName(
                 $admin,
                 explode('.', preg_replace('#\[\d*?]#', '', $path))
