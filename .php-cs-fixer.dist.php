@@ -24,16 +24,12 @@ $rules = [
     '@PHPUnit60Migration:risky' => true,
     '@Symfony' => true,
     '@Symfony:risky' => true,
-    'array_syntax' => [
-        'syntax' => 'short',
-    ],
+    'array_syntax' => ['syntax' => 'short'],
     'combine_consecutive_issets' => true,
     'combine_consecutive_unsets' => true,
     'compact_nullable_typehint' => true,
     'global_namespace_import' => ['import_classes' => false, 'import_constants' => false, 'import_functions' => false],
-    'header_comment' => [
-        'header' => $header,
-    ],
+    'header_comment' => ['header' => $header],
     'list_syntax' => ['syntax' => 'short'],
     'logical_operators' => true,
     'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
@@ -56,6 +52,7 @@ $rules = [
     'static_lambda' => true,
     'strict_comparison' => true,
     'strict_param' => true,
+    'types_spaces' => ['space' => 'single'],
     'void_return' => false,
 ];
 

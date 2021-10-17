@@ -25,7 +25,7 @@ jobs:
             - name: Set up Python 3.7
               uses: actions/setup-python@v2
               with:
-                  python-version: '3.7'
+                  python-version: 3.7
 
             - name: Display Python version
               run: python -c "import sys; print(sys.version)"
@@ -58,4 +58,4 @@ jobs:
               with:
                   args: --short --error-format=github
               env:
-                  DOCS_DIR: 'docs/'
+                  DOCS_DIR: docs/
