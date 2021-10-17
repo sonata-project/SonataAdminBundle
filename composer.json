@@ -81,6 +81,7 @@
         "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^0.12.84",
         "phpstan/phpstan-symfony": "^0.12.10",
+        "phpunit/phpunit": "^9.5",
         "psalm/plugin-symfony": "^2.0",
         "psr/event-dispatcher": "^1.0",
         "sensio/framework-extra-bundle": "^5.6 || ^6.1",
