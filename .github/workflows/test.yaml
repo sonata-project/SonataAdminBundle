@@ -26,23 +26,23 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - 7.3
-                    - 7.4
-                    - 8.0
+                    - '7.3'
+                    - '7.4'
+                    - '8.0'
                 dependencies: [highest]
                 allowed-to-fail: [false]
                 symfony-require: ['']
                 variant: [normal]
                 include:
-                    - php-version: 7.3
+                    - php-version: '7.3'
                       dependencies: lowest
                       allowed-to-fail: false
                       variant: normal
-                    - php-version: 8.0
+                    - php-version: '8.0'
                       dependencies: highest
                       allowed-to-fail: false
                       variant: sonata-project/block-bundle:"3.*"
-                    - php-version: 8.0
+                    - php-version: '8.0'
                       dependencies: highest
                       allowed-to-fail: false
                       symfony-require: 4.4.*

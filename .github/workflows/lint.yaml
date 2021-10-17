@@ -25,7 +25,7 @@ jobs:
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: 8.0
+                  php-version: '8.0'
                   coverage: none
                   tools: composer:v2, php-cs-fixer:3
               env:
@@ -46,7 +46,7 @@ jobs:
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: 8.0
+                  php-version: '8.0'
                   coverage: none
                   tools: composer:v2, composer-normalize:2
               env:
@@ -67,7 +67,7 @@ jobs:
             - name: Install Ruby 2.6
               uses: actions/setup-ruby@v1
               with:
-                  ruby-version: 2.6
+                  ruby-version: '2.6'
 
             - name: Install required gem
               run: gem install yaml-lint
