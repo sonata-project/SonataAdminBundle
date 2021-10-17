@@ -113,7 +113,7 @@ interface FilterInterface
     public function getFieldMapping();
 
     /**
-     * @return array<string, string>  association mapping
+     * @return array<string, string> association mapping
      */
     public function getAssociationMapping();
 
