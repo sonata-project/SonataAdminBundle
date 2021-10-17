@@ -39,10 +39,10 @@ jobs:
                       dependencies: lowest
                       allowed-to-fail: false
                       variant: normal
-                    - php-version: '8.1'
+                    - php-version: '8.0'
                       dependencies: highest
-                      allowed-to-fail: false
-                      variant: sonata-project/block-bundle:"4.*"
+                      allowed-to-fail: true
+                      variant: normal
                     - php-version: '8.1'
                       dependencies: highest
                       allowed-to-fail: false
@@ -52,12 +52,12 @@ jobs:
                       dependencies: highest
                       allowed-to-fail: false
                       symfony-require: 5.3.*
-                      variant: 'symfony/symfony:"5.3.*"'
+                      variant: symfony/symfony:"5.3.*"
                     - php-version: '8.1'
                       dependencies: highest
                       allowed-to-fail: false
                       symfony-require: 5.4.*
-                      variant: 'symfony/symfony:"5.4.*"'
+                      variant: symfony/symfony:"5.4.*"
 
         steps:
             - name: Checkout
@@ -72,6 +72,10 @@ jobs:
 
             - name: Add PHPUnit matcher
               run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+            - name: Configuration required for PHP 8.0
+              if: matrix.php-version == '8.0'
+              run: composer config platform.php 7.4.99
 
             - name: Globally install symfony/flex
               if: matrix.symfony-require != ''
