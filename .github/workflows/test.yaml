@@ -39,21 +39,21 @@ jobs:
                       dependencies: lowest
                       allowed-to-fail: false
                       variant: normal
-                    - php-version: '8.0'
+                    - php-version: '8.1'
                       dependencies: highest
                       allowed-to-fail: false
                       variant: sonata-project/block-bundle:"4.*"
-                    - php-version: '8.0'
+                    - php-version: '8.1'
                       dependencies: highest
                       allowed-to-fail: false
                       symfony-require: 4.4.*
                       variant: symfony/symfony:"4.4.*"
-                    - php-version: '8.0'
+                    - php-version: '8.1'
                       dependencies: highest
                       allowed-to-fail: false
                       symfony-require: 5.3.*
                       variant: 'symfony/symfony:"5.3.*"'
-                    - php-version: '8.0'
+                    - php-version: '8.1'
                       dependencies: highest
                       allowed-to-fail: false
                       symfony-require: 5.4.*
