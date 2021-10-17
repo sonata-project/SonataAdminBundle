@@ -22,13 +22,20 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
 
-            - name: Run PHP-CS-Fixer
-              uses: docker://oskarstark/php-cs-fixer-ga:3.0.0
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
               with:
-                  args: --ansi --verbose --diff --dry-run
+                  php-version: '8.0'
+                  coverage: none
+                  tools: composer:v2, php-cs-fixer:3
+              env:
+                  COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    composer-normalize:
-        name: composer-normalize
+            - name: Lint PHP files
+              run: make lint-php
+
+    composer:
+        name: Composer
 
         runs-on: ubuntu-latest
 
@@ -36,10 +43,17 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
 
-            - name: Run composer-normalize
-              uses: docker://ergebnis/composer-normalize-action:0.8.0
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
               with:
-                  args: --dry-run
+                  php-version: '8.0'
+                  coverage: none
+                  tools: composer:v2, composer-normalize:2
+              env:
+                  COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Lint Composer
+              run: make lint-composer
 
     yaml-files:
         name: YAML files
