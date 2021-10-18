@@ -10,6 +10,7 @@ lint: lint-composer lint-yaml lint-xml lint-xliff lint-php
 .PHONY: lint
 
 lint-composer:
+	composer-normalize --dry-run
 	composer validate
 .PHONY: lint-composer
 
@@ -46,7 +47,7 @@ lint-php:
 	php-cs-fixer fix --ansi --verbose --diff --dry-run
 .PHONY: lint-php
 
-cs-fix: cs-fix-php cs-fix-xml cs-fix-xliff
+cs-fix: cs-fix-php cs-fix-xml cs-fix-xliff cs-fix-composer
 .PHONY: cs-fix
 
 cs-fix-php:
@@ -73,15 +74,19 @@ cs-fix-xliff:
 	done
 .PHONY: cs-fix-xliff
 
+cs-fix-composer:
+	composer-normalize
+.PHONY: cs-fix-composer
+
 build:
 	mkdir $@
 
 test:
-	vendor/bin/simple-phpunit -c phpunit.xml.dist
+	vendor/bin/phpunit -c phpunit.xml.dist
 .PHONY: test
 
 coverage:
-	vendor/bin/simple-phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
+	vendor/bin/phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
 .PHONY: coverage
 
 docs:

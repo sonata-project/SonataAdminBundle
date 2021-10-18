@@ -32,28 +32,28 @@ jobs:
                     - '8.1'
                 dependencies: [highest]
                 allowed-to-fail: [false]
-                symfony-require: [""]
+                symfony-require: ['']
                 variant: [normal]
                 include:
                     - php-version: '7.3'
                       dependencies: lowest
                       allowed-to-fail: false
                       variant: normal
-                    - php-version: '8.0'
+                    - php-version: '8.1'
                       dependencies: highest
                       allowed-to-fail: false
-                      variant: 'sonata-project/block-bundle:"4.*"'
-                    - php-version: '8.0'
+                      variant: sonata-project/block-bundle:"4.*"
+                    - php-version: '8.1'
                       dependencies: highest
                       allowed-to-fail: false
                       symfony-require: 4.4.*
-                      variant: 'symfony/symfony:"4.4.*"'
-                    - php-version: '8.0'
+                      variant: symfony/symfony:"4.4.*"
+                    - php-version: '8.1'
                       dependencies: highest
                       allowed-to-fail: false
                       symfony-require: 5.3.*
                       variant: 'symfony/symfony:"5.3.*"'
-                    - php-version: '8.0'
+                    - php-version: '8.1'
                       dependencies: highest
                       allowed-to-fail: false
                       symfony-require: 5.4.*
@@ -73,9 +73,9 @@ jobs:
             - name: Add PHPUnit matcher
               run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-            - name: "Globally install symfony/flex"
+            - name: Globally install symfony/flex
               if: matrix.symfony-require != ''
-              run: "composer global require --no-progress --no-scripts --no-plugins symfony/flex"
+              run: composer global require --no-progress --no-scripts --no-plugins symfony/flex
 
             - name: Install variant
               if: matrix.variant != 'normal' && !startsWith(matrix.variant, 'symfony/symfony')
@@ -88,16 +88,16 @@ jobs:
               if: matrix.symfony-require == '6.0.*'
               run: composer remove vimeo/psalm psalm/plugin-phpunit psalm/plugin-symfony weirdan/doctrine-psalm-plugin --dev --no-update --no-interaction
 
-            - name: "Install Composer dependencies (${{ matrix.dependencies }})"
-              uses: "ramsey/composer-install@v1"
+            - name: Install Composer dependencies (${{ matrix.dependencies }})
+              uses: ramsey/composer-install@v1
               with:
-                  dependency-versions: "${{ matrix.dependencies }}"
-                  composer-options: "--prefer-dist --prefer-stable"
+                  dependency-versions: ${{ matrix.dependencies }}
+                  composer-options: --prefer-dist --prefer-stable
 
             - name: Run Tests with coverage
               run: make coverage
 
             - name: Send coverage to Codecov
-              uses: codecov/codecov-action@v1
+              uses: codecov/codecov-action@v2
               with:
                   file: build/logs/clover.xml

@@ -18,10 +18,7 @@ file that was distributed with this source code.
     {% set results_count = admin.datagrid.pager.countResults %}
     <div class="box box-primary" id="{{ inlineAnchor }}">
         <div class="box-header with-border">
-            {% set icon = settings.icon|default('') %}
-            {% if icon %}
-                {{ icon|parse_icon }}
-            {% endif %}
+            {{ settings.icon|default('')|parse_icon }}
             <h3 class="box-title">
                 <a href="#{{ inlineAnchor }}">
                     {% if translation_domain is same as(false) %}

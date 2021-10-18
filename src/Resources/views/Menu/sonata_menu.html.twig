@@ -24,9 +24,9 @@
     {% apply spaceless %}
         {%- set translation_domain = item.extra('label_catalogue', 'messages') -%}
         {%- if item.extra('on_top') is defined and not item.extra('on_top') -%}
-            {%- set icon = item.extra('icon')|default(item.level > 1 ? 'fas fa-angle-double-right' : '') -%}
+            {%- set icon = item.extra('icon')|default(item.level > 1 ? 'fa fa-angle-double-right' : '')|parse_icon -%}
         {%- else -%}
-            {%- set icon = item.extra('icon') -%}
+            {%- set icon = item.extra('icon')|parse_icon -%}
         {%- endif -%}
         {%- set is_link = true -%}
         {{ parent() }}
@@ -37,8 +37,8 @@
     {% apply spaceless %}
         <a href="#">
             {%- set translation_domain = item.extra('label_catalogue', 'messages') -%}
-            {%- set icon = item.extra('icon')|default('') -%}
-            {{ icon|parse_icon }}
+            {%- set icon = item.extra('icon')|default('')|parse_icon -%}
+            {{ icon|raw }}
             {{ parent() }}
             {%- if item.extra('keep_open') is not defined or not item.extra('keep_open') -%}
                 <span class="pull-right-container"><i class="fas pull-right fa-angle-left"></i></span>

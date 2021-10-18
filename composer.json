@@ -80,6 +80,7 @@
         "phpstan/phpstan-phpunit": "^0.12.18",
         "phpstan/phpstan-strict-rules": "^0.12.10",
         "phpstan/phpstan-symfony": "^0.12.21",
+        "phpunit/phpunit": "^9.5",
         "psalm/plugin-phpunit": "^0.16",
         "psalm/plugin-symfony": "^2.0",
         "psr/event-dispatcher": "^1.0",

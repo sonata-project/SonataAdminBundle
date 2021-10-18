@@ -123,6 +123,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [4.0.0-alpha-1](https://github.com/sonata-project/SonataAdminBundle/compare/3.105.0...4.0.0-alpha-1) - 2021-04-11
 See UPGRADE-4.0.md
 
+## [3.105.3](https://github.com/sonata-project/SonataAdminBundle/compare/3.105.2...3.105.3) - 2021-10-07
+### Fixed
+- [[#7524](https://github.com/sonata-project/SonataAdminBundle/pull/7524)] HTML icon rendering in the menu ([@VincentLanglet](https://github.com/VincentLanglet))
+
+## [3.105.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.105.1...3.105.2) - 2021-10-05
+### Fixed
+- [[#7521](https://github.com/sonata-project/SonataAdminBundle/pull/7521)] Correctly display the default icon in the admin menu if none are provided ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [3.105.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.105.0...3.105.1) - 2021-09-08
 ### Fixed
 - [[#7387](https://github.com/sonata-project/SonataAdminBundle/pull/7387)] Do not throw error when trying to inject an admin as a service in an action. ([@VincentLanglet](https://github.com/VincentLanglet))
