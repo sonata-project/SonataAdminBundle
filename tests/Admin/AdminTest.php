@@ -61,6 +61,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Admin\PostCategoryAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostWithCustomRouteAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostWithoutBatchRouteAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\TagAdmin;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\TagWithoutPostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\BlogPost;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\CommentVote;
@@ -1421,6 +1422,23 @@ final class AdminTest extends TestCase
         $tag = $tagAdmin->getNewInstance();
 
         static::assertSame($post, $tag->getPost());
+    }
+
+    public function testGetNewInstanceForChildAdminWithParentValueCanBeDisabled(): void
+    {
+        $postAdmin = $this->getMockBuilder(PostAdmin::class)->setConstructorArgs([
+            'post',
+            Post::class,
+            CRUDController::class,
+        ])->getMock();
+        $postAdmin->expects(static::never())->method('getIdParameter');
+
+        $tagAdmin = new TagWithoutPostAdmin('admin.tag', Tag::class, 'MyBundle\MyController');
+        $tagAdmin->setParent($postAdmin, 'post');
+
+        $tag = $tagAdmin->getNewInstance();
+
+        static::assertNull($tag->getPost());
     }
 
     public function testGetNewInstanceForChildAdminWithCollectionParentValue(): void
