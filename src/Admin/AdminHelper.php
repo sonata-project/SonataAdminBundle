@@ -224,6 +224,10 @@ class AdminHelper
             return $associationAdmin->getClass();
         }
 
+        if (!$associationAdmin->hasSubject()) {
+            $associationAdmin->setSubject($associationAdmin->getNewInstance());
+        }
+
         return $this->getModelClassName($associationAdmin, $elements);
     }
 
