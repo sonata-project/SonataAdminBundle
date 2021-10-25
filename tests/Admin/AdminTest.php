@@ -77,7 +77,6 @@ use Sonata\Doctrine\Adapter\AdapterInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormRegistry;
 use Symfony\Component\Form\ResolvedFormTypeFactory;
@@ -1408,9 +1407,6 @@ final class AdminTest extends TestCase
 
         $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
-        $formBuilder = $this->createStub(FormBuilderInterface::class);
-        $formBuilder->method('getForm')->willReturn(null);
-
         $tagAdmin = new TagAdmin('admin.tag', Tag::class, 'MyBundle\MyController');
         $tagAdmin->setParent($postAdmin, 'post');
 
@@ -1438,9 +1434,6 @@ final class AdminTest extends TestCase
         $postAdmin->setModelManager($modelManager);
 
         $postAdmin->method('getIdParameter')->willReturn('parent_id');
-
-        $formBuilder = $this->createStub(FormBuilderInterface::class);
-        $formBuilder->method('getForm')->willReturn(null);
 
         $postCategoryAdmin = new PostCategoryAdmin('admin.post_category', PostCategory::class, 'MyBundle\MyController');
         $postCategoryAdmin->setParent($postAdmin, 'posts');
@@ -1471,9 +1464,6 @@ final class AdminTest extends TestCase
         $postAdmin->setModelManager($modelManager);
 
         $postAdmin->method('getIdParameter')->willReturn('parent_id');
-
-        $formBuilder = $this->createStub(FormBuilderInterface::class);
-        $formBuilder->method('getForm')->willReturn(null);
 
         $parentField = $this->createStub(FieldDescriptionInterface::class);
         $parentField->method('getAdmin')->willReturn($postAdmin);
