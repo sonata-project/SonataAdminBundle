@@ -47,6 +47,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
@@ -1707,7 +1708,7 @@ final class CRUDControllerTest extends TestCase
         $form->expects(static::once())
             ->method('getErrors')
             ->with(true)
-            ->willReturn([$formError]);
+            ->willReturn(new FormErrorIterator($form, [$formError]));
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
@@ -1812,7 +1813,7 @@ final class CRUDControllerTest extends TestCase
             ->method('createView')
             ->willReturn($formView);
 
-        self::assertLoggerLogsModelManagerException($this->admin, 'update');
+        $this->assertLoggerLogsModelManagerException($this->admin, 'update');
 
         $this->twig
             ->expects(static::once())
@@ -2407,7 +2408,7 @@ final class CRUDControllerTest extends TestCase
         $form->expects(static::once())
             ->method('getErrors')
             ->with(true)
-            ->willReturn([$formError]);
+            ->willReturn(new FormErrorIterator($form, [$formError]));
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');

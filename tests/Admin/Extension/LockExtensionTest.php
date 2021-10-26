@@ -132,7 +132,7 @@ final class LockExtensionTest extends TestCase
         $this->configureAdmin($this->modelManager);
         $event = new FormEvent($form, $this->object);
 
-        $form->method('getParent')->willReturn('parent');
+        $form->method('getParent')->willReturn($this->createStub(FormInterface::class));
         $form->expects(static::never())->method('add');
 
         $this->lockExtension->configureFormFields($formMapper);

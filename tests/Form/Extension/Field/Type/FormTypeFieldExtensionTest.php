@@ -20,10 +20,11 @@ use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormConfigBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\ResolvedFormType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class FormTypeFieldExtensionTest extends TestCase
@@ -87,11 +88,10 @@ final class FormTypeFieldExtensionTest extends TestCase
                 return $value;
             });
 
-        $formBuilder = new FormBuilder(
-            'test',
-            \stdClass::class,
-            $this->createStub(EventDispatcherInterface::class),
-            $this->createStub(FormFactoryInterface::class)
+        $resolvedFormType = new ResolvedFormType($this->createStub(FormTypeInterface::class));
+        $formBuilder = $resolvedFormType->createBuilder(
+            $this->createStub(FormFactoryInterface::class),
+            'test'
         );
 
         $extension = new FormTypeFieldExtension([], []);

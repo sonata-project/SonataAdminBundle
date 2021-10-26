@@ -226,7 +226,7 @@ final class AdminObjectAclManipulator
             }
 
             $formBuilder->add(
-                $key,
+                (string) $key,
                 AclMatrixType::class,
                 ['permissions' => $permissions, 'acl_value' => $aclValue]
             );
