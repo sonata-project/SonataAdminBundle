@@ -56,8 +56,10 @@ interface AdminExtensionInterface
     /**
      * Builds the tab menu.
      *
+     * @phpstan-template TChild of object
+     *
      * @phpstan-param AdminInterface<T> $admin
-     * @phpstan-param AdminInterface<object>|null $childAdmin
+     * @phpstan-param AdminInterface<TChild>|null $childAdmin
      */
     public function configureTabMenu(
         AdminInterface $admin,
