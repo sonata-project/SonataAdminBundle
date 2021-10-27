@@ -855,7 +855,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
         $object = $this->createNewInstance();
 
-        $this->appendParentObject($object);
         $this->alterNewInstance($object);
 
         foreach ($this->getExtensions() as $extension) {
@@ -1845,7 +1844,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     protected function createNewInstance(): object
     {
-        return Instantiator::instantiate($this->getClass());
+        $object = Instantiator::instantiate($this->getClass());
+        $this->appendParentObject($object);
+
+        return $object;
     }
 
     /**
