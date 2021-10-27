@@ -20,7 +20,7 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
  *
  * NEXT_MAJOR: Remove this interface
  *
- * @deprecated since sonata-project/admin-bundle version 4.x and will be removed in 5.0.
+ * @deprecated since sonata-project/admin-bundle version 4.1 and will be removed in 5.0.
  */
 interface BuilderInterface
 {
