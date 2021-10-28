@@ -151,6 +151,8 @@ final class RetrieveAutocompleteItemsAction
 
                 $previousFilter = $filter;
             }
+
+            $datagrid->reorderFilters($property);
         } else {
             if (!$datagrid->hasFilter($property)) {
                 throw new \RuntimeException(sprintf(

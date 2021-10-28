@@ -855,7 +855,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
         $object = $this->createNewInstance();
 
-        $this->appendParentObject($object);
         $this->alterNewInstance($object);
 
         foreach ($this->getExtensions() as $extension) {
@@ -1845,7 +1844,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     protected function createNewInstance(): object
     {
-        return Instantiator::instantiate($this->getClass());
+        $object = Instantiator::instantiate($this->getClass());
+        $this->appendParentObject($object);
+
+        return $object;
     }
 
     /**
@@ -2078,7 +2080,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * Configures the tab menu in your admin.
      *
-     * @phpstan-param AdminInterface<object>|null $childAdmin
+     * @phpstan-template TChild of object
+     *
+     * @phpstan-param AdminInterface<TChild>|null $childAdmin
      */
     protected function configureTabMenu(ItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
     {
@@ -2479,7 +2483,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * @phpstan-param AdminInterface<object>|null $childAdmin
+     * @phpstan-template TChild of object
+     *
+     * @phpstan-param AdminInterface<TChild>|null $childAdmin
      */
     private function buildTabMenu(string $action, ?AdminInterface $childAdmin = null): ?ItemInterface
     {

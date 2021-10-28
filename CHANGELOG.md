@@ -2,6 +2,21 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.1.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.0.1...4.1.0) - 2021-10-27
+### Added
+- [[#7558](https://github.com/sonata-project/SonataAdminBundle/pull/7558)] Added more generic information ([@core23](https://github.com/core23))
+- [[#7555](https://github.com/sonata-project/SonataAdminBundle/pull/7555)] Added support for Symfony 6 ([@jordisala1991](https://github.com/jordisala1991))
+
+### Changed
+- [[#7549](https://github.com/sonata-project/SonataAdminBundle/pull/7549)] Move appendParentObject call into createNewInstance ([@goetas](https://github.com/goetas))
+
+### Deprecated
+- [[#7519](https://github.com/sonata-project/SonataAdminBundle/pull/7519)] `Sonata\AdminBundle\Builder\BuilderInterface` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#7556](https://github.com/sonata-project/SonataAdminBundle/pull/7556)] Set subject of $associationAdmin when collection is append to childs collections. ([@Pasttaga](https://github.com/Pasttaga))
+- [[#7537](https://github.com/sonata-project/SonataAdminBundle/pull/7537)] Made `getBatchActions()` return an empty array when the admin does not have a batch route ([@7ochem](https://github.com/7ochem))
+
 ## [4.0.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.0.0...4.0.1) - 2021-10-01
 ### Changed
 - [[#7506](https://github.com/sonata-project/SonataAdminBundle/pull/7506)] Improved error message when a required option is not passed to the FormType. ([@VincentLanglet](https://github.com/VincentLanglet))

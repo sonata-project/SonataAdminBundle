@@ -61,6 +61,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Admin\PostCategoryAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostWithCustomRouteAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostWithoutBatchRouteAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\TagAdmin;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\TagWithoutPostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\BlogPost;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\CommentVote;
@@ -77,7 +78,6 @@ use Sonata\Doctrine\Adapter\AdapterInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormRegistry;
 use Symfony\Component\Form\ResolvedFormTypeFactory;
@@ -1408,9 +1408,6 @@ final class AdminTest extends TestCase
 
         $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
-        $formBuilder = $this->createStub(FormBuilderInterface::class);
-        $formBuilder->method('getForm')->willReturn(null);
-
         $tagAdmin = new TagAdmin('admin.tag', Tag::class, 'MyBundle\MyController');
         $tagAdmin->setParent($postAdmin, 'post');
 
@@ -1421,6 +1418,23 @@ final class AdminTest extends TestCase
         $tag = $tagAdmin->getNewInstance();
 
         static::assertSame($post, $tag->getPost());
+    }
+
+    public function testGetNewInstanceForChildAdminWithParentValueCanBeDisabled(): void
+    {
+        $postAdmin = $this->getMockBuilder(PostAdmin::class)->setConstructorArgs([
+            'post',
+            Post::class,
+            CRUDController::class,
+        ])->getMock();
+        $postAdmin->expects(static::never())->method('getIdParameter');
+
+        $tagAdmin = new TagWithoutPostAdmin('admin.tag', Tag::class, 'MyBundle\MyController');
+        $tagAdmin->setParent($postAdmin, 'post');
+
+        $tag = $tagAdmin->getNewInstance();
+
+        static::assertNull($tag->getPost());
     }
 
     public function testGetNewInstanceForChildAdminWithCollectionParentValue(): void
@@ -1438,9 +1452,6 @@ final class AdminTest extends TestCase
         $postAdmin->setModelManager($modelManager);
 
         $postAdmin->method('getIdParameter')->willReturn('parent_id');
-
-        $formBuilder = $this->createStub(FormBuilderInterface::class);
-        $formBuilder->method('getForm')->willReturn(null);
 
         $postCategoryAdmin = new PostCategoryAdmin('admin.post_category', PostCategory::class, 'MyBundle\MyController');
         $postCategoryAdmin->setParent($postAdmin, 'posts');
@@ -1471,9 +1482,6 @@ final class AdminTest extends TestCase
         $postAdmin->setModelManager($modelManager);
 
         $postAdmin->method('getIdParameter')->willReturn('parent_id');
-
-        $formBuilder = $this->createStub(FormBuilderInterface::class);
-        $formBuilder->method('getForm')->willReturn(null);
 
         $parentField = $this->createStub(FieldDescriptionInterface::class);
         $parentField->method('getAdmin')->willReturn($postAdmin);
