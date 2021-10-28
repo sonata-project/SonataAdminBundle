@@ -39,7 +39,9 @@ interface AuditManagerInterface
      *
      * @throws \LogicException
      *
-     * @phpstan-param class-string $class
+     * @phpstan-template T of object
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return AuditReaderInterface<T>
      */
     public function getReader(string $class): AuditReaderInterface;
 }
