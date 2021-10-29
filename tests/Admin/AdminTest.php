@@ -948,6 +948,9 @@ class AdminTest extends TestCase
         $admin->addExtension($adminExtension1);
         $admin->addExtension($adminExtension2);
         static::assertSame([$adminExtension1, $adminExtension2], $admin->getExtensions());
+
+        $admin->removeExtension($adminExtension2);
+        static::assertSame([$adminExtension1], $admin->getExtensions());
     }
 
     public function testGetFilterTheme(): void
