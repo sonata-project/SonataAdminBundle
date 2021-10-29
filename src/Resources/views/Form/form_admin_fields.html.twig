@@ -618,7 +618,7 @@ file that was distributed with this source code.
         <span id="field_actions_{{ id }}" class="field-actions">
             <span class="btn-group">
                 {% if sonata_admin.field_description.associationadmin.hasroute('list') and sonata_admin.field_description.associationadmin.hasAccess('list') and btn_list %}
-                    <a href="{{ sonata_admin.field_description.associationadmin.generateUrl('list') }}"
+                    <a href="{{ sonata_admin.field_description.associationadmin.generateUrl('list', {select: true}) }}"
                        onclick="return start_field_dialog_form_list_{{ id }}(this);"
                        class="btn btn-info btn-sm sonata-ba-action"
                        title="{{ btn_list|trans({}, btn_catalogue) }}"

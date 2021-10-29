@@ -3724,7 +3724,11 @@ EOT;
             $extension->configureListFields($mapper);
         }
 
-        if ($this->hasRequest() && $this->getRequest()->isXmlHttpRequest()) {
+        if ($this->hasRequest()
+            && $this->getRequest()->isXmlHttpRequest()
+            && $this->getRequest()->query->getBoolean('select', true) // NEXT_MAJOR: Change the default value to `false` in version 5
+        ) {
+            $mapper->remove(ListMapper::NAME_ACTIONS);
             $mapper->add(ListMapper::NAME_SELECT, ListMapper::TYPE_SELECT, [
                 'label' => false,
                 // NEXT_MAJOR: Remove this code.

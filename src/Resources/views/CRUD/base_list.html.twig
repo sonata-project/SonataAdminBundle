@@ -59,6 +59,7 @@ file that was distributed with this source code.
                                         {% elseif field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_SELECT') %}
                                             <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
                                         {% elseif field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_ACTIONS') and app.request.isXmlHttpRequest %}
+                                            {# NEXT_MAJOR: Remove this case in version 5 and recommend using the option `ajax_hidden` instead. #}
                                             {# Action buttons disabled in ajax view! #}
                                         {% elseif field_description.getOption('ajax_hidden') == true and app.request.isXmlHttpRequest %}
                                             {# Disable fields with 'ajax_hidden' option set to true #}
