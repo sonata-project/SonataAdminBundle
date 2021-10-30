@@ -3857,6 +3857,8 @@ EOT;
      * Return list routes with permissions name.
      *
      * @return array<string, string|string[]>
+     *
+     * @final since sonata-project/admin-bundle 3.x.
      */
     protected function getAccess()
     {
