@@ -13,7 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - [[#7530](https://github.com/sonata-project/SonataAdminBundle/pull/7530)] Fixed using multiple properties with `ModelAutocompleteType` with different order ([@franmomu](https://github.com/franmomu))
 
 ### Removed
-- [[#7567](https://github.com/sonata-project/SonataAdminBundle/pull/7567)] Removed final information from `AbstractAdmin::getAccessMapping()` ([@core23](https://github.com/core23))
+- [[#7567](https://github.com/sonata-project/SonataAdminBundle/pull/7567)] Final information from `AbstractAdmin::getAccessMapping()` ([@core23](https://github.com/core23))
 
 ## [3.105.3](https://github.com/sonata-project/SonataAdminBundle/compare/3.105.2...3.105.3) - 2021-10-07
 ### Fixed
