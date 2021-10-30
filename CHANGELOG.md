@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [4.2.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.1.0...4.2.0) - 2021-10-29
+## [4.2.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.1.0...4.2.0) - 2021-10-30
 ### Added
 - [[#7561](https://github.com/sonata-project/SonataAdminBundle/pull/7561)] Make `AuditReaderInterface` generic ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7563](https://github.com/sonata-project/SonataAdminBundle/pull/7563)] `AbstractAdmin::removeExtension()` ([@VincentLanglet](https://github.com/VincentLanglet))
