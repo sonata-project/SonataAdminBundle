@@ -8,6 +8,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - [[#7563](https://github.com/sonata-project/SonataAdminBundle/pull/7563)] `AbstractAdmin::removeExtension()` ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7564](https://github.com/sonata-project/SonataAdminBundle/pull/7564)] The ability to not add a `select` column when accessing to the list with AJAX ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7567](https://github.com/sonata-project/SonataAdminBundle/pull/7567)] Final information to `AbstractAdmin::getAccess()` ([@core23](https://github.com/core23))
+- [[#7568](https://github.com/sonata-project/SonataAdminBundle/pull/7568)] Added support for `psr/log` 3.0. ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7568](https://github.com/sonata-project/SonataAdminBundle/pull/7568)] Added support for `psr/container` 2.0. ([@jordisala1991](https://github.com/jordisala1991))
 
 ### Fixed
 - [[#7529](https://github.com/sonata-project/SonataAdminBundle/pull/7529)] Setting a default order if it is not set in the field description ([@franmomu](https://github.com/franmomu))
