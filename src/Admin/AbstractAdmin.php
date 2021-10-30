@@ -2937,6 +2937,18 @@ EOT;
         $this->extensions[] = $extension;
     }
 
+    final public function removeExtension(AdminExtensionInterface $extension): void
+    {
+        $key = array_search($extension, $this->extensions, true);
+        if (false === $key) {
+            throw new \InvalidArgumentException(
+                sprintf('The extension "%s" was not set to the "%s" admin.', \get_class($extension), __CLASS__)
+            );
+        }
+
+        unset($this->extensions[$key]);
+    }
+
     /**
      * @final since sonata-project/admin-bundle 3.102.
      */

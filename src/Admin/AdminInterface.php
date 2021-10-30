@@ -31,8 +31,11 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * NEXT_MAJOR: Add all these methods to the interface by uncommenting them.
+ * NEXT_MAJOR: Add all these methods to the interface by uncommenting them for Sonata 5.
  *
+ * @method void removeExtension(AdminExtensionInterface $extension)
+ *
+ * NEXT_MAJOR: Add all these methods to the interface by uncommenting them.
  * @method string                          getSearchResultLink(object $object)
  * @method array                           getDefaultFilterParameters()
  * @method bool                            isCurrentRoute(string $name, ?string $adminCode)
@@ -262,6 +265,9 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      * @return void
      */
     public function addExtension(AdminExtensionInterface $extension);
+
+    // NEXT_MAJOR: Uncomment this for Sonata 5
+    //public function removeExtension(AdminExtensionInterface $extension): void;
 
     /**
      * Returns an array of extension related to the current Admin.
