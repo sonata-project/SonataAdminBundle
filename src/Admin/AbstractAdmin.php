@@ -3054,9 +3054,6 @@ EOT;
         return $this->getRequest()->getSession()->get(sprintf('%s.list_mode', $this->getCode()), 'list');
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.102.
-     */
     public function getAccessMapping()
     {
         return $this->accessMapping;
