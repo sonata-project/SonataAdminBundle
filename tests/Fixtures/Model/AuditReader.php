@@ -16,6 +16,9 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Model;
 use Sonata\AdminBundle\Model\AuditReaderInterface;
 use Sonata\AdminBundle\Model\Revision;
 
+/**
+ * @phpstan-implements AuditReaderInterface<object>
+ */
 final class AuditReader implements AuditReaderInterface
 {
     public function find(string $className, $id, $revisionId): ?object

@@ -15,6 +15,8 @@ namespace Sonata\AdminBundle\Model;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
  */
 interface AuditReaderInterface
 {
@@ -22,7 +24,6 @@ interface AuditReaderInterface
      * @param int|string $id
      * @param int|string $revisionId
      *
-     * @phpstan-template T of object
      * @phpstan-param class-string<T> $className
      * @phpstan-return T|null
      */
@@ -31,14 +32,14 @@ interface AuditReaderInterface
     /**
      * @return Revision[]
      *
-     * @phpstan-param class-string $className
+     * @phpstan-param class-string<T> $className
      */
     public function findRevisionHistory(string $className, int $limit = 20, int $offset = 0): array;
 
     /**
      * @param int|string $revisionId
      *
-     * @phpstan-param class-string $className
+     * @phpstan-param class-string<T> $className
      */
     public function findRevision(string $className, $revisionId): ?Revision;
 
@@ -47,7 +48,7 @@ interface AuditReaderInterface
      *
      * @return Revision[]
      *
-     * @phpstan-param class-string $className
+     * @phpstan-param class-string<T> $className
      */
     public function findRevisions(string $className, $id): array;
 
@@ -58,7 +59,7 @@ interface AuditReaderInterface
      *
      * @return array<string, array{old: mixed, new: mixed, same: mixed}>
      *
-     * @phpstan-param class-string $className
+     * @phpstan-param class-string<T> $className
      */
     public function diff(string $className, $id, $oldRevisionId, $newRevisionId): array;
 }
