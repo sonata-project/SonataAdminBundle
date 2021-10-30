@@ -9,7 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - [[#7567](https://github.com/sonata-project/SonataAdminBundle/pull/7567)] Added final information to `AbstractAdmin::getAccess()` ([@core23](https://github.com/core23))
 
 ### Fixed
-- [[#7529](https://github.com/sonata-project/SonataAdminBundle/pull/7529)] Fixed setting a default order if it is not set in the field description ([@franmomu](https://github.com/franmomu))
+- [[#7529](https://github.com/sonata-project/SonataAdminBundle/pull/7529)] Setting a default order if it is not set in the field description ([@franmomu](https://github.com/franmomu))
 - [[#7530](https://github.com/sonata-project/SonataAdminBundle/pull/7530)] Using multiple properties with `ModelAutocompleteType` with different order ([@franmomu](https://github.com/franmomu))
 
 ### Removed
