@@ -927,6 +927,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         if (null === $id) {
             return null;
         }
+        
+        if (\is_array($id) && \array_key_exists('value', $id)) {
+            $id = $id['value'];
+        }
 
         $object = $this->getModelManager()->find($this->getClass(), $id);
         if (null === $object) {
