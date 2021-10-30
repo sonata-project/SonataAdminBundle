@@ -953,6 +953,18 @@ class AdminTest extends TestCase
         static::assertSame([$adminExtension1], $admin->getExtensions());
     }
 
+    public function testRemovingNonExistingExtensions(): void
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+
+        static::assertSame([], $admin->getExtensions());
+
+        $adminExtension1 = $this->createMock(AdminExtensionInterface::class);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $admin->removeExtension($adminExtension1);
+    }
+
     public function testGetFilterTheme(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
