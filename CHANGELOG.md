@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [3.106.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.105.3...3.106.0) - 2021-10-30
 ### Added
-- [[#7563](https://github.com/sonata-project/SonataAdminBundle/pull/7563)] AbstractAdmin::removeExtension() ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7563](https://github.com/sonata-project/SonataAdminBundle/pull/7563)] `AbstractAdmin::removeExtension()` ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7564](https://github.com/sonata-project/SonataAdminBundle/pull/7564)] The ability to not add a `select` column when accessing to the list with AJAX ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7567](https://github.com/sonata-project/SonataAdminBundle/pull/7567)] Final information to `AbstractAdmin::getAccess()` ([@core23](https://github.com/core23))
 
