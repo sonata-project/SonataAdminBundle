@@ -138,9 +138,8 @@ If those options doesn't fill your need, you can still dynamically add/remove
 an extensions in the `AdminInterface::configure()` method of your admin with
 the methods `addExtension` and `removeExtension`::
 
-    use Sonata\AdminBundle\Admin\AbstractAdminExtension;
-    use Sonata\AdminBundle\Form\FormMapper;
-    use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+    use App\AdminExtension\PublishStatusAdminExtension;
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
 
     final class PublishStatusAdmin extends AbstractAdmin
     {
