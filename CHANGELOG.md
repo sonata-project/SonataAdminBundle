@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.2.0...4.2.1) - 2021-10-31
+### Fixed
+- [[#7576](https://github.com/sonata-project/SonataAdminBundle/pull/7576)] Missing `merge` call in twig ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.2.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.1.0...4.2.0) - 2021-10-30
 ### Added
 - [[#7561](https://github.com/sonata-project/SonataAdminBundle/pull/7561)] Make `AuditReaderInterface` generic ([@VincentLanglet](https://github.com/VincentLanglet))
