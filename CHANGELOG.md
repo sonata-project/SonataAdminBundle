@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.106.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.106.0...3.106.1) - 2021-10-31
+### Fixed
+- [[#7574](https://github.com/sonata-project/SonataAdminBundle/pull/7574)] Missing `merge` call in twig ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [3.106.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.105.3...3.106.0) - 2021-10-30
 ### Added
 - [[#7563](https://github.com/sonata-project/SonataAdminBundle/pull/7563)] `AbstractAdmin::removeExtension()` ([@VincentLanglet](https://github.com/VincentLanglet))
