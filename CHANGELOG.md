@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.1.0...4.2.0) - 2021-10-30
+### Added
+- [[#7561](https://github.com/sonata-project/SonataAdminBundle/pull/7561)] Make `AuditReaderInterface` generic ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7563](https://github.com/sonata-project/SonataAdminBundle/pull/7563)] `AbstractAdmin::removeExtension()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7564](https://github.com/sonata-project/SonataAdminBundle/pull/7564)] The ability to not add a `select` column when accessing to the list with AJAX ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7568](https://github.com/sonata-project/SonataAdminBundle/pull/7568)] Added support for `psr/log` 3.0. ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7568](https://github.com/sonata-project/SonataAdminBundle/pull/7568)] Added support for `psr/container` 2.0. ([@jordisala1991](https://github.com/jordisala1991))
+
+### Fixed
+- [[#7529](https://github.com/sonata-project/SonataAdminBundle/pull/7529)] Setting a default order if it is not set in the field description ([@franmomu](https://github.com/franmomu))
+- [[#7530](https://github.com/sonata-project/SonataAdminBundle/pull/7530)] Using multiple properties with `ModelAutocompleteType` with different order ([@franmomu](https://github.com/franmomu))
+
 ## [4.1.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.0.1...4.1.0) - 2021-10-27
 ### Added
 - [[#7558](https://github.com/sonata-project/SonataAdminBundle/pull/7558)] Added more generic information ([@core23](https://github.com/core23))
@@ -137,6 +149,19 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.0.0-alpha-1](https://github.com/sonata-project/SonataAdminBundle/compare/3.105.0...4.0.0-alpha-1) - 2021-04-11
 See UPGRADE-4.0.md
+
+## [3.106.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.105.3...3.106.0) - 2021-10-30
+### Added
+- [[#7563](https://github.com/sonata-project/SonataAdminBundle/pull/7563)] `AbstractAdmin::removeExtension()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7564](https://github.com/sonata-project/SonataAdminBundle/pull/7564)] The ability to not add a `select` column when accessing to the list with AJAX ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7567](https://github.com/sonata-project/SonataAdminBundle/pull/7567)] Final information to `AbstractAdmin::getAccess()` ([@core23](https://github.com/core23))
+
+### Fixed
+- [[#7529](https://github.com/sonata-project/SonataAdminBundle/pull/7529)] Setting a default order if it is not set in the field description ([@franmomu](https://github.com/franmomu))
+- [[#7530](https://github.com/sonata-project/SonataAdminBundle/pull/7530)] Using multiple properties with `ModelAutocompleteType` with different order ([@franmomu](https://github.com/franmomu))
+
+### Removed
+- [[#7567](https://github.com/sonata-project/SonataAdminBundle/pull/7567)] Final information from `AbstractAdmin::getAccessMapping()` ([@core23](https://github.com/core23))
 
 ## [3.105.3](https://github.com/sonata-project/SonataAdminBundle/compare/3.105.2...3.105.3) - 2021-10-07
 ### Fixed

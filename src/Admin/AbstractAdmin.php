@@ -1656,6 +1656,21 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->extensions[] = $extension;
     }
 
+    /**
+     * @phpstan-param AdminExtensionInterface<T> $extension
+     */
+    final public function removeExtension(AdminExtensionInterface $extension): void
+    {
+        $key = array_search($extension, $this->extensions, true);
+        if (false === $key) {
+            throw new \InvalidArgumentException(
+                sprintf('The extension "%s" was not set to the "%s" admin.', \get_class($extension), __CLASS__)
+            );
+        }
+
+        unset($this->extensions[$key]);
+    }
+
     final public function getExtensions(): array
     {
         return $this->extensions;

@@ -9,6 +9,8 @@ file that was distributed with this source code.
 
 #}
 
+{# NEXT_MAJOR: Deprecate this template in version 4. Remove it in version 5. #}
+
 {% if admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_BATCH')) and not app.request.isXmlHttpRequest %}
     <td class="sonata-ba-list-field sonata-ba-list-field-batch">
         {{ object|render_list_element(admin.list[constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_BATCH')]) }}

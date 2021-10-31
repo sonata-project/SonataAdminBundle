@@ -29,6 +29,10 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
+ * NEXT_MAJOR: Add all these methods to the interface by uncommenting them.
+ *
+ * @method void removeExtension(AdminExtensionInterface $extension)
+ *
  * @phpstan-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
  *
  * @phpstan-template T of object
@@ -165,6 +169,12 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      * @phpstan-param AdminExtensionInterface<T> $extension
      */
     public function addExtension(AdminExtensionInterface $extension): void;
+
+    // NEXT_MAJOR: Uncomment this for Sonata 5
+    /**
+     * @phpstan-param AdminExtensionInterface<T> $extension
+     */
+    //public function removeExtension(AdminExtensionInterface $extension): void;
 
     /**
      * Returns an array of extension related to the current Admin.
