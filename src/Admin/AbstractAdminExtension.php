@@ -96,6 +96,15 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
         return $actions;
     }
 
+    // NEXT_MAJOR: Remove the PHPDoc block as the interface will then specify the types
+    /**
+     * @param mixed[] $idx
+     * @phpstan-param AdminInterface<T> $admin
+     */
+    public function preBatchAction(AdminInterface $admin, string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements): void
+    {
+    }
+
     public function configureExportFields(AdminInterface $admin, array $fields): array
     {
         return $fields;
