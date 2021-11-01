@@ -126,4 +126,12 @@ final class AdminEventExtension extends AbstractAdminExtension
             'sonata.admin.event.persistence.post_remove'
         );
     }
+
+    public function preBatchAction(AdminInterface $admin, string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements): void
+    {
+        $this->eventDispatcher->dispatch(
+            new BatchActionEvent($admin, BatchActionEvent::TYPE_PRE_BATCH_ACTION, $actionName, $query, $idx, $allElements),
+            'sonata.admin.event.batch_action.pre_batch_action'
+        );
+    }
 }

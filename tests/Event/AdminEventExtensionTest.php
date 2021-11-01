@@ -24,6 +24,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Event\AdminEventExtension;
+use Sonata\AdminBundle\Event\BatchActionEvent;
 use Sonata\AdminBundle\Event\ConfigureEvent;
 use Sonata\AdminBundle\Event\ConfigureQueryEvent;
 use Sonata\AdminBundle\Event\PersistenceEvent;
@@ -188,5 +189,39 @@ final class AdminEventExtensionTest extends TestCase
             static::callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_POST_REMOVE)),
             static::equalTo('sonata.admin.event.persistence.post_remove'),
         ])->postRemove($this->createMock(AdminInterface::class), new \stdClass());
+    }
+
+    public function testPreBatchAction(): void
+    {
+        $admin = $this->createMock(AdminInterface::class);
+        $proxyQuery = $this->createMock(ProxyQueryInterface::class);
+        $idx = [1, 2, 3];
+
+        $this->getExtension([
+            static::callback(
+                static function (Event $event) use (&$idx): bool {
+                    if (!$event instanceof BatchActionEvent) {
+                        return false;
+                    }
+
+                    // @phpstan-ignore-next-line
+                    if (BatchActionEvent::TYPE_PRE_BATCH_ACTION !== $event->getType()) {
+                        return false;
+                    }
+
+                    if ('delete' !== $event->getActionName()) {
+                        return false;
+                    }
+
+                    $idx[] = 4; // Test if this was passed by reference correctly everywhere
+                    if ($event->getIdx() !== $idx) {
+                        return false;
+                    }
+
+                    return true;
+                }
+            ),
+            static::equalTo('sonata.admin.event.batch_action.pre_batch_action'),
+        ])->preBatchAction($admin, 'delete', $proxyQuery, $idx, false);
     }
 }
