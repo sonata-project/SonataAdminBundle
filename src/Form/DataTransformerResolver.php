@@ -25,12 +25,12 @@ use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransf
 final class DataTransformerResolver implements DataTransformerResolverInterface
 {
     /**
-     * @var array<string, DataTransformerInterface>
+     * @var array<string, DataTransformerInterface<mixed, mixed>>
      */
     private $globalCustomTransformers = [];
 
     /**
-     * @param array<string, DataTransformerInterface> $customGlobalTransformers
+     * @param array<string, DataTransformerInterface<mixed, mixed>> $customGlobalTransformers
      */
     public function __construct(array $customGlobalTransformers = [])
     {
@@ -44,9 +44,6 @@ final class DataTransformerResolver implements DataTransformerResolverInterface
         $this->globalCustomTransformers[$fieldType] = $dataTransformer;
     }
 
-    /**
-     * @param ModelManagerInterface<object> $modelManager
-     */
     public function resolve(
         FieldDescriptionInterface $fieldDescription,
         ModelManagerInterface $modelManager

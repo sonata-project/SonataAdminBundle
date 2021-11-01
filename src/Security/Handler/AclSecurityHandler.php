@@ -22,6 +22,7 @@ use Symfony\Component\Security\Acl\Exception\NotAllAclsFoundException;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 use Symfony\Component\Security\Acl\Model\MutableAclProviderInterface;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
+use Symfony\Component\Security\Acl\Permission\MaskBuilderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
@@ -64,13 +65,13 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
 
     /**
      * @var string
-     * @phpstan-var class-string
+     * @phpstan-var class-string<MaskBuilderInterface>
      */
     private $maskBuilderClass;
 
     /**
      * @param string[] $superAdminRoles
-     * @phpstan-param class-string $maskBuilderClass
+     * @phpstan-param class-string<MaskBuilderInterface> $maskBuilderClass
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,

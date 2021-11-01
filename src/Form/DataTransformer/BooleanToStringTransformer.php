@@ -20,6 +20,8 @@ use Symfony\Component\Form\DataTransformerInterface;
  * which allows you to use non-strings in reverseTransform() method.
  *
  * @author Peter Gribanov <info@peter-gribanov.ru>
+ *
+ * @phpstan-implements DataTransformerInterface<bool, string>
  */
 final class BooleanToStringTransformer implements DataTransformerInterface
 {

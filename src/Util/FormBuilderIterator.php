@@ -17,6 +17,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-extends \RecursiveArrayIterator<string|int, FormBuilderInterface>
  */
 final class FormBuilderIterator extends \RecursiveArrayIterator
 {

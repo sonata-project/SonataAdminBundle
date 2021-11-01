@@ -24,6 +24,7 @@ use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
+use Symfony\Component\Security\Acl\Permission\MaskBuilderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -45,12 +46,12 @@ final class AdminObjectAclManipulator
     /**
      * @var string
      *
-     * @phpstan-var class-string
+     * @phpstan-var class-string<MaskBuilderInterface>
      */
     private $maskBuilderClass;
 
     /**
-     * @phpstan-param class-string $maskBuilderClass
+     * @phpstan-param class-string<MaskBuilderInterface> $maskBuilderClass
      */
     public function __construct(FormFactoryInterface $formFactory, string $maskBuilderClass)
     {

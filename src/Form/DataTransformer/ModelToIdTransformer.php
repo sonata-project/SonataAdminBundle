@@ -20,6 +20,7 @@ use Symfony\Component\Form\DataTransformerInterface;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-template T of object
+ * @phpstan-implements DataTransformerInterface<T, int|string>
  */
 final class ModelToIdTransformer implements DataTransformerInterface
 {
