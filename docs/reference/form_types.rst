@@ -522,6 +522,9 @@ According the choice made only associated fields are displayed. The others field
 ``map``
   Associative array. Describes the fields that are displayed for each choice.
 
+.. figure:: ../images/choice_field_mask_type.gif
+   :alt: Form type choice field mask type
+
 Sonata\\AdminBundle\\Form\\Type\\AdminType
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -646,11 +649,15 @@ The available options (which can be passed as a third parameter to ``FormMapper:
   corresponding button. You can also specify a custom translation catalogue
   for this label, which defaults to ``SonataAdminBundle``.
 
-**TIP**: A jQuery event is fired after a row has been added (``sonata-admin-append-form-element``).
-You can listen to this event to trigger custom JavaScript (eg: add a calendar widget to a newly added date field)
+.. tip::
 
-**TIP**: Setting the 'required' option to ``true`` does not cause a requirement of 'at least one' child entity.
-Setting the 'required' option to ``false`` causes all nested form fields to become not required as well.
+    A jQuery event is fired after a row has been added (``sonata-admin-append-form-element``).
+    You can listen to this event to trigger custom JavaScript (eg: add a calendar widget to a newly added date field)
+
+.. tip::
+
+    Setting the 'required' option to ``true`` does not cause a requirement of 'at least one' child entity.
+    Setting the 'required' option to ``false`` causes all nested form fields to become not required as well.
 
 .. tip::
 
