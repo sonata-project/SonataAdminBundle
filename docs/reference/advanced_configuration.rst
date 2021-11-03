@@ -407,17 +407,21 @@ to the ``<html>`` tag.
 Custom Action Access Management
 -------------------------------
 
-You can customize the access system inside the CRUDController by adding
-some entries inside the  `$accessMapping` array in the linked Admin::
+You can customize the access system inside the CRUDController by override
+`getAccessMapping` method in your Admin class and return array with 
+additional entries::
 
-    // src/Admin/PostAdmin.php
+    // src/Admin/CustomAdmin.php
 
     final class CustomAdmin extends AbstractAdmin
     {
-        protected $accessMapping = [
-            'myCustomFoo' => 'EDIT',
-            'myCustomBar' => ['EDIT', 'LIST'],
-        ];
+        protected function getAccessMapping(): array
+        {
+            return [
+                'myCustomFoo' => 'EDIT',
+                'myCustomBar' => ['EDIT', 'LIST'],
+            ];
+        }
     }
 
 .. code-block:: php
@@ -444,17 +448,113 @@ some entries inside the  `$accessMapping` array in the linked Admin::
     }
 
 You can also fully customize how you want to handle your access management
-by overriding ``checkAccess`` function::
+by creating custom SecurityHandler service for specific Admin class::
 
-    // src/Admin/CustomAdmin.php
+    // src/Security/Handler/CustomSecurityHandler.php
 
-    final class CustomAdmin extends AbstractAdmin
+    use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
+
+    final class CustomSecurityHandler extends SecurityHandlerInterface
     {
-        public function checkAccess(string $action, ?object $object = null): void
+        public function isGranted(AdminInterface $admin, $attributes, ?object $object = null): bool
         {
-            $this->customAccessLogic();
+            return $this->customAccessLogic();
+        }
+
+        public function getBaseRole(AdminInterface $admin): string
+        {
+            return '';
+        }
+
+        public function buildSecurityInformation(AdminInterface $admin): array
+        {
+            return [];
+        }
+
+        public function createObjectSecurity(AdminInterface $admin, object $object): void
+        {
+        }
+
+        public function deleteObjectSecurity(AdminInterface $admin, object $object): void
+        {
         }
     }
+
+Use `security_handler` tag to point to your custom SecurityHandler service
+for specific Admin class:
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # config/services.yaml
+
+        services:
+            # ...
+            admin.custom:
+                class: App\Admin\CustomAdmin
+                arguments: [~, App\Entity\Custom, ~]
+                tags:
+                    - { name: sonata.admin, manager_type: orm, label: Category, security_handler: App\Security\Handler\CustomSecurityHandler }
+
+You can also use the default SecurityHandler (defined in global configuration) 
+in your custom SecurityHandler::
+
+    // src/Security/Handler/CustomSecurityHandler.php
+
+    use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
+
+    final class CustomSecurityHandler extends SecurityHandlerInterface
+    {
+        private SecurityHandlerInterface $defaultSecurityHandler;
+
+        public function __construct(SecurityHandlerInterface $defaultSecurityHandler)
+        {
+            $this->defaultSecurityHandler = $defaultSecurityHandler;
+        }
+
+        public function isGranted(AdminInterface $admin, $attributes, ?object $object = null): bool
+        {
+            // Custom access logic
+            if (...) {
+                return false;
+            }
+
+            // Default access logic
+            return $this->defaultSecurityHandler->isGranted($admin, $attributes, $object);
+        }
+
+        // ...
+    }
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # config/services.yaml
+
+        services:
+            # ...
+            App\Security\Handler\CustomSecurityHandler:
+                arguments:
+                    - '@sonata.admin.security.handler'
+
+If you have a lot of SecurityHandler services that use the default SecurityHandler service,
+you can define a service alias:
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # config/services.yaml
+
+        services:
+            # ...
+            Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface: '@sonata.admin.security.handler'
+
+This way, you do not need to define each custom SecurityHandler service to specify 
+the default SecurityHandler service as an argument.
+
 
 Use your own custom controller as default
 -----------------------------------------
