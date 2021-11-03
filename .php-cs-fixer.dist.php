@@ -48,6 +48,7 @@ $rules = [
     'php_unit_test_annotation' => false,
     'php_unit_test_case_static_method_calls' => true,
     'phpdoc_order' => true,
+    'phpdoc_to_comment' => ['ignored_tags' => ['psalm-suppress']],
     'single_line_throw' => false,
     'static_lambda' => true,
     'strict_comparison' => true,
