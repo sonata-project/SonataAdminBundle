@@ -90,14 +90,14 @@ interface FilterInterface
     /**
      * @throws \RuntimeException if the `field_mapping` option is not set
      *
-     * @return array<string, string> field mapping
+     * @return array<string, mixed> field mapping
      */
     public function getFieldMapping(): array;
 
     /**
      * @throws \RuntimeException if the `association_mapping` option is not set
      *
-     * @return array<string, string> association mapping
+     * @return array<string, mixed> association mapping
      */
     public function getAssociationMapping(): array;
 
