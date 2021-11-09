@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.2.1...4.2.2) - 2021-11-08
+### Fixed
+- [[#7599](https://github.com/sonata-project/SonataAdminBundle/pull/7599)] French translations ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7598](https://github.com/sonata-project/SonataAdminBundle/pull/7598)] Filter interface phpdoc ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.2.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.2.0...4.2.1) - 2021-10-31
 ### Fixed
 - [[#7576](https://github.com/sonata-project/SonataAdminBundle/pull/7576)] Missing `merge` call in twig ([@VincentLanglet](https://github.com/VincentLanglet))
