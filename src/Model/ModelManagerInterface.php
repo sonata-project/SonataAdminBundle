@@ -15,7 +15,7 @@ namespace Sonata\AdminBundle\Model;
 
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\AdminBundle\Exception\ModelManagerThrowable;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 
@@ -49,7 +49,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * @param object $object
      *
-     * @throws ModelManagerException
+     * @throws ModelManagerThrowable
      *
      * @phpstan-param T $object
      */
@@ -58,7 +58,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * @param object $object
      *
-     * @throws ModelManagerException
+     * @throws ModelManagerThrowable
      *
      * @phpstan-param T $object
      */
@@ -67,7 +67,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * @param object $object
      *
-     * @throws ModelManagerException
+     * @throws ModelManagerThrowable
      *
      * @phpstan-param T $object
      */
@@ -109,7 +109,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * @param string $class
      *
-     * @throws ModelManagerException
+     * @throws ModelManagerThrowable
      *
      * @phpstan-param class-string<T> $class
      */

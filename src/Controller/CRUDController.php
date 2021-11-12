@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\LockException;
-use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\AdminBundle\Exception\ModelManagerThrowable;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
@@ -190,7 +190,7 @@ class CRUDController implements ContainerAwareInterface
                 'sonata_flash_success',
                 $this->trans('flash_batch_delete_success', [], 'SonataAdminBundle')
             );
-        } catch (ModelManagerException $e) {
+        } catch (ModelManagerThrowable $e) {
             $this->handleModelManagerException($e);
             $this->addFlash(
                 'sonata_flash_error',
@@ -251,7 +251,7 @@ class CRUDController implements ContainerAwareInterface
                         'SonataAdminBundle'
                     )
                 );
-            } catch (ModelManagerException $e) {
+            } catch (ModelManagerThrowable $e) {
                 $this->handleModelManagerException($e);
 
                 if ($this->isXmlHttpRequest()) {
@@ -358,7 +358,7 @@ class CRUDController implements ContainerAwareInterface
 
                     // redirect to edit mode
                     return $this->redirectTo($existingObject);
-                } catch (ModelManagerException $e) {
+                } catch (ModelManagerThrowable $e) {
                     $this->handleModelManagerException($e);
 
                     $isFormValid = false;
@@ -632,7 +632,7 @@ class CRUDController implements ContainerAwareInterface
 
                     // redirect to edit mode
                     return $this->redirectTo($newObject);
-                } catch (ModelManagerException $e) {
+                } catch (ModelManagerThrowable $e) {
                     $this->handleModelManagerException($e);
 
                     $isFormValid = false;
