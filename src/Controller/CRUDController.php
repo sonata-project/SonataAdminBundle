@@ -1336,7 +1336,7 @@ class CRUDController implements ContainerAwareInterface
         }
 
         @trigger_error(sprintf(
-            'The method %s is deprecated since sonata-project/admin-bundle 3.107 and will be removed in 5.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.107 and will be removed in 5.0.',
             __METHOD__
         ), \E_USER_DEPRECATED);
 
