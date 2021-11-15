@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\AdminBundle\Exception\ModelManagerThrowable;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
@@ -191,7 +192,16 @@ class CRUDController implements ContainerAwareInterface
                 $this->trans('flash_batch_delete_success', [], 'SonataAdminBundle')
             );
         } catch (ModelManagerException $e) {
+            // NEXT_MAJOR: Remove this catch.
             $this->handleModelManagerException($e);
+
+            $this->addFlash(
+                'sonata_flash_error',
+                $this->trans('flash_batch_delete_error', [], 'SonataAdminBundle')
+            );
+        } catch (ModelManagerThrowable $e) {
+            $this->handleModelManagerThrowable($e);
+
             $this->addFlash(
                 'sonata_flash_error',
                 $this->trans('flash_batch_delete_error', [], 'SonataAdminBundle')
@@ -252,7 +262,23 @@ class CRUDController implements ContainerAwareInterface
                     )
                 );
             } catch (ModelManagerException $e) {
+                // NEXT_MAJOR: Remove this catch.
                 $this->handleModelManagerException($e);
+
+                if ($this->isXmlHttpRequest()) {
+                    return $this->renderJson(['result' => 'error'], Response::HTTP_OK, []);
+                }
+
+                $this->addFlash(
+                    'sonata_flash_error',
+                    $this->trans(
+                        'flash_delete_error',
+                        ['%name%' => $this->escapeHtml($objectName)],
+                        'SonataAdminBundle'
+                    )
+                );
+            } catch (ModelManagerThrowable $e) {
+                $this->handleModelManagerThrowable($e);
 
                 if ($this->isXmlHttpRequest()) {
                     return $this->renderJson(['result' => 'error'], Response::HTTP_OK, []);
@@ -359,7 +385,12 @@ class CRUDController implements ContainerAwareInterface
                     // redirect to edit mode
                     return $this->redirectTo($existingObject);
                 } catch (ModelManagerException $e) {
+                    // NEXT_MAJOR: Remove this catch.
                     $this->handleModelManagerException($e);
+
+                    $isFormValid = false;
+                } catch (ModelManagerThrowable $e) {
+                    $this->handleModelManagerThrowable($e);
 
                     $isFormValid = false;
                 } catch (LockException $e) {
@@ -633,7 +664,12 @@ class CRUDController implements ContainerAwareInterface
                     // redirect to edit mode
                     return $this->redirectTo($newObject);
                 } catch (ModelManagerException $e) {
+                    // NEXT_MAJOR: Remove this catch.
                     $this->handleModelManagerException($e);
+
+                    $isFormValid = false;
+                } catch (ModelManagerThrowable $e) {
+                    $this->handleModelManagerThrowable($e);
 
                     $isFormValid = false;
                 }
@@ -1292,6 +1328,33 @@ class CRUDController implements ContainerAwareInterface
      * @throws \Exception
      */
     protected function handleModelManagerException(\Exception $e)
+    {
+        if ($e instanceof ModelManagerThrowable) {
+            $this->handleModelManagerThrowable($e);
+
+            return;
+        }
+
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.107 and will be removed in 5.0.',
+            __METHOD__
+        ), \E_USER_DEPRECATED);
+
+        if ($this->get('kernel')->isDebug()) {
+            throw $e;
+        }
+
+        $context = ['exception' => $e];
+        if ($e->getPrevious()) {
+            $context['previous_exception_message'] = $e->getPrevious()->getMessage();
+        }
+        $this->getLogger()->error($e->getMessage(), $context);
+    }
+
+    /**
+     * @throws ModelManagerThrowable
+     */
+    protected function handleModelManagerThrowable(ModelManagerThrowable $e)
     {
         if ($this->get('kernel')->isDebug()) {
             throw $e;
