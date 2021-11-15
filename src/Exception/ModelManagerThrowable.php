@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Exception;
 
-/**
- * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
- */
-final class ModelManagerException extends \Exception implements ModelManagerThrowable
+interface ModelManagerThrowable extends \Throwable
 {
 }

@@ -22,6 +22,7 @@ use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\AdminBundle\Exception\ModelManagerThrowable;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
@@ -159,7 +160,16 @@ class CRUDController extends AbstractController
                 $this->trans('flash_batch_delete_success', [], 'SonataAdminBundle')
             );
         } catch (ModelManagerException $e) {
+            // NEXT_MAJOR: Remove this catch.
             $this->handleModelManagerException($e);
+
+            $this->addFlash(
+                'sonata_flash_error',
+                $this->trans('flash_batch_delete_error', [], 'SonataAdminBundle')
+            );
+        } catch (ModelManagerThrowable $e) {
+            $this->handleModelManagerThrowable($e);
+
             $this->addFlash(
                 'sonata_flash_error',
                 $this->trans('flash_batch_delete_error', [], 'SonataAdminBundle')
@@ -213,10 +223,26 @@ class CRUDController extends AbstractController
                     )
                 );
             } catch (ModelManagerException $e) {
+                // NEXT_MAJOR: Remove this catch.
                 $this->handleModelManagerException($e);
 
                 if ($this->isXmlHttpRequest($request)) {
                     return $this->renderJson(['result' => 'error']);
+                }
+
+                $this->addFlash(
+                    'sonata_flash_error',
+                    $this->trans(
+                        'flash_delete_error',
+                        ['%name%' => $this->escapeHtml($objectName)],
+                        'SonataAdminBundle'
+                    )
+                );
+            } catch (ModelManagerThrowable $e) {
+                $this->handleModelManagerThrowable($e);
+
+                if ($this->isXmlHttpRequest($request)) {
+                    return $this->renderJson(['result' => 'error'], Response::HTTP_OK, []);
                 }
 
                 $this->addFlash(
@@ -302,7 +328,12 @@ class CRUDController extends AbstractController
                     // redirect to edit mode
                     return $this->redirectTo($request, $existingObject);
                 } catch (ModelManagerException $e) {
+                    // NEXT_MAJOR: Remove this catch.
                     $this->handleModelManagerException($e);
+
+                    $isFormValid = false;
+                } catch (ModelManagerThrowable $e) {
+                    $this->handleModelManagerThrowable($e);
 
                     $isFormValid = false;
                 } catch (LockException $e) {
@@ -557,7 +588,12 @@ class CRUDController extends AbstractController
                     // redirect to edit mode
                     return $this->redirectTo($request, $newObject);
                 } catch (ModelManagerException $e) {
+                    // NEXT_MAJOR: Remove this catch.
                     $this->handleModelManagerException($e);
+
+                    $isFormValid = false;
+                } catch (ModelManagerThrowable $e) {
+                    $this->handleModelManagerThrowable($e);
 
                     $isFormValid = false;
                 }
@@ -1004,6 +1040,35 @@ class CRUDController extends AbstractController
      * @throws \Exception
      */
     protected function handleModelManagerException(\Exception $exception): void
+    {
+        if ($exception instanceof ModelManagerThrowable) {
+            $this->handleModelManagerThrowable($exception);
+
+            return;
+        }
+
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.107 and will be removed in 5.0.',
+            __METHOD__
+        ), \E_USER_DEPRECATED);
+
+        $debug = $this->getParameter('kernel.debug');
+        \assert(\is_bool($debug));
+        if ($debug) {
+            throw $exception;
+        }
+
+        $context = ['exception' => $exception];
+        if (null !== $exception->getPrevious()) {
+            $context['previous_exception_message'] = $exception->getPrevious()->getMessage();
+        }
+        $this->getLogger()->error($exception->getMessage(), $context);
+    }
+
+    /**
+     * @throws ModelManagerThrowable
+     */
+    protected function handleModelManagerThrowable(ModelManagerThrowable $exception): void
     {
         $debug = $this->getParameter('kernel.debug');
         \assert(\is_bool($debug));
