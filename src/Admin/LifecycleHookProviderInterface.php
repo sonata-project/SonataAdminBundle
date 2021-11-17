@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Admin;
 
 use Sonata\AdminBundle\Exception\LockException;
-use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\AdminBundle\Exception\ModelManagerThrowable;
 
 /**
  * This interface can be implemented to provide hooks that will be called
@@ -27,7 +27,7 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 interface LifecycleHookProviderInterface
 {
     /**
-     * @throws ModelManagerException
+     * @throws ModelManagerThrowable
      * @throws LockException
      *
      * @phpstan-param T $object
@@ -36,7 +36,7 @@ interface LifecycleHookProviderInterface
     public function update(object $object): object;
 
     /**
-     * @throws ModelManagerException
+     * @throws ModelManagerThrowable
      *
      * @phpstan-param T $object
      * @phpstan-return T $object
@@ -44,7 +44,7 @@ interface LifecycleHookProviderInterface
     public function create(object $object): object;
 
     /**
-     * @throws ModelManagerException
+     * @throws ModelManagerThrowable
      *
      * @phpstan-param T $object
      */

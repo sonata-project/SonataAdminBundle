@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Util;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\AdminBundle\Exception\ModelManagerThrowable;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
@@ -28,7 +28,7 @@ interface ObjectAclManipulatorInterface
      *
      * @param AdminInterface<object> $admin
      *
-     * @throws ModelManagerException
+     * @throws ModelManagerThrowable
      */
     public function batchConfigureAcls(
         OutputInterface $output,

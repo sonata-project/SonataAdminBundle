@@ -159,6 +159,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [4.0.0-alpha-1](https://github.com/sonata-project/SonataAdminBundle/compare/3.105.0...4.0.0-alpha-1) - 2021-04-11
 See UPGRADE-4.0.md
 
+## [3.107.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.106.1...3.107.0) - 2021-11-15
+### Added
+- [[#7602](https://github.com/sonata-project/SonataAdminBundle/pull/7602)] `ModelManagerThrowable` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7602](https://github.com/sonata-project/SonataAdminBundle/pull/7602)] `CRUDController::handleModelManagerThrowable()` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Deprecated
+- [[#7602](https://github.com/sonata-project/SonataAdminBundle/pull/7602)] `CRUDController::handleModelManagerException()` ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [3.106.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.106.0...3.106.1) - 2021-10-31
 ### Fixed
 - [[#7574](https://github.com/sonata-project/SonataAdminBundle/pull/7574)] Missing `merge` call in twig ([@VincentLanglet](https://github.com/VincentLanglet))
