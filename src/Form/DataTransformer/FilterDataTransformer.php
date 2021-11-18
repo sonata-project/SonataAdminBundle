@@ -17,6 +17,9 @@ use Sonata\AdminBundle\Filter\Model\FilterData;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
+/**
+ * @phpstan-implements DataTransformerInterface<FilterData, array{type?: int|numeric-string|null, value?: mixed}>
+ */
 final class FilterDataTransformer implements DataTransformerInterface
 {
     /**

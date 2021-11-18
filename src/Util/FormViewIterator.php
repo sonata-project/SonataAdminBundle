@@ -17,6 +17,8 @@ use Symfony\Component\Form\FormView;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-implements \RecursiveIterator<string, FormView>
  */
 final class FormViewIterator implements \RecursiveIterator
 {

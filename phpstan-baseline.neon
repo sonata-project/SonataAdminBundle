@@ -13,14 +13,14 @@ parameters:
             message: '#^Method Sonata\\AdminBundle\\Tests\\Fixtures\\Entity\\FooToStringNull\:\:__toString\(\) should return string but returns null\.$#'
             path: tests/Fixtures/Entity/FooToStringNull.php
         - # The phpstan-param is less precise than the psalm-param https://github.com/phpstan/phpstan/issues/4703
-            message: '#^Parameter \#3 \$idx of method Sonata\\AdminBundle\\Model\\ModelManagerInterface\<T of object\>\:\:addIdentifiersToQuery\(\) expects array\<int\|string\>\&nonEmpty\, array\<array\<string\>\|int\|string\>\&nonEmpty given\.$#'
+            message: '#^Parameter \#3 \$idx of method Sonata\\AdminBundle\\Model\\ModelManagerInterface\<T of object\>\:\:addIdentifiersToQuery\(\) expects non-empty-array\<int\|string\>, non-empty-array\<array\<string\>\|int\|string\> given\.$#'
             path: src/Form/DataTransformer/ModelToIdPropertyTransformer.php
         - # `treatPhpdocAsCertain: false` should not report this https://github.com/phpstan/phpstan/issues/5333
             message: '#^Instanceof between Symfony\\Component\\Routing\\Route and Symfony\\Component\\Routing\\Route will always evaluate to true\.$#'
             path: src/Route/RouteCollection.php
-        - # DataTransformer contravariance is not really mandatory
-            message: '#(reverseTransform|transform)\(\) should be contravariant#'
-            path: src/Form/DataTransformer
         - # Generic with intersection is buggy https://github.com/phpstan/phpstan/issues/5336
             message: '#Sonata\\AdminBundle\\Datagrid\\(Datagrid|PagerInterface)<PHPUnit\\Framework\\MockObject\\Stub&Sonata\\AdminBundle\\Datagrid\\ProxyQueryInterface>#'
             path: tests/Datagrid/DatagridTest.php
+        - # https://github.com/phpstan/phpstan/issues/5893
+            message: '#^Parameter \#1 \$object of static method Doctrine\\Common\\Util\\ClassUtils\:\:getClass\(\) expects Doctrine\\Persistence\\Proxy\<T of object\>\|T of object, T of object|T of object given\.$#'
+            path: src/Admin/AbstractAdmin.php

@@ -22,10 +22,15 @@ use Symfony\Component\Form\DataTransformerInterface;
  */
 interface DataTransformerResolverInterface
 {
+    /**
+     * @param DataTransformerInterface<mixed, mixed> $dataTransformer
+     */
     public function addCustomGlobalTransformer(string $fieldType, DataTransformerInterface $dataTransformer): void;
 
     /**
      * @param ModelManagerInterface<object> $modelManager
+     *
+     * @return DataTransformerInterface<mixed, mixed>
      */
     public function resolve(
         FieldDescriptionInterface $fieldDescription,

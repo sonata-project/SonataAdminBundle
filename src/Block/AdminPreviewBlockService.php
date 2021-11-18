@@ -105,9 +105,12 @@ final class AdminPreviewBlockService extends AbstractBlockService
     {
         $filters = $blockContext->getSetting('filters');
 
-        if ($sortBy = $filters[DatagridInterface::SORT_BY] ?? null) {
+        $sortBy = $filters[DatagridInterface::SORT_BY] ?? null;
+        if (null !== $sortBy) {
             $sortFilters = [DatagridInterface::SORT_BY => $sortBy];
-            if ($sortOrder = $filters[DatagridInterface::SORT_ORDER] ?? null) {
+
+            $sortOrder = $filters[DatagridInterface::SORT_ORDER] ?? null;
+            if (null !== $sortOrder) {
                 $sortFilters[DatagridInterface::SORT_ORDER] = $sortOrder;
                 unset($filters[DatagridInterface::SORT_ORDER]);
             }

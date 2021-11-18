@@ -26,6 +26,7 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-template T of object
+ * @phpstan-implements DataTransformerInterface<\Traversable<T>, array<int|string>>
  */
 final class ModelsToArrayTransformer implements DataTransformerInterface
 {
