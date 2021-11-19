@@ -143,6 +143,8 @@ class CRUDController extends AbstractController
     }
 
     /**
+     * NEXT_MAJOR: Change signature to `(ProxyQueryInterface $query, Request $request).
+     *
      * Execute a batch delete.
      *
      * @throws AccessDeniedException If access is not granted
