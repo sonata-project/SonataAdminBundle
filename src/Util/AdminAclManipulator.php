@@ -19,6 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
+use Symfony\Component\Security\Acl\Permission\MaskBuilderInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -28,12 +29,12 @@ final class AdminAclManipulator implements AdminAclManipulatorInterface
     /**
      * @var string
      *
-     * @phpstan-var class-string
+     * @phpstan-var class-string<MaskBuilderInterface>
      */
     private $maskBuilderClass;
 
     /**
-     * @phpstan-param class-string $maskBuilderClass
+     * @phpstan-param class-string<MaskBuilderInterface> $maskBuilderClass
      */
     public function __construct(string $maskBuilderClass)
     {

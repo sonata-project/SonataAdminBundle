@@ -54,8 +54,8 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $sonataAdmin = [
-            'name' => null,
-            'admin' => null,
+            'name' => false,
+            'admin' => false,
             'value' => null,
             'edit' => 'standard',
             'inline' => 'natural',
@@ -93,7 +93,11 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
         /*
          * We have a child, so we need to upgrade block prefix
          */
-        if ($view->parent && $view->parent->vars['sonata_admin_enabled'] && !($sonataAdmin['admin'] ?? false)) {
+        if (
+            null !== $view->parent
+            && true === $view->parent->vars['sonata_admin_enabled']
+            && false === $sonataAdmin['admin']
+        ) {
             $blockPrefixes = $view->vars['block_prefixes'];
             $baseName = str_replace('.', '_', $view->parent->vars['sonata_admin_code']);
 
@@ -171,8 +175,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver
-            ->setDefaults([
+        $resolver->setDefaults([
             'sonata_admin' => null,
             'sonata_field_description' => null,
 
@@ -182,6 +185,10 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x and will be removed in 5.0.
+     *
      * return the value related to FieldDescription, if the associated object does no
      * exists => a temporary one is created.
      *
@@ -189,6 +196,11 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
      */
     public function getValueFromFieldDescription(?object $object, FieldDescriptionInterface $fieldDescription)
     {
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
+            __METHOD__
+        ), \E_USER_DEPRECATED);
+
         $value = null;
 
         if (null === $object) {

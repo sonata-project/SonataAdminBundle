@@ -223,6 +223,9 @@ final class DataTransformerResolverTest extends TestCase
         static::assertSame($customDataTransformer, $dataTransformer);
     }
 
+    /**
+     * @return DataTransformerInterface<mixed, mixed>
+     */
     private function resolve(): ?DataTransformerInterface
     {
         return $this->resolver->resolve($this->fieldDescription, $this->modelManager);
