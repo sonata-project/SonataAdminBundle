@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.3.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.2.2...4.3.0) - 2021-11-19
+### Added
+- [[#7579](https://github.com/sonata-project/SonataAdminBundle/pull/7579)] Added `AbstractAdminExtension::preBatchAction()` and `AdminExtensionInterface::preBatchAction()` (as annotation for BC) to have an extension point on batch actions. ([@7ochem](https://github.com/7ochem))
+- [[#7579](https://github.com/sonata-project/SonataAdminBundle/pull/7579)] Added `AdminEventExtension::preBatchAction()` that dispatches a `sonata.admin.event.batch_action.pre_batch_action` event with a BatchActionEvent object containing the data ([@7ochem](https://github.com/7ochem))
+- [[#7579](https://github.com/sonata-project/SonataAdminBundle/pull/7579)] Added BatchActionEvent class as a transport for (newly introduced) batch action events ([@7ochem](https://github.com/7ochem))
+- [[#7604](https://github.com/sonata-project/SonataAdminBundle/pull/7604)] `ModelManagerThrowable` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7604](https://github.com/sonata-project/SonataAdminBundle/pull/7604)] `CRUDController::handleModelManagerThrowable()` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Deprecated
+- [[#7580](https://github.com/sonata-project/SonataAdminBundle/pull/7580)] `FormTypeFieldExtension::getValueFromFieldDescription()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7604](https://github.com/sonata-project/SonataAdminBundle/pull/7604)] `CRUDController::handleModelManagerException()` ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.2.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.2.1...4.2.2) - 2021-11-08
 ### Fixed
 - [[#7599](https://github.com/sonata-project/SonataAdminBundle/pull/7599)] French translations ([@VincentLanglet](https://github.com/VincentLanglet))
