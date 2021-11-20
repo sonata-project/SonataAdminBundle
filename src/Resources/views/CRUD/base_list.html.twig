@@ -141,6 +141,11 @@ file that was distributed with this source code.
                 {{ sonata_block_render_event('sonata.admin.list.table.bottom', { 'admin': admin }) }}
             </div>
             {% block list_footer %}
+                {% if not datagrid_has_results is defined %}
+                    {# Prevent error if someone is overriding the list_table and not the list footer #}
+                    {% set datagrid_has_results = admin.datagrid.results|length > 0 %}
+                {% endif %}
+
                 {% if datagrid_has_results %}
                     <div class="box-footer">
                         <div class="form-inline clearfix">
