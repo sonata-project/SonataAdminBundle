@@ -21,7 +21,6 @@ use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\FileManager;
 use Symfony\Bundle\MakerBundle\Generator;
-use Symfony\Bundle\MakerBundle\MakerBundle;
 use Symfony\Bundle\MakerBundle\Util\AutoloaderUtil;
 use Symfony\Bundle\MakerBundle\Util\MakerFileLinkFormatter;
 use Symfony\Bundle\MakerBundle\Util\PhpCompatUtil;
@@ -81,11 +80,6 @@ final class AdminMakerTest extends TestCase
 
     protected function setUp(): void
     {
-        // TODO: Remove this and restore this dependency on Github workflows when MakerBundle supports Symfony 6.
-        if (!class_exists(MakerBundle::class)) {
-            static::markTestSkipped('Maker bundle is not installed');
-        }
-
         $managerOrmProxy = $this->createMock(ModelManagerInterface::class);
         $managerOrmProxy->method('getExportFields')->with(Foo::class)
             ->willReturn(['bar', 'baz']);
