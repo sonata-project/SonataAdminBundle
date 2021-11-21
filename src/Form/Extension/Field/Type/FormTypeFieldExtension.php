@@ -187,7 +187,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x and will be removed in 5.0.
+     * @deprecated since sonata-project/admin-bundle version 4.3 and will be removed in 5.0.
      *
      * return the value related to FieldDescription, if the associated object does no
      * exists => a temporary one is created.
@@ -197,7 +197,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
     public function getValueFromFieldDescription(?object $object, FieldDescriptionInterface $fieldDescription)
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.3 and will be removed in 5.0.',
             __METHOD__
         ), \E_USER_DEPRECATED);
 
