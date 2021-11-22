@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.3.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.3.1...4.3.2) - 2021-11-22
+### Fixed
+- [[#7608](https://github.com/sonata-project/SonataAdminBundle/pull/7608)] Accessing a non existing template variable in list_footer block when the list_table block is overriden ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.3.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.3.0...4.3.1) - 2021-11-22
 ### Fixed
 - [[#7609](https://github.com/sonata-project/SonataAdminBundle/pull/7609)] Model Autocomplete template ([@VincentLanglet](https://github.com/VincentLanglet))
