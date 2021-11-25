@@ -9,7 +9,8 @@ file that was distributed with this source code.
 
 #}
 
-{# NEXT_MAJOR: Deprecate this template in version 4. Remove it in version 5. #}
+{# NEXT_MAJOR: Remove this #}
+{% deprecated 'The "base_list_flat_inner_row.html.twig" template is deprecated since sonata-project/admin-bundle version 4.3 and will be removed in 5.0.' %}
 
 {% if admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_BATCH')) and not app.request.isXmlHttpRequest %}
     <td class="sonata-ba-list-field sonata-ba-list-field-batch">

@@ -9,7 +9,8 @@ file that was distributed with this source code.
 
 #}
 
-{# NEXT_MAJOR: Deprecate this template in version 4. Remove it in version 5. #}
+{# NEXT_MAJOR: Remove this #}
+{% deprecated 'The "base_list_flat_field.html.twig" template is deprecated since sonata-project/admin-bundle version 4.3 and will be removed in 5.0.' %}
 
 <span class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}">
     {% set route_name = field_description.option('route').name|default(sonata_config.getOption('default_admin_route')) %}
