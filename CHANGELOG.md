@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.4.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.3.2...4.4.0) - 2021-11-25
+### Added
+- [[#7617](https://github.com/sonata-project/SonataAdminBundle/pull/7617)] The ability to not add a `select` column when accessing to the List with AJAX. ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Deprecated
+- [[#7617](https://github.com/sonata-project/SonataAdminBundle/pull/7617)] Template `src/Resources/views/CRUD/base_list_flat_field.html.twig` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7617](https://github.com/sonata-project/SonataAdminBundle/pull/7617)] Template `src/Resources/views/CRUD/base_list_flat_inner_row.html.twig` ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.3.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.3.1...4.3.2) - 2021-11-22
 ### Fixed
 - [[#7608](https://github.com/sonata-project/SonataAdminBundle/pull/7608)] Accessing a non existing template variable in list_footer block when the list_table block is overriden ([@VincentLanglet](https://github.com/VincentLanglet))
