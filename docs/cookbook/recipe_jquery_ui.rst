@@ -12,7 +12,7 @@ to the `addExternals` method:
 
 .. code-block:: javascript
 
-    # webpack.config.js
+    // webpack.config.js
 
     let Encore = require('@symfony/webpack-encore');
 
@@ -25,7 +25,7 @@ And then adding the one you need in your own js files (don't forget to load it i
 
 .. code-block:: javascript
 
-    # assets/js/sonata.js
+    // assets/js/sonata.js
 
     import $ from 'jquery';
 
