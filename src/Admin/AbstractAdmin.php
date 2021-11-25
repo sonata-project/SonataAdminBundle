@@ -2437,7 +2437,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             $extension->configureListFields($mapper);
         }
 
-        if ($this->hasRequest() && $this->getRequest()->isXmlHttpRequest()) {
+        if ($this->hasRequest()
+            && $this->getRequest()->isXmlHttpRequest()
+            && $this->getRequest()->query->getBoolean('select', true) // NEXT_MAJOR: Change the default value to `false` in version 5
+        ) {
             $mapper->add(ListMapper::NAME_SELECT, ListMapper::TYPE_SELECT, [
                 'label' => false,
                 'sortable' => false,
