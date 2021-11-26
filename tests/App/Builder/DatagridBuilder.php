@@ -15,11 +15,13 @@ namespace Sonata\AdminBundle\Tests\App\Builder;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
+use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Tests\App\Datagrid\Datagrid;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
@@ -65,6 +67,11 @@ final class DatagridBuilder implements DatagridBuilderInterface
 
     public function getBaseDatagrid(AdminInterface $admin, array $values = []): DatagridInterface
     {
-        return new Datagrid($this->formFactory, $this->pager, $this->proxyQuery);
+        return new Datagrid(
+            $this->proxyQuery,
+            new FieldDescriptionCollection(),
+            $this->pager,
+            $this->formFactory->createNamedBuilder('filter', FormType::class, [])
+        );
     }
 }
