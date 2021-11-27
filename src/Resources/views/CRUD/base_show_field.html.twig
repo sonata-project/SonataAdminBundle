@@ -32,7 +32,7 @@ file that was distributed with this source code.
                       data-readmore-more="{{ collapse.more|default('read_more')|trans({}, 'SonataAdminBundle') }}"
                       data-readmore-less="{{ collapse.less|default('read_less')|trans({}, 'SonataAdminBundle') }}">
                     {% block field_value %}
-                        {% if field_description.option('safe', false) %}{{ value|raw }}{% else %}{{ value|nl2br }}{% endif %}
+                        {% if field_description.option('safe', false) %}{{ value|raw }}{% else %}{{ value|default('')|nl2br }}{% endif %}
                     {% endblock %}
                 </div>
             {% else %}
