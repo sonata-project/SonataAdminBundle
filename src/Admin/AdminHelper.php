@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
-use Doctrine\Common\Collections\Collection;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Manipulator\ObjectManipulator;
@@ -167,10 +166,10 @@ class AdminHelper
 
             $collection = $this->propertyAccessor->getValue($subject, $path);
 
-            if (!($collection instanceof Collection)) {
+            if (!$collection instanceof \ArrayAccess && !\is_array($collection)) {
                 throw new \TypeError(sprintf(
-                    'Collection must be an instance of %s, %s given.',
-                    Collection::class,
+                    'Collection must be an instance of %s or array, %s given.',
+                    \ArrayAccess::class,
                     \is_object($collection) ? 'instance of "'.\get_class($collection).'"' : '"'.\gettype($collection).'"'
                 ));
             }
@@ -180,7 +179,7 @@ class AdminHelper
                 explode('.', preg_replace('#\[\d*?]#', '', $path) ?? '')
             );
 
-            $collection->add(new $modelClassName());
+            $collection[] = new $modelClassName();
             $this->propertyAccessor->setValue($subject, $path, $collection);
 
             $fieldDescription = null;
