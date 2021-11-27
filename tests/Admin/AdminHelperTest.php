@@ -245,7 +245,7 @@ final class AdminHelperTest extends TestCase
         }
     }
 
-    public function testAppendFormFieldElementWithoutFormFieldDescriptionInAdminAndNoCollectionClass(): void
+    public function testAppendFormFieldElementWithoutFormFieldDescriptionInAdminAndNoArrayAccess(): void
     {
         $admin = $this->createMock(AdminInterface::class);
         $admin
@@ -329,7 +329,7 @@ final class AdminHelperTest extends TestCase
         $admin->method('getFormBuilder')->willReturn($formBuilder);
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(sprintf('Collection must be an instance of %s, "%s" given.', Collection::class, \gettype(null)));
+        $this->expectExceptionMessage(sprintf('Collection must be an instance of %s or array, "%s" given.', \ArrayAccess::class, \gettype(null)));
         $this->helper->appendFormFieldElement($admin, $foo, 'test_bar');
     }
 
@@ -444,6 +444,117 @@ final class AdminHelperTest extends TestCase
         }
     }
 
+    public function testAppendFormFieldElementWithArray(): void
+    {
+        $admin = $this->createMock(AdminInterface::class);
+        $admin
+            ->method('getClass')
+            ->willReturn(Foo::class);
+
+        $associationAdmin = $this->createMock(AdminInterface::class);
+        $associationAdmin
+            ->method('getClass')
+            ->willReturn(Bar::class);
+
+        $associationMapping = [
+            'fieldName' => 'bar',
+            'targetEntity' => Foo::class,
+            'sourceEntity' => Foo::class,
+            'isOwningSide' => false,
+        ];
+
+        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $fieldDescription->method('getAssociationAdmin')->willReturn($associationAdmin);
+        $fieldDescription->method('getAssociationMapping')->willReturn($associationMapping);
+        $fieldDescription->method('getParentAssociationMappings')->willReturn([]);
+
+        $admin
+            ->method('getFormFieldDescription')
+            ->willReturn($fieldDescription);
+
+        $associationAdmin
+            ->method('getFormFieldDescriptions')
+            ->willReturn([
+                'bar' => $fieldDescription,
+            ]);
+
+        $admin
+            ->method('hasFormFieldDescription')
+            ->with($associationMapping['fieldName'])
+            ->willReturn(false);
+
+        $request = new Request([], [
+            'test' => [
+                'bar' => [
+                    [
+                        'baz' => [
+                            'baz' => true,
+                        ],
+                    ],
+                    ['_delete' => true],
+                ],
+            ],
+        ]);
+
+        $admin
+            ->method('getRequest')
+            ->willReturn($request);
+
+        $foo = new class() {
+            /** @var Collection<int, Bar> */
+            private $bar;
+
+            public function __construct()
+            {
+                $this->bar = new ArrayCollection();
+            }
+
+            /** @return array<int, Bar> */
+            public function getBar(): array
+            {
+                return $this->bar->toArray();
+            }
+
+            /** @param array<int, Bar> $bar */
+            public function setBar(array $bar): void
+            {
+                $this->bar = new ArrayCollection($bar);
+            }
+        };
+
+        $admin
+            ->method('hasSubject')
+            ->willReturn(true);
+        $admin
+            ->method('getSubject')
+            ->willReturn($foo);
+
+        $dataMapper = $this->createStub(DataMapperInterface::class);
+        $formFactory = $this->createStub(FormFactoryInterface::class);
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
+        $formBuilder = new FormBuilder('test', \get_class($foo), $eventDispatcher, $formFactory);
+        $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
+        $childFormBuilder = new FormBuilder('bar', \stdClass::class, $eventDispatcher, $formFactory);
+        $childFormBuilder->setCompound(true);
+        $childFormBuilder->setDataMapper($dataMapper);
+        $subChildFormBuilder = new FormBuilder('baz', \stdClass::class, $eventDispatcher, $formFactory);
+        $subChildFormBuilder->setCompound(true);
+        $subChildFormBuilder->setDataMapper($dataMapper);
+        $childFormBuilder->add($subChildFormBuilder);
+
+        $formBuilder->setCompound(true);
+        $formBuilder->setDataMapper($dataMapper);
+        $formBuilder->add($childFormBuilder);
+
+        $admin->method('getFormBuilder')->willReturn($formBuilder);
+
+        $finalForm = $this->helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
+
+        foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
+            static::assertFalse($childField->has('_delete'));
+        }
+    }
+
     public function testAppendFormFieldElementNested(): void
     {
         $admin = $this->createMock(AdminInterface::class);
@@ -498,7 +609,7 @@ final class AdminHelperTest extends TestCase
         $admin->expects(static::once())->method('getFormBuilder')->willReturn($formBuilder);
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(sprintf('Collection must be an instance of %s, "string" given.', Collection::class));
+        $this->expectExceptionMessage(sprintf('Collection must be an instance of %s or array, "string" given.', \ArrayAccess::class));
 
         $this->helper->appendFormFieldElement($admin, $object, 'uniquePartOfId_sub_object_0_and_more_0_final_data');
     }
