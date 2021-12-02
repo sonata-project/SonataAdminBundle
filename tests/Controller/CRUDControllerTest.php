@@ -43,7 +43,6 @@ use Sonata\Exporter\Source\SourceIteratorInterface;
 use Sonata\Exporter\Writer\JsonWriter;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
@@ -190,37 +189,20 @@ class CRUDControllerTest extends TestCase
 
         $this->templateRegistry = $this->createStub(TemplateRegistryInterface::class);
 
-        $templating = $this->createMock(DelegatingEngine::class);
-
-        $templatingRenderReturnCallback = static::returnCallback(function (
-            $view,
-            array $parameters = [],
-            ?Response $response = null
-        ) {
-            $this->template = $view;
-
-            if (null === $response) {
-                $response = new Response();
-            }
-
-            $this->parameters = $parameters;
-
-            return $response;
-        });
-
-        $templating
-            ->method('render')
-            ->will($templatingRenderReturnCallback);
-
-        $templating
-            ->method('supports')
-            ->willReturn(true);
-
         $this->session = new Session(new MockArraySessionStorage());
 
         $twig = $this->getMockBuilder(Environment::class)
             ->disableOriginalConstructor()
             ->getMock();
+
+        $twig
+            ->method('render')
+            ->willReturnCallback(function ($view, array $parameters = []) {
+                $this->template = $view;
+                $this->parameters = $parameters;
+
+                return '';
+            });
 
         $twig
             ->method('getRuntime')
@@ -271,7 +253,7 @@ class CRUDControllerTest extends TestCase
         $this->container->set('request_stack', $requestStack);
         $this->container->set('foo.admin', $this->admin);
         $this->container->set('foo.admin.template_registry', $this->templateRegistry);
-        $this->container->set('templating', $templating);
+//        $this->container->set('templating', $templating);
         $this->container->set('twig', $twig);
         $this->container->set('session', $this->session);
         $this->container->set('sonata.admin.exporter', $exporter);
