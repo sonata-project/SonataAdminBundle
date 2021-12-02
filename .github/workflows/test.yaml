@@ -82,13 +82,6 @@ jobs:
               if: matrix.variant != 'normal' && !startsWith(matrix.variant, 'symfony/symfony')
               run: composer require ${{ matrix.variant }} --no-update
 
-            - name: Allow unstable dependencies
-              run: composer config minimum-stability dev
-
-            - name: Remove dev dependencies not compatible with Symfony 6
-              if: matrix.symfony-require == '6.0.*'
-              run: composer remove psalm/plugin-symfony --dev --no-update --no-interaction
-
             - name: Install Composer dependencies (${{ matrix.dependencies }})
               uses: ramsey/composer-install@v1
               with:
