@@ -134,6 +134,8 @@ final class SetObjectFieldValueAction
 
             $elements = $propertyPath->getElements();
             $field = end($elements);
+            \assert(\is_string($field));
+
             $propertyPath = new PropertyPath($field);
         }
 
