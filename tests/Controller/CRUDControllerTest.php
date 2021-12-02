@@ -253,7 +253,6 @@ class CRUDControllerTest extends TestCase
         $this->container->set('request_stack', $requestStack);
         $this->container->set('foo.admin', $this->admin);
         $this->container->set('foo.admin.template_registry', $this->templateRegistry);
-//        $this->container->set('templating', $templating);
         $this->container->set('twig', $twig);
         $this->container->set('session', $this->session);
         $this->container->set('sonata.admin.exporter', $exporter);
