@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.5.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.4.0...4.5.0) - 2021-12-03
+### Added
+- [[#7626](https://github.com/sonata-project/SonataAdminBundle/pull/7626)] Support for a nullable username in a Revision. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7624](https://github.com/sonata-project/SonataAdminBundle/pull/7624)] Support for ArrayAccess when accessing value in the appendFormFieldElement method. ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#7622](https://github.com/sonata-project/SonataAdminBundle/pull/7622)] Fixed PHP 8.1 deprecation notice for nl2br usage in base_show_field.html.twig. ([@javer](https://github.com/javer))
+
 ## [4.4.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.3.2...4.4.0) - 2021-11-25
 ### Added
 - [[#7617](https://github.com/sonata-project/SonataAdminBundle/pull/7617)] The ability to not add a `select` column when accessing to the List with AJAX. ([@VincentLanglet](https://github.com/VincentLanglet))
