@@ -90,8 +90,7 @@
         "vimeo/psalm": "^4.9.2"
     },
     "conflict": {
-        "doctrine/doctrine-bundle": ">=3",
-        "sonata-project/doctrine-orm-admin-bundle": "<=4.0.0-alpha-1"
+        "doctrine/doctrine-bundle": ">=3"
     },
     "suggest": {
         "twig/extra-bundle": "Auto configures the Twig Intl extension"
@@ -108,10 +107,5 @@
     },
     "config": {
         "sort-packages": true
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "4.x-dev"
-        }
     }
 }
