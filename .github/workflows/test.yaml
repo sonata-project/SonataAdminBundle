@@ -83,6 +83,7 @@ jobs:
               run: composer require ${{ matrix.variant }} --no-update
 
             - name: Allow unstable dependencies
+              if: matrix.symfony-require == '6.0.*'
               run: composer config minimum-stability dev
 
             - name: Install Composer dependencies (${{ matrix.dependencies }})
