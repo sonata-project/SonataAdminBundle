@@ -1,7 +1,8 @@
 {
     "name": "sonata-project/admin-bundle",
-    "type": "symfony-bundle",
     "description": "The missing Symfony Admin Generator",
+    "license": "MIT",
+    "type": "symfony-bundle",
     "keywords": [
         "admin",
         "admin-generator",
@@ -10,8 +11,6 @@
         "sonata",
         "symfony"
     ],
-    "homepage": "https://docs.sonata-project.org/projects/SonataAdminBundle",
-    "license": "MIT",
     "authors": [
         {
             "name": "Thomas Rabaix",
@@ -23,6 +22,7 @@
             "homepage": "https://github.com/sonata-project/SonataAdminBundle/contributors"
         }
     ],
+    "homepage": "https://docs.sonata-project.org/projects/SonataAdminBundle",
     "require": {
         "php": "^7.3 || ^8.0",
         "ext-json": "*",
@@ -67,10 +67,6 @@
         "twig/string-extra": "^3.0",
         "twig/twig": "^2.12.1 || ^3.0"
     },
-    "conflict": {
-        "doctrine/doctrine-bundle": ">=3",
-        "sonata-project/doctrine-orm-admin-bundle": "<=4.0.0-alpha-1"
-    },
     "require-dev": {
         "doctrine/annotations": "^1.7",
         "matthiasnoback/symfony-config-test": "^4.2",
@@ -93,11 +89,12 @@
         "symfony/yaml": "^4.4 || ^5.3 || ^6.0",
         "vimeo/psalm": "^4.9.2"
     },
+    "conflict": {
+        "doctrine/doctrine-bundle": ">=3",
+        "sonata-project/doctrine-orm-admin-bundle": "<=4.0.0-alpha-1"
+    },
     "suggest": {
         "twig/extra-bundle": "Auto configures the Twig Intl extension"
-    },
-    "config": {
-        "sort-packages": true
     },
     "autoload": {
         "psr-4": {
@@ -108,5 +105,8 @@
         "psr-4": {
             "Sonata\\AdminBundle\\Tests\\": "tests/"
         }
+    },
+    "config": {
+        "sort-packages": true
     }
 }

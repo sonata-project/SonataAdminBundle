@@ -122,7 +122,7 @@ final class ChoiceFieldMaskTypeTest extends TypeTestCase
             ],
         ];
 
-        static::assertSame(array_values($expectedAllFields), array_values($view->vars['all_fields']), '"all_fields" is not as expected');
+        static::assertSame($expectedAllFields, array_values($view->vars['all_fields']), '"all_fields" is not as expected');
         static::assertSame($expectedMap, $view->vars['map'], '"map" is not as expected');
     }
 
@@ -150,7 +150,7 @@ final class ChoiceFieldMaskTypeTest extends TypeTestCase
             'array' => ['field_1', 'field_2'],
         ];
 
-        static::assertSame(array_values($expectedAllFields), array_values($view->vars['all_fields']), '"all_fields" is not as expected');
+        static::assertSame($expectedAllFields, array_values($view->vars['all_fields']), '"all_fields" is not as expected');
         static::assertSame($expectedMap, $view->vars['map'], '"map" is not as expected');
     }
 
