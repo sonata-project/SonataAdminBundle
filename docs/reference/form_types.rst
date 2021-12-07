@@ -663,6 +663,12 @@ The available options (which can be passed as a third parameter to ``FormMapper:
 
     You can check / uncheck a range of checkboxes by clicking a first one,
     then a second one with shift + click.
+    
+.. warning::
+
+    If you are using the ``sonata.admin.security.handler.role``, you must set, at least, the CREATE permission to the Admin of the relation, to be able to add more rows to the collection.
+    In order to delete rows, you must set the DELETE permission.
+    For more infos about permissions, check the :doc:`security` page.
 
 Sonata\\AdminBundle\\Form\\Type\\CollectionType
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -683,6 +689,12 @@ This bundle handle the native Symfony ``collection`` form type by adding:
     or before deleted (``sonata-collection-item-deleted``).
     A jQuery event is fired after a row has been deleted successfully (``sonata-collection-item-deleted-successful``)
     You can listen to these events to trigger custom JavaScript.
+    
+.. warning::
+
+    If you are using the ``sonata.admin.security.handler.role``, you must set, at least, the CREATE permission to the Admin of the relation, to be able to add more rows to the collection.
+    In order to delete rows, you must set the DELETE permission.
+    For more infos about permissions, check the :doc:`security` page.
 
 .. _form_types_fielddescription_options:
 
