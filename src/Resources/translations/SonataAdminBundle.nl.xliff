@@ -208,7 +208,7 @@
       </trans-unit>
       <trans-unit id="message_delete_confirmation">
         <source>message_delete_confirmation</source>
-        <target>Weet je zeker dat het geselecteerde item moet worden verwijderd?</target>
+        <target>Weet je zeker dat het geselecteerde item "%object%" moet worden verwijderd?</target>
       </trans-unit>
       <trans-unit id="btn_delete">
         <source>btn_delete</source>
@@ -216,7 +216,7 @@
       </trans-unit>
       <trans-unit id="title_batch_confirmation">
         <source>title_batch_confirmation</source>
-        <target>Bevestig groep handeling</target>
+        <target>Bevestig groep handeling "%action%"</target>
       </trans-unit>
       <trans-unit id="message_batch_confirmation">
         <source>message_batch_confirmation</source>
