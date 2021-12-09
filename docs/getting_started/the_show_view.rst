@@ -24,7 +24,7 @@ If you're now familiar with the ``FormMapper`` and the ``ListMapper``, the
             ->add('id')
             ->add('title')
             ->add('body')
-            ->add('category')
+            ->add('category.name')
         ;
     }
 
