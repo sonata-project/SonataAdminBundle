@@ -22,26 +22,26 @@ final class MetadataTest extends TestCase
     {
         $metadata = new Metadata('title', 'description', 'image', 'domain', ['key1' => 'value1']);
 
-        self::assertSame('title', $metadata->getTitle());
-        self::assertSame('description', $metadata->getDescription());
-        self::assertSame('image', $metadata->getImage());
-        self::assertSame('domain', $metadata->getDomain());
+        static::assertSame('title', $metadata->getTitle());
+        static::assertSame('description', $metadata->getDescription());
+        static::assertSame('image', $metadata->getImage());
+        static::assertSame('domain', $metadata->getDomain());
 
-        self::assertSame('value1', $metadata->getOption('key1'));
-        self::assertSame('valueDefault', $metadata->getOption('none', 'valueDefault'));
-        self::assertNull($metadata->getOption('none'));
-        self::assertSame(['key1' => 'value1'], $metadata->getOptions());
-        self::assertSame('value1', $metadata->getOption('key1'));
+        static::assertSame('value1', $metadata->getOption('key1'));
+        static::assertSame('valueDefault', $metadata->getOption('none', 'valueDefault'));
+        static::assertNull($metadata->getOption('none'));
+        static::assertSame(['key1' => 'value1'], $metadata->getOptions());
+        static::assertSame('value1', $metadata->getOption('key1'));
 
         $metadata2 = new Metadata('title', 'description', 'image');
-        self::assertNull($metadata2->getDomain());
-        self::assertSame([], $metadata2->getOptions());
+        static::assertNull($metadata2->getDomain());
+        static::assertSame([], $metadata2->getOptions());
     }
 
     public function testImageNullGetDefaultImage(): void
     {
         $metadata = new Metadata('title', 'description');
-        self::assertSame($metadata::DEFAULT_MOSAIC_BACKGROUND, $metadata->getImage());
+        static::assertSame($metadata::DEFAULT_MOSAIC_BACKGROUND, $metadata->getImage());
     }
 
     /**
@@ -49,7 +49,7 @@ final class MetadataTest extends TestCase
      */
     public function testIsImageAvailable(bool $expected, ?string $image): void
     {
-        self::assertSame(
+        static::assertSame(
             $expected,
             (new Metadata('title', 'description', $image))->isImageAvailable()
         );

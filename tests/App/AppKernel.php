@@ -28,7 +28,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorageFactory;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
-use Symfony\Component\Routing\RouteCollectionBuilder;
 use Symfony\Component\Security\Http\Authentication\AuthenticatorManager;
 
 final class AppKernel extends Kernel
@@ -40,9 +39,9 @@ final class AppKernel extends Kernel
         parent::__construct('test', false);
     }
 
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
-        $bundles = [
+        return [
             new FrameworkBundle(),
             new TwigBundle(),
             new SecurityBundle(),
@@ -53,8 +52,6 @@ final class AppKernel extends Kernel
             new SonataTwigBundle(),
             new SonataFormBundle(),
         ];
-
-        return $bundles;
     }
 
     public function getCacheDir(): string
@@ -67,15 +64,15 @@ final class AppKernel extends Kernel
         return sprintf('%slog', $this->getBaseDir());
     }
 
-    public function getProjectDir()
+    public function getProjectDir(): string
     {
         return __DIR__;
     }
 
     /**
-     * TODO: Drop RouteCollectionBuilder when support for Symfony < 5.1 is dropped.
+     * TODO: add typehint when support for Symfony < 5.1 is dropped.
      *
-     * @param RoutingConfigurator|RouteCollectionBuilder $routes
+     * @param RoutingConfigurator $routes
      */
     protected function configureRoutes($routes): void
     {

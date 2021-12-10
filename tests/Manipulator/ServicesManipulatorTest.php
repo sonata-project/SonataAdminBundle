@@ -52,7 +52,7 @@ final class ServicesManipulatorTest extends TestCase
             'controller_name',
             'manager_type'
         );
-        self::assertSame(
+        static::assertSame(
             "services:
     service_id:
         class: Sonata\AdminBundle\Admin\AdminInterface
@@ -69,7 +69,7 @@ final class ServicesManipulatorTest extends TestCase
             'another_controller_name',
             'another_manager_type'
         );
-        self::assertSame(
+        static::assertSame(
             "services:
     service_id:
         class: Sonata\AdminBundle\Admin\AdminInterface
@@ -119,7 +119,7 @@ final class ServicesManipulatorTest extends TestCase
             'controller_name',
             'manager_type'
         );
-        self::assertSame(
+        static::assertSame(
             "services:
     service_id:
         class: Sonata\AdminBundle\Admin\AdminInterface

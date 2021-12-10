@@ -175,6 +175,9 @@ interface FieldDescriptionInterface
      * Set the association admin instance (only used if the field is linked to an Admin).
      *
      * @param AdminInterface<object> $associationAdmin
+     *
+     * @phpstan-template T of object
+     * @phpstan-param AdminInterface<T> $associationAdmin
      */
     public function setAssociationAdmin(AdminInterface $associationAdmin): void;
 
@@ -220,6 +223,9 @@ interface FieldDescriptionInterface
 
     /**
      * @param AdminInterface<object> $admin
+     *
+     * @phpstan-template T of object
+     * @phpstan-param AdminInterface<T> $admin
      */
     public function setAdmin(AdminInterface $admin): void;
 

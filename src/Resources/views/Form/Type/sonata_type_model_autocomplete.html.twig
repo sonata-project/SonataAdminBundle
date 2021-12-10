@@ -97,7 +97,7 @@ file that was distributed with this source code.
                                 '{{ req_param_name_page_number }}': (params.page !== 'undefined' ? params.page : 1),
 
                                 // admin
-                                {% if sonata_admin.admin is not null %}
+                                {% if sonata_admin.admin %}
                                     'uniqid': '{{ sonata_admin.admin.uniqid }}',
                                     '_sonata_admin': '{{ sonata_admin.admin.baseCodeRoute|e('js') }}',
                                 {% elseif admin_code %}

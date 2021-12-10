@@ -24,4 +24,4 @@ Configuration
             breadcrumbs:
                # use this to change the default route used to generate the link
                # to the parent object inside a breadcrumb, when in a child admin
-               child_admin_route: edit
+               child_admin_route: show

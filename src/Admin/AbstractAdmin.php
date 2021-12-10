@@ -131,20 +131,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     protected $supportsPreviewMode = false;
 
     /**
-     * Action list for the search result.
-     *
-     * @var string[]
-     */
-    protected $searchResultActions = ['edit', 'show'];
-
-    /**
-     * The Access mapping.
-     *
-     * @var array<string, string|string[]> [action1 => requiredRole1, action2 => [requiredRole2, requiredRole3]]
-     */
-    protected $accessMapping = [];
-
-    /**
      * The list FieldDescription constructed from the configureListField method.
      *
      * @var array<string, FieldDescriptionInterface>
@@ -760,6 +746,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function getBatchActions(): array
     {
+        if (!$this->hasRoute('batch')) {
+            return [];
+        }
+
         $actions = [];
 
         if ($this->hasRoute('delete') && $this->hasAccess('delete')) {
@@ -865,7 +855,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
         $object = $this->createNewInstance();
 
-        $this->appendParentObject($object);
         $this->alterNewInstance($object);
 
         foreach ($this->getExtensions() as $extension) {
@@ -1061,7 +1050,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function removeFieldFromFormGroup(string $key): void
     {
-        foreach ($this->formGroups as $name => $formGroup) {
+        foreach ($this->formGroups as $name => $_formGroup) {
             unset($this->formGroups[$name]['fields'][$key]);
 
             if ([] === $this->formGroups[$name]['fields']) {
@@ -1105,6 +1094,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function setShowGroups(array $showGroups): void
     {
         $this->showGroups = $showGroups;
+    }
+
+    final public function removeFieldFromShowGroup(string $key): void
+    {
+        foreach ($this->showGroups as $name => $_showGroup) {
+            unset($this->showGroups[$name]['fields'][$key]);
+
+            if ([] === $this->showGroups[$name]['fields']) {
+                unset($this->showGroups[$name]);
+            }
+        }
     }
 
     final public function reorderShowGroup(string $group, array $keys): void
@@ -1576,6 +1576,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getCode();
     }
 
+    /**
+     * @return string
+     */
     public function getObjectIdentifier()
     {
         return $this->getCode();
@@ -1653,6 +1656,21 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->extensions[] = $extension;
     }
 
+    /**
+     * @phpstan-param AdminExtensionInterface<T> $extension
+     */
+    final public function removeExtension(AdminExtensionInterface $extension): void
+    {
+        $key = array_search($extension, $this->extensions, true);
+        if (false === $key) {
+            throw new \InvalidArgumentException(
+                sprintf('The extension "%s" was not set to the "%s" admin.', \get_class($extension), __CLASS__)
+            );
+        }
+
+        unset($this->extensions[$key]);
+    }
+
     final public function getExtensions(): array
     {
         return $this->extensions;
@@ -1720,11 +1738,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getRequest()->getSession()->get(sprintf('%s.list_mode', $this->getCode()), 'list');
     }
 
-    final public function getAccessMapping(): array
-    {
-        return $this->accessMapping;
-    }
-
     final public function checkAccess(string $action, ?object $object = null): void
     {
         $access = $this->getAccess();
@@ -1776,80 +1789,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     final public function getActionButtons(string $action, ?object $object = null): array
     {
-        // nothing to do for non-internal actions
-        if (!isset(self::INTERNAL_ACTIONS[$action])) {
-            return [];
-        }
-
-        $actionBit = self::INTERNAL_ACTIONS[$action];
-
-        $buttonList = [];
-
-        if (0 !== (self::MASK_OF_ACTION_CREATE & $actionBit)
-            && $this->hasRoute('create')
-            && $this->hasAccess('create')
-        ) {
-            $buttonList['create'] = [
-                'template' => $this->getTemplateRegistry()->getTemplate('button_create'),
-            ];
-        }
-
-        $canAccessObject = 0 !== (self::MASK_OF_ACTIONS_USING_OBJECT & $actionBit)
-            && null !== $object
-            && null !== $this->id($object);
-
-        if ($canAccessObject
-            && 0 !== (self::MASK_OF_ACTION_EDIT & $actionBit)
-            && $this->hasRoute('edit')
-            && $this->hasAccess('edit', $object)
-        ) {
-            $buttonList['edit'] = [
-                'template' => $this->getTemplateRegistry()->getTemplate('button_edit'),
-            ];
-        }
-
-        if ($canAccessObject
-            && 0 !== (self::MASK_OF_ACTION_HISTORY & $actionBit)
-            && $this->hasRoute('history')
-            && $this->hasAccess('history', $object)
-        ) {
-            $buttonList['history'] = [
-                'template' => $this->getTemplateRegistry()->getTemplate('button_history'),
-            ];
-        }
-
-        if ($canAccessObject
-            && 0 !== (self::MASK_OF_ACTION_ACL & $actionBit)
-            && $this->isAclEnabled()
-            && $this->hasRoute('acl')
-            && $this->hasAccess('acl', $object)
-        ) {
-            $buttonList['acl'] = [
-                'template' => $this->getTemplateRegistry()->getTemplate('button_acl'),
-            ];
-        }
-
-        if ($canAccessObject
-            && 0 !== (self::MASK_OF_ACTION_SHOW & $actionBit)
-            && $this->hasRoute('show')
-            && $this->hasAccess('show', $object)
-            && \count($this->getShow()) > 0
-        ) {
-            $buttonList['show'] = [
-                'template' => $this->getTemplateRegistry()->getTemplate('button_show'),
-            ];
-        }
-
-        if (0 !== (self::MASK_OF_ACTION_LIST & $actionBit)
-            && $this->hasRoute('list')
-            && $this->hasAccess('list')
-        ) {
-            $buttonList['list'] = [
-                'template' => $this->getTemplateRegistry()->getTemplate('button_list'),
-            ];
-        }
-
-        $buttonList = $this->configureActionButtons($buttonList, $action, $object);
+        $defaultButtonList = $this->getDefaultActionButtons($action, $object);
+        $buttonList = $this->configureActionButtons($defaultButtonList, $action, $object);
 
         foreach ($this->getExtensions() as $extension) {
             $buttonList = $extension->configureActionButtons($this, $buttonList, $action, $object);
@@ -1895,20 +1836,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $actions;
     }
 
-    /**
-     * @phpstan-param T $object
-     */
-    final public function getSearchResultLink(object $object): ?string
-    {
-        foreach ($this->searchResultActions as $action) {
-            if ($this->hasRoute($action) && $this->hasAccess($action, $object)) {
-                return $this->generateObjectUrl($action, $object);
-            }
-        }
-
-        return null;
-    }
-
     final public function createFieldDescription(string $propertyName, array $options = []): FieldDescriptionInterface
     {
         $fieldDescriptionFactory = $this->getFieldDescriptionFactory();
@@ -1932,7 +1859,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     protected function createNewInstance(): object
     {
-        return Instantiator::instantiate($this->getClass());
+        $object = Instantiator::instantiate($this->getClass());
+        $this->appendParentObject($object);
+
+        return $object;
     }
 
     /**
@@ -2165,7 +2095,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * Configures the tab menu in your admin.
      *
-     * @phpstan-param AdminInterface<object>|null $childAdmin
+     * @phpstan-template TChild of object
+     *
+     * @phpstan-param AdminInterface<TChild>|null $childAdmin
      */
     protected function configureTabMenu(ItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
     {
@@ -2195,9 +2127,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $access = array_merge([
             'acl' => AdminPermissionMap::PERMISSION_MASTER,
             'export' => AdminPermissionMap::PERMISSION_EXPORT,
-            'historyCompareRevisions' => AdminPermissionMap::PERMISSION_EDIT,
-            'historyViewRevision' => AdminPermissionMap::PERMISSION_EDIT,
-            'history' => AdminPermissionMap::PERMISSION_EDIT,
+            'historyCompareRevisions' => AdminPermissionMap::PERMISSION_HISTORY,
+            'historyViewRevision' => AdminPermissionMap::PERMISSION_HISTORY,
+            'history' => AdminPermissionMap::PERMISSION_HISTORY,
             'edit' => AdminPermissionMap::PERMISSION_EDIT,
             'show' => AdminPermissionMap::PERMISSION_VIEW,
             'create' => AdminPermissionMap::PERMISSION_CREATE,
@@ -2211,6 +2143,14 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         return $access;
+    }
+
+    /**
+     * @return array<string, string|string[]> [action1 => requiredRole1, action2 => [requiredRole2, requiredRole3]]
+     */
+    protected function getAccessMapping(): array
+    {
+        return [];
     }
 
     /**
@@ -2298,6 +2238,89 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 ObjectManipulator::setObject($object, $parentObject, $this->getParentFieldDescription());
             }
         }
+    }
+
+    /**
+     * @return array<string, array<string, mixed>>
+     *
+     * @phpstan-param T|null $object
+     */
+    private function getDefaultActionButtons(string $action, ?object $object = null): array
+    {
+        // nothing to do for non-internal actions
+        if (!isset(self::INTERNAL_ACTIONS[$action])) {
+            return [];
+        }
+
+        $buttonList = [];
+
+        $actionBit = self::INTERNAL_ACTIONS[$action];
+
+        if (0 !== (self::MASK_OF_ACTION_CREATE & $actionBit)
+            && $this->hasRoute('create')
+            && $this->hasAccess('create')
+        ) {
+            $buttonList['create'] = [
+                'template' => $this->getTemplateRegistry()->getTemplate('button_create'),
+            ];
+        }
+
+        $canAccessObject = 0 !== (self::MASK_OF_ACTIONS_USING_OBJECT & $actionBit)
+            && null !== $object
+            && null !== $this->id($object);
+
+        if ($canAccessObject
+            && 0 !== (self::MASK_OF_ACTION_EDIT & $actionBit)
+            && $this->hasRoute('edit')
+            && $this->hasAccess('edit', $object)
+        ) {
+            $buttonList['edit'] = [
+                'template' => $this->getTemplateRegistry()->getTemplate('button_edit'),
+            ];
+        }
+
+        if ($canAccessObject
+            && 0 !== (self::MASK_OF_ACTION_HISTORY & $actionBit)
+            && $this->hasRoute('history')
+            && $this->hasAccess('history', $object)
+        ) {
+            $buttonList['history'] = [
+                'template' => $this->getTemplateRegistry()->getTemplate('button_history'),
+            ];
+        }
+
+        if ($canAccessObject
+            && 0 !== (self::MASK_OF_ACTION_ACL & $actionBit)
+            && $this->isAclEnabled()
+            && $this->hasRoute('acl')
+            && $this->hasAccess('acl', $object)
+        ) {
+            $buttonList['acl'] = [
+                'template' => $this->getTemplateRegistry()->getTemplate('button_acl'),
+            ];
+        }
+
+        if ($canAccessObject
+            && 0 !== (self::MASK_OF_ACTION_SHOW & $actionBit)
+            && $this->hasRoute('show')
+            && $this->hasAccess('show', $object)
+            && \count($this->getShow()) > 0
+        ) {
+            $buttonList['show'] = [
+                'template' => $this->getTemplateRegistry()->getTemplate('button_show'),
+            ];
+        }
+
+        if (0 !== (self::MASK_OF_ACTION_LIST & $actionBit)
+            && $this->hasRoute('list')
+            && $this->hasAccess('list')
+        ) {
+            $buttonList['list'] = [
+                'template' => $this->getTemplateRegistry()->getTemplate('button_list'),
+            ];
+        }
+
+        return $buttonList;
     }
 
     /**
@@ -2414,7 +2437,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             $extension->configureListFields($mapper);
         }
 
-        if ($this->hasRequest() && $this->getRequest()->isXmlHttpRequest()) {
+        if ($this->hasRequest()
+            && $this->getRequest()->isXmlHttpRequest()
+            && $this->getRequest()->query->getBoolean('select', true) // NEXT_MAJOR: Change the default value to `false` in version 5
+        ) {
             $mapper->add(ListMapper::NAME_SELECT, ListMapper::TYPE_SELECT, [
                 'label' => false,
                 'sortable' => false,
@@ -2475,7 +2501,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * @phpstan-param AdminInterface<object>|null $childAdmin
+     * @phpstan-template TChild of object
+     *
+     * @phpstan-param AdminInterface<TChild>|null $childAdmin
      */
     private function buildTabMenu(string $action, ?AdminInterface $childAdmin = null): ?ItemInterface
     {

@@ -17,6 +17,10 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * NEXT_MAJOR: Remove this interface
+ *
+ * @deprecated since sonata-project/admin-bundle version 4.1 and will be removed in 5.0.
  */
 interface BuilderInterface
 {

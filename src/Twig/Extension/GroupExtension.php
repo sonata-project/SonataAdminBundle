@@ -18,6 +18,9 @@ use Sonata\AdminBundle\Admin\Pool;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
+/**
+ * @phpstan-import-type Item from \Sonata\AdminBundle\Admin\Pool
+ */
 final class GroupExtension extends AbstractExtension
 {
     /**
@@ -48,7 +51,7 @@ final class GroupExtension extends AbstractExtension
      *  label: string,
      *  label_catalogue: string,
      *  icon: string,
-     *  item_adds: array,
+     *  item_adds: Item[],
      *  items: array<AdminInterface<object>>,
      *  keep_open: bool,
      *  on_top: bool,

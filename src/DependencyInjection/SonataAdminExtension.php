@@ -99,6 +99,7 @@ final class SonataAdminExtension extends Extension
         }
 
         $container->setParameter('sonata.admin.configuration.global_search.empty_boxes', $config['global_search']['empty_boxes']);
+        $container->setParameter('sonata.admin.configuration.global_search.admin_route', $config['global_search']['admin_route']);
         $container->setParameter('sonata.admin.configuration.templates', $config['templates']);
         $container->setParameter('sonata.admin.configuration.default_admin_services', $config['default_admin_services']);
         $container->setParameter('sonata.admin.configuration.default_controller', $config['default_controller']);
@@ -137,6 +138,13 @@ final class SonataAdminExtension extends Extension
 
                 break;
             case 'sonata.admin.security.handler.acl':
+                if (!$container->has('security.acl.provider')) {
+                    throw new \RuntimeException(
+                        'The "security.acl.provider" service is needed to use ACL as security handler.'
+                        .' You MUST install and enable the "symfony/acl-bundle" bundle.'
+                    );
+                }
+
                 if (0 === \count($config['security']['information'])) {
                     $config['security']['information'] = [
                         'GUEST' => ['VIEW', 'LIST'],

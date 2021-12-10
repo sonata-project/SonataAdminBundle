@@ -44,7 +44,7 @@ final class AdminExporterTest extends TestCase
         $writers = [];
         foreach ($globalFormats as $exportFormat) {
             $writer = $this->createMock(TypedWriterInterface::class);
-            $writer->expects(self::once())
+            $writer->expects(static::once())
                 ->method('getFormat')
                 ->willReturn($exportFormat);
             $writers[] = $writer;
@@ -52,21 +52,21 @@ final class AdminExporterTest extends TestCase
 
         $exporter = new Exporter($writers);
         $admin = $this->createMock(AdminInterface::class);
-        $admin->expects(self::once())
+        $admin->expects(static::once())
             ->method('getExportFormats')
             ->willReturn($adminFormats);
         $adminExporter = new AdminExporter($exporter);
-        self::assertSame($expectedFormats, $adminExporter->getAvailableFormats($admin));
+        static::assertSame($expectedFormats, $adminExporter->getAvailableFormats($admin));
     }
 
     public function testGetExportFilename(): void
     {
         $admin = $this->createMock(AdminInterface::class);
-        $admin->expects(self::once())
+        $admin->expects(static::once())
             ->method('getClass')
             ->willReturn('MyProject\AppBundle\Model\MyClass');
         $adminExporter = new AdminExporter(new Exporter());
-        self::assertMatchesRegularExpression(
+        static::assertMatchesRegularExpression(
             '#export_myclass_\d{4}_\d{2}_\d{2}_\d{2}_\d{2}_\d{2}.csv#',
             $adminExporter->getExportFilename($admin, 'csv')
         );

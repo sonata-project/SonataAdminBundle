@@ -24,6 +24,10 @@ use Sonata\AdminBundle\Show\ShowMapper;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
+ * NEXT_MAJOR: Uncomment the actual definition of below methods inside the interface and remove these annotations.
+ *
+ * @method void preBatchAction(AdminInterface $admin, string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements)
+ *
  * @phpstan-template T of object
  */
 interface AdminExtensionInterface
@@ -56,8 +60,10 @@ interface AdminExtensionInterface
     /**
      * Builds the tab menu.
      *
+     * @phpstan-template TChild of object
+     *
      * @phpstan-param AdminInterface<T> $admin
-     * @phpstan-param AdminInterface<object>|null $childAdmin
+     * @phpstan-param AdminInterface<TChild>|null $childAdmin
      */
     public function configureTabMenu(
         AdminInterface $admin,
@@ -124,6 +130,13 @@ interface AdminExtensionInterface
      * @phpstan-param AdminInterface<T> $admin
      */
     public function configureBatchActions(AdminInterface $admin, array $actions): array;
+
+    // NEXT_MAJOR: Uncomment the method definition
+    ///**
+    // * @param mixed[] $idx
+    // * @phpstan-param AdminInterface<T> $admin
+    // */
+    //public function preBatchAction(AdminInterface $admin, string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements): void;
 
     /**
      * Get a chance to modify export fields.

@@ -1,8 +1,8 @@
 iCheck
 ======
 
-The admin comes with `iCheck <http://icheck.fronteed.com/>`_ integration
-since version 3.0.0. iCheck is a jQuery based checkbox and radio buttons skinning plugin.
+The admin comes with `iCheck <http://icheck.fronteed.com/>`_ integration.
+iCheck is a jQuery based checkbox and radio buttons skinning plugin.
 It provides a cross-browser and accessible solution to checkboxes and radio buttons customization.
 
 The iCheck plugin is enabled on all ``checkbox`` and ``radio`` form elements by default.

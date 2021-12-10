@@ -41,6 +41,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('sonata.admin.search.handler'),
                 new ReferenceConfigurator('sonata.admin.global_template_registry'),
                 '%sonata.admin.configuration.global_search.empty_boxes%',
+                '%sonata.admin.configuration.global_search.admin_route%',
             ])
 
         ->set('sonata.admin.block.stats', AdminStatsBlockService::class)

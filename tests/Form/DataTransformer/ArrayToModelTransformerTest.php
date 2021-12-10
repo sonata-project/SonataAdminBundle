@@ -38,7 +38,7 @@ final class ArrayToModelTransformerTest extends TestCase
         $transformer = new ArrayToModelTransformer($this->modelManager, \stdClass::class);
 
         $model = new \stdClass();
-        self::assertSame($model, $transformer->reverseTransform($model));
+        static::assertSame($model, $transformer->reverseTransform($model));
     }
 
     /**
@@ -50,7 +50,7 @@ final class ArrayToModelTransformerTest extends TestCase
     {
         $transformer = new ArrayToModelTransformer($this->modelManager, \stdClass::class);
 
-        self::assertInstanceOf(\stdClass::class, $transformer->reverseTransform($value));
+        static::assertInstanceOf(\stdClass::class, $transformer->reverseTransform($value));
     }
 
     /**
@@ -73,7 +73,7 @@ final class ArrayToModelTransformerTest extends TestCase
     {
         $transformer = new ArrayToModelTransformer($this->modelManager, \stdClass::class);
 
-        self::assertSame($expected, $transformer->transform($value));
+        static::assertSame($expected, $transformer->transform($value));
     }
 
     /**

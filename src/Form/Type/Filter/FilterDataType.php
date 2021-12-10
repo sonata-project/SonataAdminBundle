@@ -26,8 +26,14 @@ final class FilterDataType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('type', $options['operator_type'], $options['operator_options'] + ['required' => false])
-            ->add('value', $options['field_type'], $options['field_options'] + ['required' => false]);
+            ->add('type', $options['operator_type'], $options['operator_options'] + [
+                'label' => false,
+                'required' => false,
+            ])
+            ->add('value', $options['field_type'], $options['field_options'] + [
+                'label' => false,
+                'required' => false,
+            ]);
 
         $builder
             ->addModelTransformer(new FilterDataTransformer());

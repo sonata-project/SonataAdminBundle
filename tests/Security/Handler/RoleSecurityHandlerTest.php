@@ -48,11 +48,11 @@ final class RoleSecurityHandlerTest extends TestCase
     {
         $handler = new RoleSecurityHandler($this->authorizationChecker, ['ROLE_BATMAN', 'ROLE_IRONMAN']);
 
-        $this->admin->expects(self::once())
+        $this->admin->expects(static::once())
             ->method('getCode')
             ->willReturn($code);
 
-        self::assertSame($expected, $handler->getBaseRole($this->admin));
+        static::assertSame($expected, $handler->getBaseRole($this->admin));
     }
 
     /**
@@ -101,7 +101,7 @@ final class RoleSecurityHandlerTest extends TestCase
                 }
             });
 
-        self::assertSame($expected, $handler->isGranted($this->admin, $operation, $object));
+        static::assertSame($expected, $handler->isGranted($this->admin, $operation, $object));
     }
 
     /**
@@ -222,7 +222,7 @@ final class RoleSecurityHandlerTest extends TestCase
     public function testBuildSecurityInformation(): void
     {
         $handler = $this->getRoleSecurityHandler(['ROLE_FOO']);
-        self::assertSame([], $handler->buildSecurityInformation($this->getSonataAdminObject()));
+        static::assertSame([], $handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
     /**

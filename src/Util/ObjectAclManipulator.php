@@ -69,7 +69,7 @@ abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
                 $securityHandler->addObjectOwner($acl, $securityIdentity);
             }
 
-            $securityHandler->addObjectClassAces($acl, $securityHandler->buildSecurityInformation($admin));
+            $securityHandler->addObjectClassAces($acl, $admin);
 
             try {
                 $securityHandler->updateAcl($acl);

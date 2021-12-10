@@ -59,7 +59,9 @@ use Sonata\AdminBundle\Tests\Fixtures\Admin\ModelAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostCategoryAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostWithCustomRouteAdmin;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\PostWithoutBatchRouteAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\TagAdmin;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\TagWithoutPostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\BlogPost;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\CommentVote;
@@ -76,11 +78,9 @@ use Sonata\Doctrine\Adapter\AdapterInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormRegistry;
 use Symfony\Component\Form\ResolvedFormTypeFactory;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -110,9 +110,9 @@ final class AdminTest extends TestCase
         $baseControllerName = 'Sonata\NewsBundle\Controller\PostAdminController';
 
         $admin = new PostAdmin('sonata.post.admin.post', $class, $baseControllerName);
-        self::assertInstanceOf(AbstractAdmin::class, $admin);
-        self::assertSame($class, $admin->getClass());
-        self::assertSame($baseControllerName, $admin->getBaseControllerName());
+        static::assertInstanceOf(AbstractAdmin::class, $admin);
+        static::assertSame($class, $admin->getClass());
+        static::assertSame($baseControllerName, $admin->getBaseControllerName());
     }
 
     public function testGetClass(): void
@@ -125,18 +125,18 @@ final class AdminTest extends TestCase
         $admin->setModelManager($this->createMock(ModelManagerInterface::class));
 
         $admin->setSubject(new BlogPost());
-        self::assertSame(BlogPost::class, $admin->getClass());
+        static::assertSame(BlogPost::class, $admin->getClass());
 
         $admin->setSubClasses(['foo' => Foo::class]);
-        self::assertSame(BlogPost::class, $admin->getClass());
+        static::assertSame(BlogPost::class, $admin->getClass());
 
         $admin->setSubject(null);
         $admin->setSubClasses([]);
-        self::assertSame($class, $admin->getClass());
+        static::assertSame($class, $admin->getClass());
 
         $admin->setSubClasses(['foo' => Foo::class]);
         $admin->setRequest(new Request(['subclass' => 'foo']));
-        self::assertSame(Foo::class, $admin->getClass());
+        static::assertSame(Foo::class, $admin->getClass());
     }
 
     public function testGetClassException(): void
@@ -205,7 +205,7 @@ final class AdminTest extends TestCase
             'Sonata\NewsBundle\Controller\PostAdminController'
         );
 
-        self::assertFalse($admin->hasAccess('made-up'));
+        static::assertFalse($admin->hasAccess('made-up'));
     }
 
     public function testHasAccess(): void
@@ -227,7 +227,7 @@ final class AdminTest extends TestCase
         $admin->addExtension($customExtension);
         $admin->setSecurityHandler($securityHandler);
 
-        self::assertFalse($admin->hasAccess('custom_action'));
+        static::assertFalse($admin->hasAccess('custom_action'));
     }
 
     public function testHasAccessAllowsAccess(): void
@@ -249,7 +249,7 @@ final class AdminTest extends TestCase
         $admin->addExtension($customExtension);
         $admin->setSecurityHandler($securityHandler);
 
-        self::assertTrue($admin->hasAccess('custom_action'));
+        static::assertTrue($admin->hasAccess('custom_action'));
     }
 
     public function testHasAccessAllowsAccessEditAction(): void
@@ -268,7 +268,7 @@ final class AdminTest extends TestCase
         $admin->addExtension($customExtension);
         $admin->setSecurityHandler($securityHandler);
 
-        self::assertTrue($admin->hasAccess('edit_action'));
+        static::assertTrue($admin->hasAccess('edit_action'));
     }
 
     /**
@@ -282,24 +282,24 @@ final class AdminTest extends TestCase
     public function testChildren(): void
     {
         $postAdmin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
-        self::assertFalse($postAdmin->hasChildren());
-        self::assertFalse($postAdmin->hasChild('comment'));
+        static::assertFalse($postAdmin->hasChildren());
+        static::assertFalse($postAdmin->hasChild('comment'));
 
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'Sonata\NewsBundle\Controller\CommentAdminController');
         $postAdmin->addChild($commentAdmin, 'post');
 
-        self::assertTrue($postAdmin->hasChildren());
-        self::assertTrue($postAdmin->hasChild('sonata.post.admin.comment'));
+        static::assertTrue($postAdmin->hasChildren());
+        static::assertTrue($postAdmin->hasChild('sonata.post.admin.comment'));
 
-        self::assertSame('sonata.post.admin.comment', $postAdmin->getChild('sonata.post.admin.comment')->getCode());
-        self::assertSame('sonata.post.admin.post|sonata.post.admin.comment', $postAdmin->getChild('sonata.post.admin.comment')->getBaseCodeRoute());
-        self::assertSame($postAdmin, $postAdmin->getChild('sonata.post.admin.comment')->getParent());
-        self::assertSame('post', $commentAdmin->getParentAssociationMapping());
+        static::assertSame('sonata.post.admin.comment', $postAdmin->getChild('sonata.post.admin.comment')->getCode());
+        static::assertSame('sonata.post.admin.post|sonata.post.admin.comment', $postAdmin->getChild('sonata.post.admin.comment')->getBaseCodeRoute());
+        static::assertSame($postAdmin, $postAdmin->getChild('sonata.post.admin.comment')->getParent());
+        static::assertSame('post', $commentAdmin->getParentAssociationMapping());
 
-        self::assertFalse($postAdmin->isChild());
-        self::assertTrue($commentAdmin->isChild());
+        static::assertFalse($postAdmin->isChild());
+        static::assertTrue($commentAdmin->isChild());
 
-        self::assertSame(['sonata.post.admin.comment' => $commentAdmin], $postAdmin->getChildren());
+        static::assertSame(['sonata.post.admin.comment' => $commentAdmin], $postAdmin->getChildren());
     }
 
     /**
@@ -310,13 +310,13 @@ final class AdminTest extends TestCase
     {
         $postAdmin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'Sonata\NewsBundle\Controller\CommentAdminController');
-        self::assertFalse($commentAdmin->isChild());
-        self::assertFalse($commentAdmin->hasParentFieldDescription());
+        static::assertFalse($commentAdmin->isChild());
+        static::assertFalse($commentAdmin->hasParentFieldDescription());
 
         $commentAdmin->setParent($postAdmin, 'post');
 
-        self::assertSame($postAdmin, $commentAdmin->getParent());
-        self::assertSame('post', $commentAdmin->getParentAssociationMapping());
+        static::assertSame($postAdmin, $commentAdmin->getParent());
+        static::assertSame('post', $commentAdmin->getParentAssociationMapping());
     }
 
     /**
@@ -325,17 +325,17 @@ final class AdminTest extends TestCase
     public function testConfigure(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
-        self::assertNotNull($admin->getUniqId());
+        static::assertNotNull($admin->getUniqId());
 
         $admin->initialize();
-        self::assertNotNull($admin->getUniqId());
-        self::assertSame('Post', $admin->getClassnameLabel());
+        static::assertNotNull($admin->getUniqId());
+        static::assertSame('Post', $admin->getClassnameLabel());
 
         $admin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'Sonata\NewsBundle\Controller\CommentAdminController');
         $admin->setClassnameLabel('postcomment');
 
         $admin->initialize();
-        self::assertSame('postcomment', $admin->getClassnameLabel());
+        static::assertSame('postcomment', $admin->getClassnameLabel());
     }
 
     public function testConfigureWithValidParentAssociationMapping(): void
@@ -347,7 +347,7 @@ final class AdminTest extends TestCase
 
         $admin->initialize();
 
-        self::assertSame('comment', $admin->getParentAssociationMapping());
+        static::assertSame('comment', $admin->getParentAssociationMapping());
     }
 
     /**
@@ -429,7 +429,7 @@ final class AdminTest extends TestCase
     public function testGetBaseRoutePattern(string $objFqn, string $expected): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', $objFqn, 'Sonata\NewsBundle\Controller\PostAdminController');
-        self::assertSame($expected, $admin->getBaseRoutePattern());
+        static::assertSame($expected, $admin->getBaseRoutePattern());
     }
 
     /**
@@ -443,7 +443,7 @@ final class AdminTest extends TestCase
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'Sonata\NewsBundle\Controller\CommentAdminController');
         $commentAdmin->setParent($postAdmin, 'post');
 
-        self::assertSame(sprintf('%s/{id}/comment', $expected), $commentAdmin->getBaseRoutePattern());
+        static::assertSame(sprintf('%s/{id}/comment', $expected), $commentAdmin->getBaseRoutePattern());
     }
 
     /**
@@ -468,14 +468,14 @@ final class AdminTest extends TestCase
         $commentAdmin->setParent($postAdmin, 'post');
         $commentVoteAdmin->setParent($commentAdmin, 'comment');
 
-        self::assertSame(sprintf('%s/{id}/comment/{childId}/commentvote', $expected), $commentVoteAdmin->getBaseRoutePattern());
+        static::assertSame(sprintf('%s/{id}/comment/{childId}/commentvote', $expected), $commentVoteAdmin->getBaseRoutePattern());
     }
 
     public function testGetBaseRoutePatternWithSpecifedPattern(): void
     {
         $postAdmin = new PostWithCustomRouteAdmin('sonata.post.admin.post_with_custom_route', Post::class, 'Sonata\NewsBundle\Controller\PostWithCustomRouteAdminController');
 
-        self::assertSame('/post-custom', $postAdmin->getBaseRoutePattern());
+        static::assertSame('/post-custom', $postAdmin->getBaseRoutePattern());
     }
 
     public function testGetBaseRoutePatternWithChildAdminAndWithSpecifedPattern(): void
@@ -484,7 +484,7 @@ final class AdminTest extends TestCase
         $commentAdmin = new CommentWithCustomRouteAdmin('sonata.post.admin.comment_with_custom_route', Comment::class, 'Sonata\NewsBundle\Controller\CommentWithCustomRouteAdminController');
         $commentAdmin->setParent($postAdmin, 'post');
 
-        self::assertSame('/fixtures/bundle/post/{id}/comment-custom', $commentAdmin->getBaseRoutePattern());
+        static::assertSame('/fixtures/bundle/post/{id}/comment-custom', $commentAdmin->getBaseRoutePattern());
     }
 
     /**
@@ -579,7 +579,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', $objFqn, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertSame($expected, $admin->getBaseRouteName());
+        static::assertSame($expected, $admin->getBaseRouteName());
     }
 
     /**
@@ -598,7 +598,7 @@ final class AdminTest extends TestCase
     {
         $postAdmin = new PostWithCustomRouteAdmin('sonata.post.admin.post_with_custom_route', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertSame('post_custom', $postAdmin->getBaseRouteName());
+        static::assertSame('post_custom', $postAdmin->getBaseRouteName());
     }
 
     public function testGetBaseRouteNameWithChildAdminAndWithSpecifiedName(): void
@@ -607,7 +607,7 @@ final class AdminTest extends TestCase
         $commentAdmin = new CommentWithCustomRouteAdmin('sonata.post.admin.comment_with_custom_route', Comment::class, 'Sonata\NewsBundle\Controller\CommentWithCustomRouteAdminController');
         $commentAdmin->setParent($postAdmin, 'post');
 
-        self::assertSame('admin_fixtures_bundle_post_comment_custom', $commentAdmin->getBaseRouteName());
+        static::assertSame('admin_fixtures_bundle_post_comment_custom', $commentAdmin->getBaseRouteName());
     }
 
     public function testGetBaseRouteNameWithTwoNestedChildAdminAndWithSpecifiedName(): void
@@ -630,7 +630,7 @@ final class AdminTest extends TestCase
         $commentAdmin->setParent($postAdmin, 'post');
         $commentVoteAdmin->setParent($commentAdmin, 'comment');
 
-        self::assertSame('admin_fixtures_bundle_post_comment_custom_commentvote', $commentVoteAdmin->getBaseRouteName());
+        static::assertSame('admin_fixtures_bundle_post_comment_custom_commentvote', $commentVoteAdmin->getBaseRouteName());
     }
 
     /**
@@ -644,7 +644,7 @@ final class AdminTest extends TestCase
         $uniqId = uniqid();
         $admin->setUniqId($uniqId);
 
-        self::assertSame($uniqId, $admin->getUniqId());
+        static::assertSame($uniqId, $admin->getUniqId());
     }
 
     public function testToString(): void
@@ -653,23 +653,23 @@ final class AdminTest extends TestCase
 
         $s = new \stdClass();
 
-        self::assertNotEmpty($admin->toString($s));
+        static::assertNotEmpty($admin->toString($s));
 
         $s = new FooToString();
-        self::assertSame('salut', $admin->toString($s));
+        static::assertSame('salut', $admin->toString($s));
     }
 
     public function testToStringNull(): void
     {
         if (\PHP_VERSION_ID >= 80000) {
-            self::markTestSkipped('PHP 8.0 does not allow __toString() method to return null');
+            static::markTestSkipped('PHP 8.0 does not allow __toString() method to return null');
         }
 
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
         // To string method is implemented, but returns null
         $s = new FooToStringNull();
-        self::assertNotEmpty($admin->toString($s));
+        static::assertNotEmpty($admin->toString($s));
     }
 
     public function testIsAclEnabled(): void
@@ -677,11 +677,11 @@ final class AdminTest extends TestCase
         $postAdmin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
         $postAdmin->setSecurityHandler($this->createMock(SecurityHandlerInterface::class));
-        self::assertFalse($postAdmin->isAclEnabled());
+        static::assertFalse($postAdmin->isAclEnabled());
 
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'Sonata\NewsBundle\Controller\CommentAdminController');
         $commentAdmin->setSecurityHandler($this->createMock(AclSecurityHandlerInterface::class));
-        self::assertTrue($commentAdmin->isAclEnabled());
+        static::assertTrue($commentAdmin->isAclEnabled());
     }
 
     /**
@@ -701,15 +701,15 @@ final class AdminTest extends TestCase
             Post::class,
             'Sonata\NewsBundle\Controller\PostAdminController'
         );
-        self::assertFalse($admin->hasSubClass('test'));
-        self::assertFalse($admin->hasActiveSubClass());
-        self::assertCount(0, $admin->getSubClasses());
-        self::assertSame(Post::class, $admin->getClass());
+        static::assertFalse($admin->hasSubClass('test'));
+        static::assertFalse($admin->hasActiveSubClass());
+        static::assertCount(0, $admin->getSubClasses());
+        static::assertSame(Post::class, $admin->getClass());
 
         // Just for the record, if there is no inheritance set, the getSubject is not used
         // the getSubject can also lead to some issue
         $admin->setSubject(new BlogPost());
-        self::assertSame(BlogPost::class, $admin->getClass());
+        static::assertSame(BlogPost::class, $admin->getClass());
 
         /** @var class-string $postExtended1 */
         $postExtended1 = 'NewsBundle\Entity\PostExtended1';
@@ -720,11 +720,11 @@ final class AdminTest extends TestCase
             'extended1' => $postExtended1,
             'extended2' => $postExtended2,
         ]);
-        self::assertFalse($admin->hasSubClass('test'));
-        self::assertTrue($admin->hasSubClass('extended1'));
-        self::assertFalse($admin->hasActiveSubClass());
-        self::assertCount(2, $admin->getSubClasses());
-        self::assertSame(
+        static::assertFalse($admin->hasSubClass('test'));
+        static::assertTrue($admin->hasSubClass('extended1'));
+        static::assertFalse($admin->hasActiveSubClass());
+        static::assertCount(2, $admin->getSubClasses());
+        static::assertSame(
             BlogPost::class,
             $admin->getClass(),
             'When there is no subclass in the query the class parameter should be returned'
@@ -732,17 +732,17 @@ final class AdminTest extends TestCase
 
         $request = new Request(['subclass' => 'extended1']);
         $admin->setRequest($request);
-        self::assertFalse($admin->hasSubClass('test'));
-        self::assertTrue($admin->hasSubClass('extended1'));
-        self::assertTrue($admin->hasActiveSubClass());
-        self::assertCount(2, $admin->getSubClasses());
-        self::assertSame(
+        static::assertFalse($admin->hasSubClass('test'));
+        static::assertTrue($admin->hasSubClass('extended1'));
+        static::assertTrue($admin->hasActiveSubClass());
+        static::assertCount(2, $admin->getSubClasses());
+        static::assertSame(
             $postExtended1,
             $admin->getActiveSubClass(),
             'It should return the curently active sub class.'
         );
-        self::assertSame('extended1', $admin->getActiveSubclassCode());
-        self::assertSame(
+        static::assertSame('extended1', $admin->getActiveSubclassCode());
+        static::assertSame(
             'NewsBundle\Entity\PostExtended1',
             $admin->getClass(),
             'getClass() should return the name of the sub class when passed through a request query parameter.'
@@ -773,7 +773,7 @@ final class AdminTest extends TestCase
             'extended2' => $postExtended2,
         ]);
 
-        self::assertTrue($admin->hasActiveSubClass());
+        static::assertTrue($admin->hasActiveSubClass());
 
         $this->expectException(\LogicException::class);
 
@@ -793,7 +793,7 @@ final class AdminTest extends TestCase
 
         $request = new Request(['subclass' => 'extended1']);
         $admin->setRequest($request);
-        self::assertTrue($admin->hasActiveSubClass());
+        static::assertTrue($admin->hasActiveSubClass());
     }
 
     public function testGetPerPageOptions(): void
@@ -802,7 +802,7 @@ final class AdminTest extends TestCase
 
         $perPageOptions = $admin->getPerPageOptions();
 
-        self::assertSame([10, 25, 50, 100, 250], $perPageOptions);
+        static::assertSame([10, 25, 50, 100, 250], $perPageOptions);
     }
 
     public function testGetLabelTranslatorStrategy(): void
@@ -811,7 +811,7 @@ final class AdminTest extends TestCase
 
         $labelTranslatorStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
         $admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
-        self::assertSame($labelTranslatorStrategy, $admin->getLabelTranslatorStrategy());
+        static::assertSame($labelTranslatorStrategy, $admin->getLabelTranslatorStrategy());
     }
 
     public function testGetLabelTranslatorStrategyWithException(): void
@@ -833,7 +833,7 @@ final class AdminTest extends TestCase
 
         $routeBuilder = $this->createMock(RouteBuilderInterface::class);
         $admin->setRouteBuilder($routeBuilder);
-        self::assertSame($routeBuilder, $admin->getRouteBuilder());
+        static::assertSame($routeBuilder, $admin->getRouteBuilder());
     }
 
     public function testGetMenuFactory(): void
@@ -842,42 +842,57 @@ final class AdminTest extends TestCase
 
         $menuFactory = $this->createMock(FactoryInterface::class);
         $admin->setMenuFactory($menuFactory);
-        self::assertSame($menuFactory, $admin->getMenuFactory());
+        static::assertSame($menuFactory, $admin->getMenuFactory());
     }
 
     public function testGetExtensions(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertSame([], $admin->getExtensions());
+        static::assertSame([], $admin->getExtensions());
 
         $adminExtension1 = $this->createMock(AdminExtensionInterface::class);
         $adminExtension2 = $this->createMock(AdminExtensionInterface::class);
 
         $admin->addExtension($adminExtension1);
         $admin->addExtension($adminExtension2);
-        self::assertSame([$adminExtension1, $adminExtension2], $admin->getExtensions());
+        static::assertSame([$adminExtension1, $adminExtension2], $admin->getExtensions());
+
+        $admin->removeExtension($adminExtension2);
+        static::assertSame([$adminExtension1], $admin->getExtensions());
+    }
+
+    public function testRemovingNonExistingExtensions(): void
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
+
+        static::assertSame([], $admin->getExtensions());
+
+        $adminExtension1 = $this->createMock(AdminExtensionInterface::class);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $admin->removeExtension($adminExtension1);
     }
 
     public function testGetFilterTheme(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertSame([], $admin->getFilterTheme());
+        static::assertSame([], $admin->getFilterTheme());
 
         $admin->setFilterTheme(['FooTheme']);
-        self::assertSame(['FooTheme'], $admin->getFilterTheme());
+        static::assertSame(['FooTheme'], $admin->getFilterTheme());
     }
 
     public function testGetFormTheme(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertSame([], $admin->getFormTheme());
+        static::assertSame([], $admin->getFormTheme());
 
         $admin->setFormTheme(['FooTheme']);
 
-        self::assertSame(['FooTheme'], $admin->getFormTheme());
+        static::assertSame(['FooTheme'], $admin->getFormTheme());
     }
 
     public function testGetSecurityHandler(): void
@@ -886,14 +901,14 @@ final class AdminTest extends TestCase
 
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $admin->setSecurityHandler($securityHandler);
-        self::assertSame($securityHandler, $admin->getSecurityHandler());
+        static::assertSame($securityHandler, $admin->getSecurityHandler());
     }
 
     public function testGetSecurityInformation(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertSame([], $admin->getSecurityInformation());
+        static::assertSame([], $admin->getSecurityInformation());
 
         $securityInformation = [
             'GUEST' => ['VIEW', 'LIST'],
@@ -901,7 +916,7 @@ final class AdminTest extends TestCase
         ];
 
         $admin->setSecurityInformation($securityInformation);
-        self::assertSame($securityInformation, $admin->getSecurityInformation());
+        static::assertSame($securityInformation, $admin->getSecurityInformation());
     }
 
     public function testGetManagerType(): void
@@ -909,7 +924,7 @@ final class AdminTest extends TestCase
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
         $admin->setManagerType('foo_orm');
-        self::assertSame('foo_orm', $admin->getManagerType());
+        static::assertSame('foo_orm', $admin->getManagerType());
     }
 
     public function testGetModelManager(): void
@@ -919,7 +934,7 @@ final class AdminTest extends TestCase
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
         $admin->setModelManager($modelManager);
-        self::assertSame($modelManager, $admin->getModelManager());
+        static::assertSame($modelManager, $admin->getModelManager());
     }
 
     public function testGetModelManagerWithException(): void
@@ -948,11 +963,11 @@ final class AdminTest extends TestCase
             'Sonata\NewsBundle\Controller\CommentAdminController'
         );
 
-        self::assertSame($postAdmin->getCode(), $postAdmin->getBaseCodeRoute());
+        static::assertSame($postAdmin->getCode(), $postAdmin->getBaseCodeRoute());
 
         $postAdmin->addChild($commentAdmin, 'post');
 
-        self::assertSame(
+        static::assertSame(
             'sonata.post.admin.post|sonata.post.admin.comment',
             $commentAdmin->getBaseCodeRoute()
         );
@@ -965,7 +980,7 @@ final class AdminTest extends TestCase
         $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
 
         $admin->setRouteGenerator($routeGenerator);
-        self::assertSame($routeGenerator, $admin->getRouteGenerator());
+        static::assertSame($routeGenerator, $admin->getRouteGenerator());
     }
 
     public function testGetRouteGeneratorWithException(): void
@@ -985,7 +1000,7 @@ final class AdminTest extends TestCase
         $pool = new Pool(new Container());
 
         $admin->setConfigurationPool($pool);
-        self::assertSame($pool, $admin->getConfigurationPool());
+        static::assertSame($pool, $admin->getConfigurationPool());
     }
 
     public function testGetConfigurationPoolWithException(): void
@@ -1005,7 +1020,7 @@ final class AdminTest extends TestCase
         $showBuilder = $this->createMock(ShowBuilderInterface::class);
 
         $admin->setShowBuilder($showBuilder);
-        self::assertSame($showBuilder, $admin->getShowBuilder());
+        static::assertSame($showBuilder, $admin->getShowBuilder());
     }
 
     public function testGetListBuilder(): void
@@ -1015,7 +1030,7 @@ final class AdminTest extends TestCase
         $listBuilder = $this->createMock(ListBuilderInterface::class);
 
         $admin->setListBuilder($listBuilder);
-        self::assertSame($listBuilder, $admin->getListBuilder());
+        static::assertSame($listBuilder, $admin->getListBuilder());
     }
 
     public function testGetDatagridBuilder(): void
@@ -1025,7 +1040,7 @@ final class AdminTest extends TestCase
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
 
         $admin->setDatagridBuilder($datagridBuilder);
-        self::assertSame($datagridBuilder, $admin->getDatagridBuilder());
+        static::assertSame($datagridBuilder, $admin->getDatagridBuilder());
     }
 
     public function testGetFormContractor(): void
@@ -1035,20 +1050,20 @@ final class AdminTest extends TestCase
         $formContractor = $this->createMock(FormContractorInterface::class);
 
         $admin->setFormContractor($formContractor);
-        self::assertSame($formContractor, $admin->getFormContractor());
+        static::assertSame($formContractor, $admin->getFormContractor());
     }
 
     public function testGetRequest(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertFalse($admin->hasRequest());
+        static::assertFalse($admin->hasRequest());
 
         $request = new Request();
 
         $admin->setRequest($request);
-        self::assertSame($request, $admin->getRequest());
-        self::assertTrue($admin->hasRequest());
+        static::assertSame($request, $admin->getRequest());
+        static::assertTrue($admin->hasRequest());
     }
 
     public function testGetRequestWithException(): void
@@ -1064,10 +1079,10 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertSame('messages', $admin->getTranslationDomain());
+        static::assertSame('messages', $admin->getTranslationDomain());
 
         $admin->setTranslationDomain('foo');
-        self::assertSame('foo', $admin->getTranslationDomain());
+        static::assertSame('foo', $admin->getTranslationDomain());
     }
 
     public function testGetTranslator(): void
@@ -1077,41 +1092,41 @@ final class AdminTest extends TestCase
         $translator = $this->createMock(TranslatorInterface::class);
 
         $admin->setTranslator($translator);
-        self::assertSame($translator, $admin->getTranslator());
+        static::assertSame($translator, $admin->getTranslator());
     }
 
     public function testGetShowGroups(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertSame([], $admin->getShowGroups());
+        static::assertSame([], $admin->getShowGroups());
 
         $groups = ['group' => []];
 
         $admin->setShowGroups($groups);
-        self::assertSame($groups, $admin->getShowGroups());
+        static::assertSame($groups, $admin->getShowGroups());
     }
 
     public function testGetFormGroups(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertSame([], $admin->getFormGroups());
+        static::assertSame([], $admin->getFormGroups());
 
         $groups = ['group' => []];
 
         $admin->setFormGroups($groups);
-        self::assertSame($groups, $admin->getFormGroups());
+        static::assertSame($groups, $admin->getFormGroups());
     }
 
     public function testGetMaxPageLinks(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertSame(25, $admin->getMaxPageLinks());
+        static::assertSame(25, $admin->getMaxPageLinks());
 
         $admin->setMaxPageLinks(14);
-        self::assertSame(14, $admin->getMaxPageLinks());
+        static::assertSame(14, $admin->getMaxPageLinks());
     }
 
     public function testGetMaxPerPage(): void
@@ -1121,27 +1136,27 @@ final class AdminTest extends TestCase
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
         $admin->setModelManager($modelManager);
 
-        self::assertSame(25, $admin->getMaxPerPage());
+        static::assertSame(25, $admin->getMaxPerPage());
     }
 
     public function testGetLabel(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertNull($admin->getLabel());
+        static::assertNull($admin->getLabel());
 
         $admin->setLabel('FooLabel');
-        self::assertSame('FooLabel', $admin->getLabel());
+        static::assertSame('FooLabel', $admin->getLabel());
     }
 
     public function testGetBaseController(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertSame('Sonata\NewsBundle\Controller\PostAdminController', $admin->getBaseControllerName());
+        static::assertSame('Sonata\NewsBundle\Controller\PostAdminController', $admin->getBaseControllerName());
 
         $admin->setBaseControllerName('Sonata\NewsBundle\Controller\FooAdminController');
-        self::assertSame('Sonata\NewsBundle\Controller\FooAdminController', $admin->getBaseControllerName());
+        static::assertSame('Sonata\NewsBundle\Controller\FooAdminController', $admin->getBaseControllerName());
     }
 
     public function testGetIdParameter(): void
@@ -1152,8 +1167,8 @@ final class AdminTest extends TestCase
             'Sonata\NewsBundle\Controller\PostAdminController'
         );
 
-        self::assertSame('id', $postAdmin->getIdParameter());
-        self::assertFalse($postAdmin->isChild());
+        static::assertSame('id', $postAdmin->getIdParameter());
+        static::assertFalse($postAdmin->isChild());
 
         $commentAdmin = new CommentAdmin(
             'sonata.post.admin.comment',
@@ -1162,8 +1177,8 @@ final class AdminTest extends TestCase
         );
         $commentAdmin->setParent($postAdmin, 'post');
 
-        self::assertTrue($commentAdmin->isChild());
-        self::assertSame('childId', $commentAdmin->getIdParameter());
+        static::assertTrue($commentAdmin->isChild());
+        static::assertSame('childId', $commentAdmin->getIdParameter());
 
         $commentVoteAdmin = new CommentVoteAdmin(
             'sonata.post.admin.comment_vote',
@@ -1172,15 +1187,15 @@ final class AdminTest extends TestCase
         );
         $commentVoteAdmin->setParent($commentAdmin, 'comment');
 
-        self::assertTrue($commentVoteAdmin->isChild());
-        self::assertSame('childChildId', $commentVoteAdmin->getIdParameter());
+        static::assertTrue($commentVoteAdmin->isChild());
+        static::assertSame('childChildId', $commentVoteAdmin->getIdParameter());
     }
 
     public function testGetExportFormats(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertSame(['json', 'xml', 'csv', 'xls'], $admin->getExportFormats());
+        static::assertSame(['json', 'xml', 'csv', 'xls'], $admin->getExportFormats());
     }
 
     public function testGetUrlsafeIdentifier(): void
@@ -1190,13 +1205,13 @@ final class AdminTest extends TestCase
         $model = new \stdClass();
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
-        $modelManager->expects(self::once())
+        $modelManager->expects(static::once())
             ->method('getUrlSafeIdentifier')
-            ->with(self::equalTo($model))
+            ->with(static::equalTo($model))
             ->willReturn('foo');
         $admin->setModelManager($modelManager);
 
-        self::assertSame('foo', $admin->getUrlSafeIdentifier($model));
+        static::assertSame('foo', $admin->getUrlSafeIdentifier($model));
     }
 
     public function testDeterminedPerPageValue(): void
@@ -1206,8 +1221,8 @@ final class AdminTest extends TestCase
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
         $admin->setModelManager($modelManager);
 
-        self::assertFalse($admin->determinedPerPageValue(123));
-        self::assertTrue($admin->determinedPerPageValue(25));
+        static::assertFalse($admin->determinedPerPageValue(123));
+        static::assertTrue($admin->determinedPerPageValue(25));
     }
 
     public function testIsGranted(): void
@@ -1228,7 +1243,7 @@ final class AdminTest extends TestCase
 
         $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
         $securityHandler
-            ->expects(self::exactly(6))
+            ->expects(static::exactly(6))
             ->method('isGranted')
             ->willReturnCallback(static function (
                 AdminInterface $adminIn,
@@ -1244,33 +1259,33 @@ final class AdminTest extends TestCase
 
         $admin->setSecurityHandler($securityHandler);
 
-        self::assertTrue($admin->isGranted('FOO'));
-        self::assertTrue($admin->isGranted('FOO'));
-        self::assertTrue($admin->isGranted('FOO', $entity1));
-        self::assertTrue($admin->isGranted('FOO', $entity1));
-        self::assertFalse($admin->isGranted('BAR'));
-        self::assertFalse($admin->isGranted('BAR'));
-        self::assertFalse($admin->isGranted('BAR', $entity1));
-        self::assertFalse($admin->isGranted('BAR', $entity1));
+        static::assertTrue($admin->isGranted('FOO'));
+        static::assertTrue($admin->isGranted('FOO'));
+        static::assertTrue($admin->isGranted('FOO', $entity1));
+        static::assertTrue($admin->isGranted('FOO', $entity1));
+        static::assertFalse($admin->isGranted('BAR'));
+        static::assertFalse($admin->isGranted('BAR'));
+        static::assertFalse($admin->isGranted('BAR', $entity1));
+        static::assertFalse($admin->isGranted('BAR', $entity1));
 
         $entity2 = new \stdClass();
         $entity2->id = '2';
 
-        self::assertFalse($admin->isGranted('BAR', $entity2));
-        self::assertFalse($admin->isGranted('BAR', $entity2));
+        static::assertFalse($admin->isGranted('BAR', $entity2));
+        static::assertFalse($admin->isGranted('BAR', $entity2));
 
         $entity3 = new \stdClass();
         $entity3->id = '3';
 
-        self::assertFalse($admin->isGranted('BAR', $entity3));
-        self::assertFalse($admin->isGranted('BAR', $entity3));
+        static::assertFalse($admin->isGranted('BAR', $entity3));
+        static::assertFalse($admin->isGranted('BAR', $entity3));
     }
 
     public function testSupportsPreviewMode(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertFalse($admin->supportsPreviewMode());
+        static::assertFalse($admin->supportsPreviewMode());
     }
 
     public function testShowIn(): void
@@ -1286,16 +1301,16 @@ final class AdminTest extends TestCase
 
         $admin->setSecurityHandler($securityHandler);
 
-        self::assertTrue($admin->showIn(AbstractAdmin::CONTEXT_DASHBOARD));
-        self::assertTrue($admin->showIn(AbstractAdmin::CONTEXT_MENU));
-        self::assertTrue($admin->showIn('foo'));
+        static::assertTrue($admin->showIn(AbstractAdmin::CONTEXT_DASHBOARD));
+        static::assertTrue($admin->showIn(AbstractAdmin::CONTEXT_MENU));
+        static::assertTrue($admin->showIn('foo'));
     }
 
     public function testGetObjectIdentifier(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertSame('sonata.post.admin.post', $admin->getObjectIdentifier());
+        static::assertSame('sonata.post.admin.post', $admin->getObjectIdentifier());
     }
 
     /**
@@ -1314,36 +1329,36 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertSame('sonata.post.admin.post', $admin->getRootCode());
+        static::assertSame('sonata.post.admin.post', $admin->getRootCode());
 
         $parentAdmin = new PostAdmin('sonata.post.admin.post.parent', Post::class, 'Sonata\NewsBundle\Controller\PostParentAdminController');
         $parentFieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $parentFieldDescription->expects(self::once())
+        $parentFieldDescription->expects(static::once())
             ->method('getAdmin')
             ->willReturn($parentAdmin);
 
-        self::assertFalse($admin->hasParentFieldDescription());
+        static::assertFalse($admin->hasParentFieldDescription());
         $admin->setParentFieldDescription($parentFieldDescription);
-        self::assertSame($parentFieldDescription, $admin->getParentFieldDescription());
-        self::assertSame('sonata.post.admin.post.parent', $admin->getRootCode());
+        static::assertSame($parentFieldDescription, $admin->getParentFieldDescription());
+        static::assertSame('sonata.post.admin.post.parent', $admin->getRootCode());
     }
 
     public function testGetRoot(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertSame($admin, $admin->getRoot());
+        static::assertSame($admin, $admin->getRoot());
 
         $parentAdmin = new PostAdmin('sonata.post.admin.post.parent', Post::class, 'Sonata\NewsBundle\Controller\PostParentAdminController');
         $parentFieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $parentFieldDescription->expects(self::once())
+        $parentFieldDescription->expects(static::once())
             ->method('getAdmin')
             ->willReturn($parentAdmin);
 
-        self::assertFalse($admin->hasParentFieldDescription());
+        static::assertFalse($admin->hasParentFieldDescription());
         $admin->setParentFieldDescription($parentFieldDescription);
-        self::assertSame($parentFieldDescription, $admin->getParentFieldDescription());
-        self::assertSame($parentAdmin, $admin->getRoot());
+        static::assertSame($parentFieldDescription, $admin->getParentFieldDescription());
+        static::assertSame($parentAdmin, $admin->getRoot());
     }
 
     public function testGetExportFields(): void
@@ -1351,20 +1366,20 @@ final class AdminTest extends TestCase
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
-        $modelManager->expects(self::once())
+        $modelManager->expects(static::once())
             ->method('getExportFields')
-            ->with(self::equalTo(Post::class))
+            ->with(static::equalTo(Post::class))
             ->willReturn(['foo', 'bar']);
 
         $admin->setModelManager($modelManager);
-        self::assertSame(['foo', 'bar'], $admin->getExportFields());
+        static::assertSame(['foo', 'bar'], $admin->getExportFields());
     }
 
     public function testGetPersistentParametersWithNoExtension(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertEmpty($admin->getPersistentParameters());
+        static::assertEmpty($admin->getPersistentParameters());
     }
 
     public function testGetPersistentParametersWithValidExtension(): void
@@ -1380,16 +1395,16 @@ final class AdminTest extends TestCase
 
         $admin->addExtension($extension);
 
-        self::assertSame($expected, $admin->getPersistentParameters());
-        self::assertSame('foobar', $admin->getPersistentParameter('context'));
+        static::assertSame($expected, $admin->getPersistentParameters());
+        static::assertSame('foobar', $admin->getPersistentParameter('context'));
     }
 
     public function testGetPersistentParameterDefaultValue(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        self::assertNull($admin->getPersistentParameter('foo'));
-        self::assertSame('bar', $admin->getPersistentParameter('foo', 'bar'));
+        static::assertNull($admin->getPersistentParameter('foo'));
+        static::assertSame('bar', $admin->getPersistentParameter('foo', 'bar'));
     }
 
     public function testGetNewInstanceForChildAdminWithParentValue(): void
@@ -1408,9 +1423,6 @@ final class AdminTest extends TestCase
 
         $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
-        $formBuilder = $this->createStub(FormBuilderInterface::class);
-        $formBuilder->method('getForm')->willReturn(null);
-
         $tagAdmin = new TagAdmin('admin.tag', Tag::class, 'MyBundle\MyController');
         $tagAdmin->setParent($postAdmin, 'post');
 
@@ -1420,7 +1432,24 @@ final class AdminTest extends TestCase
 
         $tag = $tagAdmin->getNewInstance();
 
-        self::assertSame($post, $tag->getPost());
+        static::assertSame($post, $tag->getPost());
+    }
+
+    public function testGetNewInstanceForChildAdminWithParentValueCanBeDisabled(): void
+    {
+        $postAdmin = $this->getMockBuilder(PostAdmin::class)->setConstructorArgs([
+            'post',
+            Post::class,
+            CRUDController::class,
+        ])->getMock();
+        $postAdmin->expects(static::never())->method('getIdParameter');
+
+        $tagAdmin = new TagWithoutPostAdmin('admin.tag', Tag::class, 'MyBundle\MyController');
+        $tagAdmin->setParent($postAdmin, 'post');
+
+        $tag = $tagAdmin->getNewInstance();
+
+        static::assertNull($tag->getPost());
     }
 
     public function testGetNewInstanceForChildAdminWithCollectionParentValue(): void
@@ -1439,9 +1468,6 @@ final class AdminTest extends TestCase
 
         $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
-        $formBuilder = $this->createStub(FormBuilderInterface::class);
-        $formBuilder->method('getForm')->willReturn(null);
-
         $postCategoryAdmin = new PostCategoryAdmin('admin.post_category', PostCategory::class, 'MyBundle\MyController');
         $postCategoryAdmin->setParent($postAdmin, 'posts');
 
@@ -1451,9 +1477,9 @@ final class AdminTest extends TestCase
 
         $postCategory = $postCategoryAdmin->getNewInstance();
 
-        self::assertInstanceOf(Collection::class, $postCategory->getPosts());
-        self::assertCount(1, $postCategory->getPosts());
-        self::assertContains($post, $postCategory->getPosts());
+        static::assertInstanceOf(Collection::class, $postCategory->getPosts());
+        static::assertCount(1, $postCategory->getPosts());
+        static::assertContains($post, $postCategory->getPosts());
     }
 
     public function testGetNewInstanceForEmbededAdminWithParentValue(): void
@@ -1472,9 +1498,6 @@ final class AdminTest extends TestCase
 
         $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
-        $formBuilder = $this->createStub(FormBuilderInterface::class);
-        $formBuilder->method('getForm')->willReturn(null);
-
         $parentField = $this->createStub(FieldDescriptionInterface::class);
         $parentField->method('getAdmin')->willReturn($postAdmin);
         $parentField->method('getParentAssociationMappings')->willReturn([]);
@@ -1489,7 +1512,7 @@ final class AdminTest extends TestCase
 
         $tag = $tagAdmin->getNewInstance();
 
-        self::assertSame($post, $tag->getPost());
+        static::assertSame($post, $tag->getPost());
     }
 
     public function testRemoveFieldFromFormGroup(): void
@@ -1507,7 +1530,7 @@ final class AdminTest extends TestCase
         $admin->setFormGroups($formGroups);
 
         $admin->removeFieldFromFormGroup('foo');
-        self::assertSame($admin->getFormGroups(), [
+        static::assertSame($admin->getFormGroups(), [
             'foobar' => [
                 'fields' => [
                     'bar' => 'bar',
@@ -1516,7 +1539,7 @@ final class AdminTest extends TestCase
         ]);
 
         $admin->removeFieldFromFormGroup('bar');
-        self::assertSame($admin->getFormGroups(), []);
+        static::assertSame($admin->getFormGroups(), []);
     }
 
     public function testGetFilterParameters(): void
@@ -1528,28 +1551,23 @@ final class AdminTest extends TestCase
         $postAdmin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
         $postAdmin->addChild($commentAdmin, 'post__author');
 
-        $request = $this->createMock(Request::class);
-        $query = new ParameterBag();
-        $query
-            ->set('filter', [
-                'filter' => [
-                    DatagridInterface::PAGE => '1',
-                    DatagridInterface::PER_PAGE => '32',
-                ],
-            ]);
+        $request = new Request();
 
-        $request->query = $query;
+        $request->query->set('filter', [
+            'filter' => [
+                DatagridInterface::PAGE => '1',
+                DatagridInterface::PER_PAGE => '32',
+            ],
+        ]);
 
-        $request
-            ->method('get')
-            ->willReturn($authorId);
+        $request->attributes->set($postAdmin->getIdParameter(), $authorId);
 
         $commentAdmin->setRequest($request);
 
         $parameters = $commentAdmin->getFilterParameters();
 
-        self::assertTrue(isset($parameters['post__author']));
-        self::assertSame(['value' => $authorId], $parameters['post__author']);
+        static::assertTrue(isset($parameters['post__author']));
+        static::assertSame(['value' => $authorId], $parameters['post__author']);
     }
 
     public function testGetFilterParametersWithoutRequest(): void
@@ -1562,8 +1580,8 @@ final class AdminTest extends TestCase
 
         $parameters = $commentAdmin->getFilterParameters();
 
-        self::assertArrayHasKey(DatagridInterface::PER_PAGE, $parameters);
-        self::assertSame(25, $parameters[DatagridInterface::PER_PAGE]);
+        static::assertArrayHasKey(DatagridInterface::PER_PAGE, $parameters);
+        static::assertSame(25, $parameters[DatagridInterface::PER_PAGE]);
     }
 
     public function testGetFilterFieldDescription(): void
@@ -1577,7 +1595,7 @@ final class AdminTest extends TestCase
 
         $fieldDescriptionFactory = $this->createMock(FieldDescriptionFactoryInterface::class);
         $fieldDescriptionFactory
-            ->expects(self::exactly(3))
+            ->expects(static::exactly(3))
             ->method('create')
             ->willReturnCallback(static function (string $adminClass, string $name, array $filterOptions) use ($fooFieldDescription, $barFieldDescription, $bazFieldDescription): FieldDescriptionInterface {
                 switch ($name) {
@@ -1613,17 +1631,17 @@ final class AdminTest extends TestCase
         $pager = $this->createMock(PagerInterface::class);
 
         $datagrid = $this->createMock(DatagridInterface::class);
-        $datagrid->expects(self::once())
+        $datagrid->expects(static::once())
             ->method('getPager')
             ->willReturn($pager);
 
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
-        $datagridBuilder->expects(self::once())
+        $datagridBuilder->expects(static::once())
             ->method('getBaseDatagrid')
-            ->with(self::identicalTo($modelAdmin))
+            ->with(static::identicalTo($modelAdmin))
             ->willReturn($datagrid);
 
-        $datagridBuilder->expects(self::exactly(3))
+        $datagridBuilder->expects(static::exactly(3))
             ->method('addFilter')
             ->willReturnCallback(static function (DatagridInterface $datagrid, ?string $type, FieldDescriptionInterface $fieldDescription): void {
                 $fieldDescription->getAdmin()->addFilterFieldDescription($fieldDescription->getName(), $fieldDescription);
@@ -1632,44 +1650,44 @@ final class AdminTest extends TestCase
 
         $modelAdmin->setDatagridBuilder($datagridBuilder);
 
-        self::assertSame(['foo' => $fooFieldDescription, 'bar' => $barFieldDescription, 'baz' => $bazFieldDescription], $modelAdmin->getFilterFieldDescriptions());
-        self::assertFalse($modelAdmin->hasFilterFieldDescription('fooBar'));
-        self::assertTrue($modelAdmin->hasFilterFieldDescription('foo'));
-        self::assertTrue($modelAdmin->hasFilterFieldDescription('bar'));
-        self::assertTrue($modelAdmin->hasFilterFieldDescription('baz'));
-        self::assertSame($fooFieldDescription, $modelAdmin->getFilterFieldDescription('foo'));
-        self::assertSame($barFieldDescription, $modelAdmin->getFilterFieldDescription('bar'));
-        self::assertSame($bazFieldDescription, $modelAdmin->getFilterFieldDescription('baz'));
+        static::assertSame(['foo' => $fooFieldDescription, 'bar' => $barFieldDescription, 'baz' => $bazFieldDescription], $modelAdmin->getFilterFieldDescriptions());
+        static::assertFalse($modelAdmin->hasFilterFieldDescription('fooBar'));
+        static::assertTrue($modelAdmin->hasFilterFieldDescription('foo'));
+        static::assertTrue($modelAdmin->hasFilterFieldDescription('bar'));
+        static::assertTrue($modelAdmin->hasFilterFieldDescription('baz'));
+        static::assertSame($fooFieldDescription, $modelAdmin->getFilterFieldDescription('foo'));
+        static::assertSame($barFieldDescription, $modelAdmin->getFilterFieldDescription('bar'));
+        static::assertSame($bazFieldDescription, $modelAdmin->getFilterFieldDescription('baz'));
     }
 
     public function testGetSubjectNoRequest(): void
     {
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
-            ->expects(self::never())
+            ->expects(static::never())
             ->method('find');
 
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
         $admin->setModelManager($modelManager);
 
-        self::assertFalse($admin->hasSubject());
+        static::assertFalse($admin->hasSubject());
     }
 
     public function testGetSideMenu(): void
     {
         $item = $this->createMock(ItemInterface::class);
         $item
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('setChildrenAttribute')
             ->with('class', 'nav navbar-nav');
         $item
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('setExtra')
             ->with('translation_domain', 'foo_bar_baz');
 
         $menuFactory = $this->createMock(FactoryInterface::class);
         $menuFactory
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('createItem')
             ->willReturn($item);
 
@@ -1703,7 +1721,7 @@ final class AdminTest extends TestCase
     {
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('find')
             ->with(Post::class, $id)
             ->willReturn(null); // entity not found
@@ -1712,7 +1730,7 @@ final class AdminTest extends TestCase
         $admin->setModelManager($modelManager);
 
         $admin->setRequest(new Request(['id' => $id]));
-        self::assertFalse($admin->hasSubject());
+        static::assertFalse($admin->hasSubject());
     }
 
     /**
@@ -1726,7 +1744,7 @@ final class AdminTest extends TestCase
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('find')
             ->with(Post::class, $id)
             ->willReturn($model);
@@ -1735,9 +1753,9 @@ final class AdminTest extends TestCase
         $admin->setModelManager($modelManager);
 
         $admin->setRequest(new Request(['id' => $id]));
-        self::assertTrue($admin->hasSubject());
-        self::assertSame($model, $admin->getSubject());
-        self::assertSame($model, $admin->getSubject()); // model manager must be used only once
+        static::assertTrue($admin->hasSubject());
+        static::assertSame($model, $admin->getSubject());
+        static::assertSame($model, $admin->getSubject()); // model manager must be used only once
     }
 
     public function testGetSubjectWithParentDescription(): void
@@ -1761,13 +1779,13 @@ final class AdminTest extends TestCase
         $commentAdmin->setRequest($request);
         $commentAdmin->setModelManager($modelManager);
 
-        self::assertTrue($commentAdmin->hasSubject());
-        self::assertSame($comment, $commentAdmin->getSubject());
+        static::assertTrue($commentAdmin->hasSubject());
+        static::assertSame($comment, $commentAdmin->getSubject());
 
         $commentAdmin->setSubject(null);
         $commentAdmin->setParentFieldDescription(new FieldDescription('name'));
 
-        self::assertFalse($commentAdmin->hasSubject());
+        static::assertFalse($commentAdmin->hasSubject());
     }
 
     /**
@@ -1790,7 +1808,7 @@ final class AdminTest extends TestCase
 
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('isGranted')
             ->with($admin, 'CREATE', $admin)
             ->willReturn(true);
@@ -1798,13 +1816,13 @@ final class AdminTest extends TestCase
 
         $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
         $routeGenerator
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('hasAdminRoute')
             ->with($admin, 'create')
             ->willReturn(true);
         $admin->setRouteGenerator($routeGenerator);
 
-        self::assertSame($expected, $admin->getActionButtons('list', null));
+        static::assertSame($expected, $admin->getActionButtons('list', null));
     }
 
     /**
@@ -1816,7 +1834,7 @@ final class AdminTest extends TestCase
 
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('isGranted')
             ->with($admin, 'CREATE', $admin)
             ->willReturn(false);
@@ -1824,13 +1842,13 @@ final class AdminTest extends TestCase
 
         $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
         $routeGenerator
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('hasAdminRoute')
             ->with($admin, 'create')
             ->willReturn(true);
         $admin->setRouteGenerator($routeGenerator);
 
-        self::assertSame([], $admin->getActionButtons('list', null));
+        static::assertSame([], $admin->getActionButtons('list', null));
     }
 
     public function testGetActionButtonsListWithoutExtraChecks(): void
@@ -1845,11 +1863,11 @@ final class AdminTest extends TestCase
         $admin->setSecurityHandler($securityHandler);
 
         $routerGenerator = $this->createMock(RouteGeneratorInterface::class);
-        $routerGenerator->expects(self::exactly(4))->method('hasAdminRoute')->willReturn(false);
+        $routerGenerator->expects(static::exactly(4))->method('hasAdminRoute')->willReturn(false);
         $admin->setRouteGenerator($routerGenerator);
 
-        self::assertSame([], $admin->getActionButtons('show'));
-        self::assertSame([], $admin->getActionButtons('edit'));
+        static::assertSame([], $admin->getActionButtons('show'));
+        static::assertSame([], $admin->getActionButtons('edit'));
     }
 
     /**
@@ -1893,9 +1911,9 @@ final class AdminTest extends TestCase
 
         $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
         $routeGenerator
-            ->expects(self::once())
+            ->expects(static::exactly(2))
             ->method('hasAdminRoute')
-            ->with($admin, 'delete')
+            ->withConsecutive([$admin, 'batch'], [$admin, 'delete'])
             ->willReturn(true);
         $admin->setRouteGenerator($routeGenerator);
 
@@ -1907,7 +1925,30 @@ final class AdminTest extends TestCase
             });
         $admin->setSecurityHandler($securityHandler);
 
-        self::assertSame($expected, $admin->getBatchActions());
+        static::assertSame($expected, $admin->getBatchActions());
+    }
+
+    public function testGetBatchActionsWithoutBatchRoute(): void
+    {
+        $expected = [];
+
+        $pathInfo = new PathInfoBuilder($this->createMock(AuditManagerInterface::class));
+        $routerMock = $this->createMock(RouterInterface::class);
+
+        $routeGenerator = new DefaultRouteGenerator(
+            $routerMock,
+            new RoutesCache($this->cacheTempFolder, true)
+        );
+
+        $admin = new PostWithoutBatchRouteAdmin('sonata.post.admin.model', Post::class, 'Sonata\FooBundle\Controller\ModelAdminController');
+        $admin->setRouteBuilder($pathInfo);
+        $admin->setRouteGenerator($routeGenerator);
+        $admin->initialize();
+
+        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
+        $admin->setSecurityHandler($securityHandler);
+
+        static::assertSame($expected, $admin->getBatchActions());
     }
 
     /**
@@ -1920,7 +1961,7 @@ final class AdminTest extends TestCase
             $admin->setRequest($request);
         }
 
-        self::assertSame($expected, $admin->getListMode());
+        static::assertSame($expected, $admin->getListMode());
     }
 
     /**
@@ -1988,8 +2029,8 @@ final class AdminTest extends TestCase
 
         $admin->setSecurityHandler($securityHandler);
 
-        self::assertArrayHasKey('list', $admin->getDashboardActions());
-        self::assertArrayHasKey('create', $admin->getDashboardActions());
+        static::assertArrayHasKey('list', $admin->getDashboardActions());
+        static::assertArrayHasKey('create', $admin->getDashboardActions());
     }
 
     public function testDefaultFilters(): void
@@ -1998,10 +2039,8 @@ final class AdminTest extends TestCase
 
         $subjectId = uniqid();
 
-        $request = $this->createMock(Request::class);
-        $query = new ParameterBag();
-        $query
-            ->set('filter', [
+        $request = new Request([
+            'filter' => [
                 'a' => [
                     'value' => 'b',
                 ],
@@ -2013,17 +2052,12 @@ final class AdminTest extends TestCase
                     'type' => '5',
                     'value' => 'test',
                 ],
-            ]);
-
-        $request->query = $query;
-
-        $request
-            ->method('get')
-            ->willReturn($subjectId);
+            ],
+        ]);
 
         $admin->setRequest($request);
 
-        self::assertSame([
+        static::assertSame([
             DatagridInterface::PAGE => 1,
             DatagridInterface::PER_PAGE => 25,
             'foo' => [
@@ -2124,21 +2158,21 @@ final class AdminTest extends TestCase
         // Workaround for static analysis
         $commentAdminRootAncestor = $commentAdmin->getRootAncestor();
 
-        self::assertSame($postAdmin, $postAdmin->getRootAncestor());
-        self::assertSame($commentAdmin, $commentAdminRootAncestor);
-        self::assertSame($commentVoteAdmin, $commentVoteAdmin->getRootAncestor());
+        static::assertSame($postAdmin, $postAdmin->getRootAncestor());
+        static::assertSame($commentAdmin, $commentAdminRootAncestor);
+        static::assertSame($commentVoteAdmin, $commentVoteAdmin->getRootAncestor());
 
         $postAdmin->addChild($commentAdmin, 'post');
 
-        self::assertSame($postAdmin, $postAdmin->getRootAncestor());
-        self::assertSame($postAdmin, $commentAdmin->getRootAncestor());
-        self::assertSame($commentVoteAdmin, $commentVoteAdmin->getRootAncestor());
+        static::assertSame($postAdmin, $postAdmin->getRootAncestor());
+        static::assertSame($postAdmin, $commentAdmin->getRootAncestor());
+        static::assertSame($commentVoteAdmin, $commentVoteAdmin->getRootAncestor());
 
         $commentAdmin->addChild($commentVoteAdmin, 'comment');
 
-        self::assertSame($postAdmin, $postAdmin->getRootAncestor());
-        self::assertSame($postAdmin, $commentAdmin->getRootAncestor());
-        self::assertSame($postAdmin, $commentVoteAdmin->getRootAncestor());
+        static::assertSame($postAdmin, $postAdmin->getRootAncestor());
+        static::assertSame($postAdmin, $commentAdmin->getRootAncestor());
+        static::assertSame($postAdmin, $commentVoteAdmin->getRootAncestor());
     }
 
     public function testGetChildDepth(): void
@@ -2159,21 +2193,21 @@ final class AdminTest extends TestCase
             'Sonata\NewsBundle\Controller\CommentVoteAdminController'
         );
 
-        self::assertSame(0, $postAdmin->getChildDepth());
-        self::assertSame(0, $commentAdmin->getChildDepth());
-        self::assertSame(0, $commentVoteAdmin->getChildDepth());
+        static::assertSame(0, $postAdmin->getChildDepth());
+        static::assertSame(0, $commentAdmin->getChildDepth());
+        static::assertSame(0, $commentVoteAdmin->getChildDepth());
 
         $postAdmin->addChild($commentAdmin, 'post');
 
-        self::assertSame(0, $postAdmin->getChildDepth());
-        self::assertSame(1, $commentAdmin->getChildDepth());
-        self::assertSame(0, $commentVoteAdmin->getChildDepth());
+        static::assertSame(0, $postAdmin->getChildDepth());
+        static::assertSame(1, $commentAdmin->getChildDepth());
+        static::assertSame(0, $commentVoteAdmin->getChildDepth());
 
         $commentAdmin->addChild($commentVoteAdmin, 'comment');
 
-        self::assertSame(0, $postAdmin->getChildDepth());
-        self::assertSame(1, $commentAdmin->getChildDepth());
-        self::assertSame(2, $commentVoteAdmin->getChildDepth());
+        static::assertSame(0, $postAdmin->getChildDepth());
+        static::assertSame(1, $commentAdmin->getChildDepth());
+        static::assertSame(2, $commentVoteAdmin->getChildDepth());
     }
 
     public function testGetCurrentLeafChildAdmin(): void
@@ -2200,21 +2234,21 @@ final class AdminTest extends TestCase
         // Workaround for static analysis
         $postAdminChildAdmin = $postAdmin->getCurrentLeafChildAdmin();
 
-        self::assertNull($postAdminChildAdmin);
-        self::assertNull($commentAdmin->getCurrentLeafChildAdmin());
-        self::assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
+        static::assertNull($postAdminChildAdmin);
+        static::assertNull($commentAdmin->getCurrentLeafChildAdmin());
+        static::assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
 
         $commentAdmin->setCurrentChild(true);
 
-        self::assertSame($commentAdmin, $postAdmin->getCurrentLeafChildAdmin());
-        self::assertNull($commentAdmin->getCurrentLeafChildAdmin());
-        self::assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
+        static::assertSame($commentAdmin, $postAdmin->getCurrentLeafChildAdmin());
+        static::assertNull($commentAdmin->getCurrentLeafChildAdmin());
+        static::assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
 
         $commentVoteAdmin->setCurrentChild(true);
 
-        self::assertSame($commentVoteAdmin, $postAdmin->getCurrentLeafChildAdmin());
-        self::assertSame($commentVoteAdmin, $commentAdmin->getCurrentLeafChildAdmin());
-        self::assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
+        static::assertSame($commentVoteAdmin, $postAdmin->getCurrentLeafChildAdmin());
+        static::assertSame($commentVoteAdmin, $commentAdmin->getCurrentLeafChildAdmin());
+        static::assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
     }
 
     public function testAdminAvoidInifiniteLoop(): void
@@ -2269,14 +2303,14 @@ final class AdminTest extends TestCase
             return sprintf('trans(%s)', $label);
         });
 
-        $modelManager->expects(self::once())->method('getExportFields')->willReturn([
+        $modelManager->expects(static::once())->method('getExportFields')->willReturn([
             'key' => 'field',
             'foo',
             'bar',
         ]);
 
         $dataSource
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('createIterator')
             ->with($proxyQuery, [
                 'key' => 'field',
@@ -2291,6 +2325,6 @@ final class AdminTest extends TestCase
         $admin->setLabelTranslatorStrategy(new UnderscoreLabelTranslatorStrategy());
         $admin->setDataSource($dataSource);
 
-        self::assertSame($sourceIterator, $admin->getDataSourceIterator());
+        static::assertSame($sourceIterator, $admin->getDataSourceIterator());
     }
 }

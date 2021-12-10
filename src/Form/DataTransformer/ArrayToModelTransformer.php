@@ -21,6 +21,7 @@ use Symfony\Component\Form\DataTransformerInterface;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-template T of object
+ * @phpstan-implements DataTransformerInterface<T, T|array<string, mixed>>
  */
 final class ArrayToModelTransformer implements DataTransformerInterface
 {

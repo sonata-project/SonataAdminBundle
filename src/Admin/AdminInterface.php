@@ -29,6 +29,10 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
+ * NEXT_MAJOR: Add all these methods to the interface by uncommenting them.
+ *
+ * @method void removeExtension(AdminExtensionInterface $extension)
+ *
  * @phpstan-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
  *
  * @phpstan-template T of object
@@ -166,6 +170,12 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function addExtension(AdminExtensionInterface $extension): void;
 
+    // NEXT_MAJOR: Uncomment this for Sonata 5
+    /**
+     * @phpstan-param AdminExtensionInterface<T> $extension
+     */
+    //public function removeExtension(AdminExtensionInterface $extension): void;
+
     /**
      * Returns an array of extension related to the current Admin.
      *
@@ -234,9 +244,6 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function getExportFields(): array;
 
-    /**
-     * @return SourceIteratorInterface<array<mixed>>
-     */
     public function getDataSourceIterator(): SourceIteratorInterface;
 
     /**
@@ -298,6 +305,8 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function setFormGroups(array $formGroups): void;
 
+    public function removeFieldFromFormGroup(string $key): void;
+
     /**
      * @param string[] $keys
      */
@@ -323,8 +332,6 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function setShowTabs(array $showTabs): void;
 
-    public function removeFieldFromFormGroup(string $key): void;
-
     /**
      * Returns the show groups.
      *
@@ -338,6 +345,8 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      * @param array<string, mixed> $showGroups
      */
     public function setShowGroups(array $showGroups): void;
+
+    public function removeFieldFromShowGroup(string $key): void;
 
     /**
      * Reorder items in showGroup.
@@ -459,13 +468,6 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      * Check the current request is given route or not.
      */
     public function isCurrentRoute(string $name, ?string $adminCode = null): bool;
-
-    /**
-     * Returns the result link for an object.
-     *
-     * @phpstan-param T $object
-     */
-    public function getSearchResultLink(object $object): ?string;
 
     /**
      * Returns the master admin.

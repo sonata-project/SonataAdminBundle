@@ -22,7 +22,7 @@ final class NoopLabelTranslatorStrategyTest extends TestCase
     {
         $strategy = new NoopLabelTranslatorStrategy();
 
-        self::assertSame('isValid', $strategy->getLabel('isValid', 'form', 'label'));
-        self::assertSame('isValid_SuperCool', $strategy->getLabel('isValid_SuperCool', 'form', 'label'));
+        static::assertSame('isValid', $strategy->getLabel('isValid', 'form', 'label'));
+        static::assertSame('isValid_SuperCool', $strategy->getLabel('isValid_SuperCool', 'form', 'label'));
     }
 }

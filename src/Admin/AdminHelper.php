@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
-use Doctrine\Common\Collections\Collection;
 use Sonata\AdminBundle\Exception\NoValueException;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Manipulator\ObjectManipulator;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
 use Sonata\AdminBundle\Util\FormViewIterator;
@@ -118,9 +118,15 @@ class AdminHelper
         $form->setData($subject);
         $form->handleRequest($admin->getRequest());
 
-        if (null !== $childFormBuilder && $admin->hasFormFieldDescription($childFormBuilder->getName())) {
+        if (
+            null !== $childFormBuilder
+            && $childFormBuilder->getOption('sonata_field_description') instanceof FieldDescriptionInterface
+            && $admin->hasFormFieldDescription($childFormBuilder->getOption('sonata_field_description')->getName())
+        ) {
             // retrieve the FieldDescription
-            $fieldDescription = $admin->getFormFieldDescription($childFormBuilder->getName());
+            $fieldDescription = $admin->getFormFieldDescription(
+                $childFormBuilder->getOption('sonata_field_description')->getName()
+            );
 
             try {
                 $value = $fieldDescription->getValue($form->getData());
@@ -160,10 +166,10 @@ class AdminHelper
 
             $collection = $this->propertyAccessor->getValue($subject, $path);
 
-            if (!($collection instanceof Collection)) {
+            if (!$collection instanceof \ArrayAccess && !\is_array($collection)) {
                 throw new \TypeError(sprintf(
-                    'Collection must be an instance of %s, %s given.',
-                    Collection::class,
+                    'Collection must be an instance of %s or array, %s given.',
+                    \ArrayAccess::class,
                     \is_object($collection) ? 'instance of "'.\get_class($collection).'"' : '"'.\gettype($collection).'"'
                 ));
             }
@@ -173,7 +179,7 @@ class AdminHelper
                 explode('.', preg_replace('#\[\d*?]#', '', $path) ?? '')
             );
 
-            $collection->add(new $modelClassName());
+            $collection[] = new $modelClassName();
             $this->propertyAccessor->setValue($subject, $path, $collection);
 
             $fieldDescription = null;
@@ -215,6 +221,10 @@ class AdminHelper
         $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();
         if ([] === $elements) {
             return $associationAdmin->getClass();
+        }
+
+        if (!$associationAdmin->hasSubject()) {
+            $associationAdmin->setSubject($associationAdmin->getNewInstance());
         }
 
         return $this->getModelClassName($associationAdmin, $elements);

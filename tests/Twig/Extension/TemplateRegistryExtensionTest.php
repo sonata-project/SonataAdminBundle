@@ -54,12 +54,12 @@ final class TemplateRegistryExtensionTest extends TestCase
 
     public function testGetFunctions(): void
     {
-        self::assertCount(2, $this->extension->getFunctions());
+        static::assertCount(2, $this->extension->getFunctions());
     }
 
     public function testGetAdminTemplate(): void
     {
-        self::assertSame(
+        static::assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
             $this->extension->getAdminTemplate('edit', 'admin.post')
         );
@@ -71,7 +71,7 @@ final class TemplateRegistryExtensionTest extends TestCase
 
         $this->expectExceptionMessage('Admin service "admin.non-existing" not found in admin pool. Did you mean "admin.post" or one of those: []?');
 
-        self::assertSame(
+        static::assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
             $this->extension->getAdminTemplate('edit', 'admin.non-existing')
         );
@@ -79,7 +79,7 @@ final class TemplateRegistryExtensionTest extends TestCase
 
     public function testGetGlobalTemplate(): void
     {
-        self::assertSame(
+        static::assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
             $this->extension->getGlobalTemplate('edit')
         );

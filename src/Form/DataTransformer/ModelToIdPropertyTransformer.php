@@ -27,6 +27,7 @@ use Symfony\Component\Form\DataTransformerInterface;
  *
  * @phpstan-template T of object
  * @phpstan-template P
+ * @phpstan-implements DataTransformerInterface<T|array<T>|\Traversable<T>, int|string|array<int|string|array<string>>>
  */
 final class ModelToIdPropertyTransformer implements DataTransformerInterface
 {

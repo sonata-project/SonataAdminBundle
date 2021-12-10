@@ -91,22 +91,22 @@ final class RetrieveFormFieldElementActionTest extends TestCase
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getClass')->willReturn(\get_class($object));
-        $this->admin->expects(self::once())->method('setSubject')->with($object);
+        $this->admin->expects(static::once())->method('setSubject')->with($object);
         $this->admin->method('getFormTheme')->willReturn([]);
         $this->admin->method('getFormBuilder')->willReturn($formBuilder);
         $this->helper->method('getChildFormView')->with($formView, 'element_42')->willReturn($formView);
         $modelManager->method('find')->with(\get_class($object), 42)->willReturn($object);
-        $form->expects(self::once())->method('setData')->with($object);
-        $form->expects(self::once())->method('handleRequest')->with($request);
+        $form->expects(static::once())->method('setData')->with($object);
+        $form->expects(static::once())->method('handleRequest')->with($request);
         $form->method('createView')->willReturn($formView);
         $formBuilder->method('getForm')->willReturn($form);
-        $renderer->expects(self::once())->method('setTheme')->with($formView, []);
+        $renderer->expects(static::once())->method('setTheme')->with($formView, []);
         $renderer->method('searchAndRenderBlock')->with($formView, 'widget')->willReturn('block');
 
         $response = ($this->action)($request);
 
-        self::assertInstanceOf(Response::class, $response);
-        self::assertSame($response->getContent(), 'block');
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame($response->getContent(), 'block');
     }
 
     /**

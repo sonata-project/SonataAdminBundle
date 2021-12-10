@@ -22,7 +22,7 @@ final class FormLabelTranslatorStrategyTest extends TestCase
     {
         $strategy = new FormLabelTranslatorStrategy();
 
-        self::assertSame('Isvalid', $strategy->getLabel('isValid', 'form', 'label'));
-        self::assertSame('Plainpassword', $strategy->getLabel('plainPassword', 'form', 'label'));
+        static::assertSame('Isvalid', $strategy->getLabel('isValid', 'form', 'label'));
+        static::assertSame('Plainpassword', $strategy->getLabel('plainPassword', 'form', 'label'));
     }
 }

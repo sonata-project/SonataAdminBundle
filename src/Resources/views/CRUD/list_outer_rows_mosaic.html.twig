@@ -10,14 +10,21 @@ file that was distributed with this source code.
 #}
 
 <!--
-This template can be customized to match your needs. You should only extends the template and used the differents block to customize the view:
+This template can be customized to match your needs. You should only extends the template and used the different blocks to customize the view:
     - sonata_mosaic_default_view
     - sonata_mosaic_hover_view
     - sonata_mosaic_description
 -->
 
 <tr>
-    <td colspan="{{ admin.list.getElements()|length - (app.request.isXmlHttpRequest ? (admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_ACTIONS')) + admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_BATCH'))) : 0) }}">
+    {# NEXT_MAJOR: Remove the NAME_ACTIONS check in version 5 and recommend using the option `ajax_hidden` instead. #}
+    <td colspan="{{
+        app.request.isXmlHttpRequest
+            ? admin.list.getElements()|filter(element => element.getOption('ajax_hidden') != true)|length
+                - admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_ACTIONS'))
+                - admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_BATCH'))
+            : admin.list.getElements()|length
+    }}">
         <div class="row">
             {% for object in admin.datagrid.results %}
                 {% set meta = admin.getObjectMetadata(object) %}

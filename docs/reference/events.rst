@@ -46,3 +46,10 @@ Block events help you customize your templates. Available events are :
 
 If you want more information about block events, you should check the
 `"Event" section of block bundle documentation <https://docs.sonata-project.org/projects/SonataBlockBundle/en/3.x/reference/events>`_.
+
+BatchActionEvent
+^^^^^^^^^^^^^^^^
+
+This event is dispatched when a batch action is being executed. The event name is:
+
+- ``sonata.admin.event.batch_action.pre_batch_action``

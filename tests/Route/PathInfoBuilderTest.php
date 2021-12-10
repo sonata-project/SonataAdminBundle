@@ -24,11 +24,11 @@ final class PathInfoBuilderTest extends TestCase
     public function testBuild(): void
     {
         $audit = $this->createMock(AuditManagerInterface::class);
-        $audit->expects(self::once())->method('hasReader')->willReturn(true);
+        $audit->expects(static::once())->method('hasReader')->willReturn(true);
 
         $admin = $this->createMock(AdminInterface::class);
-        $admin->expects(self::once())->method('getChildren')->willReturn([]);
-        $admin->expects(self::once())->method('isAclEnabled')->willReturn(true);
+        $admin->expects(static::once())->method('getChildren')->willReturn([]);
+        $admin->expects(static::once())->method('isAclEnabled')->willReturn(true);
 
         $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'baseControllerName');
 
@@ -36,6 +36,6 @@ final class PathInfoBuilderTest extends TestCase
 
         $pathBuilder->build($admin, $routeCollection);
 
-        self::assertCount(11, $routeCollection->getElements());
+        static::assertCount(11, $routeCollection->getElements());
     }
 }

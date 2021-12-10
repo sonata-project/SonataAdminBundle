@@ -15,13 +15,12 @@ file that was distributed with this source code.
     {% set results_count = pager ? pager.countResults() : 0 %}
     {% set has_results = results_count > 0 %}
     {% set current_page_results = has_results ? pager.currentPageResults : [] %}
-    {% set visibility_class = 'sonata-search-result-' ~ has_results ? 'show' : show_empty_boxes %}
+    {% set visibility_class = 'sonata-search-result-' ~ (has_results ? 'show' : show_empty_boxes) %}
 
     <div class="col-lg-4 col-md-6 search-box-item {{ visibility_class }}">
         <div class="box box-solid {{ visibility_class }}">
             <div class="box-header with-border {{ visibility_class }}">
-                {% set icon = settings.icon|default('') %}
-                {{ icon|parse_icon }}
+                {{ settings.icon|default('')|parse_icon }}
                 <h3 class="box-title">
                     {% if admin.label is not empty %}
                         {{ admin.label|trans({}, admin.translationdomain) }}
@@ -57,12 +56,13 @@ file that was distributed with this source code.
             </div>
             {% if has_results %}
                 <div class="box-body no-padding">
-                    <ul class="nav nav-stacked sonata-search-result-list products-list">
+                    <ul class="nav nav-stacked sonata-search-result-list">
                         {% for result in current_page_results %}
-                            {% set link = admin.getSearchResultLink(result) %}
-                            {% if link %}
-                                <li class="item no-padding">
-                                    <a class="main pull-left" href="{{ link }}">{{ admin.toString(result) }}</a>
+                            {% if admin.hasRoute(admin_route) and admin.hasAccess(admin_route, result) %}
+                                <li>
+                                    <a href="{{ admin.generateObjectUrl(admin_route, result) }}">
+                                        {{ admin.toString(result) }}
+                                    </a>
                                 </li>
                             {% else %}
                                 <li><a>{{ admin.toString(result) }}</a></li>

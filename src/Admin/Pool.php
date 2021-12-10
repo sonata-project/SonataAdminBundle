@@ -92,7 +92,7 @@ final class Pool
      *  label: string,
      *  label_catalogue: string,
      *  icon: string,
-     *  item_adds: array,
+     *  item_adds: Item[],
      *  items: array<array-key, AdminInterface<object>>,
      *  keep_open: bool,
      *  on_top: bool,
@@ -105,23 +105,21 @@ final class Pool
         $groups = [];
 
         foreach ($this->adminGroups as $name => $adminGroup) {
-            if (isset($adminGroup['items'])) {
-                $items = array_filter(array_map(function (array $item): ?AdminInterface {
-                    if (!isset($item['admin']) || '' === $item['admin']) {
-                        return null;
-                    }
-
-                    $admin = $this->getInstance($item['admin']);
-                    if (!$admin->showIn(AbstractAdmin::CONTEXT_DASHBOARD)) {
-                        return null;
-                    }
-
-                    return $admin;
-                }, $adminGroup['items']));
-
-                if ([] !== $items) {
-                    $groups[$name] = ['items' => $items] + $adminGroup;
+            $items = array_filter(array_map(function (array $item): ?AdminInterface {
+                if (!isset($item['admin']) || '' === $item['admin']) {
+                    return null;
                 }
+
+                $admin = $this->getInstance($item['admin']);
+                if (!$admin->showIn(AbstractAdmin::CONTEXT_DASHBOARD)) {
+                    return null;
+                }
+
+                return $admin;
+            }, $adminGroup['items']));
+
+            if ([] !== $items) {
+                $groups[$name] = ['items' => $items] + $adminGroup;
             }
         }
 

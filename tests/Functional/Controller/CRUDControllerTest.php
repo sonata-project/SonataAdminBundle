@@ -25,8 +25,8 @@ final class CRUDControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request(Request::METHOD_GET, '/admin/tests/app/foo/list');
 
-        self::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        self::assertCount(
+        static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        static::assertCount(
             1,
             $crawler->filter('.sonata-ba-list-field:contains("foo_name")')
         );
@@ -37,12 +37,12 @@ final class CRUDControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request(Request::METHOD_GET, '/admin/tests/app/foo/create');
 
-        self::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        self::assertCount(
+        static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        static::assertCount(
             1,
             $crawler->filter('.sonata-ba-collapsed-fields label:contains("Name")')
         );
-        self::assertCount(
+        static::assertCount(
             1,
             $crawler->filter('p.help-block.sonata-ba-field-help:contains("Help me!")')
         );
@@ -53,8 +53,8 @@ final class CRUDControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request(Request::METHOD_GET, '/admin/tests/app/foo/test_id/show');
 
-        self::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        self::assertCount(
+        static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        static::assertCount(
             1,
             $crawler->filter('td:contains("foo_name")')
         );
@@ -65,8 +65,8 @@ final class CRUDControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request(Request::METHOD_GET, '/admin/tests/app/foo/test_id/edit');
 
-        self::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        self::assertCount(
+        static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        static::assertCount(
             1,
             $crawler->filter('.sonata-ba-collapsed-fields label:contains("Name")')
         );
@@ -80,7 +80,7 @@ final class CRUDControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request(Request::METHOD_GET, $url);
 
-        self::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 
     /**
@@ -100,7 +100,7 @@ final class CRUDControllerTest extends WebTestCase
         ];
     }
 
-    protected static function getKernelClass()
+    protected static function getKernelClass(): string
     {
         return AppKernel::class;
     }

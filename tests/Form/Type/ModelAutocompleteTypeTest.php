@@ -42,46 +42,46 @@ final class ModelAutocompleteTypeTest extends TypeTestCase
 
         $options = $optionResolver->resolve(['model_manager' => $modelManager, 'class' => 'Foo', 'property' => 'bar']);
 
-        self::assertSame([], $options['attr']);
-        self::assertFalse($options['compound']);
-        self::assertInstanceOf(ModelManagerInterface::class, $options['model_manager']);
-        self::assertSame($modelManager, $options['model_manager']);
-        self::assertSame('Foo', $options['class']);
-        self::assertSame('bar', $options['property']);
-        self::assertNull($options['callback']);
+        static::assertSame([], $options['attr']);
+        static::assertFalse($options['compound']);
+        static::assertInstanceOf(ModelManagerInterface::class, $options['model_manager']);
+        static::assertSame($modelManager, $options['model_manager']);
+        static::assertSame('Foo', $options['class']);
+        static::assertSame('bar', $options['property']);
+        static::assertNull($options['callback']);
 
-        self::assertSame('', $options['placeholder']);
-        self::assertSame(3, $options['minimum_input_length']);
-        self::assertSame(10, $options['items_per_page']);
-        self::assertSame(100, $options['quiet_millis']);
-        self::assertFalse($options['cache']);
-        self::assertSame('', $options['width']);
-        self::assertFalse($options['dropdown_auto_width']);
+        static::assertSame('', $options['placeholder']);
+        static::assertSame(3, $options['minimum_input_length']);
+        static::assertSame(10, $options['items_per_page']);
+        static::assertSame(100, $options['quiet_millis']);
+        static::assertFalse($options['cache']);
+        static::assertSame('', $options['width']);
+        static::assertFalse($options['dropdown_auto_width']);
 
-        self::assertSame('', $options['url']);
-        self::assertSame(['name' => 'sonata_admin_retrieve_autocomplete_items', 'parameters' => []], $options['route']);
-        self::assertSame([], $options['req_params']);
-        self::assertSame('q', $options['req_param_name_search']);
-        self::assertSame(DatagridInterface::PAGE, $options['req_param_name_page_number']);
-        self::assertSame(DatagridInterface::PER_PAGE, $options['req_param_name_items_per_page']);
+        static::assertSame('', $options['url']);
+        static::assertSame(['name' => 'sonata_admin_retrieve_autocomplete_items', 'parameters' => []], $options['route']);
+        static::assertSame([], $options['req_params']);
+        static::assertSame('q', $options['req_param_name_search']);
+        static::assertSame(DatagridInterface::PAGE, $options['req_param_name_page_number']);
+        static::assertSame(DatagridInterface::PER_PAGE, $options['req_param_name_items_per_page']);
 
-        self::assertSame('list', $options['target_admin_access_action']);
-        self::assertNull($options['response_item_callback']);
+        static::assertSame('list', $options['target_admin_access_action']);
+        static::assertNull($options['response_item_callback']);
 
-        self::assertSame('', $options['container_css_class']);
-        self::assertSame('', $options['dropdown_css_class']);
-        self::assertSame('', $options['dropdown_item_css_class']);
+        static::assertSame('', $options['container_css_class']);
+        static::assertSame('', $options['dropdown_css_class']);
+        static::assertSame('', $options['dropdown_item_css_class']);
 
-        self::assertSame('@SonataAdmin/Form/Type/sonata_type_model_autocomplete.html.twig', $options['template']);
+        static::assertSame('@SonataAdmin/Form/Type/sonata_type_model_autocomplete.html.twig', $options['template']);
 
-        self::assertSame('', $options['context']);
+        static::assertSame('', $options['context']);
 
-        self::assertSame('link_add', $options['btn_add']);
-        self::assertSame('SonataAdminBundle', $options['btn_catalogue']);
+        static::assertSame('link_add', $options['btn_add']);
+        static::assertSame('SonataAdminBundle', $options['btn_catalogue']);
     }
 
     public function testGetBlockPrefix(): void
     {
-        self::assertSame('sonata_type_model_autocomplete', $this->type->getBlockPrefix());
+        static::assertSame('sonata_type_model_autocomplete', $this->type->getBlockPrefix());
     }
 }

@@ -28,7 +28,7 @@ final class AdminAsParameterControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request(Request::METHOD_GET, $url);
 
-        self::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 
     /**
@@ -42,7 +42,7 @@ final class AdminAsParameterControllerTest extends WebTestCase
         ];
     }
 
-    protected static function getKernelClass()
+    protected static function getKernelClass(): string
     {
         return AppKernel::class;
     }

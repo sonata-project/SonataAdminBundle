@@ -68,7 +68,7 @@
       </trans-unit>
       <trans-unit id="link_action_edit">
         <source>link_action_edit</source>
-        <target>Editer</target>
+        <target>Éditer</target>
       </trans-unit>
       <trans-unit id="link_add">
         <source>link_add</source>
@@ -404,7 +404,7 @@
       </trans-unit>
       <trans-unit id="link_edit_acl">
         <source>link_edit_acl</source>
-        <target>Editer les permissions</target>
+        <target>Éditer les permissions</target>
       </trans-unit>
       <trans-unit id="btn_update_acl">
         <source>btn_update_acl</source>

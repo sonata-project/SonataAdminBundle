@@ -24,6 +24,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 interface FormContractorInterface extends BuilderInterface
 {
     /**
+     * Adds missing information to the given field description and the given admin.
+     */
+    public function fixFieldDescription(FieldDescriptionInterface $fieldDescription): void;
+
+    /**
      * @param array<string, mixed> $formOptions
      */
     public function getFormBuilder(string $name, array $formOptions = []): FormBuilderInterface;

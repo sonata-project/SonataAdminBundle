@@ -56,7 +56,7 @@ final class AdminObjectAclManipulatorTest extends TestCase
 
     public function testGetMaskBuilder(): void
     {
-        self::assertSame(
+        static::assertSame(
             MaskBuilder::class,
             $this->adminObjectAclManipulator->getMaskBuilderClass()
         );
@@ -74,17 +74,17 @@ final class AdminObjectAclManipulatorTest extends TestCase
         $acl->method('getObjectAces')->willReturn([]);
         $acl->method('isGranted')
             ->withConsecutive(
-                [[MaskBuilder::MASK_MASTER], self::isType('array'), false],
-                [[MaskBuilder::MASK_OWNER], self::isType('array'), false]
+                [[MaskBuilder::MASK_MASTER], static::isType('array'), false],
+                [[MaskBuilder::MASK_OWNER], static::isType('array'), false]
             )
             ->willReturnOnConsecutiveCalls(true, false);
 
         $acl
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('insertObjectAce')
-            ->with(self::isInstanceOf(RoleSecurityIdentity::class), MaskBuilder::MASK_MASTER);
+            ->with(static::isInstanceOf(RoleSecurityIdentity::class), MaskBuilder::MASK_MASTER);
 
-        $securityHandler->expects(self::once())->method('updateAcl')->with($acl);
+        $securityHandler->expects(static::once())->method('updateAcl')->with($acl);
 
         $securityHandler
             ->method('getObjectPermissions')
@@ -147,11 +147,11 @@ final class AdminObjectAclManipulatorTest extends TestCase
             FormType::class
         )->willReturn($formBuilder);
         $formBuilder->method('getForm')->willReturn($form);
-        $securityHandler->method('getObjectAcl')->with(self::isInstanceOf(ObjectIdentityInterface::class))->willReturn($acl);
+        $securityHandler->method('getObjectAcl')->with(static::isInstanceOf(ObjectIdentityInterface::class))->willReturn($acl);
 
         $resultForm = $this->adminObjectAclManipulator->createAclUsersForm($aclData);
 
-        self::assertSame($form, $resultForm);
+        static::assertSame($form, $resultForm);
     }
 
     public function testCreateAclRolesForm(): void
@@ -192,6 +192,6 @@ final class AdminObjectAclManipulatorTest extends TestCase
 
         $resultForm = $this->adminObjectAclManipulator->createAclRolesForm($aclData);
 
-        self::assertSame($form, $resultForm);
+        static::assertSame($form, $resultForm);
     }
 }

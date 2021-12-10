@@ -271,11 +271,11 @@ Here is a short table resuming on which you have to start:
 Kind of modification | Backward Compatible (BC) | Type of release | Branch to target        | Label |
 -------------------- | ------------------------ | --------------- | ----------------------- | ----- |
 Bug fixes            | Yes                      | Patch           | `4.x`   |       |
-Bug fixes            | No (Only if no choice)   | Major           | `master` |       |
+Bug fixes            | No (Only if no choice)   | Major           | `5.x` |       |
 Feature              | Yes                      | Minor           | `4.x`   |       |
-Feature              | No (Only if no choice)   | Major           | `master` |       |
+Feature              | No (Only if no choice)   | Major           | `5.x` |       |
 Deprecation          | Yes (Have to)            | Minor           | `4.x`   |       |
-Deprecation removal  | No (Can't be)            | Major           | `master` |       |
+Deprecation removal  | No (Can't be)            | Major           | `5.x` |       |
 
 Notes:
   * Branch `4.x` is the branch of the **latest stable** minor release and
@@ -283,7 +283,7 @@ Notes:
   * If you PR is not **Backward Compatible** but can be, it **MUST** be:
     * Changing a function/method signature? Prefer create a new one and deprecate the old one.
     * Code deletion? Don't. Please deprecate it instead.
-    * If your BC PR is accepted, you can do a new one on the `master` branch which removes the deprecated code.
+    * If your BC PR is accepted, you can do a new one on the `5.x` branch which removes the deprecated code.
     * SYMFONY DOC REF (same logic)?
 
 If you have a non-BC PR to propose, please try to create a related BC PR first.
@@ -299,6 +299,9 @@ For instance, assuming you want to introduce a new method to an existing interfa
 
 namespace Foo;
 
+/**
+ * @method void usefulMethod()
+ */
 interface BarInterface
 {
   /**
@@ -306,7 +309,7 @@ interface BarInterface
    *
    * This method does useful stuff.
    */
-  // public function usefulMethod();
+  // public function usefulMethod(): void;
 
   // …
 }
@@ -413,8 +416,8 @@ If you want to change some dependencies, here are the rules:
 - Lower version dropping is accepted as a Backward Compatible change according to [semver][semver_dependencies_update],
 but some extra rules MUST be respected here:
   - PHP versions that are under the [orange zone][php_supported_versions] (Security Support) **MUST NOT** be dropped on the stable branch.
-  - PHP versions that are under the [green zone][php_supported_versions] (Active Support) **MUST NOT** be dropped on the master branch.
-  - If it's a Symfony package, at least the last LTS version **MUST** be supported, even on master.
+  - PHP versions that are under the [green zone][php_supported_versions] (Active Support) **MUST NOT** be dropped on the unstable branch.
+  - If it's a Symfony package, at least the last LTS version **MUST** be supported, even on the unstable branch.
   - Generally, don't drop dependency version if it doesn't have a big impact on the code.
   - Backward Compatible code related to the dropped version **MUST** be dropped on the same PR.
     This will allow seeing if this version drop **is really worth it** or not.

@@ -114,7 +114,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
 
-        self::assertSame(
+        static::assertSame(
             array_merge($this->getDefaultStylesheets(), $extraStylesheets),
             $stylesheets
         );
@@ -135,7 +135,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
 
-        self::assertSame(
+        static::assertSame(
             array_values(
                 array_diff($this->defaultConfiguration['assets']['stylesheets'], $removeStylesheets)
             ),
@@ -155,7 +155,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $javascripts = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['javascripts'];
 
-        self::assertSame(
+        static::assertSame(
             array_merge($this->defaultConfiguration['assets']['javascripts'], $extraJavascripts),
             $javascripts
         );
@@ -175,7 +175,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $javascripts = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['javascripts'];
 
-        self::assertSame(
+        static::assertSame(
             array_values(
                 array_diff($this->defaultConfiguration['assets']['javascripts'], $removeJavascripts)
             ),
@@ -206,7 +206,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
 
-        self::assertSame(
+        static::assertSame(
             array_merge(
                 array_diff($this->defaultConfiguration['assets']['stylesheets'], $removeStylesheets),
                 $extraStylesheets
@@ -216,7 +216,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $javascripts = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['javascripts'];
 
-        self::assertSame(
+        static::assertSame(
             array_merge(
                 array_diff($this->defaultConfiguration['assets']['javascripts'], $removeJavascripts),
                 $extraJavascripts
@@ -229,7 +229,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
     {
         $this->load();
 
-        self::assertSame([
+        static::assertSame([
             'user_block' => '@SonataAdmin/Core/user_block.html.twig',
             'add_block' => '@SonataAdmin/Core/add_block.html.twig',
             'layout' => '@SonataAdmin/standard_layout.html.twig',
@@ -277,14 +277,14 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
     public function testLoadIntlTemplate(): void
     {
         $bundles = $this->container->getParameter('kernel.bundles');
-        self::assertIsArray($bundles);
+        static::assertIsArray($bundles);
 
         $this->container->setParameter('kernel.bundles', array_merge($bundles, ['SonataIntlBundle' => true]));
         $this->load();
 
         $templates = $this->container->getParameter('sonata.admin.configuration.templates');
-        self::assertIsArray($templates);
-        self::assertSame('@SonataIntl/CRUD/history_revision_timestamp.html.twig', $templates['history_revision_timestamp']);
+        static::assertIsArray($templates);
+        static::assertSame('@SonataIntl/CRUD/history_revision_timestamp.html.twig', $templates['history_revision_timestamp']);
     }
 
     public function testDefaultSkin(): void
@@ -295,8 +295,8 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
         $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
 
-        self::assertSame($this->getDefaultStylesheets(), $stylesheets);
-        self::assertSame('skin-black', $skin);
+        static::assertSame($this->getDefaultStylesheets(), $stylesheets);
+        static::assertSame('skin-black', $skin);
     }
 
     public function testSetSkin(): void
@@ -311,8 +311,8 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
         $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
 
-        self::assertSame($this->getDefaultStylesheets('skin-blue'), $stylesheets);
-        self::assertSame('skin-blue', $skin);
+        static::assertSame($this->getDefaultStylesheets('skin-blue'), $stylesheets);
+        static::assertSame('skin-blue', $skin);
     }
 
     public function testSetDefaultSkin(): void
@@ -327,8 +327,8 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
         $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
 
-        self::assertSame($this->getDefaultStylesheets(), $stylesheets);
-        self::assertSame('skin-black', $skin);
+        static::assertSame($this->getDefaultStylesheets(), $stylesheets);
+        static::assertSame('skin-black', $skin);
     }
 
     public function testSetInvalidSkin(): void
@@ -349,11 +349,11 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $autoconfiguredInstancesOf = $this->container->getAutoconfiguredInstanceof();
 
-        self::assertArrayHasKey(ModelManagerInterface::class, $autoconfiguredInstancesOf);
-        self::assertTrue($autoconfiguredInstancesOf[ModelManagerInterface::class]->hasTag(ModelManagerCompilerPass::MANAGER_TAG));
+        static::assertArrayHasKey(ModelManagerInterface::class, $autoconfiguredInstancesOf);
+        static::assertTrue($autoconfiguredInstancesOf[ModelManagerInterface::class]->hasTag(ModelManagerCompilerPass::MANAGER_TAG));
 
-        self::assertArrayHasKey(AuditReaderInterface::class, $autoconfiguredInstancesOf);
-        self::assertTrue($autoconfiguredInstancesOf[AuditReaderInterface::class]->hasTag(AddAuditReadersCompilerPass::AUDIT_READER_TAG));
+        static::assertArrayHasKey(AuditReaderInterface::class, $autoconfiguredInstancesOf);
+        static::assertTrue($autoconfiguredInstancesOf[AuditReaderInterface::class]->hasTag(AddAuditReadersCompilerPass::AUDIT_READER_TAG));
     }
 
     protected function getContainerExtensions(): array

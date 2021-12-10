@@ -30,6 +30,9 @@ file that was distributed with this source code.
     {{ admin.isChild and admin.parent.subject ? 'title_edit'|trans({'%name%': admin.parent.toString(admin.parent.subject)|u.truncate(100, '...') }, 'SonataAdminBundle') : '' }}
 {% endblock %}
 
+{# Define the variable out of the block to prevent error if someone is overriding the list_table and not the list_footer #}
+{% set datagrid_has_results = admin.datagrid.results|length > 0 %}
+
 {% block list_table %}
     <div class="col-xs-12 col-md-12">
         {% set batchactions = admin.batchactions %}
@@ -37,8 +40,6 @@ file that was distributed with this source code.
             <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST" >
             <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
         {% endif %}
-
-        {% set datagrid_has_results = admin.datagrid.results|length > 0 %}
 
         {# Add a margin if no pager to prevent dropdown cropping on window #}
         <div class="box box-primary"{% if admin.datagrid.pager.lastPage == 1 %} style="margin-bottom: 100px;"{% endif %}>
@@ -61,6 +62,7 @@ file that was distributed with this source code.
                                         {% elseif field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_SELECT') %}
                                             <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
                                         {% elseif field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_ACTIONS') and app.request.isXmlHttpRequest %}
+                                            {# NEXT_MAJOR: Remove this case in version 5 and recommend using the option `ajax_hidden` instead. #}
                                             {# Action buttons disabled in ajax view! #}
                                         {% elseif field_description.getOption('ajax_hidden') == true and app.request.isXmlHttpRequest %}
                                             {# Disable fields with 'ajax_hidden' option set to true #}
@@ -73,7 +75,7 @@ file that was distributed with this source code.
                                                     and (admin.datagrid.values[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_BY')] == field_description
                                                         or admin.datagrid.values[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_BY')].name == sort_parameters.filter[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_BY')]) %}
                                                 {% set sort_active_class    = current ? 'sonata-ba-list-field-order-active' : '' %}
-                                                {% set sort_by              = current ? admin.datagrid.values[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_ORDER')] : field_description.option(constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_ORDER')) %}
+                                                {% set sort_by              = current ? admin.datagrid.values[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_ORDER')] : field_description.option(constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_ORDER'), sort_parameters.filter[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_ORDER')]) %}
                                             {% endif %}
 
                                             {% apply spaceless %}

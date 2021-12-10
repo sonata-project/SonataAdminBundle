@@ -55,7 +55,7 @@ final class AdminListBlockService extends AbstractBlockService
 
         $visibleGroups = [];
         foreach ($dashboardGroups as $name => $dashboardGroup) {
-            if (!$settings['groups'] || \in_array($name, $settings['groups'], true)) {
+            if (false === $settings['groups'] || \in_array($name, $settings['groups'], true)) {
                 $visibleGroups[] = $dashboardGroup;
             }
         }

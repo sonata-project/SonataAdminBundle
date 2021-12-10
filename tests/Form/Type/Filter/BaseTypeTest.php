@@ -21,16 +21,16 @@ abstract class BaseTypeTest extends TypeTestCase
     {
         $form = $this->factory->create($this->getTestedType());
 
-        self::assertTrue($form->has('type'));
-        self::assertTrue($form->has('value'));
+        static::assertTrue($form->has('type'));
+        static::assertTrue($form->has('value'));
     }
 
     public function testHasFieldTypeAndOptions(): void
     {
         $form = $this->factory->create($this->getTestedType());
 
-        self::assertTrue($form->getConfig()->hasOption('field_type'));
-        self::assertTrue($form->getConfig()->hasOption('field_options'));
+        static::assertTrue($form->getConfig()->hasOption('field_type'));
+        static::assertTrue($form->getConfig()->hasOption('field_options'));
     }
 
     /**

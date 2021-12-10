@@ -24,16 +24,12 @@ $rules = [
     '@PHPUnit60Migration:risky' => true,
     '@Symfony' => true,
     '@Symfony:risky' => true,
-    'array_syntax' => [
-        'syntax' => 'short',
-    ],
+    'array_syntax' => ['syntax' => 'short'],
     'combine_consecutive_issets' => true,
     'combine_consecutive_unsets' => true,
     'compact_nullable_typehint' => true,
     'global_namespace_import' => ['import_classes' => false, 'import_constants' => false, 'import_functions' => false],
-    'header_comment' => [
-        'header' => $header,
-    ],
+    'header_comment' => ['header' => $header],
     'list_syntax' => ['syntax' => 'short'],
     'logical_operators' => true,
     'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
@@ -50,29 +46,29 @@ $rules = [
     'php_unit_set_up_tear_down_visibility' => true,
     'php_unit_strict' => true,
     'php_unit_test_annotation' => false,
+    'php_unit_test_case_static_method_calls' => true,
     'phpdoc_order' => true,
+    'phpdoc_to_comment' => ['ignored_tags' => ['psalm-suppress']],
     'single_line_throw' => false,
     'static_lambda' => true,
     'strict_comparison' => true,
     'strict_param' => true,
+    'types_spaces' => ['space' => 'single'],
     'void_return' => false,
 ];
-
 
 $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
     ->exclude('node_modules')
     ->exclude('Resources/skeleton')
     ->exclude('Resources/public/vendor')
-    ->exclude('var')
-;
+    ->exclude('var');
 
 $config = new PhpCsFixer\Config();
 $config
     ->setFinder($finder)
     ->setRiskyAllowed(true)
     ->setRules($rules)
-    ->setUsingCache(true)
-;
+    ->setUsingCache(true);
 
 return $config;

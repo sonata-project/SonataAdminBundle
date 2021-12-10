@@ -27,6 +27,7 @@ final class SonataConfigurationTest extends TestCase
     {
         $this->configuration = new SonataConfiguration('title', '/path/to/logo.png', [
             'confirm_exit' => true,
+            'default_admin_route' => 'show',
             'default_group' => 'default',
             'default_icon' => '<i class="fas fa-folder"></i>',
             'default_label_catalogue' => 'SonataAdminBundle',
@@ -55,23 +56,23 @@ final class SonataConfigurationTest extends TestCase
 
     public function testGetTitle(): void
     {
-        self::assertSame('title', $this->configuration->getTitle());
+        static::assertSame('title', $this->configuration->getTitle());
     }
 
     public function testGetLogo(): void
     {
-        self::assertSame('/path/to/logo.png', $this->configuration->getLogo());
+        static::assertSame('/path/to/logo.png', $this->configuration->getLogo());
     }
 
     public function testGetOption(): void
     {
-        self::assertTrue($this->configuration->getOption('html5_validate'));
-        self::assertFalse($this->configuration->getOption('lock_protection'));
+        static::assertTrue($this->configuration->getOption('html5_validate'));
+        static::assertFalse($this->configuration->getOption('lock_protection'));
     }
 
     public function testGetOptionDefault(): void
     {
-        self::assertNull($this->configuration->getOption('pager_links'));
-        self::assertSame(1, $this->configuration->getOption('pager_links', 1));
+        static::assertNull($this->configuration->getOption('pager_links'));
+        static::assertSame(1, $this->configuration->getOption('pager_links', 1));
     }
 }

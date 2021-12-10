@@ -22,6 +22,7 @@ use Symfony\Component\Security\Acl\Exception\NotAllAclsFoundException;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 use Symfony\Component\Security\Acl\Model\MutableAclProviderInterface;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
+use Symfony\Component\Security\Acl\Permission\MaskBuilderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
@@ -64,13 +65,13 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
 
     /**
      * @var string
-     * @phpstan-var class-string
+     * @phpstan-var class-string<MaskBuilderInterface>
      */
     private $maskBuilderClass;
 
     /**
      * @param string[] $superAdminRoles
-     * @phpstan-param class-string $maskBuilderClass
+     * @phpstan-param class-string<MaskBuilderInterface> $maskBuilderClass
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -154,7 +155,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         $securityIdentity = UserSecurityIdentity::fromAccount($user);
 
         $this->addObjectOwner($acl, $securityIdentity);
-        $this->addObjectClassAces($acl, $this->buildSecurityInformation($admin));
+        $this->addObjectClassAces($acl, $admin);
         $this->updateAcl($acl);
     }
 
@@ -199,11 +200,11 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         }
     }
 
-    public function addObjectClassAces(MutableAclInterface $acl, array $roleInformation = []): void
+    public function addObjectClassAces(MutableAclInterface $acl, AdminInterface $admin): void
     {
         $builder = new $this->maskBuilderClass();
 
-        foreach ($roleInformation as $role => $permissions) {
+        foreach ($this->buildSecurityInformation($admin) as $role => $permissions) {
             $aceIndex = $this->findClassAceIndexByRole($acl, $role);
             $hasRole = false;
 

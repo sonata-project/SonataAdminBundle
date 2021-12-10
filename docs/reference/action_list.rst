@@ -472,7 +472,7 @@ given the default type ``is equal`` is used::
     protected function configureDefaultFilterValues(array &$filterValues): void
     {
         $filterValues['foo'] = [
-            'type'  => ChoiceType::TYPE_CONTAINS,
+            'type'  => ContainsOperatorType::TYPE_CONTAINS,
             'value' => 'bar',
         ];
     }

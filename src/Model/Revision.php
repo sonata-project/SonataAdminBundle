@@ -26,14 +26,14 @@ final class Revision
     private $dateTime;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $username;
 
     /**
      * @param int|string $id
      */
-    public function __construct($id, \DateTimeInterface $dateTime, string $username)
+    public function __construct($id, \DateTimeInterface $dateTime, ?string $username)
     {
         $this->id = $id;
         $this->dateTime = $dateTime;
@@ -66,7 +66,7 @@ final class Revision
         return $this->dateTime;
     }
 
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }

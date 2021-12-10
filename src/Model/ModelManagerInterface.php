@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Model;
 
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\AdminBundle\Exception\ModelManagerThrowable;
 
 /**
  * A model manager is a bridge between the model classes and the admin functionality.
@@ -24,21 +24,21 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 interface ModelManagerInterface
 {
     /**
-     * @throws ModelManagerException
+     * @throws ModelManagerThrowable
      *
      * @phpstan-param T $object
      */
     public function create(object $object): void;
 
     /**
-     * @throws ModelManagerException
+     * @throws ModelManagerThrowable
      *
      * @phpstan-param T $object
      */
     public function update(object $object): void;
 
     /**
-     * @throws ModelManagerException
+     * @throws ModelManagerThrowable
      *
      * @phpstan-param T $object
      */
@@ -75,7 +75,7 @@ interface ModelManagerInterface
     public function find(string $class, $id): ?object;
 
     /**
-     * @throws ModelManagerException
+     * @throws ModelManagerThrowable
      *
      * @phpstan-param class-string<T> $class
      */

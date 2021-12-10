@@ -42,7 +42,7 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
         parent::setUp();
 
         $reflection = new \ReflectionClass(TwigRendererEngine::class);
-        self::assertNotFalse($reflection->getFileName());
+        static::assertNotFalse($reflection->getFileName());
         $bridgeDirectory = \dirname($reflection->getFileName()).'/../Resources/views/Form';
 
         $loader = new FilesystemLoader([
@@ -69,7 +69,7 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
         ]));
 
         $renderer = $environment->getRuntime(FormRenderer::class);
-        self::assertInstanceOf(FormRenderer::class, $renderer);
+        static::assertInstanceOf(FormRenderer::class, $renderer);
         $this->renderer = $renderer;
     }
 
@@ -84,7 +84,7 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
             // the top level
             $dom->loadXML('<root>'.$html.'</root>');
         } catch (\Exception $e) {
-            self::fail(sprintf(
+            static::fail(sprintf(
                 "Failed loading HTML:\n\n%s\n\nError: %s",
                 $html,
                 $e->getMessage()
@@ -97,7 +97,7 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
             $dom->formatOutput = true;
             $savedHtml = $dom->saveHTML();
 
-            self::fail(sprintf(
+            static::fail(sprintf(
                 "Failed asserting that \n\n%s\n\nmatches exactly %s. Matches %s in \n\n%s",
                 $expression,
                 1 === $count ? 'once' : $count.' times',

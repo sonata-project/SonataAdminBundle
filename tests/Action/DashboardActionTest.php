@@ -55,7 +55,7 @@ final class DashboardActionTest extends TestCase
             ['dashboard', 'dashboard.html'],
         ]);
 
-        self::assertInstanceOf(Response::class, ($this->action)($request));
+        static::assertInstanceOf(Response::class, ($this->action)($request));
     }
 
     public function testDashboardActionAjaxLayout(): void
@@ -68,6 +68,6 @@ final class DashboardActionTest extends TestCase
             ['dashboard', 'dashboard.html'],
         ]);
 
-        self::assertInstanceOf(Response::class, ($this->action)($request));
+        static::assertInstanceOf(Response::class, ($this->action)($request));
     }
 }

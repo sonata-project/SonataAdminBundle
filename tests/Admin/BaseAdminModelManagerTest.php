@@ -25,9 +25,9 @@ final class BaseAdminModelManagerTest extends TestCase
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
-        $modelManager->expects(self::once())->method('create');
-        $modelManager->expects(self::once())->method('update');
-        $modelManager->expects(self::once())->method('delete');
+        $modelManager->expects(static::once())->method('create');
+        $modelManager->expects(static::once())->method('update');
+        $modelManager->expects(static::once())->method('delete');
 
         $admin = new BaseAdminModelManager_Admin('code', \stdClass::class, 'controller');
         $admin->setModelManager($modelManager);
@@ -43,7 +43,7 @@ final class BaseAdminModelManagerTest extends TestCase
     public function testObject(): void
     {
         $modelManager = $this->createMock(ModelManagerInterface::class);
-        $modelManager->expects(self::once())->method('find')->willReturnCallback(static function (string $class, int $id): void {
+        $modelManager->expects(static::once())->method('find')->willReturnCallback(static function (string $class, int $id): void {
             if (\stdClass::class !== $class) {
                 throw new \RuntimeException('Invalid class argument');
             }
@@ -63,7 +63,7 @@ final class BaseAdminModelManagerTest extends TestCase
         $query = $this->createMock(ProxyQueryInterface::class);
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('createQuery')
             ->with(\stdClass::class)
             ->willReturn($query);
@@ -77,7 +77,7 @@ final class BaseAdminModelManagerTest extends TestCase
     {
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
-            ->expects(self::exactly(2))
+            ->expects(static::exactly(2))
             ->method('getNormalizedIdentifier')
             ->willReturn('42');
 

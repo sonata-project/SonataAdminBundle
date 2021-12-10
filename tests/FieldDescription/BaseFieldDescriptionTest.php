@@ -25,8 +25,8 @@ final class BaseFieldDescriptionTest extends TestCase
     {
         $description = new FieldDescription('foo.bar');
 
-        self::assertSame('foo.bar', $description->getName());
-        self::assertSame('foo.bar', $description->getFieldName());
+        static::assertSame('foo.bar', $description->getName());
+        static::assertSame('foo.bar', $description->getFieldName());
     }
 
     public function testConstructingWithMapping(): void
@@ -44,21 +44,21 @@ final class BaseFieldDescriptionTest extends TestCase
             'bar'
         );
 
-        self::assertSame($fieldMapping, $description->getFieldMapping());
-        self::assertSame($associationMapping, $description->getAssociationMapping());
-        self::assertSame($parentAssociationMapping, $description->getParentAssociationMappings());
-        self::assertSame('bar', $description->getFieldName());
+        static::assertSame($fieldMapping, $description->getFieldMapping());
+        static::assertSame($associationMapping, $description->getAssociationMapping());
+        static::assertSame($parentAssociationMapping, $description->getParentAssociationMappings());
+        static::assertSame('bar', $description->getFieldName());
     }
 
     public function testSetName(): void
     {
         $description = new FieldDescription('foo');
-        self::assertSame('foo', $description->getFieldName());
-        self::assertSame('foo', $description->getName());
+        static::assertSame('foo', $description->getFieldName());
+        static::assertSame('foo', $description->getName());
 
         $description->setName('bar');
-        self::assertSame('foo', $description->getFieldName());
-        self::assertSame('bar', $description->getName());
+        static::assertSame('foo', $description->getFieldName());
+        static::assertSame('bar', $description->getName());
     }
 
     public function testOptions(): void
@@ -66,40 +66,40 @@ final class BaseFieldDescriptionTest extends TestCase
         $description = new FieldDescription('name');
         $description->setOption('foo', 'bar');
 
-        self::assertNull($description->getOption('bar'));
-        self::assertSame('bar', $description->getOption('foo'));
+        static::assertNull($description->getOption('bar'));
+        static::assertSame('bar', $description->getOption('foo'));
 
         $description->mergeOption('settings', ['value_1', 'value_2']);
         $description->mergeOption('settings', ['value_1', 'value_3']);
 
-        self::assertSame(['value_1', 'value_2', 'value_1', 'value_3'], $description->getOption('settings'));
+        static::assertSame(['value_1', 'value_2', 'value_1', 'value_3'], $description->getOption('settings'));
 
         $description->mergeOption('settings', ['value_4']);
-        self::assertSame(['value_1', 'value_2', 'value_1', 'value_3', 'value_4'], $description->getOption('settings'));
+        static::assertSame(['value_1', 'value_2', 'value_1', 'value_3', 'value_4'], $description->getOption('settings'));
 
         $description->mergeOption('bar', ['hello']);
 
-        self::assertCount(1, $description->getOption('bar'));
+        static::assertCount(1, $description->getOption('bar'));
 
         $description->setOption('label', 'trucmuche');
-        self::assertSame('trucmuche', $description->getLabel());
-        self::assertNull($description->getTemplate());
+        static::assertSame('trucmuche', $description->getLabel());
+        static::assertNull($description->getTemplate());
         $description->setOptions(['type' => 'integer', 'template' => 'foo.twig.html']);
 
-        self::assertSame('integer', $description->getType());
-        self::assertSame('foo.twig.html', $description->getTemplate());
+        static::assertSame('integer', $description->getType());
+        static::assertSame('foo.twig.html', $description->getTemplate());
 
-        self::assertCount(0, $description->getOptions());
+        static::assertCount(0, $description->getOptions());
 
-        self::assertNull($description->getOption('placeholder'));
+        static::assertNull($description->getOption('placeholder'));
         $description->setOptions(['placeholder' => 'foo']);
-        self::assertSame('foo', $description->getOption('placeholder'));
+        static::assertSame('foo', $description->getOption('placeholder'));
 
         $description->setOption('sortable', false);
-        self::assertFalse($description->isSortable());
+        static::assertFalse($description->isSortable());
 
         $description->setOption('sortable', 'field_name');
-        self::assertTrue($description->isSortable());
+        static::assertTrue($description->isSortable());
     }
 
     public function testAdmin(): void
@@ -108,28 +108,29 @@ final class BaseFieldDescriptionTest extends TestCase
 
         $admin = $this->createMock(AdminInterface::class);
         $description->setAdmin($admin);
-        self::assertInstanceOf(AdminInterface::class, $description->getAdmin());
+        static::assertInstanceOf(AdminInterface::class, $description->getAdmin());
 
         $associationAdmin = $this->createMock(AdminInterface::class);
-        $associationAdmin->expects(self::once())->method('setParentFieldDescription');
+        $associationAdmin->expects(static::once())->method('setParentFieldDescription');
 
-        self::assertFalse($description->hasAssociationAdmin());
+        static::assertFalse($description->hasAssociationAdmin());
         $description->setAssociationAdmin($associationAdmin);
-        self::assertTrue($description->hasAssociationAdmin());
-        self::assertInstanceOf(AdminInterface::class, $description->getAssociationAdmin());
+        static::assertTrue($description->hasAssociationAdmin());
+        static::assertInstanceOf(AdminInterface::class, $description->getAssociationAdmin());
 
         $parent = $this->createMock(AdminInterface::class);
         $description->setParent($parent);
-        self::assertInstanceOf(AdminInterface::class, $description->getParent());
+        static::assertInstanceOf(AdminInterface::class, $description->getParent());
     }
 
     public function testGetFieldValueNoValueException(): void
     {
-        $this->expectException(NoValueException::class);
-
+        $admin = $this->createStub(AdminInterface::class);
         $description = new FieldDescription('name');
+        $description->setAdmin($admin);
         $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getFoo'])->getMock();
 
+        $this->expectException(NoValueException::class);
         $this->callMethod($description, 'getFieldValue', [$mock, 'fake']);
     }
 
@@ -139,29 +140,29 @@ final class BaseFieldDescriptionTest extends TestCase
         $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getFoo'])->getMock();
 
         $description->setOption('virtual_field', true);
-        self::assertNull($this->callMethod($description, 'getFieldValue', [$mock, 'fake']));
+        static::assertNull($this->callMethod($description, 'getFieldValue', [$mock, 'fake']));
     }
 
     public function testGetFieldValueWithNullObject(): void
     {
         $description = new FieldDescription('name');
-        self::assertNull($this->callMethod($description, 'getFieldValue', [null, 'fake']));
+        static::assertNull($this->callMethod($description, 'getFieldValue', [null, 'fake']));
     }
 
     public function testGetFieldValueWithAccessor(): void
     {
         $description = new FieldDescription('name', ['accessor' => 'foo']);
         $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getFoo'])->getMock();
-        $mock->expects(self::once())->method('getFoo')->willReturn(42);
-        self::assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'fake']));
+        $mock->expects(static::once())->method('getFoo')->willReturn(42);
+        static::assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'fake']));
     }
 
     public function testGetFieldValueWithTopLevelFunctionName(): void
     {
         $description = new FieldDescription('microtime');
         $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getMicrotime'])->getMock();
-        $mock->expects(self::once())->method('getMicrotime')->willReturn(42);
-        self::assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'microtime']));
+        $mock->expects(static::once())->method('getMicrotime')->willReturn(42);
+        static::assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'microtime']));
     }
 
     public function testGetFieldValueWithCallableAccessor(): void
@@ -173,8 +174,8 @@ final class BaseFieldDescriptionTest extends TestCase
             },
         ]);
         $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getFoo'])->getMock();
-        $mock->expects(self::once())->method('getFoo')->willReturn(42);
-        self::assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'fake']));
+        $mock->expects(static::once())->method('getFoo')->willReturn(42);
+        static::assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'fake']));
     }
 
     public function testGetFieldValueWithMagicCall(): void
@@ -182,10 +183,10 @@ final class BaseFieldDescriptionTest extends TestCase
         $foo = new FooCall();
 
         $description = new FieldDescription('name');
-        self::assertSame(['getFake', []], $this->callMethod($description, 'getFieldValue', [$foo, 'fake']));
+        static::assertSame(['getFake', []], $this->callMethod($description, 'getFieldValue', [$foo, 'fake']));
 
         // repeating to cover retrieving cached getter
-        self::assertSame(['getFake', []], $this->callMethod($description, 'getFieldValue', [$foo, 'fake']));
+        static::assertSame(['getFake', []], $this->callMethod($description, 'getFieldValue', [$foo, 'fake']));
     }
 
     /**
@@ -197,8 +198,8 @@ final class BaseFieldDescriptionTest extends TestCase
         $mock = $this->getMockBuilder(\stdClass::class)->addMethods([$method])->getMock();
 
         $mock->method($method)->willReturn(42);
-        self::assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'fake_field_value']));
-        self::assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'fakeFieldValue']));
+        static::assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'fake_field_value']));
+        static::assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'fakeFieldValue']));
     }
 
     /**
@@ -216,13 +217,13 @@ final class BaseFieldDescriptionTest extends TestCase
     public function testGetFieldValueWithChainedFieldName(): void
     {
         $mockChild = $this->getMockBuilder(\stdClass::class)->addMethods(['getFoo'])->getMock();
-        $mockChild->expects(self::once())->method('getFoo')->willReturn(42);
+        $mockChild->expects(static::once())->method('getFoo')->willReturn(42);
 
         $mockParent = $this->getMockBuilder(\stdClass::class)->addMethods(['getChild'])->getMock();
-        $mockParent->expects(self::once())->method('getChild')->willReturn($mockChild);
+        $mockParent->expects(static::once())->method('getChild')->willReturn($mockChild);
 
         $description = new FieldDescription('name');
-        self::assertSame(42, $this->callMethod($description, 'getFieldValue', [$mockParent, 'child.foo']));
+        static::assertSame(42, $this->callMethod($description, 'getFieldValue', [$mockParent, 'child.foo']));
     }
 
     public function testExceptionOnNonArrayOption(): void
@@ -241,16 +242,16 @@ final class BaseFieldDescriptionTest extends TestCase
         $admin = $this->createMock(AdminInterface::class);
         $description->setAdmin($admin);
 
-        $admin->expects(self::once())
+        $admin->expects(static::once())
             ->method('getTranslationDomain')
             ->willReturn('AdminDomain');
 
-        self::assertSame('AdminDomain', $description->getTranslationDomain());
+        static::assertSame('AdminDomain', $description->getTranslationDomain());
 
-        $admin->expects(self::never())
+        $admin->expects(static::never())
             ->method('getTranslationDomain');
         $description->setOption('translation_domain', 'ExtensionDomain');
-        self::assertSame('ExtensionDomain', $description->getTranslationDomain());
+        static::assertSame('ExtensionDomain', $description->getTranslationDomain());
     }
 
     public function testGetTranslationDomainWithFalse(): void
@@ -260,10 +261,10 @@ final class BaseFieldDescriptionTest extends TestCase
         $admin = $this->createMock(AdminInterface::class);
         $description->setAdmin($admin);
 
-        $admin->expects(self::never())
+        $admin->expects(static::never())
             ->method('getTranslationDomain');
 
-        self::assertFalse($description->getTranslationDomain());
+        static::assertFalse($description->getTranslationDomain());
     }
 
     /**
