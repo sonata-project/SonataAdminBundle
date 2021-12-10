@@ -151,6 +151,10 @@ class DefaultRouteGeneratorTest extends TestCase
         $collection->add('foo');
         $collection->addCollection($childCollection);
 
+        $nochildCollection = new RouteCollection('base.Code.Child', 'admin_child', '/foo/', 'BundleName:ControllerName');
+        $nochildCollection->add('bar');
+        $collection->addCollection($nochildCollection);
+
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->method('isChild')->willReturn(true);
         $admin->method('getCode')->willReturn('base.Code.Child');
@@ -201,6 +205,10 @@ class DefaultRouteGeneratorTest extends TestCase
                         return sprintf('/foo%s', $params);
                     case 'admin_acme_child_bar':
                         return sprintf('/foo/bar%s', $params);
+                    case 'admin_child_bar':
+                        return sprintf('/bar%s', $params);
+                    default:
+                        throw new \LogicException('Not implemented');
                 }
             });
 
