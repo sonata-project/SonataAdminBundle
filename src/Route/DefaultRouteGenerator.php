@@ -138,16 +138,16 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
     {
         $this->loadCache($admin);
 
-        // someone provide the fullname
-        if (!$admin->isChild() && \array_key_exists($name, $this->caches)) {
-            return $name;
-        }
-
         $codePrefix = $admin->getBaseCodeRoute();
 
         // someone provide a code, so it is a child
         if (strpos($name, '.') > 0) {
             return sprintf('%s|%s', $codePrefix, $name);
+        }
+
+        // someone provide the fullname
+        if (!$admin->isChild() && \array_key_exists($name, $this->caches)) {
+            return $name;
         }
 
         return sprintf('%s.%s', $codePrefix, $name);
