@@ -403,6 +403,11 @@ final class PoolTest extends TestCase
         ];
     }
 
+    /**
+     * @psalm-suppress TypeDoesNotContainType
+     *
+     * @see https://github.com/vimeo/psalm/issues/7109
+     */
     public function testGetAdminClasses(): void
     {
         $class = \stdClass::class;
