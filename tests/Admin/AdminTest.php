@@ -1195,7 +1195,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        static::assertSame(['json', 'xml', 'csv', 'xls'], $admin->getExportFormats());
+        static::assertSame(['json', 'xml', 'csv', 'xls', 'xlsx'], $admin->getExportFormats());
     }
 
     public function testGetUrlsafeIdentifier(): void
