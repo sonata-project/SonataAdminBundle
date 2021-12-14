@@ -351,9 +351,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     public function getExportFormats(): array
     {
-        return [
-            'json', 'xml', 'csv', 'xls', 'xlsx',
-        ];
+        return [];
     }
 
     final public function getExportFields(): array
