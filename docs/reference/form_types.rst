@@ -663,7 +663,7 @@ The available options (which can be passed as a third parameter to ``FormMapper:
 
     You can check / uncheck a range of checkboxes by clicking a first one,
     then a second one with shift + click.
-    
+
 .. warning::
 
     If you are using the ``sonata.admin.security.handler.role``, you must set, at least, the CREATE permission to the Admin of the relation, to be able to add more rows to the collection.
@@ -689,7 +689,7 @@ This bundle handle the native Symfony ``collection`` form type by adding:
     or before deleted (``sonata-collection-item-deleted``).
     A jQuery event is fired after a row has been deleted successfully (``sonata-collection-item-deleted-successful``)
     You can listen to these events to trigger custom JavaScript.
-    
+
 .. warning::
 
     If you are using the ``sonata.admin.security.handler.role``, you must set, at least, the CREATE permission to the Admin of the relation, to be able to add more rows to the collection.
@@ -734,62 +734,6 @@ example above::
 
 Other specific field configuration options are detailed in the related
 abstraction layer documentation.
-
-Adding a FormBuilderInterface
------------------------------
-
-You can add Symfony ``FormBuilderInterface`` instances to the ``FormMapper``. This allows you to
-re-use a model form type. When adding a field using a ``FormBuilderInterface``, the type is guessed.
-
-Given you have a ``PostType`` like this::
-
-    // src/Form/PostType.php
-
-    use Symfony\Component\Form\FormBuilderInterface;
-    use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-    use Symfony\Component\Form\Extension\Core\Type\TextType;
-    use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-    use Symfony\Component\Form\AbstractType;
-
-    class PostType extends AbstractType
-    {
-        public function buildForm(FormBuilderInterface $builder, array $options): void
-        {
-            $builder
-                ->add('author', EntityType::class, [
-                    'class' => User::class
-                ])
-                ->add('title', TextType::class)
-                ->add('body', TextareaType::class)
-            ;
-        }
-    }
-
-you can reuse it like this::
-
-    // src/Admin/Post.php
-
-    use Sonata\AdminBundle\Form\FormMapper;
-    use Sonata\AdminBundle\Admin\AbstractAdmin;
-    use App\Form\PostType;
-
-    final class Post extend AbstractAdmin
-    {
-        protected function configureFormFields(FormMapper $form): void
-        {
-            $builder = $form->getFormBuilder()->getFormFactory()->createBuilder(PostType::class);
-
-            $form
-                ->with('Post')
-                    ->add($builder->get('title'))
-                    ->add($builder->get('body'))
-                ->end()
-                ->with('Author')
-                    ->add($builder->get('author'))
-                ->end()
-            ;
-        }
-    }
 
 Types options
 -------------
