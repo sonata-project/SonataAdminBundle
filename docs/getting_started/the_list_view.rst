@@ -192,6 +192,36 @@ This way you can filter by a selected category.
    :alt: Sonata Category filter
    :width: 700px
 
+Another way to filter, if you have custom values to select from, is by using ``ChoiceFilter`` ::
+
+    // src/Admin/BlogPostAdmin.php
+
+    namespace App\Admin;
+
+    use Sonata\AdminBundle\Datagrid\DatagridMapper;
+    use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
+    use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
+    final class BlogPostAdmin extends AbstractAdmin
+    {
+        protected function configureDatagridFilters(DatagridMapper $datagrid): void
+        {
+            $datagrid
+                ->add('title')
+                ->add('state',   ChoiceFilter::class, [
+                    'label' => 'State',
+                    'field_type' => ChoiceType::class,
+                    'field_options' => [
+                        'choices' => [
+                            'new' => 'new',
+                            'open' => 'open',
+                            'closed' => 'closed'],                        
+                    ]
+                ])
+            ;
+        }
+    }
+
 Round Up
 --------
 
