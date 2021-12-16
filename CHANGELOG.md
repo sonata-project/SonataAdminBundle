@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.5.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.5.0...4.5.1) - 2021-12-16
+### Fixed
+- [[#7647](https://github.com/sonata-project/SonataAdminBundle/pull/7647)] DefaultRouteGenerator Routes generation for nested admins ([@Devristo](https://github.com/Devristo))
+- [[#7636](https://github.com/sonata-project/SonataAdminBundle/pull/7636)] Remove support for translation-contracts until it can be installed without relying on dev dependencies ([@jordisala1991](https://github.com/jordisala1991))
+
 ## [4.5.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.4.0...4.5.0) - 2021-12-03
 ### Added
 - [[#7626](https://github.com/sonata-project/SonataAdminBundle/pull/7626)] Support for a nullable username in a Revision. ([@VincentLanglet](https://github.com/VincentLanglet))
