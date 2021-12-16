@@ -1295,8 +1295,8 @@ final class AdminTest extends TestCase
         $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
-            ->willReturnCallback(static function (AdminInterface $adminIn, array $attributes, ?object $object = null) use ($admin): bool {
-                return $admin === $adminIn && $attributes === ['LIST'];
+            ->willReturnCallback(static function (AdminInterface $adminIn, $attributes, ?object $object = null) use ($admin): bool {
+                return $admin === $adminIn && 'LIST' === $attributes;
             });
 
         $admin->setSecurityHandler($securityHandler);
