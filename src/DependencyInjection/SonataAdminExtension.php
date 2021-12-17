@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
+use Sonata\AdminBundle\DependencyInjection\Admin\AutoConfiguredAdminInterface;
+use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
 use Sonata\AdminBundle\Model\AuditReaderInterface;
@@ -204,6 +206,10 @@ final class SonataAdminExtension extends Extension
         $container
             ->registerForAutoconfiguration(AuditReaderInterface::class)
             ->addTag(AddAuditReadersCompilerPass::AUDIT_READER_TAG);
+
+        $container
+            ->registerForAutoconfiguration(AutoConfiguredAdminInterface::class)
+            ->addTag(TaggedAdminInterface::ADMIN_TAG);
     }
 
     public function getNamespace(): string

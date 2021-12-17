@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\Pager;
+use Sonata\AdminBundle\DependencyInjection\Admin\AutoConfiguredAdminInterface;
 use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistry;
 use Symfony\Component\DependencyInjection\ChildDefinition;
@@ -75,6 +76,17 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
             foreach ($tags as $attributes) {
                 $definition = $container->getDefinition($id);
+                //Autoconfiguration stuff
+                $adminClass = $definition->getClass();
+                $reflectionClass = new \ReflectionClass($adminClass);
+                if($reflectionClass->implementsInterface(AutoConfiguredAdminInterface::class)){
+                    $conf = call_user_func([$adminClass,'getAdminConfiguration']);
+                    $attributes = array_merge($attributes,$conf);
+                    $definition->setArgument(0,null);
+                    $definition->setArgument(1,$conf['class']);
+                    $definition->setArgument(2,$conf['controller']);
+                }
+
                 $parentDefinition = null;
 
                 if ($definition instanceof ChildDefinition) {
