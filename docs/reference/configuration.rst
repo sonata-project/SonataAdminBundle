@@ -37,7 +37,7 @@ Full Configuration Options
         # Default configuration for extension with alias: "sonata_admin"
         sonata_admin:
             security:
-                handler:              sonata.admin.security.handler.noop
+                handler: sonata.admin.security.handler.noop
 
                 role_admin: ROLE_ADMIN
                 role_super_admin: ROLE_SUPER_ADMIN
@@ -45,7 +45,7 @@ Full Configuration Options
                 information:
 
                     # Prototype
-                    id:                   []
+                    id: []
                 admin_permissions:
 
                     # Defaults:
@@ -85,7 +85,7 @@ Full Configuration Options
                 use_bootlint: false
                 use_stickyforms: true
                 pager_links: null
-                form_type: standard
+                form_type: 'standard' # One of "standard"; "horizontal"
                 default_admin_route: show
                 default_group: default
                 default_label_catalogue: SonataAdminBundle
