@@ -74,7 +74,7 @@ file that was distributed with this source code.
                 ajax: {
                     url:  '{{ url ?: path(route.name, route.parameters|default([])) }}',
                     dataType: 'json',
-                    delay: {{ delay === 100 and quiet_millis !== 100 ? quiet_millis : delay }}, // NEXT_MAJOR: `quiet_millis` is deprecated. Use `delay` instead.
+                    delay: {{ delay === 100 and quiet_millis !== 100 ? quiet_millis : delay }}, // NEXT_MAJOR: Replace by `{{ delay }}` instead.
                     cache: {{ cache ? 'true' : 'false' }},
                     processResults: function (data, params) {
                         return {
