@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Twig\Extension;
+namespace Sonata\AdminBundle\Tests\Twig;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -19,21 +19,15 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\AdminCodeNotFoundException;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
-use Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension;
 use Sonata\AdminBundle\Twig\TemplateRegistryRuntime;
 use Symfony\Component\DependencyInjection\Container;
 
-/**
- * NEXT_MAJOR: Remove this test.
- *
- * @group legacy
- */
-final class TemplateRegistryExtensionTest extends TestCase
+final class TemplateRegistryRuntimeTest extends TestCase
 {
     /**
-     * @var TemplateRegistryExtension
+     * @var TemplateRegistryRuntime
      */
-    private $extension;
+    private $templateRegistryRuntime;
 
     protected function setUp(): void
     {
@@ -52,22 +46,17 @@ final class TemplateRegistryExtensionTest extends TestCase
         $container->set('admin.post', $admin);
         $pool = new Pool($container, ['admin.post']);
 
-        $this->extension = new TemplateRegistryExtension(new TemplateRegistryRuntime(
+        $this->templateRegistryRuntime = new TemplateRegistryRuntime(
             $templateRegistry,
             $pool
-        ));
-    }
-
-    public function testGetFunctions(): void
-    {
-        static::assertCount(2, $this->extension->getFunctions());
+        );
     }
 
     public function testGetAdminTemplate(): void
     {
         static::assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
-            $this->extension->getAdminTemplate('edit', 'admin.post')
+            $this->templateRegistryRuntime->getAdminTemplate('edit', 'admin.post')
         );
     }
 
@@ -79,7 +68,7 @@ final class TemplateRegistryExtensionTest extends TestCase
 
         static::assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
-            $this->extension->getAdminTemplate('edit', 'admin.non-existing')
+            $this->templateRegistryRuntime->getAdminTemplate('edit', 'admin.non-existing')
         );
     }
 
@@ -87,7 +76,7 @@ final class TemplateRegistryExtensionTest extends TestCase
     {
         static::assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
-            $this->extension->getGlobalTemplate('edit')
+            $this->templateRegistryRuntime->getGlobalTemplate('edit')
         );
     }
 }

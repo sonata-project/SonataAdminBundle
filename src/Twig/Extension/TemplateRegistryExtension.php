@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Twig\Extension;
 
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Exception\AdminCodeNotFoundException;
-use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
+use Sonata\AdminBundle\Twig\TemplateRegistryRuntime;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Twig\Extension\AbstractExtension;
@@ -24,22 +22,18 @@ use Twig\TwigFunction;
 final class TemplateRegistryExtension extends AbstractExtension
 {
     /**
-     * @var TemplateRegistryInterface
+     * @var TemplateRegistryRuntime
      */
-    private $globalTemplateRegistry;
+    private $templateRegistryRuntime;
 
     /**
-     * @var Pool
-     */
-    private $pool;
-
-    /**
+     * NEXT_MAJOR: Remove this constructor.
+     *
      * @internal This class should only be used through Twig
      */
-    public function __construct(TemplateRegistryInterface $globalTemplateRegistry, Pool $pool)
+    public function __construct(TemplateRegistryRuntime $templateRegistryRuntime)
     {
-        $this->globalTemplateRegistry = $globalTemplateRegistry;
-        $this->pool = $pool;
+        $this->templateRegistryRuntime = $templateRegistryRuntime;
     }
 
     /**
@@ -48,32 +42,47 @@ final class TemplateRegistryExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('get_admin_template', [$this, 'getAdminTemplate']),
-            new TwigFunction('get_global_template', [$this, 'getGlobalTemplate']),
+            new TwigFunction('get_admin_template', [TemplateRegistryRuntime::class, 'getAdminTemplate']),
+            new TwigFunction('get_global_template', [TemplateRegistryRuntime::class, 'getGlobalTemplate']),
         ];
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x use TemplateRegistryRuntime::getAdminTemplate() instead
+     *
      * @throws ServiceNotFoundException
      * @throws ServiceCircularReferenceException
      */
     public function getAdminTemplate(string $name, string $adminCode): ?string
     {
-        return $this->getTemplateRegistry($adminCode)->getTemplate($name);
-    }
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            .'Use "%s::%s() instead.',
+            __METHOD__,
+            TemplateRegistryRuntime::class,
+            __METHOD__
+        ), \E_USER_DEPRECATED);
 
-    public function getGlobalTemplate(string $name): ?string
-    {
-        return $this->globalTemplateRegistry->getTemplate($name);
+        return $this->templateRegistryRuntime->getAdminTemplate($name, $adminCode);
     }
 
     /**
-     * @throws AdminCodeNotFoundException
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x use TemplateRegistryRuntime::getGlobalTemplate() instead
      */
-    private function getTemplateRegistry(string $adminCode): TemplateRegistryInterface
+    public function getGlobalTemplate(string $name): ?string
     {
-        $admin = $this->pool->getAdminByAdminCode($adminCode);
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            .'Use "%s::%s() instead.',
+            __METHOD__,
+            TemplateRegistryRuntime::class,
+            __METHOD__
+        ), \E_USER_DEPRECATED);
 
-        return $admin->getTemplateRegistry();
+        return $this->templateRegistryRuntime->getGlobalTemplate($name);
     }
 }

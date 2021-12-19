@@ -11,20 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Twig\Extension;
+namespace Sonata\AdminBundle\Tests\Twig;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Twig\Extension\XEditableExtension;
 use Sonata\AdminBundle\Twig\XEditableRuntime;
 use Symfony\Component\Translation\Translator;
 
-/**
- * NEXT_MAJOR: Remove this test.
- *
- * @group legacy
- */
-final class XEditableExtensionTest extends TestCase
+final class XEditableRuntimeTest extends TestCase
 {
     /**
      * @param array<string, mixed>         $options
@@ -34,7 +28,7 @@ final class XEditableExtensionTest extends TestCase
      */
     public function testGetXEditableChoicesIsIdempotent(array $options, array $expectedChoices): void
     {
-        $twigExtension = new XEditableExtension(new XEditableRuntime(new Translator('en')));
+        $xEditableRuntime = new XEditableRuntime(new Translator('en'));
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription
@@ -51,7 +45,7 @@ final class XEditableExtensionTest extends TestCase
                 $options['multiple'] ?? null
             ));
 
-        static::assertSame($expectedChoices, $twigExtension->getXEditableChoices($fieldDescription));
+        static::assertSame($expectedChoices, $xEditableRuntime->getXEditableChoices($fieldDescription));
     }
 
     /**

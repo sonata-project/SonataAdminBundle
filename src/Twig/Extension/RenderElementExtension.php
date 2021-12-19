@@ -14,25 +14,26 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Twig\Extension;
 
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use Sonata\AdminBundle\Twig\RenderElementRuntime;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
-use Twig\TemplateWrapper;
 use Twig\TwigFilter;
 
 final class RenderElementExtension extends AbstractExtension
 {
     /**
-     * @var PropertyAccessorInterface
+     * @var RenderElementRuntime
      */
-    private $propertyAccessor;
+    private $renderElementRuntime;
 
     /**
+     * NEXT_MAJOR: Remove this constructor.
+     *
      * @internal This class should only be used through Twig
      */
-    public function __construct(PropertyAccessorInterface $propertyAccessor)
+    public function __construct(RenderElementRuntime $renderElementRuntime)
     {
-        $this->propertyAccessor = $propertyAccessor;
+        $this->renderElementRuntime = $renderElementRuntime;
     }
 
     /**
@@ -43,7 +44,7 @@ final class RenderElementExtension extends AbstractExtension
         return [
             new TwigFilter(
                 'render_list_element',
-                [$this, 'renderListElement'],
+                [RenderElementRuntime::class, 'renderListElement'],
                 [
                     'is_safe' => ['html'],
                     'needs_environment' => true,
@@ -51,7 +52,7 @@ final class RenderElementExtension extends AbstractExtension
             ),
             new TwigFilter(
                 'render_view_element',
-                [$this, 'renderViewElement'],
+                [RenderElementRuntime::class, 'renderViewElement'],
                 [
                     'is_safe' => ['html'],
                     'needs_environment' => true,
@@ -59,7 +60,7 @@ final class RenderElementExtension extends AbstractExtension
             ),
             new TwigFilter(
                 'render_view_element_compare',
-                [$this, 'renderViewElementCompare'],
+                [RenderElementRuntime::class, 'renderViewElementCompare'],
                 [
                     'is_safe' => ['html'],
                     'needs_environment' => true,
@@ -67,12 +68,16 @@ final class RenderElementExtension extends AbstractExtension
             ),
             new TwigFilter(
                 'render_relation_element',
-                [$this, 'renderRelationElement']
+                [RenderElementRuntime::class, 'renderRelationElement']
             ),
         ];
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x use RenderElementRuntime::renderListElement() instead
+     *
      * render a list element from the FieldDescription.
      *
      * @param object|mixed[]       $listElement
@@ -84,42 +89,43 @@ final class RenderElementExtension extends AbstractExtension
         FieldDescriptionInterface $fieldDescription,
         array $params = []
     ): string {
-        $template = $this->getTemplate(
-            $fieldDescription,
-            $fieldDescription->getAdmin()->getTemplateRegistry()->getTemplate('base_list_field'),
-            $environment
-        );
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            .'Use "%s::%s() instead.',
+            __METHOD__,
+            RenderElementRuntime::class,
+            __METHOD__
+        ), \E_USER_DEPRECATED);
 
-        [$object, $value] = $this->getObjectAndValueFromListElement($listElement, $fieldDescription);
-
-        return $this->render($fieldDescription, $template, array_merge($params, [
-            'admin' => $fieldDescription->getAdmin(),
-            'object' => $object,
-            'value' => $value,
-            'field_description' => $fieldDescription,
-        ]), $environment);
+        return $this->renderElementRuntime->renderListElement($environment, $listElement, $fieldDescription, $params);
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x use RenderElementRuntime::renderViewElement() instead
+     */
     public function renderViewElement(
         Environment $environment,
         FieldDescriptionInterface $fieldDescription,
         object $object
     ): string {
-        $template = $this->getTemplate(
-            $fieldDescription,
-            '@SonataAdmin/CRUD/base_show_field.html.twig',
-            $environment
-        );
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            .'Use "%s::%s() instead.',
+            __METHOD__,
+            RenderElementRuntime::class,
+            __METHOD__
+        ), \E_USER_DEPRECATED);
 
-        return $this->render($fieldDescription, $template, [
-            'field_description' => $fieldDescription,
-            'object' => $object,
-            'value' => $fieldDescription->getValue($object),
-            'admin' => $fieldDescription->getAdmin(),
-        ], $environment);
+        return $this->renderElementRuntime->renderViewElement($environment, $fieldDescription, $object);
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x use RenderElementRuntime::renderViewElementCompare() instead
+     *
      * render a compared view element.
      *
      * @param mixed $baseObject
@@ -131,44 +137,22 @@ final class RenderElementExtension extends AbstractExtension
         $baseObject,
         $compareObject
     ): string {
-        $template = $this->getTemplate(
-            $fieldDescription,
-            '@SonataAdmin/CRUD/base_show_field.html.twig',
-            $environment
-        );
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            .'Use "%s::%s() instead.',
+            __METHOD__,
+            RenderElementRuntime::class,
+            __METHOD__
+        ), \E_USER_DEPRECATED);
 
-        $baseValue = $fieldDescription->getValue($baseObject);
-        $compareValue = $fieldDescription->getValue($compareObject);
-
-        $baseValueOutput = $template->render([
-            'admin' => $fieldDescription->getAdmin(),
-            'field_description' => $fieldDescription,
-            'value' => $baseValue,
-            'object' => $baseObject,
-        ]);
-
-        $compareValueOutput = $template->render([
-            'field_description' => $fieldDescription,
-            'admin' => $fieldDescription->getAdmin(),
-            'value' => $compareValue,
-            'object' => $compareObject,
-        ]);
-
-        // Compare the rendered output of both objects by using the (possibly) overridden field block
-        $isDiff = $baseValueOutput !== $compareValueOutput;
-
-        return $this->render($fieldDescription, $template, [
-            'field_description' => $fieldDescription,
-            'value' => $baseValue,
-            'value_compare' => $compareValue,
-            'is_diff' => $isDiff,
-            'admin' => $fieldDescription->getAdmin(),
-            'object' => $baseObject,
-            'object_compare' => $compareObject,
-        ], $environment);
+        return $this->renderElementRuntime->renderViewElementCompare($environment, $fieldDescription, $baseObject, $compareObject);
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x use RenderElementRuntime::renderRelationElement() instead
+     *
      * @param mixed $element
      *
      * @throws \RuntimeException
@@ -177,112 +161,14 @@ final class RenderElementExtension extends AbstractExtension
      */
     public function renderRelationElement($element, FieldDescriptionInterface $fieldDescription)
     {
-        if (!\is_object($element)) {
-            return $element;
-        }
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            .'Use "%s::%s() instead.',
+            __METHOD__,
+            RenderElementRuntime::class,
+            __METHOD__
+        ), \E_USER_DEPRECATED);
 
-        $propertyPath = $fieldDescription->getOption('associated_property');
-
-        if (null === $propertyPath) {
-            if (!method_exists($element, '__toString')) {
-                throw new \RuntimeException(sprintf(
-                    'You must define an `associated_property` option or create a `%s::__toString` method'
-                    .' to the field option %s from service %s is ',
-                    \get_class($element),
-                    $fieldDescription->getName(),
-                    $fieldDescription->getAdmin()->getCode()
-                ));
-            }
-
-            return $element->__toString();
-        }
-
-        if (\is_callable($propertyPath)) {
-            return $propertyPath($element);
-        }
-
-        return $this->propertyAccessor->getValue($element, $propertyPath);
-    }
-
-    /**
-     * Extracts the object and requested value from the $listElement.
-     *
-     * @param object|mixed[] $listElement
-     *
-     * @throws \TypeError when $listElement is not an object or an array with an object on offset 0
-     *
-     * @return mixed[] An array containing object and value
-     *
-     * @phpstan-return array{0: object, 1: mixed}
-     */
-    private function getObjectAndValueFromListElement(
-        $listElement,
-        FieldDescriptionInterface $fieldDescription
-    ): array {
-        if (\is_object($listElement)) {
-            $object = $listElement;
-        } elseif (\is_array($listElement)) {
-            if (!isset($listElement[0]) || !\is_object($listElement[0])) {
-                throw new \TypeError(sprintf('If argument 1 passed to %s() is an array it must contain an object at offset 0.', __METHOD__));
-            }
-
-            $object = $listElement[0];
-        } else {
-            throw new \TypeError(sprintf('Argument 1 passed to %s() must be an object or an array, %s given.', __METHOD__, \gettype($listElement)));
-        }
-
-        if (\is_array($listElement) && \array_key_exists($fieldDescription->getName(), $listElement)) {
-            $value = $listElement[$fieldDescription->getName()];
-        } else {
-            $value = $fieldDescription->getValue($object);
-        }
-
-        return [$object, $value];
-    }
-
-    /**
-     * @param array<string, mixed> $parameters
-     */
-    private function render(
-        FieldDescriptionInterface $fieldDescription,
-        TemplateWrapper $template,
-        array $parameters,
-        Environment $environment
-    ): string {
-        $content = $template->render($parameters);
-
-        if ($environment->isDebug()) {
-            $commentTemplate = <<<'EOT'
-
-<!-- START
-    fieldName: %s
-    template: %s
-    compiled template: %s
-    -->
-    %s
-<!-- END - fieldName: %s -->
-EOT;
-
-            return sprintf(
-                $commentTemplate,
-                $fieldDescription->getFieldName(),
-                $fieldDescription->getTemplate() ?? '',
-                $template->getSourceContext()->getName(),
-                $content,
-                $fieldDescription->getFieldName()
-            );
-        }
-
-        return $content;
-    }
-
-    private function getTemplate(
-        FieldDescriptionInterface $fieldDescription,
-        string $defaultTemplate,
-        Environment $environment
-    ): TemplateWrapper {
-        $templateName = $fieldDescription->getTemplate() ?? $defaultTemplate;
-
-        return $environment->load($templateName);
+        return $this->renderElementRuntime->renderRelationElement($element, $fieldDescription);
     }
 }

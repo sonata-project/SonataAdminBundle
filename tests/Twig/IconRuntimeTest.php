@@ -11,27 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Twig\Extension;
+namespace Sonata\AdminBundle\Tests\Twig;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Twig\Extension\IconExtension;
 use Sonata\AdminBundle\Twig\IconRuntime;
 
-/**
- * NEXT_MAJOR: Remove this test.
- *
- * @group legacy
- */
-final class IconExtensionTest extends TestCase
+final class IconRuntimeTest extends TestCase
 {
     /**
      * @dataProvider iconProvider
      */
     public function testParseIcon(string $icon, string $expected): void
     {
-        $twigExtension = new IconExtension(new IconRuntime());
+        $iconRuntime = new IconRuntime();
 
-        static::assertSame($expected, $twigExtension->parseIcon($icon));
+        static::assertSame($expected, $iconRuntime->parseIcon($icon));
     }
 
     /**

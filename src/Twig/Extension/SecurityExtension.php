@@ -13,26 +13,25 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Twig\Extension;
 
-use Symfony\Component\Security\Acl\Voter\FieldVote;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+use Sonata\AdminBundle\Twig\SecurityRuntime;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class SecurityExtension extends AbstractExtension
 {
     /**
-     * @var AuthorizationCheckerInterface|null
+     * @var SecurityRuntime
      */
-    private $securityChecker;
+    private $securityRuntime;
 
     /**
+     * NEXT_MAJOR: Remove this constructor.
+     *
      * @internal This class should only be used through Twig
      */
-    public function __construct(
-        ?AuthorizationCheckerInterface $securityChecker = null
-    ) {
-        $this->securityChecker = $securityChecker;
+    public function __construct(SecurityRuntime $securityRuntime)
+    {
+        $this->securityRuntime = $securityRuntime;
     }
 
     /**
@@ -41,37 +40,27 @@ final class SecurityExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('is_granted_affirmative', [$this, 'isGrantedAffirmative']),
+            new TwigFunction('is_granted_affirmative', [SecurityRuntime::class, 'isGrantedAffirmative']),
         ];
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x use SecurityRuntime::isGrantedAffirmative() instead
+     *
      * @param string|string[] $role
      */
     public function isGrantedAffirmative($role, ?object $object = null, ?string $field = null): bool
     {
-        if (null === $this->securityChecker) {
-            return false;
-        }
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            .'Use "%s::%s() instead.',
+            __METHOD__,
+            SecurityRuntime::class,
+            __METHOD__
+        ), \E_USER_DEPRECATED);
 
-        if (null !== $field) {
-            $object = new FieldVote($object, $field);
-        }
-
-        if (!\is_array($role)) {
-            $role = [$role];
-        }
-
-        foreach ($role as $oneRole) {
-            try {
-                if ($this->securityChecker->isGranted($oneRole, $object)) {
-                    return true;
-                }
-            } catch (AuthenticationCredentialsNotFoundException $e) {
-                // empty on purpose
-            }
-        }
-
-        return false;
+        return $this->securityRuntime->isGrantedAffirmative($role, $object, $field);
     }
 }

@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Twig\Extension;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Twig\GroupRuntime;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -24,16 +23,18 @@ use Twig\TwigFunction;
 final class GroupExtension extends AbstractExtension
 {
     /**
-     * @var Pool
+     * @var GroupRuntime
      */
-    private $pool;
+    private $groupRuntime;
 
     /**
+     * NEXT_MAJOR: Remove this constructor.
+     *
      * @internal This class should only be used through Twig
      */
-    public function __construct(Pool $pool)
+    public function __construct(GroupRuntime $groupRuntime)
     {
-        $this->pool = $pool;
+        $this->groupRuntime = $groupRuntime;
     }
 
     /**
@@ -42,17 +43,21 @@ final class GroupExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('get_sonata_dashboard_groups_with_creatable_admins', [$this, 'getDashboardGroupsWithCreatableAdmins']),
+            new TwigFunction('get_sonata_dashboard_groups_with_creatable_admins', [GroupRuntime::class, 'getDashboardGroupsWithCreatableAdmins']),
         ];
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x use GroupRuntime::getDashboardGroupsWithCreatableAdmins() instead
+     *
      * @phpstan-return array<array{
      *  label: string,
      *  label_catalogue: string,
      *  icon: string,
      *  item_adds: Item[],
-     *  items: array<AdminInterface<object>>,
+     *  items: array<\Sonata\AdminBundle\Admin\AdminInterface<object>>,
      *  keep_open: bool,
      *  on_top: bool,
      *  roles: list<string>
@@ -60,18 +65,14 @@ final class GroupExtension extends AbstractExtension
      */
     public function getDashboardGroupsWithCreatableAdmins(): array
     {
-        $groups = [];
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            .'Use "%s::%s() instead.',
+            __METHOD__,
+            GroupRuntime::class,
+            __METHOD__
+        ), \E_USER_DEPRECATED);
 
-        foreach ($this->pool->getDashboardGroups() as $group) {
-            $filteredGroups = array_filter($group['items'], static function (AdminInterface $admin): bool {
-                return $admin->hasRoute('create') && $admin->hasAccess('create');
-            });
-
-            if (\count($filteredGroups) > 0) {
-                $groups[] = $group;
-            }
-        }
-
-        return $groups;
+        return $this->groupRuntime->getDashboardGroupsWithCreatableAdmins();
     }
 }
