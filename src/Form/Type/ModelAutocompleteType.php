@@ -163,7 +163,7 @@ final class ModelAutocompleteType extends AbstractType
             ...$this->deprecationParameters(
                 '4.x',
                 static function (Options $options, $value): string {
-                    if ($value !== 100) {
+                    if (100 !== $value) {
                         return 'Passing a value to option "quiet_millis" is deprecated! Use "delay" instead!';
                     }
 
