@@ -78,7 +78,8 @@ final class ModelAutocompleteType extends AbstractType
             'req_param_name_search',
             'req_param_name_page_number',
             'req_param_name_items_per_page',
-            'quiet_millis',
+            'quiet_millis', // NEXT_MAJOR: `quiet_millis` is deprecated. Use `delay` instead.
+            'delay',
             'cache',
             // CSS classes
             'container_css_class',
@@ -118,7 +119,8 @@ final class ModelAutocompleteType extends AbstractType
             'placeholder' => '',
             'minimum_input_length' => 3, //minimum 3 chars should be typed to load ajax data
             'items_per_page' => 10, //number of items per page
-            'quiet_millis' => 100,
+            'quiet_millis' => 100, // NEXT_MAJOR: `quiet_millis` is deprecated. Use `delay` instead.
+            'delay' => 100,
             'cache' => false,
 
             'to_string_callback' => null,
@@ -156,6 +158,7 @@ final class ModelAutocompleteType extends AbstractType
         $resolver->setAllowedTypes('model_manager', ModelManagerInterface::class);
         $resolver->setAllowedTypes('class', 'string');
         $resolver->setAllowedTypes('property', ['string', 'array']);
+        $resolver->setDeprecated('quiet_millis', 'Using `quiet_millis` is deprecated! Use `delay` instead!'); // NEXT_MAJOR: Remove this deprecation notice.
     }
 
     public function getBlockPrefix(): string
