@@ -44,9 +44,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.security.handler.role', '%sonata.admin.security.handler.role.class%')
             ->args([
                 new ReferenceConfigurator('security.authorization_checker'),
-                [
-                    '%sonata.admin.configuration.security.role_super_admin%',
-                ],
+                '%sonata.admin.configuration.security.role_super_admin%',
             ])
 
         ->set('sonata.admin.security.handler.acl', '%sonata.admin.security.handler.acl.class%')
@@ -55,9 +53,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('security.authorization_checker'),
                 (new ReferenceConfigurator('security.acl.provider'))->nullOnInvalid(),
                 '%sonata.admin.security.mask.builder.class%',
-                [
-                    '%sonata.admin.configuration.security.role_super_admin%',
-                ],
+                '%sonata.admin.configuration.security.role_super_admin%',
             ])
             ->call('setAdminPermissions', ['%sonata.admin.configuration.security.admin_permissions%'])
             ->call('setObjectPermissions', ['%sonata.admin.configuration.security.object_permissions%'])

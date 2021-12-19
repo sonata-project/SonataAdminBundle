@@ -21,6 +21,8 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 interface SecurityHandlerInterface
 {
     /**
+     * NEXT_MAJOR: Restrict $attributes typehint to string and rename it $attribute.
+     *
      * @param AdminInterface<object> $admin
      * @param string|string[]        $attributes
      */

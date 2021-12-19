@@ -115,6 +115,8 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     public function hasRoute(string $name): bool;
 
     /**
+     * NEXT_MAJOR: Restrict $name typehint to string.
+     *
      * @param string|string[] $name
      *
      * @phpstan-param T|null $object
