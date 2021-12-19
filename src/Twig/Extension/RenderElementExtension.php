@@ -91,10 +91,10 @@ final class RenderElementExtension extends AbstractExtension
     ): string {
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
-            .'Use "%s::%s() instead.',
+            .' Use "%s::%s() instead.',
             __METHOD__,
             RenderElementRuntime::class,
-            __METHOD__
+            __FUNCTION__
         ), \E_USER_DEPRECATED);
 
         return $this->renderElementRuntime->renderListElement($environment, $listElement, $fieldDescription, $params);
@@ -112,10 +112,10 @@ final class RenderElementExtension extends AbstractExtension
     ): string {
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
-            .'Use "%s::%s() instead.',
+            .' Use "%s::%s() instead.',
             __METHOD__,
             RenderElementRuntime::class,
-            __METHOD__
+            __FUNCTION__
         ), \E_USER_DEPRECATED);
 
         return $this->renderElementRuntime->renderViewElement($environment, $fieldDescription, $object);
@@ -139,10 +139,10 @@ final class RenderElementExtension extends AbstractExtension
     ): string {
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
-            .'Use "%s::%s() instead.',
+            .' Use "%s::%s() instead.',
             __METHOD__,
             RenderElementRuntime::class,
-            __METHOD__
+            __FUNCTION__
         ), \E_USER_DEPRECATED);
 
         return $this->renderElementRuntime->renderViewElementCompare($environment, $fieldDescription, $baseObject, $compareObject);
@@ -163,10 +163,10 @@ final class RenderElementExtension extends AbstractExtension
     {
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
-            .'Use "%s::%s() instead.',
+            .' Use "%s::%s() instead.',
             __METHOD__,
             RenderElementRuntime::class,
-            __METHOD__
+            __FUNCTION__
         ), \E_USER_DEPRECATED);
 
         return $this->renderElementRuntime->renderRelationElement($element, $fieldDescription);

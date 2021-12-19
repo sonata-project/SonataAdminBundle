@@ -78,10 +78,10 @@ final class XEditableExtension extends AbstractExtension
     {
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
-            .'Use "%s::%s() instead.',
+            .' Use "%s::%s() instead.',
             __METHOD__,
             XEditableRuntime::class,
-            __METHOD__
+            __FUNCTION__
         ), \E_USER_DEPRECATED);
 
         return $this->xEditableRuntime->getXEditableType($type);
@@ -104,10 +104,10 @@ final class XEditableExtension extends AbstractExtension
     {
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
-            .'Use "%s::%s() instead.',
+            .' Use "%s::%s() instead.',
             __METHOD__,
             XEditableRuntime::class,
-            __METHOD__
+            __FUNCTION__
         ), \E_USER_DEPRECATED);
 
         return $this->xEditableRuntime->getXEditableChoices($fieldDescription);

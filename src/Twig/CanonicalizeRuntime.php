@@ -18,7 +18,7 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 final class CanonicalizeRuntime implements RuntimeExtensionInterface
 {
-    // @todo: there are more locales which are not supported by moment and they need to be translated/normalized/canonicalized here
+    // @todo: there are more locales which are not supported by "Moment.js" NPM library and they need to be translated/normalized/canonicalized here
     private const MOMENT_UNSUPPORTED_LOCALES = [
         'de' => ['de', 'de-at'],
         'es' => ['es', 'es-do'],
@@ -40,7 +40,7 @@ final class CanonicalizeRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Returns a canonicalized locale for "moment" NPM library,
+     * Returns a canonicalized locale for "Moment.js" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
      */
     public function getCanonicalizedLocaleForMoment(): ?string

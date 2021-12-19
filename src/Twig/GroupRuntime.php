@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Twig;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Twig\Extension\RuntimeExtensionInterface;
 
@@ -41,7 +40,7 @@ final class GroupRuntime implements RuntimeExtensionInterface
      *  label_catalogue: string,
      *  icon: string,
      *  item_adds: Item[],
-     *  items: array<AdminInterface<object>>,
+     *  items: array<\Sonata\AdminBundle\Admin\AdminInterface<object>>,
      *  keep_open: bool,
      *  on_top: bool,
      *  roles: list<string>
@@ -52,12 +51,12 @@ final class GroupRuntime implements RuntimeExtensionInterface
         $groups = [];
 
         foreach ($this->pool->getDashboardGroups() as $group) {
-            $filteredGroups = array_filter($group['items'], static function (AdminInterface $admin): bool {
-                return $admin->hasRoute('create') && $admin->hasAccess('create');
-            });
+            foreach ($group['items'] as $admin) {
+                if ($admin->hasRoute('create') && $admin->hasAccess('create')) {
+                    $groups[] = $group;
 
-            if (\count($filteredGroups) > 0) {
-                $groups[] = $group;
+                    continue 2;
+                }
             }
         }
 

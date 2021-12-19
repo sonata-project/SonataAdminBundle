@@ -41,7 +41,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // Use "param" function for creating references to parameters when dropping support for Symfony 5.1
     $containerConfigurator->services()
 
-        // NEXT_MAJOR: Remove the args part.
+        // NEXT_MAJOR: Remove the `args()` call.
         ->set('sonata.admin.twig.extension', SonataAdminExtension::class)
             ->tag('twig.extension')
             ->args([
@@ -54,7 +54,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('sonata.admin.pool'),
             ])
 
-        // NEXT_MAJOR: Remove the args part.
+        // NEXT_MAJOR: Remove the `args()` call.
         ->set('sonata.templates.twig.extension', TemplateRegistryExtension::class)
             ->tag('twig.extension')
             ->args([
@@ -68,7 +68,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('sonata.admin.pool'),
             ])
 
-        // NEXT_MAJOR: Remove the args part.
+        // NEXT_MAJOR: Remove the `args()` call.
         ->set('sonata.admin.group.extension', GroupExtension::class)
             ->tag('twig.extension')
             ->args([
@@ -81,7 +81,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('sonata.admin.pool'),
             ])
 
-        // NEXT_MAJOR: Remove the args part.
+        // NEXT_MAJOR: Remove the `args()` call.
         ->set('sonata.admin.twig.icon_extension', IconExtension::class)
             ->tag('twig.extension')
             ->args([
@@ -91,7 +91,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.twig.icon_runtime', IconRuntime::class)
             ->tag('twig.runtime')
 
-        // NEXT_MAJOR: Remove the args part.
+        // NEXT_MAJOR: Remove the `args()` call.
         ->set('sonata.security.twig.extension', SecurityExtension::class)
             ->tag('twig.extension')
             ->args([
@@ -104,7 +104,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('security.authorization_checker'),
             ])
 
-        // NEXT_MAJOR: Remove the args part.
+        // NEXT_MAJOR: Remove the `args()` call.
         ->set('sonata.canonicalize.twig.extension', CanonicalizeExtension::class)
             ->tag('twig.extension')
             ->args([
@@ -117,7 +117,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('request_stack'),
             ])
 
-        // NEXT_MAJOR: Remove the args part.
+        // NEXT_MAJOR: Remove the `args()` call.
         ->set('sonata.xeditable.twig.extension', XEditableExtension::class)
             ->tag('twig.extension')
             ->args([
@@ -131,7 +131,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 '%sonata.admin.twig.extension.x_editable_type_mapping%',
             ])
 
-        // NEXT_MAJOR: Remove the args part.
+        // NEXT_MAJOR: Remove the `args()` call.
         ->set('sonata.render_element.twig.extension', RenderElementExtension::class)
             ->tag('twig.extension')
             ->args([
@@ -144,7 +144,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('property_accessor'),
             ])
 
-        // NEXT_MAJOR: Remove the args part.
+        // NEXT_MAJOR: Remove the `args()` call.
         ->set('sonata.admin.twig.breadcrumbs_extension', BreadcrumbsExtension::class)
             ->tag('twig.extension')
             ->args([
