@@ -82,7 +82,7 @@ final class BreadcrumbsExtension extends AbstractExtension
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use BreadcrumbsRuntime::renderBreadcrumbs() instead
+     * @deprecated since sonata-project/admin-bundle version 4.x use BreadcrumbsRuntime::renderBreadcrumbsForTitle() instead
      *
      * @param AdminInterface<object> $admin
      *
