@@ -16,22 +16,7 @@ namespace Sonata\AdminBundle\DependencyInjection\Admin;
 interface AutoConfiguredAdminInterface
 {
     /**
-     * Return an array wuth all parameters required to configure admin:
-     * [
-     *    code: ?string
-     *    class: string
-     *    controller: ?string
-     *    label: ?string
-     *    show_in_dashboard: bool
-     *    group: string
-     *    label_catalog: ?string
-     *    icon: ?string
-     *    on_top: bool
-     *    keep_open: bool
-     *    manager_type: string
-     * ]
-     *
-     * @return array
+     * @return AdminConfiguration
      */
-    public static function getAdminConfiguration() : array;
+    public static function getAdminConfiguration() : AdminConfiguration;
 }

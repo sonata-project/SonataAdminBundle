@@ -15,43 +15,53 @@ namespace Sonata\AdminBundle\DependencyInjection\Admin;
 
 trait AutoConfiguredAdminTrait
 {
-    public static function getAdminConfiguration(): array
+    public static function getAdminConfiguration(): AdminConfiguration
     {
-        return [
-            'code' => static::getDefaultCode(),
-            'class' => null,
-            'controller' => null,
-            'label' => static::getDefaultLabel(),
-            'show_in_dashboard' => true,
-            'group' => 'admin',
-            'label_catalogue' => null,
-            'icon' => null,
-            'on_top' => false,
-            'keep_open' => false,
-            'manager_type' => null
-        ];
+        $conf = new AdminConfiguration();
+        $conf->class = static::getDefaultClass();
+        $conf->label = static::getDefaultLabel();
+        $conf->managerType = static::getDefaultManagerType($conf->class);
+
+        return $conf;
     }
 
-    public static function getDefaultCode(): string
-    {
-        $code = "";
-        $explode = explode("\\", str_replace("App\\", "", static::class));
-        $count = count($explode);
-        foreach ($explode as $i => $part) {
-            $part = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $part)) . ".";
-            if ($count - 1 === $i) {
-                $part = str_replace("_admin.", "", $part);
-            }
-
-            $code .= $part;
-        }
-
-        return $code;
-    }
-
-    public static function getDefaultLabel(): string
+    protected static function getDefaultLabel(): string
     {
         $explode = explode("\\", static::class);
         return str_replace("Admin", "", end($explode));
+    }
+
+    protected static function getDefaultClass(): ?string
+    {
+        $explode = explode("\\", static::class);
+        $name = str_replace("Admin", "", end($explode));
+        
+        $ormName = sprintf("App\\Entity\\%s", $name);
+        if (class_exists($ormName)) {
+            return $ormName;
+        }
+
+        $odmName = sprintf("App\\Document\\%s", $name);
+        if (class_exists($odmName)) {
+            return $odmName;
+        }
+
+        return null;
+    }
+
+    protected static function getDefaultManagerType(?string $class)
+    {
+        if(!$class){
+            return null;
+        }
+
+        if (preg_match("/\\\Document\\\/", $class)) {
+            return 'odm';
+        }
+        if (preg_match("/\\\Entity\\\/", $class)) {
+            return 'orm';
+        }
+
+        return null;
     }
 }

@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\Pager;
+use Sonata\AdminBundle\DependencyInjection\Admin\AdminConfiguration;
 use Sonata\AdminBundle\DependencyInjection\Admin\AutoConfiguredAdminInterface;
 use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistry;
@@ -25,6 +27,7 @@ use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 
 /**
  * Add all dependencies to the Admin class, this avoid to write too many lines
@@ -76,16 +79,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
             foreach ($tags as $attributes) {
                 $definition = $container->getDefinition($id);
-                //Autoconfiguration stuff
-                $adminClass = $definition->getClass();
-                $reflectionClass = new \ReflectionClass($adminClass);
-                if($reflectionClass->implementsInterface(AutoConfiguredAdminInterface::class)){
-                    $conf = call_user_func([$adminClass,'getAdminConfiguration']);
-                    $attributes = array_merge($attributes,$conf);
-                    $definition->setArgument(0,null);
-                    $definition->setArgument(1,$conf['class']);
-                    $definition->setArgument(2,$conf['controller']);
-                }
+                $this->applyAutoConfiguration($definition,$attributes);
 
                 $parentDefinition = null;
 
@@ -263,6 +257,40 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $pool->replaceArgument(1, $admins);
         $pool->replaceArgument(2, $groups);
         $pool->replaceArgument(3, $classes);
+    }
+
+    private function applyAutoConfiguration(Definition $definition, array &$attributes): void
+    {
+        //Autoconfiguration stuff
+        $adminClass = $definition->getClass();
+        $reflectionClass = new \ReflectionClass($adminClass);
+        $reader = new AnnotationReader();
+        $conf = null;
+        if($reflectionClass->implementsInterface(AutoConfiguredAdminInterface::class)){
+            $conf = call_user_func([$adminClass,'getAdminConfiguration']);
+        }elseif($annotation = $reader->getClassAnnotation($reflectionClass,AdminConfiguration::class)){
+            $conf = $annotation;
+        }elseif(method_exists($reflectionClass,'getAttributes') && count(($attributes = $reflectionClass->getAttributes(AdminConfiguration::class)))){            
+            $attribute = $attributes[0];
+            $className =$attribute->getName(); 
+            $conf = new $className(...$attribute->getArguments());
+        }
+
+        if($conf instanceof AdminConfiguration){
+            $attributes = array_merge($attributes,[
+                'label' => $conf->label,
+                'show_in_dashboard' => $conf->showInDashbaord,
+                'group' => $conf->group,
+                'label_catalogue' => $conf->labelCatalogue,
+                'icon' => $conf->icon,
+                'on_top' => $conf->onTop,
+                'keep_open' => $conf->keepOpen,
+                'manager_type' => $conf->managerType,
+            ]);
+            $definition->setArgument(0,null);
+            $definition->setArgument(1,$conf->class);
+            $definition->setArgument(2,$conf->controller);
+        }
     }
 
     /**
