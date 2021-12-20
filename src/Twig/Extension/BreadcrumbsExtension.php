@@ -96,7 +96,7 @@ final class BreadcrumbsExtension extends AbstractExtension
     ): string {
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
-            .' Use "%s::%s() instead.',
+            .'  Use "%s::%s()" instead.',
             __METHOD__,
             BreadcrumbsRuntime::class,
             __FUNCTION__
