@@ -78,7 +78,8 @@ final class ModelAutocompleteType extends AbstractType
             'req_param_name_search',
             'req_param_name_page_number',
             'req_param_name_items_per_page',
-            'quiet_millis',
+            'quiet_millis', // NEXT_MAJOR: Remove this line.
+            'delay',
             'cache',
             // CSS classes
             'container_css_class',
@@ -118,7 +119,8 @@ final class ModelAutocompleteType extends AbstractType
             'placeholder' => '',
             'minimum_input_length' => 3, //minimum 3 chars should be typed to load ajax data
             'items_per_page' => 10, //number of items per page
-            'quiet_millis' => 100,
+            'quiet_millis' => 100, // NEXT_MAJOR: Remove this line.
+            'delay' => 100,
             'cache' => false,
 
             'to_string_callback' => null,
@@ -156,10 +158,45 @@ final class ModelAutocompleteType extends AbstractType
         $resolver->setAllowedTypes('model_manager', ModelManagerInterface::class);
         $resolver->setAllowedTypes('class', 'string');
         $resolver->setAllowedTypes('property', ['string', 'array']);
+        $resolver->setDeprecated(
+            'quiet_millis',
+            ...$this->deprecationParameters(
+                '4.x',
+                static function (Options $options, $value): string {
+                    if (100 !== $value) {
+                        return 'Passing a value to option "quiet_millis" is deprecated! Use "delay" instead!';
+                    }
+
+                    return '';
+                }
+            )
+        ); // NEXT_MAJOR: Remove this deprecation notice.
     }
 
     public function getBlockPrefix(): string
     {
         return 'sonata_type_model_autocomplete';
+    }
+
+    /**
+     * This class is a BC layer for deprecation messages for symfony/options-resolver < 5.1.
+     * Remove this class when dropping support for symfony/options-resolver < 5.1.
+     *
+     * @param string|\Closure $message
+     *
+     * @return mixed[]
+     */
+    private function deprecationParameters(string $version, $message): array
+    {
+        // @phpstan-ignore-next-line
+        if (method_exists(OptionsResolver::class, 'define')) {
+            return [
+                'sonata-project/admin-bundle',
+                $version,
+                $message,
+            ];
+        }
+
+        return [$message];
     }
 }

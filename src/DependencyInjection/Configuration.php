@@ -169,7 +169,12 @@ final class Configuration implements ConfigurationInterface
                         ->booleanNode('use_bootlint')->defaultFalse()->end()
                         ->booleanNode('use_stickyforms')->defaultTrue()->end()
                         ->integerNode('pager_links')->defaultNull()->end()
+                        // NEXT_MAJOR: Remove this line and uncomment the following line instead.
                         ->scalarNode('form_type')->defaultValue('standard')->end()
+//                        ->enumNode('form_type')
+//                            ->defaultValue('standard')
+//                            ->values(['standard', 'horizontal'])
+//                        ->end()
                         ->scalarNode('default_admin_route')
                             ->defaultValue('show')
                             ->info('Name of the admin route to be used as a default to generate the link to the object')

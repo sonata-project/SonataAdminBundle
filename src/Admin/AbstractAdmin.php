@@ -1586,7 +1586,11 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function showIn(string $context): bool
     {
-        return $this->isGranted($this->getPermissionsShow($context));
+        $permissionShow = $this->getPermissionsShow($context);
+        // Avoid isGranted deprecation if there is only one permission show.
+        $permission = 1 === \count($permissionShow) ? reset($permissionShow) : $permissionShow;
+
+        return $this->isGranted($permission);
     }
 
     final public function createObjectSecurity(object $object): void
@@ -1596,6 +1600,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function isGranted($name, ?object $object = null): bool
     {
+        if (\is_array($name)) {
+            @trigger_error(
+                sprintf(
+                    'Passing an array as argument 1 of "%s()" is deprecated since sonata-project/admin-bundle 4.x'
+                    .' and will throw an error in 5.0. You MUST pass a string instead.',
+                    __METHOD__
+                ),
+                \E_USER_DEPRECATED
+            );
+        }
+
         $objectRef = null !== $object ? sprintf('/%s#%s', spl_object_hash($object), $this->id($object) ?? '') : '';
         $key = md5(json_encode($name).$objectRef);
 
