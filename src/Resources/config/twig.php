@@ -11,6 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Sonata\AdminBundle\BCLayer\BCDeprecationParameters;
 use Sonata\AdminBundle\Twig\BreadcrumbsRuntime;
 use Sonata\AdminBundle\Twig\CanonicalizeRuntime;
 use Sonata\AdminBundle\Twig\Extension\BreadcrumbsExtension;
@@ -42,26 +43,40 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
 
         // NEXT_MAJOR: Remove the `args()` call.
-        ->set('sonata.admin.twig.extension', SonataAdminExtension::class)
+        ->set('sonata.admin.twig.sonata_admin_extension', SonataAdminExtension::class)
             ->tag('twig.extension')
             ->args([
-                new ReferenceConfigurator('sonata.admin.twig.runtime'),
+                new ReferenceConfigurator('sonata.admin.twig.sonata_admin_runtime'),
             ])
 
-        ->set('sonata.admin.twig.runtime', SonataAdminRuntime::class)
+        // NEXT_MAJOR: Remove the alias.
+        ->alias('sonata.admin.twig.extension', 'sonata.admin.twig.sonata_admin_extension')
+        ->deprecate(...BCDeprecationParameters::forConfig(
+            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
+            '4.x'
+        ))
+
+        ->set('sonata.admin.twig.sonata_admin_runtime', SonataAdminRuntime::class)
             ->tag('twig.runtime')
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
             ])
 
         // NEXT_MAJOR: Remove the `args()` call.
-        ->set('sonata.templates.twig.extension', TemplateRegistryExtension::class)
+        ->set('sonata.admin.twig.template_registry_extension', TemplateRegistryExtension::class)
             ->tag('twig.extension')
             ->args([
-                new ReferenceConfigurator('sonata.templates.twig.runtime'),
+                new ReferenceConfigurator('sonata.admin.twig.template_registry_runtime'),
             ])
 
-        ->set('sonata.templates.twig.runtime', TemplateRegistryRuntime::class)
+        // NEXT_MAJOR: Remove the alias.
+        ->alias('sonata.templates.twig.extension', 'sonata.admin.twig.template_registry_extension')
+        ->deprecate(...BCDeprecationParameters::forConfig(
+            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
+            '4.x'
+        ))
+
+        ->set('sonata.admin.twig.template_registry_runtime', TemplateRegistryRuntime::class)
             ->tag('twig.runtime')
             ->args([
                 new ReferenceConfigurator('sonata.admin.global_template_registry'),
@@ -69,13 +84,20 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         // NEXT_MAJOR: Remove the `args()` call.
-        ->set('sonata.admin.group.extension', GroupExtension::class)
+        ->set('sonata.admin.twig.group_extension', GroupExtension::class)
             ->tag('twig.extension')
             ->args([
-                new ReferenceConfigurator('sonata.admin.group.runtime'),
+                new ReferenceConfigurator('sonata.admin.twig.group_runtime'),
             ])
 
-        ->set('sonata.admin.group.runtime', GroupRuntime::class)
+        // NEXT_MAJOR: Remove the alias.
+        ->alias('sonata.admin.group.extension', 'sonata.admin.twig.group_extension')
+        ->deprecate(...BCDeprecationParameters::forConfig(
+            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
+            '4.x'
+        ))
+
+        ->set('sonata.admin.twig.group_runtime', GroupRuntime::class)
             ->tag('twig.runtime')
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
@@ -92,39 +114,60 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('twig.runtime')
 
         // NEXT_MAJOR: Remove the `args()` call.
-        ->set('sonata.security.twig.extension', SecurityExtension::class)
+        ->set('sonata.admin.twig.security_extension', SecurityExtension::class)
             ->tag('twig.extension')
             ->args([
-                new ReferenceConfigurator('sonata.security.twig.runtime'),
+                new ReferenceConfigurator('sonata.admin.twig.security_runtime'),
             ])
 
-        ->set('sonata.security.twig.runtime', SecurityRuntime::class)
+        // NEXT_MAJOR: Remove the alias.
+        ->alias('sonata.security.twig.extension', 'sonata.admin.twig.security_extension')
+        ->deprecate(...BCDeprecationParameters::forConfig(
+            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
+            '4.x'
+        ))
+
+        ->set('sonata.admin.twig.security_runtime', SecurityRuntime::class)
             ->tag('twig.runtime')
             ->args([
                 new ReferenceConfigurator('security.authorization_checker'),
             ])
 
         // NEXT_MAJOR: Remove the `args()` call.
-        ->set('sonata.canonicalize.twig.extension', CanonicalizeExtension::class)
+        ->set('sonata.admin.twig.canonicalize_extension', CanonicalizeExtension::class)
             ->tag('twig.extension')
             ->args([
-                new ReferenceConfigurator('sonata.canonicalize.twig.runtime'),
+                new ReferenceConfigurator('sonata.admin.twig.canonicalize_runtime'),
             ])
 
-        ->set('sonata.canonicalize.twig.runtime', CanonicalizeRuntime::class)
+        // NEXT_MAJOR: Remove the alias.
+        ->alias('sonata.canonicalize.twig.extension', 'sonata.admin.twig.canonicalize_extension')
+        ->deprecate(...BCDeprecationParameters::forConfig(
+            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
+            '4.x'
+        ))
+
+        ->set('sonata.admin.twig.canonicalize_runtime', CanonicalizeRuntime::class)
             ->tag('twig.runtime')
             ->args([
                 new ReferenceConfigurator('request_stack'),
             ])
 
         // NEXT_MAJOR: Remove the `args()` call.
-        ->set('sonata.xeditable.twig.extension', XEditableExtension::class)
+        ->set('sonata.admin.twig.xeditable_extension', XEditableExtension::class)
             ->tag('twig.extension')
             ->args([
-                new ReferenceConfigurator('sonata.xeditable.twig.runtime'),
+                new ReferenceConfigurator('sonata.admin.twig.xeditable_runtime'),
             ])
 
-        ->set('sonata.xeditable.twig.runtime', XEditableRuntime::class)
+        // NEXT_MAJOR: Remove the alias.
+        ->alias('sonata.xeditable.twig.extension', 'sonata.admin.twig.xeditable_extension')
+        ->deprecate(...BCDeprecationParameters::forConfig(
+            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
+            '4.x'
+        ))
+
+        ->set('sonata.admin.twig.xeditable_runtime', XEditableRuntime::class)
             ->tag('twig.runtime')
             ->args([
                 new ReferenceConfigurator('translator'),
@@ -132,13 +175,20 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         // NEXT_MAJOR: Remove the `args()` call.
-        ->set('sonata.render_element.twig.extension', RenderElementExtension::class)
+        ->set('sonata.admin.twig.render_element_extension', RenderElementExtension::class)
             ->tag('twig.extension')
             ->args([
-                new ReferenceConfigurator('sonata.render_element.twig.runtime'),
+                new ReferenceConfigurator('sonata.admin.twig.render_element_runtime'),
             ])
 
-        ->set('sonata.render_element.twig.runtime', RenderElementRuntime::class)
+        // NEXT_MAJOR: Remove the alias.
+        ->alias('sonata.render_element.twig.extension', 'sonata.admin.twig.render_element_extension')
+        ->deprecate(...BCDeprecationParameters::forConfig(
+            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
+            '4.x'
+        ))
+
+        ->set('sonata.admin.twig.render_element_runtime', RenderElementRuntime::class)
             ->tag('twig.runtime')
             ->args([
                 new ReferenceConfigurator('property_accessor'),
