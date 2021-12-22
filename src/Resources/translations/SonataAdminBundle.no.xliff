@@ -209,7 +209,7 @@
       </trans-unit>
       <trans-unit id="message_delete_confirmation">
         <source>message_delete_confirmation</source>
-        <target>Er du sikker på at du vil slette det valgte objektet"%object%" ?</target>
+        <target>Er du sikker på at du vil slette det valgte objektet "%object%"?</target>
       </trans-unit>
       <trans-unit id="btn_delete">
         <source>btn_delete</source>

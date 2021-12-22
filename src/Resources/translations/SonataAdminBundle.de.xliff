@@ -208,7 +208,7 @@
       </trans-unit>
       <trans-unit id="message_delete_confirmation">
         <source>message_delete_confirmation</source>
-        <target>Sind Sie sicher, dass Sie das ausgewählte Element löschen wollen?</target>
+        <target>Sind Sie sicher, dass Sie das ausgewählte Element '%object%' löschen wollen?</target>
       </trans-unit>
       <trans-unit id="btn_delete">
         <source>btn_delete</source>
