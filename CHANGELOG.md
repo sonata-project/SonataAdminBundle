@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.6.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.6.0...4.6.1) - 2021-12-23
+### Fixed
+- [[#7669](https://github.com/sonata-project/SonataAdminBundle/pull/7669)] Model_autocomplete_type template ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.6.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.5.1...4.6.0) - 2021-12-23
 ### Added
 - [[#7661](https://github.com/sonata-project/SonataAdminBundle/pull/7661)] ModelAutocompleteType delay option ([@Gasjki](https://github.com/Gasjki))
