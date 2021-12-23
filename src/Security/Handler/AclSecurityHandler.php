@@ -88,7 +88,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         // NEXT_MAJOR: Keep only the elseif part and add typehint.
         if (\is_array($superAdminRoles)) {
             @trigger_error(sprintf(
-                'Passing an array as argument 1 of "%s()" is deprecated since sonata-project/admin-bundle 4.x'
+                'Passing an array as argument 1 of "%s()" is deprecated since sonata-project/admin-bundle 4.6'
                 .' and will throw an error in 5.0. You MUST pass a string instead.',
                 __METHOD__
             ), \E_USER_DEPRECATED);
@@ -130,7 +130,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         // NEXT_MAJOR: Remove this and add string typehint to $attributes and rename it $attribute.
         if (\is_array($attributes)) {
             @trigger_error(sprintf(
-                'Passing an array as argument 1 of "%s()" is deprecated since sonata-project/admin-bundle 4.x'
+                'Passing an array as argument 1 of "%s()" is deprecated since sonata-project/admin-bundle 4.6'
                 .' and will throw an error in 5.0. You MUST pass a string instead.',
                 __METHOD__
             ), \E_USER_DEPRECATED);
