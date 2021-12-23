@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Twig\Extension;
+namespace Sonata\AdminBundle\Tests\Twig;
 
 use Knp\Menu\ItemInterface;
 use PHPUnit\Framework\MockObject\Stub;
@@ -21,22 +21,16 @@ use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
 use Sonata\AdminBundle\Tests\Fixtures\StubTranslator;
 use Sonata\AdminBundle\Twig\BreadcrumbsRuntime;
-use Sonata\AdminBundle\Twig\Extension\BreadcrumbsExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Twig\Environment;
 use Twig\Extra\String\StringExtension;
 
-/**
- * NEXT_MAJOR: Remove this test.
- *
- * @group legacy
- */
-final class BreadcrumbsExtensionTest extends TestCase
+final class BreadcrumbsRuntimeTest extends TestCase
 {
     /**
-     * @var BreadcrumbsExtension
+     * @var BreadcrumbsRuntime
      */
-    private $breadcrumbsExtension;
+    private $breadcrumbsRuntime;
 
     /**
      * @var Environment
@@ -51,7 +45,7 @@ final class BreadcrumbsExtensionTest extends TestCase
     protected function setUp(): void
     {
         $loader = new StubFilesystemLoader();
-        $loader->addPath(__DIR__.'/../../../src/Resources/views/', 'SonataAdmin');
+        $loader->addPath(__DIR__.'/../../src/Resources/views/', 'SonataAdmin');
 
         $this->environment = new Environment($loader, [
             'strict_variables' => true,
@@ -64,7 +58,7 @@ final class BreadcrumbsExtensionTest extends TestCase
 
         $this->breadcrumbBuilder = $this->createStub(BreadcrumbsBuilderInterface::class);
 
-        $this->breadcrumbsExtension = new BreadcrumbsExtension(new BreadcrumbsRuntime($this->breadcrumbBuilder));
+        $this->breadcrumbsRuntime = new BreadcrumbsRuntime($this->breadcrumbBuilder);
     }
 
     public function testBreadcrumbsForTitle(): void
@@ -106,7 +100,7 @@ final class BreadcrumbsExtensionTest extends TestCase
 
         static::assertSame(
             'Label for item 2 &gt; [trans domain=custom_translation_domain]Label for item 3 with custom_parameter[/trans]',
-            $this->removeExtraWhitespace($this->breadcrumbsExtension->renderBreadcrumbsForTitle(
+            $this->removeExtraWhitespace($this->breadcrumbsRuntime->renderBreadcrumbsForTitle(
                 $this->environment,
                 $this->createStub(AdminInterface::class),
                 'not_important',
@@ -179,7 +173,7 @@ final class BreadcrumbsExtensionTest extends TestCase
 
         static::assertSame(
             $expected,
-            $this->removeExtraWhitespace($this->breadcrumbsExtension->renderBreadcrumbs(
+            $this->removeExtraWhitespace($this->breadcrumbsRuntime->renderBreadcrumbs(
                 $this->environment,
                 $this->createStub(AdminInterface::class),
                 'not_important',

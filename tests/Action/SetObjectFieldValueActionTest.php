@@ -23,7 +23,7 @@ use Sonata\AdminBundle\Form\DataTransformerResolver;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
-use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
+use Sonata\AdminBundle\Twig\RenderElementRuntime;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -94,10 +94,10 @@ final class SetObjectFieldValueActionTest extends TestCase
             $this->adminFetcher,
             $this->validator,
             $this->resolver,
-            $propertyAccessor
+            $propertyAccessor,
+            new RenderElementRuntime($propertyAccessor)
         );
         $this->admin->method('getModelManager')->willReturn($this->modelManager);
-        $this->twig->addExtension(new RenderElementExtension($propertyAccessor));
         $this->templateRegistry = $this->createMock(MutableTemplateRegistryInterface::class);
 
         $this->admin

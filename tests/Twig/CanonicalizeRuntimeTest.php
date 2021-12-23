@@ -11,20 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Twig\Extension;
+namespace Sonata\AdminBundle\Tests\Twig;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Twig\CanonicalizeRuntime;
-use Sonata\AdminBundle\Twig\Extension\CanonicalizeExtension;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-/**
- * NEXT_MAJOR: Remove this test.
- *
- * @group legacy
- */
-final class CanonicalizeExtensionTest extends TestCase
+final class CanonicalizeRuntimeTest extends TestCase
 {
     /**
      * @var Request
@@ -32,16 +26,16 @@ final class CanonicalizeExtensionTest extends TestCase
     private $request;
 
     /**
-     * @var CanonicalizeExtension
+     * @var CanonicalizeRuntime
      */
-    private $twigExtension;
+    private $canonicalizeRuntime;
 
     protected function setUp(): void
     {
         $this->request = new Request();
         $requestStack = new RequestStack();
         $requestStack->push($this->request);
-        $this->twigExtension = new CanonicalizeExtension(new CanonicalizeRuntime($requestStack));
+        $this->canonicalizeRuntime = new CanonicalizeRuntime($requestStack);
     }
 
     /**
@@ -50,7 +44,7 @@ final class CanonicalizeExtensionTest extends TestCase
     public function testCanonicalizedLocaleForMoment(?string $expected, string $original): void
     {
         $this->changeLocale($original);
-        static::assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForMoment());
+        static::assertSame($expected, $this->canonicalizeRuntime->getCanonicalizedLocaleForMoment());
     }
 
     /**
@@ -59,7 +53,7 @@ final class CanonicalizeExtensionTest extends TestCase
     public function testCanonicalizedLocaleForSelect2(?string $expected, string $original): void
     {
         $this->changeLocale($original);
-        static::assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForSelect2());
+        static::assertSame($expected, $this->canonicalizeRuntime->getCanonicalizedLocaleForSelect2());
     }
 
     /**

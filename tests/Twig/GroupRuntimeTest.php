@@ -11,22 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Twig\Extension;
+namespace Sonata\AdminBundle\Tests\Twig;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Twig\Extension\GroupExtension;
 use Sonata\AdminBundle\Twig\GroupRuntime;
 use Symfony\Component\DependencyInjection\Container;
 
-/**
- * NEXT_MAJOR: Remove this test.
- *
- * @group legacy
- */
-final class GroupExtensionTest extends TestCase
+final class GroupRuntimeTest extends TestCase
 {
     public function testGetDashboardGroupsWithCreatableAdmins(): void
     {
@@ -71,7 +65,7 @@ final class GroupExtensionTest extends TestCase
                 'roles' => [],
             ],
         ]);
-        $twigExtension = new GroupExtension(new GroupRuntime($pool));
+        $groupRuntime = new GroupRuntime($pool);
 
         $adminNonCreatable = $this->createMock(AdminInterface::class);
         $adminCreatable = $this->createMock(AdminInterface::class);
@@ -112,6 +106,6 @@ final class GroupExtensionTest extends TestCase
                 'on_top' => false,
                 'roles' => [],
             ],
-        ], $twigExtension->getDashboardGroupsWithCreatableAdmins());
+        ], $groupRuntime->getDashboardGroupsWithCreatableAdmins());
     }
 }

@@ -73,6 +73,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 new ReferenceConfigurator('validator'),
                 new ReferenceConfigurator('sonata.admin.form.data_transformer_resolver'),
                 new ReferenceConfigurator('property_accessor'),
+                new ReferenceConfigurator('sonata.admin.twig.render_element_runtime'),
             ])
 
         ->set('sonata.admin.action.retrieve_autocomplete_items', RetrieveAutocompleteItemsAction::class)
