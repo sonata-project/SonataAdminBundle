@@ -241,8 +241,11 @@ final class DefaultRouteGeneratorTest extends TestCase
     {
         return [
             ['parent', '/foo?id=123&default_param=default_val', 'foo', ['id' => 123, 'default_param' => 'default_val']],
+            ['parent', '/foo?id=123&default_param=default_val', 'base.Code.Parent.foo', ['id' => 123, 'default_param' => 'default_val']],
             ['parent', '/foo/bar?id=123&default_param=default_val', 'base.Code.Child.bar', ['id' => 123, 'default_param' => 'default_val']],
+            ['parent', '/foo/bar?id=123&default_param=default_val', 'base.Code.Parent|base.Code.Child.bar', ['id' => 123, 'default_param' => 'default_val']],
             ['child', '/foo/bar?abc=a123&efg=e456&default_param=default_val&childId=987654', 'bar', ['id' => 123, 'default_param' => 'default_val']],
+            ['child', '/foo/bar?abc=a123&efg=e456&default_param=default_val&childId=987654', 'base.Code.Parent|base.Code.Child.bar', ['id' => 123, 'default_param' => 'default_val']],
         ];
     }
 
