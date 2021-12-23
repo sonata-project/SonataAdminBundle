@@ -1603,7 +1603,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         if (\is_array($name)) {
             @trigger_error(
                 sprintf(
-                    'Passing an array as argument 1 of "%s()" is deprecated since sonata-project/admin-bundle 4.x'
+                    'Passing an array as argument 1 of "%s()" is deprecated since sonata-project/admin-bundle 4.6'
                     .' and will throw an error in 5.0. You MUST pass a string instead.',
                     __METHOD__
                 ),

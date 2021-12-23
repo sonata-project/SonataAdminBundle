@@ -1,8 +1,8 @@
 UPGRADE 4.x
 ===========
 
-UPGRADE FROM 4.x to 4.x
-===========================
+UPGRADE FROM 4.0 to 4.1
+=======================
 
 ### appendParentObject is called inside createNewInstance with child admins
 
