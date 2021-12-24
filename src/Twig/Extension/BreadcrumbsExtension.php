@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Twig\Extension;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
+use Sonata\AdminBundle\Twig\BreadcrumbsRuntime;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -22,16 +22,18 @@ use Twig\TwigFunction;
 final class BreadcrumbsExtension extends AbstractExtension
 {
     /**
-     * @var BreadcrumbsBuilderInterface
+     * @var BreadcrumbsRuntime
      */
-    private $breadcrumbsBuilder;
+    private $breadcrumbsRuntime;
 
     /**
+     * NEXT_MAJOR: Remove this constructor.
+     *
      * @internal This class should only be used through Twig
      */
-    public function __construct(BreadcrumbsBuilderInterface $breadcrumbsBuilder)
+    public function __construct(BreadcrumbsRuntime $breadcrumbsRuntime)
     {
-        $this->breadcrumbsBuilder = $breadcrumbsBuilder;
+        $this->breadcrumbsRuntime = $breadcrumbsRuntime;
     }
 
     /**
@@ -40,11 +42,11 @@ final class BreadcrumbsExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('render_breadcrumbs', [$this, 'renderBreadcrumbs'], [
+            new TwigFunction('render_breadcrumbs', [BreadcrumbsRuntime::class, 'renderBreadcrumbs'], [
                 'is_safe' => ['html'],
                 'needs_environment' => true,
             ]),
-            new TwigFunction('render_breadcrumbs_for_title', [$this, 'renderBreadcrumbsForTitle'], [
+            new TwigFunction('render_breadcrumbs_for_title', [BreadcrumbsRuntime::class, 'renderBreadcrumbsForTitle'], [
                 'is_safe' => ['html'],
                 'needs_environment' => true,
             ]),
@@ -52,6 +54,10 @@ final class BreadcrumbsExtension extends AbstractExtension
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x use BreadcrumbsRuntime::renderBreadcrumbs() instead
+     *
      * @param AdminInterface<object> $admin
      *
      * @phpstan-template T of object
@@ -62,12 +68,22 @@ final class BreadcrumbsExtension extends AbstractExtension
         AdminInterface $admin,
         string $action
     ): string {
-        return $environment->render('@SonataAdmin/Breadcrumb/breadcrumb.html.twig', [
-            'items' => $this->breadcrumbsBuilder->getBreadcrumbs($admin, $action),
-        ]);
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            .' Use "%s::%s()" instead.',
+            __METHOD__,
+            BreadcrumbsRuntime::class,
+            __FUNCTION__
+        ), \E_USER_DEPRECATED);
+
+        return $this->breadcrumbsRuntime->renderBreadcrumbs($environment, $admin, $action);
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x use BreadcrumbsRuntime::renderBreadcrumbsForTitle() instead
+     *
      * @param AdminInterface<object> $admin
      *
      * @phpstan-template T of object
@@ -78,8 +94,14 @@ final class BreadcrumbsExtension extends AbstractExtension
         AdminInterface $admin,
         string $action
     ): string {
-        return $environment->render('@SonataAdmin/Breadcrumb/breadcrumb_title.html.twig', [
-            'items' => $this->breadcrumbsBuilder->getBreadcrumbs($admin, $action),
-        ]);
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            .'  Use "%s::%s()" instead.',
+            __METHOD__,
+            BreadcrumbsRuntime::class,
+            __FUNCTION__
+        ), \E_USER_DEPRECATED);
+
+        return $this->breadcrumbsRuntime->renderBreadcrumbsForTitle($environment, $admin, $action);
     }
 }

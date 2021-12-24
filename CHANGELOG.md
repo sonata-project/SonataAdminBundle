@@ -2,6 +2,26 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.6.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.6.0...4.6.1) - 2021-12-23
+### Fixed
+- [[#7669](https://github.com/sonata-project/SonataAdminBundle/pull/7669)] Model_autocomplete_type template ([@VincentLanglet](https://github.com/VincentLanglet))
+
+## [4.6.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.5.1...4.6.0) - 2021-12-23
+### Added
+- [[#7661](https://github.com/sonata-project/SonataAdminBundle/pull/7661)] ModelAutocompleteType delay option ([@Gasjki](https://github.com/Gasjki))
+
+### Deprecated
+- [[#7661](https://github.com/sonata-project/SonataAdminBundle/pull/7661)] ModelAutocompleteType quietMillis option ([@Gasjki](https://github.com/Gasjki))
+- [[#7659](https://github.com/sonata-project/SonataAdminBundle/pull/7659)] Passing an array of role to `AdminInterface::isGranted()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7659](https://github.com/sonata-project/SonataAdminBundle/pull/7659)] Passing an array of role to `AbstractAdmin::isGranted()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7659](https://github.com/sonata-project/SonataAdminBundle/pull/7659)] Passing an array of role to `SecurityHandlerInterface::isGranted()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7659](https://github.com/sonata-project/SonataAdminBundle/pull/7659)] Passing an array of role to `RoleSecurityHandler::isGranted()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7659](https://github.com/sonata-project/SonataAdminBundle/pull/7659)] Passing an array of role to `AclSecurityHandler::isGranted()` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#7666](https://github.com/sonata-project/SonataAdminBundle/pull/7666)] DefaultRouterGenerator route name generation when full name is given ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7661](https://github.com/sonata-project/SonataAdminBundle/pull/7661)] ModelAutocompleteType quietMillis option ([@Gasjki](https://github.com/Gasjki))
+
 ## [4.5.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.5.0...4.5.1) - 2021-12-16
 ### Fixed
 - [[#7647](https://github.com/sonata-project/SonataAdminBundle/pull/7647)] DefaultRouteGenerator Routes generation for nested admins ([@Devristo](https://github.com/Devristo))

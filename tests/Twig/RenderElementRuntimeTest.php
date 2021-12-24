@@ -40,17 +40,12 @@ use Twig\Environment;
 use Twig\Extra\String\StringExtension;
 use Twig\RuntimeLoader\FactoryRuntimeLoader;
 
-/**
- * NEXT_MAJOR: Remove this test.
- *
- * @group legacy
- */
-final class RenderElementExtensionTest extends TestCase
+final class RenderElementRuntimeTest extends TestCase
 {
     /**
-     * @var RenderElementExtension
+     * @var RenderElementRuntime
      */
-    private $twigExtension;
+    private $renderElementRuntime;
 
     /**
      * @var Environment
@@ -91,7 +86,7 @@ final class RenderElementExtensionTest extends TestCase
         $translator->addLoader('xlf', new XliffFileLoader());
         $translator->addResource(
             'xlf',
-            sprintf('%s/../../../src/Resources/translations/SonataAdminBundle.en.xliff', __DIR__),
+            sprintf('%s/../../src/Resources/translations/SonataAdminBundle.en.xliff', __DIR__),
             'en',
             'SonataAdminBundle'
         );
@@ -105,11 +100,11 @@ final class RenderElementExtensionTest extends TestCase
         $request->method('get')->with('_sonata_admin')->willReturn('sonata_admin_foo_service');
 
         $loader = new StubFilesystemLoader([
-            __DIR__.'/../../../src/Resources/views/CRUD',
-            __DIR__.'/../../Fixtures/Resources/views/CRUD',
+            __DIR__.'/../../src/Resources/views/CRUD',
+            __DIR__.'/../Fixtures/Resources/views/CRUD',
         ]);
-        $loader->addPath(__DIR__.'/../../../src/Resources/views/', 'SonataAdmin');
-        $loader->addPath(__DIR__.'/../../Fixtures/Resources/views/', 'App');
+        $loader->addPath(__DIR__.'/../../src/Resources/views/', 'SonataAdmin');
+        $loader->addPath(__DIR__.'/../Fixtures/Resources/views/', 'App');
 
         $this->environment = new Environment($loader, [
             'strict_variables' => true,
@@ -145,7 +140,7 @@ final class RenderElementExtensionTest extends TestCase
             'use_stickyforms' => false,
         ]));
 
-        $this->twigExtension = new RenderElementExtension(new RenderElementRuntime($propertyAccessor));
+        $this->renderElementRuntime = new RenderElementRuntime($propertyAccessor);
 
         $this->registerRequiredTwigExtensions();
 
@@ -271,7 +266,7 @@ final class RenderElementExtensionTest extends TestCase
 
         static::assertSame(
             $this->removeExtraWhitespace($expected),
-            $this->removeExtraWhitespace($this->twigExtension->renderListElement(
+            $this->removeExtraWhitespace($this->renderElementRuntime->renderListElement(
                 $this->environment,
                 $this->object,
                 $this->fieldDescription,
@@ -290,7 +285,7 @@ final class RenderElementExtensionTest extends TestCase
 
         static::assertSame(
             $this->removeExtraWhitespace('<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> Extra value </td>'),
-            $this->removeExtraWhitespace($this->twigExtension->renderListElement(
+            $this->removeExtraWhitespace($this->renderElementRuntime->renderListElement(
                 $this->environment,
                 [$this->object, 'fd_name' => 'Extra value'],
                 $this->fieldDescription
@@ -334,7 +329,7 @@ final class RenderElementExtensionTest extends TestCase
 EOT
             ),
             $this->removeExtraWhitespace(
-                $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription, $parameters)
+                $this->renderElementRuntime->renderListElement($this->environment, $this->object, $this->fieldDescription, $parameters)
             )
         );
     }
@@ -401,7 +396,7 @@ EOT
         static::assertSame(
             $this->removeExtraWhitespace($expected),
             $this->removeExtraWhitespace(
-                $this->twigExtension->renderViewElement(
+                $this->renderElementRuntime->renderViewElement(
                     $this->environment,
                     $this->fieldDescription,
                     $this->object
@@ -484,7 +479,7 @@ EOT
         static::assertSame(
             $this->removeExtraWhitespace($expected),
             $this->removeExtraWhitespace(
-                $this->twigExtension->renderViewElementCompare(
+                $this->renderElementRuntime->renderViewElementCompare(
                     $this->environment,
                     $this->fieldDescription,
                     $this->object,
@@ -496,7 +491,7 @@ EOT
 
     public function testRenderRelationElementNoObject(): void
     {
-        static::assertSame('foo', $this->twigExtension->renderRelationElement('foo', $this->fieldDescription));
+        static::assertSame('foo', $this->renderElementRuntime->renderRelationElement('foo', $this->fieldDescription));
     }
 
     public function testRenderRelationElementToString(): void
@@ -510,7 +505,7 @@ EOT
             });
 
         $element = new FooToString();
-        static::assertSame('salut', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
+        static::assertSame('salut', $this->renderElementRuntime->renderRelationElement($element, $this->fieldDescription));
     }
 
     public function testRenderRelationElementCustomToString(): void
@@ -532,7 +527,7 @@ EOT
             }
         };
 
-        static::assertSame('fooBar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
+        static::assertSame('fooBar', $this->renderElementRuntime->renderRelationElement($element, $this->fieldDescription));
     }
 
     public function testRenderRelationElementMethodNotExist(): void
@@ -551,7 +546,7 @@ EOT
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('You must define an `associated_property` option or create a `stdClass::__toString');
 
-        $this->twigExtension->renderRelationElement($element, $this->fieldDescription);
+        $this->renderElementRuntime->renderRelationElement($element, $this->fieldDescription);
     }
 
     public function testRenderRelationElementWithPropertyPath(): void
@@ -570,7 +565,7 @@ EOT
         $element = new \stdClass();
         $element->foo = 'bar';
 
-        static::assertSame('bar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
+        static::assertSame('bar', $this->renderElementRuntime->renderRelationElement($element, $this->fieldDescription));
     }
 
     public function testRenderRelationElementWithClosure(): void
@@ -592,7 +587,7 @@ EOT
 
         static::assertSame(
             'closure bar',
-            $this->twigExtension->renderRelationElement($element, $this->fieldDescription)
+            $this->renderElementRuntime->renderRelationElement($element, $this->fieldDescription)
         );
     }
 
@@ -2150,7 +2145,7 @@ EOT
 
     private function registerRequiredTwigExtensions(): void
     {
-        $this->environment->addExtension($this->twigExtension);
+        $this->environment->addExtension(new RenderElementExtension($this->renderElementRuntime));
         $this->environment->addExtension(new XEditableExtension(new XEditableRuntime($this->translator)));
         $this->environment->addExtension(new TranslationExtension($this->translator));
         $this->environment->addExtension(new FakeTemplateRegistryExtension());
@@ -2168,12 +2163,12 @@ EOT
     private function registerRoutingExtension(): void
     {
         $xmlFileLoader = new XmlFileLoader(new FileLocator([
-            sprintf('%s/../../../src/Resources/config/routing', __DIR__),
+            sprintf('%s/../../src/Resources/config/routing', __DIR__),
         ]));
         $routeCollection = $xmlFileLoader->load('sonata_admin.xml');
 
         $xmlFileLoader = new XmlFileLoader(new FileLocator([
-            sprintf('%s/../../Fixtures/Resources/config/routing', __DIR__),
+            sprintf('%s/../Fixtures/Resources/config/routing', __DIR__),
         ]));
 
         $testRouteCollection = $xmlFileLoader->load('routing.xml');

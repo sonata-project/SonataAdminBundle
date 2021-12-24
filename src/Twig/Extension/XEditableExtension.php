@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Twig\Extension;
 
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Sonata\AdminBundle\Twig\XEditableRuntime;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 final class XEditableExtension extends AbstractExtension
 {
+    // NEXT_MAJOR: Remove this const.
     public const FIELD_DESCRIPTION_MAPPING = [
         FieldDescriptionInterface::TYPE_CHOICE => 'select',
         FieldDescriptionInterface::TYPE_BOOLEAN => 'select',
@@ -35,26 +36,18 @@ final class XEditableExtension extends AbstractExtension
     ];
 
     /**
-     * @var string[]
+     * @var XEditableRuntime
      */
-    private $xEditableTypeMapping = [];
+    private $xEditableRuntime;
 
     /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @param string[] $xEditableTypeMapping
+     * NEXT_MAJOR: Remove this constructor.
      *
      * @internal This class should only be used through Twig
      */
-    public function __construct(
-        TranslatorInterface $translator,
-        array $xEditableTypeMapping = self::FIELD_DESCRIPTION_MAPPING
-    ) {
-        $this->translator = $translator;
-        $this->xEditableTypeMapping = $xEditableTypeMapping;
+    public function __construct(XEditableRuntime $xEditableRuntime)
+    {
+        $this->xEditableRuntime = $xEditableRuntime;
     }
 
     /**
@@ -65,28 +58,40 @@ final class XEditableExtension extends AbstractExtension
         return [
             new TwigFilter(
                 'sonata_xeditable_type',
-                [$this, 'getXEditableType']
+                [XEditableRuntime::class, 'getXEditableType']
             ),
             new TwigFilter(
                 'sonata_xeditable_choices',
-                [$this, 'getXEditableChoices']
+                [XEditableRuntime::class, 'getXEditableChoices']
             ),
         ];
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x use XEditableRuntime::getXEditableType() instead
+     *
      * @return string|bool
      */
     public function getXEditableType(?string $type)
     {
-        if (null === $type) {
-            return false;
-        }
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            .'  Use "%s::%s()" instead.',
+            __METHOD__,
+            XEditableRuntime::class,
+            __FUNCTION__
+        ), \E_USER_DEPRECATED);
 
-        return $this->xEditableTypeMapping[$type] ?? false;
+        return $this->xEditableRuntime->getXEditableType($type);
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x use XEditableRuntime::getXEditableChoices() instead
+     *
      * Return xEditable choices based on the field description choices options & catalogue options.
      * With the following choice options:
      *     ['Status1' => 'Alias1', 'Status2' => 'Alias2']
@@ -97,44 +102,14 @@ final class XEditableExtension extends AbstractExtension
      */
     public function getXEditableChoices(FieldDescriptionInterface $fieldDescription): array
     {
-        $choices = $fieldDescription->getOption('choices', []);
-        $catalogue = $fieldDescription->getOption('catalogue');
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            .'  Use "%s::%s()" instead.',
+            __METHOD__,
+            XEditableRuntime::class,
+            __FUNCTION__
+        ), \E_USER_DEPRECATED);
 
-        reset($choices);
-        $first = current($choices);
-        if (\is_array($first)) {
-            // the choice are already in the right format
-            $xEditableChoices = $choices;
-        } else {
-            $xEditableChoices = [];
-            foreach ($choices as $value => $text) {
-                if (\is_array($text)) {
-                    // the choice is already in the right format
-                    $xEditableChoices[] = $text;
-                    break;
-                }
-
-                if (null !== $catalogue) {
-                    $text = $this->translator->trans($text, [], $catalogue);
-                }
-
-                $xEditableChoices[] = [
-                    'value' => $value,
-                    'text' => $text,
-                ];
-            }
-        }
-
-        if (
-            false === $fieldDescription->getOption('required', true)
-            && false === $fieldDescription->getOption('multiple', false)
-        ) {
-            $xEditableChoices = array_merge([[
-                'value' => '',
-                'text' => '',
-            ]], $xEditableChoices);
-        }
-
-        return $xEditableChoices;
+        return $this->xEditableRuntime->getXEditableChoices($fieldDescription);
     }
 }

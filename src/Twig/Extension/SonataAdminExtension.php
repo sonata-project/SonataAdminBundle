@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Twig\Extension;
 
-use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Twig\SonataAdminRuntime;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -25,16 +24,18 @@ use Twig\TwigFilter;
 final class SonataAdminExtension extends AbstractExtension
 {
     /**
-     * @var Pool
+     * @var SonataAdminRuntime
      */
-    private $pool;
+    private $sonataAdminRuntime;
 
     /**
+     * NEXT_MAJOR: Remove this constructor.
+     *
      * @internal This class should only be used through Twig
      */
-    public function __construct(Pool $pool)
+    public function __construct(SonataAdminRuntime $sonataAdminRuntime)
     {
-        $this->pool = $pool;
+        $this->sonataAdminRuntime = $sonataAdminRuntime;
     }
 
     /**
@@ -45,7 +46,7 @@ final class SonataAdminExtension extends AbstractExtension
         return [
             new TwigFilter(
                 'sonata_urlsafeid',
-                [$this, 'getUrlSafeIdentifier']
+                [SonataAdminRuntime::class, 'getUrlSafeIdentifier']
             ),
         ];
     }
@@ -56,6 +57,10 @@ final class SonataAdminExtension extends AbstractExtension
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x use SonataAdminRuntime::getUrlSafeIdentifier() instead
+     *
      * Get the identifiers as a string that is safe to use in a url.
      *
      * @return string|null representation of the id that is safe to use in a url
@@ -66,15 +71,14 @@ final class SonataAdminExtension extends AbstractExtension
      */
     public function getUrlSafeIdentifier(object $model, ?AdminInterface $admin = null): ?string
     {
-        if (null === $admin) {
-            $class = ClassUtils::getClass($model);
-            if (!$this->pool->hasAdminByClass($class)) {
-                throw new \InvalidArgumentException('You must pass an admin.');
-            }
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            .'  Use "%s::%s()" instead.',
+            __METHOD__,
+            SonataAdminRuntime::class,
+            __FUNCTION__
+        ), \E_USER_DEPRECATED);
 
-            $admin = $this->pool->getAdminByClass($class);
-        }
-
-        return $admin->getUrlSafeIdentifier($model);
+        return $this->sonataAdminRuntime->getUrlSafeIdentifier($model, $admin);
     }
 }

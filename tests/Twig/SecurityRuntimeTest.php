@@ -11,24 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Twig\Extension;
+namespace Sonata\AdminBundle\Tests\Twig;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Twig\Extension\SecurityExtension;
 use Sonata\AdminBundle\Twig\SecurityRuntime;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-/**
- * NEXT_MAJOR: Remove this test.
- *
- * @group legacy
- */
-final class SecurityExtensionTest extends TestCase
+final class SecurityRuntimeTest extends TestCase
 {
     public function testIsGrantedAffirmative(): void
     {
         $securityChecker = $this->createMock(AuthorizationCheckerInterface::class);
-        $twigExtension = new SecurityExtension(new SecurityRuntime($securityChecker));
+        $securityRuntime = new SecurityRuntime($securityChecker);
 
         $securityChecker
             ->method('isGranted')
@@ -43,8 +37,8 @@ final class SecurityExtensionTest extends TestCase
                 ['bar', null, true],
             ]);
 
-        static::assertTrue($twigExtension->isGrantedAffirmative(['foo', 'bar']));
-        static::assertFalse($twigExtension->isGrantedAffirmative('foo'));
-        static::assertTrue($twigExtension->isGrantedAffirmative('bar'));
+        static::assertTrue($securityRuntime->isGrantedAffirmative(['foo', 'bar']));
+        static::assertFalse($securityRuntime->isGrantedAffirmative('foo'));
+        static::assertTrue($securityRuntime->isGrantedAffirmative('bar'));
     }
 }

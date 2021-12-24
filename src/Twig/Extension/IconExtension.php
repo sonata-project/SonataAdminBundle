@@ -13,35 +13,49 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Twig\Extension;
 
+use Sonata\AdminBundle\Twig\IconRuntime;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 final class IconExtension extends AbstractExtension
 {
+    /**
+     * @var IconRuntime
+     */
+    private $iconRuntime;
+
+    /**
+     * NEXT_MAJOR: Remove this constructor.
+     *
+     * @internal This class should only be used through Twig
+     */
+    public function __construct(IconRuntime $iconRuntime)
+    {
+        $this->iconRuntime = $iconRuntime;
+    }
+
     public function getFilters(): array
     {
         return [
-            new TwigFilter('parse_icon', [$this, 'parseIcon'], ['is_safe' => ['html']]),
+            new TwigFilter('parse_icon', [IconRuntime::class, 'parseIcon'], ['is_safe' => ['html']]),
         ];
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x use IconRuntime::parseIcon() instead
+     */
     public function parseIcon(string $icon): string
     {
-        if ('' === $icon || 0 === strpos($icon, '<')) {
-            return $icon;
-        }
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            .'  Use "%s::%s()" instead.',
+            __METHOD__,
+            IconRuntime::class,
+            __FUNCTION__
+        ), \E_USER_DEPRECATED);
 
-        if (
-            0 !== strpos($icon, 'fa ')
-            && 0 !== strpos($icon, 'fas ')
-            && 0 !== strpos($icon, 'far ')
-            && 0 !== strpos($icon, 'fab ')
-            && 0 !== strpos($icon, 'fal ')
-            && 0 !== strpos($icon, 'fad ')
-        ) {
-            throw new \InvalidArgumentException(sprintf('The icon format "%s" is not supported.', $icon));
-        }
-
-        return sprintf('<i class="%s" aria-hidden="true"></i>', $icon);
+        return $this->iconRuntime->parseIcon($icon);
     }
 }
