@@ -151,7 +151,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 }
 
-
 UserProvider
 ^^^^^^^^^^^^
 
