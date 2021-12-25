@@ -26,8 +26,6 @@ User Entity
 This represents your security user, you can read more about it
 `here <https://symfony.com/doc/5.4/security.html#a-create-your-user-class>`__::
 
-    <?php
-
 namespace App\Entity;
 
 use App\Repository\UserRepository;
