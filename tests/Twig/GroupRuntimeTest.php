@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Twig;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Twig\GroupRuntime;
@@ -67,15 +66,15 @@ final class GroupRuntimeTest extends TestCase
         ]);
         $groupRuntime = new GroupRuntime($pool);
 
-        $adminNonCreatable = $this->createMock(AdminInterface::class);
-        $adminCreatable = $this->createMock(AdminInterface::class);
+        // NEXT_MAJOR: Use createMock instead.
+        $adminNonCreatable = $this->getMockBuilder(AdminInterface::class)->addMethods(['showInDashboard'])->getMockForAbstractClass();
+        $adminCreatable = $this->getMockBuilder(AdminInterface::class)->addMethods(['showInDashboard'])->getMockForAbstractClass();
 
         $container->set('sonata_admin_non_creatable', $adminNonCreatable);
         $container->set('sonata_admin_creatable', $adminCreatable);
 
         $adminCreatable
-            ->method('showIn')
-            ->with(AbstractAdmin::CONTEXT_DASHBOARD)
+            ->method('showInDashboard')
             ->willReturn(true);
 
         $adminCreatable
