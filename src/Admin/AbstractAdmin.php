@@ -58,7 +58,10 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterface, DomainObjectInterface, AdminTreeInterface
 {
+    // NEXT_MAJOR: Remove the CONTEXT constants.
+    /** @deprecated */
     public const CONTEXT_MENU = 'menu';
+    /** @deprecated */
     public const CONTEXT_DASHBOARD = 'dashboard';
 
     public const CLASS_REGEX =
@@ -1584,9 +1587,32 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getCode();
     }
 
+    public function showInDashboard(): bool
+    {
+        // NEXT_MAJOR: Remove those lines and uncomment the last one.
+        $permissionShow = $this->getPermissionsShow(self::CONTEXT_DASHBOARD, 'sonata_deprecation_mute');
+        $permission = 1 === \count($permissionShow) ? reset($permissionShow) : $permissionShow;
+
+        return $this->isGranted($permission);
+        // return $this->isGranted('LIST');
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x use showInDashboard instead
+     */
     final public function showIn(string $context): bool
     {
-        $permissionShow = $this->getPermissionsShow($context);
+        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
+            @trigger_error(sprintf(
+                'The "%s()" method is deprecated since sonata-project/admin-bundle version 4.x and will be'
+                .' removed in 5.0 version. Use showInDashboard() instead.',
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+        }
+
+        $permissionShow = $this->getPermissionsShow($context, 'sonata_deprecation_mute');
         // Avoid isGranted deprecation if there is only one permission show.
         $permission = 1 === \count($permissionShow) ? reset($permissionShow) : $permissionShow;
 
@@ -2171,10 +2197,22 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * Return the list of permissions the user should have in order to display the admin.
      *
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x
+     *
      * @return string[]
      */
     protected function getPermissionsShow(string $context): array
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
+            @trigger_error(sprintf(
+                'The "%s()" method is deprecated since sonata-project/admin-bundle version 4.x and will be'
+                .' removed in 5.0 version.',
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+        }
+
         return ['LIST'];
     }
 

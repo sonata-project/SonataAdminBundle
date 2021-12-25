@@ -111,8 +111,23 @@ final class Pool
                 }
 
                 $admin = $this->getInstance($item['admin']);
-                if (!$admin->showIn(AbstractAdmin::CONTEXT_DASHBOARD)) {
-                    return null;
+
+                // NEXT_MAJOR: Keep the if part.
+                // @phpstan-ignore-next-line
+                if (method_exists($admin, 'showInDashboard')) {
+                    if (!$admin->showInDashboard()) {
+                        return null;
+                    }
+                } else {
+                    @trigger_error(sprintf(
+                        'Not implementing "%s::showInDashboard()" is deprecated since sonata-project/admin-bundle 4.x'
+                        .' and will fail in 5.0.',
+                        AdminInterface::class
+                    ), \E_USER_DEPRECATED);
+
+                    if (!$admin->showIn(AbstractAdmin::CONTEXT_DASHBOARD)) {
+                        return null;
+                    }
                 }
 
                 return $admin;

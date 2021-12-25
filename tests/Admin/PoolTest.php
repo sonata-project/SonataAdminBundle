@@ -41,7 +41,12 @@ final class PoolTest extends TestCase
         $this->pool = new Pool($this->container);
     }
 
-    public function testGetDashboardGroups(): void
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
+    public function testGetDashboardGroupsForLegacyAdmin(): void
     {
         $adminGroup1 = $this->createMock(AdminInterface::class);
         $adminGroup1->expects(static::once())->method('showIn')->willReturn(true);
@@ -51,6 +56,41 @@ final class PoolTest extends TestCase
 
         $adminGroup3 = $this->createMock(AdminInterface::class);
         $adminGroup3->expects(static::once())->method('showIn')->willReturn(false);
+
+        $this->container->set('sonata.user.admin.group1', $adminGroup1);
+        $this->container->set('sonata.user.admin.group2', $adminGroup2);
+        $this->container->set('sonata.user.admin.group3', $adminGroup3);
+
+        $pool = new Pool(
+            $this->container,
+            ['sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3'],
+            [
+                'adminGroup1' => $this->getGroupArray('sonata.user.admin.group1'),
+                'adminGroup2' => $this->getGroupArray('sonata.user.admin.group2'),
+                'adminGroup3' => $this->getGroupArray('sonata.user.admin.group3'),
+                'adminGroup4' => $this->getGroupArray(),
+            ]
+        );
+
+        $groups = $pool->getDashboardGroups();
+
+        static::assertCount(1, $groups);
+        static::assertSame($adminGroup1, $groups['adminGroup1']['items']['itemKey']);
+    }
+
+    public function testGetDashboardGroups(): void
+    {
+        // NEXT_MAJOR: Use $this->createMock(AdminInterface::class);
+        $adminGroup1 = $this->getMockBuilder(AdminInterface::class)->addMethods(['showInDashboard'])->getMockForAbstractClass();
+        $adminGroup1->expects(static::once())->method('showInDashboard')->willReturn(true);
+
+        // NEXT_MAJOR: Use $this->createMock(AdminInterface::class);
+        $adminGroup2 = $this->getMockBuilder(AdminInterface::class)->addMethods(['showInDashboard'])->getMockForAbstractClass();
+        $adminGroup2->expects(static::once())->method('showInDashboard')->willReturn(false);
+
+        // NEXT_MAJOR: Use $this->createMock(AdminInterface::class);
+        $adminGroup3 = $this->getMockBuilder(AdminInterface::class)->addMethods(['showInDashboard'])->getMockForAbstractClass();
+        $adminGroup3->expects(static::once())->method('showInDashboard')->willReturn(false);
 
         $this->container->set('sonata.user.admin.group1', $adminGroup1);
         $this->container->set('sonata.user.admin.group2', $adminGroup2);

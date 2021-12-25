@@ -31,6 +31,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * NEXT_MAJOR: Add all these methods to the interface by uncommenting them.
  *
+ * @method bool showInDashboard()
  * @method void removeExtension(AdminExtensionInterface $extension)
  *
  * @phpstan-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
@@ -269,7 +270,15 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function getFilterParameters(): array;
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.x use showInDashboard instead
+     */
     public function showIn(string $context): bool;
+
+    // NEXT_MAJOR: Uncomment this for Sonata 5
+    //public function showInDashboard(): bool;
 
     /**
      * Add object security, fe. make the current user owner of the object.
