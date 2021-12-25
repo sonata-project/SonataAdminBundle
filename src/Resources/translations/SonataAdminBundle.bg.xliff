@@ -374,6 +374,10 @@
         <source>export_format_xls</source>
         <target>XLS</target>
       </trans-unit>
+      <trans-unit id="export_format_xlsx">
+        <source>export_format_xlsx</source>
+        <target>XLSX</target>
+      </trans-unit>
       <trans-unit id="loading_information">
         <source>loading_information</source>
         <target>Зареждане на информацията…</target>
