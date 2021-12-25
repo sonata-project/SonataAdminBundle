@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Tests\Fixtures\Entity\Entity;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -34,50 +35,16 @@ final class ModelsToArrayTransformerTest extends TestCase
         static::assertInstanceOf(ModelsToArrayTransformer::class, $transformer);
     }
 
-    /**
-     * @param array<int|string>|null $value
-     *
-     * @dataProvider reverseTransformProvider
-     */
-    public function testReverseTransform(?array $value): void
+    public function testReverseTransformWithNull(): void
     {
         $modelManager = $this->createMock(ModelManagerInterface::class);
-
-        if (null !== $value) {
-            $proxyQuery = $this->createStub(ProxyQueryInterface::class);
-            $modelManager
-                ->method('createQuery')
-                ->with(static::equalTo(Foo::class))
-                ->willReturn($proxyQuery);
-            $modelManager
-                ->method('executeQuery')
-                ->with(static::equalTo($proxyQuery))
-                ->willReturn($value);
-        }
 
         $transformer = new ModelsToArrayTransformer(
             $modelManager,
             Foo::class
         );
 
-        $result = $transformer->reverseTransform($value);
-
-        if (null === $value) {
-            static::assertNull($result);
-        } else {
-            static::assertInstanceOf(Collection::class, $result);
-            static::assertCount(\count($value), $result);
-        }
-    }
-
-    /**
-     * @phpstan-return iterable<array-key, array{array<int|string>|null}>
-     */
-    public function reverseTransformProvider(): iterable
-    {
-        yield [['a']];
-        yield [['a', 'b', 3]];
-        yield [null];
+        static::assertNull($transformer->reverseTransform(null));
     }
 
     public function testReverseTransformWithEmptyArray(): void
@@ -104,6 +71,39 @@ final class ModelsToArrayTransformerTest extends TestCase
         static::assertCount(0, $result);
     }
 
+    public function testReverseTransformRespectOrder(): void
+    {
+        $object1 = new Entity(1);
+        $object2 = new Entity(2);
+        $object3 = new Entity(3);
+
+        $proxyQuery = $this->createStub(ProxyQueryInterface::class);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager
+            ->method('createQuery')
+            ->willReturn($proxyQuery);
+        $modelManager
+            ->method('executeQuery')
+            ->willReturn([$object1, $object2, $object3]);
+        $modelManager
+            ->method('getNormalizedIdentifier')
+            ->willReturnMap([
+                [$object1, '1'],
+                [$object2, '2'],
+                [$object3, '3'],
+            ]);
+
+        $transformer = new ModelsToArrayTransformer(
+            $modelManager,
+            Entity::class
+        );
+
+        $result = $transformer->reverseTransform([1, 3, 2]);
+
+        static::assertInstanceOf(Collection::class, $result);
+        static::assertSame([$object1, $object3, $object2], $result->toArray());
+    }
+
     /**
      * @psalm-suppress InvalidArgument
      */
@@ -126,8 +126,9 @@ final class ModelsToArrayTransformerTest extends TestCase
 
     public function testReverseTransformFailed(): void
     {
-        $value = ['a', 'b'];
-        $reverseTransformCollection = ['a'];
+        $object1 = new Entity(1);
+        $object2 = new Entity(2);
+
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $proxyQuery = $this->createStub(ProxyQueryInterface::class);
         $modelManager
@@ -137,7 +138,13 @@ final class ModelsToArrayTransformerTest extends TestCase
         $modelManager
             ->method('executeQuery')
             ->with(static::equalTo($proxyQuery))
-            ->willReturn($reverseTransformCollection);
+            ->willReturn([$object1]);
+        $modelManager
+            ->method('getNormalizedIdentifier')
+            ->willReturnMap([
+                [$object1, '1'],
+                [$object2, '2'],
+            ]);
 
         $transformer = new ModelsToArrayTransformer(
             $modelManager,
@@ -145,8 +152,8 @@ final class ModelsToArrayTransformerTest extends TestCase
         );
 
         $this->expectException(TransformationFailedException::class);
-        $this->expectExceptionMessage('1 keys could not be found in the provided values: "a", "b".');
+        $this->expectExceptionMessage('No model was found for the identifier "2".');
 
-        $transformer->reverseTransform($value);
+        $transformer->reverseTransform([1, 2]);
     }
 }
