@@ -1195,7 +1195,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        static::assertSame(['json', 'xml', 'csv', 'xls'], $admin->getExportFormats());
+        static::assertSame([], $admin->getExportFormats());
     }
 
     public function testGetUrlsafeIdentifier(): void
@@ -1288,6 +1288,11 @@ final class AdminTest extends TestCase
         static::assertFalse($admin->supportsPreviewMode());
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testShowIn(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
@@ -1304,6 +1309,22 @@ final class AdminTest extends TestCase
         static::assertTrue($admin->showIn(AbstractAdmin::CONTEXT_DASHBOARD));
         static::assertTrue($admin->showIn(AbstractAdmin::CONTEXT_MENU));
         static::assertTrue($admin->showIn('foo'));
+    }
+
+    public function testShowInDashboard(): void
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'Sonata\NewsBundle\Controller\PostAdminController');
+
+        $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
+        $securityHandler
+            ->expects(static::once())
+            ->method('isGranted')
+            ->with($admin, 'LIST')
+            ->willReturn(true);
+
+        $admin->setSecurityHandler($securityHandler);
+
+        static::assertTrue($admin->showInDashboard());
     }
 
     public function testGetObjectIdentifier(): void

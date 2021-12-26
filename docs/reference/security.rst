@@ -234,7 +234,7 @@ For example, you can `create your own voter`_
 Customizing the handler behavior
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you want to change the handler behavior, create your own handler implementing 
+If you want to change the handler behavior, create your own handler implementing
 ``Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface``.
 
 And specify it as Sonata security handler on your configuration:
@@ -475,7 +475,7 @@ If you try to access to the admin class you should see the login form, log in
 with the ``root`` user.
 
 An Admin is displayed in the dashboard (and menu) when the user has the role
-``LIST``. To change this override the ``showIn`` method in the Admin class.
+``LIST``. To change this override the ``showInDashboard`` method in the Admin class.
 
 Roles and Access control lists
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
