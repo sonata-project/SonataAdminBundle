@@ -33,6 +33,8 @@ final class AdminPermissionMapTest extends TestCase
     {
         $reflection = new \ReflectionClass(AdminPermissionMap::class);
         foreach ($reflection->getConstants() as $permission) {
+            static::assertIsString($permission);
+
             $masks = $this->permissionMap->getMasks(
                 $permission,
                 new \stdClass()

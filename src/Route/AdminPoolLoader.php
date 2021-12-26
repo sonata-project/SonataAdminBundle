@@ -65,7 +65,9 @@ final class AdminPoolLoader extends Loader
             $admin = $this->pool->getInstance($id);
 
             foreach ($admin->getRoutes()->getElements() as $route) {
-                $collection->add($route->getDefault('_sonata_name'), $route);
+                $name = $route->getDefault('_sonata_name');
+                \assert(\is_string($name));
+                $collection->add($name, $route);
             }
 
             $reflection = new \ReflectionObject($admin);

@@ -22,14 +22,16 @@ use Doctrine\Common\Collections\Collection;
 final class TraversableToCollection
 {
     /**
-     * @param \Traversable|array $value
+     * NEXT_MAJOR: Add typehint.
+     *
+     * @param iterable<mixed, mixed> $value
      *
      * @throws \TypeError
      *
      * @return Collection<int|string, mixed>
      *
      * @phpstan-template T
-     * @phpstan-param \Traversable<T>|array<T> $value
+     * @phpstan-param iterable<mixed, T> $value
      * @phpstan-return Collection<array-key, T>
      */
     public static function transform($value): Collection
@@ -47,10 +49,8 @@ final class TraversableToCollection
         }
 
         throw new \TypeError(sprintf(
-            'Argument 1 passed to "%s()" must be of type "%s" or "%s", %s given.',
+            'Argument 1 passed to "%s()" must be an iterable, %s given.',
             __METHOD__,
-            \Traversable::class,
-            'array',
             \is_object($value) ? 'instance of "'.\get_class($value).'"' : '"'.\gettype($value).'"'
         ));
     }

@@ -102,7 +102,7 @@ final class AdminObjectAclManipulatorTest extends TestCase
         $aclData = new AdminObjectAclData(
             $admin,
             new DummyDomainObject(),
-            new \ArrayIterator(),
+            new \ArrayIterator(['ACL_USER']),
             MaskBuilder::class
         );
 
@@ -135,7 +135,7 @@ final class AdminObjectAclManipulatorTest extends TestCase
         $aclData = new AdminObjectAclData(
             $admin,
             new DummyDomainObject(),
-            new \ArrayIterator(),
+            new \ArrayIterator(['ACL_USER']),
             MaskBuilder::class
         );
 
@@ -177,7 +177,7 @@ final class AdminObjectAclManipulatorTest extends TestCase
         $aclData = new AdminObjectAclData(
             $admin,
             new DummyDomainObject(),
-            new \ArrayIterator(),
+            new \ArrayIterator(['ACL_USER']),
             MaskBuilder::class
         );
 

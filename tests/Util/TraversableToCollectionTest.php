@@ -37,7 +37,7 @@ final class TraversableToCollectionTest extends TestCase
     }
 
     /**
-     * @phpstan-return iterable<array-key, array{int, \Traversable<mixed>|array<mixed>}>
+     * @phpstan-return iterable<array-key, array{int, iterable<mixed, mixed>}>
      */
     public function provideTraversableValues(): iterable
     {
@@ -59,7 +59,7 @@ final class TraversableToCollectionTest extends TestCase
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(sprintf(
-            'Argument 1 passed to "Sonata\AdminBundle\Util\TraversableToCollection::transform()" must be of type "Traversable" or "array", %s given.',
+            'Argument 1 passed to "Sonata\AdminBundle\Util\TraversableToCollection::transform()" must be an iterable, %s given.',
             $invalidType
         ));
 

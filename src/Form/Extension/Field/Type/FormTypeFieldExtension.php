@@ -96,6 +96,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
         if (
             null !== $view->parent
             && true === $view->parent->vars['sonata_admin_enabled']
+            && \is_array($sonataAdmin)
             && false === $sonataAdmin['admin']
         ) {
             $blockPrefixes = $view->vars['block_prefixes'];
