@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Form\Type;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use Sonata\AdminBundle\FieldDescription\Mapping;
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 use Sonata\AdminBundle\Manipulator\ObjectManipulator;
 use Symfony\Component\Form\AbstractType;
@@ -75,8 +76,8 @@ final class AdminType extends AbstractType
                     $parentPath = implode(
                         '',
                         array_map(
-                            static function (array $associationMapping): string {
-                                return sprintf('%s.', $associationMapping['fieldName']);
+                            static function (Mapping $associationMapping): string {
+                                return sprintf('%s.', $associationMapping->getFieldName());
                             },
                             $this->getFieldDescription($options)->getParentAssociationMappings()
                         )

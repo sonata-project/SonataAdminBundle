@@ -2,9 +2,7 @@
 
 namespace Sonata\AdminBundle\FieldDescription;
 
-use ArrayAccess;
-
-class Mapping implements ArrayAccess
+final class Mapping
 {
     /**
      * @var string
@@ -41,25 +39,5 @@ class Mapping implements ArrayAccess
     public function getValue(string $key)
     {
         return $this->data[$key] ?? null;
-    }
-
-    public function offsetExists($offset)
-    {
-        return isset($this->data[$offset]);
-    }
-
-    public function offsetGet($offset)
-    {
-        return $this->data[$offset];
-    }
-
-    public function offsetSet($offset, $value)
-    {
-        throw new \BadMethodCallException('The Mapping data is immutable.');
-    }
-
-    public function offsetUnset($offset)
-    {
-        throw new \BadMethodCallException('The Mapping data is immutable.');
     }
 }
