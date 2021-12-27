@@ -92,6 +92,7 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
         }
         $xpath = new \DOMXPath($dom);
         $nodeList = $xpath->evaluate('/root'.$expression);
+        static::assertInstanceOf(\DOMNodeList::class, $nodeList);
 
         if ($nodeList->length !== $count) {
             $dom->formatOutput = true;

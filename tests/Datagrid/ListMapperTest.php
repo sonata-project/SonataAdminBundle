@@ -159,8 +159,11 @@ final class ListMapperTest extends TestCase
 
         static::assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
         static::assertSame(ListMapper::NAME_ACTIONS, $fieldDescription->getName());
-        static::assertCount(1, $fieldDescription->getOption('actions'));
-        static::assertSame(['show' => []], $fieldDescription->getOption('actions'));
+
+        $actions = $fieldDescription->getOption('actions');
+        static::assertIsArray($actions);
+        static::assertCount(1, $actions);
+        static::assertSame(['show' => []], $actions);
     }
 
     public function testAddRemove(): void

@@ -21,7 +21,9 @@ namespace Sonata\AdminBundle\Datagrid;
 interface ProxyQueryInterface
 {
     /**
-     * @return array<object>|\Traversable<object>
+     * NEXT_MAJOR: Add typehint.
+     *
+     * @return iterable<object>
      */
     public function execute();
 

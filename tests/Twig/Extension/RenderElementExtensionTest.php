@@ -439,7 +439,7 @@ EOT
         $this->fieldDescription
             ->method('getTemplate')
             ->willReturnCallback(static function () use ($type, $options): ?string {
-                if (isset($options['template'])) {
+                if (isset($options['template']) && \is_string($options['template'])) {
                     return $options['template'];
                 }
 
