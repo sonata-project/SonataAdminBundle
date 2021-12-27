@@ -6,6 +6,7 @@ parameters:
     symfony:
         console_application_loader: ./phpstan-console-application.php
     paths:
+        - bin
         - src
         - tests
     excludePaths:
