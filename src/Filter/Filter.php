@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Filter;
 
+use Sonata\AdminBundle\FieldDescription\Mapping;
 use Sonata\AdminBundle\Search\ChainableFilterInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -144,7 +145,7 @@ abstract class Filter implements FilterInterface, ChainableFilterInterface
         return $this->getOption('parent_association_mappings', []);
     }
 
-    final public function getFieldMapping(): array
+    final public function getFieldMapping(): Mapping
     {
         $fieldMapping = $this->getOption('field_mapping');
 
@@ -158,7 +159,7 @@ abstract class Filter implements FilterInterface, ChainableFilterInterface
         return $fieldMapping;
     }
 
-    final public function getAssociationMapping(): array
+    final public function getAssociationMapping(): Mapping
     {
         $associationMapping = $this->getOption('association_mapping');
 

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Datagrid;
 
+use Sonata\AdminBundle\FieldDescription\Mapping;
+
 /**
  * Used by the Datagrid to build the query.
  *
@@ -26,12 +28,12 @@ interface ProxyQueryInterface
     public function execute();
 
     /**
-     * @param mixed[] $parentAssociationMappings
-     * @param mixed[] $fieldMapping
+     * @param Mapping[] $parentAssociationMappings
+     * @param Mapping   $fieldMapping
      *
      * @return static
      */
-    public function setSortBy(array $parentAssociationMappings, array $fieldMapping): self;
+    public function setSortBy(array $parentAssociationMappings, Mapping $fieldMapping): self;
 
     public function getSortBy(): ?string;
 

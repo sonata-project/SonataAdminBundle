@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use Sonata\AdminBundle\FieldDescription\Mapping;
 use Sonata\AdminBundle\Mapper\MapperInterface;
 
 /**
@@ -110,14 +111,14 @@ final class ListMapper implements MapperInterface
                 $fieldDescriptionOptions['sortable'] = !\is_callable($fieldDescriptionOptions['associated_property']);
             }
             if (!isset($fieldDescriptionOptions['sort_parent_association_mappings'])) {
-                $fieldDescriptionOptions['sort_parent_association_mappings'] = [[
-                    'fieldName' => $name,
-                ]];
+                $fieldDescriptionOptions['sort_parent_association_mappings'] = [
+                    new Mapping(['fieldName' => $name],
+                ];
             }
             if (!isset($fieldDescriptionOptions['sort_field_mapping'])) {
-                $fieldDescriptionOptions['sort_field_mapping'] = [
+                $fieldDescriptionOptions['sort_field_mapping'] = new Mapping([
                     'fieldName' => $fieldDescriptionOptions['associated_property'],
-                ];
+                ]);
             }
         }
 

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Filter;
 
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\FieldDescription\Mapping;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 
 /**
@@ -83,23 +84,23 @@ interface FilterInterface
     public function getFieldName(): string;
 
     /**
-     * @return array<array<string, mixed>> array of mappings
+     * @return Mapping[] array of mappings
      */
     public function getParentAssociationMappings(): array;
 
     /**
      * @throws \RuntimeException if the `field_mapping` option is not set
      *
-     * @return array<string, mixed> field mapping
+     * @return Mapping field mapping
      */
-    public function getFieldMapping(): array;
+    public function getFieldMapping(): Mapping;
 
     /**
      * @throws \RuntimeException if the `association_mapping` option is not set
      *
-     * @return array<string, mixed> association mapping
+     * @return Mapping association mapping
      */
-    public function getAssociationMapping(): array;
+    public function getAssociationMapping(): Mapping;
 
     /**
      * @return array<string, mixed>

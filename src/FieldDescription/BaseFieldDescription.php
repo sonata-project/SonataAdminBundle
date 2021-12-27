@@ -83,17 +83,17 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $fieldName;
 
     /**
-     * @var array<string, mixed> association mapping
+     * @var Mapping|null association mapping
      */
-    protected $associationMapping = [];
+    protected $associationMapping;
 
     /**
-     * @var array<string, mixed> field information
+     * @var Mapping|null field information
      */
-    protected $fieldMapping = [];
+    protected $fieldMapping;
 
     /**
-     * @var array<string, mixed> parent mapping association
+     * @var Mapping[] parent mapping association
      */
     protected $parentAssociationMappings = [];
 
@@ -124,17 +124,17 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $associationAdmin;
 
     /**
-     * @param mixed[] $fieldMapping
-     * @param mixed[] $associationMapping
-     * @param mixed[] $parentAssociationMappings
+     * @param Mapping   $fieldMapping
+     * @param Mapping   $associationMapping
+     * @param Mapping[] $parentAssociationMappings
      *
      * @phpstan-param FieldDescriptionOptions $options
      */
     public function __construct(
         string $name,
         array $options = [],
-        array $fieldMapping = [],
-        array $associationMapping = [],
+        ?Mapping $fieldMapping = null,
+        ?Mapping $associationMapping = null,
         array $parentAssociationMappings = [],
         ?string $fieldName = null
     ) {
@@ -148,11 +148,11 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
         $this->setOptions($options);
 
-        if ([] !== $fieldMapping) {
+        if (null !== $fieldMapping) {
             $this->setFieldMapping($fieldMapping);
         }
 
-        if ([] !== $associationMapping) {
+        if (null !== $associationMapping) {
             $this->setAssociationMapping($associationMapping);
         }
 
@@ -247,12 +247,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return null !== $this->parent;
     }
 
-    final public function getAssociationMapping(): array
+    final public function getAssociationMapping(): Mapping
     {
         return $this->associationMapping;
     }
 
-    final public function getFieldMapping(): array
+    final public function getFieldMapping(): Mapping
     {
         return $this->fieldMapping;
     }
@@ -332,7 +332,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return false !== $this->getOption('sortable', false);
     }
 
-    final public function getSortFieldMapping(): array
+    final public function getSortFieldMapping(): Mapping
     {
         return $this->getOption('sort_field_mapping');
     }
@@ -358,17 +358,17 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * @param array<string, mixed> $fieldMapping
+     * @param Mapping $fieldMapping
      */
-    abstract protected function setFieldMapping(array $fieldMapping): void;
+    abstract protected function setFieldMapping(Mapping $fieldMapping): void;
 
     /**
-     * @param array<string, mixed> $associationMapping
+     * @param Mapping $associationMapping
      */
-    abstract protected function setAssociationMapping(array $associationMapping): void;
+    abstract protected function setAssociationMapping(Mapping $associationMapping): void;
 
     /**
-     *  @param array<array<string, mixed>> $parentAssociationMappings
+     *  @param Mapping[] $parentAssociationMappings
      */
     abstract protected function setParentAssociationMappings(array $parentAssociationMappings): void;
 

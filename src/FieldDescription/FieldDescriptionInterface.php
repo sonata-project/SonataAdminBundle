@@ -145,10 +145,8 @@ interface FieldDescriptionInterface
 
     /**
      * Returns the association mapping definition.
-     *
-     * @return array<string, mixed>
      */
-    public function getAssociationMapping(): array;
+    public function getAssociationMapping(): Mapping;
 
     /**
      * Returns the related Target object model.
@@ -159,15 +157,13 @@ interface FieldDescriptionInterface
 
     /**
      * Returns the field mapping definition.
-     *
-     * @return array<string, mixed>
      */
-    public function getFieldMapping(): array;
+    public function getFieldMapping(): Mapping;
 
     /**
      * Returns the parent association mapping definitions.
      *
-     * @return array<array<string, mixed>>
+     * @return Mapping[]
      */
     public function getParentAssociationMappings(): array;
 
@@ -276,15 +272,13 @@ interface FieldDescriptionInterface
 
     /**
      * Returns the field mapping definition used when sorting.
-     *
-     * @return array<string, mixed>
      */
-    public function getSortFieldMapping(): array;
+    public function getSortFieldMapping(): Mapping;
 
     /**
      * Returns the parent association mapping definitions used when sorting.
      *
-     * @return array<string, mixed>
+     * @return Mapping[]
      */
     public function getSortParentAssociationMapping(): array;
 }
