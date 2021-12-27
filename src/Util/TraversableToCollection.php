@@ -18,6 +18,8 @@ use Doctrine\Common\Collections\Collection;
 
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
+ *
+ * NEXT_MAJOR: Rename IterableToCollection.
  */
 final class TraversableToCollection
 {
