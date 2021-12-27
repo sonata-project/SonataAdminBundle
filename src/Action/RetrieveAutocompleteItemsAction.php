@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
+use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
@@ -48,10 +49,7 @@ final class RetrieveAutocompleteItemsAction
         try {
             $admin = $this->adminFetcher->get($request);
         } catch (\InvalidArgumentException $e) {
-            throw new NotFoundHttpException(sprintf(
-                'Could not find admin for code "%s".',
-                $request->get('_sonata_admin')
-            ));
+            throw new NotFoundHttpException($e->getMessage());
         }
 
         $context = $request->get('_context', '');
@@ -64,9 +62,14 @@ final class RetrieveAutocompleteItemsAction
         // subject will be empty to avoid unnecessary database requests and keep autocomplete function fast
         $admin->setSubject($admin->getNewInstance());
 
+        $field = $request->get('field');
+        if (!\is_string($field)) {
+            throw new BadRequestParamHttpException('field', 'string', $field);
+        }
+
         if ('filter' === $context) {
             // filter
-            $fieldDescription = $this->retrieveFilterFieldDescription($admin, $request->get('field'));
+            $fieldDescription = $this->retrieveFilterFieldDescription($admin, $field);
             $filterAutocomplete = $admin->getDatagrid()->getFilter($fieldDescription->getName());
 
             $property = $filterAutocomplete->getFieldOption('property');
@@ -79,7 +82,7 @@ final class RetrieveAutocompleteItemsAction
             $responseItemCallback = $filterAutocomplete->getFieldOption('response_item_callback');
         } else {
             // create/edit form
-            $fieldDescription = $this->retrieveFormFieldDescription($admin, $request->get('field'));
+            $fieldDescription = $this->retrieveFormFieldDescription($admin, $field);
             $formAutocomplete = $admin->getForm()->get($fieldDescription->getName());
 
             $formAutocompleteConfig = $formAutocomplete->getConfig();
@@ -100,10 +103,16 @@ final class RetrieveAutocompleteItemsAction
         }
 
         $searchText = $request->get('q', '');
+        if (!\is_string($searchText)) {
+            throw new BadRequestParamHttpException('q', 'string', $searchText);
+        }
 
         $targetAdmin = $fieldDescription->getAssociationAdmin();
 
         // check user permission
+        if (!\is_string($targetAdminAccessAction)) {
+            throw new \RuntimeException('The "target_admin_access_action" action must be a string.');
+        }
         $targetAdmin->checkAccess($targetAdminAccessAction);
 
         if (mb_strlen($searchText, 'UTF-8') < $minimumInputLength) {
@@ -153,7 +162,7 @@ final class RetrieveAutocompleteItemsAction
             }
 
             $datagrid->reorderFilters($property);
-        } else {
+        } elseif (\is_string($property)) {
             if (!$datagrid->hasFilter($property)) {
                 throw new \RuntimeException(sprintf(
                     'To retrieve autocomplete items, you MUST add the filter "%s"'
@@ -164,6 +173,12 @@ final class RetrieveAutocompleteItemsAction
             }
 
             $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $searchText);
+        } else {
+            throw new \RuntimeException('Unsupported property type.');
+        }
+
+        if (!\is_string($reqParamPageNumber)) {
+            throw new \RuntimeException('The "req_param_name_page_number" value must be a string.');
         }
 
         $datagrid->setValue(DatagridInterface::PER_PAGE, null, $itemsPerPage);

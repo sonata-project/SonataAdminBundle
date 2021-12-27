@@ -315,28 +315,28 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * The form group disposition.
      *
-     * @var array<string, mixed>
+     * @var array<string, array<string, mixed>>
      */
     private $formGroups = [];
 
     /**
      * The form tabs disposition.
      *
-     * @var array<string, mixed>
+     * @var array<string, array<string, mixed>>
      */
     private $formTabs = [];
 
     /**
      * The view group disposition.
      *
-     * @var array<string, mixed>
+     * @var array<string, array<string, mixed>>
      */
     private $showGroups = [];
 
     /**
      * The view tab disposition.
      *
-     * @var array<string, mixed>
+     * @var array<string, array<string, mixed>>
      */
     private $showTabs = [];
 
@@ -482,7 +482,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 $filters = $bag->all('filter');
             } else {
                 $filters = $bag->get('filter', []);
+                \assert(\is_array($filters));
             }
+
             if (isset($filters[DatagridInterface::PAGE])) {
                 $filters[DatagridInterface::PAGE] = (int) $filters[DatagridInterface::PAGE];
             }

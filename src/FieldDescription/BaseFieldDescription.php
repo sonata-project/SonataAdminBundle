@@ -93,7 +93,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $fieldMapping = [];
 
     /**
-     * @var array<string, mixed> parent mapping association
+     * @var array<string, array<string, mixed>> parent mapping association
      */
     protected $parentAssociationMappings = [];
 

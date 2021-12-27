@@ -154,10 +154,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         static::assertContains('sonata_article_admin', $adminServiceIds);
         static::assertContains('sonata_news_admin', $adminServiceIds);
 
-        static::assertContains('sonata_post_admin', $poolDefinition->getArgument(1));
-        static::assertArrayHasKey('sonata_group_one', $poolDefinition->getArgument(2));
-        static::assertArrayHasKey(NewsEntity::class, $poolDefinition->getArgument(3));
-
         static::assertArrayHasKey('sonata_group_one', $adminGroups);
         static::assertArrayHasKey('label', $adminGroups['sonata_group_one']);
         static::assertArrayHasKey('label_catalogue', $adminGroups['sonata_group_one']);
@@ -271,8 +267,11 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $this->compile();
 
+        $adminGroups = $this->container->findDefinition('sonata.admin.pool')->getArgument(2);
+        static::assertIsArray($adminGroups);
+
         // use array_values to check groups position
-        $adminGroups = array_values($this->container->findDefinition('sonata.admin.pool')->getArgument(2));
+        $adminGroups = array_values($adminGroups);
 
         static::assertSame('sonata_group_one', $adminGroups['0']['label'], 'second group in configuration, first in list');
         static::assertSame('1 Entry', $adminGroups[0]['items'][0]['label'], 'second entry for group in configuration, first in list');
@@ -297,6 +296,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->compile();
 
         $adminGroups = $this->container->findDefinition('sonata.admin.pool')->getArgument(2);
+        static::assertIsArray($adminGroups);
         static::assertArrayHasKey('resolved_group_name', $adminGroups);
         static::assertArrayNotHasKey('%sonata.admin.parameter.groupname%', $adminGroups);
     }
@@ -323,6 +323,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $postAdminTemplates = $this->container->findDefinition('sonata_post_admin.template_registry')->getArgument(0);
 
+        static::assertIsArray($postAdminTemplates);
         static::assertSame('@SonataAdmin/Pager/simple_pager_results.html.twig', $postAdminTemplates['pager_results']);
         static::assertSame('@SonataAdmin/Button/create_button.html.twig', $postAdminTemplates['button_create']);
     }
@@ -516,6 +517,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $pool = $this->container->findDefinition('sonata.admin.pool');
         $adminServiceIds = $pool->getArgument(1);
 
+        static::assertIsArray($adminServiceIds);
         static::assertContains('sonata_post_one_admin', $adminServiceIds);
         static::assertContains('sonata_post_two_admin', $adminServiceIds);
 
