@@ -28,8 +28,8 @@ interface ProxyQueryInterface
     public function execute();
 
     /**
-     * @param mixed[] $parentAssociationMappings
-     * @param mixed[] $fieldMapping
+     * @param array<string, array<string, mixed>> $parentAssociationMappings
+     * @param array<string, mixed>                $fieldMapping
      *
      * @return static
      */

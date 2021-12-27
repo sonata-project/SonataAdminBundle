@@ -245,7 +245,7 @@ final class Pool
     {
         $adminCode = $fieldDescription->getOption('admin_code');
 
-        if (null !== $adminCode) {
+        if (\is_string($adminCode)) {
             return $this->getAdminByAdminCode($adminCode);
         }
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Action;
 
+use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,13 +47,14 @@ final class GetShortObjectDescriptionAction
         try {
             $admin = $this->adminFetcher->get($request);
         } catch (\InvalidArgumentException $e) {
-            throw new NotFoundHttpException(sprintf(
-                'Could not find admin for code "%s".',
-                $request->get('_sonata_admin')
-            ));
+            throw new NotFoundHttpException($e->getMessage());
         }
 
         $objectId = $request->get('objectId');
+        if (!\is_string($objectId) && !\is_int($objectId)) {
+            throw new BadRequestParamHttpException('objectId', 'string|int', $objectId);
+        }
+
         $object = $admin->getObject($objectId);
         if (null === $object) {
             throw new NotFoundHttpException(sprintf('Could not find subject for id "%s"', $objectId));

@@ -285,7 +285,7 @@ interface FieldDescriptionInterface
     /**
      * Returns the parent association mapping definitions used when sorting.
      *
-     * @return array<string, mixed>
+     * @return array<string, array<string, mixed>>
      */
     public function getSortParentAssociationMapping(): array;
 }
