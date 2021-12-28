@@ -112,8 +112,10 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
+        $options = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2);
+        static::assertIsArray($options);
 
+        $stylesheets = $options['stylesheets'];
         static::assertSame(
             array_merge($this->getDefaultStylesheets(), $extraStylesheets),
             $stylesheets
@@ -133,8 +135,10 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
+        $options = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2);
+        static::assertIsArray($options);
 
+        $stylesheets = $options['stylesheets'];
         static::assertSame(
             array_values(
                 array_diff($this->defaultConfiguration['assets']['stylesheets'], $removeStylesheets)
@@ -153,8 +157,10 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        $javascripts = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['javascripts'];
+        $options = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2);
+        static::assertIsArray($options);
 
+        $javascripts = $options['javascripts'];
         static::assertSame(
             array_merge($this->defaultConfiguration['assets']['javascripts'], $extraJavascripts),
             $javascripts
@@ -173,8 +179,10 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        $javascripts = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['javascripts'];
+        $options = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2);
+        static::assertIsArray($options);
 
+        $javascripts = $options['javascripts'];
         static::assertSame(
             array_values(
                 array_diff($this->defaultConfiguration['assets']['javascripts'], $removeJavascripts)
@@ -204,8 +212,10 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
+        $options = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2);
+        static::assertIsArray($options);
 
+        $stylesheets = $options['stylesheets'];
         static::assertSame(
             array_merge(
                 array_diff($this->defaultConfiguration['assets']['stylesheets'], $removeStylesheets),
@@ -214,8 +224,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             $stylesheets
         );
 
-        $javascripts = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['javascripts'];
-
+        $javascripts = $options['javascripts'];
         static::assertSame(
             array_merge(
                 array_diff($this->defaultConfiguration['assets']['javascripts'], $removeJavascripts),
@@ -308,10 +317,13 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
-        $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
+        $options = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2);
+        static::assertIsArray($options);
 
+        $stylesheets = $options['stylesheets'];
         static::assertSame($this->getDefaultStylesheets('skin-blue'), $stylesheets);
+
+        $skin = $options['skin'];
         static::assertSame('skin-blue', $skin);
     }
 
@@ -324,10 +336,13 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
-        $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
+        $options = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2);
+        static::assertIsArray($options);
 
+        $stylesheets = $options['stylesheets'];
         static::assertSame($this->getDefaultStylesheets(), $stylesheets);
+
+        $skin = $options['skin'];
         static::assertSame('skin-black', $skin);
     }
 
@@ -372,7 +387,10 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
+        $options = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2);
+        static::assertIsArray($options);
+
+        $skin = $options['skin'];
 
         $defaultStylesheets = $this->defaultConfiguration['assets']['stylesheets'];
         $defaultStylesheets[] = sprintf(

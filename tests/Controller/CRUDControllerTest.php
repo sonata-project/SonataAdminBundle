@@ -69,8 +69,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 /**
- * Test for CRUDController.
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
 final class CRUDControllerTest extends TestCase
@@ -313,6 +311,7 @@ final class CRUDControllerTest extends TestCase
         $this->request->headers->set('Content-Type', 'application/x-www-form-urlencoded');
         $response = $this->protectedTestedMethods['renderJson']->invoke($this->controller, $data, 200, [], $this->request);
 
+        static::assertInstanceOf(JsonResponse::class, $response);
         static::assertSame($response->headers->get('Content-Type'), 'application/json');
         static::assertSame(json_encode($data), $response->getContent());
     }
@@ -324,6 +323,7 @@ final class CRUDControllerTest extends TestCase
         $this->request->headers->set('Content-Type', 'multipart/form-data');
         $response = $this->protectedTestedMethods['renderJson']->invoke($this->controller, $data, 200, [], $this->request);
 
+        static::assertInstanceOf(JsonResponse::class, $response);
         static::assertSame($response->headers->get('Content-Type'), 'application/json');
         static::assertSame(json_encode($data), $response->getContent());
     }
@@ -336,6 +336,7 @@ final class CRUDControllerTest extends TestCase
         $this->request->headers->set('Content-Type', 'multipart/form-data');
         $response = $this->protectedTestedMethods['renderJson']->invoke($this->controller, $data, 200, [], $this->request);
 
+        static::assertInstanceOf(JsonResponse::class, $response);
         static::assertSame($response->headers->get('Content-Type'), 'application/json');
         static::assertSame(json_encode($data), $response->getContent());
     }

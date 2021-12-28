@@ -225,7 +225,9 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
     {
         if (false === $this->findClassAceIndexByUsername($acl, $securityIdentity->getUsername())) {
             // only add if not already exists
-            $acl->insertObjectAce($securityIdentity, \constant("$this->maskBuilderClass::MASK_OWNER"));
+            $mask = \constant("$this->maskBuilderClass::MASK_OWNER");
+            \assert(\is_int($mask));
+            $acl->insertObjectAce($securityIdentity, $mask);
         }
     }
 

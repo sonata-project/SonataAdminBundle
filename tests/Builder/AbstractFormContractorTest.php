@@ -149,6 +149,7 @@ final class AbstractFormContractorTest extends TestCase
             static::assertSame($this->fieldDescription, $options['sonata_field_description']);
             static::assertSame(AdminType::class, $options['type']);
             static::assertTrue($options['modifiable']);
+            static::assertIsArray($options['type_options']);
             static::assertSame($this->fieldDescription, $options['type_options']['sonata_field_description']);
             static::assertSame($modelClass, $options['type_options']['data_class']);
             static::assertFalse($options['type_options']['collection_by_reference']);
