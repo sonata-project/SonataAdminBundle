@@ -312,7 +312,7 @@ const Admin = {
           element.removeAttribute('name');
         } else if (element.multiple && JSON.stringify(elementValue) === '[]') {
           // Empty array values will not be submitted, but we need to override
-          // the default value provided by AdminInterface::getDefaultFilterParameters
+          // the default value provided by `AdminInterface::getDefaultFilterParameters()`.
           // So we change the empty select to an empty input in order to have a submitted value.
           // @see https://github.com/sonata-project/SonataAdminBundle/issues/7547
 
