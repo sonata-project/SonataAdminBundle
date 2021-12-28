@@ -17,7 +17,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Util\TraversableToCollection;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
@@ -118,15 +117,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
 
         unset($value['_labels']);
 
-        if ([] === $value) {
-            $result = $value;
-        } else {
-            $query = $this->modelManager->createQuery($this->className);
-            $this->modelManager->addIdentifiersToQuery($this->className, $query, $value);
-            $result = $this->modelManager->executeQuery($query);
-        }
-
-        return TraversableToCollection::transform($result);
+        return (new ModelsToArrayTransformer($this->modelManager, $this->className))->reverseTransform($value);
     }
 
     /**

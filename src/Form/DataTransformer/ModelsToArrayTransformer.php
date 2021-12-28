@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Util\TraversableToCollection;
-use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -68,7 +67,15 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
 
         $array = [];
         foreach ($value as $model) {
-            $array[] = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($model));
+            $identifier = $this->modelManager->getNormalizedIdentifier($model);
+            if (null === $identifier) {
+                throw new TransformationFailedException(sprintf(
+                    'No identifier was found for the model "%s".',
+                    ClassUtils::getClass($model)
+                ));
+            }
+
+            $array[] = $identifier;
         }
 
         return $array;
@@ -94,42 +101,38 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
         }
 
         if ([] === $value) {
-            $result = $value;
-        } else {
-            $query = $this->modelManager->createQuery($this->class);
-            $this->modelManager->addIdentifiersToQuery($this->class, $query, $value);
-            $result = $this->modelManager->executeQuery($query);
+            return new ArrayCollection();
         }
 
-        $collection = TraversableToCollection::transform($result);
+        $query = $this->modelManager->createQuery($this->class);
+        $this->modelManager->addIdentifiersToQuery($this->class, $query, $value);
+        $queryResult = $this->modelManager->executeQuery($query);
 
-        $diffCount = \count($value) - $collection->count();
+        $modelsById = [];
+        foreach ($queryResult as $model) {
+            $identifier = $this->modelManager->getNormalizedIdentifier($model);
+            if (null === $identifier) {
+                throw new TransformationFailedException(sprintf(
+                    'No identifier was found for the model "%s".',
+                    ClassUtils::getClass($model)
+                ));
+            }
 
-        if (0 !== $diffCount) {
-            throw new TransformationFailedException(sprintf(
-                '%u keys could not be found in the provided values: "%s".',
-                $diffCount,
-                implode('", "', $value)
-            ));
+            $modelsById[$identifier] = $model;
         }
 
-        return $collection;
-    }
+        $result = [];
+        foreach ($value as $identifier) {
+            if (!isset($modelsById[$identifier])) {
+                throw new TransformationFailedException(sprintf(
+                    'No model was found for the identifier "%s".',
+                    $identifier,
+                ));
+            }
 
-    /**
-     * @return array<int|string>
-     *
-     * @phpstan-param T $model
-     */
-    private function getIdentifierValues(object $model): array
-    {
-        try {
-            return $this->modelManager->getIdentifierValues($model);
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException(sprintf(
-                'Unable to retrieve the identifier values for entity %s',
-                ClassUtils::getClass($model)
-            ), 0, $e);
+            $result[] = $modelsById[$identifier];
         }
+
+        return new ArrayCollection($result);
     }
 }

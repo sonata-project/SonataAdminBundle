@@ -96,6 +96,13 @@ final class ModelToIdPropertyTransformerTest extends TestCase
 
                 return $collection;
             });
+        $modelManager
+            ->method('getNormalizedIdentifier')
+            ->willReturnMap([
+                [$entity1, '123'],
+                [$entity2, '456'],
+                [$entity3, '789'],
+            ]);
 
         $result = $transformer->reverseTransform($params);
         static::assertInstanceOf(Collection::class, $result);
