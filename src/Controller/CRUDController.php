@@ -114,7 +114,7 @@ class CRUDController extends AbstractController
             return $preResponse;
         }
 
-        $listMode = $request->get('_list_mode');
+        $listMode = $request->query->get('_list_mode');
         if (\is_string($listMode)) {
             $this->admin->setListMode($listMode);
         }
@@ -189,7 +189,7 @@ class CRUDController extends AbstractController
     {
         $this->assertObjectExists($request, true);
 
-        $id = $request->get($this->admin->getIdParameter());
+        $id = $request->query->get($this->admin->getIdParameter());
         \assert(\is_string($id) || \is_int($id));
         $object = $this->admin->getObject($id);
         \assert(null !== $object);
@@ -280,7 +280,7 @@ class CRUDController extends AbstractController
 
         $this->assertObjectExists($request, true);
 
-        $id = $request->get($this->admin->getIdParameter());
+        $id = $request->query->get($this->admin->getIdParameter());
         \assert(\is_string($id) || \is_int($id));
         $existingObject = $this->admin->getObject($id);
         \assert(null !== $existingObject);
@@ -401,11 +401,11 @@ class CRUDController extends AbstractController
         // check the csrf token
         $this->validateCsrfToken($request, 'sonata.batch');
 
-        $confirmation = $request->get('confirmation', false);
+        $confirmation = $request->request->get('confirmation', false);
 
         $forwardedRequest = $request->duplicate();
 
-        $encodedData = $request->get('data', '');
+        $encodedData = $request->request->get('data', '');
         if (!\is_string($encodedData)) {
             throw new BadRequestParamHttpException('data', 'string', $encodedData);
         }
@@ -424,7 +424,7 @@ class CRUDController extends AbstractController
                 // symfony 5.1+
                 $idx = $bag->all('idx');
             } else {
-                $idx = (array) $bag->get('idx', []);
+                $idx = (array) $bag->request->get('idx', []);
             }
             $allElements = $forwardedRequest->request->getBoolean('all_elements');
 
@@ -649,7 +649,7 @@ class CRUDController extends AbstractController
     {
         $this->assertObjectExists($request, true);
 
-        $id = $request->get($this->admin->getIdParameter());
+        $id = $request->query->get($this->admin->getIdParameter());
         \assert(\is_string($id) || \is_int($id));
         $object = $this->admin->getObject($id);
         \assert(null !== $object);
@@ -686,7 +686,7 @@ class CRUDController extends AbstractController
     {
         $this->assertObjectExists($request, true);
 
-        $id = $request->get($this->admin->getIdParameter());
+        $id = $request->query->get($this->admin->getIdParameter());
         \assert(\is_string($id) || \is_int($id));
         $object = $this->admin->getObject($id);
         \assert(null !== $object);
@@ -727,7 +727,7 @@ class CRUDController extends AbstractController
     {
         $this->assertObjectExists($request, true);
 
-        $id = $request->get($this->admin->getIdParameter());
+        $id = $request->query->get($this->admin->getIdParameter());
         \assert(\is_string($id) || \is_int($id));
         $object = $this->admin->getObject($id);
         \assert(null !== $object);
@@ -781,7 +781,7 @@ class CRUDController extends AbstractController
 
         $this->assertObjectExists($request, true);
 
-        $id = $request->get($this->admin->getIdParameter());
+        $id = $request->query->get($this->admin->getIdParameter());
         \assert(\is_string($id) || \is_int($id));
 
         $manager = $this->container->get('sonata.admin.audit.manager');
@@ -840,7 +840,7 @@ class CRUDController extends AbstractController
     {
         $this->admin->checkAccess('export');
 
-        $format = $request->get('format');
+        $format = $request->query->get('format');
         if (!\is_string($format)) {
             throw new BadRequestParamHttpException('format', 'string', $format);
         }
@@ -883,7 +883,7 @@ class CRUDController extends AbstractController
 
         $this->assertObjectExists($request, true);
 
-        $id = $request->get($this->admin->getIdParameter());
+        $id = $request->query->get($this->admin->getIdParameter());
         \assert(\is_string($id) || \is_int($id));
         $object = $this->admin->getObject($id);
         \assert(null !== $object);
@@ -1100,23 +1100,23 @@ class CRUDController extends AbstractController
      */
     protected function redirectTo(Request $request, object $object): RedirectResponse
     {
-        if (null !== $request->get('btn_update_and_list')) {
+        if (null !== $request->request->get('btn_update_and_list')) {
             return $this->redirectToList();
         }
-        if (null !== $request->get('btn_create_and_list')) {
+        if (null !== $request->request->get('btn_create_and_list')) {
             return $this->redirectToList();
         }
 
-        if (null !== $request->get('btn_create_and_create')) {
+        if (null !== $request->request->get('btn_create_and_create')) {
             $params = [];
             if ($this->admin->hasActiveSubClass()) {
-                $params['subclass'] = $request->get('subclass');
+                $params['subclass'] = $request->query->get('subclass');
             }
 
             return new RedirectResponse($this->admin->generateUrl('create', $params));
         }
 
-        if (null !== $request->get('btn_delete')) {
+        if (null !== $request->request->get('btn_delete')) {
             return $this->redirectToList();
         }
 
@@ -1155,7 +1155,7 @@ class CRUDController extends AbstractController
      */
     final protected function isPreviewRequested(Request $request): bool
     {
-        return null !== $request->get('btn_preview');
+        return null !== $request->request->get('btn_preview');
     }
 
     /**
@@ -1163,7 +1163,7 @@ class CRUDController extends AbstractController
      */
     final protected function isPreviewApproved(Request $request): bool
     {
-        return null !== $request->get('btn_preview_approve');
+        return null !== $request->request->get('btn_preview_approve');
     }
 
     /**
@@ -1185,7 +1185,7 @@ class CRUDController extends AbstractController
      */
     final protected function isPreviewDeclined(Request $request): bool
     {
-        return null !== $request->get('btn_preview_decline');
+        return null !== $request->request->get('btn_preview_decline');
     }
 
     /**
@@ -1250,7 +1250,7 @@ class CRUDController extends AbstractController
             return;
         }
 
-        $token = $request->get('_sonata_csrf_token');
+        $token = $request->request->get('_sonata_csrf_token');
         $tokenManager = $this->container->get('security.csrf.token_manager');
         \assert($tokenManager instanceof CsrfTokenManagerInterface);
 
@@ -1388,7 +1388,7 @@ class CRUDController extends AbstractController
         $admin = $this->admin;
 
         while (null !== $admin) {
-            $objectId = $request->get($admin->getIdParameter());
+            $objectId = $request->query->get($admin->getIdParameter());
             if (\is_string($objectId) || \is_int($objectId)) {
                 $adminObject = $admin->getObject($objectId);
                 if (null === $adminObject) {
@@ -1443,7 +1443,7 @@ class CRUDController extends AbstractController
         }
 
         $parentAdmin = $this->admin->getParent();
-        $parentId = $request->get($parentAdmin->getIdParameter());
+        $parentId = $request->query->get($parentAdmin->getIdParameter());
         \assert(\is_string($parentId) || \is_int($parentId));
 
         $parentAdminObject = $parentAdmin->getObject($parentId);
