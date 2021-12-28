@@ -143,6 +143,22 @@ final class ParametersManipulatorTest extends TestCase
                     ],
                 ],
             ],
+            [
+                [
+                    'status' => [
+                        'value' => [
+                            'foo',
+                            'bar',
+                        ],
+                    ],
+                ],
+                [
+                    'status' => '',
+                ],
+                [
+                    'status' => '',
+                ],
+            ],
         ];
     }
 
