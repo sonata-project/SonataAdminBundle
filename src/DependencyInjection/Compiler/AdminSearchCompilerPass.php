@@ -41,6 +41,7 @@ final class AdminSearchCompilerPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $tags) {
             $this->validateAdminClass($container, $id);
 
+            $adminCode = $container->getDefinition($id)->getArgument(0);
             foreach ($tags as $attributes) {
                 $globalSearch = $this->getGlobalSearchValue($attributes, $id);
 
@@ -48,7 +49,7 @@ final class AdminSearchCompilerPass implements CompilerPassInterface
                     continue;
                 }
 
-                $adminSearch[$id] = $globalSearch;
+                $adminSearch[$adminCode] = $globalSearch;
             }
         }
 
