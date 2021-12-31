@@ -44,7 +44,7 @@ final class AdminSearchCompilerPassTest extends AbstractCompilerPassTestCase
 
         $adminBazDefinition = new Definition(
             PostAdmin::class,
-            ['admin_bar_code', Post::class, CRUDController::class]
+            ['admin_baz_code', Post::class, CRUDController::class]
         );
         $adminBazDefinition->addTag('sonata.admin', ['some_attribute' => 42]);
         $this->setDefinition('admin.baz', $adminBazDefinition);

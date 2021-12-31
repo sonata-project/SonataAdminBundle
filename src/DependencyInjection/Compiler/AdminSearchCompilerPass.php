@@ -39,9 +39,19 @@ final class AdminSearchCompilerPass implements CompilerPassInterface
         $adminSearch = [];
 
         foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $tags) {
-            $this->validateAdminClass($container, $id);
+            $adminClass = $this->validateAdminClass($container, $id);
 
-            $adminCode = $container->getDefinition($id)->getArgument(0);
+            $argument = $container->getDefinition($id)->getArgument(0);
+            $adminCode = $container->getParameterBag()->resolveValue($argument);
+            if (!\is_string($adminCode)) {
+                throw new \TypeError(sprintf(
+                    'Argument "%s" for admin class "%s" must be of type string, %s given.',
+                    $argument,
+                    $adminClass,
+                    \is_object($adminCode) ? \get_class($adminCode) : \gettype($adminCode)
+                ));
+            }
+
             foreach ($tags as $attributes) {
                 $globalSearch = $this->getGlobalSearchValue($attributes, $id);
 
@@ -60,8 +70,10 @@ final class AdminSearchCompilerPass implements CompilerPassInterface
     /**
      * @throws LogicException if the class in the given service definition is not
      *                        a subclass of `AdminInterface`
+     *
+     * @return class-string<AdminInterface<object>>
      */
-    private function validateAdminClass(ContainerBuilder $container, string $id): void
+    private function validateAdminClass(ContainerBuilder $container, string $id): string
     {
         $definition = $container->getDefinition($id);
 
@@ -79,6 +91,8 @@ final class AdminSearchCompilerPass implements CompilerPassInterface
                 AdminInterface::class
             ));
         }
+
+        return $adminClass;
     }
 
     /**
