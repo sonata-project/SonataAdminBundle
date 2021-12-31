@@ -18,12 +18,12 @@ use Symfony\Component\Form\FormView;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @phpstan-implements \RecursiveIterator<string, FormView>
+ * @phpstan-implements \RecursiveIterator<int|string, FormView>
  */
 final class FormViewIterator implements \RecursiveIterator
 {
     /**
-     * @var \ArrayIterator<string, FormView>
+     * @var \ArrayIterator<int|string, FormView>
      */
     private $iterator;
 
