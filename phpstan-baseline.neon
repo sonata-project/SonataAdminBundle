@@ -24,3 +24,6 @@ parameters:
         - # https://github.com/phpstan/phpstan/issues/5893
             message: '#^Parameter \#1 \$object of static method Doctrine\\Common\\Util\\ClassUtils\:\:getClass\(\) expects Doctrine\\Persistence\\Proxy\<T of object\>\|T of object, T of object|T of object given\.$#'
             path: src/Admin/AbstractAdmin.php
+        - # https://github.com/phpstan/phpstan-symfony/pull/225
+            message: '#^Property Sonata\\AdminBundle\\Util\\FormViewIterator\:\:\$iterator \(ArrayIterator\<int\|string, Symfony\\Component\\Form\\FormView\>\) does not accept ArrayIterator\<string, Symfony\\Component\\Form\\FormView\>\.$#'
+            path: src/Util/FormViewIterator.php
