@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.107.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.107.0...3.107.1) - 2022-01-01
+### Fixed
+- [[#7641](https://github.com/sonata-project/SonataAdminBundle/pull/7641)] Fixed batch confirmation translations to include mentioning the selected action or object ([@7ochem](https://github.com/7ochem))
+- [[#7641](https://github.com/sonata-project/SonataAdminBundle/pull/7641)] Fixed (other) Dutch translations that were missing a placeholder compared to the English file ([@7ochem](https://github.com/7ochem))
+
 ## [3.107.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.106.1...3.107.0) - 2021-11-15
 ### Added
 - [[#7602](https://github.com/sonata-project/SonataAdminBundle/pull/7602)] `ModelManagerThrowable` ([@VincentLanglet](https://github.com/VincentLanglet))
