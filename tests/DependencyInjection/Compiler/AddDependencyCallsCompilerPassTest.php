@@ -473,6 +473,8 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     }
 
     /**
+     * NEXT_MAJOR: Remove this test.
+     *
      * @group legacy
      */
     public function testProcessAbstractAdminServiceInServiceDefinition(): void

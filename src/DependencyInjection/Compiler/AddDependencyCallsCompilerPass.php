@@ -18,7 +18,6 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistry;
-use function sprintf;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
@@ -114,7 +113,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 $default = (bool) (isset($attributes['default']) ? $parameterBag->resolveValue($attributes['default']) : false);
                 if ($default) {
                     if (isset($classes[$modelClass][Pool::DEFAULT_ADMIN_KEY])) {
-                        throw new \RuntimeException(\sprintf(
+                        throw new \RuntimeException(sprintf(
                             'The class %s has two admins %s and %s with the "default" attribute set to true. Only one is allowed.',
                             $modelClass,
                             $classes[$modelClass][Pool::DEFAULT_ADMIN_KEY],
@@ -314,7 +313,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $managerType = $attributes['manager_type'] ?? null;
         if (null === $managerType) {
-            throw new InvalidArgumentException(\sprintf('Missing tag information "manager_type" on service "%s".', $serviceId));
+            throw new InvalidArgumentException(sprintf('Missing tag information "manager_type" on service "%s".', $serviceId));
         }
 
         $defaultController = $container->getParameter('sonata.admin.configuration.default_controller');
@@ -324,13 +323,13 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         \assert(\is_array($overwriteAdminConfiguration));
 
         $defaultAddServices = [
-            'model_manager' => \sprintf('sonata.admin.manager.%s', $managerType),
-            'data_source' => \sprintf('sonata.admin.data_source.%s', $managerType),
-            'field_description_factory' => \sprintf('sonata.admin.field_description_factory.%s', $managerType),
-            'form_contractor' => \sprintf('sonata.admin.builder.%s_form', $managerType),
-            'show_builder' => \sprintf('sonata.admin.builder.%s_show', $managerType),
-            'list_builder' => \sprintf('sonata.admin.builder.%s_list', $managerType),
-            'datagrid_builder' => \sprintf('sonata.admin.builder.%s_datagrid', $managerType),
+            'model_manager' => sprintf('sonata.admin.manager.%s', $managerType),
+            'data_source' => sprintf('sonata.admin.data_source.%s', $managerType),
+            'field_description_factory' => sprintf('sonata.admin.field_description_factory.%s', $managerType),
+            'form_contractor' => sprintf('sonata.admin.builder.%s_form', $managerType),
+            'show_builder' => sprintf('sonata.admin.builder.%s_show', $managerType),
+            'list_builder' => sprintf('sonata.admin.builder.%s_list', $managerType),
+            'datagrid_builder' => sprintf('sonata.admin.builder.%s_datagrid', $managerType),
             'translator' => 'translator',
             'configuration_pool' => 'sonata.admin.pool',
             'route_generator' => 'sonata.admin.route.default_generator',
@@ -468,7 +467,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definition->setMethodCalls($methods);
 
-        $templateRegistryId = \sprintf('%s.template_registry', $serviceId);
+        $templateRegistryId = sprintf('%s.template_registry', $serviceId);
         $templateRegistryDefinition = $container
             ->register($templateRegistryId, MutableTemplateRegistry::class)
             ->addTag('sonata.admin.template_registry')
@@ -503,7 +502,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $argumentValue = $declaredInParent ? $parentArguments[$index] : $arguments[$index] ?? null;
 
             if (null === $argumentValue || '' === $argumentValue) {
-                $arguments[$declaredInParent ? \sprintf('index_%s', $index) : $index] = $value;
+                $arguments[$declaredInParent ? sprintf('index_%s', $index) : $index] = $value;
             }
         }
 
