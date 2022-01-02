@@ -43,6 +43,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *     - The first and third argument are automatically injected by the AddDependencyCallsCompilerPass.
  *     - The second one is used as a reference of the Admin in the Pool, with the `setAdminClasses` call.
  *
+ * @method void   setCode(string $code)
+ * @method string getCode()
+ * @method void   setModelClass(string $modelClass)
+ * @method string getModelClass()
+ * @method void   setBaseControllerName(string $baseControllerName)
+ * @method string getBaseControllerName()
+ *
  * @phpstan-template T of object
  */
 interface TaggedAdminInterface extends MutableTemplateRegistryAwareInterface

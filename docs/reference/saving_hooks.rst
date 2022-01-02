@@ -91,13 +91,10 @@ The service declaration where the ``UserManager`` is injected into the Admin cla
     .. code-block:: xml
 
         <service id="fos.user.admin.user" class="%fos.user.admin.user.class%">
-            <argument/>
-            <argument>%fos.user.admin.user.entity%</argument>
-            <argument/>
             <call method="setUserManager">
                 <argument type="service" id="fos_user.user_manager"/>
             </call>
-            <tag name="sonata.admin" manager_type="orm" group="fos_user"/>
+            <tag name="sonata.admin" model_class="%fos.user.admin.user.entity%" manager_type="orm" group="fos_user"/>
         </service>
 
 Hooking in the Controller

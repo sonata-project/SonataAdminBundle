@@ -268,10 +268,7 @@ So we are going to start by creating this ``UserBundle\Admin\UserHasExpectations
 .. code-block:: xml
 
     <service id="user.admin.user_has_expectations" class="UserBundle\Admin\UserHasExpectationsAdmin">
-        <tag name="sonata.admin" manager_type="orm" group="UserHasExpectations" label="UserHasExpectations"/>
-        <argument/>
-        <argument>UserBundle\Entity\UserHasExpectations</argument>
-        <argument/>
+        <tag name="sonata.admin" model_class="UserBundle\Entity\UserHasExpectations" manager_type="orm" group="UserHasExpectations" label="UserHasExpectations"/>
     </service>
 
 Now update the ``UserBundle\Admin\UserAdmin.php`` by adding the ``sonata_type_model`` field::

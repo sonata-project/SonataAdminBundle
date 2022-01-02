@@ -488,7 +488,7 @@ final class AdminTest extends TestCase
     }
 
     /**
-     * @psalm-suppress ArgumentTypeCoercion, UndefinedClass
+     * @psalm-suppress ArgumentTypeCoercion
      */
     public function testGetBaseRoutePatternWithUnreconizedClassname(): void
     {
@@ -583,7 +583,7 @@ final class AdminTest extends TestCase
     }
 
     /**
-     * @psalm-suppress ArgumentTypeCoercion, UndefinedClass
+     * @psalm-suppress ArgumentTypeCoercion
      */
     public function testGetBaseRouteNameWithUnreconizedClassname(): void
     {

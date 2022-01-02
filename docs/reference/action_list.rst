@@ -700,15 +700,13 @@ You need to add option ``show_mosaic_button`` in your admin services:
 
     sonata_admin.admin.post:
         class: Sonata\AdminBundle\Admin\PostAdmin
-        arguments: [~, Sonata\AdminBundle\Entity\Post, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: admin, label: Post, show_mosaic_button: true }
+            - { name: sonata.admin, model_class: Sonata\AdminBundle\Entity\Post, manager_type: orm, group: admin, label: Post, show_mosaic_button: true }
 
     sonata_admin.admin.news:
         class: Sonata\AdminBundle\Admin\NewsAdmin
-        arguments: [~, Sonata\AdminBundle\Entity\News, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: admin, label: News, show_mosaic_button: false }
+            - { name: sonata.admin, model_class: Sonata\AdminBundle\Entity\News, manager_type: orm, group: admin, label: News, show_mosaic_button: false }
 
 Show Icons on Action Buttons
 ----------------------------
