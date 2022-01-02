@@ -29,7 +29,7 @@ final class BaseAdminModelManagerTest extends TestCase
         $modelManager->expects(static::once())->method('update');
         $modelManager->expects(static::once())->method('delete');
 
-        $admin = new BaseAdminModelManager_Admin('code', \stdClass::class, 'controller');
+        $admin = new BaseAdminModelManager_Admin();
         $admin->setModelManager($modelManager);
         $admin->setSecurityHandler($securityHandler);
 
@@ -53,7 +53,8 @@ final class BaseAdminModelManagerTest extends TestCase
             }
         });
 
-        $admin = new BaseAdminModelManager_Admin('code', \stdClass::class, 'controller');
+        $admin = new BaseAdminModelManager_Admin();
+        $admin->setModelClass(\stdClass::class);
         $admin->setModelManager($modelManager);
         $admin->getObject(10);
     }
@@ -68,7 +69,8 @@ final class BaseAdminModelManagerTest extends TestCase
             ->with(\stdClass::class)
             ->willReturn($query);
 
-        $admin = new BaseAdminModelManager_Admin('code', \stdClass::class, 'controller');
+        $admin = new BaseAdminModelManager_Admin();
+        $admin->setModelClass(\stdClass::class);
         $admin->setModelManager($modelManager);
         $admin->createQuery();
     }
@@ -81,7 +83,7 @@ final class BaseAdminModelManagerTest extends TestCase
             ->method('getNormalizedIdentifier')
             ->willReturn('42');
 
-        $admin = new BaseAdminModelManager_Admin('code', \stdClass::class, 'controller');
+        $admin = new BaseAdminModelManager_Admin();
         $admin->setModelManager($modelManager);
 
         $admin->id(new \stdClass());

@@ -84,11 +84,18 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $parentDefinition = $container->getDefinition($definition->getParent());
                 }
 
-                // NEXT_MAJOR: Remove the following call.
-                $this->replaceDefaultArguments([
-                    0 => $id,
-                    2 => $defaultController,
-                ], $definition, $parentDefinition);
+                // NEXT_MAJOR: Remove the following code.
+                if (!isset($attributes['model_class'])) {
+                    // Since the model_class attribute will be mandatory we're assuming that
+                    // - if it's used the new syntax is used, so we don't need to replace the arguments
+                    // - if it's not used, the old syntax is used, so we still need to
+
+                    $this->replaceDefaultArguments([
+                        0 => $id,
+                        2 => $defaultController,
+                    ], $definition, $parentDefinition);
+                }
+
                 $this->applyConfigurationFromAttribute($definition, $attributes);
                 $this->applyDefaults($container, $id, $attributes);
 
@@ -351,16 +358,6 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $defaultController = $container->getParameter('sonata.admin.configuration.default_controller');
         \assert(\is_string($defaultController));
 
-        $controller = $attributes['controller'] ?? $defaultController;
-        if ($controller !== $defaultController) { // NEXT_MAJOR: Remove the if check.
-            $definition->addMethodCall('setBaseControllerName', [$controller]);
-        }
-
-        $code = $attributes['code'] ?? $serviceId;
-        if ($serviceId !== $code) { // NEXT_MAJOR: Remove the if check.
-            $definition->addMethodCall('setCode', [$code]);
-        }
-
         $modelClass = $attributes['model_class'] ?? null;
         if (null === $modelClass) {
             @trigger_error(
@@ -373,6 +370,12 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             // throw new InvalidArgumentException(sprintf('Missing tag information "model_class" on service "%s".', $serviceId));
         } else {
             $definition->addMethodCall('setModelClass', [$modelClass]);
+
+            $controller = $attributes['controller'] ?? $defaultController;
+            $definition->addMethodCall('setBaseControllerName', [$controller]);
+
+            $code = $attributes['code'] ?? $serviceId;
+            $definition->addMethodCall('setCode', [$code]);
         }
 
         $pagerType = $overwriteAdminConfiguration['pager_type'] ?? $attributes['pager_type'] ?? Pager::TYPE_DEFAULT;

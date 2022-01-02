@@ -213,10 +213,25 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
      */
     public function __construct(?string $code = null, ?string $class = null, ?string $baseControllerName = null)
     {
-        $this->code = $code;
+        if (\func_num_args() > 0) {
+            @trigger_error(
+                'Setting the code, the model class and the base controller name with the constructor is deprecated'
+                .' since sonata-project/admin-bundle version 4.x and will not be possible in 5.0 version.'
+                .' Use the `code`, `model_class` and `controller` attribute of the `sonata.admin` tag or'
+                .' the method "setCode()", "setModelClass()" and "setBaseControllerName()" instead.',
+                \E_USER_DEPRECATED
+            );
+        }
+
+        if (null !== $code) {
+            $this->code = $code;
+        }
         $this->class = $class;
         $this->modelClass = $class;
-        $this->baseControllerName = $baseControllerName;
+
+        if (null !== $baseControllerName) {
+            $this->baseControllerName = $baseControllerName;
+        }
     }
 
     abstract public function initialize(): void;
@@ -229,7 +244,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getCode(): string
     {
         if (null === $this->code) {
-            throw new \LogicException(sprintf('Admin "%s" has no code.', static::class));
+            return static::class;
         }
 
         return $this->code;

@@ -550,10 +550,10 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $this->compile();
 
-        self::assertContainerBuilderHasServiceDefinitionWithArgument(
+        self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_without_controller',
-            2,
-            FooAdminController::class
+            'setBaseControllerName',
+            [FooAdminController::class]
         );
     }
 
