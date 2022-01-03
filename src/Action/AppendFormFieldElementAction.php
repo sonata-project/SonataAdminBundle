@@ -78,17 +78,9 @@ final class AppendFormFieldElementAction
         \assert(null !== $view);
 
         // render the widget
-        $renderer = $this->getFormRenderer();
+        $renderer = $this->twig->getRuntime(FormRenderer::class);
         $renderer->setTheme($view, $admin->getFormTheme());
 
         return new Response($renderer->searchAndRenderBlock($view, 'widget'));
-    }
-
-    private function getFormRenderer(): FormRenderer
-    {
-        $formRenderer = $this->twig->getRuntime(FormRenderer::class);
-        \assert($formRenderer instanceof FormRenderer);
-
-        return $formRenderer;
     }
 }
