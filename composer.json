@@ -60,7 +60,7 @@
         "symfony/security-csrf": "^4.4 || ^5.3 || ^6.0",
         "symfony/string": "^5.3 || ^6.0",
         "symfony/translation": "^4.4 || ^5.3 || ^6.0",
-        "symfony/translation-contracts": "^1.1.10 || ^2.3",
+        "symfony/translation-contracts": "^1.1.10 || ^2.3 || ^3.0",
         "symfony/twig-bridge": "^4.4 || ^5.3 || ^6.0",
         "symfony/twig-bundle": "^4.4 || ^5.3 || ^6.0",
         "symfony/validator": "^4.4 || ^5.3 || ^6.0",
