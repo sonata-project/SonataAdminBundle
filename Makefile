@@ -47,6 +47,25 @@ lint-php:
 	php-cs-fixer fix --ansi --verbose --diff --dry-run
 .PHONY: lint-php
 
+lint-symfony: lint-symfony-container lint-symfony-twig lint-symfony-xliff lint-symfony-yaml
+.PHONY: lint-symfony
+
+lint-symfony-container:
+	bin/console lint:container
+.PHONY: lint-symfony-container
+
+lint-symfony-twig:
+	bin/console lint:twig src tests
+.PHONY: lint-symfony-twig
+
+lint-symfony-xliff:
+	bin/console lint:xliff src tests
+.PHONY: lint-symfony-xliff
+
+lint-symfony-yaml:
+	bin/console lint:yaml src tests
+.PHONY: lint-symfony-yaml
+
 cs-fix: cs-fix-php cs-fix-xml cs-fix-xliff cs-fix-composer
 .PHONY: cs-fix
 
