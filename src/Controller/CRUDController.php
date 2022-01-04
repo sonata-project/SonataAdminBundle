@@ -1415,9 +1415,8 @@ class CRUDController extends AbstractController
     {
         $twig = $this->container->get('twig');
         \assert($twig instanceof Environment);
-        $formRenderer = $twig->getRuntime(FormRenderer::class);
-        \assert($formRenderer instanceof FormRenderer);
 
+        $formRenderer = $twig->getRuntime(FormRenderer::class);
         $formRenderer->setTheme($formView, $theme);
     }
 
