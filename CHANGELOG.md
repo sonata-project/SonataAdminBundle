@@ -9,7 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - [[#7658](https://github.com/sonata-project/SonataAdminBundle/pull/7658)] `AdminInterface::showInDashboard()` method ([@VincentLanglet](https://github.com/VincentLanglet))
 
 ### Changed
-- [[#7662](https://github.com/sonata-project/SonataAdminBundle/pull/7662)] TwigExtensions are now lazy ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7662](https://github.com/sonata-project/SonataAdminBundle/pull/7662)] Twig extensions are now lazy ([@VincentLanglet](https://github.com/VincentLanglet))
 
 ### Deprecated
 - [[#7658](https://github.com/sonata-project/SonataAdminBundle/pull/7658)] `AdminInterface::showIn()` method. ([@VincentLanglet](https://github.com/VincentLanglet))
