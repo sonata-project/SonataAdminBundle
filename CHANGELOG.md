@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - [[#7685](https://github.com/sonata-project/SonataAdminBundle/pull/7685)] Support for `symfony/translation-contracts` 3.x ([@jordisala1991](https://github.com/jordisala1991))
 - [[#7653](https://github.com/sonata-project/SonataAdminBundle/pull/7653)] Add "export_format_xlsx" translations ([@willemverspyck](https://github.com/willemverspyck))
-- [[#7658](https://github.com/sonata-project/SonataAdminBundle/pull/7658)] `AdminInterface::showInDashboard()` method. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7658](https://github.com/sonata-project/SonataAdminBundle/pull/7658)] `AdminInterface::showInDashboard()` method ([@VincentLanglet](https://github.com/VincentLanglet))
 
 ### Changed
 - [[#7662](https://github.com/sonata-project/SonataAdminBundle/pull/7662)] TwigExtensions are now lazy ([@VincentLanglet](https://github.com/VincentLanglet))
