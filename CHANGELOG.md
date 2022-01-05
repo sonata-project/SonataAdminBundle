@@ -12,7 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - [[#7662](https://github.com/sonata-project/SonataAdminBundle/pull/7662)] Twig extensions are now lazy ([@VincentLanglet](https://github.com/VincentLanglet))
 
 ### Deprecated
-- [[#7658](https://github.com/sonata-project/SonataAdminBundle/pull/7658)] `AdminInterface::showIn()` method. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7658](https://github.com/sonata-project/SonataAdminBundle/pull/7658)] `AdminInterface::showIn()` method ([@VincentLanglet](https://github.com/VincentLanglet))
 
 ### Fixed
 - [[#7674](https://github.com/sonata-project/SonataAdminBundle/pull/7674)] Multiple choice field with predefined default values ([@VincentLanglet](https://github.com/VincentLanglet))
