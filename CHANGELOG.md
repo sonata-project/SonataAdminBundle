@@ -16,7 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - [[#7674](https://github.com/sonata-project/SonataAdminBundle/pull/7674)] Multiple choice field with predefined default values ([@VincentLanglet](https://github.com/VincentLanglet))
-- [[#7673](https://github.com/sonata-project/SonataAdminBundle/pull/7673)] `ModelsToArrayTransformer::reverseTransform()` now respect order of IDs provided ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7673](https://github.com/sonata-project/SonataAdminBundle/pull/7673)] Order of provided IDs at `ModelsToArrayTransformer::reverseTransform()` ([@VincentLanglet](https://github.com/VincentLanglet))
 
 ## [4.6.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.6.0...4.6.1) - 2021-12-23
 ### Fixed
