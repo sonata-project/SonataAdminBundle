@@ -47,14 +47,14 @@ final class SecurityExtension extends AbstractExtension
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use SecurityRuntime::isGrantedAffirmative() instead
+     * @deprecated since sonata-project/admin-bundle version 4.7 use SecurityRuntime::isGrantedAffirmative() instead
      *
      * @param string|string[] $role
      */
     public function isGrantedAffirmative($role, ?object $object = null, ?string $field = null): bool
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .'  Use "%s::%s()" instead.',
             __METHOD__,
             SecurityRuntime::class,

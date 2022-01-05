@@ -59,7 +59,7 @@ final class SonataAdminExtension extends AbstractExtension
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use SonataAdminRuntime::getUrlSafeIdentifier() instead
+     * @deprecated since sonata-project/admin-bundle version 4.7 use SonataAdminRuntime::getUrlSafeIdentifier() instead
      *
      * Get the identifiers as a string that is safe to use in a url.
      *
@@ -72,7 +72,7 @@ final class SonataAdminExtension extends AbstractExtension
     public function getUrlSafeIdentifier(object $model, ?AdminInterface $admin = null): ?string
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .'  Use "%s::%s()" instead.',
             __METHOD__,
             SonataAdminRuntime::class,

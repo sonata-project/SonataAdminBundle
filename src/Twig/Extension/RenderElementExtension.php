@@ -76,7 +76,7 @@ final class RenderElementExtension extends AbstractExtension
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use RenderElementRuntime::renderListElement() instead
+     * @deprecated since sonata-project/admin-bundle version 4.7 use RenderElementRuntime::renderListElement() instead
      *
      * render a list element from the FieldDescription.
      *
@@ -90,7 +90,7 @@ final class RenderElementExtension extends AbstractExtension
         array $params = []
     ): string {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .'  Use "%s::%s()" instead.',
             __METHOD__,
             RenderElementRuntime::class,
@@ -103,7 +103,7 @@ final class RenderElementExtension extends AbstractExtension
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use RenderElementRuntime::renderViewElement() instead
+     * @deprecated since sonata-project/admin-bundle version 4.7 use RenderElementRuntime::renderViewElement() instead
      */
     public function renderViewElement(
         Environment $environment,
@@ -111,7 +111,7 @@ final class RenderElementExtension extends AbstractExtension
         object $object
     ): string {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .'  Use "%s::%s()" instead.',
             __METHOD__,
             RenderElementRuntime::class,
@@ -124,7 +124,7 @@ final class RenderElementExtension extends AbstractExtension
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use RenderElementRuntime::renderViewElementCompare() instead
+     * @deprecated since sonata-project/admin-bundle version 4.7 use RenderElementRuntime::renderViewElementCompare() instead
      *
      * render a compared view element.
      *
@@ -138,7 +138,7 @@ final class RenderElementExtension extends AbstractExtension
         $compareObject
     ): string {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .'  Use "%s::%s()" instead.',
             __METHOD__,
             RenderElementRuntime::class,
@@ -151,7 +151,7 @@ final class RenderElementExtension extends AbstractExtension
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use RenderElementRuntime::renderRelationElement() instead
+     * @deprecated since sonata-project/admin-bundle version 4.7 use RenderElementRuntime::renderRelationElement() instead
      *
      * @param mixed $element
      *
@@ -162,7 +162,7 @@ final class RenderElementExtension extends AbstractExtension
     public function renderRelationElement($element, FieldDescriptionInterface $fieldDescription)
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .'  Use "%s::%s()" instead.',
             __METHOD__,
             RenderElementRuntime::class,

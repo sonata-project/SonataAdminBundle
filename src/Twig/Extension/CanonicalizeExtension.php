@@ -48,7 +48,7 @@ final class CanonicalizeExtension extends AbstractExtension
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use CanonicalizeRuntime::getCanonicalizedLocaleForMoment() instead
+     * @deprecated since sonata-project/admin-bundle version 4.7 use CanonicalizeRuntime::getCanonicalizedLocaleForMoment() instead
      *
      * Returns a canonicalized locale for "moment" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
@@ -56,7 +56,7 @@ final class CanonicalizeExtension extends AbstractExtension
     public function getCanonicalizedLocaleForMoment(): ?string
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .'  Use "%s::%s()" instead.',
             __METHOD__,
             CanonicalizeRuntime::class,
@@ -69,7 +69,7 @@ final class CanonicalizeExtension extends AbstractExtension
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use CanonicalizeRuntime::getCanonicalizedLocaleForSelect2() instead
+     * @deprecated since sonata-project/admin-bundle version 4.7 use CanonicalizeRuntime::getCanonicalizedLocaleForSelect2() instead
      *
      * Returns a canonicalized locale for "select2" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
@@ -77,7 +77,7 @@ final class CanonicalizeExtension extends AbstractExtension
     public function getCanonicalizedLocaleForSelect2(): ?string
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .'  Use "%s::%s()" instead.',
             __METHOD__,
             CanonicalizeRuntime::class,

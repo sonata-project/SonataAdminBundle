@@ -273,7 +273,7 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use showInDashboard instead
+     * @deprecated since sonata-project/admin-bundle version 4.7 use showInDashboard instead
      */
     public function showIn(string $context): bool;
 
