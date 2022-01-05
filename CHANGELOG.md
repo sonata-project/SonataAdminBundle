@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.7.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.6.1...4.7.0) - 2022-01-05
 ### Added
-- [[#7685](https://github.com/sonata-project/SonataAdminBundle/pull/7685)] Added support for `symfony/translation-contracts` v3. ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7685](https://github.com/sonata-project/SonataAdminBundle/pull/7685)] Support for `symfony/translation-contracts` 3.x ([@jordisala1991](https://github.com/jordisala1991))
 - [[#7653](https://github.com/sonata-project/SonataAdminBundle/pull/7653)] Add "export_format_xlsx" translations ([@willemverspyck](https://github.com/willemverspyck))
 - [[#7658](https://github.com/sonata-project/SonataAdminBundle/pull/7658)] `AdminInterface::showInDashboard()` method. ([@VincentLanglet](https://github.com/VincentLanglet))
 
