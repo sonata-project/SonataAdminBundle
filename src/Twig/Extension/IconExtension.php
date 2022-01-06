@@ -44,12 +44,12 @@ final class IconExtension extends AbstractExtension
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use IconRuntime::parseIcon() instead
+     * @deprecated since sonata-project/admin-bundle version 4.7 use IconRuntime::parseIcon() instead
      */
     public function parseIcon(string $icon): string
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .'  Use "%s::%s()" instead.',
             __METHOD__,
             IconRuntime::class,

@@ -50,7 +50,7 @@ final class GroupExtension extends AbstractExtension
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use GroupRuntime::getDashboardGroupsWithCreatableAdmins() instead
+     * @deprecated since sonata-project/admin-bundle version 4.7 use GroupRuntime::getDashboardGroupsWithCreatableAdmins() instead
      *
      * @phpstan-return array<array{
      *  label: string,
@@ -66,7 +66,7 @@ final class GroupExtension extends AbstractExtension
     public function getDashboardGroupsWithCreatableAdmins(): array
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .'  Use "%s::%s()" instead.',
             __METHOD__,
             GroupRuntime::class,

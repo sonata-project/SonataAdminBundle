@@ -120,7 +120,7 @@ final class Pool
                     }
                 } else {
                     @trigger_error(sprintf(
-                        'Not implementing "%s::showInDashboard()" is deprecated since sonata-project/admin-bundle 4.x'
+                        'Not implementing "%s::showInDashboard()" is deprecated since sonata-project/admin-bundle 4.7'
                         .' and will fail in 5.0.',
                         AdminInterface::class
                     ), \E_USER_DEPRECATED);

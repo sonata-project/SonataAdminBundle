@@ -2,6 +2,22 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.7.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.6.1...4.7.0) - 2022-01-05
+### Added
+- [[#7685](https://github.com/sonata-project/SonataAdminBundle/pull/7685)] Support for `symfony/translation-contracts` 3.x ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7653](https://github.com/sonata-project/SonataAdminBundle/pull/7653)] "export_format_xlsx" translations ([@willemverspyck](https://github.com/willemverspyck))
+- [[#7658](https://github.com/sonata-project/SonataAdminBundle/pull/7658)] `AdminInterface::showInDashboard()` method ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Changed
+- [[#7662](https://github.com/sonata-project/SonataAdminBundle/pull/7662)] Twig extensions are now lazy ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Deprecated
+- [[#7658](https://github.com/sonata-project/SonataAdminBundle/pull/7658)] `AdminInterface::showIn()` method ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#7674](https://github.com/sonata-project/SonataAdminBundle/pull/7674)] Multiple choice field with predefined default values ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7673](https://github.com/sonata-project/SonataAdminBundle/pull/7673)] Order of provided IDs at `ModelsToArrayTransformer::reverseTransform()` ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.6.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.6.0...4.6.1) - 2021-12-23
 ### Fixed
 - [[#7669](https://github.com/sonata-project/SonataAdminBundle/pull/7669)] Model_autocomplete_type template ([@VincentLanglet](https://github.com/VincentLanglet))
