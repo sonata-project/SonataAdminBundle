@@ -70,14 +70,14 @@ final class XEditableExtension extends AbstractExtension
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use XEditableRuntime::getXEditableType() instead
+     * @deprecated since sonata-project/admin-bundle version 4.7 use XEditableRuntime::getXEditableType() instead
      *
      * @return string|bool
      */
     public function getXEditableType(?string $type)
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .'  Use "%s::%s()" instead.',
             __METHOD__,
             XEditableRuntime::class,
@@ -90,7 +90,7 @@ final class XEditableExtension extends AbstractExtension
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use XEditableRuntime::getXEditableChoices() instead
+     * @deprecated since sonata-project/admin-bundle version 4.7 use XEditableRuntime::getXEditableChoices() instead
      *
      * Return xEditable choices based on the field description choices options & catalogue options.
      * With the following choice options:
@@ -103,7 +103,7 @@ final class XEditableExtension extends AbstractExtension
     public function getXEditableChoices(FieldDescriptionInterface $fieldDescription): array
     {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .'  Use "%s::%s()" instead.',
             __METHOD__,
             XEditableRuntime::class,

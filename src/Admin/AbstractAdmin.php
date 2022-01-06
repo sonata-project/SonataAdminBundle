@@ -1598,13 +1598,13 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use showInDashboard instead
+     * @deprecated since sonata-project/admin-bundle version 4.7 use showInDashboard instead
      */
     final public function showIn(string $context): bool
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
             @trigger_error(sprintf(
-                'The "%s()" method is deprecated since sonata-project/admin-bundle version 4.x and will be'
+                'The "%s()" method is deprecated since sonata-project/admin-bundle version 4.7 and will be'
                 .' removed in 5.0 version. Use showInDashboard() instead.',
                 __METHOD__
             ), \E_USER_DEPRECATED);
@@ -2197,7 +2197,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      *
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x
+     * @deprecated since sonata-project/admin-bundle version 4.7
      *
      * @return string[]
      */
@@ -2205,7 +2205,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
             @trigger_error(sprintf(
-                'The "%s()" method is deprecated since sonata-project/admin-bundle version 4.x and will be'
+                'The "%s()" method is deprecated since sonata-project/admin-bundle version 4.7 and will be'
                 .' removed in 5.0 version.',
                 __METHOD__
             ), \E_USER_DEPRECATED);

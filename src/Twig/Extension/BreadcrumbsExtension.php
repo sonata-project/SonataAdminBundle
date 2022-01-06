@@ -56,7 +56,7 @@ final class BreadcrumbsExtension extends AbstractExtension
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use BreadcrumbsRuntime::renderBreadcrumbs() instead
+     * @deprecated since sonata-project/admin-bundle version 4.7 use BreadcrumbsRuntime::renderBreadcrumbs() instead
      *
      * @param AdminInterface<object> $admin
      *
@@ -69,7 +69,7 @@ final class BreadcrumbsExtension extends AbstractExtension
         string $action
     ): string {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .' Use "%s::%s()" instead.',
             __METHOD__,
             BreadcrumbsRuntime::class,
@@ -82,7 +82,7 @@ final class BreadcrumbsExtension extends AbstractExtension
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use BreadcrumbsRuntime::renderBreadcrumbsForTitle() instead
+     * @deprecated since sonata-project/admin-bundle version 4.7 use BreadcrumbsRuntime::renderBreadcrumbsForTitle() instead
      *
      * @param AdminInterface<object> $admin
      *
@@ -95,7 +95,7 @@ final class BreadcrumbsExtension extends AbstractExtension
         string $action
     ): string {
         @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .'  Use "%s::%s()" instead.',
             __METHOD__,
             BreadcrumbsRuntime::class,

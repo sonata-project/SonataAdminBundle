@@ -52,8 +52,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove the alias.
         ->alias('sonata.admin.twig.extension', 'sonata.admin.twig.sonata_admin_extension')
         ->deprecate(...BCDeprecationParameters::forConfig(
-            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
-            '4.x'
+            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.',
+            '4.7'
         ))
 
         ->set('sonata.admin.twig.sonata_admin_runtime', SonataAdminRuntime::class)
@@ -72,8 +72,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove the alias.
         ->alias('sonata.templates.twig.extension', 'sonata.admin.twig.template_registry_extension')
         ->deprecate(...BCDeprecationParameters::forConfig(
-            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
-            '4.x'
+            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.',
+            '4.7'
         ))
 
         ->set('sonata.admin.twig.template_registry_runtime', TemplateRegistryRuntime::class)
@@ -93,8 +93,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove the alias.
         ->alias('sonata.admin.group.extension', 'sonata.admin.twig.group_extension')
         ->deprecate(...BCDeprecationParameters::forConfig(
-            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
-            '4.x'
+            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.',
+            '4.7'
         ))
 
         ->set('sonata.admin.twig.group_runtime', GroupRuntime::class)
@@ -123,8 +123,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove the alias.
         ->alias('sonata.security.twig.extension', 'sonata.admin.twig.security_extension')
         ->deprecate(...BCDeprecationParameters::forConfig(
-            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
-            '4.x'
+            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.',
+            '4.7'
         ))
 
         ->set('sonata.admin.twig.security_runtime', SecurityRuntime::class)
@@ -143,8 +143,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove the alias.
         ->alias('sonata.canonicalize.twig.extension', 'sonata.admin.twig.canonicalize_extension')
         ->deprecate(...BCDeprecationParameters::forConfig(
-            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
-            '4.x'
+            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.',
+            '4.7'
         ))
 
         ->set('sonata.admin.twig.canonicalize_runtime', CanonicalizeRuntime::class)
@@ -163,8 +163,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove the alias.
         ->alias('sonata.xeditable.twig.extension', 'sonata.admin.twig.xeditable_extension')
         ->deprecate(...BCDeprecationParameters::forConfig(
-            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
-            '4.x'
+            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.',
+            '4.7'
         ))
 
         ->set('sonata.admin.twig.xeditable_runtime', XEditableRuntime::class)
@@ -184,8 +184,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         // NEXT_MAJOR: Remove the alias.
         ->alias('sonata.render_element.twig.extension', 'sonata.admin.twig.render_element_extension')
         ->deprecate(...BCDeprecationParameters::forConfig(
-            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
-            '4.x'
+            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.',
+            '4.7'
         ))
 
         ->set('sonata.admin.twig.render_element_runtime', RenderElementRuntime::class)
