@@ -15,4 +15,16 @@
             <code>null</code>
         </NullableReturnStatement>
     </file>
+    <!-- https://github.com/vimeo/psalm/issues/4295 -->
+    <file src="src/Block/AdminSearchBlockService.php">
+        <InvalidScalarArgument occurrences="1">
+            <code>$exception-&gt;getCode()</code>
+        </InvalidScalarArgument>
+    </file>
+    <!-- https://github.com/vimeo/psalm/issues/4295 -->
+    <file src="src/FieldDescription/BaseFieldDescription.php">
+        <InvalidScalarArgument occurrences="1">
+            <code>$exception-&gt;getCode()</code>
+        </InvalidScalarArgument>
+    </file>
 </files>
