@@ -423,7 +423,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         } catch (ExceptionInterface $exception) {
             throw new NoValueException(
                 sprintf('Cannot access property "%s" in class "%s".', $this->getName(), $this->getAdmin()->getClass()),
-                (int) $exception->getCode(),
+                $exception->getCode(),
                 $exception
             );
         }

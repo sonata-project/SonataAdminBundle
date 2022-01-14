@@ -80,8 +80,12 @@ final class AdminSearchBlockService extends AbstractBlockService
     {
         try {
             $admin = $this->pool->getAdminByAdminCode($blockContext->getSetting('admin_code'));
-        } catch (ServiceNotFoundException $e) {
-            throw new \RuntimeException('Unable to find the Admin instance', (int) $e->getCode(), $e);
+        } catch (ServiceNotFoundException $exception) {
+            throw new \RuntimeException(
+                'Unable to find the Admin instance',
+                $exception->getCode(),
+                $exception
+            );
         }
 
         $admin->checkAccess('list');
