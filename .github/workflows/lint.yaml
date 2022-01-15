@@ -29,7 +29,7 @@ jobs:
               with:
                   php-version: '8.1'
                   coverage: none
-                  tools: composer:v2, php-cs-fixer:3
+                  tools: composer:v2, php-cs-fixer:3.4
               env:
                   COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
