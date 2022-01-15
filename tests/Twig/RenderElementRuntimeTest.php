@@ -22,6 +22,7 @@ use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
+use Sonata\AdminBundle\Tests\Twig\Extension\FakeTemplateRegistryExtension;
 use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
 use Sonata\AdminBundle\Twig\Extension\XEditableExtension;
 use Sonata\AdminBundle\Twig\RenderElementRuntime;
