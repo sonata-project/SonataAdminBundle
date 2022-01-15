@@ -386,6 +386,20 @@ overriding the following method::
         return $buttonList;
     }
 
+
+Your custom twig file
+
+.. code-block:: twig
+
+    {# @App/Button/custom_button.html.twig #}
+
+    <li>
+        <a href="{{ admin.generateObjectUrl('custom', object) }}">
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            Custom
+        </a>
+    </li>
+
 .. figure:: ../images/custom_action_buttons.png
    :align: center
    :alt: Custom action buttons
@@ -408,7 +422,7 @@ Custom Action Access Management
 -------------------------------
 
 You can customize the access system inside the CRUDController by override
-`getAccessMapping` method in your Admin class and return array with 
+`getAccessMapping` method in your Admin class and return array with
 additional entries::
 
     // src/Admin/CustomAdmin.php
@@ -497,7 +511,7 @@ for specific Admin class:
                 tags:
                     - { name: sonata.admin, manager_type: orm, label: Category, security_handler: App\Security\Handler\CustomSecurityHandler }
 
-You can also use the default SecurityHandler (defined in global configuration) 
+You can also use the default SecurityHandler (defined in global configuration)
 in your custom SecurityHandler::
 
     // src/Security/Handler/CustomSecurityHandler.php
@@ -552,7 +566,7 @@ you can define a service alias:
             # ...
             Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface: '@sonata.admin.security.handler'
 
-This way, you do not need to define each custom SecurityHandler service to specify 
+This way, you do not need to define each custom SecurityHandler service to specify
 the default SecurityHandler service as an argument.
 
 
