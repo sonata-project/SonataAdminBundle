@@ -849,7 +849,7 @@ Displaying sub model properties
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. note::
 
-    This only makes sense when the prefix path is made of entities, not collections.
+    This only makes sense when the prefix path is made of models, not collections.
 
 If you need to display only one field from a sub model or embedded object in a dedicated column, you can simply use the dot-separated notation::
 
