@@ -881,7 +881,7 @@ Custom template
 
 If you need a specific layout for a row cell, you can define a custom template::
 
-    namespace Sonata\MediaBundle\Admin;
+    namespace App\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
