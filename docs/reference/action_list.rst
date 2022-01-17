@@ -846,7 +846,7 @@ Advance Usage
 -------------
 
 Displaying sub model properties
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. note::
 
     This only makes sense when the prefix path is made of models, not collections.
