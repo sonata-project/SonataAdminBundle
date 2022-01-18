@@ -19,7 +19,9 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\SonataConfiguration;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
+use Sonata\AdminBundle\Tests\Fixtures\Enum\Suit;
 use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
 use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
 use Sonata\AdminBundle\Twig\Extension\XEditableExtension;
@@ -234,39 +236,7 @@ final class RenderElementExtensionTest extends TestCase
         $this->fieldDescription
             ->method('getTemplate')
             ->willReturnCallback(static function () use ($type): ?string {
-                switch ($type) {
-                    case FieldDescriptionInterface::TYPE_STRING:
-                        return '@SonataAdmin/CRUD/list_string.html.twig';
-                    case FieldDescriptionInterface::TYPE_BOOLEAN:
-                        return '@SonataAdmin/CRUD/list_boolean.html.twig';
-                    case FieldDescriptionInterface::TYPE_DATETIME:
-                        return '@SonataAdmin/CRUD/list_datetime.html.twig';
-                    case FieldDescriptionInterface::TYPE_DATE:
-                        return '@SonataAdmin/CRUD/list_date.html.twig';
-                    case FieldDescriptionInterface::TYPE_TIME:
-                        return '@SonataAdmin/CRUD/list_time.html.twig';
-                    case FieldDescriptionInterface::TYPE_CURRENCY:
-                        return '@SonataAdmin/CRUD/list_currency.html.twig';
-                    case FieldDescriptionInterface::TYPE_PERCENT:
-                        return '@SonataAdmin/CRUD/list_percent.html.twig';
-                    case FieldDescriptionInterface::TYPE_EMAIL:
-                        return '@SonataAdmin/CRUD/list_email.html.twig';
-                    case FieldDescriptionInterface::TYPE_CHOICE:
-                        return '@SonataAdmin/CRUD/list_choice.html.twig';
-                    case FieldDescriptionInterface::TYPE_ARRAY:
-                        return '@SonataAdmin/CRUD/list_array.html.twig';
-                    case FieldDescriptionInterface::TYPE_TRANS:
-                        return '@SonataAdmin/CRUD/list_trans.html.twig';
-                    case FieldDescriptionInterface::TYPE_URL:
-                        return '@SonataAdmin/CRUD/list_url.html.twig';
-                    case FieldDescriptionInterface::TYPE_HTML:
-                        return '@SonataAdmin/CRUD/list_html.html.twig';
-                    case 'nonexistent':
-                        // template doesn`t exist
-                        return '@SonataAdmin/CRUD/list_nonexistent_template.html.twig';
-                    default:
-                        return null;
-                }
+                return TemplateRegistryInterface::LIST_TEMPLATES[$type] ?? null;
             });
 
         static::assertSame(
@@ -368,34 +338,7 @@ EOT
         $this->fieldDescription
             ->method('getTemplate')
             ->willReturnCallback(static function () use ($type): ?string {
-                switch ($type) {
-                    case FieldDescriptionInterface::TYPE_BOOLEAN:
-                        return '@SonataAdmin/CRUD/show_boolean.html.twig';
-                    case FieldDescriptionInterface::TYPE_DATETIME:
-                        return '@SonataAdmin/CRUD/show_datetime.html.twig';
-                    case FieldDescriptionInterface::TYPE_DATE:
-                        return '@SonataAdmin/CRUD/show_date.html.twig';
-                    case FieldDescriptionInterface::TYPE_TIME:
-                        return '@SonataAdmin/CRUD/show_time.html.twig';
-                    case FieldDescriptionInterface::TYPE_CURRENCY:
-                        return '@SonataAdmin/CRUD/show_currency.html.twig';
-                    case FieldDescriptionInterface::TYPE_PERCENT:
-                        return '@SonataAdmin/CRUD/show_percent.html.twig';
-                    case FieldDescriptionInterface::TYPE_EMAIL:
-                        return '@SonataAdmin/CRUD/show_email.html.twig';
-                    case FieldDescriptionInterface::TYPE_CHOICE:
-                        return '@SonataAdmin/CRUD/show_choice.html.twig';
-                    case FieldDescriptionInterface::TYPE_ARRAY:
-                        return '@SonataAdmin/CRUD/show_array.html.twig';
-                    case FieldDescriptionInterface::TYPE_TRANS:
-                        return '@SonataAdmin/CRUD/show_trans.html.twig';
-                    case FieldDescriptionInterface::TYPE_URL:
-                        return '@SonataAdmin/CRUD/show_url.html.twig';
-                    case FieldDescriptionInterface::TYPE_HTML:
-                        return '@SonataAdmin/CRUD/show_html.html.twig';
-                    default:
-                        return null;
-                }
+                return TemplateRegistryInterface::SHOW_TEMPLATES[$type] ?? null;
             });
 
         static::assertSame(
@@ -443,34 +386,7 @@ EOT
                     return $options['template'];
                 }
 
-                switch ($type) {
-                    case FieldDescriptionInterface::TYPE_BOOLEAN:
-                        return '@SonataAdmin/CRUD/show_boolean.html.twig';
-                    case FieldDescriptionInterface::TYPE_DATETIME:
-                        return '@SonataAdmin/CRUD/show_datetime.html.twig';
-                    case FieldDescriptionInterface::TYPE_DATE:
-                        return '@SonataAdmin/CRUD/show_date.html.twig';
-                    case FieldDescriptionInterface::TYPE_TIME:
-                        return '@SonataAdmin/CRUD/show_time.html.twig';
-                    case FieldDescriptionInterface::TYPE_CURRENCY:
-                        return '@SonataAdmin/CRUD/show_currency.html.twig';
-                    case FieldDescriptionInterface::TYPE_PERCENT:
-                        return '@SonataAdmin/CRUD/show_percent.html.twig';
-                    case FieldDescriptionInterface::TYPE_EMAIL:
-                        return '@SonataAdmin/CRUD/show_email.html.twig';
-                    case FieldDescriptionInterface::TYPE_CHOICE:
-                        return '@SonataAdmin/CRUD/show_choice.html.twig';
-                    case FieldDescriptionInterface::TYPE_ARRAY:
-                        return '@SonataAdmin/CRUD/show_array.html.twig';
-                    case FieldDescriptionInterface::TYPE_TRANS:
-                        return '@SonataAdmin/CRUD/show_trans.html.twig';
-                    case FieldDescriptionInterface::TYPE_URL:
-                        return '@SonataAdmin/CRUD/show_url.html.twig';
-                    case FieldDescriptionInterface::TYPE_HTML:
-                        return '@SonataAdmin/CRUD/show_html.html.twig';
-                    default:
-                        return null;
-                }
+                return TemplateRegistryInterface::SHOW_TEMPLATES[$type] ?? null;
             });
 
         $this->object->name = 'SonataAdmin';
@@ -601,7 +517,7 @@ EOT
      */
     public function getRenderListElementTests(): array
     {
-        return [
+        $elements = [
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345"> Example </td>',
                 FieldDescriptionInterface::TYPE_STRING,
@@ -1581,6 +1497,18 @@ EOT
                 ],
             ],
         ];
+
+        // TODO: Remove the "if" check when dropping support of PHP < 8.1 and add the case to the list
+        if (\PHP_VERSION_ID >= 80100) {
+            $elements[] = [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-enum" objectId="12345"> Hearts </td>',
+                FieldDescriptionInterface::TYPE_ENUM,
+                Suit::Hearts,
+                [],
+            ];
+        }
+
+        return $elements;
     }
 
     /**
@@ -1588,7 +1516,7 @@ EOT
      */
     public function getRenderViewElementTests(): array
     {
-        return [
+        $elements = [
             ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]],
             ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]],
             ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_TEXTAREA, 'Example', ['safe' => false]],
@@ -2085,6 +2013,18 @@ EOT
                 ],
             ],
         ];
+
+        // TODO: Remove the "if" check when dropping support of PHP < 8.1 and add the case to the list
+        if (\PHP_VERSION_ID >= 80100) {
+            $elements[] = [
+                '<th>Data</th> <td>Hearts</td>',
+                FieldDescriptionInterface::TYPE_ENUM,
+                Suit::Hearts,
+                [],
+            ];
+        }
+
+        return $elements;
     }
 
     /**

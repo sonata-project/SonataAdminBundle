@@ -27,12 +27,6 @@ SonataAdmin Options that may affect the list view:
             pager_links:                '@SonataAdmin/Pager/links.html.twig'
             pager_results:              '@SonataAdmin/Pager/results.html.twig'
 
-.. note::
-
-    **TODO**:
-    * adding custom columns
-    * targeting submodel fields using dot-separated notation
-
 Routes
 ------
 
@@ -49,6 +43,33 @@ For more detailed information about routes, see :doc:`routing`::
             $collection->remove('list');
         }
     }
+
+Custom route
+^^^^^^^^^^^^
+
+Default route for a link is `show` (for `FieldDescriptionInterface::TYPE_MANY_TO_ONE` and `FieldDescriptionInterface::TYPE_ONE_TO_ONE`).
+Using this, the route can be customized as follows::
+
+    namespace App\Admin;
+
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
+    use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Datagrid\DatagridMapper;
+    use Sonata\AdminBundle\Datagrid\ListMapper;
+    use Sonata\AdminBundle\Show\ShowMapper;
+
+    final class MediaAdmin extends AbstractAdmin
+    {
+        protected function configureListFields(ListMapper $list): void
+        {
+            $list
+                ->addIdentifier('field', null, [
+                    'route' => [
+                        'name' => 'edit'
+                    ]
+                ]);
+        }
+   }
 
 Customizing the fields displayed on the list page
 -------------------------------------------------
@@ -143,6 +164,10 @@ Here is an example::
         ;
     }
 
+.. tip::
+
+    Edit and Delete actions are enabled in the default configuration. You can add your own! Default template file is: ``@SonataAdmin/CRUD/list__action_[ACTION_NAME].html.twig``
+
 Options
 ^^^^^^^
 
@@ -185,6 +210,21 @@ Available types and associated options
 +---------------------------------------+---------------------+-----------------------------------------------------------------------+
 | ``FieldDescriptionInterface::TYPE_*`` |                     | See :doc:`Field Types <field_types>`                                  |
 +---------------------------------------+---------------------+-----------------------------------------------------------------------+
+
+Setting up custom action buttons
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can specify your own action buttons by setting up the 'template' option like so::
+
+    $listMapper
+        ->add(ListMapper::NAME_ACTIONS, ListMapper::TYPE_ACTIONS, [
+            'actions' => [
+                'show' => [],
+                'edit' => [],
+                'delete' => ['template' => 'Admin/MyController/my_partial.html.twig'],
+                //this twig file will be located at: templates/Admin/MyController/my_partial.html.twig
+            ]
+        ]);
 
 Symfony Data Transformers
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -801,3 +841,76 @@ Combine this with configuring a custom template and you'll have a list column fu
 
 .. _`SonataDoctrineORMAdminBundle Documentation`: https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle/en/4.x/reference/list_field_definition/
 .. _`here`: https://github.com/sonata-project/form-extensions/tree/1.x/src/Type
+
+Advance Usage
+-------------
+
+Displaying sub model properties
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. note::
+
+    This only makes sense when the prefix path is made of models, not collections.
+
+If you need to display only one field from a sub model or embedded object in a dedicated column, you can simply use the dot-separated notation::
+
+    namespace App\Admin;
+
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
+    use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Datagrid\DatagridMapper;
+    use Sonata\AdminBundle\Datagrid\ListMapper;
+    use Sonata\AdminBundle\Show\ShowMapper;
+
+    final class UserAdmin extends AbstractAdmin
+    {
+        protected function configureListFields(ListMapper $list): void
+        {
+            $list
+                ->addIdentifier('id')
+                ->add('firstName')
+                ->add('lastName')
+                ->add('address.street')
+                ->add('address.ZIPCode')
+                ->add('address.town')
+            ;
+        }
+    }
+
+Custom template
+^^^^^^^^^^^^^^^
+
+If you need a specific layout for a row cell, you can define a custom template::
+
+    namespace App\Admin;
+
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
+    use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
+    use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Datagrid\DatagridMapper;
+    use Sonata\AdminBundle\Datagrid\ListMapper;
+    use Sonata\AdminBundle\Show\ShowMapper;
+
+   final class MediaAdmin extends AbstractAdmin
+    {
+        protected function configureListFields(ListMapper $list): void
+        {
+            $list
+                ->addIdentifier('id')
+                ->add('image', FieldDescriptionInterface::TYPE_STRING, ['template' => '@SonataMedia/MediaAdmin/list_image.html.twig'])
+                ->add('custom', FieldDescriptionInterface::TYPE_STRING, ['template' => '@SonataMedia/MediaAdmin/list_custom.html.twig'])
+            ;
+        }
+    }
+
+The related template:
+
+.. code-block:: twig
+
+    {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+    {% block field %}
+        <div>
+            <strong>{{ object.name }}</strong> <br/>
+            {{ object.providername}} : {{ object.width }}x{{ object.height }} <br/>
+        </div>
+    {% endblock %}
