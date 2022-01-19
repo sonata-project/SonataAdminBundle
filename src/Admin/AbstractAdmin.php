@@ -44,6 +44,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\Exception\AccessException;
+use Symfony\Component\PropertyAccess\Exception\UninitializedPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
@@ -2267,7 +2269,17 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
                 if (null !== $parentObject) {
                     $propertyAccessor = PropertyAccess::createPropertyAccessor();
-                    $value = $propertyAccessor->getValue($object, $parentAssociationMapping);
+
+                    try {
+                        $value = $propertyAccessor->getValue($object, $parentAssociationMapping);
+                    } catch (AccessException $e) {
+                        // @todo: Catching and checking AccessException here as BC for symfony/property-access < 5.1.
+                        //        Catch UninitializedPropertyException and remove the check when dropping support < 5.1
+                        if (!$e instanceof UninitializedPropertyException && AccessException::class !== \get_class($e)) {
+                            throw $e; // Re-throw. We only want to "ignore" pure AccessException (Sf < 5.1) and UninitializedPropertyException (Sf >= 5.1)
+                        }
+                        $value = null;
+                    }
 
                     if (\is_array($value) || $value instanceof \ArrayAccess) {
                         $value[] = $parentObject;
