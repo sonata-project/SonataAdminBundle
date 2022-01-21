@@ -77,7 +77,7 @@ final class DataTransformerResolver implements DataTransformerResolverInterface
         if (FieldDescriptionInterface::TYPE_CHOICE === $fieldType) {
             $className = $fieldDescription->getOption('class');
 
-            if (null !== $className && $className === $fieldDescription->getTargetModel()) {
+            if (null !== $className && is_a($fieldDescription->getTargetModel(), $className, true)) {
                 return new ModelToIdTransformer($modelManager, $className);
             }
         }
