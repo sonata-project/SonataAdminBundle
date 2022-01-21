@@ -37,6 +37,7 @@ final class ObjectAclManipulatorCompilerPassTest extends TestCase
 
         $availableManagers = $containerBuilder->getDefinition('sonata.admin.command.generate_object_acl')->getArgument(1);
 
+        static::assertIsArray($availableManagers);
         static::assertArrayHasKey($serviceId, $availableManagers);
     }
 

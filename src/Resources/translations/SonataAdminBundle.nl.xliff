@@ -156,19 +156,19 @@
       </trans-unit>
       <trans-unit id="flash_create_success">
         <source>flash_create_success</source>
-        <target>Het item is succesvol aangemaakt.</target>
+        <target>Het item "%name%" is succesvol aangemaakt.</target>
       </trans-unit>
       <trans-unit id="flash_create_error">
         <source>flash_create_error</source>
-        <target>Het item kon door een fout niet worden aangemaakt.</target>
+        <target>Het item "%name%" kon door een fout niet worden aangemaakt.</target>
       </trans-unit>
       <trans-unit id="flash_edit_success">
         <source>flash_edit_success</source>
-        <target>Het item is succesvol bijgewerkt.</target>
+        <target>Het item "%name%" is succesvol bijgewerkt.</target>
       </trans-unit>
       <trans-unit id="flash_edit_error">
         <source>flash_edit_error</source>
-        <target>Het item kon door een fout niet worden bijgewerkt.</target>
+        <target>Het item "%name%" kon door een fout niet worden bijgewerkt.</target>
       </trans-unit>
       <trans-unit id="flash_lock_error">
         <source>flash_lock_error</source>
@@ -188,11 +188,11 @@
       </trans-unit>
       <trans-unit id="flash_delete_error">
         <source>flash_delete_error</source>
-        <target>Het item kon door een fout niet worden verwijderd.</target>
+        <target>Het item "%name%" kon door een fout niet worden verwijderd.</target>
       </trans-unit>
       <trans-unit id="flash_delete_success">
         <source>flash_delete_success</source>
-        <target>Het item is succesvol verwijderd.</target>
+        <target>Het item "%name%" is succesvol verwijderd.</target>
       </trans-unit>
       <trans-unit id="form_not_available">
         <source>form_not_available</source>
@@ -208,7 +208,7 @@
       </trans-unit>
       <trans-unit id="message_delete_confirmation">
         <source>message_delete_confirmation</source>
-        <target>Weet je zeker dat het geselecteerde item moet worden verwijderd?</target>
+        <target>Weet je zeker dat het geselecteerde item "%object%" moet worden verwijderd?</target>
       </trans-unit>
       <trans-unit id="btn_delete">
         <source>btn_delete</source>
@@ -216,7 +216,7 @@
       </trans-unit>
       <trans-unit id="title_batch_confirmation">
         <source>title_batch_confirmation</source>
-        <target>Bevestig groep handeling</target>
+        <target>Bevestig groep handeling "%action%"</target>
       </trans-unit>
       <trans-unit id="message_batch_confirmation">
         <source>message_batch_confirmation</source>
@@ -428,7 +428,7 @@
       </trans-unit>
       <trans-unit id="title_search_results">
         <source>title_search_results</source>
-        <target>Zoek resultaten</target>
+        <target>Zoek resultaten: %query%</target>
       </trans-unit>
       <trans-unit id="search_placeholder">
         <source>search_placeholder</source>

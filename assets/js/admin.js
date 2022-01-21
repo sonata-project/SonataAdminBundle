@@ -310,6 +310,16 @@ const Admin = {
 
         if (JSON.stringify(defaultElementValue) === JSON.stringify(elementValue)) {
           element.removeAttribute('name');
+        } else if (element.multiple && JSON.stringify(elementValue) === '[]') {
+          // Empty array values will not be submitted, but we need to override
+          // the default value provided by `AdminInterface::getDefaultFilterParameters()`.
+          // So we change the empty select to an empty input in order to have a submitted value.
+          // @see https://github.com/sonata-project/SonataAdminBundle/issues/7547
+
+          // We remove the `[]` from the select name in order to generate the input name
+          const name = element.name.substring(0, element.name.length - 2);
+          $form.append(`<input name="${name}" type="hidden" value="">`);
+          element.removeAttribute('name');
         }
       });
 

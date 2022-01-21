@@ -36,7 +36,7 @@ abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
      *
      * @phpstan-template T of object
      * @phpstan-param AdminInterface<T> $admin
-     * @phpstan-return array{0: int, 1: int}
+     * @phpstan-return array{int, int}
      */
     final public function configureAcls(
         OutputInterface $output,

@@ -15,17 +15,20 @@ namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Twig\Extension\SecurityExtension;
+use Sonata\AdminBundle\Twig\SecurityRuntime;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * @author Andrej Hudec <pulzarraider@gmail.com>
+ * NEXT_MAJOR: Remove this test.
+ *
+ * @group legacy
  */
 final class SecurityExtensionTest extends TestCase
 {
     public function testIsGrantedAffirmative(): void
     {
         $securityChecker = $this->createMock(AuthorizationCheckerInterface::class);
-        $twigExtension = new SecurityExtension($securityChecker);
+        $twigExtension = new SecurityExtension(new SecurityRuntime($securityChecker));
 
         $securityChecker
             ->method('isGranted')

@@ -29,7 +29,7 @@ final class ParametersManipulator
     public static function merge(array $parameters, array $newParameters): array
     {
         foreach (array_intersect_key($parameters, $newParameters) as $key => $parameter) {
-            if (\is_array($parameter)) {
+            if (\is_array($parameter) && \is_array($newParameters[$key])) {
                 $parameters[$key] = array_replace($parameter, $newParameters[$key]);
             } else {
                 $parameters[$key] = $newParameters[$key];

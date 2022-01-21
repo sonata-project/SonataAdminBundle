@@ -2,6 +2,47 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.7.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.6.1...4.7.0) - 2022-01-05
+### Added
+- [[#7685](https://github.com/sonata-project/SonataAdminBundle/pull/7685)] Support for `symfony/translation-contracts` 3.x ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7653](https://github.com/sonata-project/SonataAdminBundle/pull/7653)] "export_format_xlsx" translations ([@willemverspyck](https://github.com/willemverspyck))
+- [[#7658](https://github.com/sonata-project/SonataAdminBundle/pull/7658)] `AdminInterface::showInDashboard()` method ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Changed
+- [[#7662](https://github.com/sonata-project/SonataAdminBundle/pull/7662)] Twig extensions are now lazy ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Deprecated
+- [[#7658](https://github.com/sonata-project/SonataAdminBundle/pull/7658)] `AdminInterface::showIn()` method ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#7674](https://github.com/sonata-project/SonataAdminBundle/pull/7674)] Multiple choice field with predefined default values ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7673](https://github.com/sonata-project/SonataAdminBundle/pull/7673)] Order of provided IDs at `ModelsToArrayTransformer::reverseTransform()` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+## [4.6.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.6.0...4.6.1) - 2021-12-23
+### Fixed
+- [[#7669](https://github.com/sonata-project/SonataAdminBundle/pull/7669)] Model_autocomplete_type template ([@VincentLanglet](https://github.com/VincentLanglet))
+
+## [4.6.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.5.1...4.6.0) - 2021-12-23
+### Added
+- [[#7661](https://github.com/sonata-project/SonataAdminBundle/pull/7661)] ModelAutocompleteType delay option ([@Gasjki](https://github.com/Gasjki))
+
+### Deprecated
+- [[#7661](https://github.com/sonata-project/SonataAdminBundle/pull/7661)] ModelAutocompleteType quietMillis option ([@Gasjki](https://github.com/Gasjki))
+- [[#7659](https://github.com/sonata-project/SonataAdminBundle/pull/7659)] Passing an array of role to `AdminInterface::isGranted()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7659](https://github.com/sonata-project/SonataAdminBundle/pull/7659)] Passing an array of role to `AbstractAdmin::isGranted()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7659](https://github.com/sonata-project/SonataAdminBundle/pull/7659)] Passing an array of role to `SecurityHandlerInterface::isGranted()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7659](https://github.com/sonata-project/SonataAdminBundle/pull/7659)] Passing an array of role to `RoleSecurityHandler::isGranted()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7659](https://github.com/sonata-project/SonataAdminBundle/pull/7659)] Passing an array of role to `AclSecurityHandler::isGranted()` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#7666](https://github.com/sonata-project/SonataAdminBundle/pull/7666)] DefaultRouterGenerator route name generation when full name is given ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7661](https://github.com/sonata-project/SonataAdminBundle/pull/7661)] ModelAutocompleteType quietMillis option ([@Gasjki](https://github.com/Gasjki))
+
+## [4.5.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.5.0...4.5.1) - 2021-12-16
+### Fixed
+- [[#7647](https://github.com/sonata-project/SonataAdminBundle/pull/7647)] DefaultRouteGenerator Routes generation for nested admins ([@Devristo](https://github.com/Devristo))
+- [[#7636](https://github.com/sonata-project/SonataAdminBundle/pull/7636)] Remove support for translation-contracts until it can be installed without relying on dev dependencies ([@jordisala1991](https://github.com/jordisala1991))
+
 ## [4.5.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.4.0...4.5.0) - 2021-12-03
 ### Added
 - [[#7626](https://github.com/sonata-project/SonataAdminBundle/pull/7626)] Support for a nullable username in a Revision. ([@VincentLanglet](https://github.com/VincentLanglet))
@@ -194,6 +235,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.0.0-alpha-1](https://github.com/sonata-project/SonataAdminBundle/compare/3.105.0...4.0.0-alpha-1) - 2021-04-11
 See UPGRADE-4.0.md
+
+## [3.107.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.107.1...3.107.2) - 2022-01-19
+### Fixed
+- [[#7705](https://github.com/sonata-project/SonataAdminBundle/pull/7705)] Catch AccessException in AbstractAdmin::appendParentObject() to prevent an error when the property for the parent object is uninitialised. ([@7ochem](https://github.com/7ochem))
+
+## [3.107.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.107.0...3.107.1) - 2022-01-01
+### Fixed
+- [[#7641](https://github.com/sonata-project/SonataAdminBundle/pull/7641)] Fixed batch confirmation translations to include mentioning the selected action or object ([@7ochem](https://github.com/7ochem))
+- [[#7641](https://github.com/sonata-project/SonataAdminBundle/pull/7641)] Fixed (other) Dutch translations that were missing a placeholder compared to the English file ([@7ochem](https://github.com/7ochem))
 
 ## [3.107.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.106.1...3.107.0) - 2021-11-15
 ### Added

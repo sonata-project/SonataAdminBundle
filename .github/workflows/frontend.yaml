@@ -5,6 +5,8 @@
 name: Frontend
 
 on:
+    schedule:
+        - cron: '30 0 * * *'
     push:
         branches:
             - 4.x

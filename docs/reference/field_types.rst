@@ -16,6 +16,7 @@ Fieldtype                                           Description
 ``FieldDescriptionInterface::TYPE_DATETIME``        display a formatted date and time. Accepts the options ``format`` and ``timezone``
 ``FieldDescriptionInterface::TYPE_STRING``          display a text
 ``FieldDescriptionInterface::TYPE_EMAIL``           display a mailto link. Accepts the options ``as_string``, ``subject`` and ``body``
+``FieldDescriptionInterface::TYPE_ENUM``            display the name of a backed enum
 ``FieldDescriptionInterface::TYPE_TEXTAREA``        display a textarea
 ``FieldDescriptionInterface::TYPE_TRANS``           translate the value with a provided ``catalogue`` (translation domain) and ``format`` (sprintf format) option
 ``FieldDescriptionInterface::TYPE_FLOAT``           display a number

@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Tests\App\Model\Foo;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
+use Sonata\AdminBundle\Twig\SonataAdminRuntime;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +29,9 @@ use Twig\Extra\String\StringExtension;
 use Twig\Loader\FilesystemLoader;
 
 /**
- * @author Andrej Hudec <pulzarraider@gmail.com>
+ * NEXT_MAJOR: Remove this test.
+ *
+ * @group legacy
  */
 final class SonataAdminExtensionTest extends TestCase
 {
@@ -75,7 +78,7 @@ final class SonataAdminExtensionTest extends TestCase
 
         $this->pool = new Pool($this->container, ['sonata_admin_foo_service'], [], [Foo::class => ['sonata_admin_foo_service']]);
 
-        $this->twigExtension = new SonataAdminExtension($this->pool);
+        $this->twigExtension = new SonataAdminExtension(new SonataAdminRuntime($this->pool));
 
         $request = $this->createMock(Request::class);
         $request->method('get')->with('_sonata_admin')->willReturn('sonata_admin_foo_service');
@@ -157,7 +160,7 @@ final class SonataAdminExtensionTest extends TestCase
 
         $this->container->set('sonata_admin_foo_service', $this->admin);
 
-        $twigExtension = new SonataAdminExtension($pool);
+        $twigExtension = new SonataAdminExtension(new SonataAdminRuntime($pool));
 
         static::assertSame('1234567', $twigExtension->getUrlSafeIdentifier($model));
     }
@@ -187,7 +190,7 @@ final class SonataAdminExtensionTest extends TestCase
         $this->adminBar->expects(static::never())
             ->method('getUrlSafeIdentifier');
 
-        $twigExtension = new SonataAdminExtension($pool);
+        $twigExtension = new SonataAdminExtension(new SonataAdminRuntime($pool));
 
         static::assertSame('1234567', $twigExtension->getUrlSafeIdentifier($model, $this->admin));
     }
@@ -214,7 +217,7 @@ final class SonataAdminExtensionTest extends TestCase
             ->with(static::equalTo($model))
             ->willReturn('1234567');
 
-        $twigExtension = new SonataAdminExtension($pool);
+        $twigExtension = new SonataAdminExtension(new SonataAdminRuntime($pool));
 
         static::assertSame('1234567', $twigExtension->getUrlSafeIdentifier($model, $this->adminBar));
     }

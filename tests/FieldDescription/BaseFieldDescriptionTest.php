@@ -79,6 +79,7 @@ final class BaseFieldDescriptionTest extends TestCase
 
         $description->mergeOption('bar', ['hello']);
 
+        static::assertIsArray($description->getOption('bar'));
         static::assertCount(1, $description->getOption('bar'));
 
         $description->setOption('label', 'trucmuche');

@@ -14,12 +14,15 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Twig\CanonicalizeRuntime;
 use Sonata\AdminBundle\Twig\Extension\CanonicalizeExtension;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * @author Andrej Hudec <pulzarraider@gmail.com>
+ * NEXT_MAJOR: Remove this test.
+ *
+ * @group legacy
  */
 final class CanonicalizeExtensionTest extends TestCase
 {
@@ -38,7 +41,7 @@ final class CanonicalizeExtensionTest extends TestCase
         $this->request = new Request();
         $requestStack = new RequestStack();
         $requestStack->push($this->request);
-        $this->twigExtension = new CanonicalizeExtension($requestStack);
+        $this->twigExtension = new CanonicalizeExtension(new CanonicalizeRuntime($requestStack));
     }
 
     /**

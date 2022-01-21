@@ -13,31 +13,25 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Twig\Extension;
 
-use Symfony\Component\HttpFoundation\RequestStack;
+use Sonata\AdminBundle\Twig\CanonicalizeRuntime;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class CanonicalizeExtension extends AbstractExtension
 {
-    // @todo: there are more locales which are not supported by moment and they need to be translated/normalized/canonicalized here
-    private const MOMENT_UNSUPPORTED_LOCALES = [
-        'de' => ['de', 'de-at'],
-        'es' => ['es', 'es-do'],
-        'nl' => ['nl', 'nl-be'],
-        'fr' => ['fr', 'fr-ca', 'fr-ch'],
-    ];
-
     /**
-     * @var RequestStack
+     * @var CanonicalizeRuntime
      */
-    private $requestStack;
+    private $canonicalizeRuntime;
 
     /**
+     * NEXT_MAJOR: Remove this constructor.
+     *
      * @internal This class should only be used through Twig
      */
-    public function __construct(RequestStack $requestStack)
+    public function __construct(CanonicalizeRuntime $canonicalizeRuntime)
     {
-        $this->requestStack = $requestStack;
+        $this->canonicalizeRuntime = $canonicalizeRuntime;
     }
 
     /**
@@ -46,72 +40,50 @@ final class CanonicalizeExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('canonicalize_locale_for_moment', [$this, 'getCanonicalizedLocaleForMoment']),
-            new TwigFunction('canonicalize_locale_for_select2', [$this, 'getCanonicalizedLocaleForSelect2']),
+            new TwigFunction('canonicalize_locale_for_moment', [CanonicalizeRuntime::class, 'getCanonicalizedLocaleForMoment']),
+            new TwigFunction('canonicalize_locale_for_select2', [CanonicalizeRuntime::class, 'getCanonicalizedLocaleForSelect2']),
         ];
     }
 
-    /*
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.7 use CanonicalizeRuntime::getCanonicalizedLocaleForMoment() instead
+     *
      * Returns a canonicalized locale for "moment" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
      */
     public function getCanonicalizedLocaleForMoment(): ?string
     {
-        $locale = $this->getLocale();
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
+            .'  Use "%s::%s()" instead.',
+            __METHOD__,
+            CanonicalizeRuntime::class,
+            __FUNCTION__
+        ), \E_USER_DEPRECATED);
 
-        // "en" language doesn't require localization.
-        if (('en' === $lang = substr($locale, 0, 2)) && !\in_array($locale, ['en-au', 'en-ca', 'en-gb', 'en-ie', 'en-nz'], true)) {
-            return null;
-        }
-
-        foreach (self::MOMENT_UNSUPPORTED_LOCALES as $language => $locales) {
-            if ($language === $lang && !\in_array($locale, $locales, true)) {
-                $locale = $language;
-            }
-        }
-
-        return $locale;
+        return $this->canonicalizeRuntime->getCanonicalizedLocaleForMoment();
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.7 use CanonicalizeRuntime::getCanonicalizedLocaleForSelect2() instead
+     *
      * Returns a canonicalized locale for "select2" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
      */
     public function getCanonicalizedLocaleForSelect2(): ?string
     {
-        $locale = $this->getLocale();
+        @trigger_error(sprintf(
+            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
+            .'  Use "%s::%s()" instead.',
+            __METHOD__,
+            CanonicalizeRuntime::class,
+            __FUNCTION__
+        ), \E_USER_DEPRECATED);
 
-        // "en" language doesn't require localization.
-        if ('en' === $lang = substr($locale, 0, 2)) {
-            return null;
-        }
-
-        switch ($locale) {
-            case 'pt':
-                $locale = 'pt-PT';
-                break;
-            case 'ug':
-                $locale = 'ug-CN';
-                break;
-            case 'zh':
-                $locale = 'zh-CN';
-                break;
-            default:
-                if (!\in_array($locale, ['pt-BR', 'pt-PT', 'ug-CN', 'zh-CN', 'zh-TW'], true)) {
-                    $locale = $lang;
-                }
-        }
-
-        return $locale;
-    }
-
-    private function getLocale(): string
-    {
-        $request = $this->requestStack->getCurrentRequest();
-        if (null === $request) {
-            throw new \LogicException('The request stack is empty.');
-        }
-
-        return str_replace('_', '-', $request->getLocale());
+        return $this->canonicalizeRuntime->getCanonicalizedLocaleForSelect2();
     }
 }

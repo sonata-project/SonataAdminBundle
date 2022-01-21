@@ -20,11 +20,17 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
 use Sonata\AdminBundle\Tests\Fixtures\StubTranslator;
+use Sonata\AdminBundle\Twig\BreadcrumbsRuntime;
 use Sonata\AdminBundle\Twig\Extension\BreadcrumbsExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Twig\Environment;
 use Twig\Extra\String\StringExtension;
 
+/**
+ * NEXT_MAJOR: Remove this test.
+ *
+ * @group legacy
+ */
 final class BreadcrumbsExtensionTest extends TestCase
 {
     /**
@@ -58,7 +64,7 @@ final class BreadcrumbsExtensionTest extends TestCase
 
         $this->breadcrumbBuilder = $this->createStub(BreadcrumbsBuilderInterface::class);
 
-        $this->breadcrumbsExtension = new BreadcrumbsExtension($this->breadcrumbBuilder);
+        $this->breadcrumbsExtension = new BreadcrumbsExtension(new BreadcrumbsRuntime($this->breadcrumbBuilder));
     }
 
     public function testBreadcrumbsForTitle(): void

@@ -46,7 +46,7 @@ final class RoleSecurityHandlerTest extends TestCase
      */
     public function testGetBaseRole(string $expected, string $code): void
     {
-        $handler = new RoleSecurityHandler($this->authorizationChecker, ['ROLE_BATMAN', 'ROLE_IRONMAN']);
+        $handler = new RoleSecurityHandler($this->authorizationChecker, 'ROLE_BATMAN');
 
         $this->admin->expects(static::once())
             ->method('getCode')
@@ -69,12 +69,16 @@ final class RoleSecurityHandlerTest extends TestCase
     }
 
     /**
-     * @param string[]        $superAdminRoles
+     * NEXT_MAJOR: Remove the group legacy and only keep string $superAdminRoles and string $operation in dataProvider.
+     *
+     * @group legacy
+     *
+     * @param string|string[] $superAdminRoles
      * @param string|string[] $operation
      *
      * @dataProvider getIsGrantedTests
      */
-    public function testIsGranted(bool $expected, array $superAdminRoles, string $adminCode, $operation, ?object $object = null): void
+    public function testIsGranted(bool $expected, $superAdminRoles, string $adminCode, $operation, ?object $object = null): void
     {
         $handler = $this->getRoleSecurityHandler($superAdminRoles);
 
@@ -105,38 +109,38 @@ final class RoleSecurityHandlerTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{bool, string[], string, string|string[]}>
+     * @phpstan-return array<array{bool, string|array<string>, string, string|array<string>}>
      */
     public function getIsGrantedTests(): array
     {
         return [
             //empty
-            [false, [''], 'foo.bar', ''],
-            [false, [''], 'foo.bar', ['']],
-            [false, [''], 'foo.bar.abc', ['']],
-            [false, [''], 'foo.bar.def', ['']],
-            [false, [''], 'foo.bar.baz.xyz', ''],
-            [false, [''], 'foo.bar.baz.xyz', ['']],
+            [false, '', 'foo.bar', ''],
+            [false, '', 'foo.bar', ['']],
+            [false, '', 'foo.bar.abc', ['']],
+            [false, '', 'foo.bar.def', ['']],
+            [false, '', 'foo.bar.baz.xyz', ''],
+            [false, '', 'foo.bar.baz.xyz', ['']],
 
             //superadmins
             [true, ['ROLE_BATMAN', 'ROLE_IRONMAN'], 'foo.bar', 'BAZ'],
             [true, ['ROLE_BATMAN', 'ROLE_IRONMAN'], 'foo.bar', 'ANYTHING'],
             [true, ['ROLE_BATMAN', 'ROLE_IRONMAN'], 'foo.bar', ['BAZ', 'ANYTHING']],
-            [true, ['ROLE_IRONMAN'], 'foo.bar', 'BAZ'],
-            [true, ['ROLE_IRONMAN'], 'foo.bar', 'ANYTHING'],
-            [true, ['ROLE_IRONMAN'], 'foo.bar.baz.xyz', 'ANYTHING'],
-            [true, ['ROLE_IRONMAN'], 'foo.bar', ''],
-            [true, ['ROLE_IRONMAN'], 'foo.bar', ['']],
+            [true, 'ROLE_IRONMAN', 'foo.bar', 'BAZ'],
+            [true, 'ROLE_IRONMAN', 'foo.bar', 'ANYTHING'],
+            [true, 'ROLE_IRONMAN', 'foo.bar.baz.xyz', 'ANYTHING'],
+            [true, 'ROLE_IRONMAN', 'foo.bar', ''],
+            [true, 'ROLE_IRONMAN', 'foo.bar', ['']],
 
             //operations
-            [true, ['ROLE_SPIDERMAN'], 'foo.bar', 'ABC'],
-            [true, ['ROLE_SPIDERMAN'], 'foo.bar', ['ABC']],
-            [true, ['ROLE_SPIDERMAN'], 'foo.bar', ['ABC', 'DEF']],
-            [true, ['ROLE_SPIDERMAN'], 'foo.bar', ['BAZ', 'ABC']],
-            [false, ['ROLE_SPIDERMAN'], 'foo.bar', 'DEF'],
-            [false, ['ROLE_SPIDERMAN'], 'foo.bar', ['DEF']],
-            [false, ['ROLE_SPIDERMAN'], 'foo.bar', 'BAZ'],
-            [false, ['ROLE_SPIDERMAN'], 'foo.bar', ['BAZ']],
+            [true, 'ROLE_SPIDERMAN', 'foo.bar', 'ABC'],
+            [true, 'ROLE_SPIDERMAN', 'foo.bar', ['ABC']],
+            [true, 'ROLE_SPIDERMAN', 'foo.bar', ['ABC', 'DEF']],
+            [true, 'ROLE_SPIDERMAN', 'foo.bar', ['BAZ', 'ABC']],
+            [false, 'ROLE_SPIDERMAN', 'foo.bar', 'DEF'],
+            [false, 'ROLE_SPIDERMAN', 'foo.bar', ['DEF']],
+            [false, 'ROLE_SPIDERMAN', 'foo.bar', 'BAZ'],
+            [false, 'ROLE_SPIDERMAN', 'foo.bar', ['BAZ']],
             [true, [], 'foo.bar', 'ABC'],
             [true, [], 'foo.bar', ['ABC']],
             [false, [], 'foo.bar', 'DEF'],
@@ -152,15 +156,15 @@ final class RoleSecurityHandlerTest extends TestCase
             [false, [], 'foo.bar.baz.xyz', ['BAZ']],
 
             //objects
-            [true, ['ROLE_SPIDERMAN'], 'foo.bar', ['DEF'], new \stdClass()],
-            [true, ['ROLE_SPIDERMAN'], 'foo.bar', ['ABC'], new \stdClass()],
-            [true, ['ROLE_SPIDERMAN'], 'foo.bar', ['ABC', 'DEF'], new \stdClass()],
-            [true, ['ROLE_SPIDERMAN'], 'foo.bar', ['BAZ', 'DEF'], new \stdClass()],
-            [true, ['ROLE_SPIDERMAN'], 'foo.bar', 'DEF', new \stdClass()],
-            [true, ['ROLE_SPIDERMAN'], 'foo.bar', 'ABC', new \stdClass()],
-            [false, ['ROLE_SPIDERMAN'], 'foo.bar', 'BAZ', new \stdClass()],
-            [false, ['ROLE_SPIDERMAN'], 'foo.bar.baz.xyz', 'DEF', new \stdClass()],
-            [false, ['ROLE_SPIDERMAN'], 'foo.bar.baz.xyz', 'ABC', new \stdClass()],
+            [true, 'ROLE_SPIDERMAN', 'foo.bar', ['DEF'], new \stdClass()],
+            [true, 'ROLE_SPIDERMAN', 'foo.bar', ['ABC'], new \stdClass()],
+            [true, 'ROLE_SPIDERMAN', 'foo.bar', ['ABC', 'DEF'], new \stdClass()],
+            [true, 'ROLE_SPIDERMAN', 'foo.bar', ['BAZ', 'DEF'], new \stdClass()],
+            [true, 'ROLE_SPIDERMAN', 'foo.bar', 'DEF', new \stdClass()],
+            [true, 'ROLE_SPIDERMAN', 'foo.bar', 'ABC', new \stdClass()],
+            [false, 'ROLE_SPIDERMAN', 'foo.bar', 'BAZ', new \stdClass()],
+            [false, 'ROLE_SPIDERMAN', 'foo.bar.baz.xyz', 'DEF', new \stdClass()],
+            [false, 'ROLE_SPIDERMAN', 'foo.bar.baz.xyz', 'ABC', new \stdClass()],
             [true, [], 'foo.bar', ['ABC'], new \stdClass()],
             [true, [], 'foo.bar', 'ABC', new \stdClass()],
             [true, [], 'foo.bar', ['DEF'], new \stdClass()],
@@ -169,7 +173,7 @@ final class RoleSecurityHandlerTest extends TestCase
             [false, [], 'foo.bar', 'BAZ', new \stdClass()],
             [false, [], 'foo.bar.baz.xyz', 'BAZ', new \stdClass()],
             [false, [], 'foo.bar.baz.xyz', ['BAZ'], new \stdClass()],
-            [false, ['ROLE_AUTH_EXCEPTION'], 'foo.bar.baz.xyz', ['BAZ'], new \stdClass()],
+            [false, 'ROLE_AUTH_EXCEPTION', 'foo.bar.baz.xyz', ['BAZ'], new \stdClass()],
 
             //role
             [false, [], 'foo.bar', ['CUSTOM']],
@@ -197,7 +201,7 @@ final class RoleSecurityHandlerTest extends TestCase
                 throw new \RuntimeException('Something is wrong');
             });
 
-        $handler = $this->getRoleSecurityHandler(['ROLE_BATMAN']);
+        $handler = $this->getRoleSecurityHandler('ROLE_BATMAN');
         $handler->isGranted($this->admin, 'BAZ');
     }
 
@@ -206,7 +210,7 @@ final class RoleSecurityHandlerTest extends TestCase
      */
     public function testCreateObjectSecurity(): void
     {
-        $handler = $this->getRoleSecurityHandler(['ROLE_FOO']);
+        $handler = $this->getRoleSecurityHandler('ROLE_FOO');
         $handler->createObjectSecurity($this->getSonataAdminObject(), new \stdClass());
     }
 
@@ -215,20 +219,20 @@ final class RoleSecurityHandlerTest extends TestCase
      */
     public function testDeleteObjectSecurity(): void
     {
-        $handler = $this->getRoleSecurityHandler(['ROLE_FOO']);
+        $handler = $this->getRoleSecurityHandler('ROLE_FOO');
         $handler->deleteObjectSecurity($this->getSonataAdminObject(), new \stdClass());
     }
 
     public function testBuildSecurityInformation(): void
     {
-        $handler = $this->getRoleSecurityHandler(['ROLE_FOO']);
+        $handler = $this->getRoleSecurityHandler('ROLE_FOO');
         static::assertSame([], $handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
     /**
-     * @param string[] $superAdminRoles
+     * @param string|string[] $superAdminRoles
      */
-    private function getRoleSecurityHandler(array $superAdminRoles): RoleSecurityHandler
+    private function getRoleSecurityHandler($superAdminRoles): RoleSecurityHandler
     {
         return new RoleSecurityHandler($this->authorizationChecker, $superAdminRoles);
     }

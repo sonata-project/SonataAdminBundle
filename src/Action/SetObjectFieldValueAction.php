@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Action;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformerResolverInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
-use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
+use Sonata\AdminBundle\Twig\RenderElementRuntime;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,18 +54,35 @@ final class SetObjectFieldValueAction
      */
     private $propertyAccessor;
 
+    /**
+     * @var RenderElementRuntime
+     */
+    private $renderElementRuntime;
+
     public function __construct(
         Environment $twig,
         AdminFetcherInterface $adminFetcher,
         ValidatorInterface $validator,
         DataTransformerResolverInterface $resolver,
-        PropertyAccessorInterface $propertyAccessor
+        PropertyAccessorInterface $propertyAccessor,
+        ?RenderElementRuntime $renderElementRuntime = null
     ) {
         $this->adminFetcher = $adminFetcher;
         $this->twig = $twig;
         $this->validator = $validator;
         $this->resolver = $resolver;
         $this->propertyAccessor = $propertyAccessor;
+
+        // NEXT_MAJOR: Remove the deprecation and restrict param constructor to RenderElementRuntime.
+        if (null === $renderElementRuntime) {
+            @trigger_error(sprintf(
+                'Passing null as argument 5 of "%s()" is deprecated since sonata-project/admin-bundle 4.7'
+                .' and will throw an error in 5.0. You MUST pass an instance of %s instead.',
+                __METHOD__,
+                RenderElementRuntime::class
+            ), \E_USER_DEPRECATED);
+        }
+        $this->renderElementRuntime = $renderElementRuntime ?? new RenderElementRuntime($propertyAccessor);
     }
 
     /**
@@ -174,11 +191,7 @@ final class SetObjectFieldValueAction
         $admin->update($object);
 
         // render the widget
-        // todo : fix this, the twig environment variable is not set inside the extension ...
-        $extension = $this->twig->getExtension(RenderElementExtension::class);
-        \assert($extension instanceof RenderElementExtension);
-
-        $content = $extension->renderListElement($this->twig, $rootObject, $fieldDescription);
+        $content = $this->renderElementRuntime->renderListElement($this->twig, $rootObject, $fieldDescription);
 
         return new JsonResponse($content, Response::HTTP_OK);
     }

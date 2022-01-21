@@ -56,6 +56,7 @@ final class RoutesCache
         if ($cache->isFresh()) {
             $content = file_get_contents($filename);
             if (false !== $content) {
+                /** @var array<string, string>|false $routes */
                 $routes = unserialize($content);
                 if (false !== $routes) {
                     return $routes;
@@ -72,7 +73,9 @@ final class RoutesCache
         }
 
         foreach ($admin->getRoutes()->getElements() as $code => $route) {
-            $routes[$code] = $route->getDefault('_sonata_name');
+            $name = $route->getDefault('_sonata_name');
+            \assert(\is_string($name));
+            $routes[$code] = $name;
         }
 
         foreach ($admin->getExtensions() as $extension) {

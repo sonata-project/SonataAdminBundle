@@ -14,12 +14,17 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Twig\Extension\GroupExtension;
+use Sonata\AdminBundle\Twig\GroupRuntime;
 use Symfony\Component\DependencyInjection\Container;
 
+/**
+ * NEXT_MAJOR: Remove this test.
+ *
+ * @group legacy
+ */
 final class GroupExtensionTest extends TestCase
 {
     public function testGetDashboardGroupsWithCreatableAdmins(): void
@@ -65,17 +70,17 @@ final class GroupExtensionTest extends TestCase
                 'roles' => [],
             ],
         ]);
-        $twigExtension = new GroupExtension($pool);
+        $twigExtension = new GroupExtension(new GroupRuntime($pool));
 
-        $adminNonCreatable = $this->createMock(AdminInterface::class);
-        $adminCreatable = $this->createMock(AdminInterface::class);
+        // NEXT_MAJOR: Use createMock instead.
+        $adminNonCreatable = $this->getMockBuilder(AdminInterface::class)->addMethods(['showInDashboard'])->getMockForAbstractClass();
+        $adminCreatable = $this->getMockBuilder(AdminInterface::class)->addMethods(['showInDashboard'])->getMockForAbstractClass();
 
         $container->set('sonata_admin_non_creatable', $adminNonCreatable);
         $container->set('sonata_admin_creatable', $adminCreatable);
 
         $adminCreatable
-            ->method('showIn')
-            ->with(AbstractAdmin::CONTEXT_DASHBOARD)
+            ->method('showInDashboard')
             ->willReturn(true);
 
         $adminCreatable

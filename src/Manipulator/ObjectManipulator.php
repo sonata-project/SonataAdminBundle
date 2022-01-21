@@ -35,10 +35,15 @@ final class ObjectManipulator
         $parentAssociationMappings = $parentFieldDescription->getParentAssociationMappings();
 
         foreach ($parentAssociationMappings as $parentAssociationMapping) {
-            $object = self::callGetter($object, $parentAssociationMapping['fieldName']);
+            $fieldName = $parentAssociationMapping['fieldName'];
+            \assert(\is_string($fieldName));
+            $object = self::callGetter($object, $fieldName);
         }
 
-        return self::callAdder($object, $instance, $associationMapping['fieldName']);
+        $fieldName = $associationMapping['fieldName'];
+        \assert(\is_string($fieldName));
+
+        return self::callAdder($object, $instance, $fieldName);
     }
 
     /**
@@ -54,14 +59,16 @@ final class ObjectManipulator
         FieldDescriptionInterface $parentFieldDescription
     ): object {
         $mappedBy = $parentFieldDescription->getAssociationMapping()['mappedBy'] ?? null;
-        if (null === $mappedBy) {
+        if (!\is_string($mappedBy)) {
             return $instance;
         }
 
         $parentAssociationMappings = $parentFieldDescription->getParentAssociationMappings();
 
         foreach ($parentAssociationMappings as $parentAssociationMapping) {
-            $object = self::callGetter($object, $parentAssociationMapping['fieldName']);
+            $fieldName = $parentAssociationMapping['fieldName'];
+            \assert(\is_string($fieldName));
+            $object = self::callGetter($object, $fieldName);
         }
 
         return self::callSetter($instance, $object, $mappedBy);

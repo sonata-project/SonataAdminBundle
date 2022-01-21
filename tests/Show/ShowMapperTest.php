@@ -55,7 +55,7 @@ final class ShowMapperTest extends TestCase
     private $fieldDescriptionCollection;
 
     /**
-     * @var array<string, mixed>
+     * @var array<string, array<string, mixed>>
      */
     private $groups;
 

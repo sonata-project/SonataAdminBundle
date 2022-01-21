@@ -94,6 +94,7 @@ final class ExtensionCompilerPassTest extends TestCase
         $method->setAccessible(true);
         $extensionMap = $method->invokeArgs(new ExtensionCompilerPass(), [$extensionMap]);
 
+        static::assertIsArray($extensionMap);
         static::assertArrayHasKey('admins', $extensionMap);
         static::assertArrayHasKey('excludes', $extensionMap);
         static::assertArrayHasKey('implements', $extensionMap);
@@ -126,6 +127,8 @@ final class ExtensionCompilerPassTest extends TestCase
 
         $method->setAccessible(true);
         $extensionMap = $method->invokeArgs(new ExtensionCompilerPass(), [$extensionMap]);
+
+        static::assertIsArray($extensionMap);
 
         // Admins
         static::assertArrayHasKey('admins', $extensionMap);

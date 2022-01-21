@@ -44,6 +44,7 @@ interface FieldDescriptionInterface
     public const TYPE_DATETIME = 'datetime';
     public const TYPE_TEXTAREA = 'textarea';
     public const TYPE_EMAIL = 'email';
+    public const TYPE_ENUM = 'enum';
     public const TYPE_TRANS = 'trans';
     public const TYPE_STRING = 'string';
     public const TYPE_INTEGER = 'integer';

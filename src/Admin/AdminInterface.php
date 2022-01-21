@@ -31,6 +31,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * NEXT_MAJOR: Add all these methods to the interface by uncommenting them.
  *
+ * @method bool showInDashboard()
  * @method void removeExtension(AdminExtensionInterface $extension)
  *
  * @phpstan-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
@@ -115,6 +116,8 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     public function hasRoute(string $name): bool;
 
     /**
+     * NEXT_MAJOR: Restrict $name typehint to string.
+     *
      * @param string|string[] $name
      *
      * @phpstan-param T|null $object
@@ -267,7 +270,15 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function getFilterParameters(): array;
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.7 use showInDashboard instead
+     */
     public function showIn(string $context): bool;
+
+    // NEXT_MAJOR: Uncomment this for Sonata 5
+    //public function showInDashboard(): bool;
 
     /**
      * Add object security, fe. make the current user owner of the object.
@@ -296,12 +307,12 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     public function getTranslationDomain(): string;
 
     /**
-     * @return array<string, mixed>
+     * @return array<string, array<string, mixed>>
      */
     public function getFormGroups(): array;
 
     /**
-     * @param array<string, mixed> $formGroups
+     * @param array<string, array<string, mixed>> $formGroups
      */
     public function setFormGroups(array $formGroups): void;
 
@@ -313,36 +324,36 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     public function reorderFormGroup(string $group, array $keys): void;
 
     /**
-     * @return array<string, mixed>
+     * @return array<string, array<string, mixed>>
      */
     public function getFormTabs(): array;
 
     /**
-     * @param array<string, mixed> $formTabs
+     * @param array<string, array<string, mixed>> $formTabs
      */
     public function setFormTabs(array $formTabs): void;
 
     /**
-     * @return array<string, mixed>
+     * @return array<string, array<string, mixed>>
      */
     public function getShowTabs(): array;
 
     /**
-     * @param array<string, mixed> $showTabs
+     * @param array<string, array<string, mixed>> $showTabs
      */
     public function setShowTabs(array $showTabs): void;
 
     /**
      * Returns the show groups.
      *
-     * @return array<string, mixed>
+     * @return array<string, array<string, mixed>>
      */
     public function getShowGroups(): array;
 
     /**
      * Set the show groups.
      *
-     * @param array<string, mixed> $showGroups
+     * @param array<string, array<string, mixed>> $showGroups
      */
     public function setShowGroups(array $showGroups): void;
 

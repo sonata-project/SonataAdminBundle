@@ -15,7 +15,13 @@ namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Twig\Extension\IconExtension;
+use Sonata\AdminBundle\Twig\IconRuntime;
 
+/**
+ * NEXT_MAJOR: Remove this test.
+ *
+ * @group legacy
+ */
 final class IconExtensionTest extends TestCase
 {
     /**
@@ -23,7 +29,7 @@ final class IconExtensionTest extends TestCase
      */
     public function testParseIcon(string $icon, string $expected): void
     {
-        $twigExtension = new IconExtension();
+        $twigExtension = new IconExtension(new IconRuntime());
 
         static::assertSame($expected, $twigExtension->parseIcon($icon));
     }

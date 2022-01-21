@@ -16,10 +16,13 @@ namespace Sonata\AdminBundle\Tests\Twig\Extension;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Twig\Extension\XEditableExtension;
+use Sonata\AdminBundle\Twig\XEditableRuntime;
 use Symfony\Component\Translation\Translator;
 
 /**
- * @author Andrej Hudec <pulzarraider@gmail.com>
+ * NEXT_MAJOR: Remove this test.
+ *
+ * @group legacy
  */
 final class XEditableExtensionTest extends TestCase
 {
@@ -31,7 +34,7 @@ final class XEditableExtensionTest extends TestCase
      */
     public function testGetXEditableChoicesIsIdempotent(array $options, array $expectedChoices): void
     {
-        $twigExtension = new XEditableExtension(new Translator('en'));
+        $twigExtension = new XEditableExtension(new XEditableRuntime(new Translator('en')));
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription

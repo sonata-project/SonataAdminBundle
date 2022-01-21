@@ -20,8 +20,14 @@ use Sonata\AdminBundle\Exception\AdminCodeNotFoundException;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension;
+use Sonata\AdminBundle\Twig\TemplateRegistryRuntime;
 use Symfony\Component\DependencyInjection\Container;
 
+/**
+ * NEXT_MAJOR: Remove this test.
+ *
+ * @group legacy
+ */
 final class TemplateRegistryExtensionTest extends TestCase
 {
     /**
@@ -46,10 +52,10 @@ final class TemplateRegistryExtensionTest extends TestCase
         $container->set('admin.post', $admin);
         $pool = new Pool($container, ['admin.post']);
 
-        $this->extension = new TemplateRegistryExtension(
+        $this->extension = new TemplateRegistryExtension(new TemplateRegistryRuntime(
             $templateRegistry,
             $pool
-        );
+        ));
     }
 
     public function testGetFunctions(): void

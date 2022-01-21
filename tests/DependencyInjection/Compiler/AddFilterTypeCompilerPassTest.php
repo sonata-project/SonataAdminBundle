@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Reference;
 
 final class AddFilterTypeCompilerPassTest extends AbstractCompilerPassTestCase
 {
@@ -56,8 +57,11 @@ final class AddFilterTypeCompilerPassTest extends AbstractCompilerPassTestCase
 
         $this->compile();
 
+        $serviceLocator = $this->container->getDefinition('sonata.admin.builder.filter.factory')->getArgument(0);
+        static::assertInstanceOf(Reference::class, $serviceLocator);
+
         self::assertContainerBuilderHasServiceLocator(
-            (string) $this->container->getDefinition('sonata.admin.builder.filter.factory')->getArgument(0),
+            (string) $serviceLocator,
             [
                 FooFilter::class => 'acme.demo.foo_filter',
                 BarFilter::class => 'acme.demo.bar_filter',
