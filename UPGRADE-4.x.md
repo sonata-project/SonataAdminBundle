@@ -1,7 +1,7 @@
 UPGRADE 4.x
 ===========
 
-UPGRADE FROM 4.x to 4.x
+UPGRADE FROM 4.7 to 4.8
 =======================
 
 ## Admin definitions

@@ -50,7 +50,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     /**
      * NEXT_MAJOR: Remove this property.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use $modelClass instead.
+     * @deprecated since sonata-project/admin-bundle version 4.8 use $modelClass instead.
      *
      * The class name managed by the admin class.
      *
@@ -216,7 +216,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         if (\func_num_args() > 0) {
             @trigger_error(
                 'Setting the code, the model class and the base controller name with the constructor is deprecated'
-                .' since sonata-project/admin-bundle version 4.x and will not be possible in 5.0 version.'
+                .' since sonata-project/admin-bundle version 4.8 and will not be possible in 5.0 version.'
                 .' Use the `code`, `model_class` and `controller` attribute of the `sonata.admin` tag or'
                 .' the method "setCode()", "setModelClass()" and "setBaseControllerName()" instead.',
                 \E_USER_DEPRECATED
