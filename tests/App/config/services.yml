@@ -52,26 +52,21 @@ services:
         class: Sonata\AdminBundle\Tests\App\FieldDescription\FieldDescriptionFactory
 
     Sonata\AdminBundle\Tests\App\Admin\FooAdmin:
-        arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, 'sonata.admin.controller.crud']
         tags:
-            - {name: sonata.admin, manager_type: test, label: Foo}
+            - {name: sonata.admin, model_class: Sonata\AdminBundle\Tests\App\Model\Foo, controller: 'sonata.admin.controller.crud', manager_type: test, label: Foo}
 
     Sonata\AdminBundle\Tests\App\Admin\FooAdminWithCustomController:
-        arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, Sonata\AdminBundle\Tests\App\Controller\CustomCRUDController]
         tags:
-            - {name: sonata.admin, manager_type: test, label: Foo}
+            - {name: sonata.admin, model_class: Sonata\AdminBundle\Tests\App\Model\Foo, controller: Sonata\AdminBundle\Tests\App\Controller\CustomCRUDController, manager_type: test, label: Foo}
 
     Sonata\AdminBundle\Tests\App\Admin\AdminAsParameterAdmin:
-        arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, ~]
         tags:
-            - {name: sonata.admin, manager_type: test}
+            - {name: sonata.admin, model_class: Sonata\AdminBundle\Tests\App\Model\Foo, manager_type: test}
 
     Sonata\AdminBundle\Tests\App\Admin\EmptyAdmin:
-        arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, ~]
         tags:
-            - {name: sonata.admin, manager_type: test, label: Empty}
+            - {name: sonata.admin, model_class: Sonata\AdminBundle\Tests\App\Model\Foo, manager_type: test, label: Empty}
 
     Sonata\AdminBundle\Tests\App\Admin\TranslatedAdmin:
-        arguments: [~, Sonata\AdminBundle\Tests\App\Model\Translated, ~]
         tags:
-            - {name: sonata.admin, manager_type: test, group: 'group_label', label: 'admin_label'}
+            - {name: sonata.admin, model_class: Sonata\AdminBundle\Tests\App\Model\Translated, manager_type: test, group: 'group_label', label: 'admin_label'}

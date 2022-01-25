@@ -35,13 +35,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * This interface should be implemented to work with the AddDependencyCallsCompilerPass.
  * All the setter are called by this compiler pass.
  *
- * Note that the constructor should also have the following signature
- * ```
- * public function __construct(string $code, string $class, string $controller, ...);
- * ```
- * so that the admin class works correctly with the AddDependencyCallsCompilerPass. Indeed:
- *     - The first and third argument are automatically injected by the AddDependencyCallsCompilerPass.
- *     - The second one is used as a reference of the Admin in the Pool, with the `setAdminClasses` call.
+ * @method void   setCode(string $code)
+ * @method string getCode()
+ * @method void   setModelClass(string $modelClass)
+ * @method string getModelClass()
+ * @method void   setBaseControllerName(string $baseControllerName)
+ * @method string getBaseControllerName()
  *
  * @phpstan-template T of object
  */

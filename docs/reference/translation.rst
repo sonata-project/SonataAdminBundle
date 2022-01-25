@@ -20,10 +20,7 @@ You can configure the catalogue for the Admin class by injecting the value throu
         <!-- config/services.xml -->
 
         <service id="sonata.page.admin.page" class="Sonata\PageBundle\Admin\PageAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="sonata_page" label="Page"/>
-            <argument/>
-            <argument>Application\Sonata\PageBundle\Entity\Page</argument>
-            <argument/>
+            <tag name="sonata.admin" model_class="Application\Sonata\PageBundle\Entity\Page" manager_type="orm" group="sonata_page" label="Page"/>
             <call method="setTranslationDomain">
                 <argument>SonataPageBundle</argument>
             </call>
@@ -155,14 +152,12 @@ the Container:
         <service id="app.admin.project" class="App\Admin\ProjectAdmin">
             <tag
                 name="sonata.admin"
+                model_class="App\Entity\Project"
                 manager_type="orm"
                 group="Project"
                 label="Project"
                 label_translator_strategy="sonata.admin.label.strategy.native"
              />
-            <argument/>
-            <argument>App\Entity\Project</argument>
-            <argument/>
         </service>
 
 .. note::

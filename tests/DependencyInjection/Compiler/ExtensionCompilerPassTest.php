@@ -409,20 +409,17 @@ final class ExtensionCompilerPassTest extends TestCase
             ->register('sonata_post_admin')
             ->setPublic(true)
             ->setClass(MockAdmin::class)
-            ->setArguments(['', Post::class, 'sonata.admin.controller.crud'])
-            ->addTag('sonata.admin');
+            ->addTag('sonata.admin', ['model_class' => Post::class]);
         $container
             ->register('sonata_news_admin')
             ->setPublic(true)
             ->setClass(MockAdmin::class)
-            ->setArguments(['', News::class, 'sonata.admin.controller.crud'])
-            ->addTag('sonata.admin');
+            ->addTag('sonata.admin', ['model_class' => News::class]);
         $container
             ->register('sonata_article_admin')
             ->setPublic(true)
             ->setClass(MockAdmin::class)
-            ->setArguments(['', Article::class, 'sonata.admin.controller.crud'])
-            ->addTag('sonata.admin');
+            ->addTag('sonata.admin', ['model_class' => Article::class]);
         $container
             ->register('event_dispatcher')
             ->setClass(EventDispatcher::class);

@@ -194,9 +194,8 @@ your admin services or remove menu items from the ``sonata_admin`` dashboard gro
 
     sonata_admin.admin.post:
         class: Sonata\AdminBundle\Admin\PostAdmin
-        arguments: [~, Sonata\AdminBundle\Entity\Post, Sonata\AdminBundle\Controller\CRUDController]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: admin, label: Post, show_in_dashboard: false }
+            - { name: sonata.admin, model_class: Sonata\AdminBundle\Entity\Post, controller: Sonata\AdminBundle\Controller\CRUDController, manager_type: orm, group: admin, label: Post, show_in_dashboard: false }
 
 .. code-block:: yaml
 
@@ -253,9 +252,8 @@ or in sonata_admin dashboard group configuration:
 
     sonata_admin.admin.post:
         class: Sonata\AdminBundle\Admin\PostAdmin
-        arguments: [~, Sonata\AdminBundle\Entity\Post, Sonata\AdminBundle\Controller\CRUDController]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: admin, label: Post, on_top: true }
+            - { name: sonata.admin, model_class: Sonata\AdminBundle\Entity\Post, controller: Sonata\AdminBundle\Controller\CRUDController, manager_type: orm, group: admin, label: Post, on_top: true }
 
 .. code-block:: yaml
 

@@ -70,22 +70,15 @@ services:
         services:
             app.admin.post:
                 class: App\Admin\PostAdmin
-                arguments:
-                    - ~
-                    - App\Entity\Post
-                    - ~
                 tags:
-                    - { name: sonata.admin, manager_type: orm, group: 'Content', label: 'Post' }
+                    - { name: sonata.admin, model_class: App\Entity\Post, manager_type: orm, group: 'Content', label: 'Post' }
 
     .. code-block:: xml
 
         <!-- config/services.xml -->
 
         <service id="app.admin.post" class="App\Admin\PostAdmin">
-              <argument/>
-              <argument>App\Entity\Post</argument>
-              <argument/>
-              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
+              <tag name="sonata.admin" model_class="App\Entity\Post" manager_type="orm" group="Content" label="Post"/>
           </service>
 
 In these examples, notice the ``group`` tag, stating that this particular ``Admin``
@@ -100,12 +93,9 @@ service belongs to the ``Content`` group.
         services:
             app.admin.post:
                 class: App\Admin\PostAdmin
-                arguments:
-                    - ~
-                    - App\Entity\Post
-                    - ~
                 tags:
                     - name: sonata.admin
+                      model_class: App\Entity\Post
                       manager_type: orm
                       group: 'app.admin.group.content'
                       label: 'app.admin.model.post'
@@ -116,11 +106,9 @@ service belongs to the ``Content`` group.
         <!-- config/services.xml -->
 
         <service id="app.admin.post" class="App\Admin\PostAdmin">
-              <argument/>
-              <argument>App\Entity\Post</argument>
-              <argument/>
               <tag
                   name="sonata.admin"
+                  model_class="App\Entity\Post"
                   manager_type="orm"
                   group="app.admin.group.content"
                   label="app.admin.model.post"

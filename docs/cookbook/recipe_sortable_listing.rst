@@ -103,12 +103,8 @@ Now you can update your ``services.yaml`` to use the handler provided by the ``p
     services:
         app.admin.client:
             class: App\Admin\ClientAdmin
-            arguments:
-                - ~
-                - App\Entity\Client
-                - 'PixSortableBehaviorBundle:SortableAdmin' # define the new controller via the third argument
             tags:
-                - { name: sonata.admin, manager_type: orm, label: 'Clients' }
+                - { name: sonata.admin, model_class: App\Entity\Client, controller: 'PixSortableBehaviorBundle:SortableAdmin', manager_type: orm, label: 'Clients' }
 
 Now we need to define the sort by field to be ``$position``::
 
