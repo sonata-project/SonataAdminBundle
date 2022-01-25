@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Twig\Environment;
 
@@ -52,7 +53,7 @@ final class GetShortObjectDescriptionAction
 
         $objectId = $request->get('objectId');
         if (!\is_string($objectId) && !\is_int($objectId)) {
-            throw new BadRequestParamHttpException('objectId', 'string|int', $objectId);
+            throw new BadRequestParamHttpException('objectId', ['string', 'int'], $objectId);
         }
 
         $object = $admin->getObject($objectId);
@@ -78,6 +79,6 @@ final class GetShortObjectDescriptionAction
             ]));
         }
 
-        throw new \RuntimeException('Invalid format');
+        throw new BadRequestHttpException('Invalid format');
     }
 }

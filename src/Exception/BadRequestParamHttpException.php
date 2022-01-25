@@ -21,14 +21,19 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 final class BadRequestParamHttpException extends BadRequestHttpException
 {
     /**
-     * @param mixed $value
+     * @param string|string[] $expectedTypes
+     * @param mixed           $value
      */
-    public function __construct(string $name, string $expectedType, $value)
+    public function __construct(string $name, $expectedTypes, $value)
     {
+        if (!\is_array($expectedTypes)) {
+            $expectedTypes = [$expectedTypes];
+        }
+
         $message = sprintf(
-            'Expected request parameter "%s" of type "%s", "%s" given',
+            'Expected request parameter "%s" of type "%s", %s given',
             $name,
-            $expectedType,
+            implode('|', $expectedTypes),
             \is_object($value) ? 'instance of "'.\get_class($value).'"' : '"'.\gettype($value).'"'
         );
 

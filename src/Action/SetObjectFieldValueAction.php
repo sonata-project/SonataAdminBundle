@@ -112,7 +112,7 @@ final class SetObjectFieldValueAction
 
         $objectId = $request->get('objectId');
         if (!\is_string($objectId) && !\is_int($objectId)) {
-            throw new BadRequestParamHttpException('objectId', 'string|int', $objectId);
+            throw new BadRequestParamHttpException('objectId', ['string', 'int'], $objectId);
         }
 
         $object = $admin->getObject($objectId);

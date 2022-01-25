@@ -70,7 +70,7 @@ final class RetrieveFormFieldElementAction
                 ));
             }
         } else {
-            throw new BadRequestParamHttpException('objectId', 'string|int|null', $objectId);
+            throw new BadRequestParamHttpException('objectId', ['string', 'int', 'null'], $objectId);
         }
 
         $admin->setSubject($subject);

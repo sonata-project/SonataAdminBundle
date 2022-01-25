@@ -23,6 +23,7 @@ use Sonata\AdminBundle\Search\ChainableFilterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -42,6 +43,7 @@ final class RetrieveAutocompleteItemsAction
      * Retrieve list of items for autocomplete form field.
      *
      * @throws \RuntimeException
+     * @throws AccessDeniedException
      * @throws AccessDeniedException
      */
     public function __invoke(Request $request): JsonResponse
@@ -111,7 +113,7 @@ final class RetrieveAutocompleteItemsAction
 
         // check user permission
         if (!\is_string($targetAdminAccessAction)) {
-            throw new \RuntimeException('The "target_admin_access_action" action must be a string.');
+            throw new BadRequestHttpException('The "target_admin_access_action" action must be a string.');
         }
         $targetAdmin->checkAccess($targetAdminAccessAction);
 
@@ -124,7 +126,7 @@ final class RetrieveAutocompleteItemsAction
 
         if (null !== $callback) {
             if (!\is_callable($callback)) {
-                throw new \RuntimeException('Callback does not contain callable function.');
+                throw new BadRequestHttpException('Callback does not contain callable function.');
             }
 
             $callback($targetAdmin, $property, $searchText);
@@ -132,7 +134,7 @@ final class RetrieveAutocompleteItemsAction
             $previousFilter = null;
             foreach ($property as $prop) {
                 if (!$datagrid->hasFilter($prop)) {
-                    throw new \RuntimeException(sprintf(
+                    throw new BadRequestHttpException(sprintf(
                         'To retrieve autocomplete items, you MUST add the filter "%s"'
                         .' to the %s::configureDatagridFilters() method.',
                         $prop,
@@ -142,7 +144,7 @@ final class RetrieveAutocompleteItemsAction
 
                 $filter = $datagrid->getFilter($prop);
                 if (!$filter instanceof ChainableFilterInterface) {
-                    throw new \RuntimeException(sprintf(
+                    throw new BadRequestHttpException(sprintf(
                         'To retrieve autocomplete items with multiple properties,'
                         .' the filter "%s" of the admin "%s" MUST implements "%s".',
                         $filter->getName(),
@@ -164,7 +166,7 @@ final class RetrieveAutocompleteItemsAction
             $datagrid->reorderFilters($property);
         } elseif (\is_string($property)) {
             if (!$datagrid->hasFilter($property)) {
-                throw new \RuntimeException(sprintf(
+                throw new BadRequestHttpException(sprintf(
                     'To retrieve autocomplete items, you MUST add the filter "%s"'
                     .' to the %s::configureDatagridFilters() method.',
                     $property,
@@ -174,11 +176,11 @@ final class RetrieveAutocompleteItemsAction
 
             $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $searchText);
         } else {
-            throw new \RuntimeException('Unsupported property type.');
+            throw new BadRequestHttpException('Unsupported property type.');
         }
 
         if (!\is_string($reqParamPageNumber)) {
-            throw new \RuntimeException('The "req_param_name_page_number" value must be a string.');
+            throw new BadRequestHttpException('The "req_param_name_page_number" value must be a string.');
         }
 
         $datagrid->setValue(DatagridInterface::PER_PAGE, null, $itemsPerPage);
@@ -193,7 +195,7 @@ final class RetrieveAutocompleteItemsAction
         foreach ($results as $model) {
             if (null !== $toStringCallback) {
                 if (!\is_callable($toStringCallback)) {
-                    throw new \RuntimeException('Option "to_string_callback" does not contain callable function.');
+                    throw new BadRequestHttpException('Option "to_string_callback" does not contain callable function.');
                 }
 
                 $label = $toStringCallback($model, $property);
