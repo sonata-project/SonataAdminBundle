@@ -361,7 +361,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         if (null === $modelClass) {
             @trigger_error(
                 'Not setting the "model_class" attribute is deprecated'
-                .' since sonata-project/admin-bundle 4.x and will throw an error in 5.0.',
+                .' since sonata-project/admin-bundle 4.8 and will throw an error in 5.0.',
                 \E_USER_DEPRECATED
             );
 
