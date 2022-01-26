@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AdminSearchCompilerPass;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
+use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -27,15 +28,27 @@ final class AdminSearchCompilerPassTest extends AbstractCompilerPassTestCase
     public function testProcess(): void
     {
         $adminFooDefinition = new Definition(PostAdmin::class);
-        $adminFooDefinition->addTag('sonata.admin', ['global_search' => true]);
+        $adminFooDefinition->addTag('sonata.admin', [
+            'code' => 'admin_foo_code',
+            'model_class' => Post::class,
+            'global_search' => true,
+        ]);
         $this->setDefinition('admin.foo', $adminFooDefinition);
 
         $adminBarDefinition = new Definition(PostAdmin::class);
-        $adminBarDefinition->addTag('sonata.admin', ['global_search' => false]);
+        $adminBarDefinition->addTag('sonata.admin', [
+            'code' => 'admin_bar_code',
+            'model_class' => Post::class,
+            'global_search' => false,
+        ]);
         $this->setDefinition('admin.bar', $adminBarDefinition);
 
         $adminBazDefinition = new Definition(PostAdmin::class);
-        $adminBazDefinition->addTag('sonata.admin', ['some_attribute' => 42]);
+        $adminBazDefinition->addTag('sonata.admin', [
+            'code' => 'admin_baz_code',
+            'model_class' => Post::class,
+            'some_attribute' => 42,
+        ]);
         $this->setDefinition('admin.baz', $adminBazDefinition);
 
         $searchHandlerDefinition = new Definition();
@@ -46,7 +59,7 @@ final class AdminSearchCompilerPassTest extends AbstractCompilerPassTestCase
         self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata.admin.search.handler',
             'configureAdminSearch',
-            [['admin.foo' => true, 'admin.bar' => false]]
+            [['admin_foo_code' => true, 'admin_bar_code' => false]]
         );
     }
 
