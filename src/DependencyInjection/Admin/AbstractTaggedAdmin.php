@@ -39,27 +39,44 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 {
     /**
+     * NEXT_MAJOR: Change visibility to private.
+     *
      * The code related to the admin.
      *
-     * @var string
+     * @var string|null
      */
     protected $code;
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @deprecated since sonata-project/admin-bundle version 4.8 use $modelClass instead.
+     *
      * The class name managed by the admin class.
      *
-     * @var string
+     * @var string|null
      *
-     * @phpstan-var class-string<T>
+     * @phpstan-var class-string<T>|null
      */
     protected $class;
 
     /**
+     * NEXT_MAJOR: Change visibility to private.
+     *
      * The base name controller used to generate the routing information.
      *
-     * @var string
+     * @var string|null
      */
     protected $baseControllerName;
+
+    /**
+     * The class name managed by the admin class.
+     *
+     * @var string|null
+     *
+     * @phpstan-var class-string<T>|null
+     */
+    private $modelClass;
 
     /**
      * @var string|null
@@ -190,16 +207,82 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     private $templateRegistry;
 
     /**
-     * @phpstan-param class-string<T> $class
+     * NEXT_MAJOR: Remove the __construct method.
+     *
+     * @phpstan-param class-string<T>|null $class
      */
-    public function __construct(string $code, string $class, string $baseControllerName)
+    public function __construct(?string $code = null, ?string $class = null, ?string $baseControllerName = null)
     {
-        $this->code = $code;
+        if (\func_num_args() > 0) {
+            @trigger_error(
+                'Setting the code, the model class and the base controller name with the constructor is deprecated'
+                .' since sonata-project/admin-bundle version 4.8 and will not be possible in 5.0 version.'
+                .' Use the `code`, `model_class` and `controller` attribute of the `sonata.admin` tag or'
+                .' the method "setCode()", "setModelClass()" and "setBaseControllerName()" instead.',
+                \E_USER_DEPRECATED
+            );
+        }
+
+        if (null !== $code) {
+            $this->code = $code;
+        }
         $this->class = $class;
-        $this->baseControllerName = $baseControllerName;
+        $this->modelClass = $class;
+
+        if (null !== $baseControllerName) {
+            $this->baseControllerName = $baseControllerName;
+        }
     }
 
     abstract public function initialize(): void;
+
+    final public function setCode(string $code): void
+    {
+        $this->code = $code;
+    }
+
+    final public function getCode(): string
+    {
+        if (null === $this->code) {
+            return static::class;
+        }
+
+        return $this->code;
+    }
+
+    /**
+     * @param class-string<T> $modelClass
+     */
+    final public function setModelClass(string $modelClass): void
+    {
+        $this->modelClass = $modelClass;
+    }
+
+    /**
+     * @return class-string<T>
+     */
+    final public function getModelClass(): string
+    {
+        if (null === $this->modelClass) {
+            throw new \LogicException(sprintf('Admin "%s" has no model class.', static::class));
+        }
+
+        return $this->modelClass;
+    }
+
+    final public function setBaseControllerName(string $baseControllerName): void
+    {
+        $this->baseControllerName = $baseControllerName;
+    }
+
+    final public function getBaseControllerName(): string
+    {
+        if (null === $this->baseControllerName) {
+            throw new \LogicException(sprintf('Admin "%s" has no base controller name.', static::class));
+        }
+
+        return $this->baseControllerName;
+    }
 
     final public function setLabel(?string $label): void
     {

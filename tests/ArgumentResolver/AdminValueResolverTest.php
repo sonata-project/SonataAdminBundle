@@ -19,7 +19,6 @@ use Sonata\AdminBundle\ArgumentResolver\AdminValueResolver;
 use Sonata\AdminBundle\Request\AdminFetcher;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
-use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -38,7 +37,8 @@ final class AdminValueResolverTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->admin = new PostAdmin('sonata.admin.post', Post::class, '');
+        $this->admin = new PostAdmin();
+        $this->admin->setCode('sonata.admin.post');
 
         $container = new Container();
         $container->set('sonata.admin.post', $this->admin);

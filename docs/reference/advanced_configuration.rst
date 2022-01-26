@@ -45,13 +45,10 @@ With a tag attribute (less verbose)
 
         app.admin.project:
             class: App\Admin\ProjectAdmin
-            arguments:
-                - ~
-                - App\Entity\Project
-                - ~
             tags:
                 -
                     name: sonata.admin
+                    model_class: App\Entity\Project
                     manager_type: orm
                     group: 'Project'
                     label: 'Project'
@@ -63,11 +60,9 @@ With a tag attribute (less verbose)
         <!-- config/services.xml -->
 
         <service id="app.admin.project" class="App\Admin\ProjectAdmin">
-            <argument/>
-            <argument>App\Entity\Project</argument>
-            <argument/>
             <tag
                 name="sonata.admin"
+                model_class="App\Entity\Project"
                 manager_type="orm"
                 group="Project"
                 label="Project"
@@ -87,31 +82,24 @@ With a method call (more verbose)
 
         app.admin.project:
             class: App\Admin\ProjectAdmin
-            arguments:
-                - ~
-                - App\Entity\Project
-                - ~
             calls:
                 - [setLabelTranslatorStrategy, ['@sonata.admin.label.strategy.native']]
                 - [setRouteBuilder, ['@sonata.admin.route.path_info']]
             tags:
-                - { name: sonata.admin, manager_type: orm, group: 'Project', label: 'Project' }
+                - { name: sonata.admin, model_class: App\Entity\Project, manager_type: orm, group: 'Project', label: 'Project' }
 
     .. code-block:: xml
 
         <!-- config/services.xml -->
 
         <service id="app.admin.project" class="App\Admin\ProjectAdmin">
-            <argument/>
-            <argument>App\Entity\Project</argument>
-            <argument/>
             <call method="setLabelTranslatorStrategy">
                 <argument type="service" id="sonata.admin.label.strategy.native"/>
             </call>
             <call method="setRouteBuilder">
                 <argument type="service" id="sonata.admin.route.path_info"/>
             </call>
-            <tag name="sonata.admin" manager_type="orm" group="Project" label="Project"/>
+            <tag name="sonata.admin" model_class="App\Entity\Project" manager_type="orm" group="Project" label="Project"/>
         </service>
 
 If you want to modify the service that is going to be injected, add the following code to your
@@ -201,10 +189,6 @@ Lets consider a base class named ``Person`` and its subclasses ``Student`` and `
 
         app.admin.person:
             class: App\Admin\PersonAdmin
-            arguments:
-                - ~
-                - App\Entity\Person
-                - ~
             calls:
                 -
                     - setSubClasses
@@ -212,23 +196,20 @@ Lets consider a base class named ``Person`` and its subclasses ``Student`` and `
                         student: App\Entity\Student
                         teacher: App\Entity\Teacher
             tags:
-                - { name: sonata.admin, manager_type: orm, group: "admin", label: "Person" }
+                - { name: sonata.admin, model_class: App\Entity\Person, manager_type: orm, group: "admin", label: "Person" }
 
     .. code-block:: xml
 
         <!-- config/services.xml -->
 
         <service id="app.admin.person" class="App\Admin\PersonAdmin">
-            <argument/>
-            <argument>App\Entity\Person</argument>
-            <argument></argument>
             <call method="setSubClasses">
                 <argument type="collection">
                     <argument key="student">App\Entity\Student</argument>
                     <argument key="teacher">App\Entity\Teacher</argument>
                 </argument>
             </call>
-            <tag name="sonata.admin" manager_type="orm" group="admin" label="Person"/>
+            <tag name="sonata.admin" model_class="App\Entity\Person" manager_type="orm" group="admin" label="Person"/>
         </service>
 
 You will need to change the way forms are configured in order to
@@ -507,9 +488,8 @@ for specific Admin class:
             # ...
             admin.custom:
                 class: App\Admin\CustomAdmin
-                arguments: [~, App\Entity\Custom, ~]
                 tags:
-                    - { name: sonata.admin, manager_type: orm, label: Category, security_handler: App\Security\Handler\CustomSecurityHandler }
+                    - { name: sonata.admin, model_class: App\Entity\Custom, manager_type: orm, label: Category, security_handler: App\Security\Handler\CustomSecurityHandler }
 
 You can also use the default SecurityHandler (defined in global configuration)
 in your custom SecurityHandler::
