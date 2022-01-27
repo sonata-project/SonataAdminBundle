@@ -43,12 +43,12 @@ final class AdminSearchCompilerPass implements CompilerPassInterface
 
             foreach ($tags as $attributes) {
                 $globalSearch = $this->getGlobalSearchValue($attributes, $id);
-
                 if (null === $globalSearch) {
                     continue;
                 }
 
-                $adminSearch[$id] = $globalSearch;
+                $adminCode = $attributes['code'] ?? $id;
+                $adminSearch[$adminCode] = $globalSearch;
             }
         }
 

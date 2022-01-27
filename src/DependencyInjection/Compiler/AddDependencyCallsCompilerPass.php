@@ -28,7 +28,7 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Add all dependencies to the Admin class, this avoid to write too many lines
+ * Add all dependencies to the Admin class, this avoids writing too many lines
  * in the configuration files.
  *
  * @internal

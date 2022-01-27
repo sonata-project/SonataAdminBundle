@@ -34,7 +34,7 @@ final class SonataAdminBundle extends Bundle
     {
         $container->addCompilerPass(new AddDependencyCallsCompilerPass());
         $container->addCompilerPass(new AddFilterTypeCompilerPass());
-        $container->addCompilerPass(new AdminSearchCompilerPass());
+        $container->addCompilerPass(new AdminSearchCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -1);
         $container->addCompilerPass(new ExtensionCompilerPass());
         $container->addCompilerPass(new GlobalVariablesCompilerPass());
         $container->addCompilerPass(new ModelManagerCompilerPass());
