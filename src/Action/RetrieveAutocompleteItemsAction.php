@@ -44,7 +44,6 @@ final class RetrieveAutocompleteItemsAction
      *
      * @throws \RuntimeException
      * @throws AccessDeniedException
-     * @throws AccessDeniedException
      */
     public function __invoke(Request $request): JsonResponse
     {
