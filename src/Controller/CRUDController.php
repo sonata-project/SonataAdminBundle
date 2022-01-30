@@ -31,7 +31,6 @@ use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Sonata\Exporter\Exporter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
@@ -1349,7 +1348,6 @@ class CRUDController extends AbstractController
 
         $errors = [];
         foreach ($form->getErrors(true) as $error) {
-            \assert($error instanceof FormError);
             $errors[] = $error->getMessage();
         }
 

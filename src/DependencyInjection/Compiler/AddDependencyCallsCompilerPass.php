@@ -274,7 +274,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
      *
      * @param array<string, mixed> $attributes
      *
-     * @return array<array<string, array<mixed>>>
+     * @return array<array{string, array<mixed>}>
      */
     private function getDefaultMethodCalls(ContainerBuilder $container, string $serviceId, array $attributes = []): array
     {
