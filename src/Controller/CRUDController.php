@@ -1340,6 +1340,9 @@ class CRUDController extends AbstractController
         return $translator->trans($id, $parameters, $domain, $locale);
     }
 
+    /**
+     * @psalm-suppress PossiblyUndefinedMethod https://github.com/psalm/psalm-plugin-symfony/pull/243
+     */
     protected function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): ?JsonResponse
     {
         if ([] === array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes())) {

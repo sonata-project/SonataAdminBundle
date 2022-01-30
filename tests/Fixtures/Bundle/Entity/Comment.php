@@ -15,7 +15,7 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity;
 
 final class Comment
 {
-    public function __toString()
+    public function __toString(): string
     {
         return 'this is a comment';
     }
