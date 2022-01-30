@@ -100,6 +100,8 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $definition->getMethodCalls()
                 ));
 
+                $this->fixTemplates($id, $container, $definition);
+
                 $arguments = null !== $parentDefinition ?
                     array_merge($parentDefinition->getArguments(), $definition->getArguments()) :
                     $definition->getArguments();
@@ -376,8 +378,6 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             unset($listModes['mosaic']);
         }
         $methodCalls[] = ['setListModes', [$listModes]];
-
-        $this->fixTemplates($serviceId, $container, $definition);
 
         if ($container->hasParameter('sonata.admin.configuration.security.information') && !$definition->hasMethodCall('setSecurityInformation')) {
             $methodCalls[] = ['setSecurityInformation', ['%sonata.admin.configuration.security.information%']];
