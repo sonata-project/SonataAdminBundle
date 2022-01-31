@@ -21,6 +21,3 @@ parameters:
         - # Generic with intersection is buggy https://github.com/phpstan/phpstan/issues/5336
             message: '#Sonata\\AdminBundle\\Datagrid\\(Datagrid|PagerInterface)<PHPUnit\\Framework\\MockObject\\Stub&Sonata\\AdminBundle\\Datagrid\\ProxyQueryInterface>#'
             path: tests/Datagrid/DatagridTest.php
-        - # https://github.com/phpstan/phpstan/issues/5893
-            message: '#^Parameter \#1 \$object of static method Doctrine\\Common\\Util\\ClassUtils\:\:getClass\(\) expects Doctrine\\Persistence\\Proxy\<T of object\>\|T of object, T of object|T of object given\.$#'
-            path: src/Admin/AbstractAdmin.php
