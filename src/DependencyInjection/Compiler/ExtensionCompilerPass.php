@@ -89,7 +89,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
                 $this->addExtension($targets, $id, $extension, $extensionAttributes);
             }
 
-            $extensions = $this->getExtensionsForAdmin($id, $admin, $container, $extensionMap);
+            $extensions = $this->getExtensionsForAdmin($id, $tags, $admin, $container, $extensionMap);
 
             foreach ($extensions as $extension => $attributes) {
                 if (!$container->has($extension)) {
@@ -115,13 +115,14 @@ final class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
+     * @param array<string, mixed>                                              $tags
      * @param array<string, array<string, array<string, array<string, mixed>>>> $extensionMap
      *
      * @return array<string, array<string, mixed>>
      *
      * @phpstan-param FlattenExtensionMap $extensionMap
      */
-    private function getExtensionsForAdmin(string $id, Definition $admin, ContainerBuilder $container, array $extensionMap): array
+    private function getExtensionsForAdmin(string $id, array $tags, Definition $admin, ContainerBuilder $container, array $extensionMap): array
     {
         $extensions = [];
 
@@ -138,14 +139,31 @@ final class ExtensionCompilerPass implements CompilerPassInterface
                     continue;
                 }
 
-                $class = $this->getManagedClass($id, $admin, $container);
+                // NEXT_MAJOR: Remove this line.
+                $defaultModelClass = $admin->getArguments()[1] ?? null;
+                foreach ($tags as $attributes) {
+                    // NEXT_MAJOR: Remove the fallback to $defaultModelClass and use null instead.
+                    $modelClass = $attributes['model_class'] ?? $defaultModelClass;
+                    if (null === $modelClass) {
+                        throw new InvalidArgumentException(sprintf('Missing tag attribute "model_class" on service "%s".', $id));
+                    }
 
-                if (!class_exists($class)) {
-                    continue;
-                }
+                    $class = $container->getParameterBag()->resolveValue($modelClass);
+                    if (!\is_string($class)) {
+                        throw new \TypeError(sprintf(
+                            'Tag attribute "model_class" for service "%s" must be of type string, %s given.',
+                            $id,
+                            \is_object($class) ? \get_class($class) : \gettype($class)
+                        ));
+                    }
 
-                if ($this->isSubtypeOf($type, $subject, $class)) {
-                    $extensions = array_merge($extensions, $extensionList);
+                    if (!class_exists($class)) {
+                        continue;
+                    }
+
+                    if ($this->isSubtypeOf($type, $subject, $class)) {
+                        $extensions = array_merge($extensions, $extensionList);
+                    }
                 }
             }
         }
@@ -155,35 +173,6 @@ final class ExtensionCompilerPass implements CompilerPassInterface
         }
 
         return $extensions;
-    }
-
-    /**
-     * Resolves the class argument of the admin to an actual class (in case of %parameter%).
-     */
-    private function getManagedClass(string $id, Definition $admin, ContainerBuilder $container): string
-    {
-        $adminClass = $admin->getClass();
-        if (null === $adminClass) {
-            throw new InvalidArgumentException(sprintf('The service "%s" has no class.', $id));
-        }
-
-        $argument = $admin->getArgument(1);
-        $class = $container->getParameterBag()->resolveValue($argument);
-
-        if (null === $class) {
-            throw new \DomainException(sprintf('The admin "%s" does not have a valid manager.', $adminClass));
-        }
-
-        if (!\is_string($class)) {
-            throw new \TypeError(sprintf(
-                'Argument "%s" for admin class "%s" must be of type string, %s given.',
-                $argument,
-                $adminClass,
-                \is_object($class) ? \get_class($class) : \gettype($class)
-            ));
-        }
-
-        return $class;
     }
 
     /**

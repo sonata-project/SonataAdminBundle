@@ -46,10 +46,7 @@ Either by using XML:
         <!-- config/services.xml -->
 
         <service id="app.admin.car" class="App\Admin\CarAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="Demo" label="Car"/>
-            <argument/>
-            <argument>App\Entity\Car</argument>
-            <argument>App\Controller\CarAdminController</argument>
+            <tag name="sonata.admin" model_class="App\Entity\Car" controller="App\Controller\CarAdminController" manager_type="orm" group="Demo" label="Car"/>
         </service>
 
 or by adding it to your ``services.yaml``:
@@ -62,11 +59,7 @@ or by adding it to your ``services.yaml``:
         app.admin.car:
             class: App\Admin\CarAdmin
             tags:
-                - { name: sonata.admin, manager_type: orm, group: Demo, label: Car }
-            arguments:
-                - ~
-                - App\Entity\Car
-                - App\Controller\CarAdminController
+                - { name: sonata.admin, model_class: App\Entity\Car, controller: App\Controller\CarAdminController, manager_type: orm, group: Demo, label: Car }
 
 For more information about service configuration please refer to Step 3 of :doc:`../getting_started/creating_an_admin`
 

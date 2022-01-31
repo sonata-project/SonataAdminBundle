@@ -42,9 +42,8 @@ The same applies to the service definition:
     services:
         admin.blog_post:
             class: App\Admin\BlogPostAdmin
-            arguments: [~, App\Entity\BlogPost, ~]
             tags:
-                - { name: sonata.admin, manager_type: orm, label: 'Blog post' }
+                - { name: sonata.admin, model_class: App\Entity\BlogPost, manager_type: orm, label: 'Blog post' }
 
 Configuring the Form Mapper
 ---------------------------

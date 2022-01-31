@@ -59,12 +59,8 @@ You can use the provided extension to take care of your entity admin.
    services:
        app.admin.blog_post:
            class: App\Admin\BlogPostAdmin
-           arguments:
-               - ~
-               - App\Entity\BlogPost
-               - Yokai\SonataWorkflow\Controller\WorkflowController
            tags:
-               - { name: sonata.admin, manager_type: orm }
+               - { name: sonata.admin, model_class: App\Entity\BlogPost, controller: Yokai\SonataWorkflow\Controller\WorkflowController, manager_type: orm }
 
        app.admin.extension.workflow.blog_post:
            class: Yokai\SonataWorkflow\Admin\Extension\WorkflowExtension

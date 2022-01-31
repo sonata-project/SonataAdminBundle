@@ -1,6 +1,34 @@
 UPGRADE 4.x
 ===========
 
+UPGRADE FROM 4.7 to 4.8
+=======================
+
+## Admin definitions
+
+Deprecate passing the code, the model class and the controller in the arguments section.
+
+Before
+```yaml
+    services:
+        app.admin.car:
+            class: App\Admin\CarAdmin
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: Demo, label: Car }
+            arguments:
+                - admin_car
+                - App\Entity\Car
+                - App\Controller\CarAdminController
+```
+After
+```yaml
+    services:
+        app.admin.car:
+            class: App\Admin\CarAdmin
+            tags:
+                - { name: sonata.admin, code: admin_car, model_class: App\Entity\Car, controller: App\Controller\CarAdminController, manager_type: orm, group: Demo, label: Car }
+```
+
 UPGRADE FROM 4.0 to 4.1
 =======================
 

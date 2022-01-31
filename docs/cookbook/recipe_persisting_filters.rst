@@ -58,13 +58,10 @@ Per Admin :
         services:
             app.admin.user:
                 class: App\Admin\UserAdmin
-                arguments:
-                    - ~
-                    - App\Entity\User
-                    - ~
                 tags:
                     -
                         name: sonata.admin
+                        model_class: App\Entity\User
                         manager_type: orm
                         filter_persister: filter_persister_service_id
 
@@ -73,11 +70,9 @@ Per Admin :
         <!-- config/services.xml -->
 
         <service id="app.admin.user" class="App\Admin\UserAdmin">
-            <argument/>
-            <argument>App\Entity\User</argument>
-            <argument/>
             <tag
                 name="sonata.admin"
+                model_class="App\Entity\User"
                 manager_type="orm"
                 filter_persister="filter_persister_service_id"
                 />
@@ -101,22 +96,15 @@ You can disable it per Admin if you want.
         services:
             app.admin.user:
                 class: App\Admin\UserAdmin
-                arguments:
-                    - ~
-                    - App\Entity\User
-                    - ~
                 tags:
-                    - { name: sonata.admin, manager_type: orm, persist_filters: false }
+                    - { name: sonata.admin, model_class: App\Entity\User,  manager_type: orm, persist_filters: false }
 
     .. code-block:: xml
 
         <!-- config/services.xml -->
 
         <service id="app.admin.user" class="App\Admin\UserAdmin">
-            <argument/>
-            <argument>App\Entity\User</argument>
-            <argument/>
-            <tag name="sonata.admin" manager_type="orm" persist_filters="false"/>
+            <tag name="sonata.admin" model_class="App\Entity\User" manager_type="orm" persist_filters="false"/>
         </service>
 
 .. note::

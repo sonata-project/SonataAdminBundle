@@ -554,14 +554,10 @@ that looks like this:
         services:
             app.admin.image:
                 class: App\Admin\ImageAdmin
-                arguments:
-                    - ~
-                    - App\Entity\Image
-                    - 'Sonata\AdminBundle\Controller\CRUDController'
                 calls:
                     - [setTranslationDomain, ['App']]
                 tags:
-                    - { name: sonata.admin, manager_type: orm, label: 'Image' }
+                    - { name: sonata.admin, model_class: App\Entity\Image, controller: 'Sonata\AdminBundle\Controller\CRUDController', manager_type: orm, label: 'Image' }
 
 To embed ``ImageAdmin`` within ``PageAdmin`` we need to change the reference
 for the ``image1`` field to ``AdminType`` in our ``PageAdmin`` class::

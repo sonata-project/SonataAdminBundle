@@ -30,9 +30,6 @@ First, configure the ``outer_list_rows_mosaic`` template key:
       <!-- config/services.xml -->
 
        <service id="sonata.media.admin.media" class="%sonata.media.admin.media.class%">
-            <argument/>
-            <argument>%sonata.media.admin.media.entity%</argument>
-            <argument>%sonata.media.admin.media.controller%</argument>
             <call method="setTemplates">
                 <argument type="collection">
                     <argument key="outer_list_rows_mosaic">@SonataMedia/MediaAdmin/list_outer_rows_mosaic.html.twig</argument>
@@ -40,6 +37,8 @@ First, configure the ``outer_list_rows_mosaic`` template key:
             </call>
             <tag
                 name="sonata.admin"
+                model_class="%sonata.media.admin.media.entity%"
+                controller="%sonata.media.admin.media.controller%"
                 manager_type="orm"
                 group="sonata_media"
                 label_catalogue="%sonata.media.admin.media.translation_domain%"
@@ -144,11 +143,9 @@ the ``$pool`` variable and override the constructor::
 
     private $pool;
 
-    public function __construct(string $code, string $class, string $baseControllerName, Pool $pool)
+    public function __construct(Pool $pool)
     {
        $this->pool = $pool;
-
-       parent::__construct($code, $class, $baseControllerName);
     }
 
 Then add ``'@sonata.media.pool'`` to your service definition arguments:
@@ -161,13 +158,11 @@ Then add ``'@sonata.media.pool'`` to your service definition arguments:
         app.admin.post:
             class: App\Admin\PostAdmin
             arguments:
-                - ~
-                - App\Entity\Post
-                - ~
                 - '@sonata.media.pool'
             tags:
                 -
                     name: sonata.admin
+                    model_class: App\Entity\Post
                     manager_type: orm
                     group: 'Content'
                     label: 'Post'

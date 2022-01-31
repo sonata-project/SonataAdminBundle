@@ -22,10 +22,7 @@ to ``false`` at your admin definition using the tag ``sonata.admin``.
     .. code-block:: xml
 
         <service id="app.admin.post" class="App\Admin\PostAdmin">
-            <tag name="sonata.admin" global_search="false" manager_type="orm" group="Content" label="Post"/>
-            <argument/>
-            <argument>App\Entity\Post</argument>
-            <argument/>
+            <tag name="sonata.admin" global_search="false" model_class="App\Entity\Post" manager_type="orm" group="Content" label="Post"/>
         </service>
 
 Customization
@@ -71,10 +68,7 @@ You can also configure the block template per admin while defining the admin:
     .. code-block:: xml
 
         <service id="app.admin.post" class="App\Admin\PostAdmin">
-              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
-              <argument/>
-              <argument>App\Entity\Post</argument>
-              <argument/>
+              <tag name="sonata.admin" model_class="App\Entity\Post" manager_type="orm" group="Content" label="Post"/>
               <call method="setTemplate">
                   <argument>search_result_block</argument>
                   <argument>@SonataPost/Block/block_search_result.html.twig</argument>

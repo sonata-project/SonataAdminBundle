@@ -40,9 +40,9 @@ If you need to override the service of a specific admin, you can do it during th
     services:
         admin.blog_post:
             class: App\Admin\BlogPostAdmin
-            arguments: [~, App\Entity\BlogPost, ~]
             tags:
                 - name: sonata.admin
+                  model_class: App\Entity\BlogPost
                   manager_type: orm
                   label: 'Blog post'
                   label_translator_strategy: sonata.admin.label.strategy.native

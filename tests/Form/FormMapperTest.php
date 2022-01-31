@@ -62,7 +62,8 @@ final class FormMapperTest extends TestCase
         $formFactory->method('createNamedBuilder')->willReturn($formBuilder);
         $this->contractor->method('getFormBuilder')->willReturn($formBuilder2);
 
-        $this->admin = new CleanAdmin('code', \stdClass::class, 'controller');
+        $this->admin = new CleanAdmin();
+        $this->admin->setModelClass(\stdClass::class);
         $this->admin->setSubject(new \stdClass());
 
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
