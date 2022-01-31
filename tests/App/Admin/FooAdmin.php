@@ -24,7 +24,7 @@ use Sonata\AdminBundle\Tests\App\Model\Foo;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
- * @phpstan-extends AbstractAdmin<object>
+ * @phpstan-extends AbstractAdmin<Foo>
  */
 class FooAdmin extends AbstractAdmin
 {

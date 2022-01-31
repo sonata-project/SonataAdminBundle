@@ -25,7 +25,7 @@ final class Foo
      */
     private $baz;
 
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->bar;
     }
