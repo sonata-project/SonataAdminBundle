@@ -18,19 +18,22 @@ use Sonata\AdminBundle\Model\LockInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 /**
- * Class ModelManager.
+ * @phpstan-template T of EntityInterface
  *
- * @phpstan-implements LockInterface<Foo>
- * @phpstan-implements ModelManagerInterface<Foo>
+ * @phpstan-implements LockInterface<T>
+ * @phpstan-implements ModelManagerInterface<T>
  */
 final class ModelManager implements ModelManagerInterface, LockInterface
 {
     /**
-     * @var FooRepository
+     * @var RepositoryInterface<T>
      */
     private $repository;
 
-    public function __construct(FooRepository $repository)
+    /**
+     * @param RepositoryInterface<T> $repository
+     */
+    public function __construct(RepositoryInterface $repository)
     {
         $this->repository = $repository;
     }
@@ -101,7 +104,7 @@ final class ModelManager implements ModelManagerInterface, LockInterface
     }
 
     /**
-     * @return Foo[]
+     * @return array<T>
      */
     public function executeQuery(object $query): array
     {

@@ -23,7 +23,7 @@ final class FooArrayAccess implements \ArrayAccess
      */
     private $bar;
 
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->bar;
     }

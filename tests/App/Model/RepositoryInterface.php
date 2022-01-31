@@ -11,12 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity;
+namespace Sonata\AdminBundle\Tests\App\Model;
 
-final class Comment
+/**
+ * @phpstan-template T of EntityInterface
+ */
+interface RepositoryInterface
 {
-    public function __toString(): string
-    {
-        return 'this is a comment';
-    }
+    /**
+     * @return T|null
+     */
+    public function byId(string $id);
+
+    /**
+     * @return array<T>
+     */
+    public function all(): array;
 }

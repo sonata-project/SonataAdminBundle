@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\App\Model;
 
-final class Foo
+final class Foo implements EntityInterface
 {
     /**
      * @var string
