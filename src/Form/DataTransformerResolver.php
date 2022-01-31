@@ -75,9 +75,10 @@ final class DataTransformerResolver implements DataTransformerResolverInterface
 
         // Handle entity choice association type, transforming the value into entity
         if (FieldDescriptionInterface::TYPE_CHOICE === $fieldType) {
+            /** @var class-string|null $className */
             $className = $fieldDescription->getOption('class');
 
-            if (null !== $className && is_a($fieldDescription->getTargetModel(), $className, true)) {
+            if (null !== $className && class_exists($className) && is_a($fieldDescription->getTargetModel(), $className, true)) {
                 return new ModelToIdTransformer($modelManager, $className);
             }
         }
