@@ -18,6 +18,13 @@ services:
         tags:
             - {name: sonata.admin.manager}
 
+    sonata.admin.manager.bar:
+        class: Sonata\AdminBundle\Tests\App\Model\ModelManager
+        arguments:
+            - '@Sonata\AdminBundle\Tests\App\Model\BarRepository'
+        tags:
+            - {name: sonata.admin.manager}
+
     sonata.admin.builder.test_form:
         class: Sonata\AdminBundle\Tests\App\Builder\FormContractor
         arguments:
@@ -51,9 +58,12 @@ services:
     sonata.admin.field_description_factory.test:
         class: Sonata\AdminBundle\Tests\App\FieldDescription\FieldDescriptionFactory
 
-    Sonata\AdminBundle\Tests\App\Admin\FooAdmin:
+    sonata_foo_admin:
+        class: Sonata\AdminBundle\Tests\App\Admin\FooAdmin
         tags:
             - {name: sonata.admin, model_class: Sonata\AdminBundle\Tests\App\Model\Foo, controller: 'sonata.admin.controller.crud', manager_type: test, label: Foo}
+        calls:
+            - [addChild, ['@sonata_bar_admin', 'foo']]
 
     Sonata\AdminBundle\Tests\App\Admin\FooAdminWithCustomController:
         tags:
@@ -70,3 +80,8 @@ services:
     Sonata\AdminBundle\Tests\App\Admin\TranslatedAdmin:
         tags:
             - {name: sonata.admin, model_class: Sonata\AdminBundle\Tests\App\Model\Translated, manager_type: test, group: 'group_label', label: 'admin_label'}
+
+    sonata_bar_admin:
+        class: Sonata\AdminBundle\Tests\App\Admin\BarAdmin
+        tags:
+            - {name: sonata.admin, model_class: Sonata\AdminBundle\Tests\App\Model\Bar, manager_type: test, model_manager: sonata.admin.manager.bar, label: Bar}

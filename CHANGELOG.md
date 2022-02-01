@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.8.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.8.0...4.8.1) - 2022-01-31
+### Fixed
+- [[#7716](https://github.com/sonata-project/SonataAdminBundle/pull/7716)] Configure the admin with the `sonata_admin` tag before any custom `call` provided in the service configuration. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7681](https://github.com/sonata-project/SonataAdminBundle/pull/7681)] Disabling `global_search` for admin with non-default code. ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.8.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.7.0...4.8.0) - 2022-01-25
 ### Added
 - [[#7684](https://github.com/sonata-project/SonataAdminBundle/pull/7684)] `code`, `model_class` and `controller` attribute to the `sonata.admin` service tag ([@VincentLanglet](https://github.com/VincentLanglet))
