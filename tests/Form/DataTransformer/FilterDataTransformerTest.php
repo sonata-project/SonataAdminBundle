@@ -34,8 +34,9 @@ final class FilterDataTransformerTest extends TestCase
     }
 
     /**
+     * @param array{type: int, value: mixed} $value
+     *
      * @dataProvider getDataValues
-     * @phpstan-param array{type: int, value: mixed} $value
      */
     public function testReverseTransform(array $value): void
     {
@@ -55,8 +56,9 @@ final class FilterDataTransformerTest extends TestCase
     }
 
     /**
+     * @param array{type: int, value: mixed} $value
+     *
      * @dataProvider getDataValues
-     * @phpstan-param array{type: int, value: mixed} $value
      */
     public function testTransform(array $value): void
     {
