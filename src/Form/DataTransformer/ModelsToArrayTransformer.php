@@ -82,8 +82,6 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
     }
 
     /**
-     * @psalm-suppress MethodSignatureMustProvideReturnType https://github.com/vimeo/psalm/issues/7518
-     *
      * @param array<int|string>|null $value
      *
      * @throws UnexpectedTypeException
