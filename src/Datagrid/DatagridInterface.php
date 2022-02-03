@@ -89,14 +89,14 @@ interface DatagridInterface
     public function hasDisplayableFilters(): bool;
 
     /**
-     * TODO: avoid returning an array with one element and return its contents instead.
+     * NEXT_MAJOR: avoid returning an array with one element and return its contents instead.
      *
      * @return array{filter: array<string, mixed>}
      */
     public function getSortParameters(FieldDescriptionInterface $fieldDescription): array;
 
     /**
-     * TODO: avoid returning an array with one element and return its contents instead.
+     * NEXT_MAJOR: avoid returning an array with one element and return its contents instead.
      *
      * @return array{filter: array<string, mixed>}
      */

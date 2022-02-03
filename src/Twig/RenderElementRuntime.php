@@ -173,9 +173,7 @@ final class RenderElementRuntime implements RuntimeExtensionInterface
      *
      * @throws \TypeError when $listElement is not an object or an array with an object on offset 0
      *
-     * @return mixed[] An array containing object and value
-     *
-     * @phpstan-return array{0: object, 1: mixed}
+     * @return array{object, mixed} An array containing object and value
      */
     private function getObjectAndValueFromListElement(
         $listElement,

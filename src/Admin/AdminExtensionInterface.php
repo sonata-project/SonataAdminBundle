@@ -225,10 +225,9 @@ interface AdminExtensionInterface
     /**
      * Returns a list of default sort values.
      *
-     * @param array<string, string|int> $sortValues
+     * @param array{_page?: int, _per_page?: int, _sort_by?: string, _sort_order?: string} $sortValues
      *
      * @phpstan-param AdminInterface<T> $admin
-     * @phpstan-param array{_page?: int, _per_page?: int, _sort_by?: string, _sort_order?: string} $sortValues
      */
     public function configureDefaultSortValues(AdminInterface $admin, array &$sortValues): void;
 

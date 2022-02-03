@@ -68,8 +68,7 @@ interface UrlGeneratorInterface
      *
      * @param array<string, mixed> $parameters
      *
-     * @return array<string, mixed>
-     * @phpstan-return array{route: string, routeParameters: array<string, mixed>, routeAbsolute: bool}
+     * @return array{route: string, routeParameters: array<string, mixed>, routeAbsolute: bool}
      */
     public function generateMenuUrl(string $name, array $parameters = [], int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH): array;
 
