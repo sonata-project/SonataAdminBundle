@@ -19,6 +19,8 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 use Sonata\AdminBundle\Form\DataTransformerResolver;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Tests\Fixtures\Entity\AbstractEntity;
+use Sonata\AdminBundle\Tests\Fixtures\Entity\Entity;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer;
@@ -162,8 +164,8 @@ final class DataTransformerResolverTest extends TestCase
     public function testResolveChoice(): void
     {
         $newId = 1;
-        $className = \stdClass::class;
-        $object = new \stdClass();
+        $className = Entity::class;
+        $object = new Entity(1);
 
         $this->fieldDescription->method('getOption')->willReturnMap([
             ['data_transformer', null, null],
@@ -171,6 +173,27 @@ final class DataTransformerResolverTest extends TestCase
         ]);
         $this->fieldDescription->method('getType')->willReturn('choice');
         $this->fieldDescription->method('getTargetModel')->willReturn($className);
+        $this->modelManager->method('find')->with($className, $newId)->willReturn($object);
+
+        $dataTransformer = $this->resolve();
+
+        static::assertInstanceOf(ModelToIdTransformer::class, $dataTransformer);
+        static::assertSame($object, $dataTransformer->reverseTransform($newId));
+    }
+
+    public function testResolveChoiceWithAbstractClass(): void
+    {
+        $newId = 1;
+        $targetModel = Entity::class;
+        $className = AbstractEntity::class;
+        $object = new Entity(2);
+
+        $this->fieldDescription->method('getOption')->willReturnMap([
+            ['data_transformer', null, null],
+            ['class', null, $className],
+        ]);
+        $this->fieldDescription->method('getType')->willReturn('choice');
+        $this->fieldDescription->method('getTargetModel')->willReturn($targetModel);
         $this->modelManager->method('find')->with($className, $newId)->willReturn($object);
 
         $dataTransformer = $this->resolve();
