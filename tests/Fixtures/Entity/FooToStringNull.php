@@ -15,9 +15,6 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
 
 final class FooToStringNull
 {
-    /**
-     * @psalm-suppress MethodSignatureMustProvideReturnType
-     */
     public function __toString()
     {
         // In case __toString returns an attribute not yet set

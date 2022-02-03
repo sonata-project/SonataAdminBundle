@@ -32,11 +32,10 @@ abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
      *
      * @throws \Exception
      *
-     * @return array<int, int> [countAdded, countUpdated]
+     * @return array{int, int} [countAdded, countUpdated]
      *
      * @phpstan-template T of object
      * @phpstan-param AdminInterface<T> $admin
-     * @phpstan-return array{int, int}
      */
     final public function configureAcls(
         OutputInterface $output,

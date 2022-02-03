@@ -83,8 +83,6 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
     }
 
     /**
-     * @psalm-suppress MethodSignatureMustProvideReturnType https://github.com/vimeo/psalm/issues/7518
-     *
      * @param int|string|array<int|string|array<string>>|null $value
      *
      * @throws \UnexpectedValueException

@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Manipulator\ObjectManipulator;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
 use Sonata\AdminBundle\Util\FormViewIterator;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
@@ -83,9 +84,10 @@ class AdminHelper
      * @throws \RuntimeException
      * @throws \Exception
      *
+     * @return array{FieldDescriptionInterface|null, FormInterface}
+     *
      * @phpstan-template T of object
      * @phpstan-param AdminInterface<T> $admin
-     * @phpstan-return array{\Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface|null, \Symfony\Component\Form\FormInterface}
      */
     public function appendFormFieldElement(AdminInterface $admin, object $subject, string $elementId): array
     {

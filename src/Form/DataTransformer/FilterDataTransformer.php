@@ -23,11 +23,7 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 final class FilterDataTransformer implements DataTransformerInterface
 {
     /**
-     * @param array<string, mixed>|null $value
-     *
-     * @phpstan-param array{type?: int|numeric-string|null, value?: mixed}|null $value
-     *
-     * @psalm-suppress TypeDoesNotContainType @see https://github.com/vimeo/psalm/issues/5643
+     * @param array{type?: int|numeric-string|null, value?: mixed}|null $value
      */
     public function reverseTransform($value): FilterData
     {
@@ -45,9 +41,7 @@ final class FilterDataTransformer implements DataTransformerInterface
     /**
      * @param FilterData|null $value
      *
-     * @return array<string, mixed>|null
-     *
-     * @phpstan-return array{type: int|null, value?: mixed}|null
+     * @return array{type: int|null, value?: mixed}|null
      */
     public function transform($value): ?array
     {

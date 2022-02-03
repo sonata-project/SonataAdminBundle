@@ -137,8 +137,8 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
     }
 
     /**
-     * @param string|false|null $label
-     * @phpstan-param array<string, mixed> $vars
+     * @param string|false|null    $label
+     * @param array<string, mixed> $vars
      */
     protected function renderLabel(FormView $view, $label = null, array $vars = []): string
     {
