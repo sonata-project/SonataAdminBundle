@@ -7,8 +7,6 @@ Admin Bundle
 * `SonataDoctrineORMAdminBundle <https://github.com/sonata-project/SonataDoctrineORMAdminBundle>`_: integrates Doctrine ORM project with the admin bundle
 * `SonataDoctrineMongoDBAdminBundle <https://github.com/sonata-project/SonataDoctrineMongoDBAdminBundle>`_: integrates MongoDB with the admin bundle
 
-The demo website can be found at https://demo.sonata-project.org.
-
 **Usage examples:**
 
 * `SonataMediaBundle <https://github.com/sonata-project/SonataMediaBundle>`_: a media manager bundle
