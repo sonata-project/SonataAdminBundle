@@ -13,11 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
 
-final class FooToStringNull
+abstract class AbstractEntity
 {
-    public function __toString()
-    {
-        // In case __toString returns an attribute not yet set
-        return null;
-    }
 }

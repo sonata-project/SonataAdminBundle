@@ -1400,7 +1400,7 @@ class CRUDController extends AbstractController
     }
 
     /**
-     * @phpstan-return array{_tab?: string}
+     * @return array{_tab?: string}
      */
     final protected function getSelectedTab(Request $request): array
     {

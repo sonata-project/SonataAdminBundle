@@ -39,11 +39,9 @@ final class FilterData
     }
 
     /**
-     * @param array<string, mixed>|null $data
+     * @param array{type?: int|numeric-string|null, value?: mixed} $data
      *
      * @psalm-pure
-     *
-     * @phpstan-param array{type?: int|numeric-string|null, value?: mixed} $data
      */
     public static function fromArray(array $data): self
     {

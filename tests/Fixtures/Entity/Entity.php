@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
 
-final class Entity
+final class Entity extends AbstractEntity
 {
     /**
      * @var int

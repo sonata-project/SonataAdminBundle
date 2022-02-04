@@ -123,7 +123,7 @@ interface FilterInterface
     /**
      * Returns the main widget used to render the filter.
      *
-     * @return array{0: string, 1: array<string, mixed>}
+     * @return array{string, array<string, mixed>}
      */
     public function getRenderSettings(): array;
 
