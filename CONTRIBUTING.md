@@ -94,19 +94,23 @@ Please note that we try to keep phpdoc to a minimum, so if an `@param` phpdoc
 comment brings nothing more than the type hint and variable name already do,
 it SHOULD be removed. Descriptions are OPTIONAL if you want to document a type.
 
-If you want to use pseudo-types, generics, array shapes or templates for
-static-analysis, prefer the usage of `@phpstan-` annotations over classic
-annotations to keep IDE support, and over `@psalm-` annotations for consistency.
-Keep standard annotations if necessary.
+If you want to use templates for static-analysis, prefer the usage of
+`@phpstan-` annotations over classic annotations to keep IDE support, and
+over `@psalm-` annotations for consistency. Keep standard annotations if necessary.
 
 ```php
 /**
- * @param Bar|Baz $foo
- * @param int     $limit a crucial, highly interesting comment
+ * @param Bar|Baz      $foo
+ * @param class-string $class
+ * @param int          $limit a crucial, fascinating comment
  *
- * @phpstan-param class-string $class
+ * @return object
+ *
+ * @phpstan-template T of object
+ * @phpstan-param class-string<T> $class
+ * @phpstan-return T
  */
-protected function bar($foo, string $class, int $limit)
+protected function bar($foo, string $class, int $limit): object
 {
     // ...
 }
