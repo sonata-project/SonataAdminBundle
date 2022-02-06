@@ -368,8 +368,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $methodCalls[] = ['setFilterPersister', [new Reference($filtersPersister)]];
         }
 
-        $showMosaicButton = $overwriteAdminConfiguration['show_mosaic_button']
-            ?? $attributes['show_mosaic_button']
+        $showMosaicButton = $attributes['show_mosaic_button']
             ?? $container->getParameter('sonata.admin.configuration.show.mosaic.button');
         \assert(\is_bool($showMosaicButton));
 

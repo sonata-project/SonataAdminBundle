@@ -1984,6 +1984,53 @@ final class AdminTest extends TestCase
     }
 
     /**
+     * @dataProvider getListModeProvider2
+     */
+    public function testGetListModeWithCustomListModes(string $expected, ?Request $request = null): void
+    {
+        $admin = new PostAdmin();
+        $admin->setListModes([
+            'mosaic' => ['icon' => '<i class="fas fa-th-large fa-fw" aria-hidden="true"></i>'],
+            'list' => ['icon' => '<i class="fas fa-list fa-fw" aria-hidden="true"></i>'],
+        ]);
+        $admin->setCode('sonata.post.admin.post');
+
+        if (null !== $request) {
+            $admin->setRequest($request);
+        }
+
+        static::assertSame($expected, $admin->getListMode());
+    }
+
+    /**
+     * @phpstan-return iterable<array-key, array{string, Request|null}>
+     */
+    public function getListModeProvider2(): iterable
+    {
+        yield ['mosaic', null];
+
+        yield ['mosaic', new Request()];
+
+        $request = new Request();
+        $session = $this->createMock(SessionInterface::class);
+        $session
+            ->method('get')
+            ->with('sonata.post.admin.post.list_mode', 'mosaic')
+            ->willReturn('list');
+        $request->setSession($session);
+        yield ['list', $request];
+
+        $session = $this->createMock(SessionInterface::class);
+        $session
+            ->method('get')
+            ->with('sonata.post.admin.post.list_mode', 'mosaic')
+            ->willReturn('some_list_mode');
+        $request = new Request();
+        $request->setSession($session);
+        yield ['some_list_mode', $request];
+    }
+
+    /**
      * @param class-string $objFqn
      *
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getDashboardActions
