@@ -37,7 +37,10 @@ file that was distributed with this source code.
     <div class="col-xs-12 col-md-12">
         {% set batchactions = admin.batchactions %}
         {% if admin.hasRoute('batch') and batchactions|length %}
-            <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST" >
+            {{ form_start(form, {
+                method: 'POST',
+                action: admin.generateUrl('batch', {'filter': admin.filterParameters})
+            }) }}
             <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
         {% endif %}
 
@@ -250,7 +253,7 @@ file that was distributed with this source code.
             {% endblock %}
         </div>
         {% if admin.hasRoute('batch') and batchactions|length %}
-            </form>
+            {{ form_end(form) }}
         {% endif %}
     </div>
 {% endblock %}
@@ -297,13 +300,15 @@ file that was distributed with this source code.
         <div class="col-xs-12 col-md-12 sonata-filters-box" style="display: {{ admin.datagrid.hasDisplayableFilters ? 'block' : 'none' }}" id="filter-container-{{ admin.uniqid() }}">
             <div class="box box-primary" >
                 <div class="box-body">
-                    <form
-                        class="sonata-filter-form form-horizontal {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}"
-                        action="{{ admin.generateUrl(action|default('list')) }}"
-                        method="GET"
-                        role="form"
-                        data-default-values="{{ admin.defaultFilterParameters|json_encode }}"
-                    >
+                    {{ form_start(form, {
+                        method: 'GET',
+                        action: admin.generateUrl('list'),
+                        attr: {
+                            class: 'sonata-filter-form form-horizontal' ~ (admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : ''),
+                            role: 'form',
+                            'data-default-values': admin.defaultFilterParameters|json_encode
+                        }
+                    }) }}
                         {{ form_errors(form) }}
 
                         <div class="row">
@@ -378,7 +383,7 @@ file that was distributed with this source code.
                         {% for paramKey, paramValue in admin.persistentParameters %}
                             <input type="hidden" name="{{ paramKey }}" value="{{ paramValue }}">
                         {% endfor %}
-                    </form>
+                    {{ form_end(form) }}
                 </div>
             </div>
         </div>

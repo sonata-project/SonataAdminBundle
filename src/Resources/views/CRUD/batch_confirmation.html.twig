@@ -45,7 +45,10 @@ file that was distributed with this source code.
                 {% endif %}
             </div>
             <div class="box-footer clearfix">
-                <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST">
+                {{ form_start(form, {
+                    method: 'POST',
+                    action: admin.generateUrl('batch', {'filter': admin.filterParameters})
+                }) }}
                     <input type="hidden" name="confirmation" value="ok">
                     <input type="hidden" name="data" value="{{ data|json_encode }}">
                     <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
@@ -63,7 +66,7 @@ file that was distributed with this source code.
                             <i class="fas fa-list" aria-hidden="true"></i> {{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}
                         </a>
                     {% endif %}
-                </form>
+                {{ form_end(form) }}
             </div>
         </div>
     </div>

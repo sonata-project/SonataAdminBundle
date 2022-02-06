@@ -33,7 +33,10 @@ file that was distributed with this source code.
                 {{ 'message_delete_confirmation'|trans({'%object%': admin.toString(object)}, 'SonataAdminBundle') }}
             </div>
             <div class="box-footer clearfix">
-                <form method="POST" action="{{ admin.generateObjectUrl('delete', object) }}">
+                {{ form_start(form, {
+                    method: 'POST',
+                    action: admin.generateObjectUrl('delete', object)
+                }) }}
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
 
@@ -45,7 +48,7 @@ file that was distributed with this source code.
                             <i class="fas fa-pencil-alt" aria-hidden="true"></i>
                             {{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}</a>
                     {% endif %}
-                </form>
+                {{ form_end(form) }}
             </div>
         </div>
     </div>

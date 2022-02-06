@@ -10,13 +10,17 @@ file that was distributed with this source code.
 #}
 
 {% macro render_form(form, permissions, td_type, admin, admin_configuration, object) %}
-    <form class="form-horizontal"
-          action="{{ admin.generateUrl('acl', {(admin.idParameter): admin.id(object), 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}"
-          {% if form.vars.multipart %} enctype="multipart/form-data"{% endif %}
-          method="POST"
-            {% if not admin_configuration.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
-            >
+    {%- set form_attr = {role: 'form'} -%}
+    {# NEXT_MAJOR: Move logic to the controller #}
+    {%- if not sonata_config.getOption('html5_validate') -%}
+        {%- set form_attr = form_attr|merge({novalidate: 'novalidate'}) -%}
+    {%- endif -%}
 
+    {{ form_start(form, {
+        method: 'POST',
+        action: admin.generateUrl('acl', {(admin.idParameter): admin.id(object), 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}),
+        attr:   form_attr
+    }) }}
         {{ include('@SonataAdmin/Helper/render_form_dismissable_errors.html.twig') }}
 
         <div class="box box-success">
@@ -59,5 +63,5 @@ file that was distributed with this source code.
         <div class="well well-small form-actions">
             <input class="btn btn-primary" type="submit" name="btn_create_and_edit" value="{{ 'btn_update_acl'|trans({}, 'SonataAdminBundle') }}">
         </div>
-    </form>
+    {{ form_end(form) }}
 {% endmacro %}

@@ -8,16 +8,17 @@
             {{ "form_not_available"|trans({}, "SonataAdminBundle") }}
         </div>
     {% else %}
-        <form
-              {% if sonata_config.getOption('form_type') == 'horizontal' %}class="form-horizontal"{% endif %}
-              role="form"
-              action="{% block sonata_form_action_url %}{{ admin.generateUrl(url, {(admin.idParameter): objectId, 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}{% endblock %}"
-              {% if form.vars.multipart %} enctype="multipart/form-data"{% endif %}
-              method="POST"
-              {% if not sonata_config.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
-              {% block sonata_form_attributes %}{% endblock %}
-              >
+        {%- set form_attr = {role: 'form'} -%}
+        {# NEXT_MAJOR: Move logic to the controller #}
+        {%- if not sonata_config.getOption('html5_validate') -%}
+            {%- set form_attr = form_attr|merge({novalidate: 'novalidate'}) -%}
+        {%- endif -%}
 
+        {{ form_start(form, {
+            method: 'POST',
+            action: admin.generateUrl(url, {(admin.idParameter): objectId, 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}),
+            attr:   form_attr
+        }) }}
             {{ include('@SonataAdmin/Helper/render_form_dismissable_errors.html.twig') }}
 
             {% block sonata_pre_fieldsets %}
@@ -153,7 +154,7 @@
                 {% endblock %}
                 </div>
             {% endblock formactions %}
-        </form>
+        {{ form_end(form) }}
     {% endif %}
 
     {{ sonata_block_render_event('sonata.admin.edit.form.bottom', { 'admin': admin, 'object': object }) }}
