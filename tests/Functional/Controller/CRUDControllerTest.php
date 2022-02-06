@@ -89,6 +89,7 @@ final class CRUDControllerTest extends WebTestCase
     public function urlIsSuccessfulDataProvider(): iterable
     {
         return [
+            ['/admin/tests/app/foo/browse'], // CustomAdminExtension route
             ['/admin/empty/list'],
             ['/admin/empty/create'],
             ['/admin/empty/test_id/show'],
