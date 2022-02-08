@@ -643,3 +643,7 @@ file that was distributed with this source code.
 
     {% include '@SonataAdmin/CRUD/Association/edit_many_script.html.twig' %}
 {% endblock %}
+
+{% block sonata_type_template_widget %}
+    {% include template with parameters only %}
+{% endblock sonata_type_template_widget %}
