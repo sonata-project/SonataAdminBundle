@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 final class BCUserInterface
 {
     /**
-     * @psalm-suppress DeprecatedMethod
+     * @psalm-suppress UndefinedInterfaceMethod
      */
     public static function getUsername(UserInterface $user): string
     {
@@ -33,6 +33,7 @@ final class BCUserInterface
             return $user->getUserIdentifier();
         }
 
+        // @phpstan-ignore-next-line
         return $user->getUsername();
     }
 }
