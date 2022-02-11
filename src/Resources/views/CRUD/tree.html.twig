@@ -9,10 +9,8 @@ file that was distributed with this source code.
 
 #}
 
-{#
-    This template is not used at all, it is just a template that you can use to create
-    your own custom tree view.
-#}
+{% deprecated 'The "tree.html.twig" template is deprecated since sonata-project/admin-bundle version 4.x and will be removed in 5.0.' %}
+
 {% extends '@SonataAdmin/CRUD/base_list.html.twig' %}
 
 {% import _self as tree %}
