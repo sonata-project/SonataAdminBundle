@@ -200,15 +200,15 @@ npm install
 To compile assets before the pull request you should run:
 
 ```bash
-npm encore production
+npx encore production
 ```
 
 This command will make the lint checks and compile for production usage the assets. You can also run
 lint checks ([ESLint](https://eslint.org/) and [Stylelint](https://stylelint.io/)) with:
 
 ```bash
-npm run eslint assets/js
-npm run stylelint assets/scss
+npx eslint assets/js
+npx stylelint assets/scss
 ```
 
 We have some strict rules following the most popular coding standards for JavaScript and SCSS.
