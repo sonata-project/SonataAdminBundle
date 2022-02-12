@@ -32,10 +32,10 @@ jobs:
               uses: bahmutov/npm-install@v1
 
             - name: Run Eslint
-              run: npm run eslint assets/js
+              run: npx eslint assets/js
 
             - name: Run Stylelint
-              run: npm run stylelint assets/scss
+              run: npx stylelint assets/scss
 
             - name: Run Webpack Encore
               run: npm encore production
