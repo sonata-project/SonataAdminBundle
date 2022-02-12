@@ -85,3 +85,7 @@ services:
         class: Sonata\AdminBundle\Tests\App\Admin\BarAdmin
         tags:
             - {name: sonata.admin, model_class: Sonata\AdminBundle\Tests\App\Model\Bar, manager_type: test, model_manager: sonata.admin.manager.bar, label: Bar}
+
+    Sonata\AdminBundle\Tests\App\Admin\Extension\CustomAdminExtension:
+        tags:
+            - {name: sonata.admin.extension, target: sonata_foo_admin}
