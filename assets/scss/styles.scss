@@ -52,7 +52,7 @@ footer {
 }
 
 body > .header .logo {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .main-header {
@@ -136,7 +136,7 @@ div {
   }
 
   &.mosaic-inner-box-hover {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgb(255 255 255 / 80%);
     border-radius: 4px 4px 0 0;
     bottom: 0;
     left: 0;

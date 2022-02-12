@@ -374,7 +374,7 @@ const Admin = {
     Admin.log('[core|setup_collection_counter] setup collection counter', subject);
 
     // Count and save element of each collection
-    const highestCounterRegexp = new RegExp('_([0-9]+)[^0-9]*$');
+    const highestCounterRegexp = /_([0-9]+)[^0-9]*$/;
     jQuery(subject).find('[data-prototype]').each((index, element) => {
       const collection = jQuery(element);
       let counter = -1;

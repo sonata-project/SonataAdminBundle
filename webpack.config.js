@@ -20,7 +20,7 @@ Encore
   .enablePostCssLoader()
   .enableVersioning(false)
   .enableSourceMaps(false)
-  .enableEslintLoader()
+  .enableEslintPlugin()
   .autoProvidejQuery()
   .disableSingleRuntimeChunk()
 
