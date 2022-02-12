@@ -48,11 +48,13 @@ footer {
     width: 200px;
   }
 
-  img + span { width: 140px; }
+  img + span {
+    width: 140px;
+  }
 }
 
 body > .header .logo {
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 .main-header {
@@ -317,11 +319,11 @@ body.fixed .content-header .navbar {
 }
 
 .fa.arrow::before {
-  content: "\f104";
+  content: '\f104';
 }
 
 .active > a > .fa.arrow::before {
-  content: "\f107";
+  content: '\f107';
 }
 
 @media (min-width: 768px) {
@@ -373,7 +375,7 @@ h4.filter_legend {
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
     border-top: 4px solid black;
-    content: "";
+    content: '';
     display: block;
     height: 0;
     left: 2px;
@@ -437,11 +439,11 @@ td.sonata-ba-list-field {
 
 .editable-container {
   .prev::before {
-    content: "\2190 ";
+    content: '\2190 ';
   }
 
   .next::before {
-    content: "\2192 ";
+    content: '\2192 ';
   }
 }
 
@@ -471,19 +473,19 @@ body.sonata-icheck .radio label {
  * The iCheck checkboxes & radios have 0 margin by default,
  * add some space for the label text.
  */
-.checkbox div[class^="icheckbox"],
-.checkbox-inline div[class^="icheckbox"],
-.radio div[class^="iradio"],
-.radio-inline div[class^="iradio"] {
+.checkbox div[class^='icheckbox'],
+.checkbox-inline div[class^='icheckbox'],
+.radio div[class^='iradio'],
+.radio-inline div[class^='iradio'] {
   margin-right: 5px;
   margin-top: -3px;
   position: relative;
 }
 
-.form-inline .checkbox div[class^="icheckbox"],
-.form-inline .checkbox-inline div[class^="icheckbox"],
-.form-inline .radio div[class^="iradio"],
-.form-inline .radio-inline div[class^="iradio"] {
+.form-inline .checkbox div[class^='icheckbox'],
+.form-inline .checkbox-inline div[class^='icheckbox'],
+.form-inline .radio div[class^='iradio'],
+.form-inline .radio-inline div[class^='iradio'] {
   margin-left: 0;
   margin-right: 5px;
   margin-top: -3px;

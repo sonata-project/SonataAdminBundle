@@ -37,6 +37,9 @@ jobs:
             - name: Run Stylelint
               run: npx stylelint assets/scss
 
+            - name: Run Prettier
+              run: npx prettier --check assets
+
             - name: Run Webpack Encore
               run: npx encore production
 
