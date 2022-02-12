@@ -33,6 +33,7 @@
     "file-loader": "^6.2",
     "postcss": "^8.4",
     "postcss-loader": "^6.2",
+    "postcss-scss": "^4.0",
     "sass": "^1.49",
     "sass-loader": "^12.4",
     "stylelint": "^14.4",
