@@ -31,12 +31,15 @@ final class AdminFetcher implements AdminFetcherInterface
 
     public function get(Request $request): AdminInterface
     {
-        $adminCode = (string) $request->get('_sonata_admin');
+        $adminCode = $request->get('_sonata_admin');
 
-        if ('' === $adminCode) {
+        if (!\is_string($adminCode)) {
+            $route = $request->get('_route');
+            \assert(\is_string($route));
+
             throw new \InvalidArgumentException(sprintf(
                 'There is no `_sonata_admin` defined for the current route `%s`.',
-                (string) $request->get('_route')
+                $route
             ));
         }
 
@@ -50,7 +53,7 @@ final class AdminFetcher implements AdminFetcherInterface
 
         $rootAdmin->setRequest($request);
 
-        if (null !== $request->get('uniqid')) {
+        if (\is_string($request->get('uniqid'))) {
             $admin->setUniqId($request->get('uniqid'));
         }
 

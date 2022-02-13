@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\AdminHelper;
+use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,14 +54,13 @@ final class RetrieveFormFieldElementAction
         try {
             $admin = $this->adminFetcher->get($request);
         } catch (\InvalidArgumentException $e) {
-            throw new NotFoundHttpException(sprintf(
-                'Could not find admin for code "%s".',
-                $request->get('_sonata_admin')
-            ));
+            throw new NotFoundHttpException($e->getMessage());
         }
 
         $objectId = $request->get('objectId');
-        if (null !== $objectId) {
+        if (null === $objectId) {
+            $subject = $admin->getNewInstance();
+        } elseif (\is_string($objectId) || \is_int($objectId)) {
             $subject = $admin->getObject($objectId);
             if (null === $subject) {
                 throw new NotFoundHttpException(sprintf(
@@ -70,7 +70,7 @@ final class RetrieveFormFieldElementAction
                 ));
             }
         } else {
-            $subject = $admin->getNewInstance();
+            throw new BadRequestParamHttpException('objectId', ['string', 'int', 'null'], $objectId);
         }
 
         $admin->setSubject($subject);
@@ -82,6 +82,10 @@ final class RetrieveFormFieldElementAction
         $form->handleRequest($request);
 
         $elementId = $request->get('elementId');
+        if (!\is_string($elementId)) {
+            throw new BadRequestParamHttpException('elementId', 'string', $elementId);
+        }
+
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
         \assert(null !== $view);
 
