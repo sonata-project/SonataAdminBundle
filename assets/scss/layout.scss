@@ -106,19 +106,19 @@ th {
 
   &.sonata-ba-list-field-order-active {
     &.sonata-ba-list-field-header-order-asc a::after {
-      content: "↓";
+      content: '↓';
     }
 
     &.sonata-ba-list-field-header-order-desc a::after {
-      content: "↑";
+      content: '↑';
     }
 
     &.sonata-ba-list-field-header-order-asc a:hover::after {
-      content: "↑";
+      content: '↑';
     }
 
     &.sonata-ba-list-field-header-order-desc a:hover::after {
-      content: "↓";
+      content: '↓';
     }
   }
 }
@@ -230,7 +230,7 @@ input.sonata-medium {
   }
 }
 
-input[type="file"] {
+input[type='file'] {
   height: 34px;
 }
 
@@ -338,11 +338,11 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
 }
 
 .sonata-ba-fieldset-collapsed legend::before {
-  content: "+ ";
+  content: '+ ';
 }
 
 .sonata-ba-collapsed-fields-close legend::before {
-  content: "- ";
+  content: '- ';
   padding-left: 5px;
 }
 
@@ -369,7 +369,7 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
 }
 
 .required::after {
-  content: "*";
+  content: '*';
 }
 
 .noscript-warning {

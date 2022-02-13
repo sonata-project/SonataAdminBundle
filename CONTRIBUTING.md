@@ -216,6 +216,17 @@ We have some strict rules following the most popular coding standards for JavaSc
 * [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
 * [Stylelint Recommended Configuration](https://github.com/stylelint/stylelint-config-recommended)
 
+We also use [Prettier](https://prettier.io/) to do the code formatting for all the `assets` folder, to run it manually:
+
+```bash
+npx prettier --write assets
+```
+
+You can also configure your IDE to do it automatically on save:
+
+* [PHPStorm](https://www.jetbrains.com/help/phpstorm/prettier.html)
+* [VSCode](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+
 In case you need more documentation before making your Pull Request, please consider reading
 the documentation of all mentioned tools.
 

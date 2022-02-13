@@ -25,7 +25,6 @@ function TreeView(element, options) {
 }
 
 TreeView.prototype = {
-
   /**
    * Constructor
    */
