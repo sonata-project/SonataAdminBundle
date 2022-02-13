@@ -11,4 +11,4 @@ phpunit.xml
 phpstan.neon
 /.phpunit.result.cache
 /docs/_build/
-yarn-error.log
+npm-debug.log

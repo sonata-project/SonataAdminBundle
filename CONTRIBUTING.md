@@ -183,7 +183,7 @@ If you take a look at the `src/Resources/public` you will see a lot of minified 
 [Webpack](https://webpack.js.org/), we are using [Webpack Encore](https://github.com/symfony/webpack-encore) to configure and run it.
 
 Similar to what Composer is for PHP there is a package manager for the frontend stack, called NPM and we declare our
-dependencies on `package.json` and the lockfile is `yarn.lock`, because we are using [Yarn](https://yarnpkg.com/).
+dependencies on `package.json` and the lockfile is `package-lock.json`, because we are using [NPM](https://www.npmjs.com/).
 It is common to commit the lockfile in the case of frontend, because dependencies tend to upgrade really often and it
 affects directly the compiled files.
 
@@ -191,26 +191,24 @@ If you PR is focused on fixing or improving the frontend you might need to modif
 JavaScript or CSS code. To do so, you will first need to install the dependencies:
 
 ```bash
-yarn install --frozen-lockfile
+npm clean-install
 
-# if you want to upgrade some package you SHOULD omit the --frozen-lockfile
-yarn install
-# if you want to force the install of package you SHOULD add --force
-yarn install --force
+# if you want to upgrade some package you SHOULD run instead
+npm install
 ```
 
 To compile assets before the pull request you should run:
 
 ```bash
-yarn encore production
+npx encore production
 ```
 
 This command will make the lint checks and compile for production usage the assets. You can also run
 lint checks ([ESLint](https://eslint.org/) and [Stylelint](https://stylelint.io/)) with:
 
 ```bash
-yarn run eslint assets/js
-yarn run stylelint assets/scss
+npx eslint assets/js
+npx stylelint assets/scss
 ```
 
 We have some strict rules following the most popular coding standards for JavaScript and SCSS.

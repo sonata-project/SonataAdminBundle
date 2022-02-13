@@ -62,7 +62,7 @@
     border: 1px solid #3c8dbc;
 
     &::after {
-      border-color: rgba(255, 255, 255, 0);
+      border-color: rgb(255 255 255 / 0%);
       border-left-color: #fff;
       border-width: 8px;
       margin-top: -8px;
@@ -85,7 +85,7 @@
     }
 
     &::before {
-      border-color: rgba(255, 255, 255, 0);
+      border-color: rgb(255 255 255 / 0%);
       border-left-color: #3c8dbc;
       border-width: 9px;
       margin-top: -9px;
@@ -140,7 +140,7 @@
 
       &::after {
         bottom: -5px;
-        content: '';
+        content: "";
         left: -10px;
         position: absolute;
         right: -10px;
