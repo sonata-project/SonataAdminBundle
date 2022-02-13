@@ -284,7 +284,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $definition->setShared(false);
 
         $managerType = $attributes['manager_type'] ?? null;
-        if (null === $managerType) {
+        if (!\is_string($managerType)) {
             throw new InvalidArgumentException(sprintf('Missing tag information "manager_type" on service "%s".', $serviceId));
         }
 

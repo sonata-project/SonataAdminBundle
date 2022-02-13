@@ -138,7 +138,7 @@ final class RenderElementExtensionTest extends TestCase
             'role_admin' => 'ROLE_SONATA_ADMIN',
             'role_super_admin' => 'ROLE_SUPER_ADMIN',
             'search' => true,
-            'skin' => 'black',
+            'skin' => 'skin-black',
             'sort_admins' => true,
             'stylesheets' => [],
             'use_bootlint' => false,

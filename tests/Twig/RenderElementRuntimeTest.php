@@ -21,6 +21,7 @@ use Sonata\AdminBundle\SonataConfiguration;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
+use Sonata\AdminBundle\Tests\Fixtures\Enum\Suit;
 use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
 use Sonata\AdminBundle\Tests\Twig\Extension\FakeTemplateRegistryExtension;
 use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
@@ -133,7 +134,7 @@ final class RenderElementRuntimeTest extends TestCase
             'role_admin' => 'ROLE_SONATA_ADMIN',
             'role_super_admin' => 'ROLE_SUPER_ADMIN',
             'search' => true,
-            'skin' => 'black',
+            'skin' => 'skin-black',
             'sort_admins' => true,
             'stylesheets' => [],
             'use_bootlint' => false,
@@ -512,7 +513,7 @@ EOT
      */
     public function getRenderListElementTests(): array
     {
-        return [
+        $elements = [
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345"> Example </td>',
                 FieldDescriptionInterface::TYPE_STRING,
@@ -1492,6 +1493,18 @@ EOT
                 ],
             ],
         ];
+
+        // TODO: Remove the "if" check when dropping support of PHP < 8.1 and add the case to the list
+        if (\PHP_VERSION_ID >= 80100) {
+            $elements[] = [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-enum" objectId="12345"> Hearts </td>',
+                FieldDescriptionInterface::TYPE_ENUM,
+                Suit::Hearts,
+                [],
+            ];
+        }
+
+        return $elements;
     }
 
     /**
