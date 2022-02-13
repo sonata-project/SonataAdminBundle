@@ -14,7 +14,7 @@ import '../scss/app.scss';
 import $ from 'jquery';
 
 // jQuery scrollTo is not directly used in SonataAdmin
-// but it is used on SonataPage, SonataArticle and SonataDashboard
+// but it is used on SonataPage
 import 'jquery.scrollto';
 
 // Only using sortable widget from jQuery UI library
@@ -32,17 +32,11 @@ import moment from 'moment';
 import '../vendor/bootstrap-datetimepicker.min';
 import 'jquery-form';
 
-// Boostrap 3 JavaScript for the X-editable library
-import 'x-editable/dist/bootstrap3-editable/js/bootstrap-editable';
-
 // Full version of Select2, needed because SonataAdmin needs
 // compat dropdownCss and it only comes on the full version
 import 'select2/dist/js/select2.full';
 import 'admin-lte';
 import 'icheck';
-
-// jQuery SlimScroll is used in AdminLTE v2
-import 'jquery-slimscroll';
 
 // No Framework Waypoints version and sticky shortcut
 import 'waypoints/lib/noframework.waypoints';

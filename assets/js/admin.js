@@ -26,7 +26,6 @@ const Admin = {
     Admin.setup_select2(subject);
     Admin.setup_icheck(subject);
     Admin.setup_checkbox_range_selection(subject);
-    Admin.setup_xeditable(subject);
     Admin.setup_form_tabs_for_errors(subject);
     Admin.setup_inline_form_errors(subject);
     Admin.setup_tree_view(subject);
@@ -202,29 +201,6 @@ const Admin = {
 
         previousIndex = currentIndex;
       }
-    });
-  },
-
-  setup_xeditable(subject) {
-    Admin.log('[core|setup_xeditable] configure xeditable on', subject);
-    jQuery('.x-editable', subject).editable({
-      emptyclass: 'editable-empty btn btn-sm btn-default',
-      emptytext: '<i class="fas fa-pencil-alt"></i>',
-      container: 'body',
-      placement: 'auto',
-      success(response) {
-        const html = jQuery(response);
-        Admin.setup_xeditable(html);
-        jQuery(this).closest('td').replaceWith(html);
-      },
-      error: (xhr) => {
-        // On some error responses, we return JSON.
-        if (xhr.getResponseHeader('Content-Type') === 'application/json') {
-          return JSON.parse(xhr.responseText);
-        }
-
-        return xhr.responseText;
-      },
     });
   },
 

@@ -9,11 +9,8 @@
 
 @import '~bootstrap/dist/css/bootstrap.css';
 
-// Add Font Awesome Free and the v4 compatibility layer
-// this layer should only be removed when we are sure we have replaced
-// all icons to the new naming on all Sonata code
+// Add Font Awesome Free
 @import '~@fortawesome/fontawesome-free/css/all.css';
-@import '~@fortawesome/fontawesome-free/css/v4-shims.css';
 
 // Add Source Sans Pro Font with all options
 // This font is used by AdminLTE
@@ -25,9 +22,13 @@
 @import '~@fontsource/source-sans-pro/600-italic.css';
 @import '~@fontsource/source-sans-pro/700.css';
 
-// Basic AdminLTE styles without any plugins,
-// because they conflict with Select2 v4
-@import '~admin-lte/dist/css/alt/AdminLTE-without-plugins.css';
+// Basic AdminLTE styles
+@import '~admin-lte/dist/css/alt/adminlte.core.css';
+@import '~admin-lte/dist/css/alt/adminlte.components.css';
+@import '~admin-lte/dist/css/alt/adminlte.extra-components.css';
+@import '~admin-lte/dist/css/alt/adminlte.light.css';
+@import '~admin-lte/dist/css/alt/adminlte.pages.css';
+
 @import '~icheck/skins/square/blue.css';
 
 // Eonasdan Bootstrap DateTimePicker in its version 3 does not
@@ -41,10 +42,7 @@
 // Only use sortable widget from jQuery UI library
 @import '~jquery-ui/themes/base/sortable.css';
 @import '~select2/dist/css/select2.css';
-@import '~select2-bootstrap-theme/dist/select2-bootstrap.css';
-
-// Boostrap 3 styles for the X-editable library
-@import '~x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css';
+@import '~@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.css';
 
 // SonataAdmin custom styles
 @import './styles';
