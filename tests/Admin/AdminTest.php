@@ -74,7 +74,6 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 use Sonata\Doctrine\Adapter\AdapterInterface;
-use Sonata\Exporter\Source\SourceIteratorInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormFactory;
@@ -2231,7 +2230,7 @@ final class AdminTest extends TestCase
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $dataSource = $this->createMock(DataSourceInterface::class);
         $proxyQuery = $this->createStub(ProxyQueryInterface::class);
-        $sourceIterator = $this->createStub(SourceIteratorInterface::class);
+        $sourceIterator = $this->createStub(\Iterator::class);
 
         $admin = new PostAdmin();
         $admin->setModelClass(Post::class);

@@ -21,7 +21,6 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionRegistryInterface;
 use Sonata\AdminBundle\Object\MetadataInterface;
-use Sonata\Exporter\Source\SourceIteratorInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -247,7 +246,10 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function getExportFields(): array;
 
-    public function getDataSourceIterator(): SourceIteratorInterface;
+    /**
+     * @return \Iterator<array<mixed>>
+     */
+    public function getDataSourceIterator(): \Iterator;
 
     /**
      * Call before the batch action, allow you to alter the query and the idx.

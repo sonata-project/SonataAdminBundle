@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Exporter;
 
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\Exporter\Source\SourceIteratorInterface;
 
 interface DataSourceInterface
 {
     /**
      * @param string[] $fields
+     *
+     * @return \Iterator<array<mixed>>
      */
-    public function createIterator(ProxyQueryInterface $query, array $fields): SourceIteratorInterface;
+    public function createIterator(ProxyQueryInterface $query, array $fields): \Iterator;
 }
