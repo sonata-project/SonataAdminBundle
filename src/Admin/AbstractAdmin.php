@@ -35,7 +35,6 @@ use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Util\Instantiator;
 use Sonata\AdminBundle\Util\ParametersManipulator;
-use Sonata\Exporter\Source\SourceIteratorInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -370,7 +369,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $fields;
     }
 
-    final public function getDataSourceIterator(): SourceIteratorInterface
+    final public function getDataSourceIterator(): \Iterator
     {
         $datagrid = $this->getDatagrid();
         $datagrid->buildPager();

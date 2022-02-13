@@ -38,7 +38,6 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\Entity;
 use Sonata\AdminBundle\Tests\Fixtures\Util\DummyDomainObject;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Sonata\Exporter\Exporter;
-use Sonata\Exporter\Source\SourceIteratorInterface;
 use Sonata\Exporter\Writer\JsonWriter;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -2575,7 +2574,7 @@ final class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn(\stdClass::class);
 
-        $dataSourceIterator = $this->createMock(SourceIteratorInterface::class);
+        $dataSourceIterator = $this->createMock(\Iterator::class);
 
         $this->admin->expects(static::once())
             ->method('getDataSourceIterator')

@@ -28,7 +28,6 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.3'
                     - '7.4'
                     - '8.0'
                     - '8.1'
@@ -37,7 +36,7 @@ jobs:
                 symfony-require: ['']
                 variant: [normal]
                 include:
-                    - php-version: '7.3'
+                    - php-version: '7.4'
                       dependencies: lowest
                       allowed-to-fail: false
                       variant: normal
