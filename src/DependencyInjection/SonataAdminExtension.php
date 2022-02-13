@@ -34,6 +34,8 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  * @author Michael Williams <michael.williams@funsational.com>
+ *
+ * @phpstan-import-type SonataAdminConfiguration from \Sonata\AdminBundle\DependencyInjection\Configuration
  */
 final class SonataAdminExtension extends Extension
 {
@@ -81,6 +83,8 @@ final class SonataAdminExtension extends Extension
 
         $configuration = $this->getConfiguration($configs, $container);
         \assert(null !== $configuration);
+
+        /** @phpstan-var SonataAdminConfiguration $config */
         $config = $this->processConfiguration($configuration, $configs);
 
         $config['options']['javascripts'] = $this->buildJavascripts($config);
@@ -215,6 +219,8 @@ final class SonataAdminExtension extends Extension
      * @param array<string, mixed> $config
      *
      * @return string[]
+     *
+     * @phpstan-param SonataAdminConfiguration $config
      */
     private function buildStylesheets(array $config): array
     {
@@ -234,6 +240,8 @@ final class SonataAdminExtension extends Extension
      * @param array<string, mixed> $config
      *
      * @return string[]
+     *
+     * @phpstan-param SonataAdminConfiguration $config
      */
     private function buildJavascripts(array $config): array
     {

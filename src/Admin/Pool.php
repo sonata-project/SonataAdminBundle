@@ -34,8 +34,8 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
  *     label: string,
  *     label_catalogue: string,
  *     icon: string,
- *     item_adds: Item[],
- *     items: Item[],
+ *     item_adds: list<string>,
+ *     items: list<Item>,
  *     keep_open: bool,
  *     on_top: bool,
  *     provider?: string,
@@ -92,8 +92,8 @@ final class Pool
      *  label: string,
      *  label_catalogue: string,
      *  icon: string,
-     *  item_adds: Item[],
-     *  items: array<array-key, AdminInterface<object>>,
+     *  item_adds: list<string>,
+     *  items: list<AdminInterface<object>>,
      *  keep_open: bool,
      *  on_top: bool,
      *  provider?: string,
@@ -105,7 +105,7 @@ final class Pool
         $groups = [];
 
         foreach ($this->adminGroups as $name => $adminGroup) {
-            $items = array_filter(array_map(function (array $item): ?AdminInterface {
+            $items = array_values(array_filter(array_map(function (array $item): ?AdminInterface {
                 if (!isset($item['admin']) || '' === $item['admin']) {
                     return null;
                 }
@@ -131,7 +131,7 @@ final class Pool
                 }
 
                 return $admin;
-            }, $adminGroup['items']));
+            }, $adminGroup['items'])));
 
             if ([] !== $items) {
                 $groups[$name] = ['items' => $items] + $adminGroup;

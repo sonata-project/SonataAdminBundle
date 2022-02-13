@@ -30,7 +30,7 @@ final class GroupRuntimeTest extends TestCase
                 'label_catalogue' => 'default',
                 'icon' => 'icon1',
                 'items' => [
-                    'itemKey' => [
+                    [
                         'admin' => 'sonata_admin_non_creatable',
                         'label' => 'admin1',
                         'roles' => [],
@@ -49,7 +49,7 @@ final class GroupRuntimeTest extends TestCase
                 'label_catalogue' => 'default',
                 'icon' => 'icon2',
                 'items' => [
-                    'itemKey' => [
+                    [
                         'admin' => 'sonata_admin_creatable',
                         'label' => 'admin1',
                         'roles' => [],
@@ -95,7 +95,7 @@ final class GroupRuntimeTest extends TestCase
         static::assertSame([
             [
                 'items' => [
-                    'itemKey' => $adminCreatable,
+                    $adminCreatable,
                 ],
                 'label' => 'creatable',
                 'label_catalogue' => 'default',
