@@ -16,11 +16,10 @@ namespace Sonata\AdminBundle\Tests\App\Exporter;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exporter\DataSourceInterface;
 use Sonata\Exporter\Source\ArraySourceIterator;
-use Sonata\Exporter\Source\SourceIteratorInterface;
 
 final class DataSource implements DataSourceInterface
 {
-    public function createIterator(ProxyQueryInterface $query, array $fields): SourceIteratorInterface
+    public function createIterator(ProxyQueryInterface $query, array $fields): \Iterator
     {
         return new ArraySourceIterator([]);
     }

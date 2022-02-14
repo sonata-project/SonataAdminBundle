@@ -24,7 +24,7 @@
     ],
     "homepage": "https://docs.sonata-project.org/projects/SonataAdminBundle",
     "require": {
-        "php": "^7.3 || ^8.0",
+        "php": "^7.4 || ^8.0",
         "ext-json": "*",
         "doctrine/collections": "^1.6",
         "doctrine/common": "^3.0",
@@ -36,7 +36,7 @@
         "psr/log": "^1.1 || ^2.0 || ^3.0",
         "sonata-project/block-bundle": "^4.7",
         "sonata-project/doctrine-extensions": "^1.8",
-        "sonata-project/exporter": "^2.1",
+        "sonata-project/exporter": "^2.11",
         "sonata-project/form-extensions": "^1.7.1",
         "sonata-project/twig-extensions": "^1.4.1",
         "symfony/asset": "^4.4 || ^5.3 || ^6.0",

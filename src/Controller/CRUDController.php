@@ -20,6 +20,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Exception\ModelManagerThrowable;
@@ -113,8 +114,7 @@ class CRUDController extends AbstractController
         }
 
         $listMode = $request->get('_list_mode');
-
-        if (null !== $listMode) {
+        if (\is_string($listMode)) {
             $this->admin->setListMode($listMode);
         }
 
@@ -189,7 +189,7 @@ class CRUDController extends AbstractController
         $this->assertObjectExists($request, true);
 
         $id = $request->get($this->admin->getIdParameter());
-        \assert(null !== $id);
+        \assert(\is_string($id) || \is_int($id));
         $object = $this->admin->getObject($id);
         \assert(null !== $object);
 
@@ -280,7 +280,7 @@ class CRUDController extends AbstractController
         $this->assertObjectExists($request, true);
 
         $id = $request->get($this->admin->getIdParameter());
-        \assert(null !== $id);
+        \assert(\is_string($id) || \is_int($id));
         $existingObject = $this->admin->getObject($id);
         \assert(null !== $existingObject);
 
@@ -404,8 +404,13 @@ class CRUDController extends AbstractController
 
         $forwardedRequest = $request->duplicate();
 
-        $data = json_decode((string) $request->get('data', ''), true);
-        if (null !== $data) {
+        $encodedData = $request->get('data', '');
+        if (!\is_string($encodedData)) {
+            throw new BadRequestParamHttpException('data', 'string', $encodedData);
+        }
+
+        $data = json_decode($encodedData, true);
+        if (\is_array($data)) {
             $action = $data['action'];
             $idx = (array) ($data['idx'] ?? []);
             $allElements = (bool) ($data['all_elements'] ?? false);
@@ -640,7 +645,7 @@ class CRUDController extends AbstractController
         $this->assertObjectExists($request, true);
 
         $id = $request->get($this->admin->getIdParameter());
-        \assert(null !== $id);
+        \assert(\is_string($id) || \is_int($id));
         $object = $this->admin->getObject($id);
         \assert(null !== $object);
 
@@ -677,7 +682,7 @@ class CRUDController extends AbstractController
         $this->assertObjectExists($request, true);
 
         $id = $request->get($this->admin->getIdParameter());
-        \assert(null !== $id);
+        \assert(\is_string($id) || \is_int($id));
         $object = $this->admin->getObject($id);
         \assert(null !== $object);
 
@@ -718,7 +723,7 @@ class CRUDController extends AbstractController
         $this->assertObjectExists($request, true);
 
         $id = $request->get($this->admin->getIdParameter());
-        \assert(null !== $id);
+        \assert(\is_string($id) || \is_int($id));
         $object = $this->admin->getObject($id);
         \assert(null !== $object);
 
@@ -772,7 +777,7 @@ class CRUDController extends AbstractController
         $this->assertObjectExists($request, true);
 
         $id = $request->get($this->admin->getIdParameter());
-        \assert(null !== $id);
+        \assert(\is_string($id) || \is_int($id));
 
         $manager = $this->container->get('sonata.admin.audit.manager');
         \assert($manager instanceof AuditManagerInterface);
@@ -831,6 +836,9 @@ class CRUDController extends AbstractController
         $this->admin->checkAccess('export');
 
         $format = $request->get('format');
+        if (!\is_string($format)) {
+            throw new BadRequestParamHttpException('format', 'string', $format);
+        }
 
         $adminExporter = $this->container->get('sonata.admin.admin_exporter');
         \assert($adminExporter instanceof AdminExporter);
@@ -871,7 +879,7 @@ class CRUDController extends AbstractController
         $this->assertObjectExists($request, true);
 
         $id = $request->get($this->admin->getIdParameter());
-        \assert(null !== $id);
+        \assert(\is_string($id) || \is_int($id));
         $object = $this->admin->getObject($id);
         \assert(null !== $object);
 
@@ -1375,7 +1383,7 @@ class CRUDController extends AbstractController
 
         while (null !== $admin) {
             $objectId = $request->get($admin->getIdParameter());
-            if (null !== $objectId) {
+            if (\is_string($objectId) || \is_int($objectId)) {
                 $adminObject = $admin->getObject($objectId);
                 if (null === $adminObject) {
                     throw $this->createNotFoundException(sprintf(
@@ -1429,6 +1437,7 @@ class CRUDController extends AbstractController
 
         $parentAdmin = $this->admin->getParent();
         $parentId = $request->get($parentAdmin->getIdParameter());
+        \assert(\is_string($parentId) || \is_int($parentId));
 
         $parentAdminObject = $parentAdmin->getObject($parentId);
         if (null === $parentAdminObject) {
