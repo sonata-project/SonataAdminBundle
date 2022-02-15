@@ -215,10 +215,6 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $groups[$resolvedGroupName]['icon'] = $groupDefaults[$resolvedGroupName]['icon'];
                 }
 
-                if (isset($group['item_adds']) && [] !== $group['item_adds']) {
-                    $groups[$resolvedGroupName]['items'] = array_merge($groups[$resolvedGroupName]['items'], $group['item_adds']);
-                }
-
                 if (!isset($group['roles']) || [] === $group['roles']) {
                     $groups[$resolvedGroupName]['roles'] = $groupDefaults[$resolvedGroupName]['roles'];
                 }

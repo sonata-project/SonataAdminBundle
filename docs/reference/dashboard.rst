@@ -148,8 +148,7 @@ declarations.
                             - app.admin.post
 
                     app.admin.group.blog:
-                        items: ~
-                        item_adds:
+                        items:
                             - sonata.admin.page
                         roles: ['ROLE_ONE', 'ROLE_TWO']
 

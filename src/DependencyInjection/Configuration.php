@@ -75,8 +75,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *             label?: string,
  *             label_catalogue?: string,
  *             icon?: string,
- *             item_adds: list<string>,
- *             items?: array<Item>,
+ *             items: array<Item>,
  *             keep_open: bool,
  *             on_top: bool,
  *             provider?: string,
@@ -434,9 +433,6 @@ final class Configuration implements ConfigurationInterface
                                                 ->end()
                                             ->end()
                                         ->end()
-                                    ->end()
-                                    ->arrayNode('item_adds')
-                                        ->prototype('scalar')->defaultValue([])->end()
                                     ->end()
                                     ->arrayNode('roles')
                                         ->prototype('scalar')->defaultValue([])->end()
