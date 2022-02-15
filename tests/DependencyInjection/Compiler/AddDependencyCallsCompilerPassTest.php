@@ -328,7 +328,11 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_report_one_admin',
             'setListModes',
-            [['list' => ['class' => 'fas fa-list fa-fw']]]
+            [['list' => [
+                'icon' => '<i class="fas fa-list fa-fw" aria-hidden="true"></i>',
+                // NEXT_MAJOR: Remove the class part.
+                'class' => 'fas fa-list fa-fw',
+            ]]]
         );
 
         self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
