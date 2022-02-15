@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
+use Sonata\AdminBundle\BCLayer\BCDeprecationParameters;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -465,6 +466,14 @@ final class Configuration implements ConfigurationInterface
                                                 ->end()
                                             ->end()
                                         ->end()
+                                    ->end()
+                                    // NEXT_MAJOR: Remove the item_adds key.
+                                    ->arrayNode('item_adds')
+                                        ->setDeprecated(...BCDeprecationParameters::forConfig(
+                                            'The "item_adds" node is deprecated',
+                                            '4.x'
+                                        ))
+                                        ->prototype('scalar')->defaultValue([])->end()
                                     ->end()
                                     ->arrayNode('roles')
                                         ->prototype('scalar')->defaultValue([])->end()
