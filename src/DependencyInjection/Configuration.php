@@ -400,6 +400,38 @@ final class Configuration implements ConfigurationInterface
                                                         continue;
                                                     }
 
+                                                    if (isset($item['admin'])) {
+                                                        // NEXT_MAJOR: Remove this check
+                                                        if ('' === $item['admin']) {
+                                                            @trigger_error(
+                                                                'Configuring an item with an empty admin is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
+                                                                \E_USER_DEPRECATED
+                                                            );
+                                                        } else {
+                                                            if (isset($item['route'])) {
+                                                                @trigger_error(
+                                                                    'Configuring a route for an item with an admin key is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
+                                                                    \E_USER_DEPRECATED
+                                                                );
+
+                                                                // NEXT_MAJOR: Uncomment
+                                                                //throw new \InvalidArgumentException('Parameter "route" is not expected when the "admin" is provided for array items');
+                                                            }
+
+                                                            if (isset($item['label'])) {
+                                                                @trigger_error(
+                                                                    'Configuring a label for an item with an admin key is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
+                                                                    \E_USER_DEPRECATED
+                                                                );
+
+                                                                // NEXT_MAJOR: Uncomment
+                                                                //throw new \InvalidArgumentException('Parameter "label" is not expected when the "admin" is provided for array items');
+                                                            }
+                                                        }
+
+                                                        continue;
+                                                    }
+
                                                     if (!isset($item['route'])) {
                                                         throw new \InvalidArgumentException('Expected parameter "route" for array items');
                                                     }
