@@ -116,6 +116,7 @@ final class GroupMenuProvider implements MenuProviderInterface
      */
     private function canGenerateMenuItem(array $item, array $group): bool
     {
+        // NEXT_MAJOR: Remove the '' check
         if (isset($item['admin']) && '' !== $item['admin']) {
             $admin = $this->pool->getInstance($item['admin']);
 
@@ -157,6 +158,7 @@ final class GroupMenuProvider implements MenuProviderInterface
      */
     private function generateMenuItem(array $item, array $group): ItemInterface
     {
+        // NEXT_MAJOR: Remove the '' check
         if (isset($item['admin']) && '' !== $item['admin']) {
             $admin = $this->pool->getInstance($item['admin']);
 
@@ -172,6 +174,9 @@ final class GroupMenuProvider implements MenuProviderInterface
 
             return $this->menuFactory->createItem($admin->getLabel() ?? '', $options);
         }
+
+        \assert(isset($item['label']));
+        \assert(isset($item['route']));
 
         return $this->menuFactory->createItem($item['label'], [
             'route' => $item['route'],

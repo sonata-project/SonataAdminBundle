@@ -23,10 +23,14 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-type Item = array{
- *     admin?: string,
- *     label?: string,
+ *     label: string,
  *     roles: list<string>,
- *     route?: string,
+ *     route: string,
+ *     route_absolute: bool,
+ *     route_params: array<string, string>
+ * }|array{
+ *     admin: string,
+ *     roles: list<string>,
  *     route_absolute: bool,
  *     route_params: array<string, string>
  * }
@@ -104,6 +108,7 @@ final class Pool
 
         foreach ($this->adminGroups as $name => $adminGroup) {
             $items = array_values(array_filter(array_map(function (array $item): ?AdminInterface {
+                // NEXT_MAJOR: Remove the '' check
                 if (!isset($item['admin']) || '' === $item['admin']) {
                     return null;
                 }
