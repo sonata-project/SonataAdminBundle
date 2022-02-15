@@ -24,9 +24,9 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
  *
  * @phpstan-type Item = array{
  *     admin?: string,
- *     label: string,
+ *     label?: string,
  *     roles: list<string>,
- *     route: string,
+ *     route?: string,
  *     route_absolute: bool,
  *     route_params: array<string, string>
  * }
@@ -34,7 +34,6 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
  *     label: string,
  *     label_catalogue: string,
  *     icon: string,
- *     item_adds: list<string>,
  *     items: list<Item>,
  *     keep_open: bool,
  *     on_top: bool,
@@ -92,7 +91,6 @@ final class Pool
      *  label: string,
      *  label_catalogue: string,
      *  icon: string,
-     *  item_adds: list<string>,
      *  items: list<AdminInterface<object>>,
      *  keep_open: bool,
      *  on_top: bool,

@@ -84,7 +84,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         static::assertArrayHasKey('label', $dashboardGroupsSettings['sonata_group_one']);
         static::assertArrayHasKey('label_catalogue', $dashboardGroupsSettings['sonata_group_one']);
         static::assertArrayHasKey('items', $dashboardGroupsSettings['sonata_group_one']);
-        static::assertArrayHasKey('item_adds', $dashboardGroupsSettings['sonata_group_one']);
         static::assertArrayHasKey('roles', $dashboardGroupsSettings['sonata_group_one']);
         static::assertSame('Group One Label', $dashboardGroupsSettings['sonata_group_one']['label']);
         static::assertSame('SonataAdminBundle', $dashboardGroupsSettings['sonata_group_one']['label_catalogue']);
@@ -110,7 +109,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         static::assertSame('blog_article', $dashboardGroupsSettings['sonata_group_one']['items'][2]['route']);
         static::assertSame('Article', $dashboardGroupsSettings['sonata_group_one']['items'][2]['label']);
         static::assertSame(['articleId' => 3], $dashboardGroupsSettings['sonata_group_one']['items'][2]['route_params']);
-        static::assertContains('sonata_news_admin', $dashboardGroupsSettings['sonata_group_one']['item_adds']);
         static::assertContains('ROLE_ONE', $dashboardGroupsSettings['sonata_group_one']['roles']);
 
         static::assertArrayHasKey('sonata_group_two', $dashboardGroupsSettings);
@@ -152,7 +150,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         static::assertArrayHasKey('label', $adminGroups['sonata_group_one']);
         static::assertArrayHasKey('label_catalogue', $adminGroups['sonata_group_one']);
         static::assertArrayHasKey('items', $adminGroups['sonata_group_one']);
-        static::assertArrayHasKey('item_adds', $adminGroups['sonata_group_one']);
         static::assertArrayHasKey('roles', $adminGroups['sonata_group_one']);
         static::assertSame('Group One Label', $adminGroups['sonata_group_one']['label']);
         static::assertSame('SonataAdminBundle', $adminGroups['sonata_group_one']['label_catalogue']);
@@ -163,8 +160,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             'sonata_post_admin',
             $adminGroups['sonata_group_one']['items'][0]['admin']
         );
-        static::assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['items']);
-        static::assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['item_adds']);
         static::assertNotContains('sonata_article_admin', $adminGroups['sonata_group_one']['items']);
         static::assertContains('ROLE_ONE', $adminGroups['sonata_group_one']['roles']);
 
@@ -386,9 +381,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
                     'route_params' => ['articleId' => 3],
                 ],
             ],
-            'item_adds' => [
-                'sonata_news_admin',
-            ],
             'roles' => ['ROLE_ONE'],
         ];
 
@@ -603,9 +595,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
                                 'label' => 'Article',
                                 'route_params' => ['articleId' => 3],
                             ],
-                        ],
-                        'item_adds' => [
-                            'sonata_news_admin',
                         ],
                         'roles' => ['ROLE_ONE'],
                     ],

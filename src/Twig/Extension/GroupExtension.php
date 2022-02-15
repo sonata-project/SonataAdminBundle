@@ -56,7 +56,6 @@ final class GroupExtension extends AbstractExtension
      *  label: string,
      *  label_catalogue: string,
      *  icon: string,
-     *  item_adds: list<string>,
      *  items: list<\Sonata\AdminBundle\Admin\AdminInterface<object>>,
      *  keep_open: bool,
      *  on_top: bool,
