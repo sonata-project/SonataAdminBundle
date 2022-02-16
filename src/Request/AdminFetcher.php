@@ -34,7 +34,7 @@ final class AdminFetcher implements AdminFetcherInterface
         $adminCode = $request->get('_sonata_admin');
 
         if (!\is_string($adminCode)) {
-            $route = $request->get('_route');
+            $route = $request->get('_route', '');
             \assert(\is_string($route));
 
             throw new \InvalidArgumentException(sprintf(

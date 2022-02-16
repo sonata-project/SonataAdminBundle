@@ -215,10 +215,6 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $groups[$resolvedGroupName]['icon'] = $groupDefaults[$resolvedGroupName]['icon'];
                 }
 
-                if (isset($group['item_adds']) && [] !== $group['item_adds']) {
-                    $groups[$resolvedGroupName]['items'] = array_merge($groups[$resolvedGroupName]['items'], $group['item_adds']);
-                }
-
                 if (!isset($group['roles']) || [] === $group['roles']) {
                     $groups[$resolvedGroupName]['roles'] = $groupDefaults[$resolvedGroupName]['roles'];
                 }
@@ -284,7 +280,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $definition->setShared(false);
 
         $managerType = $attributes['manager_type'] ?? null;
-        if (null === $managerType) {
+        if (!\is_string($managerType)) {
             throw new InvalidArgumentException(sprintf('Missing tag information "manager_type" on service "%s".', $serviceId));
         }
 
@@ -368,8 +364,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $methodCalls[] = ['setFilterPersister', [new Reference($filtersPersister)]];
         }
 
-        $showMosaicButton = $overwriteAdminConfiguration['show_mosaic_button']
-            ?? $attributes['show_mosaic_button']
+        $showMosaicButton = $attributes['show_mosaic_button']
             ?? $container->getParameter('sonata.admin.configuration.show.mosaic.button');
         \assert(\is_bool($showMosaicButton));
 

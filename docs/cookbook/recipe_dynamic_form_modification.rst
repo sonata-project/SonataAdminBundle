@@ -36,7 +36,8 @@ Then, you should be able to dynamically add needed fields to the form::
 
             $subject = $this->getSubject();
 
-            if ($this->isNew()) {
+            // If you're using auto-generated identifiers
+            if ($subject->getId() === null) {
                 // The thumbnail field will only be added when the edited item is created
                 $form->add('thumbnail', FileType::class);
             }

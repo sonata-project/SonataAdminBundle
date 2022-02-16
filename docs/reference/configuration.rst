@@ -110,7 +110,6 @@ Full Configuration Options
                             label: ~
                             route: ~
                             route_params: []
-                        item_adds: []
                         roles: []
                 blocks:
                     type: ~

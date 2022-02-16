@@ -104,6 +104,7 @@ final class AdminPreviewBlockService extends AbstractBlockService
     private function handleFilters(AdminInterface $admin, BlockContextInterface $blockContext): void
     {
         $filters = $blockContext->getSetting('filters');
+        \assert(\is_array($filters));
 
         $sortBy = $filters[DatagridInterface::SORT_BY] ?? null;
         if (null !== $sortBy) {

@@ -80,6 +80,7 @@ final class XEditableRuntime implements RuntimeExtensionInterface
     public function getXEditableChoices(FieldDescriptionInterface $fieldDescription): array
     {
         $choices = $fieldDescription->getOption('choices', []);
+        \assert(\is_array($choices));
         $catalogue = $fieldDescription->getOption('catalogue');
 
         reset($choices);
@@ -96,7 +97,7 @@ final class XEditableRuntime implements RuntimeExtensionInterface
                     break;
                 }
 
-                if (null !== $catalogue) {
+                if (\is_string($catalogue)) {
                     $text = $this->translator->trans($text, [], $catalogue);
                 }
 

@@ -1758,11 +1758,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function getListMode(): string
     {
+        $defaultListMode = array_keys($this->getListModes())[0];
         if (!$this->hasRequest() || !$this->getRequest()->hasSession()) {
-            return 'list';
+            return $defaultListMode;
         }
 
-        return $this->getRequest()->getSession()->get(sprintf('%s.list_mode', $this->getCode()), 'list');
+        return $this->getRequest()->getSession()->get(sprintf('%s.list_mode', $this->getCode()), $defaultListMode);
     }
 
     final public function checkAccess(string $action, ?object $object = null): void

@@ -39,8 +39,7 @@ final class GroupRuntime implements RuntimeExtensionInterface
      *  label: string,
      *  label_catalogue: string,
      *  icon: string,
-     *  item_adds: Item[],
-     *  items: array<\Sonata\AdminBundle\Admin\AdminInterface<object>>,
+     *  items: list<\Sonata\AdminBundle\Admin\AdminInterface<object>>,
      *  keep_open: bool,
      *  on_top: bool,
      *  roles: list<string>
