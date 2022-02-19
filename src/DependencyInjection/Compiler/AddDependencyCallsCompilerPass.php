@@ -156,7 +156,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 $labelCatalogue = $attributes['label_catalogue'] ?? $defaultValues['label_catalogue'];
 
                 // NEXT_MAJOR: Remove the `label_catalogue` fallback.
-                $groupTranslationDomain = $attributes['translation_domain'] ?? $defaultValues['label_catalogue'] ?? $defaultValues['translation_domain'];
+                $groupTranslationDomain = $attributes['translation_domain'] ?? $attributes['label_catalogue'] ?? $defaultValues['translation_domain'];
                 $icon = $attributes['icon'] ?? $defaultValues['icon'];
                 $onTop = $attributes['on_top'] ?? false;
                 $keepOpen = $attributes['keep_open'] ?? false;
