@@ -162,7 +162,7 @@ declarations.
 
 This configuration specifies that the ``app.admin.group.content`` group uses the
 ``app.admin.group.content`` label, which is translated using the ``App``
-translation catalogue (the same label and translation configuration that we declared
+translation domain (the same label and translation configuration that we declared
 previously, in the service definition example).
 
 It also states that the ``app.admin.group.content`` group contains only the
