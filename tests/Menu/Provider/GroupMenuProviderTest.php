@@ -124,8 +124,8 @@ final class GroupMenuProviderTest extends TestCase
         static::assertSame('foo_admin_label', $item->getLabel());
 
         $extras = $item->getExtras();
-        static::assertArrayHasKey('label_catalogue', $extras);
-        static::assertSame($extras['label_catalogue'], 'SonataAdminBundle');
+        static::assertArrayHasKey('translation_domain', $extras);
+        static::assertSame($extras['translation_domain'], 'SonataAdminBundle');
     }
 
     public function unanimousGrantCheckerMock(string $role): bool
@@ -252,13 +252,13 @@ final class GroupMenuProviderTest extends TestCase
         static::assertSame('foo_admin_label', $item->getLabel());
 
         $extras = $item->getExtras();
-        static::assertArrayHasKey('label_catalogue', $extras);
-        static::assertSame('SonataAdminBundle', $extras['label_catalogue']);
+        static::assertArrayHasKey('translation_domain', $extras);
+        static::assertSame('SonataAdminBundle', $extras['translation_domain']);
 
         static::assertInstanceOf(MenuItem::class, $menu['route_label']);
         $extras = $menu['route_label']->getExtras();
-        static::assertArrayHasKey('label_catalogue', $extras);
-        static::assertSame('SonataAdminBundle', $extras['label_catalogue']);
+        static::assertArrayHasKey('translation_domain', $extras);
+        static::assertSame('SonataAdminBundle', $extras['translation_domain']);
 
         static::assertSame('http://sonata-project/FooRoute?foo=bar', $menu['route_label']->getUri());
         static::assertInstanceOf(MenuItem::class, $menu['relative_route']);
@@ -405,7 +405,7 @@ final class GroupMenuProviderTest extends TestCase
                 [
                     'label' => 'foo',
                     'icon' => '<i class="fas fa-edit"></i>',
-                    'label_catalogue' => 'SonataAdminBundle',
+                    'translation_domain' => 'SonataAdminBundle',
                     'items' => [
                         [
                             'admin' => 'sonata_admin_foo_service',
@@ -451,7 +451,7 @@ final class GroupMenuProviderTest extends TestCase
                 [
                     'label' => 'foo',
                     'icon' => '<i class="fas fa-edit"></i>',
-                    'label_catalogue' => 'SonataAdminBundle',
+                    'translation_domain' => 'SonataAdminBundle',
                     'items' => [
                         [
                             'admin' => '',
@@ -495,7 +495,7 @@ final class GroupMenuProviderTest extends TestCase
                 [
                     'label' => 'foo',
                     'icon' => '<i class="fas fa-edit"></i>',
-                    'label_catalogue' => 'SonataAdminBundle',
+                    'translation_domain' => 'SonataAdminBundle',
                     'items' => [
                         [
                             'admin' => '',
@@ -548,7 +548,7 @@ final class GroupMenuProviderTest extends TestCase
                 [
                     'label' => 'foo1',
                     'icon' => '<i class="fas fa-edit"></i>',
-                    'label_catalogue' => 'SonataAdminBundle',
+                    'translation_domain' => 'SonataAdminBundle',
                     'items' => [
                         [
                             'admin' => '',
@@ -567,7 +567,7 @@ final class GroupMenuProviderTest extends TestCase
                 [
                     'label' => 'foo2',
                     'icon' => '<i class="fas fa-edit"></i>',
-                    'label_catalogue' => 'SonataAdminBundle',
+                    'translation_domain' => 'SonataAdminBundle',
                     'items' => [
                         [
                             'admin' => '',
@@ -586,7 +586,7 @@ final class GroupMenuProviderTest extends TestCase
                 [
                     'label' => 'foo3',
                     'icon' => '<i class="fas fa-edit"></i>',
-                    'label_catalogue' => 'SonataAdminBundle',
+                    'translation_domain' => 'SonataAdminBundle',
                     'items' => [
                         [
                             'admin' => '',
@@ -615,7 +615,7 @@ final class GroupMenuProviderTest extends TestCase
                 [
                     'label' => 'foo_on_top',
                     'icon' => '<i class="fas fa-edit"></i>',
-                    'label_catalogue' => 'SonataAdminBundle',
+                    'translation_domain' => 'SonataAdminBundle',
                     'keep_open' => false,
                     'on_top' => true,
                     'items' => [
@@ -644,7 +644,7 @@ final class GroupMenuProviderTest extends TestCase
             [
                 'label' => 'foo',
                 'icon' => '<i class="fas fa-edit"></i>',
-                'label_catalogue' => 'SonataAdminBundle',
+                'translation_domain' => 'SonataAdminBundle',
                 'keep_open' => false,
                 'on_top' => false,
                 'items' => [
@@ -666,7 +666,7 @@ final class GroupMenuProviderTest extends TestCase
             [
                 'label' => 'foo',
                 'icon' => '<i class="fas fa-edit"></i>',
-                'label_catalogue' => 'SonataAdminBundle',
+                'translation_domain' => 'SonataAdminBundle',
                 'keep_open' => false,
                 'on_top' => false,
                 'items' => [

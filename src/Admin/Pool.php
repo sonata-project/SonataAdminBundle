@@ -38,7 +38,7 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
  * @phpstan-type Group = array{
  *     label: string,
  *     translation_domain: string,
- *     label_catalogue: string,
+ *     label_catalogue?: string,
  *     icon: string,
  *     items: list<Item>,
  *     keep_open: bool,

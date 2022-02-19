@@ -420,7 +420,7 @@ final class PoolTest extends TestCase
             'sonata.user.admin.group1' => [
                 'label' => 'label',
                 'icon' => 'icon',
-                'label_catalogue' => 'admin_domain',
+                'translation_domain' => 'admin_domain',
                 'items' => [],
                 'keep_open' => false,
                 'on_top' => false,
@@ -457,7 +457,7 @@ final class PoolTest extends TestCase
 
         return [
             'label' => '',
-            'label_catalogue' => '',
+            'translation_domain' => '',
             'icon' => '',
             'items' => [$item],
             'keep_open' => false,
