@@ -81,7 +81,8 @@ final class XEditableRuntime implements RuntimeExtensionInterface
     {
         $choices = $fieldDescription->getOption('choices', []);
         \assert(\is_array($choices));
-        $catalogue = $fieldDescription->getOption('catalogue');
+        // NEXT_MAJOR: Remove the fallback on catalogue
+        $catalogue = $fieldDescription->getOption('choice_translation_domain', $fieldDescription->getOption('catalogue'));
 
         reset($choices);
         $first = current($choices);

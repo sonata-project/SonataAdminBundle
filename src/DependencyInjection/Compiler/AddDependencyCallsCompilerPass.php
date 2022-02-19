@@ -61,11 +61,12 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $defaultGroup = $container->getParameter('sonata.admin.configuration.default_group');
         \assert(\is_string($defaultGroup));
-        $defaultTranslationDomain = $container->getParameter('sonata.admin.configuration.default_translation_domain');
-        \assert(\is_string($defaultTranslationDomain));
         // NEXT_MAJOR: Remove this variable.
         $defaultLabelCatalogue = $container->getParameter('sonata.admin.configuration.default_label_catalogue');
         \assert(\is_string($defaultLabelCatalogue));
+        // NEXT_MAJOR: Remove the fallback.
+        $defaultTranslationDomain = $container->getParameter('sonata.admin.configuration.default_translation_domain') ?? $defaultLabelCatalogue;
+        \assert(\is_string($defaultTranslationDomain));
         $defaultIcon = $container->getParameter('sonata.admin.configuration.default_icon');
         \assert(\is_string($defaultIcon));
 
@@ -309,9 +310,6 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             throw new InvalidArgumentException(sprintf('Missing tag information "manager_type" on service "%s".', $serviceId));
         }
 
-        $defaultController = $container->getParameter('sonata.admin.configuration.default_controller');
-        \assert(\is_string($defaultController));
-
         $overwriteAdminConfiguration = $container->getParameter('sonata.admin.configuration.default_admin_services');
         \assert(\is_array($overwriteAdminConfiguration));
 
@@ -377,7 +375,11 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $label = $attributes['label'] ?? null;
         $methodCalls[] = ['setLabel', [$label]];
 
-        $translationDomain = $attributes['translation_domain'] ?? 'messages';
+        // NEXT_MAJOR: Remove the fallback.
+        $defaultTranslationDomain = $container->getParameter('sonata.admin.configuration.default_translation_domain') ?? 'messages';
+        \assert(\is_string($defaultTranslationDomain));
+
+        $translationDomain = $attributes['translation_domain'] ?? $defaultTranslationDomain;
         $methodCalls[] = ['setTranslationDomain', [$translationDomain]];
 
         $persistFilters = $attributes['persist_filters']
