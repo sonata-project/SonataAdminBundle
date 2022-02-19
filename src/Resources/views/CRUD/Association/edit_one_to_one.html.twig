@@ -61,10 +61,20 @@ file that was distributed with this source code.
                     <a  href="{{ sonata_admin.field_description.associationadmin.generateUrl('list', {select: true}|merge(sonata_admin.field_description.getOption('link_parameters', {}))) }}"
                         onclick="return start_field_dialog_form_list_{{ id }}(this);"
                         class="btn btn-info btn-sm sonata-ba-action"
-                        title="{{ btn_list|trans({}, btn_catalogue) }}"
+                        {# NEXT_MAJOR: Remove the fallback on btn_catalogue #}
+                        title="{{
+                            btn_translation_domain is same as(false)
+                            ? btn_list
+                            : btn_list|trans({}, btn_translation_domain|default(btn_catalogue))
+                        }}"
                         >
                         <i class="fas fa-list"></i>
-                        {{ btn_list|trans({}, btn_catalogue) }}
+                        {# NEXT_MAJOR: Remove the fallback on btn_catalogue #}
+                        {{
+                            btn_translation_domain is same as(false)
+                            ? btn_list
+                            : btn_list|trans({}, btn_translation_domain|default(btn_catalogue))
+                        }}
                     </a>
                 {% endif %}
 
@@ -72,10 +82,20 @@ file that was distributed with this source code.
                     <a  href="{{ sonata_admin.field_description.associationadmin.generateUrl('create', sonata_admin.field_description.getOption('link_parameters', {})) }}"
                         onclick="return start_field_dialog_form_add_{{ id }}(this);"
                         class="btn btn-success btn-sm sonata-ba-action"
-                        title="{{ btn_add|trans({}, btn_catalogue) }}"
+                        {# NEXT_MAJOR: Remove the fallback on btn_catalogue #}
+                        title="{{
+                            btn_translation_domain is same as(false)
+                            ? btn_add
+                            : btn_add|trans({}, btn_translation_domain|default(btn_catalogue))
+                        }}"
                         >
                         <i class="fas fa-plus-circle"></i>
-                        {{ btn_add|trans({}, btn_catalogue) }}
+                        {# NEXT_MAJOR: Remove the fallback on btn_catalogue #}
+                        {{
+                            btn_translation_domain is same as(false)
+                            ? btn_add
+                            : btn_add|trans({}, btn_translation_domain|default(btn_catalogue))
+                        }}
                     </a>
                 {% endif %}
             </div>
@@ -89,10 +109,20 @@ file that was distributed with this source code.
                 <a  href=""
                     onclick="return remove_selected_element_{{ id }}(this);"
                     class="btn btn-danger btn-sm sonata-ba-action"
-                    title="{{ btn_delete|trans({}, btn_catalogue) }}"
+                    {# NEXT_MAJOR: Remove the fallback on btn_catalogue #}
+                    title="{{
+                        btn_translation_domain is same as(false)
+                        ? btn_delete
+                        : btn_delete|trans({}, btn_translation_domain|default(btn_catalogue))
+                    }}"
                     >
                     <i class="fas fa-minus-circle"></i>
-                    {{ btn_delete|trans({}, btn_catalogue) }}
+                    {# NEXT_MAJOR: Remove the fallback on btn_catalogue #}
+                    {{
+                        btn_translation_domain is same as(false)
+                        ? btn_delete
+                        : btn_delete|trans({}, btn_translation_domain|default(btn_catalogue))
+                    }}
                 </a>
             {% endif %}
 

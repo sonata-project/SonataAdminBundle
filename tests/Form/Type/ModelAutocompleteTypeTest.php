@@ -78,6 +78,7 @@ final class ModelAutocompleteTypeTest extends TypeTestCase
 
         static::assertSame('link_add', $options['btn_add']);
         static::assertSame('SonataAdminBundle', $options['btn_catalogue']);
+        static::assertSame('SonataAdminBundle', $options['btn_translation_domain']);
     }
 
     public function testGetBlockPrefix(): void
