@@ -18,7 +18,7 @@ Fieldtype                                           Description
 ``FieldDescriptionInterface::TYPE_EMAIL``           display a mailto link. Accepts the options ``as_string``, ``subject`` and ``body``
 ``FieldDescriptionInterface::TYPE_ENUM``            display the name of a backed enum
 ``FieldDescriptionInterface::TYPE_TEXTAREA``        display a textarea
-``FieldDescriptionInterface::TYPE_TRANS``           translate the value with a provided ``catalogue`` (translation domain) and ``format`` (sprintf format) option
+``FieldDescriptionInterface::TYPE_TRANS``           translate the value with a provided ``value_translation_domain`` and ``format`` (sprintf format) option
 ``FieldDescriptionInterface::TYPE_FLOAT``           display a number
 ``FieldDescriptionInterface::TYPE_CURRENCY``        display a number with a provided ``currency`` option
 ``FieldDescriptionInterface::TYPE_PERCENT``         display a percentage
@@ -148,7 +148,7 @@ Option                                  Description
 **choices**                             Array of choices.
 **multiple**                            Determines if choosing multiple options is allowed. Defaults to false.
 **delimiter**                           Separator of values, if multiple.
-**catalogue**                           Translation catalogue.
+**choice_translation_domain**           Translation domain.
 **class**                               Class qualified name for editable association field.
 **required**                            Whether the field is required or not (default true) when the
                                         ``editable`` option is set to ``true``. If false, an empty
@@ -159,7 +159,7 @@ Option                                  Description
 
     protected function configureListFields(ListMapper $list)
     {
-        // For the value `prog`, the displayed text is `In progress`. The `App` catalogue will be used to translate `In progress` message.
+        // For the value `prog`, the displayed text is `In progress`. The `App` domain will be used to translate `In progress` message.
         $list
             ->add('status', FieldDescriptionInterface::TYPE_CHOICE, [
                 'choices' => [
@@ -167,7 +167,7 @@ Option                                  Description
                     'prog' => 'In progress',
                     'done' => 'Done',
                 ],
-                'catalogue' => 'App',
+                'choice_translation_domain' => 'App',
             ])
         ;
     }
