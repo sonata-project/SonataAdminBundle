@@ -10,11 +10,12 @@ file that was distributed with this source code.
 #}
 {% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
 
+{# NEXT_MAJOR: Remove the fallback on catalogue #}
 {% block field %}
     {%- include '@SonataAdmin/CRUD/display_trans.html.twig' with {
         value: value,
         value_format: field_description.option('format'),
-        translation_domain: field_description.option('catalogue', admin.translationDomain),
+        translation_domain: field_description.option('value_translation_domain', field_description.option('catalogue', admin.translationDomain)),
         safe: field_description.option('safe'),
     } only -%}
 {% endblock %}
