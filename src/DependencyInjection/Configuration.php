@@ -29,12 +29,14 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  * @phpstan-import-type ExtensionMap from \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass
  * @phpstan-import-type Item from \Sonata\AdminBundle\Admin\Pool
  *
+ * NEXT_MAJOR: Remove the default_label_catalogue key.
  * @phpstan-type SonataAdminConfigurationOptions = array{
  *     confirm_exit: bool,
  *     default_admin_route: string,
  *     default_group: string,
  *     default_icon: string,
  *     default_translation_domain: string,
+ *     default_label_catalogue: string,
  *     dropdown_number_groups_per_colums: int,
  *     form_type: 'standard'|'horizontal',
  *     html5_validate: bool,
@@ -338,7 +340,7 @@ final class Configuration implements ConfigurationInterface
                             // NEXT_MAJOR: Use `messages` as default value and remove the deprecation.
                             ->defaultValue(null)
                             ->validate()
-                                ->always(function ($value) {
+                                ->always(static function ($value) {
                                     if (null === $value) {
                                         @trigger_error(
                                             'Not setting the "sonata_admin.options.default_translation_domain" config option is deprecated'

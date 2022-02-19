@@ -184,15 +184,15 @@ final class ModelAutocompleteType extends AbstractType
         $resolver->setDeprecated(
             'btn_catalogue',
             ...BCDeprecation::forOptionResolver(
-            static function (Options $options, $value): string {
-                if ('SonataAdminBundle' !== $value) {
-                    return 'Passing a value to option "btn_catalogue" is deprecated! Use "btn_translation_domain" instead!';
-                }
+                static function (Options $options, $value): string {
+                    if ('SonataAdminBundle' !== $value) {
+                        return 'Passing a value to option "btn_catalogue" is deprecated! Use "btn_translation_domain" instead!';
+                    }
 
-                return '';
-            },
-            '4.x',
-        )
+                    return '';
+                },
+                '4.x',
+            )
         ); // NEXT_MAJOR: Remove this deprecation notice.
     }
 
