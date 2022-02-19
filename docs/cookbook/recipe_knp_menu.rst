@@ -46,7 +46,7 @@ Add the controller route as an item of the menu:
                 groups:
                     news:
                         label:                ~
-                        label_catalogue:      ~
+                        translation_domain:   ~
                         items:
                             - sonata.news.admin.post
                             - route:        blog_home
@@ -69,7 +69,7 @@ group roles will be checked.
                 groups:
                     news:
                         label:                ~
-                        label_catalogue:      ~
+                        translation_domain:   ~
                         items:
                             - sonata.news.admin.post
                             - route:        blog_home
@@ -206,7 +206,7 @@ your admin services or remove menu items from the ``sonata_admin`` dashboard gro
             groups:
                 news:
                     label:                ~
-                    label_catalogue:      ~
+                    translation_domain:   ~
                     items:
                       # comment or remove the sonata.news.admin.post declaration to hide it from the menu.
                       #  - sonata.news.admin.post
@@ -228,10 +228,10 @@ open and ignore open/close effects:
         dashboard:
             groups:
                 sonata.admin.group.content:
-                    keep_open:       true
-                    label:           sonata_media
-                    label_catalogue: SonataMediaBundle
-                    icon:            'fas fa-image' # html is also supported
+                    keep_open:          true
+                    label:              sonata_media
+                    translation_domain: SonataMediaBundle
+                    icon:               'fas fa-image' # html is also supported
                     items:
                         - sonata.media.admin.media
                         - sonata.media.admin.gallery
@@ -263,9 +263,9 @@ or in sonata_admin dashboard group configuration:
         dashboard:
             groups:
                 news:
-                    on_top:          true
-                    label:           ~
-                    label_catalogue: ~
+                    on_top:             true
+                    label:              ~
+                    translation_domain: ~
                     items:
                         - sonata.news.admin.post
 
@@ -286,9 +286,9 @@ Your can't use this option for two or more items at the same time:
         dashboard:
             groups:
                 news:
-                    on_top:          true
-                    label:           ~
-                    label_catalogue: ~
+                    on_top:            true
+                    label:              ~
+                    translation_domain: ~
                     items:
                         - sonata.news.admin.post
                         - route:        blog_home

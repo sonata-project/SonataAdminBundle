@@ -19,7 +19,7 @@ namespace Sonata\AdminBundle;
  *     default_admin_route: string,
  *     default_group: string,
  *     default_icon: string,
- *     default_label_catalogue: string,
+ *     default_translation_domain: string,
  *     dropdown_number_groups_per_colums: int,
  *     form_type: 'standard'|'horizontal',
  *     html5_validate: bool,

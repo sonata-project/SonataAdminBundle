@@ -34,8 +34,10 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
  *     route_absolute: bool,
  *     route_params: array<string, string>
  * }
+ * NEXT_MAJOR: Remove the label_catalogue key.
  * @phpstan-type Group = array{
  *     label: string,
+ *     translation_domain: string,
  *     label_catalogue: string,
  *     icon: string,
  *     items: list<Item>,
@@ -93,7 +95,7 @@ final class Pool
     /**
      * @phpstan-return array<string, array{
      *  label: string,
-     *  label_catalogue: string,
+     *  translation_domain: string,
      *  icon: string,
      *  items: list<AdminInterface<object>>,
      *  keep_open: bool,
