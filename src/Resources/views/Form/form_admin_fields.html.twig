@@ -569,17 +569,17 @@ file that was distributed with this source code.
                     <a href="{{ sonata_admin.field_description.associationadmin.generateUrl('list', {select: true}) }}"
                        onclick="return start_field_dialog_form_list_{{ id }}(this);"
                        class="btn btn-info btn-sm sonata-ba-action"
-                       {# NEXT_MAJOR: Remove the fallback on btn_catalogue #}
+                       {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
                        title="{{
-                           btn_translation_domain is same as(false)
+                           btn_translation_domain|default(null) is same as(false)
                            ? btn_list
                            : btn_list|trans({}, btn_translation_domain|default(btn_catalogue))
                        }}"
                     >
                         <i class="fas fa-list"></i>
-                        {# NEXT_MAJOR: Remove the fallback on btn_catalogue #}
+                        {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
                         {{
-                            btn_translation_domain is same as(false)
+                            btn_translation_domain|default(null) is same as(false)
                             ? btn_list
                             : btn_list|trans({}, btn_translation_domain|default(btn_catalogue))
                         }}
@@ -593,17 +593,17 @@ file that was distributed with this source code.
                     <a href="{{ sonata_admin.field_description.associationadmin.generateUrl('create') }}"
                        onclick="return start_field_dialog_form_add_{{ id }}(this);"
                        class="btn btn-success btn-sm sonata-ba-action"
-                        {# NEXT_MAJOR: Remove the fallback on btn_catalogue #}
+                        {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
                        title="{{
-                           btn_translation_domain is same as(false)
+                           btn_translation_domain|default(null) is same as(false)
                            ? btn_add
                            : btn_add|trans({}, btn_translation_domain|default(btn_catalogue))
                        }}"
                     >
                         <i class="fas fa-plus-circle"></i>
-                        {# NEXT_MAJOR: Remove the fallback on btn_catalogue #}
+                        {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
                         {{
-                            btn_translation_domain is same as(false)
+                            btn_translation_domain|default(null) is same as(false)
                             ? btn_add
                             : btn_add|trans({}, btn_translation_domain|default(btn_catalogue))
                         }}
@@ -618,17 +618,17 @@ file that was distributed with this source code.
                     }}"
                        onclick="return start_field_dialog_form_edit_{{ id }}(this);"
                        class="btn btn-warning btn-sm sonata-ba-action {% if sonata_admin.value == null %}hidden{% endif %}"
-                        {# NEXT_MAJOR: Remove the fallback on btn_catalogue #}
+                        {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
                        title="{{
-                           btn_translation_domain is same as(false)
+                           btn_translation_domain|default(null) is same as(false)
                            ? btn_edit
                            : btn_edit|trans({}, btn_translation_domain|default(btn_catalogue))
                        }}"
                     >
                         <i class="fas fa-pencil-alt"></i>
-                        {# NEXT_MAJOR: Remove the fallback on btn_catalogue #}
+                        {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
                         {{
-                            btn_translation_domain is same as(false)
+                            btn_translation_domain|default(null) is same as(false)
                             ? btn_edit
                             : btn_edit|trans({}, btn_translation_domain|default(btn_catalogue))
                         }}
@@ -641,17 +641,17 @@ file that was distributed with this source code.
                     <button
                         onclick="return remove_selected_element_{{ id }}(this);"
                         class="btn btn-danger btn-sm sonata-ba-action"
-                        {# NEXT_MAJOR: Remove the fallback on btn_catalogue #}
+                        {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
                         title="{{
-                            btn_translation_domain is same as(false)
+                            btn_translation_domain|default(null) is same as(false)
                             ? btn_delete
                             : btn_delete|trans({}, btn_translation_domain|default(btn_catalogue))
                         }}"
                     >
                         <i class="fas fa-minus-circle"></i>
-                        {# NEXT_MAJOR: Remove the fallback on btn_catalogue #}
+                        {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
                         {{
-                            btn_translation_domain is same as(false)
+                            btn_translation_domain|default(null) is same as(false)
                             ? btn_delete
                             : btn_delete|trans({}, btn_translation_domain|default(btn_catalogue))
                         }}

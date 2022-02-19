@@ -34,7 +34,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *     default_admin_route: string,
  *     default_group: string,
  *     default_icon: string,
- *     default_label_catalogue: string,
+ *     default_translation_domain: string,
  *     dropdown_number_groups_per_colums: int,
  *     form_type: 'standard'|'horizontal',
  *     html5_validate: bool,
@@ -74,7 +74,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *         },
  *         groups: array<string, array{
  *             label?: string,
- *             label_catalogue?: string,
+ *             translation_domain?: string,
  *             icon?: string,
  *             items: array<Item>,
  *             keep_open: bool,
@@ -325,9 +325,30 @@ final class Configuration implements ConfigurationInterface
                             ->defaultValue('default')
                             ->info('Group used for admin services if one isn\'t provided.')
                         ->end()
+                        // NEXT_MAJOR: Remove this option.
                         ->scalarNode('default_label_catalogue')
+                            ->setDeprecated(...BCDeprecation::forConfig(
+                                'The "default_label_catalogue" node is deprecated, use "default_translation_domain" instead.',
+                                '4.x'
+                            ))
                             ->defaultValue('SonataAdminBundle')
                             ->info('Label Catalogue used for admin services if one isn\'t provided.')
+                        ->end()
+                        ->scalarNode('default_translation_domain')
+                            // NEXT_MAJOR: Use `messages` as default value and remove the deprecation.
+                            ->defaultValue(null)
+                            ->always(function ($value) {
+                                if (null === $value) {
+                                    @trigger_error(
+                                        'Not setting the "sonata_admin.default_translation_domain" config option is deprecated'
+                                        .' since sonata-project/admin-bundle 4.x. In 5.0, it will default to "messages".',
+                                        \E_USER_DEPRECATED
+                                    );
+                                }
+
+                                return $value;
+                            })
+                            ->info('Translation domain used for admin services if one isn\'t provided.')
                         ->end()
                         ->scalarNode('default_icon')
                             ->defaultValue('fas fa-folder')
@@ -384,7 +405,14 @@ final class Configuration implements ConfigurationInterface
                                 ->fixXmlConfig('item_add')
                                 ->children()
                                     ->scalarNode('label')->end()
-                                    ->scalarNode('label_catalogue')->end()
+                                    ->scalarNode('translation_domain')->end()
+                                    // NEXT_MAJOR: Remove this option.
+                                    ->scalarNode('label_catalogue')
+                                        ->setDeprecated(...BCDeprecation::forConfig(
+                                            'The "default_label_catalogue" node is deprecated, use "default_translation_domain" instead.',
+                                            '4.x'
+                                        ))
+                                    ->end()
                                     ->scalarNode('icon')->end()
                                     ->scalarNode('on_top')->defaultFalse()->info('Show menu item in side dashboard menu without treeview')->end()
                                     ->scalarNode('keep_open')->defaultFalse()->info('Keep menu group always open')->end()

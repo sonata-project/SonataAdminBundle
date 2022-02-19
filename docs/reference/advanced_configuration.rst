@@ -295,18 +295,18 @@ Translations
 ^^^^^^^^^^^^
 
 The label translation parameters and domain can be customised by using the
-``label_translation_parameters`` and ``label_catalogue`` keys of the extra array
+``label_translation_parameters`` and ``translation_domain`` keys of the extra array
 of data associated with the item, respectively::
 
     $menuItem->setExtras([
         'label_translation_parameters' => ['myparam' => 'myvalue'],
-        'label_catalogue' => 'My domain',
+        'translation_domain' => 'My domain',
     ]);
 
 You can also set the translation domain on the menu root, and children will
 inherit it::
 
-    $menu->setExtra('label_catalogue', 'My domain');
+    $menu->setExtra('translation_domain', 'My domain');
 
 Filter parameters
 ^^^^^^^^^^^^^^^^^
