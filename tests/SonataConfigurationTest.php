@@ -30,7 +30,7 @@ final class SonataConfigurationTest extends TestCase
             'default_admin_route' => 'show',
             'default_group' => 'default',
             'default_icon' => '<i class="fas fa-folder"></i>',
-            'default_label_catalogue' => 'SonataAdminBundle',
+            'default_translation_domain' => 'SonataAdminBundle',
             'dropdown_number_groups_per_colums' => 2,
             'form_type' => 'standard',
             'html5_validate' => true,

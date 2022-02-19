@@ -377,7 +377,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $label = $attributes['label'] ?? null;
         $methodCalls[] = ['setLabel', [$label]];
 
-        $translationDomain = $attributes['translation_domain'] ?? null;
+        $translationDomain = $attributes['translation_domain'] ?? 'messages';
         $methodCalls[] = ['setTranslationDomain', [$translationDomain]];
 
         $persistFilters = $attributes['persist_filters']

@@ -337,17 +337,19 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('default_translation_domain')
                             // NEXT_MAJOR: Use `messages` as default value and remove the deprecation.
                             ->defaultValue(null)
-                            ->always(function ($value) {
-                                if (null === $value) {
-                                    @trigger_error(
-                                        'Not setting the "sonata_admin.default_translation_domain" config option is deprecated'
-                                        .' since sonata-project/admin-bundle 4.x. In 5.0, it will default to "messages".',
-                                        \E_USER_DEPRECATED
-                                    );
-                                }
+                            ->validate()
+                                ->always(function ($value) {
+                                    if (null === $value) {
+                                        @trigger_error(
+                                            'Not setting the "sonata_admin.options.default_translation_domain" config option is deprecated'
+                                            .' since sonata-project/admin-bundle 4.x. In 5.0, it will default to "messages".',
+                                            \E_USER_DEPRECATED
+                                        );
+                                    }
 
-                                return $value;
-                            })
+                                    return $value;
+                                })
+                            ->end()
                             ->info('Translation domain used for admin services if one isn\'t provided.')
                         ->end()
                         ->scalarNode('default_icon')

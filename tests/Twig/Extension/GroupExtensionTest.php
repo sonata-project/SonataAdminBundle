@@ -33,7 +33,7 @@ final class GroupExtensionTest extends TestCase
         $pool = new Pool($container, ['sonata_admin_non_creatable', 'sonata_admin_creatable'], [
             'group_without_creatable' => [
                 'label' => 'non_creatable',
-                'label_catalogue' => 'default',
+                'translation_domain' => 'default',
                 'icon' => 'icon1',
                 'items' => [
                     [
@@ -51,7 +51,7 @@ final class GroupExtensionTest extends TestCase
             ],
             'group_with_creatable' => [
                 'label' => 'creatable',
-                'label_catalogue' => 'default',
+                'translation_domain' => 'default',
                 'icon' => 'icon2',
                 'items' => [
                     [
@@ -102,7 +102,7 @@ final class GroupExtensionTest extends TestCase
                     $adminCreatable,
                 ],
                 'label' => 'creatable',
-                'label_catalogue' => 'default',
+                'translation_domain' => 'default',
                 'icon' => 'icon2',
                 'keep_open' => false,
                 'on_top' => false,
