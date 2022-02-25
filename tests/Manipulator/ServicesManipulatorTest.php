@@ -56,10 +56,8 @@ final class ServicesManipulatorTest extends TestCase
             "services:
     service_id:
         class: Sonata\AdminBundle\Admin\AdminInterface
-        arguments: [~, stdClass, controller_name]
         tags:
-            - { name: sonata.admin, manager_type: manager_type, group: admin, label: stdClass }
-        public: true\n",
+            - { name: sonata.admin, model_class: stdClass, controller: controller_name, manager_type: manager_type, group: admin, label: stdClass }\n",
             file_get_contents($this->file)
         );
         $this->servicesManipulator->addResource(
@@ -73,17 +71,13 @@ final class ServicesManipulatorTest extends TestCase
             "services:
     service_id:
         class: Sonata\AdminBundle\Admin\AdminInterface
-        arguments: [~, stdClass, controller_name]
         tags:
-            - { name: sonata.admin, manager_type: manager_type, group: admin, label: stdClass }
-        public: true
+            - { name: sonata.admin, model_class: stdClass, controller: controller_name, manager_type: manager_type, group: admin, label: stdClass }
 
     another_service_id:
         class: Sonata\AdminBundle\Admin\AdminInterface
-        arguments: [~, stdClass, another_controller_name]
         tags:
-            - { name: sonata.admin, manager_type: another_manager_type, group: admin, label: stdClass }
-        public: true\n",
+            - { name: sonata.admin, model_class: stdClass, controller: another_controller_name, manager_type: another_manager_type, group: admin, label: stdClass }\n",
             file_get_contents($this->file)
         );
     }
@@ -123,10 +117,8 @@ final class ServicesManipulatorTest extends TestCase
             "services:
     service_id:
         class: Sonata\AdminBundle\Admin\AdminInterface
-        arguments: [~, stdClass, controller_name]
         tags:
-            - { name: sonata.admin, manager_type: manager_type, group: admin, label: stdClass }
-        public: true\n",
+            - { name: sonata.admin, model_class: stdClass, controller: controller_name, manager_type: manager_type, group: admin, label: stdClass }\n",
             file_get_contents($this->file)
         );
     }

@@ -31,10 +31,8 @@ final class ServicesManipulator
      */
     private $template = '    %s:
         class: %s
-        arguments: [~, %s, %s]
         tags:
-            - { name: sonata.admin, manager_type: %s, group: admin, label: %s }
-        public: true
+            - { name: sonata.admin, model_class: %s, controller: %s, manager_type: %s, group: admin, label: %s }
 ';
 
     public function __construct(string $file)
