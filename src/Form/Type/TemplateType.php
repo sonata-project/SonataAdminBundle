@@ -19,7 +19,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TemplateType extends AbstractType
+final class TemplateType extends AbstractType
 {
     /**
      * @param array<string, mixed> $options
