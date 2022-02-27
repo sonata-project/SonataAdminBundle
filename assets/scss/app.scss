@@ -7,8 +7,6 @@
  * file that was distributed with this source code.
  */
 
-@import '~bootstrap/dist/css/bootstrap.css';
-
 // Add Font Awesome Free
 @import '~@fortawesome/fontawesome-free/css/all.css';
 
@@ -23,11 +21,7 @@
 @import '~@fontsource/source-sans-pro/700.css';
 
 // Basic AdminLTE styles
-@import '~admin-lte/dist/css/alt/adminlte.core.css';
-@import '~admin-lte/dist/css/alt/adminlte.components.css';
-@import '~admin-lte/dist/css/alt/adminlte.extra-components.css';
-@import '~admin-lte/dist/css/alt/adminlte.light.css';
-@import '~admin-lte/dist/css/alt/adminlte.pages.css';
+@import '~admin-lte/dist/css/adminlte.css';
 
 @import '~icheck/skins/square/blue.css';
 
