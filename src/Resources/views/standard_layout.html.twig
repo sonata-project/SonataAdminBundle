@@ -117,18 +117,6 @@ file that was distributed with this source code.
                         </div>
                     </noscript>
                 {% endblock %}
-                {% block logo %}
-                    {% apply spaceless %}
-                        <a class="logo" href="{{ path('sonata_admin_dashboard') }}">
-                            {% if 'icon' == sonata_config.getOption('logo_content') or 'all' == sonata_config.getOption('logo_content') %}
-                                <img src="{{ asset(sonata_config.logo) }}" alt="{{ sonata_config.title }}">
-                            {% endif %}
-                            {% if 'text' == sonata_config.getOption('logo_content') or 'all' == sonata_config.getOption('logo_content') %}
-                                <span>{{ sonata_config.title }}</span>
-                            {% endif %}
-                        </a>
-                    {% endapply %}
-                {% endblock %}
                 {% block sonata_nav %}
                     <a href="#" class="sidebar-toggle fa5" data-toggle="push-menu"
                         role="button" title="{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}">
@@ -192,6 +180,18 @@ file that was distributed with this source code.
         {% block sonata_wrapper %}
             {% block sonata_left_side %}
                 <aside class="main-sidebar sidebar-dark-primary">
+                    {% block logo %}
+                        {% apply spaceless %}
+                            <a class="brand-link logo-switch" href="{{ path('sonata_admin_dashboard') }}">
+                                {% if 'icon' == sonata_config.getOption('logo_content') or 'all' == sonata_config.getOption('logo_content') %}
+                                    <img src="{{ asset(sonata_config.logo) }}" class="brand-image-xl logo-xl" alt="{{ sonata_config.title }}">
+                                {% endif %}
+                                {% if 'text' == sonata_config.getOption('logo_content') or 'all' == sonata_config.getOption('logo_content') %}
+                                    <span>{{ sonata_config.title }}</span>
+                                {% endif %}
+                            </a>
+                        {% endapply %}
+                    {% endblock %}
                     <section class="sidebar">
                         {% block sonata_side_nav %}
                             {% block sonata_sidebar_search %}
