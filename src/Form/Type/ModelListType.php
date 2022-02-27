@@ -104,7 +104,7 @@ final class ModelListType extends AbstractType
 
                     return '';
                 },
-                '4.x',
+                '4.9',
             )
         ); // NEXT_MAJOR: Remove this deprecation notice.
     }
