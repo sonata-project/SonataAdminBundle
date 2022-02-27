@@ -13,9 +13,9 @@
     {%- endif -%}
 
     {%- if item.displayed and display|default -%}
-        {%- set options = options|merge({branch_class: 'treeview', currentClass: "active", ancestorClass: "active"}) -%}
+        {%- set options = options|merge({branch_class: 'nav-item', currentClass: "active", ancestorClass: "active"}) -%}
         {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' active')|trim) -%}
-        {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' treeview-menu')|trim) -%}
+        {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' nav nav-treeview')|trim) -%}
         {{ parent() }}
     {%- endif -%}
 {% endblock %}
