@@ -121,15 +121,11 @@ file that was distributed with this source code.
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link" data-widget="pushmenu" href="#">
+                                <span class="sr-only">{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}</span>
                                 <i class="fas fa-bars"></i>
                             </a>
                         </li>
                     </ul>
-
-                    <a href="#" class="sidebar-toggle fa5" data-toggle="push-menu"
-                        role="button" title="{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}">
-                        <span class="sr-only">{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}</span>
-                    </a>
 
                     <div class="navbar-left">
                         {% block sonata_breadcrumb %}
