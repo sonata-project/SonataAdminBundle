@@ -648,12 +648,6 @@ type of your condition(s)::
         }
     }
 
-.. note::
-
-    **TODO**:
-    * basic filter configuration and options
-    * targeting submodel fields using dot-separated notation
-
 Visual configuration
 --------------------
 
