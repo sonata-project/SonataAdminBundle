@@ -29,6 +29,11 @@ final class ActiveVoter implements VoterInterface
             return null;
         }
 
-        return $item->getExtra('active', null);
+        $active = $item->getExtra('active');
+        if (null === $active) {
+            return null;
+        }
+
+        return (bool) $active;
     }
 }

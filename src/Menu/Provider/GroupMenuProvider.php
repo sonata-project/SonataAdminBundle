@@ -57,11 +57,11 @@ final class GroupMenuProvider implements MenuProviderInterface
      *
      * @param array<string, mixed> $options
      *
-     * @throws \InvalidArgumentException if the menu does not exists
+     * @throws \InvalidArgumentException if the menu does not exist
      */
     public function get(string $name, array $options = []): ItemInterface
     {
-        if (!isset($options['name'])) {
+        if (!isset($options['name']) || !\is_string($options['name'])) {
             throw new \InvalidArgumentException('The option "name" is required.');
         }
         $menuItem = $this->menuFactory->createItem($options['name']);

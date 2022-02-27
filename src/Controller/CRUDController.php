@@ -952,8 +952,11 @@ class CRUDController extends AbstractController
     final public function configureAdmin(Request $request): void
     {
         $adminFetcher = $this->container->get('sonata.admin.request.fetcher');
+        \assert($adminFetcher instanceof AdminFetcherInterface);
 
-        $this->admin = $adminFetcher->get($request);
+        /** @var AdminInterface<T> $admin */
+        $admin = $adminFetcher->get($request);
+        $this->admin = $admin;
 
         if (!$this->admin->hasTemplateRegistry()) {
             throw new \RuntimeException(sprintf(

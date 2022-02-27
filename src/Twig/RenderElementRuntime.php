@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Twig;
 
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use Symfony\Component\PropertyAccess\PropertyPathInterface;
 use Twig\Environment;
 use Twig\Extension\RuntimeExtensionInterface;
 use Twig\TemplateWrapper;
@@ -83,15 +84,12 @@ final class RenderElementRuntime implements RuntimeExtensionInterface
 
     /**
      * render a compared view element.
-     *
-     * @param mixed $baseObject
-     * @param mixed $compareObject
      */
     public function renderViewElementCompare(
         Environment $environment,
         FieldDescriptionInterface $fieldDescription,
-        $baseObject,
-        $compareObject
+        object $baseObject,
+        object $compareObject
     ): string {
         $template = $this->getTemplate(
             $fieldDescription,
@@ -161,6 +159,14 @@ final class RenderElementRuntime implements RuntimeExtensionInterface
 
         if (\is_callable($propertyPath)) {
             return $propertyPath($element);
+        }
+
+        if (!\is_string($propertyPath) && !$propertyPath instanceof PropertyPathInterface) {
+            throw new \TypeError(sprintf(
+                'The option "associated_property" must be a string, a callable or a %s, %s given.',
+                PropertyPathInterface::class,
+                \is_object($propertyPath) ? 'instance of '.\get_class($propertyPath) : \gettype($propertyPath)
+            ));
         }
 
         return $this->propertyAccessor->getValue($element, $propertyPath);
