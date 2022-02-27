@@ -3,7 +3,10 @@
 {% block root %}
     {%- set listAttributes = item.childrenAttributes|merge({'class': 'sidebar-menu', 'data-widget': 'tree'}) -%}
     {%- set request        = item.extra('request') ?: app.request -%}
-    {{ block('list') -}}
+
+    <nav class="mt-2">
+        {{ block('list') -}}
+    </nav>
 {% endblock %}
 
 {% block item %}
