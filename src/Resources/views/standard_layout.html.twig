@@ -118,6 +118,14 @@ file that was distributed with this source code.
                     </noscript>
                 {% endblock %}
                 {% block sonata_nav %}
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" data-widget="pushmenu" href="#">
+                                <i class="fas fa-bars"></i>
+                            </a>
+                        </li>
+                    </ul>
+
                     <a href="#" class="sidebar-toggle fa5" data-toggle="push-menu"
                         role="button" title="{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}">
                         <span class="sr-only">{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}</span>
@@ -192,7 +200,8 @@ file that was distributed with this source code.
                             </a>
                         {% endapply %}
                     {% endblock %}
-                    <section class="sidebar">
+
+                    <div class="sidebar">
                         {% block sonata_side_nav %}
                             {% block sonata_sidebar_search %}
                                 {% if sonata_config.getOption('search') %}
