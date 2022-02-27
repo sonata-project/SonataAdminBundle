@@ -331,7 +331,7 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('default_label_catalogue')
                             ->setDeprecated(...BCDeprecation::forConfig(
                                 'The "default_label_catalogue" node is deprecated, use "default_translation_domain" instead.',
-                                '4.x'
+                                '4.9'
                             ))
                             ->defaultValue('SonataAdminBundle')
                             ->info('Label Catalogue used for admin services if one isn\'t provided.')
@@ -344,7 +344,7 @@ final class Configuration implements ConfigurationInterface
                                     if (null === $value) {
                                         @trigger_error(
                                             'Not setting the "sonata_admin.options.default_translation_domain" config option is deprecated'
-                                            .' since sonata-project/admin-bundle 4.x. In 5.0, it will default to "messages".',
+                                            .' since sonata-project/admin-bundle 4.9. In 5.0, it will default to "messages".',
                                             \E_USER_DEPRECATED
                                         );
                                     }
@@ -414,7 +414,7 @@ final class Configuration implements ConfigurationInterface
                                     ->scalarNode('label_catalogue')
                                         ->setDeprecated(...BCDeprecation::forConfig(
                                             'The "default_label_catalogue" node is deprecated, use "default_translation_domain" instead.',
-                                            '4.x'
+                                            '4.9'
                                         ))
                                     ->end()
                                     ->scalarNode('icon')->end()
@@ -437,13 +437,13 @@ final class Configuration implements ConfigurationInterface
                                                         // NEXT_MAJOR: Remove this check
                                                         if ('' === $item['admin']) {
                                                             @trigger_error(
-                                                                'Configuring an item with an empty admin is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
+                                                                'Configuring an item with an empty admin is deprecated since sonata-project/admin-bundle 4.9 and will be removed in 5.0.',
                                                                 \E_USER_DEPRECATED
                                                             );
                                                         } else {
                                                             if (isset($item['route'])) {
                                                                 @trigger_error(
-                                                                    'Configuring a route for an item with an admin key is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
+                                                                    'Configuring a route for an item with an admin key is deprecated since sonata-project/admin-bundle 4.9 and will be removed in 5.0.',
                                                                     \E_USER_DEPRECATED
                                                                 );
 
@@ -453,7 +453,7 @@ final class Configuration implements ConfigurationInterface
 
                                                             if (isset($item['label'])) {
                                                                 @trigger_error(
-                                                                    'Configuring a label for an item with an admin key is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.',
+                                                                    'Configuring a label for an item with an admin key is deprecated since sonata-project/admin-bundle 4.9 and will be removed in 5.0.',
                                                                     \E_USER_DEPRECATED
                                                                 );
 
@@ -503,7 +503,7 @@ final class Configuration implements ConfigurationInterface
                                     ->arrayNode('item_adds')
                                         ->setDeprecated(...BCDeprecation::forConfig(
                                             'The "item_adds" node is deprecated',
-                                            '4.x'
+                                            '4.9'
                                         ))
                                         ->prototype('scalar')->defaultValue([])->end()
                                     ->end()

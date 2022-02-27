@@ -31,7 +31,7 @@ file that was distributed with this source code.
                                     <a href="{{ admin.generateUrl('list', app.request.query.all|merge({_list_mode: mode})) }}" class="btn btn-default navbar-btn btn-sm{% if admin.getListMode() == mode %} active{% endif %}">
                                         {# NEXT_MAJOR: Remove the if and keep the else part #}
                                         {% if settings.icon is not defined and settings.class is defined %}
-                                            {% deprecated 'Relying on the "class" setting is deprecated since sonata-project/admin-bundle 4.x, use the "icon" setting instead' %}
+                                            {% deprecated 'Relying on the "class" setting is deprecated since sonata-project/admin-bundle 4.9, use the "icon" setting instead' %}
                                             <i class="{{ settings.class }}" aria-hidden="true"></i>
                                         {% else %}
                                             {{ settings.icon|default('')|parse_icon }}
