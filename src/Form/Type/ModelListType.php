@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\Type;
 
+use Sonata\AdminBundle\BCLayer\BCDeprecation;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\AbstractType;
@@ -21,6 +22,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -68,6 +70,12 @@ final class ModelListType extends AbstractType
         $view->vars['btn_edit'] = $options['btn_edit'];
         $view->vars['btn_list'] = $options['btn_list'];
         $view->vars['btn_delete'] = $options['btn_delete'];
+
+        // NEXT_MAJOR: Remove the btn_catalogue usage.
+        $view->vars['btn_translation_domain'] =
+            'SonataAdminBundle' !== $options['btn_translation_domain']
+                ? $options['btn_translation_domain']
+                : $options['btn_catalogue'];
         $view->vars['btn_catalogue'] = $options['btn_catalogue'];
     }
 
@@ -78,12 +86,27 @@ final class ModelListType extends AbstractType
             'btn_edit' => 'link_edit',
             'btn_list' => 'link_list',
             'btn_delete' => 'link_delete',
-            'btn_catalogue' => 'SonataAdminBundle',
+            'btn_catalogue' => 'SonataAdminBundle', // NEXT_MAJOR: Remove this option
+            'btn_translation_domain' => 'SonataAdminBundle',
         ]);
 
         $resolver->setRequired(['model_manager', 'class']);
         $resolver->setAllowedTypes('model_manager', ModelManagerInterface::class);
         $resolver->setAllowedTypes('class', 'string');
+
+        $resolver->setDeprecated(
+            'btn_catalogue',
+            ...BCDeprecation::forOptionResolver(
+                static function (Options $options, $value): string {
+                    if ('SonataAdminBundle' !== $value) {
+                        return 'Passing a value to option "btn_catalogue" is deprecated! Use "btn_translation_domain" instead!';
+                    }
+
+                    return '';
+                },
+                '4.9',
+            )
+        ); // NEXT_MAJOR: Remove this deprecation notice.
     }
 
     /**

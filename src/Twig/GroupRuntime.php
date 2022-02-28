@@ -37,7 +37,7 @@ final class GroupRuntime implements RuntimeExtensionInterface
     /**
      * @phpstan-return array<array{
      *  label: string,
-     *  label_catalogue: string,
+     *  translation_domain: string,
      *  icon: string,
      *  items: list<\Sonata\AdminBundle\Admin\AdminInterface<object>>,
      *  keep_open: bool,

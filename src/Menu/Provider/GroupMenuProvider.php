@@ -57,11 +57,11 @@ final class GroupMenuProvider implements MenuProviderInterface
      *
      * @param array<string, mixed> $options
      *
-     * @throws \InvalidArgumentException if the menu does not exists
+     * @throws \InvalidArgumentException if the menu does not exist
      */
     public function get(string $name, array $options = []): ItemInterface
     {
-        if (!isset($options['name'])) {
+        if (!isset($options['name']) || !\is_string($options['name'])) {
             throw new \InvalidArgumentException('The option "name" is required.');
         }
         $menuItem = $this->menuFactory->createItem($options['name']);
@@ -164,11 +164,12 @@ final class GroupMenuProvider implements MenuProviderInterface
 
             $options = $admin->generateMenuUrl(
                 'list',
-                [],
+                $item['route_params'],
                 $item['route_absolute'] ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH
             );
             $options['extras'] = [
-                'label_catalogue' => $admin->getTranslationDomain(),
+                'label_catalogue' => $admin->getTranslationDomain(), // NEXT_MAJOR: Remove this line.
+                'translation_domain' => $admin->getTranslationDomain(),
                 'admin' => $admin,
             ];
 
@@ -183,7 +184,8 @@ final class GroupMenuProvider implements MenuProviderInterface
             'routeParameters' => $item['route_params'],
             'routeAbsolute' => $item['route_absolute'],
             'extras' => [
-                'label_catalogue' => $group['label_catalogue'],
+                'translation_domain' => $group['translation_domain'],
+                'label_catalogue' => $group['label_catalogue'] ?? '', // NEXT_MAJOR: Remove this line.
             ],
         ]);
     }

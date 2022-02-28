@@ -36,11 +36,13 @@ final class XEditableRuntimeTest extends TestCase
             ->withConsecutive(
                 ['choices', []],
                 ['catalogue'],
+                ['choice_translation_domain'],
                 ['required'],
                 ['multiple']
             )
             ->will(static::onConsecutiveCalls(
                 $options['choices'],
+                'MyCatalogue',
                 'MyCatalogue',
                 $options['multiple'] ?? null
             ));

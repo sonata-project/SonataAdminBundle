@@ -78,7 +78,12 @@ final class DataTransformerResolver implements DataTransformerResolverInterface
             $targetModel = $fieldDescription->getTargetModel();
             $className = $fieldDescription->getOption('class');
 
-            if (null !== $targetModel && null !== $className && class_exists($className) && is_a($targetModel, $className, true)) {
+            if (
+                null !== $targetModel
+                && \is_string($className)
+                && class_exists($className)
+                && is_a($targetModel, $className, true)
+            ) {
                 return new ModelToIdTransformer($modelManager, $className);
             }
         }
@@ -90,12 +95,12 @@ final class DataTransformerResolver implements DataTransformerResolverInterface
     {
         $outputTimezone = $fieldDescription->getOption('timezone');
 
-        if (null === $outputTimezone || false === $outputTimezone) {
-            return null;
-        }
-
         if ($outputTimezone instanceof \DateTimeZone) {
             return $outputTimezone->getName();
+        }
+
+        if (!\is_string($outputTimezone)) {
+            return null;
         }
 
         return $outputTimezone;

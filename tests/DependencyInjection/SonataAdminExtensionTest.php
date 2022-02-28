@@ -103,6 +103,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_group');
         self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_label_catalogue');
+        self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_translation_domain');
         self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_icon');
         self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_controller');
     }

@@ -61,14 +61,19 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $defaultGroup = $container->getParameter('sonata.admin.configuration.default_group');
         \assert(\is_string($defaultGroup));
+        // NEXT_MAJOR: Remove this variable.
         $defaultLabelCatalogue = $container->getParameter('sonata.admin.configuration.default_label_catalogue');
         \assert(\is_string($defaultLabelCatalogue));
+        // NEXT_MAJOR: Remove the fallback.
+        $defaultTranslationDomain = $container->getParameter('sonata.admin.configuration.default_translation_domain') ?? $defaultLabelCatalogue;
+        \assert(\is_string($defaultTranslationDomain));
         $defaultIcon = $container->getParameter('sonata.admin.configuration.default_icon');
         \assert(\is_string($defaultIcon));
 
         $defaultValues = [
             'group' => $defaultGroup,
-            'label_catalogue' => $defaultLabelCatalogue,
+            'translation_domain' => $defaultTranslationDomain,
+            'label_catalogue' => $defaultLabelCatalogue, // NEXT_MAJOR: Remove this line.
             'icon' => $defaultIcon,
         ];
 
@@ -140,7 +145,18 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $defaultValues['group'];
                 \assert(\is_string($resolvedGroupName));
 
+                // NEXT_MAJOR: Remove this deprecation and the $labelCatalogue variable.
+                if (isset($attributes['label_catalogue'])) {
+                    @trigger_error(
+                        'The "label_catalogue" attribute is deprecated'
+                        .' since sonata-project/admin-bundle 4.9 and will throw an error in 5.0.',
+                        \E_USER_DEPRECATED
+                    );
+                }
                 $labelCatalogue = $attributes['label_catalogue'] ?? $defaultValues['label_catalogue'];
+
+                // NEXT_MAJOR: Remove the `label_catalogue` fallback.
+                $groupTranslationDomain = $attributes['translation_domain'] ?? $attributes['label_catalogue'] ?? $defaultValues['translation_domain'];
                 $icon = $attributes['icon'] ?? $defaultValues['icon'];
                 $onTop = $attributes['on_top'] ?? false;
                 $keepOpen = $attributes['keep_open'] ?? false;
@@ -148,7 +164,8 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 if (!isset($groupDefaults[$resolvedGroupName])) {
                     $groupDefaults[$resolvedGroupName] = [
                         'label' => $resolvedGroupName,
-                        'label_catalogue' => $labelCatalogue,
+                        'translation_domain' => $groupTranslationDomain,
+                        'label_catalogue' => $labelCatalogue, // NEXT_MAJOR: Remove this line.
                         'icon' => $icon,
                         'items' => [],
                         'roles' => [],
@@ -159,8 +176,8 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 $groupDefaults[$resolvedGroupName]['items'][] = [
                     'admin' => $id,
-                    'label' => $attributes['label'] ?? '',
-                    'route' => '',
+                    'label' => $attributes['label'] ?? '', // NEXT_MAJOR: Remove this line.
+                    'route' => '', // NEXT_MAJOR: Remove this line.
                     'route_params' => [],
                     'route_absolute' => false,
                 ];
@@ -191,7 +208,8 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $groupDefaults[$resolvedGroupName] = [
                         'items' => [],
                         'label' => $resolvedGroupName,
-                        'label_catalogue' => $defaultValues['label_catalogue'],
+                        'translation_domain' => $defaultValues['translation_domain'],
+                        'label_catalogue' => $defaultValues['label_catalogue'], // NEXT_MAJOR: Remove this line.
                         'icon' => $defaultValues['icon'],
                         'roles' => [],
                         'on_top' => false,
@@ -207,8 +225,16 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $groups[$resolvedGroupName]['label'] = $groupDefaults[$resolvedGroupName]['label'];
                 }
 
+                if (!isset($group['translation_domain']) || '' === $group['translation_domain']) {
+                    $groups[$resolvedGroupName]['translation_domain'] = $groupDefaults[$resolvedGroupName]['translation_domain'];
+                }
+
+                // NEXT_MAJOR: Remove the whole if/else.
                 if (!isset($group['label_catalogue']) || '' === $group['label_catalogue']) {
                     $groups[$resolvedGroupName]['label_catalogue'] = $groupDefaults[$resolvedGroupName]['label_catalogue'];
+                } elseif (!isset($group['translation_domain']) || '' === $group['translation_domain']) {
+                    // BC-layer if label_catalogue is provided.
+                    $groups[$resolvedGroupName]['translation_domain'] = $group['label_catalogue'];
                 }
 
                 if (!isset($group['icon']) || '' === $group['icon']) {
@@ -284,9 +310,6 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             throw new InvalidArgumentException(sprintf('Missing tag information "manager_type" on service "%s".', $serviceId));
         }
 
-        $defaultController = $container->getParameter('sonata.admin.configuration.default_controller');
-        \assert(\is_string($defaultController));
-
         $overwriteAdminConfiguration = $container->getParameter('sonata.admin.configuration.default_admin_services');
         \assert(\is_array($overwriteAdminConfiguration));
 
@@ -349,8 +372,15 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $pagerType = $overwriteAdminConfiguration['pager_type'] ?? $attributes['pager_type'] ?? Pager::TYPE_DEFAULT;
         $methodCalls[] = ['setPagerType', [$pagerType]];
 
-        $label = $overwriteAdminConfiguration['label'] ?? $attributes['label'] ?? null;
+        $label = $attributes['label'] ?? null;
         $methodCalls[] = ['setLabel', [$label]];
+
+        // NEXT_MAJOR: Remove the fallback.
+        $defaultTranslationDomain = $container->getParameter('sonata.admin.configuration.default_translation_domain') ?? 'messages';
+        \assert(\is_string($defaultTranslationDomain));
+
+        $translationDomain = $attributes['translation_domain'] ?? $defaultTranslationDomain;
+        $methodCalls[] = ['setTranslationDomain', [$translationDomain]];
 
         $persistFilters = $attributes['persist_filters']
             ?? $container->getParameter('sonata.admin.configuration.filters.persist');

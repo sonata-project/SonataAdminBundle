@@ -84,7 +84,11 @@ final class DatagridMapper implements MapperInterface
         array $filterOptions = [],
         array $fieldDescriptionOptions = []
     ): self {
-        if (isset($fieldDescriptionOptions['role']) && !$this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
+        if (
+            isset($fieldDescriptionOptions['role'])
+            && \is_string($fieldDescriptionOptions['role'])
+            && !$this->getAdmin()->isGranted($fieldDescriptionOptions['role'])
+        ) {
             return $this;
         }
 

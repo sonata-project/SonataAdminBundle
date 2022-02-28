@@ -86,7 +86,7 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
         $this->catalogue = $catalogue;
 
         foreach ($this->adminPool->getAdminGroups() as $name => $group) {
-            $catalogue->set($name, $this->prefix.$name, $group['label_catalogue']);
+            $catalogue->set($name, $this->prefix.$name, $group['translation_domain']);
         }
 
         foreach ($this->adminPool->getAdminServiceIds() as $id) {

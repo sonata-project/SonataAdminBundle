@@ -1,17 +1,17 @@
 Translation
 ===========
 
-There are two main catalogue names in an Admin class:
+There are two main translation domains in an Admin class:
 
-* ``SonataAdminBundle``: this catalogue is used to translate shared messages
+* ``SonataAdminBundle``: this domain is used to translate shared messages
   across different Admins
-* ``messages``: this catalogue is used to translate the messages for the current
+* ``messages``: this domain is used to translate the messages for the current
   Admin
 
-Ideally the ``messages`` catalogue should be changed to avoid any issues with
+Ideally the ``messages`` domain should be changed to avoid any issues with
 other Admin classes.
 
-You can configure the catalogue for the Admin class by injecting the value through the container:
+You can configure the translation domain for the Admin class by injecting the value through the container:
 
 .. configuration-block::
 
@@ -34,13 +34,13 @@ translate messages within the ``configureFields`` method or in templates.
     {# the classical call by using the twig trans helper #}
     {{ 'message_create_snapshots'|trans({}, 'SonataPageBundle') }}
 
-    {# by using the admin trans method with hardcoded catalogue #}
+    {# by using the admin trans method with hardcoded translation domain #}
     {{ 'message_create_snapshots'|trans({}, 'SonataPageBundle') }}
 
-    {# by using the admin trans with the configured catalogue #}
+    {# by using the admin trans with the configured translation domain #}
     {{ 'message_create_snapshots'|trans({}, admin.translationdomain) }}
 
-The last solution is most flexible, as no catalogue parameters are hardcoded, and is the recommended one to use.
+The last solution is most flexible, as no translation parameters are hardcoded, and is the recommended one to use.
 
 Translate field labels
 ----------------------
@@ -52,7 +52,7 @@ either the Admin instance or the field description to translate labels.
 Overriding the translation domain
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The translation domain (message catalog) can be overridden at either the form
+The translation domain can be overridden at either the form
 group or individual field level.
 
 If a translation domain is set at the group level it will cascade down to all

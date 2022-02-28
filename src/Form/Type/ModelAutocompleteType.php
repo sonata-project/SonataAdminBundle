@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\Type;
 
+use Sonata\AdminBundle\BCLayer\BCDeprecation;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -91,13 +92,20 @@ final class ModelAutocompleteType extends AbstractType
             'context',
             // add button
             'btn_add',
-            'btn_catalogue',
+            'btn_translation_domain',
             // allow HTML
             'safe_label',
             'property',
         ] as $passthroughOption) {
             $view->vars[$passthroughOption] = $options[$passthroughOption];
         }
+
+        // NEXT_MAJOR: Remove this BC-layer
+        $view->vars['btn_translation_domain'] =
+            'SonataAdminBundle' !== $options['btn_translation_domain']
+                ? $options['btn_translation_domain']
+                : $options['btn_catalogue'];
+        $view->vars['btn_catalogue'] = $options['btn_catalogue'];
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -128,7 +136,8 @@ final class ModelAutocompleteType extends AbstractType
 
             // add button
             'btn_add' => 'link_add',
-            'btn_catalogue' => 'SonataAdminBundle',
+            'btn_catalogue' => 'SonataAdminBundle', // NEXT_MAJOR: Remove this option
+            'btn_translation_domain' => 'SonataAdminBundle',
 
             // ajax parameters
             'url' => '',
@@ -160,15 +169,29 @@ final class ModelAutocompleteType extends AbstractType
         $resolver->setAllowedTypes('property', ['string', 'array']);
         $resolver->setDeprecated(
             'quiet_millis',
-            ...$this->deprecationParameters(
-                '4.6',
+            ...BCDeprecation::forOptionResolver(
                 static function (Options $options, $value): string {
                     if (100 !== $value) {
                         return 'Passing a value to option "quiet_millis" is deprecated! Use "delay" instead!';
                     }
 
                     return '';
-                }
+                },
+                '4.6',
+            )
+        ); // NEXT_MAJOR: Remove this deprecation notice.
+
+        $resolver->setDeprecated(
+            'btn_catalogue',
+            ...BCDeprecation::forOptionResolver(
+                static function (Options $options, $value): string {
+                    if ('SonataAdminBundle' !== $value) {
+                        return 'Passing a value to option "btn_catalogue" is deprecated! Use "btn_translation_domain" instead!';
+                    }
+
+                    return '';
+                },
+                '4.9',
             )
         ); // NEXT_MAJOR: Remove this deprecation notice.
     }
@@ -176,27 +199,5 @@ final class ModelAutocompleteType extends AbstractType
     public function getBlockPrefix(): string
     {
         return 'sonata_type_model_autocomplete';
-    }
-
-    /**
-     * This class is a BC layer for deprecation messages for symfony/options-resolver < 5.1.
-     * Remove this class when dropping support for symfony/options-resolver < 5.1.
-     *
-     * @param string|\Closure $message
-     *
-     * @return mixed[]
-     */
-    private function deprecationParameters(string $version, $message): array
-    {
-        // @phpstan-ignore-next-line
-        if (method_exists(OptionsResolver::class, 'define')) {
-            return [
-                'sonata-project/admin-bundle',
-                $version,
-                $message,
-            ];
-        }
-
-        return [$message];
     }
 }
