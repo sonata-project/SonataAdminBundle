@@ -169,11 +169,11 @@ class CRUDController extends AbstractController
                 $this->trans('flash_batch_delete_error', [], 'SonataAdminBundle')
             );
         } catch (ModelManagerThrowable $e) {
-            $this->handleModelManagerThrowable($e);
+            $errorMessage = $this->handleModelManagerThrowable($e);
 
             $this->addFlash(
                 'sonata_flash_error',
-                $this->trans('flash_batch_delete_error', [], 'SonataAdminBundle')
+                $errorMessage ?? $this->trans('flash_batch_delete_error', [], 'SonataAdminBundle')
             );
         }
 
@@ -240,7 +240,7 @@ class CRUDController extends AbstractController
                     )
                 );
             } catch (ModelManagerThrowable $e) {
-                $this->handleModelManagerThrowable($e);
+                $errorMessage = $this->handleModelManagerThrowable($e);
 
                 if ($this->isXmlHttpRequest($request)) {
                     return $this->renderJson(['result' => 'error'], Response::HTTP_OK, []);
@@ -248,7 +248,7 @@ class CRUDController extends AbstractController
 
                 $this->addFlash(
                     'sonata_flash_error',
-                    $this->trans(
+                    $errorMessage ?? $this->trans(
                         'flash_delete_error',
                         ['%name%' => $this->escapeHtml($objectName)],
                         'SonataAdminBundle'
@@ -334,7 +334,7 @@ class CRUDController extends AbstractController
 
                     $isFormValid = false;
                 } catch (ModelManagerThrowable $e) {
-                    $this->handleModelManagerThrowable($e);
+                    $errorMessage = $this->handleModelManagerThrowable($e);
 
                     $isFormValid = false;
                 } catch (LockException $e) {
@@ -354,7 +354,7 @@ class CRUDController extends AbstractController
 
                 $this->addFlash(
                     'sonata_flash_error',
-                    $this->trans(
+                    $errorMessage ?? $this->trans(
                         'flash_edit_error',
                         ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))],
                         'SonataAdminBundle'
@@ -599,7 +599,7 @@ class CRUDController extends AbstractController
 
                     $isFormValid = false;
                 } catch (ModelManagerThrowable $e) {
-                    $this->handleModelManagerThrowable($e);
+                    $errorMessage = $this->handleModelManagerThrowable($e);
 
                     $isFormValid = false;
                 }
@@ -613,7 +613,7 @@ class CRUDController extends AbstractController
 
                 $this->addFlash(
                     'sonata_flash_error',
-                    $this->trans(
+                    $errorMessage ?? $this->trans(
                         'flash_create_error',
                         ['%name%' => $this->escapeHtml($this->admin->toString($newObject))],
                         'SonataAdminBundle'
@@ -1078,9 +1078,13 @@ class CRUDController extends AbstractController
     }
 
     /**
+     * NEXT_MAJOR: Add typehint.
+     *
      * @throws ModelManagerThrowable
+     *
+     * @return string|null A custom error message to display in the flag bag instead of the generic one
      */
-    protected function handleModelManagerThrowable(ModelManagerThrowable $exception): void
+    protected function handleModelManagerThrowable(ModelManagerThrowable $exception)
     {
         $debug = $this->getParameter('kernel.debug');
         \assert(\is_bool($debug));
@@ -1093,6 +1097,8 @@ class CRUDController extends AbstractController
             $context['previous_exception_message'] = $exception->getPrevious()->getMessage();
         }
         $this->getLogger()->error($exception->getMessage(), $context);
+
+        return null;
     }
 
     /**
