@@ -117,23 +117,15 @@ file that was distributed with this source code.
                         </div>
                     </noscript>
                 {% endblock %}
-                {% block logo %}
-                    {% apply spaceless %}
-                        <a class="logo" href="{{ path('sonata_admin_dashboard') }}">
-                            {% if 'icon' == sonata_config.getOption('logo_content') or 'all' == sonata_config.getOption('logo_content') %}
-                                <img src="{{ asset(sonata_config.logo) }}" alt="{{ sonata_config.title }}">
-                            {% endif %}
-                            {% if 'text' == sonata_config.getOption('logo_content') or 'all' == sonata_config.getOption('logo_content') %}
-                                <span>{{ sonata_config.title }}</span>
-                            {% endif %}
-                        </a>
-                    {% endapply %}
-                {% endblock %}
                 {% block sonata_nav %}
-                    <a href="#" class="sidebar-toggle fa5" data-toggle="push-menu"
-                        role="button" title="{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}">
-                        <span class="sr-only">{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}</span>
-                    </a>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" data-widget="pushmenu" href="#">
+                                <span class="sr-only">{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}</span>
+                                <i class="fas fa-bars"></i>
+                            </a>
+                        </li>
+                    </ul>
 
                     <div class="navbar-left">
                         {% block sonata_breadcrumb %}
@@ -192,13 +184,26 @@ file that was distributed with this source code.
         {% block sonata_wrapper %}
             {% block sonata_left_side %}
                 <aside class="main-sidebar sidebar-dark-primary">
-                    <section class="sidebar">
+                    {% block logo %}
+                        {% apply spaceless %}
+                            <a class="brand-link" href="{{ path('sonata_admin_dashboard') }}">
+                                {% if 'icon' == sonata_config.getOption('logo_content') or 'all' == sonata_config.getOption('logo_content') %}
+                                    <img src="{{ asset(sonata_config.logo) }}" class="brand-image img-circle elevation-3" alt="{{ sonata_config.title }}">
+                                {% endif %}
+                                {% if 'text' == sonata_config.getOption('logo_content') or 'all' == sonata_config.getOption('logo_content') %}
+                                    <span class="brand-text font-weight-light">{{ sonata_config.title }}</span>
+                                {% endif %}
+                            </a>
+                        {% endapply %}
+                    {% endblock %}
+
+                    <div class="sidebar">
                         {% block sonata_side_nav %}
                             {% block sonata_sidebar_search %}
                                 {% if sonata_config.getOption('search') %}
                                     <form action="{{ path('sonata_admin_search') }}" method="GET" class="sidebar-form" role="search">
                                         <div class="input-group custom-search-form">
-                                            <input type="text" name="q" value="{{ app.request.get('q') }}" class="form-control" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
+                                            <input type="text" name="q" value="{{ app.request.get('q') }}" class="form-control form-control-sidebar" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
                                             <span class="input-group-btn">
                                                 <button class="btn btn-flat" type="submit">
                                                     <i class="fas fa-search" aria-hidden="true"></i>
