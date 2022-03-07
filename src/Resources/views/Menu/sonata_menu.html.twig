@@ -1,7 +1,7 @@
 {% extends 'knp_menu.html.twig' %}
 
 {% block root %}
-    {%- set listAttributes = item.childrenAttributes|merge({'class': 'sidebar-menu', 'data-widget': 'tree'}) -%}
+    {%- set listAttributes = item.childrenAttributes|merge({'class': 'nav nav-pills nav-sidebar flex-column', 'data-widget': 'tree'}) -%}
     {%- set request        = item.extra('request') ?: app.request -%}
 
     <nav class="mt-2">
@@ -10,13 +10,14 @@
 {% endblock %}
 
 {% block item %}
+    {%- do item.setAttribute('class', 'nav-item') -%}
     {%- if item.displayed -%}
         {#- check role of the group #}
         {%- set display = item.extra('roles') is empty or is_granted(sonata_config.getOption('role_super_admin')) or item.extra('roles')|filter(role => is_granted(role))|length > 0 -%}
     {%- endif -%}
 
     {%- if item.displayed and display|default -%}
-        {%- set options = options|merge({branch_class: 'nav-item', currentClass: "active", ancestorClass: "active"}) -%}
+        {%- set options = options|merge({branch_class: '', currentClass: "active", ancestorClass: "active"}) -%}
         {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' active')|trim) -%}
         {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' nav nav-treeview')|trim) -%}
         {{ parent() }}
@@ -24,6 +25,12 @@
 {% endblock %}
 
 {% block linkElement %}
+    {%- do item.setLinkAttributes({'class': 'nav-link'}) -%}
+
+    {%  if item.uri is not empty and matcher.isCurrent(item) %}
+        {%- do item.setLinkAttributes({'class': 'nav-link active'}) -%}
+    {% endif %}
+
     {% apply spaceless %}
         {%- set translation_domain = item.extra('label_catalogue', 'messages') -%}
         {%- if item.extra('on_top') is defined and not item.extra('on_top') -%}
@@ -32,20 +39,30 @@
             {%- set icon = item.extra('icon')|parse_icon -%}
         {%- endif -%}
         {%- set is_link = true -%}
+        {%- set icon = '<span class="nav-icon">' ~ icon ~ '</span>' -%}
+
         {{ parent() }}
     {% endapply %}
 {% endblock %}
 
 {% block spanElement %}
     {% apply spaceless %}
-        <a href="#">
+        {%- do item.setLinkAttributes({'class': 'nav-link'}) -%}
+
+        {%  if matcher.isAncestor(item) %}
+            {%- do item.setLinkAttributes({'class': 'nav-link active'}) -%}
+        {% endif %}
+
+        <a href="#" class="{{ item.linkAttributes['class'] }}">
             {%- set translation_domain = item.extra('label_catalogue', 'messages') -%}
             {%- set icon = item.extra('icon')|default('')|parse_icon -%}
-            {{ icon|raw }}
-            {{ parent() }}
-            {%- if item.extra('keep_open') is not defined or not item.extra('keep_open') -%}
-                <span class="pull-right-container"><i class="fas pull-right fa-angle-left"></i></span>
-            {%- endif -%}
+            <span class="nav-icon">{{ icon|raw }}</span>
+            <p>
+                {{ parent() }}
+                {%- if item.extra('keep_open') is not defined or not item.extra('keep_open') -%}
+                    <i class="right fas fa-angle-left"></i>
+                {%- endif -%}
+            </p>
         </a>
     {% endapply %}
 {% endblock %}
