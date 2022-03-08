@@ -8,7 +8,7 @@
     {%- endif -%}
 
     {% if not loop.last %}
-        <li>
+        <li class="breadcrumb-item">
             {% if menu.uri is not empty %}
                 <a href="{{ menu.uri }}">
                     {% if menu.extra('safe_label', true) %}
@@ -22,7 +22,7 @@
             {% endif %}
         </li>
     {% else %}
-        <li class="active"><span>{{ label|u.truncate(100, '...') }}</span></li>
+        <li class="breadcrumb-item active"><span>{{ label|u.truncate(100, '...') }}</span></li>
     {% endif %}
 {% endfor %}
 {% endapply %}

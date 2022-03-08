@@ -97,7 +97,7 @@ file that was distributed with this source code.
     </head>
     <body
             {% block body_attributes -%}
-                class="sonata-bc {% block admin_lte_skin_class %}{{ _skin }}{% endblock %} fixed
+                class="sidebar-mini layout-fixed sonata-bc {% block admin_lte_skin_class %}{{ _skin }}{% endblock %}
                 {% if _use_select2 %}sonata-select2{% endif %}
                 {% if _use_icheck %}sonata-icheck{% endif %}
                 {% if app.request.cookies.get('sonata_sidebar_hide') -%}
@@ -118,20 +118,21 @@ file that was distributed with this source code.
                     </noscript>
                 {% endblock %}
                 {% block sonata_nav %}
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" data-widget="pushmenu" href="#">
-                                <span class="sr-only">{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}</span>
-                                <i class="fas fa-bars"></i>
-                            </a>
-                        </li>
-                    </ul>
-
-                    <div class="navbar-left">
-                        {% block sonata_breadcrumb %}
-                            <div class="hidden-xs">
-                                {% if _breadcrumb is not empty or action is defined %}
-                                    <ol class="nav navbar-top-links breadcrumb">
+                    <di class="d-flex flex-row">
+                        <div>
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" data-widget="pushmenu" href="#">
+                                        <span class="sr-only">{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}</span>
+                                        <i class="fas fa-bars"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="align-self-center">
+                            <div class="breadcrumb">
+                                {% block sonata_breadcrumb %}
+                                    {% if _breadcrumb is not empty or action is defined %}
                                         {% if _breadcrumb is empty %}
                                             {% if action is defined %}
                                                 {{ render_breadcrumbs(admin, action) }}
@@ -139,11 +140,11 @@ file that was distributed with this source code.
                                         {% else %}
                                             {{ _breadcrumb|raw }}
                                         {% endif %}
-                                    </ol>
-                                {% endif %}
+                                    {% endif %}
+                                {% endblock sonata_breadcrumb %}
                             </div>
-                        {% endblock sonata_breadcrumb %}
-                    </div>
+                        </div>
+                    </di>
 
                     {% block sonata_top_nav_menu %}
                         {% if app.user and is_granted(sonata_config.getOption('role_admin')) %}
@@ -240,12 +241,13 @@ file that was distributed with this source code.
                                   or _actions is not empty
                                   or _list_filters_actions is not empty
                                  %}
-                                    <nav class="navbar navbar-default" role="navigation">
                                         <div class="container-fluid">
                                             {% block tab_menu_navbar_header %}
                                                 {% if _navbar_title is not empty %}
-                                                    <div class="navbar-header">
-                                                        <a class="navbar-brand" href="#">{{ _navbar_title|raw }}</a>
+                                                    <div class="row mb-2">
+                                                        <div class="col-sm-6">
+                                                            <h1>{{ _navbar_title|raw }}</h1>
+                                                        </div>
                                                     </div>
                                                 {% endif %}
                                             {% endblock %}
@@ -287,7 +289,6 @@ file that was distributed with this source code.
                                                 {% endif %}
                                             </div>
                                         </div>
-                                    </nav>
                                 {% endif %}
                             {% endblock sonata_page_content_nav %}
                         {% endblock sonata_page_content_header %}
