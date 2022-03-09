@@ -259,34 +259,37 @@ file that was distributed with this source code.
                                                     </div>
                                                 {% endif %}
 
-                                                {% if admin is defined and action is defined and action == 'list' and admin.listModes|length > 1 %}
-                                                    <div class="nav navbar-right btn-group">
-                                                        {% for mode, settings in admin.listModes %}
-                                                            <a href="{{ admin.generateUrl('list', app.request.query.all|merge({_list_mode: mode})) }}" class="btn btn-default navbar-btn btn-sm{% if admin.getListMode() == mode %} active{% endif %}"><i class="{{ settings.class }}"></i></a>
-                                                        {% endfor %}
-                                                    </div>
-                                                {% endif %}
-
                                                 {% block sonata_admin_content_actions_wrappers %}
                                                     {% if _actions|replace({ '<li>': '', '</li>': '' })|trim is not empty %}
-                                                        <ul class="nav navbar-nav navbar-right">
-                                                        {% if _actions|split('</a>')|length > 2 %}
-                                                            <li class="dropdown sonata-actions">
-                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'link_actions'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b></a>
-                                                                <ul class="dropdown-menu" role="menu">
+                                                        <nav class="navbar navbar-expand navbar-light">
+                                                            <ul class="navbar-nav ml-auto">
+
+                                                                {% if _list_filters_actions is not empty %}
+                                                                    {{ _list_filters_actions|raw }}
+                                                                {% endif %}
+
+                                                                {% if _actions|split('</a>')|length > 2 %}
+                                                                    <li class="nav-item dropdown sonata-actions">
+                                                                        <a href="#" class="nav-link" data-toggle="dropdown">{{ 'link_actions'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b></a>
+                                                                        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                                                                            {{ _actions|raw }}
+                                                                        </ul>
+                                                                    </li>
+                                                                {% else %}
                                                                     {{ _actions|raw }}
-                                                                </ul>
-                                                            </li>
-                                                        {% else %}
-                                                            {{ _actions|raw }}
-                                                        {% endif %}
-                                                        </ul>
+                                                                {% endif %}
+
+                                                                {% if admin is defined and action is defined and action == 'list' and admin.listModes|length > 1 %}
+                                                                    {% for mode, settings in admin.listModes %}
+                                                                        <li class="nav-item">
+                                                                            <a href="{{ admin.generateUrl('list', app.request.query.all|merge({_list_mode: mode})) }}" class="nav-link btn btn-default navbar-btn btn-sm{% if admin.getListMode() == mode %} active{% endif %}"><i class="{{ settings.class }}"></i></a>
+                                                                        </li>
+                                                                    {% endfor %}
+                                                                {% endif %}
+                                                            </ul>
+                                                        </nav>
                                                     {% endif %}
                                                 {% endblock sonata_admin_content_actions_wrappers %}
-
-                                                {% if _list_filters_actions is not empty %}
-                                                    {{ _list_filters_actions|raw }}
-                                                {% endif %}
                                             </div>
                                         </div>
                                 {% endif %}
