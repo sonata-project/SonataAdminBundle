@@ -256,35 +256,32 @@ file that was distributed with this source code.
 {% block list_filters_actions %}
     {% set displayableFilters = admin.datagrid.filters|filter(filter => filter.option('show_filter') is not same as (false)) %}
     {%- if displayableFilters|length %}
-        <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown sonata-actions">
+            <a href="#" class="dropdown-toggle sonata-ba-action" data-toggle="dropdown">
+                <i class="fas fa-filter" aria-hidden="true"></i>
+                {{ 'link_filters'|trans({}, 'SonataAdminBundle') }}
+                <span class="badge badge-primary navbar-badge sonata-filter-count"></span>
+                <b class="caret"></b>
+            </a>
 
-            <li class="dropdown sonata-actions">
-                <a href="#" class="dropdown-toggle sonata-ba-action" data-toggle="dropdown">
-                    <i class="fas fa-filter" aria-hidden="true"></i>
-                    {{ 'link_filters'|trans({}, 'SonataAdminBundle') }}
-                    <span class="badge sonata-filter-count"></span>
-                    <b class="caret"></b>
-                </a>
-
-                <ul class="dropdown-menu dropdown-menu-scrollable" role="menu">
-                    {% for filter in displayableFilters %}
-                        {% set filterDisplayed = filter.isActive() or filter.option('show_filter') is same as (true) %}
-                        <li>
-                            <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
-                                <i class="far {{ filterDisplayed ? 'fa-check-square' : 'fa-square' }}"></i>
-                                {% if filter.label is not same as(false) %}
-                                    {% if filter.translationDomain is same as(false) %}
-                                        {{ filter.label }}
-                                    {% else %}
-                                        {{ filter.label|trans(filter.option('label_translation_parameters', {}), filter.translationDomain ?? admin.translationDomain) }}
-                                    {% endif %}
+            <ul class="dropdown-menu dropdown-menu-scrollable" role="menu">
+                {% for filter in displayableFilters %}
+                    {% set filterDisplayed = filter.isActive() or filter.option('show_filter') is same as (true) %}
+                    <li>
+                        <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
+                            <i class="far {{ filterDisplayed ? 'fa-check-square' : 'fa-square' }}"></i>
+                            {% if filter.label is not same as(false) %}
+                                {% if filter.translationDomain is same as(false) %}
+                                    {{ filter.label }}
+                                {% else %}
+                                    {{ filter.label|trans(filter.option('label_translation_parameters', {}), filter.translationDomain ?? admin.translationDomain) }}
                                 {% endif %}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </li>
-        </ul>
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </li>
     {% endif -%}
 {% endblock %}
 
