@@ -43,7 +43,7 @@ file that was distributed with this source code.
 
         {# Add a margin if no pager to prevent dropdown cropping on window #}
         <div class="card card-primary border-primary "{% if admin.datagrid.pager.lastPage == 1 %} style="margin-bottom: 100px;"{% endif %}>
-            <div class="card-body{% if datagrid_has_results %} table-responsive no-padding{% endif %}">
+            <div class="card-body{% if datagrid_has_results %} table-responsive p-0{% endif %}">
                 {{ sonata_block_render_event('sonata.admin.list.table.top', { 'admin': admin }) }}
 
                 {% block list_header %}{% endblock %}
@@ -143,7 +143,7 @@ file that was distributed with this source code.
             </div>
             {% block list_footer %}
                 {% if datagrid_has_results %}
-                    <div class="box-footer">
+                    <div class="box-footer p-4">
                         <div class="form-inline clearfix">
                             {% if not app.request.isXmlHttpRequest %}
                                 <div class="pull-left">
