@@ -120,10 +120,10 @@ final class ModelTypeTest extends TypeTestCase
     public function getCompoundOptionTests(): array
     {
         return [
-            [true, true, true], //checkboxes
-            [false, true, false], //select tag (with multiple attribute)
-            [true, false, true], //radio buttons
-            [false, false, false], //select tag
+            [true, true, true], // checkboxes
+            [false, true, false], // select tag (with multiple attribute)
+            [true, false, true], // radio buttons
+            [false, false, false], // select tag
         ];
     }
 }
