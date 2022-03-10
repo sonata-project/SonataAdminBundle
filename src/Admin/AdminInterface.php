@@ -176,7 +176,7 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     /**
      * @phpstan-param AdminExtensionInterface<T> $extension
      */
-    //public function removeExtension(AdminExtensionInterface $extension): void;
+    // public function removeExtension(AdminExtensionInterface $extension): void;
 
     /**
      * Returns an array of extension related to the current Admin.
@@ -280,7 +280,7 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     public function showIn(string $context): bool;
 
     // NEXT_MAJOR: Uncomment this for Sonata 5
-    //public function showInDashboard(): bool;
+    // public function showInDashboard(): bool;
 
     /**
      * Add object security, fe. make the current user owner of the object.

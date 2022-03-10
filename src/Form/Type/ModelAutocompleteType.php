@@ -125,8 +125,8 @@ final class ModelAutocompleteType extends AbstractType
             'context' => '',
 
             'placeholder' => '',
-            'minimum_input_length' => 3, //minimum 3 chars should be typed to load ajax data
-            'items_per_page' => 10, //number of items per page
+            'minimum_input_length' => 3, // minimum 3 chars should be typed to load ajax data
+            'items_per_page' => 10, // number of items per page
             'quiet_millis' => 100, // NEXT_MAJOR: Remove this line.
             'delay' => 100,
             'cache' => false,

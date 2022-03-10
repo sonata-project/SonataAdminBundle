@@ -40,7 +40,7 @@ final class TabMenuTest extends BaseMenuTest
             ->with(
                 'some-label',
                 [],
-                null, //messages or null
+                null, // messages or null
                 null
             )
             ->willReturn('my-translation');

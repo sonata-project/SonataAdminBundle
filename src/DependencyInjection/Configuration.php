@@ -448,7 +448,7 @@ final class Configuration implements ConfigurationInterface
                                                                 );
 
                                                                 // NEXT_MAJOR: Uncomment
-                                                                //throw new \InvalidArgumentException('Parameter "route" is not expected when the "admin" is provided for array items');
+                                                                // throw new \InvalidArgumentException('Parameter "route" is not expected when the "admin" is provided for array items');
                                                             }
 
                                                             if (isset($item['label'])) {
@@ -458,7 +458,7 @@ final class Configuration implements ConfigurationInterface
                                                                 );
 
                                                                 // NEXT_MAJOR: Uncomment
-                                                                //throw new \InvalidArgumentException('Parameter "label" is not expected when the "admin" is provided for array items');
+                                                                // throw new \InvalidArgumentException('Parameter "label" is not expected when the "admin" is provided for array items');
                                                             }
                                                         }
 

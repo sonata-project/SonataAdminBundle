@@ -114,7 +114,7 @@ final class RoleSecurityHandlerTest extends TestCase
     public function getIsGrantedTests(): array
     {
         return [
-            //empty
+            // empty
             [false, '', 'foo.bar', ''],
             [false, '', 'foo.bar', ['']],
             [false, '', 'foo.bar.abc', ['']],
@@ -122,7 +122,7 @@ final class RoleSecurityHandlerTest extends TestCase
             [false, '', 'foo.bar.baz.xyz', ''],
             [false, '', 'foo.bar.baz.xyz', ['']],
 
-            //superadmins
+            // superadmins
             [true, ['ROLE_BATMAN', 'ROLE_IRONMAN'], 'foo.bar', 'BAZ'],
             [true, ['ROLE_BATMAN', 'ROLE_IRONMAN'], 'foo.bar', 'ANYTHING'],
             [true, ['ROLE_BATMAN', 'ROLE_IRONMAN'], 'foo.bar', ['BAZ', 'ANYTHING']],
@@ -132,7 +132,7 @@ final class RoleSecurityHandlerTest extends TestCase
             [true, 'ROLE_IRONMAN', 'foo.bar', ''],
             [true, 'ROLE_IRONMAN', 'foo.bar', ['']],
 
-            //operations
+            // operations
             [true, 'ROLE_SPIDERMAN', 'foo.bar', 'ABC'],
             [true, 'ROLE_SPIDERMAN', 'foo.bar', ['ABC']],
             [true, 'ROLE_SPIDERMAN', 'foo.bar', ['ABC', 'DEF']],
@@ -155,7 +155,7 @@ final class RoleSecurityHandlerTest extends TestCase
             [false, [], 'foo.bar.baz.xyz', 'BAZ'],
             [false, [], 'foo.bar.baz.xyz', ['BAZ']],
 
-            //objects
+            // objects
             [true, 'ROLE_SPIDERMAN', 'foo.bar', ['DEF'], new \stdClass()],
             [true, 'ROLE_SPIDERMAN', 'foo.bar', ['ABC'], new \stdClass()],
             [true, 'ROLE_SPIDERMAN', 'foo.bar', ['ABC', 'DEF'], new \stdClass()],
@@ -175,7 +175,7 @@ final class RoleSecurityHandlerTest extends TestCase
             [false, [], 'foo.bar.baz.xyz', ['BAZ'], new \stdClass()],
             [false, 'ROLE_AUTH_EXCEPTION', 'foo.bar.baz.xyz', ['BAZ'], new \stdClass()],
 
-            //role
+            // role
             [false, [], 'foo.bar', ['CUSTOM']],
             [true, [], 'foo.bar', ['ROLE_CUSTOM']],
             [false, [], 'foo.bar', ['ROLE_ANOTHER_CUSTOM']],

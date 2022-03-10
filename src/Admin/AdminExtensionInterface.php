@@ -132,11 +132,11 @@ interface AdminExtensionInterface
     public function configureBatchActions(AdminInterface $admin, array $actions): array;
 
     // NEXT_MAJOR: Uncomment the method definition
-    ///**
+    // /**
     // * @param mixed[] $idx
     // * @phpstan-param AdminInterface<T> $admin
     // */
-    //public function preBatchAction(AdminInterface $admin, string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements): void;
+    // public function preBatchAction(AdminInterface $admin, string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements): void;
 
     /**
      * Get a chance to modify export fields.
