@@ -144,9 +144,9 @@ file that was distributed with this source code.
             {% block list_footer %}
                 {% if datagrid_has_results %}
                     <div class="box-footer p-4">
-                        <div class="form-inline clearfix">
+                        <div class="d-flex flex-wrap">
                             {% if not app.request.isXmlHttpRequest %}
-                                <div class="pull-left">
+                                <div>
                                     {% if admin.hasRoute('batch') and batchactions|length > 0 %}
                                         {% block batch %}
                                             <script>
@@ -180,33 +180,43 @@ file that was distributed with this source code.
                                                 {% endblock %}
                                             </script>
 
-                                        {% block batch_actions %}
-                                            <label class="checkbox" for="{{ admin.uniqid }}_all_elements">
-                                                <input type="checkbox" name="all_elements" id="{{ admin.uniqid }}_all_elements">
-                                                {{ 'all_elements'|trans({}, 'SonataAdminBundle') }}
-                                                ({{ admin.datagrid.pager.countResults() }})
-                                            </label>
+                                            {% block batch_actions %}
+                                                <div class="d-flex">
+                                                    <div class="align-self-center">
+                                                        <label class="checkbox" for="{{ admin.uniqid }}_all_elements">
+                                                            <input type="checkbox" name="all_elements" id="{{ admin.uniqid }}_all_elements">
+                                                            {{ 'all_elements'|trans({}, 'SonataAdminBundle') }}
+                                                            ({{ admin.datagrid.pager.countResults() }})
+                                                        </label>
+                                                    </div>
 
-                                            <select name="action" style="width: auto; height: auto" class="form-control">
-                                                {% for action, options in batchactions %}
-                                                    <option value="{{ action }}">
-                                                        {% if options.translation_domain is defined and options.translation_domain is same as(false) %}
-                                                            {{ options.label }}
-                                                        {% else %}
-                                                            {{ options.label|trans({}, options.translation_domain ?? admin.translationDomain) }}
-                                                        {% endif %}
-                                                    </option>
-                                                {% endfor %}
-                                            </select>
-                                        {% endblock %}
+                                                    <div class="p-2 align-self-center">
+                                                        <div class="input-group">
+                                                            <select name="action" style="width: auto; height: auto" class="form-control">
+                                                                {% for action, options in batchactions %}
+                                                                    <option value="{{ action }}">
+                                                                        {% if options.translation_domain is defined and options.translation_domain is same as(false) %}
+                                                                            {{ options.label }}
+                                                                        {% else %}
+                                                                            {{ options.label|trans({}, options.translation_domain ?? admin.translationDomain) }}
+                                                                        {% endif %}
+                                                                    </option>
+                                                                {% endfor %}
+                                                            </select>
 
-                                            <input type="submit" class="btn btn-small btn-primary" value="{{ 'btn_batch'|trans({}, 'SonataAdminBundle') }}">
+                                                            <div class="input-group-prepend">
+                                                                <button type="submit" class="btn btn-primary">{{ 'btn_batch'|trans({}, 'SonataAdminBundle') }}</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endblock %}
                                         {% endblock %}
                                     {% endif %}
                                 </div>
 
-                                <div class="pull-right">
-                                    {% if admin.hasRoute('export') and admin.hasAccess('export') and export_formats|length %}
+                                {% if admin.hasRoute('export') and admin.hasAccess('export') and export_formats|length %}
+                                    <div class="p-2 align-self-center">
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                                 <i class="fas fa-share-square" aria-hidden="true"></i>
@@ -215,34 +225,39 @@ file that was distributed with this source code.
                                             </button>
                                             <ul class="dropdown-menu">
                                                 {% for format in export_formats %}
-                                                <li>
-                                                    <a href="{{ admin.generateUrl('export', admin.datagrid.paginationparameters(0) + {'format' : format}) }}">
-                                                        <i class="fas fa-arrow-circle-o-down" aria-hidden="true"></i>
-                                                        {{ ("export_format_" ~ format)|trans({}, 'SonataAdminBundle') }}
-                                                    </a>
-                                                </li>
+                                                    <li class="dropdown-item">
+                                                        <a href="{{ admin.generateUrl('export', admin.datagrid.paginationparameters(0) + {'format' : format}) }}">
+                                                            <i class="fas fa-arrow-circle-o-down" aria-hidden="true"></i>
+                                                            {{ ("export_format_" ~ format)|trans({}, 'SonataAdminBundle') }}
+                                                        </a>
+                                                    </li>
                                                 {% endfor %}
                                             </ul>
                                         </div>
+                                    </div>
+                                {% endif %}
 
-                                        {% if block('pager_results') is not empty %}
-                                            &nbsp;-&nbsp;
-                                        {% endif %}
-                                    {% endif %}
-
+                                <div class="ml-auto d-flex">
                                     {% block pager_results %}
-                                        {% include get_admin_template('pager_results', admin.code) %}
+                                        <div class="d-none d-md-block">
+                                            <div class="d-flex">
+                                                {% include get_admin_template('pager_results', admin.code) %}
+                                            </div>
+                                        </div>
+                                    {% endblock %}
+
+                                    {% block pager_links %}
+                                        <div class="p-2 align-self-center">
+                                            {% if admin.datagrid.pager.haveToPaginate() %}
+                                                {% include get_admin_template('pager_links', admin.code) %}
+                                            {% endif %}
+                                        </div>
                                     {% endblock %}
                                 </div>
+
                             {% endif %}
                         </div>
 
-                        {% block pager_links %}
-                            {% if admin.datagrid.pager.haveToPaginate() %}
-                                <hr/>
-                                {% include get_admin_template('pager_links', admin.code) %}
-                            {% endif %}
-                        {% endblock %}
                     </div>
                 {% endif %}
             {% endblock %}
