@@ -190,7 +190,7 @@ final class AdminHelperTest extends TestCase
             ->method('getRequest')
             ->willReturn($request);
 
-        $foo = new class {
+        $foo = new class() {
             /** @var object[] */
             public array $bar = [];
         };
@@ -246,7 +246,7 @@ final class AdminHelperTest extends TestCase
             static::assertSame('', $childField->get('_delete')->getData());
         }
 
-        static::assertGreaterThan(0, count($foo->bar));
+        static::assertGreaterThan(0, \count($foo->bar));
     }
 
     public function testAppendFormFieldElementWithoutFormFieldDescriptionInAdminAndNoArrayAccess(): void

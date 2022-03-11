@@ -27,7 +27,7 @@ final class ObjectManipulatorTest extends TestCase
 
         $instance = new \stdClass();
 
-        $object = new class {
+        $object = new class() {
             /** @var object[] */
             private array $fooBars = [];
 
@@ -62,7 +62,7 @@ final class ObjectManipulatorTest extends TestCase
 
         $instance = new \stdClass();
 
-        $object2 = new class {
+        $object2 = new class() {
             /** @var object[] */
             private array $fooBars = [];
 
@@ -84,8 +84,8 @@ final class ObjectManipulatorTest extends TestCase
             }
         };
 
-        $object1 = new class {
-            private ?object $parent;
+        $object1 = new class() {
+            private ?object $parent = null;
 
             public function setParent(object $parent): void
             {
@@ -112,7 +112,7 @@ final class ObjectManipulatorTest extends TestCase
 
         $instance = new \stdClass();
 
-        $object = new class {
+        $object = new class() {
             /** @var object[] */
             private array $entries = [];
 
@@ -147,8 +147,8 @@ final class ObjectManipulatorTest extends TestCase
 
         $object = new \stdClass();
 
-        $instance = new class {
-            private ?object $parent;
+        $instance = new class() {
+            private ?object $parent = null;
 
             public function setParent(object $parent): void
             {
@@ -190,8 +190,8 @@ final class ObjectManipulatorTest extends TestCase
 
         $object2 = new \stdClass();
 
-        $instance = new class {
-            private ?object $fooBar;
+        $instance = new class() {
+            private ?object $fooBar = null;
 
             public function setFooBar(object $foobar): void
             {
@@ -204,8 +204,8 @@ final class ObjectManipulatorTest extends TestCase
             }
         };
 
-        $object1 = new class {
-            private ?object $parent;
+        $object1 = new class() {
+            private ?object $parent = null;
 
             public function setParent(object $parent): void
             {
