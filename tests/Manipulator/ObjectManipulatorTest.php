@@ -22,7 +22,7 @@ final class ObjectManipulatorTest extends TestCase
     public function testAddInstance(): void
     {
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects(static::once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBar']);
+        $fieldDescription->expects(static::once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBars']);
         $fieldDescription->expects(static::once())->method('getParentAssociationMappings')->willReturn([]);
 
         $instance = new \stdClass();
@@ -34,6 +34,12 @@ final class ObjectManipulatorTest extends TestCase
             public function addFooBar(object $fooBar): void
             {
                 $this->fooBars[] = $fooBar;
+            }
+
+            public function removeFooBar(object $fooBar): void
+            {
+                $key = array_search($fooBar, $this->fooBars, true);
+                unset($this->fooBars[$key]);
             }
 
             /** @return object[] */
@@ -51,7 +57,7 @@ final class ObjectManipulatorTest extends TestCase
     public function testAddInstanceWithParentAssociation(): void
     {
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects(static::once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBar']);
+        $fieldDescription->expects(static::once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBars']);
         $fieldDescription->expects(static::once())->method('getParentAssociationMappings')->willReturn([['fieldName' => 'parent']]);
 
         $instance = new \stdClass();
@@ -63,6 +69,12 @@ final class ObjectManipulatorTest extends TestCase
             public function addFooBar(object $fooBar): void
             {
                 $this->fooBars[] = $fooBar;
+            }
+
+            public function removeFooBar(object $fooBar): void
+            {
+                $key = array_search($fooBar, $this->fooBars, true);
+                unset($this->fooBars[$key]);
             }
 
             /** @return object[] */
@@ -92,35 +104,6 @@ final class ObjectManipulatorTest extends TestCase
         static::assertSame([$instance], $object2->getFooBars());
     }
 
-    public function testAddInstancePlural(): void
-    {
-        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects(static::once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBars']);
-        $fieldDescription->expects(static::once())->method('getParentAssociationMappings')->willReturn([]);
-
-        $instance = new \stdClass();
-
-        $object = new class {
-            /** @var object[] */
-            private array $fooBars = [];
-
-            public function addFooBar(object $fooBar): void
-            {
-                $this->fooBars[] = $fooBar;
-            }
-
-            /** @return object[] */
-            public function getFooBars(): array
-            {
-                return $this->fooBars;
-            }
-        };
-
-        ObjectManipulator::addInstance($object, $instance, $fieldDescription);
-
-        static::assertSame([$instance], $object->getFooBars());
-    }
-
     public function testAddInstanceInflector(): void
     {
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
@@ -136,6 +119,12 @@ final class ObjectManipulatorTest extends TestCase
             public function addEntry(object $entry): void
             {
                 $this->entries[] = $entry;
+            }
+
+            public function removeEntry(object $entry): void
+            {
+                $key = array_search($entry, $this->entries, true);
+                unset($this->entries[$key]);
             }
 
             /** @return object[] */

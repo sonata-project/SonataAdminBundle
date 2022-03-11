@@ -16,6 +16,8 @@ namespace Sonata\AdminBundle\Manipulator;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 final class ObjectManipulator
 {
@@ -79,24 +81,9 @@ final class ObjectManipulator
      */
     private static function callGetter(object $object, string $fieldName): object
     {
-        $inflector = InflectorFactory::create()->build();
-        $method = sprintf('get%s', $inflector->classify($fieldName));
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
-        if (\is_callable([$object, $method]) && method_exists($object, $method)) {
-            return $object->$method();
-        }
-
-        if (property_exists($object, $fieldName)) {
-            $ref = new \ReflectionProperty($object, $fieldName);
-
-            if ($ref->isPublic()) {
-                return $object->$fieldName;
-            }
-        }
-
-        throw new \BadMethodCallException(
-            sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
-        );
+        return $propertyAccessor->getValue($object, $fieldName);
     }
 
     /**
@@ -108,28 +95,11 @@ final class ObjectManipulator
      */
     private static function callSetter(object $instance, object $object, string $mappedBy): object
     {
-        $inflector = InflectorFactory::create()->build();
-        $method = sprintf('set%s', $inflector->classify($mappedBy));
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
-        if (\is_callable([$instance, $method]) && method_exists($instance, $method)) {
-            $instance->$method($object);
+        $propertyAccessor->setValue($instance, $mappedBy, $object);
 
-            return $instance;
-        }
-
-        if (property_exists($instance, $mappedBy)) {
-            $ref = new \ReflectionProperty($instance, $mappedBy);
-
-            if ($ref->isPublic()) {
-                $instance->$mappedBy = $object;
-
-                return $instance;
-            }
-        }
-
-        throw new \BadMethodCallException(
-            sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($instance), $method)
-        );
+        return $instance;
     }
 
     /**
@@ -141,24 +111,11 @@ final class ObjectManipulator
      */
     private static function callAdder(object $object, object $instance, string $fieldName): object
     {
-        $inflector = InflectorFactory::create()->build();
-        $method = sprintf('add%s', $inflector->classify($fieldName));
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
-        if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
-            $method = rtrim($method, 's');
-
-            if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
-                $method = sprintf('add%s', $inflector->classify($inflector->singularize($fieldName)));
-
-                if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
-                    throw new \BadMethodCallException(
-                        sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
-                    );
-                }
-            }
-        }
-
-        $object->$method($instance);
+        $collection = $propertyAccessor->getValue($object, $fieldName);
+        $collection[] = $instance;
+        $propertyAccessor->setValue($object, $fieldName, $collection);
 
         return $instance;
     }

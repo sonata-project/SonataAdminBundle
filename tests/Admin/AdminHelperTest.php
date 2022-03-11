@@ -190,7 +190,11 @@ final class AdminHelperTest extends TestCase
             ->method('getRequest')
             ->willReturn($request);
 
-        $foo = $this->getMockBuilder(\stdClass::class)->addMethods(['addBar'])->getMock();
+        $foo = new class {
+            /** @var object[] */
+            public array $bar = [];
+        };
+
         $admin
             ->method('hasSubject')
             ->willReturn(true);
@@ -203,8 +207,6 @@ final class AdminHelperTest extends TestCase
             ->expects(static::atLeastOnce())
             ->method('getNewInstance')
             ->willReturn($bar);
-
-        $foo->expects(static::atLeastOnce())->method('addBar')->with($bar);
 
         $dataMapper = $this->createStub(DataMapperInterface::class);
         $formFactory = $this->createStub(FormFactoryInterface::class);
@@ -243,6 +245,8 @@ final class AdminHelperTest extends TestCase
             static::assertTrue($childField->has('_delete'));
             static::assertSame('', $childField->get('_delete')->getData());
         }
+
+        static::assertGreaterThan(0, count($foo->bar));
     }
 
     public function testAppendFormFieldElementWithoutFormFieldDescriptionInAdminAndNoArrayAccess(): void
