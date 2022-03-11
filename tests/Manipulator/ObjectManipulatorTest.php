@@ -26,10 +26,26 @@ final class ObjectManipulatorTest extends TestCase
         $fieldDescription->expects(static::once())->method('getParentAssociationMappings')->willReturn([]);
 
         $instance = new \stdClass();
-        $object = $this->getMockBuilder(\stdClass::class)->addMethods(['addFooBar'])->getMock();
-        $object->expects(static::once())->method('addFooBar')->with($instance);
+
+        $object = new class {
+            /** @var object[] */
+            private array $fooBars = [];
+
+            public function addFooBar(object $fooBar): void
+            {
+                $this->fooBars[] = $fooBar;
+            }
+
+            /** @return object[] */
+            public function getFooBars(): array
+            {
+                return $this->fooBars;
+            }
+        };
 
         ObjectManipulator::addInstance($object, $instance, $fieldDescription);
+
+        static::assertSame([$instance], $object->getFooBars());
     }
 
     public function testAddInstanceWithParentAssociation(): void
@@ -40,13 +56,40 @@ final class ObjectManipulatorTest extends TestCase
 
         $instance = new \stdClass();
 
-        $object2 = $this->getMockBuilder(\stdClass::class)->addMethods(['addFooBar'])->getMock();
-        $object2->expects(static::once())->method('addFooBar')->with($instance);
+        $object2 = new class {
+            /** @var object[] */
+            private array $fooBars = [];
 
-        $object1 = $this->getMockBuilder(\stdClass::class)->addMethods(['getParent'])->getMock();
-        $object1->expects(static::once())->method('getParent')->willReturn($object2);
+            public function addFooBar(object $fooBar): void
+            {
+                $this->fooBars[] = $fooBar;
+            }
+
+            /** @return object[] */
+            public function getFooBars(): array
+            {
+                return $this->fooBars;
+            }
+        };
+
+        $object1 = new class {
+            private ?object $parent;
+
+            public function setParent(object $parent): void
+            {
+                $this->parent = $parent;
+            }
+
+            public function getParent(): ?object
+            {
+                return $this->parent;
+            }
+        };
+        $object1->setParent($object2);
 
         ObjectManipulator::addInstance($object1, $instance, $fieldDescription);
+
+        static::assertSame([$instance], $object2->getFooBars());
     }
 
     public function testAddInstancePlural(): void
@@ -56,10 +99,26 @@ final class ObjectManipulatorTest extends TestCase
         $fieldDescription->expects(static::once())->method('getParentAssociationMappings')->willReturn([]);
 
         $instance = new \stdClass();
-        $object = $this->getMockBuilder(\stdClass::class)->addMethods(['addFooBar'])->getMock();
-        $object->expects(static::once())->method('addFooBar')->with($instance);
+
+        $object = new class {
+            /** @var object[] */
+            private array $fooBars = [];
+
+            public function addFooBar(object $fooBar): void
+            {
+                $this->fooBars[] = $fooBar;
+            }
+
+            /** @return object[] */
+            public function getFooBars(): array
+            {
+                return $this->fooBars;
+            }
+        };
 
         ObjectManipulator::addInstance($object, $instance, $fieldDescription);
+
+        static::assertSame([$instance], $object->getFooBars());
     }
 
     public function testAddInstanceInflector(): void
@@ -69,10 +128,26 @@ final class ObjectManipulatorTest extends TestCase
         $fieldDescription->expects(static::once())->method('getParentAssociationMappings')->willReturn([]);
 
         $instance = new \stdClass();
-        $object = $this->getMockBuilder(\stdClass::class)->addMethods(['addEntry'])->getMock();
-        $object->expects(static::once())->method('addEntry')->with($instance);
+
+        $object = new class {
+            /** @var object[] */
+            private array $entries = [];
+
+            public function addEntry(object $entry): void
+            {
+                $this->entries[] = $entry;
+            }
+
+            /** @return object[] */
+            public function getEntries(): array
+            {
+                return $this->entries;
+            }
+        };
 
         ObjectManipulator::addInstance($object, $instance, $fieldDescription);
+
+        static::assertSame([$instance], $object->getEntries());
     }
 
     public function testSetObject(): void
@@ -82,10 +157,24 @@ final class ObjectManipulatorTest extends TestCase
         $fieldDescription->expects(static::once())->method('getParentAssociationMappings')->willReturn([]);
 
         $object = new \stdClass();
-        $instance = $this->getMockBuilder(\stdClass::class)->addMethods(['setParent'])->getMock();
-        $instance->expects(static::once())->method('setParent')->with($object);
+
+        $instance = new class {
+            private ?object $parent;
+
+            public function setParent(object $parent): void
+            {
+                $this->parent = $parent;
+            }
+
+            public function getParent(): ?object
+            {
+                return $this->parent;
+            }
+        };
 
         ObjectManipulator::setObject($instance, $object, $fieldDescription);
+
+        static::assertSame($object, $instance->getParent());
     }
 
     public function testSetObjectWithNullMapped(): void
@@ -112,13 +201,38 @@ final class ObjectManipulatorTest extends TestCase
 
         $object2 = new \stdClass();
 
-        $instance = $this->getMockBuilder(\stdClass::class)->addMethods(['setFooBar'])->getMock();
-        $instance->expects(static::once())->method('setFooBar')->with($object2);
+        $instance = new class {
+            private ?object $fooBar;
 
-        $object1 = $this->getMockBuilder(\stdClass::class)->addMethods(['getParent'])->getMock();
-        $object1->expects(static::once())->method('getParent')->willReturn($object2);
+            public function setFooBar(object $foobar): void
+            {
+                $this->fooBar = $foobar;
+            }
+
+            public function getFooBar(): ?object
+            {
+                return $this->fooBar;
+            }
+        };
+
+        $object1 = new class {
+            private ?object $parent;
+
+            public function setParent(object $parent): void
+            {
+                $this->parent = $parent;
+            }
+
+            public function getParent(): ?object
+            {
+                return $this->parent;
+            }
+        };
+        $object1->setParent($object2);
 
         ObjectManipulator::setObject($instance, $object1, $fieldDescription);
+
+        static::assertSame($object2, $instance->getFooBar());
     }
 
     public function testSetObjectProperty(): void
