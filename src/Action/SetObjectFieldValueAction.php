@@ -66,24 +66,14 @@ final class SetObjectFieldValueAction
         ValidatorInterface $validator,
         DataTransformerResolverInterface $resolver,
         PropertyAccessorInterface $propertyAccessor,
-        ?RenderElementRuntime $renderElementRuntime = null
+        RenderElementRuntime $renderElementRuntime
     ) {
         $this->adminFetcher = $adminFetcher;
         $this->twig = $twig;
         $this->validator = $validator;
         $this->resolver = $resolver;
         $this->propertyAccessor = $propertyAccessor;
-
-        // NEXT_MAJOR: Remove the deprecation and restrict param constructor to RenderElementRuntime.
-        if (null === $renderElementRuntime) {
-            @trigger_error(sprintf(
-                'Passing null as argument 5 of "%s()" is deprecated since sonata-project/admin-bundle 4.7'
-                .' and will throw an error in 5.0. You MUST pass an instance of %s instead.',
-                __METHOD__,
-                RenderElementRuntime::class
-            ), \E_USER_DEPRECATED);
-        }
-        $this->renderElementRuntime = $renderElementRuntime ?? new RenderElementRuntime($propertyAccessor);
+        $this->renderElementRuntime = $renderElementRuntime;
     }
 
     /**

@@ -22,7 +22,6 @@ use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
 use Sonata\AdminBundle\Exception\LockException;
-use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Exception\ModelManagerThrowable;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
@@ -142,13 +141,11 @@ class CRUDController extends AbstractController
     }
 
     /**
-     * NEXT_MAJOR: Change signature to `(ProxyQueryInterface $query, Request $request).
-     *
      * Execute a batch delete.
      *
      * @throws AccessDeniedException If access is not granted
      */
-    public function batchActionDelete(ProxyQueryInterface $query): Response
+    public function batchActionDelete(ProxyQueryInterface $query, Request $request): Response
     {
         $this->admin->checkAccess('batchDelete');
 
@@ -159,14 +156,6 @@ class CRUDController extends AbstractController
             $this->addFlash(
                 'sonata_flash_success',
                 $this->trans('flash_batch_delete_success', [], 'SonataAdminBundle')
-            );
-        } catch (ModelManagerException $e) {
-            // NEXT_MAJOR: Remove this catch.
-            $this->handleModelManagerException($e);
-
-            $this->addFlash(
-                'sonata_flash_error',
-                $this->trans('flash_batch_delete_error', [], 'SonataAdminBundle')
             );
         } catch (ModelManagerThrowable $e) {
             $errorMessage = $this->handleModelManagerThrowable($e);
@@ -219,22 +208,6 @@ class CRUDController extends AbstractController
                     'sonata_flash_success',
                     $this->trans(
                         'flash_delete_success',
-                        ['%name%' => $this->escapeHtml($objectName)],
-                        'SonataAdminBundle'
-                    )
-                );
-            } catch (ModelManagerException $e) {
-                // NEXT_MAJOR: Remove this catch.
-                $this->handleModelManagerException($e);
-
-                if ($this->isXmlHttpRequest($request)) {
-                    return $this->renderJson(['result' => 'error']);
-                }
-
-                $this->addFlash(
-                    'sonata_flash_error',
-                    $this->trans(
-                        'flash_delete_error',
                         ['%name%' => $this->escapeHtml($objectName)],
                         'SonataAdminBundle'
                     )
@@ -328,11 +301,6 @@ class CRUDController extends AbstractController
 
                     // redirect to edit mode
                     return $this->redirectTo($request, $existingObject);
-                } catch (ModelManagerException $e) {
-                    // NEXT_MAJOR: Remove this catch.
-                    $this->handleModelManagerException($e);
-
-                    $isFormValid = false;
                 } catch (ModelManagerThrowable $e) {
                     $errorMessage = $this->handleModelManagerThrowable($e);
 
@@ -589,11 +557,6 @@ class CRUDController extends AbstractController
 
                     // redirect to edit mode
                     return $this->redirectTo($request, $newObject);
-                } catch (ModelManagerException $e) {
-                    // NEXT_MAJOR: Remove this catch.
-                    $this->handleModelManagerException($e);
-
-                    $isFormValid = false;
                 } catch (ModelManagerThrowable $e) {
                     $errorMessage = $this->handleModelManagerThrowable($e);
 
@@ -1045,42 +1008,11 @@ class CRUDController extends AbstractController
     }
 
     /**
-     * @throws \Exception
-     */
-    protected function handleModelManagerException(\Exception $exception): void
-    {
-        if ($exception instanceof ModelManagerThrowable) {
-            $this->handleModelManagerThrowable($exception);
-
-            return;
-        }
-
-        @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.107 and will be removed in 5.0.',
-            __METHOD__
-        ), \E_USER_DEPRECATED);
-
-        $debug = $this->getParameter('kernel.debug');
-        \assert(\is_bool($debug));
-        if ($debug) {
-            throw $exception;
-        }
-
-        $context = ['exception' => $exception];
-        if (null !== $exception->getPrevious()) {
-            $context['previous_exception_message'] = $exception->getPrevious()->getMessage();
-        }
-        $this->getLogger()->error($exception->getMessage(), $context);
-    }
-
-    /**
-     * NEXT_MAJOR: Add typehint.
-     *
      * @throws ModelManagerThrowable
      *
      * @return string|null A custom error message to display in the flag bag instead of the generic one
      */
-    protected function handleModelManagerThrowable(ModelManagerThrowable $exception)
+    protected function handleModelManagerThrowable(ModelManagerThrowable $exception): ?string
     {
         $debug = $this->getParameter('kernel.debug');
         \assert(\is_bool($debug));

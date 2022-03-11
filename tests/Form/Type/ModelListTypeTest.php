@@ -49,7 +49,6 @@ final class ModelListTypeTest extends TypeTestCase
         static::assertSame('link_edit', $options['btn_edit']);
         static::assertSame('link_list', $options['btn_list']);
         static::assertSame('link_delete', $options['btn_delete']);
-        static::assertSame('SonataAdminBundle', $options['btn_catalogue']);
         static::assertSame('SonataAdminBundle', $options['btn_translation_domain']);
     }
 

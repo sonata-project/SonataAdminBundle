@@ -17,11 +17,9 @@ This template can be customized to match your needs. You should only extends the
 -->
 
 <tr>
-    {# NEXT_MAJOR: Remove the NAME_ACTIONS check in version 5 and recommend using the option `ajax_hidden` instead. #}
     <td colspan="{{
         app.request.isXmlHttpRequest
             ? admin.list.getElements()|filter(element => element.getOption('ajax_hidden') != true)|length
-                - admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_ACTIONS'))
                 - admin.list.has(constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_BATCH'))
             : admin.list.getElements()|length
     }}">

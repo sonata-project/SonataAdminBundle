@@ -32,7 +32,6 @@ final class NoopSecurityHandlerTest extends TestCase
 
     public function testIsGranted(): void
     {
-        static::assertTrue($this->handler->isGranted($this->getSonataAdminObject(), ['TOTO']));
         static::assertTrue($this->handler->isGranted($this->getSonataAdminObject(), 'TOTO'));
     }
 

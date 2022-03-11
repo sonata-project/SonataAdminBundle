@@ -2074,8 +2074,8 @@ EOT
 
     private function registerRequiredTwigExtensions(): void
     {
-        $this->environment->addExtension(new RenderElementExtension($this->renderElementRuntime));
-        $this->environment->addExtension(new XEditableExtension(new XEditableRuntime($this->translator)));
+        $this->environment->addExtension(new RenderElementExtension());
+        $this->environment->addExtension(new XEditableExtension());
         $this->environment->addExtension(new TranslationExtension($this->translator));
         $this->environment->addExtension(new FakeTemplateRegistryExtension());
         $this->environment->addExtension(new StringExtension());

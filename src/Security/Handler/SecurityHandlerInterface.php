@@ -21,12 +21,9 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 interface SecurityHandlerInterface
 {
     /**
-     * NEXT_MAJOR: Restrict $attributes typehint to string and rename it $attribute.
-     *
      * @param AdminInterface<object> $admin
-     * @param string|string[]        $attributes
      */
-    public function isGranted(AdminInterface $admin, $attributes, ?object $object = null): bool;
+    public function isGranted(AdminInterface $admin, string $attribute, ?object $object = null): bool;
 
     /**
      * Get a sprintf template to get the role.

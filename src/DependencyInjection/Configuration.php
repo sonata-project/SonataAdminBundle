@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
-use Sonata\AdminBundle\BCLayer\BCDeprecation;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -29,14 +28,12 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  * @phpstan-import-type ExtensionMap from \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass
  * @phpstan-import-type Item from \Sonata\AdminBundle\Admin\Pool
  *
- * NEXT_MAJOR: Remove the default_label_catalogue key.
  * @phpstan-type SonataAdminConfigurationOptions = array{
  *     confirm_exit: bool,
  *     default_admin_route: string,
  *     default_group: string,
  *     default_icon: string,
  *     default_translation_domain: string,
- *     default_label_catalogue: string,
  *     dropdown_number_groups_per_colums: int,
  *     form_type: 'standard'|'horizontal',
  *     html5_validate: bool,
@@ -313,12 +310,10 @@ final class Configuration implements ConfigurationInterface
                         ->booleanNode('use_bootlint')->defaultFalse()->end()
                         ->booleanNode('use_stickyforms')->defaultTrue()->end()
                         ->integerNode('pager_links')->defaultNull()->end()
-                        // NEXT_MAJOR: Remove this line and uncomment the following line instead.
-                        ->scalarNode('form_type')->defaultValue('standard')->end()
-//                        ->enumNode('form_type')
-//                            ->defaultValue('standard')
-//                            ->values(['standard', 'horizontal'])
-//                        ->end()
+                        ->enumNode('form_type')
+                            ->defaultValue('standard')
+                            ->values(['standard', 'horizontal'])
+                        ->end()
                         ->scalarNode('default_admin_route')
                             ->defaultValue('show')
                             ->info('Name of the admin route to be used as a default to generate the link to the object')
@@ -327,31 +322,8 @@ final class Configuration implements ConfigurationInterface
                             ->defaultValue('default')
                             ->info('Group used for admin services if one isn\'t provided.')
                         ->end()
-                        // NEXT_MAJOR: Remove this option.
-                        ->scalarNode('default_label_catalogue')
-                            ->setDeprecated(...BCDeprecation::forConfig(
-                                'The "default_label_catalogue" node is deprecated, use "default_translation_domain" instead.',
-                                '4.9'
-                            ))
-                            ->defaultValue('SonataAdminBundle')
-                            ->info('Label Catalogue used for admin services if one isn\'t provided.')
-                        ->end()
                         ->scalarNode('default_translation_domain')
-                            // NEXT_MAJOR: Use `messages` as default value and remove the deprecation.
-                            ->defaultValue(null)
-                            ->validate()
-                                ->always(static function ($value) {
-                                    if (null === $value) {
-                                        @trigger_error(
-                                            'Not setting the "sonata_admin.options.default_translation_domain" config option is deprecated'
-                                            .' since sonata-project/admin-bundle 4.9. In 5.0, it will default to "messages".',
-                                            \E_USER_DEPRECATED
-                                        );
-                                    }
-
-                                    return $value;
-                                })
-                            ->end()
+                            ->defaultValue('messages')
                             ->info('Translation domain used for admin services if one isn\'t provided.')
                         ->end()
                         ->scalarNode('default_icon')
@@ -410,13 +382,6 @@ final class Configuration implements ConfigurationInterface
                                 ->children()
                                     ->scalarNode('label')->end()
                                     ->scalarNode('translation_domain')->end()
-                                    // NEXT_MAJOR: Remove this option.
-                                    ->scalarNode('label_catalogue')
-                                        ->setDeprecated(...BCDeprecation::forConfig(
-                                            'The "default_label_catalogue" node is deprecated, use "default_translation_domain" instead.',
-                                            '4.9'
-                                        ))
-                                    ->end()
                                     ->scalarNode('icon')->end()
                                     ->scalarNode('on_top')->defaultFalse()->info('Show menu item in side dashboard menu without treeview')->end()
                                     ->scalarNode('keep_open')->defaultFalse()->info('Keep menu group always open')->end()
@@ -434,32 +399,12 @@ final class Configuration implements ConfigurationInterface
                                                     }
 
                                                     if (isset($item['admin'])) {
-                                                        // NEXT_MAJOR: Remove this check
-                                                        if ('' === $item['admin']) {
-                                                            @trigger_error(
-                                                                'Configuring an item with an empty admin is deprecated since sonata-project/admin-bundle 4.9 and will be removed in 5.0.',
-                                                                \E_USER_DEPRECATED
-                                                            );
-                                                        } else {
-                                                            if (isset($item['route'])) {
-                                                                @trigger_error(
-                                                                    'Configuring a route for an item with an admin key is deprecated since sonata-project/admin-bundle 4.9 and will be removed in 5.0.',
-                                                                    \E_USER_DEPRECATED
-                                                                );
+                                                        if (isset($item['route'])) {
+                                                            throw new \InvalidArgumentException('Parameter "route" is not expected when the "admin" is provided for array items');
+                                                        }
 
-                                                                // NEXT_MAJOR: Uncomment
-                                                                // throw new \InvalidArgumentException('Parameter "route" is not expected when the "admin" is provided for array items');
-                                                            }
-
-                                                            if (isset($item['label'])) {
-                                                                @trigger_error(
-                                                                    'Configuring a label for an item with an admin key is deprecated since sonata-project/admin-bundle 4.9 and will be removed in 5.0.',
-                                                                    \E_USER_DEPRECATED
-                                                                );
-
-                                                                // NEXT_MAJOR: Uncomment
-                                                                // throw new \InvalidArgumentException('Parameter "label" is not expected when the "admin" is provided for array items');
-                                                            }
+                                                        if (isset($item['label'])) {
+                                                            throw new \InvalidArgumentException('Parameter "label" is not expected when the "admin" is provided for array items');
                                                         }
 
                                                         continue;
@@ -498,14 +443,6 @@ final class Configuration implements ConfigurationInterface
                                                 ->end()
                                             ->end()
                                         ->end()
-                                    ->end()
-                                    // NEXT_MAJOR: Remove the item_adds key.
-                                    ->arrayNode('item_adds')
-                                        ->setDeprecated(...BCDeprecation::forConfig(
-                                            'The "item_adds" node is deprecated',
-                                            '4.9'
-                                        ))
-                                        ->prototype('scalar')->defaultValue([])->end()
                                     ->end()
                                     ->arrayNode('roles')
                                         ->prototype('scalar')->defaultValue([])->end()

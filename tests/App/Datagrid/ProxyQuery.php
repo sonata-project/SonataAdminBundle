@@ -17,7 +17,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 final class ProxyQuery implements ProxyQueryInterface
 {
-    public function execute()
+    public function execute(): iterable
     {
         throw new \BadMethodCallException('Not implemented.');
     }

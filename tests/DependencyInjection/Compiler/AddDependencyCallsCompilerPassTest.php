@@ -21,9 +21,7 @@ use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\FooAdminController;
 use Sonata\BlockBundle\DependencyInjection\SonataBlockExtension;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
-use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
-use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;
 use Symfony\Component\DependencyInjection\Compiler\ResolveEnvPlaceholdersPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -262,8 +260,8 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         // use array_values to check groups position
         $adminGroups = array_values($adminGroups);
 
-        static::assertSame('sonata_group_one', $adminGroups['0']['label'], 'second group in configuration, first in list');
-        static::assertSame('1 Entry', $adminGroups[0]['items'][0]['label'], 'second entry for group in configuration, first in list');
+        static::assertSame('sonata_group_one', $adminGroups[0]['label'], 'second group in configuration, first in list');
+        static::assertSame('sonata_article_admin', $adminGroups[0]['items'][0]['admin'], 'second entry for group in configuration, first in list');
     }
 
     public function testProcessGroupNameAsParameter(): void
@@ -330,8 +328,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             'setListModes',
             [['list' => [
                 'icon' => '<i class="fas fa-list fa-fw" aria-hidden="true"></i>',
-                // NEXT_MAJOR: Remove the class part.
-                'class' => 'fas fa-list fa-fw',
             ]]]
         );
 
@@ -462,71 +458,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         } catch (\RuntimeException $e) {
             static::fail('An expected exception has been raised.');
         }
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testProcessAbstractAdminServiceInServiceDefinition(): void
-    {
-        $this->setUpContainer();
-
-        $config = $this->getConfig();
-        $config['dashboard']['groups'] = [];
-
-        $this->extension->load([$config], $this->container);
-
-        $this->container
-            ->register('sonata_abstract_post_admin')
-            ->setArguments(['', PostEntity::class, ''])
-            ->setAbstract(true);
-
-        $adminDefinition = new ChildDefinition('sonata_abstract_post_admin');
-        $adminDefinition
-            ->setPublic(true)
-            ->setClass(CustomAdmin::class)
-            ->setArguments([0 => 'extra_argument_1'])
-            ->addTag('sonata.admin', ['group' => 'sonata_post_one_group', 'manager_type' => 'orm']);
-
-        $adminTwoDefinition = new ChildDefinition('sonata_abstract_post_admin');
-        $adminTwoDefinition
-            ->setPublic(true)
-            ->setClass(CustomAdmin::class)
-            ->setArguments([0 => 'extra_argument_2', 'index_0' => 'should_not_override'])
-            ->addTag('sonata.admin', ['group' => 'sonata_post_two_group', 'manager_type' => 'orm']);
-
-        $this->container->addDefinitions([
-            'sonata_post_one_admin' => $adminDefinition,
-            'sonata_post_two_admin' => $adminTwoDefinition,
-        ]);
-
-        $this->allowToResolveChildren();
-
-        $this->compile();
-
-        $pool = $this->container->findDefinition('sonata.admin.pool');
-        $adminServiceIds = $pool->getArgument(1);
-
-        static::assertIsArray($adminServiceIds);
-        static::assertContains('sonata_post_one_admin', $adminServiceIds);
-        static::assertContains('sonata_post_two_admin', $adminServiceIds);
-
-        self::assertContainerBuilderHasService('sonata_post_one_admin');
-        self::assertContainerBuilderHasService('sonata_post_two_admin');
-
-        $definition = $this->container->findDefinition('sonata_post_one_admin');
-        static::assertSame('sonata_post_one_admin', $definition->getArgument(0));
-        static::assertSame(PostEntity::class, $definition->getArgument(1));
-        static::assertSame('sonata.admin.controller.crud', $definition->getArgument(2));
-        static::assertSame('extra_argument_1', $definition->getArgument(3));
-
-        $definition = $this->container->findDefinition('sonata_post_two_admin');
-        static::assertSame('sonata_post_two_admin', $definition->getArgument(0));
-        static::assertSame(PostEntity::class, $definition->getArgument(1));
-        static::assertSame('sonata.admin.controller.crud', $definition->getArgument(2));
-        static::assertSame('extra_argument_2', $definition->getArgument(3));
     }
 
     public function testDefaultControllerCanBeChanged(): void
@@ -685,11 +616,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $blockExtension = new SonataBlockExtension();
         $blockExtension->load([], $this->container);
-    }
-
-    private function allowToResolveChildren(): void
-    {
-        $this->container->addCompilerPass(new ResolveChildDefinitionsPass());
     }
 
     private function allowToResolveParameters(): void

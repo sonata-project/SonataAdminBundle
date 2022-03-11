@@ -30,12 +30,10 @@
             {% endif %}
             <li role="presentation" class="dropdown-header">
                 {{ group.icon|parse_icon }}
-                {# NEXT_MAJOR: Remove the default null #}
-                {% if group.translation_domain|default(null) is same as(false) %}
+                {% if group.translation_domain is same as(false) %}
                     {{ group.label }}
                 {% else %}
-                    {# NEXT_MAJOR: Remove the fallback on group.label_catalogue #}
-                    {{ group.label|trans({}, group.translation_domain|default(group.label_catalogue)) }}
+                    {{ group.label|trans({}, group.translation_domain) }}
                 {% endif %}
             </li>
 

@@ -416,7 +416,6 @@ final class GroupMenuProviderTest extends TestCase
                             'roles' => [],
                         ],
                         [
-                            'admin' => '',
                             'label' => 'route_label',
                             'route' => 'FooRoute',
                             'route_params' => ['foo' => 'bar'],
@@ -424,7 +423,6 @@ final class GroupMenuProviderTest extends TestCase
                             'roles' => [],
                         ],
                         [
-                            'admin' => '',
                             'label' => 'relative_route',
                             'route' => 'FooRelativeRoute',
                             'route_params' => ['baz' => 'qux'],
@@ -454,7 +452,6 @@ final class GroupMenuProviderTest extends TestCase
                     'translation_domain' => 'SonataAdminBundle',
                     'items' => [
                         [
-                            'admin' => '',
                             'label' => 'route_label1',
                             'route' => 'FooRoute1',
                             'route_params' => ['foo' => 'bar'],
@@ -462,7 +459,6 @@ final class GroupMenuProviderTest extends TestCase
                             'roles' => ['foo', 'bar'],
                         ],
                         [
-                            'admin' => '',
                             'label' => 'route_label2',
                             'route' => 'FooRoute2',
                             'route_params' => ['foo' => 'bar'],
@@ -470,7 +466,6 @@ final class GroupMenuProviderTest extends TestCase
                             'roles' => ['foo'],
                         ],
                         [
-                            'admin' => '',
                             'label' => 'route_label3',
                             'route' => 'FooRoute3',
                             'route_params' => ['foo' => 'bar'],
@@ -478,7 +473,6 @@ final class GroupMenuProviderTest extends TestCase
                             'roles' => ['bar'],
                         ],
                         [
-                            'admin' => '',
                             'label' => 'route_label4',
                             'route' => 'FooRoute4',
                             'route_params' => ['foo' => 'bar'],
@@ -498,7 +492,6 @@ final class GroupMenuProviderTest extends TestCase
                     'translation_domain' => 'SonataAdminBundle',
                     'items' => [
                         [
-                            'admin' => '',
                             'label' => 'route_label1',
                             'route' => 'FooRoute1',
                             'route_params' => ['foo' => 'bar'],
@@ -506,7 +499,6 @@ final class GroupMenuProviderTest extends TestCase
                             'roles' => ['foo', 'bar'],
                         ],
                         [
-                            'admin' => '',
                             'label' => 'route_label2',
                             'route' => 'FooRoute2',
                             'route_params' => ['foo' => 'bar'],
@@ -514,7 +506,6 @@ final class GroupMenuProviderTest extends TestCase
                             'roles' => ['foo'],
                         ],
                         [
-                            'admin' => '',
                             'label' => 'route_label3',
                             'route' => 'FooRoute3',
                             'route_params' => ['foo' => 'bar'],
@@ -522,7 +513,6 @@ final class GroupMenuProviderTest extends TestCase
                             'roles' => ['bar'],
                         ],
                         [
-                            'admin' => '',
                             'label' => 'route_label4',
                             'route' => 'FooRoute4',
                             'route_params' => ['foo' => 'bar'],
@@ -551,7 +541,6 @@ final class GroupMenuProviderTest extends TestCase
                     'translation_domain' => 'SonataAdminBundle',
                     'items' => [
                         [
-                            'admin' => '',
                             'label' => 'route_label1',
                             'roles' => ['bar'],
                             'route' => 'FooRoute1',
@@ -570,7 +559,6 @@ final class GroupMenuProviderTest extends TestCase
                     'translation_domain' => 'SonataAdminBundle',
                     'items' => [
                         [
-                            'admin' => '',
                             'label' => 'route_label2',
                             'roles' => ['bar'],
                             'route' => 'FooRoute2',
@@ -589,7 +577,6 @@ final class GroupMenuProviderTest extends TestCase
                     'translation_domain' => 'SonataAdminBundle',
                     'items' => [
                         [
-                            'admin' => '',
                             'label' => 'route_label3',
                             'roles' => ['bar'],
                             'route' => 'FooRoute3',

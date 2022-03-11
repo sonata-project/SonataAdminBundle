@@ -39,35 +39,18 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 {
     /**
-     * NEXT_MAJOR: Change visibility to private.
-     *
      * The code related to the admin.
      *
      * @var string|null
      */
-    protected $code;
+    private $code;
 
     /**
-     * NEXT_MAJOR: Remove this property.
-     *
-     * @deprecated since sonata-project/admin-bundle version 4.8 use $modelClass instead.
-     *
-     * The class name managed by the admin class.
-     *
-     * @var string|null
-     *
-     * @phpstan-var class-string<T>|null
-     */
-    protected $class;
-
-    /**
-     * NEXT_MAJOR: Change visibility to private.
-     *
      * The base name controller used to generate the routing information.
      *
      * @var string|null
      */
-    protected $baseControllerName;
+    private $baseControllerName;
 
     /**
      * The class name managed by the admin class.
@@ -205,34 +188,6 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
      * @var MutableTemplateRegistryInterface|null
      */
     private $templateRegistry;
-
-    /**
-     * NEXT_MAJOR: Remove the __construct method.
-     *
-     * @phpstan-param class-string<T>|null $class
-     */
-    public function __construct(?string $code = null, ?string $class = null, ?string $baseControllerName = null)
-    {
-        if (\func_num_args() > 0) {
-            @trigger_error(
-                'Setting the code, the model class and the base controller name with the constructor is deprecated'
-                .' since sonata-project/admin-bundle version 4.8 and will not be possible in 5.0 version.'
-                .' Use the `code`, `model_class` and `controller` attribute of the `sonata.admin` tag or'
-                .' the method "setCode()", "setModelClass()" and "setBaseControllerName()" instead.',
-                \E_USER_DEPRECATED
-            );
-        }
-
-        if (null !== $code) {
-            $this->code = $code;
-        }
-        $this->class = $class;
-        $this->modelClass = $class;
-
-        if (null !== $baseControllerName) {
-            $this->baseControllerName = $baseControllerName;
-        }
-    }
 
     abstract public function initialize(): void;
 

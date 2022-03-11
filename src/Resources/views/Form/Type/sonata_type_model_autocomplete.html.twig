@@ -39,19 +39,17 @@ file that was distributed with this source code.
                           }}"
                     onclick="return start_field_dialog_form_add_{{ id }}(this);"
                     class="btn btn-success btn-sm sonata-ba-action"
-                    {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
                     title="{{
-                        btn_translation_domain|default(null) is same as(false)
+                        btn_translation_domain is same as(false)
                         ? btn_add
-                        : btn_add|trans({}, btn_translation_domain|default(btn_catalogue))
+                        : btn_add|trans({}, btn_translation_domain)
                     }}"
                     >
                     <i class="fas fa-plus-circle"></i>
-                    {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
                     {{
-                        btn_translation_domain|default(null) is same as(false)
+                        btn_translation_domain is same as(false)
                         ? btn_add
-                        : btn_add|trans({}, btn_translation_domain|default(btn_catalogue))
+                        : btn_add|trans({}, btn_translation_domain)
                     }}
                 </a>
                 {% include '@SonataAdmin/CRUD/Association/edit_modal.html.twig' %}
@@ -84,7 +82,7 @@ file that was distributed with this source code.
                 ajax: {
                     url:  '{{ url ?: path(route.name, route.parameters|default([])) }}',
                     dataType: 'json',
-                    delay: {{ delay == 100 and quiet_millis != 100 ? quiet_millis : delay }}, // NEXT_MAJOR: Replace by `{{ delay }}` instead.
+                    delay: {{ delay }},
                     cache: {{ cache ? 'true' : 'false' }},
                     processResults: function (data, params) {
                         return {

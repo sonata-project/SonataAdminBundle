@@ -25,11 +25,6 @@ use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundE
 
 final class AclSecurityHandlerTest extends TestCase
 {
-    /**
-     * NEXT_MAJOR: Remove the group legacy.
-     *
-     * @group legacy
-     */
     public function testAcl(): void
     {
         $admin = $this->createMock(AdminInterface::class);
@@ -46,8 +41,6 @@ final class AclSecurityHandlerTest extends TestCase
 
         $handler = new AclSecurityHandler($this->createMock(TokenStorageInterface::class), $authorizationChecker, $aclProvider, MaskBuilder::class, 'ROLE_SUPER_ADMIN');
 
-        // NEXT_MAJOR: Remove the next line.
-        static::assertTrue($handler->isGranted($admin, ['TOTO']));
         static::assertTrue($handler->isGranted($admin, 'TOTO'));
 
         $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
@@ -57,8 +50,6 @@ final class AclSecurityHandlerTest extends TestCase
 
         $handler = new AclSecurityHandler($this->createMock(TokenStorageInterface::class), $authorizationChecker, $aclProvider, MaskBuilder::class, 'ROLE_SUPER_ADMIN');
 
-        // NEXT_MAJOR: Remove the next line.
-        static::assertFalse($handler->isGranted($admin, ['TOTO']));
         static::assertFalse($handler->isGranted($admin, 'TOTO'));
     }
 

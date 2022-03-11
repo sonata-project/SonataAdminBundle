@@ -22,7 +22,7 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
  *
  * @phpstan-template T of \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
  */
-interface DatagridBuilderInterface extends BuilderInterface
+interface DatagridBuilderInterface
 {
     /**
      * @phpstan-param DatagridInterface<T> $datagrid

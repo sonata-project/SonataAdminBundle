@@ -51,13 +51,9 @@ interface TaggedAdminInterface extends MutableTemplateRegistryAwareInterface
     public const DEFAULT_LIST_MODES = [
         'list' => [
             'icon' => '<i class="fas fa-list fa-fw" aria-hidden="true"></i>',
-            // NEXT_MAJOR: Remove the class part.
-            'class' => 'fas fa-list fa-fw',
         ],
         'mosaic' => [
             'icon' => '<i class="fas fa-th-large fa-fw" aria-hidden="true"></i>',
-            // NEXT_MAJOR: Remove the class part.
-            'class' => 'fas fa-th-large fa-fw',
         ],
     ];
 

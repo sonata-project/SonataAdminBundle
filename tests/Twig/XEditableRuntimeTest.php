@@ -35,7 +35,6 @@ final class XEditableRuntimeTest extends TestCase
             ->method('getOption')
             ->withConsecutive(
                 ['choices', []],
-                ['catalogue'],
                 ['choice_translation_domain'],
                 ['required'],
                 ['multiple']

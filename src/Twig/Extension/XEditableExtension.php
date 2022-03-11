@@ -13,43 +13,12 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Twig\Extension;
 
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Twig\XEditableRuntime;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 final class XEditableExtension extends AbstractExtension
 {
-    // NEXT_MAJOR: Remove this const.
-    public const FIELD_DESCRIPTION_MAPPING = [
-        FieldDescriptionInterface::TYPE_CHOICE => 'select',
-        FieldDescriptionInterface::TYPE_BOOLEAN => 'select',
-        FieldDescriptionInterface::TYPE_TEXTAREA => 'textarea',
-        FieldDescriptionInterface::TYPE_HTML => 'textarea',
-        FieldDescriptionInterface::TYPE_EMAIL => 'email',
-        FieldDescriptionInterface::TYPE_STRING => 'text',
-        FieldDescriptionInterface::TYPE_INTEGER => 'number',
-        FieldDescriptionInterface::TYPE_FLOAT => 'number',
-        FieldDescriptionInterface::TYPE_CURRENCY => 'number',
-        FieldDescriptionInterface::TYPE_PERCENT => 'number',
-        FieldDescriptionInterface::TYPE_URL => 'url',
-    ];
-
-    /**
-     * @var XEditableRuntime
-     */
-    private $xEditableRuntime;
-
-    /**
-     * NEXT_MAJOR: Remove this constructor.
-     *
-     * @internal This class should only be used through Twig
-     */
-    public function __construct(XEditableRuntime $xEditableRuntime)
-    {
-        $this->xEditableRuntime = $xEditableRuntime;
-    }
-
     /**
      * @return TwigFilter[]
      */
@@ -65,51 +34,5 @@ final class XEditableExtension extends AbstractExtension
                 [XEditableRuntime::class, 'getXEditableChoices']
             ),
         ];
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle version 4.7 use XEditableRuntime::getXEditableType() instead
-     *
-     * @return string|bool
-     */
-    public function getXEditableType(?string $type)
-    {
-        @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
-            .'  Use "%s::%s()" instead.',
-            __METHOD__,
-            XEditableRuntime::class,
-            __FUNCTION__
-        ), \E_USER_DEPRECATED);
-
-        return $this->xEditableRuntime->getXEditableType($type);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle version 4.7 use XEditableRuntime::getXEditableChoices() instead
-     *
-     * Return xEditable choices based on the field description choices options & catalogue options.
-     * With the following choice options:
-     *     ['Status1' => 'Alias1', 'Status2' => 'Alias2']
-     * The method will return:
-     *     [['value' => 'Status1', 'text' => 'Alias1'], ['value' => 'Status2', 'text' => 'Alias2']].
-     *
-     * @phpstan-return array<array{value: string, text: string}>
-     */
-    public function getXEditableChoices(FieldDescriptionInterface $fieldDescription): array
-    {
-        @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
-            .'  Use "%s::%s()" instead.',
-            __METHOD__,
-            XEditableRuntime::class,
-            __FUNCTION__
-        ), \E_USER_DEPRECATED);
-
-        return $this->xEditableRuntime->getXEditableChoices($fieldDescription);
     }
 }

@@ -33,8 +33,7 @@ final class ConfigurationTest extends TestCase
         static::assertTrue($config['options']['use_icheck']);
         static::assertSame('bundles/sonataadmin/images/default_mosaic_image.png', $config['options']['mosaic_background']);
         static::assertSame('default', $config['options']['default_group']);
-        static::assertSame('SonataAdminBundle', $config['options']['default_label_catalogue']);
-        static::assertNull($config['options']['default_translation_domain']);
+        static::assertSame('messages', $config['options']['default_translation_domain']);
         static::assertSame('fas fa-folder', $config['options']['default_icon']);
     }
 

@@ -34,11 +34,9 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
  *     route_absolute: bool,
  *     route_params: array<string, string>
  * }
- * NEXT_MAJOR: Remove the label_catalogue key.
  * @phpstan-type Group = array{
  *     label: string,
  *     translation_domain: string,
- *     label_catalogue?: string,
  *     icon: string,
  *     items: list<Item>,
  *     keep_open: bool,
@@ -110,29 +108,13 @@ final class Pool
 
         foreach ($this->adminGroups as $name => $adminGroup) {
             $items = array_values(array_filter(array_map(function (array $item): ?AdminInterface {
-                // NEXT_MAJOR: Remove the '' check
-                if (!isset($item['admin']) || '' === $item['admin']) {
+                if (!isset($item['admin'])) {
                     return null;
                 }
 
                 $admin = $this->getInstance($item['admin']);
-
-                // NEXT_MAJOR: Keep the if part.
-                // @phpstan-ignore-next-line
-                if (method_exists($admin, 'showInDashboard')) {
-                    if (!$admin->showInDashboard()) {
-                        return null;
-                    }
-                } else {
-                    @trigger_error(sprintf(
-                        'Not implementing "%s::showInDashboard()" is deprecated since sonata-project/admin-bundle 4.7'
-                        .' and will fail in 5.0.',
-                        AdminInterface::class
-                    ), \E_USER_DEPRECATED);
-
-                    if (!$admin->showIn(AbstractAdmin::CONTEXT_DASHBOARD)) {
-                        return null;
-                    }
+                if (!$admin->showInDashboard()) {
+                    return null;
                 }
 
                 return $admin;

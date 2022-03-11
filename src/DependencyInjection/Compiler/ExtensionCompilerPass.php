@@ -139,11 +139,8 @@ final class ExtensionCompilerPass implements CompilerPassInterface
                     continue;
                 }
 
-                // NEXT_MAJOR: Remove this line.
-                $defaultModelClass = $admin->getArguments()[1] ?? null;
                 foreach ($tags as $attributes) {
-                    // NEXT_MAJOR: Remove the fallback to $defaultModelClass and use null instead.
-                    $modelClass = $attributes['model_class'] ?? $defaultModelClass;
+                    $modelClass = $attributes['model_class'];
                     if (null === $modelClass) {
                         throw new InvalidArgumentException(sprintf('Missing tag attribute "model_class" on service "%s".', $id));
                     }

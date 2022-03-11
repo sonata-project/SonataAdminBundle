@@ -19,43 +19,10 @@ use Twig\TwigFilter;
 
 final class IconExtension extends AbstractExtension
 {
-    /**
-     * @var IconRuntime
-     */
-    private $iconRuntime;
-
-    /**
-     * NEXT_MAJOR: Remove this constructor.
-     *
-     * @internal This class should only be used through Twig
-     */
-    public function __construct(IconRuntime $iconRuntime)
-    {
-        $this->iconRuntime = $iconRuntime;
-    }
-
     public function getFilters(): array
     {
         return [
             new TwigFilter('parse_icon', [IconRuntime::class, 'parseIcon'], ['is_safe' => ['html']]),
         ];
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle version 4.7 use IconRuntime::parseIcon() instead
-     */
-    public function parseIcon(string $icon): string
-    {
-        @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
-            .'  Use "%s::%s()" instead.',
-            __METHOD__,
-            IconRuntime::class,
-            __FUNCTION__
-        ), \E_USER_DEPRECATED);
-
-        return $this->iconRuntime->parseIcon($icon);
     }
 }

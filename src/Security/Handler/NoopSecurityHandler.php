@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
  */
 final class NoopSecurityHandler implements SecurityHandlerInterface
 {
-    public function isGranted(AdminInterface $admin, $attributes, ?object $object = null): bool
+    public function isGranted(AdminInterface $admin, string $attribute, ?object $object = null): bool
     {
         return true;
     }

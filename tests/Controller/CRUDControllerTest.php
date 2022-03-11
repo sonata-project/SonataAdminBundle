@@ -590,7 +590,7 @@ final class CRUDControllerTest extends TestCase
             ->with(static::equalTo('batchDelete'))
             ->will(static::throwException(new AccessDeniedException()));
 
-        $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class));
+        $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class), new Request());
     }
 
     public function testBatchActionDelete(): void
@@ -611,7 +611,7 @@ final class CRUDControllerTest extends TestCase
 
         $this->expectTranslate('flash_batch_delete_success', [], 'SonataAdminBundle');
 
-        $result = $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class));
+        $result = $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class), new Request());
 
         static::assertInstanceOf(RedirectResponse::class, $result);
         static::assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
@@ -633,7 +633,7 @@ final class CRUDControllerTest extends TestCase
 
         $this->expectTranslate('flash_batch_delete_error', [], 'SonataAdminBundle');
 
-        $result = $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class));
+        $result = $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class), new Request());
 
         static::assertInstanceOf(RedirectResponse::class, $result);
         static::assertSame(['flash_batch_delete_error'], $this->session->getFlashBag()->get('sonata_flash_error'));
@@ -657,7 +657,7 @@ final class CRUDControllerTest extends TestCase
 
         $this->parameterBag->set('kernel.debug', true);
 
-        $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class));
+        $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class), new Request());
     }
 
     public function testShowActionNotFoundException(): void

@@ -99,24 +99,6 @@ final class AdminTest extends TestCase
         $filesystem->remove($this->cacheTempFolder);
     }
 
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     *
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::__construct
-     */
-    public function testConstructor(): void
-    {
-        $class = Post::class;
-        $baseControllerName = 'Sonata\NewsBundle\Controller\PostAdminController';
-
-        $admin = new PostAdmin('sonata.post.admin.post', $class, $baseControllerName);
-        static::assertInstanceOf(AbstractAdmin::class, $admin);
-        static::assertSame($class, $admin->getClass());
-        static::assertSame($baseControllerName, $admin->getBaseControllerName());
-    }
-
     public function testGetClass(): void
     {
         $admin = new PostAdmin();
@@ -1252,29 +1234,6 @@ final class AdminTest extends TestCase
         $admin = new PostAdmin();
 
         static::assertFalse($admin->supportsPreviewMode());
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testShowIn(): void
-    {
-        $admin = new PostAdmin();
-
-        $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
-        $securityHandler
-            ->method('isGranted')
-            ->willReturnCallback(static function (AdminInterface $adminIn, $attributes, ?object $object = null) use ($admin): bool {
-                return $admin === $adminIn && 'LIST' === $attributes;
-            });
-
-        $admin->setSecurityHandler($securityHandler);
-
-        static::assertTrue($admin->showIn(AbstractAdmin::CONTEXT_DASHBOARD));
-        static::assertTrue($admin->showIn(AbstractAdmin::CONTEXT_MENU));
-        static::assertTrue($admin->showIn('foo'));
     }
 
     public function testShowInDashboard(): void

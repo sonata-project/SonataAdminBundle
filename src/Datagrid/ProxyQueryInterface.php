@@ -21,11 +21,9 @@ namespace Sonata\AdminBundle\Datagrid;
 interface ProxyQueryInterface
 {
     /**
-     * NEXT_MAJOR: Add typehint.
-     *
      * @return iterable<object>
      */
-    public function execute();
+    public function execute(): iterable;
 
     /**
      * @param array<string, array<string, mixed>> $parentAssociationMappings

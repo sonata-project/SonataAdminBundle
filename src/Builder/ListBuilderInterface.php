@@ -19,7 +19,7 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-interface ListBuilderInterface extends BuilderInterface
+interface ListBuilderInterface
 {
     /**
      * @param array<string, mixed> $options

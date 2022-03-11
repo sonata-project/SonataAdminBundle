@@ -64,9 +64,8 @@ final class GroupRuntimeTest extends TestCase
         ]);
         $groupRuntime = new GroupRuntime($pool);
 
-        // NEXT_MAJOR: Use createMock instead.
-        $adminNonCreatable = $this->getMockBuilder(AdminInterface::class)->addMethods(['showInDashboard'])->getMockForAbstractClass();
-        $adminCreatable = $this->getMockBuilder(AdminInterface::class)->addMethods(['showInDashboard'])->getMockForAbstractClass();
+        $adminNonCreatable = $this->createMock(AdminInterface::class);
+        $adminCreatable = $this->createMock(AdminInterface::class);
 
         $container->set('sonata_admin_non_creatable', $adminNonCreatable);
         $container->set('sonata_admin_creatable', $adminCreatable);

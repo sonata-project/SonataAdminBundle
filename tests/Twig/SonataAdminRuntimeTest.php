@@ -17,7 +17,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Tests\App\Model\Foo;
 use Sonata\AdminBundle\Tests\Twig\Extension\FakeTemplateRegistryExtension;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Sonata\AdminBundle\Twig\SonataAdminRuntime;
@@ -31,11 +30,6 @@ use Twig\Loader\FilesystemLoader;
 
 final class SonataAdminRuntimeTest extends TestCase
 {
-    /**
-     * @var SonataAdminRuntime
-     */
-    private $sonataAdminRuntime;
-
     /**
      * @var Environment
      */
@@ -57,11 +51,6 @@ final class SonataAdminRuntimeTest extends TestCase
     private $object;
 
     /**
-     * @var Pool
-     */
-    private $pool;
-
-    /**
      * @var Container
      */
     private $container;
@@ -71,10 +60,6 @@ final class SonataAdminRuntimeTest extends TestCase
         date_default_timezone_set('Europe/London');
 
         $this->container = new Container();
-
-        $this->pool = new Pool($this->container, ['sonata_admin_foo_service'], [], [Foo::class => ['sonata_admin_foo_service']]);
-
-        $this->sonataAdminRuntime = new SonataAdminRuntime($this->pool);
 
         $request = $this->createMock(Request::class);
         $request->method('get')->with('_sonata_admin')->willReturn('sonata_admin_foo_service');
@@ -92,7 +77,7 @@ final class SonataAdminRuntimeTest extends TestCase
             'autoescape' => 'html',
             'optimizations' => 0,
         ]);
-        $this->environment->addExtension(new SonataAdminExtension($this->sonataAdminRuntime));
+        $this->environment->addExtension(new SonataAdminExtension());
         $this->environment->addExtension(new FakeTemplateRegistryExtension());
 
         // routing extension

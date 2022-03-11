@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Datagrid;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Sonata\AdminBundle\Util\TraversableToCollection;
+use Sonata\AdminBundle\Util\IterableToCollection;
 
 /**
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
@@ -75,7 +75,7 @@ final class SimplePager extends Pager
             throw new \LogicException('Uninitialized query.');
         }
 
-        $results = TraversableToCollection::transform($query->execute());
+        $results = IterableToCollection::transform($query->execute());
         $this->thresholdCount = $results->count();
 
         if ($this->thresholdCount > $this->getMaxPerPage()) {

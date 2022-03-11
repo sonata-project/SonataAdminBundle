@@ -116,8 +116,7 @@ final class GroupMenuProvider implements MenuProviderInterface
      */
     private function canGenerateMenuItem(array $item, array $group): bool
     {
-        // NEXT_MAJOR: Remove the '' check
-        if (isset($item['admin']) && '' !== $item['admin']) {
+        if (isset($item['admin'])) {
             $admin = $this->pool->getInstance($item['admin']);
 
             // skip menu item if no `list` url is available or user doesn't have the LIST access rights
@@ -158,8 +157,7 @@ final class GroupMenuProvider implements MenuProviderInterface
      */
     private function generateMenuItem(array $item, array $group): ItemInterface
     {
-        // NEXT_MAJOR: Remove the '' check
-        if (isset($item['admin']) && '' !== $item['admin']) {
+        if (isset($item['admin'])) {
             $admin = $this->pool->getInstance($item['admin']);
 
             $options = $admin->generateMenuUrl(
@@ -168,7 +166,6 @@ final class GroupMenuProvider implements MenuProviderInterface
                 $item['route_absolute'] ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH
             );
             $options['extras'] = [
-                'label_catalogue' => $admin->getTranslationDomain(), // NEXT_MAJOR: Remove this line.
                 'translation_domain' => $admin->getTranslationDomain(),
                 'admin' => $admin,
             ];
@@ -185,7 +182,6 @@ final class GroupMenuProvider implements MenuProviderInterface
             'routeAbsolute' => $item['route_absolute'],
             'extras' => [
                 'translation_domain' => $group['translation_domain'],
-                'label_catalogue' => $group['label_catalogue'] ?? '', // NEXT_MAJOR: Remove this line.
             ],
         ]);
     }

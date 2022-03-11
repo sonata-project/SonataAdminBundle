@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\Extension\Field\Type;
 
-use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -183,40 +182,6 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
             // be compatible with mopa if not installed, avoid generating an exception for invalid option
             'label_render' => true,
         ]);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle version 4.3 and will be removed in 5.0.
-     *
-     * return the value related to FieldDescription, if the associated object does no
-     * exists => a temporary one is created.
-     *
-     * @return mixed
-     */
-    public function getValueFromFieldDescription(?object $object, FieldDescriptionInterface $fieldDescription)
-    {
-        @trigger_error(sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.3 and will be removed in 5.0.',
-            __METHOD__
-        ), \E_USER_DEPRECATED);
-
-        $value = null;
-
-        if (null === $object) {
-            return null;
-        }
-
-        try {
-            $value = $fieldDescription->getValue($object);
-        } catch (NoValueException $e) {
-            if ($fieldDescription->hasAssociationAdmin()) {
-                $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
-            }
-        }
-
-        return $value;
     }
 
     private function getClass(FormBuilderInterface $formBuilder): string

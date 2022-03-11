@@ -115,8 +115,6 @@ final class SonataAdminExtension extends Extension
             $config['options']['mosaic_background']
         );
         $container->setParameter('sonata.admin.configuration.default_group', $config['options']['default_group']);
-        // NEXT_MAJOR: Remove the following line.
-        $container->setParameter('sonata.admin.configuration.default_label_catalogue', $config['options']['default_label_catalogue']);
         $container->setParameter('sonata.admin.configuration.default_translation_domain', $config['options']['default_translation_domain']);
         $container->setParameter('sonata.admin.configuration.default_icon', $config['options']['default_icon']);
         $container->setParameter('sonata.admin.configuration.breadcrumbs', $config['breadcrumbs']);

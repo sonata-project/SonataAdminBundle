@@ -19,12 +19,10 @@ file that was distributed with this source code.
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">
-                        {# NEXT_MAJOR: Remove the default null #}
-                        {% if group.translation_domain|default(null) is same as(false) %}
+                        {% if group.translation_domain is same as(false) %}
                             {{ group.label }}
                         {% else %}
-                            {# NEXT_MAJOR: Remove the fallback on group.label_catalogue #}
-                            {{ group.label|trans({}, group.translation_domain|default(group.label_catalogue)) }}
+                            {{ group.label|trans({}, group.translation_domain) }}
                         {% endif %}
                     </h3>
                 </div>

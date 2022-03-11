@@ -22,8 +22,7 @@
 
 {% block linkElement %}
     {% apply spaceless %}
-        {# NEXT_MAJOR: Remove the label_catalogue fallback #}
-        {%- set translation_domain = item.extra('translation_domain', item.extra('label_catalogue', 'messages')) -%}
+        {%- set translation_domain = item.extra('translation_domain', 'messages') -%}
         {%- if item.extra('on_top') is defined and not item.extra('on_top') -%}
             {%- set icon = item.extra('icon')|default(item.level > 1 ? 'fa fa-angle-double-right' : '')|parse_icon -%}
         {%- else -%}
@@ -37,8 +36,7 @@
 {% block spanElement %}
     {% apply spaceless %}
         <a href="#">
-            {# NEXT_MAJOR: Remove the label_catalogue fallback #}
-            {%- set translation_domain = item.extra('translation_domain', item.extra('label_catalogue', 'messages')) -%}
+            {%- set translation_domain = item.extra('translation_domain', 'messages') -%}
             {%- set icon = item.extra('icon')|default('')|parse_icon -%}
             {{ icon|raw }}
             {{ parent() }}
@@ -59,8 +57,7 @@
         {%- if options.allow_safe_labels and item.extra('safe_label', false) -%}
             {{ item_label|raw }}
         {%- else -%}
-            {# NEXT_MAJOR: Remove the label_catalogue fallback #}
-            {%- set translation_domain = item.extra('translation_domain', item.extra('label_catalogue', 'messages')) -%}
+            {%- set translation_domain = item.extra('translation_domain', 'messages') -%}
             {{ item_label|trans(item.extra('label_translation_parameters', {}), translation_domain) }}
         {%- endif -%}
     {% endapply %}

@@ -18,14 +18,10 @@ use Doctrine\Common\Collections\Collection;
 
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
- *
- * NEXT_MAJOR: Rename IterableToCollection.
  */
-final class TraversableToCollection
+final class IterableToCollection
 {
     /**
-     * NEXT_MAJOR: Add typehint.
-     *
      * @param iterable<mixed, mixed> $value
      *
      * @throws \TypeError
@@ -36,7 +32,7 @@ final class TraversableToCollection
      * @phpstan-param iterable<mixed, T> $value
      * @phpstan-return Collection<array-key, T>
      */
-    public static function transform($value): Collection
+    public static function transform(iterable $value): Collection
     {
         if ($value instanceof Collection) {
             return $value;
@@ -46,14 +42,6 @@ final class TraversableToCollection
             return new ArrayCollection(iterator_to_array($value));
         }
 
-        if (\is_array($value)) {
-            return new ArrayCollection($value);
-        }
-
-        throw new \TypeError(sprintf(
-            'Argument 1 passed to "%s()" must be an iterable, %s given.',
-            __METHOD__,
-            \is_object($value) ? 'instance of "'.\get_class($value).'"' : '"'.\gettype($value).'"'
-        ));
+        return new ArrayCollection($value);
     }
 }
