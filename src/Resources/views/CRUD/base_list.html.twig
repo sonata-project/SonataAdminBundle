@@ -146,7 +146,7 @@ file that was distributed with this source code.
                     <div class="box-footer p-4">
                         <div class="d-flex flex-wrap">
                             {% if not app.request.isXmlHttpRequest %}
-                                <div>
+                                <div class="mr-auto">
                                     {% if admin.hasRoute('batch') and batchactions|length > 0 %}
                                         {% block batch %}
                                             <script>
@@ -216,10 +216,10 @@ file that was distributed with this source code.
                                 </div>
 
                                 {% if admin.hasRoute('export') and admin.hasAccess('export') and export_formats|length %}
-                                    <div class="p-2 align-self-center">
+                                    <div class="p-2 align-self-center d-none d-md-block">
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fas fa-share-square" aria-hidden="true"></i>
+                                                <i class="fa-solid fa-download"></i>
                                                 {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
                                                 <span class="caret"></span>
                                             </button>
@@ -237,27 +237,26 @@ file that was distributed with this source code.
                                     </div>
                                 {% endif %}
 
-                                <div class="ml-auto d-flex">
-                                    {% block pager_results %}
-                                        <div class="d-none d-md-block">
-                                            <div class="d-flex">
-                                                {% include get_admin_template('pager_results', admin.code) %}
-                                            </div>
-                                        </div>
-                                    {% endblock %}
 
-                                    {% block pager_links %}
-                                        <div class="p-2 align-self-center">
-                                            {% if admin.datagrid.pager.haveToPaginate() %}
-                                                {% include get_admin_template('pager_links', admin.code) %}
-                                            {% endif %}
-                                        </div>
-                                    {% endblock %}
+                                <div class="p-2 align-self-center">
+                                    <div class="input-group">
+                                        {% block pager_results %}
+                                            {% include get_admin_template('pager_results', admin.code) %}
+                                        {% endblock %}
+                                    </div>
                                 </div>
-
                             {% endif %}
                         </div>
 
+                        {% block pager_links %}
+                            <div class="d-flex justify-content-center border-top p-3">
+                                    <div>
+                                        {% if admin.datagrid.pager.haveToPaginate() %}
+                                            {% include get_admin_template('pager_links', admin.code) %}
+                                        {% endif %}
+                                    </div>
+                            </div>
+                        {% endblock %}
                     </div>
                 {% endif %}
             {% endblock %}
