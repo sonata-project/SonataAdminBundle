@@ -118,7 +118,7 @@ file that was distributed with this source code.
                     </noscript>
                 {% endblock %}
                 {% block sonata_nav %}
-                    <di class="d-flex flex-row">
+                    <div class="d-flex flex-row">
                         <div>
                             <ul class="navbar-nav">
                                 <li class="nav-item">
@@ -144,7 +144,7 @@ file that was distributed with this source code.
                                 {% endblock sonata_breadcrumb %}
                             </div>
                         </div>
-                    </di>
+                    </div>
 
                     {% block sonata_top_nav_menu %}
                         {% if app.user and is_granted(sonata_config.getOption('role_admin')) %}

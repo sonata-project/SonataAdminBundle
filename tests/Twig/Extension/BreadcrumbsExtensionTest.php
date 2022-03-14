@@ -169,13 +169,13 @@ final class BreadcrumbsExtensionTest extends TestCase
             ->willReturn([$item, $item2, $item3]);
 
         $expected =
-            '<li><span>Label for item 1</span></li>'
-            .'<li>'
+            '<li class="breadcrumb-item"><span>Label for item 1</span></li>'
+            .'<li class="breadcrumb-item">'
                 .'<a href="https://sonata-project.org"> '
                     .'[trans domain=custom_translation_domain]Label for item 2 with custom_parameter[/trans] '
                 .'</a>'
             .'</li>'
-            .'<li class="active"><span>Label for item 3</span></li>';
+            .'<li class="breadcrumb-item active"><span>Label for item 3</span></li>';
 
         static::assertSame(
             $expected,
