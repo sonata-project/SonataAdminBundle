@@ -44,21 +44,15 @@ namespace Sonata\AdminBundle;
  */
 final class SonataConfiguration
 {
-    /**
-     * @var string
-     */
-    private $title;
+    private string $title;
 
-    /**
-     * @var string
-     */
-    private $logo;
+    private string $logo;
 
     /**
      * @var array<string, mixed>
      * @phpstan-var SonataConfigurationOptions
      */
-    private $options;
+    private array $options;
 
     /**
      * @phpstan-param SonataConfigurationOptions $options

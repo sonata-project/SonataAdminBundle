@@ -19,10 +19,7 @@ use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
 
 final class AdminPermissionMapTest extends TestCase
 {
-    /**
-     * @var AdminPermissionMap
-     */
-    private $permissionMap;
+    private AdminPermissionMap $permissionMap;
 
     protected function setUp(): void
     {

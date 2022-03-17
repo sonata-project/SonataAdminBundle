@@ -29,10 +29,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 final class AdminEventExtension extends AbstractAdminExtension
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {

@@ -35,10 +35,7 @@ final class XEditableExtension extends AbstractExtension
         FieldDescriptionInterface::TYPE_URL => 'url',
     ];
 
-    /**
-     * @var XEditableRuntime
-     */
-    private $xEditableRuntime;
+    private XEditableRuntime $xEditableRuntime;
 
     /**
      * NEXT_MAJOR: Remove this constructor.

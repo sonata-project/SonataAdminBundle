@@ -22,10 +22,7 @@ use Sonata\AdminBundle\Tests\App\Model\FooRepository;
  */
 final class Pager implements PagerInterface
 {
-    /**
-     * @var FooRepository
-     */
-    private $repository;
+    private FooRepository $repository;
 
     public function __construct(FooRepository $repository)
     {

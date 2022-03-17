@@ -28,10 +28,7 @@ use Twig\Environment;
  */
 final class AdminPreviewBlockServiceTest extends BlockServiceTestCase
 {
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
     protected function setUp(): void
     {

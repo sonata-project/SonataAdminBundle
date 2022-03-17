@@ -45,15 +45,9 @@ use Twig\RuntimeLoader\FactoryRuntimeLoader;
 
 final class RenderElementRuntimeTest extends TestCase
 {
-    /**
-     * @var RenderElementRuntime
-     */
-    private $renderElementRuntime;
+    private RenderElementRuntime $renderElementRuntime;
 
-    /**
-     * @var Environment
-     */
-    private $environment;
+    private Environment $environment;
 
     /**
      * @var AdminInterface<object>&MockObject
@@ -65,15 +59,9 @@ final class RenderElementRuntimeTest extends TestCase
      */
     private $fieldDescription;
 
-    /**
-     * @var \stdClass
-     */
-    private $object;
+    private \stdClass $object;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TranslatorInterface $translator;
 
     /**
      * @var MutableTemplateRegistryInterface&MockObject
@@ -225,15 +213,11 @@ final class RenderElementRuntimeTest extends TestCase
 
         $this->fieldDescription
             ->method('getOption')
-            ->willReturnCallback(static function (string $name, $default = null) use ($options) {
-                return $options[$name] ?? $default;
-            });
+            ->willReturnCallback(static fn (string $name, $default = null) => $options[$name] ?? $default);
 
         $this->fieldDescription
             ->method('getTemplate')
-            ->willReturnCallback(static function () use ($type): ?string {
-                return TemplateRegistryInterface::LIST_TEMPLATES[$type] ?? null;
-            });
+            ->willReturnCallback(static fn (): ?string => TemplateRegistryInterface::LIST_TEMPLATES[$type] ?? null);
 
         static::assertSame(
             $this->removeExtraWhitespace($expected),
@@ -327,15 +311,11 @@ EOT
 
         $this->fieldDescription
             ->method('getOption')
-            ->willReturnCallback(static function (string $name, $default = null) use ($options) {
-                return $options[$name] ?? $default;
-            });
+            ->willReturnCallback(static fn (string $name, $default = null) => $options[$name] ?? $default);
 
         $this->fieldDescription
             ->method('getTemplate')
-            ->willReturnCallback(static function () use ($type): ?string {
-                return TemplateRegistryInterface::SHOW_TEMPLATES[$type] ?? null;
-            });
+            ->willReturnCallback(static fn (): ?string => TemplateRegistryInterface::SHOW_TEMPLATES[$type] ?? null);
 
         static::assertSame(
             $this->removeExtraWhitespace($expected),
@@ -371,9 +351,7 @@ EOT
 
         $this->fieldDescription
             ->method('getOption')
-            ->willReturnCallback(static function (string $name, $default = null) use ($options) {
-                return $options[$name] ?? $default;
-            });
+            ->willReturnCallback(static fn (string $name, $default = null) => $options[$name] ?? $default);
 
         $this->fieldDescription
             ->method('getTemplate')
@@ -491,9 +469,7 @@ EOT
             ->method('getOption')
             ->willReturnCallback(static function (string $value, $default = null) {
                 if ('associated_property' === $value) {
-                    return static function ($element): string {
-                        return sprintf('closure %s', $element->foo);
-                    };
+                    return static fn ($element): string => sprintf('closure %s', $element->foo);
                 }
 
                 return $default;
@@ -2081,9 +2057,7 @@ EOT
         $this->environment->addExtension(new StringExtension());
 
         $this->environment->addRuntimeLoader(new FactoryRuntimeLoader([
-            XEditableRuntime::class => function (): XEditableRuntime {
-                return new XEditableRuntime($this->translator);
-            },
+            XEditableRuntime::class => fn (): XEditableRuntime => new XEditableRuntime($this->translator),
         ]));
 
         $this->registerRoutingExtension();

@@ -30,30 +30,15 @@ use Twig\Environment;
  */
 final class AdminSearchBlockService extends AbstractBlockService
 {
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
-    /**
-     * @var SearchHandler
-     */
-    private $searchHandler;
+    private SearchHandler $searchHandler;
 
-    /**
-     * @var TemplateRegistryInterface
-     */
-    private $templateRegistry;
+    private TemplateRegistryInterface $templateRegistry;
 
-    /**
-     * @var string
-     */
-    private $emptyBoxesOption;
+    private string $emptyBoxesOption;
 
-    /**
-     * @var string
-     */
-    private $adminRoute;
+    private string $adminRoute;
 
     /**
      * @phpstan-param 'show'|'hide'|'fade' $emptyBoxesOption
@@ -100,14 +85,12 @@ final class AdminSearchBlockService extends AbstractBlockService
         );
 
         if (null === $pager) {
-            $response = $response ?? new Response();
+            $response ??= new Response();
 
             return $response->setContent('')->setStatusCode(204);
         }
 
-        $filters = array_filter($admin->getDatagrid()->getFilters(), static function (FilterInterface $filter): bool {
-            return $filter instanceof SearchableFilterInterface && $filter->isSearchEnabled();
-        });
+        $filters = array_filter($admin->getDatagrid()->getFilters(), static fn (FilterInterface $filter): bool => $filter instanceof SearchableFilterInterface && $filter->isSearchEnabled());
 
         return $this->renderPrivateResponse($this->templateRegistry->getTemplate('search_result_block'), [
             'block' => $blockContext->getBlock(),

@@ -77,11 +77,10 @@ class CRUDController extends AbstractController
     /**
      * The template registry of the related Admin class.
      *
-     * @var TemplateRegistryInterface
-     *
      * @psalm-suppress PropertyNotSetInConstructor
+     * @phpstan-ignore-next-line
      */
-    private $templateRegistry;
+    private TemplateRegistryInterface $templateRegistry;
 
     public static function getSubscribedServices(): array
     {
@@ -402,7 +401,12 @@ class CRUDController extends AbstractController
             throw new BadRequestParamHttpException('data', 'string', $encodedData);
         }
 
-        $data = json_decode($encodedData, true);
+        try {
+            $data = json_decode($encodedData, true, 512, \JSON_THROW_ON_ERROR);
+        } catch (\JsonException $exception) {
+            $data = null;
+        }
+
         if (\is_array($data)) {
             $action = $data['action'];
             $idx = (array) ($data['idx'] ?? []);
@@ -967,8 +971,8 @@ class CRUDController extends AbstractController
      */
     protected function addRenderExtraParams(array $parameters = []): array
     {
-        $parameters['admin'] = $parameters['admin'] ?? $this->admin;
-        $parameters['base_template'] = $parameters['base_template'] ?? $this->getBaseTemplate();
+        $parameters['admin'] ??= $this->admin;
+        $parameters['base_template'] ??= $this->getBaseTemplate();
 
         return $parameters;
     }
@@ -1032,7 +1036,7 @@ class CRUDController extends AbstractController
     /**
      * @throws \Exception
      */
-    protected function handleModelManagerException(\Exception $exception): void
+    protected function handleModelManagerException(\Throwable $exception): void
     {
         if ($exception instanceof ModelManagerThrowable) {
             $this->handleModelManagerThrowable($exception);
@@ -1331,7 +1335,7 @@ class CRUDController extends AbstractController
      */
     final protected function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
     {
-        $domain = $domain ?? $this->admin->getTranslationDomain();
+        $domain ??= $this->admin->getTranslationDomain();
         $translator = $this->container->get('translator');
         \assert($translator instanceof TranslatorInterface);
 

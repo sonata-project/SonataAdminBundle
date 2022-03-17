@@ -38,45 +38,27 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 final class AdminMakerTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $projectDirectory;
+    private string $projectDirectory;
 
     /**
      * @var array<string, ModelManagerInterface<object>>
      */
-    private $modelManagers = [];
+    private array $modelManagers = [];
 
-    /**
-     * @var InputInterface
-     */
-    private $input;
+    private ?InputInterface $input = null;
 
     /**
      * @var OutputInterface
      */
     private $output;
 
-    /**
-     * @var ConsoleStyle
-     */
-    private $io;
+    private ?ConsoleStyle $io = null;
 
-    /**
-     * @var Generator
-     */
-    private $generator;
+    private ?Generator $generator = null;
 
-    /**
-     * @var string
-     */
-    private $servicesFile;
+    private string $servicesFile;
 
-    /**
-     * @var Filesystem
-     */
-    private $filesystem;
+    private Filesystem $filesystem;
 
     protected function setUp(): void
     {
@@ -126,9 +108,7 @@ final class AdminMakerTest extends TestCase
         $autoloaderUtil = $this->createMock(AutoloaderUtil::class);
         $autoloaderUtil
             ->method('getPathForFutureClass')
-            ->willReturnCallback(function (string $className): string {
-                return sprintf('%s/%s.php', $this->projectDirectory, str_replace('\\', '/', $className));
-            });
+            ->willReturnCallback(fn (string $className): string => sprintf('%s/%s.php', $this->projectDirectory, str_replace('\\', '/', $className)));
 
         $fileManager = new FileManager(
             $this->filesystem,

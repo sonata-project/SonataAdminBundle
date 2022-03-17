@@ -24,7 +24,7 @@ abstract class AbstractDummyGroupedMapper extends BaseGroupedMapper
     /**
      * @var AdminInterface<object>
      */
-    private $admin;
+    private AdminInterface $admin;
 
     /**
      * @param AdminInterface<object> $admin

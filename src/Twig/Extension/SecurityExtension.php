@@ -19,10 +19,7 @@ use Twig\TwigFunction;
 
 final class SecurityExtension extends AbstractExtension
 {
-    /**
-     * @var SecurityRuntime
-     */
-    private $securityRuntime;
+    private SecurityRuntime $securityRuntime;
 
     /**
      * NEXT_MAJOR: Remove this constructor.

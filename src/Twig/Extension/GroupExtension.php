@@ -13,19 +13,18 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Twig\Extension;
 
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Twig\GroupRuntime;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**
- * @phpstan-import-type Item from \Sonata\AdminBundle\Admin\Pool
+ * @phpstan-import-type Item from Pool
  */
 final class GroupExtension extends AbstractExtension
 {
-    /**
-     * @var GroupRuntime
-     */
-    private $groupRuntime;
+    private GroupRuntime $groupRuntime;
 
     /**
      * NEXT_MAJOR: Remove this constructor.
@@ -52,15 +51,7 @@ final class GroupExtension extends AbstractExtension
      *
      * @deprecated since sonata-project/admin-bundle version 4.7 use GroupRuntime::getDashboardGroupsWithCreatableAdmins() instead
      *
-     * @phpstan-return array<array{
-     *  label: string,
-     *  translation_domain: string,
-     *  icon: string,
-     *  items: list<\Sonata\AdminBundle\Admin\AdminInterface<object>>,
-     *  keep_open: bool,
-     *  on_top: bool,
-     *  roles: list<string>
-     * }>
+     * @phpstan-return array<array{label: string, translation_domain: string, icon: string, items: list<AdminInterface<object>>, keep_open: bool, on_top: bool, roles: list<string>}>
      */
     public function getDashboardGroupsWithCreatableAdmins(): array
     {

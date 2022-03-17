@@ -40,10 +40,7 @@ final class AbstractFormContractorTest extends TestCase
      */
     private $formFactory;
 
-    /**
-     * @var FormContractorInterface
-     */
-    private $formContractor;
+    private FormContractorInterface $formContractor;
 
     /**
      * @var MockObject&FieldDescriptionInterface

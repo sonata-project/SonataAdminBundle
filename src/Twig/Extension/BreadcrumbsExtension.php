@@ -21,10 +21,7 @@ use Twig\TwigFunction;
 
 final class BreadcrumbsExtension extends AbstractExtension
 {
-    /**
-     * @var BreadcrumbsRuntime
-     */
-    private $breadcrumbsRuntime;
+    private BreadcrumbsRuntime $breadcrumbsRuntime;
 
     /**
      * NEXT_MAJOR: Remove this constructor.

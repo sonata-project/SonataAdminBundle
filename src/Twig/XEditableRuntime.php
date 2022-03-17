@@ -36,12 +36,9 @@ final class XEditableRuntime implements RuntimeExtensionInterface
     /**
      * @var string[]
      */
-    private $xEditableTypeMapping = [];
+    private array $xEditableTypeMapping = [];
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TranslatorInterface $translator;
 
     /**
      * @param string[] $xEditableTypeMapping

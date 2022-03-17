@@ -15,15 +15,9 @@ namespace Sonata\AdminBundle\Tests\Action;
 
 final class Bafoo
 {
-    /**
-     * @var \DateTime|null
-     */
-    private $dateProp;
+    private ?\DateTime $dateProp = null;
 
-    /**
-     * @var \DateTime|null
-     */
-    private $datetimeProp;
+    private ?\DateTime $datetimeProp = null;
 
     public function getDateProp(): ?\DateTime
     {

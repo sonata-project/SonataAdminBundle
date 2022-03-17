@@ -41,12 +41,12 @@ final class FormMapperTest extends TestCase
     /**
      * @var AdminInterface<object>
      */
-    protected $admin;
+    protected AdminInterface $admin;
 
     /**
      * @var FormMapper<object>
      */
-    protected $formMapper;
+    protected FormMapper $formMapper;
 
     protected function setUp(): void
     {
@@ -69,9 +69,7 @@ final class FormMapperTest extends TestCase
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
-            ->willReturnCallback(static function (AdminInterface $admin, string $attributes, $object = null): bool {
-                return self::DEFAULT_GRANTED_ROLE === $attributes;
-            });
+            ->willReturnCallback(static fn (AdminInterface $admin, string $attributes, $object = null): bool => self::DEFAULT_GRANTED_ROLE === $attributes);
 
         $this->admin->setSecurityHandler($securityHandler);
         $this->admin->setFormContractor($this->contractor);

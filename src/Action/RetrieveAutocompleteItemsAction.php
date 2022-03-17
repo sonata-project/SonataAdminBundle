@@ -29,10 +29,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 final class RetrieveAutocompleteItemsAction
 {
-    /**
-     * @var AdminFetcherInterface
-     */
-    private $adminFetcher;
+    private AdminFetcherInterface $adminFetcher;
 
     public function __construct(AdminFetcherInterface $adminFetcher)
     {

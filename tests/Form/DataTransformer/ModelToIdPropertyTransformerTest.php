@@ -215,9 +215,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
             ->method('getIdentifierValues')
             ->willReturn([123]);
 
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, static function (Foo $model): string {
-            return (string) $model->getBaz();
-        });
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, static fn (Foo $model): string => (string) $model->getBaz());
 
         static::assertSame([123, '_labels' => ['bazz']], $transformer->transform($model));
     }

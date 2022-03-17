@@ -35,10 +35,7 @@ class AdminHelper
      */
     private const FORM_FIELD_DELETE = '_delete';
 
-    /**
-     * @var PropertyAccessorInterface
-     */
-    private $propertyAccessor;
+    private PropertyAccessorInterface $propertyAccessor;
 
     public function __construct(PropertyAccessorInterface $propertyAccessor)
     {

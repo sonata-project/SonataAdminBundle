@@ -13,18 +13,16 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Twig;
 
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Twig\Extension\RuntimeExtensionInterface;
 
 /**
- * @phpstan-import-type Item from \Sonata\AdminBundle\Admin\Pool
+ * @phpstan-import-type Item from Pool
  */
 final class GroupRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
     /**
      * @internal This class should only be used through Twig
@@ -35,15 +33,7 @@ final class GroupRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * @phpstan-return array<array{
-     *  label: string,
-     *  translation_domain: string,
-     *  icon: string,
-     *  items: list<\Sonata\AdminBundle\Admin\AdminInterface<object>>,
-     *  keep_open: bool,
-     *  on_top: bool,
-     *  roles: list<string>
-     * }>
+     * @phpstan-return array<array{label: string, translation_domain: string, icon: string, items: list<AdminInterface<object>>, keep_open: bool, on_top: bool, roles: list<string>}>
      */
     public function getDashboardGroupsWithCreatableAdmins(): array
     {

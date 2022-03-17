@@ -26,7 +26,7 @@ final class SearchHandler
     /**
      * @var array<string, bool>
      */
-    private $adminsSearchConfig = [];
+    private array $adminsSearchConfig = [];
 
     /**
      * @param AdminInterface<object> $admin

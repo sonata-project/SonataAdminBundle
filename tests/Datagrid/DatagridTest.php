@@ -38,7 +38,7 @@ final class DatagridTest extends TestCase
     /**
      * @var Datagrid<ProxyQueryInterface&Stub>
      */
-    private $datagrid;
+    private Datagrid $datagrid;
 
     /**
      * @var PagerInterface<ProxyQueryInterface&Stub>&MockObject
@@ -53,12 +53,9 @@ final class DatagridTest extends TestCase
     /**
      * @var FieldDescriptionCollection<FieldDescriptionInterface>
      */
-    private $columns;
+    private FieldDescriptionCollection $columns;
 
-    /**
-     * @var FormBuilderInterface
-     */
-    private $formBuilder;
+    private FormBuilderInterface $formBuilder;
 
     protected function setUp(): void
     {

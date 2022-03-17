@@ -28,10 +28,7 @@ final class DashboardActionTest extends TestCase
      */
     private $templateRegistry;
 
-    /**
-     * @var DashboardAction
-     */
-    private $action;
+    private DashboardAction $action;
 
     protected function setUp(): void
     {

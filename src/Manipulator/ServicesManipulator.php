@@ -21,15 +21,9 @@ use Symfony\Component\Yaml\Yaml;
  */
 final class ServicesManipulator
 {
-    /**
-     * @var string
-     */
-    private $file;
+    private string $file;
 
-    /**
-     * @var string
-     */
-    private $template = '    %s:
+    private string $template = '    %s:
         class: %s
         tags:
             - { name: sonata.admin, model_class: %s, controller: %s, manager_type: %s, group: admin, label: %s }

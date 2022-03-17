@@ -22,25 +22,19 @@ use Symfony\Component\Routing\RouterInterface;
  */
 final class DefaultRouteGenerator implements RouteGeneratorInterface
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @var RoutesCache
-     */
-    private $cache;
+    private RoutesCache $cache;
 
     /**
      * @var array<string, string>
      */
-    private $caches = [];
+    private array $caches = [];
 
     /**
      * @var string[]
      */
-    private $loaded = [];
+    private array $loaded = [];
 
     public function __construct(RouterInterface $router, RoutesCache $cache)
     {

@@ -41,15 +41,9 @@ final class SetObjectFieldValueActionTest extends TestCase
      */
     private $adminFetcher;
 
-    /**
-     * @var Environment
-     */
-    private $twig;
+    private Environment $twig;
 
-    /**
-     * @var SetObjectFieldValueAction
-     */
-    private $action;
+    private SetObjectFieldValueAction $action;
 
     /**
      * @var AdminInterface<object>&MockObject
@@ -66,10 +60,7 @@ final class SetObjectFieldValueActionTest extends TestCase
      */
     private $modelManager;
 
-    /**
-     * @var DataTransformerResolver
-     */
-    private $resolver;
+    private DataTransformerResolver $resolver;
 
     /**
      * @var MockObject&MutableTemplateRegistryInterface
@@ -335,11 +326,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             'context' => 'list',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
-        $dataTransformer = new CallbackTransformer(static function ($value): string {
-            return (string) (int) $value;
-        }, static function ($value): bool {
-            return filter_var($value, \FILTER_VALIDATE_BOOLEAN);
-        });
+        $dataTransformer = new CallbackTransformer(static fn ($value): string => (string) (int) $value, static fn ($value): bool => filter_var($value, \FILTER_VALIDATE_BOOLEAN));
 
         $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
 
@@ -379,9 +366,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $isOverridden = false;
-        $dataTransformer = new CallbackTransformer(static function ($value): string {
-            return (string) (int) $value;
-        }, static function ($value) use (&$isOverridden): bool {
+        $dataTransformer = new CallbackTransformer(static fn ($value): string => (string) (int) $value, static function ($value) use (&$isOverridden): bool {
             $isOverridden = true;
 
             return filter_var($value, \FILTER_VALIDATE_BOOLEAN);

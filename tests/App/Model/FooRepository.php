@@ -21,7 +21,7 @@ final class FooRepository implements RepositoryInterface
     /**
      * @var Foo[]
      */
-    private $elements;
+    private array $elements;
 
     public function __construct()
     {

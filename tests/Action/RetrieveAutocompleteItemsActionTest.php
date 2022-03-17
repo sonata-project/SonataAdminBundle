@@ -38,10 +38,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
      */
     private $adminFetcher;
 
-    /**
-     * @var RetrieveAutocompleteItemsAction
-     */
-    private $action;
+    private RetrieveAutocompleteItemsAction $action;
 
     /**
      * @var AdminInterface<object>&MockObject

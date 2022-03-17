@@ -28,7 +28,7 @@ final class SimplePagerTest extends TestCase
     /**
      * @var SimplePager<ProxyQueryInterface>
      */
-    private $pager;
+    private SimplePager $pager;
 
     /**
      * @var MockObject&ProxyQueryInterface

@@ -34,76 +34,62 @@ use Symfony\Component\DependencyInjection\Container;
  */
 final class AdminMaker extends AbstractMaker
 {
-    /**
-     * @var string
-     */
-    private $projectDirectory;
+    private string $projectDirectory;
 
     /**
      * @var array<string, ModelManagerInterface<object>>
      */
-    private $availableModelManagers;
+    private array $availableModelManagers;
+
+    private string $skeletonDirectory;
 
     /**
-     * @var string
-     */
-    private $skeletonDirectory;
-
-    /**
-     * @var string
      * @phpstan-var class-string
      *
      * @psalm-suppress PropertyNotSetInConstructor
+     * @phpstan-ignore-next-line
      *
      * @see AdminMaker::configure
      */
-    private $modelClass;
+    private string $modelClass;
 
     /**
-     * @var string
-     *
      * @psalm-suppress PropertyNotSetInConstructor
+     * @phpstan-ignore-next-line
      *
      * @see AdminMaker::configure
      */
-    private $modelClassBasename;
+    private string $modelClassBasename;
 
     /**
-     * @var string
-     *
      * @psalm-suppress PropertyNotSetInConstructor
+     * @phpstan-ignore-next-line
      *
      * @see AdminMaker::configure
      */
-    private $adminClassBasename;
+    private string $adminClassBasename;
+
+    private ?string $controllerClassBasename = null;
 
     /**
-     * @var string|null
-     */
-    private $controllerClassBasename;
-
-    /**
-     * @var string
-     *
      * @psalm-suppress PropertyNotSetInConstructor
+     * @phpstan-ignore-next-line
      *
      * @see AdminMaker::configure
      */
-    private $managerType;
+    private string $managerType;
 
     /**
      * @var ModelManagerInterface<object>
      *
      * @psalm-suppress PropertyNotSetInConstructor
+     * @phpstan-ignore-next-line
      *
      * @see AdminMaker::configure
      */
-    private $modelManager;
+    private ModelManagerInterface $modelManager;
 
-    /**
-     * @var string
-     */
-    private $defaultController;
+    private string $defaultController;
 
     /**
      * @param array<string, ModelManagerInterface<object>> $modelManagers

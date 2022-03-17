@@ -25,10 +25,7 @@ final class ListAdminCommand extends Command
 {
     protected static $defaultName = 'sonata:admin:list';
 
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
     /**
      * @internal This class should only be used through the console

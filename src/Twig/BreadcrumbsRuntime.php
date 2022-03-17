@@ -20,10 +20,7 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 final class BreadcrumbsRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var BreadcrumbsBuilderInterface
-     */
-    private $breadcrumbsBuilder;
+    private BreadcrumbsBuilderInterface $breadcrumbsBuilder;
 
     /**
      * @internal This class should only be used through Twig

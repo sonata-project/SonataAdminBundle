@@ -18,10 +18,7 @@ use Sonata\AdminBundle\Templating\TemplateRegistry;
 
 final class TemplateRegistryTest extends TestCase
 {
-    /**
-     * @var TemplateRegistry
-     */
-    private $templateRegistry;
+    private TemplateRegistry $templateRegistry;
 
     protected function setUp(): void
     {

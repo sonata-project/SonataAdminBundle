@@ -22,10 +22,7 @@ use Twig\TemplateWrapper;
 
 final class RenderElementRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var PropertyAccessorInterface
-     */
-    private $propertyAccessor;
+    private PropertyAccessorInterface $propertyAccessor;
 
     /**
      * @internal This class should only be used through Twig

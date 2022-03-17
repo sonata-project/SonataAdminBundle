@@ -26,10 +26,7 @@ final class ExplainAdminCommand extends Command
 {
     protected static $defaultName = 'sonata:admin:explain';
 
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
     /**
      * @internal This class should only be used through the console

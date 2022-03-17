@@ -27,7 +27,7 @@ final class DataTransformerResolver implements DataTransformerResolverInterface
     /**
      * @var array<string, DataTransformerInterface<mixed, mixed>>
      */
-    private $globalCustomTransformers = [];
+    private array $globalCustomTransformers = [];
 
     /**
      * @param array<string, DataTransformerInterface<mixed, mixed>> $customGlobalTransformers

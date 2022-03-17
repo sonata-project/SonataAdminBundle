@@ -15,20 +15,14 @@ namespace Sonata\AdminBundle\Tests\App\Model;
 
 final class Foo implements EntityInterface
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
     /**
      * @var string[]
      */
-    private $elements;
+    private array $elements;
 
     /**
      * @param string[] $elements

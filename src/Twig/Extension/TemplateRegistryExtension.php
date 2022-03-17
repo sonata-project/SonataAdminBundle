@@ -21,10 +21,7 @@ use Twig\TwigFunction;
 
 final class TemplateRegistryExtension extends AbstractExtension
 {
-    /**
-     * @var TemplateRegistryRuntime
-     */
-    private $templateRegistryRuntime;
+    private TemplateRegistryRuntime $templateRegistryRuntime;
 
     /**
      * NEXT_MAJOR: Remove this constructor.

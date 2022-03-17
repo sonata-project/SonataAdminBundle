@@ -23,10 +23,7 @@ use Twig\TwigFilter;
  */
 final class SonataAdminExtension extends AbstractExtension
 {
-    /**
-     * @var SonataAdminRuntime
-     */
-    private $sonataAdminRuntime;
+    private SonataAdminRuntime $sonataAdminRuntime;
 
     /**
      * NEXT_MAJOR: Remove this constructor.

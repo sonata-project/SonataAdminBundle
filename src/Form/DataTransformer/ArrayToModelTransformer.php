@@ -26,17 +26,14 @@ use Symfony\Component\Form\DataTransformerInterface;
 final class ArrayToModelTransformer implements DataTransformerInterface
 {
     /**
-     * @var ModelManagerInterface
      * @phpstan-var ModelManagerInterface<T>
      */
-    private $modelManager;
+    private ModelManagerInterface $modelManager;
 
     /**
-     * @var string
-     *
      * @phpstan-var class-string<T>
      */
-    private $className;
+    private string $className;
 
     /**
      * @phpstan-param ModelManagerInterface<T> $modelManager

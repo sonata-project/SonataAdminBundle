@@ -33,15 +33,9 @@ final class GetShortObjectDescriptionActionTest extends TestCase
      */
     private $adminFetcher;
 
-    /**
-     * @var Environment
-     */
-    private $twig;
+    private Environment $twig;
 
-    /**
-     * @var GetShortObjectDescriptionAction
-     */
-    private $action;
+    private GetShortObjectDescriptionAction $action;
 
     /**
      * @var AdminInterface<object>&MockObject

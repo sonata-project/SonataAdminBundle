@@ -37,12 +37,12 @@ final class ShowMapperTest extends TestCase
     /**
      * @var ShowMapper<object>
      */
-    private $showMapper;
+    private ShowMapper $showMapper;
 
     /**
      * @var AdminInterface<object>
      */
-    private $admin;
+    private AdminInterface $admin;
 
     /**
      * @var ShowBuilderInterface&MockObject
@@ -52,7 +52,7 @@ final class ShowMapperTest extends TestCase
     /**
      * @var FieldDescriptionCollection<FieldDescriptionInterface>
      */
-    private $fieldDescriptionCollection;
+    private FieldDescriptionCollection $fieldDescriptionCollection;
 
     /**
      * @var array<string, array<string, mixed>>
@@ -62,7 +62,7 @@ final class ShowMapperTest extends TestCase
     /**
      * @var array<string, bool>
      */
-    private $listShowFields;
+    private array $listShowFields;
 
     protected function setUp(): void
     {
@@ -83,9 +83,7 @@ final class ShowMapperTest extends TestCase
 
         $this->admin
             ->method('getShowGroups')
-            ->willReturnCallback(function (): array {
-                return $this->groups;
-            });
+            ->willReturnCallback(fn (): array => $this->groups);
 
         $this->admin
             ->method('setShowGroups')
@@ -534,9 +532,7 @@ final class ShowMapperTest extends TestCase
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
-            ->willReturnCallback(static function (AdminInterface $admin, string $attributes, ?object $object = null): bool {
-                return self::DEFAULT_GRANTED_ROLE === $attributes;
-            });
+            ->willReturnCallback(static fn (AdminInterface $admin, string $attributes, ?object $object = null): bool => self::DEFAULT_GRANTED_ROLE === $attributes);
 
         $this->admin->setSecurityHandler($securityHandler);
 

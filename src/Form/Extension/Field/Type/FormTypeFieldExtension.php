@@ -31,12 +31,12 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
     /**
      * @var array<string, string>
      */
-    private $defaultClasses = [];
+    private array $defaultClasses = [];
 
     /**
      * @var array<string, mixed>
      */
-    private $options = [];
+    private array $options = [];
 
     /**
      * @param array<string, string> $defaultClasses

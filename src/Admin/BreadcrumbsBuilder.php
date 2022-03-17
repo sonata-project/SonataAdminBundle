@@ -26,7 +26,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
     /**
      * @var string[]
      */
-    private $config = [];
+    private array $config = [];
 
     /**
      * @param string[] $config

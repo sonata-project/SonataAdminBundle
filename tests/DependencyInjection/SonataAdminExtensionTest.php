@@ -31,7 +31,7 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
 /**
- * @phpstan-import-type SonataAdminConfiguration from \Sonata\AdminBundle\DependencyInjection\Configuration
+ * @phpstan-import-type SonataAdminConfiguration from Configuration
  */
 final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 {
@@ -39,7 +39,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
      * @var array<string, mixed>
      * @phpstan-var SonataAdminConfiguration
      */
-    private $defaultConfiguration;
+    private array $defaultConfiguration;
 
     protected function setUp(): void
     {

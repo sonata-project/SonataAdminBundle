@@ -24,7 +24,7 @@ final class AdminExporter
     /**
      * @var Exporter service from the exporter bundle
      */
-    private $exporter;
+    private Exporter $exporter;
 
     /**
      * @param Exporter $exporter will be used to get global settings

@@ -25,10 +25,7 @@ final class AdminPoolLoader extends Loader
 {
     public const ROUTE_TYPE_NAME = 'sonata_admin';
 
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
     public function __construct(Pool $pool)
     {

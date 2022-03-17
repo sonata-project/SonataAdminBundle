@@ -20,15 +20,9 @@ final class Revision
      */
     private $id;
 
-    /**
-     * @var \DateTimeInterface
-     */
-    private $dateTime;
+    private \DateTimeInterface $dateTime;
 
-    /**
-     * @var string|null
-     */
-    private $username;
+    private ?string $username;
 
     /**
      * @param int|string $id

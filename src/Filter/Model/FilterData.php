@@ -18,20 +18,14 @@ namespace Sonata\AdminBundle\Filter\Model;
  */
 final class FilterData
 {
-    /**
-     * @var ?int
-     */
-    private $type;
+    private ?int $type = null;
 
     /**
      * @var mixed
      */
     private $value;
 
-    /**
-     * @var bool
-     */
-    private $hasValue;
+    private bool $hasValue;
 
     private function __construct()
     {

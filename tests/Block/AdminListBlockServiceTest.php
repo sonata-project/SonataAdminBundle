@@ -25,10 +25,7 @@ use Symfony\Component\DependencyInjection\Container;
  */
 final class AdminListBlockServiceTest extends BlockServiceTestCase
 {
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
     /**
      * @var TemplateRegistryInterface&MockObject

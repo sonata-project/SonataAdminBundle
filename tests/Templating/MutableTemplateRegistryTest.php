@@ -19,10 +19,7 @@ use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 
 final class MutableTemplateRegistryTest extends TestCase
 {
-    /**
-     * @var MutableTemplateRegistryInterface
-     */
-    private $templateRegistry;
+    private MutableTemplateRegistryInterface $templateRegistry;
 
     protected function setUp(): void
     {

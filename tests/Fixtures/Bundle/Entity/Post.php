@@ -21,12 +21,12 @@ class Post
     /**
      * @var Collection<int, Tag>
      */
-    private $tags;
+    private Collection $tags;
 
     /**
      * @var Collection<int, PostCategory>
      */
-    private $postCategories;
+    private Collection $postCategories;
 
     public function __construct()
     {

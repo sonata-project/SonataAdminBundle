@@ -33,41 +33,31 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 final class AclSecurityHandler implements AclSecurityHandlerInterface
 {
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $authorizationChecker;
+    private AuthorizationCheckerInterface $authorizationChecker;
 
-    /**
-     * @var MutableAclProviderInterface
-     */
-    private $aclProvider;
+    private MutableAclProviderInterface $aclProvider;
 
     /**
      * @var string[]
      */
-    private $superAdminRoles = [];
+    private array $superAdminRoles = [];
 
     /**
      * @var string[]
      */
-    private $adminPermissions = [];
+    private array $adminPermissions = [];
 
     /**
      * @var string[]
      */
-    private $objectPermissions = [];
+    private array $objectPermissions = [];
 
     /**
-     * @var string
      * @phpstan-var class-string<MaskBuilderInterface>
      */
-    private $maskBuilderClass;
+    private string $maskBuilderClass;
 
     /**
      * @param string|string[] $superAdminRoles
