@@ -31,9 +31,9 @@ final class BaseFieldDescriptionTest extends TestCase
 
     public function testConstructingWithMapping(): void
     {
-        $fieldMapping = ['field_name' => 'fieldName'];
-        $associationMapping = ['association_model' => 'association_bar'];
-        $parentAssociationMapping = [['parent_mapping' => 'parent_bar']];
+        $fieldMapping = ['fieldName' => 'fieldName'];
+        $associationMapping = ['fieldName' => 'association_bar'];
+        $parentAssociationMapping = [['fieldName' => 'parent_bar']];
 
         $description = new FieldDescription(
             'foo',

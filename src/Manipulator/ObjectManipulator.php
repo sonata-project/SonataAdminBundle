@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Manipulator;
 
-use Doctrine\Common\Util\ClassUtils;
-use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 final class ObjectManipulator
 {
@@ -34,16 +33,23 @@ final class ObjectManipulator
         $associationMapping = $parentFieldDescription->getAssociationMapping();
         $parentAssociationMappings = $parentFieldDescription->getParentAssociationMappings();
 
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+
         foreach ($parentAssociationMappings as $parentAssociationMapping) {
             $fieldName = $parentAssociationMapping['fieldName'];
             \assert(\is_string($fieldName));
-            $object = self::callGetter($object, $fieldName);
+
+            $object = $propertyAccessor->getValue($object, $fieldName);
         }
 
         $fieldName = $associationMapping['fieldName'];
         \assert(\is_string($fieldName));
 
-        return self::callAdder($object, $instance, $fieldName);
+        $collection = $propertyAccessor->getValue($object, $fieldName);
+        $collection[] = $instance;
+        $propertyAccessor->setValue($object, $fieldName, $collection);
+
+        return $instance;
     }
 
     /**
@@ -65,100 +71,16 @@ final class ObjectManipulator
 
         $parentAssociationMappings = $parentFieldDescription->getParentAssociationMappings();
 
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+
         foreach ($parentAssociationMappings as $parentAssociationMapping) {
             $fieldName = $parentAssociationMapping['fieldName'];
             \assert(\is_string($fieldName));
-            $object = self::callGetter($object, $fieldName);
+
+            $object = $propertyAccessor->getValue($object, $fieldName);
         }
 
-        return self::callSetter($instance, $object, $mappedBy);
-    }
-
-    /**
-     * Call $object->getXXX().
-     */
-    private static function callGetter(object $object, string $fieldName): object
-    {
-        $inflector = InflectorFactory::create()->build();
-        $method = sprintf('get%s', $inflector->classify($fieldName));
-
-        if (\is_callable([$object, $method]) && method_exists($object, $method)) {
-            return $object->$method();
-        }
-
-        if (property_exists($object, $fieldName)) {
-            $ref = new \ReflectionProperty($object, $fieldName);
-
-            if ($ref->isPublic()) {
-                return $object->$fieldName;
-            }
-        }
-
-        throw new \BadMethodCallException(
-            sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
-        );
-    }
-
-    /**
-     * Call $instance->setXXX($object).
-     *
-     * @phpstan-template T of object
-     * @phpstan-param T $instance
-     * @phpstan-return T
-     */
-    private static function callSetter(object $instance, object $object, string $mappedBy): object
-    {
-        $inflector = InflectorFactory::create()->build();
-        $method = sprintf('set%s', $inflector->classify($mappedBy));
-
-        if (\is_callable([$instance, $method]) && method_exists($instance, $method)) {
-            $instance->$method($object);
-
-            return $instance;
-        }
-
-        if (property_exists($instance, $mappedBy)) {
-            $ref = new \ReflectionProperty($instance, $mappedBy);
-
-            if ($ref->isPublic()) {
-                $instance->$mappedBy = $object;
-
-                return $instance;
-            }
-        }
-
-        throw new \BadMethodCallException(
-            sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($instance), $method)
-        );
-    }
-
-    /**
-     * Call $object->addXXX($instance).
-     *
-     * @phpstan-template T of object
-     * @phpstan-param T $instance
-     * @phpstan-return T
-     */
-    private static function callAdder(object $object, object $instance, string $fieldName): object
-    {
-        $inflector = InflectorFactory::create()->build();
-        $method = sprintf('add%s', $inflector->classify($fieldName));
-
-        if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
-            $method = rtrim($method, 's');
-
-            if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
-                $method = sprintf('add%s', $inflector->classify($inflector->singularize($fieldName)));
-
-                if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
-                    throw new \BadMethodCallException(
-                        sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
-                    );
-                }
-            }
-        }
-
-        $object->$method($instance);
+        $propertyAccessor->setValue($instance, $mappedBy, $object);
 
         return $instance;
     }
