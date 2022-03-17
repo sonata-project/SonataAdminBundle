@@ -22,11 +22,11 @@ final class Metadata implements MetadataInterface
 
     private string $title;
 
-    private ?string $description;
+    private ?string $description = null;
 
     private ?string $image = null;
 
-    private ?string $domain;
+    private ?string $domain = null;
 
     /**
      * @var array<string, mixed>

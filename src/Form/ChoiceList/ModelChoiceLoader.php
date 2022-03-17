@@ -38,14 +38,14 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
      */
     private string $class;
 
-    private ?string $property;
+    private ?string $property = null;
 
     private ?object $query = null;
 
     /**
      * @var object[]|null
      */
-    private ?array $choices;
+    private ?array $choices = null;
 
     private ?ChoiceListInterface $choiceList = null;
 

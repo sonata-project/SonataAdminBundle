@@ -74,7 +74,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
      *
      * @phpstan-var class-string<T>|null
      */
-    private ?string $modelClass;
+    private ?string $modelClass = null;
 
     private ?string $label = null;
 

@@ -22,7 +22,7 @@ final class Revision
 
     private \DateTimeInterface $dateTime;
 
-    private ?string $username;
+    private ?string $username = null;
 
     /**
      * @param int|string $id

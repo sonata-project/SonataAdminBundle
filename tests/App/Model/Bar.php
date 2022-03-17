@@ -17,7 +17,7 @@ final class Bar implements EntityInterface
 {
     private string $id;
 
-    private ?Foo $foo;
+    private ?Foo $foo = null;
 
     public function __construct(string $id, ?Foo $foo = null)
     {
