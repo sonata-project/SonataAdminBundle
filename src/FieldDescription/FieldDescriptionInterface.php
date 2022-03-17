@@ -21,16 +21,16 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @psalm-type FieldDescriptionOptions array{
- *     accessor?: (string | callable | PropertyPathInterface),
- *     associated_property?: (string | callable | PropertyPathInterface),
- *     label?: (string | false | null),
+ *     accessor?: string|callable|PropertyPathInterface,
+ *     associated_property?: string|callable|PropertyPathInterface,
+ *     label?: string|false|null,
  *     link_parameters?: array<string, mixed>,
- *     role?: (string | string[]),
+ *     role?: string|string[],
  *     sort_field_mapping?: array<string, mixed>,
  *     sort_parent_association_mappings?: array<array<string, mixed>>,
- *     sortable?: (string | bool),
+ *     sortable?: string|bool,
  *     template?: string,
- *     translation_domain?: (string | false),
+ *     translation_domain?: string|false,
  *     type?: string,
  *     virtual_field?: bool
  * }&array<string, mixed>
