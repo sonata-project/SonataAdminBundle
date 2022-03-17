@@ -57,11 +57,11 @@ final class GroupMenuProvider implements MenuProviderInterface
      *
      * @param array<string, mixed> $options
      *
-     * @throws \InvalidArgumentException if the menu does not exists
+     * @throws \InvalidArgumentException if the menu does not exist
      */
     public function get(string $name, array $options = []): ItemInterface
     {
-        if (!isset($options['name'])) {
+        if (!isset($options['name']) || !\is_string($options['name'])) {
             throw new \InvalidArgumentException('The option "name" is required.');
         }
         $menuItem = $this->menuFactory->createItem($options['name']);
@@ -116,6 +116,7 @@ final class GroupMenuProvider implements MenuProviderInterface
      */
     private function canGenerateMenuItem(array $item, array $group): bool
     {
+        // NEXT_MAJOR: Remove the '' check
         if (isset($item['admin']) && '' !== $item['admin']) {
             $admin = $this->pool->getInstance($item['admin']);
 
@@ -157,28 +158,34 @@ final class GroupMenuProvider implements MenuProviderInterface
      */
     private function generateMenuItem(array $item, array $group): ItemInterface
     {
+        // NEXT_MAJOR: Remove the '' check
         if (isset($item['admin']) && '' !== $item['admin']) {
             $admin = $this->pool->getInstance($item['admin']);
 
             $options = $admin->generateMenuUrl(
                 'list',
-                [],
+                $item['route_params'],
                 $item['route_absolute'] ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH
             );
             $options['extras'] = [
-                'label_catalogue' => $admin->getTranslationDomain(),
+                'label_catalogue' => $admin->getTranslationDomain(), // NEXT_MAJOR: Remove this line.
+                'translation_domain' => $admin->getTranslationDomain(),
                 'admin' => $admin,
             ];
 
             return $this->menuFactory->createItem($admin->getLabel() ?? '', $options);
         }
 
+        \assert(isset($item['label']));
+        \assert(isset($item['route']));
+
         return $this->menuFactory->createItem($item['label'], [
             'route' => $item['route'],
             'routeParameters' => $item['route_params'],
             'routeAbsolute' => $item['route_absolute'],
             'extras' => [
-                'label_catalogue' => $group['label_catalogue'],
+                'translation_domain' => $group['translation_domain'],
+                'label_catalogue' => $group['label_catalogue'] ?? '', // NEXT_MAJOR: Remove this line.
             ],
         ]);
     }

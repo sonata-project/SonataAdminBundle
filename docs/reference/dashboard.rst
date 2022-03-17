@@ -98,8 +98,8 @@ service belongs to the ``Content`` group.
                       model_class: App\Entity\Post
                       manager_type: orm
                       group: 'app.admin.group.content'
+                      translation_domain: 'App'
                       label: 'app.admin.model.post'
-                      label_catalogue: 'App'
 
     .. code-block:: xml
 
@@ -111,13 +111,13 @@ service belongs to the ``Content`` group.
                   model_class="App\Entity\Post"
                   manager_type="orm"
                   group="app.admin.group.content"
+                  translation_domain="App"
                   label="app.admin.model.post"
-                  label_catalogue="App"
                   />
           </service>
 
-In this example, the labels are translated by ``App``, using the given
-``label_catalogue``. So, you can use the above examples to support multiple languages
+In this example, the label are translated by ``App``, using the given
+``translation_domain``. So, you can use the above examples to support multiple languages
 in your project.
 
 .. note::
@@ -143,13 +143,12 @@ declarations.
                 groups:
                     app.admin.group.content:
                         label: app.admin.group.content
-                        label_catalogue: App
+                        translation_domain: App
                         items:
                             - app.admin.post
 
                     app.admin.group.blog:
-                        items: ~
-                        item_adds:
+                        items:
                             - sonata.admin.page
                         roles: ['ROLE_ONE', 'ROLE_TWO']
 
@@ -163,7 +162,7 @@ declarations.
 
 This configuration specifies that the ``app.admin.group.content`` group uses the
 ``app.admin.group.content`` label, which is translated using the ``App``
-translation catalogue (the same label and translation configuration that we declared
+translation domain (the same label and translation configuration that we declared
 previously, in the service definition example).
 
 It also states that the ``app.admin.group.content`` group contains only the

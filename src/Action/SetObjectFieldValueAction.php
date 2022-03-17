@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Action;
 
+use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformerResolverInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
@@ -93,16 +94,8 @@ final class SetObjectFieldValueAction
         try {
             $admin = $this->adminFetcher->get($request);
         } catch (\InvalidArgumentException $e) {
-            throw new NotFoundHttpException(sprintf(
-                'Could not find admin for code "%s".',
-                $request->get('_sonata_admin')
-            ));
+            throw new NotFoundHttpException($e->getMessage());
         }
-
-        $field = $request->get('field');
-        $objectId = $request->get('objectId');
-        $value = $originalValue = $request->get('value');
-        $context = $request->get('context');
 
         // alter should be done by using a post method
         if (!$request->isXmlHttpRequest()) {
@@ -117,6 +110,11 @@ final class SetObjectFieldValueAction
             ), Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
+        $objectId = $request->get('objectId');
+        if (!\is_string($objectId) && !\is_int($objectId)) {
+            throw new BadRequestParamHttpException('objectId', ['string', 'int'], $objectId);
+        }
+
         $object = $admin->getObject($objectId);
         if (null === $object) {
             return new JsonResponse('Object does not exist', Response::HTTP_NOT_FOUND);
@@ -127,8 +125,14 @@ final class SetObjectFieldValueAction
             return new JsonResponse('Invalid permissions', Response::HTTP_FORBIDDEN);
         }
 
+        $context = $request->get('context');
         if ('list' !== $context) {
             return new JsonResponse('Invalid context', Response::HTTP_BAD_REQUEST);
+        }
+
+        $field = $request->get('field');
+        if (!\is_string($field)) {
+            throw new BadRequestParamHttpException('field', 'string', $field);
         }
 
         if (!$admin->hasListFieldDescription($field)) {
@@ -156,6 +160,8 @@ final class SetObjectFieldValueAction
             $propertyPath = new PropertyPath($field);
         }
 
+        $value = $request->get('value');
+
         if ('' === $value) {
             $this->propertyAccessor->setValue($object, $propertyPath, null);
         } else {
@@ -167,8 +173,8 @@ final class SetObjectFieldValueAction
 
             if (null === $value && FieldDescriptionInterface::TYPE_CHOICE === $fieldDescription->getType()) {
                 return new JsonResponse(sprintf(
-                    'Edit failed, object with id: %s not found in association: %s.',
-                    $originalValue,
+                    'Edit failed, object with id "%s" not found in association "%s".',
+                    $objectId,
                     $field
                 ), Response::HTTP_NOT_FOUND);
             }

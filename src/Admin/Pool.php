@@ -23,19 +23,24 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-type Item = array{
- *     admin?: string,
  *     label: string,
  *     roles: list<string>,
  *     route: string,
  *     route_absolute: bool,
  *     route_params: array<string, string>
+ * }|array{
+ *     admin: string,
+ *     roles: list<string>,
+ *     route_absolute: bool,
+ *     route_params: array<string, string>
  * }
+ * NEXT_MAJOR: Remove the label_catalogue key.
  * @phpstan-type Group = array{
  *     label: string,
- *     label_catalogue: string,
+ *     translation_domain: string,
+ *     label_catalogue?: string,
  *     icon: string,
- *     item_adds: Item[],
- *     items: Item[],
+ *     items: list<Item>,
  *     keep_open: bool,
  *     on_top: bool,
  *     provider?: string,
@@ -90,10 +95,9 @@ final class Pool
     /**
      * @phpstan-return array<string, array{
      *  label: string,
-     *  label_catalogue: string,
+     *  translation_domain: string,
      *  icon: string,
-     *  item_adds: Item[],
-     *  items: array<array-key, AdminInterface<object>>,
+     *  items: list<AdminInterface<object>>,
      *  keep_open: bool,
      *  on_top: bool,
      *  provider?: string,
@@ -105,7 +109,8 @@ final class Pool
         $groups = [];
 
         foreach ($this->adminGroups as $name => $adminGroup) {
-            $items = array_filter(array_map(function (array $item): ?AdminInterface {
+            $items = array_values(array_filter(array_map(function (array $item): ?AdminInterface {
+                // NEXT_MAJOR: Remove the '' check
                 if (!isset($item['admin']) || '' === $item['admin']) {
                     return null;
                 }
@@ -131,7 +136,7 @@ final class Pool
                 }
 
                 return $admin;
-            }, $adminGroup['items']));
+            }, $adminGroup['items'])));
 
             if ([] !== $items) {
                 $groups[$name] = ['items' => $items] + $adminGroup;
@@ -245,7 +250,7 @@ final class Pool
     {
         $adminCode = $fieldDescription->getOption('admin_code');
 
-        if (null !== $adminCode) {
+        if (\is_string($adminCode)) {
             return $this->getAdminByAdminCode($adminCode);
         }
 

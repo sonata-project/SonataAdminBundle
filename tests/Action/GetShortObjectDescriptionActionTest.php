@@ -18,6 +18,7 @@ use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -104,7 +105,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
         $this->admin->method('getObject')->with(null)->willReturn(null);
 
-        $this->expectException(NotFoundHttpException::class);
+        $this->expectException(BadRequestParamHttpException::class);
         ($this->action)($request);
     }
 
@@ -148,7 +149,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->admin->method('id')->with(null)->willReturn('');
         $this->admin->method('toString')->with(null)->willReturn('');
 
-        $this->expectException(NotFoundHttpException::class);
+        $this->expectException(BadRequestParamHttpException::class);
         ($this->action)($request);
     }
 

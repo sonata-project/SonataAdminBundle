@@ -30,7 +30,13 @@
             {% endif %}
             <li role="presentation" class="dropdown-header">
                 {{ group.icon|parse_icon }}
-                {{ group.label|trans({}, group.label_catalogue) }}
+                {# NEXT_MAJOR: Remove the default null #}
+                {% if group.translation_domain|default(null) is same as(false) %}
+                    {{ group.label }}
+                {% else %}
+                    {# NEXT_MAJOR: Remove the fallback on group.label_catalogue #}
+                    {{ group.label|trans({}, group.translation_domain|default(group.label_catalogue)) }}
+                {% endif %}
             </li>
 
             {% for admin in group.items %}

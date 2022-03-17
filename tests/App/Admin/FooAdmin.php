@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\TemplateType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Tests\App\Model\Foo;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -45,7 +46,12 @@ class FooAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $form): void
     {
-        $form->add('name', TextType::class, ['help' => 'Help me!']);
+        $form
+            ->add('name', TextType::class, ['help' => 'Help me!'])
+            ->add('customField', TemplateType::class, [
+                'template' => 'foo/custom_field.html.twig',
+                'parameters' => ['number' => 42],
+            ]);
     }
 
     protected function configureShowFields(ShowMapper $show): void

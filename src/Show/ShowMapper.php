@@ -80,7 +80,11 @@ final class ShowMapper extends BaseGroupedMapper
             return $this;
         }
 
-        if (isset($fieldDescriptionOptions['role']) && !$this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
+        if (
+            isset($fieldDescriptionOptions['role'])
+            && \is_string($fieldDescriptionOptions['role'])
+            && !$this->getAdmin()->isGranted($fieldDescriptionOptions['role'])
+        ) {
             return $this;
         }
 

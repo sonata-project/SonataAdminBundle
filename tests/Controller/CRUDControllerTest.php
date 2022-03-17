@@ -38,7 +38,6 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\Entity;
 use Sonata\AdminBundle\Tests\Fixtures\Util\DummyDomainObject;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Sonata\Exporter\Exporter;
-use Sonata\Exporter\Source\SourceIteratorInterface;
 use Sonata\Exporter\Writer\JsonWriter;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -800,8 +799,8 @@ final class CRUDControllerTest extends TestCase
     }
 
     /**
-     * @param array<string, mixed> $queryParams
-     * @param array<string, mixed> $requestParams
+     * @param array<string, bool|float|int|string|null> $queryParams
+     * @param array<string, bool|float|int|string|null> $requestParams
      *
      * @dataProvider getRedirectToTests
      */
@@ -865,7 +864,7 @@ final class CRUDControllerTest extends TestCase
     }
 
     /**
-     * @phpstan-return iterable<array-key, array{string, string, array<string, mixed>, array<string, mixed>, bool}>
+     * @phpstan-return iterable<array-key, array{string, string, array<string, bool|float|int|string|null>, array<string, bool|float|int|string|null>, bool}>
      */
     public function getRedirectToTests()
     {
@@ -2575,7 +2574,7 @@ final class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn(\stdClass::class);
 
-        $dataSourceIterator = $this->createMock(SourceIteratorInterface::class);
+        $dataSourceIterator = $this->createMock(\Iterator::class);
 
         $this->admin->expects(static::once())
             ->method('getDataSourceIterator')

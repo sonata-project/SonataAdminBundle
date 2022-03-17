@@ -101,8 +101,12 @@ class AdminHelper
 
         if (null !== $childFormBuilder) {
             $formData = $admin->getRequest()->get($formBuilder->getName(), []);
+            \assert(\is_array($formData));
+
             if (\array_key_exists($childFormBuilder->getName(), $formData)) {
                 $formData = $admin->getRequest()->get($formBuilder->getName(), []);
+                \assert(\is_array($formData));
+
                 $i = 0;
                 foreach ($formData[$childFormBuilder->getName()] as &$field) {
                     $toDelete[$i] = false;

@@ -341,7 +341,10 @@ final class Datagrid implements DatagridInterface
     {
         $values = $this->getValues();
 
-        if (!isset($values[DatagridInterface::SORT_BY]) || !$values[DatagridInterface::SORT_BY] instanceof FieldDescriptionInterface) {
+        if (
+            !isset($values[DatagridInterface::SORT_BY])
+            || !$values[DatagridInterface::SORT_BY] instanceof FieldDescriptionInterface
+        ) {
             return false;
         }
 
@@ -374,7 +377,10 @@ final class Datagrid implements DatagridInterface
         $this->formBuilder->add(DatagridInterface::SORT_ORDER, HiddenType::class);
         $this->formBuilder->add(DatagridInterface::PAGE, HiddenType::class);
 
-        if (isset($this->values[DatagridInterface::PER_PAGE]) && \is_array($this->values[DatagridInterface::PER_PAGE])) {
+        if (
+            isset($this->values[DatagridInterface::PER_PAGE])
+            && \is_array($this->values[DatagridInterface::PER_PAGE])
+        ) {
             $this->formBuilder->add(DatagridInterface::PER_PAGE, CollectionType::class, [
                 'entry_type' => HiddenType::class,
                 'allow_add' => true,

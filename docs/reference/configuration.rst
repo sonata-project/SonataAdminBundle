@@ -88,7 +88,7 @@ Full Configuration Options
                 form_type: 'standard' # One of "standard"; "horizontal"
                 default_admin_route: show
                 default_group: default
-                default_label_catalogue: SonataAdminBundle
+                default_translation_domain: SonataAdminBundle
                 default_icon: 'fas fa-folder'
                 dropdown_number_groups_per_colums:  2
                 logo_content: 'all' # One of "text"; "icon"; "all"
@@ -102,7 +102,7 @@ Full Configuration Options
                     # Prototype
                     id:
                         label: ~
-                        label_catalogue: ~
+                        translation_domain: ~
                         icon: ~
                         provider: ~
                         items:
@@ -110,7 +110,6 @@ Full Configuration Options
                             label: ~
                             route: ~
                             route_params: []
-                        item_adds: []
                         roles: []
                 blocks:
                     type: ~

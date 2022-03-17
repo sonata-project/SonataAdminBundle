@@ -30,19 +30,25 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
+/**
+ * @phpstan-import-type SonataAdminConfiguration from \Sonata\AdminBundle\DependencyInjection\Configuration
+ */
 final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 {
     /**
      * @var array<string, mixed>
+     * @phpstan-var SonataAdminConfiguration
      */
-    private $defaultConfiguration = [];
+    private $defaultConfiguration;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->container->setParameter('kernel.bundles', []);
 
-        $this->defaultConfiguration = (new Processor())->processConfiguration(new Configuration(), []);
+        /** @phpstan-var SonataAdminConfiguration $config */
+        $config = (new Processor())->processConfiguration(new Configuration(), []);
+        $this->defaultConfiguration = $config;
     }
 
     public function testHasCoreServicesAlias(): void
@@ -97,6 +103,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_group');
         self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_label_catalogue');
+        self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_translation_domain');
         self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_icon');
         self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_controller');
     }
@@ -301,10 +308,13 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->container->setParameter('kernel.bundles', []);
         $this->load();
 
-        $stylesheets = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['stylesheets'];
-        $skin = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2)['skin'];
+        $options = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2);
+        static::assertIsArray($options);
 
+        $stylesheets = $options['stylesheets'];
         static::assertSame($this->getDefaultStylesheets(), $stylesheets);
+
+        $skin = $options['skin'];
         static::assertSame('skin-black', $skin);
     }
 

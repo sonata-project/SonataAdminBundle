@@ -20,14 +20,6 @@ final class FieldDescriptionFactory implements FieldDescriptionFactoryInterface
 {
     public function create(string $class, string $name, array $options = []): FieldDescriptionInterface
     {
-        if (!isset($options['route']['name'])) {
-            $options['route']['name'] = 'edit';
-        }
-
-        if (!isset($options['route']['parameters'])) {
-            $options['route']['parameters'] = [];
-        }
-
         return new FieldDescription($name, $options);
     }
 }

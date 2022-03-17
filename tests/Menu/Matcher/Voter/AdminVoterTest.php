@@ -14,20 +14,51 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Menu\Matcher\Voter;
 
 use Knp\Menu\ItemInterface;
-use Knp\Menu\Matcher\Voter\VoterInterface;
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Menu\Matcher\Voter\AdminVoter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-final class AdminVoterTest extends AbstractVoterTest
+final class AdminVoterTest extends TestCase
 {
-    public function provideData(): array
+    /**
+     * @param mixed $itemData
+     *
+     * @dataProvider provideData
+     */
+    public function testMatching($itemData, ?string $voterData, ?string $route, ?bool $expected): void
+    {
+        $item = $this->createMock(ItemInterface::class);
+        $item
+            ->method('getExtra')
+            ->with(static::logicalOr(
+                static::equalTo('admin'),
+                static::equalTo('route')
+            ))
+            ->willReturn($itemData);
+
+        $request = new Request();
+        $request->request->set('_sonata_admin', $voterData);
+        $request->request->set('_route', $route);
+
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
+
+        $voter = new AdminVoter($requestStack);
+
+        static::assertSame($expected, $voter->matchItem($item));
+    }
+
+    /**
+     * @return iterable<array{mixed, string|null, string|null, bool|null}>
+     */
+    public function provideData(): iterable
     {
         return [
             'no data' => [null, null, null, null],
             'no route and granted' => [$this->getAdmin('_sonata_admin'), '_sonata_admin', null, null],
-            'no granted' => [$this->getAdmin('_sonata_admin', true, false), '_sonata_admin', null, null],
+            'no granted' => [$this->getAdmin('_sonata_admin', true), '_sonata_admin', null, null],
             'no code' => [$this->getAdmin('_sonata_admin_code', true, true), '_sonata_admin', null, null],
             'no code request' => [$this->getAdmin('_sonata_admin', true, true), '_sonata_admin_unexpected', null, null],
             'no route' => [$this->getAdmin('_sonata_admin', false, true), '_sonata_admin', null, null],
@@ -37,32 +68,6 @@ final class AdminVoterTest extends AbstractVoterTest
             'direct link' => ['admin_post', null, 'admin_post', true],
             'no direct link' => ['admin_post', null, 'admin_blog', null],
         ];
-    }
-
-    protected function createVoter($dataVoter, $route): VoterInterface
-    {
-        $request = new Request();
-        $request->request->set('_sonata_admin', $dataVoter);
-        $request->request->set('_route', $route);
-
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
-
-        return new AdminVoter($requestStack);
-    }
-
-    protected function createItem($data): ItemInterface
-    {
-        $item = $this->createMock(ItemInterface::class);
-        $item
-            ->method('getExtra')
-            ->with(static::logicalOr(
-                static::equalTo('admin'),
-                static::equalTo('route')
-            ))
-            ->willReturn($data);
-
-        return $item;
     }
 
     /**

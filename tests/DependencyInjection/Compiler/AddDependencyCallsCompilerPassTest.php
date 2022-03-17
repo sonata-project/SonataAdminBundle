@@ -38,17 +38,11 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
      */
     private $extension;
 
-    /**
-     *  @var array<string, mixed>
-     */
-    private $config = [];
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->extension = new SonataAdminExtension();
-        $this->config = $this->getConfig();
     }
 
     public function testTranslatorDisabled(): void
@@ -56,7 +50,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->setUpContainer();
         $this->container->removeAlias('translator');
         $this->container->removeDefinition('translator');
-        $this->extension->load([$this->config], $this->container);
+        $this->extension->load([$this->getConfig()], $this->container);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
@@ -76,7 +70,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     public function testProcessParsingFullValidConfig(): void
     {
         $this->setUpContainer();
-        $this->extension->load([$this->config], $this->container);
+        $this->extension->load([$this->getConfig()], $this->container);
 
         $this->compile();
 
@@ -88,12 +82,11 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         static::assertArrayHasKey('sonata_group_one', $dashboardGroupsSettings);
 
         static::assertArrayHasKey('label', $dashboardGroupsSettings['sonata_group_one']);
-        static::assertArrayHasKey('label_catalogue', $dashboardGroupsSettings['sonata_group_one']);
+        static::assertArrayHasKey('translation_domain', $dashboardGroupsSettings['sonata_group_one']);
         static::assertArrayHasKey('items', $dashboardGroupsSettings['sonata_group_one']);
-        static::assertArrayHasKey('item_adds', $dashboardGroupsSettings['sonata_group_one']);
         static::assertArrayHasKey('roles', $dashboardGroupsSettings['sonata_group_one']);
         static::assertSame('Group One Label', $dashboardGroupsSettings['sonata_group_one']['label']);
-        static::assertSame('SonataAdminBundle', $dashboardGroupsSettings['sonata_group_one']['label_catalogue']);
+        static::assertSame('SonataAdminBundle', $dashboardGroupsSettings['sonata_group_one']['translation_domain']);
         static::assertFalse($dashboardGroupsSettings['sonata_group_one']['on_top']);
         static::assertTrue($dashboardGroupsSettings['sonata_group_three']['on_top']);
         static::assertFalse($dashboardGroupsSettings['sonata_group_one']['keep_open']);
@@ -116,7 +109,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         static::assertSame('blog_article', $dashboardGroupsSettings['sonata_group_one']['items'][2]['route']);
         static::assertSame('Article', $dashboardGroupsSettings['sonata_group_one']['items'][2]['label']);
         static::assertSame(['articleId' => 3], $dashboardGroupsSettings['sonata_group_one']['items'][2]['route_params']);
-        static::assertContains('sonata_news_admin', $dashboardGroupsSettings['sonata_group_one']['item_adds']);
         static::assertContains('ROLE_ONE', $dashboardGroupsSettings['sonata_group_one']['roles']);
 
         static::assertArrayHasKey('sonata_group_two', $dashboardGroupsSettings);
@@ -133,7 +125,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     public function testProcessResultingConfig(): void
     {
         $this->setUpContainer();
-        $this->extension->load([$this->config], $this->container);
+        $this->extension->load([$this->getConfig()], $this->container);
 
         $this->compile();
 
@@ -154,18 +146,13 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         static::assertContains('sonata_article_admin', $adminServiceIds);
         static::assertContains('sonata_news_admin', $adminServiceIds);
 
-        static::assertContains('sonata_post_admin', $poolDefinition->getArgument(1));
-        static::assertArrayHasKey('sonata_group_one', $poolDefinition->getArgument(2));
-        static::assertArrayHasKey(NewsEntity::class, $poolDefinition->getArgument(3));
-
         static::assertArrayHasKey('sonata_group_one', $adminGroups);
         static::assertArrayHasKey('label', $adminGroups['sonata_group_one']);
-        static::assertArrayHasKey('label_catalogue', $adminGroups['sonata_group_one']);
+        static::assertArrayHasKey('translation_domain', $adminGroups['sonata_group_one']);
         static::assertArrayHasKey('items', $adminGroups['sonata_group_one']);
-        static::assertArrayHasKey('item_adds', $adminGroups['sonata_group_one']);
         static::assertArrayHasKey('roles', $adminGroups['sonata_group_one']);
         static::assertSame('Group One Label', $adminGroups['sonata_group_one']['label']);
-        static::assertSame('SonataAdminBundle', $adminGroups['sonata_group_one']['label_catalogue']);
+        static::assertSame('SonataAdminBundle', $adminGroups['sonata_group_one']['translation_domain']);
         static::assertFalse($adminGroups['sonata_group_one']['on_top']);
         static::assertTrue($adminGroups['sonata_group_three']['on_top']);
         static::assertFalse($adminGroups['sonata_group_one']['keep_open']);
@@ -173,8 +160,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             'sonata_post_admin',
             $adminGroups['sonata_group_one']['items'][0]['admin']
         );
-        static::assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['items']);
-        static::assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['item_adds']);
         static::assertNotContains('sonata_article_admin', $adminGroups['sonata_group_one']['items']);
         static::assertContains('ROLE_ONE', $adminGroups['sonata_group_one']['roles']);
 
@@ -263,7 +248,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     {
         $this->setUpContainer();
 
-        $config = $this->config;
+        $config = $this->getConfig();
         $config['options']['sort_admins'] = true;
         unset($config['dashboard']['groups']);
 
@@ -271,8 +256,11 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $this->compile();
 
+        $adminGroups = $this->container->findDefinition('sonata.admin.pool')->getArgument(2);
+        static::assertIsArray($adminGroups);
+
         // use array_values to check groups position
-        $adminGroups = array_values($this->container->findDefinition('sonata.admin.pool')->getArgument(2));
+        $adminGroups = array_values($adminGroups);
 
         static::assertSame('sonata_group_one', $adminGroups['0']['label'], 'second group in configuration, first in list');
         static::assertSame('1 Entry', $adminGroups[0]['items'][0]['label'], 'second entry for group in configuration, first in list');
@@ -297,6 +285,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->compile();
 
         $adminGroups = $this->container->findDefinition('sonata.admin.pool')->getArgument(2);
+        static::assertIsArray($adminGroups);
         static::assertArrayHasKey('resolved_group_name', $adminGroups);
         static::assertArrayNotHasKey('%sonata.admin.parameter.groupname%', $adminGroups);
     }
@@ -323,6 +312,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $postAdminTemplates = $this->container->findDefinition('sonata_post_admin.template_registry')->getArgument(0);
 
+        static::assertIsArray($postAdminTemplates);
         static::assertSame('@SonataAdmin/Pager/simple_pager_results.html.twig', $postAdminTemplates['pager_results']);
         static::assertSame('@SonataAdmin/Button/create_button.html.twig', $postAdminTemplates['button_create']);
     }
@@ -338,7 +328,11 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'sonata_report_one_admin',
             'setListModes',
-            [['list' => ['class' => 'fas fa-list fa-fw']]]
+            [['list' => [
+                'icon' => '<i class="fas fa-list fa-fw" aria-hidden="true"></i>',
+                // NEXT_MAJOR: Remove the class part.
+                'class' => 'fas fa-list fa-fw',
+            ]]]
         );
 
         self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
@@ -352,8 +346,9 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     {
         $this->setUpContainer();
 
-        $config = $this->config;
+        $config = $this->getConfig();
         static::assertArrayHasKey('sonata_group_four', $config['dashboard']['groups']);
+        static::assertIsArray($config['dashboard']['groups']['sonata_group_four']['items']);
 
         $config['dashboard']['groups']['sonata_group_four']['items'][] = [
             'route' => 'blog_article',
@@ -373,10 +368,10 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     {
         $this->setUpContainer();
 
-        $config = $this->config;
+        $config = $this->getConfig();
         $config['dashboard']['groups']['sonata_group_five'] = [
             'label' => 'Group One Label',
-            'label_catalogue' => 'SonataAdminBundle',
+            'translation_domain' => 'SonataAdminBundle',
             'on_top' => true,
             'items' => [
                 'sonata_post_admin',
@@ -389,9 +384,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
                     'label' => 'Article',
                     'route_params' => ['articleId' => 3],
                 ],
-            ],
-            'item_adds' => [
-                'sonata_news_admin',
             ],
             'roles' => ['ROLE_ONE'],
         ];
@@ -408,7 +400,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     {
         $this->setUpContainer();
 
-        $config = $this->config;
+        $config = $this->getConfig();
         $config['dashboard']['groups'] = [];
 
         $this->extension->load([$config], $this->container);
@@ -428,7 +420,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     {
         $this->setUpContainer();
 
-        $config = $this->config;
+        $config = $this->getConfig();
         $config['dashboard']['groups'] = [];
 
         $this->extension->load([$config], $this->container);
@@ -451,7 +443,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     {
         $this->setUpContainer();
 
-        $config = $this->config;
+        $config = $this->getConfig();
         $config['dashboard']['groups'] = [];
 
         $this->extension->load([$config], $this->container);
@@ -481,7 +473,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     {
         $this->setUpContainer();
 
-        $config = $this->config;
+        $config = $this->getConfig();
         $config['dashboard']['groups'] = [];
 
         $this->extension->load([$config], $this->container);
@@ -517,6 +509,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $pool = $this->container->findDefinition('sonata.admin.pool');
         $adminServiceIds = $pool->getArgument(1);
 
+        static::assertIsArray($adminServiceIds);
         static::assertContains('sonata_post_one_admin', $adminServiceIds);
         static::assertContains('sonata_post_two_admin', $adminServiceIds);
 
@@ -540,7 +533,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     {
         $this->setUpContainer();
 
-        $config = $this->config;
+        $config = $this->getConfig();
         $config['default_controller'] = FooAdminController::class;
 
         $this->container
@@ -568,7 +561,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             ->setPublic(true)
             ->addTag('sonata.admin', ['model_class' => PostEntity::class, 'controller' => 'sonata.admin.controller.crud', 'default' => true, 'group' => 'sonata_group_one', 'manager_type' => 'orm']);
 
-        $config = $this->config;
+        $config = $this->getConfig();
 
         $this->extension->load([$config], $this->container);
 
@@ -580,15 +573,21 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
     /**
      * @return array<string, mixed>
+     *
+     * @phpstan-return array{
+     *     dashboard: array{groups: array<string, array<string, mixed>>},
+     *     default_admin_services: array{pager_type: string},
+     *     templates: array{filter_theme: list<string>, form_theme: list<string>},
+     * }
      */
-    protected function getConfig()
+    protected function getConfig(): array
     {
         return [
             'dashboard' => [
                 'groups' => [
                     'sonata_group_one' => [
                         'label' => 'Group One Label',
-                        'label_catalogue' => 'SonataAdminBundle',
+                        'translation_domain' => 'SonataAdminBundle',
                         'items' => [
                             'sonata_post_admin',
                             [
@@ -601,9 +600,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
                                 'route_params' => ['articleId' => 3],
                             ],
                         ],
-                        'item_adds' => [
-                            'sonata_news_admin',
-                        ],
                         'roles' => ['ROLE_ONE'],
                     ],
                     'sonata_group_two' => [
@@ -615,7 +611,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
                     'sonata_group_four' => [
                         'on_top' => true,
                         'label' => 'Group Four Label',
-                        'label_catalogue' => 'SonataAdminBundle',
+                        'translation_domain' => 'SonataAdminBundle',
                         'items' => [
                             'sonata_post_admin',
                         ],

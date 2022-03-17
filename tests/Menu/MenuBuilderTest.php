@@ -58,9 +58,8 @@ final class MenuBuilderTest extends TestCase
             'bar' => [
                 'label' => '',
                 'icon' => '<i class="fas fa-edit"></i>',
-                'label_catalogue' => '',
+                'translation_domain' => '',
                 'roles' => [],
-                'item_adds' => [],
                 'items' => [],
                 'keep_open' => false,
                 'on_top' => false,
@@ -99,10 +98,9 @@ final class MenuBuilderTest extends TestCase
             'bar' => [
                 'label' => '',
                 'provider' => 'my_menu',
-                'label_catalogue' => '',
+                'translation_domain' => '',
                 'icon' => '<i class="fas fa-edit"></i>',
                 'roles' => [],
-                'item_adds' => [],
                 'items' => [],
                 'keep_open' => false,
                 'on_top' => false,
@@ -141,9 +139,8 @@ final class MenuBuilderTest extends TestCase
             'bar' => [
                 'label' => 'foo',
                 'icon' => '<i class="fas fa-edit"></i>',
-                'label_catalogue' => 'SonataAdminBundle',
+                'translation_domain' => 'SonataAdminBundle',
                 'items' => [],
-                'item_adds' => [],
                 'roles' => [],
                 'keep_open' => false,
                 'on_top' => false,

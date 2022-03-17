@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Enum;
 
-enum Suit: string {
+enum Suit: string
+{
     case Hearts = 'H';
     case Diamonds = 'D';
     case Clubs = 'C';
