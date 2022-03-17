@@ -51,7 +51,15 @@ final class GroupExtension extends AbstractExtension
      *
      * @deprecated since sonata-project/admin-bundle version 4.7 use GroupRuntime::getDashboardGroupsWithCreatableAdmins() instead
      *
-     * @phpstan-return array<array{label: string, translation_domain: string, icon: string, items: list<AdminInterface<object>>, keep_open: bool, on_top: bool, roles: list<string>}>
+     * @phpstan-return array<array{
+     *     label: string,
+     *     translation_domain: string,
+     *     icon: string,
+     *     items: list<AdminInterface<object>>,
+     *     keep_open: bool,
+     *     on_top: bool,
+     *     roles: list<string>
+     * }>
      */
     public function getDashboardGroupsWithCreatableAdmins(): array
     {

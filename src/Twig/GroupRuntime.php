@@ -33,7 +33,15 @@ final class GroupRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * @phpstan-return array<array{label: string, translation_domain: string, icon: string, items: list<AdminInterface<object>>, keep_open: bool, on_top: bool, roles: list<string>}>
+     * @phpstan-return array<array{
+     *     label: string,
+     *     translation_domain: string,
+     *     icon: string,
+     *     items: list<AdminInterface<object>>,
+     *     keep_open: bool,
+     *     on_top: bool,
+     *     roles: list<string>
+     * }>
      */
     public function getDashboardGroupsWithCreatableAdmins(): array
     {
