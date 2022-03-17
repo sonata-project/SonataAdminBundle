@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 
 use Rector\Core\Configuration\Option;
+use Rector\Php70\Rector\FunctionLike\ExceptionHandlerTypehintRector;
 use Rector\Php71\Rector\FuncCall\CountOnNullRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -29,5 +30,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set(Option::IMPORT_SHORT_CLASSES, false);
     $parameters->set(Option::SKIP, [
         CountOnNullRector::class,
+        ExceptionHandlerTypehintRector::class,
     ]);
 };

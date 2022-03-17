@@ -1036,7 +1036,7 @@ class CRUDController extends AbstractController
     /**
      * @throws \Exception
      */
-    protected function handleModelManagerException(\Throwable $exception): void
+    protected function handleModelManagerException(\Exception $exception): void
     {
         if ($exception instanceof ModelManagerThrowable) {
             $this->handleModelManagerThrowable($exception);
