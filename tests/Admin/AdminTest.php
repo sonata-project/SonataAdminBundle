@@ -1194,8 +1194,8 @@ final class AdminTest extends TestCase
         $modelManager = $this->createStub(ModelManagerInterface::class);
         $modelManager
             ->method('getNormalizedIdentifier')
-            ->willReturnCallback(static fn (?object $model = null): ?string => // @phpstan-ignore-next-line
-$model ? $model->id : null);
+            // @phpstan-ignore-next-line
+            ->willReturnCallback(static fn (?object $model = null): ?string => $model ? $model->id : null);
 
         $admin->setModelManager($modelManager);
 
