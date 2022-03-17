@@ -2,6 +2,33 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.9.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.8.1...4.9.0) - 2022-02-27
+### Added
+- [[#7730](https://github.com/sonata-project/SonataAdminBundle/pull/7730)] `TemplateType` to display custom data in the edit/create view. ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Changed
+- [[#7749](https://github.com/sonata-project/SonataAdminBundle/pull/7749)] Improve `make:sonata:admin` command, now it's passing modelClass and Controller in services tag. ([@eerison](https://github.com/eerison))
+- [[#7725](https://github.com/sonata-project/SonataAdminBundle/pull/7725)] The default list mode is now the first one of the `getListModes` method. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7744](https://github.com/sonata-project/SonataAdminBundle/pull/7744)] Some typehint from SourceIteratorInterface to \Iterator to allow using this library without deprecation ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7729](https://github.com/sonata-project/SonataAdminBundle/pull/7729)] Use dynamic action variable to template ([@core23](https://github.com/core23))
+- [[#7714](https://github.com/sonata-project/SonataAdminBundle/pull/7714)] Change if targetClass is instance of other className ([@willemverspyck](https://github.com/willemverspyck))
+
+### Deprecated
+- [[#7748](https://github.com/sonata-project/SonataAdminBundle/pull/7748)] `sonata_admin.options.default_label_catalogue` in favor of `sonata_admin.options.default_translation_domain` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7748](https://github.com/sonata-project/SonataAdminBundle/pull/7748)] `label_catalogue` attribute on `sonata_admin` tag in favor of `translation_domain` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7748](https://github.com/sonata-project/SonataAdminBundle/pull/7748)] `catalogue` option on fieldDescription in favor of `choice_translation_domain` for TYPE_CHOICE or `value_translation_domain` for TYPE_TRANS. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7748](https://github.com/sonata-project/SonataAdminBundle/pull/7748)] `label_catalogue` on group configuration in favor of `translation_domain` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7748](https://github.com/sonata-project/SonataAdminBundle/pull/7748)] `btn_catalogue` option on form type in favor of `btn_translation_domain` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7725](https://github.com/sonata-project/SonataAdminBundle/pull/7725)] Defining a list mode with a "class" setting, use the "icon" setting instead. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7743](https://github.com/sonata-project/SonataAdminBundle/pull/7743)] Passing '' for the `admin` key in an item of the `sonata_admin.dashboard.groups` config ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7743](https://github.com/sonata-project/SonataAdminBundle/pull/7743)] Passing a `route` or a `label` when an `admin` is passed in an item of the `sonata_admin.dashboard.groups` config ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7743](https://github.com/sonata-project/SonataAdminBundle/pull/7743)] The `item_adds` key when configuring the `sonata_admin.dashboard.groups` config ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7729](https://github.com/sonata-project/SonataAdminBundle/pull/7729)] `tree.html.twig` template ([@core23](https://github.com/core23))
+
+### Fixed
+- [[#7748](https://github.com/sonata-project/SonataAdminBundle/pull/7748)] `translation_domain` attribute on `sonata_admin` is used to set the admin translation domain. (Unlike the `label_catalogue` attribute) ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7757](https://github.com/sonata-project/SonataAdminBundle/pull/7757)] Duplicate display of the help option for ModelListType ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.8.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.8.0...4.8.1) - 2022-01-31
 ### Fixed
 - [[#7716](https://github.com/sonata-project/SonataAdminBundle/pull/7716)] Configure the admin with the `sonata_admin` tag before any custom `call` provided in the service configuration. ([@VincentLanglet](https://github.com/VincentLanglet))

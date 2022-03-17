@@ -41,7 +41,7 @@ First, configure the ``outer_list_rows_mosaic`` template key:
                 controller="%sonata.media.admin.media.controller%"
                 manager_type="orm"
                 group="sonata_media"
-                label_catalogue="%sonata.media.admin.media.translation_domain%"
+                translation_domain="%sonata.media.admin.media.translation_domain%"
                 label="media"
                 label_translator_strategy="sonata.admin.label.strategy.underscore"
                 />

@@ -49,8 +49,8 @@ Two template keys need to be set:
                 controller="%sonata.admin.comment.controller%"
                 manager_type="orm"
                 group="sonata_blog"
+                translation_domain="%sonata.admin.comment.translation_domain%"
                 label="comments"
-                label_catalogue="%sonata.admin.comment.translation_domain%"
                 label_translator_strategy="sonata.admin.label.strategy.underscore"
                 />
         </service>

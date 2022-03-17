@@ -21,6 +21,7 @@ use Sonata\AdminBundle\SonataConfiguration;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
+use Sonata\AdminBundle\Tests\Fixtures\Enum\Suit;
 use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
 use Sonata\AdminBundle\Tests\Twig\Extension\FakeTemplateRegistryExtension;
 use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
@@ -119,7 +120,7 @@ final class RenderElementRuntimeTest extends TestCase
             'default_admin_route' => 'show',
             'default_group' => 'default',
             'default_icon' => '<i class="fas fa-folder"></i>',
-            'default_label_catalogue' => 'SonataAdminBundle',
+            'default_translation_domain' => 'SonataAdminBundle',
             'dropdown_number_groups_per_colums' => 2,
             'form_type' => 'standard',
             'html5_validate' => true,
@@ -133,7 +134,7 @@ final class RenderElementRuntimeTest extends TestCase
             'role_admin' => 'ROLE_SONATA_ADMIN',
             'role_super_admin' => 'ROLE_SUPER_ADMIN',
             'search' => true,
-            'skin' => 'black',
+            'skin' => 'skin-black',
             'sort_admins' => true,
             'stylesheets' => [],
             'use_bootlint' => false,
@@ -512,7 +513,7 @@ EOT
      */
     public function getRenderListElementTests(): array
     {
-        return [
+        $elements = [
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345"> Example </td>',
                 FieldDescriptionInterface::TYPE_STRING,
@@ -897,19 +898,19 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> Delete </td>',
                 FieldDescriptionInterface::TYPE_TRANS,
                 'action_delete',
-                ['catalogue' => 'SonataAdminBundle'],
+                ['value_translation_domain' => 'SonataAdminBundle'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> </td>',
                 FieldDescriptionInterface::TYPE_TRANS,
                 null,
-                ['catalogue' => 'SonataAdminBundle'],
+                ['value_translation_domain' => 'SonataAdminBundle'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> Delete </td>',
                 FieldDescriptionInterface::TYPE_TRANS,
                 'action_delete',
-                ['format' => '%s', 'catalogue' => 'SonataAdminBundle'],
+                ['format' => '%s', 'value_translation_domain' => 'SonataAdminBundle'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345">
@@ -925,7 +926,7 @@ EOT
                 </td>',
                 FieldDescriptionInterface::TYPE_TRANS,
                 'action_delete',
-                ['format' => 'action.%s', 'catalogue' => 'SonataAdminBundle'],
+                ['format' => 'action.%s', 'value_translation_domain' => 'SonataAdminBundle'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Status1 </td>',
@@ -963,7 +964,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Delete </td>',
                 FieldDescriptionInterface::TYPE_CHOICE,
                 'Foo',
-                ['catalogue' => 'SonataAdminBundle', 'choices' => [
+                ['choice_translation_domain' => 'SonataAdminBundle', 'choices' => [
                     'Foo' => 'action_delete',
                     'Status2' => 'Alias2',
                     'Status3' => 'Alias3',
@@ -1025,7 +1026,7 @@ EOT
                 '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Delete, Alias3 </td>',
                 FieldDescriptionInterface::TYPE_CHOICE,
                 ['Foo', 'Status3'],
-                ['catalogue' => 'SonataAdminBundle', 'choices' => [
+                ['choice_translation_domain' => 'SonataAdminBundle', 'choices' => [
                     'Foo' => 'action_delete',
                     'Status2' => 'Alias2',
                     'Status3' => 'Alias3',
@@ -1162,7 +1163,7 @@ EOT
                 'Foo',
                 [
                     'editable' => true,
-                    'catalogue' => 'SonataAdminBundle',
+                    'choice_translation_domain' => 'SonataAdminBundle',
                     'choices' => [
                         'Foo' => 'action_delete',
                         'Status2' => 'Alias2',
@@ -1483,7 +1484,7 @@ EOT
                 [
                     'editable' => true,
                     'multiple' => true,
-                    'catalogue' => 'SonataAdminBundle',
+                    'choice_translation_domain' => 'SonataAdminBundle',
                     'choices' => [
                         'Status1' => 'action_delete',
                         'Status2' => 'Alias2',
@@ -1492,6 +1493,18 @@ EOT
                 ],
             ],
         ];
+
+        // TODO: Remove the "if" check when dropping support of PHP < 8.1 and add the case to the list
+        if (\PHP_VERSION_ID >= 80100) {
+            $elements[] = [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-enum" objectId="12345"> Hearts </td>',
+                FieldDescriptionInterface::TYPE_ENUM,
+                Suit::Hearts,
+                [],
+            ];
+        }
+
+        return $elements;
     }
 
     /**
@@ -1586,13 +1599,13 @@ EOT
                 '<th>Data</th> <td>Delete</td>',
                 FieldDescriptionInterface::TYPE_TRANS,
                 'action_delete',
-                ['safe' => false, 'catalogue' => 'SonataAdminBundle'],
+                ['safe' => false, 'value_translation_domain' => 'SonataAdminBundle'],
             ],
             [
                 '<th>Data</th> <td>Delete</td>',
                 FieldDescriptionInterface::TYPE_TRANS,
                 'delete',
-                ['safe' => false, 'catalogue' => 'SonataAdminBundle', 'format' => 'action_%s'],
+                ['safe' => false, 'value_translation_domain' => 'SonataAdminBundle', 'format' => 'action_%s'],
             ],
             ['<th>Data</th> <td>Status1</td>', FieldDescriptionInterface::TYPE_CHOICE, 'Status1', ['safe' => false]],
             [
@@ -1619,7 +1632,7 @@ EOT
                 '<th>Data</th> <td>Delete</td>',
                 FieldDescriptionInterface::TYPE_CHOICE,
                 'Foo',
-                ['safe' => false, 'catalogue' => 'SonataAdminBundle', 'choices' => [
+                ['safe' => false, 'choice_translation_domain' => 'SonataAdminBundle', 'choices' => [
                     'Foo' => 'action_delete',
                     'Status2' => 'Alias2',
                     'Status3' => 'Alias3',
@@ -1668,7 +1681,7 @@ EOT
                 '<th>Data</th> <td>Delete, Alias3</td>',
                 FieldDescriptionInterface::TYPE_CHOICE,
                 ['Foo', 'Status3'],
-                ['safe' => false, 'catalogue' => 'SonataAdminBundle', 'choices' => [
+                ['safe' => false, 'choice_translation_domain' => 'SonataAdminBundle', 'choices' => [
                     'Foo' => 'action_delete',
                     'Status2' => 'Alias2',
                     'Status3' => 'Alias3',

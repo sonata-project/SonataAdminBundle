@@ -25,6 +25,7 @@ final class ConfigurationTest extends TestCase
     {
         $config = $this->process([]);
 
+        static::assertIsArray($config['options']);
         static::assertTrue($config['options']['html5_validate']);
         static::assertNull($config['options']['pager_links']);
         static::assertTrue($config['options']['confirm_exit']);
@@ -33,6 +34,7 @@ final class ConfigurationTest extends TestCase
         static::assertSame('bundles/sonataadmin/images/default_mosaic_image.png', $config['options']['mosaic_background']);
         static::assertSame('default', $config['options']['default_group']);
         static::assertSame('SonataAdminBundle', $config['options']['default_label_catalogue']);
+        static::assertNull($config['options']['default_translation_domain']);
         static::assertSame('fas fa-folder', $config['options']['default_icon']);
     }
 
@@ -40,6 +42,7 @@ final class ConfigurationTest extends TestCase
     {
         $config = $this->process([]);
 
+        static::assertIsArray($config['breadcrumbs']);
         static::assertSame('show', $config['breadcrumbs']['child_admin_route']);
     }
 
@@ -83,6 +86,9 @@ final class ConfigurationTest extends TestCase
     {
         $config = $this->process([]);
 
+        static::assertIsArray($config['dashboard']);
+        static::assertIsArray($config['dashboard']['blocks']);
+        static::assertIsArray($config['dashboard']['blocks'][0]);
         static::assertEmpty($config['dashboard']['blocks'][0]['roles']);
     }
 
@@ -97,6 +103,9 @@ final class ConfigurationTest extends TestCase
             ],
         ]]);
 
+        static::assertIsArray($config['dashboard']);
+        static::assertIsArray($config['dashboard']['blocks']);
+        static::assertIsArray($config['dashboard']['blocks'][0]);
         static::assertSame($config['dashboard']['blocks'][0]['roles'], ['ROLE_ADMIN']);
     }
 
@@ -127,6 +136,10 @@ final class ConfigurationTest extends TestCase
             ],
         ]]);
 
+        static::assertIsArray($config['dashboard']);
+        static::assertIsArray($config['dashboard']['groups']);
+        static::assertIsArray($config['dashboard']['groups']['bar']);
+        static::assertIsArray($config['dashboard']['groups']['bar']['items']);
         static::assertCount(4, $config['dashboard']['groups']['bar']['items']);
         static::assertSame(
             $config['dashboard']['groups']['bar']['items'][0],
@@ -212,6 +225,7 @@ final class ConfigurationTest extends TestCase
     {
         $config = $this->process([[]]);
 
+        static::assertIsArray($config['security']);
         static::assertSame('ROLE_SONATA_ADMIN', $config['security']['role_admin']);
         static::assertSame('ROLE_SUPER_ADMIN', $config['security']['role_super_admin']);
     }
@@ -220,6 +234,7 @@ final class ConfigurationTest extends TestCase
     {
         $config = $this->process([[]]);
 
+        static::assertIsArray($config['assets']);
         static::assertSame([], $config['assets']['extra_stylesheets']);
         static::assertSame([], $config['assets']['extra_javascripts']);
     }
@@ -228,6 +243,7 @@ final class ConfigurationTest extends TestCase
     {
         $config = $this->process([[]]);
 
+        static::assertIsArray($config['assets']);
         static::assertSame([], $config['assets']['remove_stylesheets']);
         static::assertSame([], $config['assets']['remove_javascripts']);
     }

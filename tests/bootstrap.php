@@ -31,5 +31,10 @@ if (class_exists(Deprecation::class)) {
 }
 
 if (file_exists($file = __DIR__.'/custom_bootstrap.php')) {
+    /**
+     * @psalm-suppress MissingFile,UnusedPsalmSuppress
+     *
+     * @see https://github.com/vimeo/psalm/issues/3886
+     */
     require_once $file;
 }

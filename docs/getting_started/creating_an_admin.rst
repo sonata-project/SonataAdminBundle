@@ -114,9 +114,10 @@ easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin`
     namespace App\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
-    use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
+    use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Show\ShowMapper;
     use Symfony\Component\Form\Extension\Core\Type\TextType;
 
     final class CategoryAdmin extends AbstractAdmin
@@ -177,6 +178,22 @@ service and tag it with the ``sonata.admin`` tag:
                 class: App\Admin\CategoryAdmin
                 tags:
                     - { name: sonata.admin, model_class: App\Entity\Category, manager_type: orm, label: Category }
+
++---------------------------------------+-----------------------------------------------------------------------------------------+
+| Tag option                            | Description                                                                             |
++=======================================+=========================================================================================+
+| name                                  | Service tag's name                                                                      |
++---------------------------------------+-----------------------------------------------------------------------------------------+
+| model_class                           | The entity class e.g: ``App\Entity\Category``                                           |
++---------------------------------------+-----------------------------------------------------------------------------------------+
+| manager_type                          | Manager type (``orm``, ``odm``)                                                         |
++---------------------------------------+-----------------------------------------------------------------------------------------+
+| label                                 | Label, e.g Category                                                                     |
++---------------------------------------+-----------------------------------------------------------------------------------------+
+| group (``optional``)                  | The admins group, it will be used to group in menu on the left side, e.g ``Category``   |
++---------------------------------------+-----------------------------------------------------------------------------------------+
+| controller (``optional``)             | In case you want to use a custom controller, pass the class name.                       |
++---------------------------------------+-----------------------------------------------------------------------------------------+
 
 The constructor of the base Admin class has many arguments. SonataAdminBundle
 provides a compiler pass which takes care of configuring it correctly for you.

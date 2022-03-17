@@ -49,8 +49,16 @@ interface TaggedAdminInterface extends MutableTemplateRegistryAwareInterface
     public const ADMIN_TAG = 'sonata.admin';
 
     public const DEFAULT_LIST_MODES = [
-        'list' => ['class' => 'fas fa-list fa-fw'],
-        'mosaic' => ['class' => 'fas fa-th-large fa-fw'],
+        'list' => [
+            'icon' => '<i class="fas fa-list fa-fw" aria-hidden="true"></i>',
+            // NEXT_MAJOR: Remove the class part.
+            'class' => 'fas fa-list fa-fw',
+        ],
+        'mosaic' => [
+            'icon' => '<i class="fas fa-th-large fa-fw" aria-hidden="true"></i>',
+            // NEXT_MAJOR: Remove the class part.
+            'class' => 'fas fa-th-large fa-fw',
+        ],
     ];
 
     /**
@@ -63,12 +71,12 @@ interface TaggedAdminInterface extends MutableTemplateRegistryAwareInterface
     public function getLabel(): ?string;
 
     /**
-     * @param array<string, array<string, mixed>> $listModes
+     * @param non-empty-array<string, array<string, mixed>> $listModes
      */
     public function setListModes(array $listModes): void;
 
     /**
-     * @return array<string, array<string, mixed>>
+     * @return non-empty-array<string, array<string, mixed>>
      */
     public function getListModes(): array;
 

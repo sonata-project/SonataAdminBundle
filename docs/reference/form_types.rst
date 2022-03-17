@@ -91,10 +91,10 @@ The available options are:
   calculated from the linked admin class. You usually should not need to set
   this manually.
 
-``btn_add``, ``btn_list``, ``btn_delete`` and ``btn_catalogue``:
+``btn_add``, ``btn_list``, ``btn_delete`` and ``btn_translation_domain``:
   The labels on the ``add``, ``list`` and ``delete`` buttons can be customized
   with these parameters. Setting any of them to ``false`` will hide the
-  corresponding button. You can also specify a custom translation catalogue
+  corresponding button. You can also specify a custom translation domain
   for these labels, which defaults to ``SonataAdminBundle``.
 
 .. note::
@@ -148,10 +148,10 @@ The available options are:
   calculated from the linked admin class. You usually should not need to set
   this manually.
 
-``btn_add``, ``btn_edit``, ``btn_list``, ``btn_delete`` and ``btn_catalogue``:
+``btn_add``, ``btn_edit``, ``btn_list``, ``btn_delete`` and ``btn_translation_domain``:
   The labels on the ``add``, ``edit``, ``list`` and ``delete`` buttons can be customized
   with these parameters. Setting any of them to ``false`` will hide the
-  corresponding button. You can also specify a custom translation catalogue
+  corresponding button. You can also specify a custom translation domain
   for these labels, which defaults to ``SonataAdminBundle``.
 
 .. note::
@@ -389,10 +389,10 @@ The available options are:
   defaults to ``@SonataAdmin/Form/Type/sonata_type_model_autocomplete.html.twig``.
   Use this option if you want to override the default template of this form type.
 
-``btn_add`` and ``btn_catalogue``:
+``btn_add`` and ``btn_translation_domain``:
   The labels on the ``add`` button can be customized with these parameters.
   Setting any of them to ``false`` will hide the corresponding button. You can also specify
-  a custom translation catalogue for these labels, which defaults to ``SonataAdminBundle``::
+  a custom translation domain for these labels, which defaults to ``SonataAdminBundle``::
 
     // src/Admin/ArticleAdmin.php
 
@@ -588,10 +588,10 @@ The available options (which can be passed as a third parameter to ``FormMapper:
   defaults to ``true`` and indicates that a 'delete' checkbox should be shown allowing
   the user to delete the linked object.
 
-``btn_add``, ``btn_list``, ``btn_delete`` and ``btn_catalogue``:
+``btn_add``, ``btn_list``, ``btn_delete`` and ``btn_translation_domain``:
   The labels on the ``add``, ``list`` and ``delete`` buttons can be customized
   with these parameters. Setting any of them to ``false`` will hide the
-  corresponding button. You can also specify a custom translation catalogue
+  corresponding button. You can also specify a custom translation domain
   for these labels, which defaults to ``SonataAdminBundle``.
 
 Sonata\\Form\\Type\\CollectionType
@@ -639,10 +639,10 @@ to the underlying forms::
 
 The available options (which can be passed as a third parameter to ``FormMapper::add()``) are:
 
-``btn_add`` and ``btn_catalogue``:
+``btn_add`` and ``btn_translation_domain``:
   The label on the ``add`` button can be customized
   with this parameters. Setting it to ``false`` will hide the
-  corresponding button. You can also specify a custom translation catalogue
+  corresponding button. You can also specify a custom translation domain
   for this label, which defaults to ``SonataAdminBundle``.
 
 .. tip::

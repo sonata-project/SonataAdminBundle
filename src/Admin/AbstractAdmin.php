@@ -35,7 +35,6 @@ use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Util\Instantiator;
 use Sonata\AdminBundle\Util\ParametersManipulator;
-use Sonata\Exporter\Source\SourceIteratorInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -317,28 +316,28 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * The form group disposition.
      *
-     * @var array<string, mixed>
+     * @var array<string, array<string, mixed>>
      */
     private $formGroups = [];
 
     /**
      * The form tabs disposition.
      *
-     * @var array<string, mixed>
+     * @var array<string, array<string, mixed>>
      */
     private $formTabs = [];
 
     /**
      * The view group disposition.
      *
-     * @var array<string, mixed>
+     * @var array<string, array<string, mixed>>
      */
     private $showGroups = [];
 
     /**
      * The view tab disposition.
      *
-     * @var array<string, mixed>
+     * @var array<string, array<string, mixed>>
      */
     private $showTabs = [];
 
@@ -370,7 +369,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $fields;
     }
 
-    final public function getDataSourceIterator(): SourceIteratorInterface
+    final public function getDataSourceIterator(): \Iterator
     {
         $datagrid = $this->getDatagrid();
         $datagrid->buildPager();
@@ -484,7 +483,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 $filters = $bag->all('filter');
             } else {
                 $filters = $bag->get('filter', []);
+                \assert(\is_array($filters));
             }
+
             if (isset($filters[DatagridInterface::PAGE])) {
                 $filters[DatagridInterface::PAGE] = (int) $filters[DatagridInterface::PAGE];
             }
@@ -1757,11 +1758,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function getListMode(): string
     {
+        $defaultListMode = array_keys($this->getListModes())[0];
         if (!$this->hasRequest() || !$this->getRequest()->hasSession()) {
-            return 'list';
+            return $defaultListMode;
         }
 
-        return $this->getRequest()->getSession()->get(sprintf('%s.list_mode', $this->getCode()), 'list');
+        return $this->getRequest()->getSession()->get(sprintf('%s.list_mode', $this->getCode()), $defaultListMode);
     }
 
     final public function checkAccess(string $action, ?object $object = null): void

@@ -92,7 +92,11 @@ final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
             return $this;
         }
 
-        if (isset($fieldDescriptionOptions['role']) && !$this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
+        if (
+            isset($fieldDescriptionOptions['role'])
+            && \is_string($fieldDescriptionOptions['role'])
+            && !$this->getAdmin()->isGranted($fieldDescriptionOptions['role'])
+        ) {
             return $this;
         }
 

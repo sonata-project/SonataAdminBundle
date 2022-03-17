@@ -34,6 +34,8 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  * @author Michael Williams <michael.williams@funsational.com>
+ *
+ * @phpstan-import-type SonataAdminConfiguration from \Sonata\AdminBundle\DependencyInjection\Configuration
  */
 final class SonataAdminExtension extends Extension
 {
@@ -81,6 +83,8 @@ final class SonataAdminExtension extends Extension
 
         $configuration = $this->getConfiguration($configs, $container);
         \assert(null !== $configuration);
+
+        /** @phpstan-var SonataAdminConfiguration $config */
         $config = $this->processConfiguration($configuration, $configs);
 
         $config['options']['javascripts'] = $this->buildJavascripts($config);
@@ -111,7 +115,9 @@ final class SonataAdminExtension extends Extension
             $config['options']['mosaic_background']
         );
         $container->setParameter('sonata.admin.configuration.default_group', $config['options']['default_group']);
+        // NEXT_MAJOR: Remove the following line.
         $container->setParameter('sonata.admin.configuration.default_label_catalogue', $config['options']['default_label_catalogue']);
+        $container->setParameter('sonata.admin.configuration.default_translation_domain', $config['options']['default_translation_domain']);
         $container->setParameter('sonata.admin.configuration.default_icon', $config['options']['default_icon']);
         $container->setParameter('sonata.admin.configuration.breadcrumbs', $config['breadcrumbs']);
 
@@ -215,6 +221,8 @@ final class SonataAdminExtension extends Extension
      * @param array<string, mixed> $config
      *
      * @return string[]
+     *
+     * @phpstan-param SonataAdminConfiguration $config
      */
     private function buildStylesheets(array $config): array
     {
@@ -234,6 +242,8 @@ final class SonataAdminExtension extends Extension
      * @param array<string, mixed> $config
      *
      * @return string[]
+     *
+     * @phpstan-param SonataAdminConfiguration $config
      */
     private function buildJavascripts(array $config): array
     {

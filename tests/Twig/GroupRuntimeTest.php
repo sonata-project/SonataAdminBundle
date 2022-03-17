@@ -27,10 +27,10 @@ final class GroupRuntimeTest extends TestCase
         $pool = new Pool($container, ['sonata_admin_non_creatable', 'sonata_admin_creatable'], [
             'group_without_creatable' => [
                 'label' => 'non_creatable',
-                'label_catalogue' => 'default',
+                'translation_domain' => 'default',
                 'icon' => 'icon1',
                 'items' => [
-                    'itemKey' => [
+                    [
                         'admin' => 'sonata_admin_non_creatable',
                         'label' => 'admin1',
                         'roles' => [],
@@ -39,17 +39,16 @@ final class GroupRuntimeTest extends TestCase
                         'route_absolute' => false,
                     ],
                 ],
-                'item_adds' => [],
                 'keep_open' => false,
                 'on_top' => false,
                 'roles' => [],
             ],
             'group_with_creatable' => [
                 'label' => 'creatable',
-                'label_catalogue' => 'default',
+                'translation_domain' => 'default',
                 'icon' => 'icon2',
                 'items' => [
-                    'itemKey' => [
+                    [
                         'admin' => 'sonata_admin_creatable',
                         'label' => 'admin1',
                         'roles' => [],
@@ -58,7 +57,6 @@ final class GroupRuntimeTest extends TestCase
                         'route_absolute' => false,
                     ],
                 ],
-                'item_adds' => [],
                 'keep_open' => false,
                 'on_top' => false,
                 'roles' => [],
@@ -95,12 +93,11 @@ final class GroupRuntimeTest extends TestCase
         static::assertSame([
             [
                 'items' => [
-                    'itemKey' => $adminCreatable,
+                    $adminCreatable,
                 ],
                 'label' => 'creatable',
-                'label_catalogue' => 'default',
+                'translation_domain' => 'default',
                 'icon' => 'icon2',
-                'item_adds' => [],
                 'keep_open' => false,
                 'on_top' => false,
                 'roles' => [],

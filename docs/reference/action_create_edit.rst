@@ -34,12 +34,6 @@ For more information about optional libraries:
 - iCheck: http://icheck.fronteed.com/
 - Bootlint: https://github.com/twbs/bootlint#in-the-browser
 
-.. note::
-
-    **TODO**
-    * options available when adding fields, inc custom templates
-    * targeting submodel fields using dot-separated notation
-
 Routes
 ------
 
@@ -158,6 +152,41 @@ a group:
    :alt: Box Class
    :width: 500
 
+Displaying custom data/template
+-------------------------------
+
+If you need a specific layout between some fields, you can define a custom template
+with the sonata TemplateType::
+
+    namespace App\Admin;
+
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
+    use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Form\Type\TemplateType;
+
+   final class PersonAdmin extends AbstractAdmin
+    {
+        protected function configureFormFields(FormMapper $form): void
+        {
+            $form
+                 ->add('title')
+                 ->add('googleMap', TemplateType::class, [
+                     'template'   => 'path/to/your/template.html.twig'
+                     'parameters' => [
+                         'url' => $this->generateGoogleMapUrl($this->getSubject()),
+                     ],
+                 ])
+                 ->add('streetname', TextType::class)
+                 ->add('housenumber', NumberType::class);
+        }
+    }
+
+The related template:
+
+.. code-block:: twig
+
+    <a href="{{ url }}">{{ object.title }}</a>
+
 Embedding other Admins
 ----------------------
 
@@ -166,12 +195,3 @@ Embedding other Admins
     **TODO**:
     * how to embed one Admin in another (1:1, 1:M, M:M)
     * how to access the right object(s) from the embedded Admin's code
-
-Customizing only one of the actions
------------------------------------
-
-.. note::
-
-    **TODO**:
-    * how to create settings/fields that appear on only one of the create/edit views
-    * and any controller changes needed to manage them

@@ -120,6 +120,7 @@ final class AdminObjectAclManipulator
         }
 
         $masks = $data->getMasks();
+        /** @var array<string, array<string, mixed>> $matrices */
         $matrices = $form->getData();
 
         foreach ($aclValues as $aclValue) {

@@ -14,29 +14,15 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Menu\Matcher\Voter;
 
 use Knp\Menu\ItemInterface;
-use Knp\Menu\Matcher\Voter\VoterInterface;
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Menu\Matcher\Voter\ActiveVoter;
 
-final class ActiveVoterTest extends AbstractVoterTest
+final class ActiveVoterTest extends TestCase
 {
-    public function createVoter($dataVoter, $route): VoterInterface
-    {
-        return new ActiveVoter();
-    }
-
-    public function provideData(): array
-    {
-        return [
-            'active' => [true, null, true, true],
-            'no active' => [false, null, false, false],
-            'null' => [null, null, null, null],
-        ];
-    }
-
     /**
-     * @param mixed $data
+     * @dataProvider provideData
      */
-    protected function createItem($data): ItemInterface
+    public function testMatching(?bool $itemData, ?bool $expected): void
     {
         $item = $this->createMock(ItemInterface::class);
         $item
@@ -45,14 +31,28 @@ final class ActiveVoterTest extends AbstractVoterTest
                 static::equalTo('active'),
                 static::equalTo('sonata_admin')
             ))
-            ->willReturnCallback(static function (string $name) use ($data) {
+            ->willReturnCallback(static function (string $name) use ($itemData) {
                 if ('active' === $name) {
-                    return $data;
+                    return $itemData;
                 }
 
                 return true;
             });
 
-        return $item;
+        $voter = new ActiveVoter();
+
+        static::assertSame($expected, $voter->matchItem($item));
+    }
+
+    /**
+     * @return iterable<array{bool|null, bool|null}>
+     */
+    public function provideData(): iterable
+    {
+        return [
+            'active' => [true, true],
+            'no active' => [false, false],
+            'null' => [null, null],
+        ];
     }
 }

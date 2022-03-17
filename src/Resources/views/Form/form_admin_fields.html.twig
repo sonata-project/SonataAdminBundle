@@ -569,10 +569,20 @@ file that was distributed with this source code.
                     <a href="{{ sonata_admin.field_description.associationadmin.generateUrl('list', {select: true}) }}"
                        onclick="return start_field_dialog_form_list_{{ id }}(this);"
                        class="btn btn-info btn-sm sonata-ba-action"
-                       title="{{ btn_list|trans({}, btn_catalogue) }}"
+                       {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
+                       title="{{
+                           btn_translation_domain|default(null) is same as(false)
+                           ? btn_list
+                           : btn_list|trans({}, btn_translation_domain|default(btn_catalogue))
+                       }}"
                     >
                         <i class="fas fa-list"></i>
-                        {{ btn_list|trans({}, btn_catalogue) }}
+                        {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
+                        {{
+                            btn_translation_domain|default(null) is same as(false)
+                            ? btn_list
+                            : btn_list|trans({}, btn_translation_domain|default(btn_catalogue))
+                        }}
                     </a>
                 {% endif %}
 
@@ -583,10 +593,20 @@ file that was distributed with this source code.
                     <a href="{{ sonata_admin.field_description.associationadmin.generateUrl('create') }}"
                        onclick="return start_field_dialog_form_add_{{ id }}(this);"
                        class="btn btn-success btn-sm sonata-ba-action"
-                       title="{{ btn_add|trans({}, btn_catalogue) }}"
+                        {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
+                       title="{{
+                           btn_translation_domain|default(null) is same as(false)
+                           ? btn_add
+                           : btn_add|trans({}, btn_translation_domain|default(btn_catalogue))
+                       }}"
                     >
                         <i class="fas fa-plus-circle"></i>
-                        {{ btn_add|trans({}, btn_catalogue) }}
+                        {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
+                        {{
+                            btn_translation_domain|default(null) is same as(false)
+                            ? btn_add
+                            : btn_add|trans({}, btn_translation_domain|default(btn_catalogue))
+                        }}
                     </a>
                 {% endif %}
                 {% if sonata_admin.field_description.associationadmin.hasroute('edit')
@@ -598,10 +618,20 @@ file that was distributed with this source code.
                     }}"
                        onclick="return start_field_dialog_form_edit_{{ id }}(this);"
                        class="btn btn-warning btn-sm sonata-ba-action {% if sonata_admin.value == null %}hidden{% endif %}"
-                       title="{{ btn_edit|trans({}, btn_catalogue) }}"
+                        {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
+                       title="{{
+                           btn_translation_domain|default(null) is same as(false)
+                           ? btn_edit
+                           : btn_edit|trans({}, btn_translation_domain|default(btn_catalogue))
+                       }}"
                     >
                         <i class="fas fa-pencil-alt"></i>
-                        {{ btn_edit|trans({}, btn_catalogue) }}
+                        {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
+                        {{
+                            btn_translation_domain|default(null) is same as(false)
+                            ? btn_edit
+                            : btn_edit|trans({}, btn_translation_domain|default(btn_catalogue))
+                        }}
                     </a>
                 {% endif %}
             </span>
@@ -611,10 +641,20 @@ file that was distributed with this source code.
                     <button
                         onclick="return remove_selected_element_{{ id }}(this);"
                         class="btn btn-danger btn-sm sonata-ba-action"
-                        title="{{ btn_delete|trans({}, btn_catalogue) }}"
+                        {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
+                        title="{{
+                            btn_translation_domain|default(null) is same as(false)
+                            ? btn_delete
+                            : btn_delete|trans({}, btn_translation_domain|default(btn_catalogue))
+                        }}"
                     >
                         <i class="fas fa-minus-circle"></i>
-                        {{ btn_delete|trans({}, btn_catalogue) }}
+                        {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
+                        {{
+                            btn_translation_domain|default(null) is same as(false)
+                            ? btn_delete
+                            : btn_delete|trans({}, btn_translation_domain|default(btn_catalogue))
+                        }}
                     </button>
                 {% endif %}
             </span>
@@ -624,8 +664,6 @@ file that was distributed with this source code.
             {# Hidden text input cannot be required, because browser will throw error "An invalid form control with name='' is not focusable"  #}
             {{ form_widget(form, {'required':false}) }}
         </span>
-
-        {{ form_help(form) }}
 
         <div class="modal fade" id="field_dialog_{{ id }}" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -643,3 +681,7 @@ file that was distributed with this source code.
 
     {% include '@SonataAdmin/CRUD/Association/edit_many_script.html.twig' %}
 {% endblock %}
+
+{% block sonata_type_template_widget %}
+    {% include template with parameters only %}
+{% endblock sonata_type_template_widget %}

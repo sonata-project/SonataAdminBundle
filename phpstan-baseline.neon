@@ -21,3 +21,6 @@ parameters:
         - # Generic with intersection is buggy https://github.com/phpstan/phpstan/issues/5336
             message: '#Sonata\\AdminBundle\\Datagrid\\(Datagrid|PagerInterface)<PHPUnit\\Framework\\MockObject\\Stub&Sonata\\AdminBundle\\Datagrid\\ProxyQueryInterface>#'
             path: tests/Datagrid/DatagridTest.php
+        - # https://github.com/phpstan/phpstan-symfony/pull/259
+            message: '#Call to an undefined method Symfony\\Component\\Form\\FormError\|Symfony\\Component\\Form\\FormErrorIterator\:\:getMessage\(\)\.#'
+            path: src/Controller/CRUDController.php

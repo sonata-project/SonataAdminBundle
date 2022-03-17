@@ -47,6 +47,7 @@ final class AdminStatsBlockService extends AbstractBlockService
 
         $datagrid = $admin->getDatagrid();
 
+        /** @var array<string, array{type?: string|null, value: mixed}> $filters */
         $filters = $blockContext->getSetting('filters');
 
         if (!isset($filters[DatagridInterface::PER_PAGE])) {

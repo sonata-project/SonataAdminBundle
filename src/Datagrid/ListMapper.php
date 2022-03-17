@@ -100,7 +100,11 @@ final class ListMapper implements MapperInterface
      */
     public function add(string $name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
-        if (isset($fieldDescriptionOptions['role']) && !$this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
+        if (
+            isset($fieldDescriptionOptions['role'])
+            && \is_string($fieldDescriptionOptions['role'])
+            && !$this->getAdmin()->isGranted($fieldDescriptionOptions['role'])
+        ) {
             return $this;
         }
 

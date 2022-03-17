@@ -6,12 +6,6 @@ This document will cover the Show action and related configuration options.
 Basic configuration
 -------------------
 
-.. note::
-
-    **TODO**:
-    * options available when adding general fields, inc custom templates
-    * targeting submodel fields using dot-separated notation
-
 Routes
 ------
 

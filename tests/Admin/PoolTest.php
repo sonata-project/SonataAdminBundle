@@ -75,7 +75,7 @@ final class PoolTest extends TestCase
         $groups = $pool->getDashboardGroups();
 
         static::assertCount(1, $groups);
-        static::assertSame($adminGroup1, $groups['adminGroup1']['items']['itemKey']);
+        static::assertSame($adminGroup1, $groups['adminGroup1']['items'][0]);
     }
 
     public function testGetDashboardGroups(): void
@@ -110,7 +110,7 @@ final class PoolTest extends TestCase
         $groups = $pool->getDashboardGroups();
 
         static::assertCount(1, $groups);
-        static::assertSame($adminGroup1, $groups['adminGroup1']['items']['itemKey']);
+        static::assertSame($adminGroup1, $groups['adminGroup1']['items'][0]);
     }
 
     public function testGetAdminForClassWithTooManyRegisteredAdmin(): void
@@ -241,32 +241,6 @@ final class PoolTest extends TestCase
     }
 
     /**
-     * @param mixed $adminId
-     *
-     * @dataProvider getNonStringAdminServiceNames
-     */
-    public function testGetAdminByAdminCodeWithNonStringCode($adminId): void
-    {
-        $this->expectException(\TypeError::class);
-
-        $this->pool->getAdminByAdminCode($adminId);
-    }
-
-    /**
-     * @phpstan-return iterable<array-key, array{mixed}>
-     */
-    public function getNonStringAdminServiceNames(): iterable
-    {
-        return [
-            [null],
-            [false],
-            [1],
-            [['some_value']],
-            [new \stdClass()],
-        ];
-    }
-
-    /**
      * @dataProvider getEmptyRootAdminServiceNames
      */
     public function testGetAdminByAdminCodeWithInvalidRootCode(string $adminId): void
@@ -372,17 +346,6 @@ final class PoolTest extends TestCase
     }
 
     /**
-     * @param mixed $adminId
-     *
-     * @dataProvider getNonStringAdminServiceNames
-     */
-    public function testHasAdminByAdminCodeWithNonStringCode($adminId): void
-    {
-        $this->expectException(\TypeError::class);
-        $this->pool->hasAdminByAdminCode($adminId);
-    }
-
-    /**
      * @dataProvider getInvalidAdminServiceNamesToCheck
      */
     public function testHasAdminByAdminCodeWithInvalidCodes(string $adminId): void
@@ -457,9 +420,8 @@ final class PoolTest extends TestCase
             'sonata.user.admin.group1' => [
                 'label' => 'label',
                 'icon' => 'icon',
-                'label_catalogue' => 'admin_domain',
+                'translation_domain' => 'admin_domain',
                 'items' => [],
-                'item_adds' => [],
                 'keep_open' => false,
                 'on_top' => false,
                 'roles' => [],
@@ -495,10 +457,9 @@ final class PoolTest extends TestCase
 
         return [
             'label' => '',
-            'label_catalogue' => '',
+            'translation_domain' => '',
             'icon' => '',
-            'item_adds' => [],
-            'items' => ['itemKey' => $item],
+            'items' => [$item],
             'keep_open' => false,
             'on_top' => false,
             'roles' => [],

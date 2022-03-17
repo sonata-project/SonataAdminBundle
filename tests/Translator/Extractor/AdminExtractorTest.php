@@ -68,9 +68,8 @@ final class AdminExtractorTest extends TestCase
             'group' => [
                 'label' => 'label',
                 'icon' => 'icon',
-                'label_catalogue' => 'admin_domain',
+                'translation_domain' => 'admin_domain',
                 'items' => [],
-                'item_adds' => [],
                 'keep_open' => false,
                 'on_top' => false,
                 'roles' => [],

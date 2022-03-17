@@ -15,30 +15,31 @@ namespace Sonata\AdminBundle;
 
 /**
  * @phpstan-type SonataConfigurationOptions = array{
- *  confirm_exit: bool,
- *  default_group: string,
- *  default_icon: string,
- *  default_label_catalogue: string,
- *  dropdown_number_groups_per_colums: int,
- *  form_type: 'standard'|'horizontal',
- *  html5_validate: bool,
- *  javascripts: list<string>,
- *  js_debug: bool,
- *  list_action_button_content: 'text'|'icon'|'all',
- *  lock_protection: bool,
- *  logo_content: 'text'|'icon'|'all',
- *  mosaic_background: string,
- *  pager_links: ?int,
- *  role_admin: string,
- *  role_super_admin: string,
- *  search: bool,
- *  skin: string,
- *  sort_admins: bool,
- *  stylesheets: list<string>,
- *  use_bootlint: bool,
- *  use_icheck: bool,
- *  use_select2: bool,
- *  use_stickyforms: bool
+ *     confirm_exit: bool,
+ *     default_admin_route: string,
+ *     default_group: string,
+ *     default_icon: string,
+ *     default_translation_domain: string,
+ *     dropdown_number_groups_per_colums: int,
+ *     form_type: 'standard'|'horizontal',
+ *     html5_validate: bool,
+ *     javascripts: list<string>,
+ *     js_debug: bool,
+ *     list_action_button_content: 'text'|'icon'|'all',
+ *     lock_protection: bool,
+ *     logo_content: 'text'|'icon'|'all',
+ *     mosaic_background: string,
+ *     pager_links: ?int,
+ *     role_admin: string,
+ *     role_super_admin: string,
+ *     search: bool,
+ *     skin: 'skin-black'|'skin-black-light'|'skin-blue'|'skin-blue-light'|'skin-green'|'skin-green-light'|'skin-purple'|'skin-purple-light'|'skin-red'|'skin-red-light'|'skin-yellow'|'skin-yellow-light',
+ *     sort_admins: bool,
+ *     stylesheets: list<string>,
+ *     use_bootlint: bool,
+ *     use_icheck: bool,
+ *     use_select2: bool,
+ *     use_stickyforms: bool
  * }
  */
 final class SonataConfiguration
@@ -54,7 +55,7 @@ final class SonataConfiguration
     private $logo;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      * @phpstan-var SonataConfigurationOptions
      */
     private $options;

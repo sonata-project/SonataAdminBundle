@@ -21,7 +21,6 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionRegistryInterface;
 use Sonata\AdminBundle\Object\MetadataInterface;
-use Sonata\Exporter\Source\SourceIteratorInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -177,7 +176,7 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     /**
      * @phpstan-param AdminExtensionInterface<T> $extension
      */
-    //public function removeExtension(AdminExtensionInterface $extension): void;
+    // public function removeExtension(AdminExtensionInterface $extension): void;
 
     /**
      * Returns an array of extension related to the current Admin.
@@ -247,7 +246,10 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function getExportFields(): array;
 
-    public function getDataSourceIterator(): SourceIteratorInterface;
+    /**
+     * @return \Iterator<array<mixed>>
+     */
+    public function getDataSourceIterator(): \Iterator;
 
     /**
      * Call before the batch action, allow you to alter the query and the idx.
@@ -278,7 +280,7 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     public function showIn(string $context): bool;
 
     // NEXT_MAJOR: Uncomment this for Sonata 5
-    //public function showInDashboard(): bool;
+    // public function showInDashboard(): bool;
 
     /**
      * Add object security, fe. make the current user owner of the object.
