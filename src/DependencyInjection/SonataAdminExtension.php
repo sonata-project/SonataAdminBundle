@@ -144,7 +144,7 @@ final class SonataAdminExtension extends Extension
 
                 break;
             case 'sonata.admin.security.handler.acl':
-                if (!$container->has('security.acl.provider')) {
+                if (!$container->hasParameter('security.acl.provider')) {
                     throw new \RuntimeException(
                         'The "security.acl.provider" service is needed to use ACL as security handler.'
                         .' You MUST install and enable the "symfony/acl-bundle" bundle.'
