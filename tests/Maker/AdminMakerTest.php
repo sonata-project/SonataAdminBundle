@@ -29,7 +29,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -46,11 +45,6 @@ final class AdminMakerTest extends TestCase
     private array $modelManagers = [];
 
     private ?InputInterface $input = null;
-
-    /**
-     * @var OutputInterface
-     */
-    private $output;
 
     private ?ConsoleStyle $io = null;
 
@@ -102,9 +96,8 @@ final class AdminMakerTest extends TestCase
 
         $stream = fopen('php://memory', 'w', false);
         static::assertIsResource($stream);
-        $this->output = new StreamOutput($stream);
 
-        $this->io = new ConsoleStyle($this->input, $this->output);
+        $this->io = new ConsoleStyle($this->input, new StreamOutput($stream));
         $autoloaderUtil = $this->createMock(AutoloaderUtil::class);
         $autoloaderUtil
             ->method('getPathForFutureClass')

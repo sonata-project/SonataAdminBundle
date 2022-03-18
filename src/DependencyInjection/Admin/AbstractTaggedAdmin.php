@@ -81,7 +81,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     /**
      * @var non-empty-array<string, array<string, mixed>>
      */
-    private $listModes = TaggedAdminInterface::DEFAULT_LIST_MODES;
+    private array $listModes = TaggedAdminInterface::DEFAULT_LIST_MODES;
 
     private string $pagerType = Pager::TYPE_DEFAULT;
 

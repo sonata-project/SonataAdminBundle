@@ -131,10 +131,7 @@ To create your own RouteBuilder create the PHP class and register it as a servic
 
     final class EntityRouterBuilder implements RouteBuilderInterface
     {
-        /**
-         * @var PathInfoBuilder
-         */
-        private $pathInfoBuilder;
+        private PathInfoBuilder $pathInfoBuilder;
 
         public function __construct(PathInfoBuilder $pathInfoBuilder)
         {

@@ -29,9 +29,9 @@ Example Entity
 
     final class Example
     {
-        private $name;
+        private string $name;
 
-        private $description;
+        private string $description;
 
         public function __construct(string $name, string $description)
         {
