@@ -677,7 +677,7 @@ final class CRUDControllerTest extends TestCase
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn(new \stdClass());
 
@@ -697,7 +697,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new Entity(123456);
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -720,7 +720,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -895,7 +895,7 @@ final class CRUDControllerTest extends TestCase
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn(new \stdClass());
 
@@ -915,7 +915,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new Entity(123456);
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -938,7 +938,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -982,7 +982,7 @@ final class CRUDControllerTest extends TestCase
             ->method('toString')
             ->willReturn('parentObject');
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1020,7 +1020,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1049,7 +1049,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1075,7 +1075,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1101,7 +1101,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1133,7 +1133,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1166,7 +1166,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1201,7 +1201,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1238,7 +1238,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1268,7 +1268,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1302,7 +1302,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1335,7 +1335,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1373,7 +1373,7 @@ final class CRUDControllerTest extends TestCase
             ->method('getObject')
             ->willReturn($parent);
 
-        $childAdmin->expects(static::atLeastOnce())
+        $childAdmin->expects(static::once())
             ->method('getObject')
             ->willReturn($child);
 
@@ -1409,7 +1409,7 @@ final class CRUDControllerTest extends TestCase
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn(new \stdClass());
 
@@ -1429,7 +1429,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new Entity(123456);
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1452,7 +1452,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1497,7 +1497,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1562,7 +1562,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1622,7 +1622,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1678,7 +1678,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1726,7 +1726,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1769,7 +1769,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -1837,7 +1837,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -2626,7 +2626,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::exactly(2))
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -2655,9 +2655,14 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::exactly(2))
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
+
+        $this->admin
+            ->method('getNormalizedIdentifier')
+            ->with(static::equalTo($object))
+            ->willReturn('123');
 
         $this->admin
             ->method('getClass')
@@ -2733,7 +2738,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::atLeastOnce())
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -2757,7 +2762,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new DummyDomainObject();
 
-        $this->admin->expects(static::exactly(2))
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -2844,7 +2849,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new DummyDomainObject();
 
-        $this->admin->expects(static::exactly(2))
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -2937,7 +2942,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new DummyDomainObject();
 
-        $this->admin->expects(static::exactly(2))
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -3056,7 +3061,7 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::exactly(2))
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
 
@@ -3085,9 +3090,14 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::exactly(2))
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
+
+        $this->admin
+            ->method('getNormalizedIdentifier')
+            ->with(static::equalTo($object))
+            ->willReturn('123');
 
         $this->admin
             ->method('getClass')
@@ -3128,9 +3138,14 @@ final class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects(static::exactly(2))
+        $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
+
+        $this->admin
+            ->method('getNormalizedIdentifier')
+            ->with(static::equalTo($object))
+            ->willReturn('123');
 
         $this->admin
             ->method('getClass')
@@ -3260,6 +3275,11 @@ final class CRUDControllerTest extends TestCase
             ->willReturn($object);
 
         $this->admin
+            ->method('getNormalizedIdentifier')
+            ->with(static::equalTo($object))
+            ->willReturn('123');
+
+        $this->admin
             ->method('getClass')
             ->willReturn('Foo');
 
@@ -3302,6 +3322,11 @@ final class CRUDControllerTest extends TestCase
         $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
+
+        $this->admin
+            ->method('getNormalizedIdentifier')
+            ->with(static::equalTo($object))
+            ->willReturn('123');
 
         $this->admin
             ->method('getClass')
@@ -3349,6 +3374,11 @@ final class CRUDControllerTest extends TestCase
         $this->admin->expects(static::once())
             ->method('getObject')
             ->willReturn($object);
+
+        $this->admin
+            ->method('getNormalizedIdentifier')
+            ->with(static::equalTo($object))
+            ->willReturn('123');
 
         $this->admin
             ->method('getClass')
