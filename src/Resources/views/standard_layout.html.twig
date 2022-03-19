@@ -97,7 +97,7 @@ file that was distributed with this source code.
     </head>
     <body
             {% block body_attributes -%}
-                class="sonata-bc {% block admin_lte_skin_class %}{{ _skin }}{% endblock %} fixed
+                class="sidebar-mini layout-fixed sonata-bc {% block admin_lte_skin_class %}{{ _skin }}{% endblock %}
                 {% if _use_select2 %}sonata-select2{% endif %}
                 {% if _use_icheck %}sonata-icheck{% endif %}
                 {% if app.request.cookies.get('sonata_sidebar_hide') -%}
@@ -118,20 +118,21 @@ file that was distributed with this source code.
                     </noscript>
                 {% endblock %}
                 {% block sonata_nav %}
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" data-widget="pushmenu" href="#">
-                                <span class="sr-only">{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}</span>
-                                <i class="fas fa-bars"></i>
-                            </a>
-                        </li>
-                    </ul>
-
-                    <div class="navbar-left">
-                        {% block sonata_breadcrumb %}
-                            <div class="hidden-xs">
-                                {% if _breadcrumb is not empty or action is defined %}
-                                    <ol class="nav navbar-top-links breadcrumb">
+                    <div class="d-flex flex-row">
+                        <div>
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" data-widget="pushmenu" href="#">
+                                        <span class="sr-only">{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}</span>
+                                        <i class="fas fa-bars"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="align-self-center">
+                            <div class="breadcrumb">
+                                {% block sonata_breadcrumb %}
+                                    {% if _breadcrumb is not empty or action is defined %}
                                         {% if _breadcrumb is empty %}
                                             {% if action is defined %}
                                                 {{ render_breadcrumbs(admin, action) }}
@@ -139,10 +140,10 @@ file that was distributed with this source code.
                                         {% else %}
                                             {{ _breadcrumb|raw }}
                                         {% endif %}
-                                    </ol>
-                                {% endif %}
+                                    {% endif %}
+                                {% endblock sonata_breadcrumb %}
                             </div>
-                        {% endblock sonata_breadcrumb %}
+                        </div>
                     </div>
 
                     {% block sonata_top_nav_menu %}
@@ -240,12 +241,13 @@ file that was distributed with this source code.
                                   or _actions is not empty
                                   or _list_filters_actions is not empty
                                  %}
-                                    <nav class="navbar navbar-default" role="navigation">
                                         <div class="container-fluid">
                                             {% block tab_menu_navbar_header %}
                                                 {% if _navbar_title is not empty %}
-                                                    <div class="navbar-header">
-                                                        <a class="navbar-brand" href="#">{{ _navbar_title|raw }}</a>
+                                                    <div class="row mb-2">
+                                                        <div class="col-sm-6">
+                                                            <h1>{{ _navbar_title|raw }}</h1>
+                                                        </div>
                                                     </div>
                                                 {% endif %}
                                             {% endblock %}
@@ -257,45 +259,47 @@ file that was distributed with this source code.
                                                     </div>
                                                 {% endif %}
 
-                                                {% if admin is defined and action is defined and action == 'list' and admin.listModes|length > 1 %}
-                                                    <div class="nav navbar-right btn-group">
-                                                        {% for mode, settings in admin.listModes %}
-                                                            <a href="{{ admin.generateUrl('list', app.request.query.all|merge({_list_mode: mode})) }}" class="btn btn-default navbar-btn btn-sm{% if admin.getListMode() == mode %} active{% endif %}">
-                                                                {# NEXT_MAJOR: Remove the if and keep the else part #}
-                                                                {% if settings.icon is not defined and settings.class is defined %}
-                                                                    {% deprecated 'Relying on the "class" setting is deprecated since sonata-project/admin-bundle 4.9, use the "icon" setting instead' %}
-                                                                    <i class="{{ settings.class }}" aria-hidden="true"></i>
-                                                                {% else %}
-                                                                    {{ settings.icon|default('')|parse_icon }}
-                                                                {% endif %}
-                                                            </a>
-                                                        {% endfor %}
-                                                    </div>
-                                                {% endif %}
-
                                                 {% block sonata_admin_content_actions_wrappers %}
                                                     {% if _actions|replace({ '<li>': '', '</li>': '' })|trim is not empty %}
-                                                        <ul class="nav navbar-nav navbar-right">
-                                                        {% if _actions|split('</a>')|length > 2 %}
-                                                            <li class="dropdown sonata-actions">
-                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'link_actions'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b></a>
-                                                                <ul class="dropdown-menu" role="menu">
+                                                        <nav class="navbar navbar-expand navbar-light">
+                                                            <ul class="navbar-nav ml-auto">
+
+                                                                {% if _list_filters_actions is not empty %}
+                                                                    {{ _list_filters_actions|raw }}
+                                                                {% endif %}
+
+                                                                {% if _actions|split('</a>')|length > 2 %}
+                                                                    <li class="nav-item dropdown sonata-actions">
+                                                                        <a href="#" class="nav-link" data-toggle="dropdown">{{ 'link_actions'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b></a>
+                                                                        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                                                                            {{ _actions|raw }}
+                                                                        </ul>
+                                                                    </li>
+                                                                {% else %}
                                                                     {{ _actions|raw }}
-                                                                </ul>
-                                                            </li>
-                                                        {% else %}
-                                                            {{ _actions|raw }}
-                                                        {% endif %}
-                                                        </ul>
+                                                                {% endif %}
+
+                                                                {% if admin is defined and action is defined and action == 'list' and admin.listModes|length > 1 %}
+                                                                    {% for mode, settings in admin.listModes %}
+                                                                        <li class="nav-item">
+                                                                            <a href="{{ admin.generateUrl('list', app.request.query.all|merge({_list_mode: mode})) }}" class="nav-link btn btn-default navbar-btn btn-sm{% if admin.getListMode() == mode %} active{% endif %}">
+                                                                                {# NEXT_MAJOR: Remove the if and keep the else part #}
+                                                                                {% if settings.icon is not defined and settings.class is defined %}
+                                                                                    {% deprecated 'Relying on the "class" setting is deprecated since sonata-project/admin-bundle 4.9, use the "icon" setting instead' %}
+                                                                                    <i class="{{ settings.class }}" aria-hidden="true"></i>
+                                                                                {% else %}
+                                                                                    {{ settings.icon|default('')|parse_icon }}
+                                                                                {% endif %}
+                                                                            </a>
+                                                                        </li>
+                                                                    {% endfor %}
+                                                                {% endif %}
+                                                            </ul>
+                                                        </nav>
                                                     {% endif %}
                                                 {% endblock sonata_admin_content_actions_wrappers %}
-
-                                                {% if _list_filters_actions is not empty %}
-                                                    {{ _list_filters_actions|raw }}
-                                                {% endif %}
                                             </div>
                                         </div>
-                                    </nav>
                                 {% endif %}
                             {% endblock sonata_page_content_nav %}
                         {% endblock sonata_page_content_header %}
