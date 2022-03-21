@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.10.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.9.0...4.10.0) - 2022-03-21
+### Changed
+- [[#7761](https://github.com/sonata-project/SonataAdminBundle/pull/7761)] CrudController::handleModelManagerThrowable can now return a custom error message to display in the flashbag instead of the generic one from Sonata. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7766](https://github.com/sonata-project/SonataAdminBundle/pull/7766)] Reduced number of ModelManager::find calls ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#7769](https://github.com/sonata-project/SonataAdminBundle/pull/7769)] Improve detection of Symfony ACL bundle installation ([@Buratinas](https://github.com/Buratinas))
+
 ## [4.9.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.8.1...4.9.0) - 2022-02-27
 ### Added
 - [[#7730](https://github.com/sonata-project/SonataAdminBundle/pull/7730)] `TemplateType` to display custom data in the edit/create view. ([@VincentLanglet](https://github.com/VincentLanglet))
