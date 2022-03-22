@@ -90,7 +90,10 @@ final class AdminSearchBlockService extends AbstractBlockService
             return $response->setContent('')->setStatusCode(204);
         }
 
-        $filters = array_filter($admin->getDatagrid()->getFilters(), static fn (FilterInterface $filter): bool => $filter instanceof SearchableFilterInterface && $filter->isSearchEnabled());
+        $filters = array_filter(
+            $admin->getDatagrid()->getFilters(), 
+            static fn (FilterInterface $filter): bool => $filter instanceof SearchableFilterInterface && $filter->isSearchEnabled()
+        );
 
         return $this->renderPrivateResponse($this->templateRegistry->getTemplate('search_result_block'), [
             'block' => $blockContext->getBlock(),
