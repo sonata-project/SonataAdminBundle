@@ -208,7 +208,7 @@ final class AdminTypeTest extends TypeTestCase
         $modelManager = $this->createStub(ModelManagerInterface::class);
 
         $newInstance = new class() {
-            public function setBar(): void
+            public function setBar(object $bar): void
             {
             }
         };
