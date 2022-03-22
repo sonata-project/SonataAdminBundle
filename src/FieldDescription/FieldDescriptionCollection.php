@@ -86,6 +86,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
         unset($this->elements[$name]);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return $this->has($offset);
@@ -98,21 +99,25 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
      *
      * @phpstan-return TValue
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->get($offset);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         throw new \RuntimeException('Cannot set value, use add');
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         $this->remove($offset);
     }
 
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return \count($this->elements);
