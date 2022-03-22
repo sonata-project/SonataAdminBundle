@@ -91,7 +91,7 @@ final class AdminSearchBlockService extends AbstractBlockService
         }
 
         $filters = array_filter(
-            $admin->getDatagrid()->getFilters(), 
+            $admin->getDatagrid()->getFilters(),
             static fn (FilterInterface $filter): bool => $filter instanceof SearchableFilterInterface && $filter->isSearchEnabled()
         );
 
