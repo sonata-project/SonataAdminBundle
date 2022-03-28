@@ -42,6 +42,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -396,23 +397,9 @@ class CRUDController extends AbstractController
 
         $forwardedRequest = $request->duplicate();
 
-        $encodedData = $request->get('data', '');
-        if (!\is_string($encodedData)) {
-            throw new BadRequestParamHttpException('data', 'string', $encodedData);
-        }
+        $encodedData = $request->get('data');
 
-        try {
-            $data = json_decode($encodedData, true, 512, \JSON_THROW_ON_ERROR);
-        } catch (\JsonException $exception) {
-            $data = null;
-        }
-
-        if (\is_array($data)) {
-            $action = $data['action'];
-            $idx = (array) ($data['idx'] ?? []);
-            $allElements = (bool) ($data['all_elements'] ?? false);
-            $forwardedRequest->request->replace(array_merge($forwardedRequest->request->all(), $data));
-        } else {
+        if (null === $encodedData) {
             $action = $forwardedRequest->request->get('action');
             /** @var InputBag|ParameterBag $bag */
             $bag = $request->request;
@@ -431,6 +418,21 @@ class CRUDController extends AbstractController
             $data['all_elements'] = $allElements;
 
             unset($data['_sonata_csrf_token']);
+        } else {
+            if (!\is_string($encodedData)) {
+                throw new BadRequestParamHttpException('data', 'string', $encodedData);
+            }
+
+            try {
+                $data = json_decode($encodedData, true, 512, \JSON_THROW_ON_ERROR);
+            } catch (\JsonException $exception) {
+                throw new BadRequestHttpException('Unable to decode batch data');
+            }
+
+            $action = $data['action'];
+            $idx = (array) ($data['idx'] ?? []);
+            $allElements = (bool) ($data['all_elements'] ?? false);
+            $forwardedRequest->request->replace(array_merge($forwardedRequest->request->all(), $data));
         }
 
         if (null === $action) {
