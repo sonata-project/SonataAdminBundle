@@ -90,9 +90,8 @@ final class AdminType extends AbstractType
 
                         if (true === $options['collection_by_reference']) {
                             $subject = ObjectManipulator::addInstance($parentSubject, $subject, $parentFieldDescription);
-                        } else {
-                            $subject = ObjectManipulator::setObject($subject, $parentSubject, $parentFieldDescription);
                         }
+                        $subject = ObjectManipulator::setObject($subject, $parentSubject, $parentFieldDescription);
                     }
                 }
             }
