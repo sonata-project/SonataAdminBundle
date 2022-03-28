@@ -24,7 +24,7 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 final class ArrayToModelTransformerTest extends TestCase
 {
     /**
-     * @var MockObject&ModelManagerInterface<object>
+     * @var MockObject&ModelManagerInterface<\stdClass>
      */
     private $modelManager;
 
