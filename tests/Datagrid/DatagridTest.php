@@ -61,9 +61,12 @@ final class DatagridTest extends TestCase
     {
         $this->query = $this->createStub(ProxyQueryInterface::class);
         $this->columns = new FieldDescriptionCollection();
-        $this->pager = $this->createMock(PagerInterface::class);
         $this->formBuilder = Forms::createFormFactoryBuilder()->getFormFactory()->createBuilder();
-        $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, []);
+
+        /** @var PagerInterface<ProxyQueryInterface&Stub>&MockObject $pager */
+        $pager = $this->createMock(PagerInterface::class);
+        $this->pager = $pager;
+        $this->datagrid = new Datagrid($this->query, $this->columns, $pager, $this->formBuilder, []);
     }
 
     public function testGetPager(): void

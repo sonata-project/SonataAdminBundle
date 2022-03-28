@@ -21,6 +21,3 @@ parameters:
         - # https://github.com/phpstan/phpstan-symfony/pull/259
             message: '#Call to an undefined method Symfony\\Component\\Form\\FormError\|Symfony\\Component\\Form\\FormErrorIterator\:\:getMessage\(\)\.#'
             path: src/Controller/CRUDController.php
-        - # https://github.com/phpstan/phpstan/issues/6917
-            message: '#^Parameter \#3 \$admin of class Sonata\\AdminBundle\\Form\\FormMapper constructor expects Sonata\\AdminBundle\\Admin\\AdminInterface\<T of object\>, PHPUnit\\Framework\\MockObject\\Stub&Sonata\\AdminBundle\\Admin\\AdminInterface\<object\> given\.$#'
-            path: tests/Admin/Extension/LockExtensionTest.php
