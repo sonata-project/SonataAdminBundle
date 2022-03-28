@@ -18,9 +18,6 @@ parameters:
         - # `treatPhpdocAsCertain: false` should not report this https://github.com/phpstan/phpstan/issues/5333
             message: '#^Instanceof between Symfony\\Component\\Routing\\Route and Symfony\\Component\\Routing\\Route will always evaluate to true\.$#'
             path: src/Route/RouteCollection.php
-        - # Generic with intersection is buggy https://github.com/phpstan/phpstan/issues/5336
-            message: '#Sonata\\AdminBundle\\Datagrid\\(Datagrid|PagerInterface)<PHPUnit\\Framework\\MockObject\\Stub&Sonata\\AdminBundle\\Datagrid\\ProxyQueryInterface>#'
-            path: tests/Datagrid/DatagridTest.php
         - # https://github.com/phpstan/phpstan-symfony/pull/259
             message: '#Call to an undefined method Symfony\\Component\\Form\\FormError\|Symfony\\Component\\Form\\FormErrorIterator\:\:getMessage\(\)\.#'
             path: src/Controller/CRUDController.php
