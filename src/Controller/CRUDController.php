@@ -435,7 +435,7 @@ class CRUDController extends AbstractController
             $forwardedRequest->request->replace(array_merge($forwardedRequest->request->all(), $data));
         }
 
-        if (null === $action) {
+        if (!\is_string($action)) {
             throw new \RuntimeException('The action is not defined');
         }
 
