@@ -40,7 +40,7 @@ final class BaseGroupedMapperTest extends TestCase
     /**
      * @var array<string, array<string, mixed>>
      */
-    private $groups;
+    private array $groups;
 
     protected function setUp(): void
     {

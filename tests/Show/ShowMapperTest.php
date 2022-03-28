@@ -57,7 +57,7 @@ final class ShowMapperTest extends TestCase
     /**
      * @var array<string, array<string, mixed>>
      */
-    private $groups;
+    private array $groups;
 
     /**
      * @var array<string, bool>
