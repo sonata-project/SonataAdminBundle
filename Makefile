@@ -119,3 +119,7 @@ phpstan:
 psalm:
 	vendor/bin/psalm --php-version=8.1
 .PHONY: psalm
+
+rector:
+	vendor/bin/rector
+.PHONY: rector
