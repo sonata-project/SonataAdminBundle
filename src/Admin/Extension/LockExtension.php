@@ -28,10 +28,7 @@ use Symfony\Component\Form\FormEvents;
  */
 final class LockExtension extends AbstractAdminExtension
 {
-    /**
-     * @var string
-     */
-    private $fieldName = '_lock_version';
+    private string $fieldName = '_lock_version';
 
     public function configureFormFields(FormMapper $form): void
     {

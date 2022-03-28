@@ -25,15 +25,9 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 final class AdminExtractorTest extends TestCase
 {
-    /**
-     * @var AdminExtractor
-     */
-    private $adminExtractor;
+    private AdminExtractor $adminExtractor;
 
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
     /**
      * @var AdminInterface<object>&MockObject

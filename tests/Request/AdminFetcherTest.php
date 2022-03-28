@@ -24,10 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class AdminFetcherTest extends TestCase
 {
-    /**
-     * @var AdminFetcher
-     */
-    private $adminFetcher;
+    private AdminFetcher $adminFetcher;
 
     /**
      * @var MockObject&AdminInterface<object>

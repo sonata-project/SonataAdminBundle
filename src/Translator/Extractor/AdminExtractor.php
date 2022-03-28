@@ -40,35 +40,17 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
         'delete',
     ];
 
-    /**
-     * @var string
-     */
-    private $prefix = '';
+    private string $prefix = '';
 
-    /**
-     * @var MessageCatalogue|null
-     */
-    private $catalogue;
+    private ?MessageCatalogue $catalogue = null;
 
-    /**
-     * @var Pool
-     */
-    private $adminPool;
+    private Pool $adminPool;
 
-    /**
-     * @var LabelTranslatorStrategyInterface|null
-     */
-    private $labelStrategy;
+    private ?LabelTranslatorStrategyInterface $labelStrategy = null;
 
-    /**
-     * @var string|null
-     */
-    private $domain;
+    private ?string $domain = null;
 
-    /**
-     * @var BreadcrumbsBuilderInterface
-     */
-    private $breadcrumbsBuilder;
+    private BreadcrumbsBuilderInterface $breadcrumbsBuilder;
 
     public function __construct(Pool $adminPool, BreadcrumbsBuilderInterface $breadcrumbsBuilder)
     {

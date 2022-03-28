@@ -30,10 +30,7 @@ use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
  */
 final class GenerateObjectAclCommandTest extends TestCase
 {
-    /**
-     * @var Container
-     */
-    private $container;
+    private Container $container;
 
     protected function setUp(): void
     {
@@ -142,9 +139,7 @@ final class GenerateObjectAclCommandTest extends TestCase
             ->with(
                 static::isInstanceOf(StreamOutput::class),
                 $admin,
-                static::callback(static function (UserSecurityIdentity $userSecurityIdentity): bool {
-                    return Foo::class === $userSecurityIdentity->getClass();
-                })
+                static::callback(static fn (UserSecurityIdentity $userSecurityIdentity): bool => Foo::class === $userSecurityIdentity->getClass())
             );
 
         $aclObjectManipulators = [

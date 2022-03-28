@@ -75,57 +75,36 @@ final class CRUDControllerTest extends TestCase
     /**
      * @var CRUDController<object>
      */
-    private $controller;
+    private CRUDController $controller;
 
-    /**
-     * @var Request
-     */
-    private $request;
+    private Request $request;
 
     /**
      * @var AdminInterface<object>&MockObject
      */
     private $admin;
 
-    /**
-     * @var MutableTemplateRegistryInterface
-     */
-    private $templateRegistry;
+    private MutableTemplateRegistryInterface $templateRegistry;
 
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
-    /**
-     * @var Session
-     */
-    private $session;
+    private Session $session;
 
     /**
      * @var AuditManagerInterface&MockObject
      */
     private $auditManager;
 
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ContainerInterface $container;
 
-    /**
-     * @var AdminObjectAclManipulator
-     */
-    private $adminObjectAclManipulator;
+    private AdminObjectAclManipulator $adminObjectAclManipulator;
 
     /**
      * @var array<string, \ReflectionMethod>
      */
-    private $protectedTestedMethods;
+    private array $protectedTestedMethods = [];
 
-    /**
-     * @var CsrfTokenManagerInterface
-     */
-    private $csrfProvider;
+    private CsrfTokenManagerInterface $csrfProvider;
 
     /**
      * @var TranslatorInterface&MockObject
@@ -142,10 +121,7 @@ final class CRUDControllerTest extends TestCase
      */
     private $formFactory;
 
-    /**
-     * @var ParameterBag
-     */
-    private $parameterBag;
+    private ParameterBag $parameterBag;
 
     /**
      * @var Stub&AdminFetcherInterface
@@ -196,15 +172,11 @@ final class CRUDControllerTest extends TestCase
 
         $this->csrfProvider
             ->method('getToken')
-            ->willReturnCallback(static function (string $intention): CsrfToken {
-                return new CsrfToken($intention, sprintf('csrf-token-123_%s', $intention));
-            });
+            ->willReturnCallback(static fn (string $intention): CsrfToken => new CsrfToken($intention, sprintf('csrf-token-123_%s', $intention)));
 
         $this->csrfProvider
             ->method('isTokenValid')
-            ->willReturnCallback(static function (CsrfToken $token): bool {
-                return $token->getValue() === sprintf('csrf-token-123_%s', $token->getId());
-            });
+            ->willReturnCallback(static fn (CsrfToken $token): bool => $token->getValue() === sprintf('csrf-token-123_%s', $token->getId()));
 
         $this->logger = $this->createMock(LoggerInterface::class);
 
@@ -3627,7 +3599,7 @@ final class CRUDControllerTest extends TestCase
             ->willReturn($batchActions);
 
         $this->request->setMethod(Request::METHOD_POST);
-        $this->request->request->set('data', json_encode($data));
+        $this->request->request->set('data', json_encode($data, \JSON_THROW_ON_ERROR));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
         $datagrid = $this->createMock(DatagridInterface::class);

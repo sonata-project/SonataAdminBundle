@@ -31,15 +31,9 @@ use Twig\Loader\FilesystemLoader;
 
 final class SonataAdminRuntimeTest extends TestCase
 {
-    /**
-     * @var SonataAdminRuntime
-     */
-    private $sonataAdminRuntime;
+    private SonataAdminRuntime $sonataAdminRuntime;
 
-    /**
-     * @var Environment
-     */
-    private $environment;
+    private Environment $environment;
 
     /**
      * @var AdminInterface<\stdClass>&MockObject
@@ -51,20 +45,11 @@ final class SonataAdminRuntimeTest extends TestCase
      */
     private $adminBar;
 
-    /**
-     * @var \stdClass
-     */
-    private $object;
+    private \stdClass $object;
 
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
-    /**
-     * @var Container
-     */
-    private $container;
+    private Container $container;
 
     protected function setUp(): void
     {

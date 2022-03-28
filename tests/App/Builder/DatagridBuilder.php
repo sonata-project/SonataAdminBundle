@@ -25,24 +25,18 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
- * @phpstan-implements DatagridBuilderInterface<\Sonata\AdminBundle\Datagrid\ProxyQueryInterface>
+ * @phpstan-implements DatagridBuilderInterface<ProxyQueryInterface>
  */
 final class DatagridBuilder implements DatagridBuilderInterface
 {
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
 
     /**
      * @var PagerInterface<ProxyQueryInterface>
      */
-    private $pager;
+    private PagerInterface $pager;
 
-    /**
-     * @var ProxyQueryInterface
-     */
-    private $proxyQuery;
+    private ProxyQueryInterface $proxyQuery;
 
     /**
      * @param PagerInterface<ProxyQueryInterface> $pager

@@ -139,140 +139,121 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      *
      * @var array<string, FieldDescriptionInterface>
      */
-    private $listFieldDescriptions = [];
+    private array $listFieldDescriptions = [];
 
     /**
      * The show FieldDescription constructed from the configureShowFields method.
      *
      * @var FieldDescriptionInterface[]
      */
-    private $showFieldDescriptions = [];
+    private array $showFieldDescriptions = [];
 
     /**
      * The list FieldDescription constructed from the configureFormField method.
      *
      * @var FieldDescriptionInterface[]
      */
-    private $formFieldDescriptions = [];
+    private array $formFieldDescriptions = [];
 
     /**
      * The filter FieldDescription constructed from the configureFilterField method.
      *
      * @var FieldDescriptionInterface[]
      */
-    private $filterFieldDescriptions = [];
+    private array $filterFieldDescriptions = [];
 
     /**
      * The maximum number of page numbers to display in the list.
-     *
-     * @var int
      */
-    private $maxPageLinks = 25;
+    private int $maxPageLinks = 25;
 
     /**
      * The translation domain to be used to translate messages.
-     *
-     * @var string
      */
-    private $translationDomain = 'messages';
+    private string $translationDomain = 'messages';
 
     /**
      * Array of routes related to this admin.
-     *
-     * @var RouteCollectionInterface|null
      */
-    private $routes;
+    private ?RouteCollectionInterface $routes = null;
 
     /**
      * The subject only set in edit/update/create mode.
      *
-     * @var object|null
-     *
      * @phpstan-var T|null
      */
-    private $subject;
+    private ?object $subject = null;
 
     /**
      * Define a Collection of child admin, ie /admin/order/{id}/order-element/{childId}.
      *
      * @var array<string, AdminInterface<object>>
      */
-    private $children = [];
+    private array $children = [];
 
     /**
      * Reference the parent admin.
      *
      * @var AdminInterface<object>|null
      */
-    private $parent;
+    private ?AdminInterface $parent = null;
 
     /**
      * Reference the parent FieldDescription related to this admin
      * only set for FieldDescription which is associated to an Sub Admin instance.
-     *
-     * @var FieldDescriptionInterface|null
      */
-    private $parentFieldDescription;
+    private ?FieldDescriptionInterface $parentFieldDescription = null;
 
     /**
      * If true then the current admin is part of the nested admin set (from the url).
-     *
-     * @var bool
      */
-    private $currentChild = false;
+    private bool $currentChild = false;
 
     /**
      * The uniqId is used to avoid clashing with 2 admin related to the code
      * ie: a Block linked to a Block.
-     *
-     * @var string|null
      */
-    private $uniqId;
+    private ?string $uniqId = null;
 
     /**
      * The current request object.
-     *
-     * @var Request|null
      */
-    private $request;
+    private ?Request $request = null;
 
     /**
      * The datagrid instance.
      *
      * @var DatagridInterface<ProxyQueryInterface>|null
      */
-    private $datagrid;
+    private ?DatagridInterface $datagrid = null;
 
-    /**
-     * @var ItemInterface|null
-     */
-    private $menu;
+    private ?ItemInterface $menu = null;
 
     /**
      * @var string[]
      */
-    private $formTheme = [];
+    private array $formTheme = [];
 
     /**
      * @var string[]
      */
-    private $filterTheme = [];
+    private array $filterTheme = [];
 
     /**
      * @var AdminExtensionInterface[]
      * @phpstan-var array<AdminExtensionInterface<T>>
      */
-    private $extensions = [];
+    private array $extensions = [];
 
     /**
      * @var array<string, bool>
      */
-    private $cacheIsGranted = [];
+    private array $cacheIsGranted = [];
 
     /**
      * @var array<string, string>
      */
-    private $parentAssociationMapping = [];
+    private array $parentAssociationMapping = [];
 
     /**
      * The subclasses supported by the admin class.
@@ -280,71 +261,64 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * @var string[]
      * @phpstan-var array<string, class-string<T>>
      */
-    private $subClasses = [];
+    private array $subClasses = [];
 
     /**
      * The list collection.
      *
      * @var FieldDescriptionCollection<FieldDescriptionInterface>|null
      */
-    private $list;
+    private ?FieldDescriptionCollection $list = null;
 
     /**
      * @var FieldDescriptionCollection<FieldDescriptionInterface>|null
      */
-    private $show;
+    private ?FieldDescriptionCollection $show = null;
 
-    /**
-     * @var FormInterface|null
-     */
-    private $form;
+    private ?FormInterface $form = null;
 
     /**
      * The cached base route name.
-     *
-     * @var string|null
      */
-    private $cachedBaseRouteName;
+    private ?string $cachedBaseRouteName = null;
 
     /**
      * The cached base route pattern.
-     *
-     * @var string|null
      */
-    private $cachedBaseRoutePattern;
+    private ?string $cachedBaseRoutePattern = null;
 
     /**
      * The form group disposition.
      *
      * @var array<string, array<string, mixed>>
      */
-    private $formGroups = [];
+    private array $formGroups = [];
 
     /**
      * The form tabs disposition.
      *
      * @var array<string, array<string, mixed>>
      */
-    private $formTabs = [];
+    private array $formTabs = [];
 
     /**
      * The view group disposition.
      *
      * @var array<string, array<string, mixed>>
      */
-    private $showGroups = [];
+    private array $showGroups = [];
 
     /**
      * The view tab disposition.
      *
      * @var array<string, array<string, mixed>>
      */
-    private $showTabs = [];
+    private array $showTabs = [];
 
     /**
      * @var array<string, bool>
      */
-    private $loaded = [
+    private array $loaded = [
         'routes' => false,
         'tab_menu' => false,
         'show' => false,
@@ -1624,7 +1598,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         $objectRef = null !== $object ? sprintf('/%s#%s', spl_object_hash($object), $this->id($object) ?? '') : '';
-        $key = md5(json_encode($name).$objectRef);
+        $key = md5(json_encode($name, \JSON_THROW_ON_ERROR).$objectRef);
 
         if (!\array_key_exists($key, $this->cacheIsGranted)) {
             $this->cacheIsGranted[$key] = $this->getSecurityHandler()->isGranted($this, $name, $object ?? $this);
@@ -1691,7 +1665,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $key = array_search($extension, $this->extensions, true);
         if (false === $key) {
             throw new \InvalidArgumentException(
-                sprintf('The extension "%s" was not set to the "%s" admin.', \get_class($extension), __CLASS__)
+                sprintf('The extension "%s" was not set to the "%s" admin.', \get_class($extension), self::class)
             );
         }
 

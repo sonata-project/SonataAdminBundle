@@ -36,10 +36,7 @@ final class RetrieveFormFieldElementActionTest extends TestCase
      */
     private $adminFetcher;
 
-    /**
-     * @var RetrieveFormFieldElementAction
-     */
-    private $action;
+    private RetrieveFormFieldElementAction $action;
 
     /**
      * @var AdminInterface<object>&MockObject

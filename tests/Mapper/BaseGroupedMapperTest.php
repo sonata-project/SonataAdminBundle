@@ -35,12 +35,12 @@ final class BaseGroupedMapperTest extends TestCase
     /**
      * @var array<string, array<string, mixed>>
      */
-    private $tabs;
+    private array $tabs;
 
     /**
      * @var array<string, array<string, mixed>>
      */
-    private $groups;
+    private array $groups;
 
     protected function setUp(): void
     {
@@ -51,9 +51,7 @@ final class BaseGroupedMapperTest extends TestCase
         $labelStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
         $labelStrategy
             ->method('getLabel')
-            ->willReturnCallback(static function (string $label): string {
-                return sprintf('label_%s', strtolower($label));
-            });
+            ->willReturnCallback(static fn (string $label): string => sprintf('label_%s', strtolower($label)));
 
         $admin->setLabelTranslatorStrategy($labelStrategy);
 
@@ -73,9 +71,7 @@ final class BaseGroupedMapperTest extends TestCase
 
         $this->baseGroupedMapper
             ->method('getTabs')
-            ->willReturnCallback(function (): array {
-                return $this->getTabs();
-            });
+            ->willReturnCallback(fn (): array => $this->getTabs());
 
         $this->baseGroupedMapper
             ->method('setTabs')
@@ -85,9 +81,7 @@ final class BaseGroupedMapperTest extends TestCase
 
         $this->baseGroupedMapper
             ->method('getGroups')
-            ->willReturnCallback(function (): array {
-                return $this->getTestGroups();
-            });
+            ->willReturnCallback(fn (): array => $this->getTestGroups());
 
         $this->baseGroupedMapper
             ->method('setGroups')

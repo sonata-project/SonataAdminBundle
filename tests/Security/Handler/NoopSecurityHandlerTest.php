@@ -20,10 +20,7 @@ use Sonata\AdminBundle\Security\Handler\NoopSecurityHandler;
 
 final class NoopSecurityHandlerTest extends TestCase
 {
-    /**
-     * @var NoopSecurityHandler
-     */
-    private $handler;
+    private NoopSecurityHandler $handler;
 
     protected function setUp(): void
     {

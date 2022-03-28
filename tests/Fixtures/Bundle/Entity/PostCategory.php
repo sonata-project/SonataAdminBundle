@@ -21,7 +21,7 @@ final class PostCategory
     /**
      * @var Collection<int, Post>
      */
-    private $posts;
+    private Collection $posts;
 
     public function __construct()
     {

@@ -25,20 +25,11 @@ use Twig\Environment;
 
 final class SearchActionTest extends TestCase
 {
-    /**
-     * @var Container
-     */
-    private $container;
+    private Container $container;
 
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
-    /**
-     * @var SearchAction
-     */
-    private $action;
+    private SearchAction $action;
 
     /**
      * @var MockObject&Environment

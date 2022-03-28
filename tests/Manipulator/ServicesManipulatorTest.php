@@ -22,15 +22,9 @@ use Sonata\AdminBundle\Manipulator\ServicesManipulator;
  */
 final class ServicesManipulatorTest extends TestCase
 {
-    /**
-     * @var ServicesManipulator
-     */
-    private $servicesManipulator;
+    private ServicesManipulator $servicesManipulator;
 
-    /**
-     * @var string
-     */
-    private $file;
+    private string $file;
 
     protected function setUp(): void
     {

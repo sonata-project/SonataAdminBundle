@@ -27,15 +27,9 @@ use Twig\Extra\String\StringExtension;
 
 final class BreadcrumbsRuntimeTest extends TestCase
 {
-    /**
-     * @var BreadcrumbsRuntime
-     */
-    private $breadcrumbsRuntime;
+    private BreadcrumbsRuntime $breadcrumbsRuntime;
 
-    /**
-     * @var Environment
-     */
-    private $environment;
+    private Environment $environment;
 
     /**
      * @var Stub&BreadcrumbsBuilderInterface

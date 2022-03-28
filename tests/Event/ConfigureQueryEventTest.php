@@ -21,10 +21,7 @@ use Sonata\AdminBundle\Event\ConfigureQueryEvent;
 
 final class ConfigureQueryEventTest extends TestCase
 {
-    /**
-     * @var ConfigureQueryEvent
-     */
-    private $event;
+    private ConfigureQueryEvent $event;
 
     /**
      * @var AdminInterface<object>&MockObject

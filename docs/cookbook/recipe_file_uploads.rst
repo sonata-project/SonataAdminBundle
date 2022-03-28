@@ -77,7 +77,7 @@ We then have the following methods in our ``Image`` class to manage file uploads
         /**
          * Unmapped property to handle file uploads
          */
-        private $file;
+        private ?UploadedFile $file = null;
 
         public function setFile(?UploadedFile $file = null): void
         {

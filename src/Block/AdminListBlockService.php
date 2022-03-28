@@ -26,15 +26,9 @@ use Twig\Environment;
  */
 final class AdminListBlockService extends AbstractBlockService
 {
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
-    /**
-     * @var TemplateRegistryInterface
-     */
-    private $templateRegistry;
+    private TemplateRegistryInterface $templateRegistry;
 
     public function __construct(
         Environment $twig,

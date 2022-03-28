@@ -41,10 +41,7 @@ final class AppendFormFieldElementActionTest extends TestCase
      */
     private $twig;
 
-    /**
-     * @var AppendFormFieldElementAction
-     */
-    private $action;
+    private AppendFormFieldElementAction $action;
 
     /**
      * @var AdminInterface<object>&MockObject

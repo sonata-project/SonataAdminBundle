@@ -30,10 +30,7 @@ use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransf
  */
 final class DataTransformerResolverTest extends TestCase
 {
-    /**
-     * @var DataTransformerResolver
-     */
-    private $resolver;
+    private DataTransformerResolver $resolver;
 
     /**
      * @var FieldDescriptionInterface&MockObject
@@ -76,11 +73,10 @@ final class DataTransformerResolverTest extends TestCase
      */
     public function testResolveCustomDataTransformer(string $fieldType): void
     {
-        $customDataTransformer = new CallbackTransformer(static function ($value): string {
-            return (string) (int) $value;
-        }, static function ($value): bool {
-            return filter_var($value, \FILTER_VALIDATE_BOOLEAN);
-        });
+        $customDataTransformer = new CallbackTransformer(
+            static fn ($value): string => (string) (int) $value,
+            static fn ($value): bool => filter_var($value, \FILTER_VALIDATE_BOOLEAN)
+        );
         $this->fieldDescription->method('getOption')->with('data_transformer')->willReturn($customDataTransformer);
         $this->fieldDescription->method('getType')->willReturn($fieldType);
 
@@ -207,11 +203,10 @@ final class DataTransformerResolverTest extends TestCase
      */
     public function testCustomGlobalTransformers(string $fieldType): void
     {
-        $customDataTransformer = new CallbackTransformer(static function ($value): string {
-            return (string) (int) $value;
-        }, static function ($value): bool {
-            return filter_var($value, \FILTER_VALIDATE_BOOLEAN);
-        });
+        $customDataTransformer = new CallbackTransformer(
+            static fn ($value): string => (string) (int) $value,
+            static fn ($value): bool => filter_var($value, \FILTER_VALIDATE_BOOLEAN)
+        );
 
         $this->fieldDescription->method('getType')->willReturn($fieldType);
 
@@ -230,11 +225,10 @@ final class DataTransformerResolverTest extends TestCase
      */
     public function testAddCustomGlobalTransformer(string $fieldType): void
     {
-        $customDataTransformer = new CallbackTransformer(static function ($value): string {
-            return (string) (int) $value;
-        }, static function ($value): bool {
-            return filter_var($value, \FILTER_VALIDATE_BOOLEAN);
-        });
+        $customDataTransformer = new CallbackTransformer(
+            static fn ($value): string => (string) (int) $value,
+            static fn ($value): bool => filter_var($value, \FILTER_VALIDATE_BOOLEAN)
+        );
 
         $this->fieldDescription->method('getType')->willReturn($fieldType);
 

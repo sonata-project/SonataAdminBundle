@@ -169,10 +169,8 @@ final class BaseFieldDescriptionTest extends TestCase
     public function testGetFieldValueWithCallableAccessor(): void
     {
         $description = new FieldDescription('name', [
-            'accessor' => static function (object $object): int {
-                // @phpstan-ignore-next-line
-                return $object->getFoo();
-            },
+            // @phpstan-ignore-next-line
+            'accessor' => static fn (object $object): int => $object->getFoo(),
         ]);
         $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getFoo'])->getMock();
         $mock->expects(static::once())->method('getFoo')->willReturn(42);

@@ -26,15 +26,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 final class CanonicalizeExtensionTest extends TestCase
 {
-    /**
-     * @var Request
-     */
-    private $request;
+    private Request $request;
 
-    /**
-     * @var CanonicalizeExtension
-     */
-    private $twigExtension;
+    private CanonicalizeExtension $twigExtension;
 
     protected function setUp(): void
     {

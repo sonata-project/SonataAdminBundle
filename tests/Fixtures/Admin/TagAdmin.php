@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Fixtures\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
 
 /**
- * @phpstan-extends AbstractAdmin<\Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag>
+ * @phpstan-extends AbstractAdmin<Tag>
  */
 final class TagAdmin extends AbstractAdmin
 {

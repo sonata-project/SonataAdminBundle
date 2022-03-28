@@ -24,10 +24,7 @@ use Symfony\Component\DependencyInjection\Container;
 
 final class TemplateRegistryRuntimeTest extends TestCase
 {
-    /**
-     * @var TemplateRegistryRuntime
-     */
-    private $templateRegistryRuntime;
+    private TemplateRegistryRuntime $templateRegistryRuntime;
 
     protected function setUp(): void
     {

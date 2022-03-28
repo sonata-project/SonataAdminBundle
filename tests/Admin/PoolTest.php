@@ -21,19 +21,13 @@ use Sonata\AdminBundle\Exception\TooManyAdminClassException;
 use Symfony\Component\DependencyInjection\Container;
 
 /**
- * @phpstan-import-type Group from \Sonata\AdminBundle\Admin\Pool
+ * @phpstan-import-type Group from Pool
  */
 final class PoolTest extends TestCase
 {
-    /**
-     * @var Container
-     */
-    private $container;
+    private Container $container;
 
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
     protected function setUp(): void
     {

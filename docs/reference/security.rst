@@ -290,7 +290,7 @@ User class (in a custom UserBundle). Do it as follows::
          * @ORM\Column(type="integer")
          * @ORM\GeneratedValue(strategy="AUTO")
          */
-        protected $id;
+        private ?int $id = null;
 
         public function __construct()
         {

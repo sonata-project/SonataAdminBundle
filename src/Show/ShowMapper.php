@@ -24,28 +24,25 @@ use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @phpstan-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
+ * @phpstan-import-type FieldDescriptionOptions from FieldDescriptionInterface
  *
  * @phpstan-template T of object
  * @phpstan-extends BaseGroupedMapper<T>
  */
 final class ShowMapper extends BaseGroupedMapper
 {
-    /**
-     * @var ShowBuilderInterface
-     */
-    private $builder;
+    private ShowBuilderInterface $builder;
 
     /**
      * @var FieldDescriptionCollection<FieldDescriptionInterface>
      */
-    private $list;
+    private FieldDescriptionCollection $list;
 
     /**
      * @var AdminInterface<object>
      * @phpstan-var AdminInterface<T>
      */
-    private $admin;
+    private AdminInterface $admin;
 
     /**
      * @param FieldDescriptionCollection<FieldDescriptionInterface> $list

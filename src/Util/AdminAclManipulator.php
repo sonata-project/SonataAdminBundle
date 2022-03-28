@@ -27,11 +27,9 @@ use Symfony\Component\Security\Acl\Permission\MaskBuilderInterface;
 final class AdminAclManipulator implements AdminAclManipulatorInterface
 {
     /**
-     * @var string
-     *
      * @phpstan-var class-string<MaskBuilderInterface>
      */
-    private $maskBuilderClass;
+    private string $maskBuilderClass;
 
     /**
      * @phpstan-param class-string<MaskBuilderInterface> $maskBuilderClass
@@ -99,7 +97,7 @@ final class AdminAclManipulator implements AdminAclManipulatorInterface
                         $action = 'update';
                     }
 
-                    $output->writeln(sprintf('   - %s role: %s, permissions: %s', $action, $role, json_encode($roleAdminPermissions)));
+                    $output->writeln(sprintf('   - %s role: %s, permissions: %s', $action, $role, json_encode($roleAdminPermissions, \JSON_THROW_ON_ERROR)));
 
                     $builder->reset();
                 } elseif (false !== $aceIndex) {

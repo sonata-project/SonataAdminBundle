@@ -49,7 +49,7 @@ Using Annotations::
          * @ORM\Column(type="integer")
          * @ORM\Version
          */
-        protected $version;
+        private ?int $version = null;
 
         // ...
     }

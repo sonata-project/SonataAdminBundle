@@ -26,15 +26,9 @@ final class SetupAclCommand extends Command
 {
     protected static $defaultName = 'sonata:admin:setup-acl';
 
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
-    /**
-     * @var AdminAclManipulatorInterface
-     */
-    private $aclManipulator;
+    private AdminAclManipulatorInterface $aclManipulator;
 
     /**
      * @internal This class should only be used through the console

@@ -84,9 +84,7 @@ final class FormTypeFieldExtensionTest extends TestCase
             ->willReturn('name');
         $fieldDescription
             ->method('getOption')
-            ->willReturnCallback(static function (string $option, $value) {
-                return $value;
-            });
+            ->willReturnCallback(static fn (string $option, $value) => $value);
 
         $resolvedFormType = new ResolvedFormType($this->createStub(FormTypeInterface::class));
         $formBuilder = $resolvedFormType->createBuilder(

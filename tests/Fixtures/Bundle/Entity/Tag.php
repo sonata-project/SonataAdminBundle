@@ -15,10 +15,7 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity;
 
 final class Tag
 {
-    /**
-     * @var Post|null
-     */
-    private $post;
+    private ?Post $post = null;
 
     public function setPost(?Post $post): void
     {

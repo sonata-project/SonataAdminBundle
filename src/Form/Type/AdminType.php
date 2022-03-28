@@ -76,9 +76,7 @@ final class AdminType extends AbstractType
                     $parentPath = implode(
                         '',
                         array_map(
-                            static function (array $associationMapping): string {
-                                return sprintf('%s.', $associationMapping['fieldName']);
-                            },
+                            static fn (array $associationMapping): string => sprintf('%s.', $associationMapping['fieldName']),
                             $this->getFieldDescription($options)->getParentAssociationMappings()
                         )
                     );
@@ -129,9 +127,7 @@ final class AdminType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'delete' => static function (Options $options): bool {
-                return false !== $options['btn_delete'];
-            },
+            'delete' => static fn (Options $options): bool => false !== $options['btn_delete'],
             'delete_options' => [
                 'type' => CheckboxType::class,
                 'type_options' => [

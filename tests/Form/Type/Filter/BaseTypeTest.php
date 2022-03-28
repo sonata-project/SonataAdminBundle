@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\Type\Filter;
 
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 abstract class BaseTypeTest extends TypeTestCase
@@ -34,7 +35,7 @@ abstract class BaseTypeTest extends TypeTestCase
     }
 
     /**
-     * @phpstan-return class-string<\Symfony\Component\Form\FormTypeInterface>
+     * @phpstan-return class-string<FormTypeInterface>
      */
     abstract protected function getTestedType(): string;
 }

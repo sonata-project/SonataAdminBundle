@@ -30,10 +30,7 @@ use Twig\Loader\FilesystemLoader;
  */
 abstract class BaseMenuTest extends TestCase
 {
-    /**
-     * @var Environment
-     */
-    private $environment;
+    private Environment $environment;
 
     protected function setUp(): void
     {
@@ -76,9 +73,7 @@ abstract class BaseMenuTest extends TestCase
      */
     protected function cleanHtmlWhitespace(string $html): string
     {
-        $html = preg_replace_callback('/>([^<]+)</', static function ($value): string {
-            return sprintf('>%s<', trim($value[1]));
-        }, $html);
+        $html = preg_replace_callback('/>([^<]+)</', static fn ($value): string => sprintf('>%s<', trim($value[1])), $html);
 
         return $html ?? '';
     }

@@ -25,15 +25,9 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 final class AdminValueResolverTest extends TestCase
 {
-    /**
-     * @var PostAdmin
-     */
-    private $admin;
+    private PostAdmin $admin;
 
-    /**
-     * @var AdminValueResolver
-     */
-    private $adminValueResolver;
+    private AdminValueResolver $adminValueResolver;
 
     protected function setUp(): void
     {
@@ -64,7 +58,7 @@ final class AdminValueResolverTest extends TestCase
         yield 'Object must implement AdminInterface' => [
             false,
             new Request(),
-            new ArgumentMetadata('_sonata_admin', __CLASS__, false, false, null),
+            new ArgumentMetadata('_sonata_admin', self::class, false, false, null),
         ];
 
         yield 'Admin code must be passed' => [

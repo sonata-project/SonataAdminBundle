@@ -23,7 +23,7 @@ final class TypeGuesserChain implements TypeGuesserInterface
     /**
      * @var TypeGuesserInterface[]
      */
-    private $guessers = [];
+    private array $guessers = [];
 
     /**
      * @param TypeGuesserInterface[] $guessers

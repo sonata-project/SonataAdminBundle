@@ -21,10 +21,7 @@ use Symfony\Component\Form\Forms;
 
 final class ChoiceTypeExtensionTest extends TestCase
 {
-    /**
-     * @var FormFactoryInterface
-     */
-    private $factory;
+    private FormFactoryInterface $factory;
 
     protected function setUp(): void
     {

@@ -27,10 +27,7 @@ use Symfony\Component\DependencyInjection\Container;
  */
 final class SetupAclCommandTest extends TestCase
 {
-    /**
-     * @var Container
-     */
-    private $container;
+    private Container $container;
 
     protected function setUp(): void
     {

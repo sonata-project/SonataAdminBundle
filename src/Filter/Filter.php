@@ -36,15 +36,9 @@ abstract class Filter implements FilterInterface, ChainableFilterInterface
      */
     protected $condition;
 
-    /**
-     * @var bool
-     */
-    private $active = false;
+    private bool $active = false;
 
-    /**
-     * @var FilterInterface|null
-     */
-    private $previousFilter;
+    private ?FilterInterface $previousFilter = null;
 
     final public function initialize(string $name, array $options = []): void
     {

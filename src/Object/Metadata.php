@@ -20,30 +20,18 @@ final class Metadata implements MetadataInterface
      */
     public const DEFAULT_MOSAIC_BACKGROUND = 'bundles/sonataadmin/images/default_mosaic_image.png';
 
-    /**
-     * @var string
-     */
-    private $title;
+    private string $title;
 
-    /**
-     * @var string|null
-     */
-    private $description;
+    private ?string $description = null;
 
-    /**
-     * @var string|null
-     */
-    private $image;
+    private ?string $image = null;
 
-    /**
-     * @var string|null
-     */
-    private $domain;
+    private ?string $domain = null;
 
     /**
      * @var array<string, mixed>
      */
-    private $options = [];
+    private array $options = [];
 
     /**
      * @param array<string, mixed> $options
@@ -57,7 +45,7 @@ final class Metadata implements MetadataInterface
     ) {
         $this->title = $title;
         $this->description = $description;
-        $this->image = null !== $image ? $image : self::DEFAULT_MOSAIC_BACKGROUND;
+        $this->image = $image ?? self::DEFAULT_MOSAIC_BACKGROUND;
         $this->domain = $domain;
         $this->options = $options;
     }

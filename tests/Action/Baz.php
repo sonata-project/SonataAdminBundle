@@ -15,10 +15,7 @@ namespace Sonata\AdminBundle\Tests\Action;
 
 final class Baz
 {
-    /**
-     * @var Bar|null
-     */
-    private $bar;
+    private ?Bar $bar = null;
 
     public function setBar(Bar $bar): void
     {

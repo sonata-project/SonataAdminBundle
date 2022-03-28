@@ -22,15 +22,9 @@ use Symfony\Component\Config\Resource\FileResource;
  */
 final class RoutesCache
 {
-    /**
-     * @var string
-     */
-    private $cacheFolder;
+    private string $cacheFolder;
 
-    /**
-     * @var bool
-     */
-    private $debug;
+    private bool $debug;
 
     public function __construct(string $cacheFolder, bool $debug)
     {

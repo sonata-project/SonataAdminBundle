@@ -21,10 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ModelAutocompleteTypeTest extends TypeTestCase
 {
-    /**
-     * @var ModelAutocompleteType
-     */
-    private $type;
+    private ModelAutocompleteType $type;
 
     protected function setUp(): void
     {

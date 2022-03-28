@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Form;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 use Sonata\BlockBundle\Form\Mapper\FormMapper as BlockFormMapper;
@@ -27,28 +28,22 @@ use Symfony\Component\Form\FormTypeInterface;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @phpstan-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
+ * @phpstan-import-type FieldDescriptionOptions from FieldDescriptionInterface
  *
  * @phpstan-template T of object
  * @phpstan-extends BaseGroupedMapper<T>
  */
 final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
 {
-    /**
-     * @var FormContractorInterface
-     */
-    private $builder;
+    private FormContractorInterface $builder;
 
-    /**
-     * @var FormBuilderInterface
-     */
-    private $formBuilder;
+    private FormBuilderInterface $formBuilder;
 
     /**
      * @var AdminInterface<object>
      * @phpstan-var AdminInterface<T>
      */
-    private $admin;
+    private AdminInterface $admin;
 
     /**
      * @phpstan-param AdminInterface<T> $admin

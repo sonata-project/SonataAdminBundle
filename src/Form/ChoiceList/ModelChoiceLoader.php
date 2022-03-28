@@ -29,39 +29,25 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
     /**
      * @var ModelManagerInterface<object>
      */
-    private $modelManager;
+    private ModelManagerInterface $modelManager;
+
+    private PropertyAccessorInterface $propertyAccessor;
 
     /**
-     * @var PropertyAccessorInterface
-     */
-    private $propertyAccessor;
-
-    /**
-     * @var string
-     *
      * @phpstan-var class-string
      */
-    private $class;
+    private string $class;
 
-    /**
-     * @var string|null
-     */
-    private $property;
+    private ?string $property = null;
 
-    /**
-     * @var object|null
-     */
-    private $query;
+    private ?object $query = null;
 
     /**
      * @var object[]|null
      */
-    private $choices;
+    private ?array $choices = null;
 
-    /**
-     * @var ChoiceListInterface|null
-     */
-    private $choiceList;
+    private ?ChoiceListInterface $choiceList = null;
 
     /**
      * @param ModelManagerInterface<object> $modelManager

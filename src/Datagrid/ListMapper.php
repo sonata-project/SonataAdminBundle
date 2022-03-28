@@ -24,7 +24,7 @@ use Sonata\AdminBundle\Mapper\MapperInterface;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @phpstan-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
+ * @phpstan-import-type FieldDescriptionOptions from FieldDescriptionInterface
  *
  * @phpstan-template T of object
  * @phpstan-implements MapperInterface<T>
@@ -39,21 +39,18 @@ final class ListMapper implements MapperInterface
     public const TYPE_BATCH = 'batch';
     public const TYPE_SELECT = 'select';
 
-    /**
-     * @var ListBuilderInterface
-     */
-    private $builder;
+    private ListBuilderInterface $builder;
 
     /**
      * @var FieldDescriptionCollection<FieldDescriptionInterface>
      */
-    private $list;
+    private FieldDescriptionCollection $list;
 
     /**
      * @var AdminInterface<object>
      * @phpstan-var AdminInterface<T>
      */
-    private $admin;
+    private AdminInterface $admin;
 
     /**
      * @param FieldDescriptionCollection<FieldDescriptionInterface> $list

@@ -38,17 +38,12 @@ final class AdminObjectAclManipulator
     public const ACL_USERS_FORM_NAME = 'acl_users_form';
     public const ACL_ROLES_FORM_NAME = 'acl_roles_form';
 
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
 
     /**
-     * @var string
-     *
      * @phpstan-var class-string<MaskBuilderInterface>
      */
-    private $maskBuilderClass;
+    private string $maskBuilderClass;
 
     /**
      * @phpstan-param class-string<MaskBuilderInterface> $maskBuilderClass

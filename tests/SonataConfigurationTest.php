@@ -18,10 +18,7 @@ use Sonata\AdminBundle\SonataConfiguration;
 
 final class SonataConfigurationTest extends TestCase
 {
-    /**
-     * @var SonataConfiguration
-     */
-    private $configuration;
+    private SonataConfiguration $configuration;
 
     protected function setUp(): void
     {

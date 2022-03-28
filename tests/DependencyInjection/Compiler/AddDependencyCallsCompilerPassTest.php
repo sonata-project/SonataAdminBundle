@@ -33,10 +33,7 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestCase
 {
-    /**
-     * @var SonataAdminExtension
-     */
-    private $extension;
+    private SonataAdminExtension $extension;
 
     protected function setUp(): void
     {

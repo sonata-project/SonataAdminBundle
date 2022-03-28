@@ -87,10 +87,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class AdminTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    protected $cacheTempFolder;
+    protected string $cacheTempFolder;
 
     protected function setUp(): void
     {
@@ -1197,10 +1194,8 @@ final class AdminTest extends TestCase
         $modelManager = $this->createStub(ModelManagerInterface::class);
         $modelManager
             ->method('getNormalizedIdentifier')
-            ->willReturnCallback(static function (?object $model = null): ?string {
-                // @phpstan-ignore-next-line
-                return $model ? $model->id : null;
-            });
+            // @phpstan-ignore-next-line
+            ->willReturnCallback(static fn (?object $model = null): ?string => $model ? $model->id : null);
 
         $admin->setModelManager($modelManager);
 
@@ -1211,17 +1206,8 @@ final class AdminTest extends TestCase
         $securityHandler
             ->expects(static::exactly(6))
             ->method('isGranted')
-            ->willReturnCallback(static function (
-                AdminInterface $adminIn,
-                string $attributes,
-                ?object $object = null
-            ) use (
-                $admin,
-                $entity1
-            ): bool {
-                return $admin === $adminIn && 'FOO' === $attributes &&
-                    ($object === $admin || $object === $entity1);
-            });
+            ->willReturnCallback(static fn (AdminInterface $adminIn, string $attributes, ?object $object = null): bool => $admin === $adminIn && 'FOO' === $attributes &&
+                ($object === $admin || $object === $entity1));
 
         $admin->setSecurityHandler($securityHandler);
 
@@ -1266,9 +1252,7 @@ final class AdminTest extends TestCase
         $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
-            ->willReturnCallback(static function (AdminInterface $adminIn, $attributes, ?object $object = null) use ($admin): bool {
-                return $admin === $adminIn && 'LIST' === $attributes;
-            });
+            ->willReturnCallback(static fn (AdminInterface $adminIn, $attributes, ?object $object = null): bool => $admin === $adminIn && 'LIST' === $attributes);
 
         $admin->setSecurityHandler($securityHandler);
 
@@ -1886,9 +1870,7 @@ final class AdminTest extends TestCase
         $labelTranslatorStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
         $labelTranslatorStrategy
             ->method('getLabel')
-            ->willReturnCallback(static function (string $label, string $context = '', string $type = ''): string {
-                return sprintf('%s.%s_%s', $context, $type, $label);
-            });
+            ->willReturnCallback(static fn (string $label, string $context = '', string $type = ''): string => sprintf('%s.%s_%s', $context, $type, $label));
 
         $admin = new PostAdmin();
         $admin->setRouteBuilder($pathInfo);
@@ -1906,9 +1888,7 @@ final class AdminTest extends TestCase
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
-            ->willReturnCallback(static function (AdminInterface $adminIn, string $attributes, ?object $object = null) use ($admin): bool {
-                return $admin === $adminIn && 'DELETE' === $attributes;
-            });
+            ->willReturnCallback(static fn (AdminInterface $adminIn, string $attributes, ?object $object = null): bool => $admin === $adminIn && 'DELETE' === $attributes);
         $admin->setSecurityHandler($securityHandler);
 
         static::assertSame($expected, $admin->getBatchActions());
@@ -2062,9 +2042,7 @@ final class AdminTest extends TestCase
         $securityHandler = $this->createStub(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
-            ->willReturnCallback(static function (AdminInterface $adminIn, string $attributes, ?object $object = null) use ($admin): bool {
-                return $admin === $adminIn && ('CREATE' === $attributes || 'LIST' === $attributes);
-            });
+            ->willReturnCallback(static fn (AdminInterface $adminIn, string $attributes, ?object $object = null): bool => $admin === $adminIn && ('CREATE' === $attributes || 'LIST' === $attributes));
 
         $admin->setSecurityHandler($securityHandler);
 
@@ -2285,9 +2263,7 @@ final class AdminTest extends TestCase
         $formFactory = new FormFactory(new FormRegistry([], new ResolvedFormTypeFactory()));
         $datagridBuilder = new DatagridBuilder($formFactory, $pager, $proxyQuery);
 
-        $translator->method('trans')->willReturnCallback(static function (string $label): string {
-            return sprintf('trans(%s)', $label);
-        });
+        $translator->method('trans')->willReturnCallback(static fn (string $label): string => sprintf('trans(%s)', $label));
 
         $modelManager->expects(static::once())->method('getExportFields')->willReturn([
             'key' => 'field',

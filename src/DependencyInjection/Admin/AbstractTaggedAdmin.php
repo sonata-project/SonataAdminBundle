@@ -72,139 +72,93 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     /**
      * The class name managed by the admin class.
      *
-     * @var string|null
-     *
      * @phpstan-var class-string<T>|null
      */
-    private $modelClass;
+    private ?string $modelClass = null;
 
-    /**
-     * @var string|null
-     */
-    private $label;
+    private ?string $label = null;
 
     /**
      * @var non-empty-array<string, array<string, mixed>>
      */
-    private $listModes = TaggedAdminInterface::DEFAULT_LIST_MODES;
+    private array $listModes = TaggedAdminInterface::DEFAULT_LIST_MODES;
 
-    /**
-     * @var string
-     */
-    private $pagerType = Pager::TYPE_DEFAULT;
+    private string $pagerType = Pager::TYPE_DEFAULT;
 
     /**
      * The manager type to use for the admin.
-     *
-     * @var string|null
      */
-    private $managerType;
+    private ?string $managerType = null;
 
     /**
      * Roles and permissions per role.
      *
      * @var array<string, string[]> 'role' => ['permission1', 'permission2']
      */
-    private $securityInformation = [];
+    private array $securityInformation = [];
 
     /**
      * Component responsible for persisting filters.
-     *
-     * @var FilterPersisterInterface|null
      */
-    private $filterPersister;
+    private ?FilterPersisterInterface $filterPersister = null;
 
     /**
      * The Entity or Document manager.
      *
-     * @var ModelManagerInterface|null
      * @phpstan-var ModelManagerInterface<T>|null
      */
-    private $modelManager;
+    private ?ModelManagerInterface $modelManager = null;
 
-    /**
-     * @var DataSourceInterface|null
-     */
-    private $dataSource;
+    private ?DataSourceInterface $dataSource = null;
 
     /**
      * The related form contractor.
-     *
-     * @var FormContractorInterface|null
      */
-    private $formContractor;
+    private ?FormContractorInterface $formContractor = null;
 
     /**
      * The related view builder.
-     *
-     * @var ShowBuilderInterface|null
      */
-    private $showBuilder;
+    private ?ShowBuilderInterface $showBuilder = null;
 
     /**
      * The related list builder.
-     *
-     * @var ListBuilderInterface|null
      */
-    private $listBuilder;
+    private ?ListBuilderInterface $listBuilder = null;
 
     /**
      * The related datagrid builder.
      *
      * @var DatagridBuilderInterface<ProxyQueryInterface>|null
      */
-    private $datagridBuilder;
+    private ?DatagridBuilderInterface $datagridBuilder = null;
 
     /**
      * The translator component.
-     *
-     * @var TranslatorInterface|null
      */
-    private $translator;
+    private ?TranslatorInterface $translator = null;
 
     /**
      * The configuration pool.
-     *
-     * @var Pool|null
      */
-    private $configurationPool;
+    private ?Pool $configurationPool = null;
 
     /**
      * The router instance.
-     *
-     * @var RouteGeneratorInterface|null
      */
-    private $routeGenerator;
+    private ?RouteGeneratorInterface $routeGenerator = null;
 
-    /**
-     * @var SecurityHandlerInterface|null
-     */
-    private $securityHandler;
+    private ?SecurityHandlerInterface $securityHandler = null;
 
-    /**
-     * @var FactoryInterface|null
-     */
-    private $menuFactory;
+    private ?FactoryInterface $menuFactory = null;
 
-    /**
-     * @var RouteBuilderInterface|null
-     */
-    private $routeBuilder;
+    private ?RouteBuilderInterface $routeBuilder = null;
 
-    /**
-     * @var LabelTranslatorStrategyInterface|null
-     */
-    private $labelTranslatorStrategy;
+    private ?LabelTranslatorStrategyInterface $labelTranslatorStrategy = null;
 
-    /**
-     * @var FieldDescriptionFactoryInterface|null
-     */
-    private $fieldDescriptionFactory;
+    private ?FieldDescriptionFactoryInterface $fieldDescriptionFactory = null;
 
-    /**
-     * @var MutableTemplateRegistryInterface|null
-     */
-    private $templateRegistry;
+    private ?MutableTemplateRegistryInterface $templateRegistry = null;
 
     /**
      * NEXT_MAJOR: Remove the __construct method.

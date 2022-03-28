@@ -28,7 +28,7 @@ final class ModelManager implements ModelManagerInterface, LockInterface
     /**
      * @var RepositoryInterface<T>
      */
-    private $repository;
+    private RepositoryInterface $repository;
 
     /**
      * @param RepositoryInterface<T> $repository

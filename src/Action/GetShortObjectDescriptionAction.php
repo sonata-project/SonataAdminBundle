@@ -24,15 +24,9 @@ use Twig\Environment;
 
 final class GetShortObjectDescriptionAction
 {
-    /**
-     * @var AdminFetcherInterface
-     */
-    private $adminFetcher;
+    private AdminFetcherInterface $adminFetcher;
 
-    /**
-     * @var Environment
-     */
-    private $twig;
+    private Environment $twig;
 
     public function __construct(Environment $twig, AdminFetcherInterface $adminFetcher)
     {

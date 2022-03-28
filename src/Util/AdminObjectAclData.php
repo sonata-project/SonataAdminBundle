@@ -29,54 +29,40 @@ final class AdminObjectAclData
     /**
      * @var string[] Permissions managed only by a OWNER
      */
-    private static $ownerPermissions = ['MASTER', 'OWNER'];
+    private static array $ownerPermissions = ['MASTER', 'OWNER'];
 
     /**
      * @var AdminInterface<object>
      */
-    private $admin;
+    private AdminInterface $admin;
 
-    /**
-     * @var object
-     */
-    private $object;
+    private object $object;
 
     /**
      * @var \Traversable<UserInterface|string> Users to set ACL for
      */
-    private $aclUsers;
+    private \Traversable $aclUsers;
 
     /**
      * @var \Traversable<string> Roles to set ACL for
      */
-    private $aclRoles;
+    private \Traversable $aclRoles;
 
     /**
      * @var array<string, mixed> Cache of masks
      */
-    private $masks = [];
+    private array $masks = [];
+
+    private ?FormInterface $aclUsersForm = null;
+
+    private ?FormInterface $aclRolesForm = null;
+
+    private ?MutableAclInterface $acl = null;
 
     /**
-     * @var FormInterface|null
-     */
-    private $aclUsersForm;
-
-    /**
-     * @var FormInterface|null
-     */
-    private $aclRolesForm;
-
-    /**
-     * @var MutableAclInterface|null
-     */
-    private $acl;
-
-    /**
-     * @var string
-     *
      * @phpstan-var class-string
      */
-    private $maskBuilderClass;
+    private string $maskBuilderClass;
 
     /**
      * @param AdminInterface<object>             $admin
@@ -95,7 +81,7 @@ final class AdminObjectAclData
         $this->admin = $admin;
         $this->object = $object;
         $this->aclUsers = $aclUsers;
-        $this->aclRoles = (null === $aclRoles) ? new \ArrayIterator() : $aclRoles;
+        $this->aclRoles = $aclRoles ?? new \ArrayIterator();
         $this->maskBuilderClass = $maskBuilderClass;
         if (!$admin->isAclEnabled()) {
             throw new \InvalidArgumentException('The admin must have ACL enabled.');

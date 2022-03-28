@@ -29,10 +29,7 @@ use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 final class AdminTypeTest extends TypeTestCase
 {
-    /**
-     * @var AdminType
-     */
-    private $adminType;
+    private AdminType $adminType;
 
     protected function setUp(): void
     {

@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
+use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\BCLayer\BCDeprecation;
+use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -26,8 +28,8 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *
  * @author Michael Williams <mtotheikle@gmail.com>
  *
- * @phpstan-import-type ExtensionMap from \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass
- * @phpstan-import-type Item from \Sonata\AdminBundle\Admin\Pool
+ * @phpstan-import-type ExtensionMap from ExtensionCompilerPass
+ * @phpstan-import-type Item from Pool
  *
  * NEXT_MAJOR: Remove the default_label_catalogue key.
  * @phpstan-type SonataAdminConfigurationOptions = array{

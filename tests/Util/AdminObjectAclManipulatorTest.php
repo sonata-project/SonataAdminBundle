@@ -39,10 +39,7 @@ final class AdminObjectAclManipulatorTest extends TestCase
      */
     private $formFactory;
 
-    /**
-     * @var AdminObjectAclManipulator
-     */
-    private $adminObjectAclManipulator;
+    private AdminObjectAclManipulator $adminObjectAclManipulator;
 
     protected function setUp(): void
     {

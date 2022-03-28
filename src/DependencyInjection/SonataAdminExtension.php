@@ -35,7 +35,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  * @author Michael Williams <michael.williams@funsational.com>
  *
- * @phpstan-import-type SonataAdminConfiguration from \Sonata\AdminBundle\DependencyInjection\Configuration
+ * @phpstan-import-type SonataAdminConfiguration from Configuration
  */
 final class SonataAdminExtension extends Extension
 {

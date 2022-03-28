@@ -41,22 +41,17 @@ use Twig\Environment;
 
 final class ExtensionCompilerPassTest extends TestCase
 {
-    /**
-     * @var SonataAdminExtension
-     */
-    private $extension;
+    private SonataAdminExtension $extension;
 
     /**
      * @var array<string, mixed>
      */
-    private $config = [];
+    private array $config = [];
 
     /**
      * Root name of the configuration.
-     *
-     * @var string
      */
-    private $root;
+    private string $root;
 
     protected function setUp(): void
     {

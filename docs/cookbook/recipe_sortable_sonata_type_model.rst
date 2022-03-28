@@ -97,7 +97,7 @@ Update the ``UserBundle\Entity\User.php`` entity with the following::
     /**
      * @var Collection|UserHasExpectations[]
      */
-    protected $userHasExpectations;
+    private Collection $userHasExpectations;
 
     public function __construct()
     {
@@ -135,7 +135,7 @@ Update the ``UserBundle\Entity\Expectation.php`` entity with the following::
     /**
      * @var Collection|UserHasExpectations[]
      */
-    protected $userHasExpectations;
+    private Collection $userHasExpectations;
 
     /**
      * @param Collection|UserHasExpectations[] $userHasExpectations
@@ -167,25 +167,13 @@ Create the ``UserBundle\Entity\UserHasExpectations.php`` entity with the followi
 
     class UserHasExpectations
     {
-        /**
-         * @var int $id
-         */
-        protected $id;
+        private ?int $id = null;
 
-        /**
-         * @var User $user
-         */
-        protected $user;
+        private ?User $user = null;
 
-        /**
-         * @var Expectation $expectation
-         */
-        protected $expectation;
+        private ?Expectation $expectation = null;
 
-        /**
-         * @var int $position
-         */
-        protected $position;
+        private ?int $position = null;
 
         public function getId(): ?int
         {
@@ -305,15 +293,9 @@ to handle the conversion of ``Expectation`` to ``UserHasExpectations``::
 
     final class ExpectationDataTransformer implements Symfony\Component\Form\DataTransformerInterface
     {
-        /**
-         * @var User $user
-         */
-        private $user;
+        private User $user;
 
-        /**
-         * @var ModelManager $modelManager
-         */
-        private $modelManager;
+        private ModelManager $modelManager;
 
         public function __construct(User $user, ModelManager $modelManager)
         {

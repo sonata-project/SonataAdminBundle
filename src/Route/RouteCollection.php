@@ -23,32 +23,20 @@ final class RouteCollection implements RouteCollectionInterface
     /**
      * @var array<string, Route|callable():Route>
      */
-    private $elements = [];
+    private array $elements = [];
 
-    /**
-     * @var string
-     */
-    private $baseCodeRoute;
+    private string $baseCodeRoute;
 
-    /**
-     * @var string
-     */
-    private $baseRouteName;
+    private string $baseRouteName;
 
-    /**
-     * @var string
-     */
-    private $baseControllerName;
+    private string $baseControllerName;
 
-    /**
-     * @var string
-     */
-    private $baseRoutePattern;
+    private string $baseRoutePattern;
 
     /**
      * @var array<string, Route|callable():Route>
      */
-    private $cachedElements = [];
+    private array $cachedElements = [];
 
     public function __construct(
         string $baseCodeRoute,
@@ -93,9 +81,7 @@ final class RouteCollection implements RouteCollectionInterface
 
         $defaults['_sonata_name'] = $this->getRouteName($name);
 
-        $element = static function () use ($pattern, $defaults, $requirements, $options, $host, $schemes, $methods, $condition): Route {
-            return new Route($pattern, $defaults, $requirements, $options, $host, $schemes, $methods, $condition);
-        };
+        $element = static fn (): Route => new Route($pattern, $defaults, $requirements, $options, $host, $schemes, $methods, $condition);
         $this->addElement($code, $element);
 
         return $this;

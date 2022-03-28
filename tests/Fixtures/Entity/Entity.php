@@ -15,10 +15,7 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
 
 final class Entity extends AbstractEntity
 {
-    /**
-     * @var int
-     */
-    private $id;
+    private int $id;
 
     public function __construct(int $id)
     {
