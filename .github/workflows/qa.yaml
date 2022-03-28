@@ -62,13 +62,14 @@ jobs:
 
             - name: Psalm
               run: vendor/bin/psalm --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd --php-version=8.1
+
     rector:
         name: Rector
 
         runs-on: ubuntu-latest
 
         steps:
-            - name: Checkout
+            - name: Checkout code
               uses: actions/checkout@v2
 
             - name: Install PHP with extensions
