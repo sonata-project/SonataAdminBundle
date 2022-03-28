@@ -255,12 +255,16 @@ final class AdminTypeTest extends TypeTestCase
         $parentField = $this->createMock(FieldDescriptionInterface::class);
         $parentField->expects(static::once())->method('setAssociationAdmin')->with(static::isInstanceOf(AdminInterface::class));
         $parentField->expects(static::once())->method('getAdmin')->willReturn($parentAdmin);
-        $parentField->expects(static::once())->method('getParentAssociationMappings')->willReturn([]);
-        $parentField->expects(static::once())->method('getAssociationMapping')->willReturn(['fieldName' => 'foo', 'mappedBy' => 'bar']);
+        $parentField->expects(static::atLeastOnce())->method('getParentAssociationMappings')->willReturn([]);
+        $parentField->expects(static::atLeastOnce())->method('getAssociationMapping')->willReturn(['fieldName' => 'foo', 'mappedBy' => 'bar']);
 
         $modelManager = $this->createStub(ModelManagerInterface::class);
 
-        $newInstance = new \stdClass();
+        $newInstance = new class() {
+            public function setBar(object $bar): void
+            {
+            }
+        };
 
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects(static::exactly(2))->method('hasParentFieldDescription')->willReturn(true);
@@ -274,7 +278,7 @@ final class AdminTypeTest extends TypeTestCase
         $field = $this->createMock(FieldDescriptionInterface::class);
         $field->expects(static::once())->method('getAssociationAdmin')->willReturn($admin);
         $field->expects(static::atLeastOnce())->method('getFieldName')->willReturn('foo');
-        $field->expects(static::once())->method('getParentAssociationMappings')->willReturn([]);
+        $field->expects(static::atLeastOnce())->method('getParentAssociationMappings')->willReturn([]);
 
         $this->builder->add('foo');
 
