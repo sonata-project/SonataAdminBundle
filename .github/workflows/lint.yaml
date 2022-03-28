@@ -21,16 +21,20 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
               with:
                   php-version: '8.1'
                   coverage: none
-                  tools: composer:v2, php-cs-fixer:3
-              env:
-                  COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  tools: composer:v2
+
+            - name: Install Composer dependencies (highest)
+              uses: ramsey/composer-install@v2
+              with:
+                  dependency-versions: highest
+                  composer-options: --prefer-dist --prefer-stable
 
             - name: Lint PHP files
               run: make lint-php
@@ -42,7 +46,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
@@ -63,15 +67,10 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
-            - name: Install Ruby 2.6
-              uses: actions/setup-ruby@v1
-              with:
-                  ruby-version: '2.6'
-
-            - name: Install required gem
-              run: gem install yaml-lint
+            - name: Install yamllint
+              run: sudo apt-get install yamllint
 
             - name: Lint files
               run: make lint-yaml
@@ -83,7 +82,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Install required dependencies
               run: sudo apt-get update && sudo apt-get install libxml2-utils
