@@ -37,7 +37,7 @@ jobs:
                   composer-options: --prefer-dist --prefer-stable
 
             - name: PHPStan
-              run: vendor/bin/phpstan --memory-limit=1G analyse --error-format=github
+              run: vendor/bin/phpstan --no-progress --memory-limit=1G analyse --error-format=github
     psalm:
         name: Psalm
 
@@ -61,7 +61,7 @@ jobs:
                   composer-options: --prefer-dist --prefer-stable
 
             - name: Psalm
-              run: vendor/bin/psalm --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd --php-version=8.1
+              run: vendor/bin/psalm --no-progress --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd --php-version=8.1
 
     rector:
         name: Rector
@@ -86,4 +86,4 @@ jobs:
                   composer-options: --prefer-dist --prefer-stable
 
             - name: Rector
-              run: vendor/bin/rector --dry-run
+              run: vendor/bin/rector --no-progress-bar --dry-run
