@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.10.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.10.0...4.10.1) - 2022-03-29
+### Fixed
+- [[#7781](https://github.com/sonata-project/SonataAdminBundle/pull/7781)] Correctly set the parent object in AdminType with CollectionType passed by reference ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7779](https://github.com/sonata-project/SonataAdminBundle/pull/7779)] ProxyQueryInterface::setSortBy phpdoc ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7776](https://github.com/sonata-project/SonataAdminBundle/pull/7776)] Fixed display of list items when there are no results and using an entity with inheritance ([@jordisala1991](https://github.com/jordisala1991))
+
 ## [4.10.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.9.0...4.10.0) - 2022-03-21
 ### Changed
 - [[#7761](https://github.com/sonata-project/SonataAdminBundle/pull/7761)] CrudController::handleModelManagerThrowable can now return a custom error message to display in the flashbag instead of the generic one from Sonata. ([@VincentLanglet](https://github.com/VincentLanglet))
