@@ -33,15 +33,9 @@ use Twig\Extra\String\StringExtension;
  */
 final class BreadcrumbsExtensionTest extends TestCase
 {
-    /**
-     * @var BreadcrumbsExtension
-     */
-    private $breadcrumbsExtension;
+    private BreadcrumbsExtension $breadcrumbsExtension;
 
-    /**
-     * @var Environment
-     */
-    private $environment;
+    private Environment $environment;
 
     /**
      * @var Stub&BreadcrumbsBuilderInterface

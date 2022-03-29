@@ -19,10 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class AdminFetcher implements AdminFetcherInterface
 {
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
     public function __construct(Pool $pool)
     {

@@ -22,15 +22,9 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 final class TemplateRegistryRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var TemplateRegistryInterface
-     */
-    private $globalTemplateRegistry;
+    private TemplateRegistryInterface $globalTemplateRegistry;
 
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
     /**
      * @internal This class should only be used through Twig

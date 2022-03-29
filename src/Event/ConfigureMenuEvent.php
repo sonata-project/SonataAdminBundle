@@ -26,15 +26,9 @@ final class ConfigureMenuEvent extends Event
 {
     public const SIDEBAR = 'sonata.admin.event.configure.menu.sidebar';
 
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
+    private FactoryInterface $factory;
 
-    /**
-     * @var ItemInterface
-     */
-    private $menu;
+    private ItemInterface $menu;
 
     public function __construct(FactoryInterface $factory, ItemInterface $menu)
     {

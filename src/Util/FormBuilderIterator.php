@@ -22,20 +22,14 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 final class FormBuilderIterator extends \RecursiveArrayIterator
 {
-    /**
-     * @var FormBuilderInterface
-     */
-    private $formBuilder;
+    private FormBuilderInterface $formBuilder;
 
-    /**
-     * @var string
-     */
-    private $prefix;
+    private string $prefix;
 
     /**
      * @var \ArrayIterator<string|int, string>
      */
-    private $iterator;
+    private \ArrayIterator $iterator;
 
     public function __construct(FormBuilderInterface $formBuilder, ?string $prefix = null)
     {

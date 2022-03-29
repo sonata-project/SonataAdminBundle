@@ -20,10 +20,7 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 final class SonataAdminRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
     /**
      * @internal This class should only be used through Twig

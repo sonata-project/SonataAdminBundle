@@ -25,20 +25,11 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 final class FormBuilderIteratorTest extends TestCase
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
+    private EventDispatcherInterface $dispatcher;
 
-    /**
-     * @var FormFactoryInterface
-     */
-    private $factory;
+    private FormFactoryInterface $factory;
 
-    /**
-     * @var FormBuilder
-     */
-    private $builder;
+    private FormBuilder $builder;
 
     protected function setUp(): void
     {

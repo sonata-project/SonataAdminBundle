@@ -41,12 +41,9 @@ final class ObjectAclManipulatorTest extends TestCase
     /**
      * @var \ArrayIterator<int, MockObject&ObjectIdentityInterface>
      */
-    private $oids;
+    private \ArrayIterator $oids;
 
-    /**
-     * @var UserSecurityIdentity
-     */
-    private $securityIdentity;
+    private UserSecurityIdentity $securityIdentity;
 
     protected function setUp(): void
     {

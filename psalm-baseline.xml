@@ -15,4 +15,10 @@
             <code>null</code>
         </NullableReturnStatement>
     </file>
+    <!-- https://github.com/vimeo/psalm/issues/7825 -->
+    <file src="tests/Datagrid/DatagridTest.php">
+        <InvalidArgument occurrences="1">
+            <code>new Datagrid($this-&gt;query, $this-&gt;columns, $pager, $this-&gt;formBuilder, [])</code>
+        </InvalidArgument>
+    </file>
 </files>

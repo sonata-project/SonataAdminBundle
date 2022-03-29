@@ -33,7 +33,7 @@ use Symfony\Component\HttpFoundation\Request;
  * @method bool showInDashboard()
  * @method void removeExtension(AdminExtensionInterface $extension)
  *
- * @phpstan-import-type FieldDescriptionOptions from \Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface
+ * @phpstan-import-type FieldDescriptionOptions from FieldDescriptionInterface
  *
  * @phpstan-template T of object
  * @phpstan-extends AccessRegistryInterface<T>

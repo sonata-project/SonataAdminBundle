@@ -18,10 +18,7 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
  */
 final class FooArrayAccess implements \ArrayAccess
 {
-    /**
-     * @var string|null
-     */
-    private $bar;
+    private ?string $bar = null;
 
     public function __toString(): string
     {

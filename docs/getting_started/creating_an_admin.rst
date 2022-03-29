@@ -18,30 +18,24 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
         // ...
 
         /**
-         * @var string
-         *
          * @ORM\Column(name="title", type="string")
          */
-        private $title;
+        private ?string $title = null;
 
         /**
-         * @var string
-         *
          * @ORM\Column(name="body", type="text")
          */
-        private $body;
+        private ?string $body = null;
 
         /**
-         * @var bool
-         *
          * @ORM\Column(name="draft", type="boolean")
          */
-        private $draft = false;
+        private bool $draft = false;
 
         /**
          * @ORM\ManyToOne(targetEntity="Category", inversedBy="blogPosts")
          */
-        private $category;
+        private ?Category $category = null;
     }
 
 .. code-block:: php
@@ -56,18 +50,14 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
         // ...
 
         /**
-         * @var string
-         *
          * @ORM\Column(name="name", type="string")
          */
-        private $name;
+        private ?string $name = null;
 
         /**
-         * @var Collection
-         *
          * @ORM\OneToMany(targetEntity="BlogPost", mappedBy="category")
          */
-        private $blogPosts;
+        private Collection $blogPosts;
 
         public function __construct()
         {

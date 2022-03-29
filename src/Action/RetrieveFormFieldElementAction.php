@@ -24,20 +24,11 @@ use Twig\Environment;
 
 final class RetrieveFormFieldElementAction
 {
-    /**
-     * @var AdminFetcherInterface
-     */
-    private $adminFetcher;
+    private AdminFetcherInterface $adminFetcher;
 
-    /**
-     * @var AdminHelper
-     */
-    private $helper;
+    private AdminHelper $helper;
 
-    /**
-     * @var Environment
-     */
-    private $twig;
+    private Environment $twig;
 
     public function __construct(Environment $twig, AdminFetcherInterface $adminFetcher, AdminHelper $helper)
     {

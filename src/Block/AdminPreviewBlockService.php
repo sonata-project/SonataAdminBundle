@@ -29,10 +29,7 @@ use Twig\Environment;
  */
 final class AdminPreviewBlockService extends AbstractBlockService
 {
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
     public function __construct(Environment $twig, Pool $pool)
     {

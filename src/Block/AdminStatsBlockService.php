@@ -26,10 +26,7 @@ use Twig\Environment;
  */
 final class AdminStatsBlockService extends AbstractBlockService
 {
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
     public function __construct(Environment $twig, Pool $pool)
     {

@@ -23,17 +23,14 @@ final class PersistenceEventTest extends TestCase
     /**
      * @var PersistenceEvent<object>
      */
-    private $event;
+    private PersistenceEvent $event;
 
     /**
      * @var AdminInterface<object>&MockObject
      */
     private $admin;
 
-    /**
-     * @var object
-     */
-    private $object;
+    private object $object;
 
     protected function setUp(): void
     {

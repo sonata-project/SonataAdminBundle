@@ -36,33 +36,23 @@ final class BatchActionEvent extends Event
      * @var AdminInterface<object>
      * @phpstan-var AdminInterface<T>
      */
-    private $admin;
+    private AdminInterface $admin;
 
     /**
-     * @var string
      * @phpstan-var self::TYPE_*
      */
-    private $type;
+    private string $type;
 
-    /**
-     * @var string
-     */
-    private $actionName;
+    private string $actionName;
 
-    /**
-     * @var ProxyQueryInterface
-     */
-    private $proxyQuery;
+    private ProxyQueryInterface $proxyQuery;
 
     /**
      * @var mixed[]
      */
-    private $idx;
+    private array $idx;
 
-    /**
-     * @var bool
-     */
-    private $allElements;
+    private bool $allElements;
 
     /**
      * @param mixed[] $idx

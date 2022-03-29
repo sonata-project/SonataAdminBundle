@@ -19,10 +19,7 @@ use Twig\TwigFilter;
 
 final class IconExtension extends AbstractExtension
 {
-    /**
-     * @var IconRuntime
-     */
-    private $iconRuntime;
+    private IconRuntime $iconRuntime;
 
     /**
      * NEXT_MAJOR: Remove this constructor.

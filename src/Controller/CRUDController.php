@@ -42,6 +42,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -77,11 +78,10 @@ class CRUDController extends AbstractController
     /**
      * The template registry of the related Admin class.
      *
-     * @var TemplateRegistryInterface
-     *
      * @psalm-suppress PropertyNotSetInConstructor
+     * @phpstan-ignore-next-line
      */
-    private $templateRegistry;
+    private TemplateRegistryInterface $templateRegistry;
 
     public static function getSubscribedServices(): array
     {
@@ -397,18 +397,9 @@ class CRUDController extends AbstractController
 
         $forwardedRequest = $request->duplicate();
 
-        $encodedData = $request->get('data', '');
-        if (!\is_string($encodedData)) {
-            throw new BadRequestParamHttpException('data', 'string', $encodedData);
-        }
+        $encodedData = $request->get('data');
 
-        $data = json_decode($encodedData, true);
-        if (\is_array($data)) {
-            $action = $data['action'];
-            $idx = (array) ($data['idx'] ?? []);
-            $allElements = (bool) ($data['all_elements'] ?? false);
-            $forwardedRequest->request->replace(array_merge($forwardedRequest->request->all(), $data));
-        } else {
+        if (null === $encodedData) {
             $action = $forwardedRequest->request->get('action');
             /** @var InputBag|ParameterBag $bag */
             $bag = $request->request;
@@ -427,9 +418,24 @@ class CRUDController extends AbstractController
             $data['all_elements'] = $allElements;
 
             unset($data['_sonata_csrf_token']);
+        } else {
+            if (!\is_string($encodedData)) {
+                throw new BadRequestParamHttpException('data', 'string', $encodedData);
+            }
+
+            try {
+                $data = json_decode($encodedData, true, 512, \JSON_THROW_ON_ERROR);
+            } catch (\JsonException $exception) {
+                throw new BadRequestHttpException('Unable to decode batch data');
+            }
+
+            $action = $data['action'];
+            $idx = (array) ($data['idx'] ?? []);
+            $allElements = (bool) ($data['all_elements'] ?? false);
+            $forwardedRequest->request->replace(array_merge($forwardedRequest->request->all(), $data));
         }
 
-        if (null === $action) {
+        if (!\is_string($action)) {
             throw new \RuntimeException('The action is not defined');
         }
 
@@ -963,8 +969,8 @@ class CRUDController extends AbstractController
      */
     protected function addRenderExtraParams(array $parameters = []): array
     {
-        $parameters['admin'] = $parameters['admin'] ?? $this->admin;
-        $parameters['base_template'] = $parameters['base_template'] ?? $this->getBaseTemplate();
+        $parameters['admin'] ??= $this->admin;
+        $parameters['base_template'] ??= $this->getBaseTemplate();
 
         return $parameters;
     }
@@ -1327,7 +1333,7 @@ class CRUDController extends AbstractController
      */
     final protected function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
     {
-        $domain = $domain ?? $this->admin->getTranslationDomain();
+        $domain ??= $this->admin->getTranslationDomain();
         $translator = $this->container->get('translator');
         \assert($translator instanceof TranslatorInterface);
 

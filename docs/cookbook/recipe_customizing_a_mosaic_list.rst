@@ -141,7 +141,7 @@ the ``$pool`` variable and override the constructor::
 
     use Sonata\MediaBundle\Provider\Pool;
 
-    private $pool;
+    private Pool $pool;
 
     public function __construct(Pool $pool)
     {

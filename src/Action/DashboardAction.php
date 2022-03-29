@@ -23,17 +23,11 @@ final class DashboardAction
     /**
      * @var array<array<string, mixed>>
      */
-    private $dashboardBlocks = [];
+    private array $dashboardBlocks = [];
 
-    /**
-     * @var TemplateRegistryInterface
-     */
-    private $templateRegistry;
+    private TemplateRegistryInterface $templateRegistry;
 
-    /**
-     * @var Environment
-     */
-    private $twig;
+    private Environment $twig;
 
     /**
      * @param array<array<string, mixed>> $dashboardBlocks

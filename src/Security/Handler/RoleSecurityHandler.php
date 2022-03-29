@@ -22,15 +22,12 @@ use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundE
  */
 final class RoleSecurityHandler implements SecurityHandlerInterface
 {
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $authorizationChecker;
+    private AuthorizationCheckerInterface $authorizationChecker;
 
     /**
      * @var string[]
      */
-    private $superAdminRoles = [];
+    private array $superAdminRoles = [];
 
     /**
      * @param string|string[] $superAdminRoles

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Command;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Command\Validators;
 
 /**
@@ -61,8 +62,8 @@ final class ValidatorsTest extends TestCase
     public function getValidateClassTests(): iterable
     {
         return [
-            ['Sonata\AdminBundle\Admin\AbstractAdmin', 'Sonata\AdminBundle\Admin\AbstractAdmin'],
-            ['Sonata\AdminBundle\Admin\AbstractAdmin', 'Sonata/AdminBundle/Admin/AbstractAdmin'],
+            [AbstractAdmin::class, AbstractAdmin::class],
+            [AbstractAdmin::class, 'Sonata/AdminBundle/Admin/AbstractAdmin'],
         ];
     }
 

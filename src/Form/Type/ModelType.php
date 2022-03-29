@@ -37,10 +37,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  */
 final class ModelType extends AbstractType
 {
-    /**
-     * @var PropertyAccessorInterface
-     */
-    private $propertyAccessor;
+    private PropertyAccessorInterface $propertyAccessor;
 
     public function __construct(PropertyAccessorInterface $propertyAccessor)
     {
@@ -102,9 +99,7 @@ final class ModelType extends AbstractType
         };
 
         $resolver->setDefaults(array_merge($options, [
-            'compound' => static function (Options $options): bool {
-                return true === $options['expanded'];
-            },
+            'compound' => static fn (Options $options): bool => true === $options['expanded'],
             'template' => 'choice',
             'multiple' => false,
             'expanded' => false,

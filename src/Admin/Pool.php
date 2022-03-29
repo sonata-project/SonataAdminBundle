@@ -51,27 +51,24 @@ final class Pool
 {
     public const DEFAULT_ADMIN_KEY = 'default';
 
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ContainerInterface $container;
 
     /**
      * @var string[]
      */
-    private $adminServiceIds = [];
+    private array $adminServiceIds = [];
 
     /**
      * @var array<string, array<string, mixed>>
      * @phpstan-var array<string, Group>
      */
-    private $adminGroups = [];
+    private array $adminGroups = [];
 
     /**
      * @var array<string, string[]>
      * @phpstan-var array<class-string, string[]>
      */
-    private $adminClasses = [];
+    private array $adminClasses = [];
 
     /**
      * @param string[]                            $adminServices

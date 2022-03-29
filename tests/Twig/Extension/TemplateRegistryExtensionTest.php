@@ -30,10 +30,7 @@ use Symfony\Component\DependencyInjection\Container;
  */
 final class TemplateRegistryExtensionTest extends TestCase
 {
-    /**
-     * @var TemplateRegistryExtension
-     */
-    private $extension;
+    private TemplateRegistryExtension $extension;
 
     protected function setUp(): void
     {

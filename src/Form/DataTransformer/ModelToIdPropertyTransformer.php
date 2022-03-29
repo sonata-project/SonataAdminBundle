@@ -31,17 +31,14 @@ use Symfony\Component\Form\DataTransformerInterface;
 final class ModelToIdPropertyTransformer implements DataTransformerInterface
 {
     /**
-     * @var ModelManagerInterface
      * @phpstan-var ModelManagerInterface<T>
      */
-    private $modelManager;
+    private ModelManagerInterface $modelManager;
 
     /**
-     * @var string
-     *
      * @phpstan-var class-string<T>
      */
-    private $className;
+    private string $className;
 
     /**
      * @var string|string[]
@@ -49,10 +46,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
      */
     private $property;
 
-    /**
-     * @var bool
-     */
-    private $multiple;
+    private bool $multiple;
 
     /**
      * @var callable|null
@@ -149,7 +143,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
                     .' is set for many-to-many or one-to-many relations.'
                 );
             }
-            if (\is_array($value) || $value instanceof \Traversable) {
+            if (is_iterable($value)) {
                 $collection = $value;
             } else {
                 throw new \InvalidArgumentException(
@@ -161,7 +155,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
         } else {
             if (!\is_array($value) && substr(\get_class($value), -1 * \strlen($this->className)) === $this->className) {
                 $collection = [$value];
-            } elseif (\is_array($value) || $value instanceof \Traversable) {
+            } elseif (is_iterable($value)) {
                 throw new \InvalidArgumentException(
                     'A single selection must be passed a single value not a collection.'
                     .' Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true"'

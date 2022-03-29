@@ -27,34 +27,22 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * @phpstan-import-type Group from \Sonata\AdminBundle\Admin\Pool
+ * @phpstan-import-type Group from Pool
  */
 final class GroupMenuProviderTest extends TestCase
 {
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
-    /**
-     * @var GroupMenuProvider
-     */
-    private $provider;
+    private GroupMenuProvider $provider;
 
-    /**
-     * @var MenuFactory
-     */
-    private $factory;
+    private MenuFactory $factory;
 
     /**
      * @var AuthorizationCheckerInterface&Stub
      */
     private $checker;
 
-    /**
-     * @var Container
-     */
-    private $container;
+    private Container $container;
 
     protected function setUp(): void
     {

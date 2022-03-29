@@ -124,7 +124,7 @@ file that was distributed with this source code.
                                     <div class="progress-bar" style="width: 0%"></div>
                                 </div>
                                 <div class="progress-description">
-                                    <ul class="list-inline">
+                                    <ul class="list-unstyled">
                                         {%- if admin.datagrid.pager.countResults() > 0 -%}
                                             <li>
                                                 <a href="{{ admin.generateUrl(action|default('list'), admin.datagrid.getPaginationParameters(1)) }}">

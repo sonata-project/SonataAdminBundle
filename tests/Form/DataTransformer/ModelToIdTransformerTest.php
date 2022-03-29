@@ -21,7 +21,7 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 final class ModelToIdTransformerTest extends TestCase
 {
     /**
-     * @var ModelManagerInterface<object>&MockObject
+     * @var ModelManagerInterface<\stdClass>&MockObject
      */
     private $modelManager;
 

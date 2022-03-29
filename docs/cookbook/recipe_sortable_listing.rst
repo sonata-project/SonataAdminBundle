@@ -39,7 +39,7 @@ First of all we are going to add a position field in our ``Client`` entity::
      * @Gedmo\SortablePosition
      * @ORM\Column(name="position", type="integer")
      */
-    private $position;
+    private ?int $position = null;
 
 Then we need to inject the Sortable listener.
 If you only have the Gedmo bundle enabled, you only have to add the listener

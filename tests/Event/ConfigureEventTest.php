@@ -24,7 +24,7 @@ final class ConfigureEventTest extends TestCase
     /**
      * @var ConfigureEvent<object>
      */
-    private $event;
+    private ConfigureEvent $event;
 
     /**
      * @var AdminInterface<object>&MockObject

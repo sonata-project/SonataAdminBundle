@@ -30,35 +30,17 @@ use Twig\Environment;
 
 final class SetObjectFieldValueAction
 {
-    /**
-     * @var AdminFetcherInterface
-     */
-    private $adminFetcher;
+    private AdminFetcherInterface $adminFetcher;
 
-    /**
-     * @var Environment
-     */
-    private $twig;
+    private Environment $twig;
 
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /**
-     * @var DataTransformerResolverInterface
-     */
-    private $resolver;
+    private DataTransformerResolverInterface $resolver;
 
-    /**
-     * @var PropertyAccessorInterface
-     */
-    private $propertyAccessor;
+    private PropertyAccessorInterface $propertyAccessor;
 
-    /**
-     * @var RenderElementRuntime
-     */
-    private $renderElementRuntime;
+    private RenderElementRuntime $renderElementRuntime;
 
     public function __construct(
         Environment $twig,

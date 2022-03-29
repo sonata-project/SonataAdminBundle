@@ -33,10 +33,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 final class AdminHelperTest extends TestCase
 {
-    /**
-     * @var AdminHelper
-     */
-    protected $helper;
+    protected AdminHelper $helper;
 
     protected function setUp(): void
     {
@@ -395,7 +392,7 @@ final class AdminHelperTest extends TestCase
 
         $foo = new class() {
             /** @var Collection<int, Bar> */
-            private $bar;
+            private Collection $bar;
 
             public function __construct()
             {
@@ -506,7 +503,7 @@ final class AdminHelperTest extends TestCase
 
         $foo = new class() {
             /** @var Collection<int, Bar> */
-            private $bar;
+            private Collection $bar;
 
             public function __construct()
             {

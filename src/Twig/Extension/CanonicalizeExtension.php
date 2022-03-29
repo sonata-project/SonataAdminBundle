@@ -19,10 +19,7 @@ use Twig\TwigFunction;
 
 final class CanonicalizeExtension extends AbstractExtension
 {
-    /**
-     * @var CanonicalizeRuntime
-     */
-    private $canonicalizeRuntime;
+    private CanonicalizeRuntime $canonicalizeRuntime;
 
     /**
      * NEXT_MAJOR: Remove this constructor.

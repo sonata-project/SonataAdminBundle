@@ -28,22 +28,16 @@ final class GenerateObjectAclCommand extends QuestionableCommand
 {
     protected static $defaultName = 'sonata:admin:generate-object-acl';
 
-    /**
-     * @var string
-     */
-    private $userModelClass = '';
+    private string $userModelClass = '';
 
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
     /**
      * An array of object ACL manipulators indexed by their service ids.
      *
      * @var ObjectAclManipulatorInterface[]
      */
-    private $aclObjectManipulators = [];
+    private array $aclObjectManipulators = [];
 
     /**
      * @param ObjectAclManipulatorInterface[] $aclObjectManipulators

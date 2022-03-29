@@ -36,51 +36,40 @@ final class Datagrid implements DatagridInterface
      *
      * @var array<string, FilterInterface>
      */
-    private $filters = [];
+    private array $filters = [];
 
     /**
      * @var array<string, mixed>
      */
-    private $values = [];
+    private array $values = [];
 
     /**
      * @var FieldDescriptionCollection<FieldDescriptionInterface>
      */
-    private $columns;
+    private FieldDescriptionCollection $columns;
 
     /**
-     * @var PagerInterface
      * @phpstan-var PagerInterface<T>
      */
-    private $pager;
+    private PagerInterface $pager;
+
+    private bool $bound = false;
 
     /**
-     * @var bool
-     */
-    private $bound = false;
-
-    /**
-     * @var ProxyQueryInterface
      * @phpstan-var T
      */
-    private $query;
+    private ProxyQueryInterface $query;
 
-    /**
-     * @var FormBuilderInterface
-     */
-    private $formBuilder;
+    private FormBuilderInterface $formBuilder;
 
-    /**
-     * @var FormInterface|null
-     */
-    private $form;
+    private ?FormInterface $form = null;
 
     /**
      * Results are null prior to its initialization in `getResults()`.
      *
      * @var iterable<object>|null
      */
-    private $results;
+    private ?iterable $results = null;
 
     /**
      * @param FieldDescriptionCollection<FieldDescriptionInterface> $columns
@@ -276,7 +265,7 @@ final class Datagrid implements DatagridInterface
     private function applyFilters(array $data): void
     {
         foreach ($this->getFilters() as $name => $filter) {
-            $this->values[$name] = $this->values[$name] ?? null;
+            $this->values[$name] ??= null;
             $filterFormName = $filter->getFormName();
 
             $value = $this->values[$filterFormName]['value'] ?? '';
@@ -307,7 +296,7 @@ final class Datagrid implements DatagridInterface
             $this->values[DatagridInterface::SORT_BY]->getSortFieldMapping()
         );
 
-        $this->values[DatagridInterface::SORT_ORDER] = $this->values[DatagridInterface::SORT_ORDER] ?? 'ASC';
+        $this->values[DatagridInterface::SORT_ORDER] ??= 'ASC';
         $this->query->setSortOrder($this->values[DatagridInterface::SORT_ORDER]);
     }
 
@@ -366,12 +355,8 @@ final class Datagrid implements DatagridInterface
 
         $this->formBuilder->add(DatagridInterface::SORT_BY, HiddenType::class);
         $this->formBuilder->get(DatagridInterface::SORT_BY)->addViewTransformer(new CallbackTransformer(
-            static function ($value) {
-                return $value;
-            },
-            static function ($value) {
-                return $value instanceof FieldDescriptionInterface ? $value->getName() : $value;
-            }
+            static fn ($value) => $value,
+            static fn ($value) => $value instanceof FieldDescriptionInterface ? $value->getName() : $value
         ));
 
         $this->formBuilder->add(DatagridInterface::SORT_ORDER, HiddenType::class);

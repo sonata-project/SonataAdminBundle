@@ -6,3 +6,4 @@ Pygments==2.9.0
 sphinx==1.8.5
 git+https://github.com/fabpot/sphinx-php.git@v2.0.2#egg_name=sphinx-php
 sphinx_rtd_theme==0.5.2
+jinja2==3.0.3

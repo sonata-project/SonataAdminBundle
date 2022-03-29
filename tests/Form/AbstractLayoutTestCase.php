@@ -63,9 +63,7 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
         $csrfTokenManager = $this->createStub(CsrfTokenManagerInterface::class);
 
         $environment->addRuntimeLoader(new FactoryRuntimeLoader([
-            FormRenderer::class => static function () use ($rendererEngine, $csrfTokenManager): FormRendererInterface {
-                return new FormRenderer($rendererEngine, $csrfTokenManager);
-            },
+            FormRenderer::class => static fn (): FormRendererInterface => new FormRenderer($rendererEngine, $csrfTokenManager),
         ]));
 
         $renderer = $environment->getRuntime(FormRenderer::class);

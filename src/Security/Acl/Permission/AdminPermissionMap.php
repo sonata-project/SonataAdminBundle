@@ -42,7 +42,7 @@ final class AdminPermissionMap implements PermissionMapInterface
      *
      * @var array<string, int[]>
      */
-    private $map = [
+    private array $map = [
         self::PERMISSION_VIEW => [
             MaskBuilder::MASK_VIEW,
             MaskBuilder::MASK_LIST,

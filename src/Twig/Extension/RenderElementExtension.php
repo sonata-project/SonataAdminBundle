@@ -21,10 +21,7 @@ use Twig\TwigFilter;
 
 final class RenderElementExtension extends AbstractExtension
 {
-    /**
-     * @var RenderElementRuntime
-     */
-    private $renderElementRuntime;
+    private RenderElementRuntime $renderElementRuntime;
 
     /**
      * NEXT_MAJOR: Remove this constructor.

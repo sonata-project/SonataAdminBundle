@@ -28,10 +28,7 @@ final class ModelChoiceLoaderTest extends TestCase
      */
     private $modelManager;
 
-    /**
-     * @var PropertyAccessorInterface
-     */
-    private $propertyAccessor;
+    private PropertyAccessorInterface $propertyAccessor;
 
     protected function setUp(): void
     {
@@ -65,9 +62,7 @@ final class ModelChoiceLoaderTest extends TestCase
 
         $this->modelManager
             ->method('getIdentifierValues')
-            ->willReturnCallback(static function (Foo $foo): array {
-                return [$foo->getBar()];
-            });
+            ->willReturnCallback(static fn (Foo $foo): array => [$foo->getBar()]);
 
         $modelChoiceLoader = new ModelChoiceLoader(
             $this->modelManager,

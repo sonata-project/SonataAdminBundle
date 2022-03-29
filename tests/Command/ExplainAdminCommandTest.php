@@ -34,10 +34,7 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 final class ExplainAdminCommandTest extends TestCase
 {
-    /**
-     * @var Application
-     */
-    private $application;
+    private Application $application;
 
     /**
      * @var AdminInterface<object>&MockObject

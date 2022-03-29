@@ -21,7 +21,7 @@ final class BarRepository implements RepositoryInterface
     /**
      * @var Bar[]
      */
-    private $elements;
+    private array $elements;
 
     public function __construct(FooRepository $fooRepository)
     {

@@ -25,25 +25,16 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  *
  * @author Alexandru Furculita <alex@furculita.net>
  *
- * @phpstan-import-type Item from \Sonata\AdminBundle\Admin\Pool
- * @phpstan-import-type Group from \Sonata\AdminBundle\Admin\Pool
+ * @phpstan-import-type Item from Pool
+ * @phpstan-import-type Group from Pool
  */
 final class GroupMenuProvider implements MenuProviderInterface
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $menuFactory;
+    private FactoryInterface $menuFactory;
 
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $checker;
+    private AuthorizationCheckerInterface $checker;
 
     public function __construct(FactoryInterface $menuFactory, Pool $pool, AuthorizationCheckerInterface $checker)
     {

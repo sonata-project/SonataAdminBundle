@@ -23,10 +23,7 @@ use Symfony\Component\DependencyInjection\Container;
  */
 final class AdminStatsBlockServiceTest extends BlockServiceTestCase
 {
-    /**
-     * @var Pool
-     */
-    private $pool;
+    private Pool $pool;
 
     protected function setUp(): void
     {

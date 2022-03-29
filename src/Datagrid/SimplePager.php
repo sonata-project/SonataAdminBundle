@@ -32,17 +32,13 @@ final class SimplePager extends Pager
 
     /**
      * How many pages to look forward to create links to next pages.
-     *
-     * @var int
      */
-    private $threshold;
+    private int $threshold;
 
     /**
      * thresholdCount is null prior to its initialization in `getCurrentPageResults()`.
-     *
-     * @var int|null
      */
-    private $thresholdCount;
+    private ?int $thresholdCount = null;
 
     /**
      * The threshold parameter can be used to determine how far ahead the pager
@@ -56,7 +52,8 @@ final class SimplePager extends Pager
     public function __construct(int $maxPerPage = 10, int $threshold = 1)
     {
         parent::__construct($maxPerPage);
-        $this->setThreshold($threshold);
+
+        $this->threshold = $threshold;
     }
 
     public function countResults(): int

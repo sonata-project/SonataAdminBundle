@@ -41,22 +41,22 @@ This represents your security user, you can read more about it
          * @ORM\Column(type="integer")
          * @ORM\GeneratedValue(strategy="AUTO")
          */
-        private $id;
+        private ?int $id = null;
 
         /**
          * @ORM\Column(name="email", type="string", unique=true)
          */
-        private $email;
+        private ?string $email = null;
 
         /**
          * @ORM\Column(name="password", type="string", nullable=true)
          */
-        private $password;
+        private ?string $password = null;
 
         /**
-         * @ORM\Column(name="roles", type="json_array")
+         * @ORM\Column(name="roles", type="array")
          */
-        private $roles;
+        private array $roles = [];
     }
 
 UserProvider
@@ -75,10 +75,7 @@ more about it `here <https://symfony.com/doc/5.4/security.html#b-the-user-provid
 
     final class UserProvider implements UserProviderInterface
     {
-        /**
-         * @var EntityManagerInterface
-         */
-        private $entityManager;
+        private EntityManagerInterface $entityManager;
 
         public function __construct(EntityManagerInterface $entityManager)
         {
@@ -176,20 +173,11 @@ more about it `here <https://symfony.com/doc/5.4/security/guard_authentication.h
 
     final class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator implements AuthenticatorInterface
     {
-        /**
-         * @var FormFactoryInterface
-         */
-        private $formFactory;
+        private FormFactoryInterface $formFactory;
 
-        /**
-         * @var RouterInterface
-         */
-        private $router;
+        private RouterInterface $router;
 
-        /**
-         * @var UserPasswordEncoderInterface
-         */
-        private $passwordEncoder;
+        private UserPasswordEncoderInterface $passwordEncoder;
 
         public function __construct(
             FormFactoryInterface $formFactory,
@@ -264,10 +252,7 @@ this will be handled by Symfony, but we still need to register that route::
 
     final class AdminLoginController extends AbstractController
     {
-        /**
-         * @var AuthenticationUtils
-         */
-        private $authenticationUtils;
+        private AuthenticationUtils $authenticationUtils;
 
         public function __construct(AuthenticationUtils $authenticationUtils)
         {

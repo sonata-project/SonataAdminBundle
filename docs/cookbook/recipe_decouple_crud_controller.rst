@@ -38,10 +38,7 @@ the controller to make it Invokable::
 
     final class CarAdminSoldAction
     {
-        /**
-         * @var AdminFetcherInterface
-         */
-        private $adminFetcher;
+        private AdminFetcherInterface $adminFetcher;
 
         public function __construct(AdminFetcherInterface $adminFetcher)
         {
