@@ -205,8 +205,16 @@ final class AdminTypeTest extends TypeTestCase
         $modelManager = $this->createStub(ModelManagerInterface::class);
 
         $newInstance = new class() {
+            private ?object $bar = null;
+
             public function setBar(object $bar): void
             {
+                $this->bar = $bar;
+            }
+
+            public function getBar(): ?object
+            {
+                return $this->bar;
             }
         };
 
@@ -236,6 +244,8 @@ final class AdminTypeTest extends TypeTestCase
         } catch (NoSuchPropertyException $exception) {
             static::fail($exception->getMessage());
         }
+
+        static::assertSame($parentSubject, $newInstance->getBar());
     }
 
     public function testArrayCollectionByReferenceNotFound(): void
@@ -261,8 +271,16 @@ final class AdminTypeTest extends TypeTestCase
         $modelManager = $this->createStub(ModelManagerInterface::class);
 
         $newInstance = new class() {
+            private ?object $bar = null;
+
             public function setBar(object $bar): void
             {
+                $this->bar = $bar;
+            }
+
+            public function getBar(): ?object
+            {
+                return $this->bar;
             }
         };
 
@@ -292,6 +310,8 @@ final class AdminTypeTest extends TypeTestCase
         } catch (NoSuchPropertyException $exception) {
             static::fail($exception->getMessage());
         }
+
+        static::assertSame($parentSubject, $newInstance->getBar());
     }
 
     /**
