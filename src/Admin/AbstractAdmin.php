@@ -2393,7 +2393,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                     'label' => false,
                     'field_type' => ModelHiddenType::class,
                     'field_options' => [
-                        'model_manager' => $this->getModelManager(),
+                        'model_manager' => $this->getParent()->getModelManager(),
+                        'class' => $this->getParent()->getClass(),
                     ],
                     'operator_type' => HiddenType::class,
                 ], [
