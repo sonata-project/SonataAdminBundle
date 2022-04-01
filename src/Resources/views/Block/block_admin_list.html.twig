@@ -16,42 +16,34 @@ file that was distributed with this source code.
         {% set display = group.roles is empty or is_granted(sonata_config.getOption('role_super_admin')) or group.roles|filter(role => is_granted(role))|length > 0 %}
 
         {% if display %}
-            <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title">
-                        {# NEXT_MAJOR: Remove the default null #}
-                        {% if group.translation_domain|default(null) is same as(false) %}
-                            {{ group.label }}
-                        {% else %}
-                            {# NEXT_MAJOR: Remove the fallback on group.label_catalogue #}
-                            {{ group.label|trans({}, group.translation_domain|default(group.label_catalogue)) }}
+            <div class="card">
+                <h5 class="card-header">
+                    {# NEXT_MAJOR: Remove the default null #}
+                    {% if group.translation_domain|default(null) is same as(false) %}
+                        {{ group.label }}
+                    {% else %}
+                        {# NEXT_MAJOR: Remove the fallback on group.label_catalogue #}
+                        {{ group.label|trans({}, group.translation_domain|default(group.label_catalogue)) }}
+                    {% endif %}
+                </h3>
+                <ul class="list-group list-group-flush">
+                    {% for admin in group.items %}
+                        {% if admin.dashboardActions|length > 0 %}
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>
+                                    {% if admin.label is not empty %}
+                                        {{ admin.label|trans({}, admin.translationdomain) }}
+                                    {% endif %}
+                                </span>
+                                <div>
+                                    {% for action in admin.dashboardActions %}
+                                        {% include action.template|default('@SonataAdmin/CRUD/dashboard__action.html.twig') with {'action': action} %}
+                                    {% endfor %}
+                                </div>
+                            </li>
                         {% endif %}
-                    </h3>
-                </div>
-                <div class="box-body">
-                    <table class="table table-hover">
-                        <tbody>
-                            {% for admin in group.items %}
-                                {% if admin.dashboardActions|length > 0 %}
-                                    <tr>
-                                        <td class="sonata-ba-list-label" width="40%">
-                                            {% if admin.label is not empty %}
-                                                {{ admin.label|trans({}, admin.translationdomain) }}
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            <div class="btn-group">
-                                                {% for action in admin.dashboardActions %}
-                                                    {% include action.template|default('@SonataAdmin/CRUD/dashboard__action.html.twig') with {'action': action} %}
-                                                {% endfor %}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% endif %}
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                    {% endfor %}
+                </ul>
             </div>
         {% endif %}
     {% endfor %}
