@@ -18,7 +18,7 @@ file that was distributed with this source code.
         {% if display %}
             <div class="card card-primary card-outline">
                 <div class="card-header border-0">
-                    <h3 class="card-title">
+                    <h3 class="card-title text-bold">
                         {# NEXT_MAJOR: Remove the default null #}
                         {% if group.translation_domain|default(null) is same as(false) %}
                             {{ group.label }}
@@ -32,7 +32,7 @@ file that was distributed with this source code.
                     {% for admin in group.items %}
                         {% if admin.dashboardActions|length > 0 %}
                             <div class="d-flex justify-content-between align-items-center {% if not loop.last %}border-bottom {% endif %}mb-3">
-                                <p class="text-bold">
+                                <p>
                                     {% if admin.label is not empty %}
                                         {{ admin.label|trans({}, admin.translationdomain) }}
                                     {% endif %}
