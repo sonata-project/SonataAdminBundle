@@ -249,7 +249,7 @@ file that was distributed with this source code.
                                                     {% endif %}
                                                 {% endblock %}
 
-                                                <div class="col-sm-6">
+                                                <div class="col-sm-{% if _navbar_title is not empty %}6{% else %}12{% endif %}">
                                                     {% if _tab_menu is not empty %}
                                                         <div class="navbar-left">
                                                             {{ _tab_menu|raw }}
