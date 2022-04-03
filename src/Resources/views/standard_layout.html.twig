@@ -240,36 +240,36 @@ file that was distributed with this source code.
                                   or _list_filters_actions is not empty
                                  %}
                                         <div class="container-fluid">
-                                            {% block tab_menu_navbar_header %}
-                                                {% if _navbar_title is not empty %}
-                                                    <div class="row mb-2">
+                                            <div class="row mb-2">
+                                                {% block tab_menu_navbar_header %}
+                                                    {% if _navbar_title is not empty %}
                                                         <div class="col-sm-6">
                                                             <h1>{{ _navbar_title|raw }}</h1>
                                                         </div>
-                                                    </div>
-                                                {% endif %}
-                                            {% endblock %}
+                                                    {% endif %}
+                                                {% endblock %}
 
-                                            <div class="navbar-collapse">
-                                                {% if _tab_menu is not empty %}
-                                                    <div class="navbar-left">
-                                                        {{ _tab_menu|raw }}
-                                                    </div>
-                                                {% endif %}
+                                                <div class="col-sm-6">
+                                                    {% if _tab_menu is not empty %}
+                                                        <div class="navbar-left">
+                                                            {{ _tab_menu|raw }}
+                                                        </div>
+                                                    {% endif %}
 
-                                                {% block sonata_admin_content_actions_wrappers %}
-                                                    {% if _actions|replace({ '<li>': '', '</li>': '' })|trim is not empty %}
-                                                        <nav class="navbar navbar-expand navbar-light">
-                                                            <ul class="navbar-nav ml-auto">
-
+                                                    {% block sonata_admin_content_actions_wrappers %}
+                                                        {% if _actions|replace({ '<li>': '', '</li>': '' })|trim is not empty %}
+                                                            <ul class="navbar-nav ml-auto float-sm-right">
                                                                 {% if _list_filters_actions is not empty %}
                                                                     {{ _list_filters_actions|raw }}
                                                                 {% endif %}
 
                                                                 {% if _actions|split('</a>')|length > 2 %}
-                                                                    <li class="nav-item dropdown sonata-actions">
-                                                                        <a href="#" class="nav-link" data-toggle="dropdown">{{ 'link_actions'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b></a>
-                                                                        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                                                                    <li class="nav-item dropdown">
+                                                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
+                                                                            {{ 'link_actions'|trans({}, 'SonataAdminBundle') }}
+                                                                            <b class="caret"></b>
+                                                                        </a>
+                                                                        <ul class="dropdown-menu dropdown-menu-right">
                                                                             {{ _actions|raw }}
                                                                         </ul>
                                                                     </li>
@@ -293,9 +293,9 @@ file that was distributed with this source code.
                                                                     {% endfor %}
                                                                 {% endif %}
                                                             </ul>
-                                                        </nav>
-                                                    {% endif %}
-                                                {% endblock sonata_admin_content_actions_wrappers %}
+                                                        {% endif %}
+                                                    {% endblock sonata_admin_content_actions_wrappers %}
+                                                </div>
                                             </div>
                                         </div>
                                 {% endif %}
