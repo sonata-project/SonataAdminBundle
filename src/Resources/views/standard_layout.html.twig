@@ -201,11 +201,11 @@ file that was distributed with this source code.
                             {% block sonata_sidebar_search %}
                                 {% if sonata_config.getOption('search') %}
                                     <form action="{{ path('sonata_admin_search') }}" method="GET" class="sidebar-form mt-2" role="search">
-                                        <div class="input-group custom-search-form">
+                                        <div class="input-group">
                                             <input type="text" name="q" value="{{ app.request.get('q') }}" class="form-control form-control-sidebar" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
-                                            <span class="input-group-btn">
+                                            <span class="input-group-append">
                                                 <button class="btn btn-sidebar" type="submit">
-                                                    <i class="fas fa-search" aria-hidden="true"></i>
+                                                    <i class="fas fa-fw fa-search" aria-hidden="true"></i>
                                                 </button>
                                             </span>
                                         </div>
