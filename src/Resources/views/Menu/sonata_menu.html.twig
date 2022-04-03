@@ -4,7 +4,7 @@
     {%- set listAttributes = item.childrenAttributes|merge({'class': 'nav nav-pills nav-sidebar flex-column', 'data-widget': 'tree'}) -%}
     {%- set request        = item.extra('request') ?: app.request -%}
 
-    <nav class="mt-2">
+    <nav class="mt-3">
         {{ block('list') -}}
     </nav>
 {% endblock %}

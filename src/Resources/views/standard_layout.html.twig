@@ -200,7 +200,7 @@ file that was distributed with this source code.
                         {% block sonata_side_nav %}
                             {% block sonata_sidebar_search %}
                                 {% if sonata_config.getOption('search') %}
-                                    <form action="{{ path('sonata_admin_search') }}" method="GET" class="sidebar-form" role="search">
+                                    <form action="{{ path('sonata_admin_search') }}" method="GET" class="sidebar-form mt-3" role="search">
                                         <div class="input-group custom-search-form">
                                             <input type="text" name="q" value="{{ app.request.get('q') }}" class="form-control form-control-sidebar" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
                                             <span class="input-group-btn">
