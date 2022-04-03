@@ -16,7 +16,7 @@ file that was distributed with this source code.
         {% set display = group.roles is empty or is_granted(sonata_config.getOption('role_super_admin')) or group.roles|filter(role => is_granted(role))|length > 0 %}
 
         {% if display %}
-            <div class="card card-primary card-outline">
+            <div class="card">
                 <div class="card-header border-0">
                     <h3 class="card-title text-bold">
                         {# NEXT_MAJOR: Remove the default null #}
@@ -31,7 +31,7 @@ file that was distributed with this source code.
                 <div class="card-body">
                     {% for admin in group.items %}
                         {% if admin.dashboardActions|length > 0 %}
-                            <div class="d-flex justify-content-between align-items-center {% if not loop.last %}border-bottom {% endif %}mb-3">
+                            <div class="d-flex justify-content-between align-items-center{% if not loop.last %} border-bottom mb-3{% endif %}">
                                 <p>
                                     {% if admin.label is not empty %}
                                         {{ admin.label|trans({}, admin.translationdomain) }}
