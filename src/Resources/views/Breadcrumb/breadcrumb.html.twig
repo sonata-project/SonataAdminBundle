@@ -10,7 +10,7 @@
     {% if not loop.last %}
         <li class="breadcrumb-item">
             {% if menu.uri is not empty %}
-                <a href="{{ menu.uri }}">
+                <a class="text-muted" href="{{ menu.uri }}">
                     {% if menu.extra('safe_label', true) %}
                         {{- label|raw -}}
                     {% else %}
