@@ -1,10 +1,10 @@
 {% extends 'knp_menu.html.twig' %}
 
 {% block root %}
-    {%- set listAttributes = item.childrenAttributes|merge({'class': 'nav nav-pills nav-sidebar flex-column', 'data-widget': 'tree'}) -%}
+    {%- set listAttributes = item.childrenAttributes|merge({'class': 'nav nav-pills nav-sidebar nav-child-indent flex-column', 'data-widget': 'treeview', 'role': 'menu', 'data-accordion': 'false'}) -%}
     {%- set request        = item.extra('request') ?: app.request -%}
 
-    <nav class="mt-3">
+    <nav class="mt-2">
         {{ block('list') -}}
     </nav>
 {% endblock %}
@@ -34,13 +34,11 @@
     {% apply spaceless %}
         {# NEXT_MAJOR: Remove the label_catalogue fallback #}
         {%- set translation_domain = item.extra('translation_domain', item.extra('label_catalogue', 'messages')) -%}
+        {%- set icon = item.extra('icon') -%}
         {%- if item.extra('on_top') is defined and not item.extra('on_top') -%}
-            {%- set icon = item.extra('icon')|default(item.level > 1 ? 'fa fa-angle-double-right' : '')|parse_icon -%}
-        {%- else -%}
-            {%- set icon = item.extra('icon')|parse_icon -%}
+            {%- set icon = icon|default(item.level > 1 ? 'fa fa-angle-double-right' : '') -%}
         {%- endif -%}
         {%- set is_link = true -%}
-        {%- set icon = '<span class="nav-icon">' ~ icon ~ '</span>' -%}
 
         {{ parent() }}
     {% endapply %}
@@ -57,31 +55,27 @@
         <a href="#" class="{{ item.linkAttributes['class'] }}">
             {# NEXT_MAJOR: Remove the label_catalogue fallback #}
             {%- set translation_domain = item.extra('translation_domain', item.extra('label_catalogue', 'messages')) -%}
-            {%- set icon = item.extra('icon')|default('')|parse_icon -%}
-            <span class="nav-icon">{{ icon|raw }}</span>
-            <p>
-                {{ parent() }}
-                {%- if item.extra('keep_open') is not defined or not item.extra('keep_open') -%}
-                    <i class="right fas fa-angle-left"></i>
-                {%- endif -%}
-            </p>
+            {%- set icon = item.extra('icon') -%}
+            {{ block('label') }}
         </a>
     {% endapply %}
 {% endblock %}
 
 {% block label %}
     {% apply spaceless %}
-        {%- if is_link|default(false) -%}
-            {{ icon|default('')|parse_icon }}
-        {%- endif -%}
-        {# We use method accessor instead of ".label" since `item` implements `ArrayAccess` and could have a property called "label". #}
-        {%- set item_label = item.getLabel() -%}
-        {%- if options.allow_safe_labels and item.extra('safe_label', false) -%}
-            {{ item_label|raw }}
-        {%- else -%}
-            {# NEXT_MAJOR: Remove the label_catalogue fallback #}
-            {%- set translation_domain = item.extra('translation_domain', item.extra('label_catalogue', 'messages')) -%}
-            {{ item_label|trans(item.extra('label_translation_parameters', {}), translation_domain) }}
-        {%- endif -%}
+        {{ icon|default('')|parse_icon('nav-icon') }}
+        <p>
+            {%- set item_label = item.getLabel() -%}
+            {%- if options.allow_safe_labels and item.extra('safe_label', false) -%}
+                {{- item_label|raw -}}
+            {%- else -%}
+                {# NEXT_MAJOR: Remove the label_catalogue fallback #}
+                {%- set translation_domain = item.extra('translation_domain', item.extra('label_catalogue', 'messages')) -%}
+                {{- item_label|trans(item.extra('label_translation_parameters', {}), translation_domain) -}}
+            {%- endif -%}
+            {%- if not is_link|default(false) and (item.extra('keep_open') is not defined or not item.extra('keep_open')) -%}
+                <i class="right fas fa-angle-left"></i>
+            {%- endif -%}
+        </p>
     {% endapply %}
 {% endblock %}

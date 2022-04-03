@@ -17,7 +17,7 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 final class IconRuntime implements RuntimeExtensionInterface
 {
-    public function parseIcon(string $icon): string
+    public function parseIcon(string $icon, ?string $extraClasses = ''): string
     {
         if ('' === $icon || 0 === strpos($icon, '<')) {
             return $icon;
@@ -34,6 +34,6 @@ final class IconRuntime implements RuntimeExtensionInterface
             throw new \InvalidArgumentException(sprintf('The icon format "%s" is not supported.', $icon));
         }
 
-        return sprintf('<i class="%s" aria-hidden="true"></i>', $icon);
+        return sprintf('<i class="%s %s" aria-hidden="true"></i>', $icon, $extraClasses);
     }
 }
