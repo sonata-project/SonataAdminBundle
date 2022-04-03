@@ -1,5 +1,5 @@
 {% if admin.subClasses is empty %}
-    <a class="card-link" href="{{ action.url }}">
+    <a class="card-link text-muted" href="{{ action.url }}">
         {{ action.icon|parse_icon }}
         {% if action.translation_domain is defined and action.translation_domain is same as(false) %}
             {{ action.label }}
@@ -8,7 +8,7 @@
         {% endif %}
     </a>
 {% else %}
-    <a class="card-link dropdown-toggle" data-toggle="dropdown" href="#">
+    <a class="card-link text-muted dropdown-toggle" data-toggle="dropdown" href="#">
         {{ action.icon|parse_icon }}
         {% if action.translation_domain is defined and action.translation_domain is same as(false) %}
             {{ action.label }}
