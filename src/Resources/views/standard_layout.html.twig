@@ -187,7 +187,7 @@ file that was distributed with this source code.
                         {% apply spaceless %}
                             <a class="brand-link" href="{{ path('sonata_admin_dashboard') }}">
                                 {% if 'icon' == sonata_config.getOption('logo_content') or 'all' == sonata_config.getOption('logo_content') %}
-                                    <img src="{{ asset(sonata_config.logo) }}" class="brand-image img-circle elevation-3" alt="{{ sonata_config.title }}">
+                                    <img src="{{ asset(sonata_config.logo) }}" class="brand-image" alt="{{ sonata_config.title }}">
                                 {% endif %}
                                 {% if 'text' == sonata_config.getOption('logo_content') or 'all' == sonata_config.getOption('logo_content') %}
                                     <span class="brand-text font-weight-light">{{ sonata_config.title }}</span>
