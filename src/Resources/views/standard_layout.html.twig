@@ -97,7 +97,7 @@ file that was distributed with this source code.
     </head>
     <body
             {% block body_attributes -%}
-                class="sidebar-mini layout-fixed sonata-bc {% block admin_lte_skin_class %}{{ _skin }}{% endblock %}
+                class="sidebar-mini layout-fixed layout-footer-fixed sonata-bc {% block admin_lte_skin_class %}{{ _skin }}{% endblock %}
                 {% if _use_select2 %}sonata-select2{% endif %}
                 {% if _use_icheck %}sonata-icheck{% endif %}
                 {% if app.request.cookies.get('sonata_sidebar_hide') -%}
