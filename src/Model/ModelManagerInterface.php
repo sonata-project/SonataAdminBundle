@@ -136,9 +136,11 @@ interface ModelManagerInterface
     public function supportsQuery(object $query): bool;
 
     /**
-     * @return array<object>|\Traversable<object>
+     * NEXT_MAJOR: Add typehint.
      *
-     * @phpstan-return array<T>|\Traversable<T>
+     * @return iterable<object>
+     *
+     * @phpstan-return iterable<T>
      */
     public function executeQuery(object $query);
 
