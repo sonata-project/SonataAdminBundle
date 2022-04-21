@@ -604,7 +604,7 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the
                 ]);
         }
 
-        public function getFullTextFilter(ProxyQueryInterface $query, string $alias, string $field, FilterData $data): void
+        public function getFullTextFilter(ProxyQueryInterface $query, string $alias, string $field, FilterData $data): bool
         {
             if (!$data->hasValue()) {
                 return false;
@@ -631,10 +631,10 @@ type of your condition(s)::
 
     final class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        public function getFullTextFilter(ProxyQueryInterface $query, string $alias, string $field, FilterData $data): void
+        public function getFullTextFilter(ProxyQueryInterface $query, string $alias, string $field, FilterData $data): bool
         {
             if (!$data->hasValue()) {
-                return;
+                return false;
             }
 
             $operator = $data->isType(EqualType::TYPE_IS_EQUAL) ? '=' : '!=';
