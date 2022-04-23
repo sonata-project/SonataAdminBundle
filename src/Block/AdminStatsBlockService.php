@@ -57,7 +57,7 @@ final class AdminStatsBlockService extends AbstractBlockService
 
         $datagrid->buildPager();
 
-        return $this->renderPrivateResponse($template, [
+        return $this->renderResponse($template, [
             'block' => $blockContext->getBlock(),
             'settings' => $blockContext->getSettings(),
             'admin' => $admin,
