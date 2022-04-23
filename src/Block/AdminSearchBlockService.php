@@ -95,7 +95,7 @@ final class AdminSearchBlockService extends AbstractBlockService
             static fn (FilterInterface $filter): bool => $filter instanceof SearchableFilterInterface && $filter->isSearchEnabled()
         );
 
-        return $this->renderPrivateResponse($this->templateRegistry->getTemplate('search_result_block'), [
+        return $this->renderResponse($this->templateRegistry->getTemplate('search_result_block'), [
             'block' => $blockContext->getBlock(),
             'settings' => $blockContext->getSettings(),
             'pager' => $pager,
