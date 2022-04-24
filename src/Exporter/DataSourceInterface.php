@@ -18,7 +18,8 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 interface DataSourceInterface
 {
     /**
-     * @param string[] $fields
+     * @param ProxyQueryInterface<object> $query
+     * @param string[]                    $fields
      *
      * @return \Iterator<array<mixed>>
      */

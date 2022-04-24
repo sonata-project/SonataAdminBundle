@@ -26,20 +26,26 @@ use Symfony\Contracts\EventDispatcher\Event;
  *   - sonata.admin.event.configure.[admin_code].query  (not implemented yet)
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
  */
 final class ConfigureQueryEvent extends Event
 {
     /**
-     * @var AdminInterface<object>
+     * @phpstan-var AdminInterface<T>
      */
     private AdminInterface $admin;
 
+    /**
+     * @phpstan-var ProxyQueryInterface<T>
+     */
     private ProxyQueryInterface $proxyQuery;
 
     private string $context;
 
     /**
-     * @param AdminInterface<object> $admin
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param ProxyQueryInterface<T> $proxyQuery
      */
     public function __construct(AdminInterface $admin, ProxyQueryInterface $proxyQuery, string $context)
     {
@@ -49,7 +55,7 @@ final class ConfigureQueryEvent extends Event
     }
 
     /**
-     * @return AdminInterface<object>
+     * @phpstan-return AdminInterface<T>
      */
     public function getAdmin(): AdminInterface
     {
@@ -61,6 +67,9 @@ final class ConfigureQueryEvent extends Event
         return $this->context;
     }
 
+    /**
+     * @phpstan-return ProxyQueryInterface<T>
+     */
     public function getProxyQuery(): ProxyQueryInterface
     {
         return $this->proxyQuery;

@@ -223,7 +223,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * The datagrid instance.
      *
-     * @var DatagridInterface<ProxyQueryInterface>|null
+     * @var DatagridInterface<ProxyQueryInterface<T>>|null
      */
     private ?DatagridInterface $datagrid = null;
 
@@ -1946,6 +1946,11 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getModelManager()->getExportFields($this->getClass());
     }
 
+    /**
+     * @phpstan-param ProxyQueryInterface<T> $query
+     *
+     * @phpstan-return ProxyQueryInterface<T>
+     */
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
         return $query;
@@ -2348,7 +2353,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * @return DatagridInterface<ProxyQueryInterface>|null
+     * @return DatagridInterface<ProxyQueryInterface<T>>|null
      */
     private function buildDatagrid(): ?DatagridInterface
     {

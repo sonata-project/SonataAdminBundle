@@ -21,7 +21,6 @@ use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Datagrid\Pager;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exporter\DataSourceInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
@@ -129,7 +128,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     /**
      * The related datagrid builder.
      *
-     * @var DatagridBuilderInterface<ProxyQueryInterface>|null
+     * @phpstan-var DatagridBuilderInterface<T>|null
      */
     private ?DatagridBuilderInterface $datagridBuilder = null;
 

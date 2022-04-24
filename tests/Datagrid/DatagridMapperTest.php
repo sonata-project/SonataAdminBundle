@@ -43,7 +43,7 @@ final class DatagridMapperTest extends TestCase
     private DatagridMapper $datagridMapper;
 
     /**
-     * @var Datagrid<ProxyQueryInterface>
+     * @var Datagrid<ProxyQueryInterface<object>>
      */
     private Datagrid $datagrid;
 
@@ -56,8 +56,9 @@ final class DatagridMapperTest extends TestCase
     {
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
 
-        /** @var ProxyQueryInterface $proxyQuery */
+        /** @var ProxyQueryInterface<object> $proxyQuery */
         $proxyQuery = $this->createMock(ProxyQueryInterface::class);
+        /** @var PagerInterface<ProxyQueryInterface<object>> $pager */
         $pager = $this->createMock(PagerInterface::class);
         $fieldDescriptionCollection = new FieldDescriptionCollection();
         $formBuilder = $this->getMockBuilder(FormBuilder::class)

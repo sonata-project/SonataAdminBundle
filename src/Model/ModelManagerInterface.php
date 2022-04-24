@@ -78,11 +78,13 @@ interface ModelManagerInterface
      * @throws ModelManagerThrowable
      *
      * @phpstan-param class-string<T> $class
+     * @phpstan-param ProxyQueryInterface<T> $query
      */
     public function batchDelete(string $class, ProxyQueryInterface $query): void;
 
     /**
      * @phpstan-param class-string<T> $class
+     * @phpstan-return ProxyQueryInterface<T>
      */
     public function createQuery(string $class): ProxyQueryInterface;
 
@@ -154,7 +156,8 @@ interface ModelManagerInterface
     /**
      * @param array<int|string> $idx
      *
-     * @phpstan-param class-string<T>             $class
+     * @phpstan-param class-string<T> $class
+     * @phpstan-param ProxyQueryInterface<T> $query
      * @phpstan-param non-empty-array<string|int> $idx
      */
     public function addIdentifiersToQuery(string $class, ProxyQueryInterface $query, array $idx): void;

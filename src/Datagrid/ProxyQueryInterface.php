@@ -17,6 +17,8 @@ namespace Sonata\AdminBundle\Datagrid;
  * Used by the Datagrid to build the query.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template-covariant T of object
  */
 interface ProxyQueryInterface
 {
@@ -24,6 +26,8 @@ interface ProxyQueryInterface
      * NEXT_MAJOR: Add typehint.
      *
      * @return iterable<object>
+     *
+     * @phpstan-return iterable<T>
      */
     public function execute();
 

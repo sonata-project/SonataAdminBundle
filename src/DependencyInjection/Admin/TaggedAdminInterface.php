@@ -20,7 +20,6 @@ use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exporter\DataSourceInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
@@ -142,12 +141,12 @@ interface TaggedAdminInterface extends MutableTemplateRegistryAwareInterface
     public function getListBuilder(): ListBuilderInterface;
 
     /**
-     * @param DatagridBuilderInterface<ProxyQueryInterface> $datagridBuilder
+     * @phpstan-param DatagridBuilderInterface<T> $datagridBuilder
      */
     public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder): void;
 
     /**
-     * @return DatagridBuilderInterface<ProxyQueryInterface>
+     * @phpstan-return DatagridBuilderInterface<T>
      */
     public function getDatagridBuilder(): DatagridBuilderInterface;
 

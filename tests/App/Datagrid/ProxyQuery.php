@@ -15,6 +15,9 @@ namespace Sonata\AdminBundle\Tests\App\Datagrid;
 
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
+/**
+ * @phpstan-implements ProxyQueryInterface<object>
+ */
 final class ProxyQuery implements ProxyQueryInterface
 {
     public function execute()

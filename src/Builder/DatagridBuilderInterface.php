@@ -15,18 +15,19 @@ namespace Sonata\AdminBundle\Builder;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @phpstan-template T of \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
+ * @phpstan-template T of object
  */
 interface DatagridBuilderInterface extends BuilderInterface
 {
     /**
-     * @phpstan-param DatagridInterface<T> $datagrid
-     * @phpstan-param class-string|null    $type
+     * @phpstan-param DatagridInterface<ProxyQueryInterface<T>> $datagrid
+     * @phpstan-param class-string|null $type
      */
     public function addFilter(
         DatagridInterface $datagrid,
@@ -35,10 +36,10 @@ interface DatagridBuilderInterface extends BuilderInterface
     ): void;
 
     /**
-     * @param AdminInterface<object> $admin
-     * @param array<string, mixed>   $values
+     * @param array<string, mixed> $values
      *
-     * @phpstan-return DatagridInterface<T>
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-return DatagridInterface<ProxyQueryInterface<T>>
      */
     public function getBaseDatagrid(AdminInterface $admin, array $values = []): DatagridInterface;
 }

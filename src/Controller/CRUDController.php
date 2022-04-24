@@ -146,6 +146,8 @@ class CRUDController extends AbstractController
      *
      * Execute a batch delete.
      *
+     * @phpstan-param ProxyQueryInterface<T> $query
+     *
      * @throws AccessDeniedException If access is not granted
      */
     public function batchActionDelete(ProxyQueryInterface $query): Response

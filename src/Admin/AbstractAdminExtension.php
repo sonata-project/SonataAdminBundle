@@ -100,6 +100,7 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     /**
      * @param mixed[] $idx
      * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param ProxyQueryInterface<T> $query
      */
     public function preBatchAction(AdminInterface $admin, string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements): void
     {

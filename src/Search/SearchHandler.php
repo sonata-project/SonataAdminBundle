@@ -33,10 +33,11 @@ final class SearchHandler
      *
      * @throws \RuntimeException
      *
-     * @return PagerInterface<ProxyQueryInterface>
+     * @return PagerInterface<ProxyQueryInterface<object>>
      *
      * @phpstan-template T of object
      * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-return PagerInterface<ProxyQueryInterface<T>>
      */
     public function search(AdminInterface $admin, string $term, int $page = 0, int $offset = 20): ?PagerInterface
     {

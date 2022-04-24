@@ -21,6 +21,9 @@ use Sonata\AdminBundle\Event\ConfigureQueryEvent;
 
 final class ConfigureQueryEventTest extends TestCase
 {
+    /**
+     * @var ConfigureQueryEvent<object>
+     */
     private ConfigureQueryEvent $event;
 
     /**
@@ -29,7 +32,7 @@ final class ConfigureQueryEventTest extends TestCase
     private $admin;
 
     /**
-     * @var ProxyQueryInterface&MockObject
+     * @var ProxyQueryInterface<object>&MockObject
      */
     private $proxyQuery;
 

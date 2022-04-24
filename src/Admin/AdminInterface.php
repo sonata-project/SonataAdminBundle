@@ -56,7 +56,7 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     public function attachAdminClass(FieldDescriptionInterface $fieldDescription): void;
 
     /**
-     * @return DatagridInterface<ProxyQueryInterface>
+     * @phpstan-return DatagridInterface<ProxyQueryInterface<T>>
      */
     public function getDatagrid(): DatagridInterface;
 
@@ -70,6 +70,9 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function getBaseControllerName(): string;
 
+    /**
+     * @phpstan-return ProxyQueryInterface<T>
+     */
     public function createQuery(): ProxyQueryInterface;
 
     public function getFormBuilder(): FormBuilderInterface;
@@ -255,6 +258,8 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      * Call before the batch action, allow you to alter the query and the idx.
      *
      * @param mixed[] $idx
+     *
+     * @phpstan-param ProxyQueryInterface<T> $query
      */
     public function preBatchAction(string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements = false): void;
 
