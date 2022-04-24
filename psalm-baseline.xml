@@ -21,4 +21,10 @@
             <code>new Datagrid($this-&gt;query, $this-&gt;columns, $pager, $this-&gt;formBuilder, [])</code>
         </InvalidArgument>
     </file>
+    <!-- https://github.com/vimeo/psalm/issues/7897 -->
+    <file src="src/Admin/AbstractAdmin.php">
+        <InvalidArgument occurrences="1">
+            <code>$this-&gt;datagrid</code>
+        </InvalidArgument>
+    </file>
 </files>
