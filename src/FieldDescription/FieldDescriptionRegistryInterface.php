@@ -39,13 +39,13 @@ interface FieldDescriptionRegistryInterface
     public function getFormFieldDescription($name);
 
     // NEXT_MAJOR: Uncomment the following line.
-    //public function hasFormFieldDescription(string $name): bool;
+    // public function hasFormFieldDescription(string $name): bool;
 
     // NEXT_MAJOR: Uncomment the following line.
-    //public function addFormFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void;
+    // public function addFormFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void;
 
     // NEXT_MAJOR: Uncomment the following line.
-    //public function removeFormFieldDescription(string $name): void;
+    // public function removeFormFieldDescription(string $name): void;
 
     /**
      * Build and return the collection of form FieldDescription.
@@ -55,7 +55,7 @@ interface FieldDescriptionRegistryInterface
     public function getFormFieldDescriptions();
 
     // NEXT_MAJOR: Uncomment the following line.
-    //public function getShowFieldDescription(string $name): FieldDescriptionInterface;
+    // public function getShowFieldDescription(string $name): FieldDescriptionInterface;
 
     /**
      * Returns true if the admin has a FieldDescription with the given $name.
@@ -85,13 +85,13 @@ interface FieldDescriptionRegistryInterface
     public function removeShowFieldDescription($name);
 
     // NEXT_MAJOR: Uncomment the following line.
-    //public function getShowFieldDescriptions(): array;
+    // public function getShowFieldDescriptions(): array;
 
     // NEXT_MAJOR: Uncomment the following line.
-    //public function hasListFieldDescription(string $name): bool;
+    // public function hasListFieldDescription(string $name): bool;
 
     // NEXT_MAJOR: Uncomment the following line.
-    //public function getListFieldDescription(string $name): FieldDescriptionInterface;
+    // public function getListFieldDescription(string $name): FieldDescriptionInterface;
 
     /**
      * Adds a list FieldDescription.
@@ -112,7 +112,7 @@ interface FieldDescriptionRegistryInterface
     public function removeListFieldDescription($name);
 
     // NEXT_MAJOR: Uncomment the following line.
-    //public function getListFieldDescriptions(): array;
+    // public function getListFieldDescriptions(): array;
 
     /**
      * Returns a list depend on the given $object.

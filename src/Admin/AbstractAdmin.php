@@ -3412,9 +3412,9 @@ EOT;
                 __CLASS__
             ), \E_USER_DEPRECATED);
         }
-        //if (false === $this->hasTemplateRegistry()) {
+        // if (false === $this->hasTemplateRegistry()) {
         //    throw new \LogicException(sprintf('Unable to find the template registry for admin `%s`.', static::class));
-        //}
+        // }
 
         return $this->templateRegistry;
     }

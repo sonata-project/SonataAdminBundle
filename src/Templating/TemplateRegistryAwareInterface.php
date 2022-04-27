@@ -23,11 +23,11 @@ namespace Sonata\AdminBundle\Templating;
 interface TemplateRegistryAwareInterface
 {
     // NEXT_MAJOR: uncomment this method in 4.0
-    //public function getTemplateRegistry(): TemplateRegistryInterface;
+    // public function getTemplateRegistry(): TemplateRegistryInterface;
 
     // NEXT_MAJOR: uncomment this method in 4.0
-    //public function hasTemplateRegistry(): bool;
+    // public function hasTemplateRegistry(): bool;
 
     // NEXT_MAJOR: uncomment this method in 4.0
-    //public function setTemplateRegistry(TemplateRegistryInterface $templateRegistry): void;
+    // public function setTemplateRegistry(TemplateRegistryInterface $templateRegistry): void;
 }

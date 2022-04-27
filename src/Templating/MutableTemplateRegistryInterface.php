@@ -28,7 +28,7 @@ interface MutableTemplateRegistryInterface extends TemplateRegistryInterface
     ///**
     // * @param array<string, string> $templates 'name' => 'file_path.html.twig'
     // */
-    //public function setTemplates(array $templates): void;
+    // public function setTemplates(array $templates): void;
 
     /**
      * NEXT_MAJOR: remove this method declaration with docblock and uncomment code below.
@@ -40,5 +40,5 @@ interface MutableTemplateRegistryInterface extends TemplateRegistryInterface
      */
     public function setTemplate($name, $template);
 
-    //public function setTemplate(string $name, string $template): void;
+    // public function setTemplate(string $name, string $template): void;
 }

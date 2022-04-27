@@ -60,7 +60,7 @@ interface MapperInterface
      *
      * @return string[]
      */
-    //public function keys(): array;
+    // public function keys(): array;
 
     /**
      * @param array $keys field names

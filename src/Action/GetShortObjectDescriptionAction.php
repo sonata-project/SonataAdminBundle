@@ -101,7 +101,7 @@ final class GetShortObjectDescriptionAction
                 .' since sonata-project/admin-bundle 3.76 and will be throw a 404 in version 4.0.',
                 \E_USER_DEPRECATED
             );
-            //throw new NotFoundHttpException(sprintf('Could not find subject for id "%s"', $objectId));
+            // throw new NotFoundHttpException(sprintf('Could not find subject for id "%s"', $objectId));
 
             // NEXT_MAJOR: Remove this.
             if ('html' === $request->get('_format')) {

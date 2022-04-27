@@ -1417,7 +1417,7 @@ class CRUDControllerTest extends TestCase
             ->with(static::equalTo('delete'))
             ->willReturn(true);
 
-        //without POST request parameter "_method" should not be used as real REST method
+        // without POST request parameter "_method" should not be used as real REST method
         $this->request->query->set('_method', Request::METHOD_DELETE);
 
         Request::enableHttpMethodParameterOverride();
