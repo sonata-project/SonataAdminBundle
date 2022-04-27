@@ -466,7 +466,7 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      *
      * @return void
      */
-    public function setParent(self $parent/*, string $parentAssociationMapping*/);
+    public function setParent(self $parent/* , string $parentAssociationMapping */);
 
     /**
      * Returns true if the Admin class has an Parent Admin defined.

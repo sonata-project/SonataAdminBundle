@@ -99,20 +99,20 @@ class ModelType extends AbstractType
             'compound' => static function (Options $options) {
                 if (isset($options['multiple']) && $options['multiple']) {
                     if (isset($options['expanded']) && $options['expanded']) {
-                        //checkboxes
+                        // checkboxes
                         return true;
                     }
 
-                    //select tag (with multiple attribute)
+                    // select tag (with multiple attribute)
                     return false;
                 }
 
                 if (isset($options['expanded']) && $options['expanded']) {
-                    //radio buttons
+                    // radio buttons
                     return true;
                 }
 
-                //select tag
+                // select tag
                 return false;
             },
 
