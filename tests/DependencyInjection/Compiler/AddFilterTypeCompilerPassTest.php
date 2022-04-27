@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 // NEXT_MAJOR: Uncomment next line.
-//use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+// use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 final class AddFilterTypeCompilerPassTest extends AbstractCompilerPassTestCase
 {

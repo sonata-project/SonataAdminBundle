@@ -68,7 +68,7 @@ final class XEditableExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            //NEXT_MAJOR: Uncomment lines below
+            // NEXT_MAJOR: Uncomment lines below
             /*
             new TwigFilter(
                 'sonata_xeditable_type',

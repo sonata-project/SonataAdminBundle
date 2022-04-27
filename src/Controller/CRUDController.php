@@ -123,7 +123,7 @@ class CRUDController implements ContainerAwareInterface
      */
     public function renderWithExtraParams($view, array $parameters = [], ?Response $response = null)
     {
-        //NEXT_MAJOR: Remove method alias and use $this->render() directly.
+        // NEXT_MAJOR: Remove method alias and use $this->render() directly.
         return $this->originalRender($view, $this->addRenderExtraParams($parameters), $response);
     }
 
@@ -757,7 +757,7 @@ class CRUDController implements ContainerAwareInterface
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
         $template = $this->admin->getTemplate('show');
-        //$template = $this->templateRegistry->getTemplate('show');
+        // $template = $this->templateRegistry->getTemplate('show');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'show',

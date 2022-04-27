@@ -65,7 +65,7 @@ final class RenderElementExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            //NEXT_MAJOR: Uncomment lines below
+            // NEXT_MAJOR: Uncomment lines below
             /*
             new TwigFilter(
                 'render_list_element',
@@ -117,7 +117,7 @@ final class RenderElementExtension extends AbstractExtension
             $fieldDescription,
             // NEXT_MAJOR: Remove this line and use commented line below instead
             $fieldDescription->getAdmin()->getTemplate('base_list_field'),
-            //$this->getTemplateRegistry($fieldDescription->getAdmin()->getCode())->getTemplate('base_list_field'),
+            // $this->getTemplateRegistry($fieldDescription->getAdmin()->getCode())->getTemplate('base_list_field'),
             $environment
         );
 
