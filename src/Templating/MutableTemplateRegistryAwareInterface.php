@@ -23,13 +23,13 @@ namespace Sonata\AdminBundle\Templating;
 interface MutableTemplateRegistryAwareInterface
 {
     // NEXT_MAJOR: uncomment this method in 4.0
-    //public function getTemplateRegistry(): MutableTemplateRegistryInterface;
+    // public function getTemplateRegistry(): MutableTemplateRegistryInterface;
 
     // NEXT_MAJOR: uncomment this method in 4.0
-    //public function hasTemplateRegistry(): bool;
+    // public function hasTemplateRegistry(): bool;
 
     // NEXT_MAJOR: uncomment this method in 4.0
-    //public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void;
+    // public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void;
 
     /**
      * NEXT_MAJOR: remove this method declaration with docblock and uncomment code below.
@@ -39,7 +39,7 @@ interface MutableTemplateRegistryAwareInterface
      */
     public function setTemplate($name, $template);
 
-    //public function setTemplate(string $name, string $template);
+    // public function setTemplate(string $name, string $template);
 
     /**
      * NEXT_MAJOR: remove this method declaration and uncomment code below.
@@ -48,5 +48,5 @@ interface MutableTemplateRegistryAwareInterface
      */
     public function setTemplates(array $templates);
 
-    //public function setTemplates(array $templates): void;
+    // public function setTemplates(array $templates): void;
 }

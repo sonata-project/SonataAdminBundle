@@ -2549,7 +2549,7 @@ EOT
 
     private function registerRequiredTwigExtensions(PropertyAccessorInterface $propertyAccessor): void
     {
-        //NEXT_MAJOR: Remove next line.
+        // NEXT_MAJOR: Remove next line.
         $this->registerSonataAdminExtension($propertyAccessor);
 
         $this->environment->addExtension($this->twigExtension);

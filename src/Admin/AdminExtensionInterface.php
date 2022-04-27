@@ -331,7 +331,7 @@ interface AdminExtensionInterface
      *
      * @phpstan-param AdminInterface<T> $admin
      */
-    //public function configureFilterParameters(AdminInterface $admin, array $parameters): array;
+    // public function configureFilterParameters(AdminInterface $admin, array $parameters): array;
 }
 
 class_exists(\Sonata\Form\Validator\ErrorElement::class);

@@ -58,7 +58,7 @@ class AddFilterTypeCompilerPass implements CompilerPassInterface
                     $id,
                 ), \E_USER_DEPRECATED);
 
-                //throw new InvalidArgumentException(sprintf('Class "%s" used for service "%s" cannot be found.', $class, $id));
+                // throw new InvalidArgumentException(sprintf('Class "%s" used for service "%s" cannot be found.', $class, $id));
             }
 
             if (null !== $reflectionClass && !$reflectionClass->isSubclassOf(FilterInterface::class)) {

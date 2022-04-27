@@ -46,9 +46,9 @@ final class CanonicalizeExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            //NEXT_MAJOR: Uncomment lines below
-            //new TwigFunction('canonicalize_locale_for_moment', [$this, 'getCanonicalizedLocaleForMoment']),
-            //new TwigFunction('canonicalize_locale_for_select2', [$this, 'getCanonicalizedLocaleForSelect2']),
+            // NEXT_MAJOR: Uncomment lines below
+            // new TwigFunction('canonicalize_locale_for_moment', [$this, 'getCanonicalizedLocaleForMoment']),
+            // new TwigFunction('canonicalize_locale_for_select2', [$this, 'getCanonicalizedLocaleForSelect2']),
         ];
     }
 

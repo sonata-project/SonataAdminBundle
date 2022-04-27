@@ -18,7 +18,7 @@ use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
 use Sonata\AdminBundle\Model\AuditReaderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 // NEXT_MAJOR: Uncomment this line.
-//use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
+// use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -150,10 +150,10 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         }
 
         // NEXT_MAJOR: Uncomment this code.
-        //if (null !== $config['security']['acl_user_manager']) {
+        // if (null !== $config['security']['acl_user_manager']) {
         //    $container->setAlias('sonata.admin.security.acl_user_manager', $config['security']['acl_user_manager']);
         //    $container->setAlias(AdminAclUserManagerInterface::class, 'sonata.admin.security.acl_user_manager');
-        //}
+        // }
 
         $container->setAlias('sonata.admin.security.handler', $config['security']['handler']);
 

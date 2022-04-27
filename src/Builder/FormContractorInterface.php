@@ -46,7 +46,7 @@ interface FormContractorInterface extends BuilderInterface
      *
      * @return array<string, mixed>
      */
-    public function getDefaultOptions($type, FieldDescriptionInterface $fieldDescription/*, array $formOptions = []*/);
+    public function getDefaultOptions($type, FieldDescriptionInterface $fieldDescription/* , array $formOptions = [] */);
 }
 
 // NEXT_MAJOR: Remove next line.

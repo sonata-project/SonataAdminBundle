@@ -267,7 +267,7 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     public function addExtension(AdminExtensionInterface $extension);
 
     // NEXT_MAJOR: Uncomment this for Sonata 5
-    //public function removeExtension(AdminExtensionInterface $extension): void;
+    // public function removeExtension(AdminExtensionInterface $extension): void;
 
     /**
      * Returns an array of extension related to the current Admin.
@@ -466,7 +466,7 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      *
      * @return void
      */
-    public function setParent(self $parent/*, string $parentAssociationMapping*/);
+    public function setParent(self $parent/* , string $parentAssociationMapping */);
 
     /**
      * Returns true if the Admin class has an Parent Admin defined.
@@ -745,7 +745,7 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     /*
      * Returns the result link for an object.
      */
-    //public function getSearchResultLink(object $object): ?string
+    // public function getSearchResultLink(object $object): ?string
 
 //    NEXT_MAJOR: uncomment this method in 4.0
 //    /**

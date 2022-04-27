@@ -134,11 +134,11 @@ class SonataAdminExtension extends AbstractExtension
      */
     public function __construct(
         Pool $pool,
-        ?LoggerInterface $logger = null, //NEXT_MAJOR: Remove this parameter
+        ?LoggerInterface $logger = null, // NEXT_MAJOR: Remove this parameter
         $translator = null,
         ?ContainerInterface $templateRegistries = null,
         $propertyAccessorOrSecurityChecker = null,
-        ?AuthorizationCheckerInterface $securityChecker = null //NEXT_MAJOR: Remove this parameter
+        ?AuthorizationCheckerInterface $securityChecker = null // NEXT_MAJOR: Remove this parameter
     ) {
         // NEXT_MAJOR: make the translator parameter required, move TranslatorInterface check to method signature
         // and remove this block
@@ -204,7 +204,7 @@ class SonataAdminExtension extends AbstractExtension
             $this->propertyAccessor = $pool->getPropertyAccessor();
             $this->securityChecker = $securityChecker;
         } else {
-            $this->securityChecker = $securityChecker; //NEXT_MAJOR: Remove this property
+            $this->securityChecker = $securityChecker; // NEXT_MAJOR: Remove this property
             $this->propertyAccessor = $propertyAccessorOrSecurityChecker;
         }
 
@@ -220,7 +220,7 @@ class SonataAdminExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            //NEXT_MAJOR remove this filter
+            // NEXT_MAJOR remove this filter
             new TwigFilter(
                 'render_list_element',
                 function (
@@ -242,7 +242,7 @@ class SonataAdminExtension extends AbstractExtension
                     'needs_environment' => true,
                 ]
             ),
-            //NEXT_MAJOR remove this filter
+            // NEXT_MAJOR remove this filter
             new TwigFilter(
                 'render_view_element',
                 function (
@@ -262,7 +262,7 @@ class SonataAdminExtension extends AbstractExtension
                     'needs_environment' => true,
                 ]
             ),
-            //NEXT_MAJOR remove this filter
+            // NEXT_MAJOR remove this filter
             new TwigFilter(
                 'render_view_element_compare',
                 function (
@@ -284,7 +284,7 @@ class SonataAdminExtension extends AbstractExtension
                     'needs_environment' => true,
                 ]
             ),
-            //NEXT_MAJOR remove this filter
+            // NEXT_MAJOR remove this filter
             new TwigFilter(
                 'render_relation_element',
                 function (
@@ -302,14 +302,14 @@ class SonataAdminExtension extends AbstractExtension
                 'sonata_urlsafeid',
                 [$this, 'getUrlSafeIdentifier']
             ),
-            //NEXT_MAJOR remove this filter
+            // NEXT_MAJOR remove this filter
             new TwigFilter(
                 'sonata_xeditable_type',
                 function ($type) {
                     return $this->getXEditableType($type, 'sonata_deprecation_mute');
                 }
             ),
-            //NEXT_MAJOR remove this filter
+            // NEXT_MAJOR remove this filter
             new TwigFilter(
                 'sonata_xeditable_choices',
                 function (FieldDescriptionInterface $fieldDescription) {

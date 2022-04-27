@@ -131,7 +131,7 @@ class GroupMenuProvider implements MenuProviderInterface
             return $admin->hasRoute('list') && $admin->hasAccess('list');
         }
 
-        //NEXT_MAJOR: Remove if statement of null checker.
+        // NEXT_MAJOR: Remove if statement of null checker.
         if (null === $this->checker) {
             return true;
         }
