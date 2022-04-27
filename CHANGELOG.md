@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.11.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.10.1...4.11.0) - 2022-04-27
+### Changed
+- [[#7792](https://github.com/sonata-project/SonataAdminBundle/pull/7792)] In preparation for SonataBlockBundle 5.0 we are not rendering block responses as private anymore ([@dmaicher](https://github.com/dmaicher))
+
+### Fixed
+- [[#7785](https://github.com/sonata-project/SonataAdminBundle/pull/7785)] Correctly pass the class to the ModelHiddentType when using child admin without parentAssociationMapping. ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.10.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.10.0...4.10.1) - 2022-03-29
 ### Fixed
 - [[#7781](https://github.com/sonata-project/SonataAdminBundle/pull/7781)] Correctly set the parent object in AdminType with CollectionType passed by reference ([@VincentLanglet](https://github.com/VincentLanglet))
