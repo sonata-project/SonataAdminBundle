@@ -22,10 +22,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 final class ModelTypeTest extends TypeTestCase
 {
-    /**
-     * @var ModelType
-     */
-    protected $type;
+    private ModelType $type;
 
     protected function setUp(): void
     {
