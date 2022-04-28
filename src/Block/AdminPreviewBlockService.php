@@ -52,7 +52,7 @@ final class AdminPreviewBlockService extends AbstractBlockService
 
         $datagrid = $admin->getDatagrid();
 
-        return $this->renderPrivateResponse($template, [
+        return $this->renderResponse($template, [
             'block' => $blockContext->getBlock(),
             'settings' => $blockContext->getSettings(),
             'admin' => $admin,
