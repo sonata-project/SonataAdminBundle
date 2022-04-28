@@ -28,10 +28,7 @@ final class DefaultRouteGeneratorTest extends TestCase
 {
     private const ROUTER_DOMAIN = 'http://sonata-project';
 
-    /**
-     * @var string
-     */
-    protected $cacheTempFolder;
+    private string $cacheTempFolder;
 
     protected function setUp(): void
     {

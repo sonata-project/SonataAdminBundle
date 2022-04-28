@@ -21,10 +21,7 @@ use Symfony\Component\DependencyInjection\Container;
 
 final class RoutesCacheWarmUpTest extends TestCase
 {
-    /**
-     * @var RoutesCacheWarmUp
-     */
-    protected $routesCacheWarmUp;
+    private RoutesCacheWarmUp $routesCacheWarmUp;
 
     protected function setUp(): void
     {
