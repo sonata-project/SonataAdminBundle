@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.107.3](https://github.com/sonata-project/SonataAdminBundle/compare/3.107.2...3.107.3) - 2022-04-28
+### Fixed
+- [[#7798](https://github.com/sonata-project/SonataAdminBundle/pull/7798)] Fix PHP 8.1 compatibility ([@aerrasti](https://github.com/aerrasti))
+
 ## [3.107.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.107.1...3.107.2) - 2022-01-19
 ### Fixed
 - [[#7705](https://github.com/sonata-project/SonataAdminBundle/pull/7705)] Catch AccessException in AbstractAdmin::appendParentObject() to prevent an error when the property for the parent object is uninitialised. ([@7ochem](https://github.com/7ochem))
