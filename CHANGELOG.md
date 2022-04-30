@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.11.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.11.0...4.11.1) - 2022-04-29
+### Fixed
+- [[#7803](https://github.com/sonata-project/SonataAdminBundle/pull/7803)] Fix vulnerabilities on several frontend dependencies by upgrading them: `async`, `minimist`, `ansi-regex` and `moment`, ([@jordisala1991](https://github.com/jordisala1991))
+
 ## [4.11.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.10.1...4.11.0) - 2022-04-27
 ### Changed
 - [[#7792](https://github.com/sonata-project/SonataAdminBundle/pull/7792)] In preparation for SonataBlockBundle 5.0 we are not rendering block responses as private anymore ([@dmaicher](https://github.com/dmaicher))
