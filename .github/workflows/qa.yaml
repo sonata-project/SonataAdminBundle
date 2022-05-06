@@ -38,6 +38,7 @@ jobs:
 
             - name: PHPStan
               run: vendor/bin/phpstan --no-progress --memory-limit=1G analyse --error-format=github
+
     psalm:
         name: Psalm
 
