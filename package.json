@@ -23,7 +23,7 @@
     "@babel/eslint-parser": "^7.17",
     "@babel/plugin-syntax-dynamic-import": "^7.8",
     "@babel/preset-env": "^7.16",
-    "@symfony/webpack-encore": "^1.8",
+    "@symfony/webpack-encore": "^2.0",
     "autoprefixer": "^10.4",
     "eslint": "^8.8",
     "eslint-config-airbnb-base": "^15.0",
