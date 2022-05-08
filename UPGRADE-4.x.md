@@ -1,6 +1,43 @@
 UPGRADE 4.x
 ===========
 
+UPGRADE FROM 4.11.1 to 4.x
+==========================
+
+## Datetime picker assets
+
+Datetime picker assets were moved from SonataAdminBundle to form-extensions.
+Normally this should not affect you, unless you have modified
+the default javascript and/or stylesheets
+(remember that you can also add extra stylesheets or javascript using
+`extra_stylesheets` and `extra_javascripts` to avoid this kind of issues):
+
+Before
+```yaml
+    sonata_admin:
+        assets:
+            javascript:
+                bundles/sonataadmin/app.js
+                your_own.js
+            stylesheets:
+                bundles/sonataadmin/app.css
+                your_own.css
+```
+
+After
+```yaml
+    sonata_admin:
+        assets:
+            javascript:
+                bundles/sonataadmin/app.js
+                bundles/sonataform/app.js
+                your_own.js
+            stylesheets:
+                bundles/sonataadmin/app.css
+                bundles/sonataform/app.css
+                your_own.css
+```
+
 UPGRADE FROM 4.7 to 4.8
 =======================
 
