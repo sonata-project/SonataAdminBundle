@@ -36,7 +36,7 @@
         "sonata-project/block-bundle": "^4.11",
         "sonata-project/doctrine-extensions": "^1.8",
         "sonata-project/exporter": "^2.11",
-        "sonata-project/form-extensions": "^1.7.1",
+        "sonata-project/form-extensions": "^1.14",
         "sonata-project/twig-extensions": "^1.4.1",
         "symfony/asset": "^4.4 || ^5.3 || ^6.0",
         "symfony/config": "^4.4 || ^5.3 || ^6.0",
