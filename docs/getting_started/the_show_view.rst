@@ -17,6 +17,8 @@ If you're now familiar with the ``FormMapper`` and the ``ListMapper``, the
 ``ShowMapper`` will look very similar::
 
     // src/Admin/BlogPostAdmin.php
+    
+    use Sonata\AdminBundle\Show\ShowMapper;
 
     protected function configureShowFields(ShowMapper $show): void
     {
