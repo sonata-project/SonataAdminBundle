@@ -29,7 +29,6 @@
         "doctrine/collections": "^1.6",
         "doctrine/common": "^3.0",
         "doctrine/inflector": "^2.0",
-        "doctrine/persistence": "^2.0",
         "knplabs/knp-menu": "^3.1",
         "knplabs/knp-menu-bundle": "^3.0",
         "psr/container": "^1.0 || ^2.0",
@@ -69,6 +68,7 @@
     },
     "require-dev": {
         "doctrine/annotations": "^1.7",
+        "doctrine/persistence": "^2.0 || ^3.0",
         "friendsofphp/php-cs-fixer": "^3.4",
         "matthiasnoback/symfony-config-test": "^4.2",
         "matthiasnoback/symfony-dependency-injection-test": "^4.2",
