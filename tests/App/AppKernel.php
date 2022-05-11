@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\App;
 
 use Knp\Bundle\MenuBundle\KnpMenuBundle;
 use Sonata\AdminBundle\SonataAdminBundle;
+use Sonata\BlockBundle\Cache\HttpCacheHandler;
 use Sonata\BlockBundle\SonataBlockBundle;
 use Sonata\Doctrine\Bridge\Symfony\SonataDoctrineBundle;
 use Sonata\Form\Bridge\Symfony\SonataFormBundle;
@@ -126,9 +127,7 @@ final class AppKernel extends Kernel
         $loader->load(sprintf('%s/config/services.yml', $this->getProjectDir()));
 
         // TODO: Remove when support for SonataBlockBundle 4 is dropped.
-        $containerBuilder->loadFromExtension('sonata_block', [
-            'http_cache' => false,
-        ]);
+        $containerBuilder->loadFromExtension('sonata_block', class_exists(HttpCacheHandler::class) ? ['http_cache' => false] : []);
     }
 
     private function getBaseDir(): string
