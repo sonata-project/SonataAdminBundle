@@ -21,15 +21,7 @@ import 'jquery.scrollto';
 import 'jquery-ui/ui/widget';
 import 'jquery-ui/ui/widgets/sortable';
 import 'bootstrap';
-import moment from 'moment';
 
-// Eonasdan Bootstrap DateTimePicker in its version 3 does not
-// provide the scss or plain css, it only provides the less version
-// of its source files, that's why it is not included it via npm.
-//
-// Eonasdan Bootstrap DateTimePicker is not directly used in SonataAdmin
-// but it is used on form-extensions package
-import '../vendor/bootstrap-datetimepicker.min';
 import 'jquery-form';
 
 // Boostrap 3 JavaScript for the X-editable library
@@ -60,8 +52,3 @@ import './base';
 // Create global $ and jQuery variables to be used outside this script
 global.$ = $;
 global.jQuery = $;
-
-// Create global moment variable to be used by the locale script.
-// It expects moment to be available on the global scope
-// in order to define the requested locale translations
-global.moment = moment;

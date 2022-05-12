@@ -63,7 +63,6 @@ Encore.setOutputPath('./src/Resources/public')
       pattern: /\.js/,
       to: 'select2-locale/[name].[ext]',
     },
-    { from: './node_modules/moment/locale/', to: 'moment-locale/[name].[ext]' },
   ])
 
   .addEntry('app', './assets/js/app.js');

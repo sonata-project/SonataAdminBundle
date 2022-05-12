@@ -66,9 +66,9 @@ file that was distributed with this source code.
             {% endblock %}
 
             {# localize moment #}
-            {% set localeForMoment = canonicalize_locale_for_moment() %}
+            {% set localeForMoment = sonata_form_canonicalize_locale_for_moment() %}
             {% if localeForMoment %}
-                <script src="{{ asset('bundles/sonataadmin/moment-locale/' ~ localeForMoment ~ '.js') }}"></script>
+                <script src="{{ asset('bundles/sonataform/moment-locale/' ~ localeForMoment ~ '.js') }}"></script>
             {% endif %}
 
             {# localize select2 #}
