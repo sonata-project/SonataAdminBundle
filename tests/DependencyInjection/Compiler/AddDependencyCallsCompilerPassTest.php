@@ -19,6 +19,7 @@ use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\FooAdminController;
+use Sonata\BlockBundle\Cache\HttpCacheHandler;
 use Sonata\BlockBundle\DependencyInjection\SonataBlockExtension;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
@@ -682,7 +683,12 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $blockExtension = new SonataBlockExtension();
         // TODO: remove "http_cache" parameter when support for SonataBlockBundle 4 is dropped.
-        $blockExtension->load(['sonata_block' => ['http_cache' => false]], $this->container);
+        $blockExtension->load(
+            [
+                'sonata_block' => class_exists(HttpCacheHandler::class) ? ['http_cache' => false] : [],
+            ],
+            $this->container
+        );
     }
 
     private function allowToResolveChildren(): void
