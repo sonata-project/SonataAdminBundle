@@ -46,10 +46,11 @@ final class CanonicalizeRuntime implements RuntimeExtensionInterface
      */
     public function getCanonicalizedLocaleForMoment(): ?string
     {
-        @trigger_error(sprintf(
+        @trigger_error(
             'The `canonicalize_locale_for_moment` twig function is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
-            .'  use `sonata_form_canonicalize_locale_for_moment` instead.'
-        ), \E_USER_DEPRECATED);
+            .'  use `sonata_form_canonicalize_locale_for_moment` instead.',
+            \E_USER_DEPRECATED
+        );
 
         $locale = $this->getLocale();
 
