@@ -33,7 +33,11 @@ final class CanonicalizeRuntimeTest extends TestCase
     }
 
     /**
+     * NEXT_MAJOR: Remove this test.
+     *
      * @dataProvider momentLocalesProvider
+     *
+     * @group legacy
      */
     public function testCanonicalizedLocaleForMoment(?string $expected, string $original): void
     {
@@ -51,6 +55,8 @@ final class CanonicalizeRuntimeTest extends TestCase
     }
 
     /**
+     * NEXT_MAJOR: Remove this function.
+     *
      * @return array<array{?string, string}>
      */
     public function momentLocalesProvider(): array
