@@ -705,6 +705,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @deprecated since sonata-project/admin-bundle 3.84
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         @trigger_error(sprintf(
@@ -724,6 +725,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @deprecated since sonata-project/admin-bundle 3.84
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         @trigger_error(sprintf(
@@ -743,6 +745,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @deprecated since sonata-project/admin-bundle 3.84
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         @trigger_error(sprintf(
@@ -765,6 +768,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @deprecated since sonata-project/admin-bundle 3.84
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         @trigger_error(sprintf(
@@ -787,6 +791,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @deprecated since sonata-project/admin-bundle 3.84
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         @trigger_error(sprintf(
@@ -806,6 +811,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @deprecated since sonata-project/admin-bundle 3.84, use countResults instead
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         @trigger_error(sprintf(
