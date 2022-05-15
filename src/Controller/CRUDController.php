@@ -45,6 +45,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -94,6 +95,8 @@ class CRUDController extends AbstractController
             'sonata.admin.admin_exporter' => '?'.AdminExporter::class,
             'sonata.admin.security.acl_user_manager' => '?'.AdminAclUserManagerInterface::class,
 
+            'controller_resolver' => 'controller_resolver',
+            'http_kernel' => HttpKernelInterface::class,
             'logger' => '?'.LoggerInterface::class,
             'translator' => TranslatorInterface::class,
         ] + parent::getSubscribedServices();
@@ -439,12 +442,15 @@ class CRUDController extends AbstractController
             throw new \RuntimeException('The action is not defined');
         }
 
-        $batchActions = $this->admin->getBatchActions();
-        if (!\array_key_exists($action, $batchActions)) {
-            throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
+        $camelizedAction = InflectorFactory::create()->build()->classify($action);
+
+        if (!$this->canBatchActionBeExecuted($action)) {
+            $finalAction = sprintf('batchAction%s', $camelizedAction);
+            throw new \RuntimeException(sprintf('A `%s::%s` method must be callable or create add a `controller` configuration', static::class, $finalAction));
         }
 
-        $camelizedAction = InflectorFactory::create()->build()->classify($action);
+        $batchAction = $this->admin->getBatchActions()[$action];
+
         $isRelevantAction = sprintf('batchAction%sIsRelevant', $camelizedAction);
 
         if (method_exists($this, $isRelevantAction)) {
@@ -469,18 +475,17 @@ class CRUDController extends AbstractController
             return $this->redirectToList();
         }
 
-        $askConfirmation = $batchActions[$action]['ask_confirmation'] ?? true;
+        $askConfirmation = $batchAction['ask_confirmation'] ?? true;
 
         if (true === $askConfirmation && 'ok' !== $confirmation) {
-            $actionLabel = $batchActions[$action]['label'];
-            $batchTranslationDomain = $batchActions[$action]['translation_domain'] ??
+            $actionLabel = $batchAction['label'];
+            $batchTranslationDomain = $batchAction['translation_domain'] ??
                 $this->admin->getTranslationDomain();
 
             $formView = $datagrid->getForm()->createView();
             $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-            $template = $batchActions[$action]['template']
-                ?? $this->templateRegistry->getTemplate('batch_confirmation');
+            $template = $batchAction['template'] ?? $this->templateRegistry->getTemplate('batch_confirmation');
 
             return $this->renderWithExtraParams($template, [
                 'action' => 'list',
@@ -491,12 +496,6 @@ class CRUDController extends AbstractController
                 'data' => $data,
                 'csrf_token' => $this->getCsrfToken('sonata.batch'),
             ]);
-        }
-
-        // execute the action, batchActionXxxxx
-        $finalAction = sprintf('batchAction%s', $camelizedAction);
-        if (!method_exists($this, $finalAction)) {
-            throw new \RuntimeException(sprintf('A `%s::%s` method must be callable', static::class, $finalAction));
         }
 
         $query = $datagrid->getQuery();
@@ -524,7 +523,60 @@ class CRUDController extends AbstractController
             return $this->redirectToList();
         }
 
-        return $this->$finalAction($query, $forwardedRequest);
+        return call_user_func($this->getBatchActionExecutable($action), $query, $forwardedRequest);
+    }
+
+    final protected function canBatchActionBeExecuted(string $action): bool
+    {
+        $batchActions = $this->admin->getBatchActions();
+        if (!\array_key_exists($action, $batchActions)) {
+            throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
+        }
+
+        $controller = $batchActions[$action]['controller'] ?? null;
+
+        if ($controller) {
+            $request = new Request();
+            $request->attributes->set('_controller', $controller);
+            try {
+                return false !== $this->container->get('controller_resolver')->getController($request);
+            } catch (\Throwable $error) {
+                return false;
+            }
+        } else {
+            $camelizedAction = InflectorFactory::create()->build()->classify($action);
+            $finalAction = sprintf('batchAction%s', $camelizedAction);
+
+            if (method_exists($this, $finalAction)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    final protected function getBatchActionExecutable(string $action): callable
+    {
+        if (!$this->canBatchActionBeExecuted($action)) {
+            throw new \LogicException(sprintf('Batch action `%s` cannot be executed. You must call `%s::canBatchActionBeExecuted` first.', $action, static::class));
+        }
+
+        $controller = $this->admin->getBatchActions()[$action]['controller'];
+
+        if ($controller) {
+            return function (ProxyQueryInterface $query, Request $request) use ($controller) {
+                $request->attributes->set('_controller', $controller);
+                $request->attributes->set('query', $query);
+                return $this->container->get('http_kernel')->handle($request, HttpKernelInterface::SUB_REQUEST);
+            };
+        } else {
+            $camelizedAction = InflectorFactory::create()->build()->classify($action);
+            $finalAction = sprintf('batchAction%s', $camelizedAction);
+
+            return function (ProxyQueryInterface $query, Request $request) use ($finalAction) {
+                return $this->$finalAction($query, $request);
+            };
+        }
     }
 
     /**
