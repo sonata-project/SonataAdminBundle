@@ -27,6 +27,7 @@ use Sonata\AdminBundle\Exception\ModelManagerThrowable;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
+use Sonata\AdminBundle\Twig\RenderElementRuntime;
 use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
@@ -446,7 +447,7 @@ class CRUDController extends AbstractController
 
         if (!$this->canBatchActionBeExecuted($action)) {
             $finalAction = sprintf('batchAction%s', $camelizedAction);
-            throw new \RuntimeException(sprintf('A `%s::%s` method must be callable or create add a `controller` configuration', static::class, $finalAction));
+            throw new \RuntimeException(sprintf('A `%s::%s` method must be callable or create a `controller` configuration for your batch action.', static::class, $finalAction));
         }
 
         $batchAction = $this->admin->getBatchActions()[$action];
@@ -454,6 +455,12 @@ class CRUDController extends AbstractController
         $isRelevantAction = sprintf('batchAction%sIsRelevant', $camelizedAction);
 
         if (method_exists($this, $isRelevantAction)) {
+            // TODO: Remove if above in sonata-project/admin-bundle 5.0
+            @trigger_error(sprintf(
+                'The is relevant hook via "%s()" is deprecated since sonata-project/admin-bundle 4.12'
+                .' and will not be call in 5.0. Move the logic to your controller.',
+                $isRelevantAction,
+            ), \E_USER_DEPRECATED);
             $nonRelevantMessage = $this->$isRelevantAction($idx, $allElements, $forwardedRequest);
         } else {
             $nonRelevantMessage = 0 !== \count($idx) || $allElements; // at least one item is selected
@@ -526,7 +533,18 @@ class CRUDController extends AbstractController
         return call_user_func($this->getBatchActionExecutable($action), $query, $forwardedRequest);
     }
 
-    final protected function canBatchActionBeExecuted(string $action): bool
+    private function canBatchActionBeExecuted(string $action): bool
+    {
+        try {
+            return false !== $this->container
+                    ->get('controller_resolver')
+                    ->getController(new Request([], [], ['_controller' => $this->getBatchActionController($action)]));
+        } catch (\Throwable $error) {
+            return false;
+        }
+    }
+
+    private function getBatchActionController(string $action)
     {
         $batchActions = $this->admin->getBatchActions();
         if (!\array_key_exists($action, $batchActions)) {
@@ -534,49 +552,26 @@ class CRUDController extends AbstractController
         }
 
         $controller = $batchActions[$action]['controller'] ?? null;
-
-        if ($controller) {
-            $request = new Request();
-            $request->attributes->set('_controller', $controller);
-            try {
-                return false !== $this->container->get('controller_resolver')->getController($request);
-            } catch (\Throwable $error) {
-                return false;
-            }
-        } else {
-            $camelizedAction = InflectorFactory::create()->build()->classify($action);
-            $finalAction = sprintf('batchAction%s', $camelizedAction);
-
-            if (method_exists($this, $finalAction)) {
-                return true;
-            }
+        if (null ?? $controller) {
+            $controller = sprintf(
+                '%s::%s',
+                static::class,
+                sprintf('batchAction%s',  InflectorFactory::create()->build()->classify($action))
+            );
         }
 
-        return false;
+        return $controller;
     }
 
-    final protected function getBatchActionExecutable(string $action): callable
+    private function getBatchActionExecutable(string $action): callable
     {
-        if (!$this->canBatchActionBeExecuted($action)) {
-            throw new \LogicException(sprintf('Batch action `%s` cannot be executed. You must call `%s::canBatchActionBeExecuted` first.', $action, static::class));
-        }
+        $controller = $this->getBatchActionController($action);
 
-        $controller = $this->admin->getBatchActions()[$action]['controller'];
-
-        if ($controller) {
-            return function (ProxyQueryInterface $query, Request $request) use ($controller) {
-                $request->attributes->set('_controller', $controller);
-                $request->attributes->set('query', $query);
-                return $this->container->get('http_kernel')->handle($request, HttpKernelInterface::SUB_REQUEST);
-            };
-        } else {
-            $camelizedAction = InflectorFactory::create()->build()->classify($action);
-            $finalAction = sprintf('batchAction%s', $camelizedAction);
-
-            return function (ProxyQueryInterface $query, Request $request) use ($finalAction) {
-                return $this->$finalAction($query, $request);
-            };
-        }
+        return function (ProxyQueryInterface $query, Request $request) use ($controller) {
+            $request->attributes->set('_controller', $controller);
+            $request->attributes->set('query', $query);
+            return $this->container->get('http_kernel')->handle($request, HttpKernelInterface::SUB_REQUEST);
+        };
     }
 
     /**

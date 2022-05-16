@@ -126,6 +126,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('container.service_subscriber')
             ->call('setContainer', [new ReferenceConfigurator(ContainerInterface::class)])
 
+        // Aliasing service doesn't work when using service as a controller
+        ->set(CRUDController::class, CRUDController::class)
+            ->public()
+            ->tag('container.service_subscriber')
+            ->call('setContainer', [new ReferenceConfigurator(ContainerInterface::class)])
+
         ->set('sonata.admin.event.extension', AdminEventExtension::class)
             ->tag('sonata.admin.extension', ['global' => true])
             ->args([
