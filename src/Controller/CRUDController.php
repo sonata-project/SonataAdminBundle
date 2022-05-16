@@ -27,7 +27,6 @@ use Sonata\AdminBundle\Exception\ModelManagerThrowable;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
-use Sonata\AdminBundle\Twig\RenderElementRuntime;
 use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
@@ -530,45 +529,7 @@ class CRUDController extends AbstractController
             return $this->redirectToList();
         }
 
-        return call_user_func($this->getBatchActionExecutable($action), $query, $forwardedRequest);
-    }
-
-    private function canBatchActionBeExecuted(string $action): bool
-    {
-        try {
-            return false !== $this->container
-                    ->get('controller_resolver')
-                    ->getController(new Request([], [], ['_controller' => $this->getBatchActionController($action)]));
-        } catch (\Throwable $error) {
-            return false;
-        }
-    }
-
-    private function getBatchActionController(string $action)
-    {
-        $batchActions = $this->admin->getBatchActions();
-        if (!\array_key_exists($action, $batchActions)) {
-            throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
-        }
-
-        $controller = $batchActions[$action]['controller'] ?? sprintf(
-            '%s::%s',
-            static::class,
-            sprintf('batchAction%s',  InflectorFactory::create()->build()->classify($action))
-       );
-
-        return $controller;
-    }
-
-    private function getBatchActionExecutable(string $action): callable
-    {
-        $controller = $this->getBatchActionController($action);
-
-        return function (ProxyQueryInterface $query, Request $request) use ($controller) {
-            $request->attributes->set('_controller', $controller);
-            $request->attributes->set('query', $query);
-            return $this->container->get('http_kernel')->handle($request, HttpKernelInterface::SUB_REQUEST);
-        };
+        return \call_user_func($this->getBatchActionExecutable($action), $query, $forwardedRequest);
     }
 
     /**
@@ -1520,6 +1481,48 @@ class CRUDController extends AbstractController
                 $this->admin->toString($object)
             ));
         }
+    }
+
+    private function canBatchActionBeExecuted(string $action): bool
+    {
+        try {
+            return false !== $this->container
+                    ->get('controller_resolver')
+                    ->getController(new Request([], [], ['_controller' => $this->getBatchActionController($action)]));
+        } catch (\Throwable $error) {
+            return false;
+        }
+    }
+
+    /**
+     * @return string|callable|array<string, string> All must match symfony supported format for controller
+     */
+    private function getBatchActionController(string $action)
+    {
+        $batchActions = $this->admin->getBatchActions();
+        if (!\array_key_exists($action, $batchActions)) {
+            throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
+        }
+
+        $controller = $batchActions[$action]['controller'] ?? sprintf(
+            '%s::%s',
+            static::class,
+            sprintf('batchAction%s', InflectorFactory::create()->build()->classify($action))
+        );
+
+        return $controller;
+    }
+
+    private function getBatchActionExecutable(string $action): callable
+    {
+        $controller = $this->getBatchActionController($action);
+
+        return function (ProxyQueryInterface $query, Request $request) use ($controller) {
+            $request->attributes->set('_controller', $controller);
+            $request->attributes->set('query', $query);
+
+            return $this->container->get('http_kernel')->handle($request, HttpKernelInterface::SUB_REQUEST);
+        };
     }
 
     /**
