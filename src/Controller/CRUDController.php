@@ -551,14 +551,11 @@ class CRUDController extends AbstractController
             throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
         }
 
-        $controller = $batchActions[$action]['controller'] ?? null;
-        if (null ?? $controller) {
-            $controller = sprintf(
-                '%s::%s',
-                static::class,
-                sprintf('batchAction%s',  InflectorFactory::create()->build()->classify($action))
-            );
-        }
+        $controller = $batchActions[$action]['controller'] ?? sprintf(
+            '%s::%s',
+            static::class,
+            sprintf('batchAction%s',  InflectorFactory::create()->build()->classify($action))
+       );
 
         return $controller;
     }
