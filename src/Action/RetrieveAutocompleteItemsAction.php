@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
+use Sonata\AdminBundle\Exception\AbstractClassException;
 use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
@@ -57,8 +58,13 @@ final class RetrieveAutocompleteItemsAction
             throw new AccessDeniedException();
         }
 
-        // subject will be empty to avoid unnecessary database requests and keep autocomplete function fast
-        $admin->setSubject($admin->getNewInstance());
+        try {
+            // subject will be empty to avoid unnecessary database requests and keep autocomplete function fast
+            $admin->setSubject($admin->getNewInstance());
+        } catch (AbstractClassException) {
+            // in case the subject is an abstract entity, we continue
+            // no-op
+        }
 
         $field = $request->get('field');
         if (!\is_string($field)) {
