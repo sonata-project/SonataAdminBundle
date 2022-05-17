@@ -18,4 +18,11 @@ namespace Sonata\AdminBundle\Exception;
  */
 final class AbstractClassException extends \RuntimeException
 {
+    /**
+     * @param class-string $class
+     */
+    public function __construct(string $class)
+    {
+        parent::__construct(sprintf('Cannot initialize abstract class: %s', $class));
+    }
 }

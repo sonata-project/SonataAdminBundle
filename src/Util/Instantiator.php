@@ -29,7 +29,7 @@ final class Instantiator
     {
         $r = new \ReflectionClass($class);
         if ($r->isAbstract()) {
-            throw new AbstractClassException(sprintf('Cannot initialize abstract class: %s', $class));
+            throw new AbstractClassException($class);
         }
 
         $constructor = $r->getConstructor();
