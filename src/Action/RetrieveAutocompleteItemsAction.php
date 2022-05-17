@@ -61,7 +61,7 @@ final class RetrieveAutocompleteItemsAction
         try {
             // subject will be empty to avoid unnecessary database requests and keep autocomplete function fast
             $admin->setSubject($admin->getNewInstance());
-        } catch (AbstractClassException) {
+        } catch (AbstractClassException $e) {
             // in case the subject is an abstract entity, we continue because the admin subject is non-mandatory here
         }
 
