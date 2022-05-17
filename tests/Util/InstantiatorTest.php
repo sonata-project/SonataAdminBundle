@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\Util;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Exception\AbstractClassException;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\AbstractEntity;
+use Sonata\AdminBundle\Tests\Fixtures\Entity\Bar;
 use Sonata\AdminBundle\Util\Instantiator;
 
 /**
@@ -26,6 +27,12 @@ final class InstantiatorTest extends TestCase
     public function testAbstractClassThrowsException(): void
     {
         $this->expectException(AbstractClassException::class);
+
         Instantiator::instantiate(AbstractEntity::class);
+    }
+
+    public function testNotAbstractClassDoesntThrowsException(): void
+    {
+        static::assertInstanceOf(Bar::class, Instantiator::instantiate(Bar::class));
     }
 }
