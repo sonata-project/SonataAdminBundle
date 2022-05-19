@@ -15,10 +15,8 @@ namespace Sonata\AdminBundle\Exception;
 
 /**
  * @author Morgan Abraham <morgan@geekimo.me>
- *
- * NEXT_MAJOR: extends \InvalidArgumentException
  */
-final class AbstractClassException extends \RuntimeException
+final class AbstractClassException extends \InvalidArgumentException
 {
     /**
      * @param class-string $class
