@@ -39,7 +39,7 @@ final class CanonicalizeRuntime implements RuntimeExtensionInterface
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use `sonata_form_canonicalize_locale_for_moment` twig function.
+     * @deprecated since sonata-project/admin-bundle version 4.12 use `sonata_form_canonicalize_locale_for_moment` twig function.
      *
      * Returns a canonicalized locale for "Moment.js" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
@@ -47,7 +47,7 @@ final class CanonicalizeRuntime implements RuntimeExtensionInterface
     public function getCanonicalizedLocaleForMoment(): ?string
     {
         @trigger_error(
-            'The `canonicalize_locale_for_moment` twig function is deprecated since sonata-project/admin-bundle 4.x and will be removed in 5.0.'
+            'The `canonicalize_locale_for_moment` twig function is deprecated since sonata-project/admin-bundle 4.12 and will be removed in 5.0.'
             .'  use `sonata_form_canonicalize_locale_for_moment` instead.',
             \E_USER_DEPRECATED
         );
