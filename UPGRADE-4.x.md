@@ -1,8 +1,8 @@
 UPGRADE 4.x
 ===========
 
-UPGRADE FROM 4.11.1 to 4.x
-==========================
+UPGRADE FROM 4.11.1 to 4.12.0
+=============================
 
 ## Datetime picker assets
 
