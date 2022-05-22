@@ -13,6 +13,9 @@ on:
             - 5.x
     pull_request:
 
+permissions:
+    contents: read
+
 jobs:
     container:
         name: Symfony container
