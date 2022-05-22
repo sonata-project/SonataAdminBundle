@@ -2,6 +2,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.12.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.11.1...4.12.0) - 2022-05-21
+### Added
+- [[#7823](https://github.com/sonata-project/SonataAdminBundle/pull/7823)] Support for abstract class subject in `RetrieveAutocompleteItemsAction`. ([@Geekimo](https://github.com/Geekimo))
+
+### Changed
+- [[#7824](https://github.com/sonata-project/SonataAdminBundle/pull/7824)] Update jQuery to `^3.6` ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7809](https://github.com/sonata-project/SonataAdminBundle/pull/7809)] Use datetime picker library from `sonata-project/form-extensions`. ([@jordisala1991](https://github.com/jordisala1991))
+
+### Removed
+- [[#7814](https://github.com/sonata-project/SonataAdminBundle/pull/7814)] Removed `doctrine/persistence` dependency ([@franmomu](https://github.com/franmomu))
+
 ## [4.11.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.11.0...4.11.1) - 2022-04-29
 ### Fixed
 - [[#7803](https://github.com/sonata-project/SonataAdminBundle/pull/7803)] Fix vulnerabilities on several frontend dependencies by upgrading them: `async`, `minimist`, `ansi-regex` and `moment`, ([@jordisala1991](https://github.com/jordisala1991))
