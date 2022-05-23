@@ -33,7 +33,6 @@ final class FilterDataTest extends TestCase
             \is_object($type) ? 'instance of "'.\get_class($type).'"' : '"'.\gettype($type).'"'
         ));
 
-        // @phpstan-ignore-next-line
         FilterData::fromArray(['type' => $type]);
     }
 

@@ -31,8 +31,6 @@ final class FilterData
 
     /**
      * @param array{type?: int|numeric-string|null, value?: mixed} $data
-     *
-     * @psalm-pure
      */
     public static function fromArray(array $data): self
     {
