@@ -444,9 +444,11 @@ class CRUDController extends AbstractController
 
         $camelizedAction = InflectorFactory::create()->build()->classify($action);
 
-        if (!$this->canBatchActionBeExecuted($action)) {
+        try {
+            $batchActionExecutable = $this->getBatchActionExecutable($action);
+        } catch (\Throwable $error) {
             $finalAction = sprintf('batchAction%s', $camelizedAction);
-            throw new \RuntimeException(sprintf('A `%s::%s` method must be callable or create a `controller` configuration for your batch action.', static::class, $finalAction));
+            throw new \RuntimeException(sprintf('A `%s::%s` method must be callable or create a `controller` configuration for your batch action.', $this->admin->getBaseControllerName(), $finalAction), 0, $error);
         }
 
         $batchAction = $this->admin->getBatchActions()[$action];
@@ -529,7 +531,7 @@ class CRUDController extends AbstractController
             return $this->redirectToList();
         }
 
-        return \call_user_func($this->getBatchActionExecutable($action), $query, $forwardedRequest);
+        return \call_user_func($batchActionExecutable, $query, $forwardedRequest);
     }
 
     /**
@@ -1483,21 +1485,7 @@ class CRUDController extends AbstractController
         }
     }
 
-    private function canBatchActionBeExecuted(string $action): bool
-    {
-        try {
-            return false !== $this->container
-                    ->get('controller_resolver')
-                    ->getController(new Request([], [], ['_controller' => $this->getBatchActionController($action)]));
-        } catch (\Throwable $error) {
-            return false;
-        }
-    }
-
-    /**
-     * @return string|callable|array<string, string> All must match symfony supported format for controller
-     */
-    private function getBatchActionController(string $action)
+    private function getBatchActionExecutable(string $action): callable
     {
         $batchActions = $this->admin->getBatchActions();
         if (!\array_key_exists($action, $batchActions)) {
@@ -1506,16 +1494,18 @@ class CRUDController extends AbstractController
 
         $controller = $batchActions[$action]['controller'] ?? sprintf(
             '%s::%s',
-            static::class,
+            $this->admin->getBaseControllerName(),
             sprintf('batchAction%s', InflectorFactory::create()->build()->classify($action))
         );
 
-        return $controller;
-    }
+        // This will throw an exception when called so we know if it's possible or not to call the controller.
+        $exists = false !== $this->container
+            ->get('controller_resolver')
+            ->getController(new Request([], [], ['_controller' => $controller]));
 
-    private function getBatchActionExecutable(string $action): callable
-    {
-        $controller = $this->getBatchActionController($action);
+        if (!$exists) {
+            throw new \RuntimeException(sprintf('Controller for action `%s` cannot be resolved', $action));
+        }
 
         return function (ProxyQueryInterface $query, Request $request) use ($controller) {
             $request->attributes->set('_controller', $controller);

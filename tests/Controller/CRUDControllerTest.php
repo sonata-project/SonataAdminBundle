@@ -57,8 +57,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -133,6 +135,16 @@ final class CRUDControllerTest extends TestCase
      */
     private $twig;
 
+    /**
+     * @var MockObject&HttpKernelInterface
+     */
+    private $httpKernel;
+
+    /**
+     * @var MockObject&ControllerResolverInterface
+     */
+    private $controllerResolver;
+
     protected function setUp(): void
     {
         $this->container = new Container();
@@ -164,6 +176,10 @@ final class CRUDControllerTest extends TestCase
         $this->auditManager = $this->createMock(AuditManagerInterface::class);
 
         $this->formFactory = $this->createStub(FormFactoryInterface::class);
+
+        $this->controllerResolver = $this->createMock(ControllerResolverInterface::class);
+
+        $this->httpKernel = $this->createMock(HttpKernelInterface::class);
 
         $this->adminObjectAclManipulator = new AdminObjectAclManipulator($this->formFactory, MaskBuilder::class);
 
@@ -200,6 +216,8 @@ final class CRUDControllerTest extends TestCase
         $this->container->set('translator', $this->translator);
         $this->container->set('sonata.admin.request.fetcher', $this->adminFetcher);
         $this->container->set('parameter_bag', $this->parameterBag);
+        $this->container->set('http_kernel', $this->httpKernel);
+        $this->container->set('controller_resolver', $this->controllerResolver);
 
         $this->parameterBag->set(
             'security.role_hierarchy.roles',
@@ -3470,13 +3488,17 @@ final class CRUDControllerTest extends TestCase
     public function testBatchActionActionNotDefined(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('The `foo` batch action is not defined');
+        $this->expectExceptionMessage('A `sonata.admin.controller.crud::batchActionFoo` method must be callable or create a `controller` configuration for your batch action.');
 
         $batchActions = [];
 
         $this->admin->expects(static::once())
             ->method('getBatchActions')
             ->willReturn($batchActions);
+
+        $this->admin->expects(static::once())
+            ->method('getBaseControllerName')
+            ->willReturn('sonata.admin.controller.crud');
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
@@ -3507,10 +3529,14 @@ final class CRUDControllerTest extends TestCase
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
-        $datagrid = $this->createMock(DatagridInterface::class);
-        $this->admin->expects(static::once())
-            ->method('getDatagrid')
-            ->willReturn($datagrid);
+        $this->controllerResolver
+            ->expects(static::once())
+            ->method('getController')
+            ->willReturn(false);
+
+        $this->admin->expects(static::any())
+            ->method('getBaseControllerName')
+            ->willReturn('sonata.admin.controller.crud');
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
@@ -3518,7 +3544,7 @@ final class CRUDControllerTest extends TestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            'A `Sonata\AdminBundle\Controller\CRUDController::batchActionFoo` method must be callable'
+            'A `sonata.admin.controller.crud::batchActionFoo` method must be callable or create a `controller` configuration for your batch action.'
         );
 
         $this->controller->batchAction($this->request);
@@ -3528,9 +3554,26 @@ final class CRUDControllerTest extends TestCase
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 
-        $this->admin->expects(static::once())
+        $this->admin->expects(static::exactly(2))
             ->method('getBatchActions')
             ->willReturn($batchActions);
+
+        $this->admin->expects(static::any())
+            ->method('getBaseControllerName')
+            ->willReturn($baseControllerName = 'sonata.admin.controller.crud');
+
+        $this->controllerResolver->expects(static::any())
+            ->method('getController')
+            ->with(
+                static::callback(function (Request $request) use ($baseControllerName) {
+                    static::assertSame(
+                        $baseControllerName.'::batchActionDelete',
+                        $request->attributes->get('_controller')
+                    );
+
+                    return true;
+                })
+            );
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
@@ -3543,11 +3586,27 @@ final class CRUDControllerTest extends TestCase
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $this->httpKernel->expects(static::once())
+            ->method('handle')
+            ->with(
+                static::callback(function (Request $request) use ($baseControllerName, $query) {
+                    static::assertSame(
+                        $baseControllerName.'::batchActionDelete',
+                        $request->attributes->get('_controller')
+                    );
 
-        $this->admin->expects(static::once())
-            ->method('checkAccess')
-            ->with(static::equalTo('batchDelete'));
+                    static::assertSame(
+                        $query,
+                        $request->attributes->get('query')
+                    );
+
+                    return true;
+                }),
+                HttpKernelInterface::SUB_REQUEST
+            )
+            ->willReturn($response = new Response());
+
+        $modelManager = $this->createMock(ModelManagerInterface::class);
 
         $this->admin
             ->method('getModelManager')
@@ -3560,8 +3619,6 @@ final class CRUDControllerTest extends TestCase
         $modelManager->expects(static::once())
             ->method('addIdentifiersToQuery')
             ->with(static::equalTo('Foo'), static::equalTo($query), static::equalTo(['123', '456']));
-
-        $this->expectTranslate('flash_batch_delete_success', [], 'SonataAdminBundle');
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false]));
@@ -3572,18 +3629,33 @@ final class CRUDControllerTest extends TestCase
         $result = $this->controller->batchAction($this->request);
 
         static::assertNull($this->request->get('idx'), 'Ensure original request is not modified by calling `CRUDController::batchAction()`.');
-        static::assertInstanceOf(RedirectResponse::class, $result);
-        static::assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
-        static::assertSame('list', $result->getTargetUrl());
+        static::assertSame($response, $result);
     }
 
     public function testBatchActionWithoutConfirmation2(): void
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 
-        $this->admin->expects(static::once())
+        $this->admin->expects(static::exactly(2))
             ->method('getBatchActions')
             ->willReturn($batchActions);
+
+        $this->admin->expects(static::any())
+            ->method('getBaseControllerName')
+            ->willReturn($baseControllerName = 'sonata.admin.controller.crud');
+
+        $this->controllerResolver->expects(static::any())
+            ->method('getController')
+            ->with(
+                static::callback(function (Request $request) use ($baseControllerName) {
+                    static::assertSame(
+                        $baseControllerName.'::batchActionDelete',
+                        $request->attributes->get('_controller')
+                    );
+
+                    return true;
+                })
+            );
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
@@ -3596,11 +3668,27 @@ final class CRUDControllerTest extends TestCase
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $this->httpKernel->expects(static::once())
+            ->method('handle')
+            ->with(
+                static::callback(function (Request $request) use ($baseControllerName, $query) {
+                    static::assertSame(
+                        $baseControllerName.'::batchActionDelete',
+                        $request->attributes->get('_controller')
+                    );
 
-        $this->admin->expects(static::once())
-            ->method('checkAccess')
-            ->with(static::equalTo('batchDelete'));
+                    static::assertSame(
+                        $query,
+                        $request->attributes->get('query')
+                    );
+
+                    return true;
+                }),
+                HttpKernelInterface::SUB_REQUEST
+            )
+            ->willReturn($response = new Response());
+
+        $modelManager = $this->createMock(ModelManagerInterface::class);
 
         $this->admin
             ->method('getModelManager')
@@ -3614,8 +3702,6 @@ final class CRUDControllerTest extends TestCase
             ->method('addIdentifiersToQuery')
             ->with(static::equalTo('Foo'), static::equalTo($query), static::equalTo(['123', '456']));
 
-        $this->expectTranslate('flash_batch_delete_success', [], 'SonataAdminBundle');
-
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('action', 'delete');
         $this->request->request->set('idx', ['123', '456']);
@@ -3623,9 +3709,7 @@ final class CRUDControllerTest extends TestCase
 
         $result = $this->controller->batchAction($this->request);
 
-        static::assertInstanceOf(RedirectResponse::class, $result);
-        static::assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
-        static::assertSame('list', $result->getTargetUrl());
+        static::assertSame($response, $result);
     }
 
     /**
@@ -3649,9 +3733,26 @@ final class CRUDControllerTest extends TestCase
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'translation_domain' => 'FooBarBaz', 'ask_confirmation' => true]];
 
-        $this->admin->expects(static::once())
+        $this->admin->expects(static::exactly(2))
             ->method('getBatchActions')
             ->willReturn($batchActions);
+
+        $this->admin->expects(static::any())
+            ->method('getBaseControllerName')
+            ->willReturn($baseControllerName = 'sonata.admin.controller.crud');
+
+        $this->controllerResolver->expects(static::any())
+            ->method('getController')
+            ->with(
+                static::callback(function (Request $request) use ($baseControllerName) {
+                    static::assertSame(
+                        $baseControllerName.'::batchActionDelete',
+                        $request->attributes->get('_controller')
+                    );
+
+                    return true;
+                })
+            );
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode($data, \JSON_THROW_ON_ERROR));
@@ -3692,6 +3793,9 @@ final class CRUDControllerTest extends TestCase
                 'batch_translation_domain' => 'FooBarBaz',
             ]);
 
+        $datagrid->expects(static::never())
+            ->method('getQuery');
+
         static::assertInstanceOf(Response::class, $this->controller->batchAction($this->request));
         static::assertSame([], $this->session->getFlashBag()->all());
     }
@@ -3707,7 +3811,7 @@ final class CRUDControllerTest extends TestCase
 
         $batchActions = [$actionName => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 
-        $this->admin->expects(static::once())
+        $this->admin->expects(static::exactly(2))
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
@@ -3749,7 +3853,7 @@ final class CRUDControllerTest extends TestCase
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'ask_confirmation' => true, 'template' => 'custom_template.html.twig']];
 
-        $this->admin->expects(static::once())
+        $this->admin->expects(static::exactly(2))
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
@@ -3791,7 +3895,7 @@ final class CRUDControllerTest extends TestCase
 
         $batchActions = ['foo' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 
-        $this->admin->expects(static::once())
+        $this->admin->expects(static::exactly(2))
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
@@ -3819,7 +3923,7 @@ final class CRUDControllerTest extends TestCase
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'ask_confirmation' => true]];
 
-        $this->admin->expects(static::once())
+        $this->admin->expects(static::exactly(2))
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
@@ -3851,7 +3955,7 @@ final class CRUDControllerTest extends TestCase
 
         $batchActions = ['bar' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 
-        $this->admin->expects(static::once())
+        $this->admin->expects(static::exactly(2))
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
@@ -3895,7 +3999,7 @@ final class CRUDControllerTest extends TestCase
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 
-        $this->admin->expects(static::once())
+        $this->admin->expects(static::exactly(2))
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
@@ -3910,11 +4014,11 @@ final class CRUDControllerTest extends TestCase
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $this->httpKernel->expects(static::once())
+            ->method('handle')
+            ->willReturn($response = new Response());
 
-        $this->admin->expects(static::once())
-            ->method('checkAccess')
-            ->with(static::equalTo('batchDelete'));
+        $modelManager = $this->createMock(ModelManagerInterface::class);
 
         $this->admin
             ->method('getModelManager')
@@ -3928,8 +4032,6 @@ final class CRUDControllerTest extends TestCase
             ->method('addIdentifiersToQuery')
             ->with(static::equalTo('Foo'), static::equalTo($query), static::equalTo(['123', '456']));
 
-        $this->expectTranslate('flash_batch_delete_success', [], 'SonataAdminBundle');
-
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('foo', 'bar');
@@ -3937,9 +4039,7 @@ final class CRUDControllerTest extends TestCase
 
         $result = $this->controller->batchAction($this->request);
 
-        static::assertInstanceOf(RedirectResponse::class, $result);
-        static::assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
-        static::assertSame('list', $result->getTargetUrl());
+        static::assertSame($response, $result);
         static::assertSame('bar', $this->request->request->get('foo'));
     }
 
