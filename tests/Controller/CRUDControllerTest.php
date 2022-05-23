@@ -1438,6 +1438,11 @@ final class CRUDControllerTest extends TestCase
             ->method('getForm')
             ->willReturn($form);
 
+        $this->admin
+            ->method('getNormalizedIdentifier')
+            ->with(static::equalTo($object))
+            ->willReturn('foo_normalized');
+
         $formView = $this->createStub(FormView::class);
 
         $form
@@ -1453,7 +1458,7 @@ final class CRUDControllerTest extends TestCase
                 'action' => 'edit',
                 'form' => $formView,
                 'object' => $object,
-                'objectId' => null,
+                'objectId' => 'foo_normalized',
             ]);
 
         static::assertInstanceOf(Response::class, $this->controller->editAction($this->request));
@@ -1490,6 +1495,11 @@ final class CRUDControllerTest extends TestCase
             ->method('hasAccess')
             ->with(static::equalTo('edit'))
             ->willReturn(true);
+
+        $this->admin
+            ->method('getNormalizedIdentifier')
+            ->with(static::equalTo($object))
+            ->willReturn('foo_normalized');
 
         $form = $this->createMock(Form::class);
 
@@ -1542,6 +1552,11 @@ final class CRUDControllerTest extends TestCase
             ->method('checkAccess')
             ->with(static::equalTo('edit'));
 
+        $this->admin
+            ->method('getNormalizedIdentifier')
+            ->with(static::equalTo($object))
+            ->willReturn('foo_normalized');
+
         $form = $this->createMock(Form::class);
 
         $this->admin->expects(static::once())
@@ -1580,7 +1595,7 @@ final class CRUDControllerTest extends TestCase
                 'action' => 'edit',
                 'form' => $formView,
                 'object' => $object,
-                'objectId' => null,
+                'objectId' => 'foo_normalized',
             ]);
 
         static::assertInstanceOf(Response::class, $this->controller->editAction($this->request));
@@ -1658,6 +1673,11 @@ final class CRUDControllerTest extends TestCase
             ->method('checkAccess')
             ->with(static::equalTo('edit'));
 
+        $this->admin
+            ->method('getNormalizedIdentifier')
+            ->with(static::equalTo($object))
+            ->willReturn('foo_normalized');
+
         $form = $this->createMock(Form::class);
 
         $this->admin->expects(static::once())
@@ -1706,6 +1726,11 @@ final class CRUDControllerTest extends TestCase
             ->method('checkAccess')
             ->with(static::equalTo('edit'));
 
+        $this->admin
+            ->method('getNormalizedIdentifier')
+            ->with(static::equalTo($object))
+            ->willReturn('foo_normalized');
+
         $form = $this->createMock(Form::class);
 
         $this->admin->expects(static::once())
@@ -1753,6 +1778,11 @@ final class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn(\stdClass::class);
 
+        $this->admin
+            ->method('getNormalizedIdentifier')
+            ->with(static::equalTo($object))
+            ->willReturn('foo_normalized');
+
         $form = $this->createMock(Form::class);
 
         $this->admin->expects(static::once())
@@ -1796,7 +1826,7 @@ final class CRUDControllerTest extends TestCase
                 'action' => 'edit',
                 'form' => $formView,
                 'object' => $object,
-                'objectId' => null,
+                'objectId' => 'foo_normalized',
             ]);
 
         static::assertInstanceOf(Response::class, $this->controller->editAction($this->request));
@@ -1816,6 +1846,11 @@ final class CRUDControllerTest extends TestCase
         $this->admin->expects(static::once())
             ->method('checkAccess')
             ->with(static::equalTo('edit'));
+
+        $this->admin
+            ->method('getNormalizedIdentifier')
+            ->with(static::equalTo($object))
+            ->willReturn('foo_normalized');
 
         $form = $this->createMock(Form::class);
 
@@ -1855,7 +1890,7 @@ final class CRUDControllerTest extends TestCase
                 'action' => 'edit',
                 'form' => $formView,
                 'object' => $object,
-                'objectId' => null,
+                'objectId' => 'foo_normalized',
             ]);
 
         static::assertInstanceOf(Response::class, $this->controller->editAction($this->request));
@@ -1880,6 +1915,11 @@ final class CRUDControllerTest extends TestCase
         $this->admin
             ->method('getClass')
             ->willReturn($class);
+
+        $this->admin
+            ->method('getNormalizedIdentifier')
+            ->with(static::equalTo($object))
+            ->willReturn('foo_normalized');
 
         $form = $this->createMock(Form::class);
 
@@ -2606,6 +2646,11 @@ final class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn('Foo');
 
+        $this->admin
+            ->method('getNormalizedIdentifier')
+            ->with(static::equalTo($object))
+            ->willReturn('foo_normalized');
+
         $this->auditManager->expects(static::once())
             ->method('hasReader')
             ->with(static::equalTo('Foo'))
@@ -3041,6 +3086,11 @@ final class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn('Foo');
 
+        $this->admin
+            ->method('getNormalizedIdentifier')
+            ->with(static::equalTo($object))
+            ->willReturn('foo_normalized');
+
         $this->auditManager->expects(static::once())
             ->method('hasReader')
             ->with(static::equalTo('Foo'))
@@ -3220,6 +3270,11 @@ final class CRUDControllerTest extends TestCase
         $this->admin
             ->method('getClass')
             ->willReturn('Foo');
+
+        $this->admin
+            ->method('getNormalizedIdentifier')
+            ->with(static::equalTo($object))
+            ->willReturn('foo_normalized');
 
         $this->auditManager->expects(static::once())
             ->method('hasReader')

@@ -680,10 +680,10 @@ class CRUDController extends AbstractController
     {
         $object = $this->assertObjectExists($request, true);
         \assert(null !== $object);
+        $this->admin->checkAccess('history', $object);
+
         $objectId = $this->admin->getNormalizedIdentifier($object);
         \assert(null !== $objectId);
-
-        $this->admin->checkAccess('history', $object);
 
         $manager = $this->container->get('sonata.admin.audit.manager');
         \assert($manager instanceof AuditManagerInterface);
@@ -719,10 +719,10 @@ class CRUDController extends AbstractController
     {
         $object = $this->assertObjectExists($request, true);
         \assert(null !== $object);
+        $this->admin->checkAccess('historyViewRevision', $object);
+
         $objectId = $this->admin->getNormalizedIdentifier($object);
         \assert(null !== $objectId);
-
-        $this->admin->checkAccess('historyViewRevision', $object);
 
         $manager = $this->container->get('sonata.admin.audit.manager');
         \assert($manager instanceof AuditManagerInterface);
