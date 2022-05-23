@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Filter\Model;
 
-/**
- * @psalm-immutable
- */
 final class FilterData
 {
     private ?int $type = null;

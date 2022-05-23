@@ -2199,22 +2199,34 @@ final class AdminTest extends TestCase
 
         // Workaround for static analysis
         $postAdminChildAdmin = $postAdmin->getCurrentLeafChildAdmin();
+        $commentAdminChildAdmin = $commentAdmin->getCurrentLeafChildAdmin();
+        $commentVoteAdminChildAdmin = $commentVoteAdmin->getCurrentLeafChildAdmin();
 
         static::assertNull($postAdminChildAdmin);
-        static::assertNull($commentAdmin->getCurrentLeafChildAdmin());
-        static::assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
+        static::assertNull($commentAdminChildAdmin);
+        static::assertNull($commentVoteAdminChildAdmin);
 
         $commentAdmin->setCurrentChild(true);
 
-        static::assertSame($commentAdmin, $postAdmin->getCurrentLeafChildAdmin());
-        static::assertNull($commentAdmin->getCurrentLeafChildAdmin());
-        static::assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
+        // Workaround for static analysis
+        $postAdminChildAdmin = $postAdmin->getCurrentLeafChildAdmin();
+        $commentAdminChildAdmin = $commentAdmin->getCurrentLeafChildAdmin();
+        $commentVoteAdminChildAdmin = $commentVoteAdmin->getCurrentLeafChildAdmin();
+
+        static::assertSame($commentAdmin, $postAdminChildAdmin);
+        static::assertNull($commentAdminChildAdmin);
+        static::assertNull($commentVoteAdminChildAdmin);
 
         $commentVoteAdmin->setCurrentChild(true);
 
-        static::assertSame($commentVoteAdmin, $postAdmin->getCurrentLeafChildAdmin());
-        static::assertSame($commentVoteAdmin, $commentAdmin->getCurrentLeafChildAdmin());
-        static::assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
+        // Workaround for static analysis
+        $postAdminChildAdmin = $postAdmin->getCurrentLeafChildAdmin();
+        $commentAdminChildAdmin = $commentAdmin->getCurrentLeafChildAdmin();
+        $commentVoteAdminChildAdmin = $commentVoteAdmin->getCurrentLeafChildAdmin();
+
+        static::assertSame($commentVoteAdmin, $postAdminChildAdmin);
+        static::assertSame($commentVoteAdmin, $commentAdminChildAdmin);
+        static::assertNull($commentVoteAdminChildAdmin);
     }
 
     public function testAdminAvoidInfiniteLoop(): void
