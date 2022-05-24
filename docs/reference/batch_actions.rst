@@ -74,7 +74,7 @@ the context of this request. There is no requirement on the base class or any ot
 
             $target = $modelManager->find($admin->getClass(), $request->get('targetId'));
 
-            if ($target === null){
+            if ($target === null) {
                 $this->addFlash('sonata_flash_info', 'flash_batch_merge_no_target');
 
                 return new RedirectResponse(
