@@ -21,4 +21,10 @@
             <code>new Datagrid($this-&gt;query, $this-&gt;columns, $pager, $this-&gt;formBuilder, [])</code>
         </InvalidArgument>
     </file>
+    <!-- https://github.com/vimeo/psalm/issues/7896 -->
+    <file src="src/Menu/Provider/GroupMenuProvider.php">
+        <PossiblyUndefinedArrayOffset occurrences="1">
+            <code>$item['route']</code>
+        </PossiblyUndefinedArrayOffset>
+    </file>
 </files>

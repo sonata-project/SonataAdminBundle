@@ -18,7 +18,7 @@ namespace Sonata\AdminBundle\Filter\Model;
  */
 final class FilterData
 {
-    private ?int $type = null;
+    private ?int $type;
 
     /**
      * @var mixed
@@ -27,9 +27,17 @@ final class FilterData
 
     private bool $hasValue;
 
-    private function __construct()
+    /**
+     * @param mixed $value
+     */
+    private function __construct(?int $type, bool $hasValue, $value = null)
     {
-        $this->hasValue = false;
+        $this->type = $type;
+        $this->hasValue = $hasValue;
+
+        if ($hasValue) {
+            $this->value = $value;
+        }
     }
 
     /**
@@ -39,8 +47,6 @@ final class FilterData
      */
     public static function fromArray(array $data): self
     {
-        $filterData = new self();
-
         if (isset($data['type'])) {
             if (!\is_int($data['type']) && (!\is_string($data['type']) || !is_numeric($data['type']))) {
                 throw new \InvalidArgumentException(sprintf(
@@ -49,15 +55,12 @@ final class FilterData
                 ));
             }
 
-            $filterData->type = (int) $data['type'];
+            $type = (int) $data['type'];
+        } else {
+            $type = null;
         }
 
-        if (\array_key_exists('value', $data)) {
-            $filterData->value = $data['value'];
-            $filterData->hasValue = true;
-        }
-
-        return $filterData;
+        return new self($type, \array_key_exists('value', $data), $data['value'] ?? null);
     }
 
     /**
