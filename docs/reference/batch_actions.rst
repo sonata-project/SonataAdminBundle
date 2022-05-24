@@ -108,10 +108,8 @@ the context of this request. There is no requirement on the base class or any ot
         // ...
     }
 
-.. note::
-
 (Deprecated) Define the core action logic
-----------------------------
+-----------------------------------------
 
 **Deprecated**: This is the old way to do this. Will be removed in version 5.x.
 
@@ -219,7 +217,7 @@ a radio button to choose the target object.
     {% endblock %}
 
 (Optional|Deprecated) Overriding the default relevancy check function
-----------------------------------------------------------
+---------------------------------------------------------------------
 
 **Deprecated**: Make this check in your controller directly. This will be remove in version 5.x
 
