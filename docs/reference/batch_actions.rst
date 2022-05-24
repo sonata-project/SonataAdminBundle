@@ -51,7 +51,7 @@ Define the core action logic
 Define a regular Symfony controller like you normally would (without a route). Make sure you configure your controller
 as a service and tag it with **controller.service_arguments**. The parameter will be automatically injected.
 The AdminInterface is done via a param converter already available in **SonataAdminBundle**. The $query is unique to
-the context of this request. There is no requirement on the base class or any other logic, this is just an example:
+the context of this request. There is no requirement on the base class or any other logic, this is just an example::
 
     // src/Controller/MergeController.php
 
@@ -107,6 +107,8 @@ the context of this request. There is no requirement on the base class or any ot
 
         // ...
     }
+
+.. note::
 
 (Deprecated) Define the core action logic
 ----------------------------
