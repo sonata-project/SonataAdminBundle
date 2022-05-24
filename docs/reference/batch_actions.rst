@@ -37,7 +37,7 @@ merges them onto a single target item. It should only be available when two cond
         ) {
             $actions['merge'] = [
                 'ask_confirmation' => true,
-                'controller' => 'app.controller.merge::batchMergeAction'
+                'controller' => 'app.controller.merge::batchMergeAction',
                 // Or 'App/Controller/MergeController::batchMergeAction' base on how you declare your controller service.
             ];
         }
