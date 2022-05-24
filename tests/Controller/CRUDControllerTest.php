@@ -3565,7 +3565,7 @@ final class CRUDControllerTest extends TestCase
         $this->controllerResolver->expects(static::any())
             ->method('getController')
             ->with(
-                static::callback(function (Request $request) use ($baseControllerName) {
+                static::callback(static function (Request $request) use ($baseControllerName) {
                     static::assertSame(
                         $baseControllerName.'::batchActionDelete',
                         $request->attributes->get('_controller')
@@ -3589,7 +3589,7 @@ final class CRUDControllerTest extends TestCase
         $this->httpKernel->expects(static::once())
             ->method('handle')
             ->with(
-                static::callback(function (Request $request) use ($baseControllerName, $query) {
+                static::callback(static function (Request $request) use ($baseControllerName, $query) {
                     static::assertSame(
                         $baseControllerName.'::batchActionDelete',
                         $request->attributes->get('_controller')
@@ -3647,7 +3647,7 @@ final class CRUDControllerTest extends TestCase
         $this->controllerResolver->expects(static::any())
             ->method('getController')
             ->with(
-                static::callback(function (Request $request) use ($baseControllerName) {
+                static::callback(static function (Request $request) use ($baseControllerName) {
                     static::assertSame(
                         $baseControllerName.'::batchActionDelete',
                         $request->attributes->get('_controller')
@@ -3671,7 +3671,7 @@ final class CRUDControllerTest extends TestCase
         $this->httpKernel->expects(static::once())
             ->method('handle')
             ->with(
-                static::callback(function (Request $request) use ($baseControllerName, $query) {
+                static::callback(static function (Request $request) use ($baseControllerName, $query) {
                     static::assertSame(
                         $baseControllerName.'::batchActionDelete',
                         $request->attributes->get('_controller')
@@ -3744,7 +3744,7 @@ final class CRUDControllerTest extends TestCase
         $this->controllerResolver->expects(static::any())
             ->method('getController')
             ->with(
-                static::callback(function (Request $request) use ($baseControllerName) {
+                static::callback(static function (Request $request) use ($baseControllerName) {
                     static::assertSame(
                         $baseControllerName.'::batchActionDelete',
                         $request->attributes->get('_controller')
