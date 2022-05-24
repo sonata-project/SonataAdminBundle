@@ -3529,10 +3529,7 @@ final class CRUDControllerTest extends TestCase
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
-        $this->controllerResolver
-            ->expects(static::once())
-            ->method('getController')
-            ->willReturn(false);
+        $this->expectGetController(null, false);
 
         $this->admin->expects(static::any())
             ->method('getBaseControllerName')
@@ -3562,18 +3559,7 @@ final class CRUDControllerTest extends TestCase
             ->method('getBaseControllerName')
             ->willReturn($baseControllerName = 'sonata.admin.controller.crud');
 
-        $this->controllerResolver->expects(static::any())
-            ->method('getController')
-            ->with(
-                static::callback(static function (Request $request) use ($baseControllerName) {
-                    static::assertSame(
-                        $baseControllerName.'::batchActionDelete',
-                        $request->attributes->get('_controller')
-                    );
-
-                    return true;
-                })
-            );
+        $this->expectGetController($baseControllerName.'::batchActionDelete');
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
@@ -3644,18 +3630,7 @@ final class CRUDControllerTest extends TestCase
             ->method('getBaseControllerName')
             ->willReturn($baseControllerName = 'sonata.admin.controller.crud');
 
-        $this->controllerResolver->expects(static::any())
-            ->method('getController')
-            ->with(
-                static::callback(static function (Request $request) use ($baseControllerName) {
-                    static::assertSame(
-                        $baseControllerName.'::batchActionDelete',
-                        $request->attributes->get('_controller')
-                    );
-
-                    return true;
-                })
-            );
+        $this->expectGetController($baseControllerName.'::batchActionDelete');
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
@@ -3741,18 +3716,7 @@ final class CRUDControllerTest extends TestCase
             ->method('getBaseControllerName')
             ->willReturn($baseControllerName = 'sonata.admin.controller.crud');
 
-        $this->controllerResolver->expects(static::any())
-            ->method('getController')
-            ->with(
-                static::callback(static function (Request $request) use ($baseControllerName) {
-                    static::assertSame(
-                        $baseControllerName.'::batchActionDelete',
-                        $request->attributes->get('_controller')
-                    );
-
-                    return true;
-                })
-            );
+        $this->expectGetController($baseControllerName.'::batchActionDelete');
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode($data, \JSON_THROW_ON_ERROR));
@@ -3802,6 +3766,10 @@ final class CRUDControllerTest extends TestCase
 
     /**
      * @dataProvider provideActionNames
+     *
+     * @group legacy
+     *
+     * NEXT_MAJOR: Remove this test
      */
     public function testBatchActionNonRelevantAction(string $actionName): void
     {
@@ -3814,6 +3782,8 @@ final class CRUDControllerTest extends TestCase
         $this->admin->expects(static::exactly(2))
             ->method('getBatchActions')
             ->willReturn($batchActions);
+
+        $this->expectGetController();
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
@@ -3857,6 +3827,8 @@ final class CRUDControllerTest extends TestCase
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
+        $this->expectGetController();
+
         $data = ['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false];
 
         $this->request->setMethod(Request::METHOD_POST);
@@ -3887,6 +3859,11 @@ final class CRUDControllerTest extends TestCase
         $this->controller->batchAction($this->request);
     }
 
+    /**
+     * @group legacy
+     *
+     * NEXT_MAJOR: Remove this test
+     */
     public function testBatchActionNonRelevantAction2(): void
     {
         $controller = new BatchAdminController();
@@ -3898,6 +3875,8 @@ final class CRUDControllerTest extends TestCase
         $this->admin->expects(static::exactly(2))
             ->method('getBatchActions')
             ->willReturn($batchActions);
+
+        $this->expectGetController();
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
@@ -3927,6 +3906,8 @@ final class CRUDControllerTest extends TestCase
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
+        $this->expectGetController();
+
         $datagrid = $this->createMock(DatagridInterface::class);
 
         $this->admin->expects(static::once())
@@ -3947,6 +3928,11 @@ final class CRUDControllerTest extends TestCase
         static::assertSame('list', $result->getTargetUrl());
     }
 
+    /**
+     * @group legacy
+     *
+     * NEXT_MAJOR: Remove this test
+     */
     public function testBatchActionNoItemsEmptyQuery(): void
     {
         $controller = new BatchAdminController();
@@ -3958,6 +3944,8 @@ final class CRUDControllerTest extends TestCase
         $this->admin->expects(static::exactly(2))
             ->method('getBatchActions')
             ->willReturn($batchActions);
+
+        $this->expectGetController();
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
@@ -4002,6 +3990,8 @@ final class CRUDControllerTest extends TestCase
         $this->admin->expects(static::exactly(2))
             ->method('getBatchActions')
             ->willReturn($batchActions);
+
+        $this->expectGetController();
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
@@ -4091,5 +4081,24 @@ final class CRUDControllerTest extends TestCase
             ->method('trans')
             ->with(static::equalTo($id), static::equalTo($parameters), static::equalTo($domain), static::equalTo($locale))
             ->willReturn($id);
+    }
+
+    private function expectGetController(?string $controllerName = null, bool $exists = true): void
+    {
+        $this->controllerResolver->expects(static::any())
+            ->method('getController')
+            ->with(
+                static::callback(static function (Request $request) use ($controllerName) {
+                    if (null !== $controllerName) {
+                        static::assertSame(
+                            $controllerName,
+                            $request->attributes->get('_controller')
+                        );
+                    }
+
+                    return true;
+                })
+            )
+            ->willReturn($exists ? static function () {} : false);
     }
 }
