@@ -456,7 +456,7 @@ class CRUDController extends AbstractController
         $isRelevantAction = sprintf('batchAction%sIsRelevant', $camelizedAction);
 
         if (method_exists($this, $isRelevantAction)) {
-            // TODO: Remove if above in sonata-project/admin-bundle 5.0
+            // NEXT_MAJOR: Remove if above in sonata-project/admin-bundle 5.0
             @trigger_error(sprintf(
                 'The is relevant hook via "%s()" is deprecated since sonata-project/admin-bundle 4.12'
                 .' and will not be call in 5.0. Move the logic to your controller.',
