@@ -84,7 +84,7 @@ the context of this request. There is no requirement on the base class or any ot
                 );
             }
 
-            $selectedModels = $selectedModelQuery->execute();
+            $selectedModels = $query->execute();
 
             // do the merge work here
 
