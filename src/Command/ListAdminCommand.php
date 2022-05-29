@@ -23,8 +23,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class ListAdminCommand extends Command
 {
-    protected static $defaultName = 'sonata:admin:list';
-
     private Pool $pool;
 
     /**
@@ -39,7 +37,9 @@ final class ListAdminCommand extends Command
 
     public function configure(): void
     {
-        $this->setDescription('List all admin services available');
+        $this
+            ->setName('sonata:admin:list')
+            ->setDescription('List all admin services available');
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int

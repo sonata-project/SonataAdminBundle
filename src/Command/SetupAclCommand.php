@@ -24,8 +24,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class SetupAclCommand extends Command
 {
-    protected static $defaultName = 'sonata:admin:setup-acl';
-
     private Pool $pool;
 
     private AdminAclManipulatorInterface $aclManipulator;
@@ -43,7 +41,9 @@ final class SetupAclCommand extends Command
 
     public function configure(): void
     {
-        $this->setDescription('Install ACL for Admin Classes');
+        $this
+            ->setName('sonata:admin:setup-acl')
+            ->setDescription('Install ACL for Admin Classes');
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
