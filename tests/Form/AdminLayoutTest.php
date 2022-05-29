@@ -107,8 +107,9 @@ EOD;
         $view = $form->createView();
         $html = $this->renderHelp($view);
 
+        // TODO: Replace "/p|div" with "/div" when support for Symfony < 6.1 is dropped.
         $expression = <<<'EOD'
-/p
+/p|div
     [@id="name_help"]
     [@class="help-block sonata-ba-field-help help-text"]
     [.="[trans]Help text test![/trans]"]
@@ -128,8 +129,9 @@ EOD;
         $view = $form->createView();
         $html = $this->renderHelp($view);
 
+        // TODO: Replace "/p|div" with "/div" when support for Symfony < 6.1 is dropped.
         $expression = <<<'EOD'
-/p
+/p|div
     [@id="name_help"]
     [@class="help-block sonata-ba-field-help help-text"]
     [.="[trans domain=sonata_translation_domain]Help text test![/trans]"]
