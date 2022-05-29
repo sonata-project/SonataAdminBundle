@@ -92,6 +92,7 @@ final class AppKernel extends Kernel
             'translator' => [
                 'default_path' => '%kernel.project_dir%/translations',
             ],
+            'http_method_override' => false,
         ];
 
         // TODO: Remove else case when dropping support of Symfony < 5.3
