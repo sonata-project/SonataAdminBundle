@@ -26,8 +26,6 @@ use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
  */
 final class GenerateObjectAclCommand extends QuestionableCommand
 {
-    protected static $defaultName = 'sonata:admin:generate-object-acl';
-
     private string $userModelClass = '';
 
     private Pool $pool;
@@ -55,6 +53,7 @@ final class GenerateObjectAclCommand extends QuestionableCommand
     public function configure(): void
     {
         $this
+            ->setName('sonata:admin:generate-object-acl')
             ->setDescription('Install ACL for the objects of the Admin Classes.')
             ->addOption('object_owner', null, InputOption::VALUE_OPTIONAL, 'If set, the task will set the object owner for each admin.')
             ->addOption('user_model', null, InputOption::VALUE_OPTIONAL, 'Fully qualified class name <comment>App\Model\User</comment>. If not set, it will be asked the first time an object owner is set.')

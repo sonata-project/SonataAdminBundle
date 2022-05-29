@@ -24,8 +24,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class ExplainAdminCommand extends Command
 {
-    protected static $defaultName = 'sonata:admin:explain';
-
     private Pool $pool;
 
     /**
@@ -40,9 +38,10 @@ final class ExplainAdminCommand extends Command
 
     public function configure(): void
     {
-        $this->setDescription('Explain an admin service');
-
-        $this->addArgument('admin', InputArgument::REQUIRED, 'The admin service id');
+        $this
+            ->setName('sonata:admin:explain')
+            ->setDescription('Explain an admin service')
+            ->addArgument('admin', InputArgument::REQUIRED, 'The admin service id');
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
