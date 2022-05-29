@@ -64,7 +64,6 @@ $rules = [
     'static_lambda' => true,
     'strict_comparison' => true,
     'strict_param' => true,
-    'types_spaces' => ['space' => 'single'],
     'void_return' => false,
 ];
 
