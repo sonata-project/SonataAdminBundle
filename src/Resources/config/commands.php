@@ -24,26 +24,26 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
 
         ->set('sonata.admin.command.explain', ExplainAdminCommand::class)
-            ->tag('console.command')
+            ->tag('console.command', ['command' => 'sonata:admin:explain'])
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
             ])
 
         ->set('sonata.admin.command.generate_object_acl', GenerateObjectAclCommand::class)
-            ->tag('console.command')
+            ->tag('console.command', ['command' => 'sonata:admin:generate-object-acl'])
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
                 [],
             ])
 
         ->set('sonata.admin.command.list', ListAdminCommand::class)
-            ->tag('console.command')
+            ->tag('console.command', ['command' => 'sonata:admin:list'])
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
             ])
 
         ->set('sonata.admin.command.setup_acl', SetupAclCommand::class)
-            ->tag('console.command')
+            ->tag('console.command', ['command' => 'sonata:admin:setup-acl'])
             ->args([
                 new ReferenceConfigurator('sonata.admin.pool'),
                 new ReferenceConfigurator('sonata.admin.manipulator.acl.admin'),

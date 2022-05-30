@@ -50,11 +50,6 @@ jobs:
                     - php-version: '8.1'
                       dependencies: highest
                       allowed-to-fail: false
-                      symfony-require: 5.3.*
-                      variant: symfony/symfony:"5.3.*"
-                    - php-version: '8.1'
-                      dependencies: highest
-                      allowed-to-fail: false
                       symfony-require: 5.4.*
                       variant: symfony/symfony:"5.4.*"
                     - php-version: '8.1'
@@ -62,6 +57,11 @@ jobs:
                       allowed-to-fail: false
                       symfony-require: 6.0.*
                       variant: symfony/symfony:"6.0.*"
+                    - php-version: '8.1'
+                      dependencies: highest
+                      allowed-to-fail: false
+                      symfony-require: 6.1.*
+                      variant: symfony/symfony:"6.1.*"
 
         steps:
             - name: Checkout

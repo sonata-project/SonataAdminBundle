@@ -44,7 +44,7 @@ final class CRUDControllerTest extends WebTestCase
         );
         static::assertCount(
             1,
-            $crawler->filter('p.help-block.sonata-ba-field-help:contains("Help me!")')
+            $crawler->filter('.help-block.sonata-ba-field-help:contains("Help me!")')
         );
     }
 
