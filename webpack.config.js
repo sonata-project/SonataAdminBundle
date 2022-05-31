@@ -23,6 +23,8 @@ Encore.setOutputPath('./src/Resources/public')
   .autoProvidejQuery()
   .disableSingleRuntimeChunk()
 
+  .enableStimulusBridge('./assets/js/controllers.json')
+
   .configureCssMinimizerPlugin((options) => {
     options.minimizerOptions = {
       preset: ['default', { discardComments: { removeAll: true } }],

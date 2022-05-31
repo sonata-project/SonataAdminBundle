@@ -49,6 +49,12 @@ import './treeview';
 import './sidebar';
 import './base';
 
-// Create global $ and jQuery variables to be used outside this script
+import * as stimulus from '@hotwired/stimulus';
+
+import { sonataApplication } from './stimulus';
+
+// Create global variables to be used outside this script
 global.$ = $;
 global.jQuery = $;
+global.stimulus = stimulus;
+global.sonataApplication = sonataApplication;
