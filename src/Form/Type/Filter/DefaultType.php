@@ -20,6 +20,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * NEXT_MAJOR: Remove this form.
+ *
+ * @deprecated since sonata-project/admin-bundle version 4.x use the FilterDataType instead
  */
 final class DefaultType extends AbstractType
 {

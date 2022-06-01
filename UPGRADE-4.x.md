@@ -1,6 +1,39 @@
 UPGRADE 4.x
 ===========
 
+UPGRADE FROM 4.x to 4.x
+=======================
+
+## FilterInterface
+
+Not implementing `getFormOptions()` is deprecated, it will replace the `getRenderSettings()`
+in next major. If you have an implementation this way:
+```php
+public function getRenderSettings(): array
+{
+    return [DefaultType::class, [
+        'operator_type' => $this->getOption('operator_type'),
+        'operator_options' => $this->getOption('operator_options'),
+        'field_type' => $this->getFieldType(),
+        'field_options' => $this->getFieldOptions(),
+        'label' => $this->getLabel(),
+    ]];
+}
+```
+You can implement the `getFormOptions()` method this way:
+```php
+public function getFormOptions(): array
+{
+    return [
+        'operator_type' => $this->getOption('operator_type'),
+        'operator_options' => $this->getOption('operator_options'),
+        'field_type' => $this->getFieldType(),
+        'field_options' => $this->getFieldOptions(),
+        'label' => $this->getLabel(),
+    ];
+}
+```
+
 UPGRADE FROM 4.12.0 to 4.13.0
 =============================
 
@@ -8,7 +41,6 @@ UPGRADE FROM 4.12.0 to 4.13.0
 
 Deprecate `batchAction%sIsRelevant` hook. You must handle the specific logic in your
 batch action controller directly.
-
 
 UPGRADE FROM 4.11.1 to 4.12.0
 =============================

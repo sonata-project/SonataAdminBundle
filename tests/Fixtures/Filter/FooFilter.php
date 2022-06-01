@@ -35,8 +35,19 @@ final class FooFilter extends Filter
         ];
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function getRenderSettings(): array
     {
         return ['string', []];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getFormOptions(): array
+    {
+        return [];
     }
 }
