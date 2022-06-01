@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Form\Type\Filter;
 
 use Sonata\AdminBundle\Form\Type\Operator\DateRangeOperatorType;
+use Sonata\Form\Type\DateRangePickerType;
 use Sonata\Form\Type\DateRangeType as FormDateRangeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -38,7 +40,10 @@ final class DateRangeType extends AbstractType
     {
         $resolver->setDefaults([
             'operator_type' => DateRangeOperatorType::class,
-            'field_type' => FormDateRangeType::class,
+            'field_type' => function (Options $options) {
+                return $options['picker'] ? DateRangePickerType::class : FormDateRangeType::class;
+            },
+            'picker' => false,
             'field_options' => [
                 'field_options' => [
                     'format' => DateType::HTML5_FORMAT,

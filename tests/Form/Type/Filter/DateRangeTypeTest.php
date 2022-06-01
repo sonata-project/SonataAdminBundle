@@ -14,6 +14,12 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Form\Type\Filter;
 
 use Sonata\AdminBundle\Form\Type\Filter\DateRangeType;
+use Sonata\AdminBundle\Form\Type\Operator\DateRangeOperatorType;
+use Sonata\Form\Type\DateRangePickerType;
+use Sonata\Form\Type\DateRangeType as FormDateRangeType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class DateRangeTypeTest extends BaseTypeTest
 {
@@ -27,6 +33,45 @@ final class DateRangeTypeTest extends BaseTypeTest
         static::assertFalse($view->children['value']->vars['required']);
     }
 
+    public function testGetDefaultOptions(): void
+    {
+        $type = new DateRangeType();
+
+        $optionsResolver = new OptionsResolver();
+
+        $type->configureOptions($optionsResolver);
+
+        $options = $optionsResolver->resolve();
+
+        $expected = [
+            'operator_type' => DateRangeOperatorType::class,
+            'picker' => false,
+            'field_options' => ['field_options' => ['format' => DateType::HTML5_FORMAT]],
+            'field_type' => FormDateRangeType::class,
+        ];
+        static::assertSame($expected, $options);
+    }
+
+    public function testGetPickerDefaultOptions(): void
+    {
+        $type = new DateRangeType();
+
+        $optionsResolver = new OptionsResolver();
+
+        $type->configureOptions($optionsResolver);
+
+        $options = $optionsResolver->resolve([
+            'picker' => true
+        ]);
+
+        $expected = [
+            'operator_type' => DateRangeOperatorType::class,
+            'field_options' => ['field_options' => ['format' => DateType::HTML5_FORMAT]],
+            'picker' => true,
+            'field_type' => DateRangePickerType::class,
+        ];
+        static::assertSame($expected, $options);
+    }
     protected function getTestedType(): string
     {
         return DateRangeType::class;

@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Form\Type\Filter;
 
 use Sonata\AdminBundle\Form\Type\Operator\DateOperatorType;
+use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType as FormDateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -38,8 +39,11 @@ final class DateTimeType extends AbstractType
     {
         $resolver->setDefaults([
             'operator_type' => DateOperatorType::class,
-            'field_type' => FormDateTimeType::class,
-            'field_options' => ['date_format' => DateType::HTML5_FORMAT],
+            'field_type' => function (Options $options) {
+                return $options['picker'] ? DateTimePickerType::class : FormDateTimeType::class;
+            },
+            'picker' => false,
+            'field_options' => ['date_format' => FormDateTimeType::HTML5_FORMAT],
         ]);
     }
 }
