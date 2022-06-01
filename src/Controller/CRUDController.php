@@ -170,6 +170,9 @@ class CRUDController extends AbstractController
             );
         } catch (ModelManagerThrowable $e) {
             $errorMessage = $this->handleModelManagerThrowable($e);
+            if ($errorMessage instanceof Response) {
+                return $errorMessage;
+            }
 
             $this->addFlash(
                 'sonata_flash_error',
@@ -237,6 +240,9 @@ class CRUDController extends AbstractController
                 );
             } catch (ModelManagerThrowable $e) {
                 $errorMessage = $this->handleModelManagerThrowable($e);
+                if ($errorMessage instanceof Response) {
+                    return $errorMessage;
+                }
 
                 if ($this->isXmlHttpRequest($request)) {
                     return $this->renderJson(['result' => 'error'], Response::HTTP_OK, []);
@@ -328,6 +334,9 @@ class CRUDController extends AbstractController
                     $isFormValid = false;
                 } catch (ModelManagerThrowable $e) {
                     $errorMessage = $this->handleModelManagerThrowable($e);
+                    if ($errorMessage instanceof Response) {
+                        return $errorMessage;
+                    }
 
                     $isFormValid = false;
                 } catch (LockException $e) {
@@ -599,6 +608,9 @@ class CRUDController extends AbstractController
                     $isFormValid = false;
                 } catch (ModelManagerThrowable $e) {
                     $errorMessage = $this->handleModelManagerThrowable($e);
+                    if ($errorMessage instanceof Response) {
+                        return $errorMessage;
+                    }
 
                     $isFormValid = false;
                 }
@@ -1069,7 +1081,8 @@ class CRUDController extends AbstractController
      *
      * @throws ModelManagerThrowable
      *
-     * @return string|null A custom error message to display in the flag bag instead of the generic one
+     * @return Response|string|null A custom response to redirect to, or a custom error message to
+     *                              display in the flag bag instead of the generic one
      */
     protected function handleModelManagerThrowable(ModelManagerThrowable $exception)
     {
