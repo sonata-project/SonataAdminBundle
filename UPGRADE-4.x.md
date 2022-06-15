@@ -1,6 +1,15 @@
 UPGRADE 4.x
 ===========
 
+UPGRADE FROM 4.12.0 to 4.13.0
+=============================
+
+## Batch action is relevant
+
+Deprecate `batchAction%sIsRelevant` hook. You must handle the specific logic in your
+batch action controller directly.
+
+
 UPGRADE FROM 4.11.1 to 4.12.0
 =============================
 
