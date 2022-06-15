@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\ArgumentResolver;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\ArgumentResolver\AdminValueResolver;
 use Sonata\AdminBundle\Request\AdminFetcher;
@@ -92,6 +93,12 @@ final class AdminValueResolverTest extends TestCase
             true,
             $request,
             new ArgumentMetadata('_sonata_admin', PostAdmin::class, false, false, null),
+        ];
+
+        yield 'Admin can fetch by interface' => [
+            true,
+            $request,
+            new ArgumentMetadata('_sonata_admin', AdminInterface::class, false, false, null),
         ];
     }
 
