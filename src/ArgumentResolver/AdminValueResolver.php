@@ -31,7 +31,12 @@ final class AdminValueResolver implements ArgumentValueResolverInterface
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
         $type = $argument->getType();
-        if (null === $type || !is_subclass_of($type, AdminInterface::class)) {
+
+        if (null === $type) {
+            return false;
+        }
+
+        if (AdminInterface::class !== $type && !is_subclass_of($type, AdminInterface::class)) {
             return false;
         }
 
