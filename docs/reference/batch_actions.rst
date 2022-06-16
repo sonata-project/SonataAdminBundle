@@ -36,7 +36,9 @@ merges them onto a single target item. It should only be available when two cond
           $this->hasRoute('delete') && $this->hasAccess('delete')
         ) {
             $actions['merge'] = [
-                'ask_confirmation' => true
+                'ask_confirmation' => true,
+                'controller' => 'app.controller.merge::batchMergeAction',
+                // Or 'App/Controller/MergeController::batchMergeAction' base on how you declare your controller service.
             ];
         }
 
@@ -45,6 +47,71 @@ merges them onto a single target item. It should only be available when two cond
 
 Define the core action logic
 ----------------------------
+
+Define a regular Symfony controller like you normally would (without a route). Make sure you configure your controller
+as a service and tag it with **controller.service_arguments**. The parameter will be automatically injected.
+The AdminInterface is done via a param converter already available in **SonataAdminBundle**. The $query is unique to
+the context of this request. There is no requirement on the base class or any other logic, this is just an example::
+
+    // src/Controller/MergeController.php
+
+    namespace App\Controller;
+
+    use Sonata\AdminBundle\Admin\AdminInterface;
+    use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+    use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+    use Symfony\Component\HttpFoundation\RedirectResponse;
+    use Symfony\Component\HttpFoundation\Request;
+
+    class MergeController extends AbstractController
+    {
+        public function batchMergeAction(ProxyQueryInterface $query, AdminInterface $admin): RedirectResponse
+        {
+            $admin->checkAccess('edit');
+            $admin->checkAccess('delete');
+
+            $modelManager = $admin->getModelManager();
+
+            $target = $modelManager->find($admin->getClass(), $request->get('targetId'));
+
+            if ($target === null) {
+                $this->addFlash('sonata_flash_info', 'flash_batch_merge_no_target');
+
+                return new RedirectResponse(
+                    $admin->generateUrl('list', [
+                        'filter' => $admin->getFilterParameters()
+                    ])
+                );
+            }
+
+            $selectedModels = $query->execute();
+
+            // do the merge work here
+
+            try {
+                foreach ($selectedModels as $selectedModel) {
+                    $modelManager->delete($selectedModel);
+                }
+
+                $this->addFlash('sonata_flash_success', 'flash_batch_merge_success');
+            } catch (\Exception $e) {
+                $this->addFlash('sonata_flash_error', 'flash_batch_merge_error');
+            } finally {
+                return new RedirectResponse(
+                    $admin->generateUrl('list', [
+                        'filter' => $admin->getFilterParameters()
+                    ])
+                );
+            }
+        }
+
+        // ...
+    }
+
+(Deprecated) Define the core action logic
+-----------------------------------------
+
+**Deprecated**: This is the old way to do this. Will be removed in version 5.x.
 
 The method ``batchAction<MyAction>`` will be executed to process your batch in your ``CRUDController`` class. The selected
 objects are passed to this method through a query argument which can be used to retrieve them.
@@ -149,8 +216,10 @@ a radio button to choose the target object.
         <input type="radio" name="targetId" value="{{ admin.id(object) }}"/>
     {% endblock %}
 
-(Optional) Overriding the default relevancy check function
-----------------------------------------------------------
+(Optional|Deprecated) Overriding the default relevancy check function
+---------------------------------------------------------------------
+
+**Deprecated**: Make this check in your controller directly. This will be remove in version 5.x
 
 By default, batch actions are not executed if no object was selected, and
 the user is notified of this lack of selection. If your custom batch action

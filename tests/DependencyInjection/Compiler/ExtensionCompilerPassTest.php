@@ -31,6 +31,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\RouterInterface;
@@ -399,6 +401,12 @@ final class ExtensionCompilerPassTest extends TestCase
         $container
             ->register('security.authorization_checker')
             ->setClass(AuthorizationCheckerInterface::class);
+        $container
+            ->register('controller_resolver')
+            ->setClass(ControllerResolverInterface::class);
+        $container
+            ->register(HttpKernelInterface::class)
+            ->setClass(HttpKernelInterface::class);
 
         // Add admin definition's
         $container

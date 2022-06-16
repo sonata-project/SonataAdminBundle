@@ -167,4 +167,35 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
         static::assertSame('{"result":{"id":"42","label":"bar"}}', $response->getContent());
     }
+
+    public function testGetShortObjectDescriptionActionSubclassQueryParameterTemporaryRemoved(): void
+    {
+        $request = new Request([
+            '_sonata_admin' => 'sonata.post.admin',
+            'objectId' => 42,
+            'uniqid' => 'asdasd123',
+            'subclass' => $subclass = uniqid('subclass'),
+            '_format' => 'json',
+        ]);
+        $object = new \stdClass();
+
+        $this->adminFetcher->method('get')->willReturn($this->admin);
+
+        $this->admin->method('id')->with($object)->willReturn('42');
+        $this->admin->method('getObject')->with(42)->willReturnCallback(static function () use ($object, $request) {
+            static::assertFalse($request->query->has('subclass'), 'subclass query parameter should be removed at this stage');
+
+            return $object;
+        });
+
+        $this->admin->method('toString')->with($object)->willReturn('bar');
+
+        ($this->action)($request);
+
+        static::assertSame(
+            $subclass,
+            $request->query->get('subclass'),
+            'subclass query parameter should be restored at this stage'
+        );
+    }
 }

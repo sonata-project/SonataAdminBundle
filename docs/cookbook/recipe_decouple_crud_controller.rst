@@ -27,6 +27,29 @@ You can add your Admin as parameter of the action::
         }
     }
 
+Or if you have a reusable action for **all** admin::
+
+    // src/Controller/CarAdminController.php
+
+    namespace App\Controller;
+
+    use Sonata\AdminBundle\Admin\AdminInterface;
+    use Symfony\Component\HttpFoundation\RedirectResponse;
+
+    final class CloneAdminController
+    {
+        public function clone(AdminInterface $admin, Request $request)
+        {
+            $object = $admin->getSubject();
+
+            // ...
+
+            $request->getSession()->getFlashBag()->add('sonata_flash_success', 'Cloned successfully');
+
+            return new RedirectResponse($admin->generateUrl('list'));
+        }
+    }
+
 Or you can use ``AdminFetcherInterface`` service to fetch the admin from the request, in this example we transformed
 the controller to make it Invokable::
 
