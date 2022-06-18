@@ -120,7 +120,7 @@ final class AppKernel extends Kernel
 
         $containerBuilder->loadFromExtension('twig', [
             'default_path' => sprintf('%s/templates', $this->getProjectDir()),
-            'strict_variables' => '%kernel.debug%',
+            'strict_variables' => true,
             'exception_controller' => null,
             'form_themes' => ['@SonataAdmin/Form/form_admin_fields.html.twig'],
         ]);
