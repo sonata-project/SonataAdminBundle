@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Filter\Model\FilterData;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @method array  getFormOptions();
+ * @method array getFormOptions();
  */
 interface FilterInterface
 {
@@ -125,7 +125,7 @@ interface FilterInterface
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use getFormType() and getFormOptions() instead.
+     * @deprecated since sonata-project/admin-bundle version 4.x use getFormOptions() instead.
      *
      * Returns the main widget used to render the filter.
      *
