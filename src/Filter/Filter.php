@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Filter;
 
+use Sonata\AdminBundle\Form\Type\Filter\FilterDataType;
 use Sonata\AdminBundle\Search\ChainableFilterInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -224,6 +225,25 @@ abstract class Filter implements FilterInterface, ChainableFilterInterface
     final public function hasPreviousFilter(): bool
     {
         return null !== $this->previousFilter;
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
+    public function getRenderSettings(): array
+    {
+        // @phpstan-ignore-next-line
+        if (!method_exists($this, 'getFormOptions')) {
+            throw new \BadMethodCallException('You MUST implements `getFormOptions()`.');
+        }
+
+        /** @var array<string, mixed> $formOptions */
+        $formOptions = $this->getFormOptions();
+
+        return [
+            FilterDataType::class,
+            $formOptions,
+        ];
     }
 
     final protected function setActive(bool $active): void
