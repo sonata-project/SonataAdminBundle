@@ -1461,7 +1461,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             $parameters = $extension->configurePersistentParameters($this, $parameters);
         }
 
-        return $parameters;
+        return $parameters ?? [];
     }
 
     final public function getPersistentParameter(string $name, $default = null)
