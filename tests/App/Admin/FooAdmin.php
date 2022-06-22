@@ -19,8 +19,10 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\TemplateType;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Tests\App\Model\Bar;
 use Sonata\AdminBundle\Tests\App\Model\Foo;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -51,7 +53,18 @@ class FooAdmin extends AbstractAdmin
             ->add('customField', TemplateType::class, [
                 'template' => 'foo/custom_field.html.twig',
                 'parameters' => ['number' => 42],
-            ]);
+            ])
+            ->add(
+                'referenced',
+                ModelAutocompleteType::class,
+                [
+                    'class' => Bar::class,
+                    'property' => ['name', 'title'],
+                ],
+                [
+                    'admin_code' => 'sonata_bar_admin',
+                ]
+            );
     }
 
     protected function configureShowFields(ShowMapper $show): void
