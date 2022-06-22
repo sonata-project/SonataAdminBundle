@@ -48,6 +48,24 @@ final class CRUDControllerTest extends WebTestCase
         );
     }
 
+    /**
+     * https://github.com/sonata-project/SonataAdminBundle/issues/6904.
+     */
+    public function testCreateModelAutoCompleteNotPassingSubclassParameter(): void
+    {
+        $subclass = uniqid('subclass');
+        $client = static::createClient();
+        $crawler = $client->request(Request::METHOD_GET, '/admin/tests/app/foo/create?subclass='.$subclass);
+
+        static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+
+        static::assertStringNotContainsString(
+            $subclass,
+            $crawler->filter('div[id$=_referenced]')->text(),
+            'The subclass parameter must no be present in referenced model auto complete ajax call'
+        );
+    }
+
     public function testShow(): void
     {
         $client = static::createClient();
