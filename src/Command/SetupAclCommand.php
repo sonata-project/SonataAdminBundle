@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Command;
 
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Util\AdminAclManipulatorInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,8 +23,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
+#[AsCommand(name: 'sonata:admin:setup-acl', description: 'Install ACL for Admin Classes')]
 final class SetupAclCommand extends Command
 {
+    // TODO: Remove static properties when support for Symfony < 5.4 is dropped.
+    protected static $defaultName = 'sonata:admin:setup-acl';
+    protected static $defaultDescription = 'Install ACL for Admin Classes';
+
     private Pool $pool;
 
     private AdminAclManipulatorInterface $aclManipulator;
@@ -41,9 +47,11 @@ final class SetupAclCommand extends Command
 
     public function configure(): void
     {
+        \assert(null !== static::$defaultDescription);
+
         $this
-            ->setName('sonata:admin:setup-acl')
-            ->setDescription('Install ACL for Admin Classes');
+            // TODO: Remove setDescription when support for Symfony < 5.4 is dropped.
+            ->setDescription(static::$defaultDescription);
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
