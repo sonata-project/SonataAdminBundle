@@ -2,6 +2,23 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.13.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.12.0...4.13.0) - 2022-06-25
+### Added
+- [[#7819](https://github.com/sonata-project/SonataAdminBundle/pull/7819)] Added support to batch action via another controller with 'controller' configuration ([@mpoiriert](https://github.com/mpoiriert))
+
+### Deprecated
+- [[#7819](https://github.com/sonata-project/SonataAdminBundle/pull/7819)] BatchAction{actionName}IsRelevant will be remove in version 5.0. Move logic to your action. ([@mpoiriert](https://github.com/mpoiriert))
+- [[#7835](https://github.com/sonata-project/SonataAdminBundle/pull/7835)] FormMapper::create() ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#7851](https://github.com/sonata-project/SonataAdminBundle/pull/7851)] Model Auto Complete failing in create flow of admin with subclasses ([@mpoiriert](https://github.com/mpoiriert))
+- [[#7847](https://github.com/sonata-project/SonataAdminBundle/pull/7847)] AdminValueResolver does support generic AdminInterface type. ([@mpoiriert](https://github.com/mpoiriert))
+- [[#7845](https://github.com/sonata-project/SonataAdminBundle/pull/7845)] Fix the subclass query parameter conflict in the sonata.admin.action.get_short_object_description controller. ([@mpoiriert](https://github.com/mpoiriert))
+- [[#7836](https://github.com/sonata-project/SonataAdminBundle/pull/7836)] Command deprecations using Symfony 6.1 ([@franmomu](https://github.com/franmomu))
+
+### Removed
+- [[#7837](https://github.com/sonata-project/SonataAdminBundle/pull/7837)] Support of Symfony 5.3 ([@franmomu](https://github.com/franmomu))
+
 ## [4.12.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.11.1...4.12.0) - 2022-05-21
 ### Added
 - [[#7823](https://github.com/sonata-project/SonataAdminBundle/pull/7823)] Support for abstract class subject in `RetrieveAutocompleteItemsAction`. ([@Geekimo](https://github.com/Geekimo))

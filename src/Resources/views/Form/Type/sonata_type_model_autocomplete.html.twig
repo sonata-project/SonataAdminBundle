@@ -114,11 +114,6 @@ file that was distributed with this source code.
                                     '_sonata_admin': '{{ admin_code|e('js') }}',
                                 {% endif %}
 
-                                 // subclass
-                                {% if app.request.query.get('subclass') %}
-                                    'subclass': '{{ app.request.query.get('subclass') }}',
-                                {% endif %}
-
                                 {% if context == 'filter' %}
                                     'field':  '{{ full_name|replace({'filter[': '', '][value]': '', '__':'.'}) }}',
                                     '_context': 'filter'

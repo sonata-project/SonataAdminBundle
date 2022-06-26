@@ -24,6 +24,8 @@ final class Foo implements EntityInterface
      */
     private array $elements;
 
+    private ?Bar $referenced;
+
     /**
      * @param string[] $elements
      */
@@ -32,6 +34,7 @@ final class Foo implements EntityInterface
         $this->id = $id;
         $this->name = $name;
         $this->elements = $elements;
+        $this->referenced = null;
     }
 
     public function getId(): string
@@ -42,6 +45,11 @@ final class Foo implements EntityInterface
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getReferenced(): ?Bar
+    {
+        return $this->referenced;
     }
 
     /**

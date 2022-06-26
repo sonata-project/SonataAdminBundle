@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Command;
 
 use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,8 +22,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
+#[AsCommand(name: 'sonata:admin:list', description: 'List all admin services available')]
 final class ListAdminCommand extends Command
 {
+    // TODO: Remove static properties when support for Symfony < 5.4 is dropped.
+    protected static $defaultName = 'sonata:admin:list';
+    protected static $defaultDescription = 'List all admin services available';
+
     private Pool $pool;
 
     /**
@@ -37,9 +43,11 @@ final class ListAdminCommand extends Command
 
     public function configure(): void
     {
+        \assert(null !== static::$defaultDescription);
+
         $this
-            ->setName('sonata:admin:list')
-            ->setDescription('List all admin services available');
+            // TODO: Remove setDescription when support for Symfony < 5.4 is dropped.
+            ->setDescription(static::$defaultDescription);
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
