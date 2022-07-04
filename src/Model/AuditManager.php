@@ -49,18 +49,26 @@ final class AuditManager implements AuditManagerInterface
         return false;
     }
 
+    /**
+     * @phpstan-template T of object
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return AuditReaderInterface<T>
+     */
     public function getReader(string $class): AuditReaderInterface
     {
         foreach ($this->readers as $readerId => $classes) {
             if (\in_array($class, $classes, true)) {
-                $reader = $this->container->get($readerId);
-                if (!$reader instanceof AuditReaderInterface) {
+                $service = $this->container->get($readerId);
+                if (!$service instanceof AuditReaderInterface) {
                     throw new \LogicException(sprintf(
                         'Service "%s" MUST implement interface "%s".',
                         $readerId,
                         AuditReaderInterface::class,
                     ));
                 }
+
+                /** @var AuditReaderInterface<T> $reader */
+                $reader = $service;
 
                 return $reader;
             }
