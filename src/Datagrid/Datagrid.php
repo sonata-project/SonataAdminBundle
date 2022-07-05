@@ -356,7 +356,7 @@ final class Datagrid implements DatagridInterface
             } else {
                 @trigger_error(
                     'Not implementing "getFormOptions()" is deprecated since sonata-project/admin-bundle 4.x'
-                    .' and will throws an error  in 5.0.',
+                    .' and will throw an error in 5.0.',
                     \E_USER_DEPRECATED
                 );
 

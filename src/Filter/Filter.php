@@ -234,7 +234,7 @@ abstract class Filter implements FilterInterface, ChainableFilterInterface
     {
         // @phpstan-ignore-next-line
         if (!method_exists($this, 'getFormOptions')) {
-            throw new \BadMethodCallException('You MUST implements `getFormOptions()`.');
+            throw new \BadMethodCallException('You MUST implement `getFormOptions()`.');
         }
 
         /** @var array<string, mixed> $formOptions */
