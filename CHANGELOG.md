@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.14.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.13.1...4.14.0) - 2022-07-05
+### Added
+- [[#7841](https://github.com/sonata-project/SonataAdminBundle/pull/7841)] Support for a FilterInterface::getFormOptions method. ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Deprecated
+- [[#7841](https://github.com/sonata-project/SonataAdminBundle/pull/7841)] FilterInterface::getRenderSettigns ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7841](https://github.com/sonata-project/SonataAdminBundle/pull/7841)] All the `Sonata\AdminBundle\Form\Type\Filter\*Type` except the FilterDataType. ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.13.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.13.0...4.13.1) - 2022-07-05
 ### Fixed
 - [[#7861](https://github.com/sonata-project/SonataAdminBundle/pull/7861)] AdminInterface phpdoc ([@VincentLanglet](https://github.com/VincentLanglet))
