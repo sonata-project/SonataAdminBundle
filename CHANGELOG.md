@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.13.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.13.0...4.13.1) - 2022-07-05
+### Fixed
+- [[#7861](https://github.com/sonata-project/SonataAdminBundle/pull/7861)] AdminInterface phpdoc ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.13.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.12.0...4.13.0) - 2022-06-25
 ### Added
 - [[#7819](https://github.com/sonata-project/SonataAdminBundle/pull/7819)] Added support to batch action via another controller with 'controller' configuration ([@mpoiriert](https://github.com/mpoiriert))
