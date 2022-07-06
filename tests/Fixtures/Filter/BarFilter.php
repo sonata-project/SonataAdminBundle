@@ -29,10 +29,21 @@ final class BarFilter extends Filter
         return ['bar' => 'bar'];
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
     public function getRenderSettings(): array
     {
         return [DefaultType::class, [
             'label' => 'label',
         ]];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getFormOptions(): array
+    {
+        return ['label' => 'label'];
     }
 }

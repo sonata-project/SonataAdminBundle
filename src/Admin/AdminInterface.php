@@ -497,14 +497,14 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     /**
      * Returns the baseRoutePattern used to generate the routing information.
      *
-     * @throws \RuntimeException if a default baseRoutePattern is required for the admin class
+     * @throws \LogicException if a default baseRoutePattern is required for the admin class
      */
     public function getBaseRoutePattern(): string;
 
     /**
      * Returns the baseRouteName used to generate the routing information.
      *
-     * @throws \RuntimeException if a default baseRouteName is required for the admin class
+     * @throws \LogicException if a default baseRouteName is required for the admin class
      */
     public function getBaseRouteName(): string;
 

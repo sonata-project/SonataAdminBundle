@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Datagrid;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
+use Sonata\AdminBundle\Form\Type\Filter\FilterDataType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -348,7 +349,19 @@ final class Datagrid implements DatagridInterface
         }
 
         foreach ($this->getFilters() as $filter) {
-            [$type, $options] = $filter->getRenderSettings();
+            // NEXT_MAJOR: Keep the if part.
+            if (method_exists($filter, 'getFormOptions')) { // @phpstan-ignore-line
+                $type = FilterDataType::class;
+                $options = $filter->getFormOptions();
+            } else {
+                @trigger_error(
+                    'Not implementing "getFormOptions()" is deprecated since sonata-project/admin-bundle 4.x'
+                    .' and will throw an error in 5.0.',
+                    \E_USER_DEPRECATED
+                );
+
+                [$type, $options] = $filter->getRenderSettings();
+            }
 
             $this->formBuilder->add($filter->getFormName(), $type, $options);
         }
