@@ -105,6 +105,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     private const DEFAULT_LIST_PER_PAGE_OPTIONS = [10, 25, 50, 100, 250];
 
     /**
+     * @deprecated since sonata-project/admin-bundle 4.x, will be removed in 5.0.
+     *
      * The base route name used to generate the routing information.
      *
      * @var string|null
@@ -112,6 +114,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     protected $baseRouteName;
 
     /**
+     * @deprecated since sonata-project/admin-bundle 4.x, will be removed in 5.0.
+     *
      * The base route pattern used to generate the routing information.
      *
      * @var string|null
@@ -539,43 +543,14 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         if ($this->isChild()) { // the admin class is a child, prefix it with the parent route pattern
-            $baseRoutePattern = $this->baseRoutePattern;
-            if (null === $baseRoutePattern) {
-                preg_match(self::CLASS_REGEX, $this->getModelClass(), $matches);
-
-                if (!$matches) {
-                    throw new \LogicException(sprintf(
-                        'Please define a default `baseRoutePattern` value for the admin class `%s`',
-                        static::class
-                    ));
-                }
-                $baseRoutePattern = $this->urlize($matches[5], '-');
-            }
-
             $this->cachedBaseRoutePattern = sprintf(
                 '%s/%s/%s',
                 $this->getParent()->getBaseRoutePattern(),
                 $this->getParent()->getRouterIdParameter(),
-                $baseRoutePattern
+                $this->generateBaseRoutePattern(true)
             );
-        } elseif (null !== $this->baseRoutePattern) {
-            $this->cachedBaseRoutePattern = $this->baseRoutePattern;
         } else {
-            preg_match(self::CLASS_REGEX, $this->getModelClass(), $matches);
-
-            if (!$matches) {
-                throw new \LogicException(sprintf(
-                    'Please define a default `baseRoutePattern` value for the admin class `%s`',
-                    static::class
-                ));
-            }
-
-            $this->cachedBaseRoutePattern = sprintf(
-                '/%s%s/%s',
-                '' === $matches[1] ? '' : $this->urlize($matches[1], '-').'/',
-                $this->urlize($matches[3], '-'),
-                $this->urlize($matches[5], '-')
-            );
+            $this->cachedBaseRoutePattern = $this->generateBaseRoutePattern();
         }
 
         return $this->cachedBaseRoutePattern;
@@ -593,44 +568,13 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
-            $baseRouteName = $this->baseRouteName;
-            if (null === $baseRouteName) {
-                preg_match(self::CLASS_REGEX, $this->getModelClass(), $matches);
-
-                if (!$matches) {
-                    throw new \LogicException(sprintf(
-                        'Cannot automatically determine base route name,'
-                        .' please define a default `baseRouteName` value for the admin class `%s`',
-                        static::class
-                    ));
-                }
-                $baseRouteName = $this->urlize($matches[5]);
-            }
-
             $this->cachedBaseRouteName = sprintf(
                 '%s_%s',
                 $this->getParent()->getBaseRouteName(),
-                $baseRouteName
+                $this->generateBaseRouteName(true)
             );
-        } elseif (null !== $this->baseRouteName) {
-            $this->cachedBaseRouteName = $this->baseRouteName;
         } else {
-            preg_match(self::CLASS_REGEX, $this->getModelClass(), $matches);
-
-            if (!$matches) {
-                throw new \LogicException(sprintf(
-                    'Cannot automatically determine base route name,'
-                    .' please define a default `baseRouteName` value for the admin class `%s`',
-                    static::class
-                ));
-            }
-
-            $this->cachedBaseRouteName = sprintf(
-                'admin_%s%s_%s',
-                '' === $matches[1] ? '' : $this->urlize($matches[1]).'_',
-                $this->urlize($matches[3]),
-                $this->urlize($matches[5])
-            );
+            $this->cachedBaseRouteName = $this->generateBaseRouteName();
         }
 
         return $this->cachedBaseRouteName;
@@ -1854,6 +1798,75 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     protected function configure(): void
     {
+    }
+
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
+    {
+        // NEXT_MAJOR: Remove this code
+        if (null !== $this->baseRoutePattern) {
+            @trigger_error(sprintf(
+                'Overriding the baseRoutePattern property is deprecated since sonata-project/admin-bundle 4.x.'
+                .' You MUST override the method %s() instead.',
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+
+            return $this->baseRoutePattern;
+        }
+
+        preg_match(self::CLASS_REGEX, $this->getModelClass(), $matches);
+
+        if (!$matches) {
+            throw new \LogicException(sprintf(
+                'Please define a default `baseRoutePattern` value for the admin class `%s`',
+                static::class
+            ));
+        }
+
+        if ($isChildAdmin) {
+            return $this->urlize($matches[5]);
+        }
+
+        return $this->cachedBaseRoutePattern = sprintf(
+            '/%s%s/%s',
+            '' === $matches[1] ? '' : $this->urlize($matches[1], '-').'/',
+            $this->urlize($matches[3], '-'),
+            $this->urlize($matches[5], '-')
+        );
+    }
+
+    protected function generateBaseRouteName(bool $isChildAdmin = false): string
+    {
+        // NEXT_MAJOR: Remove this code
+        if (null !== $this->baseRouteName) {
+            @trigger_error(sprintf(
+                'Overriding the baseRouteName property is deprecated since sonata-project/admin-bundle 4.x.'
+                .' You MUST override the method %s() instead.',
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+
+            return $this->baseRouteName;
+        }
+
+        preg_match(self::CLASS_REGEX, $this->getModelClass(), $matches);
+
+        if (!$matches) {
+            throw new \LogicException(sprintf(
+                'Cannot automatically determine base route name,'
+                .' please define a default `baseRouteName` value for the admin class `%s`',
+                static::class
+            ));
+        }
+
+        if ($isChildAdmin) {
+            return $this->urlize($matches[5]);
+        }
+
+        return sprintf(
+            'admin_%s%s_%s',
+            '' === $matches[1] ? '' : $this->urlize($matches[1]).'_',
+            $this->urlize($matches[3]),
+            $this->urlize($matches[5])
+        );
     }
 
     /**
