@@ -62,7 +62,7 @@ final class AdminAclManipulator implements AdminAclManipulatorInterface
         if ($configResult) {
             $securityHandler->updateAcl($acl);
         } else {
-            $output->writeln(sprintf('   - %s , no roles and permissions found', ($newAcl ? 'skip' : 'removed')));
+            $output->writeln(sprintf('   - %s , no roles and permissions found', $newAcl ? 'skip' : 'removed'));
             $securityHandler->deleteAcl($objectIdentity);
         }
     }
