@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Extension\LockExtension;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\ArgumentResolver\AdminValueResolver;
+use Sonata\AdminBundle\ArgumentResolver\ProxyQueryResolver;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Event\AdminEventExtension;
 use Sonata\AdminBundle\Filter\FilterFactory;
@@ -158,5 +159,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 new ReferenceConfigurator('sonata.admin.request.fetcher'),
             ])
+            ->tag('controller.argument_value_resolver')
+
+        ->set('sonata.admin.argument_resolver.proxy_query', ProxyQueryResolver::class)
             ->tag('controller.argument_value_resolver');
 };

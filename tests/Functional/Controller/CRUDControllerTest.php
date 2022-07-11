@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Tests\App\AppKernel;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 final class CRUDControllerTest extends WebTestCase
 {
@@ -99,6 +100,29 @@ final class CRUDControllerTest extends WebTestCase
         $client->request(Request::METHOD_GET, $url);
 
         static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+    }
+
+    public function testBatchAction(): void
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request(Request::METHOD_GET, '/admin/tests/app/foo/list');
+
+        static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+
+        $csrfToken = $crawler->selectButton('OK')->form()->getValues()['_sonata_csrf_token'];
+
+        $client->request(
+            Request::METHOD_POST,
+            '/admin/tests/app/foo/batch',
+            [
+                'data' => json_encode(['action' => 'other', 'all_elements' => true]),
+                '_sonata_csrf_token' => $csrfToken,
+            ]
+        );
+
+        static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        static::assertSame('Other Controller', $client->getResponse()->getContent());
     }
 
     /**

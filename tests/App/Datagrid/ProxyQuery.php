@@ -44,6 +44,10 @@ final class ProxyQuery implements ProxyQueryInterface
 
     public function setFirstResult(?int $firstResult): ProxyQueryInterface
     {
+        if (null === $firstResult) {
+            return $this;
+        }
+
         throw new \BadMethodCallException('Not implemented.');
     }
 
@@ -54,6 +58,10 @@ final class ProxyQuery implements ProxyQueryInterface
 
     public function setMaxResults(?int $maxResults): ProxyQueryInterface
     {
+        if (null === $maxResults) {
+            return $this;
+        }
+
         throw new \BadMethodCallException('Not implemented.');
     }
 

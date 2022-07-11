@@ -33,6 +33,7 @@ use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
+use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchOtherController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Entity;
 use Sonata\AdminBundle\Tests\Fixtures\Util\DummyDomainObject;
@@ -4044,6 +4045,61 @@ final class CRUDControllerTest extends TestCase
             ['&lt;a href=&quot;http://foo&quot;&gt;Bar&lt;/a&gt;', '<a href="http://foo">Bar</a>'],
             ['&lt;&gt;&amp;&quot;&#039;abcdefghijklmnopqrstuvwxyz*-+.,?_()[]\/', '<>&"\'abcdefghijklmnopqrstuvwxyz*-+.,?_()[]\/'],
         ];
+    }
+
+    public function testBatchActionActionAnotherController(): void
+    {
+        $batchActions = [
+            'foo' => [
+                'label' => 'Foo Bar',
+                'controller' => $controllerName = BatchOtherController::class.'::batchAction',
+                'ask_confirmation' => false,
+            ],
+        ];
+
+        $this->admin->expects(static::exactly(2))
+            ->method('getBatchActions')
+            ->willReturn($batchActions);
+
+        $this->expectGetController($controllerName);
+
+        $datagrid = $this->createMock(DatagridInterface::class);
+
+        $query = $this->createMock(ProxyQueryInterface::class);
+        $datagrid->expects(static::once())
+            ->method('getQuery')
+            ->willReturn($query);
+
+        $this->admin->expects(static::once())
+            ->method('getDatagrid')
+            ->willReturn($datagrid);
+
+        $this->httpKernel->expects(static::once())
+            ->method('handle')
+            ->willReturn($response = new Response());
+
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+
+        $this->admin
+            ->method('getModelManager')
+            ->willReturn($modelManager);
+
+        $this->admin
+            ->method('getClass')
+            ->willReturn('Foo');
+
+        $modelManager->expects(static::once())
+            ->method('addIdentifiersToQuery')
+            ->with(static::equalTo('Foo'), static::equalTo($query), static::equalTo(['123', '456']));
+
+        $this->request->setMethod(Request::METHOD_POST);
+        $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
+        $this->request->request->set('foo', 'bar');
+        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+
+        $result = $this->controller->batchAction($this->request);
+
+        static::assertSame($response, $result);
     }
 
     private function assertLoggerLogsModelManagerException(MockObject $subject, string $method): void
