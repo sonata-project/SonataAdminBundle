@@ -24,6 +24,7 @@ use Sonata\AdminBundle\Form\Type\TemplateType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Tests\App\Model\Bar;
 use Sonata\AdminBundle\Tests\App\Model\Foo;
+use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchOtherController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -76,5 +77,18 @@ class FooAdmin extends AbstractAdmin
     {
         // Check conflict between `MenuItemInterface::getLabel()` method and menu item with a child with the key `label`
         $menu->addChild('label')->addChild('label');
+    }
+
+    protected function configureBatchActions(array $actions): array
+    {
+        $actions = parent::configureBatchActions($actions);
+
+        $actions['other'] = [
+            'label' => 'Other',
+            'ask_confirmation' => false,
+            'controller' => BatchOtherController::class.'::batchAction',
+        ];
+
+        return $actions;
     }
 }
