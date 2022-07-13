@@ -52,7 +52,7 @@ $rules = [
     'no_useless_return' => true,
     'nullable_type_declaration_for_default_null_value' => ['use_nullable_type_declaration' => true],
     'ordered_class_elements' => true,
-    'ordered_imports' => true,
+    'ordered_imports' => ['sort_algorithm' => 'alpha', 'imports_order' => ['class', 'function', 'const']],
     'php_unit_method_casing' => false,
     'php_unit_set_up_tear_down_visibility' => true,
     'php_unit_strict' => true,
