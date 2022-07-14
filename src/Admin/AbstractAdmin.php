@@ -1823,10 +1823,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         if ($isChildAdmin) {
-            return $this->urlize($matches[5]);
+            return $this->urlize($matches[5], '-');
         }
 
-        return $this->cachedBaseRoutePattern = sprintf(
+        return sprintf(
             '/%s%s/%s',
             '' === $matches[1] ? '' : $this->urlize($matches[1], '-').'/',
             $this->urlize($matches[3], '-'),
