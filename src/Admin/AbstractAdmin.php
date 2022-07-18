@@ -2236,7 +2236,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                     } catch (AccessException $e) {
                         // @todo: Catching and checking AccessException here as BC for symfony/property-access < 5.1.
                         //        Catch UninitializedPropertyException and remove the check when dropping support < 5.1
-                        if (!$e instanceof UninitializedPropertyException && AccessException::class !== \get_class($e)) {
+                        if (AccessException::class !== \get_class($e) && !$e instanceof UninitializedPropertyException) {
                             throw $e; // Re-throw. We only want to "ignore" pure AccessException (Sf < 5.1) and UninitializedPropertyException (Sf >= 5.1)
                         }
                         $value = null;
