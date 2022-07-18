@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Security\Handler;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
@@ -76,7 +77,7 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
         $useAll = false;
         foreach ($attributes as $pos => $attribute) {
             // If the attribute is not already a ROLE_ we generate the related role.
-            if (0 !== strpos($attribute, 'ROLE_')) {
+            if (is_string($attribute) && 0 !== strpos($attribute, 'ROLE_')) {
                 $attributes[$pos] = sprintf($this->getBaseRole($admin), $attribute);
                 // All the admin related role are available when you have the `_ALL` role.
                 $useAll = true;
@@ -114,7 +115,7 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
     }
 
     /**
-     * @param string[] $attributes
+     * @param array<string|Expression> $attributes
      */
     private function isAnyGranted(array $attributes, ?object $subject = null): bool
     {
