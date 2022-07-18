@@ -135,7 +135,7 @@
                                 {% endblock %}
                             {% endif %}
                         {% else %}
-                            {% if admin.hasroute('edit') and admin.hasAccess('edit') %}
+                            {% if admin.hasroute('edit') and admin.hasAccess('edit', object) %}
                                 {% block btn_create_and_edit %}
                                     <button class="btn btn-success" type="submit" name="btn_create_and_edit"><i class="fas fa-save" aria-hidden="true"></i> {{ 'btn_create_and_edit_again'|trans({}, 'SonataAdminBundle') }}</button>
                                 {% endblock %}
