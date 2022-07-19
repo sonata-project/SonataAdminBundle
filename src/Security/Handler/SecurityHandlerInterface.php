@@ -22,7 +22,7 @@ use Symfony\Component\ExpressionLanguage\Expression;
 interface SecurityHandlerInterface
 {
     /**
-     * NEXT_MAJOR: Restrict $attributes typehint to string and rename it $attribute.
+     * NEXT_MAJOR: Restrict $attributes typehint to string|Expression and rename it $attribute.
      *
      * @param AdminInterface<object> $admin
      * @param string|Expression|array<string|Expression>        $attributes
