@@ -10,8 +10,9 @@ Admin Bundle
 **Usage examples:**
 
 * `SonataMediaBundle <https://github.com/sonata-project/SonataMediaBundle>`_: a media manager bundle
+* `SonataClassificationBundle <https://github.com/sonata-project/SonataClassificationBundle>`_: a category manager bundle
 * `SonataPageBundle <https://github.com/sonata-project/SonataPageBundle>`_: a page (CMS like) bundle
-* `SonataUserBundle <https://github.com/sonata-project/SonataUserBundle>`_: integration of FOSUserBundle and SonataAdminBundle
+* `SonataUserBundle <https://github.com/sonata-project/SonataUserBundle>`_: integration of user and security management with SonataAdminBundle
 
 .. toctree::
     :caption: Getting Started
