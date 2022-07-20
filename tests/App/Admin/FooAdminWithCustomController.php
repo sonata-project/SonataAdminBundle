@@ -15,6 +15,13 @@ namespace Sonata\AdminBundle\Tests\App\Admin;
 
 final class FooAdminWithCustomController extends FooAdmin
 {
-    protected $baseRoutePattern = 'tests/app/foo-with-custom-controller';
-    protected $baseRouteName = 'admin_foo_with_custom_controller';
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
+    {
+        return 'tests/app/foo-with-custom-controller';
+    }
+
+    protected function generateBaseRouteName(bool $isChildAdmin = false): string
+    {
+        return 'admin_foo_with_custom_controller';
+    }
 }

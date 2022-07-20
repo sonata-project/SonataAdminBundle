@@ -23,8 +23,15 @@ use Sonata\AdminBundle\Show\ShowMapper;
  */
 final class EmptyAdmin extends AbstractAdmin
 {
-    protected $baseRoutePattern = 'empty';
-    protected $baseRouteName = 'admin_empty';
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
+    {
+        return 'empty';
+    }
+
+    protected function generateBaseRouteName(bool $isChildAdmin = false): string
+    {
+        return 'admin_empty';
+    }
 
     protected function configureListFields(ListMapper $list): void
     {

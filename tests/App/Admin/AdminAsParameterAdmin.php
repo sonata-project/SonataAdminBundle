@@ -22,8 +22,15 @@ use Sonata\AdminBundle\Tests\App\Controller\InvokableController;
  */
 final class AdminAsParameterAdmin extends AbstractAdmin
 {
-    protected $baseRoutePattern = 'tests/app/admin-as-parameter';
-    protected $baseRouteName = 'admin_admin_as_parameter';
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
+    {
+        return 'tests/app/admin-as-parameter';
+    }
+
+    protected function generateBaseRouteName(bool $isChildAdmin = false): string
+    {
+        return 'admin_admin_as_parameter';
+    }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {

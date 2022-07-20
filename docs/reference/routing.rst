@@ -15,15 +15,19 @@ Routing Definition
 Route names
 ^^^^^^^^^^^
 
-You can set a ``baseRouteName`` property inside your ``Admin`` class. This
-represents the route prefix, to which an underscore and the action name will
+You can override the ``generateBaseRouteName()`` method inside your ``Admin`` class.
+This represents the route prefix, to which an underscore and the action name will
 be added to generate the actual route names::
 
     // src/Admin/PostAdmin.php
 
     final class PostAdmin extends AbstractAdmin
     {
-        protected $baseRouteName = 'sonata_post';
+        protected function generateBaseRouteName(bool $isChildAdmin = false): string
+        {
+            return 'sonata_post';
+        }
+
         // will result in routes named:
         //   sonata_post_list
         //   sonata_post_create
@@ -36,8 +40,8 @@ be added to generate the actual route names::
 
     This is the internal *name* given to a route (it has nothing to do with the route's visible *URL*).
 
-If no ``baseRouteName`` is defined then the Admin will generate one for you,
-based on the following format: 'admin_vendor_bundlename_entityname' so you will have
+By default the Admin will generate the route name for you, based on
+the following format: 'admin_vendor_bundlename_entityname' so you will have
 route names for your actions like 'admin_vendor_bundlename_entityname_list'.
 
 If the Admin fails to find a baseRouteName for your Admin class a ``RuntimeException``
@@ -51,7 +55,10 @@ be prefixed by the parent route name, example::
     // The parent admin class
     final class PostAdmin extends AbstractAdmin
     {
-        protected $baseRouteName = 'sonata_post';
+        protected function generateBaseRouteName(bool $isChildAdmin = false): string
+        {
+            return 'sonata_post';
+        }
     }
 
 .. code-block:: php
@@ -61,7 +68,10 @@ be prefixed by the parent route name, example::
     // The child admin class
     final class CommentAdmin extends AbstractAdmin
     {
-        protected $baseRouteName = 'comment'
+        protected function generateBaseRouteName(bool $isChildAdmin = false): string
+        {
+            return 'comment';
+        }
         // will result in routes named :
         //   sonata_post_comment_list
         //   sonata_post_comment_create
@@ -73,7 +83,7 @@ be prefixed by the parent route name, example::
 Route patterns (URLs)
 ^^^^^^^^^^^^^^^^^^^^^
 
-You can use ``baseRoutePattern`` to set a custom URL for a given ``Admin`` class.
+You can override the ``generateBaseRoutePattern()`` method to set a custom URL for a given ``Admin`` class.
 
 For example, to use ``http://yourdomain.com/admin/foo`` as the base URL for
 the ``FooAdmin`` class (instead of the default of ``http://yourdomain.com/admin/vendor/bundle/foo``)
@@ -83,7 +93,10 @@ use the following code::
 
     final class FooAdmin extends AbstractAdmin
     {
-        protected $baseRoutePattern = 'foo';
+        protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
+        {
+            return 'foo';
+        }
     }
 
 You will then have route URLs like ``http://yourdomain.com/admin/foo/list`` and
@@ -97,7 +110,10 @@ be prefixed by the parent route pattern, example::
     // The parent admin class
     final class PostAdmin extends AbstractAdmin
     {
-        protected $baseRoutePattern = 'post';
+        protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
+        {
+            return 'post';
+        }
         // ...
     }
 
@@ -108,7 +124,10 @@ be prefixed by the parent route pattern, example::
     // The child admin class
     final class CommentAdmin extends AbstractAdmin
     {
-        protected $baseRoutePattern = 'comment'
+        protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
+        {
+            return 'comment';
+        }
         // ...
     }
 
