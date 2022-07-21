@@ -6,14 +6,13 @@ User management
 
 By default, the SonataAdminBundle does not come with any user management,
 however it is most likely the application requires such a feature. The Sonata
-Project includes a ``SonataUserBundle`` which integrates the ``FOSUserBundle``.
+Project includes a ``SonataUserBundle``.
 
-The ``FOSUserBundle`` adds support for a database-backed user system in Symfony.
+The ``SonataUserBundle`` adds support for a database-backed user system in Symfony.
 It provides a flexible framework for user management that aims to handle common
 tasks such as user login, registration and password retrieval.
 
-The ``SonataUserBundle`` is a thin wrapper to include the ``FOSUserBundle`` into
-the ``SonataAdminBundle``. The ``SonataUserBundle`` includes:
+The ``SonataUserBundle`` includes:
 
 * A default login area
 * A default ``user_block`` template which is used to display the current user
@@ -251,6 +250,11 @@ And specify it as Sonata security handler on your configuration:
 
 ACL and FriendsOfSymfony/UserBundle
 -----------------------------------
+
+.. note::
+
+   Some parts of this section are obsolete : ``SonataUserBundle`` does not use
+   ``FOSUserBundle`` anymore.
 
 If you want a straightforward way to handle users, please use:
 
