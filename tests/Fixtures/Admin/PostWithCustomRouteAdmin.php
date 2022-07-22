@@ -15,6 +15,13 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Admin;
 
 final class PostWithCustomRouteAdmin extends PostAdmin
 {
-    protected $baseRoutePattern = '/post-custom';
-    protected $baseRouteName = 'post_custom';
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
+    {
+        return '/post-custom';
+    }
+
+    protected function generateBaseRouteName(bool $isChildAdmin = false): string
+    {
+        return 'post_custom';
+    }
 }
