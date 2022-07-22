@@ -15,6 +15,13 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Admin;
 
 final class CommentWithCustomRouteAdmin extends CommentAdmin
 {
-    protected $baseRoutePattern = 'comment-custom';
-    protected $baseRouteName = 'comment_custom';
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
+    {
+        return 'comment-custom';
+    }
+
+    protected function generateBaseRouteName(bool $isChildAdmin = false): string
+    {
+        return 'comment_custom';
+    }
 }
