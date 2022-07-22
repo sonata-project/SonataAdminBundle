@@ -5,8 +5,8 @@ User management
 ---------------
 
 By default, the SonataAdminBundle does not come with any user management,
-however it is most likely the application requires such a feature. The Sonata
-Project includes a ``SonataUserBundle``.
+however it is most likely the application requires such a feature. For this
+you can try the ``SonataUserBundle``.
 
 The ``SonataUserBundle`` adds support for a database-backed user system in Symfony.
 It provides a flexible framework for user management that aims to handle common
@@ -251,17 +251,11 @@ And specify it as Sonata security handler on your configuration:
 ACL and FriendsOfSymfony/UserBundle
 -----------------------------------
 
-.. note::
-
-   Some parts of this section are obsolete : ``SonataUserBundle`` does not use
-   ``FOSUserBundle`` anymore.
 
 If you want a straightforward way to handle users, please use:
 
-- `FOSUserBundle <https://github.com/FriendsOfSymfony/FOSUserBundle>`_: handles
-  users and groups stored in RDBMS or MongoDB
-- `SonataUserBundle <https://github.com/sonata-project/SonataUserBundle>`_: integrates the
-  ``FriendsOfSymfony/UserBundle`` with the ``AdminBundle``
+- `SonataUserBundle <https://github.com/sonata-project/SonataUserBundle>`_: handles
+  users and groups stored in RDBMS or MongoDB.
 
 The security integration is a work in progress and has some known issues:
 
@@ -272,43 +266,17 @@ The security integration is a work in progress and has some known issues:
 Configuration
 ^^^^^^^^^^^^^
 
-Before you can use ``FriendsOfSymfony/FOSUserBundle`` you need to set it up as
-described in the documentation of the bundle. In step 4 you need to create a
-User class (in a custom UserBundle). Do it as follows::
+Before you can use ``sonata-project/SonataUserBundle`` you need to set
+it up as described in the `documentation of the bundle
+<https://docs.sonata-project.org/projects/SonataUserBundle/en/5.x/>`_.
 
-    // src/Entity/User.php
-
-    namespace App\Entity;
-
-    use Sonata\UserBundle\Entity\BaseUser as BaseUser;
-    use Doctrine\ORM\Mapping as ORM;
-
-    /**
-     * @ORM\Entity
-     * @ORM\Table(name="fos_user")
-     */
-    class User extends BaseUser
-    {
-        /**
-         * @ORM\Id
-         * @ORM\Column(type="integer")
-         * @ORM\GeneratedValue(strategy="AUTO")
-         */
-        private ?int $id = null;
-
-        public function __construct()
-        {
-            parent::__construct();
-            // your own logic
-        }
-    }
 
 If you are going to use ACL, you must create a service implementing
 `Sonata\AdminBundle\Util\AdminAclUserManagerInterface`::
 
     namespace App\Manager;
 
-    use FOS\UserBundle\Model\UserManagerInterface;
+    use Sonata\UserBundle\Model\UserManagerInterface;
     use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
 
     final class AclUserManager implements AdminAclUserManagerInterface
@@ -343,22 +311,22 @@ and then configure SonataAdminBundle:
                 acl_user_manager: App\Manager\AclUserManager
                 # ...
 
-In your ``config/packages/fos_user.yaml`` you then need to put the following:
+In your ``config/packages/sonata_user.yaml`` you then need to put the following:
 
 .. configuration-block::
 
     .. code-block:: yaml
 
-        # config/packages/fos_user.yaml
+        # config/packages/sonata_user.yaml
 
-        fos_user:
+        sonata_user:
             db_driver: orm
-            firewall_name: main
+            firewall_name: admin
             user_class: App\Entity\User
 
 The following configuration for the SonataUserBundle defines:
 
-- the ``FriendsOfSymfony/FOSUserBundle`` as a security provider
+- the ``sonata-project/SonataUserBundle`` as a security provider
 - the login form for authentication
 - the access control: resources with related required roles, the important
   part is the admin configuration
@@ -389,14 +357,14 @@ In ``config/packages/security.yaml``:
 
         security:
             providers:
-                fos_userbundle:
-                    id: fos_user.user_manager
+                sonata_user_bundle:
+                    id: sonata.user.security.user_provider
 
             firewalls:
                 main:
                     pattern:      .*
                     form-login:
-                        provider:       fos_userbundle
+                        provider:       sonata_user_bundle
                         login_path:     /login
                         use_forward:    false
                         check_path:     /login_check
@@ -414,7 +382,7 @@ In ``config/packages/security.yaml``:
                 - { path: ^/js/, role: IS_AUTHENTICATED_ANONYMOUSLY }
                 - { path: ^/css/, role: IS_AUTHENTICATED_ANONYMOUSLY }
 
-                # URL of FOSUserBundle which need to be available to anonymous users
+                # URL of SonataUserBundle which need to be available to anonymous users
                 - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
                 - { path: ^/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY } # for the case of a failed login
                 - { path: ^/user/new$, role: IS_AUTHENTICATED_ANONYMOUSLY }
@@ -446,7 +414,7 @@ In ``config/packages/security.yaml``:
 
 .. code-block:: bash
 
-    bin/console fos:user:create --super-admin
+    bin/console sonata:user:create --super-admin
         Please choose a username:root
         Please choose an email:root@domain.com
         Please choose a password:root
@@ -578,7 +546,7 @@ because for example you want to restrict access using extra rules:
 
     namespace App\Security\Authorization\Voter;
 
-    use FOS\UserBundle\Model\UserInterface;
+    use Sonata\UserBundle\Model\UserInterface;
     use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
     use Symfony\Component\Security\Acl\Voter\AclVoter;
 
@@ -587,10 +555,10 @@ because for example you want to restrict access using extra rules:
         public function supportsClass($class)
         {
             // support the Class-Scope ACL for votes with the custom permission map
-            // return $class === 'Sonata\UserBundle\Admin\Entity\UserAdmin' || is_subclass_of($class, 'FOS\UserBundle\Model\UserInterface');
+            // return $class === 'Sonata\UserBundle\Admin\Entity\UserAdmin' || is_subclass_of($class, 'Sonata\UserBundle\Model\UserInterface');
             // if you use php >=5.3.7 you can check the inheritance with is_a($class, 'Sonata\UserBundle\Admin\Entity\UserAdmin');
             // support the Object-Scope ACL
-            return is_subclass_of($class, 'FOS\UserBundle\Model\UserInterface');
+            return is_subclass_of($class, 'Sonata\UserBundle\Model\UserInterface');
         }
 
         public function supportsAttribute($attribute)
@@ -742,7 +710,7 @@ User list customization
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 By default, the ACL editor allows to set permissions for all users managed by
-``FOSUserBundle``.
+``SonataUserBundle``.
 
 To customize displayed user override
 ``Sonata\AdminBundle\Controller\CRUDController::getAclUsers()``. This method must
@@ -750,7 +718,7 @@ return an iterable collection of users::
 
     protected function getAclUsers(): \Traversable
     {
-        $userManager = $container->get('fos_user.user_manager');
+        $userManager = $container->get('sonata_user.user_manager');
 
         // Display only kevin and anne
         $users[] = $userManager->findUserByUsername('kevin');
