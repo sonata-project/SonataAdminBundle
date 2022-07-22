@@ -361,7 +361,7 @@ In ``config/packages/security.yaml``:
                     id: sonata.user.security.user_provider
 
             firewalls:
-                main:
+                admin:
                     pattern:      .*
                     form-login:
                         provider:       sonata_user_bundle
