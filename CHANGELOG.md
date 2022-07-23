@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.15.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.14.0...4.15.0) - 2022-07-23
+### Added
+- [[#7867](https://github.com/sonata-project/SonataAdminBundle/pull/7867)] Added `AbstractAdmin::generateBaseRoutePattern()` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7867](https://github.com/sonata-project/SonataAdminBundle/pull/7867)] Added `AbstractAdmin::generateBaseRouteName()` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Changed
+- [[#7878](https://github.com/sonata-project/SonataAdminBundle/pull/7878)] Bump moment to 2.29.4 ([@dependabot[bot]](https://github.com/apps/dependabot))
+
+### Deprecated
+- [[#7867](https://github.com/sonata-project/SonataAdminBundle/pull/7867)] Added `AbstractAdmin::$baseRoutePattern` property ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7867](https://github.com/sonata-project/SonataAdminBundle/pull/7867)] Added `AbstractAdmin::$baseRouteName` property ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.14.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.13.1...4.14.0) - 2022-07-12
 ### Added
 - [[#7841](https://github.com/sonata-project/SonataAdminBundle/pull/7841)] Support for a FilterInterface::getFormOptions method. ([@VincentLanglet](https://github.com/VincentLanglet))
