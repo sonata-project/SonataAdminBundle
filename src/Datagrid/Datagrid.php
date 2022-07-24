@@ -355,7 +355,7 @@ final class Datagrid implements DatagridInterface
                 $options = $filter->getFormOptions();
             } else {
                 @trigger_error(
-                    'Not implementing "getFormOptions()" is deprecated since sonata-project/admin-bundle 4.x'
+                    'Not implementing "getFormOptions()" is deprecated since sonata-project/admin-bundle 4.15'
                     .' and will throw an error in 5.0.',
                     \E_USER_DEPRECATED
                 );

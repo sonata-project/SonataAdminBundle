@@ -125,7 +125,7 @@ interface FilterInterface
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.x use getFormOptions() instead.
+     * @deprecated since sonata-project/admin-bundle version 4.15 use getFormOptions() instead.
      *
      * Returns the main widget used to render the filter.
      *

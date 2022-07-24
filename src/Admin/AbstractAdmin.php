@@ -105,7 +105,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     private const DEFAULT_LIST_PER_PAGE_OPTIONS = [10, 25, 50, 100, 250];
 
     /**
-     * @deprecated since sonata-project/admin-bundle 4.x, will be removed in 5.0.
+     * @deprecated since sonata-project/admin-bundle 4.15, will be removed in 5.0.
      *
      * The base route name used to generate the routing information.
      *
@@ -114,7 +114,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     protected $baseRouteName;
 
     /**
-     * @deprecated since sonata-project/admin-bundle 4.x, will be removed in 5.0.
+     * @deprecated since sonata-project/admin-bundle 4.15, will be removed in 5.0.
      *
      * The base route pattern used to generate the routing information.
      *
@@ -1805,7 +1805,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         // NEXT_MAJOR: Remove this code
         if (null !== $this->baseRoutePattern) {
             @trigger_error(sprintf(
-                'Overriding the baseRoutePattern property is deprecated since sonata-project/admin-bundle 4.x.'
+                'Overriding the baseRoutePattern property is deprecated since sonata-project/admin-bundle 4.15.'
                 .' You MUST override the method %s() instead.',
                 __METHOD__
             ), \E_USER_DEPRECATED);
@@ -1839,7 +1839,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         // NEXT_MAJOR: Remove this code
         if (null !== $this->baseRouteName) {
             @trigger_error(sprintf(
-                'Overriding the baseRouteName property is deprecated since sonata-project/admin-bundle 4.x.'
+                'Overriding the baseRouteName property is deprecated since sonata-project/admin-bundle 4.15.'
                 .' You MUST override the method %s() instead.',
                 __METHOD__
             ), \E_USER_DEPRECATED);
