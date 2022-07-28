@@ -23,7 +23,7 @@ final class MenuTest extends WebTestCase
     public function testDynamicMenuInLongRunningProcess(): void
     {
         $client = static::createClient();
-        $client->disableReboot();
+        $client->disableReboot(); // forces requests to land at same Kernel, simulating long-running process like one used in roadrunner/reactphp/amphp
 
         for ($i = 1; $i < 5; ++$i) {
             $client->request(Request::METHOD_GET, '/admin/dashboard');
