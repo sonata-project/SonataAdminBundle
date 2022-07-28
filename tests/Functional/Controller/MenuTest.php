@@ -20,11 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class MenuTest extends WebTestCase
 {
-    protected static function getKernelClass(): string
-    {
-        return AppKernel::class;
-    }
-
     public function testDynamicMenuInLongRunningProcess(): void
     {
         $client = static::createClient();
@@ -42,5 +37,10 @@ final class MenuTest extends WebTestCase
             static::assertCount(1, $menu);
             static::assertSame(sprintf('Dynamic Menu %s', $i), $menu->innerText());
         }
+    }
+
+    protected static function getKernelClass(): string
+    {
+        return AppKernel::class;
     }
 }
