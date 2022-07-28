@@ -295,6 +295,8 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     public function getParent(): self;
 
     /**
+     * NEXT_MAJOR: Change to ?string $parentAssociationMapping.
+     *
      * @param AdminInterface<object> $parent
      */
     public function setParent(self $parent, string $parentAssociationMapping): void;

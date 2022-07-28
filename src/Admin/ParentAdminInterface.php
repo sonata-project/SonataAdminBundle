@@ -23,6 +23,8 @@ namespace Sonata\AdminBundle\Admin;
 interface ParentAdminInterface
 {
     /**
+     * NEXT_MAJOR: Change to ?string $field
+     *
      * add an Admin child to the current one.
      *
      * @param AdminInterface<object> $child
