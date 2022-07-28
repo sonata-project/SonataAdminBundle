@@ -33,6 +33,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ])
 
         ->set('sonata.admin.sidebar_menu', MenuItem::class)
+            ->share(false)
             ->tag('knp_menu.menu', ['alias' => 'sonata_admin_sidebar'])
             ->factory([
                 new ReferenceConfigurator('sonata.admin.menu_builder'),
