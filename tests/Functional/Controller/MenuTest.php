@@ -35,7 +35,7 @@ final class MenuTest extends WebTestCase
             $menu = $crawler->filter('.sidebar-menu .dynamic-menu a');
 
             static::assertCount(1, $menu);
-            static::assertSame(sprintf('Dynamic Menu %s', $i), $menu->text());
+            static::assertSame(sprintf('Dynamic Menu %s', $i), trim($menu->text()));
         }
     }
 
