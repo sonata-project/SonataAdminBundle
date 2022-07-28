@@ -33,7 +33,7 @@ return static function (RectorConfig $rectorConfig): void {
     ]);
 
     $rectorConfig->importNames();
-    $rectorConfig->disableImportShortClasses();
+    $rectorConfig->importShortClasses(false);
     $rectorConfig->skip([
         CountOnNullRector::class,
         ExceptionHandlerTypehintRector::class,
