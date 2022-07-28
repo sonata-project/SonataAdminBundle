@@ -13,12 +13,18 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Functional\Controller;
 
+use Sonata\AdminBundle\Tests\App\AppKernel;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class MenuTest extends WebTestCase
 {
+    protected static function getKernelClass(): string
+    {
+        return AppKernel::class;
+    }
+
     public function testDynamicMenuInLongRunningProcess(): void
     {
         $client = static::createClient();
