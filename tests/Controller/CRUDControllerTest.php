@@ -2071,7 +2071,7 @@ final class CRUDControllerTest extends TestCase
     {
         $object = new \stdClass();
 
-        $this->admin->expects(static::exactly(2))
+        $this->admin->expects(static::once())
             ->method('checkAccess')
             ->willReturnCallback(static function (string $name, ?object $objectIn = null) use ($object): void {
                 if ('edit' === $name) {
@@ -2147,56 +2147,6 @@ final class CRUDControllerTest extends TestCase
         static::assertSame('stdClass_edit', $response->getTargetUrl());
     }
 
-    public function testCreateActionAccessDenied2(): void
-    {
-        $this->expectException(AccessDeniedException::class);
-
-        $object = new \stdClass();
-
-        $this->admin
-            ->method('checkAccess')
-            ->willReturnCallback(static function (string $name, ?object $object = null): void {
-                if ('create' !== $name) {
-                    throw new AccessDeniedException();
-                }
-                if (null === $object) {
-                    return;
-                }
-
-                throw new AccessDeniedException();
-            });
-
-        $this->admin->expects(static::once())
-            ->method('getNewInstance')
-            ->willReturn($object);
-
-        $form = $this->createMock(Form::class);
-
-        $this->admin
-            ->method('getClass')
-            ->willReturn(\stdClass::class);
-
-        $this->admin->expects(static::once())
-            ->method('getForm')
-            ->willReturn($form);
-
-        $form->expects(static::once())
-            ->method('isSubmitted')
-            ->willReturn(true);
-
-        $form->expects(static::once())
-            ->method('getData')
-            ->willReturn($object);
-
-        $form->expects(static::once())
-            ->method('isValid')
-            ->willReturn(true);
-
-        $this->request->setMethod(Request::METHOD_POST);
-
-        $this->controller->createAction($this->request);
-    }
-
     /**
      * @dataProvider getToStringValues
      */
@@ -2266,7 +2216,7 @@ final class CRUDControllerTest extends TestCase
      */
     public function testCreateActionWithModelManagerException(string $expectedToStringValue, string $toStringValue): void
     {
-        $this->admin->expects(static::exactly(2))
+        $this->admin->expects(static::once())
             ->method('checkAccess')
             ->with(static::equalTo('create'));
 
@@ -2335,7 +2285,7 @@ final class CRUDControllerTest extends TestCase
     {
         $object = new \stdClass();
 
-        $this->admin->expects(static::exactly(2))
+        $this->admin->expects(static::once())
             ->method('checkAccess')
             ->willReturnCallback(static function (string $name, ?object $objectIn = null) use ($object): void {
                 if ('create' !== $name) {
