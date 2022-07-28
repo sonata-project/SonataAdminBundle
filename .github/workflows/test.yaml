@@ -49,14 +49,6 @@ jobs:
                     - php-version: '8.1'
                       dependencies: highest
                       allowed-to-fail: false
-                      variant: sonata-project/doctrine-extensions:"2.x-dev as 1.999"
-                    - php-version: '8.1'
-                      dependencies: highest
-                      allowed-to-fail: false
-                      variant: sonata-project/exporter:"3.x-dev as 2.999"
-                    - php-version: '8.1'
-                      dependencies: highest
-                      allowed-to-fail: false
                       variant: sonata-project/form-extensions:"2.x-dev as 1.999"
                     - php-version: '8.1'
                       dependencies: highest
