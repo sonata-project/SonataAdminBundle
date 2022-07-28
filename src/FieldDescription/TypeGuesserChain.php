@@ -53,6 +53,8 @@ final class TypeGuesserChain implements TypeGuesserInterface
 
     /**
      * @psalm-suppress ArgumentTypeCoercion @see https://github.com/vimeo/psalm/issues/5938
+     * @psalm-suppress MoreSpecificReturnType @see https://github.com/vimeo/psalm/issues/8330#issuecomment-1198609261
+     * @psalm-suppress LessSpecificReturnStatement @see https://github.com/vimeo/psalm/issues/8330#issuecomment-1198609261
      */
     public function guess(FieldDescriptionInterface $fieldDescription): ?TypeGuess
     {
