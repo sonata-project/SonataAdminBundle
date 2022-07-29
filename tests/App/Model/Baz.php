@@ -13,32 +13,17 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\App\Model;
 
-final class Bar implements EntityInterface
+final class Baz implements EntityInterface
 {
     private string $id;
 
-    private ?Foo $foo = null;
-
-    private ?Baz $baz = null;
-
-    public function __construct(string $id, ?Foo $foo = null, ?Baz $baz = null)
+    public function __construct(string $id)
     {
         $this->id = $id;
-        $this->foo = $foo;
     }
 
     public function getId(): string
     {
         return $this->id;
-    }
-
-    public function getFoo(): ?Foo
-    {
-        return $this->foo;
-    }
-
-    public function getBaz(): ?Baz
-    {
-        return $this->baz;
     }
 }

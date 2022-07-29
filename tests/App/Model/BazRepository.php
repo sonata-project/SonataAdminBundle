@@ -14,29 +14,29 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\App\Model;
 
 /**
- * @phpstan-implements RepositoryInterface<Bar>
+ * @phpstan-implements RepositoryInterface<Baz>
  */
-final class BarRepository implements RepositoryInterface
+final class BazRepository implements RepositoryInterface
 {
     /**
-     * @var Bar[]
+     * @var Baz[]
      */
     private array $elements;
 
-    public function __construct(FooRepository $fooRepository, BazRepository $bazRepository)
+    public function __construct()
     {
         $this->elements = [
-            'test_id' => new Bar('test_id', $fooRepository->byId('test_id'), $bazRepository->byId('test_id')),
+            'test_id' => new Baz('test_id'),
         ];
     }
 
-    public function byId(string $id): ?Bar
+    public function byId(string $id): ?Baz
     {
         return $this->elements[$id] ?? null;
     }
 
     /**
-     * @return Bar[]
+     * @return Baz[]
      */
     public function all(): array
     {
