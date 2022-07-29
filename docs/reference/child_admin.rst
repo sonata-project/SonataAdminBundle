@@ -23,6 +23,8 @@ its parent:
         App\Admin\PlaylistAdmin:
             calls:
                 - [addChild, ['@App\Admin\VideoAdmin', 'playlist']]
+                # Or `[addChild, ['@App\Admin\VideoAdmin']]` if there is no
+                # field to access the Playlist from the Video entity
 
     .. code-block:: xml
 
