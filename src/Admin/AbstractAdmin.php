@@ -1259,7 +1259,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->filterFieldDescriptions;
     }
 
-    final public function addChild(AdminInterface $child, ?string $field): void
+    final public function addChild(AdminInterface $child, ?string $field = null): void
     {
         $parentAdmin = $this;
         while ($parentAdmin->isChild() && $parentAdmin->getCode() !== $child->getCode()) {
@@ -1302,7 +1302,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getChildren()[$code];
     }
 
-    final public function setParent(AdminInterface $parent, ?string $parentAssociationMapping): void
+    final public function setParent(AdminInterface $parent, ?string $parentAssociationMapping = null): void
     {
         $this->parent = $parent;
         $this->parentAssociationMapping[$parent->getCode()] = $parentAssociationMapping;

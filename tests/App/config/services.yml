@@ -99,7 +99,7 @@ services:
         tags:
             - {name: sonata.admin, model_class: Sonata\AdminBundle\Tests\App\Model\Bar, manager_type: test, model_manager: sonata.admin.manager.bar, label: Bar}
         calls:
-            - [ addChild, [ '@sonata_baz_admin', ~ ]]
+            - [addChild, [ '@sonata_baz_admin']]
 
     Sonata\AdminBundle\Tests\App\Admin\Extension\CustomAdminExtension:
         tags:
