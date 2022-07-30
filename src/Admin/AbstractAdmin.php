@@ -255,7 +255,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     private array $cacheIsGranted = [];
 
     /**
-     * @var array<string, string>
+     * @var array<string, string|null>
      */
     private array $parentAssociationMapping = [];
 
@@ -1259,7 +1259,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->filterFieldDescriptions;
     }
 
-    final public function addChild(AdminInterface $child, string $field): void
+    /**
+     * @psalm-suppress PossiblyNullArgument Will be solved in NEXT_MAJOR
+     */
+    final public function addChild(AdminInterface $child, ?string $field = null): void
     {
         $parentAdmin = $this;
         while ($parentAdmin->isChild() && $parentAdmin->getCode() !== $child->getCode()) {
@@ -1276,6 +1279,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         $this->children[$child->getCode()] = $child;
 
+        // @phpstan-ignore-next-line Will be solved in NEXT_MAJOR
         $child->setParent($this, $field);
     }
 
@@ -1302,7 +1306,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getChildren()[$code];
     }
 
-    final public function setParent(AdminInterface $parent, string $parentAssociationMapping): void
+    final public function setParent(AdminInterface $parent, ?string $parentAssociationMapping = null): void
     {
         $this->parent = $parent;
         $this->parentAssociationMapping[$parent->getCode()] = $parentAssociationMapping;
