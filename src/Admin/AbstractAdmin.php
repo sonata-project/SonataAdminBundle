@@ -1259,6 +1259,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->filterFieldDescriptions;
     }
 
+    /**
+     * @psalm-suppress PossiblyNullArgument Will be solved in NEXT_MAJOR
+     */
     final public function addChild(AdminInterface $child, ?string $field = null): void
     {
         $parentAdmin = $this;
@@ -1276,6 +1279,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         $this->children[$child->getCode()] = $child;
 
+        // @phpstan-ignore-next-line Will be solved in NEXT_MAJOR
         $child->setParent($this, $field);
     }
 
