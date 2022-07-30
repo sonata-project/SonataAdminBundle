@@ -25,6 +25,7 @@ final class Bar implements EntityInterface
     {
         $this->id = $id;
         $this->foo = $foo;
+        $this->baz = $baz;
     }
 
     public function getId(): string
