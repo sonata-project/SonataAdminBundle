@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.16.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.15.0...4.16.0) - 2022-08-02
+### Added
+- [[#7894](https://github.com/sonata-project/SonataAdminBundle/pull/7894)] Support for twig-extensions 2 ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7887](https://github.com/sonata-project/SonataAdminBundle/pull/7887)] Support for `sonata-project/doctrine-extensions` ^2 ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7886](https://github.com/sonata-project/SonataAdminBundle/pull/7886)] Support for `sonata-project/exporter ^3` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Changed
+- [[#7885](https://github.com/sonata-project/SonataAdminBundle/pull/7885)] Sidebar menu is now non-shared. (new instance is created everytime its requested) ([@Warxcell](https://github.com/Warxcell))
+
+### Fixed
+- [[#7893](https://github.com/sonata-project/SonataAdminBundle/pull/7893)] Allow ChildAdmin for Unidirectional References ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7890](https://github.com/sonata-project/SonataAdminBundle/pull/7890)] Do not try to check access for created object ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.15.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.14.0...4.15.0) - 2022-07-23
 ### Added
 - [[#7867](https://github.com/sonata-project/SonataAdminBundle/pull/7867)] Added `AbstractAdmin::generateBaseRoutePattern()` ([@VincentLanglet](https://github.com/VincentLanglet))
