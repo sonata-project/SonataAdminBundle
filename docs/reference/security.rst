@@ -705,7 +705,7 @@ return an iterable collection of users::
 
     protected function getAclUsers(): \Traversable
     {
-        $userManager = $container->get('sonata_user.user_manager');
+        $userManager = $container->get('sonata.user.manager.user');
 
         // Display only kevin and anne
         $users[] = $userManager->findUserByUsername('kevin');
