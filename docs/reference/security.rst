@@ -311,19 +311,6 @@ and then configure SonataAdminBundle:
                 acl_user_manager: App\Manager\AclUserManager
                 # ...
 
-In your ``config/packages/sonata_user.yaml`` you then need to put the following:
-
-.. configuration-block::
-
-    .. code-block:: yaml
-
-        # config/packages/sonata_user.yaml
-
-        sonata_user:
-            db_driver: orm
-            firewall_name: admin
-            user_class: App\Entity\User
-
 The following configuration for the SonataUserBundle defines:
 
 - the ``sonata-project/SonataUserBundle`` as a security provider
