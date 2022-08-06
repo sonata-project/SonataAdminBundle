@@ -575,7 +575,6 @@ class CRUDController extends AbstractController
                 /** @phpstan-var T $submittedObject */
                 $submittedObject = $form->getData();
                 $this->admin->setSubject($submittedObject);
-                $this->admin->checkAccess('create', $submittedObject);
 
                 try {
                     $newObject = $this->admin->create($submittedObject);

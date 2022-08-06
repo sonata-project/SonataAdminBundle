@@ -45,7 +45,7 @@ final class SonataAdminExtension extends Extension
         \assert(\is_array($bundles));
 
         if (isset($bundles['SonataUserBundle'])) {
-            // integrate the SonataUserBundle / FOSUserBundle if the bundle exists
+            // integrate the SonataUserBundle if the bundle exists
             array_unshift($configs, [
                 'templates' => [
                     'user_block' => '@SonataUser/Admin/Core/user_block.html.twig',
@@ -54,7 +54,7 @@ final class SonataAdminExtension extends Extension
         }
 
         if (isset($bundles['SonataIntlBundle'])) {
-            // integrate the SonataUserBundle if the bundle exists
+            // integrate the SonataIntlBundle if the bundle exists
             array_unshift($configs, [
                 'templates' => [
                     'history_revision_timestamp' => '@SonataIntl/CRUD/history_revision_timestamp.html.twig',
