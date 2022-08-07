@@ -158,7 +158,7 @@ final class AdminMaker extends AbstractMaker
             $path = sprintf('%s/config/', $this->projectDirectory);
             $servicesFile = $io->ask(
                 'The services YAML configuration file',
-                is_file($path.'admin.yaml') ? 'admin.yaml' : 'services.yaml',
+                $input->getOption('services') ?? (is_file($path.'admin.yaml') ? 'admin.yaml' : 'services.yaml'),
                 [Validators::class, 'validateServicesFile']
             );
             $id = $io->ask(
