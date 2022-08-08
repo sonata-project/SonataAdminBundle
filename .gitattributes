@@ -15,3 +15,8 @@ phpstan-baseline.neon export-ignore
 phpstan-console-application.php export-ignore
 psalm.xml export-ignore
 psalm-baseline.xml export-ignore
+package.json export-ignore
+package-lock.json export-ignore
+postcss.config.js export-ignore
+prettier.config.js export-ignore
+webpack.config.js export-ignore
