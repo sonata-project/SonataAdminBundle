@@ -201,9 +201,7 @@ final class Configuration implements ConfigurationInterface
                                 ->performNoDeepMerging()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(static function (string $value): array {
-                                        return [$value];
-                                    })
+                                    ->then(static fn (string $value): array => [$value])
                                 ->end()
                                 ->prototype('scalar')->end()
                             ->end()
@@ -258,9 +256,7 @@ final class Configuration implements ConfigurationInterface
                             ->defaultValue('show')
                             ->info('Perhaps one of the three options: show, fade, hide.')
                             ->validate()
-                                ->ifTrue(static function (string $v): bool {
-                                    return !\in_array($v, ['show', 'fade', 'hide'], true);
-                                })
+                                ->ifTrue(static fn (string $v): bool => !\in_array($v, ['show', 'fade', 'hide'], true))
                                 ->thenInvalid('Configuration value of "global_search.empty_boxes" must be one of show, fade or hide.')
                             ->end()
                         ->end()

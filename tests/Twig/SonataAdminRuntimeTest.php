@@ -146,7 +146,7 @@ final class SonataAdminRuntimeTest extends TestCase
         static::assertSame('1234567', $sonataAdminRuntime->getUrlSafeIdentifier($model));
     }
 
-    public function testGetUrlsafeIdentifier_GivenAdmin_Foo(): void
+    public function testGetUrlsafeIdentifierGivenAdminFoo(): void
     {
         $model = new \stdClass();
 
@@ -176,7 +176,7 @@ final class SonataAdminRuntimeTest extends TestCase
         static::assertSame('1234567', $sonataAdminRuntime->getUrlSafeIdentifier($model, $this->admin));
     }
 
-    public function testGetUrlsafeIdentifier_GivenAdmin_Bar(): void
+    public function testGetUrlsafeIdentifierGivenAdminBar(): void
     {
         $model = new \stdClass();
 

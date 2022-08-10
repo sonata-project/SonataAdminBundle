@@ -27,11 +27,11 @@ final class AdminLayoutTest extends AbstractLayoutTestCase
         $html = $this->renderLabel($form->createView());
 
         $expression = <<<'EOD'
-/label
-    [@class="col-sm-3 control-label required"]
-    [@for="name"]
-    [.="[trans]Name[/trans]"]
-EOD;
+            /label
+                [@class="col-sm-3 control-label required"]
+                [@for="name"]
+                [.="[trans]Name[/trans]"]
+            EOD;
 
         self::assertMatchesXpath($html, $expression);
     }
@@ -49,11 +49,11 @@ EOD;
         $html = $this->renderLabel($form->createView());
 
         $expression = <<<'EOD'
-/label
-    [@class="col-sm-3 control-label required"]
-    [@for="name"]
-    [.="Name"]
-EOD;
+            /label
+                [@class="col-sm-3 control-label required"]
+                [@for="name"]
+                [.="Name"]
+            EOD;
 
         self::assertMatchesXpath($html, $expression);
     }
@@ -71,11 +71,11 @@ EOD;
         $html = $this->renderLabel($form->createView());
 
         $expression = <<<'EOD'
-/label
-    [@class="col-sm-3 control-label required"]
-    [@for="name"]
-    [.="[trans domain=custom_domain]Name[/trans]"]
-EOD;
+            /label
+                [@class="col-sm-3 control-label required"]
+                [@for="name"]
+                [.="[trans domain=custom_domain]Name[/trans]"]
+            EOD;
 
         self::assertMatchesXpath($html, $expression);
     }
@@ -90,11 +90,11 @@ EOD;
         $html = $this->renderLabel($form->createView());
 
         $expression = <<<'EOD'
-/label
-    [@class="col-sm-3 control-label required"]
-    [@for="name"]
-    [.="[trans domain=sonata_translation_domain]Name[/trans]"]
-EOD;
+            /label
+                [@class="col-sm-3 control-label required"]
+                [@for="name"]
+                [.="[trans domain=sonata_translation_domain]Name[/trans]"]
+            EOD;
 
         self::assertMatchesXpath($html, $expression);
     }
@@ -109,11 +109,11 @@ EOD;
 
         // TODO: Replace "/p|div" with "/div" when support for Symfony < 6.1 is dropped.
         $expression = <<<'EOD'
-/p|div
-    [@id="name_help"]
-    [@class="help-block sonata-ba-field-help help-text"]
-    [.="[trans]Help text test![/trans]"]
-EOD;
+            /p|div
+                [@id="name_help"]
+                [@class="help-block sonata-ba-field-help help-text"]
+                [.="[trans]Help text test![/trans]"]
+            EOD;
 
         self::assertMatchesXpath($html, $expression);
     }
@@ -131,11 +131,11 @@ EOD;
 
         // TODO: Replace "/p|div" with "/div" when support for Symfony < 6.1 is dropped.
         $expression = <<<'EOD'
-/p|div
-    [@id="name_help"]
-    [@class="help-block sonata-ba-field-help help-text"]
-    [.="[trans domain=sonata_translation_domain]Help text test![/trans]"]
-EOD;
+            /p|div
+                [@id="name_help"]
+                [@class="help-block sonata-ba-field-help help-text"]
+                [.="[trans domain=sonata_translation_domain]Help text test![/trans]"]
+            EOD;
 
         self::assertMatchesXpath($html, $expression);
     }
@@ -170,26 +170,26 @@ EOD;
         $html = $this->renderErrors($view);
 
         $expression = <<<'EOD'
-/div
-    [@class="alert alert-danger"]
-    [
-        ./ul
-            [@class="list-unstyled"]
-            [
-                ./li
-                    [.=" [trans]Error 1[/trans]"]
-                    [
-                        ./i[@class="fas fa-exclamation-circle"]
-                    ]
-                /following-sibling::li
-                    [.=" [trans]Error 2[/trans]"]
-                    [
-                        ./i[@class="fas fa-exclamation-circle"]
-                    ]
-            ]
-            [count(./li)=2]
-    ]
-EOD;
+            /div
+                [@class="alert alert-danger"]
+                [
+                    ./ul
+                        [@class="list-unstyled"]
+                        [
+                            ./li
+                                [.=" [trans]Error 1[/trans]"]
+                                [
+                                    ./i[@class="fas fa-exclamation-circle"]
+                                ]
+                            /following-sibling::li
+                                [.=" [trans]Error 2[/trans]"]
+                                [
+                                    ./i[@class="fas fa-exclamation-circle"]
+                                ]
+                        ]
+                        [count(./li)=2]
+                ]
+            EOD;
 
         self::assertMatchesXpath(
             $html,

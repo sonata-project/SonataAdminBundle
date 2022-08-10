@@ -4105,6 +4105,6 @@ final class CRUDControllerTest extends TestCase
                     return true;
                 })
             )
-            ->willReturn($exists ? static function () {} : false);
+            ->willReturn($exists ? static function (): void {} : false);
     }
 }
