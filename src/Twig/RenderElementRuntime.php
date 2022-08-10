@@ -217,14 +217,14 @@ final class RenderElementRuntime implements RuntimeExtensionInterface
         if ($environment->isDebug()) {
             $commentTemplate = <<<'EOT'
 
-<!-- START
-    fieldName: %s
-    template: %s
-    compiled template: %s
-    -->
-    %s
-<!-- END - fieldName: %s -->
-EOT;
+                <!-- START
+                    fieldName: %s
+                    template: %s
+                    compiled template: %s
+                    -->
+                    %s
+                <!-- END - fieldName: %s -->
+                EOT;
 
             return sprintf(
                 $commentTemplate,

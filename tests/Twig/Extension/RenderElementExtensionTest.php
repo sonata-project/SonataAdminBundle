@@ -278,14 +278,14 @@ final class RenderElementExtensionTest extends TestCase
         static::assertSame(
             $this->removeExtraWhitespace(
                 <<<'EOT'
-<!-- START
-    fieldName: fd_name
-    template: @SonataAdmin/CRUD/base_list_field.html.twig
-    compiled template: @SonataAdmin/CRUD/base_list_field.html.twig
--->
-    <td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td>
-<!-- END - fieldName: fd_name -->
-EOT
+                    <!-- START
+                        fieldName: fd_name
+                        template: @SonataAdmin/CRUD/base_list_field.html.twig
+                        compiled template: @SonataAdmin/CRUD/base_list_field.html.twig
+                    -->
+                        <td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td>
+                    <!-- END - fieldName: fd_name -->
+                    EOT
             ),
             $this->removeExtraWhitespace(
                 $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription, $parameters)
@@ -816,20 +816,20 @@ EOT
             ],
             [
                 <<<'EOT'
-<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
-    <span
-        class="x-editable"
-        data-type="select"
-        data-value="1"
-        data-title="Data"
-        data-pk="12345"
-        data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
-        data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]"
-    >
-        <span class="label label-success">yes</span>
-    </span>
-</td>
-EOT
+                    <td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
+                        <span
+                            class="x-editable"
+                            data-type="select"
+                            data-value="1"
+                            data-title="Data"
+                            data-pk="12345"
+                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
+                            data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]"
+                        >
+                            <span class="label label-success">yes</span>
+                        </span>
+                    </td>
+                    EOT
             ,
                 FieldDescriptionInterface::TYPE_BOOLEAN,
                 true,
@@ -837,19 +837,19 @@ EOT
             ],
             [
                 <<<'EOT'
-<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
-    <span
-        class="x-editable"
-        data-type="select"
-        data-value="0"
-        data-title="Data"
-        data-pk="12345"
-        data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
-        data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]"
-    >
-    <span class="label label-danger">no</span> </span>
-</td>
-EOT
+                    <td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
+                        <span
+                            class="x-editable"
+                            data-type="select"
+                            data-value="0"
+                            data-title="Data"
+                            data-pk="12345"
+                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
+                            data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]"
+                        >
+                        <span class="label label-danger">no</span> </span>
+                    </td>
+                    EOT
                 ,
                 FieldDescriptionInterface::TYPE_BOOLEAN,
                 false,
@@ -857,18 +857,18 @@ EOT
             ],
             [
                 <<<'EOT'
-<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
-    <span
-        class="x-editable"
-        data-type="select"
-        data-value="0"
-        data-title="Data"
-        data-pk="12345"
-        data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
-        data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]" >
-        <span class="label label-danger">no</span> </span>
-</td>
-EOT
+                    <td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
+                        <span
+                            class="x-editable"
+                            data-type="select"
+                            data-value="0"
+                            data-title="Data"
+                            data-pk="12345"
+                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
+                            data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]" >
+                            <span class="label label-danger">no</span> </span>
+                    </td>
+                    EOT
                 ,
                 FieldDescriptionInterface::TYPE_BOOLEAN,
                 null,
@@ -1025,20 +1025,20 @@ EOT
                 ], 'multiple' => true], ],
             [
                 <<<'EOT'
-<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
-    <span
-        class="x-editable"
-        data-type="select"
-        data-value="Status1"
-        data-title="Data"
-        data-pk="12345"
-        data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
-        data-source="[]"
-    >
-        Status1
-    </span>
-</td>
-EOT
+                    <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+                        <span
+                            class="x-editable"
+                            data-type="select"
+                            data-value="Status1"
+                            data-title="Data"
+                            data-pk="12345"
+                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
+                            data-source="[]"
+                        >
+                            Status1
+                        </span>
+                    </td>
+                    EOT
                 ,
                 FieldDescriptionInterface::TYPE_CHOICE,
                 'Status1',
@@ -1046,18 +1046,18 @@ EOT
             ],
             [
                 <<<'EOT'
-<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
-    <span
-        class="x-editable"
-        data-type="select"
-        data-value="Status1"
-        data-title="Data"
-        data-pk="12345"
-        data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
-        data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
-        Alias1 </span>
-</td>
-EOT
+                    <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+                        <span
+                            class="x-editable"
+                            data-type="select"
+                            data-value="Status1"
+                            data-title="Data"
+                            data-pk="12345"
+                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
+                            data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
+                            Alias1 </span>
+                    </td>
+                    EOT
                 ,
                 FieldDescriptionInterface::TYPE_CHOICE,
                 'Status1',
@@ -1072,19 +1072,19 @@ EOT
             ],
             [
                 <<<'EOT'
-<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
-    <span
-        class="x-editable"
-        data-type="select"
-        data-value=""
-        data-title="Data"
-        data-pk="12345"
-        data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
-        data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
+                    <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+                        <span
+                            class="x-editable"
+                            data-type="select"
+                            data-value=""
+                            data-title="Data"
+                            data-pk="12345"
+                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
+                            data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
 
-    </span>
-</td>
-EOT
+                        </span>
+                    </td>
+                    EOT
                 ,
                 FieldDescriptionInterface::TYPE_CHOICE,
                 null,
@@ -1099,18 +1099,18 @@ EOT
             ],
             [
                 <<<'EOT'
-<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
-    <span
-        class="x-editable"
-        data-type="select"
-        data-value="NoValidKeyInChoices"
-        data-title="Data" data-pk="12345"
-        data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
-        data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
-        NoValidKeyInChoices
-    </span>
-</td>
-EOT
+                    <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+                        <span
+                            class="x-editable"
+                            data-type="select"
+                            data-value="NoValidKeyInChoices"
+                            data-title="Data" data-pk="12345"
+                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
+                            data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
+                            NoValidKeyInChoices
+                        </span>
+                    </td>
+                    EOT
                 ,
                 FieldDescriptionInterface::TYPE_CHOICE,
                 'NoValidKeyInChoices',
@@ -1125,19 +1125,19 @@ EOT
             ],
             [
                 <<<'EOT'
-<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
-    <span
-        class="x-editable"
-        data-type="select"
-        data-value="Foo"
-        data-title="Data"
-        data-pk="12345"
-        data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
-        data-source="[{&quot;value&quot;:&quot;Foo&quot;,&quot;text&quot;:&quot;Delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
-         Delete
-    </span>
-</td>
-EOT
+                    <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+                        <span
+                            class="x-editable"
+                            data-type="select"
+                            data-value="Foo"
+                            data-title="Data"
+                            data-pk="12345"
+                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
+                            data-source="[{&quot;value&quot;:&quot;Foo&quot;,&quot;text&quot;:&quot;Delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
+                             Delete
+                        </span>
+                    </td>
+                    EOT
                 ,
                 FieldDescriptionInterface::TYPE_CHOICE,
                 'Foo',
@@ -1404,14 +1404,14 @@ EOT
 
             [
                 <<<'EOT'
-<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345">
-<div
-    class="sonata-readmore"
-    data-readmore-height="40"
-    data-readmore-more="Read more"
-    data-readmore-less="Close">A very long string</div>
-</td>
-EOT
+                    <td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345">
+                    <div
+                        class="sonata-readmore"
+                        data-readmore-height="40"
+                        data-readmore-more="Read more"
+                        data-readmore-less="Close">A very long string</div>
+                    </td>
+                    EOT
                 ,
                 FieldDescriptionInterface::TYPE_STRING,
                 'A very long string',
@@ -1421,14 +1421,14 @@ EOT
             ],
             [
                 <<<'EOT'
-<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345">
-<div
-    class="sonata-readmore"
-    data-readmore-height="10"
-    data-readmore-more="More"
-    data-readmore-less="Less">A very long string</div>
-</td>
-EOT
+                    <td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345">
+                    <div
+                        class="sonata-readmore"
+                        data-readmore-height="10"
+                        data-readmore-more="More"
+                        data-readmore-less="Less">A very long string</div>
+                    </td>
+                    EOT
                 ,
                 FieldDescriptionInterface::TYPE_STRING,
                 'A very long string',
@@ -1442,19 +1442,19 @@ EOT
             ],
             [
                 <<<'EOT'
-<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
-    <span
-        class="x-editable"
-        data-type="checklist"
-        data-value="[&quot;Status1&quot;,&quot;Status2&quot;]"
-        data-title="Data"
-        data-pk="12345"
-        data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
-        data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
-         Delete, Alias2
-    </span>
-</td>
-EOT
+                    <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+                        <span
+                            class="x-editable"
+                            data-type="checklist"
+                            data-value="[&quot;Status1&quot;,&quot;Status2&quot;]"
+                            data-title="Data"
+                            data-pk="12345"
+                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
+                            data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
+                             Delete, Alias2
+                        </span>
+                    </td>
+                    EOT
                 ,
                 FieldDescriptionInterface::TYPE_CHOICE,
                 [
@@ -1950,14 +1950,14 @@ EOT
             ],
             [
                 <<<'EOT'
-<th>Data</th> <td><div
-        class="sonata-readmore"
-        data-readmore-height="40"
-        data-readmore-more="Read more"
-        data-readmore-less="Close">
-            A very long string
-</div></td>
-EOT
+                    <th>Data</th> <td><div
+                            class="sonata-readmore"
+                            data-readmore-height="40"
+                            data-readmore-more="Read more"
+                            data-readmore-less="Close">
+                                A very long string
+                    </div></td>
+                    EOT
                 ,
                 FieldDescriptionInterface::TYPE_STRING,
                 ' A very long string ',
@@ -1968,14 +1968,14 @@ EOT
             ],
             [
                 <<<'EOT'
-<th>Data</th> <td><div
-        class="sonata-readmore"
-        data-readmore-height="10"
-        data-readmore-more="More"
-        data-readmore-less="Less">
-            A very long string
-</div></td>
-EOT
+                    <th>Data</th> <td><div
+                            class="sonata-readmore"
+                            data-readmore-height="10"
+                            data-readmore-more="More"
+                            data-readmore-less="Less">
+                                A very long string
+                    </div></td>
+                    EOT
                 ,
                 FieldDescriptionInterface::TYPE_STRING,
                 ' A very long string ',
