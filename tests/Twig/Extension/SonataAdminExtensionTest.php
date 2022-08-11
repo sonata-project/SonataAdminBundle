@@ -150,7 +150,7 @@ final class SonataAdminExtensionTest extends TestCase
         static::assertSame('1234567', $twigExtension->getUrlSafeIdentifier($model));
     }
 
-    public function testGetUrlsafeIdentifier_GivenAdmin_Foo(): void
+    public function testGetUrlsafeIdentifierGivenAdminFoo(): void
     {
         $model = new \stdClass();
 
@@ -180,7 +180,7 @@ final class SonataAdminExtensionTest extends TestCase
         static::assertSame('1234567', $twigExtension->getUrlSafeIdentifier($model, $this->admin));
     }
 
-    public function testGetUrlsafeIdentifier_GivenAdmin_Bar(): void
+    public function testGetUrlsafeIdentifierGivenAdminBar(): void
     {
         $model = new \stdClass();
 
