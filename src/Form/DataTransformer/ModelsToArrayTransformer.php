@@ -15,8 +15,9 @@ namespace Sonata\AdminBundle\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Util\ClassUtils;
+use Sonata\AdminBundle\BCLayer\BCHelper;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Model\ProxyResolverInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -66,9 +67,14 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
         foreach ($value as $model) {
             $identifier = $this->modelManager->getNormalizedIdentifier($model);
             if (null === $identifier) {
+                $class = $this->modelManager instanceof ProxyResolverInterface
+                    ? $this->modelManager->getRealClass($model)
+                    // NEXT_MAJOR: Change to `\get_class`
+                    : BCHelper::getClass($model);
+
                 throw new TransformationFailedException(sprintf(
                     'No identifier was found for the model "%s".',
-                    ClassUtils::getClass($model)
+                    $class
                 ));
             }
 
@@ -109,9 +115,14 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
         foreach ($queryResult as $model) {
             $identifier = $this->modelManager->getNormalizedIdentifier($model);
             if (null === $identifier) {
+                $class = $this->modelManager instanceof ProxyResolverInterface
+                    ? $this->modelManager->getRealClass($model)
+                    // NEXT_MAJOR: Change to `\get_class`
+                    : BCHelper::getClass($model);
+
                 throw new TransformationFailedException(sprintf(
                     'No identifier was found for the model "%s".',
-                    ClassUtils::getClass($model)
+                    $class
                 ));
             }
 
