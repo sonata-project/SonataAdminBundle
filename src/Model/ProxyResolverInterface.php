@@ -13,15 +13,12 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Model;
 
-/**
- * @phpstan-template T of object
- */
 interface ProxyResolverInterface
 {
     /**
      * Gets the real class name of an object (even if its a proxy).
      *
-     * @phpstan-return class-string<T>
+     * @phpstan-return class-string
      */
     public function getRealClass(object $object): string;
 }

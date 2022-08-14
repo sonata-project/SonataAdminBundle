@@ -649,6 +649,7 @@ final class AdminTest extends TestCase
         }
 
         $admin = new PostAdmin();
+        $admin->setModelManager($this->createStub(ModelManagerInterface::class));
 
         // To string method is implemented, but returns null
         $s = new FooToStringNull();

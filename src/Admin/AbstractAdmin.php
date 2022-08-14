@@ -602,13 +602,11 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         // `getSubject` use `hasSubject()` which use `getObject()` which use `getClass()`.
         if (null !== $this->subject) {
             $modelManager = $this->getModelManager();
-            if ($modelManager instanceof ProxyResolverInterface) {
-                return $modelManager->getRealClass($this->subject);
-            }
-
-            // NEXT_MAJOR: Change to `\get_class($this->subject)` instead
             /** @phpstan-var class-string<T> $class */
-            $class = BCHelper::getClass($this->subject);
+            $class = $modelManager instanceof ProxyResolverInterface
+                ? $modelManager->getRealClass($this->subject)
+                // NEXT_MAJOR: Change to `\get_class($this->subject)` instead
+                : BCHelper::getClass($this->subject);
 
             return $class;
         }
