@@ -21,6 +21,7 @@ use Sonata\AdminBundle\FieldDescription\BaseFieldDescription;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
@@ -66,7 +67,10 @@ final class FormMapperTest extends TestCase
         $this->admin->setModelClass(\stdClass::class);
         $this->admin->setSubject(new \stdClass());
 
-        $securityHandler = $this->createMock(SecurityHandlerInterface::class);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $this->admin->setModelManager($modelManager);
+
+        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
             ->willReturnCallback(static fn (AdminInterface $admin, string $attributes, $object = null): bool => self::DEFAULT_GRANTED_ROLE === $attributes);

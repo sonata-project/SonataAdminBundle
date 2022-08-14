@@ -632,6 +632,7 @@ final class AdminTest extends TestCase
     public function testToString(): void
     {
         $admin = new PostAdmin();
+        $admin->setModelManager($this->createStub(ModelManagerInterface::class));
 
         $s = new \stdClass();
 
@@ -680,6 +681,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin();
         $admin->setModelClass(Post::class);
+        $admin->setModelManager($this->createStub(ModelManagerInterface::class));
 
         static::assertFalse($admin->hasSubClass('test'));
         static::assertFalse($admin->hasActiveSubClass());
@@ -2240,6 +2242,7 @@ final class AdminTest extends TestCase
         $admin->setModelClass(\stdClass::class);
         $admin->setSubject(new \stdClass());
 
+        $admin->setModelManager($this->createStub(ModelManagerInterface::class));
         $admin->setFormContractor(new FormContractor($formFactory, $registry));
 
         $admin->setShowBuilder(new ShowBuilder());
