@@ -32,7 +32,7 @@ class BCHelper
         if ($class !== $classFromDoctrine) {
             @trigger_error(sprintf(
                 'Using proxy class "%s" without a model manager which implements %s is deprecated'
-                .' since sonata-project/admin-bundle version 4.x and will not work in 5.0 version.',
+                .' since sonata-project/admin-bundle version 4.17 and will not work in 5.0 version.',
                 $class,
                 ProxyResolverInterface::class
             ), \E_USER_DEPRECATED);
