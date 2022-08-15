@@ -15,8 +15,9 @@ namespace Sonata\AdminBundle\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Util\ClassUtils;
+use Sonata\AdminBundle\BCLayer\BCHelper;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Model\ProxyResolverInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
@@ -179,9 +180,14 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
             } elseif (method_exists($model, '__toString')) {
                 $label = $model->__toString();
             } else {
+                $class = $this->modelManager instanceof ProxyResolverInterface
+                    ? $this->modelManager->getRealClass($model)
+                    // NEXT_MAJOR: Change to `\get_class`
+                    : BCHelper::getClass($model);
+
                 throw new \RuntimeException(sprintf(
                     'Unable to convert the entity %s to String, entity must have a \'__toString()\' method defined',
-                    ClassUtils::getClass($model)
+                    $class
                 ));
             }
 

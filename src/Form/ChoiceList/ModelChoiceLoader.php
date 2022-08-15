@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\ChoiceList;
 
-use Doctrine\Common\Util\ClassUtils;
+use Sonata\AdminBundle\BCLayer\BCHelper;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Model\ProxyResolverInterface;
 use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
@@ -98,10 +99,15 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
                     // Otherwise expect a __toString() method in the entity
                     $valueObject = (string) $model;
                 } else {
+                    $class = $this->modelManager instanceof ProxyResolverInterface
+                        ? $this->modelManager->getRealClass($model)
+                        // NEXT_MAJOR: Change to `\get_class`
+                        : BCHelper::getClass($model);
+
                     throw new \LogicException(sprintf(
                         'Unable to convert the model "%s" to string, provide "property" option'
                         .' or implement "__toString()" method in your model.',
-                        ClassUtils::getClass($model)
+                        $class
                     ));
                 }
 
@@ -150,9 +156,14 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
         try {
             return $this->modelManager->getIdentifierValues($model);
         } catch (\Exception $e) {
+            $class = $this->modelManager instanceof ProxyResolverInterface
+                ? $this->modelManager->getRealClass($model)
+                // NEXT_MAJOR: Change to `\get_class`
+                : BCHelper::getClass($model);
+
             throw new \InvalidArgumentException(sprintf(
                 'Unable to retrieve the identifier values for entity %s',
-                ClassUtils::getClass($model)
+                $class
             ), 0, $e);
         }
     }

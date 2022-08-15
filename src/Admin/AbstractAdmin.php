@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
-use Doctrine\Common\Util\ClassUtils;
 use Knp\Menu\ItemInterface;
+use Sonata\AdminBundle\BCLayer\BCHelper;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -26,6 +26,7 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
 use Sonata\AdminBundle\Manipulator\ObjectManipulator;
+use Sonata\AdminBundle\Model\ProxyResolverInterface;
 use Sonata\AdminBundle\Object\Metadata;
 use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
@@ -600,8 +601,12 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         // Do not use `$this->hasSubject()` and `$this->getSubject()` here to avoid infinite loop.
         // `getSubject` use `hasSubject()` which use `getObject()` which use `getClass()`.
         if (null !== $this->subject) {
+            $modelManager = $this->getModelManager();
             /** @phpstan-var class-string<T> $class */
-            $class = ClassUtils::getClass($this->subject);
+            $class = $modelManager instanceof ProxyResolverInterface
+                ? $modelManager->getRealClass($this->subject)
+                // NEXT_MAJOR: Change to `\get_class($this->subject)` instead
+                : BCHelper::getClass($this->subject);
 
             return $class;
         }
@@ -1631,7 +1636,15 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             return $object->__toString();
         }
 
-        return sprintf('%s:%s', ClassUtils::getClass($object), spl_object_hash($object));
+        $modelManager = $this->getModelManager();
+        if ($modelManager instanceof ProxyResolverInterface) {
+            $class = $modelManager->getRealClass($object);
+        } else {
+            // NEXT_MAJOR: Change to `\get_class($object)`
+            $class = BCHelper::getClass($object);
+        }
+
+        return sprintf('%s:%s', $class, spl_object_hash($object));
     }
 
     final public function supportsPreviewMode(): bool
