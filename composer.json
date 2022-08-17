@@ -90,10 +90,6 @@
         "symfony/yaml": "^4.4 || ^5.4 || ^6.0",
         "vimeo/psalm": "^4.9.2"
     },
-    "conflict": {
-        "doctrine/doctrine-bundle": ">=3",
-        "sonata-project/doctrine-orm-admin-bundle": "<=4.0.0-alpha-1"
-    },
     "suggest": {
         "twig/extra-bundle": "Auto configures the Twig Intl extension"
     },

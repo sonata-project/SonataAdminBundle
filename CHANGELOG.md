@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.17.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.16.0...4.17.0) - 2022-08-15
+### Added
+- [[#7906](https://github.com/sonata-project/SonataAdminBundle/pull/7906)] Added ProxyManagerInterface ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Deprecated
+- [[#7906](https://github.com/sonata-project/SonataAdminBundle/pull/7906)] Relying on doctrine `ClassUtils::getClass` to resolve proxy classes. The ModelManager have to implements the ProxyManagerInterface instead. ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#7899](https://github.com/sonata-project/SonataAdminBundle/pull/7899)] AdminMaker service option ([@joerndyherrn](https://github.com/joerndyherrn))
+
 ## [4.16.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.15.0...4.16.0) - 2022-08-02
 ### Added
 - [[#7894](https://github.com/sonata-project/SonataAdminBundle/pull/7894)] Support for twig-extensions 2 ([@VincentLanglet](https://github.com/VincentLanglet))
