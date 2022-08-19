@@ -2411,6 +2411,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         $this->datagrid->getPager()->setMaxPageLinks($this->getMaxPageLinks());
 
+        /** @psalm-suppress InvalidArgument https://github.com/vimeo/psalm/issues/8423 */
         $mapper = new DatagridMapper($this->getDatagridBuilder(), $this->datagrid, $this);
 
         // build the datagrid filter
