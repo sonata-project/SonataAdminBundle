@@ -47,7 +47,7 @@ $rules = [
     'ordered_imports' => ['sort_algorithm' => 'alpha', 'imports_order' => ['class', 'function', 'const']],
     'php_unit_strict' => true,
     'php_unit_test_case_static_method_calls' => true,
-    'phpdoc_to_comment' => ['ignored_tags' => ['psalm-suppress']],
+    'phpdoc_to_comment' => ['ignored_tags' => ['psalm-suppress', 'phpstan-var']],
     'single_line_throw' => false,
     'static_lambda' => true,
     'strict_comparison' => true,
