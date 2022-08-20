@@ -27,6 +27,9 @@ interface FilterInterface
 
     public const CONDITION_AND = 'AND';
 
+    /**
+     * @param ProxyQueryInterface<object> $query
+     */
     public function apply(ProxyQueryInterface $query, FilterData $filterData): void;
 
     /**

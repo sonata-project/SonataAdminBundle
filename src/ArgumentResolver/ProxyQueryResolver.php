@@ -42,7 +42,7 @@ final class ProxyQueryResolver implements ArgumentValueResolverInterface
     }
 
     /**
-     * @return iterable<ProxyQueryInterface>
+     * @return iterable<ProxyQueryInterface<object>>
      */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {

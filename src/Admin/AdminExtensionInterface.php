@@ -73,7 +73,8 @@ interface AdminExtensionInterface
     ): void;
 
     /**
-     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param AdminInterface<T>      $admin
+     * @phpstan-param ProxyQueryInterface<T> $query
      */
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query): void;
 
