@@ -80,9 +80,9 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
     /**
      * @param int|string|array<int|string|array<string>>|null $value
      *
-     * @throws \UnexpectedValueException
-     *
      * @return Collection<int|string, object>|object|null
+     *
+     * @throws \UnexpectedValueException
      *
      * @psalm-param int|string|(array{_labels?: array<string>}&array<int|string>)|null $value
      * @phpstan-param int|string|array<int|string|array<string>>|null $value
@@ -118,9 +118,9 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
     /**
      * @param object|array<object>|\Traversable<object>|null $value
      *
-     * @throws \InvalidArgumentException
-     *
      * @return array<string|int, int|string|array<string>>
+     *
+     * @throws \InvalidArgumentException
      *
      * @phpstan-param T|array<T>|\Traversable<T>|null $value
      * @psalm-return array{_labels?: array<string>}&array<int|string>

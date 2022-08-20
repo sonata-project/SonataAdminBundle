@@ -20,10 +20,10 @@ use Symfony\Component\HttpFoundation\Request;
 interface AdminFetcherInterface
 {
     /**
+     * @return AdminInterface<object>
+     *
      * @throws \InvalidArgumentException  if the admin code is not found in the request
      * @throws AdminCodeNotFoundException if no admin was found for the admin code provided
-     *
-     * @return AdminInterface<object>
      */
     public function get(Request $request): AdminInterface;
 }

@@ -1073,9 +1073,9 @@ class CRUDController extends AbstractController
     /**
      * NEXT_MAJOR: Add typehint.
      *
-     * @throws ModelManagerThrowable
-     *
      * @return string|null A custom error message to display in the flag bag instead of the generic one
+     *
+     * @throws ModelManagerThrowable
      */
     protected function handleModelManagerThrowable(ModelManagerThrowable $exception)
     {
