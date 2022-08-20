@@ -65,9 +65,9 @@ final class ShowMapper extends BaseGroupedMapper
     }
 
     /**
-     * @throws \LogicException
-     *
      * @return static
+     *
+     * @throws \LogicException
      *
      * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */

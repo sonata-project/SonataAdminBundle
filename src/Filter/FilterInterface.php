@@ -90,16 +90,16 @@ interface FilterInterface
     public function getParentAssociationMappings(): array;
 
     /**
-     * @throws \RuntimeException if the `field_mapping` option is not set
-     *
      * @return array<string, mixed> field mapping
+     *
+     * @throws \RuntimeException if the `field_mapping` option is not set
      */
     public function getFieldMapping(): array;
 
     /**
-     * @throws \RuntimeException if the `association_mapping` option is not set
-     *
      * @return array<string, mixed> association mapping
+     *
+     * @throws \RuntimeException if the `association_mapping` option is not set
      */
     public function getAssociationMapping(): array;
 

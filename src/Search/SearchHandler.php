@@ -31,9 +31,9 @@ final class SearchHandler
     /**
      * @param AdminInterface<object> $admin
      *
-     * @throws \RuntimeException
-     *
      * @return PagerInterface<ProxyQueryInterface>
+     *
+     * @throws \RuntimeException
      *
      * @phpstan-template T of object
      * @phpstan-param AdminInterface<T> $admin
