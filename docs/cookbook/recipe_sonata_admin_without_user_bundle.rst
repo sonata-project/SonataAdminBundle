@@ -1,8 +1,8 @@
-SonataAdmin without FOSUserBundle/SonataUserBundle
-==================================================
+SonataAdmin without SonataUserBundle
+====================================
 
 Here we will explain how you can use SonataAdmin with Symfony Guard instead
-of using FOSUserBundle or SonataUserBundle.
+of using SonataUserBundle.
 
 Code used in this short guide can be found `here <https://github.com/kunicmarko20/guard-talk-example>`__
 with support for different Symfony versions.
