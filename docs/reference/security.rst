@@ -100,7 +100,7 @@ Using ACL:
                 # permission related to the objects
                 object_permissions: [VIEW, EDIT, HISTORY, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]
 
-Later, we will explain how to set up ACL with the ``FriendsOfSymfony/UserBundle``.
+Later, we will explain how to set up ACL with the ``SonataUserBundle``.
 
 Role handler
 ------------
@@ -248,8 +248,8 @@ And specify it as Sonata security handler on your configuration:
             default_admin_services:
                 security_handler: App\Security\Handler\MySecurityHandler
 
-ACL and FriendsOfSymfony/UserBundle
------------------------------------
+ACL and SonataUserBundle
+------------------------
 
 
 If you want a straightforward way to handle users, please use:

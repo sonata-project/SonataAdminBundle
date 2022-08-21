@@ -26,12 +26,11 @@ advantage.
     When embedding one Admin within another, for example using the ``sonata_type_admin``
     field type, the child Admin's hooks are **not** fired.
 
-Example used with the FOS/UserBundle
-------------------------------------
+Example used with the SonataUserBundle
+--------------------------------------
 
-The ``FOSUserBundle`` provides authentication features for your Symfony Project,
-and is compatible with Doctrine ORM, Doctrine ODM. See
-`FOSUserBundle on GitHub`_ for more information.
+The ``SonataUserBundle`` provides authentication features for your Symfony Project,
+and is compatible with Doctrine ORM, Doctrine ODM.
 
 The user management system requires to perform specific calls when the user
 password or username are updated. This is how the Admin bundle can be used to
@@ -40,12 +39,19 @@ solve the issue by using the ``preUpdate`` saving hook::
     namespace Sonata\UserBundle\Admin\Entity;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
-    use FOS\UserBundle\Model\UserManagerInterface;
     use Sonata\AdminBundle\Form\Type\ModelType;
     use Sonata\UserBundle\Form\Type\SecurityRolesType;
+    use Sonata\UserBundle\Model\UserManagerInterface;
 
     final class UserAdmin extends AbstractAdmin
     {
+        private UserManagerInterface $userManager;
+
+        public function __construct(UserManagerInterface $userManager)
+        {
+            $this->userManager = $userManager;
+        }
+
         protected function configureFormFields(FormMapper $form): void
         {
             $form
@@ -69,33 +75,10 @@ solve the issue by using the ``preUpdate`` saving hook::
 
         public function preUpdate(object $user): void
         {
-            $this->getUserManager()->updateCanonicalFields($user);
-            $this->getUserManager()->updatePassword($user);
-        }
-
-        public function setUserManager(UserManagerInterface $userManager): void
-        {
-            $this->userManager = $userManager;
-        }
-
-        public function getUserManager(): UserManagerInterface
-        {
-            return $this->userManager;
+            $this->userManager->updateCanonicalFields($user);
+            $this->userManager->updatePassword($user);
         }
     }
-
-The service declaration where the ``UserManager`` is injected into the Admin class.
-
-.. configuration-block::
-
-    .. code-block:: xml
-
-        <service id="fos.user.admin.user" class="%fos.user.admin.user.class%">
-            <call method="setUserManager">
-                <argument type="service" id="fos_user.user_manager"/>
-            </call>
-            <tag name="sonata.admin" model_class="%fos.user.admin.user.entity%" manager_type="orm" group="fos_user"/>
-        </service>
 
 Hooking in the Controller
 -------------------------
@@ -121,5 +104,3 @@ You can generate a redirection to the object show page by using the method ``red
 
     If you need to prohibit the deletion of a specific item, you may do a check
     in the ``preDelete($object)`` method.
-
-.. _FOSUserBundle on GitHub: https://github.com/FriendsOfSymfony/FOSUserBundle/
