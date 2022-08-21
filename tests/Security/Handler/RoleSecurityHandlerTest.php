@@ -17,6 +17,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\RoleSecurityHandler;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
@@ -69,12 +70,12 @@ final class RoleSecurityHandlerTest extends TestCase
     }
 
     /**
-     * NEXT_MAJOR: Remove the group legacy and only keep string $superAdminRoles and string $operation in dataProvider.
+     * NEXT_MAJOR: Remove the group legacy and only keep string $superAdminRoles and string|Expression $operation in dataProvider.
      *
      * @group legacy
      *
-     * @param string|string[] $superAdminRoles
-     * @param string|string[] $operation
+     * @param string|string[]                            $superAdminRoles
+     * @param string|Expression|array<string|Expression> $operation
      *
      * @dataProvider getIsGrantedTests
      */
@@ -88,7 +89,11 @@ final class RoleSecurityHandlerTest extends TestCase
 
         $this->authorizationChecker
             ->method('isGranted')
-            ->willReturnCallback(static function (string $attribute, ?object $object): bool {
+            ->willReturnCallback(static function ($attribute, ?object $object): bool {
+                if ($attribute instanceof Expression) {
+                    $attribute = (string) $attribute;
+                }
+
                 switch ($attribute) {
                     case 'ROLE_BATMAN':
                     case 'ROLE_IRONMAN':
@@ -109,7 +114,7 @@ final class RoleSecurityHandlerTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{bool, string|array<string>, string, string|array<string>}>
+     * @phpstan-return array<array{bool, string|array<string>, string, string|Expression|array<string|Expression>}>
      */
     public function getIsGrantedTests(): array
     {
@@ -179,6 +184,11 @@ final class RoleSecurityHandlerTest extends TestCase
             [false, [], 'foo.bar', ['CUSTOM']],
             [true, [], 'foo.bar', ['ROLE_CUSTOM']],
             [false, [], 'foo.bar', ['ROLE_ANOTHER_CUSTOM']],
+
+            // expression
+            [false, [], 'foo.bar', [new Expression('CUSTOM')]],
+            [true, [], 'foo.bar', [new Expression('ROLE_CUSTOM')]],
+            [false, [], 'foo.bar', [new Expression('ROLE_ANOTHER_CUSTOM')]],
 
             // ALL role
             [true, [], 'foo.bar.baz', 'LIST'],

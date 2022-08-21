@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Security\Handler;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
@@ -291,7 +292,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
     }
 
     /**
-     * @param string[] $attributes
+     * @param array<string|Expression> $attributes
      */
     private function isAnyGranted(array $attributes, ?object $subject = null): bool
     {
