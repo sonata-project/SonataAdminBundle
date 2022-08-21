@@ -100,7 +100,7 @@ Using ACL:
                 # permission related to the objects
                 object_permissions: [VIEW, EDIT, HISTORY, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]
 
-Later, we will explain how to set up ACL with the ``UserBundle``.
+Later, we will explain how to set up ACL with the ``SonataUserBundle``.
 
 Role handler
 ------------
