@@ -34,12 +34,16 @@ final class ConfigureQueryEvent extends Event
      */
     private AdminInterface $admin;
 
+    /**
+     * @var ProxyQueryInterface<object>
+     */
     private ProxyQueryInterface $proxyQuery;
 
     private string $context;
 
     /**
-     * @param AdminInterface<object> $admin
+     * @param AdminInterface<object>      $admin
+     * @param ProxyQueryInterface<object> $proxyQuery
      */
     public function __construct(AdminInterface $admin, ProxyQueryInterface $proxyQuery, string $context)
     {
@@ -61,6 +65,9 @@ final class ConfigureQueryEvent extends Event
         return $this->context;
     }
 
+    /**
+     * @return ProxyQueryInterface<object>
+     */
     public function getProxyQuery(): ProxyQueryInterface
     {
         return $this->proxyQuery;

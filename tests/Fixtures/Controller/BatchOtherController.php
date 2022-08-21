@@ -18,6 +18,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class BatchOtherController
 {
+    /**
+     * @param ProxyQueryInterface<object> $aCustomNameForTheProxyQuery
+     */
     public function batchAction(ProxyQueryInterface $aCustomNameForTheProxyQuery): Response
     {
         return new Response('Other Controller');

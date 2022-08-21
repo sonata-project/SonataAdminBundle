@@ -111,41 +111,21 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 
     private ?DataSourceInterface $dataSource = null;
 
-    /**
-     * The related form contractor.
-     */
     private ?FormContractorInterface $formContractor = null;
 
-    /**
-     * The related view builder.
-     */
     private ?ShowBuilderInterface $showBuilder = null;
 
-    /**
-     * The related list builder.
-     */
     private ?ListBuilderInterface $listBuilder = null;
 
     /**
-     * The related datagrid builder.
-     *
-     * @var DatagridBuilderInterface<ProxyQueryInterface>|null
+     * @phpstan-var DatagridBuilderInterface<ProxyQueryInterface<T>>|null
      */
     private ?DatagridBuilderInterface $datagridBuilder = null;
 
-    /**
-     * The translator component.
-     */
     private ?TranslatorInterface $translator = null;
 
-    /**
-     * The configuration pool.
-     */
     private ?Pool $configurationPool = null;
 
-    /**
-     * The router instance.
-     */
     private ?RouteGeneratorInterface $routeGenerator = null;
 
     private ?SecurityHandlerInterface $securityHandler = null;

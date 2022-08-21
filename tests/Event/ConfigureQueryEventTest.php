@@ -29,7 +29,7 @@ final class ConfigureQueryEventTest extends TestCase
     private $admin;
 
     /**
-     * @var ProxyQueryInterface&MockObject
+     * @var ProxyQueryInterface<object>&MockObject
      */
     private $proxyQuery;
 

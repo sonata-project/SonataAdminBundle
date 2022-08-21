@@ -26,12 +26,12 @@ use Sonata\AdminBundle\Datagrid\SimplePager;
 final class SimplePagerTest extends TestCase
 {
     /**
-     * @var SimplePager<ProxyQueryInterface>
+     * @var SimplePager<ProxyQueryInterface<object>>
      */
     private SimplePager $pager;
 
     /**
-     * @var MockObject&ProxyQueryInterface
+     * @var MockObject&ProxyQueryInterface<object>
      */
     private $proxyQuery;
 

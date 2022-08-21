@@ -48,6 +48,9 @@ final class BatchAdminController extends CRUDController
         return false;
     }
 
+    /**
+     * @param ProxyQueryInterface<object> $query
+     */
     public function batchActionFoo(ProxyQueryInterface $query): Response
     {
         return new Response();
@@ -61,6 +64,9 @@ final class BatchAdminController extends CRUDController
         return true;
     }
 
+    /**
+     * @param ProxyQueryInterface<object>|null $query
+     */
     public function batchActionBar(?ProxyQueryInterface $query = null): Response
     {
         return new Response();

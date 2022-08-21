@@ -33,7 +33,6 @@ final class BatchActionEvent extends Event
     public const TYPE_PRE_BATCH_ACTION = 'pre_batch_action';
 
     /**
-     * @var AdminInterface<object>
      * @phpstan-var AdminInterface<T>
      */
     private AdminInterface $admin;
@@ -45,6 +44,9 @@ final class BatchActionEvent extends Event
 
     private string $actionName;
 
+    /**
+     * @phpstan-var ProxyQueryInterface<T>
+     */
     private ProxyQueryInterface $proxyQuery;
 
     /**
@@ -58,6 +60,7 @@ final class BatchActionEvent extends Event
      * @param mixed[] $idx
      * @phpstan-param AdminInterface<T> $admin
      * @phpstan-param self::TYPE_* $type
+     * @phpstan-param ProxyQueryInterface<T> $proxyQuery
      */
     public function __construct(AdminInterface $admin, string $type, string $actionName, ProxyQueryInterface $proxyQuery, array &$idx, bool $allElements)
     {
@@ -90,6 +93,9 @@ final class BatchActionEvent extends Event
         return $this->actionName;
     }
 
+    /**
+     * @return ProxyQueryInterface<T>
+     */
     public function getProxyQuery(): ProxyQueryInterface
     {
         return $this->proxyQuery;
