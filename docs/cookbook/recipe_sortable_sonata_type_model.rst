@@ -279,9 +279,10 @@ Now update the ``UserBundle\Admin\UserAdmin.php`` by adding the ``sonata_type_mo
             ->addModelTransformer(new ExpectationDataTransformer($this->getSubject(), $this->modelManager));
     }
 
-There is two important things that we need to show here :
-* We use the field ``userHasExpectations`` of the user, but we need a list of ``Expectation`` to be displayed, that's explain the use of ``query``.
-* We want to persist ``UserHasExpectations``Entities, but we manage ``Expectation``, so we need to use a custom `ModelTransformer <https://symfony.com/doc/5.4/form/data_transformers.html>`_ to deal with it.
+There is two important things that we need to show here:
+
+- We use the field ``userHasExpectations`` of the user, but we need a list of ``Expectation`` to be displayed, that's explain the use of ``query``.
+- We want to persist ``UserHasExpectations`` entities, but we manage ``Expectation``, so we need to use a custom `ModelTransformer <https://symfony.com/doc/5.4/form/data_transformers.html>`_ to deal with it.
 
 Part 4 : Data Transformer
 ^^^^^^^^^^^^^^^^^^^^^^^^^
