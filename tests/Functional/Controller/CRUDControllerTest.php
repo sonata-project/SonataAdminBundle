@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Functional\Controller;
 
-use Sonata\AdminBundle\Tests\App\AppKernel;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -142,10 +141,5 @@ final class CRUDControllerTest extends WebTestCase
             ['/admin/tests/app/foo/test_id/bar/list'],
             ['/admin/tests/app/bar/test_id/baz/list'],
         ];
-    }
-
-    protected static function getKernelClass(): string
-    {
-        return AppKernel::class;
     }
 }
