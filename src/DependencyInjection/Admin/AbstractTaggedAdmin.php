@@ -55,7 +55,6 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
      * The class name managed by the admin class.
      *
      * @var string|null
-     *
      * @phpstan-var class-string<T>|null
      */
     protected $class;

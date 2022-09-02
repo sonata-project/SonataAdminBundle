@@ -35,9 +35,9 @@ final class RoutesCache
     /**
      * @param AdminInterface<object> $admin
      *
-     * @return array<string, string>
-     *
      * @throws \RuntimeException
+     *
+     * @return array<string, string>
      *
      * @phpstan-template T of object
      * @phpstan-param AdminInterface<T> $admin

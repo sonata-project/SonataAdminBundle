@@ -89,9 +89,9 @@ final class ListMapper implements MapperInterface
     /**
      * @param array<string, mixed> $fieldDescriptionOptions
      *
-     * @return static
-     *
      * @throws \LogicException
+     *
+     * @return static
      *
      * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */

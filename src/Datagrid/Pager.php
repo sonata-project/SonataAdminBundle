@@ -47,7 +47,6 @@ abstract class Pager implements PagerInterface
 
     /**
      * @var ProxyQueryInterface|null
-     *
      * @phpstan-var T|null
      */
     protected $query;

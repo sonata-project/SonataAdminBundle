@@ -25,7 +25,6 @@ final class FieldDescriptionCollection implements \ArrayAccess, \Countable
 {
     /**
      * @var array<string, FieldDescriptionInterface>
-     *
      * @phpstan-var array<string, TValue>
      */
     private array $elements = [];

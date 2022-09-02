@@ -35,10 +35,10 @@ final class ServicesManipulator
     }
 
     /**
+     * @throws \RuntimeException
+     *
      * @phpstan-param class-string $modelClass
      * @phpstan-param class-string $adminClass
-     *
-     * @throws \RuntimeException
      */
     public function addResource(string $serviceId, string $modelClass, string $adminClass, string $controllerName, string $managerType): void
     {

@@ -49,7 +49,6 @@ final class ArrayToModelTransformer implements DataTransformerInterface
      * @param object|array<string, mixed>|null $value
      *
      * @phpstan-param T|array<string, mixed>|null $value
-     *
      * @phpstan-return T
      */
     public function reverseTransform($value): object
@@ -77,7 +76,6 @@ final class ArrayToModelTransformer implements DataTransformerInterface
      * @return object|null
      *
      * @phpstan-param T|null $value
-     *
      * @phpstan-return T|null
      */
     public function transform($value)

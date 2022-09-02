@@ -207,6 +207,7 @@ final class ExtensionCompilerPassTest extends TestCase
 
     /**
      * @doesNotPerformAssertions
+     *
      * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::process
      */
     public function testProcessWithInvalidAdminId(): void
