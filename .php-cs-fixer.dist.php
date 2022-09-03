@@ -45,6 +45,11 @@ $rules = [
     'nullable_type_declaration_for_default_null_value' => ['use_nullable_type_declaration' => true],
     'ordered_class_elements' => true,
     'ordered_imports' => ['sort_algorithm' => 'alpha', 'imports_order' => ['class', 'function', 'const']],
+    'phpdoc_order' => ['order' => ['var', 'param', 'throws', 'return', 'phpstan-var', 'psalm-var', 'phpstan-param', 'psalm-param', 'phpstan-return', 'psalm-return']],
+    'phpdoc_separation' => ['groups' => [
+        ['phpstan-template', 'phpstan-extends', 'phpstan-implements', 'phpstan-var', 'psalm-var', 'phpstan-param', 'psalm-param', 'phpstan-return', 'psalm-return'],
+        ['psalm-suppress', 'phpstan-ignore-next-line'],
+    ]],
     'php_unit_strict' => true,
     'php_unit_test_case_static_method_calls' => true,
     'phpdoc_to_comment' => ['ignored_tags' => ['psalm-suppress', 'phpstan-var']],
