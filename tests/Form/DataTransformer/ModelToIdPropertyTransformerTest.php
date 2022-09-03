@@ -255,9 +255,9 @@ final class ModelToIdPropertyTransformerTest extends TestCase
 
         static::assertSame([
             123,
-            '_labels' => ['foo', 'bar', 'baz'],
             456,
             789,
+            '_labels' => ['foo', 'bar', 'baz'],
         ], $transformer->transform([$entity1, $entity2, $entity3]));
     }
 
