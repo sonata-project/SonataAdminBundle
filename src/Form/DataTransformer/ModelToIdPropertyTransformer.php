@@ -173,6 +173,8 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
             throw new \RuntimeException('Please define "property" parameter.');
         }
 
+        $labels = [];
+
         /** @phpstan-var array<T>|\Traversable<T> $collection */
         foreach ($collection as $model) {
             $id = current($this->modelManager->getIdentifierValues($model));
@@ -194,7 +196,11 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
             }
 
             $result[] = $id;
-            $result['_labels'][] = $label;
+            $labels[] = $label;
+        }
+
+        if ([] !== $labels) {
+            $result['_labels'] = $labels;
         }
 
         return $result;
