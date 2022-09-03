@@ -505,6 +505,7 @@ final class DatagridTest extends TestCase
 
     /**
      * @param int|array $perPage
+     *
      * @phpstan-param int|array{value: int} $perPage
      *
      * @dataProvider getBuildPagerWithPageTests

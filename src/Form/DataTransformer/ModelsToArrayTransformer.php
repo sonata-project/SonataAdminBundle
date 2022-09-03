@@ -87,9 +87,9 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * @param array<int|string>|null $value
      *
-     * @return Collection<int|string, object>|null
-     *
      * @throws UnexpectedTypeException
+     *
+     * @return Collection<int|string, object>|null
      *
      * @phpstan-return Collection<array-key, T>|null
      */

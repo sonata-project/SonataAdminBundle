@@ -43,9 +43,9 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @param array<string, mixed> $options
      *
-     * @return static
-     *
      * @throws \LogicException
+     *
+     * @return static
      */
     final public function with(string $name, array $options = []): self
     {
@@ -190,9 +190,9 @@ abstract class BaseGroupedMapper implements MapperInterface
     }
 
     /**
-     * @return static
-     *
      * @throws \LogicException
+     *
+     * @return static
      */
     final public function ifEnd(): self
     {
@@ -220,9 +220,9 @@ abstract class BaseGroupedMapper implements MapperInterface
     /**
      * Close the current group or tab.
      *
-     * @return static
-     *
      * @throws \LogicException
+     *
+     * @return static
      */
     final public function end(): self
     {

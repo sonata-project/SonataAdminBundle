@@ -104,6 +104,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     /**
      * @var array<string, mixed> the option collection
+     *
      * @phpstan-var FieldDescriptionOptions
      */
     protected $options = [];
@@ -373,9 +374,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     abstract protected function setParentAssociationMappings(array $parentAssociationMappings): void;
 
     /**
-     * @return mixed
-     *
      * @throws NoValueException
+     *
+     * @return mixed
      */
     final protected function getFieldValue(?object $object, string $fieldName)
     {

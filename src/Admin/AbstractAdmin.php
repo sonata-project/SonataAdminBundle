@@ -244,6 +244,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     /**
      * @var AdminExtensionInterface[]
+     *
      * @phpstan-var array<AdminExtensionInterface<T>>
      */
     private array $extensions = [];
@@ -262,6 +263,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * The subclasses supported by the admin class.
      *
      * @var string[]
+     *
      * @phpstan-var array<string, class-string<T>>
      */
     private array $subClasses = [];
@@ -2131,7 +2133,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * Configures the tab menu in your admin.
      *
      * @phpstan-template TChild of object
-     *
      * @phpstan-param AdminInterface<TChild>|null $childAdmin
      */
     protected function configureTabMenu(ItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
@@ -2236,6 +2237,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      *   $sortValues[DatagridInterface::SORT_ORDER] = 'DESC'
      *
      * @param array<string, string|int> $sortValues
+     *
      * @phpstan-param array{
      *     _page?: int,
      *     _per_page?: int,
@@ -2561,7 +2563,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     /**
      * @phpstan-template TChild of object
-     *
      * @phpstan-param AdminInterface<TChild>|null $childAdmin
      */
     private function buildTabMenu(string $action, ?AdminInterface $childAdmin = null): ?ItemInterface

@@ -28,9 +28,9 @@ final class TraversableToCollection
      *
      * @param iterable<mixed, mixed> $value
      *
-     * @return Collection<int|string, mixed>
-     *
      * @throws \TypeError
+     *
+     * @return Collection<int|string, mixed>
      *
      * @phpstan-template T
      * @phpstan-param iterable<mixed, T> $value

@@ -43,6 +43,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
 
     /**
      * @var string|string[]
+     *
      * @phpstan-var P
      */
     private $property;
@@ -51,6 +52,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
 
     /**
      * @var callable|null
+     *
      * @phpstan-var null|callable(T, P): string
      */
     private $toStringCallback;
@@ -80,12 +82,12 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
     /**
      * @param int|string|array<int|string|array<string>>|null $value
      *
-     * @return Collection<int|string, object>|object|null
-     *
      * @throws \UnexpectedValueException
      *
-     * @psalm-param int|string|(array{_labels?: array<string>}&array<int|string>)|null $value
+     * @return Collection<int|string, object>|object|null
+     *
      * @phpstan-param int|string|array<int|string|array<string>>|null $value
+     * @psalm-param int|string|(array{_labels?: array<string>}&array<int|string>)|null $value
      * @phpstan-return Collection<array-key, T>|T|null
      */
     public function reverseTransform($value)
@@ -118,13 +120,13 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
     /**
      * @param object|array<object>|\Traversable<object>|null $value
      *
-     * @return array<string|int, int|string|array<string>>
-     *
      * @throws \InvalidArgumentException
      *
+     * @return array<string|int, int|string|array<string>>
+     *
      * @phpstan-param T|array<T>|\Traversable<T>|null $value
-     * @psalm-return array{_labels?: array<string>}&array<int|string>
      * @phpstan-return array<int|string|array<string>>
+     * @psalm-return array{_labels?: array<string>}&array<int|string>
      *
      * @psalm-suppress PossiblyInvalidArrayAssignment @see https://github.com/vimeo/psalm/issues/5891
      */

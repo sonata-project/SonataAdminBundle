@@ -41,6 +41,7 @@ final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
 
     /**
      * @var AdminInterface<object>
+     *
      * @phpstan-var AdminInterface<T>
      */
     private AdminInterface $admin;

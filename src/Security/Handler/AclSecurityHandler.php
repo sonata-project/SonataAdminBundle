@@ -62,6 +62,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
 
     /**
      * @param string|string[] $superAdminRoles
+     *
      * @phpstan-param class-string<MaskBuilderInterface> $maskBuilderClass
      */
     public function __construct(

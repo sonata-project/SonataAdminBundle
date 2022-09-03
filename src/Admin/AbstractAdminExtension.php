@@ -25,6 +25,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-template T of object
+ *
  * @template-implements AdminExtensionInterface<T>
  */
 abstract class AbstractAdminExtension implements AdminExtensionInterface
@@ -99,6 +100,7 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     // NEXT_MAJOR: Remove the PHPDoc block as the interface will then specify the types
     /**
      * @param mixed[] $idx
+     *
      * @phpstan-param AdminInterface<T> $admin
      * @phpstan-param ProxyQueryInterface<T> $query
      */
