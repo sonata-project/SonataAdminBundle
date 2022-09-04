@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.18.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.17.0...4.18.0) - 2022-08-21
+### Added
+- [[#7913](https://github.com/sonata-project/SonataAdminBundle/pull/7913)] Security attributes can be string or symfony expression language expressions ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7909](https://github.com/sonata-project/SonataAdminBundle/pull/7909)] Added generics to the ProxyQueryInterface ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.17.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.16.0...4.17.0) - 2022-08-15
 ### Added
 - [[#7906](https://github.com/sonata-project/SonataAdminBundle/pull/7906)] Added ProxyManagerInterface ([@VincentLanglet](https://github.com/VincentLanglet))

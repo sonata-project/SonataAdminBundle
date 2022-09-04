@@ -24,7 +24,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 final class PagerTest extends TestCase
 {
     /**
-     * @var Pager<ProxyQueryInterface>&MockObject
+     * @var Pager<ProxyQueryInterface<object>>&MockObject
      */
     private $pager;
 

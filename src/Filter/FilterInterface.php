@@ -27,6 +27,9 @@ interface FilterInterface
 
     public const CONDITION_AND = 'AND';
 
+    /**
+     * @param ProxyQueryInterface<object> $query
+     */
     public function apply(ProxyQueryInterface $query, FilterData $filterData): void;
 
     /**
@@ -90,16 +93,16 @@ interface FilterInterface
     public function getParentAssociationMappings(): array;
 
     /**
-     * @throws \RuntimeException if the `field_mapping` option is not set
-     *
      * @return array<string, mixed> field mapping
+     *
+     * @throws \RuntimeException if the `field_mapping` option is not set
      */
     public function getFieldMapping(): array;
 
     /**
-     * @throws \RuntimeException if the `association_mapping` option is not set
-     *
      * @return array<string, mixed> association mapping
+     *
+     * @throws \RuntimeException if the `association_mapping` option is not set
      */
     public function getAssociationMapping(): array;
 

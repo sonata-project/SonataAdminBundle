@@ -16,6 +16,6 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 require __DIR__.'/vendor/autoload.php';
 
-$kernel = new AppKernel();
+$kernel = new AppKernel('test', false);
 
 return new Application($kernel);

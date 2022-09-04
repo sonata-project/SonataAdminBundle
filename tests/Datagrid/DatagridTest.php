@@ -36,17 +36,17 @@ use Symfony\Component\Form\Forms;
 final class DatagridTest extends TestCase
 {
     /**
-     * @var Datagrid<ProxyQueryInterface&Stub>
+     * @var Datagrid<ProxyQueryInterface<object>&Stub>
      */
     private Datagrid $datagrid;
 
     /**
-     * @var PagerInterface<ProxyQueryInterface&Stub>&MockObject
+     * @var PagerInterface<ProxyQueryInterface<object>&Stub>&MockObject
      */
     private $pager;
 
     /**
-     * @var ProxyQueryInterface&Stub
+     * @var ProxyQueryInterface<object>&Stub
      */
     private $query;
 
@@ -59,11 +59,13 @@ final class DatagridTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->query = $this->createStub(ProxyQueryInterface::class);
+        /** @var ProxyQueryInterface<object>&Stub $query */
+        $query = $this->createStub(ProxyQueryInterface::class);
+        $this->query = $query;
         $this->columns = new FieldDescriptionCollection();
         $this->formBuilder = Forms::createFormFactoryBuilder()->getFormFactory()->createBuilder();
 
-        /** @var PagerInterface<ProxyQueryInterface&Stub>&MockObject $pager */
+        /** @var PagerInterface<ProxyQueryInterface<object>&Stub>&MockObject $pager */
         $pager = $this->createMock(PagerInterface::class);
         $this->pager = $pager;
         $this->datagrid = new Datagrid($this->query, $this->columns, $pager, $this->formBuilder, []);

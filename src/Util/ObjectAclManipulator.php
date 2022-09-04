@@ -30,9 +30,9 @@ abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
      * @param AdminInterface<object>                $admin
      * @param \Traversable<ObjectIdentityInterface> $oids
      *
-     * @throws \Exception
-     *
      * @return array{int, int} [countAdded, countUpdated]
+     *
+     * @throws \Exception
      *
      * @phpstan-template T of object
      * @phpstan-param AdminInterface<T> $admin

@@ -149,6 +149,8 @@ class CRUDController extends AbstractController
      *
      * Execute a batch delete.
      *
+     * @phpstan-param ProxyQueryInterface<T> $query
+     *
      * @throws AccessDeniedException If access is not granted
      */
     public function batchActionDelete(ProxyQueryInterface $query): Response
@@ -1069,9 +1071,9 @@ class CRUDController extends AbstractController
     /**
      * NEXT_MAJOR: Add typehint.
      *
-     * @throws ModelManagerThrowable
-     *
      * @return string|null A custom error message to display in the flag bag instead of the generic one
+     *
+     * @throws ModelManagerThrowable
      */
     protected function handleModelManagerThrowable(ModelManagerThrowable $exception)
     {

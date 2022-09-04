@@ -152,9 +152,9 @@ final class RenderElementExtension extends AbstractExtension
      *
      * @param mixed $element
      *
-     * @throws \RuntimeException
-     *
      * @return mixed
+     *
+     * @throws \RuntimeException
      */
     public function renderRelationElement($element, FieldDescriptionInterface $fieldDescription)
     {

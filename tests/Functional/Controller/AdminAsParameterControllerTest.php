@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Functional\Controller;
 
-use Sonata\AdminBundle\Tests\App\AppKernel;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,10 +39,5 @@ final class AdminAsParameterControllerTest extends WebTestCase
             ['/admin/tests/app/admin-as-parameter/test?uniqid=test'],
             ['/admin/tests/app/admin-as-parameter/invokable?uniqid=invokable'],
         ];
-    }
-
-    protected static function getKernelClass(): string
-    {
-        return AppKernel::class;
     }
 }

@@ -142,12 +142,12 @@ interface TaggedAdminInterface extends MutableTemplateRegistryAwareInterface
     public function getListBuilder(): ListBuilderInterface;
 
     /**
-     * @param DatagridBuilderInterface<ProxyQueryInterface> $datagridBuilder
+     * @param DatagridBuilderInterface<ProxyQueryInterface<T>> $datagridBuilder
      */
     public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder): void;
 
     /**
-     * @return DatagridBuilderInterface<ProxyQueryInterface>
+     * @return DatagridBuilderInterface<ProxyQueryInterface<T>>
      */
     public function getDatagridBuilder(): DatagridBuilderInterface;
 

@@ -226,9 +226,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     private ?Request $request = null;
 
     /**
-     * The datagrid instance.
-     *
-     * @var DatagridInterface<ProxyQueryInterface>|null
+     * @phpstan-var DatagridInterface<ProxyQueryInterface<T>>|null
      */
     private ?DatagridInterface $datagrid = null;
 
@@ -1976,6 +1974,11 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->getModelManager()->getExportFields($this->getClass());
     }
 
+    /**
+     * @param ProxyQueryInterface<T> $query
+     *
+     * @return ProxyQueryInterface<T>
+     */
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
         return $query;
@@ -2378,7 +2381,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     }
 
     /**
-     * @return DatagridInterface<ProxyQueryInterface>|null
+     * @return DatagridInterface<ProxyQueryInterface<T>>|null
      */
     private function buildDatagrid(): ?DatagridInterface
     {
@@ -2408,6 +2411,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         $this->datagrid->getPager()->setMaxPageLinks($this->getMaxPageLinks());
 
+        /** @psalm-suppress InvalidArgument https://github.com/vimeo/psalm/issues/8423 */
         $mapper = new DatagridMapper($this->getDatagridBuilder(), $this->datagrid, $this);
 
         // build the datagrid filter

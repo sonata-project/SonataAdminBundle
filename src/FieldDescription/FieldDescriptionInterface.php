@@ -137,9 +137,9 @@ interface FieldDescriptionInterface
     /**
      * Returns the parent Admin (only used in nested admin).
      *
-     * @throws \LogicException
-     *
      * @return AdminInterface<object>
+     *
+     * @throws \LogicException
      */
     public function getParent(): AdminInterface;
 
@@ -186,9 +186,9 @@ interface FieldDescriptionInterface
     /**
      * Returns the associated Admin instance (only used if the field is linked to an Admin).
      *
-     * @throws \LogicException
-     *
      * @return AdminInterface<object>
+     *
+     * @throws \LogicException
      */
     public function getAssociationAdmin(): AdminInterface;
 
@@ -217,9 +217,9 @@ interface FieldDescriptionInterface
     /**
      * Returns the value linked to the description.
      *
-     * @throws NoValueException if the value cannot be determined
-     *
      * @return mixed
+     *
+     * @throws NoValueException if the value cannot be determined
      */
     public function getValue(object $object);
 
@@ -232,9 +232,9 @@ interface FieldDescriptionInterface
     public function setAdmin(AdminInterface $admin): void;
 
     /**
-     * @throws \LogicException
-     *
      * @return AdminInterface<object>
+     *
+     * @throws \LogicException
      */
     public function getAdmin(): AdminInterface;
 

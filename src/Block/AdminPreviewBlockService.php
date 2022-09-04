@@ -79,9 +79,9 @@ final class AdminPreviewBlockService extends AbstractBlockService
     }
 
     /**
-     * @throws \InvalidArgumentException if the provided admin code is invalid
-     *
      * @return AdminInterface<object>
+     *
+     * @throws \InvalidArgumentException if the provided admin code is invalid
      */
     private function getAdmin(string $code): AdminInterface
     {

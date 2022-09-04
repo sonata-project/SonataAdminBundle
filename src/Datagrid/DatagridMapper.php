@@ -32,25 +32,23 @@ use Sonata\AdminBundle\Mapper\MapperInterface;
 final class DatagridMapper implements MapperInterface
 {
     /**
-     * @var DatagridBuilderInterface<ProxyQueryInterface>
+     * @phpstan-var DatagridBuilderInterface<ProxyQueryInterface<T>>
      */
     private DatagridBuilderInterface $builder;
 
     /**
-     * @var DatagridInterface<ProxyQueryInterface>
+     * @phpstan-var DatagridInterface<ProxyQueryInterface<T>>
      */
     private DatagridInterface $datagrid;
 
     /**
-     * @var AdminInterface<object>
      * @phpstan-var AdminInterface<T>
      */
     private AdminInterface $admin;
 
     /**
-     * @param DatagridBuilderInterface<ProxyQueryInterface> $datagridBuilder
-     * @param DatagridInterface<ProxyQueryInterface>        $datagrid
-     *
+     * @phpstan-param DatagridBuilderInterface<ProxyQueryInterface<T>> $datagridBuilder
+     * @phpstan-param DatagridInterface<ProxyQueryInterface<T>>        $datagrid
      * @phpstan-param AdminInterface<T> $admin
      */
     public function __construct(
@@ -72,9 +70,9 @@ final class DatagridMapper implements MapperInterface
      * @param array<string, mixed> $filterOptions
      * @param array<string, mixed> $fieldDescriptionOptions
      *
-     * @throws \LogicException
-     *
      * @return static
+     *
+     * @throws \LogicException
      *
      * @phpstan-param class-string|null $type
      * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
