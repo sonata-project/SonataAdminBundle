@@ -78,10 +78,10 @@ class AdminHelper
      * Note:
      *   This code is ugly, but there is no better way of doing it.
      *
-     * @return array{FieldDescriptionInterface|null, FormInterface}
-     *
      * @throws \RuntimeException
      * @throws \Exception
+     *
+     * @return array{FieldDescriptionInterface|null, FormInterface}
      *
      * @phpstan-template T of object
      * @phpstan-param AdminInterface<T> $admin

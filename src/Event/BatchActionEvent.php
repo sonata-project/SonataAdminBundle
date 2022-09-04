@@ -58,6 +58,7 @@ final class BatchActionEvent extends Event
 
     /**
      * @param mixed[] $idx
+     *
      * @phpstan-param AdminInterface<T> $admin
      * @phpstan-param self::TYPE_* $type
      * @phpstan-param ProxyQueryInterface<T> $proxyQuery

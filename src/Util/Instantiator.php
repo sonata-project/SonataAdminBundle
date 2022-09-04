@@ -22,6 +22,7 @@ final class Instantiator
 {
     /**
      * @template T of object
+     *
      * @phpstan-param class-string<T> $class
      * @phpstan-return T
      */

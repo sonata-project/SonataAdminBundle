@@ -471,9 +471,9 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     /**
      * Configure buttons for an action.
      *
-     * @phpstan-param T|null $object
-     *
      * @return array<string, array<string, mixed>>
+     *
+     * @phpstan-param T|null $object
      */
     public function getActionButtons(string $action, ?object $object = null): array;
 

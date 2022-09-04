@@ -41,6 +41,7 @@ final class PersistenceEvent extends Event
 
     /**
      * @var AdminInterface<object>
+     *
      * @phpstan-var AdminInterface<T>
      */
     private AdminInterface $admin;

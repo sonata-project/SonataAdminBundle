@@ -37,6 +37,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 {
     /**
      * @var array<string, mixed>
+     *
      * @phpstan-var SonataAdminConfiguration
      */
     private array $defaultConfiguration;

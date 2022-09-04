@@ -128,9 +128,9 @@ final class RenderElementRuntime implements RuntimeExtensionInterface
     /**
      * @param mixed $element
      *
-     * @return mixed
-     *
      * @throws \RuntimeException
+     *
+     * @return mixed
      */
     public function renderRelationElement($element, FieldDescriptionInterface $fieldDescription)
     {
@@ -174,9 +174,9 @@ final class RenderElementRuntime implements RuntimeExtensionInterface
      *
      * @param object|mixed[] $listElement
      *
-     * @return array{object, mixed} An array containing object and value
-     *
      * @throws \TypeError when $listElement is not an object or an array with an object on offset 0
+     *
+     * @return array{object, mixed} An array containing object and value
      */
     private function getObjectAndValueFromListElement(
         $listElement,

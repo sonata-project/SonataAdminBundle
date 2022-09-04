@@ -22,6 +22,7 @@ final class AuditManager implements AuditManagerInterface
 {
     /**
      * @var array<string, string[]>
+     *
      * @phpstan-var array<string, class-string[]>
      */
     private array $readers = [];

@@ -329,6 +329,7 @@ final class AdminTest extends TestCase
 
     /**
      * @phpstan-return iterable<array-key, array{class-string, string}>
+     *
      * @psalm-suppress InvalidReturnType, InvalidReturnStatement
      */
     public function provideGetBaseRoutePattern(): iterable
@@ -483,6 +484,7 @@ final class AdminTest extends TestCase
 
     /**
      * @phpstan-return iterable<array-key, array{class-string, string}>
+     *
      * @psalm-suppress InvalidReturnType, InvalidReturnStatement
      */
     public function provideGetBaseRouteName(): iterable
@@ -2016,6 +2018,7 @@ final class AdminTest extends TestCase
      * @param class-string $objFqn
      *
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getDashboardActions
+     *
      * @dataProvider provideGetBaseRouteName
      */
     public function testDefaultDashboardActionsArePresent(string $objFqn, string $expected): void
