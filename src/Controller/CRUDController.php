@@ -1360,8 +1360,27 @@ class CRUDController extends AbstractController
         }
 
         $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
+        $formName = $form->getName();
+
+        foreach ($form->getErrors(true) as $formError) {
+            $origin = $formError->getOrigin();
+
+            $fieldName = $origin->getName();
+            $name = '';
+
+            while ($origin = $origin->getParent()) {
+                if ($formName !== $origin->getName()) {
+                    $name = $origin->getName() . '_' . $name;
+                }
+            }
+
+            $fieldName = $formName . '_' . $name . $fieldName;
+
+            if (!in_array($fieldName, $errors)) {
+                $errors[$fieldName] = [];
+            }
+
+            $errors[$fieldName][] = $formError->getMessage();
         }
 
         return $this->renderJson([
