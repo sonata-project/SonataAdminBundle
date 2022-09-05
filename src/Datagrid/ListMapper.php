@@ -48,6 +48,7 @@ final class ListMapper implements MapperInterface
 
     /**
      * @var AdminInterface<object>
+     *
      * @phpstan-var AdminInterface<T>
      */
     private AdminInterface $admin;
@@ -89,9 +90,9 @@ final class ListMapper implements MapperInterface
     /**
      * @param array<string, mixed> $fieldDescriptionOptions
      *
-     * @return static
-     *
      * @throws \LogicException
+     *
+     * @return static
      *
      * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */

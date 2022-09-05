@@ -34,6 +34,7 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
  *     type?: string,
  *     virtual_field?: bool
  * }&array<string, mixed>
+ *
  * @phpstan-type FieldDescriptionOptions = array<string, mixed>
  */
 interface FieldDescriptionInterface
@@ -137,9 +138,9 @@ interface FieldDescriptionInterface
     /**
      * Returns the parent Admin (only used in nested admin).
      *
-     * @return AdminInterface<object>
-     *
      * @throws \LogicException
+     *
+     * @return AdminInterface<object>
      */
     public function getParent(): AdminInterface;
 
@@ -186,9 +187,9 @@ interface FieldDescriptionInterface
     /**
      * Returns the associated Admin instance (only used if the field is linked to an Admin).
      *
-     * @return AdminInterface<object>
-     *
      * @throws \LogicException
+     *
+     * @return AdminInterface<object>
      */
     public function getAssociationAdmin(): AdminInterface;
 
@@ -217,9 +218,9 @@ interface FieldDescriptionInterface
     /**
      * Returns the value linked to the description.
      *
-     * @return mixed
-     *
      * @throws NoValueException if the value cannot be determined
+     *
+     * @return mixed
      */
     public function getValue(object $object);
 
@@ -232,9 +233,9 @@ interface FieldDescriptionInterface
     public function setAdmin(AdminInterface $admin): void;
 
     /**
-     * @return AdminInterface<object>
-     *
      * @throws \LogicException
+     *
+     * @return AdminInterface<object>
      */
     public function getAdmin(): AdminInterface;
 

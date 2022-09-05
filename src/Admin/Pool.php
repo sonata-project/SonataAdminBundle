@@ -60,12 +60,14 @@ final class Pool
 
     /**
      * @var array<string, array<string, mixed>>
+     *
      * @phpstan-var array<string, Group>
      */
     private array $adminGroups = [];
 
     /**
      * @var array<string, string[]>
+     *
      * @phpstan-var array<class-string, string[]>
      */
     private array $adminClasses = [];
@@ -186,9 +188,9 @@ final class Pool
      * Returns an admin class by its Admin code
      * ie : sonata.news.admin.post|sonata.news.admin.comment => return the child class of post.
      *
-     * @return AdminInterface<object>
-     *
      * @throws AdminCodeNotFoundException
+     *
+     * @return AdminInterface<object>
      */
     public function getAdminByAdminCode(string $adminCode): AdminInterface
     {
@@ -237,11 +239,11 @@ final class Pool
     }
 
     /**
-     * @return AdminInterface<object>
-     *
      * @throws AdminClassNotFoundException if there is no admin for the field description target model
      * @throws TooManyAdminClassException  if there is too many admin for the field description target model
      * @throws AdminCodeNotFoundException  if the admin_code option is invalid
+     *
+     * @return AdminInterface<object>
      */
     public function getAdminByFieldDescription(FieldDescriptionInterface $fieldDescription): AdminInterface
     {
@@ -262,9 +264,9 @@ final class Pool
     /**
      * Returns a new admin instance depends on the given code.
      *
-     * @return AdminInterface<object>
-     *
      * @throws AdminCodeNotFoundException if the code is not found in admin pool
+     *
+     * @return AdminInterface<object>
      */
     public function getInstance(string $id): AdminInterface
     {

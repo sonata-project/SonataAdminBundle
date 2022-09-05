@@ -70,9 +70,9 @@ final class DatagridMapper implements MapperInterface
      * @param array<string, mixed> $filterOptions
      * @param array<string, mixed> $fieldDescriptionOptions
      *
-     * @return static
-     *
      * @throws \LogicException
+     *
+     * @return static
      *
      * @phpstan-param class-string|null $type
      * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions

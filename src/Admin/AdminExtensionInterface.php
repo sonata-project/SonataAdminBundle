@@ -57,7 +57,6 @@ interface AdminExtensionInterface
      * Builds the tab menu.
      *
      * @phpstan-template TChild of object
-     *
      * @phpstan-param AdminInterface<T> $admin
      * @phpstan-param AdminInterface<TChild>|null $childAdmin
      */
@@ -132,7 +131,9 @@ interface AdminExtensionInterface
 
     /**
      * @param mixed[] $idx
+     *
      * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param ProxyQueryInterface<T> $query
      */
     public function preBatchAction(AdminInterface $admin, string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements): void;
 

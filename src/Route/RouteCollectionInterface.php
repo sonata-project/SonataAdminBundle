@@ -68,9 +68,9 @@ interface RouteCollectionInterface
     public function remove(string $name): self;
 
     /**
-     * @return static
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return static
      */
     public function restore(string $name): self;
 

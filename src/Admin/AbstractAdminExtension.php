@@ -25,6 +25,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-template T of object
+ *
  * @template-implements AdminExtensionInterface<T>
  */
 abstract class AbstractAdminExtension implements AdminExtensionInterface

@@ -19,7 +19,6 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 /**
  * @phpstan-template T of EntityInterface
- *
  * @phpstan-implements LockInterface<T>
  * @phpstan-implements ModelManagerInterface<T>
  */

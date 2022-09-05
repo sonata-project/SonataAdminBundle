@@ -32,6 +32,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  * @phpstan-import-type Item from Pool
  *
  * NEXT_MAJOR: Remove the default_label_catalogue key.
+ *
  * @phpstan-type SonataAdminConfigurationOptions = array{
  *     confirm_exit: bool,
  *     default_admin_route: string,
@@ -55,7 +56,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *     use_select2: bool,
  *     use_stickyforms: bool,
  * }
- *
  * @phpstan-type SonataAdminConfiguration = array{
  *     assets: array{
  *         extra_javascripts: list<string>,

@@ -93,16 +93,16 @@ interface FilterInterface
     public function getParentAssociationMappings(): array;
 
     /**
-     * @return array<string, mixed> field mapping
-     *
      * @throws \RuntimeException if the `field_mapping` option is not set
+     *
+     * @return array<string, mixed> field mapping
      */
     public function getFieldMapping(): array;
 
     /**
-     * @return array<string, mixed> association mapping
-     *
      * @throws \RuntimeException if the `association_mapping` option is not set
+     *
+     * @return array<string, mixed> association mapping
      */
     public function getAssociationMapping(): array;
 
