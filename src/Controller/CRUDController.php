@@ -1376,7 +1376,7 @@ class CRUDController extends AbstractController
 
             $fieldName = $formName . '_' . $name . $fieldName;
 
-            if (!in_array($fieldName, $errors)) {
+            if (!isset($errors[$fieldName])) {
                 $errors[$fieldName] = [];
             }
 
