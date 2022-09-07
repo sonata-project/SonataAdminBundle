@@ -116,7 +116,6 @@ Now we need to define sortable action::
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Datagrid\DatagridInterface;
     use Sonata\AdminBundle\Datagrid\ListMapper;
-    use Sonata\AdminBundle\Route\RouteCollection;
     use Runroom\SortableBehaviorBundle\Admin\SortableAdminTrait;
 
     final class ClientAdmin extends AbstractAdmin
