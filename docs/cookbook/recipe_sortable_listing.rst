@@ -113,9 +113,9 @@ Now we need to define sortable action::
 
     namespace App\Admin;
 
+    use Runroom\SortableBehaviorBundle\Admin\SortableAdminTrait;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Datagrid\ListMapper;
-    use Runroom\SortableBehaviorBundle\Admin\SortableAdminTrait;
 
     final class ClientAdmin extends AbstractAdmin
     {
