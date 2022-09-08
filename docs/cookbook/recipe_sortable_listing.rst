@@ -90,7 +90,7 @@ In order to add new routes for these actions and to apply right sorting use ``Ru
     use Runroom\SortableBehaviorBundle\Admin\SortableAdminTrait;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
 
-    class ClientAdmin extends AbstractAdmin
+    final class ClientAdmin extends AbstractAdmin
     {
         use SortableAdminTrait;
     }
