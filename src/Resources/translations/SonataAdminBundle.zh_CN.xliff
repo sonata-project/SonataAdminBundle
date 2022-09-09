@@ -446,6 +446,10 @@
         <source>link_actions</source>
         <target>其他功能</target>
       </trans-unit>
+      <trans-unit id="list.label__actions">
+        <source>list.label__actions</source>
+        <target>其他功能</target>
+      </trans-unit>
       <trans-unit id="noscript_warning">
         <source>noscript_warning</source>
         <target>你的浏览器并不支持Javascript，所以有些功能不能正常使用</target>

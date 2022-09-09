@@ -446,6 +446,10 @@
         <source>link_actions</source>
         <target>Veiksmai</target>
       </trans-unit>
+      <trans-unit id="list.label__actions">
+        <source>list.label__actions</source>
+        <target>Veiksmai</target>
+      </trans-unit>
       <trans-unit id="noscript_warning">
         <source>noscript_warning</source>
         <target>Javascript scenarijus jūsų interneto naršyklėje neleidžiamas. Kai kurios funkcijos neveiks tinkamai.</target>

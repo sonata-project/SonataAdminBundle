@@ -446,6 +446,10 @@
         <source>link_actions</source>
         <target>Akcije</target>
       </trans-unit>
+      <trans-unit id="list.label__actions">
+        <source>list.label__actions</source>
+        <target>Akcije</target>
+      </trans-unit>
       <trans-unit id="noscript_warning">
         <source>noscript_warning</source>
         <target>Vaš internet preglednik ne podržava JavaScript. Neke mogućnosti neće raditi ispravno.</target>
