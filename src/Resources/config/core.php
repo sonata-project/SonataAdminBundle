@@ -92,6 +92,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
         // Services used to format the label, default is sonata.admin.label.strategy.noop
 
+        // NEXT_MAJOR: Remove this line.
         ->set('sonata.admin.label.strategy.bc', BCLabelTranslatorStrategy::class)
 
         ->set('sonata.admin.label.strategy.native', NativeLabelTranslatorStrategy::class)
