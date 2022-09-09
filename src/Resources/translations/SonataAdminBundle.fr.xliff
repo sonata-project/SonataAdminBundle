@@ -444,7 +444,7 @@
       </trans-unit>
       <trans-unit id="link_actions">
         <source>link_actions</source>
-        <target>Liste d'actions</target>
+        <target>Actions</target>
       </trans-unit>
       <trans-unit id="list.label__actions">
         <source>list.label__actions</source>
