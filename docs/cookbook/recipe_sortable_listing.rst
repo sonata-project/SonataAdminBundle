@@ -105,7 +105,7 @@ Define Admin in ``services.yaml``
         app.admin.client:
             class: App\Admin\ClientAdmin
             tags:
-                - { name: sonata.admin, model_class: App\Entity\Client, controller: 'SonataAdminBundle:CRUD', manager_type: orm, label: 'Clients' }
+                - { name: sonata.admin, model_class: App\Entity\Client, manager_type: orm, label: 'Clients' }
 
 Now we need to define sortable action::
 
