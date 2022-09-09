@@ -142,6 +142,16 @@ final class ListMapper implements MapperInterface
             $fieldDescriptionOptions
         );
 
+        $targetModel = $fieldDescription->getTargetModel();
+
+        if (true === ($fieldDescriptionOptions['sortable'] ?? false) && null !== $targetModel) {
+            // @todo: Find a better approach than `getExportFields()`.
+            $fields = $fieldDescription->getAdmin()->getModelManager()->getExportFields($targetModel);
+            if (!\in_array($fieldDescription->getSortFieldMapping()['fieldName'], $fields, true)) {
+                $fieldDescription->setOption('sortable', false);
+            }
+        }
+
         if (null === $fieldDescription->getLabel()) {
             $fieldDescription->setOption(
                 'label',
