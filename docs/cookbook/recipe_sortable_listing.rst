@@ -28,7 +28,7 @@ Configuration
 Bundles
 ^^^^^^^
 - install ``gedmo/doctrine-extensions`` bundle in your project (check ``stof/doctrine-extensions-bundle`` for easier integration in your project) and enable the sortable feature in your config
-- install ``runroom-packages/sortable-behavior-bundle`` and enable it in ``config/bundles.php``
+- install ``runroom-packages/sortable-behavior-bundle`` at least version ^0.16 and enable it in ``config/bundles.php``
 
 The recipe
 ----------
@@ -95,7 +95,7 @@ In order to add new routes for these actions and to apply right sorting use ``Ru
         use SortableAdminTrait;
     }
 
-Now you can update your ``services.yaml`` to use the handler provided by the ``RunroomSortableBehaviorBundle``
+Define Admin in ``services.yaml``
 
 .. code-block:: yaml
 
@@ -105,7 +105,7 @@ Now you can update your ``services.yaml`` to use the handler provided by the ``R
         app.admin.client:
             class: App\Admin\ClientAdmin
             tags:
-                - { name: sonata.admin, model_class: App\Entity\Client, controller: 'RunroomSortableBehaviorBundle:SortableAdmin', manager_type: orm, label: 'Clients' }
+                - { name: sonata.admin, model_class: App\Entity\Client, controller: 'SonataAdminBundle:CRUD', manager_type: orm, label: 'Clients' }
 
 Now we need to define sortable action::
 
