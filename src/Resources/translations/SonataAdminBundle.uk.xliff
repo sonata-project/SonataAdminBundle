@@ -446,6 +446,10 @@
         <source>link_actions</source>
         <target>Дії</target>
       </trans-unit>
+      <trans-unit id="list.label__actions">
+        <source>list.label__actions</source>
+        <target>Дії</target>
+      </trans-unit>
       <trans-unit id="noscript_warning">
         <source>noscript_warning</source>
         <target>Javascript вимкнений у вашому браузері. Деякі функції не будуть працювати належним чином.</target>

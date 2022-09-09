@@ -446,6 +446,10 @@
         <source>link_actions</source>
         <target>Accions</target>
       </trans-unit>
+      <trans-unit id="list.label__actions">
+        <source>list.label__actions</source>
+        <target>Accions</target>
+      </trans-unit>
       <trans-unit id="noscript_warning">
         <source>noscript_warning</source>
         <target>Javascript està deshabilitat al teu navegador. Algunes característiques no funcionaran correctament.</target>

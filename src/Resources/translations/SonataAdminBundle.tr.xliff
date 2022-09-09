@@ -446,6 +446,10 @@
         <source>link_actions</source>
         <target>İşlemler</target>
       </trans-unit>
+      <trans-unit id="list.label__actions">
+        <source>list.label__actions</source>
+        <target>İşlemler</target>
+      </trans-unit>
       <trans-unit id="noscript_warning">
         <source>noscript_warning</source>
         <target>Tarayıcınızda Javascript devre dışı. Bazı özellikler doğru çalışmayabilir.</target>
