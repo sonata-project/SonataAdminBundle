@@ -446,6 +446,10 @@
         <source>link_actions</source>
         <target>操作</target>
       </trans-unit>
+      <trans-unit id="list.label__actions">
+        <source>list.label__actions</source>
+        <target>操作</target>
+      </trans-unit>
       <trans-unit id="noscript_warning">
         <source>noscript_warning</source>
         <target>由於你的瀏覽器已將 Javascript 關閉，某些功能或不能正常運作。</target>

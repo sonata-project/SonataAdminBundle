@@ -446,6 +446,10 @@
         <source>link_actions</source>
         <target>Akcie</target>
       </trans-unit>
+      <trans-unit id="list.label__actions">
+        <source>list.label__actions</source>
+        <target>Akcie</target>
+      </trans-unit>
       <trans-unit id="noscript_warning">
         <source>noscript_warning</source>
         <target>Javascript je zakázaný vo vašom webovom prehliadači. Niektoré funkcie nebudú pracovať správne.</target>
