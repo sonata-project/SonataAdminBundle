@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 final class ModelToIdPropertyTransformerTest extends TestCase
 {
@@ -137,8 +138,8 @@ final class ModelToIdPropertyTransformerTest extends TestCase
     {
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false);
 
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionMessage('Value should not be an array.');
+        $this->expectException(UnexpectedTypeException::class);
+        $this->expectExceptionMessage('Expected argument of type "int|string", "array" given');
 
         $transformer->reverseTransform([123]);
     }
@@ -152,8 +153,9 @@ final class ModelToIdPropertyTransformerTest extends TestCase
     {
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionMessage(sprintf('Value should be array, %s given.', $type));
+        $this->expectException(UnexpectedTypeException::class);
+        // TODO: Uncomment the following like when dropping support for Symfony 4
+        // $this->expectExceptionMessage(sprintf('Expected argument of type "array", "%s" given', $type));
 
         $transformer->reverseTransform($params);
     }
@@ -164,11 +166,11 @@ final class ModelToIdPropertyTransformerTest extends TestCase
     public function getReverseTransformMultipleInvalidTypeTests(): array
     {
         return [
-            [true, 'boolean'],
-            [12, 'integer'],
-            [12.9, 'double'],
+            [true, 'bool'],
+            [12, 'int'],
+            [12.9, 'float'],
             ['_labels', 'string'],
-            [new \stdClass(), 'object'],
+            [new \stdClass(), \stdClass::class],
         ];
     }
 
@@ -178,14 +180,14 @@ final class ModelToIdPropertyTransformerTest extends TestCase
         $model->setBar('example');
 
         $this->modelManager->expects(static::once())
-            ->method('getIdentifierValues')
-            ->willReturn([123]);
+            ->method('getNormalizedIdentifier')
+            ->willReturn('123');
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false);
 
         static::assertSame([], $transformer->transform(null));
 
-        static::assertSame([123, '_labels' => ['example']], $transformer->transform($model));
+        static::assertSame(['123', '_labels' => ['example']], $transformer->transform($model));
     }
 
     public function testTransformWorksWithArrayAccessEntity(): void
@@ -197,12 +199,12 @@ final class ModelToIdPropertyTransformerTest extends TestCase
         $model->setBar('example');
 
         $modelManager->expects(static::once())
-            ->method('getIdentifierValues')
-            ->willReturn([123]);
+            ->method('getNormalizedIdentifier')
+            ->willReturn('123');
 
         $transformer = new ModelToIdPropertyTransformer($modelManager, FooArrayAccess::class, 'bar', false);
 
-        static::assertSame([123, '_labels' => ['example']], $transformer->transform($model));
+        static::assertSame(['123', '_labels' => ['example']], $transformer->transform($model));
     }
 
     public function testTransformToStringCallback(): void
@@ -212,12 +214,12 @@ final class ModelToIdPropertyTransformerTest extends TestCase
         $model->setBaz('bazz');
 
         $this->modelManager->expects(static::once())
-            ->method('getIdentifierValues')
-            ->willReturn([123]);
+            ->method('getNormalizedIdentifier')
+            ->willReturn('123');
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, static fn (Foo $model): string => (string) $model->getBaz());
 
-        static::assertSame([123, '_labels' => ['bazz']], $transformer->transform($model));
+        static::assertSame(['123', '_labels' => ['bazz']], $transformer->transform($model));
     }
 
     public function testTransformMultiple(): void
@@ -232,21 +234,21 @@ final class ModelToIdPropertyTransformerTest extends TestCase
         $entity3->setBar('baz');
 
         $this->modelManager->expects(static::exactly(3))
-            ->method('getIdentifierValues')
-            ->willReturnCallback(static function (Foo $value) use ($entity1, $entity2, $entity3): array {
+            ->method('getNormalizedIdentifier')
+            ->willReturnCallback(static function (Foo $value) use ($entity1, $entity2, $entity3): ?string {
                 if ($value === $entity1) {
-                    return [123];
+                    return '123';
                 }
 
                 if ($value === $entity2) {
-                    return [456];
+                    return '456';
                 }
 
                 if ($value === $entity3) {
-                    return [789];
+                    return '789';
                 }
 
-                return [999];
+                return null;
             });
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
@@ -254,9 +256,9 @@ final class ModelToIdPropertyTransformerTest extends TestCase
         static::assertSame([], $transformer->transform(null));
 
         static::assertSame([
-            123,
-            456,
-            789,
+            '123',
+            '456',
+            '789',
             '_labels' => ['foo', 'bar', 'baz'],
         ], $transformer->transform([$entity1, $entity2, $entity3]));
     }
@@ -320,12 +322,12 @@ final class ModelToIdPropertyTransformerTest extends TestCase
 
         $model = new Foo();
         $this->modelManager->expects(static::once())
-            ->method('getIdentifierValues')
-            ->willReturn([123]);
+            ->method('getNormalizedIdentifier')
+            ->willReturn('123');
 
         $value = $transformer->transform($model);
         static::assertSame([
-            123,
+            '123',
             '_labels' => ['nice_label'],
         ], $value);
     }

@@ -49,11 +49,11 @@ final class ModelChoiceLoaderTest extends TestCase
     public function testLoadFromEntityWithSamePropertyValues(): void
     {
         $fooA = new Foo();
-        $fooA->setBar(1);
+        $fooA->setBar('1');
         $fooA->setBaz('baz');
 
         $fooB = new Foo();
-        $fooB->setBar(2);
+        $fooB->setBar('2');
         $fooB->setBaz('baz');
 
         $this->modelManager->expects(static::once())
@@ -61,8 +61,8 @@ final class ModelChoiceLoaderTest extends TestCase
             ->willReturn([$fooA, $fooB]);
 
         $this->modelManager
-            ->method('getIdentifierValues')
-            ->willReturnCallback(static fn (Foo $foo): array => [$foo->getBar()]);
+            ->method('getNormalizedIdentifier')
+            ->willReturnCallback(static fn (Foo $foo): ?string => $foo->getBar());
 
         $modelChoiceLoader = new ModelChoiceLoader(
             $this->modelManager,

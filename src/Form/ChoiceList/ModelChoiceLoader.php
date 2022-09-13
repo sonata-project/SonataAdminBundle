@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\ChoiceList;
 
-use Sonata\AdminBundle\BCLayer\BCHelper;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Model\ProxyResolverInterface;
-use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface;
+use Symfony\Component\Form\Exception\InvalidArgumentException;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
@@ -72,7 +71,7 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
 
         if (null !== $query) {
             if (!$this->modelManager->supportsQuery($query)) {
-                throw new \InvalidArgumentException('The model manager does not support the query.');
+                throw new InvalidArgumentException('The model manager does not support the query.');
             }
 
             $this->query = $query;
@@ -99,15 +98,10 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
                     // Otherwise expect a __toString() method in the entity
                     $valueObject = (string) $model;
                 } else {
-                    $class = $this->modelManager instanceof ProxyResolverInterface
-                        ? $this->modelManager->getRealClass($model)
-                        // NEXT_MAJOR: Change to `\get_class`
-                        : BCHelper::getClass($model);
-
-                    throw new \LogicException(sprintf(
+                    throw new TransformationFailedException(sprintf(
                         'Unable to convert the model "%s" to string, provide "property" option'
                         .' or implement "__toString()" method in your model.',
-                        $class
+                        $this->class
                     ));
                 }
 
@@ -115,10 +109,15 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
                     $choices[$valueObject] = [];
                 }
 
-                $choices[$valueObject][] = implode(
-                    AdapterInterface::ID_SEPARATOR,
-                    $this->getIdentifierValues($model)
-                );
+                $identifier = $this->modelManager->getNormalizedIdentifier($model);
+                if (null === $identifier) {
+                    throw new TransformationFailedException(sprintf(
+                        'No identifier was found for the model "%s".',
+                        $this->class
+                    ));
+                }
+
+                $choices[$valueObject][] = $identifier;
             }
 
             $finalChoices = [];
@@ -146,25 +145,5 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
     public function loadValuesForChoices(array $choices, $value = null): array
     {
         return $this->loadChoiceList($value)->getValuesForChoices($choices);
-    }
-
-    /**
-     * @return mixed[]
-     */
-    private function getIdentifierValues(object $model): array
-    {
-        try {
-            return $this->modelManager->getIdentifierValues($model);
-        } catch (\Exception $e) {
-            $class = $this->modelManager instanceof ProxyResolverInterface
-                ? $this->modelManager->getRealClass($model)
-                // NEXT_MAJOR: Change to `\get_class`
-                : BCHelper::getClass($model);
-
-            throw new \InvalidArgumentException(sprintf(
-                'Unable to retrieve the identifier values for entity %s',
-                $class
-            ), 0, $e);
-        }
     }
 }
