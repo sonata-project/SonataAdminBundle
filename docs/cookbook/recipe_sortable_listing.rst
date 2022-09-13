@@ -28,7 +28,7 @@ Configuration
 Bundles
 ^^^^^^^
 - install ``gedmo/doctrine-extensions`` bundle in your project (check ``stof/doctrine-extensions-bundle`` for easier integration in your project) and enable the sortable feature in your config
-- install ``pixassociates/sortable-behavior-bundle`` at least version ^1.1 in your project
+- install ``runroom-packages/sortable-behavior-bundle`` at least version ^0.16 and enable it in ``config/bundles.php``
 
 The recipe
 ----------
@@ -70,31 +70,32 @@ feature in your configuration such as
                 sortable: true
 
 In our ``ClientAdmin`` we are going to add a custom action in the ``configureListFields`` method
-and use the default twig template provided in the ``pixSortableBehaviorBundle``::
+and use the default twig template provided in the ``RunroomSortableBehaviorBundle``::
 
     $list
-        ->add(ListMapper::NAME_ACTIONS, null, [
+        ->add(ListMapper::NAME_ACTIONS, ListMapper::TYPE_ACTIONS, [
             'actions' => [
                 'move' => [
-                    'template' => '@PixSortableBehavior/Default/_sort.html.twig'
+                    'template' => '@RunroomSortableBehavior/sort.html.twig'
                 ],
             ]
         ]);
 
-In order to add new routes for these actions we are also adding the following method::
+In order to add new routes for these actions and to apply right sorting use ``Runroom\SortableBehaviorBundle\Admin\SortableAdminTrait`` ::
 
     // src/Admin/ClientAdmin.php
 
     namespace App\Admin;
 
-    use Sonata\AdminBundle\Route\RouteCollectionInterface;
+    use Runroom\SortableBehaviorBundle\Admin\SortableAdminTrait;
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
 
-    protected function configureRoutes(RouteCollectionInterface $collection): void
+    final class ClientAdmin extends AbstractAdmin
     {
-        $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
+        use SortableAdminTrait;
     }
 
-Now you can update your ``services.yaml`` to use the handler provided by the ``pixSortableBehaviorBundle``
+Define Admin in ``services.yaml``
 
 .. code-block:: yaml
 
@@ -104,42 +105,31 @@ Now you can update your ``services.yaml`` to use the handler provided by the ``p
         app.admin.client:
             class: App\Admin\ClientAdmin
             tags:
-                - { name: sonata.admin, model_class: App\Entity\Client, controller: 'PixSortableBehaviorBundle:SortableAdmin', manager_type: orm, label: 'Clients' }
+                - { name: sonata.admin, model_class: App\Entity\Client, manager_type: orm, label: 'Clients' }
 
-Now we need to define the sort by field to be ``$position``::
+Now we need to define sortable action::
 
     // src/Admin/ClientAdmin.php
 
     namespace App\Admin;
 
+    use Runroom\SortableBehaviorBundle\Admin\SortableAdminTrait;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
-    use Sonata\AdminBundle\Datagrid\DatagridInterface;
     use Sonata\AdminBundle\Datagrid\ListMapper;
-    use Sonata\AdminBundle\Route\RouteCollection;
 
     final class ClientAdmin extends AbstractAdmin
     {
-        protected function configureDefaultSortValues(array &$sortValues): void
-        {
-            $sortValues[DatagridInterface::PAGE] = 1;
-            $sortValues[DatagridInterface::SORT_ORDER] = 'ASC';
-            $sortValues[DatagridInterface::SORT_BY] = 'position';
-        }
-
-        protected function configureRoutes(RouteCollectionInterface $collection): void
-        {
-            $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
-        }
+        use SortableAdminTrait;
 
         protected function configureListFields(ListMapper $list): void
         {
             $list
                 ->addIdentifier('name')
                 ->add('enabled')
-                ->add(ListMapper::NAME_ACTIONS, null, [
+                ->add(ListMapper::NAME_ACTIONS, ListMapper::TYPE_ACTIONS, [
                     'actions' => [
                         'move' => [
-                            'template' => '@App/Admin/_sort.html.twig'
+                            'template' => '@RunroomSortableBehavior/sort.html.twig'
                         ],
                     ],
                 ])
