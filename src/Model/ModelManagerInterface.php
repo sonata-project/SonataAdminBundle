@@ -89,6 +89,8 @@ interface ModelManagerInterface
     public function createQuery(string $class): ProxyQueryInterface;
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * Get the identifiers of this model class.
      *
      * This returns an array to handle cases like a primary key that is
@@ -102,6 +104,8 @@ interface ModelManagerInterface
     public function getIdentifierValues(object $model): array;
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * Get a list of the field names models of the specified fully qualified
      * class name used to store the identifier.
      *
