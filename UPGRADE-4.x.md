@@ -1,6 +1,14 @@
 UPGRADE 4.x
 ===========
 
+UPGRADE FROM 4.18 to 4.19
+=========================
+
+## BCLabelTranslatorStrategy
+
+The BCLabelTranslatorStrategy is deprecated. Please use another label translator strategy or
+implements your own directly in your project.
+
 UPGRADE FROM 4.13 to 4.14
 =========================
 
