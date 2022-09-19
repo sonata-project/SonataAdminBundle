@@ -52,6 +52,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -1359,34 +1361,37 @@ class CRUDController extends AbstractController
             return $this->renderJson([], Response::HTTP_NOT_ACCEPTABLE);
         }
 
-        $errors = [];
-        $formName = $form->getName();
+        return $this->json(
+            $this->buildConstraintViolationList($form),
+            Response::HTTP_BAD_REQUEST
+        );
+    }
+
+    private function buildConstraintViolationList(FormInterface $form): ConstraintViolationList
+    {
+        $errors = new ConstraintViolationList();
 
         foreach ($form->getErrors(true) as $formError) {
-            $origin = $formError->getOrigin();
+            $formName = $this->buildName($formError->getOrigin());
+            $closure = \Closure::bind(function (ConstraintViolation $violation) use ($formName): ConstraintViolation {
+                $violation->propertyPath = $formName;
 
-            $fieldName = $origin->getName();
-            $name = '';
+                return $violation;
+            }, null, ConstraintViolation::class);
 
-            while ($origin = $origin->getParent()) {
-                if ($formName !== $origin->getName()) {
-                    $name = $origin->getName() . '_' . $name;
-                }
-            }
-
-            $fieldName = $formName . '_' . $name . $fieldName;
-
-            if (!isset($errors[$fieldName])) {
-                $errors[$fieldName] = [];
-            }
-
-            $errors[$fieldName][] = $formError->getMessage();
+            $errors->add($closure($formError->getCause()));
         }
 
-        return $this->renderJson([
-            'result' => 'error',
-            'errors' => $errors,
-        ], Response::HTTP_BAD_REQUEST);
+        return $errors;
+    }
+
+    private function buildName(FormInterface $form): string
+    {
+        if (!$form->getParent()) {
+            return $form->getName();
+        }
+
+        return $this->buildName($form->getParent()).'['.$form->getName().']';
     }
 
     /**
