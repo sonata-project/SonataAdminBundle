@@ -1369,17 +1369,29 @@ class CRUDController extends AbstractController
 
     private function buildConstraintViolationList(FormInterface $form): ConstraintViolationList
     {
+        $closure = \Closure::bind(function (ConstraintViolation $violation, string $newPropertyPath): ConstraintViolation {
+            /**
+             * @psalm-suppress InaccessibleProperty
+             */
+            $violation->propertyPath = $newPropertyPath;
+
+            return $violation;
+        }, null, ConstraintViolation::class);
+
         $errors = new ConstraintViolationList();
 
         foreach ($form->getErrors(true) as $formError) {
-            $formName = $this->buildName($formError->getOrigin());
-            $closure = \Closure::bind(function (ConstraintViolation $violation) use ($formName): ConstraintViolation {
-                $violation->propertyPath = $formName;
+            $origin = $formError->getOrigin();
+            $cause = $formError->getCause();
 
-                return $violation;
-            }, null, ConstraintViolation::class);
+            if (null === $origin || !$cause instanceof ConstraintViolation) {
+                continue;
+            }
 
-            $errors->add($closure($formError->getCause()));
+            /**
+             * @psalm-suppress PossiblyInvalidFunctionCall
+             */
+            $errors->add($closure($cause, $this->buildName($origin)));
         }
 
         return $errors;
@@ -1387,11 +1399,13 @@ class CRUDController extends AbstractController
 
     private function buildName(FormInterface $form): string
     {
-        if (!$form->getParent()) {
+        $parent = $form->getParent();
+
+        if (null === $parent) {
             return $form->getName();
         }
 
-        return $this->buildName($form->getParent()).'['.$form->getName().']';
+        return $this->buildName($parent).'['.$form->getName().']';
     }
 
     /**
