@@ -24,6 +24,7 @@ use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Exception\ModelManagerThrowable;
+use Sonata\AdminBundle\Form\FormErrorIteratorToConstraintViolationList;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
@@ -52,8 +53,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -1362,50 +1361,9 @@ class CRUDController extends AbstractController
         }
 
         return $this->json(
-            $this->buildConstraintViolationList($form),
+            FormErrorIteratorToConstraintViolationList::transform($form->getErrors(true)),
             Response::HTTP_BAD_REQUEST
         );
-    }
-
-    private function buildConstraintViolationList(FormInterface $form): ConstraintViolationList
-    {
-        $closure = \Closure::bind(function (ConstraintViolation $violation, string $newPropertyPath): ConstraintViolation {
-            /**
-             * @psalm-suppress InaccessibleProperty
-             */
-            $violation->propertyPath = $newPropertyPath;
-
-            return $violation;
-        }, null, ConstraintViolation::class);
-
-        $errors = new ConstraintViolationList();
-
-        foreach ($form->getErrors(true) as $formError) {
-            $origin = $formError->getOrigin();
-            $cause = $formError->getCause();
-
-            if (null === $origin || !$cause instanceof ConstraintViolation) {
-                continue;
-            }
-
-            /**
-             * @psalm-suppress PossiblyInvalidFunctionCall
-             */
-            $errors->add($closure($cause, $this->buildName($origin)));
-        }
-
-        return $errors;
-    }
-
-    private function buildName(FormInterface $form): string
-    {
-        $parent = $form->getParent();
-
-        if (null === $parent) {
-            return $form->getName();
-        }
-
-        return $this->buildName($parent).'['.$form->getName().']';
     }
 
     /**
