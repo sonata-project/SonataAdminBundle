@@ -86,11 +86,13 @@
         "symfony/filesystem": "^4.4 || ^5.4 || ^6.0",
         "symfony/maker-bundle": "^1.25",
         "symfony/phpunit-bridge": "^6.1",
+        "symfony/serializer": "^4.4 || ^5.4 || ^6.0",
         "symfony/yaml": "^4.4 || ^5.4 || ^6.0",
         "vimeo/psalm": "^4.9.2"
     },
     "suggest": {
-        "twig/extra-bundle": "Auto configures the Twig Intl extension"
+        "twig/extra-bundle": "Auto configures the Twig Intl extension",
+        "symfony/serializer": "To render errors coming from form validation on ajax calls"
     },
     "autoload": {
         "psr-4": {
