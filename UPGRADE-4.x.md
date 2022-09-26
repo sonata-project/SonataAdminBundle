@@ -6,6 +6,9 @@ UPGRADE FROM 4.x to 4.x
 
 ## Form errors retrieved via ajax calls
 
+This change will most likely not affect you since normally the admin is not used
+directly as an api for create or edit objects.
+
 Previously ajax form errors that happen on creation / edit of an admin object
 were outputted as a custom json that didn't had the information about which field
 had the error. This was a problem because the form was not able to highlight the
