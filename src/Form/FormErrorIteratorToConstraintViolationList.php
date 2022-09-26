@@ -31,10 +31,11 @@ final class FormErrorIteratorToConstraintViolationList
      */
     public static function transform(FormErrorIterator $errors): ConstraintViolationListInterface
     {
+        $form = $errors->getForm();
         $list = new ConstraintViolationList();
 
         foreach ($errors as $error) {
-            $violation = static::buildViolation($error);
+            $violation = static::buildViolation($error, $form);
 
             if (null === $violation) {
                 continue;
@@ -46,12 +47,11 @@ final class FormErrorIteratorToConstraintViolationList
         return $list;
     }
 
-    private static function buildViolation(FormError $error): ?ConstraintViolationInterface
+    private static function buildViolation(FormError $error, FormInterface $form): ?ConstraintViolationInterface
     {
-        $origin = $error->getOrigin();
         $cause = $error->getCause();
 
-        if (null === $origin || !$cause instanceof ConstraintViolationInterface) {
+        if (!$cause instanceof ConstraintViolationInterface) {
             return null;
         }
 
@@ -60,7 +60,7 @@ final class FormErrorIteratorToConstraintViolationList
             $cause->getMessageTemplate(),
             $cause->getParameters(),
             $cause->getRoot(),
-            self::buildName($origin),
+            self::buildName($error->getOrigin() ?? $form),
             $cause->getInvalidValue(),
             $cause->getPlural(),
             $cause->getCode(),
