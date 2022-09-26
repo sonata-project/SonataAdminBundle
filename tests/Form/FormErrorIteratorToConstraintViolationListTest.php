@@ -40,11 +40,12 @@ final class FormErrorIteratorToConstraintViolationListTest extends TestCase
     }
 
     /**
-     * @phpstan-return iterable<array-key, array{int, FormErrorIterator<FormError>}>
+     * @phpstan-return iterable<array{int, FormErrorIterator<FormError>}>
      */
     public function provideFormErrorIterators(): iterable
     {
         $form = $this->createStub(FormInterface::class);
+        $form->method('getName')->willReturn('name');
 
         yield [0, new FormErrorIterator($form, [])];
 
