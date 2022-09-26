@@ -40,7 +40,7 @@ final class FormErrorIteratorToConstraintViolationListTest extends TestCase
     }
 
     /**
-     * @phpstan-return iterable<array{int, FormErrorIterator<FormError>}>
+     * @phpstan-return iterable<array{int, FormErrorIterator}>
      */
     public function provideFormErrorIterators(): iterable
     {
