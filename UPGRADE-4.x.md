@@ -1,6 +1,50 @@
 UPGRADE 4.x
 ===========
 
+UPGRADE FROM 4.x to 4.x
+=======================
+
+## Form errors retrieved via ajax calls
+
+Previously ajax form errors that happen on creation / edit of an admin object
+were outputted as a custom json that didn't had the information about which field
+had the error. This was a problem because the form was not able to highlight the
+field with the error.
+
+Now the ajax form errors are outputted with the standard Symfony json format for
+validation errors.
+
+To be able to output errors with that new format, you will also need to have
+`symfony/serializer` installed.
+
+Before:
+
+```json
+    {
+        "result":"error",
+        "errors": [
+            "Form error message"
+        ]
+    }
+```
+
+After:
+
+```json
+    {
+        "type":"https://symfony.com/errors/validation",
+        "title":"Validation Failed",
+        "detail":"name: Form error message",
+        "violations": [
+            {
+                "propertyPath":"name",
+                "title":"Form error message",
+                "parameters":[]
+            }
+        ]
+    }
+```
+
 UPGRADE FROM 4.18 to 4.19
 =========================
 
