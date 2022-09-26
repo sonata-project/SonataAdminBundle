@@ -17,6 +17,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -30,32 +31,40 @@ final class FormErrorIteratorToConstraintViolationList
      */
     public static function transform(FormErrorIterator $errors): ConstraintViolationListInterface
     {
-        $closure = \Closure::bind(static function (ConstraintViolation $violation, string $newPropertyPath): ConstraintViolation {
-            /**
-             * @psalm-suppress InaccessibleProperty
-             */
-            $violation->propertyPath = $newPropertyPath;
-
-            return $violation;
-        }, null, ConstraintViolation::class);
-
         $list = new ConstraintViolationList();
 
         foreach ($errors as $error) {
-            $origin = $error->getOrigin();
-            $cause = $error->getCause();
+            $violation = static::buildViolation($error);
 
-            if (null === $origin || !$cause instanceof ConstraintViolation) {
+            if (null === $violation) {
                 continue;
             }
 
-            /**
-             * @psalm-suppress PossiblyInvalidFunctionCall
-             */
-            $list->add($closure($cause, self::buildName($origin)));
+            $list->add($violation);
         }
 
         return $list;
+    }
+
+    private static function buildViolation(FormError $error): ?ConstraintViolationInterface
+    {
+        $origin = $error->getOrigin();
+        $cause = $error->getCause();
+
+        if (null === $origin || !$cause instanceof ConstraintViolationInterface) {
+            return null;
+        }
+
+        return new ConstraintViolation(
+            $cause->getMessage(),
+            $cause->getMessageTemplate(),
+            $cause->getParameters(),
+            $cause->getRoot(),
+            self::buildName($origin),
+            $cause->getInvalidValue(),
+            $cause->getPlural(),
+            $cause->getCode(),
+        );
     }
 
     private static function buildName(FormInterface $form): string
