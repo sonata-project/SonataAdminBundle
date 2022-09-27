@@ -225,7 +225,7 @@ UPGRADE FROM 3.88 to 3.89
 
 ### Deprecated `Sonata\AdminBundle\Model\ModelManager::getNewFieldDescriptionInstance()` method.
 
-This method has been deprecated in favor of `FieldFactoryInterface::create()`.
+This method has been deprecated in favor of `FieldDescriptionFactoryInterface::create()`.
 
 ### Deprecated overriding `AbstractAdmin::getNewInstance()`.
 
