@@ -1,8 +1,8 @@
 UPGRADE 4.x
 ===========
 
-UPGRADE FROM 4.x to 4.x
-=======================
+UPGRADE FROM 4.18 to 4.19
+=========================
 
 ## Form errors retrieved via ajax calls
 
@@ -47,9 +47,6 @@ After:
         ]
     }
 ```
-
-UPGRADE FROM 4.18 to 4.19
-=========================
 
 ## BCLabelTranslatorStrategy
 
