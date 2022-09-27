@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.19.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.18.0...4.19.0) - 2022-09-27
+### Changed
+- [[#7922](https://github.com/sonata-project/SonataAdminBundle/pull/7922)] [BC break] Change json error output for ajax calls to create or edit admin endpoints. ([@jordisala1991](https://github.com/jordisala1991))
+
+### Deprecated
+- [[#7927](https://github.com/sonata-project/SonataAdminBundle/pull/7927)] BCLabelTranslatorStrategy ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7930](https://github.com/sonata-project/SonataAdminBundle/pull/7930)] `ModelManager::getIdentifierValues` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7930](https://github.com/sonata-project/SonataAdminBundle/pull/7930)] `ModelManager::getIdentifierFieldNames` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#7930](https://github.com/sonata-project/SonataAdminBundle/pull/7930)] ModelToIdPropertyTransformer now supports composite identifiers ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7926](https://github.com/sonata-project/SonataAdminBundle/pull/7926)] Fix missing default translation for actions label on list view. ([@jordisala1991](https://github.com/jordisala1991))
+
 ## [4.18.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.17.0...4.18.0) - 2022-08-21
 ### Added
 - [[#7913](https://github.com/sonata-project/SonataAdminBundle/pull/7913)] Security attributes can be string or symfony expression language expressions ([@VincentLanglet](https://github.com/VincentLanglet))
