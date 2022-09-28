@@ -67,6 +67,10 @@ use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ConstraintViolationListNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -218,6 +222,11 @@ final class CRUDControllerTest extends TestCase
         $this->container->set('sonata.admin.request.fetcher', $this->adminFetcher);
         $this->container->set('parameter_bag', $this->parameterBag);
         $this->container->set('http_kernel', $this->httpKernel);
+        $this->container->set('serializer', new Serializer([
+            new ConstraintViolationListNormalizer(),
+        ], [
+            new JsonEncoder(),
+        ]));
         $this->container->set('controller_resolver', $this->controllerResolver);
 
         $this->parameterBag->set(
@@ -1708,13 +1717,20 @@ final class CRUDControllerTest extends TestCase
             ->willReturn(true);
 
         $form->expects(static::once())
+            ->method('getName')
+            ->willReturn('name');
+
+        $form->expects(static::once())
             ->method('isValid')
             ->willReturn(false);
 
         $formError = $this->createMock(FormError::class);
-        $formError->expects(static::atLeastOnce())
-            ->method('getMessage')
-            ->willReturn('Form error message');
+        $formError->expects(static::once())
+            ->method('getCause')
+            ->willReturn(new ConstraintViolation('Form error message', '', [], 'root', 'foo', 'bar'));
+        $formError->expects(static::once())
+            ->method('getOrigin')
+            ->willReturn($form);
 
         $form->expects(static::once())
             ->method('getErrors')
@@ -1728,7 +1744,7 @@ final class CRUDControllerTest extends TestCase
         static::assertInstanceOf(JsonResponse::class, $response = $this->controller->editAction($this->request));
         $content = $response->getContent();
         static::assertNotFalse($content);
-        static::assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $content);
+        static::assertJsonStringEqualsJsonString('{"type":"https:\/\/symfony.com\/errors\/validation","title":"Validation Failed","detail":"name: Form error message","violations":[{"propertyPath":"name","title":"Form error message","parameters":[]}]}', $content);
     }
 
     public function testEditActionAjaxErrorWithoutAcceptApplicationJson(): void
@@ -2378,13 +2394,20 @@ final class CRUDControllerTest extends TestCase
             ->willReturn(true);
 
         $form->expects(static::once())
+            ->method('getName')
+            ->willReturn('name');
+
+        $form->expects(static::once())
             ->method('isValid')
             ->willReturn(false);
 
         $formError = $this->createMock(FormError::class);
-        $formError->expects(static::atLeastOnce())
-            ->method('getMessage')
-            ->willReturn('Form error message');
+        $formError->expects(static::once())
+            ->method('getCause')
+            ->willReturn(new ConstraintViolation('Form error message', '', [], 'root', 'foo', 'bar'));
+        $formError->expects(static::once())
+            ->method('getOrigin')
+            ->willReturn($form);
 
         $form->expects(static::once())
             ->method('getErrors')
@@ -2399,7 +2422,7 @@ final class CRUDControllerTest extends TestCase
 
         $content = $response->getContent();
         static::assertNotFalse($content);
-        static::assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $content);
+        static::assertJsonStringEqualsJsonString('{"type":"https:\/\/symfony.com\/errors\/validation","title":"Validation Failed","detail":"name: Form error message","violations":[{"propertyPath":"name","title":"Form error message","parameters":[]}]}', $content);
     }
 
     public function testCreateActionAjaxErrorWithoutAcceptApplicationJson(): void

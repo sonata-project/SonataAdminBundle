@@ -1482,7 +1482,6 @@ final class RenderElementRuntimeTest extends TestCase
             [],
         ];
 
-        // @phpstan-ignore-next-line https://github.com/phpstan/phpstan/issues/7963
         return $elements;
     }
 

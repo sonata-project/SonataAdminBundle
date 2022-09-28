@@ -1486,7 +1486,6 @@ final class RenderElementExtensionTest extends TestCase
             [],
         ];
 
-        // @phpstan-ignore-next-line https://github.com/phpstan/phpstan/issues/7963
         return $elements;
     }
 
@@ -2005,7 +2004,6 @@ final class RenderElementExtensionTest extends TestCase
             [],
         ];
 
-        // @phpstan-ignore-next-line https://github.com/phpstan/phpstan/issues/7963
         return $elements;
     }
 

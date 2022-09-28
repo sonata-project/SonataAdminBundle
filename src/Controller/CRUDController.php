@@ -24,6 +24,7 @@ use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Exception\ModelManagerThrowable;
+use Sonata\AdminBundle\Form\FormErrorIteratorToConstraintViolationList;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
@@ -1355,15 +1356,10 @@ class CRUDController extends AbstractController
             return $this->renderJson([], Response::HTTP_NOT_ACCEPTABLE);
         }
 
-        $errors = [];
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
-
-        return $this->renderJson([
-            'result' => 'error',
-            'errors' => $errors,
-        ], Response::HTTP_BAD_REQUEST);
+        return $this->json(
+            FormErrorIteratorToConstraintViolationList::transform($form->getErrors(true)),
+            Response::HTTP_BAD_REQUEST
+        );
     }
 
     /**

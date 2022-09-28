@@ -80,16 +80,18 @@
         "psalm/plugin-phpunit": "^0.17",
         "psalm/plugin-symfony": "^3.0",
         "psr/event-dispatcher": "^1.0",
-        "rector/rector": "^0.13",
+        "rector/rector": "^0.14",
         "symfony/browser-kit": "^4.4 || ^5.4 || ^6.0",
         "symfony/css-selector": "^4.4 || ^5.4 || ^6.0",
         "symfony/filesystem": "^4.4 || ^5.4 || ^6.0",
         "symfony/maker-bundle": "^1.25",
         "symfony/phpunit-bridge": "^6.1",
+        "symfony/serializer": "^4.4 || ^5.4 || ^6.0",
         "symfony/yaml": "^4.4 || ^5.4 || ^6.0",
         "vimeo/psalm": "^4.9.2"
     },
     "suggest": {
+        "symfony/serializer": "To render errors coming from form validation on ajax calls",
         "twig/extra-bundle": "Auto configures the Twig Intl extension"
     },
     "autoload": {
