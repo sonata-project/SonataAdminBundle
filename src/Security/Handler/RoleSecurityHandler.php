@@ -28,6 +28,11 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
     /**
      * @var string[]
      */
+    private array $customRolePrefixes = [];
+
+    /**
+     * @var string[]
+     */
     private array $superAdminRoles = [];
 
     /**
@@ -98,6 +103,10 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
 
     public function getBaseRole(AdminInterface $admin): string
     {
+        if (isset($this->customRolePrefixes[$admin->getCode()])) {
+            return $this->customRolePrefixes[$admin->getCode()] . '_%s';
+        }
+
         return sprintf('ROLE_%s_%%s', str_replace('.', '_', strtoupper($admin->getCode())));
     }
 
@@ -112,6 +121,11 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
 
     public function deleteObjectSecurity(AdminInterface $admin, object $object): void
     {
+    }
+
+    public function setCustomRolePrefix(string $id, string $prefix): void
+    {
+        $this->customRolePrefixes[$id] = $prefix;
     }
 
     /**

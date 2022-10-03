@@ -239,6 +239,20 @@ final class RoleSecurityHandlerTest extends TestCase
         static::assertSame([], $handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
+    public function testCustomRolePrefix(): void
+    {
+        $handler = new RoleSecurityHandler($this->authorizationChecker, 'ROLE_SUPER_ADMIN');
+
+        $this->admin
+            ->method('getCode')
+            ->willReturn('foo.bar');
+
+        static::assertSame('ROLE_FOO_BAR_%s', $handler->getBaseRole($this->admin));
+
+        $handler->setCustomRolePrefix($this->admin->getCode(), 'ROLE_ADMIN_BAR');
+        static::assertSame('ROLE_ADMIN_BAR_%s', $handler->getBaseRole($this->admin));
+    }
+
     /**
      * @param string|string[] $superAdminRoles
      */

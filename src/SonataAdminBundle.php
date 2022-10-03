@@ -23,6 +23,7 @@ use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ObjectAclManipulatorCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\RoleSecurityCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\TwigStringExtensionCompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -43,5 +44,6 @@ final class SonataAdminBundle extends Bundle
         $container->addCompilerPass(new AdminMakerCompilerPass());
         $container->addCompilerPass(new AddAuditReadersCompilerPass());
         $container->addCompilerPass(new AdminAddInitializeCallCompilerPass(), PassConfig::TYPE_BEFORE_REMOVING, -100);
+        $container->addCompilerPass(new RoleSecurityCompilerPass());
     }
 }
