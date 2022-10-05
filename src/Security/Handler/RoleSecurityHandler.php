@@ -104,7 +104,7 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
     public function getBaseRole(AdminInterface $admin): string
     {
         if (isset($this->customRolePrefixes[$admin->getCode()])) {
-            return $this->customRolePrefixes[$admin->getCode()] . '_%s';
+            return $this->customRolePrefixes[$admin->getCode()].'_%s';
         }
 
         return sprintf('ROLE_%s_%%s', str_replace('.', '_', strtoupper($admin->getCode())));

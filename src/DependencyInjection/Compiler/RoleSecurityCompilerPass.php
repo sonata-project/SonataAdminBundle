@@ -25,14 +25,25 @@ class RoleSecurityCompilerPass implements CompilerPassInterface
         }
 
         $roleHandlerDefinition = $container->getDefinition('sonata.admin.security.handler.role');
+        $prefixes = [];
 
         foreach ($container->findTaggedServiceIds('sonata.admin.role_security') as $id => $tags) {
             foreach ($tags as $attributes) {
                 if (isset($attributes['role_prefix'])) {
+                    $rolePrefix = $attributes['role_prefix'];
+                    \assert(\is_string($rolePrefix));
+
+                    if (isset($prefixes[$id])) {
+                        throw new \RuntimeException(sprintf('Unable to set role prefix for %s to "%s", because
+                it has already been assigned with role prefix "%s".', $id, $rolePrefix, $prefixes[$id]));
+                    }
+
                     $roleHandlerDefinition->addMethodCall('setCustomRolePrefix', [
                         $id,
-                        $attributes['role_prefix']
+                        $rolePrefix,
                     ]);
+
+                    $prefixes[$id] = $rolePrefix;
                 }
             }
         }

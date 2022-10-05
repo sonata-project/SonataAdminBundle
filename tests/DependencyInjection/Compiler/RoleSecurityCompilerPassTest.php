@@ -45,6 +45,29 @@ class RoleSecurityCompilerPassTest extends AbstractCompilerPassTestCase
         );
     }
 
+    public function testRepeatedCustomRolePrefixTagging(): void
+    {
+        $roleSecurityHandlerDefinition = new Definition(RoleSecurityHandler::class);
+        $this->container->setDefinition('sonata.admin.security.handler.role', $roleSecurityHandlerDefinition);
+
+        $definition = new Definition(FooAdmin::class);
+        $definition->addTag('sonata.admin.role_security', [
+            'role_prefix' => 'ROLE_BAZ',
+        ]);
+        $definition->addTag('sonata.admin.role_security', [
+            'role_prefix' => 'ROLE_BAR',
+        ]);
+        $this->container->setDefinition('admin.foo', $definition);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Unable to set role prefix for admin.foo to "ROLE_BAR", because
+                it has already been assigned with role prefix "ROLE_BAZ".'
+        );
+
+        $this->compile();
+    }
+
     protected function registerCompilerPass(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new RoleSecurityCompilerPass());
