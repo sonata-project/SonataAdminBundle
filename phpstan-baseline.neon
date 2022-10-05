@@ -13,5 +13,5 @@ parameters:
             message: '#^Method Sonata\\AdminBundle\\Tests\\Fixtures\\Entity\\FooToStringNull\:\:__toString\(\) should return string but returns null\.$#'
             path: tests/Fixtures/Entity/FooToStringNull.php
         - # The phpstan-param is less precise than the psalm-param https://github.com/phpstan/phpstan/issues/4703
-            message: '#^Parameter \#1 \$value of method Sonata\\AdminBundle\\Form\\DataTransformer\\ModelsToArrayTransformer\<T of object\>\:\:reverseTransform\(\) expects array\<int\|string\>\|null, array\<array\<string\>\|int\|string\> given\.$#'
+            message: '#^Parameter \#1 \$value of method Sonata\\AdminBundle\\Form\\DataTransformer\\ModelsToArrayTransformer\<T of object\>\:\:reverseTransform\(\) expects array\<int\|string\>\|null, array\<mixed, array\<string\>\|int\|string\> given\.$#'
             path: src/Form/DataTransformer/ModelToIdPropertyTransformer.php
