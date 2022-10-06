@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
@@ -567,6 +568,35 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->expectExceptionMessage('The class Sonata\AdminBundle\Tests\DependencyInjection\Compiler\PostEntity has two admins sonata_post_admin and sonata_post_admin_2 with the "default" attribute set to true. Only one is allowed.');
 
         $this->compile();
+    }
+
+    public function testAdminCodeShouldBeInjectedToPool(): void
+    {
+        $this->setUpContainer();
+
+        $this->container
+            ->register('sonata_foo_admin')
+            ->setClass(CustomAdmin::class)
+            ->setPublic(true)
+            ->addTag('sonata.admin', ['model_class' => PostEntity::class, 'code' => 'sonata_bar_admin', 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_one', 'manager_type' => 'test']);
+
+        $config = $this->getConfig();
+        $config['options']['sort_admins'] = true;
+        unset($config['dashboard']['groups']);
+
+        $this->extension->load([$config], $this->container);
+        $this->container->getDefinition('sonata.admin.pool')->setPublic(true);
+
+        $this->compile();
+
+        self::assertContainerBuilderHasService('sonata.admin.pool');
+
+        $pool = $this->container->get('sonata.admin.pool');
+        static::assertInstanceOf(Pool::class, $pool);
+        $serviceCodes = $pool->getAdminServiceIds();
+
+        static::assertContains('sonata_bar_admin', $serviceCodes);
+        static::assertNotContains('sonata_foo_admin', $serviceCodes);
     }
 
     /**

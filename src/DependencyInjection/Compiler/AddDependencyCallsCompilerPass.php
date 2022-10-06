@@ -94,9 +94,11 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 // ));
             }
 
-            $adminServices[$id] = new Reference($id);
-
             foreach ($tags as $attributes) {
+                $code = $attributes['code'] ?? $id;
+
+                $adminServices[$code] = new Reference($id);
+
                 $definition = $container->getDefinition($id);
                 $parentDefinition = null;
 
@@ -127,7 +129,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     array_merge($parentDefinition->getArguments(), $definition->getArguments()) :
                     $definition->getArguments();
 
-                $admins[] = $id;
+                $admins[] = $code;
 
                 // NEXT_MAJOR: Remove the fallback to $arguments[1].
                 $modelClass = $attributes['model_class'] ?? $arguments[1];
@@ -191,7 +193,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 }
 
                 $groupDefaults[$resolvedGroupName]['items'][] = [
-                    'admin' => $id,
+                    'admin' => $code,
                     'label' => $attributes['label'] ?? '', // NEXT_MAJOR: Remove this line.
                     'route' => '', // NEXT_MAJOR: Remove this line.
                     'route_params' => [],
