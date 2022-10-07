@@ -77,6 +77,23 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         ];
 
         foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $tags) {
+            if (\count($tags) > 1) {
+                // NEXT_MAJOR: Remove deprecation error with the exception below.
+                @trigger_error(sprintf(
+                    'Found multiple sonata.admin tags in service %s. Tagging a service with sonata.admin more
+                    than once is not supported, and will result in a RuntimeException removed in 5.0.',
+                    $id
+                ), \E_USER_DEPRECATED);
+
+                // NEXT_MAJOR: Enable this exception.
+                // throw new \RuntimeException(sprintf(
+                //    'Found multiple sonata.admin tags in service %s. Tagging a service with sonata.admin more
+                //    than once is not supported. Consider defining multiple services with different sonata.admin tag
+                //    parameters if this is really needed.',
+                //    $id
+                // ));
+            }
+
             $adminServices[$id] = new Reference($id);
 
             foreach ($tags as $attributes) {
