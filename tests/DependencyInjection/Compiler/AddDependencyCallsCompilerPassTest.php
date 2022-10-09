@@ -570,6 +570,32 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     }
 
     /**
+     * NEXT_MAJOR: Enable this test.
+     */
+    // public function testTaggingAdminClassMoreThanOnce(): void
+    // {
+    //    $this->setUpContainer();
+    //
+    //    $this->container
+    //        ->register('sonata_foo_admin')
+    //        ->setClass(CustomAdmin::class)
+    //        ->setPublic(true)
+    //        ->addTag('sonata.admin', ['model_class' => PostEntity::class, 'code' => 'sonata_post_admin', 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_one', 'manager_type' => 'test'])
+    //        ->addTag('sonata.admin', ['model_class' => ArticleEntity::class, 'code' => 'sonata_article_admin', 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_two', 'manager_type' => 'test']);
+    //
+    //    $this->extension->load([$this->getConfig()], $this->container);
+    //
+    //    $this->expectException(\RuntimeException::class);
+    //    $this->expectExceptionMessage(
+    //        'Found multiple sonata.admin tags in service sonata_foo_admin. Tagging a service with sonata.admin more
+    //                than once is not supported. Consider defining multiple services with different sonata.admin tag
+    //                parameters if this is really needed.'
+    //    );
+    //
+    //    $this->compile();
+    // }
+
+    /**
      * @return array<string, mixed>
      *
      * @phpstan-return array{
