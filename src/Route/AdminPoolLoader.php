@@ -58,8 +58,8 @@ final class AdminPoolLoader extends Loader
     public function load($resource, $type = null): SymfonyRouteCollection
     {
         $collection = new SymfonyRouteCollection();
-        foreach ($this->pool->getAdminServiceIds() as $id) {
-            $admin = $this->pool->getInstance($id);
+        foreach ($this->pool->getAdminServiceCodes() as $code) {
+            $admin = $this->pool->getInstance($code);
 
             foreach ($admin->getRoutes()->getElements() as $route) {
                 $name = $route->getDefault('_sonata_name');

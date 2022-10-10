@@ -58,9 +58,9 @@ final class SetupAclCommand extends Command
     {
         $output->writeln('Starting ACL AdminBundle configuration');
 
-        foreach ($this->pool->getAdminServiceIds() as $id) {
+        foreach ($this->pool->getAdminServiceCodes() as $code) {
             try {
-                $admin = $this->pool->getInstance($id);
+                $admin = $this->pool->getInstance($code);
             } catch (\Exception $e) {
                 $output->writeln('<error>Warning : The admin class cannot be initiated from the command line</error>');
                 $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));

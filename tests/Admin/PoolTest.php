@@ -426,10 +426,10 @@ final class PoolTest extends TestCase
         static::assertSame($groups, $pool->getAdminGroups());
     }
 
-    public function testGetAdminServiceIds(): void
+    public function testGetAdminServiceCodes(): void
     {
         $pool = new Pool($this->container, ['sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3']);
-        static::assertSame(['sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3'], $pool->getAdminServiceIds());
+        static::assertSame(['sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3'], $pool->getAdminServiceCodes());
     }
 
     /**

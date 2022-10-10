@@ -1220,9 +1220,9 @@ class CRUDController extends AbstractController
         $pool = $this->container->get('sonata.admin.pool');
         \assert($pool instanceof Pool);
 
-        foreach ($pool->getAdminServiceIds() as $id) {
+        foreach ($pool->getAdminServiceCodes() as $code) {
             try {
-                $admin = $pool->getInstance($id);
+                $admin = $pool->getInstance($code);
             } catch (\Exception $e) {
                 continue;
             }

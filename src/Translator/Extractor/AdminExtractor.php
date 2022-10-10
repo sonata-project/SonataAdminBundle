@@ -71,8 +71,8 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
             $catalogue->set($name, $this->prefix.$name, $group['translation_domain']);
         }
 
-        foreach ($this->adminPool->getAdminServiceIds() as $id) {
-            $admin = $this->adminPool->getInstance($id);
+        foreach ($this->adminPool->getAdminServiceCodes() as $code) {
+            $admin = $this->adminPool->getInstance($code);
 
             $this->labelStrategy = $admin->getLabelTranslatorStrategy();
             $this->domain = $admin->getTranslationDomain();

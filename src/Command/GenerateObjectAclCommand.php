@@ -96,9 +96,9 @@ final class GenerateObjectAclCommand extends QuestionableCommand
             return 1;
         }
 
-        foreach ($this->pool->getAdminServiceIds() as $id) {
+        foreach ($this->pool->getAdminServiceCodes() as $code) {
             try {
-                $admin = $this->pool->getInstance($id);
+                $admin = $this->pool->getInstance($code);
             } catch (\Exception $e) {
                 $output->writeln('<error>Warning : The admin class cannot be initiated from the command line</error>');
                 $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
@@ -106,7 +106,7 @@ final class GenerateObjectAclCommand extends QuestionableCommand
                 continue;
             }
 
-            if ($input->getOption('step') && !$this->askConfirmation($input, $output, sprintf("<question>Generate ACLs for the object instances handled by \"%s\"?</question>\n", $id), 'no')) {
+            if ($input->getOption('step') && !$this->askConfirmation($input, $output, sprintf("<question>Generate ACLs for the object instances handled by \"%s\"?</question>\n", $code), 'no')) {
                 continue;
             }
 

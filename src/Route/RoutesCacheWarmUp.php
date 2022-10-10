@@ -45,8 +45,8 @@ final class RoutesCacheWarmUp implements CacheWarmerInterface
      */
     public function warmUp($cacheDir): array
     {
-        foreach ($this->pool->getAdminServiceIds() as $id) {
-            $this->cache->load($this->pool->getInstance($id));
+        foreach ($this->pool->getAdminServiceCodes() as $code) {
+            $this->cache->load($this->pool->getInstance($code));
         }
 
         return [];
