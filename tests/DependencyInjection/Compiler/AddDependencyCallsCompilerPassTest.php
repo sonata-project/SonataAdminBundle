@@ -593,7 +593,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $pool = $this->container->get('sonata.admin.pool');
         static::assertInstanceOf(Pool::class, $pool);
-        $serviceCodes = $pool->getAdminServiceIds();
+        $serviceCodes = $pool->getAdminServiceCodes();
 
         static::assertContains('sonata_bar_admin', $serviceCodes);
         static::assertNotContains('sonata_foo_admin', $serviceCodes);

@@ -53,11 +53,11 @@ final class ListAdminCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Admin services:</info>');
-        foreach ($this->pool->getAdminServiceIds() as $id) {
-            $instance = $this->pool->getInstance($id);
+        foreach ($this->pool->getAdminServiceCodes() as $code) {
+            $instance = $this->pool->getInstance($code);
             $output->writeln(sprintf(
                 '  <info>%-40s</info> %-60s',
-                $id,
+                $code,
                 $instance->getClass()
             ));
         }
