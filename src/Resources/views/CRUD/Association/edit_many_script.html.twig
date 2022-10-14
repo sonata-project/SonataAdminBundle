@@ -361,18 +361,18 @@ This code manages the many-to-[one|many] association field popup
                 if ('application/json' === xhr.getResponseHeader('Content-Type')) {
                     var jsonContent = JSON.parse(xhr.responseText);
 
-                    if (jsonContent.message) {
+                    if (jsonContent.title) {
                         content += '<div class="alert alert-danger alert-dismissable">'
                             + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'
-                            + jsonContent.message
+                            + jsonContent.title
                             + '</div>';
                     }
 
-                    if (jsonContent.errors) {
-                        for (error of jsonContent.errors) {
+                    if (jsonContent.violations) {
+                        for (violation of jsonContent.violations) {
                             content += '<div class="alert alert-danger alert-dismissable">'
                                 + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'
-                                + error
+                                + violation.title
                                 + '</div>';
                         }
                     }
