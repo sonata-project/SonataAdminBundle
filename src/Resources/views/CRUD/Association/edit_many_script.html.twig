@@ -368,32 +368,54 @@ This code manages the many-to-[one|many] association field popup
                             + '</div>';
                     }
 
-                    // Clean up all previous errors that we have attached to the form, in case of second request.
-                    $(form).find('.xhr-violation-error').removeClass('has-error');
-                    $(form).find('.xhr-violation-error-block').remove();
-
-                    if (jsonContent.violations) {
-                        for (violation of jsonContent.violations) {
-                            // Try to find and attach the error to the form field, if not show message on top.
-                            if (violation.hasOwnProperty('propertyPath')) {
-                                const field = $(form).find(`[name='${violation.propertyPath}']`);
-                                if (field.length) {
-                                    field.closest('.form-group').addClass('has-error xhr-violation-error');
-                                    field.parent().append(`<div class="help-block sonata-ba-field-error-messages xhr-violation-error-block">
-                                                    <ul class="list-unstyled">
-                                                        <li><i class="fas fa-exclamation-circle" aria-hidden="true"></i> ${violation.title}</li>
-                                                    </ul>
-                                                </div>`)
-                                    continue;
-                                }
-                            }
-
-                            content += '<div class="alert alert-danger alert-dismissable">'
-                                + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'
-                                + violation.title
-                                + '</div>';
-                        }
+                    if (!jsonContent.violations) {
+                        return;
                     }
+
+                    event.currentTarget.querySelectorAll('.help-block.sonata-ba-field-error-messages').forEach((element) => {
+                        element.remove();
+                    });
+
+                    event.currentTarget.querySelectorAll('.has-error').forEach((element) => {
+                        element.classList.remove('has-error');
+                    });
+
+                    event.currentTarget.querySelectorAll('button').forEach((element) => {
+                        element.removeAttribute('disabled');
+                    });
+
+                    jsonContent.violations.forEach((violation) => {
+                        const field = event.currentTarget.querySelector(`[name="${violation.propertyPath}"]`);
+
+                        if (!field) {
+                            return;
+                        }
+
+                        const formGroup = field.closest('.form-group');
+
+                        let errorList = formGroup.querySelector(
+                            '.help-block.sonata-ba-field-error-messages .list-unstyled'
+                        );
+
+                        if (!errorList) {
+                            const errorWrapper = document.createElement('div');
+                            errorWrapper.classList.add('help-block');
+                            errorWrapper.classList.add('sonata-ba-field-error-messages');
+
+                            errorList = document.createElement('ul');
+                            errorList.classList.add('list-unstyled');
+
+                            formGroup.classList.add('has-error');
+
+                            errorWrapper.appendChild(errorList);
+                            formGroup.appendChild(errorWrapper);
+                        }
+
+                        const errorItem = document.createElement('li');
+                        errorItem.innerHTML = `<i class="fas fa-exclamation-circle" aria-hidden="true"></i> ${violation.title}`;
+
+                        errorList.appendChild(errorItem);
+                    });
                 } else {
                     content += xhr.responseText;
                 }
