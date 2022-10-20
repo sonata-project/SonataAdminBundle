@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.20.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.19.0...4.20.0) - 2022-10-20
+### Added
+- [[#7937](https://github.com/sonata-project/SonataAdminBundle/pull/7937)] Allow manually reorder tagged admin services using the `priority` attribute. ([@tamcy](https://github.com/tamcy))
+
+### Deprecated
+- [[#7941](https://github.com/sonata-project/SonataAdminBundle/pull/7941)] Applying the service tag `sonata.admin` to a service more than once is deprecated. This is not meant to be supported and will not work as intended, as only one of the tag attributes will be applied to the service. ([@tamcy](https://github.com/tamcy))
+
+### Fixed
+- [[#7949](https://github.com/sonata-project/SonataAdminBundle/pull/7949)] Fix validation errors while editting many to one|many relations in a modal. ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7948](https://github.com/sonata-project/SonataAdminBundle/pull/7948)] Violations error handling ([@ggabrovski](https://github.com/ggabrovski))
+- [[#7940](https://github.com/sonata-project/SonataAdminBundle/pull/7940)] Fix an issue that exception is thrown when the admin code is different from its service id. ([@tamcy](https://github.com/tamcy))
+
 ## [4.19.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.18.0...4.19.0) - 2022-09-27
 ### Changed
 - [[#7922](https://github.com/sonata-project/SonataAdminBundle/pull/7922)] [BC break] Change json error output for ajax calls to create or edit admin endpoints. ([@jordisala1991](https://github.com/jordisala1991))
