@@ -91,7 +91,6 @@
         "vimeo/psalm": "^4.9.2"
     },
     "suggest": {
-        "symfony/serializer": "To render errors coming from form validation on ajax calls",
         "twig/extra-bundle": "Auto configures the Twig Intl extension"
     },
     "autoload": {
