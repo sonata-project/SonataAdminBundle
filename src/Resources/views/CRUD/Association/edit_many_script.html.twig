@@ -361,21 +361,61 @@ This code manages the many-to-[one|many] association field popup
                 if ('application/json' === xhr.getResponseHeader('Content-Type')) {
                     var jsonContent = JSON.parse(xhr.responseText);
 
-                    if (jsonContent.message) {
+                    if (jsonContent.title) {
                         content += '<div class="alert alert-danger alert-dismissable">'
                             + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'
-                            + jsonContent.message
+                            + jsonContent.title
                             + '</div>';
                     }
 
-                    if (jsonContent.errors) {
-                        for (error of jsonContent.errors) {
-                            content += '<div class="alert alert-danger alert-dismissable">'
-                                + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'
-                                + error
-                                + '</div>';
-                        }
+                    if (!jsonContent.violations) {
+                        return;
                     }
+
+                    event.currentTarget.querySelectorAll('.help-block.sonata-ba-field-error-messages').forEach((element) => {
+                        element.remove();
+                    });
+
+                    event.currentTarget.querySelectorAll('.has-error').forEach((element) => {
+                        element.classList.remove('has-error');
+                    });
+
+                    event.currentTarget.querySelectorAll('button').forEach((element) => {
+                        element.removeAttribute('disabled');
+                    });
+
+                    jsonContent.violations.forEach((violation) => {
+                        const field = event.currentTarget.querySelector(`[name="${violation.propertyPath}"]`);
+
+                        if (!field) {
+                            return;
+                        }
+
+                        const formGroup = field.closest('.form-group');
+
+                        let errorList = formGroup.querySelector(
+                            '.help-block.sonata-ba-field-error-messages .list-unstyled'
+                        );
+
+                        if (!errorList) {
+                            const errorWrapper = document.createElement('div');
+                            errorWrapper.classList.add('help-block');
+                            errorWrapper.classList.add('sonata-ba-field-error-messages');
+
+                            errorList = document.createElement('ul');
+                            errorList.classList.add('list-unstyled');
+
+                            formGroup.classList.add('has-error');
+
+                            errorWrapper.appendChild(errorList);
+                            formGroup.appendChild(errorWrapper);
+                        }
+
+                        const errorItem = document.createElement('li');
+                        errorItem.innerHTML = `<i class="fas fa-exclamation-circle" aria-hidden="true"></i> ${violation.title}`;
+
+                        errorList.appendChild(errorItem);
+                    });
                 } else {
                     content += xhr.responseText;
                 }
