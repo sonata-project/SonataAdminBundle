@@ -81,7 +81,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 // NEXT_MAJOR: Remove deprecation error with the exception below.
                 @trigger_error(sprintf(
                     'Found multiple sonata.admin tags in service %s. Tagging a service with sonata.admin more
-                    than once is not supported, and will result in a RuntimeException removed in 5.0.',
+                    than once is not supported, and will result in a RuntimeException in 5.0.',
                     $id
                 ), \E_USER_DEPRECATED);
 
