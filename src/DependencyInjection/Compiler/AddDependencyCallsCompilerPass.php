@@ -113,7 +113,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     // - if it's not used, the old syntax is used, so we still need to
 
                     $this->replaceDefaultArguments([
-                        0 => $id,
+                        0 => $code,
                         2 => $defaultController,
                     ], $definition, $parentDefinition);
                 }
@@ -144,13 +144,13 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                             'The class %s has two admins %s and %s with the "default" attribute set to true. Only one is allowed.',
                             $modelClass,
                             $classes[$modelClass][Pool::DEFAULT_ADMIN_KEY],
-                            $id
+                            $code
                         ));
                     }
 
-                    $classes[$modelClass][Pool::DEFAULT_ADMIN_KEY] = $id;
+                    $classes[$modelClass][Pool::DEFAULT_ADMIN_KEY] = $code;
                 } else {
-                    $classes[$modelClass][] = $id;
+                    $classes[$modelClass][] = $code;
                 }
 
                 $showInDashboard = (bool) (isset($attributes['show_in_dashboard']) ? $parameterBag->resolveValue($attributes['show_in_dashboard']) : true);

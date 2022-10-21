@@ -649,7 +649,13 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             ->register('sonata_foo_admin')
             ->setClass(CustomAdmin::class)
             ->setPublic(true)
-            ->addTag('sonata.admin', ['model_class' => PostEntity::class, 'code' => 'sonata_bar_admin', 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_one', 'manager_type' => 'test']);
+            ->addTag('sonata.admin', ['model_class' => FooEntity::class, 'code' => 'sonata_bar_admin', 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_one', 'manager_type' => 'test']);
+
+        $this->container
+            ->register('sonata_baz_admin')
+            ->setClass(CustomAdmin::class)
+            ->setPublic(true)
+            ->addTag('sonata.admin', ['model_class' => BazEntity::class, 'default' => true, 'code' => 'sonata_qux_admin', 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_one', 'manager_type' => 'test']);
 
         $config = $this->getConfig();
         $config['options']['sort_admins'] = true;
@@ -664,10 +670,26 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $pool = $this->container->get('sonata.admin.pool');
         static::assertInstanceOf(Pool::class, $pool);
+
         $serviceCodes = $pool->getAdminServiceCodes();
 
         static::assertContains('sonata_bar_admin', $serviceCodes);
         static::assertNotContains('sonata_foo_admin', $serviceCodes);
+
+        static::assertContains('sonata_qux_admin', $serviceCodes);
+        static::assertNotContains('sonata_baz_admin', $serviceCodes);
+
+        $classes = $pool->getAdminClasses();
+
+        static::assertArrayHasKey(FooEntity::class, $classes);
+        static::assertCount(1, $classes[FooEntity::class]);
+        static::assertArrayHasKey(0, $classes[FooEntity::class]);
+        static::assertSame('sonata_bar_admin', $classes[FooEntity::class][0]);
+
+        static::assertArrayHasKey(BazEntity::class, $classes);
+        static::assertCount(1, $classes[BazEntity::class]);
+        static::assertArrayHasKey(Pool::DEFAULT_ADMIN_KEY, $classes[BazEntity::class]);
+        static::assertSame('sonata_qux_admin', $classes[BazEntity::class][Pool::DEFAULT_ADMIN_KEY]);
     }
 
     /**
@@ -851,5 +873,11 @@ class PostEntity
 {
 }
 class ArticleEntity
+{
+}
+class FooEntity
+{
+}
+class BazEntity
 {
 }
