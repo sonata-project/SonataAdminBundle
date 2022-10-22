@@ -119,7 +119,7 @@ final class AdminExtractorTest extends TestCase
 
     public function testExtractCallsBreadcrumbs(): void
     {
-        $numberOfAdmins = \count($this->pool->getAdminServiceIds());
+        $numberOfAdmins = \count($this->pool->getAdminServiceCodes());
         $numberOfActionsToCheck = 6;
 
         $this->breadcrumbsBuilder->expects(static::exactly($numberOfAdmins * $numberOfActionsToCheck))

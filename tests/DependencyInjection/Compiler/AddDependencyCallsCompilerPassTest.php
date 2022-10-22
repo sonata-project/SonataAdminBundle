@@ -570,6 +570,77 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->compile();
     }
 
+    public function testProcessAdminItemPriorityDefinition(): void
+    {
+        $this->setUpContainer();
+
+        foreach ($this->container->findTaggedServiceIds('sonata.admin') as $id => $_) {
+            $this->container->removeDefinition($id);
+        }
+
+        $config = $this->getConfig();
+        $config['dashboard']['groups'] = [];
+
+        $this->extension->load([$config], $this->container);
+
+        $priorities = [200, 100, 450, 3000, 620, 330];
+        foreach ($priorities as $priority) {
+            $this->container
+                ->register('sonata_admin_'.$priority)
+                ->setPublic(true)
+                ->setClass(CustomAdmin::class)
+                ->addTag('sonata.admin', ['model_class' => NewsEntity::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_priority_1', 'label' => 'Entry', 'manager_type' => 'orm', 'priority' => $priority]);
+        }
+
+        $this->compile();
+
+        rsort($priorities);
+        $adminGroups = $this->container->findDefinition('sonata.admin.pool')->getArgument(2);
+        static::assertCount(\count($priorities), $adminGroups['sonata_group_priority_1']['items']);
+        foreach ($adminGroups['sonata_group_priority_1']['items'] as $item) {
+            $priority = array_shift($priorities);
+            static::assertSame('sonata_admin_'.$priority, $item['admin']);
+        }
+    }
+
+    public function testGroupOrderingWithAdminItemPriorityDefinition(): void
+    {
+        $this->setUpContainer();
+
+        foreach ($this->container->findTaggedServiceIds('sonata.admin') as $id => $_) {
+            $this->container->removeDefinition($id);
+        }
+
+        $config = $this->getConfig();
+        $config['dashboard']['groups'] = [];
+
+        $this->extension->load([$config], $this->container);
+
+        $this->container
+            ->register('sonata_admin_1')
+            ->setPublic(true)
+            ->setClass(CustomAdmin::class)
+            ->addTag('sonata.admin', ['model_class' => NewsEntity::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_priority_1', 'label' => 'Entry', 'manager_type' => 'orm', 'priority' => 1000]);
+
+        $this->container
+            ->register('sonata_admin_2')
+            ->setPublic(true)
+            ->setClass(CustomAdmin::class)
+            ->addTag('sonata.admin', ['model_class' => NewsEntity::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_priority_3', 'label' => 'Entry', 'manager_type' => 'orm', 'priority' => 3000]);
+
+        $this->container
+            ->register('sonata_admin_3')
+            ->setPublic(true)
+            ->setClass(CustomAdmin::class)
+            ->addTag('sonata.admin', ['model_class' => NewsEntity::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_priority_2', 'label' => 'Entry', 'manager_type' => 'orm', 'priority' => 4000]);
+
+        $this->compile();
+
+        $adminGroups = $this->container->findDefinition('sonata.admin.pool')->getArgument(2);
+        static::assertCount(3, $adminGroups);
+        static::assertSame(['sonata_group_priority_2', 'sonata_group_priority_3', 'sonata_group_priority_1'], array_keys($adminGroups));
+    }
+
     public function testAdminCodeShouldBeInjectedToPool(): void
     {
         $this->setUpContainer();
@@ -578,7 +649,13 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             ->register('sonata_foo_admin')
             ->setClass(CustomAdmin::class)
             ->setPublic(true)
-            ->addTag('sonata.admin', ['model_class' => PostEntity::class, 'code' => 'sonata_bar_admin', 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_one', 'manager_type' => 'test']);
+            ->addTag('sonata.admin', ['model_class' => FooEntity::class, 'code' => 'sonata_bar_admin', 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_one', 'manager_type' => 'test']);
+
+        $this->container
+            ->register('sonata_baz_admin')
+            ->setClass(CustomAdmin::class)
+            ->setPublic(true)
+            ->addTag('sonata.admin', ['model_class' => BazEntity::class, 'default' => true, 'code' => 'sonata_qux_admin', 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_one', 'manager_type' => 'test']);
 
         $config = $this->getConfig();
         $config['options']['sort_admins'] = true;
@@ -593,10 +670,26 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $pool = $this->container->get('sonata.admin.pool');
         static::assertInstanceOf(Pool::class, $pool);
-        $serviceCodes = $pool->getAdminServiceIds();
+
+        $serviceCodes = $pool->getAdminServiceCodes();
 
         static::assertContains('sonata_bar_admin', $serviceCodes);
         static::assertNotContains('sonata_foo_admin', $serviceCodes);
+
+        static::assertContains('sonata_qux_admin', $serviceCodes);
+        static::assertNotContains('sonata_baz_admin', $serviceCodes);
+
+        $classes = $pool->getAdminClasses();
+
+        static::assertArrayHasKey(FooEntity::class, $classes);
+        static::assertCount(1, $classes[FooEntity::class]);
+        static::assertArrayHasKey(0, $classes[FooEntity::class]);
+        static::assertSame('sonata_bar_admin', $classes[FooEntity::class][0]);
+
+        static::assertArrayHasKey(BazEntity::class, $classes);
+        static::assertCount(1, $classes[BazEntity::class]);
+        static::assertArrayHasKey(Pool::DEFAULT_ADMIN_KEY, $classes[BazEntity::class]);
+        static::assertSame('sonata_qux_admin', $classes[BazEntity::class][Pool::DEFAULT_ADMIN_KEY]);
     }
 
     /**
@@ -780,5 +873,11 @@ class PostEntity
 {
 }
 class ArticleEntity
+{
+}
+class FooEntity
+{
+}
+class BazEntity
 {
 }

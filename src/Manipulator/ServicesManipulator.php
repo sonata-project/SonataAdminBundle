@@ -70,7 +70,7 @@ final class ServicesManipulator
                     $code .= "\n";
                 }
             } else {
-                $code .= '' === $code ? '' : "\n"."services:\n";
+                $code .= '' === $code ? '' : "\n".'services:'."\n";
             }
         }
 

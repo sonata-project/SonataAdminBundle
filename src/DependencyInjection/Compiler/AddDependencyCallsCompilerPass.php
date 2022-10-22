@@ -81,7 +81,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 // NEXT_MAJOR: Remove deprecation error with the exception below.
                 @trigger_error(sprintf(
                     'Found multiple sonata.admin tags in service %s. Tagging a service with sonata.admin more
-                    than once is not supported, and will result in a RuntimeException removed in 5.0.',
+                    than once is not supported, and will result in a RuntimeException in 5.0.',
                     $id
                 ), \E_USER_DEPRECATED);
 
@@ -113,7 +113,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     // - if it's not used, the old syntax is used, so we still need to
 
                     $this->replaceDefaultArguments([
-                        0 => $id,
+                        0 => $code,
                         2 => $defaultController,
                     ], $definition, $parentDefinition);
                 }
@@ -144,13 +144,13 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                             'The class %s has two admins %s and %s with the "default" attribute set to true. Only one is allowed.',
                             $modelClass,
                             $classes[$modelClass][Pool::DEFAULT_ADMIN_KEY],
-                            $id
+                            $code
                         ));
                     }
 
-                    $classes[$modelClass][Pool::DEFAULT_ADMIN_KEY] = $id;
+                    $classes[$modelClass][Pool::DEFAULT_ADMIN_KEY] = $code;
                 } else {
-                    $classes[$modelClass][] = $id;
+                    $classes[$modelClass][] = $code;
                 }
 
                 $showInDashboard = (bool) (isset($attributes['show_in_dashboard']) ? $parameterBag->resolveValue($attributes['show_in_dashboard']) : true);
@@ -192,12 +192,14 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     ];
                 }
 
+                $groupDefaults[$resolvedGroupName]['priority'] = max($groupDefaults[$resolvedGroupName]['priority'] ?? 0, $attributes['priority'] ?? 0);
                 $groupDefaults[$resolvedGroupName]['items'][] = [
                     'admin' => $code,
                     'label' => $attributes['label'] ?? '', // NEXT_MAJOR: Remove this line.
                     'route' => '', // NEXT_MAJOR: Remove this line.
                     'route_params' => [],
                     'route_absolute' => false,
+                    'priority' => $attributes['priority'] ?? 0,
                 ];
 
                 if (isset($groupDefaults[$resolvedGroupName]['on_top']) && $groupDefaults[$resolvedGroupName]['on_top']
@@ -214,6 +216,8 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         \assert(\is_array($dashboardGroupsSettings));
         $sortAdmins = $container->getParameter('sonata.admin.configuration.sort_admins');
         \assert(\is_bool($sortAdmins));
+
+        $sortAdminsByPriority = true;
 
         if ([] !== $dashboardGroupsSettings) {
             $groups = $dashboardGroupsSettings;
@@ -237,6 +241,8 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 if (!isset($group['items']) || [] === $group['items']) {
                     $groups[$resolvedGroupName]['items'] = $groupDefaults[$resolvedGroupName]['items'];
+                } else {
+                    $sortAdminsByPriority = false;
                 }
 
                 if (!isset($group['label']) || '' === $group['label']) {
@@ -299,8 +305,23 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
              */
             ksort($groups);
             array_walk($groups, $elementSort);
+
+            $sortAdminsByPriority = false;
         } else {
             $groups = $groupDefaults;
+
+            uasort($groups, static fn (array $a, array $b): int => ($b['priority'] ?? 0) <=> ($a['priority'] ?? 0));
+        }
+
+        if ($sortAdminsByPriority) {
+            $elementSort = static function (array &$element): void {
+                usort(
+                    $element['items'],
+                    static fn (array $a, array $b): int => ($b['priority'] ?? 0) <=> ($a['priority'] ?? 0)
+                );
+            };
+
+            array_walk($groups, $elementSort);
         }
 
         $pool->replaceArgument(0, ServiceLocatorTagPass::register($container, $adminServices));
