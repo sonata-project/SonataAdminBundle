@@ -29,7 +29,7 @@ jobs:
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: '8.2'
+                  php-version: '8.1'
                   coverage: none
                   tools: composer:v2
 
@@ -54,7 +54,7 @@ jobs:
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: '8.2'
+                  php-version: '8.1'
                   coverage: none
                   tools: composer:v2
 
@@ -65,7 +65,7 @@ jobs:
                   composer-options: --prefer-dist --prefer-stable
 
             - name: Psalm
-              run: vendor/bin/psalm --no-progress --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd --php-version=8.2
+              run: vendor/bin/psalm --no-progress --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd --php-version=8.1
 
     rector:
         name: Rector
@@ -79,7 +79,7 @@ jobs:
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: '8.2'
+                  php-version: '8.1'
                   coverage: none
                   tools: composer:v2
 
