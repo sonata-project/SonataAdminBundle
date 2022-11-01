@@ -64,6 +64,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Admin\TagWithoutPostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\BlogPost;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\CommentVote;
+use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\NewsPost;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\PostCategory;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
@@ -1729,6 +1730,34 @@ final class AdminTest extends TestCase
         static::assertTrue($admin->hasSubject());
         static::assertSame($model, $admin->getSubject());
         static::assertSame($model, $admin->getSubject()); // model manager must be used only once
+    }
+
+    public function testSetSubject(): void
+    {
+        $this->expectNotToPerformAssertions();
+
+        $admin = new PostAdmin();
+        $admin->setModelClass(Post::class);
+
+        $admin->setSubject(new BlogPost());
+        $admin->setSubject(new NewsPost());
+        $admin->setSubject(new Post());
+        $admin->setSubject(null);
+    }
+
+    public function testSetSubjectNotAllowed(): void
+    {
+        $admin = new PostAdmin();
+        $admin->setModelClass(Post::class);
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage(sprintf(
+            'Admin "%s" does not allow this subject: %s, use the one register with this admin class %s',
+            PostAdmin::class,
+            Comment::class,
+            Post::class
+        ));
+        $admin->setSubject(new Comment());
     }
 
     public function testGetSubjectWithParentDescription(): void
