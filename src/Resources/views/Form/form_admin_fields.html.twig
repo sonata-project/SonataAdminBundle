@@ -500,6 +500,7 @@ file that was distributed with this source code.
                         defaultFieldId = '#sonata-ba-field-container-{{ main_form_name }}-' + field;
                     }
 
+                    // Some fields are rendered by form_widget (no container)
                     if (jQuery(defaultFieldId).length === 0) {
                         defaultFieldId = '#{{ main_form_name }}_' + field;
                     }
