@@ -615,6 +615,146 @@ final class AdminHelperTest extends TestCase
         $this->helper->appendFormFieldElement($admin, $object, 'uniquePartOfId_sub_object_0_and_more_0_final_data');
     }
 
+    public function testAppendFormFieldElementOnNestedWithSameNamedCollection(): void
+    {
+        $subObject = new class() {
+            /** @var Collection<int, \stdClass> */
+            private Collection $collection;
+
+            public function __construct()
+            {
+                $this->collection = new ArrayCollection();
+            }
+
+            /** @return Collection<int, \stdClass> */
+            public function getCollection(): Collection
+            {
+                return $this->collection;
+            }
+
+            /** @param Collection<int, \stdClass> $collection */
+            public function setCollection(Collection $collection): void
+            {
+                $this->collection = $collection;
+            }
+        };
+
+        $object = $this->getMockBuilder(\stdClass::class)
+            ->addMethods(['getSubObject', 'getCollection'])
+            ->getMock();
+
+        $collectionObject = $this->createMock(\stdClass::class);
+
+        $object->expects(static::never())->method('getCollection');
+        $object->expects(static::atLeastOnce())->method('getSubObject')->willReturn($subObject);
+
+        $admin = $this->createMock(AdminInterface::class);
+        $admin->method('hasFormFieldDescription')->with('collection')->willReturn(true);
+        $admin->method('getClass')->willReturn(\get_class($object));
+
+        $subObjectAdmin = $this->createMock(AdminInterface::class);
+        $subObjectAdmin->method('getClass')->willReturn(\get_class($subObject));
+
+        $subObjectMapping = [
+            'fieldName' => 'sub_object',
+            'targetEntity' => \get_class($subObject),
+            'sourceEntity' => \get_class($object),
+            'isOwningSide' => false,
+        ];
+
+        $subObjectFieldDescription = $this->createMock(FieldDescriptionInterface::class);
+        $subObjectFieldDescription->method('getName')->willReturn('sub_object');
+        $subObjectFieldDescription->method('getAssociationAdmin')->willReturn($subObjectAdmin);
+        $subObjectFieldDescription->method('getAssociationMapping')->willReturn($subObjectMapping);
+        $subObjectFieldDescription->method('getParentAssociationMappings')->willReturn([]);
+        $subObjectFieldDescription->expects(static::never())->method('getValue');
+
+        $subObjectCollectionAdmin = $this->createMock(AdminInterface::class);
+        $subObjectCollectionAdmin->method('getClass')->willReturn(\get_class($collectionObject));
+
+        $subObjectCollectionMapping = [
+            'fieldName' => 'collection',
+            'targetEntity' => \get_class($collectionObject),
+            'sourceEntity' => \get_class($subObject),
+            'isOwningSide' => false,
+        ];
+
+        $subObjectCollectionFieldDescription = $this->createMock(FieldDescriptionInterface::class);
+        $subObjectCollectionFieldDescription->method('getName')->willReturn('collection');
+        $subObjectCollectionFieldDescription->method('getAssociationAdmin')->willReturn($subObjectCollectionAdmin);
+        $subObjectCollectionFieldDescription->method('getAssociationMapping')->willReturn($subObjectCollectionMapping);
+        $subObjectCollectionFieldDescription->method('getParentAssociationMappings')->willReturn([]);
+        $subObjectCollectionFieldDescription->expects(static::never())->method('getValue');
+
+        $subObjectAdmin->method('getFormFieldDescription')->with('collection')->willReturn(
+            $subObjectCollectionFieldDescription
+        );
+
+        $collectionAdmin = $this->createMock(AdminInterface::class);
+        $collectionAdmin->method('getClass')->willReturn(\get_class($collectionObject));
+
+        $collectionMapping = [
+            'fieldName' => 'collection',
+            'targetEntity' => \get_class($collectionObject),
+            'sourceEntity' => \get_class($object),
+            'isOwningSide' => false,
+        ];
+
+        $collectionFieldDescription = $this->createMock(FieldDescriptionInterface::class);
+        $collectionFieldDescription->method('getName')->willReturn('collection');
+        $collectionFieldDescription->method('getAssociationAdmin')->willReturn($collectionAdmin);
+        $collectionFieldDescription->method('getAssociationMapping')->willReturn($collectionMapping);
+        $collectionFieldDescription->method('getParentAssociationMappings')->willReturn([]);
+        $collectionFieldDescription->expects(static::never())->method('getValue');
+
+        $admin->method('getFormFieldDescription')->willReturnMap([
+            ['sub_object', $subObjectFieldDescription],
+            ['collection', $collectionFieldDescription],
+        ]);
+
+        $request = new Request([], [
+            'main' => [],
+        ]);
+
+        $admin->expects(static::atLeastOnce())->method('getRequest')->willReturn($request);
+
+        $dataMapper = $this->createStub(DataMapperInterface::class);
+        $formFactory = $this->createStub(FormFactoryInterface::class);
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
+
+        $collectionFormBuilder = new FormBuilder('collection', null, $eventDispatcher, $formFactory, [
+            'sonata_field_description' => $collectionFieldDescription,
+        ]);
+        $collectionFormBuilder->setCompound(true);
+        $collectionFormBuilder->setDataMapper($dataMapper);
+
+        $childCollectionFormBuilder = new FormBuilder('collection', null, $eventDispatcher, $formFactory, [
+            'sonata_field_description' => $subObjectCollectionFieldDescription,
+        ]);
+        $childCollectionFormBuilder->setCompound(true);
+        $childCollectionFormBuilder->setDataMapper($dataMapper);
+
+        $childFormBuilder = new FormBuilder('sub_object', \get_class($subObject), $eventDispatcher, $formFactory, [
+            'sonata_field_description' => $subObjectFieldDescription,
+        ]);
+        $childFormBuilder->setCompound(true);
+        $childFormBuilder->setDataMapper($dataMapper);
+        $childFormBuilder->add($childCollectionFormBuilder);
+
+        $formBuilder = new FormBuilder('main', \get_class($object), $eventDispatcher, $formFactory);
+        $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
+        $formBuilder->setCompound(true);
+        $formBuilder->setDataMapper($dataMapper);
+        $formBuilder->add($childFormBuilder);
+        $formBuilder->add($collectionFormBuilder);
+
+        $admin->expects(static::atLeastOnce())->method('getFormBuilder')->willReturn($formBuilder);
+
+        $fieldDescription = $this->helper->appendFormFieldElement($admin, $object, 'main_sub_object_collection')[0];
+
+        static::assertNull($fieldDescription);
+    }
+
     private function getMethodAsPublic(string $privateMethod): \ReflectionMethod
     {
         $reflectionMethod = new \ReflectionMethod(AdminHelper::class, $privateMethod);
