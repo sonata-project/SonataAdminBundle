@@ -55,17 +55,43 @@ As you can see the **position** field was added into the admin page!
 Attributes supported by ``sonata.admin.extension`` tag
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-+------------------------+----------+-----------------------------------------------------------------------------+
-| Attribute name         | Type     | Description                                                                 |
-+========================+==========+=============================================================================+
-| target                 | string   | Admins service's name that you want to customize,                           |
-|                        |          | If you use the **global** attribute as **true**, you don't need to pass it. |
-+------------------------+----------+-----------------------------------------------------------------------------+
-| priority               | integer  | Can be a positive or negative integer. The higher the priority,             |
-|                        |          | the earlier it’s executed.                                                  |
-+------------------------+----------+-----------------------------------------------------------------------------+
-| global                 | boolean  | adds the extension to all admins.                                           |
-+------------------------+----------+-----------------------------------------------------------------------------+
++------------------------+-------------------------------------------------------------------------------------------------+
+| Attribute name         | Description                                                                                     |
++========================+=================================================================================================+
+| target                 | Admins service's name that you want to customize,                                               |
+|                        | If you use the **global** attribute as **true**, you don't need to pass it.                     |
++------------------------+-------------------------------------------------------------------------------------------------+
+| global                 | adds the extension to all admins.                                                               |
++------------------------+-------------------------------------------------------------------------------------------------+
+| excludes               | specify one or more admin service ids to which the Extension should not be added                |
+|                        | (this will prevent it matching any of the other settings).                                      |
++------------------------+-------------------------------------------------------------------------------------------------+
+| extends                | specify one or more classes. If the managed class of an admin extends                           |
+|                        | one of the specified classes the extension will be added to that admin.                         |
++------------------------+-------------------------------------------------------------------------------------------------+
+| implements             | specify one or more interfaces. If the managed class of an admin implements                     |
+|                        | one of the specified interfaces the extension will be added to that admin.                      |
++------------------------+-------------------------------------------------------------------------------------------------+
+| instanceof             | specify one or more classes. If the managed class of an admin extends one of the                |
+|                        | specified classes or is an instance of that class the extension will be added to that admin.    |
++------------------------+-------------------------------------------------------------------------------------------------+
+| uses                   | Specify one or more traits. If the managed class of an admin uses one of the specified traits   |
+|                        | the extension will be added to that admin.                                                      |
++------------------------+-------------------------------------------------------------------------------------------------+
+| admin_extends          | specify one or more classes. If the class of an admin extends                                   |
+|                        | one of the specified classes the extension will be added to that admin.                         |
++------------------------+-------------------------------------------------------------------------------------------------+
+| admin_implements       | specify one or more interfaces. If the class of an admin implements                             |
+|                        | one of the specified interfaces the extension will be added to that admin.                      |
++------------------------+-------------------------------------------------------------------------------------------------+
+| admin_instanceof       | specify one or more classes. If the class of an admin extends one of the                        |
+|                        | specified classes or is an instance of that class the extension will be added to that admin.    |
++------------------------+-------------------------------------------------------------------------------------------------+
+| admin_uses             | Specify one or more traits. If the class of an admin uses one of the specified traits           |
+|                        | the extension will be added to that admin.                                                      |
++------------------------+-------------------------------------------------------------------------------------------------+
+| priority               | Can be a positive or negative integer. The higher the priority, the earlier it was executed.    |
++------------------------+-------------------------------------------------------------------------------------------------+
 
 Configuration extension in sonata config
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -105,6 +131,18 @@ it's defined in your sonata_admin configs
 | uses                   | Specify one or more traits. If the managed class of an admin uses one of the specified traits   |
 |                        | the extension will be added to that admin.                                                      |
 +------------------------+-------------------------------------------------------------------------------------------------+
+| admin_extends          | specify one or more classes. If the class of an admin extends                                   |
+|                        | one of the specified classes the extension will be added to that admin.                         |
++------------------------+-------------------------------------------------------------------------------------------------+
+| admin_implements       | specify one or more interfaces. If the class of an admin implements                             |
+|                        | one of the specified interfaces the extension will be added to that admin.                      |
++------------------------+-------------------------------------------------------------------------------------------------+
+| admin_instanceof       | specify one or more classes. If the class of an admin extends one of the                        |
+|                        | specified classes or is an instance of that class the extension will be added to that admin.    |
++------------------------+-------------------------------------------------------------------------------------------------+
+| admin_uses             | Specify one or more traits. If the class of an admin uses one of the specified traits           |
+|                        | the extension will be added to that admin.                                                      |
++------------------------+-------------------------------------------------------------------------------------------------+
 | priority               | Can be a positive or negative integer. The higher the priority, the earlier it was executed.    |
 +------------------------+-------------------------------------------------------------------------------------------------+
 
@@ -129,6 +167,14 @@ it's defined in your sonata_admin configs
                     - App\Document\Page
                 uses:
                     - App\Trait\Timestampable
+                admin_implements:
+                    - App\Admin\PublishableAdminInterface
+                admin_extends:
+                    - App\Admin\AbstractAdmin
+                admin_instanceof:
+                    - App\Admin\MediaAdmin
+                admin_uses:
+                    - App\Trait\Loggable
 
 
 If those options doesn't fill your need, you can still dynamically add/remove
