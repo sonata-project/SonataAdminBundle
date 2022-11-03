@@ -236,13 +236,16 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     final public function getParent(): AdminInterface
     {
-        if (null === $this->parent) {
+        if (!$this->hasParent()) {
             throw new \LogicException(sprintf('%s has no parent.', static::class));
         }
 
         return $this->parent;
     }
 
+    /**
+     * @phpstan-assert-if-true !null $this->parent
+     */
     final public function hasParent(): bool
     {
         return null !== $this->parent;
@@ -271,13 +274,16 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     final public function getAssociationAdmin(): AdminInterface
     {
-        if (null === $this->associationAdmin) {
+        if (!$this->hasAssociationAdmin()) {
             throw new \LogicException(sprintf('%s has no association admin.', static::class));
         }
 
         return $this->associationAdmin;
     }
 
+    /**
+     * @phpstan-assert-if-true !null $this->associationAdmin
+     */
     final public function hasAssociationAdmin(): bool
     {
         return null !== $this->associationAdmin;
@@ -290,13 +296,16 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     final public function getAdmin(): AdminInterface
     {
-        if (null === $this->admin) {
+        if (!$this->hasAdmin()) {
             throw new \LogicException(sprintf('%s has no admin.', static::class));
         }
 
         return $this->admin;
     }
 
+    /**
+     * @phpstan-assert-if-true !null $this->admin
+     */
     final public function hasAdmin(): bool
     {
         return null !== $this->admin;

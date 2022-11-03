@@ -1044,14 +1044,16 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 static::class
             ));
         }
-        \assert(null !== $this->parentFieldDescription);
 
         return $this->parentFieldDescription;
     }
 
+    /**
+     * @phpstan-assert-if-true !null $this->parentFieldDescription
+     */
     final public function hasParentFieldDescription(): bool
     {
-        return $this->parentFieldDescription instanceof FieldDescriptionInterface;
+        return null !== $this->parentFieldDescription;
     }
 
     final public function setSubject(?object $subject): void
@@ -1076,11 +1078,13 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 static::class
             ));
         }
-        \assert(null !== $this->subject);
 
         return $this->subject;
     }
 
+    /**
+     * @phpstan-assert-if-true !null $this->subject
+     */
     final public function hasSubject(): bool
     {
         if (null === $this->subject && $this->hasRequest() && !$this->hasParentFieldDescription()) {
@@ -1375,6 +1379,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     /**
      * Returns true if the admin has children, false otherwise.
+     *
+     * @phpstan-assert-if-true non-empty-array $this->children
      */
     final public function hasChildren(): bool
     {
@@ -1471,13 +1477,16 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function getRequest(): Request
     {
-        if (null === $this->request) {
+        if (!$this->hasRequest()) {
             throw new \LogicException('The Request object has not been set');
         }
 
         return $this->request;
     }
 
+    /**
+     * @phpstan-assert-if-true !null $this->request
+     */
     final public function hasRequest(): bool
     {
         return null !== $this->request;

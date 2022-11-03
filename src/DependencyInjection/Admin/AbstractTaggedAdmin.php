@@ -177,11 +177,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 
     final public function getCode(): string
     {
-        if (null === $this->code) {
-            return static::class;
-        }
-
-        return $this->code;
+        return $this->code ?? static::class;
     }
 
     /**
@@ -288,11 +284,13 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         if (!$this->hasFilterPersister()) {
             throw new \LogicException(sprintf('Admin "%s" has no filter persister.', static::class));
         }
-        \assert(null !== $this->filterPersister);
 
         return $this->filterPersister;
     }
 
+    /**
+     * @phpstan-assert-if-true !null $this->filterPersister
+     */
     final public function hasFilterPersister(): bool
     {
         return null !== $this->filterPersister;
@@ -499,14 +497,16 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
 
     final public function getTemplateRegistry(): MutableTemplateRegistryInterface
     {
-        if (false === $this->hasTemplateRegistry()) {
+        if (!$this->hasTemplateRegistry()) {
             throw new \LogicException(sprintf('Unable to find the template registry for admin `%s`.', static::class));
         }
-        \assert(null !== $this->templateRegistry);
 
         return $this->templateRegistry;
     }
 
+    /**
+     * @phpstan-assert-if-true !null $this->templateRegistry
+     */
     final public function hasTemplateRegistry(): bool
     {
         return null !== $this->templateRegistry;
