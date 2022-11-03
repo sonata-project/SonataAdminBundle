@@ -143,7 +143,7 @@ final class AdminHelperTest extends TestCase
 
         $associationMapping = [
             'fieldName' => 'bar',
-            'targetEntity' => Foo::class,
+            'targetEntity' => Bar::class,
             'sourceEntity' => Foo::class,
             'isOwningSide' => false,
         ];
