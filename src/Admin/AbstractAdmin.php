@@ -103,6 +103,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     private const MASK_OF_ACTIONS_USING_OBJECT = self::MASK_OF_ACTION_SHOW | self::MASK_OF_ACTION_EDIT | self::MASK_OF_ACTION_HISTORY | self::MASK_OF_ACTION_ACL;
 
     private const DEFAULT_LIST_PER_PAGE_RESULTS = 25;
+
     private const DEFAULT_LIST_PER_PAGE_OPTIONS = [10, 25, 50, 100, 250];
 
     /**
@@ -1655,7 +1656,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * Returns predefined per page options.
      *
-     * @return list<int>
+     * @return array<int>
      */
     public function getPerPageOptions(): array
     {
@@ -1832,7 +1833,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         preg_match(self::CLASS_REGEX, $this->getModelClass(), $matches);
 
-        if (!$matches) {
+        if ([] === $matches) {
             throw new \LogicException(sprintf(
                 'Please define a default `baseRoutePattern` value for the admin class `%s`',
                 static::class
@@ -1866,7 +1867,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         preg_match(self::CLASS_REGEX, $this->getModelClass(), $matches);
 
-        if (!$matches) {
+        if ([] === $matches) {
             throw new \LogicException(sprintf(
                 'Cannot automatically determine base route name,'
                 .' please define a default `baseRouteName` value for the admin class `%s`',

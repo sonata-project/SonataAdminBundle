@@ -261,7 +261,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         // use array_values to check groups position
         $adminGroups = array_values($adminGroups);
 
-        static::assertSame('sonata_group_one', $adminGroups['0']['label'], 'second group in configuration, first in list');
+        static::assertSame('sonata_group_one', $adminGroups[0]['label'], 'second group in configuration, first in list');
         static::assertSame('1 Entry', $adminGroups[0]['items'][0]['label'], 'second entry for group in configuration, first in list');
     }
 
