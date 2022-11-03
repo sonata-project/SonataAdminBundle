@@ -148,26 +148,22 @@ final class AdminHelperTest extends TestCase
             'isOwningSide' => false,
         ];
 
-        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription->method('getName')->willReturn('bar');
         $fieldDescription->method('getAssociationAdmin')->willReturn($associationAdmin);
         $fieldDescription->method('getAssociationMapping')->willReturn($associationMapping);
         $fieldDescription->method('getParentAssociationMappings')->willReturn([]);
+        $fieldDescription->method('hasAdmin')->willReturn(true);
+        $fieldDescription->method('getAdmin')->willReturn($admin);
 
-        $admin
-            ->method('getFormFieldDescription')
-            ->willReturn($fieldDescription);
+        $admin->method('hasFormFieldDescription')->with('bar')->willReturn(true);
+        $admin->method('getFormFieldDescription')->with('bar')->willReturn($fieldDescription);
 
         $associationAdmin
             ->method('getFormFieldDescriptions')
             ->willReturn([
                 'bar' => $fieldDescription,
             ]);
-
-        $admin
-            ->method('hasFormFieldDescription')
-            ->with($associationMapping['fieldName'])
-            ->willReturn(true);
 
         $request = new Request([], [
             'test' => [
