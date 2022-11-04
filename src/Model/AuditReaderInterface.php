@@ -30,6 +30,8 @@ interface AuditReaderInterface
     public function find(string $className, $id, $revisionId): ?object;
 
     /**
+     * NEXT_MAJOR: Change the default limit value to `null` and change the native type to `?int`.
+     *
      * @return Revision[]
      *
      * @phpstan-param class-string<T> $className

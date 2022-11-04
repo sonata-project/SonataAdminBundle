@@ -1655,7 +1655,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * Returns predefined per page options.
      *
-     * @return list<int>
+     * @return array<int>
      */
     public function getPerPageOptions(): array
     {
@@ -1832,7 +1832,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         preg_match(self::CLASS_REGEX, $this->getModelClass(), $matches);
 
-        if (!$matches) {
+        if ([] === $matches) {
             throw new \LogicException(sprintf(
                 'Please define a default `baseRoutePattern` value for the admin class `%s`',
                 static::class
@@ -1866,7 +1866,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         preg_match(self::CLASS_REGEX, $this->getModelClass(), $matches);
 
-        if (!$matches) {
+        if ([] === $matches) {
             throw new \LogicException(sprintf(
                 'Cannot automatically determine base route name,'
                 .' please define a default `baseRouteName` value for the admin class `%s`',

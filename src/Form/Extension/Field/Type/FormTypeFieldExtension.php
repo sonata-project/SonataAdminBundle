@@ -103,7 +103,10 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
             $baseName = str_replace('.', '_', $view->parent->vars['sonata_admin_code']);
 
             $baseType = $blockPrefixes[\count($blockPrefixes) - 2];
-            $blockSuffix = preg_replace('#^_([a-z0-9]{14})_(.++)$#', '$2', end($blockPrefixes));
+            $lastBlockPrefix = end($blockPrefixes);
+            \assert(\is_string($lastBlockPrefix));
+
+            $blockSuffix = preg_replace('#^_([a-z0-9]{14})_(.++)$#', '$2', $lastBlockPrefix);
 
             $blockPrefixes[] = sprintf('%s_%s', $baseName, $baseType);
             $blockPrefixes[] = sprintf('%s_%s_%s_%s', $baseName, $baseType, $view->parent->vars['name'], $view->vars['name']);
@@ -134,7 +137,10 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
             $blockPrefixes = $view->vars['block_prefixes'];
             $baseName = str_replace('.', '_', $sonataAdmin['admin']->getCode());
             $baseType = $blockPrefixes[\count($blockPrefixes) - 2];
-            $blockSuffix = preg_replace('#^_([a-z0-9]{14})_(.++)$#', '$2', end($blockPrefixes));
+            $lastBlockPrefix = end($blockPrefixes);
+            \assert(\is_string($lastBlockPrefix));
+
+            $blockSuffix = preg_replace('#^_([a-z0-9]{14})_(.++)$#', '$2', $lastBlockPrefix);
 
             $blockPrefixes[] = sprintf('%s_%s', $baseName, $baseType);
             $blockPrefixes[] = sprintf('%s_%s_%s', $baseName, $sonataAdmin['name'], $baseType);
