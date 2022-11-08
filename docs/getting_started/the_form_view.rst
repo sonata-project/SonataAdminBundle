@@ -144,6 +144,8 @@ dialog with the admin of the referenced model in it::
    :alt: Sonata ModelType
    :width: 700px
 
+.. _Groups and Tabs:
+
 Using Groups and Tabs
 ---------------------
 
