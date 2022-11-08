@@ -217,11 +217,13 @@ abstract class Filter implements FilterInterface, ChainableFilterInterface
         if (!$this->hasPreviousFilter()) {
             throw new \LogicException(sprintf('Filter "%s" has no previous filter.', $this->getName()));
         }
-        \assert(null !== $this->previousFilter);
 
         return $this->previousFilter;
     }
 
+    /**
+     * @phpstan-assert-if-true !null $this->previousFilter
+     */
     final public function hasPreviousFilter(): bool
     {
         return null !== $this->previousFilter;
