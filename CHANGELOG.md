@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.21.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.20.0...4.21.0) - 2022-11-09
+### Added
+- [[#7960](https://github.com/sonata-project/SonataAdminBundle/pull/7960)] Added support for `doctrine/collections` 2 ([@franmomu](https://github.com/franmomu))
+
+### Changed
+- [[#7962](https://github.com/sonata-project/SonataAdminBundle/pull/7962)] Made `AbstractAdmin::setSubject()` use `getModelClass()` instead of `getClass()` to check is the subject is allowed ([@7ochem](https://github.com/7ochem))
+
+### Fixed
+- [[#7963](https://github.com/sonata-project/SonataAdminBundle/pull/7963)] Fix `appendFormFieldElement` on nested collection named the same as one of the parent fields ([@fgueguen](https://github.com/fgueguen))
+- [[#7961](https://github.com/sonata-project/SonataAdminBundle/pull/7961)] Fixes ChoiceFieldMaskType behavior inside CollectionType ([@Darkabso](https://github.com/Darkabso))
+- [[#7952](https://github.com/sonata-project/SonataAdminBundle/pull/7952)] Fix an issue that an exception will be thrown by `Pool::getAdminByClass()` when the admin code is different from its service id. ([@tamcy](https://github.com/tamcy))
+- [[#7952](https://github.com/sonata-project/SonataAdminBundle/pull/7952)] Fix a typo in the deprecation message which is triggered when multiple `sonata.admin` tags are found in the same service definition. ([@tamcy](https://github.com/tamcy))
+
 ## [4.20.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.19.0...4.20.0) - 2022-10-20
 ### Added
 - [[#7937](https://github.com/sonata-project/SonataAdminBundle/pull/7937)] Allow manually reorder tagged admin services using the `priority` attribute. ([@tamcy](https://github.com/tamcy))
