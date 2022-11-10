@@ -497,7 +497,12 @@ file that was distributed with this source code.
 
                     // Some fields may be named with a dash (like keys of immutable array form type)
                     if (jQuery(defaultFieldId).length === 0) {
-                        return '#sonata-ba-field-container-{{ main_form_name }}-' + field;
+                        defaultFieldId = '#sonata-ba-field-container-{{ main_form_name }}-' + field;
+                    }
+
+                    // Some fields are rendered by form_widget (no container)
+                    if (jQuery(defaultFieldId).length === 0) {
+                        defaultFieldId = '#{{ main_form_name }}_' + field;
                     }
 
                     return defaultFieldId;
