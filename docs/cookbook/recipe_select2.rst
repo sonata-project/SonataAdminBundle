@@ -92,6 +92,10 @@ To control the minimum amount of results that are required before the select is 
         ;
     }
 
+.. note::
+
+    By default ``minimumResultsForSearch`` will be set to ``10``
+
 Maximum selection length
 --------------------------
 
@@ -110,7 +114,3 @@ To control the maximum amount of results that can be selected, you can set the d
             ])
         ;
     }
-
-.. note::
-
-    By default ``minimumResultsForSearch`` will be set to ``10``
