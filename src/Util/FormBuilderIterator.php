@@ -64,7 +64,7 @@ final class FormBuilderIterator extends \RecursiveArrayIterator
 
     public function current(): FormBuilderInterface
     {
-        return $this->formBuilder->get($this->iterator->current());
+        return $this->formBuilder->get((string) $this->iterator->current());
     }
 
     public function getChildren(): self

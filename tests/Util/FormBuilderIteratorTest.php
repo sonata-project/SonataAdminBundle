@@ -17,26 +17,25 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormRegistryInterface;
 
 /**
  * @author Mike Meier <mike.meier@ibrows.ch>
  */
 final class FormBuilderIteratorTest extends TestCase
 {
-    private EventDispatcherInterface $dispatcher;
-
-    private FormFactoryInterface $factory;
-
     private FormBuilder $builder;
 
     protected function setUp(): void
     {
-        $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
-        $this->factory = $this->createStub(FormFactoryInterface::class);
-        $this->builder = new FormBuilder('name', null, $this->dispatcher, $this->factory);
-        $this->factory->method('createNamedBuilder')->willReturn($this->builder);
+        $dispatcher = $this->createStub(EventDispatcherInterface::class);
+        $registry = $this->createStub(FormRegistryInterface::class);
+        $factory = new FormFactory($registry);
+        $this->builder = new FormBuilder('name', null, $dispatcher, $factory);
     }
 
     public function testGetChildren(): void
@@ -51,6 +50,22 @@ final class FormBuilderIteratorTest extends TestCase
     {
         $this->builder->add('name', TextType::class);
         $iterator = new FormBuilderIterator($this->builder);
-        static::assertTrue($iterator->hasChildren());
+        static::assertFalse($iterator->hasChildren());
+    }
+
+    public function testCurrentCasting(): void
+    {
+        $this->builder->add('hungry', ChoiceType::class, [
+            'multiple' => true,
+            'expanded' => true,
+            'choices'  => [
+                'Maybe' => null,
+                'Yes' => true,
+                'No' => false,
+            ],
+        ]);
+
+        $iterator = new FormBuilderIterator($this->builder->get('hungry'));
+        static::assertInstanceOf(FormBuilderInterface::class, $iterator->current());
     }
 }
