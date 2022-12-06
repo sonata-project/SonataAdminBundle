@@ -16,8 +16,8 @@ namespace Sonata\AdminBundle\Tests\Util;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactory;
@@ -58,7 +58,7 @@ final class FormBuilderIteratorTest extends TestCase
         $this->builder->add('hungry', ChoiceType::class, [
             'multiple' => true,
             'expanded' => true,
-            'choices'  => [
+            'choices' => [
                 'Maybe' => null,
                 'Yes' => true,
                 'No' => false,
