@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.21.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.21.0...4.21.1) - 2022-12-08
+### Fixed
+- [[#7985](https://github.com/sonata-project/SonataAdminBundle/pull/7985)] Fixed an issue with integer indexed form children within `FormBuilderIterator` ([@dmaicher](https://github.com/dmaicher))
+- [[#7981](https://github.com/sonata-project/SonataAdminBundle/pull/7981)] `data-sonata-select2-maximumSelectionLength` attribute ([@sterrien](https://github.com/sterrien))
+
 ## [4.21.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.20.0...4.21.0) - 2022-11-09
 ### Added
 - [[#7960](https://github.com/sonata-project/SonataAdminBundle/pull/7960)] Added support for `doctrine/collections` 2 ([@franmomu](https://github.com/franmomu))
