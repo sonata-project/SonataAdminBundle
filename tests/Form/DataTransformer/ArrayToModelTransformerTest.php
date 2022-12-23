@@ -26,7 +26,7 @@ final class ArrayToModelTransformerTest extends TestCase
     /**
      * @var MockObject&ModelManagerInterface<\stdClass>
      */
-    private $modelManager;
+    private ModelManagerInterface $modelManager;
 
     protected function setUp(): void
     {

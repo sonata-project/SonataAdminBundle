@@ -29,12 +29,12 @@ final class RoleSecurityHandlerTest extends TestCase
     /**
      * @var AdminInterface<object>&MockObject
      */
-    private $admin;
+    private AdminInterface $admin;
 
     /**
      * @var AuthorizationCheckerInterface&MockObject
      */
-    private $authorizationChecker;
+    private AuthorizationCheckerInterface $authorizationChecker;
 
     protected function setUp(): void
     {

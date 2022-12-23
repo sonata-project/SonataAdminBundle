@@ -43,12 +43,12 @@ final class DatagridTest extends TestCase
     /**
      * @var PagerInterface<ProxyQueryInterface<object>&Stub>&MockObject
      */
-    private $pager;
+    private PagerInterface $pager;
 
     /**
      * @var ProxyQueryInterface<object>&Stub
      */
-    private $query;
+    private ProxyQueryInterface $query;
 
     /**
      * @var FieldDescriptionCollection<FieldDescriptionInterface>

@@ -40,7 +40,7 @@ final class GroupMenuProviderTest extends TestCase
     /**
      * @var AuthorizationCheckerInterface&Stub
      */
-    private $checker;
+    private AuthorizationCheckerInterface $checker;
 
     private Container $container;
 

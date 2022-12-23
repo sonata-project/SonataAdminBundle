@@ -42,12 +42,12 @@ final class SonataAdminExtensionTest extends TestCase
     /**
      * @var AdminInterface<\stdClass>&MockObject
      */
-    private $admin;
+    private AdminInterface $admin;
 
     /**
      * @var AdminInterface<\stdClass>&MockObject
      */
-    private $adminBar;
+    private AdminInterface $adminBar;
 
     private \stdClass $object;
 

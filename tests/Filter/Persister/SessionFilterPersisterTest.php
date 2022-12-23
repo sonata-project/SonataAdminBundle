@@ -26,7 +26,7 @@ final class SessionFilterPersisterTest extends TestCase
     /**
      * @var SessionInterface&MockObject
      */
-    private $session;
+    private SessionInterface $session;
 
     protected function setUp(): void
     {

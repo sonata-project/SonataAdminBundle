@@ -31,12 +31,12 @@ final class ObjectAclManipulatorTest extends TestCase
     /**
      * @var MockObject&OutputInterface
      */
-    private $output;
+    private OutputInterface $output;
 
     /**
      * @var MockObject&AdminInterface<object>
      */
-    private $admin;
+    private AdminInterface $admin;
 
     /**
      * @var \ArrayIterator<int, MockObject&ObjectIdentityInterface>

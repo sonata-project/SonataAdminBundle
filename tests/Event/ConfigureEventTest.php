@@ -29,12 +29,12 @@ final class ConfigureEventTest extends TestCase
     /**
      * @var AdminInterface<object>&MockObject
      */
-    private $admin;
+    private AdminInterface $admin;
 
     /**
      * @var MapperInterface<object>&MockObject
      */
-    private $mapper;
+    private MapperInterface $mapper;
 
     protected function setUp(): void
     {

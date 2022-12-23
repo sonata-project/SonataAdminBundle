@@ -52,12 +52,12 @@ final class RenderElementRuntimeTest extends TestCase
     /**
      * @var AdminInterface<object>&MockObject
      */
-    private $admin;
+    private AdminInterface $admin;
 
     /**
      * @var FieldDescriptionInterface&MockObject
      */
-    private $fieldDescription;
+    private FieldDescriptionInterface $fieldDescription;
 
     private \stdClass $object;
 
@@ -66,7 +66,7 @@ final class RenderElementRuntimeTest extends TestCase
     /**
      * @var MutableTemplateRegistryInterface&MockObject
      */
-    private $templateRegistry;
+    private MutableTemplateRegistryInterface $templateRegistry;
 
     protected function setUp(): void
     {
