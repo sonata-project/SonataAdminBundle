@@ -29,7 +29,7 @@ final class AdminFetcherTest extends TestCase
     /**
      * @var MockObject&AdminInterface<object>
      */
-    private $admin;
+    private AdminInterface $admin;
 
     protected function setUp(): void
     {

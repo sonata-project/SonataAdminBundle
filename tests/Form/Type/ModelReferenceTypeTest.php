@@ -25,7 +25,7 @@ final class ModelReferenceTypeTest extends TypeTestCase
     /**
      * @var MockObject&ModelManagerInterface<object>
      */
-    private $modelManager;
+    private ModelManagerInterface $modelManager;
 
     protected function setUp(): void
     {

@@ -34,7 +34,7 @@ final class SearchActionTest extends TestCase
     /**
      * @var MockObject&Environment
      */
-    private $twig;
+    private Environment $twig;
 
     protected function setUp(): void
     {

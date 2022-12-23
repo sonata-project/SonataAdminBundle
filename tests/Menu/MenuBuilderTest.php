@@ -33,14 +33,14 @@ final class MenuBuilderTest extends TestCase
     /**
      * @var MenuProviderInterface&MockObject
      */
-    private $provider;
+    private MenuProviderInterface $provider;
 
     private MenuFactory $factory;
 
     /**
      * @var MockObject&EventDispatcherInterface
      */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     protected function setUp(): void
     {

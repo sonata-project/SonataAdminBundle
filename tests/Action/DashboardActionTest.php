@@ -26,7 +26,7 @@ final class DashboardActionTest extends TestCase
     /**
      * @var MutableTemplateRegistryInterface&Stub
      */
-    private $templateRegistry;
+    private MutableTemplateRegistryInterface $templateRegistry;
 
     private DashboardAction $action;
 

@@ -43,7 +43,7 @@ final class ListMapperTest extends TestCase
     /**
      * @var AdminInterface<object>&MockObject
      */
-    private $admin;
+    private AdminInterface $admin;
 
     protected function setUp(): void
     {

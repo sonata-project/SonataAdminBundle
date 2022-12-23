@@ -34,24 +34,24 @@ final class RetrieveFormFieldElementActionTest extends TestCase
     /**
      * @var Stub&AdminFetcherInterface
      */
-    private $adminFetcher;
+    private AdminFetcherInterface $adminFetcher;
 
     private RetrieveFormFieldElementAction $action;
 
     /**
      * @var AdminInterface<object>&MockObject
      */
-    private $admin;
+    private AdminInterface $admin;
 
     /**
      * @var Environment&MockObject
      */
-    private $twig;
+    private Environment $twig;
 
     /**
      * @var AdminHelper&MockObject
      */
-    private $helper;
+    private AdminHelper $helper;
 
     protected function setUp(): void
     {

@@ -40,12 +40,12 @@ final class LockExtensionTest extends TestCase
     /**
      * @var AdminInterface<object>&Stub
      */
-    private $admin;
+    private AdminInterface $admin;
 
     /**
      * @var LockInterface<object>&MockObject
      */
-    private $modelManager;
+    private LockInterface $modelManager;
 
     private \stdClass $object;
 

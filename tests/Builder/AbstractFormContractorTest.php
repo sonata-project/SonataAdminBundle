@@ -38,14 +38,14 @@ final class AbstractFormContractorTest extends TestCase
     /**
      * @var FormFactoryInterface&MockObject
      */
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
 
     private FormContractorInterface $formContractor;
 
     /**
      * @var MockObject&FieldDescriptionInterface
      */
-    private $fieldDescription;
+    private FieldDescriptionInterface $fieldDescription;
 
     protected function setUp(): void
     {

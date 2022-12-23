@@ -26,7 +26,7 @@ final class ModelChoiceLoaderTest extends TestCase
     /**
      * @var MockObject&ModelManagerInterface<object>
      */
-    private $modelManager;
+    private ModelManagerInterface $modelManager;
 
     private PropertyAccessorInterface $propertyAccessor;
 

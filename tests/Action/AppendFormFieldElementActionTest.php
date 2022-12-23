@@ -34,24 +34,24 @@ final class AppendFormFieldElementActionTest extends TestCase
     /**
      * @var Stub&AdminFetcherInterface
      */
-    private $adminFetcher;
+    private AdminFetcherInterface $adminFetcher;
 
     /**
      * @var Environment&MockObject
      */
-    private $twig;
+    private Environment $twig;
 
     private AppendFormFieldElementAction $action;
 
     /**
      * @var AdminInterface<object>&MockObject
      */
-    private $admin;
+    private AdminInterface $admin;
 
     /**
      * @var AdminHelper&MockObject
      */
-    private $helper;
+    private AdminHelper $helper;
 
     protected function setUp(): void
     {

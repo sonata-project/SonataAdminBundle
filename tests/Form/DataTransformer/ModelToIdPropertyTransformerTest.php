@@ -28,7 +28,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
     /**
      * @var ModelManagerInterface<Foo>&MockObject
      */
-    private $modelManager;
+    private ModelManagerInterface $modelManager;
 
     protected function setUp(): void
     {

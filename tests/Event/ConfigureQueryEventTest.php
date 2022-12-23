@@ -26,12 +26,12 @@ final class ConfigureQueryEventTest extends TestCase
     /**
      * @var AdminInterface<object>&MockObject
      */
-    private $admin;
+    private AdminInterface $admin;
 
     /**
      * @var ProxyQueryInterface<object>&MockObject
      */
-    private $proxyQuery;
+    private ProxyQueryInterface $proxyQuery;
 
     protected function setUp(): void
     {

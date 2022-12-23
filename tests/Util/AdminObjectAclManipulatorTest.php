@@ -37,7 +37,7 @@ final class AdminObjectAclManipulatorTest extends TestCase
     /**
      * @var MockObject&FormFactoryInterface
      */
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
 
     private AdminObjectAclManipulator $adminObjectAclManipulator;
 

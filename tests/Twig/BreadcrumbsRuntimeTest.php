@@ -34,7 +34,7 @@ final class BreadcrumbsRuntimeTest extends TestCase
     /**
      * @var Stub&BreadcrumbsBuilderInterface
      */
-    private $breadcrumbBuilder;
+    private BreadcrumbsBuilderInterface $breadcrumbBuilder;
 
     protected function setUp(): void
     {
