@@ -41,6 +41,10 @@ use Symfony\Component\DependencyInjection\Reference;
  *     global: array<string, array<string, array{priority: int}>>,
  *     excludes: array<string, array<string, array{priority: int}>>,
  *     admins: array<string, array<string, array{priority: int}>>,
+ *     implements: array<string, array<class-string, array{priority: int}>>,
+ *     extends: array<string, array<class-string, array{priority: int}>>,
+ *     instanceof: array<string, array<class-string, array{priority: int}>>,
+ *     uses: array<string, array<class-string, array{priority: int}>>,
  *     admin_implements: array<string, array<class-string, array{priority: int}>>,
  *     admin_extends: array<string, array<class-string, array{priority: int}>>,
  *     admin_instanceof: array<string, array<class-string, array{priority: int}>>,
@@ -136,7 +140,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
                         }
 
                         foreach ($extensionAttributes as $type => $subject) {
-                            if ($this->isSubtypeOf($type, $subject, $class, $adminClass)) {
+                            if ($this->shouldApplyExtension($type, $subject, $class, $adminClass)) {
                                 $this->addExtension($targets, $id, $extension, $extensionAttributes);
                             }
                         }
@@ -222,7 +226,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
                         continue;
                     }
 
-                    if ($this->isSubtypeOf($type, $subject, $class, $adminClass)) {
+                    if ($this->shouldApplyExtension($type, $subject, $class, $adminClass)) {
                         $extensions = array_merge($extensions, $extensionList);
                     }
                 }
@@ -316,7 +320,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
      * @phpstan-param class-string $class
      * @phpstan-param class-string $adminClass
      */
-    private function isSubtypeOf(string $type, string $subject, string $class, string $adminClass): bool
+    private function shouldApplyExtension(string $type, string $subject, string $class, string $adminClass): bool
     {
         $classReflection = new \ReflectionClass($class);
         $adminClassReflection = new \ReflectionClass($adminClass);
