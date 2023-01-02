@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Bridge\Exporter;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\Exporter\Exporter;
+use Sonata\Exporter\ExporterInterface;
 
 /**
  * @author Grégoire Paris <postmaster@greg0ire.fr>
@@ -22,14 +22,14 @@ use Sonata\Exporter\Exporter;
 final class AdminExporter
 {
     /**
-     * @var Exporter service from the exporter bundle
+     * @var ExporterInterface service from the exporter bundle
      */
-    private Exporter $exporter;
+    private ExporterInterface $exporter;
 
     /**
-     * @param Exporter $exporter will be used to get global settings
+     * @param ExporterInterface $exporter will be used to get global settings
      */
-    public function __construct(Exporter $exporter)
+    public function __construct(ExporterInterface $exporter)
     {
         $this->exporter = $exporter;
     }
