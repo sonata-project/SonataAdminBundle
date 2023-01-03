@@ -8,9 +8,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - [[#7964](https://github.com/sonata-project/SonataAdminBundle/pull/7964)] Ability to configure admin extension in the `sonata_admin.extensions` config with the admin class rather than the model class thanks to `admin_implements`, `admin_instanceof`, `admin_extends` and `admin_use` options. ([@VincentLanglet](https://github.com/VincentLanglet))
 - [[#7964](https://github.com/sonata-project/SonataAdminBundle/pull/7964)] `excludes`, `extends`, `implements`, `instanceof`, `uses`, `admin_implements`, `admin_instanceof`, `admin_extends` and `admin_use` options are now available directly when tagging an admin extension. ([@VincentLanglet](https://github.com/VincentLanglet))
 
-### Changed
-- [[#7994](https://github.com/sonata-project/SonataAdminBundle/pull/7994)] Drop support sonata-project/exporter 2.x. ([@pkameisha](https://github.com/pkameisha))
-
 ## [4.21.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.21.0...4.21.1) - 2022-12-08
 ### Fixed
 - [[#7985](https://github.com/sonata-project/SonataAdminBundle/pull/7985)] Fixed an issue with integer indexed form children within `FormBuilderIterator` ([@dmaicher](https://github.com/dmaicher))
