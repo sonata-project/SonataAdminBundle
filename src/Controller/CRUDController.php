@@ -31,7 +31,7 @@ use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
-use Sonata\Exporter\Exporter;
+use Sonata\Exporter\ExporterInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
@@ -93,7 +93,7 @@ class CRUDController extends AbstractController
             'sonata.admin.audit.manager' => AuditManagerInterface::class,
             'sonata.admin.object.manipulator.acl.admin' => AdminObjectAclManipulator::class,
             'sonata.admin.request.fetcher' => AdminFetcherInterface::class,
-            'sonata.exporter.exporter' => '?'.Exporter::class,
+            'sonata.exporter.exporter' => '?'.ExporterInterface::class,
             'sonata.admin.admin_exporter' => '?'.AdminExporter::class,
             'sonata.admin.security.acl_user_manager' => '?'.AdminAclUserManagerInterface::class,
 
@@ -851,7 +851,7 @@ class CRUDController extends AbstractController
         $filename = $adminExporter->getExportFilename($this->admin, $format);
 
         $exporter = $this->container->get('sonata.exporter.exporter');
-        \assert($exporter instanceof Exporter);
+        \assert($exporter instanceof ExporterInterface);
 
         if (!\in_array($format, $allowedExportFormats, true)) {
             throw new \RuntimeException(sprintf(
