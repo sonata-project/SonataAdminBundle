@@ -62,10 +62,9 @@ final class ExtensionCompilerPass implements CompilerPassInterface
 
         foreach ($container->findTaggedServiceIds('sonata.admin.extension') as $id => $tags) {
             $adminExtension = $container->getDefinition($id);
-            $adminExtensionClass = $adminExtension->getClass();
-            if (null === $adminExtensionClass) {
-                throw new InvalidArgumentException(sprintf('The service "%s" has no class.', $id));
-            }
+
+            // Trim possible parameter delimiters ("%") from the class name.
+            $adminExtensionClass = trim($adminExtension->getClass() ?? '', '%');
             if (!class_exists($adminExtensionClass, false) && $container->hasParameter($adminExtensionClass)) {
                 $adminExtensionClass = $container->getParameter($adminExtensionClass);
                 \assert(\is_string($adminExtensionClass));
@@ -105,10 +104,9 @@ final class ExtensionCompilerPass implements CompilerPassInterface
 
         foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $tags) {
             $admin = $container->getDefinition($id);
-            $adminClass = $admin->getClass();
-            if (null === $adminClass) {
-                throw new InvalidArgumentException(sprintf('The service "%s" has no class.', $id));
-            }
+
+            // Trim possible parameter delimiters ("%") from the class name.
+            $adminClass = trim($admin->getClass() ?? '', '%');
             if (!class_exists($adminClass, false) && $container->hasParameter($adminClass)) {
                 $adminClass = $container->getParameter($adminClass);
                 \assert(\is_string($adminClass));
@@ -191,10 +189,8 @@ final class ExtensionCompilerPass implements CompilerPassInterface
      */
     private function getExtensionsForAdmin(string $id, array $tags, Definition $admin, ContainerBuilder $container, array $extensionMap): array
     {
-        $adminClass = $admin->getClass();
-        if (null === $adminClass) {
-            throw new InvalidArgumentException(sprintf('The service "%s" has no class.', $id));
-        }
+        // Trim possible parameter delimiters ("%") from the class name.
+        $adminClass = trim($admin->getClass() ?? '', '%');
         if (!class_exists($adminClass, false) && $container->hasParameter($adminClass)) {
             $adminClass = $container->getParameter($adminClass);
             \assert(\is_string($adminClass));
