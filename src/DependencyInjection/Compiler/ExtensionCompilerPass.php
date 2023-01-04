@@ -66,6 +66,10 @@ final class ExtensionCompilerPass implements CompilerPassInterface
             if (null === $adminExtensionClass) {
                 throw new InvalidArgumentException(sprintf('The service "%s" has no class.', $id));
             }
+            if (!class_exists($adminExtensionClass, false) && $container->hasParameter($adminExtensionClass)) {
+                $adminExtensionClass = $container->getParameter($adminExtensionClass);
+                \assert(\is_string($adminExtensionClass));
+            }
             \assert(class_exists($adminExtensionClass));
 
             foreach ($tags as $attributes) {
@@ -104,6 +108,10 @@ final class ExtensionCompilerPass implements CompilerPassInterface
             $adminClass = $admin->getClass();
             if (null === $adminClass) {
                 throw new InvalidArgumentException(sprintf('The service "%s" has no class.', $id));
+            }
+            if (!class_exists($adminClass, false) && $container->hasParameter($adminClass)) {
+                $adminClass = $container->getParameter($adminClass);
+                \assert(\is_string($adminClass));
             }
             \assert(class_exists($adminClass));
 
@@ -186,6 +194,10 @@ final class ExtensionCompilerPass implements CompilerPassInterface
         $adminClass = $admin->getClass();
         if (null === $adminClass) {
             throw new InvalidArgumentException(sprintf('The service "%s" has no class.', $id));
+        }
+        if (!class_exists($adminClass, false) && $container->hasParameter($adminClass)) {
+            $adminClass = $container->getParameter($adminClass);
+            \assert(\is_string($adminClass));
         }
         \assert(class_exists($adminClass));
 
