@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.22.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.22.0...4.22.1) - 2023-01-05
+### Fixed
+- [[#7998](https://github.com/sonata-project/SonataAdminBundle/pull/7998)] ExtensionCompilerPass usage with parameters class string. ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.22.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.21.1...4.22.0) - 2023-01-03
 ### Added
 - [[#7994](https://github.com/sonata-project/SonataAdminBundle/pull/7994)] Added usage of ExporterInterface instead of Exporter class. ([@pkameisha](https://github.com/pkameisha))
