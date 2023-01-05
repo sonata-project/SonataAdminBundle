@@ -304,9 +304,9 @@ final class ExtensionCompilerPassTest extends TestCase
         static::assertCount(8, $extensions);
 
         static::assertSame($historyExtension, $extensions[0]);
-        static::assertSame($securityExtension, $extensions[1]);
+        static::assertSame($filterExtension, $extensions[1]);
         static::assertSame($adminInstanceOfExtension, $extensions[4]);
-        static::assertSame($filterExtension, $extensions[5]);
+        static::assertSame($securityExtension, $extensions[3]);
         static::assertSame($orderExtension, $extensions[6]);
         static::assertSame($globalExtension, $extensions[7]);
 
@@ -551,7 +551,7 @@ final class ExtensionCompilerPassTest extends TestCase
             ->setPublic(true)
             ->setClass($extensionClass)
             ->addTag('sonata.admin.extension', ['global' => false])
-            ->addTag('sonata.admin.extension', ['target' => 'sonata_news_admin'])
+            ->addTag('sonata.admin.extension', ['target' => 'sonata_news_admin', 'priority' => 10])
             ->addTag('sonata.admin.extension', ['target' => 'sonata_article_admin'])
             ->addTag('sonata.admin.extension', ['implements' => Publishable::class])
             ->addTag('sonata.admin.extension', ['admin_uses' => TimestampableTrait::class]);

@@ -148,6 +148,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
                         foreach ($extensionAttributes as $type => $subject) {
                             if ($this->shouldApplyExtension($type, $subject, $class, $adminClass)) {
                                 $this->addExtension($targets, $id, $extension, $extensionAttributes);
+                                break;
                             }
                         }
                     }
@@ -325,10 +326,12 @@ final class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
+     * @param mixed $subject
+     *
      * @phpstan-param class-string $class
      * @phpstan-param class-string $adminClass
      */
-    private function shouldApplyExtension(string $type, string $subject, string $class, string $adminClass): bool
+    private function shouldApplyExtension(string $type, $subject, string $class, string $adminClass): bool
     {
         $classReflection = new \ReflectionClass($class);
         $adminClassReflection = new \ReflectionClass($adminClass);
@@ -337,7 +340,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
             case 'global':
                 return true;
             case 'instanceof':
-                if (!class_exists($subject)) {
+                if (!\is_string($subject) || !class_exists($subject)) {
                     return false;
                 }
 
@@ -345,13 +348,13 @@ final class ExtensionCompilerPass implements CompilerPassInterface
 
                 return $classReflection->isSubclassOf($subject) || $subjectReflection->getName() === $classReflection->getName();
             case 'implements':
-                return interface_exists($subject) && $classReflection->implementsInterface($subject);
+                return \is_string($subject) && interface_exists($subject) && $classReflection->implementsInterface($subject);
             case 'extends':
-                return class_exists($subject) && $classReflection->isSubclassOf($subject);
+                return \is_string($subject) && class_exists($subject) && $classReflection->isSubclassOf($subject);
             case 'uses':
-                return trait_exists($subject) && $this->hasTrait($classReflection, $subject);
+                return \is_string($subject) && trait_exists($subject) && $this->hasTrait($classReflection, $subject);
             case 'admin_instanceof':
-                if (!class_exists($subject)) {
+                if (!\is_string($subject) || !class_exists($subject)) {
                     return false;
                 }
 
@@ -359,11 +362,11 @@ final class ExtensionCompilerPass implements CompilerPassInterface
 
                 return $adminClassReflection->isSubclassOf($subject) || $subjectReflection->getName() === $adminClassReflection->getName();
             case 'admin_implements':
-                return interface_exists($subject) && $adminClassReflection->implementsInterface($subject);
+                return \is_string($subject) && interface_exists($subject) && $adminClassReflection->implementsInterface($subject);
             case 'admin_extends':
-                return class_exists($subject) && $adminClassReflection->isSubclassOf($subject);
+                return \is_string($subject) && class_exists($subject) && $adminClassReflection->isSubclassOf($subject);
             case 'admin_uses':
-                return trait_exists($subject) && $this->hasTrait($adminClassReflection, $subject);
+                return \is_string($subject) && trait_exists($subject) && $this->hasTrait($adminClassReflection, $subject);
             default:
                 return false;
         }
