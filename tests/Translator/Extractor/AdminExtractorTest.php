@@ -32,17 +32,17 @@ final class AdminExtractorTest extends TestCase
     /**
      * @var AdminInterface<object>&MockObject
      */
-    private $fooAdmin;
+    private AdminInterface$fooAdmin;
 
     /**
      * @var AdminInterface<object>&MockObject
      */
-    private $barAdmin;
+    private AdminInterface $barAdmin;
 
     /**
      * @var BreadcrumbsBuilderInterface&MockObject
      */
-    private $breadcrumbsBuilder;
+    private BreadcrumbsBuilderInterface $breadcrumbsBuilder;
 
     protected function setUp(): void
     {

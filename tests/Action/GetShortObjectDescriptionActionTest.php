@@ -31,7 +31,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
     /**
      * @var Stub&AdminFetcherInterface
      */
-    private $adminFetcher;
+    private AdminFetcherInterface $adminFetcher;
 
     private Environment $twig;
 
@@ -40,7 +40,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
     /**
      * @var AdminInterface<object>&MockObject
      */
-    private $admin;
+    private AdminInterface $admin;
 
     protected function setUp(): void
     {

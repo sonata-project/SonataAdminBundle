@@ -28,7 +28,7 @@ final class PersistenceEventTest extends TestCase
     /**
      * @var AdminInterface<object>&MockObject
      */
-    private $admin;
+    private AdminInterface $admin;
 
     private object $object;
 

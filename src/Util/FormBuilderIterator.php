@@ -27,7 +27,7 @@ final class FormBuilderIterator extends \RecursiveArrayIterator
     private string $prefix;
 
     /**
-     * @var \ArrayIterator<string|int, string>
+     * @var \ArrayIterator<string|int, string|int>
      */
     private \ArrayIterator $iterator;
 
@@ -64,7 +64,7 @@ final class FormBuilderIterator extends \RecursiveArrayIterator
 
     public function current(): FormBuilderInterface
     {
-        return $this->formBuilder->get($this->iterator->current());
+        return $this->formBuilder->get((string) $this->iterator->current());
     }
 
     public function getChildren(): self
@@ -78,7 +78,7 @@ final class FormBuilderIterator extends \RecursiveArrayIterator
     }
 
     /**
-     * @return array<string|int, string>
+     * @return array<string|int, string|int>
      */
     private static function getKeys(FormBuilderInterface $formBuilder): array
     {

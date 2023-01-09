@@ -30,7 +30,7 @@ final class XEditableExtensionTest extends TestCase
      * @param array<string, mixed>         $options
      * @param array<array<string, string>> $expectedChoices
      *
-     * @dataProvider xEditablechoicesProvider
+     * @dataProvider xEditableChoicesProvider
      */
     public function testGetXEditableChoicesIsIdempotent(array $options, array $expectedChoices): void
     {

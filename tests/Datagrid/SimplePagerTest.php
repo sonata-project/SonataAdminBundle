@@ -33,7 +33,7 @@ final class SimplePagerTest extends TestCase
     /**
      * @var MockObject&ProxyQueryInterface<object>
      */
-    private $proxyQuery;
+    private ProxyQueryInterface $proxyQuery;
 
     protected function setUp(): void
     {

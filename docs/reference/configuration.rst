@@ -209,6 +209,10 @@ Full Configuration Options
                     extends: []
                     instanceof: []
                     uses: []
+                    admin_implements: []
+                    admin_extends: []
+                    admin_instanceof: []
+                    admin_uses: []
 
             persist_filters: false
             filter_persister: sonata.admin.filter_persister.session

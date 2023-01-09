@@ -47,7 +47,7 @@ final class ShowMapperTest extends TestCase
     /**
      * @var ShowBuilderInterface&MockObject
      */
-    private $showBuilder;
+    private ShowBuilderInterface $showBuilder;
 
     /**
      * @var FieldDescriptionCollection<FieldDescriptionInterface>

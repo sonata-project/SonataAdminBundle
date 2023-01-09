@@ -26,7 +26,7 @@ final class PagerTest extends TestCase
     /**
      * @var Pager<ProxyQueryInterface<object>>&MockObject
      */
-    private $pager;
+    private Pager $pager;
 
     protected function setUp(): void
     {

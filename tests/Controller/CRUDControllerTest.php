@@ -89,7 +89,7 @@ final class CRUDControllerTest extends TestCase
     /**
      * @var AdminInterface<object>&MockObject
      */
-    private $admin;
+    private AdminInterface $admin;
 
     private MutableTemplateRegistryInterface $templateRegistry;
 
@@ -100,7 +100,7 @@ final class CRUDControllerTest extends TestCase
     /**
      * @var AuditManagerInterface&MockObject
      */
-    private $auditManager;
+    private AuditManagerInterface $auditManager;
 
     private ContainerInterface $container;
 
@@ -116,39 +116,39 @@ final class CRUDControllerTest extends TestCase
     /**
      * @var TranslatorInterface&MockObject
      */
-    private $translator;
+    private TranslatorInterface $translator;
 
     /**
      * @var LoggerInterface&MockObject
      */
-    private $logger;
+    private LoggerInterface $logger;
 
     /**
      * @var Stub&FormFactoryInterface
      */
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
 
     private ParameterBag $parameterBag;
 
     /**
      * @var Stub&AdminFetcherInterface
      */
-    private $adminFetcher;
+    private AdminFetcherInterface $adminFetcher;
 
     /**
      * @var MockObject&Environment
      */
-    private $twig;
+    private Environment $twig;
 
     /**
      * @var MockObject&HttpKernelInterface
      */
-    private $httpKernel;
+    private HttpKernelInterface $httpKernel;
 
     /**
      * @var MockObject&ControllerResolverInterface
      */
-    private $controllerResolver;
+    private ControllerResolverInterface $controllerResolver;
 
     protected function setUp(): void
     {

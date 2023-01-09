@@ -35,12 +35,12 @@ final class DataTransformerResolverTest extends TestCase
     /**
      * @var FieldDescriptionInterface&MockObject
      */
-    private $fieldDescription;
+    private FieldDescriptionInterface $fieldDescription;
 
     /**
      * @var ModelManagerInterface<object>&MockObject
      */
-    private $modelManager;
+    private ModelManagerInterface $modelManager;
 
     protected function setUp(): void
     {

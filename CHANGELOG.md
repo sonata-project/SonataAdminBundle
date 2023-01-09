@@ -2,6 +2,25 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.22.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.22.1...4.22.2) - 2023-01-05
+### Fixed
+- [[#8001](https://github.com/sonata-project/SonataAdminBundle/pull/8001)] Admin extension declaration with priority ([@VincentLanglet](https://github.com/VincentLanglet))
+
+## [4.22.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.22.0...4.22.1) - 2023-01-05
+### Fixed
+- [[#7998](https://github.com/sonata-project/SonataAdminBundle/pull/7998)] ExtensionCompilerPass usage with parameters class string. ([@VincentLanglet](https://github.com/VincentLanglet))
+
+## [4.22.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.21.1...4.22.0) - 2023-01-03
+### Added
+- [[#7994](https://github.com/sonata-project/SonataAdminBundle/pull/7994)] Added usage of ExporterInterface instead of Exporter class. ([@pkameisha](https://github.com/pkameisha))
+- [[#7964](https://github.com/sonata-project/SonataAdminBundle/pull/7964)] Ability to configure admin extension in the `sonata_admin.extensions` config with the admin class rather than the model class thanks to `admin_implements`, `admin_instanceof`, `admin_extends` and `admin_use` options. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#7964](https://github.com/sonata-project/SonataAdminBundle/pull/7964)] `excludes`, `extends`, `implements`, `instanceof`, `uses`, `admin_implements`, `admin_instanceof`, `admin_extends` and `admin_use` options are now available directly when tagging an admin extension. ([@VincentLanglet](https://github.com/VincentLanglet))
+
+## [4.21.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.21.0...4.21.1) - 2022-12-08
+### Fixed
+- [[#7985](https://github.com/sonata-project/SonataAdminBundle/pull/7985)] Fixed an issue with integer indexed form children within `FormBuilderIterator` ([@dmaicher](https://github.com/dmaicher))
+- [[#7981](https://github.com/sonata-project/SonataAdminBundle/pull/7981)] `data-sonata-select2-maximumSelectionLength` attribute ([@sterrien](https://github.com/sterrien))
+
 ## [4.21.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.20.0...4.21.0) - 2022-11-09
 ### Added
 - [[#7960](https://github.com/sonata-project/SonataAdminBundle/pull/7960)] Added support for `doctrine/collections` 2 ([@franmomu](https://github.com/franmomu))

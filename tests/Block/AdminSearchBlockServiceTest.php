@@ -38,7 +38,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
     /**
      * @var TemplateRegistryInterface&MockObject
      */
-    private $templateRegistry;
+    private TemplateRegistryInterface $templateRegistry;
 
     protected function setUp(): void
     {

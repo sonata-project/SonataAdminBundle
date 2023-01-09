@@ -22,7 +22,16 @@ final class AdminExtractorTest extends KernelTestCase
     public function testDebugMissingMessages(): void
     {
         $tester = $this->createCommandTester();
-        $tester->execute(['locale' => 'en']);
+        try {
+            $tester->execute(['locale' => 'en']);
+        } catch (\Throwable $t) {
+            // until https://github.com/symfony/symfony/issues/48422 is fixed
+            if (false !== strpos($t->getMessage(), 'Undefined property: PhpParser\Node\VariadicPlaceholder')) {
+                static::markTestSkipped();
+            }
+
+            throw $t;
+        }
 
         static::assertMatchesRegularExpression('/group_label/', $tester->getDisplay());
         static::assertMatchesRegularExpression('/admin_label/', $tester->getDisplay());

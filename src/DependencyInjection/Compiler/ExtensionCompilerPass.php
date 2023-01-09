@@ -31,6 +31,10 @@ use Symfony\Component\DependencyInjection\Reference;
  *     extends: array<class-string, string>,
  *     instanceof: array<class-string, string>,
  *     uses: array<class-string, string>,
+ *     admin_implements: array<class-string, string>,
+ *     admin_extends: array<class-string, string>,
+ *     admin_instanceof: array<class-string, string>,
+ *     admin_uses: array<class-string, string>,
  *     priority: int,
  * }>
  * @phpstan-type FlattenExtensionMap = array{
@@ -41,6 +45,10 @@ use Symfony\Component\DependencyInjection\Reference;
  *     extends: array<string, array<class-string, array{priority: int}>>,
  *     instanceof: array<string, array<class-string, array{priority: int}>>,
  *     uses: array<string, array<class-string, array{priority: int}>>,
+ *     admin_implements: array<string, array<class-string, array{priority: int}>>,
+ *     admin_extends: array<string, array<class-string, array{priority: int}>>,
+ *     admin_instanceof: array<string, array<class-string, array{priority: int}>>,
+ *     admin_uses: array<string, array<class-string, array{priority: int}>>,
  * }
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -53,16 +61,32 @@ final class ExtensionCompilerPass implements CompilerPassInterface
         $targets = [];
 
         foreach ($container->findTaggedServiceIds('sonata.admin.extension') as $id => $tags) {
+            $adminExtension = $container->getDefinition($id);
+
+            // Trim possible parameter delimiters ("%") from the class name.
+            $adminExtensionClass = trim($adminExtension->getClass() ?? '', '%');
+            if (!class_exists($adminExtensionClass, false) && $container->hasParameter($adminExtensionClass)) {
+                $adminExtensionClass = $container->getParameter($adminExtensionClass);
+                \assert(\is_string($adminExtensionClass));
+            }
+            \assert(class_exists($adminExtensionClass));
+
             foreach ($tags as $attributes) {
                 $target = false;
 
                 if (isset($attributes['target'])) {
                     $target = $attributes['target'];
+                    unset($attributes['target']);
                 }
 
-                if (isset($attributes['global']) && $attributes['global']) {
-                    $universalExtensions[$id] = $attributes;
+                if (isset($attributes['global'])) {
+                    if ($attributes['global']) {
+                        $attributes['global'] = $adminExtensionClass;
+                    } else {
+                        unset($attributes['global']);
+                    }
                 }
+                $universalExtensions[$id][] = $attributes;
 
                 if (!$target || !$container->hasDefinition($target)) {
                     continue;
@@ -81,12 +105,54 @@ final class ExtensionCompilerPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $tags) {
             $admin = $container->getDefinition($id);
 
+            // Trim possible parameter delimiters ("%") from the class name.
+            $adminClass = trim($admin->getClass() ?? '', '%');
+            if (!class_exists($adminClass, false) && $container->hasParameter($adminClass)) {
+                $adminClass = $container->getParameter($adminClass);
+                \assert(\is_string($adminClass));
+            }
+            \assert(class_exists($adminClass));
+
             if (!isset($targets[$id])) {
                 $targets[$id] = new \SplPriorityQueue();
             }
 
-            foreach ($universalExtensions as $extension => $extensionAttributes) {
-                $this->addExtension($targets, $id, $extension, $extensionAttributes);
+            // NEXT_MAJOR: Remove this line.
+            $defaultModelClass = $admin->getArguments()[1] ?? null;
+            foreach ($tags as $attributes) {
+                // NEXT_MAJOR: Remove the fallback to $defaultModelClass and use null instead.
+                $modelClass = $attributes['model_class'] ?? $defaultModelClass;
+                if (null === $modelClass) {
+                    throw new InvalidArgumentException(sprintf('Missing tag attribute "model_class" on service "%s".', $id));
+                }
+
+                $class = $container->getParameterBag()->resolveValue($modelClass);
+                if (!\is_string($class)) {
+                    throw new \TypeError(sprintf(
+                        'Tag attribute "model_class" for service "%s" must be of type string, %s given.',
+                        $id,
+                        \is_object($class) ? \get_class($class) : \gettype($class)
+                    ));
+                }
+
+                if (!class_exists($class)) {
+                    continue;
+                }
+
+                foreach ($universalExtensions as $extension => $extensionsAttributes) {
+                    foreach ($extensionsAttributes as $extensionAttributes) {
+                        if (isset($extensionAttributes['excludes'][$id])) {
+                            continue;
+                        }
+
+                        foreach ($extensionAttributes as $type => $subject) {
+                            if ($this->shouldApplyExtension($type, $subject, $class, $adminClass)) {
+                                $this->addExtension($targets, $id, $extension, $extensionAttributes);
+                                break;
+                            }
+                        }
+                    }
+                }
             }
 
             $extensions = $this->getExtensionsForAdmin($id, $tags, $admin, $container, $extensionMap);
@@ -124,6 +190,14 @@ final class ExtensionCompilerPass implements CompilerPassInterface
      */
     private function getExtensionsForAdmin(string $id, array $tags, Definition $admin, ContainerBuilder $container, array $extensionMap): array
     {
+        // Trim possible parameter delimiters ("%") from the class name.
+        $adminClass = trim($admin->getClass() ?? '', '%');
+        if (!class_exists($adminClass, false) && $container->hasParameter($adminClass)) {
+            $adminClass = $container->getParameter($adminClass);
+            \assert(\is_string($adminClass));
+        }
+        \assert(class_exists($adminClass));
+
         $extensions = [];
 
         $excludes = $extensionMap['excludes'];
@@ -161,7 +235,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
                         continue;
                     }
 
-                    if ($this->isSubtypeOf($type, $subject, $class)) {
+                    if ($this->shouldApplyExtension($type, $subject, $class, $adminClass)) {
                         $extensions = array_merge($extensions, $extensionList);
                     }
                 }
@@ -194,6 +268,10 @@ final class ExtensionCompilerPass implements CompilerPassInterface
             'extends' => [],
             'instanceof' => [],
             'uses' => [],
+            'admin_implements' => [],
+            'admin_extends' => [],
+            'admin_instanceof' => [],
+            'admin_uses' => [],
         ];
 
         foreach ($config as $extension => $options) {
@@ -212,6 +290,10 @@ final class ExtensionCompilerPass implements CompilerPassInterface
              *     extends: array<class-string, string>,
              *     instanceof: array<class-string, string>,
              *     uses: array<class-string, string>,
+             *     admin_implements: array<class-string, string>,
+             *     admin_extends: array<class-string, string>,
+             *     admin_instanceof: array<class-string, string>,
+             *     admin_uses: array<class-string, string>,
              * } $optionsMap
              */
             $optionsMap = array_intersect_key($options, $extensionMap);
@@ -244,17 +326,21 @@ final class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
+     * @param mixed $subject
+     *
      * @phpstan-param class-string $class
+     * @phpstan-param class-string $adminClass
      */
-    private function isSubtypeOf(string $type, string $subject, string $class): bool
+    private function shouldApplyExtension(string $type, $subject, string $class, string $adminClass): bool
     {
         $classReflection = new \ReflectionClass($class);
+        $adminClassReflection = new \ReflectionClass($adminClass);
 
         switch ($type) {
             case 'global':
                 return true;
             case 'instanceof':
-                if (!class_exists($subject)) {
+                if (!\is_string($subject) || !class_exists($subject)) {
                     return false;
                 }
 
@@ -262,14 +348,28 @@ final class ExtensionCompilerPass implements CompilerPassInterface
 
                 return $classReflection->isSubclassOf($subject) || $subjectReflection->getName() === $classReflection->getName();
             case 'implements':
-                return interface_exists($subject) && $classReflection->implementsInterface($subject);
+                return \is_string($subject) && interface_exists($subject) && $classReflection->implementsInterface($subject);
             case 'extends':
-                return class_exists($subject) && $classReflection->isSubclassOf($subject);
+                return \is_string($subject) && class_exists($subject) && $classReflection->isSubclassOf($subject);
             case 'uses':
-                return trait_exists($subject) && $this->hasTrait($classReflection, $subject);
-        }
+                return \is_string($subject) && trait_exists($subject) && $this->hasTrait($classReflection, $subject);
+            case 'admin_instanceof':
+                if (!\is_string($subject) || !class_exists($subject)) {
+                    return false;
+                }
 
-        return false;
+                $subjectReflection = new \ReflectionClass($subject);
+
+                return $adminClassReflection->isSubclassOf($subject) || $subjectReflection->getName() === $adminClassReflection->getName();
+            case 'admin_implements':
+                return \is_string($subject) && interface_exists($subject) && $adminClassReflection->implementsInterface($subject);
+            case 'admin_extends':
+                return \is_string($subject) && class_exists($subject) && $adminClassReflection->isSubclassOf($subject);
+            case 'admin_uses':
+                return \is_string($subject) && trait_exists($subject) && $this->hasTrait($adminClassReflection, $subject);
+            default:
+                return false;
+        }
     }
 
     /**

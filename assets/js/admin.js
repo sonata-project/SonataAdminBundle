@@ -86,7 +86,7 @@ const Admin = {
         const select = jQuery(element);
         let allowClearEnabled = false;
         const popover = select.data('popover');
-        let maximumSelectionSize = null;
+        let maximumSelectionLength = null;
         let minimumResultsForSearch = 10;
 
         select.removeClass('form-control');
@@ -101,8 +101,8 @@ const Admin = {
           allowClearEnabled = false;
         }
 
-        if (select.attr('data-sonata-select2-maximumSelectionSize')) {
-          maximumSelectionSize = select.attr('data-sonata-select2-maximumSelectionSize');
+        if (select.attr('data-sonata-select2-maximumSelectionLength')) {
+          maximumSelectionLength = select.attr('data-sonata-select2-maximumSelectionLength');
         }
 
         if (select.attr('data-sonata-select2-minimumResultsForSearch')) {
@@ -116,7 +116,7 @@ const Admin = {
           minimumResultsForSearch,
           placeholder: allowClearEnabled ? ' ' : '', // allowClear needs placeholder to work properly
           allowClear: allowClearEnabled,
-          maximumSelectionSize,
+          maximumSelectionLength,
         });
 
         if (undefined !== popover) {

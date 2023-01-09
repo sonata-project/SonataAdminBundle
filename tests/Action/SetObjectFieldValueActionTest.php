@@ -39,7 +39,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     /**
      * @var Stub&AdminFetcherInterface
      */
-    private $adminFetcher;
+    private AdminFetcherInterface $adminFetcher;
 
     private Environment $twig;
 
@@ -48,24 +48,24 @@ final class SetObjectFieldValueActionTest extends TestCase
     /**
      * @var AdminInterface<object>&MockObject
      */
-    private $admin;
+    private AdminInterface $admin;
 
     /**
      * @var ValidatorInterface&MockObject
      */
-    private $validator;
+    private ValidatorInterface $validator;
 
     /**
      * @var ModelManagerInterface<object>&MockObject
      */
-    private $modelManager;
+    private ModelManagerInterface $modelManager;
 
     private DataTransformerResolver $resolver;
 
     /**
      * @var MockObject&MutableTemplateRegistryInterface
      */
-    private $templateRegistry;
+    private MutableTemplateRegistryInterface $templateRegistry;
 
     protected function setUp(): void
     {
