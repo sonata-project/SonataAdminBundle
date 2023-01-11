@@ -16,10 +16,9 @@ namespace Sonata\AdminBundle\ArgumentResolver;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
-final class AdminValueResolver implements ArgumentValueResolverInterface
+final class AdminValueResolver implements CompatibleValueResolverInterface
 {
     private AdminFetcherInterface $adminFetcher;
 
@@ -28,6 +27,7 @@ final class AdminValueResolver implements ArgumentValueResolverInterface
         $this->adminFetcher = $adminFetcher;
     }
 
+    // TODO: Deprecate this method when dropping support of Symfony < 6.2
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
         $type = $argument->getType();
@@ -54,6 +54,22 @@ final class AdminValueResolver implements ArgumentValueResolverInterface
      */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-        yield $this->adminFetcher->get($request);
+        $type = $argument->getType();
+
+        if (null === $type) {
+            return [];
+        }
+
+        if (AdminInterface::class !== $type && !is_subclass_of($type, AdminInterface::class)) {
+            return [];
+        }
+
+        try {
+            $admin = $this->adminFetcher->get($request);
+        } catch (\InvalidArgumentException $exception) {
+            return [];
+        }
+
+        return is_a($admin, $type) ? [$admin] : [];
     }
 }
