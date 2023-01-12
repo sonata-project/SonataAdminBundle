@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.22.3](https://github.com/sonata-project/SonataAdminBundle/compare/4.22.2...4.22.3) - 2023-01-11
+### Fixed
+- [[#8003](https://github.com/sonata-project/SonataAdminBundle/pull/8003)] Value resolver deprecations using Symfony 6.2 ([@franmomu](https://github.com/franmomu))
+
 ## [4.22.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.22.1...4.22.2) - 2023-01-05
 ### Fixed
 - [[#8001](https://github.com/sonata-project/SonataAdminBundle/pull/8001)] Admin extension declaration with priority ([@VincentLanglet](https://github.com/VincentLanglet))

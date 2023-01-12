@@ -4,6 +4,8 @@
         <directory name="src"/>
         <directory name="tests"/>
         <ignoreFiles>
+            <!-- see https://github.com/vimeo/psalm/issues/5338 -->
+            <file name="src/ArgumentResolver/CompatibleValueResolverInterface.php"/>
             <directory name="src/Resources/skeleton"/>
             <directory name="vendor"/>
         </ignoreFiles>

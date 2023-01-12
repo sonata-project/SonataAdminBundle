@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\ArgumentResolver\ProxyQueryResolver;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 final class ProxyQueryResolverTest extends TestCase
@@ -29,79 +28,75 @@ final class ProxyQueryResolverTest extends TestCase
         $this->proxyQueryResolver = new ProxyQueryResolver();
     }
 
-    public function testConstruct(): void
+    /**
+     * @dataProvider provideInvalidData
+     */
+    public function testWithInvalidData(Request $request, ArgumentMetadata $argumentMetadata): void
     {
-        static::assertInstanceOf(
-            ArgumentValueResolverInterface::class,
-            $this->proxyQueryResolver
+        static::assertFalse($this->proxyQueryResolver->supports($request, $argumentMetadata));
+        static::assertSame(
+            [],
+            $this->proxyQueryResolver->resolve($request, $argumentMetadata)
         );
     }
 
     /**
-     * @dataProvider supportDataProvider
+     * @phpstan-return iterable<array-key, array{Request, ArgumentMetadata}>
      */
-    public function testSupports(bool $expectedSupport, Request $request, ArgumentMetadata $argumentMetadata): void
+    public function provideInvalidData(): iterable
     {
-        static::assertSame($expectedSupport, $this->proxyQueryResolver->supports($request, $argumentMetadata));
-    }
+        yield 'Object with no type' => [
+            static::createRequest(),
+            static::createArgumentMetadata('query'),
+        ];
 
-    /**
-     * @phpstan-return iterable<array-key, array{bool, Request, ArgumentMetadata}>
-     */
-    public function supportDataProvider(): iterable
-    {
         yield 'No ProxyQuery object in the request' => [
-            false,
-            new Request(),
-            new ArgumentMetadata('query', ProxyQueryInterface::class, false, false, null),
+            static::createRequest(),
+            static::createArgumentMetadata('query', ProxyQueryInterface::class),
         ];
 
         yield 'Not looking for a query argument' => [
-            false,
-            new Request([], [], ['query' => static::createMock(ProxyQueryInterface::class)]),
-            new ArgumentMetadata('query', \stdClass::class, false, false, null),
-        ];
-
-        yield 'ProxyQuery attributes under query name' => [
-            true,
-            new Request([], [], ['query' => static::createMock(ProxyQueryInterface::class)]),
-            new ArgumentMetadata('query', ProxyQueryInterface::class, false, false, null),
-        ];
-
-        yield 'ProxyQuery attributes under any names' => [
-            true,
-            new Request([], [], ['query' => static::createMock(ProxyQueryInterface::class)]),
-            new ArgumentMetadata(uniqid('parameter'), ProxyQueryInterface::class, false, false, null),
+            static::createRequest(['query' => static::createStub(ProxyQueryInterface::class)]),
+            static::createArgumentMetadata('query', \stdClass::class),
         ];
     }
 
-    public function testResolve(): void
+    public function testResolveWithProxyQuery(): void
     {
-        $request = new Request();
-        $request->attributes->set('query', $proxy = static::createMock(ProxyQueryInterface::class));
-
-        $argument = new ArgumentMetadata('query', ProxyQueryInterface::class, false, false, null);
+        $proxy = static::createStub(ProxyQueryInterface::class);
+        $request = static::createRequest(['query' => $proxy]);
+        $argument = static::createArgumentMetadata('query', ProxyQueryInterface::class);
 
         static::assertTrue($this->proxyQueryResolver->supports($request, $argument));
-
         static::assertSame(
             [$proxy],
-            $this->iterableToArray($this->proxyQueryResolver->resolve($request, $argument))
+            $this->proxyQueryResolver->resolve($request, $argument)
+        );
+    }
+
+    public function testResolveWithProxyQueryWithDifferentName(): void
+    {
+        $proxy = static::createStub(ProxyQueryInterface::class);
+        $request = static::createRequest(['query' => $proxy]);
+        $argument = static::createArgumentMetadata(uniqid('parameter'), ProxyQueryInterface::class);
+
+        static::assertTrue($this->proxyQueryResolver->supports($request, $argument));
+        static::assertSame(
+            [$proxy],
+            $this->proxyQueryResolver->resolve($request, $argument)
         );
     }
 
     /**
-     * @phpstan-template T
-     * @phpstan-param iterable<T> $iterable
-     * @phpstan-return array<T>
+     * @param array<string, mixed> $attributes
      */
-    private function iterableToArray(iterable $iterable): array
+    private static function createRequest(array $attributes = []): Request
     {
-        $array = [];
-        foreach ($iterable as $admin) {
-            $array[] = $admin;
-        }
+        return new Request([], [], $attributes);
+    }
 
-        return $array;
+    private static function createArgumentMetadata(string $name, ?string $type = null): ArgumentMetadata
+    {
+        return new ArgumentMetadata($name, $type, false, false, null);
     }
 }
