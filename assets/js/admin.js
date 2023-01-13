@@ -565,50 +565,72 @@ const Admin = {
   },
 
   setup_sortable_select2(subject, data, customOptions) {
-    const transformedData = [];
+    const idLookupTable = [];
+    const selectedItems = [];
+    const unselectedItems = [];
+    const selectedIds = subject.val() ? subject.val().split(',') : [];
+
     for (let i = 0; i < data.length; i += 1) {
-      transformedData[i] = { id: data[i].data, text: data[i].label };
+      if (idLookupTable[data[i].label]) {
+        Admin.log(
+          '[setup_sortable_select2] error: sortable requires all option labels to be unique'
+        );
+      }
+      idLookupTable[data[i].label] = data[i].data;
+
+      const item = {
+        id: data[i].data,
+        text: data[i].label,
+      };
+
+      const selectedIndex = selectedIds.indexOf(data[i].data);
+      if (selectedIndex !== -1) {
+        selectedItems[selectedIndex] = item;
+      } else {
+        unselectedItems.push(item);
+      }
     }
 
     const options = {
       theme: 'bootstrap',
       width: () => Admin.get_select2_width(subject),
       dropdownAutoWidth: true,
-      data: transformedData,
+      data: [...selectedItems, ...unselectedItems],
       multiple: true,
       ...customOptions,
     };
-
     subject.select2(options);
+    const list = subject.data('select2').$container.find('ul.select2-selection__rendered');
+    list.sortable({
+      containment: 'parent',
+      items: '> li[data-select2-id]',
+      update: () => {
+        // Find all values in the new order and put them in the input.
+        const sortedIds = list
+          .children('li[data-select2-id]')
+          .toArray()
+          .map((li) => idLookupTable[li.title]);
+        subject.val(sortedIds.join());
+      },
+    }); // On form submit, transform value to match what is expected by server
 
-    subject
-      .select2('container')
-      .find('ul.select2-choices')
-      .sortable({
-        containment: 'parent',
-        start: () => {
-          subject.select2('onSortStart');
-        },
-        update: () => {
-          subject.select2('onSortEnd');
-        },
-      });
-
-    // On form submit, transform value to match what is expected by server
     subject.parents('form:first').submit(() => {
       let values = subject.val().trim();
+
       if (values !== '') {
         let baseName = subject.attr('name');
         values = values.split(',');
         baseName = baseName.substring(0, baseName.length - 1);
+
         for (let i = 0; i < values.length; i += 1) {
           jQuery('<input>')
             .attr('type', 'hidden')
-            .attr('name', `${baseName + i}]`)
+            .attr('name', ''.concat(baseName + i, ']'))
             .val(values[i])
             .appendTo(subject.parents('form:first'));
         }
       }
+
       subject.remove();
     });
   },
