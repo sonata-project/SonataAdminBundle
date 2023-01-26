@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.22.4](https://github.com/sonata-project/SonataAdminBundle/compare/4.22.3...4.22.4) - 2023-01-26
+### Fixed
+- [[#8009](https://github.com/sonata-project/SonataAdminBundle/pull/8009)] Fix response_item_callback option for `ModelAutocompleteType` form field. ([@aleksvaganoff](https://github.com/aleksvaganoff))
+- [[#7891](https://github.com/sonata-project/SonataAdminBundle/pull/7891)] Fix Sortable drag and drop for `ModelType` form field. ([@jorrit](https://github.com/jorrit))
+
 ## [4.22.3](https://github.com/sonata-project/SonataAdminBundle/compare/4.22.2...4.22.3) - 2023-01-11
 ### Fixed
 - [[#8003](https://github.com/sonata-project/SonataAdminBundle/pull/8003)] Value resolver deprecations using Symfony 6.2 ([@franmomu](https://github.com/franmomu))
