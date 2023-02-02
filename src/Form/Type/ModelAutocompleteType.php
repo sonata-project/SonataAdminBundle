@@ -43,6 +43,7 @@ final class ModelAutocompleteType extends AbstractType
 
         $builder->setAttribute('property', $options['property']);
         $builder->setAttribute('callback', $options['callback']);
+        $builder->setAttribute('response_item_callback', $options['response_item_callback']);
         $builder->setAttribute('minimum_input_length', $options['minimum_input_length']);
         $builder->setAttribute('items_per_page', $options['items_per_page']);
         $builder->setAttribute('req_param_name_page_number', $options['req_param_name_page_number']);
